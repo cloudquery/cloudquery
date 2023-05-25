@@ -143,13 +143,10 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 		s := val.(string)
 		var values []string
 		// nolint:gocritic,revive
-		if strings.HasPrefix(s, "[\n  \"") {
-			values = snowflakeStrToArray(s)
-		} else if strings.HasPrefix(s, "[\n  ") {
-			values = snowflakeStrToIntArray(s)
-		} else {
+		if !strings.HasPrefix(s, "[\n  ") {
 			return fmt.Errorf("unknown array format %s", s)
 		}
+		values = snowflakeStrToArray(s)
 
 		for _, v := range values {
 			if err := c.reverseTransform(f, valBuilder, v); err != nil {
@@ -179,31 +176,6 @@ func (c *Client) reverseTransformer(table *schema.Table, values []any) (arrow.Re
 	rec := bldr.NewRecord()
 	bldr.Release()
 	return rec, nil
-}
-
-// https://github.com/snowflakedb/gosnowflake/issues/674
-func snowflakeStrToIntArray(val string) []string {
-	val = strings.TrimPrefix(val, "[\n  ")
-	val = strings.TrimSuffix(val, "\n]")
-	strs := strings.Split(val, ",\n  ")
-	for i := range strs {
-		strs[i] = strings.ReplaceAll(strs[i], "\\\"", "\"")
-		strs[i] = strings.ReplaceAll(strs[i], "\\n", "\n")
-	}
-	return strs
-}
-
-// https://github.com/snowflakedb/gosnowflake/issues/674
-func snowflakeStrToArray(val string) []string {
-	val = strings.TrimPrefix(val, "[\n  \"")
-	val = strings.TrimSuffix(val, "\"\n]")
-	strs := strings.Split(val, "\",\n  \"")
-	for i := range strs {
-		strs[i] = strings.ReplaceAll(strs[i], "\\\"", "\"")
-		strs[i] = strings.ReplaceAll(strs[i], "\\u0000", "\u0000")
-		strs[i] = strings.ReplaceAll(strs[i], "\\n", "\n")
-	}
-	return strs
 }
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
