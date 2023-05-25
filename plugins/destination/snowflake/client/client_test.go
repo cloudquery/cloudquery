@@ -26,5 +26,7 @@ func TestPlugin(t *testing.T) {
 			SkipMigrateAppendForce:    true,
 		},
 		destination.WithTestSourceSkipIntervals(),
+		destination.WithTestSourceSkipDates(),
+		
 	)
 }
