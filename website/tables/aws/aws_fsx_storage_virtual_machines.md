@@ -10,23 +10,23 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|active_directory_configuration|JSON|
-|creation_time|Timestamp|
-|endpoints|JSON|
-|file_system_id|String|
-|lifecycle|String|
-|lifecycle_transition_reason|JSON|
-|name|String|
-|resource_arn|String|
-|root_volume_security_style|String|
-|storage_virtual_machine_id|String|
-|subtype|String|
-|uuid|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|active_directory_configuration|json|
+|creation_time|timestamp[us, tz=UTC]|
+|endpoints|json|
+|file_system_id|utf8|
+|lifecycle|utf8|
+|lifecycle_transition_reason|json|
+|name|utf8|
+|resource_arn|utf8|
+|root_volume_security_style|utf8|
+|storage_virtual_machine_id|utf8|
+|subtype|utf8|
+|uuid|utf8|

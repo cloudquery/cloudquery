@@ -14,16 +14,16 @@ This table depends on [aws_support_trusted_advisor_checks](aws_support_trusted_a
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|language_code (PK)|String|
-|category_specific_summary|JSON|
-|check_id (PK)|String|
-|resources_summary|JSON|
-|status|String|
-|timestamp|String|
-|has_flagged_resources|Bool|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|region (PK)|utf8|
+|language_code (PK)|utf8|
+|category_specific_summary|json|
+|check_id (PK)|utf8|
+|resources_summary|json|
+|status|utf8|
+|timestamp|utf8|
+|has_flagged_resources|bool|

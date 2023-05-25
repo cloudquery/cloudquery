@@ -10,14 +10,14 @@ The composite primary key for this table is (**account_id**, **region**, **direc
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|directory_name (PK)|String|
-|certificate_based_auth_properties|JSON|
-|created_time|Timestamp|
-|organizational_unit_distinguished_names|StringArray|
-|service_account_credentials|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|region (PK)|utf8|
+|directory_name (PK)|utf8|
+|certificate_based_auth_properties|json|
+|created_time|timestamp[us, tz=UTC]|
+|organizational_unit_distinguished_names|list<item: utf8, nullable>|
+|service_account_credentials|json|

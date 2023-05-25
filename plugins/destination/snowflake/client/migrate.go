@@ -58,19 +58,19 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	return nil
 }
 
-func (c *Client) isTableExistSQL(_ context.Context, table string) (bool, error) {
+func (c *Client) isTableExistSQL(ctx context.Context, table string) (bool, error) {
 	var tableExist int
-	if err := c.db.QueryRow(isTableExistSQL, table).Scan(&tableExist); err != nil {
+	if err := c.db.QueryRowContext(ctx, isTableExistSQL, table).Scan(&tableExist); err != nil {
 		return false, fmt.Errorf("failed to check if table %s exists: %w", table, err)
 	}
 	return tableExist == 1, nil
 }
 
-func (c *Client) autoMigrateTable(_ context.Context, table *schema.Table) error {
+func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) error {
 	var err error
 	var info *tableInfo
 	tableName := table.Name
-	if info, err = c.getTableInfo(tableName); err != nil {
+	if info, err = c.getTableInfo(ctx, tableName); err != nil {
 		return fmt.Errorf("failed to get table %s columns types: %w", tableName, err)
 	}
 
@@ -83,7 +83,7 @@ func (c *Client) autoMigrateTable(_ context.Context, table *schema.Table) error 
 		case snowflakeColumn == nil:
 			c.logger.Debug().Str("table", tableName).Str("column", col.Name).Msg("Column doesn't exist, creating")
 			sql := "alter table " + tableName + " add column \"" + columnName + "\"" + columnType
-			if _, err := c.db.Exec(sql); err != nil {
+			if _, err := c.db.ExecContext(ctx, sql); err != nil {
 				return fmt.Errorf("failed to add column %s on table %s: %w", col.Name, tableName, err)
 			}
 		case !strings.EqualFold(snowflakeColumn.typ, columnType):
@@ -93,7 +93,7 @@ func (c *Client) autoMigrateTable(_ context.Context, table *schema.Table) error 
 	return nil
 }
 
-func (c *Client) createTableIfNotExist(_ context.Context, table *schema.Table) error {
+func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table) error {
 	var sb strings.Builder
 	// TODO sanitize tablename
 	tableName := table.Name
@@ -117,16 +117,16 @@ func (c *Client) createTableIfNotExist(_ context.Context, table *schema.Table) e
 	}
 
 	sb.WriteString(")")
-	_, err := c.db.Exec(sb.String())
+	_, err := c.db.ExecContext(ctx, sb.String())
 	if err != nil {
 		return fmt.Errorf("failed to create table with '%s': %w", sb.String(), err)
 	}
 	return nil
 }
 
-func (c *Client) getTableInfo(tableName string) (*tableInfo, error) {
+func (c *Client) getTableInfo(ctx context.Context, tableName string) (*tableInfo, error) {
 	info := tableInfo{}
-	rows, err := c.db.Query(sqlTableInfo, tableName)
+	rows, err := c.db.QueryContext(ctx, sqlTableInfo, tableName)
 	if err != nil {
 		return nil, err
 	}

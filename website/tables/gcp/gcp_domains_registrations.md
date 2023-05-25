@@ -10,20 +10,20 @@ The composite primary key for this table is (**project_id**, **name**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|domain_name|String|
-|create_time|Timestamp|
-|expire_time|Timestamp|
-|state|String|
-|issues|IntArray|
-|labels|JSON|
-|management_settings|JSON|
-|dns_settings|JSON|
-|contact_settings|JSON|
-|pending_contact_settings|JSON|
-|supported_privacy|IntArray|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id (PK)|utf8|
+|name (PK)|utf8|
+|domain_name|utf8|
+|create_time|timestamp[us, tz=UTC]|
+|expire_time|timestamp[us, tz=UTC]|
+|state|utf8|
+|issues|list<item: int64, nullable>|
+|labels|json|
+|management_settings|json|
+|dns_settings|json|
+|contact_settings|json|
+|pending_contact_settings|json|
+|supported_privacy|list<item: int64, nullable>|

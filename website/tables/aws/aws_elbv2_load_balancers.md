@@ -16,25 +16,25 @@ The following tables depend on aws_elbv2_load_balancers:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|web_acl_arn|String|
-|tags|JSON|
-|arn (PK)|String|
-|availability_zones|JSON|
-|canonical_hosted_zone_id|String|
-|created_time|Timestamp|
-|customer_owned_ipv4_pool|String|
-|dns_name|String|
-|ip_address_type|String|
-|load_balancer_arn|String|
-|load_balancer_name|String|
-|scheme|String|
-|security_groups|StringArray|
-|state|JSON|
-|type|String|
-|vpc_id|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|web_acl_arn|utf8|
+|tags|json|
+|arn (PK)|utf8|
+|availability_zones|json|
+|canonical_hosted_zone_id|utf8|
+|created_time|timestamp[us, tz=UTC]|
+|customer_owned_ipv4_pool|utf8|
+|dns_name|utf8|
+|ip_address_type|utf8|
+|load_balancer_arn|utf8|
+|load_balancer_name|utf8|
+|scheme|utf8|
+|security_groups|list<item: utf8, nullable>|
+|state|json|
+|type|utf8|
+|vpc_id|utf8|

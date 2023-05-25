@@ -10,43 +10,43 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|at_rest_encryption_enabled|Bool|
-|auth_token_enabled|Bool|
-|auth_token_last_modified_date|Timestamp|
-|auto_minor_version_upgrade|Bool|
-|cache_cluster_create_time|Timestamp|
-|cache_cluster_id|String|
-|cache_cluster_status|String|
-|cache_node_type|String|
-|cache_nodes|JSON|
-|cache_parameter_group|JSON|
-|cache_security_groups|JSON|
-|cache_subnet_group_name|String|
-|client_download_landing_page|String|
-|configuration_endpoint|JSON|
-|engine|String|
-|engine_version|String|
-|ip_discovery|String|
-|log_delivery_configurations|JSON|
-|network_type|String|
-|notification_configuration|JSON|
-|num_cache_nodes|Int|
-|pending_modified_values|JSON|
-|preferred_availability_zone|String|
-|preferred_maintenance_window|String|
-|preferred_outpost_arn|String|
-|replication_group_id|String|
-|replication_group_log_delivery_enabled|Bool|
-|security_groups|JSON|
-|snapshot_retention_limit|Int|
-|snapshot_window|String|
-|transit_encryption_enabled|Bool|
-|transit_encryption_mode|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|at_rest_encryption_enabled|bool|
+|auth_token_enabled|bool|
+|auth_token_last_modified_date|timestamp[us, tz=UTC]|
+|auto_minor_version_upgrade|bool|
+|cache_cluster_create_time|timestamp[us, tz=UTC]|
+|cache_cluster_id|utf8|
+|cache_cluster_status|utf8|
+|cache_node_type|utf8|
+|cache_nodes|json|
+|cache_parameter_group|json|
+|cache_security_groups|json|
+|cache_subnet_group_name|utf8|
+|client_download_landing_page|utf8|
+|configuration_endpoint|json|
+|engine|utf8|
+|engine_version|utf8|
+|ip_discovery|utf8|
+|log_delivery_configurations|json|
+|network_type|utf8|
+|notification_configuration|json|
+|num_cache_nodes|int64|
+|pending_modified_values|json|
+|preferred_availability_zone|utf8|
+|preferred_maintenance_window|utf8|
+|preferred_outpost_arn|utf8|
+|replication_group_id|utf8|
+|replication_group_log_delivery_enabled|bool|
+|security_groups|json|
+|snapshot_retention_limit|int64|
+|snapshot_window|utf8|
+|transit_encryption_enabled|bool|
+|transit_encryption_mode|utf8|

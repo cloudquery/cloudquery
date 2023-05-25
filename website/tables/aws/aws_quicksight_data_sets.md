@@ -15,19 +15,19 @@ The following tables depend on aws_quicksight_data_sets:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|tags|JSON|
-|arn (PK)|String|
-|column_level_permission_rules_applied|Bool|
-|created_time|Timestamp|
-|data_set_id|String|
-|import_mode|String|
-|last_updated_time|Timestamp|
-|name|String|
-|row_level_permission_data_set|JSON|
-|row_level_permission_tag_configuration_applied|Bool|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|region (PK)|utf8|
+|tags|json|
+|arn (PK)|utf8|
+|column_level_permission_rules_applied|bool|
+|created_time|timestamp[us, tz=UTC]|
+|data_set_id|utf8|
+|import_mode|utf8|
+|last_updated_time|timestamp[us, tz=UTC]|
+|name|utf8|
+|row_level_permission_data_set|json|
+|row_level_permission_tag_configuration_applied|bool|

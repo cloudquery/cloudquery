@@ -10,19 +10,19 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|tags|JSON|
-|arn (PK)|String|
-|distribution_config|JSON|
-|domain_name|String|
-|id|String|
-|in_progress_invalidation_batches|Int|
-|last_modified_time|Timestamp|
-|status|String|
-|active_trusted_key_groups|JSON|
-|active_trusted_signers|JSON|
-|alias_icp_recordals|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|tags|json|
+|arn (PK)|utf8|
+|distribution_config|json|
+|domain_name|utf8|
+|id|utf8|
+|in_progress_invalidation_batches|int64|
+|last_modified_time|timestamp[us, tz=UTC]|
+|status|utf8|
+|active_trusted_key_groups|json|
+|active_trusted_signers|json|
+|alias_icp_recordals|json|

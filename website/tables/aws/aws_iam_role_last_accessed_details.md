@@ -14,17 +14,17 @@ This table depends on [aws_iam_roles](aws_iam_roles).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|role_arn (PK)|String|
-|job_id|String|
-|service_name|String|
-|service_namespace (PK)|String|
-|last_authenticated|Timestamp|
-|last_authenticated_entity|String|
-|last_authenticated_region|String|
-|total_authenticated_entities|Int|
-|tracked_actions_last_accessed|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|role_arn (PK)|utf8|
+|job_id|utf8|
+|service_name|utf8|
+|service_namespace (PK)|utf8|
+|last_authenticated|timestamp[us, tz=UTC]|
+|last_authenticated_entity|utf8|
+|last_authenticated_region|utf8|
+|total_authenticated_entities|int64|
+|tracked_actions_last_accessed|json|

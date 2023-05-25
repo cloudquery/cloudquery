@@ -16,16 +16,16 @@ The following tables depend on aws_organizations_accounts:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|request_account_id (PK)|String|
-|tags|JSON|
-|arn (PK)|String|
-|email|String|
-|id|String|
-|joined_method|String|
-|joined_timestamp|Timestamp|
-|name|String|
-|status|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|request_account_id (PK)|utf8|
+|tags|json|
+|arn (PK)|utf8|
+|email|utf8|
+|id|utf8|
+|joined_method|utf8|
+|joined_timestamp|timestamp[us, tz=UTC]|
+|name|utf8|
+|status|utf8|

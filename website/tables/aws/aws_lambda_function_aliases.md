@@ -14,18 +14,18 @@ This table depends on [aws_lambda_functions](aws_lambda_functions).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|function_arn|String|
-|arn (PK)|String|
-|alias_arn|String|
-|description|String|
-|function_version|String|
-|name|String|
-|revision_id|String|
-|routing_config|JSON|
-|url_config|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|function_arn|utf8|
+|arn (PK)|utf8|
+|alias_arn|utf8|
+|description|utf8|
+|function_version|utf8|
+|name|utf8|
+|revision_id|utf8|
+|routing_config|json|
+|url_config|json|

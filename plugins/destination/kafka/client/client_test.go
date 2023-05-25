@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cloudquery/filetypes/v2"
+	"github.com/cloudquery/filetypes/v3"
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
 )
@@ -45,5 +45,6 @@ func TestPgPlugin(t *testing.T) {
 			SkipMigrateOverwrite:      true,
 			SkipMigrateOverwriteForce: true,
 			SkipMigrateAppendForce:    true,
-		})
+		},
+	)
 }

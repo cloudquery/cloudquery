@@ -16,17 +16,17 @@ The following tables depend on aws_directconnect_gateways:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region|String|
-|arn (PK)|String|
-|id|String|
-|amazon_side_asn|Int|
-|direct_connect_gateway_id|String|
-|direct_connect_gateway_name|String|
-|direct_connect_gateway_state|String|
-|owner_account|String|
-|state_change_error|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|id|utf8|
+|amazon_side_asn|int64|
+|direct_connect_gateway_id|utf8|
+|direct_connect_gateway_name|utf8|
+|direct_connect_gateway_state|utf8|
+|owner_account|utf8|
+|state_change_error|utf8|

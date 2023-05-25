@@ -12,8 +12,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 
 	inspector2types "github.com/aws/aws-sdk-go-v2/service/inspector2/types"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
 	"github.com/cloudquery/plugin-sdk/v3/caser"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 )

@@ -15,20 +15,20 @@ The following tables depend on aws_elastictranscoder_pipelines:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|aws_kms_key_arn|String|
-|content_config|JSON|
-|id|String|
-|input_bucket|String|
-|name|String|
-|notifications|JSON|
-|output_bucket|String|
-|role|String|
-|status|String|
-|thumbnail_config|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|aws_kms_key_arn|utf8|
+|content_config|json|
+|id|utf8|
+|input_bucket|utf8|
+|name|utf8|
+|notifications|json|
+|output_bucket|utf8|
+|role|utf8|
+|status|utf8|
+|thumbnail_config|json|

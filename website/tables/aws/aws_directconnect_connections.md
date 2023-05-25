@@ -10,32 +10,32 @@ The composite primary key for this table is (**arn**, **id**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|id (PK)|String|
-|tags|JSON|
-|aws_device|String|
-|aws_device_v2|String|
-|aws_logical_device_id|String|
-|bandwidth|String|
-|connection_id|String|
-|connection_name|String|
-|connection_state|String|
-|encryption_mode|String|
-|has_logical_redundancy|String|
-|jumbo_frame_capable|Bool|
-|lag_id|String|
-|loa_issue_time|Timestamp|
-|location|String|
-|mac_sec_capable|Bool|
-|mac_sec_keys|JSON|
-|owner_account|String|
-|partner_name|String|
-|port_encryption_status|String|
-|provider_name|String|
-|vlan|Int|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|id (PK)|utf8|
+|tags|json|
+|aws_device|utf8|
+|aws_device_v2|utf8|
+|aws_logical_device_id|utf8|
+|bandwidth|utf8|
+|connection_id|utf8|
+|connection_name|utf8|
+|connection_state|utf8|
+|encryption_mode|utf8|
+|has_logical_redundancy|utf8|
+|jumbo_frame_capable|bool|
+|lag_id|utf8|
+|loa_issue_time|timestamp[us, tz=UTC]|
+|location|utf8|
+|mac_sec_capable|bool|
+|mac_sec_keys|json|
+|owner_account|utf8|
+|partner_name|utf8|
+|port_encryption_status|utf8|
+|provider_name|utf8|
+|vlan|int64|

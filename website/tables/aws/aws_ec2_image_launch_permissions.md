@@ -14,12 +14,12 @@ This table depends on [aws_ec2_images](aws_ec2_images).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|image_arn|String|
-|group|String|
-|organization_arn|String|
-|organizational_unit_arn|String|
-|user_id|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id (PK)|uuid|
+|_cq_parent_id|uuid|
+|image_arn|utf8|
+|group|utf8|
+|organization_arn|utf8|
+|organizational_unit_arn|utf8|
+|user_id|utf8|

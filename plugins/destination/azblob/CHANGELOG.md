@@ -1,5 +1,25 @@
 # Changelog
 
+## [3.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v3.1.0...plugins-destination-azblob-v3.2.0) (2023-05-25)
+
+
+### Features
+
+* Update to `github.com/cloudquery/filetypes/v3` `v3.1.0` ([#10942](https://github.com/cloudquery/cloudquery/issues/10942)) ([40ca741](https://github.com/cloudquery/cloudquery/commit/40ca7415fb4149481b6e601c73c5f2019f3353aa))
+
+## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v3.0.1...plugins-destination-azblob-v3.1.0) (2023-05-25)
+
+
+### Features
+
+* **azblob:** Upgrade to v3 ([#10923](https://github.com/cloudquery/cloudquery/issues/10923)) ([cbecc3a](https://github.com/cloudquery/cloudquery/commit/cbecc3a158485f04f8805159387c6f25e0326475))
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.8 ([#10798](https://github.com/cloudquery/cloudquery/issues/10798)) ([27ff430](https://github.com/cloudquery/cloudquery/commit/27ff430527932d59a4d488a6767547eda8853940))
+
 ## [3.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v3.0.0...plugins-destination-azblob-v3.0.1) (2023-05-02)
 
 

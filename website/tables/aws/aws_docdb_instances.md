@@ -14,38 +14,38 @@ This table depends on [aws_docdb_clusters](aws_docdb_clusters).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|tags|JSON|
-|arn (PK)|String|
-|auto_minor_version_upgrade|Bool|
-|availability_zone|String|
-|backup_retention_period|Int|
-|ca_certificate_identifier|String|
-|copy_tags_to_snapshot|Bool|
-|db_cluster_identifier|String|
-|db_instance_arn|String|
-|db_instance_class|String|
-|db_instance_identifier|String|
-|db_instance_status|String|
-|db_subnet_group|JSON|
-|dbi_resource_id|String|
-|enabled_cloudwatch_logs_exports|StringArray|
-|endpoint|JSON|
-|engine|String|
-|engine_version|String|
-|instance_create_time|Timestamp|
-|kms_key_id|String|
-|latest_restorable_time|Timestamp|
-|pending_modified_values|JSON|
-|preferred_backup_window|String|
-|preferred_maintenance_window|String|
-|promotion_tier|Int|
-|publicly_accessible|Bool|
-|status_infos|JSON|
-|storage_encrypted|Bool|
-|vpc_security_groups|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|tags|json|
+|arn (PK)|utf8|
+|auto_minor_version_upgrade|bool|
+|availability_zone|utf8|
+|backup_retention_period|int64|
+|ca_certificate_identifier|utf8|
+|copy_tags_to_snapshot|bool|
+|db_cluster_identifier|utf8|
+|db_instance_arn|utf8|
+|db_instance_class|utf8|
+|db_instance_identifier|utf8|
+|db_instance_status|utf8|
+|db_subnet_group|json|
+|dbi_resource_id|utf8|
+|enabled_cloudwatch_logs_exports|list<item: utf8, nullable>|
+|endpoint|json|
+|engine|utf8|
+|engine_version|utf8|
+|instance_create_time|timestamp[us, tz=UTC]|
+|kms_key_id|utf8|
+|latest_restorable_time|timestamp[us, tz=UTC]|
+|pending_modified_values|json|
+|preferred_backup_window|utf8|
+|preferred_maintenance_window|utf8|
+|promotion_tier|int64|
+|publicly_accessible|bool|
+|status_infos|json|
+|storage_encrypted|bool|
+|vpc_security_groups|json|

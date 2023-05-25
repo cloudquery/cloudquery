@@ -10,18 +10,18 @@ The composite primary key for this table is (**associated_entity**, **resource_s
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|associated_entity (PK)|String|
-|association_type|String|
-|creation_time|Timestamp|
-|external|Bool|
-|last_updated_time|Timestamp|
-|resource_share_arn (PK)|String|
-|resource_share_name|String|
-|status|String|
-|status_message|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|associated_entity (PK)|utf8|
+|association_type|utf8|
+|creation_time|timestamp[us, tz=UTC]|
+|external|bool|
+|last_updated_time|timestamp[us, tz=UTC]|
+|resource_share_arn (PK)|utf8|
+|resource_share_name|utf8|
+|status|utf8|
+|status_message|utf8|

@@ -13,20 +13,20 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|source_account_id|String|
-|tags|JSON|
-|created_at|Timestamp|
-|deleted_at|Timestamp|
-|domain_name|String|
-|ingress_vpc_configuration|JSON|
-|service_arn|String|
-|status|String|
-|vpc_ingress_connection_arn|String|
-|vpc_ingress_connection_name|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|source_account_id|utf8|
+|tags|json|
+|created_at|timestamp[us, tz=UTC]|
+|deleted_at|timestamp[us, tz=UTC]|
+|domain_name|utf8|
+|ingress_vpc_configuration|json|
+|service_arn|utf8|
+|status|utf8|
+|vpc_ingress_connection_arn|utf8|
+|vpc_ingress_connection_name|utf8|

@@ -14,19 +14,19 @@ This table depends on [aws_eks_clusters](aws_eks_clusters).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|cluster_name|String|
-|created_at|Timestamp|
-|fargate_profile_arn|String|
-|fargate_profile_name|String|
-|pod_execution_role_arn|String|
-|selectors|JSON|
-|status|String|
-|subnets|StringArray|
-|tags|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|cluster_name|utf8|
+|created_at|timestamp[us, tz=UTC]|
+|fargate_profile_arn|utf8|
+|fargate_profile_name|utf8|
+|pod_execution_role_arn|utf8|
+|selectors|json|
+|status|utf8|
+|subnets|list<item: utf8, nullable>|
+|tags|json|
