@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v3.0.0...plugins-destination-neo4j-v3.1.0) (2023-05-25)
+
+
+### Features
+
+* **neo4j:** Update to SDK v3.6.3 ([#10945](https://github.com/cloudquery/cloudquery/issues/10945)) ([23cf6f0](https://github.com/cloudquery/cloudquery/commit/23cf6f0e8fa8b4e3a606aff0b52ece3f8524f000))
+
 ## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v2.0.3...plugins-destination-neo4j-v3.0.0) (2023-05-18)
 
 
