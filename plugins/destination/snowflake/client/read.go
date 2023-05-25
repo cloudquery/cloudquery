@@ -22,6 +22,14 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 		bldr.AppendNull()
 		return nil
 	}
+
+	if s, ok := val.(string); ok {
+		if s == "null" {
+			bldr.AppendNull()
+			return nil
+		}
+	}
+
 	switch b := bldr.(type) {
 	case *array.BooleanBuilder:
 		if boolVal, ok := val.(bool); ok {
