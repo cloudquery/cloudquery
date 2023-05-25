@@ -24,21 +24,21 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 		Transform: transformers.TransformWithStruct(&types.ManagedPrefixList{}),
 		Columns: []schema.Column{
 			{
-				Name:            "request_account_id",
-				Type:            arrow.BinaryTypes.String,
-				Resolver:        client.ResolveAWSAccount,
+				Name:       "request_account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSAccount,
 				PrimaryKey: true,
 			},
 			{
-				Name:            "request_region",
-				Type:            arrow.BinaryTypes.String,
-				Resolver:        client.ResolveAWSRegion,
+				Name:       "request_region",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSRegion,
 				PrimaryKey: true,
 			},
 			{
-				Name:            "arn",
-				Type:            arrow.BinaryTypes.String,
-				Resolver:        schema.PathResolver("PrefixListArn"),
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("PrefixListArn"),
 				PrimaryKey: true,
 			},
 			{

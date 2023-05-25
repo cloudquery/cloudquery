@@ -24,9 +24,9 @@ func groupMembers() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:            "group_arn",
-				Type:            arrow.BinaryTypes.String,
-				Resolver:        schema.ParentColumnResolver("arn"),
+				Name:       "group_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
 				PrimaryKey: true,
 			},
 		},

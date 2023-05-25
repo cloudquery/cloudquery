@@ -23,15 +23,15 @@ func ResourceTypes() *schema.Table {
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "ram"),
 		Columns: []schema.Column{
 			{
-				Name:            "account_id",
-				Type:            arrow.BinaryTypes.String,
-				Resolver:        client.ResolveAWSAccount,
+				Name:       "account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSAccount,
 				PrimaryKey: true,
 			},
 			{
-				Name:            "region",
-				Type:            arrow.BinaryTypes.String,
-				Resolver:        client.ResolveAWSRegion,
+				Name:       "region",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSRegion,
 				PrimaryKey: true,
 			},
 		},

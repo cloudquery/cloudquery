@@ -24,15 +24,15 @@ The 'request_account_id' and 'request_region' columns are added to show from whe
 		Transform: transformers.TransformWithStruct(&types.Subnet{}),
 		Columns: []schema.Column{
 			{
-				Name:            "request_account_id",
-				Type:            arrow.BinaryTypes.String,
-				Resolver:        client.ResolveAWSAccount,
+				Name:       "request_account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSAccount,
 				PrimaryKey: true,
 			},
 			{
-				Name:            "request_region",
-				Type:            arrow.BinaryTypes.String,
-				Resolver:        client.ResolveAWSRegion,
+				Name:       "request_region",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSRegion,
 				PrimaryKey: true,
 			},
 			{

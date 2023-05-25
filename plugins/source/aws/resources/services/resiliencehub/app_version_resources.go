@@ -23,9 +23,9 @@ func appVersionResources() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARN, appVersion,
 			{
-				Name:            "physical_resource_identifier",
-				Type:            arrow.BinaryTypes.String,
-				Resolver:        schema.PathResolver("PhysicalResourceId.Identifier"),
+				Name:       "physical_resource_identifier",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("PhysicalResourceId.Identifier"),
 				PrimaryKey: true,
 			},
 		},

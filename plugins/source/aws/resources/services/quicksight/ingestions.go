@@ -25,9 +25,9 @@ func ingestions() *schema.Table {
 			client.DefaultRegionColumn(true),
 			tagsCol,
 			{
-				Name:            "data_set_arn",
-				Type:            arrow.BinaryTypes.String,
-				Resolver:        schema.ParentColumnResolver("arn"),
+				Name:       "data_set_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
 				PrimaryKey: true,
 			},
 		},
