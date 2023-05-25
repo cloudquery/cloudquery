@@ -152,12 +152,6 @@ func (c *Client) getValueForElasticsearch(col arrow.Array, i int) any {
 			return padRight(col.Value(i).ToTime(u).Format(format), "0", len(format))
 		}
 		panic(fmt.Sprintf("unsupported time64 unit: %s", u))
-	case *array.DayTimeInterval:
-		return col.ValueStr(i)
-	case *array.MonthInterval:
-		return col.ValueStr(i)
-	case *array.MonthDayNanoInterval:
-		return col.ValueStr(i)
 	}
 	return col.GetOneForMarshal(i)
 }

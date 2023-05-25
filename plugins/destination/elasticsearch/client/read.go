@@ -1,6 +1,7 @@
 package client
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"io"
@@ -98,6 +99,17 @@ func appendValue(builder array.Builder, value any) error {
 			}
 		}
 		return nil
+	case *array.MonthIntervalBuilder, *array.DayTimeIntervalBuilder, *array.MonthDayNanoIntervalBuilder:
+		b, err := json.Marshal(value)
+		if err != nil {
+			return err
+		}
+		dec := json.NewDecoder(bytes.NewReader(b))
+		return bldr.UnmarshalOne(dec)
+	case *array.Int8Builder, *array.Int16Builder, *array.Int32Builder, *array.Int64Builder:
+		return bldr.AppendValueFromString(fmt.Sprintf("%d", int64(value.(float64))))
+	case *array.Uint8Builder, *array.Uint16Builder, *array.Uint32Builder, *array.Uint64Builder:
+		return bldr.AppendValueFromString(fmt.Sprintf("%d", uint64(value.(float64))))
 	}
 	return builder.AppendValueFromString(fmt.Sprintf("%v", value))
 }

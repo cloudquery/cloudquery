@@ -36,5 +36,6 @@ func TestPlugin(t *testing.T) {
 
 			MigrateStrategyOverwrite: migrateStrategy,
 			MigrateStrategyAppend:    migrateStrategy,
-		})
+		},
+	)
 }

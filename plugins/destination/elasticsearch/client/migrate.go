@@ -54,6 +54,9 @@ func (c *Client) getIndexTemplate(table *schema.Table) (string, error) {
 }
 
 func arrowTypeToElasticsearchProperty(dataType arrow.DataType) types.Property {
+	if dataType == nil {
+		return types.NewTextProperty()
+	}
 	switch {
 	// handle known extensions
 	case typeOneOf(dataType,
@@ -73,10 +76,16 @@ func arrowTypeToElasticsearchProperty(dataType arrow.DataType) types.Property {
 	case dataType.ID() == arrow.FIXED_SIZE_LIST:
 		return arrowTypeToElasticsearchProperty(dataType.(*arrow.FixedSizeListType).Elem())
 	case dataType.ID() == arrow.STRUCT:
-		return types.NewObjectProperty()
+		p := types.NewObjectProperty()
+		for _, field := range dataType.(*arrow.StructType).Fields() {
+			p.Properties[field.Name] = arrowTypeToElasticsearchProperty(field.Type)
+		}
+		return p
 	case dataType.ID() == arrow.MAP:
-		return types.NewObjectProperty()
-
+		p := types.NewObjectProperty()
+		p.Properties["key"] = arrowTypeToElasticsearchProperty(dataType.(*arrow.MapType).KeyType())
+		p.Properties["value"] = arrowTypeToElasticsearchProperty(dataType.(*arrow.MapType).ItemType())
+		return p
 	// handle primitive types
 	case typeOneOf(dataType,
 		arrow.FixedWidthTypes.Boolean):
@@ -152,6 +161,12 @@ func arrowTypeToElasticsearchProperty(dataType arrow.DataType) types.Property {
 		d := types.NewDateNanosProperty()
 		f := "strict_date_optional_time_nanos"
 		d.Format = &f
+		return d
+	case typeOneOf(dataType,
+		arrow.FixedWidthTypes.DayTimeInterval,
+		arrow.FixedWidthTypes.MonthInterval,
+		arrow.FixedWidthTypes.MonthDayNanoInterval):
+		return types.NewObjectProperty()
 	}
 	return types.NewTextProperty()
 }
