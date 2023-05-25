@@ -4,7 +4,7 @@ This table shows data for Ssoadmin Customer Managed Policies.
 
 https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_ListManagedPoliciesInPermissionSet.html
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is (**permission_set_arn**, **instance_arn**, **name**, **path**).
 
 ## Relations
 
@@ -16,9 +16,9 @@ This table depends on [aws_ssoadmin_permission_sets](aws_ssoadmin_permission_set
 | ------------- | ------------- |
 |_cq_source_name|utf8|
 |_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id (PK)|uuid|
+|_cq_id|uuid|
 |_cq_parent_id|uuid|
-|permission_set_arn|utf8|
-|instance_arn|utf8|
-|name|utf8|
-|path|utf8|
+|permission_set_arn (PK)|utf8|
+|instance_arn (PK)|utf8|
+|name (PK)|utf8|
+|path (PK)|utf8|
