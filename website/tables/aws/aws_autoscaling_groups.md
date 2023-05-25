@@ -54,7 +54,7 @@ The following tables depend on aws_autoscaling_groups:
 |service_linked_role_arn|utf8|
 |status|utf8|
 |suspended_processes|json|
-|target_group_ar_ns|list<item: utf8, nullable>|
+|target_group_arns|list<item: utf8, nullable>|
 |termination_policies|list<item: utf8, nullable>|
 |traffic_sources|json|
 |vpc_zone_identifier|utf8|
