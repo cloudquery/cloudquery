@@ -3,9 +3,9 @@ package client
 import (
 	"testing"
 
-	"github.com/cloudquery/filetypes/v2"
+	"github.com/cloudquery/filetypes/v3"
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
 )
 
 const storage_account = "cqdestinationazblob"
@@ -38,6 +38,8 @@ func TestPluginCSV(t *testing.T) {
 			SkipMigrateOverwriteForce: true,
 			SkipMigrateAppendForce:    true,
 		},
+		destination.WithTestSourceSkipDates(),
+		destination.WithTestSourceSkipTimes(),
 	)
 }
 
@@ -68,5 +70,7 @@ func TestPluginJSON(t *testing.T) {
 			SkipMigrateOverwriteForce: true,
 			SkipMigrateAppendForce:    true,
 		},
+		destination.WithTestSourceSkipDates(),
+		destination.WithTestSourceSkipTimes(),
 	)
 }

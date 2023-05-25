@@ -14,7 +14,7 @@ func Tickets() *schema.Table {
 		Transform: transformers.TransformWithStruct(
 			tickets.SimplePublicObjectWithAssociations{},
 			transformers.WithPrimaryKeys("Id"),
-			transformers.WithSkipFields("PropertiesWithHistory", "Associations"),
+			transformers.WithSkipFields("PropertiesWithHistory"),
 		),
 	}
 }

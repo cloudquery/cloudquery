@@ -14,7 +14,7 @@ func Quotes() *schema.Table {
 		Transform: transformers.TransformWithStruct(
 			quotes.SimplePublicObjectWithAssociations{},
 			transformers.WithPrimaryKeys("Id"),
-			transformers.WithSkipFields("PropertiesWithHistory", "Associations"),
+			transformers.WithSkipFields("PropertiesWithHistory"),
 		),
 	}
 }
