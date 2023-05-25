@@ -27,6 +27,5 @@ func TestPlugin(t *testing.T) {
 		},
 		destination.WithTestSourceSkipIntervals(),
 		destination.WithTestSourceSkipDates(),
-		
 	)
 }
