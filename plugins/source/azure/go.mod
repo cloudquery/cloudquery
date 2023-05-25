@@ -98,6 +98,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot v1.0.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads v0.2.0
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue v0.1.0
+	github.com/apache/arrow/go/v13 v13.0.0-20230509040948-de6c3cd2b604
 	github.com/cloudquery/plugin-pb-go v1.0.8
 	github.com/cloudquery/plugin-sdk/v3 v3.6.4
 	github.com/gorilla/mux v1.8.0
@@ -116,7 +117,6 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.2.0 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v0.9.0 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
-	github.com/apache/arrow/go/v13 v13.0.0-20230509040948-de6c3cd2b604 // indirect
 	github.com/apache/thrift v0.16.0 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
