@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.4.0...cli-v3.5.0) (2023-05-25)
+
+
+### Features
+
+* **cli:** Migrate support SDK V3 arrow native ([#10934](https://github.com/cloudquery/cloudquery/issues/10934)) ([4864235](https://github.com/cloudquery/cloudquery/commit/4864235e6413c7825ec294bcbdb1ef7f85737958))
+
 ## [3.4.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.3.2...cli-v3.4.0) (2023-05-22)
 
 
