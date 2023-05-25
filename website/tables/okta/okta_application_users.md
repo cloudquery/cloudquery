@@ -12,23 +12,23 @@ This table depends on [okta_applications](okta_applications).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|app_id (PK)|String|
-|created|Timestamp|
-|credentials|JSON|
-|external_id|String|
-|id (PK)|String|
-|last_sync|Timestamp|
-|last_updated|Timestamp|
-|password_changed|Timestamp|
-|profile|JSON|
-|scope|String|
-|status|String|
-|status_changed|Timestamp|
-|sync_state|String|
-|_embedded|JSON|
-|_links|JSON|
-|additional_properties|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|app_id (PK)|utf8|
+|created|timestamp[us, tz=UTC]|
+|credentials|extension_type<storage=binary>|
+|external_id|utf8|
+|id (PK)|utf8|
+|last_sync|timestamp[us, tz=UTC]|
+|last_updated|timestamp[us, tz=UTC]|
+|password_changed|timestamp[us, tz=UTC]|
+|profile|extension_type<storage=binary>|
+|scope|utf8|
+|status|utf8|
+|status_changed|timestamp[us, tz=UTC]|
+|sync_state|utf8|
+|_embedded|extension_type<storage=binary>|
+|_links|extension_type<storage=binary>|
+|additional_properties|extension_type<storage=binary>|
