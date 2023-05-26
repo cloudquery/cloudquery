@@ -1,7 +1,9 @@
 package livedns
 
 import (
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 )
 
 func LiveDNSDomainSnapshots() *schema.Table {
@@ -10,44 +12,40 @@ func LiveDNSDomainSnapshots() *schema.Table {
 		Resolver: fetchLiveDNSDomainSnapshots,
 		Columns: []schema.Column{
 			{
-				Name:     "fqdn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("fqdn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "fqdn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("fqdn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "automatic",
-				Type:     schema.TypeBool,
+				Type:     arrow.FixedWidthTypes.Boolean,
 				Resolver: schema.PathResolver("Automatic"),
 			},
 			{
 				Name:     "created_at",
-				Type:     schema.TypeTimestamp,
+				Type:     arrow.FixedWidthTypes.Timestamp_us,
 				Resolver: schema.PathResolver("CreatedAt"),
 			},
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ID"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "name",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
 				Name:     "snapshot_href",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("SnapshotHREF"),
 			},
 			{
 				Name:     "zone_data",
-				Type:     schema.TypeJSON,
+				Type:     types.ExtensionTypes.JSON,
 				Resolver: schema.PathResolver("ZoneData"),
 			},
 		},

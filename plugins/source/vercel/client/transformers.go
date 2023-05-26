@@ -3,9 +3,11 @@ package client
 import (
 	"reflect"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/internal/vercel"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 )
 
 var options = []transformers.StructTransformerOption{
@@ -16,11 +18,13 @@ func TransformWithStruct(t any, opts ...transformers.StructTransformerOption) sc
 	return transformers.TransformWithStruct(t, append(options, opts...)...)
 }
 
-func typeTransformer(field reflect.StructField) (schema.ValueType, error) {
+func typeTransformer(field reflect.StructField) (arrow.DataType, error) {
 	switch field.Type {
 	case reflect.TypeOf(vercel.MilliTime{}), reflect.TypeOf(&vercel.MilliTime{}):
-		return schema.TypeTimestamp, nil
+		return arrow.FixedWidthTypes.Timestamp_us, nil
+	case reflect.TypeOf([]any{}):
+		return types.ExtensionTypes.JSON, nil
 	default:
-		return schema.TypeInvalid, nil
+		return nil, nil
 	}
 }

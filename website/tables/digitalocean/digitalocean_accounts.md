@@ -10,17 +10,17 @@ The primary key for this table is **uuid**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|uuid (PK)|String|
-|droplet_limit|Int|
-|floating_ip_limit|Int|
-|reserved_ip_limit|Int|
-|volume_limit|Int|
-|email|String|
-|email_verified|Bool|
-|status|String|
-|status_message|String|
-|team|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|uuid (PK)|utf8|
+|droplet_limit|int64|
+|floating_ip_limit|int64|
+|reserved_ip_limit|int64|
+|volume_limit|int64|
+|email|utf8|
+|email_verified|bool|
+|status|utf8|
+|status_message|utf8|
+|team|json|

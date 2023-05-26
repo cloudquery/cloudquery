@@ -1,8 +1,9 @@
 package droplets
 
 import (
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func neighbors() *schema.Table {
@@ -12,12 +13,10 @@ func neighbors() *schema.Table {
 		Transform: transformers.TransformWithStruct(&NeighborWrapper{}),
 		Columns: []schema.Column{
 			{
-				Name:     "neighbor_id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("NeighborId"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "neighbor_id",
+				Type:       arrow.PrimitiveTypes.Int64,
+				Resolver:   schema.PathResolver("NeighborId"),
+				PrimaryKey: true,
 			},
 		},
 	}
