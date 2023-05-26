@@ -22,8 +22,8 @@ The following tables depend on okta_groups:
 |last_membership_updated|timestamp[us, tz=UTC]|
 |last_updated|timestamp[us, tz=UTC]|
 |object_class|list<item: utf8, nullable>|
-|profile|extension_type<storage=binary>|
+|profile|json|
 |type|utf8|
-|_embedded|extension_type<storage=binary>|
-|_links|extension_type<storage=binary>|
-|additional_properties|extension_type<storage=binary>|
+|_embedded|json|
+|_links|json|
+|additional_properties|json|

@@ -14,16 +14,16 @@ The primary key for this table is **id**.
 |_cq_parent_id|uuid|
 |activated|timestamp[us, tz=UTC]|
 |created|timestamp[us, tz=UTC]|
-|credentials|extension_type<storage=binary>|
+|credentials|json|
 |id (PK)|utf8|
 |last_login|timestamp[us, tz=UTC]|
 |last_updated|timestamp[us, tz=UTC]|
 |password_changed|timestamp[us, tz=UTC]|
-|profile|extension_type<storage=binary>|
+|profile|json|
 |status|utf8|
 |status_changed|timestamp[us, tz=UTC]|
 |transitioning_to_status|utf8|
-|type|extension_type<storage=binary>|
-|_embedded|extension_type<storage=binary>|
-|_links|extension_type<storage=binary>|
-|additional_properties|extension_type<storage=binary>|
+|type|json|
+|_embedded|json|
+|_links|json|
+|additional_properties|json|

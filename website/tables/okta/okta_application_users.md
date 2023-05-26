@@ -18,17 +18,17 @@ This table depends on [okta_applications](okta_applications).
 |_cq_parent_id|uuid|
 |app_id (PK)|utf8|
 |created|timestamp[us, tz=UTC]|
-|credentials|extension_type<storage=binary>|
+|credentials|json|
 |external_id|utf8|
 |id (PK)|utf8|
 |last_sync|timestamp[us, tz=UTC]|
 |last_updated|timestamp[us, tz=UTC]|
 |password_changed|timestamp[us, tz=UTC]|
-|profile|extension_type<storage=binary>|
+|profile|json|
 |scope|utf8|
 |status|utf8|
 |status_changed|timestamp[us, tz=UTC]|
 |sync_state|utf8|
-|_embedded|extension_type<storage=binary>|
-|_links|extension_type<storage=binary>|
-|additional_properties|extension_type<storage=binary>|
+|_embedded|json|
+|_links|json|
+|additional_properties|json|

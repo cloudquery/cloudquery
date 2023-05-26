@@ -20,7 +20,7 @@ This table depends on [okta_applications](okta_applications).
 |id (PK)|utf8|
 |last_updated|timestamp[us, tz=UTC]|
 |priority|int64|
-|profile|extension_type<storage=binary>|
-|_embedded|extension_type<storage=binary>|
-|_links|extension_type<storage=binary>|
-|additional_properties|extension_type<storage=binary>|
+|profile|json|
+|_embedded|json|
+|_links|json|
+|additional_properties|json|
