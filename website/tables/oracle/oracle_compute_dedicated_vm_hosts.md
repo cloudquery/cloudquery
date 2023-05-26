@@ -8,20 +8,20 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|region (PK)|String|
-|compartment_id (PK)|String|
-|id (PK)|String|
-|availability_domain|String|
-|dedicated_vm_host_shape|String|
-|display_name|String|
-|lifecycle_state|String|
-|time_created|Timestamp|
-|remaining_ocpus|Float|
-|total_ocpus|Float|
-|fault_domain|String|
-|total_memory_in_g_bs|Float|
-|remaining_memory_in_g_bs|Float|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|availability_domain|`utf8`|
+|dedicated_vm_host_shape|`utf8`|
+|display_name|`utf8`|
+|lifecycle_state|`utf8`|
+|time_created|`timestamp[us, tz=UTC]`|
+|remaining_ocpus|`float64`|
+|total_ocpus|`float64`|
+|fault_domain|`utf8`|
+|total_memory_in_g_bs|`float64`|
+|remaining_memory_in_g_bs|`float64`|
