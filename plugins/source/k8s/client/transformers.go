@@ -3,8 +3,9 @@ package client
 import (
 	"reflect"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 var (
@@ -32,9 +33,9 @@ func WithMoreSkipFields(extra ...string) transformers.StructTransformerOption {
 	return transformers.WithSkipFields(append(skipFields, extra...)...)
 }
 
-func typeTransformer(field reflect.StructField) (schema.ValueType, error) {
+func typeTransformer(field reflect.StructField) (arrow.DataType, error) {
 	if isK8sTimeStruct(field.Type) {
-		return schema.TypeTimestamp, nil
+		return arrow.FixedWidthTypes.Timestamp_us, nil
 	}
 
 	return transformers.DefaultTypeTransformer(field)

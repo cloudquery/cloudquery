@@ -12,26 +12,26 @@ This table depends on [alicloud_oss_buckets](alicloud_oss_buckets).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|bucket_name (PK)|String|
-|account_id (PK)|String|
-|xml_name|JSON|
-|storage|Int|
-|object_count|Int|
-|multipart_upload_count|Int|
-|live_channel_count|Int|
-|last_modified_time|Timestamp|
-|standard_storage|Int|
-|standard_object_count|Int|
-|infrequent_access_storage|Int|
-|infrequent_access_real_storage|Int|
-|infrequent_access_object_count|Int|
-|archive_storage|Int|
-|archive_real_storage|Int|
-|archive_object_count|Int|
-|cold_archive_storage|Int|
-|cold_archive_real_storage|Int|
-|cold_archive_object_count|Int|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|bucket_name (PK)|utf8|
+|account_id (PK)|utf8|
+|xml_name|json|
+|storage|int64|
+|object_count|int64|
+|multipart_upload_count|int64|
+|live_channel_count|int64|
+|last_modified_time|timestamp[us, tz=UTC]|
+|standard_storage|int64|
+|standard_object_count|int64|
+|infrequent_access_storage|int64|
+|infrequent_access_real_storage|int64|
+|infrequent_access_object_count|int64|
+|archive_storage|int64|
+|archive_real_storage|int64|
+|archive_object_count|int64|
+|cold_archive_storage|int64|
+|cold_archive_real_storage|int64|
+|cold_archive_object_count|int64|
