@@ -8,43 +8,43 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|region (PK)|String|
-|compartment_id (PK)|String|
-|id (PK)|String|
-|display_name|String|
-|lifecycle_state|String|
-|exadata_infrastructure_id|String|
-|vm_cluster_network_id|String|
-|time_created|Timestamp|
-|lifecycle_details|String|
-|time_zone|String|
-|is_local_backup_enabled|Bool|
-|cpus_enabled|Int|
-|compute_model|String|
-|ocpus_enabled|Float|
-|available_cpus|Int|
-|total_container_databases|Int|
-|memory_per_oracle_compute_unit_in_g_bs|Int|
-|cpu_core_count_per_node|Int|
-|autonomous_data_storage_size_in_t_bs|Float|
-|maintenance_window|JSON|
-|last_maintenance_run_id|String|
-|next_maintenance_run_id|String|
-|memory_size_in_g_bs|Int|
-|db_node_storage_size_in_g_bs|Int|
-|data_storage_size_in_t_bs|Float|
-|data_storage_size_in_g_bs|Float|
-|available_data_storage_size_in_t_bs|Float|
-|license_model|String|
-|freeform_tags|JSON|
-|defined_tags|JSON|
-|reclaimable_cpus|Int|
-|available_container_databases|Int|
-|available_autonomous_data_storage_size_in_t_bs|Float|
-|scan_listener_port_tls|Int|
-|scan_listener_port_non_tls|Int|
-|is_mtls_enabled|Bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|display_name|`utf8`|
+|lifecycle_state|`utf8`|
+|exadata_infrastructure_id|`utf8`|
+|vm_cluster_network_id|`utf8`|
+|time_created|`timestamp[us, tz=UTC]`|
+|lifecycle_details|`utf8`|
+|time_zone|`utf8`|
+|is_local_backup_enabled|`bool`|
+|cpus_enabled|`int64`|
+|compute_model|`utf8`|
+|ocpus_enabled|`float64`|
+|available_cpus|`int64`|
+|total_container_databases|`int64`|
+|memory_per_oracle_compute_unit_in_g_bs|`int64`|
+|cpu_core_count_per_node|`int64`|
+|autonomous_data_storage_size_in_t_bs|`float64`|
+|maintenance_window|`json`|
+|last_maintenance_run_id|`utf8`|
+|next_maintenance_run_id|`utf8`|
+|memory_size_in_g_bs|`int64`|
+|db_node_storage_size_in_g_bs|`int64`|
+|data_storage_size_in_t_bs|`float64`|
+|data_storage_size_in_g_bs|`float64`|
+|available_data_storage_size_in_t_bs|`float64`|
+|license_model|`utf8`|
+|freeform_tags|`json`|
+|defined_tags|`json`|
+|reclaimable_cpus|`int64`|
+|available_container_databases|`int64`|
+|available_autonomous_data_storage_size_in_t_bs|`float64`|
+|scan_listener_port_tls|`int64`|
+|scan_listener_port_non_tls|`int64`|
+|is_mtls_enabled|`bool`|

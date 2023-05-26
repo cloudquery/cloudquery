@@ -8,37 +8,37 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|region (PK)|String|
-|compartment_id (PK)|String|
-|id (PK)|String|
-|bandwidth_shape_name|String|
-|bgp_management|String|
-|bgp_session_state|String|
-|bgp_ipv6_session_state|String|
-|cross_connect_mappings|JSON|
-|routing_policy|StringArray|
-|bgp_admin_state|String|
-|is_bfd_enabled|Bool|
-|customer_bgp_asn|Int|
-|customer_asn|Int|
-|defined_tags|JSON|
-|display_name|String|
-|freeform_tags|JSON|
-|gateway_id|String|
-|lifecycle_state|String|
-|oracle_bgp_asn|Int|
-|provider_name|String|
-|provider_service_id|String|
-|provider_service_key_name|String|
-|provider_service_name|String|
-|provider_state|String|
-|public_prefixes|StringArray|
-|reference_comment|String|
-|service_type|String|
-|time_created|Timestamp|
-|type|String|
-|ip_mtu|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|bandwidth_shape_name|`utf8`|
+|bgp_management|`utf8`|
+|bgp_session_state|`utf8`|
+|bgp_ipv6_session_state|`utf8`|
+|cross_connect_mappings|`json`|
+|routing_policy|`list<item: utf8, nullable>`|
+|bgp_admin_state|`utf8`|
+|is_bfd_enabled|`bool`|
+|customer_bgp_asn|`int64`|
+|customer_asn|`int64`|
+|defined_tags|`json`|
+|display_name|`utf8`|
+|freeform_tags|`json`|
+|gateway_id|`utf8`|
+|lifecycle_state|`utf8`|
+|oracle_bgp_asn|`int64`|
+|provider_name|`utf8`|
+|provider_service_id|`utf8`|
+|provider_service_key_name|`utf8`|
+|provider_service_name|`utf8`|
+|provider_state|`utf8`|
+|public_prefixes|`list<item: utf8, nullable>`|
+|reference_comment|`utf8`|
+|service_type|`utf8`|
+|time_created|`timestamp[us, tz=UTC]`|
+|type|`utf8`|
+|ip_mtu|`utf8`|
