@@ -42,6 +42,17 @@ func buildOrganizationalUnits(t *testing.T, ctrl *gomock.Controller) client.Serv
 			OrganizationalUnit: &ou,
 		}, nil)
 
+	a := types.Account{}
+	err := faker.FakeObject(&a)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	m.EXPECT().ListAccountsForParent(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&organizations.ListAccountsForParentOutput{
+			Accounts: []types.Account{a},
+		}, nil)
+
 	return client.Services{
 		Organizations: m,
 	}
