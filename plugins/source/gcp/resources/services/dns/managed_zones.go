@@ -23,7 +23,7 @@ func ManagedZones() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			ResourceRecordSets(),
+			resourceRecordSets(),
 		},
 	}
 }

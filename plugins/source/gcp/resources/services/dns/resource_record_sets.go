@@ -8,7 +8,7 @@ import (
 	"google.golang.org/api/dns/v1"
 )
 
-func ResourceRecordSets() *schema.Table {
+func resourceRecordSets() *schema.Table {
 	return &schema.Table{
 		Name:        "gcp_dns_resource_record_sets",
 		Description: `https://cloud.google.com/dns/docs/reference/v1/resourceRecordSets`,
