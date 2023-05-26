@@ -28,7 +28,6 @@ func fetchMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	}
 
 	for {
-		// Get the first page with projects.
 		members, resp, err := c.Gitlab.Groups.ListGroupMembers(group.ID, opt, gitlab.WithContext(ctx))
 		if err != nil {
 			return err

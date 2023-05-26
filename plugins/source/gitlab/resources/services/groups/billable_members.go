@@ -24,7 +24,6 @@ func fetchBillableMembers(ctx context.Context, meta schema.ClientMeta, parent *s
 	opt := &gitlab.ListBillableGroupMembersOptions{ListOptions: gitlab.ListOptions{PerPage: 1000}}
 
 	for {
-		// Get the first page with projects.
 		members, resp, err := c.Gitlab.Groups.ListBillableGroupMembers(group.ID, opt, gitlab.WithContext(ctx))
 		if err != nil {
 			return err
