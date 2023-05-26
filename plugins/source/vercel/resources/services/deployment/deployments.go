@@ -1,9 +1,10 @@
 package deployment
 
 import (
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/client"
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/internal/vercel"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func Deployments() *schema.Table {
@@ -15,12 +16,10 @@ func Deployments() *schema.Table {
 		IsIncremental: true,
 		Columns: []schema.Column{
 			{
-				Name:     "uid",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "uid",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("UID"),
+				PrimaryKey: true,
 			},
 		},
 
