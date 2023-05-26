@@ -13,7 +13,7 @@
 \ir ../queries/storage/encrypt_with_cmk_for_activity_log.sql
 \set check_id '5.1.5'
 \echo "Executing check 5.1.5"
-\ir ../queries/monitor/logging_key_calut_is_enabled.sql
+\ir ../queries/monitor/logging_key_valut_is_enabled.sql
 \set check_id '5.2.1'
 \echo "Executing check 5.2.1"
 \ir ../queries/monitor/log_alert_for_create_policy_assignment.sql
