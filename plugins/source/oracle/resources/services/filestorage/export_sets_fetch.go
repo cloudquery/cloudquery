@@ -16,7 +16,7 @@ func fetchExportSets(ctx context.Context, meta schema.ClientMeta, parent *schema
 	for {
 		request := filestorage.ListExportSetsRequest{
 			CompartmentId:      common.String(cqClient.CompartmentOcid),
-			AvailabilityDomain: common.String(cqClient.AvailibilityDomain),
+			AvailabilityDomain: common.String(cqClient.AvailabilityDomain),
 			Page:               page,
 		}
 

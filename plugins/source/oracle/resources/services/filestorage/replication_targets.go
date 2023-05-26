@@ -12,6 +12,6 @@ func ReplicationTargets() *schema.Table {
 		Resolver:  fetchReplicationTargets,
 		Multiplex: client.AvailibilityDomainCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&filestorage.ReplicationTargetSummary{}),
-		Columns:   schema.ColumnList{client.RegionColumn, client.CompartmentIDColumn},
+		Columns:   schema.ColumnList{client.RegionColumn, client.CompartmentIDColumn, client.AvailabilityDomainColumn},
 	}
 }

@@ -18,4 +18,10 @@ var (
 		Resolver:   ResolveCompartmentID,
 		PrimaryKey: true,
 	}
+	AvailabilityDomainColumn = schema.Column{
+		Name:       "availability_domain",
+		Type:       arrow.BinaryTypes.String,
+		Resolver:   ResolveAvailabilityDomain,
+		PrimaryKey: true,
+	}
 )
