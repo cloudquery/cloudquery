@@ -11,19 +11,19 @@ It supports incremental syncs based on the **created** column.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|created (Incremental Key)|Timestamp|
-|amount|Int|
-|balance_transactions|JSON|
-|currency|String|
-|evidence|JSON|
-|livemode|Bool|
-|metadata|JSON|
-|object|String|
-|status|String|
-|transaction|JSON|
-|treasury|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|utf8|
+|created (Incremental Key)|timestamp[us, tz=UTC]|
+|amount|int64|
+|balance_transactions|json|
+|currency|utf8|
+|evidence|json|
+|livemode|bool|
+|metadata|json|
+|object|utf8|
+|status|utf8|
+|transaction|json|
+|treasury|json|

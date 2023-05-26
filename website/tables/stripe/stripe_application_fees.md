@@ -15,21 +15,21 @@ The following tables depend on stripe_application_fees:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|created (Incremental Key)|Timestamp|
-|account|JSON|
-|amount|Int|
-|amount_refunded|Int|
-|application|JSON|
-|balance_transaction|JSON|
-|charge|JSON|
-|currency|String|
-|livemode|Bool|
-|object|String|
-|originating_transaction|JSON|
-|refunded|Bool|
-|refunds|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|utf8|
+|created (Incremental Key)|timestamp[us, tz=UTC]|
+|account|json|
+|amount|int64|
+|amount_refunded|int64|
+|application|json|
+|balance_transaction|json|
+|charge|json|
+|currency|utf8|
+|livemode|bool|
+|object|utf8|
+|originating_transaction|json|
+|refunded|bool|
+|refunds|json|

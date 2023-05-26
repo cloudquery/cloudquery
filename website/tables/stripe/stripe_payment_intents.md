@@ -11,46 +11,46 @@ It supports incremental syncs based on the **created** column.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|created (Incremental Key)|Timestamp|
-|amount|Int|
-|amount_capturable|Int|
-|amount_details|JSON|
-|amount_received|Int|
-|application|JSON|
-|application_fee_amount|Int|
-|automatic_payment_methods|JSON|
-|canceled_at|Int|
-|cancellation_reason|String|
-|capture_method|String|
-|client_secret|String|
-|confirmation_method|String|
-|currency|String|
-|customer|JSON|
-|description|String|
-|invoice|JSON|
-|last_payment_error|JSON|
-|latest_charge|JSON|
-|livemode|Bool|
-|metadata|JSON|
-|next_action|JSON|
-|object|String|
-|on_behalf_of|JSON|
-|payment_method|JSON|
-|payment_method_options|JSON|
-|payment_method_types|StringArray|
-|processing|JSON|
-|receipt_email|String|
-|review|JSON|
-|setup_future_usage|String|
-|shipping|JSON|
-|source|JSON|
-|statement_descriptor|String|
-|statement_descriptor_suffix|String|
-|status|String|
-|transfer_data|JSON|
-|transfer_group|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|utf8|
+|created (Incremental Key)|timestamp[us, tz=UTC]|
+|amount|int64|
+|amount_capturable|int64|
+|amount_details|json|
+|amount_received|int64|
+|application|json|
+|application_fee_amount|int64|
+|automatic_payment_methods|json|
+|canceled_at|int64|
+|cancellation_reason|utf8|
+|capture_method|utf8|
+|client_secret|utf8|
+|confirmation_method|utf8|
+|currency|utf8|
+|customer|json|
+|description|utf8|
+|invoice|json|
+|last_payment_error|json|
+|latest_charge|json|
+|livemode|bool|
+|metadata|json|
+|next_action|json|
+|object|utf8|
+|on_behalf_of|json|
+|payment_method|json|
+|payment_method_options|json|
+|payment_method_types|list<item: utf8, nullable>|
+|processing|json|
+|receipt_email|utf8|
+|review|json|
+|setup_future_usage|utf8|
+|shipping|json|
+|source|json|
+|statement_descriptor|utf8|
+|statement_descriptor_suffix|utf8|
+|status|utf8|
+|transfer_data|json|
+|transfer_group|utf8|
