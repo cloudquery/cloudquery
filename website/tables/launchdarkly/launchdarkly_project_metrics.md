@@ -25,12 +25,12 @@ This table depends on [launchdarkly_projects](launchdarkly_projects).
 |name|utf8|
 |kind|utf8|
 |attached_flag_count|int64|
-|access|extension_type<storage=binary>|
+|access|json|
 |tags|list<item: utf8, nullable>|
 |creation_date|int64|
-|last_modified|extension_type<storage=binary>|
+|last_modified|json|
 |maintainer_id|utf8|
-|maintainer|extension_type<storage=binary>|
+|maintainer|json|
 |description|utf8|
 |is_numeric|bool|
 |success_criteria|utf8|

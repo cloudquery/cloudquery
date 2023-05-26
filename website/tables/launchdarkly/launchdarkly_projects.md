@@ -25,6 +25,6 @@ The following tables depend on launchdarkly_projects:
 |id (PK)|utf8|
 |key|utf8|
 |include_in_snippet_by_default|bool|
-|default_client_side_availability|extension_type<storage=binary>|
+|default_client_side_availability|json|
 |name|utf8|
 |tags|list<item: utf8, nullable>|

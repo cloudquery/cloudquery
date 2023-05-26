@@ -31,4 +31,4 @@ This table depends on [launchdarkly_projects](launchdarkly_projects).
 |require_comments|bool|
 |confirm_changes|bool|
 |tags|list<item: utf8, nullable>|
-|approval_settings|extension_type<storage=binary>|
+|approval_settings|json|

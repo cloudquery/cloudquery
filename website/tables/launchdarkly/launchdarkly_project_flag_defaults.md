@@ -21,5 +21,5 @@ This table depends on [launchdarkly_projects](launchdarkly_projects).
 |project_id (PK)|utf8|
 |tags|list<item: utf8, nullable>|
 |temporary|bool|
-|default_client_side_availability|extension_type<storage=binary>|
-|boolean_defaults|extension_type<storage=binary>|
+|default_client_side_availability|json|
+|boolean_defaults|json|

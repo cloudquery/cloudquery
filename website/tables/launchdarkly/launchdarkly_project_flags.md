@@ -26,16 +26,16 @@ This table depends on [launchdarkly_projects](launchdarkly_projects).
 |version|int64|
 |creation_date|int64|
 |include_in_snippet|bool|
-|client_side_availability|extension_type<storage=binary>|
-|variations|extension_type<storage=binary>|
+|client_side_availability|json|
+|variations|json|
 |temporary|bool|
 |tags|list<item: utf8, nullable>|
 |maintainer_id|utf8|
-|maintainer|extension_type<storage=binary>|
+|maintainer|json|
 |goal_ids|list<item: utf8, nullable>|
-|experiments|extension_type<storage=binary>|
-|custom_properties|extension_type<storage=binary>|
+|experiments|json|
+|custom_properties|json|
 |archived|bool|
 |archived_date|int64|
-|defaults|extension_type<storage=binary>|
-|environments|extension_type<storage=binary>|
+|defaults|json|
+|environments|json|

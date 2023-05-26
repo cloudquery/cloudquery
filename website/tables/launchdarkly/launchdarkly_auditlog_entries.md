@@ -18,17 +18,17 @@ It supports incremental syncs based on the **date** column.
 |date (Incremental Key)|timestamp[us, tz=UTC]|
 |id (PK)|utf8|
 |account_id|utf8|
-|accesses|extension_type<storage=binary>|
+|accesses|json|
 |kind|utf8|
 |name|utf8|
 |description|utf8|
 |short_description|utf8|
 |comment|utf8|
-|subject|extension_type<storage=binary>|
-|member|extension_type<storage=binary>|
-|token|extension_type<storage=binary>|
-|app|extension_type<storage=binary>|
+|subject|json|
+|member|json|
+|token|json|
+|app|json|
 |title_verb|utf8|
 |title|utf8|
-|target|extension_type<storage=binary>|
-|parent|extension_type<storage=binary>|
+|target|json|
+|parent|json|
