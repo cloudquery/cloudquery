@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230525061349-6bd31f37ae66
 	github.com/cloudquery/filetypes/v3 v3.1.0
 	github.com/cloudquery/plugin-pb-go v1.0.8
-	github.com/cloudquery/plugin-sdk/v3 v3.6.4
+	github.com/cloudquery/plugin-sdk/v3 v3.6.7
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.1
 	github.com/stretchr/testify v1.8.2
