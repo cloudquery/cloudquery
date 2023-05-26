@@ -3,59 +3,48 @@ package client
 import (
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 )
 
-func SQLType(t schema.ValueType) string {
-	switch t {
-	case schema.TypeBool:
+func SQLType(t arrow.DataType) string {
+	switch {
+	case arrow.TypeEqual(arrow.FixedWidthTypes.Boolean, t):
 		return "char(1)"
-	case schema.TypeInt:
+	case arrow.TypeEqual(arrow.PrimitiveTypes.Int64, t):
 		return "NUMBER(19)"
-	case schema.TypeFloat:
+	case arrow.TypeEqual(arrow.PrimitiveTypes.Float64, t):
 		return "binary_double"
-	case schema.TypeUUID:
+	case arrow.TypeEqual(types.ExtensionTypes.UUID, t):
 		return "raw(16)"
-	case schema.TypeByteArray:
+	case arrow.IsBinaryLike(t.ID()):
 		return "blob"
-	case schema.TypeTimestamp:
+	case arrow.TypeEqual(arrow.FixedWidthTypes.Timestamp_us, t):
 		return "timestamp"
-	case schema.TypeJSON,
-		schema.TypeString,
-		schema.TypeStringArray,
-		schema.TypeUUIDArray,
-		schema.TypeCIDRArray,
-		schema.TypeMacAddrArray,
-		schema.TypeInetArray,
-		schema.TypeIntArray,
-		schema.TypeCIDR,
-		schema.TypeMacAddr,
-		schema.TypeInet:
-		return "clob"
 	default:
-		panic("unknown type " + t.String())
+		return "clob"
 	}
 }
 
-func SchemaType(tableName string, columnName string, dataType string) schema.ValueType {
+func SchemaType(tableName string, columnName string, dataType string) arrow.DataType {
 	if strings.HasPrefix(columnName, "timestamp") {
-		return schema.TypeTimestamp
+		return arrow.FixedWidthTypes.Timestamp_us
 	}
 
 	switch dataType {
 	case "raw(16)":
-		return schema.TypeUUID
+		return types.ExtensionTypes.UUID
 	case "char(1)":
-		return schema.TypeBool
+		return arrow.FixedWidthTypes.Boolean
 	case "float", "binary_float", "binary_double":
-		return schema.TypeFloat
+		return arrow.PrimitiveTypes.Float64
 	case "binary":
-		return schema.TypeByteArray
+		return arrow.BinaryTypes.Binary
 	case "number":
-		return schema.TypeInt
+		return arrow.PrimitiveTypes.Int64
 	case "blob", "raw", "long raw":
-		return schema.TypeByteArray
+		return arrow.BinaryTypes.Binary
 	}
 
-	return schema.TypeString
+	return arrow.BinaryTypes.String
 }

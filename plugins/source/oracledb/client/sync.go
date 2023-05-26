@@ -6,8 +6,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -26,23 +28,23 @@ func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *
 func (*Client) createResultsArray(table *schema.Table) []any {
 	results := make([]any, 0, len(table.Columns))
 	for _, col := range table.Columns {
-		switch col.Type {
-		case schema.TypeUUID, schema.TypeByteArray:
+		switch {
+		case arrow.TypeEqual(types.ExtensionTypes.UUID, col.Type), arrow.IsBinaryLike(col.Type.ID()):
 			var r *[]byte
 			results = append(results, &r)
-		case schema.TypeBool:
+		case arrow.TypeEqual(arrow.FixedWidthTypes.Boolean, col.Type):
 			var r *bool
 			results = append(results, &r)
-		case schema.TypeInt:
+		case arrow.TypeEqual(arrow.PrimitiveTypes.Int64, col.Type):
 			var r *int
 			results = append(results, &r)
-		case schema.TypeFloat:
+		case arrow.TypeEqual(arrow.PrimitiveTypes.Float64, col.Type):
 			var r *float64
 			results = append(results, &r)
-		case schema.TypeTimestamp:
+		case arrow.TypeEqual(arrow.FixedWidthTypes.Timestamp_us, col.Type):
 			var r *time.Time
 			results = append(results, &r)
-		case schema.TypeJSON:
+		case arrow.TypeEqual(types.ExtensionTypes.JSON, col.Type):
 			var r string
 			results = append(results, &r)
 		default:
