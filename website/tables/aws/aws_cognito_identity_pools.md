@@ -18,7 +18,7 @@ The composite primary key for this table is (**account_id**, **region**, **id**)
 |region (PK)|utf8|
 |arn|utf8|
 |id (PK)|utf8|
-|saml_provider_ar_ns|list<item: utf8, nullable>|
+|saml_provider_arns|list<item: utf8, nullable>|
 |allow_unauthenticated_identities|bool|
 |identity_pool_id|utf8|
 |identity_pool_name|utf8|
@@ -26,6 +26,6 @@ The composite primary key for this table is (**account_id**, **region**, **id**)
 |cognito_identity_providers|json|
 |developer_provider_name|utf8|
 |identity_pool_tags|json|
-|open_id_connect_provider_ar_ns|list<item: utf8, nullable>|
+|open_id_connect_provider_arns|list<item: utf8, nullable>|
 |supported_login_providers|json|
 |result_metadata|json|

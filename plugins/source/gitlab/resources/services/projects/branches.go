@@ -28,7 +28,6 @@ func fetchBranches(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	}
 
 	for {
-		// Get the first page with projects.
 		branches, resp, err := c.Gitlab.Branches.ListBranches(project.ID, opt, gitlab.WithContext(ctx))
 		if err != nil {
 			return err
