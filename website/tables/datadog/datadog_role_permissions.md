@@ -17,7 +17,7 @@ This table depends on [datadog_roles](datadog_roles).
 |_cq_id (PK)|uuid|
 |_cq_parent_id|uuid|
 |account_name|utf8|
-|attributes|extension_type<storage=binary>|
+|attributes|json|
 |id|utf8|
 |type|utf8|
 |additional_properties|json|

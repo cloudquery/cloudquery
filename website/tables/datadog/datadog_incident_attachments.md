@@ -17,7 +17,7 @@ This table depends on [datadog_incidents](datadog_incidents).
 |_cq_id (PK)|uuid|
 |_cq_parent_id|uuid|
 |account_name|utf8|
-|attributes|extension_type<storage=binary>|
+|attributes|json|
 |id|utf8|
-|relationships|extension_type<storage=binary>|
+|relationships|json|
 |type|utf8|
