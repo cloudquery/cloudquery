@@ -6,19 +6,23 @@ https://cloud.google.com/dns/docs/reference/v1/resourceRecordSets
 
 The composite primary key for this table is (**project_id**, **name**, **type**).
 
+## Relations
+
+This table depends on [gcp_dns_managed_zones](gcp_dns_managed_zones).
+
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|kind|String|
-|name (PK)|String|
-|routing_policy|JSON|
-|rrdatas|StringArray|
-|signature_rrdatas|StringArray|
-|ttl|Int|
-|type (PK)|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id (PK)|utf8|
+|kind|utf8|
+|name (PK)|utf8|
+|routing_policy|json|
+|rrdatas|list<item: utf8, nullable>|
+|signature_rrdatas|list<item: utf8, nullable>|
+|ttl|int64|
+|type (PK)|utf8|

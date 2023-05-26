@@ -123,7 +123,6 @@
 - [gcp_dns_managed_zones](../../../../../website/tables/gcp/gcp_dns_managed_zones.md)
   - [gcp_dns_resource_record_sets](../../../../../website/tables/gcp/gcp_dns_resource_record_sets.md)
 - [gcp_dns_policies](../../../../../website/tables/gcp/gcp_dns_policies.md)
-- [gcp_dns_resource_record_sets](../../../../../website/tables/gcp/gcp_dns_resource_record_sets.md)
 - [gcp_domains_registrations](../../../../../website/tables/gcp/gcp_domains_registrations.md)
 - [gcp_functions_functions](../../../../../website/tables/gcp/gcp_functions_functions.md)
 - [gcp_iam_deny_policies](../../../../../website/tables/gcp/gcp_iam_deny_policies.md)
