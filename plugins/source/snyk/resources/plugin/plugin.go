@@ -8,8 +8,8 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/resources/services/organization"
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/resources/services/project"
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/resources/services/reporting"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 var Version = "Development"

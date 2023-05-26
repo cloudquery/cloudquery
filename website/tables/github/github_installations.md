@@ -8,28 +8,28 @@ The composite primary key for this table is (**org**, **id**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|org (PK)|String|
-|id (PK)|Int|
-|node_id|String|
-|app_id|Int|
-|app_slug|String|
-|target_id|Int|
-|account|JSON|
-|access_tokens_url|String|
-|repositories_url|String|
-|html_url|String|
-|target_type|String|
-|single_file_name|String|
-|repository_selection|String|
-|events|StringArray|
-|single_file_paths|StringArray|
-|permissions|JSON|
-|created_at|Timestamp|
-|updated_at|Timestamp|
-|has_multiple_single_files|Bool|
-|suspended_by|JSON|
-|suspended_at|Timestamp|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|org (PK)|utf8|
+|id (PK)|int64|
+|node_id|utf8|
+|app_id|int64|
+|app_slug|utf8|
+|target_id|int64|
+|account|json|
+|access_tokens_url|utf8|
+|repositories_url|utf8|
+|html_url|utf8|
+|target_type|utf8|
+|single_file_name|utf8|
+|repository_selection|utf8|
+|events|list<item: utf8, nullable>|
+|single_file_paths|list<item: utf8, nullable>|
+|permissions|json|
+|created_at|timestamp[us, tz=UTC]|
+|updated_at|timestamp[us, tz=UTC]|
+|has_multiple_single_files|bool|
+|suspended_by|json|
+|suspended_at|timestamp[us, tz=UTC]|
