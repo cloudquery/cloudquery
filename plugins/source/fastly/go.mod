@@ -3,9 +3,10 @@ module github.com/cloudquery/cloudquery/plugins/source/fastly
 go 1.19
 
 require (
+	github.com/apache/arrow/go/v13 v13.0.0-20230526080908-77a71305090f
 	github.com/cloudquery/codegen v0.2.1
 	github.com/cloudquery/plugin-pb-go v1.0.8
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0
+	github.com/cloudquery/plugin-sdk/v3 v3.6.4
 	github.com/fastly/go-fastly/v7 v7.0.0
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.29.0
@@ -17,9 +18,9 @@ replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
-	github.com/apache/arrow/go/v13 v13.0.0-20230509040948-de6c3cd2b604 // indirect
 	github.com/apache/thrift v0.16.0 // indirect
 	github.com/cloudquery/plugin-sdk v1.45.0 // indirect
+	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
@@ -43,6 +44,7 @@ require (
 	github.com/minio/c2goasm v0.0.0-20190812172519-36a3d3bbc4f3 // indirect
 	github.com/mitchellh/mapstructure v1.4.3 // indirect
 	github.com/peterhellberg/link v1.1.0 // indirect
+	github.com/pierrec/lz4/v4 v4.1.15 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
