@@ -12,14 +12,14 @@ This table depends on [gandi_simplehosting_instances](gandi_simplehosting_instan
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|instance_id (PK)|String|
-|created_at|String|
-|fqdn (PK)|String|
-|is_a_test_vhost|Bool|
-|linked_dns_zone|JSON|
-|status|String|
-|application|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|instance_id (PK)|utf8|
+|created_at|utf8|
+|fqdn (PK)|utf8|
+|is_a_test_vhost|bool|
+|linked_dns_zone|json|
+|status|utf8|
+|application|json|

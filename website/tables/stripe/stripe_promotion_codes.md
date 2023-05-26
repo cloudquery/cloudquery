@@ -11,20 +11,20 @@ It supports incremental syncs based on the **created** column.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|created (Incremental Key)|Timestamp|
-|active|Bool|
-|code|String|
-|coupon|JSON|
-|customer|JSON|
-|expires_at|Int|
-|livemode|Bool|
-|max_redemptions|Int|
-|metadata|JSON|
-|object|String|
-|restrictions|JSON|
-|times_redeemed|Int|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|utf8|
+|created (Incremental Key)|timestamp[us, tz=UTC]|
+|active|bool|
+|code|utf8|
+|coupon|json|
+|customer|json|
+|expires_at|int64|
+|livemode|bool|
+|max_redemptions|int64|
+|metadata|json|
+|object|utf8|
+|restrictions|json|
+|times_redeemed|int64|

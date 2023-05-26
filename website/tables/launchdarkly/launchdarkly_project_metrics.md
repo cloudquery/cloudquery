@@ -14,25 +14,25 @@ This table depends on [launchdarkly_projects](launchdarkly_projects).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|experiment_count|Int|
-|id (PK)|String|
-|key|String|
-|name|String|
-|kind|String|
-|attached_flag_count|Int|
-|access|JSON|
-|tags|StringArray|
-|creation_date|Int|
-|last_modified|JSON|
-|maintainer_id|String|
-|maintainer|JSON|
-|description|String|
-|is_numeric|Bool|
-|success_criteria|String|
-|unit|String|
-|event_key|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id (PK)|utf8|
+|experiment_count|int64|
+|id (PK)|utf8|
+|key|utf8|
+|name|utf8|
+|kind|utf8|
+|attached_flag_count|int64|
+|access|json|
+|tags|list<item: utf8, nullable>|
+|creation_date|int64|
+|last_modified|json|
+|maintainer_id|utf8|
+|maintainer|json|
+|description|utf8|
+|is_numeric|bool|
+|success_criteria|utf8|
+|unit|utf8|
+|event_key|utf8|

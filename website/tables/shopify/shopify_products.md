@@ -14,22 +14,22 @@ The following tables depend on shopify_products:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|Int|
-|updated_at (Incremental Key)|Timestamp|
-|title|String|
-|body_html|String|
-|vendor|String|
-|product_type|String|
-|created_at|Timestamp|
-|handle|String|
-|published_at|Timestamp|
-|template_suffix|String|
-|status|String|
-|published_scope|String|
-|tags|StringArray|
-|image|JSON|
-|admin_graphql_api_id|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|int64|
+|updated_at (Incremental Key)|timestamp[us, tz=UTC]|
+|title|utf8|
+|body_html|utf8|
+|vendor|utf8|
+|product_type|utf8|
+|created_at|timestamp[us, tz=UTC]|
+|handle|utf8|
+|published_at|timestamp[us, tz=UTC]|
+|template_suffix|utf8|
+|status|utf8|
+|published_scope|utf8|
+|tags|list<item: utf8, nullable>|
+|image|json|
+|admin_graphql_api_id|utf8|

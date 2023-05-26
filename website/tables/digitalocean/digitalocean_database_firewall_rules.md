@@ -14,12 +14,12 @@ This table depends on [digitalocean_databases](digitalocean_databases).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|uuid|String|
-|cluster_uuid|String|
-|type|String|
-|value|String|
-|created_at|Timestamp|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id (PK)|uuid|
+|_cq_parent_id|uuid|
+|uuid|utf8|
+|cluster_uuid|utf8|
+|type|utf8|
+|value|utf8|
+|created_at|timestamp[us, tz=UTC]|

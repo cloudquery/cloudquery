@@ -17,14 +17,14 @@ The following tables depend on tf_resources:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|data_backend_name|String|
-|module|String|
-|mode|String|
-|type|String|
-|name|String|
-|provider_path|String|
-|provider|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id (PK)|uuid|
+|_cq_parent_id|uuid|
+|data_backend_name|utf8|
+|module|utf8|
+|mode|utf8|
+|type|utf8|
+|name|utf8|
+|provider_path|utf8|
+|provider|utf8|
