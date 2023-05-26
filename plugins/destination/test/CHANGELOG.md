@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.0.2...plugins-destination-test-v2.1.0) (2023-05-26)
+
+
+### Features
+
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+* **test destination:** Upgrade to SDK v3 ([#10820](https://github.com/cloudquery/cloudquery/issues/10820)) ([937aa83](https://github.com/cloudquery/cloudquery/commit/937aa83e5f0e326dcc768b51635ab7337aa51fd2)), closes [#10731](https://github.com/cloudquery/cloudquery/issues/10731)
+* **test:** Update to sdk v3.6.3 ([#10948](https://github.com/cloudquery/cloudquery/issues/10948)) ([8a8db2b](https://github.com/cloudquery/cloudquery/commit/8a8db2ba10092e41f702a51cac5ffd82b099a2ac))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.8 ([#10798](https://github.com/cloudquery/cloudquery/issues/10798)) ([27ff430](https://github.com/cloudquery/cloudquery/commit/27ff430527932d59a4d488a6767547eda8853940))
+* **test-dst:** Update to the latest SDK ([#11031](https://github.com/cloudquery/cloudquery/issues/11031)) ([3b9b4d4](https://github.com/cloudquery/cloudquery/commit/3b9b4d4087cb88d4a31db9a1f1027caf74eb3b06))
+
 ## [2.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.0.1...plugins-destination-test-v2.0.2) (2023-05-09)
 
 
