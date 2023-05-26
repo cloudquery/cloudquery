@@ -16,24 +16,24 @@ The following tables depend on gandi_domains:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|sharing_id|String|
-|autorenew|JSON|
-|can_tld_lock|Bool|
-|contacts|JSON|
-|dates|JSON|
-|fqdn|String|
-|fqdn_unicode|String|
-|href|String|
-|nameservers|StringArray|
-|services|StringArray|
-|sharing_space|JSON|
-|status|StringArray|
-|tld|String|
-|authinfo|String|
-|tags|StringArray|
-|trustee_roles|StringArray|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|utf8|
+|sharing_id|utf8|
+|autorenew|json|
+|can_tld_lock|bool|
+|contacts|json|
+|dates|json|
+|fqdn|utf8|
+|fqdn_unicode|utf8|
+|href|utf8|
+|nameservers|list<item: utf8, nullable>|
+|services|list<item: utf8, nullable>|
+|sharing_space|json|
+|status|list<item: utf8, nullable>|
+|tld|utf8|
+|authinfo|utf8|
+|tags|list<item: utf8, nullable>|
+|trustee_roles|list<item: utf8, nullable>|

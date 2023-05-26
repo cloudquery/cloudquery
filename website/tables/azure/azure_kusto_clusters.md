@@ -10,19 +10,19 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|subscription_id|String|
-|location|String|
-|sku|JSON|
-|identity|JSON|
-|properties|JSON|
-|tags|JSON|
-|zones|StringArray|
-|etag|String|
-|id (PK)|String|
-|name|String|
-|system_data|JSON|
-|type|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|subscription_id|utf8|
+|location|utf8|
+|sku|json|
+|identity|json|
+|properties|json|
+|tags|json|
+|zones|list<item: utf8, nullable>|
+|etag|utf8|
+|id (PK)|utf8|
+|name|utf8|
+|system_data|json|
+|type|utf8|

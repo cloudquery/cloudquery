@@ -14,10 +14,10 @@ This table depends on [digitalocean_vpcs](digitalocean_vpcs).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|urn (PK)|String|
-|name|String|
-|created_at|Timestamp|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|urn (PK)|utf8|
+|name|utf8|
+|created_at|timestamp[us, tz=UTC]|
