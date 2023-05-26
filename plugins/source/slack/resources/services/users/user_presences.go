@@ -1,9 +1,10 @@
 package users
 
 import (
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/slack/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/slack-go/slack"
 )
 
@@ -15,16 +16,14 @@ func UserPresences() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&slack.UserPresence{}),
 		Columns: []schema.Column{
 			{
-				Name:     "user_id",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "user_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("id"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "last_activity",
-				Type:     schema.TypeTimestamp,
+				Type:     arrow.FixedWidthTypes.Timestamp_us,
 				Resolver: client.JSONTimeResolver("LastActivity"),
 			},
 		},
