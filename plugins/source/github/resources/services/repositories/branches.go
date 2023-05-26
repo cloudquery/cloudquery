@@ -4,8 +4,9 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 	"github.com/google/go-github/v49/github"
 )
 
@@ -19,7 +20,7 @@ func branches() *schema.Table {
 			client.RepositoryIDColumn,
 			{
 				Name:     "protection",
-				Type:     schema.TypeJSON,
+				Type:     types.ExtensionTypes.JSON,
 				Resolver: resolveBranchProtection,
 			},
 		},

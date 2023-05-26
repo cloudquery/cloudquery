@@ -14,25 +14,25 @@ The following tables depend on github_teams:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|org (PK)|String|
-|id (PK)|Int|
-|node_id|String|
-|name|String|
-|description|String|
-|url|String|
-|slug|String|
-|permission|String|
-|permissions|JSON|
-|privacy|String|
-|members_count|Int|
-|repos_count|Int|
-|organization|JSON|
-|html_url|String|
-|members_url|String|
-|repositories_url|String|
-|parent|JSON|
-|ldap_dn|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|org (PK)|utf8|
+|id (PK)|int64|
+|node_id|utf8|
+|name|utf8|
+|description|utf8|
+|url|utf8|
+|slug|utf8|
+|permission|utf8|
+|permissions|json|
+|privacy|utf8|
+|members_count|int64|
+|repos_count|int64|
+|organization|json|
+|html_url|utf8|
+|members_url|utf8|
+|repositories_url|utf8|
+|parent|json|
+|ldap_dn|utf8|
