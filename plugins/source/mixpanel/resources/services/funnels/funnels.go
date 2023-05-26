@@ -3,10 +3,11 @@ package funnels
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/client"
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/internal/mixpanel"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Funnels() *schema.Table {
@@ -18,7 +19,7 @@ func Funnels() *schema.Table {
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
-				Type:     schema.TypeInt,
+				Type:     arrow.PrimitiveTypes.Int64,
 				Resolver: client.ResolveProjectID,
 			},
 		},
