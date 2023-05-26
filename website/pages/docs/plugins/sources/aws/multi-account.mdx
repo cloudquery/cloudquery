@@ -31,7 +31,9 @@ Prerequisites for using AWS Org functionality:
   - `organizations:ListAccountsForParent`
   - `organizations:ListChildren`
 
-2. Have a role in each member account that has a trust policy with a single principal. The default profile name is `OrganizationAccountAccessRole`. More information can be found [here](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html#orgs_manage_accounts_create-cross-account-role), including how to create the role if it doesn't already exist in your account.
+2. Have a role in each member account that has a trust policy with a single principal. The default profile name is `OrganizationAccountAccessRole`. The [`OrganizationAccountAccessRole` is created by default](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts_access.html#orgs_manage_accounts_create-cross-account-role) in created AWS Accounts within an AWS Organization.  We do not recommend using the `OrganizationAccountAccessRole` due to the level of permissions typically granted to the `OrganizationAccountAccessRole`, but instead recommend for CloudQuery users to create their own IAM roles in each member account with the appropriate read-only permissions.  We also recommend ensuring that the IAM roles and policies used for CloudQuery adhere to company security standards.
+
+A reference IAM deployment and the CloudFormation templates for deployment in an AWS Organization for CloudQuery can be found [here](https://github.com/cloudquery/iam-for-aws-orgs).
 
 Configuring AWS Organization:
 
