@@ -10,19 +10,19 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|html_url|String|
-|type|String|
-|summary|String|
-|self|String|
-|name|String|
-|escalation_rules|JSON|
-|services|JSON|
-|num_loops|Int|
-|teams|JSON|
-|description|String|
-|on_call_handoff_notifications|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|utf8|
+|html_url|utf8|
+|type|utf8|
+|summary|utf8|
+|self|utf8|
+|name|utf8|
+|escalation_rules|json|
+|services|json|
+|num_loops|int64|
+|teams|json|
+|description|utf8|
+|on_call_handoff_notifications|utf8|
