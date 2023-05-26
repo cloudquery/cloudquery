@@ -3,9 +3,10 @@ package groups
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/xanzy/go-gitlab"
 )
 
@@ -52,10 +53,11 @@ func fetchGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 }
 
 var groupIDColumn = schema.Column{
-	Name: "group_id",
-	Type: schema.TypeInt,
+	Name:       "group_id",
+	Type:       arrow.PrimitiveTypes.Int64,
+	NotNull:    true,
+	PrimaryKey: true,
 	Resolver: func(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 		return resource.Set(c.Name, resource.Parent.Item.(*gitlab.Group).ID)
 	},
-	CreationOptions: schema.ColumnCreationOptions{NotNull: true, PrimaryKey: true},
 }
