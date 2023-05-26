@@ -15,19 +15,7 @@ func Buckets() *schema.Table {
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: transformers.TransformWithStruct(&objectstorage.BucketSummary{},
 			transformers.WithTypeTransformer(client.OracleTypeTransformer)),
-		Columns: []schema.Column{
-			{
-				Name:       "region",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveOracleRegion,
-				PrimaryKey: true,
-			},
-			{
-				Name:       "compartment_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveCompartmentId,
-				PrimaryKey: true,
-			},
+		Columns: schema.ColumnList{client.RegionColumn, client.CompartmentIDColumn,
 			{
 				Name:       "namespace",
 				Type:       arrow.BinaryTypes.String,
