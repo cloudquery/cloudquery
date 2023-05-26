@@ -1,13 +1,14 @@
 package client
 
-import "github.com/cloudquery/plugin-sdk/v2/schema"
+import (
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+)
 
 var OrganizationID = schema.Column{
-	Name:     "organization_id",
-	Type:     schema.TypeString,
-	Resolver: ResolveOrganizationID,
-	CreationOptions: schema.ColumnCreationOptions{
-		PrimaryKey: true,
-		NotNull:    true,
-	},
+	Name:       "organization_id",
+	Type:       arrow.BinaryTypes.String,
+	PrimaryKey: true,
+	NotNull:    true,
+	Resolver:   ResolveOrganizationID,
 }

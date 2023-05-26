@@ -14,19 +14,19 @@ This table depends on [pagerduty_users](pagerduty_users).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|html_url|String|
-|send_html_email|Bool|
-|type|String|
-|summary|String|
-|self|String|
-|label|String|
-|address|String|
-|send_short_email|Bool|
-|blacklisted|Bool|
-|country_code|Int|
-|enabled|Bool|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|utf8|
+|html_url|utf8|
+|send_html_email|bool|
+|type|utf8|
+|summary|utf8|
+|self|utf8|
+|label|utf8|
+|address|utf8|
+|send_short_email|bool|
+|blacklisted|bool|
+|country_code|int64|
+|enabled|bool|

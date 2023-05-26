@@ -14,13 +14,13 @@ This table depends on [snyk_organizations](snyk_organizations).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|organization_id (PK)|String|
-|id (PK)|String|
-|username|String|
-|name|String|
-|email|String|
-|role|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|organization_id (PK)|utf8|
+|id (PK)|utf8|
+|username|utf8|
+|name|utf8|
+|email|utf8|
+|role|utf8|

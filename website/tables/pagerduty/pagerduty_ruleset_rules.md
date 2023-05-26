@@ -14,16 +14,16 @@ This table depends on [pagerduty_rulesets](pagerduty_rulesets).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|self|String|
-|position|Int|
-|disabled|Bool|
-|conditions|JSON|
-|actions|JSON|
-|ruleset|JSON|
-|catch_all|Bool|
-|time_frame|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|utf8|
+|self|utf8|
+|position|int64|
+|disabled|bool|
+|conditions|json|
+|actions|json|
+|ruleset|json|
+|catch_all|bool|
+|time_frame|json|
