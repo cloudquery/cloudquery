@@ -25,6 +25,9 @@ func OrganizationalUnits() *schema.Table {
 		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "organizations"),
 		Columns:   []schema.Column{client.DefaultAccountIDColumn(true)},
+		Relations: []*schema.Table{
+			organizationalUnitAccounts(),
+		},
 	}
 }
 
