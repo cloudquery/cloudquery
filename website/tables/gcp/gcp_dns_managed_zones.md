@@ -6,6 +6,11 @@ https://cloud.google.com/dns/docs/reference/v1/managedZones#resource
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on gcp_dns_managed_zones:
+  - [gcp_dns_resource_record_sets](gcp_dns_resource_record_sets)
+
 ## Columns
 
 | Name          | Type          |

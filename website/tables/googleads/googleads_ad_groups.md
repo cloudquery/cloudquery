@@ -17,37 +17,37 @@ The following tables depend on googleads_ad_groups:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|customer_id (PK)|Int|
-|resource_name (PK)|String|
-|id (PK)|Int|
-|name|String|
-|status|String|
-|type|String|
-|ad_rotation_mode|String|
-|base_ad_group|String|
-|tracking_url_template|String|
-|url_custom_parameters|JSON|
-|campaign|String|
-|cpc_bid_micros|Int|
-|effective_cpc_bid_micros|Int|
-|cpm_bid_micros|Int|
-|target_cpa_micros|Int|
-|cpv_bid_micros|Int|
-|target_cpm_micros|Int|
-|target_roas|Float|
-|percent_cpc_bid_micros|Int|
-|optimized_targeting_enabled|Bool|
-|display_custom_bid_dimension|String|
-|final_url_suffix|String|
-|audience_setting|JSON|
-|effective_target_cpa_micros|Int|
-|effective_target_cpa_source|String|
-|effective_target_roas|Float|
-|effective_target_roas_source|String|
-|labels|StringArray|
-|excluded_parent_asset_field_types|IntArray|
-|excluded_parent_asset_set_types|IntArray|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|customer_id (PK)|int64|
+|resource_name (PK)|utf8|
+|id (PK)|int64|
+|name|utf8|
+|status|utf8|
+|type|utf8|
+|ad_rotation_mode|utf8|
+|base_ad_group|utf8|
+|tracking_url_template|utf8|
+|url_custom_parameters|json|
+|campaign|utf8|
+|cpc_bid_micros|int64|
+|effective_cpc_bid_micros|int64|
+|cpm_bid_micros|int64|
+|target_cpa_micros|int64|
+|cpv_bid_micros|int64|
+|target_cpm_micros|int64|
+|target_roas|float64|
+|percent_cpc_bid_micros|int64|
+|optimized_targeting_enabled|bool|
+|display_custom_bid_dimension|utf8|
+|final_url_suffix|utf8|
+|audience_setting|json|
+|effective_target_cpa_micros|int64|
+|effective_target_cpa_source|utf8|
+|effective_target_roas|float64|
+|effective_target_roas_source|utf8|
+|labels|list<item: utf8, nullable>|
+|excluded_parent_asset_field_types|list<item: int64, nullable>|
+|excluded_parent_asset_set_types|list<item: int64, nullable>|

@@ -3,8 +3,9 @@ package applications
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/okta/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/okta/okta-sdk-golang/v3/okta"
 )
 
@@ -94,10 +95,8 @@ func appToApp(obj *okta.ListApplications200ResponseInner) *okta.Application {
 }
 
 var appIDColumn = schema.Column{
-	Name:     "app_id",
-	Type:     schema.TypeString,
-	Resolver: schema.ParentColumnResolver("id"),
-	CreationOptions: schema.ColumnCreationOptions{
-		PrimaryKey: true,
-	},
+	Name:       "app_id",
+	Type:       arrow.BinaryTypes.String,
+	Resolver:   schema.ParentColumnResolver("id"),
+	PrimaryKey: true,
 }

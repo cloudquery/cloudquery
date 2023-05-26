@@ -11,21 +11,21 @@ It supports incremental syncs based on the **created** column.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|created (Incremental Key)|Timestamp|
-|billing_zip|String|
-|charge|JSON|
-|closed_reason|String|
-|ip_address|String|
-|ip_address_location|JSON|
-|livemode|Bool|
-|object|String|
-|open|Bool|
-|opened_reason|String|
-|payment_intent|JSON|
-|reason|String|
-|session|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|utf8|
+|created (Incremental Key)|timestamp[us, tz=UTC]|
+|billing_zip|utf8|
+|charge|json|
+|closed_reason|utf8|
+|ip_address|utf8|
+|ip_address_location|json|
+|livemode|bool|
+|object|utf8|
+|open|bool|
+|opened_reason|utf8|
+|payment_intent|json|
+|reason|utf8|
+|session|json|

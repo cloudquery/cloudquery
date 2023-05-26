@@ -1,10 +1,11 @@
 package conversations
 
 import (
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/slack/client"
 	"github.com/cloudquery/cloudquery/plugins/source/slack/resources/services/conversations/models"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func ConversationMembers() *schema.Table {
@@ -16,28 +17,22 @@ func ConversationMembers() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&models.ConversationMember{}),
 		Columns: []schema.Column{
 			{
-				Name:     "team_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveTeamID,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "team_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveTeamID,
+				PrimaryKey: true,
 			},
 			{
-				Name:     "user_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UserID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "user_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("UserID"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "channel_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ChannelID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "channel_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ChannelID"),
+				PrimaryKey: true,
 			},
 		},
 	}
