@@ -17,36 +17,36 @@ The following tables depend on slack_conversations:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|team_id (PK)|String|
-|id (PK)|String|
-|created|Timestamp|
-|is_open|Bool|
-|last_read|String|
-|unread_count|Int|
-|unread_count_display|Int|
-|is_group|Bool|
-|is_shared|Bool|
-|is_im|Bool|
-|is_ext_shared|Bool|
-|is_org_shared|Bool|
-|is_pending_ext_shared|Bool|
-|is_private|Bool|
-|is_mpim|Bool|
-|unlinked|Int|
-|name_normalized|String|
-|num_members|Int|
-|priority|Float|
-|user|String|
-|name|String|
-|creator|String|
-|is_archived|Bool|
-|topic|JSON|
-|purpose|JSON|
-|is_channel|Bool|
-|is_general|Bool|
-|is_member|Bool|
-|locale|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|team_id (PK)|utf8|
+|id (PK)|utf8|
+|created|timestamp[us, tz=UTC]|
+|is_open|bool|
+|last_read|utf8|
+|unread_count|int64|
+|unread_count_display|int64|
+|is_group|bool|
+|is_shared|bool|
+|is_im|bool|
+|is_ext_shared|bool|
+|is_org_shared|bool|
+|is_pending_ext_shared|bool|
+|is_private|bool|
+|is_mpim|bool|
+|unlinked|int64|
+|name_normalized|utf8|
+|num_members|int64|
+|priority|float64|
+|user|utf8|
+|name|utf8|
+|creator|utf8|
+|is_archived|bool|
+|topic|json|
+|purpose|json|
+|is_channel|bool|
+|is_general|bool|
+|is_member|bool|
+|locale|utf8|

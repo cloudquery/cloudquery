@@ -2,16 +2,16 @@ package checkout
 
 import (
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/cloudquery/plugins/source/shopify/client"
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/internal/shopify"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func AbandonedCheckouts() *schema.Table {
 	return &schema.Table{
 		Name:      "shopify_abandoned_checkouts",
 		Resolver:  fetchAbandonedCheckouts,
-		Transform: client.TransformWithStruct(&shopify.Checkout{}),
+		Transform: transformers.TransformWithStruct(&shopify.Checkout{}),
 		Columns: []schema.Column{
 			{
 				Name:       "id",
