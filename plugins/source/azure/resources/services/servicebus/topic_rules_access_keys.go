@@ -6,10 +6,11 @@ import (
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/gorilla/mux"
 )
 
@@ -23,12 +24,10 @@ func topicRuleAccessKeys() *schema.Table {
 		Columns: schema.ColumnList{
 			client.SubscriptionID,
 			schema.Column{
-				Name:     "rule_id",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "rule_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("id"),
+				PrimaryKey: true,
 			},
 		},
 	}
