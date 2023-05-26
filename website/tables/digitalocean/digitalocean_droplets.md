@@ -24,19 +24,19 @@ The following tables depend on digitalocean_droplets:
 |memory|int64|
 |vcpus|int64|
 |disk|int64|
-|region|extension_type<storage=binary>|
-|image|extension_type<storage=binary>|
-|size|extension_type<storage=binary>|
+|region|json|
+|image|json|
+|size|json|
 |size_slug|utf8|
 |backup_ids|list<item: int64, nullable>|
-|next_backup_window|extension_type<storage=binary>|
+|next_backup_window|json|
 |snapshot_ids|list<item: int64, nullable>|
 |features|list<item: utf8, nullable>|
 |locked|bool|
 |status|utf8|
-|networks|extension_type<storage=binary>|
+|networks|json|
 |created_at|utf8|
-|kernel|extension_type<storage=binary>|
+|kernel|json|
 |tags|list<item: utf8, nullable>|
 |volume_ids|list<item: utf8, nullable>|
 |vpc_uuid|utf8|

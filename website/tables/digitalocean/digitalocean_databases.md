@@ -25,15 +25,15 @@ The following tables depend on digitalocean_databases:
 |name|utf8|
 |engine|utf8|
 |version|utf8|
-|connection|extension_type<storage=binary>|
-|private_connection|extension_type<storage=binary>|
-|users|extension_type<storage=binary>|
+|connection|json|
+|private_connection|json|
+|users|json|
 |num_nodes|int64|
 |size|utf8|
 |db_names|list<item: utf8, nullable>|
 |region|utf8|
 |status|utf8|
-|maintenance_window|extension_type<storage=binary>|
+|maintenance_window|json|
 |created_at|timestamp[us, tz=UTC]|
 |private_network_uuid|utf8|
 |tags|list<item: utf8, nullable>|

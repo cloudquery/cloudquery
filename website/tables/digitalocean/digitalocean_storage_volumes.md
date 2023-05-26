@@ -15,7 +15,7 @@ The primary key for this table is **id**.
 |_cq_id|uuid|
 |_cq_parent_id|uuid|
 |id (PK)|utf8|
-|region|extension_type<storage=binary>|
+|region|json|
 |name|utf8|
 |size_gigabytes|int64|
 |description|utf8|

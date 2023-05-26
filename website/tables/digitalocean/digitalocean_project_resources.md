@@ -20,5 +20,5 @@ This table depends on [digitalocean_projects](digitalocean_projects).
 |_cq_parent_id|uuid|
 |urn (PK)|utf8|
 |assigned_at|utf8|
-|links|extension_type<storage=binary>|
+|links|json|
 |status|utf8|

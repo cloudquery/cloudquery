@@ -15,7 +15,7 @@ The primary key for this table is **ip**.
 |_cq_id|uuid|
 |_cq_parent_id|uuid|
 |ip (PK)|utf8|
-|region|extension_type<storage=binary>|
-|droplet|extension_type<storage=binary>|
+|region|json|
+|droplet|json|
 |project_id|utf8|
 |locked|bool|

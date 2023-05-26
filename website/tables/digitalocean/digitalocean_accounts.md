@@ -23,4 +23,4 @@ The primary key for this table is **uuid**.
 |email_verified|bool|
 |status|utf8|
 |status_message|utf8|
-|team|extension_type<storage=binary>|
+|team|json|

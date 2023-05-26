@@ -20,5 +20,5 @@ This table depends on [digitalocean_registries](digitalocean_registries).
 |_cq_parent_id|uuid|
 |name (PK)|utf8|
 |registry_name|utf8|
-|latest_tag|extension_type<storage=binary>|
+|latest_tag|json|
 |tag_count|int64|

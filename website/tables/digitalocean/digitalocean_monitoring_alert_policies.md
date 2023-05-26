@@ -22,5 +22,5 @@ The primary key for this table is **uuid**.
 |window|utf8|
 |entities|list<item: utf8, nullable>|
 |tags|list<item: utf8, nullable>|
-|alerts|extension_type<storage=binary>|
+|alerts|json|
 |enabled|bool|

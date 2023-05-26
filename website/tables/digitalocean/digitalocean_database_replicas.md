@@ -20,8 +20,8 @@ This table depends on [digitalocean_databases](digitalocean_databases).
 |_cq_parent_id|uuid|
 |id|utf8|
 |name|utf8|
-|connection|extension_type<storage=binary>|
-|private_connection|extension_type<storage=binary>|
+|connection|json|
+|private_connection|json|
 |region|utf8|
 |status|utf8|
 |created_at|timestamp[us, tz=UTC]|

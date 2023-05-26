@@ -17,9 +17,9 @@ The primary key for this table is **id**.
 |id (PK)|utf8|
 |name|utf8|
 |status|utf8|
-|inbound_rules|extension_type<storage=binary>|
-|outbound_rules|extension_type<storage=binary>|
+|inbound_rules|json|
+|outbound_rules|json|
 |droplet_ids|list<item: int64, nullable>|
 |tags|list<item: utf8, nullable>|
 |created_at|utf8|
-|pending_changes|extension_type<storage=binary>|
+|pending_changes|json|

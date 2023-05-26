@@ -22,10 +22,10 @@ The primary key for this table is **id**.
 |algorithm|utf8|
 |status|utf8|
 |created_at|utf8|
-|forwarding_rules|extension_type<storage=binary>|
-|health_check|extension_type<storage=binary>|
-|sticky_sessions|extension_type<storage=binary>|
-|region|extension_type<storage=binary>|
+|forwarding_rules|json|
+|health_check|json|
+|sticky_sessions|json|
+|region|json|
 |droplet_ids|list<item: int64, nullable>|
 |tag|utf8|
 |tags|list<item: utf8, nullable>|
@@ -37,4 +37,4 @@ The primary key for this table is **id**.
 |validate_only|bool|
 |project_id|utf8|
 |http_idle_timeout_seconds|int64|
-|firewall|extension_type<storage=binary>|
+|firewall|json|
