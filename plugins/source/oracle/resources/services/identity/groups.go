@@ -12,6 +12,6 @@ func Groups() *schema.Table {
 		Resolver:  fetchGroups,
 		Multiplex: client.TenancyMultiplex,
 		Transform: client.TransformWithStruct(&identity.Group{}),
-		Columns:   schema.ColumnList{client.RegionColumn, client.CompartmentIDColumn},
+		Columns:   schema.ColumnList{client.RegionColumn},
 	}
 }

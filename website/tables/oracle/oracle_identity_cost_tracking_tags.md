@@ -2,7 +2,7 @@
 
 This table shows data for Oracle Identity Cost Tracking Tags.
 
-The composite primary key for this table is (**region**, **compartment_id**, **id**).
+The composite primary key for this table is (**region**, **id**).
 
 ## Columns
 
@@ -13,7 +13,7 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |region (PK)|`utf8`|
-|compartment_id (PK)|`utf8`|
+|compartment_id|`utf8`|
 |tag_namespace_id|`utf8`|
 |tag_namespace_name|`utf8`|
 |id (PK)|`utf8`|

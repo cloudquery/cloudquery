@@ -12,6 +12,6 @@ func CostTrackingTags() *schema.Table {
 		Resolver:  fetchCostTrackingTags,
 		Multiplex: client.TenancyMultiplex,
 		Transform: client.TransformWithStruct(&identity.Tag{}),
-		Columns:   schema.ColumnList{client.RegionColumn, client.CompartmentIDColumn},
+		Columns:   schema.ColumnList{client.RegionColumn},
 	}
 }

@@ -12,6 +12,6 @@ func NetworkSources() *schema.Table {
 		Resolver:  fetchNetworkSources,
 		Multiplex: client.TenancyMultiplex,
 		Transform: client.TransformWithStruct(&identity.NetworkSourcesSummary{}),
-		Columns:   schema.ColumnList{client.RegionColumn, client.CompartmentIDColumn},
+		Columns:   schema.ColumnList{client.RegionColumn},
 	}
 }

@@ -12,6 +12,6 @@ func Compartments() *schema.Table {
 		Resolver:  fetchCompartments,
 		Multiplex: client.TenancyMultiplex,
 		Transform: client.TransformWithStruct(&identity.Compartment{}),
-		Columns:   schema.ColumnList{client.RegionColumn, client.CompartmentIDColumn},
+		Columns:   schema.ColumnList{client.RegionColumn},
 	}
 }

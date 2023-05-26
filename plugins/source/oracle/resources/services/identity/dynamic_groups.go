@@ -12,6 +12,6 @@ func DynamicGroups() *schema.Table {
 		Resolver:  fetchDynamicGroups,
 		Multiplex: client.TenancyMultiplex,
 		Transform: client.TransformWithStruct(&identity.DynamicGroup{}),
-		Columns:   schema.ColumnList{client.RegionColumn, client.CompartmentIDColumn},
+		Columns:   schema.ColumnList{client.RegionColumn},
 	}
 }

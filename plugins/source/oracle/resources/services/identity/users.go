@@ -12,6 +12,6 @@ func Users() *schema.Table {
 		Resolver:  fetchUsers,
 		Multiplex: client.TenancyMultiplex,
 		Transform: client.TransformWithStruct(&identity.User{}),
-		Columns:   schema.ColumnList{client.RegionColumn, client.CompartmentIDColumn},
+		Columns:   schema.ColumnList{client.RegionColumn},
 	}
 }
