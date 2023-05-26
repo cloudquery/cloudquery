@@ -21,6 +21,11 @@ func resourceRecordSets() *schema.Table {
 				Type:       arrow.BinaryTypes.String,
 				Resolver:   client.ResolveProject,
 				PrimaryKey: true,
+			}, {
+				Name:       "managed_zone_name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("name"),
+				PrimaryKey: true,
 			},
 		},
 	}
