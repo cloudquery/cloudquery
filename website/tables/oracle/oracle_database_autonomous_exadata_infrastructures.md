@@ -8,28 +8,28 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|region (PK)|String|
-|compartment_id (PK)|String|
-|id (PK)|String|
-|display_name|String|
-|availability_domain|String|
-|subnet_id|String|
-|shape|String|
-|hostname|String|
-|domain|String|
-|lifecycle_state|String|
-|maintenance_window|JSON|
-|nsg_ids|StringArray|
-|lifecycle_details|String|
-|license_model|String|
-|time_created|Timestamp|
-|last_maintenance_run_id|String|
-|next_maintenance_run_id|String|
-|freeform_tags|JSON|
-|defined_tags|JSON|
-|scan_dns_name|String|
-|zone_id|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|display_name|`utf8`|
+|availability_domain|`utf8`|
+|subnet_id|`utf8`|
+|shape|`utf8`|
+|hostname|`utf8`|
+|domain|`utf8`|
+|lifecycle_state|`utf8`|
+|maintenance_window|`json`|
+|nsg_ids|`list<item: utf8, nullable>`|
+|lifecycle_details|`utf8`|
+|license_model|`utf8`|
+|time_created|`timestamp[us, tz=UTC]`|
+|last_maintenance_run_id|`utf8`|
+|next_maintenance_run_id|`utf8`|
+|freeform_tags|`json`|
+|defined_tags|`json`|
+|scan_dns_name|`utf8`|
+|zone_id|`utf8`|

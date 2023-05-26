@@ -8,17 +8,17 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|region (PK)|String|
-|compartment_id (PK)|String|
-|id (PK)|String|
-|operation_type|String|
-|status|String|
-|resources|JSON|
-|time_accepted|Timestamp|
-|time_started|Timestamp|
-|time_finished|Timestamp|
-|percent_complete|Float|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|operation_type|`utf8`|
+|status|`utf8`|
+|resources|`json`|
+|time_accepted|`timestamp[us, tz=UTC]`|
+|time_started|`timestamp[us, tz=UTC]`|
+|time_finished|`timestamp[us, tz=UTC]`|
+|percent_complete|`float64`|
