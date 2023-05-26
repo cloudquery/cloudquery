@@ -10,19 +10,19 @@ The composite primary key for this table is (**account_id**, **arn**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region|String|
-|arn (PK)|String|
-|name|String|
-|security_group_ids|StringArray|
-|subnet_ids|StringArray|
-|vpc_link_id|String|
-|created_date|Timestamp|
-|tags|JSON|
-|vpc_link_status|String|
-|vpc_link_status_message|String|
-|vpc_link_version|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|name|utf8|
+|security_group_ids|list<item: utf8, nullable>|
+|subnet_ids|list<item: utf8, nullable>|
+|vpc_link_id|utf8|
+|created_date|timestamp[us, tz=UTC]|
+|tags|json|
+|vpc_link_status|utf8|
+|vpc_link_status_message|utf8|
+|vpc_link_version|utf8|

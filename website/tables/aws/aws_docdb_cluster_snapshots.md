@@ -14,29 +14,29 @@ This table depends on [aws_docdb_clusters](aws_docdb_clusters).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|tags|JSON|
-|arn (PK)|String|
-|attributes|JSON|
-|db_cluster_identifier|String|
-|db_cluster_snapshot_identifier|String|
-|availability_zones|StringArray|
-|cluster_create_time|Timestamp|
-|db_cluster_snapshot_arn|String|
-|engine|String|
-|engine_version|String|
-|kms_key_id|String|
-|master_username|String|
-|percent_progress|Int|
-|port|Int|
-|snapshot_create_time|Timestamp|
-|snapshot_type|String|
-|source_db_cluster_snapshot_arn|String|
-|status|String|
-|storage_encrypted|Bool|
-|vpc_id|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|tags|json|
+|arn (PK)|utf8|
+|attributes|json|
+|db_cluster_identifier|utf8|
+|db_cluster_snapshot_identifier|utf8|
+|availability_zones|list<item: utf8, nullable>|
+|cluster_create_time|timestamp[us, tz=UTC]|
+|db_cluster_snapshot_arn|utf8|
+|engine|utf8|
+|engine_version|utf8|
+|kms_key_id|utf8|
+|master_username|utf8|
+|percent_progress|int64|
+|port|int64|
+|snapshot_create_time|timestamp[us, tz=UTC]|
+|snapshot_type|utf8|
+|source_db_cluster_snapshot_arn|utf8|
+|status|utf8|
+|storage_encrypted|bool|
+|vpc_id|utf8|

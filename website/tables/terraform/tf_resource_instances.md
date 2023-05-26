@@ -14,13 +14,13 @@ This table depends on [tf_resources](tf_resources).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|resource_name|String|
-|instance_id|String|
-|schema_version|Int|
-|attributes|JSON|
-|dependencies|StringArray|
-|create_before_destroy|Bool|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id (PK)|uuid|
+|_cq_parent_id|uuid|
+|resource_name|utf8|
+|instance_id|utf8|
+|schema_version|int64|
+|attributes|json|
+|dependencies|list<item: utf8, nullable>|
+|create_before_destroy|bool|

@@ -17,25 +17,25 @@ The following tables depend on aws_cloudformation_stack_set_operations:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|id|String|
-|stack_set_arn (PK)|String|
-|action|String|
-|administration_role_arn|String|
-|creation_timestamp (PK)|Timestamp|
-|deployment_targets|JSON|
-|end_timestamp|Timestamp|
-|execution_role_name|String|
-|operation_id (PK)|String|
-|operation_preferences|JSON|
-|retain_stacks|Bool|
-|stack_set_drift_detection_details|JSON|
-|stack_set_id|String|
-|status|String|
-|status_details|JSON|
-|status_reason|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|id|utf8|
+|stack_set_arn (PK)|utf8|
+|action|utf8|
+|administration_role_arn|utf8|
+|creation_timestamp (PK)|timestamp[us, tz=UTC]|
+|deployment_targets|json|
+|end_timestamp|timestamp[us, tz=UTC]|
+|execution_role_name|utf8|
+|operation_id (PK)|utf8|
+|operation_preferences|json|
+|retain_stacks|bool|
+|stack_set_drift_detection_details|json|
+|stack_set_id|utf8|
+|status|utf8|
+|status_details|json|
+|status_reason|utf8|

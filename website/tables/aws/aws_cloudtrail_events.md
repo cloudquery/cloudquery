@@ -11,18 +11,18 @@ It supports incremental syncs based on the **event_time** column.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|cloud_trail_event|JSON|
-|event_time (Incremental Key)|Timestamp|
-|access_key_id|String|
-|event_id (PK)|String|
-|event_name|String|
-|event_source|String|
-|read_only|String|
-|resources|JSON|
-|username|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|cloud_trail_event|json|
+|event_time (Incremental Key)|timestamp[us, tz=UTC]|
+|access_key_id|utf8|
+|event_id (PK)|utf8|
+|event_name|utf8|
+|event_source|utf8|
+|read_only|utf8|
+|resources|json|
+|username|utf8|

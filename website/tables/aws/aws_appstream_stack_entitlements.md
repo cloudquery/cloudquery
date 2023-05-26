@@ -14,16 +14,16 @@ This table depends on [aws_appstream_stacks](aws_appstream_stacks).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|stack_name (PK)|String|
-|name (PK)|String|
-|app_visibility|String|
-|attributes|JSON|
-|created_time|Timestamp|
-|description|String|
-|last_modified_time|Timestamp|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|region (PK)|utf8|
+|stack_name (PK)|utf8|
+|name (PK)|utf8|
+|app_visibility|utf8|
+|attributes|json|
+|created_time|timestamp[us, tz=UTC]|
+|description|utf8|
+|last_modified_time|timestamp[us, tz=UTC]|

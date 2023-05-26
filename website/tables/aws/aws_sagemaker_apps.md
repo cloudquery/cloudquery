@@ -10,23 +10,23 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|app_arn|String|
-|app_name|String|
-|app_type|String|
-|creation_time|Timestamp|
-|domain_id|String|
-|failure_reason|String|
-|last_health_check_timestamp|Timestamp|
-|last_user_activity_timestamp|Timestamp|
-|resource_spec|JSON|
-|space_name|String|
-|status|String|
-|user_profile_name|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|app_arn|utf8|
+|app_name|utf8|
+|app_type|utf8|
+|creation_time|timestamp[us, tz=UTC]|
+|domain_id|utf8|
+|failure_reason|utf8|
+|last_health_check_timestamp|timestamp[us, tz=UTC]|
+|last_user_activity_timestamp|timestamp[us, tz=UTC]|
+|resource_spec|json|
+|space_name|utf8|
+|status|utf8|
+|user_profile_name|utf8|

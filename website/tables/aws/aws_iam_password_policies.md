@@ -10,19 +10,19 @@ The primary key for this table is **account_id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|allow_users_to_change_password|Bool|
-|expire_passwords|Bool|
-|hard_expiry|Bool|
-|max_password_age|Int|
-|minimum_password_length|Int|
-|password_reuse_prevention|Int|
-|require_lowercase_characters|Bool|
-|require_numbers|Bool|
-|require_symbols|Bool|
-|require_uppercase_characters|Bool|
-|policy_exists|Bool|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|allow_users_to_change_password|bool|
+|expire_passwords|bool|
+|hard_expiry|bool|
+|max_password_age|int64|
+|minimum_password_length|int64|
+|password_reuse_prevention|int64|
+|require_lowercase_characters|bool|
+|require_numbers|bool|
+|require_symbols|bool|
+|require_uppercase_characters|bool|
+|policy_exists|bool|

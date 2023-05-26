@@ -17,24 +17,24 @@ The following tables depend on aws_stepfunctions_executions:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|state_machine_arn|String|
-|execution_arn|String|
-|start_date|Timestamp|
-|status|String|
-|cause|String|
-|error|String|
-|input|String|
-|input_details|JSON|
-|map_run_arn|String|
-|name|String|
-|output|String|
-|output_details|JSON|
-|stop_date|Timestamp|
-|trace_header|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|state_machine_arn|utf8|
+|execution_arn|utf8|
+|start_date|timestamp[us, tz=UTC]|
+|status|utf8|
+|cause|utf8|
+|error|utf8|
+|input|utf8|
+|input_details|json|
+|map_run_arn|utf8|
+|name|utf8|
+|output|utf8|
+|output_details|json|
+|stop_date|timestamp[us, tz=UTC]|
+|trace_header|utf8|

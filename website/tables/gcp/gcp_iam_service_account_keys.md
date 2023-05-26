@@ -14,17 +14,17 @@ This table depends on [gcp_iam_service_accounts](gcp_iam_service_accounts).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|service_account_unique_id|String|
-|name (PK)|String|
-|key_algorithm|String|
-|public_key_data|ByteArray|
-|valid_after_time|Timestamp|
-|valid_before_time|Timestamp|
-|key_origin|String|
-|key_type|String|
-|disabled|Bool|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id (PK)|utf8|
+|service_account_unique_id|utf8|
+|name (PK)|utf8|
+|key_algorithm|utf8|
+|public_key_data|binary|
+|valid_after_time|timestamp[us, tz=UTC]|
+|valid_before_time|timestamp[us, tz=UTC]|
+|key_origin|utf8|
+|key_type|utf8|
+|disabled|bool|

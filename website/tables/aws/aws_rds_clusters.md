@@ -15,81 +15,81 @@ The following tables depend on aws_rds_clusters:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|activity_stream_kinesis_stream_name|String|
-|activity_stream_kms_key_id|String|
-|activity_stream_mode|String|
-|activity_stream_status|String|
-|allocated_storage|Int|
-|associated_roles|JSON|
-|auto_minor_version_upgrade|Bool|
-|automatic_restart_time|Timestamp|
-|availability_zones|StringArray|
-|backtrack_consumed_change_records|Int|
-|backtrack_window|Int|
-|backup_retention_period|Int|
-|capacity|Int|
-|character_set_name|String|
-|clone_group_id|String|
-|cluster_create_time|Timestamp|
-|copy_tags_to_snapshot|Bool|
-|cross_account_clone|Bool|
-|custom_endpoints|StringArray|
-|db_cluster_arn|String|
-|db_cluster_identifier|String|
-|db_cluster_instance_class|String|
-|db_cluster_members|JSON|
-|db_cluster_option_group_memberships|JSON|
-|db_cluster_parameter_group|String|
-|db_subnet_group|String|
-|db_system_id|String|
-|database_name|String|
-|db_cluster_resource_id|String|
-|deletion_protection|Bool|
-|domain_memberships|JSON|
-|earliest_backtrack_time|Timestamp|
-|earliest_restorable_time|Timestamp|
-|enabled_cloudwatch_logs_exports|StringArray|
-|endpoint|String|
-|engine|String|
-|engine_mode|String|
-|engine_version|String|
-|global_write_forwarding_requested|Bool|
-|global_write_forwarding_status|String|
-|hosted_zone_id|String|
-|http_endpoint_enabled|Bool|
-|iam_database_authentication_enabled|Bool|
-|iops|Int|
-|kms_key_id|String|
-|latest_restorable_time|Timestamp|
-|master_user_secret|JSON|
-|master_username|String|
-|monitoring_interval|Int|
-|monitoring_role_arn|String|
-|multi_az|Bool|
-|network_type|String|
-|pending_modified_values|JSON|
-|percent_progress|String|
-|performance_insights_enabled|Bool|
-|performance_insights_kms_key_id|String|
-|performance_insights_retention_period|Int|
-|port|Int|
-|preferred_backup_window|String|
-|preferred_maintenance_window|String|
-|publicly_accessible|Bool|
-|read_replica_identifiers|StringArray|
-|reader_endpoint|String|
-|replication_source_identifier|String|
-|scaling_configuration_info|JSON|
-|serverless_v2_scaling_configuration|JSON|
-|status|String|
-|storage_encrypted|Bool|
-|storage_type|String|
-|vpc_security_groups|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|activity_stream_kinesis_stream_name|utf8|
+|activity_stream_kms_key_id|utf8|
+|activity_stream_mode|utf8|
+|activity_stream_status|utf8|
+|allocated_storage|int64|
+|associated_roles|json|
+|auto_minor_version_upgrade|bool|
+|automatic_restart_time|timestamp[us, tz=UTC]|
+|availability_zones|list<item: utf8, nullable>|
+|backtrack_consumed_change_records|int64|
+|backtrack_window|int64|
+|backup_retention_period|int64|
+|capacity|int64|
+|character_set_name|utf8|
+|clone_group_id|utf8|
+|cluster_create_time|timestamp[us, tz=UTC]|
+|copy_tags_to_snapshot|bool|
+|cross_account_clone|bool|
+|custom_endpoints|list<item: utf8, nullable>|
+|db_cluster_arn|utf8|
+|db_cluster_identifier|utf8|
+|db_cluster_instance_class|utf8|
+|db_cluster_members|json|
+|db_cluster_option_group_memberships|json|
+|db_cluster_parameter_group|utf8|
+|db_subnet_group|utf8|
+|db_system_id|utf8|
+|database_name|utf8|
+|db_cluster_resource_id|utf8|
+|deletion_protection|bool|
+|domain_memberships|json|
+|earliest_backtrack_time|timestamp[us, tz=UTC]|
+|earliest_restorable_time|timestamp[us, tz=UTC]|
+|enabled_cloudwatch_logs_exports|list<item: utf8, nullable>|
+|endpoint|utf8|
+|engine|utf8|
+|engine_mode|utf8|
+|engine_version|utf8|
+|global_write_forwarding_requested|bool|
+|global_write_forwarding_status|utf8|
+|hosted_zone_id|utf8|
+|http_endpoint_enabled|bool|
+|iam_database_authentication_enabled|bool|
+|iops|int64|
+|kms_key_id|utf8|
+|latest_restorable_time|timestamp[us, tz=UTC]|
+|master_user_secret|json|
+|master_username|utf8|
+|monitoring_interval|int64|
+|monitoring_role_arn|utf8|
+|multi_az|bool|
+|network_type|utf8|
+|pending_modified_values|json|
+|percent_progress|utf8|
+|performance_insights_enabled|bool|
+|performance_insights_kms_key_id|utf8|
+|performance_insights_retention_period|int64|
+|port|int64|
+|preferred_backup_window|utf8|
+|preferred_maintenance_window|utf8|
+|publicly_accessible|bool|
+|read_replica_identifiers|list<item: utf8, nullable>|
+|reader_endpoint|utf8|
+|replication_source_identifier|utf8|
+|scaling_configuration_info|json|
+|serverless_v2_scaling_configuration|json|
+|status|utf8|
+|storage_encrypted|bool|
+|storage_type|utf8|
+|vpc_security_groups|json|

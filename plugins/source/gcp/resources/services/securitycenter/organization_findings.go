@@ -4,7 +4,8 @@ import (
 	"context"
 
 	pb "cloud.google.com/go/securitycenter/apiv1/securitycenterpb"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
@@ -18,20 +19,16 @@ func OrganizationFindings() *schema.Table {
 		Transform:     client.TransformWithStruct(&pb.ListFindingsResponse_ListFindingsResult{}),
 		Columns: []schema.Column{
 			{
-				Name:     "organization_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveOrganization,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "organization_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveOrganization,
+				PrimaryKey: true,
 			},
 			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Finding.Name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Finding.Name"),
+				PrimaryKey: true,
 			},
 		},
 	}

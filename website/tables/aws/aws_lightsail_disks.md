@@ -15,26 +15,26 @@ The following tables depend on aws_lightsail_disks:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|add_ons|JSON|
-|attached_to|String|
-|attachment_state|String|
-|created_at|Timestamp|
-|gb_in_use|Int|
-|iops|Int|
-|is_attached|Bool|
-|is_system_disk|Bool|
-|location|JSON|
-|name|String|
-|path|String|
-|resource_type|String|
-|size_in_gb|Int|
-|state|String|
-|support_code|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|add_ons|json|
+|attached_to|utf8|
+|attachment_state|utf8|
+|created_at|timestamp[us, tz=UTC]|
+|gb_in_use|int64|
+|iops|int64|
+|is_attached|bool|
+|is_system_disk|bool|
+|location|json|
+|name|utf8|
+|path|utf8|
+|resource_type|utf8|
+|size_in_gb|int64|
+|state|utf8|
+|support_code|utf8|

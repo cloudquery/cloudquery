@@ -14,20 +14,20 @@ This table depends on [stripe_payment_links](stripe_payment_links).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|payment_link_id (PK)|String|
-|amount_discount|Int|
-|amount_subtotal|Int|
-|amount_tax|Int|
-|amount_total|Int|
-|currency|String|
-|description|String|
-|discounts|JSON|
-|object|String|
-|price|JSON|
-|quantity|Int|
-|taxes|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|utf8|
+|payment_link_id (PK)|utf8|
+|amount_discount|int64|
+|amount_subtotal|int64|
+|amount_tax|int64|
+|amount_total|int64|
+|currency|utf8|
+|description|utf8|
+|discounts|json|
+|object|utf8|
+|price|json|
+|quantity|int64|
+|taxes|json|

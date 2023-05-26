@@ -17,8 +17,11 @@ func init() {
 
 	// extensions are special as we need v3/types for extensions (diff in `String` func)
 	cqToArrow[strings.TrimPrefix(schemav2.TypeUUID.String(), "Type")] = types.ExtensionTypes.UUID
+	cqToArrow[strings.TrimPrefix(schemav2.TypeUUIDArray.String(), "Type")] = arrow.ListOf(types.ExtensionTypes.UUID)
 	cqToArrow[strings.TrimPrefix(schemav2.TypeInet.String(), "Type")] = types.ExtensionTypes.Inet
+	cqToArrow[strings.TrimPrefix(schemav2.TypeInetArray.String(), "Type")] = arrow.ListOf(types.ExtensionTypes.Inet)
 	cqToArrow[strings.TrimPrefix(schemav2.TypeMacAddr.String(), "Type")] = types.ExtensionTypes.MAC
+	cqToArrow[strings.TrimPrefix(schemav2.TypeMacAddrArray.String(), "Type")] = arrow.ListOf(types.ExtensionTypes.MAC)
 	cqToArrow[strings.TrimPrefix(schemav2.TypeJSON.String(), "Type")] = types.ExtensionTypes.JSON
 }
 

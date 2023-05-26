@@ -15,28 +15,28 @@ The following tables depend on aws_lightsail_load_balancers:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|configuration_options|JSON|
-|created_at|Timestamp|
-|dns_name|String|
-|health_check_path|String|
-|https_redirection_enabled|Bool|
-|instance_health_summary|JSON|
-|instance_port|Int|
-|ip_address_type|String|
-|location|JSON|
-|name|String|
-|protocol|String|
-|public_ports|IntArray|
-|resource_type|String|
-|state|String|
-|support_code|String|
-|tls_certificate_summaries|JSON|
-|tls_policy_name|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|configuration_options|json|
+|created_at|timestamp[us, tz=UTC]|
+|dns_name|utf8|
+|health_check_path|utf8|
+|https_redirection_enabled|bool|
+|instance_health_summary|json|
+|instance_port|int64|
+|ip_address_type|utf8|
+|location|json|
+|name|utf8|
+|protocol|utf8|
+|public_ports|list<item: int64, nullable>|
+|resource_type|utf8|
+|state|utf8|
+|support_code|utf8|
+|tls_certificate_summaries|json|
+|tls_policy_name|utf8|

@@ -3,11 +3,12 @@ package elasticache
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func EngineVersions() *schema.Table {
@@ -21,37 +22,29 @@ func EngineVersions() *schema.Table {
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 				Resolver:    client.ResolveAWSAccount,
 				Description: `The AWS Account ID of the resource.`,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey:  true,
 			},
 			{
 				Name:        "region",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 				Resolver:    client.ResolveAWSRegion,
 				Description: `The AWS Region of the resource.`,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey:  true,
 			},
 			{
-				Name:     "engine",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Engine"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "engine",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Engine"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "engine_version",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("EngineVersion"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "engine_version",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("EngineVersion"),
+				PrimaryKey: true,
 			},
 		},
 	}

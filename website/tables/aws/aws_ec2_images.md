@@ -15,40 +15,40 @@ The following tables depend on aws_ec2_images:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|arn (PK)|String|
-|tags|JSON|
-|architecture|String|
-|block_device_mappings|JSON|
-|boot_mode|String|
-|creation_date|String|
-|deprecation_time|String|
-|description|String|
-|ena_support|Bool|
-|hypervisor|String|
-|image_id|String|
-|image_location|String|
-|image_owner_alias|String|
-|image_type|String|
-|imds_support|String|
-|kernel_id|String|
-|name|String|
-|owner_id|String|
-|platform|String|
-|platform_details|String|
-|product_codes|JSON|
-|public|Bool|
-|ramdisk_id|String|
-|root_device_name|String|
-|root_device_type|String|
-|sriov_net_support|String|
-|state|String|
-|state_reason|JSON|
-|tpm_support|String|
-|usage_operation|String|
-|virtualization_type|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id (PK)|utf8|
+|region (PK)|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|architecture|utf8|
+|block_device_mappings|json|
+|boot_mode|utf8|
+|creation_date|utf8|
+|deprecation_time|utf8|
+|description|utf8|
+|ena_support|bool|
+|hypervisor|utf8|
+|image_id|utf8|
+|image_location|utf8|
+|image_owner_alias|utf8|
+|image_type|utf8|
+|imds_support|utf8|
+|kernel_id|utf8|
+|name|utf8|
+|owner_id|utf8|
+|platform|utf8|
+|platform_details|utf8|
+|product_codes|json|
+|public|bool|
+|ramdisk_id|utf8|
+|root_device_name|utf8|
+|root_device_type|utf8|
+|sriov_net_support|utf8|
+|state|utf8|
+|state_reason|json|
+|tpm_support|utf8|
+|usage_operation|utf8|
+|virtualization_type|utf8|

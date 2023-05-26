@@ -16,18 +16,18 @@ The following tables depend on aws_qldb_ledgers:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|tags|JSON|
-|arn (PK)|String|
-|creation_date_time|Timestamp|
-|deletion_protection|Bool|
-|encryption_description|JSON|
-|name|String|
-|permissions_mode|String|
-|state|String|
-|result_metadata|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|tags|json|
+|arn (PK)|utf8|
+|creation_date_time|timestamp[us, tz=UTC]|
+|deletion_protection|bool|
+|encryption_description|json|
+|name|utf8|
+|permissions_mode|utf8|
+|state|utf8|
+|result_metadata|json|

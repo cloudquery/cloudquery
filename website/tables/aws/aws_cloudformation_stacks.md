@@ -17,33 +17,33 @@ The following tables depend on aws_cloudformation_stacks:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|id|String|
-|arn (PK)|String|
-|tags|JSON|
-|creation_time|Timestamp|
-|stack_name|String|
-|stack_status|String|
-|capabilities|StringArray|
-|change_set_id|String|
-|deletion_time|Timestamp|
-|description|String|
-|disable_rollback|Bool|
-|drift_information|JSON|
-|enable_termination_protection|Bool|
-|last_updated_time|Timestamp|
-|notification_ar_ns|StringArray|
-|outputs|JSON|
-|parameters|JSON|
-|parent_id|String|
-|role_arn|String|
-|rollback_configuration|JSON|
-|root_id|String|
-|stack_id|String|
-|stack_status_reason|String|
-|timeout_in_minutes|Int|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|id|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|creation_time|timestamp[us, tz=UTC]|
+|stack_name|utf8|
+|stack_status|utf8|
+|capabilities|list<item: utf8, nullable>|
+|change_set_id|utf8|
+|deletion_time|timestamp[us, tz=UTC]|
+|description|utf8|
+|disable_rollback|bool|
+|drift_information|json|
+|enable_termination_protection|bool|
+|last_updated_time|timestamp[us, tz=UTC]|
+|notification_arns|list<item: utf8, nullable>|
+|outputs|json|
+|parameters|json|
+|parent_id|utf8|
+|role_arn|utf8|
+|rollback_configuration|json|
+|root_id|utf8|
+|stack_id|utf8|
+|stack_status_reason|utf8|
+|timeout_in_minutes|int64|

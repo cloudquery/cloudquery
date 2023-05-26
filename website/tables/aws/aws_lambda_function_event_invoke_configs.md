@@ -14,14 +14,14 @@ This table depends on [aws_lambda_functions](aws_lambda_functions).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|function_arn|String|
-|destination_config|JSON|
-|last_modified|Timestamp|
-|maximum_event_age_in_seconds|Int|
-|maximum_retry_attempts|Int|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id (PK)|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|function_arn|utf8|
+|destination_config|json|
+|last_modified|timestamp[us, tz=UTC]|
+|maximum_event_age_in_seconds|int64|
+|maximum_retry_attempts|int64|

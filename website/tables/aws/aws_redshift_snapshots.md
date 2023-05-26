@@ -14,44 +14,44 @@ This table depends on [aws_redshift_clusters](aws_redshift_clusters).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|accounts_with_restore_access|JSON|
-|actual_incremental_backup_size_in_mega_bytes|Float|
-|availability_zone|String|
-|backup_progress_in_mega_bytes|Float|
-|cluster_create_time|Timestamp|
-|cluster_identifier|String|
-|cluster_version|String|
-|current_backup_rate_in_mega_bytes_per_second|Float|
-|db_name|String|
-|elapsed_time_in_seconds|Int|
-|encrypted|Bool|
-|encrypted_with_hsm|Bool|
-|engine_full_version|String|
-|enhanced_vpc_routing|Bool|
-|estimated_seconds_to_completion|Int|
-|kms_key_id|String|
-|maintenance_track_name|String|
-|manual_snapshot_remaining_days|Int|
-|manual_snapshot_retention_period|Int|
-|master_username|String|
-|node_type|String|
-|number_of_nodes|Int|
-|owner_account|String|
-|port|Int|
-|restorable_node_types|StringArray|
-|snapshot_create_time|Timestamp|
-|snapshot_identifier|String|
-|snapshot_retention_start_time|Timestamp|
-|snapshot_type|String|
-|source_region|String|
-|status|String|
-|total_backup_size_in_mega_bytes|Float|
-|vpc_id|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|accounts_with_restore_access|json|
+|actual_incremental_backup_size_in_mega_bytes|float64|
+|availability_zone|utf8|
+|backup_progress_in_mega_bytes|float64|
+|cluster_create_time|timestamp[us, tz=UTC]|
+|cluster_identifier|utf8|
+|cluster_version|utf8|
+|current_backup_rate_in_mega_bytes_per_second|float64|
+|db_name|utf8|
+|elapsed_time_in_seconds|int64|
+|encrypted|bool|
+|encrypted_with_hsm|bool|
+|engine_full_version|utf8|
+|enhanced_vpc_routing|bool|
+|estimated_seconds_to_completion|int64|
+|kms_key_id|utf8|
+|maintenance_track_name|utf8|
+|manual_snapshot_remaining_days|int64|
+|manual_snapshot_retention_period|int64|
+|master_username|utf8|
+|node_type|utf8|
+|number_of_nodes|int64|
+|owner_account|utf8|
+|port|int64|
+|restorable_node_types|list<item: utf8, nullable>|
+|snapshot_create_time|timestamp[us, tz=UTC]|
+|snapshot_identifier|utf8|
+|snapshot_retention_start_time|timestamp[us, tz=UTC]|
+|snapshot_type|utf8|
+|source_region|utf8|
+|status|utf8|
+|total_backup_size_in_mega_bytes|float64|
+|vpc_id|utf8|

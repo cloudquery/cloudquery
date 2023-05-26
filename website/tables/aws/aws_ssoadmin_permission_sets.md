@@ -18,16 +18,16 @@ The following tables depend on aws_ssoadmin_permission_sets:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|request_account_id|String|
-|request_region|String|
-|inline_policy|JSON|
-|created_date|Timestamp|
-|description|String|
-|name|String|
-|permission_set_arn|String|
-|relay_state|String|
-|session_duration|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id (PK)|uuid|
+|_cq_parent_id|uuid|
+|request_account_id|utf8|
+|request_region|utf8|
+|inline_policy|json|
+|created_date|timestamp[us, tz=UTC]|
+|description|utf8|
+|name|utf8|
+|permission_set_arn|utf8|
+|relay_state|utf8|
+|session_duration|utf8|

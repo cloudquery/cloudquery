@@ -10,21 +10,21 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|cust_subscription_id|String|
-|customer_aws_id|String|
-|enabled|Bool|
-|event_categories_list|StringArray|
-|event_subscription_arn|String|
-|sns_topic_arn|String|
-|source_ids_list|StringArray|
-|source_type|String|
-|status|String|
-|subscription_creation_time|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|account_id|utf8|
+|region|utf8|
+|arn (PK)|utf8|
+|tags|json|
+|cust_subscription_id|utf8|
+|customer_aws_id|utf8|
+|enabled|bool|
+|event_categories_list|list<item: utf8, nullable>|
+|event_subscription_arn|utf8|
+|sns_topic_arn|utf8|
+|source_ids_list|list<item: utf8, nullable>|
+|source_type|utf8|
+|status|utf8|
+|subscription_creation_time|utf8|

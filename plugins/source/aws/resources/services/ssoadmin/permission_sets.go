@@ -3,11 +3,14 @@ package ssoadmin
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func permissionSets() *schema.Table {
@@ -23,17 +26,17 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 		Columns: []schema.Column{
 			{
 				Name:     "request_account_id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: client.ResolveAWSAccount,
 			},
 			{
 				Name:     "request_region",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
 				Name:     "inline_policy",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: getSsoadminPermissionSetInlinePolicy,
 			},
 		},
