@@ -1,8 +1,9 @@
 package domains
 
 import (
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/go-gandi/go-gandi/domain"
 )
 
@@ -13,20 +14,16 @@ func DomainGlueRecords() *schema.Table {
 		Transform: transformers.TransformWithStruct(&domain.GlueRecord{}),
 		Columns: []schema.Column{
 			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Name"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "fqdn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FQDN"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "fqdn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("FQDN"),
+				PrimaryKey: true,
 			},
 		},
 	}

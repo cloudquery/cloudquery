@@ -8,15 +8,15 @@ The primary key for this table is **name**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|sharing_id|String|
-|name (PK)|String|
-|name_label|String|
-|href|String|
-|max_domains|Int|
-|type|String|
-|type_label|String|
-|wildcard|Bool|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|sharing_id|utf8|
+|name (PK)|utf8|
+|name_label|utf8|
+|href|utf8|
+|max_domains|int64|
+|type|utf8|
+|type_label|utf8|
+|wildcard|bool|
