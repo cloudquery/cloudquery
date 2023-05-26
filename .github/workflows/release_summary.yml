@@ -5,7 +5,7 @@ on:
     paths:
       - "plugins/source/**"
       - ".github/workflows/release_summary.yml"
-      - "website/docs/plugins/sources/*/tables/*"
+      - "website/pages/docs/plugins/sources/*/tables/*"
 
 jobs:
   release-summary:
