@@ -19,7 +19,10 @@ func IdentityPools() *schema.Table {
 		Resolver:            fetchCognitoIdentityPools,
 		PreResourceResolver: getIdentityPool,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "cognito-identity"),
-		Transform:           transformers.TransformWithStruct(&cognitoidentity.DescribeIdentityPoolOutput{}),
+		Transform: transformers.TransformWithStruct(
+			&cognitoidentity.DescribeIdentityPoolOutput{},
+			transformers.WithNameTransformer(client.CreateReplaceTransformer(map[string]string{"ar_ns": "arns"})),
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
@@ -35,7 +38,7 @@ func IdentityPools() *schema.Table {
 				PrimaryKey: true,
 			},
 			{
-				Name:     "saml_provider_ar_ns",
+				Name:     "saml_provider_arns",
 				Type:     arrow.ListOf(arrow.BinaryTypes.String),
 				Resolver: schema.PathResolver("SamlProviderARNs"),
 			},

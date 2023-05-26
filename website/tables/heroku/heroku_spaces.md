@@ -10,18 +10,18 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|cidr|String|
-|created_at|Timestamp|
-|data_cidr|String|
-|name|String|
-|organization|JSON|
-|region|JSON|
-|shield|Bool|
-|state|String|
-|team|JSON|
-|updated_at|Timestamp|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|utf8|
+|cidr|utf8|
+|created_at|timestamp[us, tz=UTC]|
+|data_cidr|utf8|
+|name|utf8|
+|organization|json|
+|region|json|
+|shield|bool|
+|state|utf8|
+|team|json|
+|updated_at|timestamp[us, tz=UTC]|
