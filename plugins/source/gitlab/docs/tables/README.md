@@ -3,6 +3,7 @@
 ## Tables
 
 - [gitlab_groups](../../../../../website/tables/gitlab/gitlab_groups.md)
+  - [gitlab_group_billable_members](../../../../../website/tables/gitlab/gitlab_group_billable_members.md)
   - [gitlab_group_members](../../../../../website/tables/gitlab/gitlab_group_members.md)
 - [gitlab_projects](../../../../../website/tables/gitlab/gitlab_projects.md)
   - [gitlab_project_branches](../../../../../website/tables/gitlab/gitlab_project_branches.md)
