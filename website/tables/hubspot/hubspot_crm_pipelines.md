@@ -10,16 +10,16 @@ The composite primary key for this table is (**object_type**, **id**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|object_type (PK)|String|
-|id (PK)|String|
-|label|String|
-|display_order|Int|
-|stages|JSON|
-|created_at|Timestamp|
-|archived_at|Timestamp|
-|updated_at|Timestamp|
-|archived|Bool|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|object_type (PK)|utf8|
+|id (PK)|utf8|
+|label|utf8|
+|display_order|int64|
+|stages|json|
+|created_at|timestamp[us, tz=UTC]|
+|archived_at|timestamp[us, tz=UTC]|
+|updated_at|timestamp[us, tz=UTC]|
+|archived|bool|

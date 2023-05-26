@@ -3,9 +3,11 @@ package acl
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/tailscale/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 	"github.com/tailscale/tailscale-client-go/tailscale"
 )
 
@@ -17,36 +19,34 @@ func Acls() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&tailscale.ACL{}, transformers.WithSkipFields("ACLs", "DERPMap", "SSH", "DisableIPv4", "OneCGNATRoute")),
 		Columns: []schema.Column{
 			{
-				Name:     "tailnet",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveTailnet,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "tailnet",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveTailnet,
+				PrimaryKey: true,
 			},
 			{
 				Name:     "acls",
-				Type:     schema.TypeJSON,
+				Type:     types.ExtensionTypes.JSON,
 				Resolver: schema.PathResolver("ACLs"),
 			},
 			{
 				Name:     "derp_map",
-				Type:     schema.TypeJSON,
+				Type:     types.ExtensionTypes.JSON,
 				Resolver: schema.PathResolver("DERPMap"),
 			},
 			{
 				Name:     "ssh",
-				Type:     schema.TypeJSON,
+				Type:     types.ExtensionTypes.JSON,
 				Resolver: schema.PathResolver("SSH"),
 			},
 			{
 				Name:     "disable_ipv4",
-				Type:     schema.TypeBool,
+				Type:     arrow.FixedWidthTypes.Boolean,
 				Resolver: schema.PathResolver("DisableIPv4"),
 			},
 			{
 				Name:     "one_cgnat_route",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("OneCGNATRoute"),
 			},
 		},

@@ -8,41 +8,41 @@ The primary key for this table is **uid**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|context|String|
-|kind|String|
-|api_version|String|
-|name|String|
-|namespace|String|
-|uid (PK)|String|
-|resource_version|String|
-|generation|Int|
-|deletion_grace_period_seconds|Int|
-|labels|JSON|
-|annotations|JSON|
-|owner_references|JSON|
-|finalizers|StringArray|
-|spec_replicas|Int|
-|spec_selector|JSON|
-|spec_template|JSON|
-|spec_volume_claim_templates|JSON|
-|spec_service_name|String|
-|spec_pod_management_policy|String|
-|spec_update_strategy|JSON|
-|spec_revision_history_limit|Int|
-|spec_min_ready_seconds|Int|
-|spec_persistent_volume_claim_retention_policy|JSON|
-|spec_ordinals|JSON|
-|status_observed_generation|Int|
-|status_replicas|Int|
-|status_ready_replicas|Int|
-|status_current_replicas|Int|
-|status_updated_replicas|Int|
-|status_current_revision|String|
-|status_update_revision|String|
-|status_collision_count|Int|
-|status_conditions|JSON|
-|status_available_replicas|Int|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|context|utf8|
+|kind|utf8|
+|api_version|utf8|
+|name|utf8|
+|namespace|utf8|
+|uid (PK)|utf8|
+|resource_version|utf8|
+|generation|int64|
+|deletion_grace_period_seconds|int64|
+|labels|json|
+|annotations|json|
+|owner_references|json|
+|finalizers|list<item: utf8, nullable>|
+|spec_replicas|int64|
+|spec_selector|json|
+|spec_template|json|
+|spec_volume_claim_templates|json|
+|spec_service_name|utf8|
+|spec_pod_management_policy|utf8|
+|spec_update_strategy|json|
+|spec_revision_history_limit|int64|
+|spec_min_ready_seconds|int64|
+|spec_persistent_volume_claim_retention_policy|json|
+|spec_ordinals|json|
+|status_observed_generation|int64|
+|status_replicas|int64|
+|status_ready_replicas|int64|
+|status_current_replicas|int64|
+|status_updated_replicas|int64|
+|status_current_revision|utf8|
+|status_update_revision|utf8|
+|status_collision_count|int64|
+|status_conditions|json|
+|status_available_replicas|int64|

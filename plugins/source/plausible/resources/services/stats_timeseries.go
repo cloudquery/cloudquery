@@ -6,8 +6,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/plausible/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func StatsTimeseries() *schema.Table {
@@ -19,45 +20,41 @@ func StatsTimeseries() *schema.Table {
 			{
 				Name:        "site_id",
 				Description: "The site ID",
-				Type:        schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-				Resolver: client.ResolveSiteID,
+				Type:        arrow.BinaryTypes.String,
+				PrimaryKey:  true,
+				Resolver:    client.ResolveSiteID,
 			},
 			{
 				Name:        "date",
 				Description: "Date of the data point",
-				Type:        schema.TypeTimestamp,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-				Resolver: ResolveDate,
+				Type:        arrow.FixedWidthTypes.Timestamp_us,
+				PrimaryKey:  true,
+				Resolver:    ResolveDate,
 			},
 			{
 				Name:        "visitors",
 				Description: "The number of unique visitors",
-				Type:        schema.TypeInt,
+				Type:        arrow.PrimitiveTypes.Int64,
 			},
 			{
 				Name:        "page_views",
 				Description: "The number of pageview events",
-				Type:        schema.TypeInt,
+				Type:        arrow.PrimitiveTypes.Int64,
 			},
 			{
 				Name:        "bounce_rate",
 				Description: "Bounce rate percentage",
-				Type:        schema.TypeInt,
+				Type:        arrow.PrimitiveTypes.Int64,
 			},
 			{
 				Name:        "visit_duration",
 				Description: "Visit duration in seconds",
-				Type:        schema.TypeInt,
+				Type:        arrow.PrimitiveTypes.Int64,
 			},
 			{
 				Name:        "visits",
 				Description: "The number of visits/sessions",
-				Type:        schema.TypeInt,
+				Type:        arrow.PrimitiveTypes.Int64,
 			},
 		},
 	}

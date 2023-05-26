@@ -15,17 +15,17 @@ The following tables depend on fastly_services:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|active_version|Int|
-|comment|String|
-|created_at|Timestamp|
-|customer_id|String|
-|deleted_at|Timestamp|
-|name|String|
-|type|String|
-|updated_at|Timestamp|
-|versions|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|utf8|
+|active_version|int64|
+|comment|utf8|
+|created_at|timestamp[us, tz=UTC]|
+|customer_id|utf8|
+|deleted_at|timestamp[us, tz=UTC]|
+|name|utf8|
+|type|utf8|
+|updated_at|timestamp[us, tz=UTC]|
+|versions|json|
