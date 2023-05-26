@@ -25,5 +25,5 @@ This table depends on [shopify_products](shopify_products).
 |width|int64|
 |height|int64|
 |src|utf8|
-|variant_ids|extension_type<storage=binary>|
+|variant_ids|json|
 |admin_graphql_api_id|utf8|

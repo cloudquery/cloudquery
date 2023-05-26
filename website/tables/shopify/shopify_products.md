@@ -31,5 +31,5 @@ The following tables depend on shopify_products:
 |status|utf8|
 |published_scope|utf8|
 |tags|list<item: utf8, nullable>|
-|image|extension_type<storage=binary>|
+|image|json|
 |admin_graphql_api_id|utf8|

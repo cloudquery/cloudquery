@@ -22,9 +22,9 @@ It supports incremental syncs based on the **updated_at** column.
 |buyer_accepts_marketing|bool|
 |created_at|timestamp[us, tz=UTC]|
 |landing_site|utf8|
-|note_attributes|extension_type<storage=binary>|
+|note_attributes|json|
 |referring_site|utf8|
-|shipping_lines|extension_type<storage=binary>|
+|shipping_lines|json|
 |taxes_included|bool|
 |total_weight|int64|
 |currency|utf8|
@@ -32,11 +32,11 @@ It supports incremental syncs based on the **updated_at** column.
 |closed_at|timestamp[us, tz=UTC]|
 |user_id|int64|
 |customer_locale|utf8|
-|line_items|extension_type<storage=binary>|
+|line_items|json|
 |name|utf8|
 |abandoned_checkout_url|utf8|
-|discount_codes|extension_type<storage=binary>|
-|tax_lines|extension_type<storage=binary>|
+|discount_codes|json|
+|tax_lines|json|
 |source_name|utf8|
 |presentment_currency|utf8|
 |buyer_accepts_sms_marketing|bool|
@@ -45,4 +45,4 @@ It supports incremental syncs based on the **updated_at** column.
 |total_price|utf8|
 |total_tax|utf8|
 |subtotal_price|utf8|
-|customer|extension_type<storage=binary>|
+|customer|json|

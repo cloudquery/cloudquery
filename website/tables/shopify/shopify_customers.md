@@ -29,10 +29,10 @@ It supports incremental syncs based on the **updated_at** column.
 |tags|utf8|
 |last_order_name|utf8|
 |currency|utf8|
-|addresses|extension_type<storage=binary>|
+|addresses|json|
 |accepts_marketing_updated_at|timestamp[us, tz=UTC]|
 |marketing_opt_in_level|utf8|
-|tax_exemptions|extension_type<storage=binary>|
-|email_marketing_consent|extension_type<storage=binary>|
+|tax_exemptions|json|
+|email_marketing_consent|json|
 |admin_graphql_api_id|utf8|
-|default_address|extension_type<storage=binary>|
+|default_address|json|

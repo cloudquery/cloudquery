@@ -30,16 +30,16 @@ The following tables depend on shopify_price_rules:
 |starts_at|timestamp[us, tz=UTC]|
 |ends_at|timestamp[us, tz=UTC]|
 |created_at|timestamp[us, tz=UTC]|
-|entitled_product_ids|extension_type<storage=binary>|
-|entitled_variant_ids|extension_type<storage=binary>|
-|entitled_collection_ids|extension_type<storage=binary>|
-|entitled_country_ids|extension_type<storage=binary>|
-|prerequisite_product_ids|extension_type<storage=binary>|
-|prerequisite_variant_ids|extension_type<storage=binary>|
-|prerequisite_collection_ids|extension_type<storage=binary>|
-|customer_segment_prerequisite_ids|extension_type<storage=binary>|
-|prerequisite_customer_ids|extension_type<storage=binary>|
-|prerequisite_to_entitlement_quantity_ratio|extension_type<storage=binary>|
-|prerequisite_to_entitlement_purchase|extension_type<storage=binary>|
+|entitled_product_ids|json|
+|entitled_variant_ids|json|
+|entitled_collection_ids|json|
+|entitled_country_ids|json|
+|prerequisite_product_ids|json|
+|prerequisite_variant_ids|json|
+|prerequisite_collection_ids|json|
+|customer_segment_prerequisite_ids|json|
+|prerequisite_customer_ids|json|
+|prerequisite_to_entitlement_quantity_ratio|json|
+|prerequisite_to_entitlement_purchase|json|
 |title|utf8|
 |admin_graphql_api_id|utf8|
