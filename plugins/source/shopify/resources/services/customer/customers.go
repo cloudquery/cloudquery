@@ -2,16 +2,16 @@ package customer
 
 import (
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/cloudquery/plugins/source/shopify/client"
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/internal/shopify"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Customers() *schema.Table {
 	return &schema.Table{
 		Name:      "shopify_customers",
 		Resolver:  fetchCustomers,
-		Transform: client.TransformWithStruct(&shopify.Customer{}),
+		Transform: transformers.TransformWithStruct(&shopify.Customer{}),
 		Columns: []schema.Column{
 			{
 				Name:       "id",
