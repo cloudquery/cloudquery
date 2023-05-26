@@ -14,14 +14,14 @@ This table depends on [slack_users](slack_users).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|user_id (PK)|String|
-|last_activity|Timestamp|
-|presence|String|
-|online|Bool|
-|auto_away|Bool|
-|manual_away|Bool|
-|connection_count|Int|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|user_id (PK)|utf8|
+|last_activity|timestamp[us, tz=UTC]|
+|presence|utf8|
+|online|bool|
+|auto_away|bool|
+|manual_away|bool|
+|connection_count|int64|
