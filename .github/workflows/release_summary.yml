@@ -1,4 +1,4 @@
-name: release-summary
+name: release-summaryx
 
 on:
   pull_request:
