@@ -15,7 +15,7 @@ The composite primary key for this table is (**site_id**, **date**).
 |_cq_id|uuid|
 |_cq_parent_id|uuid|
 |site_id (PK)|utf8|
-|date (PK)|timestamp[s, tz=UTC]|
+|date (PK)|timestamp[us, tz=UTC]|
 |visitors|int64|
 |page_views|int64|
 |bounce_rate|int64|

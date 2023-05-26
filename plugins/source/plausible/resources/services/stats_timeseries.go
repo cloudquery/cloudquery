@@ -27,7 +27,7 @@ func StatsTimeseries() *schema.Table {
 			{
 				Name:        "date",
 				Description: "Date of the data point",
-				Type:        arrow.FixedWidthTypes.Timestamp_s,
+				Type:        arrow.FixedWidthTypes.Timestamp_us,
 				PrimaryKey:  true,
 				Resolver:    ResolveDate,
 			},
