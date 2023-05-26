@@ -18,7 +18,7 @@ This table depends on [github_repositories](github_repositories).
 |_cq_parent_id|uuid|
 |org (PK)|utf8|
 |repository_id (PK)|int64|
-|protection|extension_type<storage=binary>|
+|protection|json|
 |name (PK)|utf8|
 |commit|json|
 |protected|bool|

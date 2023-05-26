@@ -18,7 +18,7 @@ This table depends on [github_teams](github_teams).
 |_cq_parent_id|uuid|
 |org (PK)|utf8|
 |team_id (PK)|int64|
-|membership|extension_type<storage=binary>|
+|membership|json|
 |login|utf8|
 |id (PK)|int64|
 |node_id|utf8|

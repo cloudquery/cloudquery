@@ -17,7 +17,7 @@ This table depends on [github_organizations](github_organizations).
 |_cq_id|uuid|
 |_cq_parent_id|uuid|
 |org (PK)|utf8|
-|membership|extension_type<storage=binary>|
+|membership|json|
 |login|utf8|
 |id (PK)|int64|
 |node_id|utf8|
