@@ -1,6 +1,6 @@
 package client
 
-import "github.com/cloudquery/plugin-sdk/v2/schema"
+import "github.com/cloudquery/plugin-sdk/v3/schema"
 
 func TeamMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	client := meta.(*Client)
