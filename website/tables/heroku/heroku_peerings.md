@@ -10,15 +10,15 @@ The primary key for this table is **_cq_id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|aws_account_id|String|
-|aws_region|String|
-|aws_vpc_id|String|
-|cidr_blocks|StringArray|
-|expires|Timestamp|
-|pcx_id|String|
-|status|String|
-|type|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id (PK)|uuid|
+|_cq_parent_id|uuid|
+|aws_account_id|utf8|
+|aws_region|utf8|
+|aws_vpc_id|utf8|
+|cidr_blocks|list<item: utf8, nullable>|
+|expires|timestamp[us, tz=UTC]|
+|pcx_id|utf8|
+|status|utf8|
+|type|utf8|

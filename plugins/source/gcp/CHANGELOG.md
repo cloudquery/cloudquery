@@ -10,7 +10,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### ⚠ BREAKING CHANGES
 
-* This release introduces an internal change to our type system to use [Apache Arrow](https://arrow.apache.org/). This should not have any visible breaking changes, however due to the size of the change we are introducing it under a major version bump to communicate that it might have some bugs that we weren't able to catch during our internal tests. If you encounter an issue during the upgrade, please submit a [bug report](https://github.com/cloudquery/cloudquery/issues/new/choose).
+* This release introduces an internal change to our type system to use [Apache Arrow](https://arrow.apache.org/). This should not have any visible breaking changes, however due to the size of the change we are introducing it under a major version bump to communicate that it might have some bugs that we weren't able to catch during our internal tests. If you encounter an issue during the upgrade, please submit a [bug report](https://github.com/cloudquery/cloudquery/issues/new/choose). You will also need to update destinations depending on which one you use:
+
+    Azure Blob Storage >= v3.2.0
+    BigQuery >= v3.0.0
+    ClickHouse >= v3.1.1
+    DuckDB >= v1.1.6
+    Elasticsearch >= v2.0.0
+    File >= v3.2.0
+    Firehose >= v2.0.2
+    GCS >= v3.2.0
+    Gremlin >= v2.1.10
+    Kafka >= v3.0.1
+    Meilisearch >= v2.0.1
+    Microsoft SQL Server >= v4.2.0
+    MongoDB >= v2.0.1
+    MySQL >= v2.0.2
+    Neo4j >= v3.0.0
+    PostgreSQL >= v4.2.0
+    S3 >= v4.4.0
+    Snowflake >= v2.1.1
+    SQLite >= v2.2.0
+
 * **gcp:** Initialization concurrency ([#10700](https://github.com/cloudquery/cloudquery/issues/10700))
 * **gcp:** Make Listing Enabled Services failures not block the sync ([#10699](https://github.com/cloudquery/cloudquery/issues/10699))
 

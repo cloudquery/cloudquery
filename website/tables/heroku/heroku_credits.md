@@ -10,14 +10,14 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|amount|Float|
-|balance|Float|
-|created_at|Timestamp|
-|expires_at|Timestamp|
-|title|String|
-|updated_at|Timestamp|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|utf8|
+|amount|float64|
+|balance|float64|
+|created_at|timestamp[us, tz=UTC]|
+|expires_at|timestamp[us, tz=UTC]|
+|title|utf8|
+|updated_at|timestamp[us, tz=UTC]|
