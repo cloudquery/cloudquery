@@ -12,22 +12,22 @@ This table depends on [gitlab_projects](gitlab_projects).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|base_url (PK)|String|
-|project_id (PK)|Int|
-|tag_name|String|
-|name|String|
-|description|String|
-|description_html|String|
-|created_at (PK)|Timestamp|
-|released_at|Timestamp|
-|author|JSON|
-|commit|JSON|
-|upcoming_release|Bool|
-|commit_path|String|
-|tag_path|String|
-|assets|JSON|
-|_links|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|base_url (PK)|utf8|
+|project_id (PK)|int64|
+|tag_name|utf8|
+|name|utf8|
+|description|utf8|
+|description_html|utf8|
+|created_at (PK)|timestamp[us, tz=UTC]|
+|released_at|timestamp[us, tz=UTC]|
+|author|json|
+|commit|json|
+|upcoming_release|bool|
+|commit_path|utf8|
+|tag_path|utf8|
+|assets|json|
+|_links|json|

@@ -4,8 +4,9 @@ import (
 	"context"
 	"regexp"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/terraform/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 var providerNameRegex = regexp.MustCompile(`^.*\["(?P<Hostname>.*)/(?P<Namespace>.*)/(?P<Type>.*)"\].*?$`)
@@ -20,33 +21,33 @@ func TFData() *schema.Table {
 			{
 				Name:        "backend_type",
 				Description: "Terraform backend type",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 				Resolver:    resolveBackendType,
 			},
 			{
 				Name:        "backend_name",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 				Description: "Terraform backend name",
 				Resolver:    resolveBackendName,
 			},
 			{
 				Name:        "version",
-				Type:        schema.TypeInt,
+				Type:        arrow.PrimitiveTypes.Int64,
 				Description: "Terraform backend version",
 			},
 			{
 				Name:        "terraform_version",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 				Description: "Terraform version",
 			},
 			{
 				Name:        "serial",
-				Type:        schema.TypeInt,
+				Type:        arrow.PrimitiveTypes.Int64,
 				Description: "Incremental number which describe the state version",
 			},
 			{
 				Name:        "lineage",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 				Description: "The \"lineage\" is a unique ID assigned to a state when it is created",
 			},
 		},

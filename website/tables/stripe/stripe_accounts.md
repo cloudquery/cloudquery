@@ -15,30 +15,30 @@ The following tables depend on stripe_accounts:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|created (Incremental Key)|Timestamp|
-|business_profile|JSON|
-|business_type|String|
-|capabilities|JSON|
-|charges_enabled|Bool|
-|company|JSON|
-|controller|JSON|
-|country|String|
-|default_currency|String|
-|deleted|Bool|
-|details_submitted|Bool|
-|email|String|
-|external_accounts|JSON|
-|future_requirements|JSON|
-|individual|JSON|
-|metadata|JSON|
-|object|String|
-|payouts_enabled|Bool|
-|requirements|JSON|
-|settings|JSON|
-|tos_acceptance|JSON|
-|type|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|utf8|
+|created (Incremental Key)|timestamp[us, tz=UTC]|
+|business_profile|json|
+|business_type|utf8|
+|capabilities|json|
+|charges_enabled|bool|
+|company|json|
+|controller|json|
+|country|utf8|
+|default_currency|utf8|
+|deleted|bool|
+|details_submitted|bool|
+|email|utf8|
+|external_accounts|json|
+|future_requirements|json|
+|individual|json|
+|metadata|json|
+|object|utf8|
+|payouts_enabled|bool|
+|requirements|json|
+|settings|json|
+|tos_acceptance|json|
+|type|utf8|

@@ -12,18 +12,18 @@ This table depends on [gitlab_projects](gitlab_projects).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|base_url (PK)|String|
-|project_id (PK)|Int|
-|commit|JSON|
-|name (PK)|String|
-|protected|Bool|
-|merged|Bool|
-|default|Bool|
-|can_push|Bool|
-|developers_can_push|Bool|
-|developers_can_merge|Bool|
-|web_url|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|base_url (PK)|utf8|
+|project_id (PK)|int64|
+|commit|json|
+|name (PK)|utf8|
+|protected|bool|
+|merged|bool|
+|default|bool|
+|can_push|bool|
+|developers_can_push|bool|
+|developers_can_merge|bool|
+|web_url|utf8|
