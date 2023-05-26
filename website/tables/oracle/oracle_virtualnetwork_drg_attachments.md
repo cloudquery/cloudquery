@@ -8,21 +8,21 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|region (PK)|String|
-|compartment_id (PK)|String|
-|id (PK)|String|
-|drg_id|String|
-|lifecycle_state|String|
-|display_name|String|
-|time_created|Timestamp|
-|drg_route_table_id|String|
-|defined_tags|JSON|
-|freeform_tags|JSON|
-|route_table_id|String|
-|vcn_id|String|
-|export_drg_route_distribution_id|String|
-|is_cross_tenancy|Bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|drg_id|`utf8`|
+|lifecycle_state|`utf8`|
+|display_name|`utf8`|
+|time_created|`timestamp[us, tz=UTC]`|
+|drg_route_table_id|`utf8`|
+|defined_tags|`json`|
+|freeform_tags|`json`|
+|route_table_id|`utf8`|
+|vcn_id|`utf8`|
+|export_drg_route_distribution_id|`utf8`|
+|is_cross_tenancy|`bool`|

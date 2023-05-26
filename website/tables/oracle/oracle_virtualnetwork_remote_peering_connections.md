@@ -8,21 +8,21 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|region (PK)|String|
-|compartment_id (PK)|String|
-|id (PK)|String|
-|display_name|String|
-|drg_id|String|
-|is_cross_tenancy_peering|Bool|
-|lifecycle_state|String|
-|peering_status|String|
-|time_created|Timestamp|
-|defined_tags|JSON|
-|freeform_tags|JSON|
-|peer_id|String|
-|peer_region_name|String|
-|peer_tenancy_id|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|display_name|`utf8`|
+|drg_id|`utf8`|
+|is_cross_tenancy_peering|`bool`|
+|lifecycle_state|`utf8`|
+|peering_status|`utf8`|
+|time_created|`timestamp[us, tz=UTC]`|
+|defined_tags|`json`|
+|freeform_tags|`json`|
+|peer_id|`utf8`|
+|peer_region_name|`utf8`|
+|peer_tenancy_id|`utf8`|

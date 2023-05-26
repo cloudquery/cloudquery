@@ -30,8 +30,9 @@ const (
 )
 
 type column struct {
-	dataType   string
-	columnType columnType
+	dataType    string
+	dataTypeRaw string
+	columnType  columnType
 }
 
 func (c column) pk() bool {
@@ -50,10 +51,10 @@ func backtickStrings(strings ...string) []any {
 	return backticked
 }
 
-func parseColumnChange(line string) (name string, dataType string, columnType columnType) {
+func parseColumnChange(line string) (name string, col column) {
 	match := columnRegex.FindStringSubmatch(line)
 	if match == nil {
-		return "", "", columnType
+		return "", column{}
 	}
 	result := make(map[string]string)
 	for i, name := range columnRegex.SubexpNames() {
@@ -62,13 +63,15 @@ func parseColumnChange(line string) (name string, dataType string, columnType co
 		}
 	}
 	if strings.Contains(result["name"], " (PK)") {
-		columnType |= columnTypePK
+		col.columnType |= columnTypePK
 	}
 	if strings.Contains(result["name"], " (Incremental Key)") {
-		columnType |= columnTypeIncremental
+		col.columnType |= columnTypeIncremental
 	}
 	cleanName := strings.Split(result["name"], " (")[0]
-	return cleanName, result["dataType"], columnType
+	col.dataTypeRaw = result["dataType"]
+	col.dataType = strings.Trim(col.dataTypeRaw, "`")
+	return cleanName, col
 }
 
 func parsePKChange(line string) (names []string) {
@@ -98,16 +101,15 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 				}
 				continue
 			}
-			name, dataType, columnType := parseColumnChange(line.Line)
-			if name == "" || dataType == "" {
+			name, col := parseColumnChange(line.Line)
+			if name == "" || col.dataType == "" {
 				continue
 			}
-			column := column{dataType: dataType, columnType: columnType}
 			switch line.Op {
 			case gitdiff.OpAdd:
-				addedColumns[name] = column
+				addedColumns[name] = col
 			case gitdiff.OpDelete:
-				deletedColumns[name] = column
+				deletedColumns[name] = col
 			}
 		}
 	}
@@ -131,7 +133,7 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 		}
 
 		if deleted.columnType == added.columnType {
-			if !toArrow { // we do this ckeck to eliminate migration diff
+			if !toArrow && deleted.dataTypeRaw == added.dataTypeRaw { // we do this check to eliminate migration diff
 				changes = append(changes, change{
 					Text:     fmt.Sprintf("Table %s: column order changed for %s", backtickStrings(table, name)...),
 					Breaking: false,

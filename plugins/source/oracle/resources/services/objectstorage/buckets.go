@@ -1,9 +1,10 @@
 package objectstorage
 
 import (
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/oracle/oci-go-sdk/v65/objectstorage"
 )
 
@@ -16,36 +17,28 @@ func Buckets() *schema.Table {
 			transformers.WithTypeTransformer(client.OracleTypeTransformer)),
 		Columns: []schema.Column{
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveOracleRegion,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "region",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveOracleRegion,
+				PrimaryKey: true,
 			},
 			{
-				Name:     "compartment_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveCompartmentId,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "compartment_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveCompartmentId,
+				PrimaryKey: true,
 			},
 			{
-				Name:     "namespace",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Namespace"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "namespace",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Namespace"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Name"),
+				PrimaryKey: true,
 			},
 		},
 	}

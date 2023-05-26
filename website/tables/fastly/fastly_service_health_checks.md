@@ -14,25 +14,25 @@ This table depends on [fastly_service_versions](fastly_service_versions).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|name (PK)|String|
-|service_id (PK)|String|
-|service_version (PK)|Int|
-|check_interval|Int|
-|comment|String|
-|created_at|Timestamp|
-|deleted_at|Timestamp|
-|expected_response|Int|
-|http_version|String|
-|headers|StringArray|
-|host|String|
-|initial|Int|
-|method|String|
-|path|String|
-|threshold|Int|
-|timeout|Int|
-|updated_at|Timestamp|
-|window|Int|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|name (PK)|utf8|
+|service_id (PK)|utf8|
+|service_version (PK)|int64|
+|check_interval|int64|
+|comment|utf8|
+|created_at|timestamp[us, tz=UTC]|
+|deleted_at|timestamp[us, tz=UTC]|
+|expected_response|int64|
+|http_version|utf8|
+|headers|list<item: utf8, nullable>|
+|host|utf8|
+|initial|int64|
+|method|utf8|
+|path|utf8|
+|threshold|int64|
+|timeout|int64|
+|updated_at|timestamp[us, tz=UTC]|
+|window|int64|

@@ -2,7 +2,6 @@ package product
 
 import (
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/cloudquery/plugins/source/shopify/client"
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/internal/shopify"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
@@ -12,7 +11,7 @@ func Products() *schema.Table {
 	return &schema.Table{
 		Name:      "shopify_products",
 		Resolver:  fetchProducts,
-		Transform: client.TransformWithStruct(&shopify.Product{}, transformers.WithSkipFields("Variants", "Images")),
+		Transform: transformers.TransformWithStruct(&shopify.Product{}, transformers.WithSkipFields("Variants", "Images")),
 		Columns: []schema.Column{
 			{
 				Name:       "id",

@@ -12,13 +12,13 @@ This table depends on [github_repositories](github_repositories).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|org (PK)|String|
-|repository_id (PK)|Int|
-|protection|JSON|
-|name (PK)|String|
-|commit|JSON|
-|protected|Bool|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|org (PK)|utf8|
+|repository_id (PK)|int64|
+|protection|json|
+|name (PK)|utf8|
+|commit|json|
+|protected|bool|
