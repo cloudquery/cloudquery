@@ -10,13 +10,13 @@ The composite primary key for this table is (**account_id**, **id**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|account|JSON|
-|created_time|Timestamp|
-|id (PK)|String|
-|name|String|
-|updated_time|Timestamp|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|account|`json`|
+|created_time|`timestamp[us, tz=UTC]`|
+|id (PK)|`utf8`|
+|name|`utf8`|
+|updated_time|`timestamp[us, tz=UTC]`|
