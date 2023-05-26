@@ -439,6 +439,7 @@
   - [aws_organizations_delegated_services](tables/aws_organizations_delegated_services)
 - [aws_organizations_delegated_administrators](tables/aws_organizations_delegated_administrators)
 - [aws_organizations_organizational_units](tables/aws_organizations_organizational_units)
+  - [aws_organizations_organizational_unit_accounts](tables/aws_organizations_organizational_unit_accounts)
 - [aws_organizations_policies](tables/aws_organizations_policies)
 - [aws_organizations_roots](tables/aws_organizations_roots)
 - [aws_qldb_ledgers](tables/aws_qldb_ledgers)

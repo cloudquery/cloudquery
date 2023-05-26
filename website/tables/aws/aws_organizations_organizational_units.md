@@ -6,6 +6,11 @@ https://docs.aws.amazon.com/organizations/latest/APIReference/API_Organizational
 
 The composite primary key for this table is (**account_id**, **arn**).
 
+## Relations
+
+The following tables depend on aws_organizations_organizational_units:
+  - [aws_organizations_organizational_unit_accounts](aws_organizations_organizational_unit_accounts)
+
 ## Columns
 
 | Name          | Type          |
