@@ -12,20 +12,20 @@ This table depends on [vercel_deployments](vercel_deployments).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|deployment_id (PK)|String|
-|id (PK)|String|
-|created_at|Timestamp|
-|completed_at|Timestamp|
-|conclusion|String|
-|details_url|String|
-|integration_id|String|
-|name|String|
-|path|String|
-|rererequestable|Bool|
-|started_at|Timestamp|
-|updated_at|Timestamp|
-|status|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|deployment_id (PK)|utf8|
+|id (PK)|utf8|
+|created_at|timestamp[us, tz=UTC]|
+|completed_at|timestamp[us, tz=UTC]|
+|conclusion|utf8|
+|details_url|utf8|
+|integration_id|utf8|
+|name|utf8|
+|path|utf8|
+|rererequestable|bool|
+|started_at|timestamp[us, tz=UTC]|
+|updated_at|timestamp[us, tz=UTC]|
+|status|utf8|
