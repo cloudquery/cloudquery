@@ -8,16 +8,16 @@ The composite primary key for this table is (**region**, **compartment_id**, **n
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|region (PK)|String|
-|compartment_id (PK)|String|
-|namespace (PK)|String|
-|name (PK)|String|
-|created_by|String|
-|time_created|Timestamp|
-|etag|String|
-|freeform_tags|JSON|
-|defined_tags|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id (PK)|`utf8`|
+|namespace (PK)|`utf8`|
+|name (PK)|`utf8`|
+|created_by|`utf8`|
+|time_created|`timestamp[us, tz=UTC]`|
+|etag|`utf8`|
+|freeform_tags|`json`|
+|defined_tags|`json`|
