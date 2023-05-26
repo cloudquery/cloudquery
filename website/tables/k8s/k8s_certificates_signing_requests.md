@@ -8,30 +8,30 @@ The primary key for this table is **uid**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|context|String|
-|kind|String|
-|api_version|String|
-|name|String|
-|namespace|String|
-|uid (PK)|String|
-|resource_version|String|
-|generation|Int|
-|deletion_grace_period_seconds|Int|
-|labels|JSON|
-|annotations|JSON|
-|owner_references|JSON|
-|finalizers|StringArray|
-|spec_request|ByteArray|
-|spec_signer_name|String|
-|spec_expiration_seconds|Int|
-|spec_usages|StringArray|
-|spec_username|String|
-|spec_uid|String|
-|spec_groups|StringArray|
-|spec_extra|JSON|
-|status_conditions|JSON|
-|status_certificate|ByteArray|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|context|utf8|
+|kind|utf8|
+|api_version|utf8|
+|name|utf8|
+|namespace|utf8|
+|uid (PK)|utf8|
+|resource_version|utf8|
+|generation|int64|
+|deletion_grace_period_seconds|int64|
+|labels|json|
+|annotations|json|
+|owner_references|json|
+|finalizers|list<item: utf8, nullable>|
+|spec_request|binary|
+|spec_signer_name|utf8|
+|spec_expiration_seconds|int64|
+|spec_usages|list<item: utf8, nullable>|
+|spec_username|utf8|
+|spec_uid|utf8|
+|spec_groups|list<item: utf8, nullable>|
+|spec_extra|json|
+|status_conditions|json|
+|status_certificate|binary|
