@@ -18,16 +18,16 @@ This table depends on [azure_compute_virtual_machines](azure_compute_virtual_mac
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|subscription_id|String|
-|assessment_activity_id (PK)|String|
-|available_patches|JSON|
-|critical_and_security_patch_count|Int|
-|error|JSON|
-|other_patch_count|Int|
-|reboot_pending|Bool|
-|start_date_time|Timestamp|
-|status|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|subscription_id|utf8|
+|assessment_activity_id (PK)|utf8|
+|available_patches|json|
+|critical_and_security_patch_count|int64|
+|error|json|
+|other_patch_count|int64|
+|reboot_pending|bool|
+|start_date_time|timestamp[us, tz=UTC]|
+|status|utf8|
