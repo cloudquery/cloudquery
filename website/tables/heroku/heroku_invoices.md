@@ -10,17 +10,17 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|charges_total|Float|
-|created_at|Timestamp|
-|credits_total|Float|
-|number|Int|
-|period_end|String|
-|period_start|String|
-|state|Int|
-|total|Float|
-|updated_at|Timestamp|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|utf8|
+|charges_total|float64|
+|created_at|timestamp[us, tz=UTC]|
+|credits_total|float64|
+|number|int64|
+|period_end|utf8|
+|period_start|utf8|
+|state|int64|
+|total|float64|
+|updated_at|timestamp[us, tz=UTC]|

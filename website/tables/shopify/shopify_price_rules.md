@@ -13,33 +13,33 @@ The following tables depend on shopify_price_rules:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|Int|
-|updated_at (Incremental Key)|Timestamp|
-|value_type|String|
-|value|String|
-|customer_selection|String|
-|target_type|String|
-|target_selection|String|
-|allocation_method|String|
-|once_per_customer|Bool|
-|usage_limit|Int|
-|starts_at|Timestamp|
-|ends_at|Timestamp|
-|created_at|Timestamp|
-|entitled_product_ids|JSON|
-|entitled_variant_ids|JSON|
-|entitled_collection_ids|JSON|
-|entitled_country_ids|JSON|
-|prerequisite_product_ids|JSON|
-|prerequisite_variant_ids|JSON|
-|prerequisite_collection_ids|JSON|
-|customer_segment_prerequisite_ids|JSON|
-|prerequisite_customer_ids|JSON|
-|prerequisite_to_entitlement_quantity_ratio|JSON|
-|prerequisite_to_entitlement_purchase|JSON|
-|title|String|
-|admin_graphql_api_id|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|int64|
+|updated_at (Incremental Key)|timestamp[us, tz=UTC]|
+|value_type|utf8|
+|value|utf8|
+|customer_selection|utf8|
+|target_type|utf8|
+|target_selection|utf8|
+|allocation_method|utf8|
+|once_per_customer|bool|
+|usage_limit|int64|
+|starts_at|timestamp[us, tz=UTC]|
+|ends_at|timestamp[us, tz=UTC]|
+|created_at|timestamp[us, tz=UTC]|
+|entitled_product_ids|json|
+|entitled_variant_ids|json|
+|entitled_collection_ids|json|
+|entitled_country_ids|json|
+|prerequisite_product_ids|json|
+|prerequisite_variant_ids|json|
+|prerequisite_collection_ids|json|
+|customer_segment_prerequisite_ids|json|
+|prerequisite_customer_ids|json|
+|prerequisite_to_entitlement_quantity_ratio|json|
+|prerequisite_to_entitlement_purchase|json|
+|title|utf8|
+|admin_graphql_api_id|utf8|

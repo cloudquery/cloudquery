@@ -18,13 +18,13 @@ The following tables depend on launchdarkly_projects:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|key|String|
-|include_in_snippet_by_default|Bool|
-|default_client_side_availability|JSON|
-|name|String|
-|tags|StringArray|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|utf8|
+|key|utf8|
+|include_in_snippet_by_default|bool|
+|default_client_side_availability|json|
+|name|utf8|
+|tags|list<item: utf8, nullable>|
