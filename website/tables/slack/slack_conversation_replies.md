@@ -14,54 +14,54 @@ This table depends on [slack_conversation_histories](slack_conversation_historie
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|conversation_history_ts|String|
-|team_id (PK)|String|
-|channel_id (PK)|String|
-|ts (PK)|String|
-|client_msg_id|String|
-|type|String|
-|channel|String|
-|user|String|
-|text|String|
-|thread_ts|String|
-|is_starred|Bool|
-|pinned_to|StringArray|
-|attachments|JSON|
-|edited|JSON|
-|last_read|String|
-|subscribed|Bool|
-|unread_count|Int|
-|subtype|String|
-|hidden|Bool|
-|deleted_ts|String|
-|event_ts|String|
-|bot_id|String|
-|username|String|
-|icons|JSON|
-|bot_profile|JSON|
-|inviter|String|
-|topic|String|
-|purpose|String|
-|name|String|
-|old_name|String|
-|members|StringArray|
-|reply_count|Int|
-|replies|JSON|
-|parent_user_id|String|
-|latest_reply|String|
-|files|JSON|
-|upload|Bool|
-|comment|JSON|
-|item_type|String|
-|reply_to|Int|
-|team|String|
-|reactions|JSON|
-|response_type|String|
-|replace_original|Bool|
-|delete_original|Bool|
-|metadata|JSON|
-|permalink|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|conversation_history_ts|utf8|
+|team_id (PK)|utf8|
+|channel_id (PK)|utf8|
+|ts (PK)|utf8|
+|client_msg_id|utf8|
+|type|utf8|
+|channel|utf8|
+|user|utf8|
+|text|utf8|
+|thread_ts|utf8|
+|is_starred|bool|
+|pinned_to|list<item: utf8, nullable>|
+|attachments|json|
+|edited|json|
+|last_read|utf8|
+|subscribed|bool|
+|unread_count|int64|
+|subtype|utf8|
+|hidden|bool|
+|deleted_ts|utf8|
+|event_ts|utf8|
+|bot_id|utf8|
+|username|utf8|
+|icons|json|
+|bot_profile|json|
+|inviter|utf8|
+|topic|utf8|
+|purpose|utf8|
+|name|utf8|
+|old_name|utf8|
+|members|list<item: utf8, nullable>|
+|reply_count|int64|
+|replies|json|
+|parent_user_id|utf8|
+|latest_reply|utf8|
+|files|json|
+|upload|bool|
+|comment|json|
+|item_type|utf8|
+|reply_to|int64|
+|team|utf8|
+|reactions|json|
+|response_type|utf8|
+|replace_original|bool|
+|delete_original|bool|
+|metadata|json|
+|permalink|utf8|

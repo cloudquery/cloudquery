@@ -10,25 +10,25 @@ The composite primary key for this table is (**organization_id**, **id**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|organization_id (PK)|String|
-|id (PK)|String|
-|name|String|
-|type|String|
-|version|String|
-|latest_version|String|
-|latest_version_published_date|Timestamp|
-|first_published_date|Timestamp|
-|is_deprecated|Bool|
-|deprecated_versions|StringArray|
-|dependencies_with_issues|StringArray|
-|issues_critical|Int|
-|issues_high|Int|
-|issues_medium|Int|
-|issues_low|Int|
-|licenses|JSON|
-|projects|JSON|
-|copyright|StringArray|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|organization_id (PK)|utf8|
+|id (PK)|utf8|
+|name|utf8|
+|type|utf8|
+|version|utf8|
+|latest_version|utf8|
+|latest_version_published_date|timestamp[us, tz=UTC]|
+|first_published_date|timestamp[us, tz=UTC]|
+|is_deprecated|bool|
+|deprecated_versions|list<item: utf8, nullable>|
+|dependencies_with_issues|list<item: utf8, nullable>|
+|issues_critical|int64|
+|issues_high|int64|
+|issues_medium|int64|
+|issues_low|int64|
+|licenses|json|
+|projects|json|
+|copyright|list<item: utf8, nullable>|

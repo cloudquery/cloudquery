@@ -12,54 +12,54 @@ This table depends on [github_teams](github_teams).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|org (PK)|String|
-|team_id (PK)|Int|
-|membership|JSON|
-|login|String|
-|id (PK)|Int|
-|node_id|String|
-|avatar_url|String|
-|html_url|String|
-|gravatar_id|String|
-|name|String|
-|company|String|
-|blog|String|
-|location|String|
-|email|String|
-|hireable|Bool|
-|bio|String|
-|twitter_username|String|
-|public_repos|Int|
-|public_gists|Int|
-|followers|Int|
-|following|Int|
-|created_at|Timestamp|
-|updated_at|Timestamp|
-|suspended_at|Timestamp|
-|type|String|
-|site_admin|Bool|
-|total_private_repos|Int|
-|owned_private_repos|Int|
-|private_gists|Int|
-|disk_usage|Int|
-|collaborators|Int|
-|two_factor_authentication|Bool|
-|plan|JSON|
-|ldap_dn|String|
-|url|String|
-|events_url|String|
-|following_url|String|
-|followers_url|String|
-|gists_url|String|
-|organizations_url|String|
-|received_events_url|String|
-|repos_url|String|
-|starred_url|String|
-|subscriptions_url|String|
-|text_matches|JSON|
-|permissions|JSON|
-|role_name|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|org (PK)|utf8|
+|team_id (PK)|int64|
+|membership|json|
+|login|utf8|
+|id (PK)|int64|
+|node_id|utf8|
+|avatar_url|utf8|
+|html_url|utf8|
+|gravatar_id|utf8|
+|name|utf8|
+|company|utf8|
+|blog|utf8|
+|location|utf8|
+|email|utf8|
+|hireable|bool|
+|bio|utf8|
+|twitter_username|utf8|
+|public_repos|int64|
+|public_gists|int64|
+|followers|int64|
+|following|int64|
+|created_at|timestamp[us, tz=UTC]|
+|updated_at|timestamp[us, tz=UTC]|
+|suspended_at|timestamp[us, tz=UTC]|
+|type|utf8|
+|site_admin|bool|
+|total_private_repos|int64|
+|owned_private_repos|int64|
+|private_gists|int64|
+|disk_usage|int64|
+|collaborators|int64|
+|two_factor_authentication|bool|
+|plan|json|
+|ldap_dn|utf8|
+|url|utf8|
+|events_url|utf8|
+|following_url|utf8|
+|followers_url|utf8|
+|gists_url|utf8|
+|organizations_url|utf8|
+|received_events_url|utf8|
+|repos_url|utf8|
+|starred_url|utf8|
+|subscriptions_url|utf8|
+|text_matches|json|
+|permissions|json|
+|role_name|utf8|
