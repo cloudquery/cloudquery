@@ -10,21 +10,21 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|created_at|Timestamp|
-|customer_id|String|
-|deleted_at|Timestamp|
-|email_hash|String|
-|limit_services|Bool|
-|locked|Bool|
-|login|String|
-|name|String|
-|require_new_password|Bool|
-|role|String|
-|two_factor_auth_enabled|Bool|
-|two_factor_setup_required|Bool|
-|updated_at|Timestamp|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|utf8|
+|created_at|timestamp[us, tz=UTC]|
+|customer_id|utf8|
+|deleted_at|timestamp[us, tz=UTC]|
+|email_hash|utf8|
+|limit_services|bool|
+|locked|bool|
+|login|utf8|
+|name|utf8|
+|require_new_password|bool|
+|role|utf8|
+|two_factor_auth_enabled|bool|
+|two_factor_setup_required|bool|
+|updated_at|timestamp[us, tz=UTC]|

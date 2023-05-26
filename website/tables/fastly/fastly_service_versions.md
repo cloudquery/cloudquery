@@ -19,18 +19,18 @@ The following tables depend on fastly_service_versions:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|number (PK)|Int|
-|service_id (PK)|String|
-|active|Bool|
-|comment|String|
-|created_at|Timestamp|
-|deleted_at|Timestamp|
-|deployed|Bool|
-|locked|Bool|
-|staging|Bool|
-|testing|Bool|
-|updated_at|Timestamp|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|number (PK)|int64|
+|service_id (PK)|utf8|
+|active|bool|
+|comment|utf8|
+|created_at|timestamp[us, tz=UTC]|
+|deleted_at|timestamp[us, tz=UTC]|
+|deployed|bool|
+|locked|bool|
+|staging|bool|
+|testing|bool|
+|updated_at|timestamp[us, tz=UTC]|

@@ -14,14 +14,14 @@ This table depends on [fastly_service_versions](fastly_service_versions).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|name (PK)|String|
-|service_id (PK)|String|
-|service_version (PK)|Int|
-|comment|String|
-|created_at|Timestamp|
-|deleted_at|Timestamp|
-|updated_at|Timestamp|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|name (PK)|utf8|
+|service_id (PK)|utf8|
+|service_version (PK)|int64|
+|comment|utf8|
+|created_at|timestamp[us, tz=UTC]|
+|deleted_at|timestamp[us, tz=UTC]|
+|updated_at|timestamp[us, tz=UTC]|

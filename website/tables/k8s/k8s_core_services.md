@@ -8,41 +8,41 @@ The primary key for this table is **uid**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|context|String|
-|spec_cluster_ip|Inet|
-|spec_cluster_ips|InetArray|
-|spec_external_ips|InetArray|
-|spec_load_balancer_ip|Inet|
-|kind|String|
-|api_version|String|
-|name|String|
-|namespace|String|
-|uid (PK)|String|
-|resource_version|String|
-|generation|Int|
-|deletion_grace_period_seconds|Int|
-|labels|JSON|
-|annotations|JSON|
-|owner_references|JSON|
-|finalizers|StringArray|
-|spec_ports|JSON|
-|spec_selector|JSON|
-|spec_type|String|
-|spec_session_affinity|String|
-|spec_load_balancer_source_ranges|StringArray|
-|spec_external_name|String|
-|spec_external_traffic_policy|String|
-|spec_health_check_node_port|Int|
-|spec_publish_not_ready_addresses|Bool|
-|spec_session_affinity_config|JSON|
-|spec_ip_families|StringArray|
-|spec_ip_family_policy|String|
-|spec_allocate_load_balancer_node_ports|Bool|
-|spec_load_balancer_class|String|
-|spec_internal_traffic_policy|String|
-|status_load_balancer|JSON|
-|status_conditions|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|context|utf8|
+|spec_cluster_ip|inet|
+|spec_cluster_ips|list<item: inet, nullable>|
+|spec_external_ips|list<item: inet, nullable>|
+|spec_load_balancer_ip|inet|
+|kind|utf8|
+|api_version|utf8|
+|name|utf8|
+|namespace|utf8|
+|uid (PK)|utf8|
+|resource_version|utf8|
+|generation|int64|
+|deletion_grace_period_seconds|int64|
+|labels|json|
+|annotations|json|
+|owner_references|json|
+|finalizers|list<item: utf8, nullable>|
+|spec_ports|json|
+|spec_selector|json|
+|spec_type|utf8|
+|spec_session_affinity|utf8|
+|spec_load_balancer_source_ranges|list<item: utf8, nullable>|
+|spec_external_name|utf8|
+|spec_external_traffic_policy|utf8|
+|spec_health_check_node_port|int64|
+|spec_publish_not_ready_addresses|bool|
+|spec_session_affinity_config|json|
+|spec_ip_families|list<item: utf8, nullable>|
+|spec_ip_family_policy|utf8|
+|spec_allocate_load_balancer_node_ports|bool|
+|spec_load_balancer_class|utf8|
+|spec_internal_traffic_policy|utf8|
+|status_load_balancer|json|
+|status_conditions|json|

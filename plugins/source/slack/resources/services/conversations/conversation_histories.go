@@ -1,9 +1,10 @@
 package conversations
 
 import (
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/slack/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/slack-go/slack"
 )
 
@@ -16,32 +17,26 @@ func ConversationHistories() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&slack.Msg{}, transformers.WithSkipFields("Blocks", "Replies")),
 		Columns: []schema.Column{
 			{
-				Name:     "channel_id",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "channel_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("id"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "team_id",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("team_id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "team_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("team_id"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "ts",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Timestamp"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "ts",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Timestamp"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "thread_ts",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("ThreadTimestamp"),
 			},
 		},
