@@ -2,8 +2,10 @@ package services
 
 import (
 	"github.com/PagerDuty/go-pagerduty"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 )
 
 func Services() *schema.Table {
@@ -15,30 +17,28 @@ func Services() *schema.Table {
 		Columns: []schema.Column{
 			{
 				Name:     "dependencies",
-				Type:     schema.TypeJSON,
+				Type:     types.ExtensionTypes.JSON,
 				Resolver: DependenciesResolver,
 			},
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ID"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "html_url",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("HTMLURL"),
 			},
 			{
 				Name:     "created_at",
-				Type:     schema.TypeTimestamp,
+				Type:     arrow.FixedWidthTypes.Timestamp_us,
 				Resolver: schema.PathResolver("CreateAt"),
 			},
 			{
 				Name:     "last_incident_timestamp",
-				Type:     schema.TypeTimestamp,
+				Type:     arrow.FixedWidthTypes.Timestamp_us,
 				Resolver: schema.PathResolver("LastIncidentTimestamp"),
 			},
 		},
