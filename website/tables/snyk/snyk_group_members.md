@@ -14,14 +14,14 @@ This table depends on [snyk_groups](snyk_groups).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|group_id (PK)|String|
-|id (PK)|String|
-|name|String|
-|username|String|
-|email|String|
-|orgs|JSON|
-|group_role|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|group_id (PK)|utf8|
+|id (PK)|utf8|
+|name|utf8|
+|username|utf8|
+|email|utf8|
+|orgs|json|
+|group_role|utf8|

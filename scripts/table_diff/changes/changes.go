@@ -68,7 +68,7 @@ func parseColumnChange(line string) (name string, dataType string, columnType co
 		columnType |= columnTypeIncremental
 	}
 	cleanName := strings.Split(result["name"], " (")[0]
-	return cleanName, result["dataType"], columnType
+	return cleanName, strings.Trim(result["dataType"], "`"), columnType
 }
 
 func parsePKChange(line string) (names []string) {
