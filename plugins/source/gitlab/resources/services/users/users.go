@@ -31,7 +31,6 @@ func fetchUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 		},
 	}
 	for {
-		// Get the first page with projects.
 		users, resp, err := c.Gitlab.Users.ListUsers(opt, gitlab.WithContext(ctx))
 		if err != nil {
 			return err

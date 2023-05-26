@@ -29,7 +29,6 @@ func fetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		},
 	}
 	for {
-		// Get the first page with projects.
 		projects, resp, err := c.Gitlab.Projects.ListProjects(opt, gitlab.WithContext(ctx))
 		if err != nil {
 			return err
