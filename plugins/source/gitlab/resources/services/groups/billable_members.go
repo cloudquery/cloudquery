@@ -9,26 +9,22 @@ import (
 	"github.com/xanzy/go-gitlab"
 )
 
-func members() *schema.Table {
+func billableMembers() *schema.Table {
 	return &schema.Table{
-		Name:      "gitlab_group_members",
-		Resolver:  fetchMembers,
-		Transform: client.TransformWithStruct(&gitlab.GroupMember{}, transformers.WithPrimaryKeys("ID")),
+		Name:      "gitlab_group_billable_members",
+		Resolver:  fetchBillableMembers,
+		Transform: client.TransformWithStruct(new(gitlab.BillableGroupMember), transformers.WithPrimaryKeys("ID")),
 		Columns:   schema.ColumnList{client.BaseURLColumn, groupIDColumn},
 	}
 }
 
-func fetchMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchBillableMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	group := parent.Item.(*gitlab.Group)
-	opt := &gitlab.ListGroupMembersOptions{
-		ListOptions: gitlab.ListOptions{
-			PerPage: 1000,
-		},
-	}
+	opt := &gitlab.ListBillableGroupMembersOptions{ListOptions: gitlab.ListOptions{PerPage: 1000}}
 
 	for {
-		members, resp, err := c.Gitlab.Groups.ListGroupMembers(group.ID, opt, gitlab.WithContext(ctx))
+		members, resp, err := c.Gitlab.Groups.ListBillableGroupMembers(group.ID, opt, gitlab.WithContext(ctx))
 		if err != nil {
 			return err
 		}

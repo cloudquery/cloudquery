@@ -15,7 +15,7 @@ func Groups() *schema.Table {
 		Resolver:  fetchGroups,
 		Transform: client.TransformWithStruct(&gitlab.Group{}, transformers.WithPrimaryKeys("ID", "Name")),
 		Columns:   schema.ColumnList{client.BaseURLColumn},
-		Relations: schema.Tables{members()},
+		Relations: schema.Tables{billableMembers(), members()},
 	}
 }
 
@@ -30,7 +30,6 @@ func fetchGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	}
 
 	for {
-		// Get the first page with projects.
 		groups, resp, err := c.Gitlab.Groups.ListGroups(opt, gitlab.WithContext(ctx))
 		if err != nil {
 			return err
