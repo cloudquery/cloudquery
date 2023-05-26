@@ -3,9 +3,10 @@ package reporting
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 	"golang.org/x/sync/errgroup"
 )
@@ -26,13 +27,11 @@ func Issues() *schema.Table {
 		Columns: schema.ColumnList{
 			client.OrganizationID,
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Issue.ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-					NotNull:    true,
-				},
+				Name:       "id",
+				Type:       arrow.BinaryTypes.String,
+				PrimaryKey: true,
+				NotNull:    true,
+				Resolver:   schema.PathResolver("Issue.ID"),
 			},
 		},
 	}
