@@ -8,8 +8,9 @@ on:
 
 jobs:
   release-summary:
-    # only run on release-please branches and if there is only one commit to avoid a recursive workflow run
-    if:  startsWith(github.head_ref, 'release-please--branches--main--components--plugins-source') && github.event.pull_request.commits == 1
+    # only run on release-please branches and if there are <= 2 commits
+    # we should allow 2 instead of 1 as CHANGELOG.md updates are done as a separate commit
+    if:  startsWith(github.head_ref, 'release-please--branches--main--components--plugins-source') && github.event.pull_request.commits <= 2
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
