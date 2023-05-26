@@ -12,20 +12,20 @@ This table depends on [gitlab_groups](gitlab_groups).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|base_url (PK)|String|
-|group_id (PK)|Int|
-|id (PK)|Int|
-|username|String|
-|name|String|
-|state|String|
-|avatar_url|String|
-|web_url|String|
-|created_at|Timestamp|
-|expires_at|Timestamp|
-|access_level|Int|
-|email|String|
-|group_saml_identity|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|base_url (PK)|utf8|
+|group_id (PK)|int64|
+|id (PK)|int64|
+|username|utf8|
+|name|utf8|
+|state|utf8|
+|avatar_url|utf8|
+|web_url|utf8|
+|created_at|timestamp[us, tz=UTC]|
+|expires_at|timestamp[us, tz=UTC]|
+|access_level|int64|
+|email|utf8|
+|group_saml_identity|json|
