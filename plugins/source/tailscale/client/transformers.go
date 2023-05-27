@@ -3,8 +3,9 @@ package client
 import (
 	"reflect"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/tailscale/tailscale-client-go/tailscale"
 )
 
@@ -16,10 +17,10 @@ func TransformWithStruct(t any, opts ...transformers.StructTransformerOption) sc
 	return transformers.TransformWithStruct(t, append(options, opts...)...)
 }
 
-func typeTransformer(field reflect.StructField) (schema.ValueType, error) {
+func typeTransformer(field reflect.StructField) (arrow.DataType, error) {
 	if field.Type == reflect.TypeOf(tailscale.Time{}) {
-		return schema.TypeTimestamp, nil
+		return arrow.FixedWidthTypes.Timestamp_us, nil
 	}
 
-	return schema.TypeInvalid, nil
+	return nil, nil
 }

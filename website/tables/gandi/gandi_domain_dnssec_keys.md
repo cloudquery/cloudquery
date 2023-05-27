@@ -12,15 +12,15 @@ This table depends on [gandi_domains](gandi_domains).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|fqdn (PK)|String|
-|id (PK)|Int|
-|algorithm|Int|
-|digest|String|
-|digest_type|Int|
-|keytag|Int|
-|type|String|
-|public_key|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|fqdn (PK)|utf8|
+|id (PK)|int64|
+|algorithm|int64|
+|digest|utf8|
+|digest_type|int64|
+|keytag|int64|
+|type|utf8|
+|public_key|utf8|

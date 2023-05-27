@@ -13,16 +13,16 @@ The following tables depend on vercel_teams:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|slug|String|
-|name|String|
-|avatar|String|
-|created_at|Timestamp|
-|creator_id|String|
-|updated_at|Timestamp|
-|profiles|JSON|
-|staging_prefix|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|id (PK)|utf8|
+|slug|utf8|
+|name|utf8|
+|avatar|utf8|
+|created_at|timestamp[us, tz=UTC]|
+|creator_id|utf8|
+|updated_at|timestamp[us, tz=UTC]|
+|profiles|json|
+|staging_prefix|utf8|

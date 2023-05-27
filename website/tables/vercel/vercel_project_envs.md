@@ -12,23 +12,23 @@ This table depends on [vercel_projects](vercel_projects).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|id (PK)|String|
-|target|String|
-|type|String|
-|key|String|
-|value|String|
-|configuration_id|String|
-|git_branch|String|
-|edge_config_id|String|
-|edge_config_token_id|String|
-|decrypted|Bool|
-|system|Bool|
-|created_at|Timestamp|
-|created_by|String|
-|updated_at|Timestamp|
-|updated_by|String|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|project_id (PK)|utf8|
+|id (PK)|utf8|
+|target|utf8|
+|type|utf8|
+|key|utf8|
+|value|utf8|
+|configuration_id|utf8|
+|git_branch|utf8|
+|edge_config_id|utf8|
+|edge_config_token_id|utf8|
+|decrypted|bool|
+|system|bool|
+|created_at|timestamp[us, tz=UTC]|
+|created_by|utf8|
+|updated_at|timestamp[us, tz=UTC]|
+|updated_by|utf8|

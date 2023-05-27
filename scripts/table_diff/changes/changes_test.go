@@ -41,10 +41,10 @@ func Test_parseColumnChange(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotName, gotDataType, columnType := parseColumnChange(tt.args.line)
+			gotName, gotCol := parseColumnChange(tt.args.line)
 			require.Equal(t, tt.wantName, gotName)
-			require.Equal(t, tt.wantDataType, gotDataType)
-			require.Equal(t, tt.wantColumnType, columnType)
+			require.Equal(t, tt.wantDataType, gotCol.dataType)
+			require.Equal(t, tt.wantColumnType, gotCol.columnType)
 		})
 	}
 }
@@ -367,8 +367,18 @@ func Test_getChanges(t *testing.T) {
 			wantChanges:  []change{},
 		},
 		{
+			name:         "Should handle CQTypes -> Apache Arrow column changes with backticks, too",
+			diffDataFile: "testdata/pr_10831_diff_backtick.txt",
+			wantChanges:  []change{},
+		},
+		{
 			name:         "Should handle CQTypes -> Apache Arrow column changes with lists, too",
 			diffDataFile: "testdata/pr_10797_diff.txt",
+			wantChanges:  []change{},
+		},
+		{
+			name:         "Should handle no backticks -> backticks",
+			diffDataFile: "testdata/pr_11034_diff.txt",
 			wantChanges:  []change{},
 		},
 	}

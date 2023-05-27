@@ -8,25 +8,25 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|region (PK)|String|
-|compartment_id (PK)|String|
-|id (PK)|String|
-|create_image_allowed|Bool|
-|lifecycle_state|String|
-|operating_system|String|
-|operating_system_version|String|
-|time_created|Timestamp|
-|base_image_id|String|
-|defined_tags|JSON|
-|display_name|String|
-|freeform_tags|JSON|
-|launch_mode|String|
-|launch_options|JSON|
-|agent_features|JSON|
-|listing_type|String|
-|size_in_m_bs|Int|
-|billable_size_in_g_bs|Int|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|create_image_allowed|`bool`|
+|lifecycle_state|`utf8`|
+|operating_system|`utf8`|
+|operating_system_version|`utf8`|
+|time_created|`timestamp[us, tz=UTC]`|
+|base_image_id|`utf8`|
+|defined_tags|`json`|
+|display_name|`utf8`|
+|freeform_tags|`json`|
+|launch_mode|`utf8`|
+|launch_options|`json`|
+|agent_features|`json`|
+|listing_type|`utf8`|
+|size_in_m_bs|`int64`|
+|billable_size_in_g_bs|`int64`|

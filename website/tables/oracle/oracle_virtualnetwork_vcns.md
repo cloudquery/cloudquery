@@ -8,25 +8,25 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|region (PK)|String|
-|compartment_id (PK)|String|
-|id (PK)|String|
-|cidr_block|String|
-|cidr_blocks|StringArray|
-|lifecycle_state|String|
-|byoipv6_cidr_blocks|StringArray|
-|ipv6_private_cidr_blocks|StringArray|
-|default_dhcp_options_id|String|
-|default_route_table_id|String|
-|default_security_list_id|String|
-|defined_tags|JSON|
-|display_name|String|
-|dns_label|String|
-|freeform_tags|JSON|
-|ipv6_cidr_blocks|StringArray|
-|time_created|Timestamp|
-|vcn_domain_name|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|cidr_block|`utf8`|
+|cidr_blocks|`list<item: utf8, nullable>`|
+|lifecycle_state|`utf8`|
+|byoipv6_cidr_blocks|`list<item: utf8, nullable>`|
+|ipv6_private_cidr_blocks|`list<item: utf8, nullable>`|
+|default_dhcp_options_id|`utf8`|
+|default_route_table_id|`utf8`|
+|default_security_list_id|`utf8`|
+|defined_tags|`json`|
+|display_name|`utf8`|
+|dns_label|`utf8`|
+|freeform_tags|`json`|
+|ipv6_cidr_blocks|`list<item: utf8, nullable>`|
+|time_created|`timestamp[us, tz=UTC]`|
+|vcn_domain_name|`utf8`|

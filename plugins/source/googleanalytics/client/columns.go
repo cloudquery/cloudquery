@@ -3,27 +3,27 @@ package client
 import (
 	"context"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 var PropertyIDColumn = schema.Column{
 	Name:        "property_id",
-	Type:        schema.TypeString,
+	Type:        arrow.BinaryTypes.String,
 	Description: "Property ID",
+	PrimaryKey:  true,
+	NotNull:     true,
 	Resolver: func(_ context.Context, m schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 		return r.Set(c.Name, m.(*Client).PropertyID)
 	},
-	CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true, NotNull: true},
 }
 
 var DateColumn = schema.Column{
-	Name:        "date",
-	Type:        schema.TypeTimestamp,
-	Description: "Date",
-	Resolver:    schema.PathResolver("Date"),
-	CreationOptions: schema.ColumnCreationOptions{
-		PrimaryKey:     true,
-		IncrementalKey: true,
-		NotNull:        true,
-	},
+	Name:           "date",
+	Type:           arrow.FixedWidthTypes.Timestamp_us,
+	Description:    "Date",
+	PrimaryKey:     true,
+	IncrementalKey: true,
+	NotNull:        true,
+	Resolver:       schema.PathResolver("Date"),
 }

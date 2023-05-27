@@ -1,6 +1,6 @@
 package client
 
-import "github.com/cloudquery/plugin-sdk/v2/schema"
+import "github.com/cloudquery/plugin-sdk/v3/schema"
 
 func RegionCompartmentMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	cqClient := meta.(*Client)
