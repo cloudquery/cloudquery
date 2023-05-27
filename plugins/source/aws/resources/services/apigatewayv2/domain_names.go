@@ -10,7 +10,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	apigatewayv2fix "github.com/cloudquery/cloudquery/plugins/source/aws/resources/forks/apigatewayv2"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
@@ -45,11 +44,8 @@ func fetchApigatewayv2DomainNames(ctx context.Context, meta schema.ClientMeta, _
 	svc := c.Services().Apigatewayv2
 	// No paginator available
 	for {
-		// TODO: This fix has been merged in the SDK, so this workaround can be removed
 		response, err := svc.GetDomainNames(ctx, &config, func(options *apigatewayv2.Options) {
 			options.Region = c.Region
-			// NOTE: Swapping OperationDeserializer until this is fixed: https://github.com/aws/aws-sdk-go-v2/issues/1282
-			options.APIOptions = append(options.APIOptions, apigatewayv2fix.SwapGetDomainNamesOperationDeserializer)
 		})
 
 		if err != nil {

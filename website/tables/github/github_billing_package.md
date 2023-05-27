@@ -8,11 +8,11 @@ The primary key for this table is **org**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|org (PK)|String|
-|total_gigabytes_bandwidth_used|Int|
-|total_paid_gigabytes_bandwidth_used|Int|
-|included_gigabytes_bandwidth|Int|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|org (PK)|utf8|
+|total_gigabytes_bandwidth_used|int64|
+|total_paid_gigabytes_bandwidth_used|int64|
+|included_gigabytes_bandwidth|int64|

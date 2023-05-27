@@ -8,40 +8,40 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|region (PK)|String|
-|compartment_id (PK)|String|
-|id (PK)|String|
-|lifecycle_state|String|
-|display_name|String|
-|shape|String|
-|availability_domain|String|
-|compute_count|Int|
-|storage_count|Int|
-|total_storage_size_in_g_bs|Int|
-|available_storage_size_in_g_bs|Int|
-|cpu_count|Int|
-|max_cpu_count|Int|
-|memory_size_in_g_bs|Int|
-|max_memory_in_g_bs|Int|
-|db_node_storage_size_in_g_bs|Int|
-|max_db_node_storage_in_g_bs|Int|
-|data_storage_size_in_t_bs|Float|
-|max_data_storage_in_t_bs|Float|
-|additional_storage_count|Int|
-|activated_storage_count|Int|
-|time_created|Timestamp|
-|lifecycle_details|String|
-|maintenance_window|JSON|
-|last_maintenance_run_id|String|
-|next_maintenance_run_id|String|
-|freeform_tags|JSON|
-|defined_tags|JSON|
-|customer_contacts|JSON|
-|storage_server_version|String|
-|db_server_version|String|
-|monthly_storage_server_version|String|
-|monthly_db_server_version|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|lifecycle_state|`utf8`|
+|display_name|`utf8`|
+|shape|`utf8`|
+|availability_domain|`utf8`|
+|compute_count|`int64`|
+|storage_count|`int64`|
+|total_storage_size_in_g_bs|`int64`|
+|available_storage_size_in_g_bs|`int64`|
+|cpu_count|`int64`|
+|max_cpu_count|`int64`|
+|memory_size_in_g_bs|`int64`|
+|max_memory_in_g_bs|`int64`|
+|db_node_storage_size_in_g_bs|`int64`|
+|max_db_node_storage_in_g_bs|`int64`|
+|data_storage_size_in_t_bs|`float64`|
+|max_data_storage_in_t_bs|`float64`|
+|additional_storage_count|`int64`|
+|activated_storage_count|`int64`|
+|time_created|`timestamp[us, tz=UTC]`|
+|lifecycle_details|`utf8`|
+|maintenance_window|`json`|
+|last_maintenance_run_id|`utf8`|
+|next_maintenance_run_id|`utf8`|
+|freeform_tags|`json`|
+|defined_tags|`json`|
+|customer_contacts|`json`|
+|storage_server_version|`utf8`|
+|db_server_version|`utf8`|
+|monthly_storage_server_version|`utf8`|
+|monthly_db_server_version|`utf8`|

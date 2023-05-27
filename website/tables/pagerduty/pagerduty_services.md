@@ -15,32 +15,32 @@ The following tables depend on pagerduty_services:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|dependencies|JSON|
-|id (PK)|String|
-|html_url|String|
-|created_at|Timestamp|
-|last_incident_timestamp|Timestamp|
-|type|String|
-|summary|String|
-|self|String|
-|name|String|
-|description|String|
-|auto_resolve_timeout|Int|
-|acknowledgement_timeout|Int|
-|status|String|
-|integrations|JSON|
-|escalation_policy|JSON|
-|teams|JSON|
-|incident_urgency_rule|JSON|
-|support_hours|JSON|
-|scheduled_actions|JSON|
-|alert_creation|String|
-|alert_grouping|String|
-|alert_grouping_timeout|Int|
-|alert_grouping_parameters|JSON|
-|response_play|JSON|
-|addons|JSON|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|dependencies|json|
+|id (PK)|utf8|
+|html_url|utf8|
+|created_at|timestamp[us, tz=UTC]|
+|last_incident_timestamp|timestamp[us, tz=UTC]|
+|type|utf8|
+|summary|utf8|
+|self|utf8|
+|name|utf8|
+|description|utf8|
+|auto_resolve_timeout|int64|
+|acknowledgement_timeout|int64|
+|status|utf8|
+|integrations|json|
+|escalation_policy|json|
+|teams|json|
+|incident_urgency_rule|json|
+|support_hours|json|
+|scheduled_actions|json|
+|alert_creation|utf8|
+|alert_grouping|utf8|
+|alert_grouping_timeout|int64|
+|alert_grouping_parameters|json|
+|response_play|json|
+|addons|json|

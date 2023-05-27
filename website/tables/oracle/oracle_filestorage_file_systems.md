@@ -8,22 +8,22 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|region (PK)|String|
-|compartment_id (PK)|String|
-|id (PK)|String|
-|metered_bytes|Int|
-|display_name|String|
-|lifecycle_state|String|
-|time_created|Timestamp|
-|availability_domain|String|
-|freeform_tags|JSON|
-|defined_tags|JSON|
-|kms_key_id|String|
-|source_details|JSON|
-|is_clone_parent|Bool|
-|is_hydrated|Bool|
-|lifecycle_details|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|metered_bytes|`int64`|
+|display_name|`utf8`|
+|lifecycle_state|`utf8`|
+|time_created|`timestamp[us, tz=UTC]`|
+|availability_domain|`utf8`|
+|freeform_tags|`json`|
+|defined_tags|`json`|
+|kms_key_id|`utf8`|
+|source_details|`json`|
+|is_clone_parent|`bool`|
+|is_hydrated|`bool`|
+|lifecycle_details|`utf8`|

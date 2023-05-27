@@ -8,30 +8,30 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|region (PK)|String|
-|compartment_id (PK)|String|
-|id (PK)|String|
-|display_name|String|
-|lifecycle_state|String|
-|time_created|Timestamp|
-|shape_name|String|
-|ip_addresses|JSON|
-|shape_details|JSON|
-|is_private|Bool|
-|subnet_ids|StringArray|
-|network_security_group_ids|StringArray|
-|listeners|JSON|
-|hostnames|JSON|
-|ssl_cipher_suites|JSON|
-|certificates|JSON|
-|backend_sets|JSON|
-|path_route_sets|JSON|
-|freeform_tags|JSON|
-|defined_tags|JSON|
-|system_tags|JSON|
-|rule_sets|JSON|
-|routing_policies|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|display_name|`utf8`|
+|lifecycle_state|`utf8`|
+|time_created|`timestamp[us, tz=UTC]`|
+|shape_name|`utf8`|
+|ip_addresses|`json`|
+|shape_details|`json`|
+|is_private|`bool`|
+|subnet_ids|`list<item: utf8, nullable>`|
+|network_security_group_ids|`list<item: utf8, nullable>`|
+|listeners|`json`|
+|hostnames|`json`|
+|ssl_cipher_suites|`json`|
+|certificates|`json`|
+|backend_sets|`json`|
+|path_route_sets|`json`|
+|freeform_tags|`json`|
+|defined_tags|`json`|
+|system_tags|`json`|
+|rule_sets|`json`|
+|routing_policies|`json`|

@@ -8,20 +8,20 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|region (PK)|String|
-|compartment_id (PK)|String|
-|id (PK)|String|
-|block_traffic|Bool|
-|lifecycle_state|String|
-|nat_ip|String|
-|time_created|Timestamp|
-|vcn_id|String|
-|defined_tags|JSON|
-|display_name|String|
-|freeform_tags|JSON|
-|public_ip_id|String|
-|route_table_id|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|block_traffic|`bool`|
+|lifecycle_state|`utf8`|
+|nat_ip|`utf8`|
+|time_created|`timestamp[us, tz=UTC]`|
+|vcn_id|`utf8`|
+|defined_tags|`json`|
+|display_name|`utf8`|
+|freeform_tags|`json`|
+|public_ip_id|`utf8`|
+|route_table_id|`utf8`|

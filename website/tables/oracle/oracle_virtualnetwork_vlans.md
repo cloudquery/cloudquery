@@ -8,21 +8,21 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|region (PK)|String|
-|compartment_id (PK)|String|
-|id (PK)|String|
-|cidr_block|String|
-|lifecycle_state|String|
-|vcn_id|String|
-|availability_domain|String|
-|defined_tags|JSON|
-|display_name|String|
-|freeform_tags|JSON|
-|nsg_ids|StringArray|
-|vlan_tag|Int|
-|route_table_id|String|
-|time_created|Timestamp|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|cidr_block|`utf8`|
+|lifecycle_state|`utf8`|
+|vcn_id|`utf8`|
+|availability_domain|`utf8`|
+|defined_tags|`json`|
+|display_name|`utf8`|
+|freeform_tags|`json`|
+|nsg_ids|`list<item: utf8, nullable>`|
+|vlan_tag|`int64`|
+|route_table_id|`utf8`|
+|time_created|`timestamp[us, tz=UTC]`|
