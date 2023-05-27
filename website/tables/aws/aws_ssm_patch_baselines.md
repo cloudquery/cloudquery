@@ -10,14 +10,14 @@ The composite primary key for this table is (**account_id**, **region**, **basel
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id (PK)|utf8|
-|region (PK)|utf8|
-|baseline_id (PK)|utf8|
-|baseline_description|utf8|
-|baseline_name|utf8|
-|default_baseline|bool|
-|operating_system|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
+|baseline_id (PK)|`utf8`|
+|baseline_description|`utf8`|
+|baseline_name|`utf8`|
+|default_baseline|`bool`|
+|operating_system|`utf8`|

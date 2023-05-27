@@ -10,19 +10,19 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|creation_request_date_time|timestamp[us, tz=UTC]|
-|key_schema|json|
-|last_evaluated_shard_id|utf8|
-|shards|json|
-|stream_arn|utf8|
-|stream_label|utf8|
-|stream_status|utf8|
-|stream_view_type|utf8|
-|table_name|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|creation_request_date_time|`timestamp[us, tz=UTC]`|
+|key_schema|`json`|
+|last_evaluated_shard_id|`utf8`|
+|shards|`json`|
+|stream_arn|`utf8`|
+|stream_label|`utf8`|
+|stream_status|`utf8`|
+|stream_view_type|`utf8`|
+|table_name|`utf8`|

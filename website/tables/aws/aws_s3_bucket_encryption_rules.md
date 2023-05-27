@@ -14,11 +14,11 @@ This table depends on [aws_s3_buckets](aws_s3_buckets).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id (PK)|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|bucket_arn|utf8|
-|apply_server_side_encryption_by_default|json|
-|bucket_key_enabled|bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|bucket_arn|`utf8`|
+|apply_server_side_encryption_by_default|`json`|
+|bucket_key_enabled|`bool`|

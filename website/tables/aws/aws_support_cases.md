@@ -15,21 +15,21 @@ The following tables depend on aws_support_cases:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id (PK)|utf8|
-|region (PK)|utf8|
-|case_id (PK)|utf8|
-|category_code|utf8|
-|cc_email_addresses|list<item: utf8, nullable>|
-|display_id|utf8|
-|language|utf8|
-|recent_communications|json|
-|service_code|utf8|
-|severity_code|utf8|
-|status|utf8|
-|subject|utf8|
-|submitted_by|utf8|
-|time_created|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
+|case_id (PK)|`utf8`|
+|category_code|`utf8`|
+|cc_email_addresses|`list<item: utf8, nullable>`|
+|display_id|`utf8`|
+|language|`utf8`|
+|recent_communications|`json`|
+|service_code|`utf8`|
+|severity_code|`utf8`|
+|status|`utf8`|
+|subject|`utf8`|
+|submitted_by|`utf8`|
+|time_created|`utf8`|

@@ -14,19 +14,19 @@ This table depends on [aws_redshift_clusters](aws_redshift_clusters).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id (PK)|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|cluster_arn|utf8|
-|allowed_all_vp_cs|bool|
-|allowed_vp_cs|list<item: utf8, nullable>|
-|authorize_time|timestamp[us, tz=UTC]|
-|cluster_identifier|utf8|
-|cluster_status|utf8|
-|endpoint_count|int64|
-|grantee|utf8|
-|grantor|utf8|
-|status|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|cluster_arn|`utf8`|
+|allowed_all_vp_cs|`bool`|
+|allowed_vp_cs|`list<item: utf8, nullable>`|
+|authorize_time|`timestamp[us, tz=UTC]`|
+|cluster_identifier|`utf8`|
+|cluster_status|`utf8`|
+|endpoint_count|`int64`|
+|grantee|`utf8`|
+|grantor|`utf8`|
+|status|`utf8`|

@@ -14,22 +14,22 @@ This table depends on [aws_frauddetector_models](aws_frauddetector_models).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|created_time|utf8|
-|external_events_detail|json|
-|ingested_events_detail|json|
-|last_updated_time|utf8|
-|model_id|utf8|
-|model_type|utf8|
-|model_version_number|utf8|
-|status|utf8|
-|training_data_schema|json|
-|training_data_source|utf8|
-|training_result|json|
-|training_result_v2|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|created_time|`utf8`|
+|external_events_detail|`json`|
+|ingested_events_detail|`json`|
+|last_updated_time|`utf8`|
+|model_id|`utf8`|
+|model_type|`utf8`|
+|model_version_number|`utf8`|
+|status|`utf8`|
+|training_data_schema|`json`|
+|training_data_source|`utf8`|
+|training_result|`json`|
+|training_result_v2|`json`|

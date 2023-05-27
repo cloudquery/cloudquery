@@ -14,14 +14,14 @@ This table depends on [gcp_aiplatform_metadata_locations](gcp_aiplatform_metadat
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|project_id (PK)|utf8|
-|name (PK)|utf8|
-|create_time|timestamp[us, tz=UTC]|
-|update_time|timestamp[us, tz=UTC]|
-|encryption_spec|json|
-|description|utf8|
-|state|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|create_time|`timestamp[us, tz=UTC]`|
+|update_time|`timestamp[us, tz=UTC]`|
+|encryption_spec|`json`|
+|description|`utf8`|
+|state|`json`|

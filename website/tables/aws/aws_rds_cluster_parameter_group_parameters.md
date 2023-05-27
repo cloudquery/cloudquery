@@ -14,21 +14,21 @@ This table depends on [aws_rds_cluster_parameter_groups](aws_rds_cluster_paramet
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id (PK)|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|cluster_parameter_group_arn|utf8|
-|allowed_values|utf8|
-|apply_method|utf8|
-|apply_type|utf8|
-|data_type|utf8|
-|description|utf8|
-|is_modifiable|bool|
-|minimum_engine_version|utf8|
-|parameter_name|utf8|
-|parameter_value|utf8|
-|source|utf8|
-|supported_engine_modes|list<item: utf8, nullable>|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|cluster_parameter_group_arn|`utf8`|
+|allowed_values|`utf8`|
+|apply_method|`utf8`|
+|apply_type|`utf8`|
+|data_type|`utf8`|
+|description|`utf8`|
+|is_modifiable|`bool`|
+|minimum_engine_version|`utf8`|
+|parameter_name|`utf8`|
+|parameter_value|`utf8`|
+|source|`utf8`|
+|supported_engine_modes|`list<item: utf8, nullable>`|

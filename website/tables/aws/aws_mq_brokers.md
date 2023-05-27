@@ -16,40 +16,40 @@ The following tables depend on aws_mq_brokers:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|actions_required|json|
-|authentication_strategy|utf8|
-|auto_minor_version_upgrade|bool|
-|broker_arn|utf8|
-|broker_id|utf8|
-|broker_instances|json|
-|broker_name|utf8|
-|broker_state|utf8|
-|configurations|json|
-|created|timestamp[us, tz=UTC]|
-|deployment_mode|utf8|
-|encryption_options|json|
-|engine_type|utf8|
-|engine_version|utf8|
-|host_instance_type|utf8|
-|ldap_server_metadata|json|
-|logs|json|
-|maintenance_window_start_time|json|
-|pending_authentication_strategy|utf8|
-|pending_engine_version|utf8|
-|pending_host_instance_type|utf8|
-|pending_ldap_server_metadata|json|
-|pending_security_groups|list<item: utf8, nullable>|
-|publicly_accessible|bool|
-|security_groups|list<item: utf8, nullable>|
-|storage_type|utf8|
-|subnet_ids|list<item: utf8, nullable>|
-|tags|json|
-|users|json|
-|result_metadata|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|actions_required|`json`|
+|authentication_strategy|`utf8`|
+|auto_minor_version_upgrade|`bool`|
+|broker_arn|`utf8`|
+|broker_id|`utf8`|
+|broker_instances|`json`|
+|broker_name|`utf8`|
+|broker_state|`utf8`|
+|configurations|`json`|
+|created|`timestamp[us, tz=UTC]`|
+|deployment_mode|`utf8`|
+|encryption_options|`json`|
+|engine_type|`utf8`|
+|engine_version|`utf8`|
+|host_instance_type|`utf8`|
+|ldap_server_metadata|`json`|
+|logs|`json`|
+|maintenance_window_start_time|`json`|
+|pending_authentication_strategy|`utf8`|
+|pending_engine_version|`utf8`|
+|pending_host_instance_type|`utf8`|
+|pending_ldap_server_metadata|`json`|
+|pending_security_groups|`list<item: utf8, nullable>`|
+|publicly_accessible|`bool`|
+|security_groups|`list<item: utf8, nullable>`|
+|storage_type|`utf8`|
+|subnet_ids|`list<item: utf8, nullable>`|
+|tags|`json`|
+|users|`json`|
+|result_metadata|`json`|

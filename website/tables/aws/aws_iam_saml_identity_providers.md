@@ -10,13 +10,13 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|arn (PK)|utf8|
-|create_date|timestamp[us, tz=UTC]|
-|saml_metadata_document|utf8|
-|tags|json|
-|valid_until|timestamp[us, tz=UTC]|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|arn (PK)|`utf8`|
+|create_date|`timestamp[us, tz=UTC]`|
+|saml_metadata_document|`utf8`|
+|tags|`json`|
+|valid_until|`timestamp[us, tz=UTC]`|

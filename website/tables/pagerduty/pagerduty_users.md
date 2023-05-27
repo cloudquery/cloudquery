@@ -16,24 +16,24 @@ The following tables depend on pagerduty_users:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|id (PK)|utf8|
-|html_url|utf8|
-|avatar_url|utf8|
-|type|utf8|
-|summary|utf8|
-|self|utf8|
-|name|utf8|
-|email|utf8|
-|time_zone|utf8|
-|color|utf8|
-|role|utf8|
-|description|utf8|
-|invitation_sent|bool|
-|contact_methods|json|
-|notification_rules|json|
-|job_title|utf8|
-|teams|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|html_url|`utf8`|
+|avatar_url|`utf8`|
+|type|`utf8`|
+|summary|`utf8`|
+|self|`utf8`|
+|name|`utf8`|
+|email|`utf8`|
+|time_zone|`utf8`|
+|color|`utf8`|
+|role|`utf8`|
+|description|`utf8`|
+|invitation_sent|`bool`|
+|contact_methods|`json`|
+|notification_rules|`json`|
+|job_title|`utf8`|
+|teams|`json`|

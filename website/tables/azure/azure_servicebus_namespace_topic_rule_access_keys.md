@@ -14,16 +14,16 @@ This table depends on [azure_servicebus_namespace_topic_authorization_rules](azu
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|subscription_id|utf8|
-|rule_id (PK)|utf8|
-|alias_primary_connection_string|utf8|
-|alias_secondary_connection_string|utf8|
-|key_name (PK)|utf8|
-|primary_connection_string|utf8|
-|primary_key|utf8|
-|secondary_connection_string|utf8|
-|secondary_key|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|subscription_id|`utf8`|
+|rule_id (PK)|`utf8`|
+|alias_primary_connection_string|`utf8`|
+|alias_secondary_connection_string|`utf8`|
+|key_name (PK)|`utf8`|
+|primary_connection_string|`utf8`|
+|primary_key|`utf8`|
+|secondary_connection_string|`utf8`|
+|secondary_key|`utf8`|

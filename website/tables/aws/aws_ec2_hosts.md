@@ -10,28 +10,28 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|tags|json|
-|allocation_time|timestamp[us, tz=UTC]|
-|allows_multiple_instance_types|utf8|
-|auto_placement|utf8|
-|availability_zone|utf8|
-|availability_zone_id|utf8|
-|available_capacity|json|
-|client_token|utf8|
-|host_id|utf8|
-|host_properties|json|
-|host_recovery|utf8|
-|host_reservation_id|utf8|
-|instances|json|
-|member_of_service_linked_resource_group|bool|
-|outpost_arn|utf8|
-|owner_id|utf8|
-|release_time|timestamp[us, tz=UTC]|
-|state|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|allocation_time|`timestamp[us, tz=UTC]`|
+|allows_multiple_instance_types|`utf8`|
+|auto_placement|`utf8`|
+|availability_zone|`utf8`|
+|availability_zone_id|`utf8`|
+|available_capacity|`json`|
+|client_token|`utf8`|
+|host_id|`utf8`|
+|host_properties|`json`|
+|host_recovery|`utf8`|
+|host_reservation_id|`utf8`|
+|instances|`json`|
+|member_of_service_linked_resource_group|`bool`|
+|outpost_arn|`utf8`|
+|owner_id|`utf8`|
+|release_time|`timestamp[us, tz=UTC]`|
+|state|`utf8`|

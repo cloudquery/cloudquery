@@ -15,14 +15,14 @@ The following tables depend on aws_route53_traffic_policies:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|arn (PK)|utf8|
-|id|utf8|
-|latest_version|int64|
-|name|utf8|
-|traffic_policy_count|int64|
-|type|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|arn (PK)|`utf8`|
+|id|`utf8`|
+|latest_version|`int64`|
+|name|`utf8`|
+|traffic_policy_count|`int64`|
+|type|`utf8`|
