@@ -12,13 +12,13 @@ This table depends on [github_organizations](github_organizations).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|org (PK)|utf8|
-|name (PK)|utf8|
-|created_at|timestamp[us, tz=UTC]|
-|updated_at|timestamp[us, tz=UTC]|
-|visibility|utf8|
-|selected_repositories_url|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|org (PK)|`utf8`|
+|name (PK)|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|updated_at|`timestamp[us, tz=UTC]`|
+|visibility|`utf8`|
+|selected_repositories_url|`utf8`|
