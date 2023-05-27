@@ -10,18 +10,18 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|id (PK)|utf8|
-|app|json|
-|attach_url|utf8|
-|command|utf8|
-|created_at|timestamp[us, tz=UTC]|
-|name|utf8|
-|release|json|
-|size|utf8|
-|state|utf8|
-|type|utf8|
-|updated_at|timestamp[us, tz=UTC]|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|app|`json`|
+|attach_url|`utf8`|
+|command|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|name|`utf8`|
+|release|`json`|
+|size|`utf8`|
+|state|`utf8`|
+|type|`utf8`|
+|updated_at|`timestamp[us, tz=UTC]`|

@@ -14,11 +14,11 @@ This table depends on [googleads_customers](googleads_customers).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|customer_id (PK)|int64|
-|resource_name (PK)|utf8|
-|customer (PK)|utf8|
-|label|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|customer_id (PK)|`int64`|
+|resource_name (PK)|`utf8`|
+|customer (PK)|`utf8`|
+|label|`utf8`|

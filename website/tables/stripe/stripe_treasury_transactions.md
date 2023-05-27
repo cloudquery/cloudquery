@@ -14,22 +14,22 @@ This table depends on [stripe_treasury_financial_accounts](stripe_treasury_finan
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|id (PK)|utf8|
-|created (Incremental Key)|timestamp[us, tz=UTC]|
-|amount|int64|
-|balance_impact|json|
-|currency|utf8|
-|description|utf8|
-|entries|json|
-|financial_account|utf8|
-|flow|utf8|
-|flow_details|json|
-|flow_type|utf8|
-|livemode|bool|
-|object|utf8|
-|status|utf8|
-|status_transitions|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|created (Incremental Key)|`timestamp[us, tz=UTC]`|
+|amount|`int64`|
+|balance_impact|`json`|
+|currency|`utf8`|
+|description|`utf8`|
+|entries|`json`|
+|financial_account|`utf8`|
+|flow|`utf8`|
+|flow_details|`json`|
+|flow_type|`utf8`|
+|livemode|`bool`|
+|object|`utf8`|
+|status|`utf8`|
+|status_transitions|`json`|
