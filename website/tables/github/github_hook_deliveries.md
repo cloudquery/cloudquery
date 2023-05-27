@@ -12,22 +12,22 @@ This table depends on [github_hooks](github_hooks).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|org (PK)|utf8|
-|hook_id (PK)|int64|
-|id (PK)|int64|
-|guid|utf8|
-|delivered_at|timestamp[us, tz=UTC]|
-|redelivery|bool|
-|duration|float64|
-|status|utf8|
-|status_code|int64|
-|event|utf8|
-|action|utf8|
-|installation_id|int64|
-|repository_id|int64|
-|request|json|
-|response|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|org (PK)|`utf8`|
+|hook_id (PK)|`int64`|
+|id (PK)|`int64`|
+|guid|`utf8`|
+|delivered_at|`timestamp[us, tz=UTC]`|
+|redelivery|`bool`|
+|duration|`float64`|
+|status|`utf8`|
+|status_code|`int64`|
+|event|`utf8`|
+|action|`utf8`|
+|installation_id|`int64`|
+|repository_id|`int64`|
+|request|`json`|
+|response|`json`|

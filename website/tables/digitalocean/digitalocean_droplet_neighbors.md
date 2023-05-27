@@ -12,9 +12,9 @@ This table depends on [digitalocean_droplets](digitalocean_droplets).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|neighbor_id (PK)|int64|
-|droplet_id|int64|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|neighbor_id (PK)|`int64`|
+|droplet_id|`int64`|

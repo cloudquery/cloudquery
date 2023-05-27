@@ -14,17 +14,17 @@ This table depends on [aws_timestream_databases](aws_timestream_databases).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|creation_time|timestamp[us, tz=UTC]|
-|database_name|utf8|
-|last_updated_time|timestamp[us, tz=UTC]|
-|magnetic_store_write_properties|json|
-|retention_properties|json|
-|table_name|utf8|
-|table_status|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|creation_time|`timestamp[us, tz=UTC]`|
+|database_name|`utf8`|
+|last_updated_time|`timestamp[us, tz=UTC]`|
+|magnetic_store_write_properties|`json`|
+|retention_properties|`json`|
+|table_name|`utf8`|
+|table_status|`utf8`|

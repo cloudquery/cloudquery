@@ -14,21 +14,21 @@ This table depends on [aws_apigateway_rest_apis](aws_apigateway_rest_apis).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id (PK)|utf8|
-|region|utf8|
-|rest_api_arn|utf8|
-|arn (PK)|utf8|
-|auth_type|utf8|
-|authorizer_credentials|utf8|
-|authorizer_result_ttl_in_seconds|int64|
-|authorizer_uri|utf8|
-|id|utf8|
-|identity_source|utf8|
-|identity_validation_expression|utf8|
-|name|utf8|
-|provider_arns|list<item: utf8, nullable>|
-|type|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region|`utf8`|
+|rest_api_arn|`utf8`|
+|arn (PK)|`utf8`|
+|auth_type|`utf8`|
+|authorizer_credentials|`utf8`|
+|authorizer_result_ttl_in_seconds|`int64`|
+|authorizer_uri|`utf8`|
+|id|`utf8`|
+|identity_source|`utf8`|
+|identity_validation_expression|`utf8`|
+|name|`utf8`|
+|provider_arns|`list<item: utf8, nullable>`|
+|type|`utf8`|

@@ -10,24 +10,24 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|tags|json|
-|created_at|timestamp[us, tz=UTC]|
-|engine|utf8|
-|engine_version|utf8|
-|from_relational_database_arn|utf8|
-|from_relational_database_blueprint_id|utf8|
-|from_relational_database_bundle_id|utf8|
-|from_relational_database_name|utf8|
-|location|json|
-|name|utf8|
-|resource_type|utf8|
-|size_in_gb|int64|
-|state|utf8|
-|support_code|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|created_at|`timestamp[us, tz=UTC]`|
+|engine|`utf8`|
+|engine_version|`utf8`|
+|from_relational_database_arn|`utf8`|
+|from_relational_database_blueprint_id|`utf8`|
+|from_relational_database_bundle_id|`utf8`|
+|from_relational_database_name|`utf8`|
+|location|`json`|
+|name|`utf8`|
+|resource_type|`utf8`|
+|size_in_gb|`int64`|
+|state|`utf8`|
+|support_code|`utf8`|

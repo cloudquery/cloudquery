@@ -14,14 +14,14 @@ This table depends on [pagerduty_services](pagerduty_services).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|id (PK)|utf8|
-|self|utf8|
-|disabled|bool|
-|conditions|json|
-|time_frame|json|
-|position|int64|
-|actions|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|self|`utf8`|
+|disabled|`bool`|
+|conditions|`json`|
+|time_frame|`json`|
+|position|`int64`|
+|actions|`json`|

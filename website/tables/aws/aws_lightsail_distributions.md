@@ -10,30 +10,30 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|tags|json|
-|able_to_update_bundle|bool|
-|alternative_domain_names|list<item: utf8, nullable>|
-|bundle_id|utf8|
-|cache_behavior_settings|json|
-|cache_behaviors|json|
-|certificate_name|utf8|
-|created_at|timestamp[us, tz=UTC]|
-|default_cache_behavior|json|
-|domain_name|utf8|
-|ip_address_type|utf8|
-|is_enabled|bool|
-|location|json|
-|name|utf8|
-|origin|json|
-|origin_public_dns|utf8|
-|resource_type|utf8|
-|status|utf8|
-|support_code|utf8|
-|latest_cache_reset|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|able_to_update_bundle|`bool`|
+|alternative_domain_names|`list<item: utf8, nullable>`|
+|bundle_id|`utf8`|
+|cache_behavior_settings|`json`|
+|cache_behaviors|`json`|
+|certificate_name|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|default_cache_behavior|`json`|
+|domain_name|`utf8`|
+|ip_address_type|`utf8`|
+|is_enabled|`bool`|
+|location|`json`|
+|name|`utf8`|
+|origin|`json`|
+|origin_public_dns|`utf8`|
+|resource_type|`utf8`|
+|status|`utf8`|
+|support_code|`utf8`|
+|latest_cache_reset|`json`|

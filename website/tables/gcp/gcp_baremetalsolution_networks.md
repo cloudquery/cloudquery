@@ -10,20 +10,20 @@ The composite primary key for this table is (**project_id**, **name**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|project_id (PK)|utf8|
-|name (PK)|utf8|
-|id|utf8|
-|type|utf8|
-|ip_address|utf8|
-|mac_address|list<item: utf8, nullable>|
-|state|utf8|
-|vlan_id|utf8|
-|cidr|utf8|
-|vrf|json|
-|labels|json|
-|services_cidr|utf8|
-|reservations|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|id|`utf8`|
+|type|`utf8`|
+|ip_address|`utf8`|
+|mac_address|`list<item: utf8, nullable>`|
+|state|`utf8`|
+|vlan_id|`utf8`|
+|cidr|`utf8`|
+|vrf|`json`|
+|labels|`json`|
+|services_cidr|`utf8`|
+|reservations|`json`|

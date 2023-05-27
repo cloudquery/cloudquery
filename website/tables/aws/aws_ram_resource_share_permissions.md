@@ -14,20 +14,20 @@ This table depends on [aws_ram_resource_shares](aws_ram_resource_shares).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id (PK)|utf8|
-|region (PK)|utf8|
-|resource_share_arn (PK)|utf8|
-|permission|json|
-|arn (PK)|utf8|
-|creation_time|timestamp[us, tz=UTC]|
-|default_version|bool|
-|is_resource_type_default|bool|
-|last_updated_time|timestamp[us, tz=UTC]|
-|name|utf8|
-|resource_type|utf8|
-|status|utf8|
-|version (PK)|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
+|resource_share_arn (PK)|`utf8`|
+|permission|`json`|
+|arn (PK)|`utf8`|
+|creation_time|`timestamp[us, tz=UTC]`|
+|default_version|`bool`|
+|is_resource_type_default|`bool`|
+|last_updated_time|`timestamp[us, tz=UTC]`|
+|name|`utf8`|
+|resource_type|`utf8`|
+|status|`utf8`|
+|version (PK)|`utf8`|

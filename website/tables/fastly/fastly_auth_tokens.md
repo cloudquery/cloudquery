@@ -10,17 +10,17 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|id (PK)|utf8|
-|ip|utf8|
-|access_token|utf8|
-|created_at|timestamp[us, tz=UTC]|
-|expires_at|timestamp[us, tz=UTC]|
-|last_used_at|timestamp[us, tz=UTC]|
-|name|utf8|
-|scope|utf8|
-|services|list<item: utf8, nullable>|
-|user_id|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|ip|`utf8`|
+|access_token|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|expires_at|`timestamp[us, tz=UTC]`|
+|last_used_at|`timestamp[us, tz=UTC]`|
+|name|`utf8`|
+|scope|`utf8`|
+|services|`list<item: utf8, nullable>`|
+|user_id|`utf8`|

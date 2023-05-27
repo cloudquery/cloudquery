@@ -14,25 +14,25 @@ This table depends on [aws_accessanalyzer_analyzers](aws_accessanalyzer_analyzer
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|analyzer_arn|utf8|
-|analyzed_at|timestamp[us, tz=UTC]|
-|condition|json|
-|created_at|timestamp[us, tz=UTC]|
-|id|utf8|
-|resource_owner_account|utf8|
-|resource_type|utf8|
-|status|utf8|
-|updated_at|timestamp[us, tz=UTC]|
-|action|list<item: utf8, nullable>|
-|error|utf8|
-|is_public|bool|
-|principal|json|
-|resource|utf8|
-|sources|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|analyzer_arn|`utf8`|
+|analyzed_at|`timestamp[us, tz=UTC]`|
+|condition|`json`|
+|created_at|`timestamp[us, tz=UTC]`|
+|id|`utf8`|
+|resource_owner_account|`utf8`|
+|resource_type|`utf8`|
+|status|`utf8`|
+|updated_at|`timestamp[us, tz=UTC]`|
+|action|`list<item: utf8, nullable>`|
+|error|`utf8`|
+|is_public|`bool`|
+|principal|`json`|
+|resource|`utf8`|
+|sources|`json`|

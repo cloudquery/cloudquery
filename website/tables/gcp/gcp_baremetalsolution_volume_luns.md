@@ -14,18 +14,18 @@ This table depends on [gcp_baremetalsolution_volumes](gcp_baremetalsolution_volu
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|project_id (PK)|utf8|
-|name (PK)|utf8|
-|id|utf8|
-|state|utf8|
-|size_gb|int64|
-|multiprotocol_type|utf8|
-|storage_volume|utf8|
-|shareable|bool|
-|boot_lun|bool|
-|storage_type|utf8|
-|wwid|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|id|`utf8`|
+|state|`utf8`|
+|size_gb|`int64`|
+|multiprotocol_type|`utf8`|
+|storage_volume|`utf8`|
+|shareable|`bool`|
+|boot_lun|`bool`|
+|storage_type|`utf8`|
+|wwid|`utf8`|

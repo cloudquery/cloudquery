@@ -10,13 +10,13 @@ The composite primary key for this table is (**tailnet**, **id**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|tailnet (PK)|utf8|
-|id (PK)|utf8|
-|key|utf8|
-|created|timestamp[us, tz=UTC]|
-|expires|timestamp[us, tz=UTC]|
-|capabilities|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|tailnet (PK)|`utf8`|
+|id (PK)|`utf8`|
+|key|`utf8`|
+|created|`timestamp[us, tz=UTC]`|
+|expires|`timestamp[us, tz=UTC]`|
+|capabilities|`json`|

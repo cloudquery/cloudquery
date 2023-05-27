@@ -10,20 +10,20 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|application_name|utf8|
-|application_version_arn|utf8|
-|build_arn|utf8|
-|date_created|timestamp[us, tz=UTC]|
-|date_updated|timestamp[us, tz=UTC]|
-|description|utf8|
-|source_build_information|json|
-|source_bundle|json|
-|status|utf8|
-|version_label|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|application_name|`utf8`|
+|application_version_arn|`utf8`|
+|build_arn|`utf8`|
+|date_created|`timestamp[us, tz=UTC]`|
+|date_updated|`timestamp[us, tz=UTC]`|
+|description|`utf8`|
+|source_build_information|`json`|
+|source_bundle|`json`|
+|status|`utf8`|
+|version_label|`utf8`|

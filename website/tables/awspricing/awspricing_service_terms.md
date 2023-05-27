@@ -14,13 +14,13 @@ This table depends on [awspricing_services](awspricing_services).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|type|utf8|
-|offer_term_code (PK)|utf8|
-|sku (PK)|utf8|
-|effective_date|timestamp[us, tz=UTC]|
-|price_dimensions|json|
-|term_attributes|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|type|`utf8`|
+|offer_term_code (PK)|`utf8`|
+|sku (PK)|`utf8`|
+|effective_date|`timestamp[us, tz=UTC]`|
+|price_dimensions|`json`|
+|term_attributes|`json`|

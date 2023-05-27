@@ -17,38 +17,38 @@ The following tables depend on pagerduty_incidents:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|id (PK)|utf8|
-|html_url|utf8|
-|created_at|timestamp[us, tz=UTC]|
-|last_status_change_at|timestamp[us, tz=UTC]|
-|type|utf8|
-|summary|utf8|
-|self|utf8|
-|incident_number|int64|
-|title|utf8|
-|description|utf8|
-|pending_actions|json|
-|incident_key|utf8|
-|service|json|
-|assignments|json|
-|acknowledgements|json|
-|last_status_change_by|json|
-|first_trigger_log_entry|json|
-|escalation_policy|json|
-|teams|json|
-|priority|json|
-|urgency|utf8|
-|status|utf8|
-|resolve_reason|json|
-|alert_counts|json|
-|body|json|
-|is_mergeable|bool|
-|conference_bridge|json|
-|assigned_via|utf8|
-|occurrence|json|
-|incidents_responders|json|
-|responder_requests|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|html_url|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|last_status_change_at|`timestamp[us, tz=UTC]`|
+|type|`utf8`|
+|summary|`utf8`|
+|self|`utf8`|
+|incident_number|`int64`|
+|title|`utf8`|
+|description|`utf8`|
+|pending_actions|`json`|
+|incident_key|`utf8`|
+|service|`json`|
+|assignments|`json`|
+|acknowledgements|`json`|
+|last_status_change_by|`json`|
+|first_trigger_log_entry|`json`|
+|escalation_policy|`json`|
+|teams|`json`|
+|priority|`json`|
+|urgency|`utf8`|
+|status|`utf8`|
+|resolve_reason|`json`|
+|alert_counts|`json`|
+|body|`json`|
+|is_mergeable|`bool`|
+|conference_bridge|`json`|
+|assigned_via|`utf8`|
+|occurrence|`json`|
+|incidents_responders|`json`|
+|responder_requests|`json`|
