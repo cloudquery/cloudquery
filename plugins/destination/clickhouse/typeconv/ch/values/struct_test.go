@@ -57,7 +57,13 @@ func Test_structValue(t *testing.T) {
 	require.True(t, ok)
 	require.True(t, *nonNullable.(*bool))
 
-	// nil
+	// nil, but for CH we have a map for every key with nil value
 	elem = elems[2]
-	require.Nil(t, elem)
+	nullable, ok = (*elem)["nullable_bool"]
+	require.True(t, ok)
+	require.Nil(t, nullable)
+
+	nonNullable, ok = (*elem)["non_nullable_bool"]
+	require.True(t, ok)
+	require.Nil(t, nonNullable)
 }

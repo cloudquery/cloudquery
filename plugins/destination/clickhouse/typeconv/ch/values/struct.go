@@ -23,12 +23,14 @@ func structValue(arr *array.Struct) (any, error) {
 		}
 	}
 
+	sanitized, err := sanitizeNested(arr)
+	if err != nil {
+		return nil, err
+	}
+	arr = sanitized.(*array.Struct)
+
 	rows := make([]*map[string]any, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
-		if arr.IsNull(i) {
-			continue
-		}
-
 		row := make(map[string]any, len(fields))
 		for _, field := range fields {
 			row[field.Name] = columns[field.Name][i]

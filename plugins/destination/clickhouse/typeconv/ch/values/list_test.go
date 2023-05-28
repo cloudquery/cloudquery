@@ -32,6 +32,7 @@ func Test_listValue(t *testing.T) {
 		for _, uid := range row {
 			uidBuilder.Append(uid)
 		}
+		builder.AppendNull()
 	}
 
 	data, err := listValue(builder.NewListArray())
@@ -39,13 +40,18 @@ func Test_listValue(t *testing.T) {
 
 	uidSlices := data.([]*[]*uuid.UUID)
 
-	require.Equal(t, amount, len(uidSlices))
+	require.Equal(t, 2*amount, len(uidSlices))
 	for i, row := range uidSlices {
 		require.NotNil(t, row)
+		if i%2 == 1 {
+			// empty
+			require.Empty(t, *row)
+			continue
+		}
 		require.Equal(t, width, len(*row))
 		for j, uid := range *row {
 			require.NotNil(t, uid)
-			require.Exactly(t, values[i][j], *uid)
+			require.Exactly(t, values[i/2][j], *uid)
 		}
 	}
 }
@@ -72,6 +78,7 @@ func Test_largeListValue(t *testing.T) {
 		for _, uid := range row {
 			uidBuilder.Append(uid)
 		}
+		builder.AppendNull()
 	}
 
 	data, err := listValue(builder.NewLargeListArray())
@@ -79,13 +86,18 @@ func Test_largeListValue(t *testing.T) {
 
 	uidSlices := data.([]*[]*uuid.UUID)
 
-	require.Equal(t, amount, len(uidSlices))
+	require.Equal(t, 2*amount, len(uidSlices))
 	for i, row := range uidSlices {
 		require.NotNil(t, row)
+		if i%2 == 1 {
+			// empty
+			require.Empty(t, *row)
+			continue
+		}
 		require.Equal(t, width, len(*row))
 		for j, uid := range *row {
 			require.NotNil(t, uid)
-			require.Exactly(t, values[i][j], *uid)
+			require.Exactly(t, values[i/2][j], *uid)
 		}
 	}
 }
@@ -112,6 +124,7 @@ func Test_fixedSizeListValue(t *testing.T) {
 		for _, uid := range row {
 			uidBuilder.Append(uid)
 		}
+		builder.AppendNull()
 	}
 
 	data, err := listValue(builder.NewListArray())
@@ -119,13 +132,17 @@ func Test_fixedSizeListValue(t *testing.T) {
 
 	uidSlices := data.([]*[]*uuid.UUID)
 
-	require.Equal(t, amount, len(uidSlices))
+	require.Equal(t, 2*amount, len(uidSlices))
 	for i, row := range uidSlices {
 		require.NotNil(t, row)
 		require.Equal(t, width, len(*row))
 		for j, uid := range *row {
 			require.NotNil(t, uid)
-			require.Exactly(t, values[i][j], *uid)
+			if i%2 == 0 {
+				require.Exactly(t, values[i/2][j], *uid)
+			} else {
+				require.Exactly(t, uuid.Nil, *uid)
+			}
 		}
 	}
 }
