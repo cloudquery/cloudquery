@@ -3,12 +3,22 @@ package services
 import (
 	"context"
 	"strings"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func TestDataTable() *schema.Table {
-	table := schema.TestTable("test_testdata_table", schema.TestSourceOptions{})
+	table := schema.TestTable("test_testdata_table", schema.TestSourceOptions{
+		SkipDates:      true,
+		SkipMaps:       true,
+		SkipStructs:    true,
+		SkipIntervals:  true,
+		SkipDurations:  true,
+		SkipTimes:      true,
+		SkipLargeTypes: true,
+		TimePrecision:  time.Millisecond,
+	})
 	for i, c := range table.Columns {
 		if strings.HasPrefix(c.Name, "_cq_") {
 			table.Columns[i].Name = "test" + c.Name
@@ -37,7 +47,7 @@ func TestDataTable() *schema.Table {
 }
 
 func fetchTestData(data map[string]any) schema.TableResolver {
-	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	return func(_ context.Context, _ schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 		res <- data
 		return nil
 	}
