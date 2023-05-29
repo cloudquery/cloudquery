@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v1.2.1...plugins-source-oracle-v2.0.0) (2023-05-29)
+
+
+### This Release has the Following Changes to Tables
+- Table `oracle_database_autonomous_container_databases`: column type changed from `JSON` to `list<item: float64, nullable>` for `provisionable_cpus` (:warning: breaking)
+- Table `oracle_database_autonomous_databases`: column type changed from `JSON` to `list<item: float64, nullable>` for `provisionable_cpus` (:warning: breaking)
+
+### ⚠ BREAKING CHANGES
+
+* This release introduces an internal change to our type system to use [Apache Arrow](https://arrow.apache.org/). This should not have any visible breaking changes, however due to the size of the change we are introducing it under a major version bump to communicate that it might have some bugs that we weren't able to catch during our internal tests. If you encounter an issue during the upgrade, please submit a [bug report](https://github.com/cloudquery/cloudquery/issues/new/choose). You will also need to update destinations depending on which one you use:
+
+### Features
+
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+* Update to use [Apache Arrow](https://arrow.apache.org/) type system ([#11037](https://github.com/cloudquery/cloudquery/issues/11037)) ([133d82e](https://github.com/cloudquery/cloudquery/commit/133d82e0bcf2ed3968cf0fe99b6fb5e456522869))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.8 ([#10798](https://github.com/cloudquery/cloudquery/issues/10798)) ([27ff430](https://github.com/cloudquery/cloudquery/commit/27ff430527932d59a4d488a6767547eda8853940))
+
 ## [1.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v1.2.0...plugins-source-oracle-v1.2.1) (2023-05-02)
 
 
