@@ -6,6 +6,51 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [18.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v17.4.0...plugins-source-aws-v18.0.0) (2023-05-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* **aws:** Change names of columns which had `_ar_ns` instead of `_arns` ([#10802](https://github.com/cloudquery/cloudquery/issues/10802))
+* This release introduces an internal change to our type system to use [Apache Arrow](https://arrow.apache.org/). This should not have any visible breaking changes, however due to the size of the change we are introducing it under a major version bump to communicate that it might have some bugs that we weren't able to catch during our internal tests. If you encounter an issue during the upgrade, please submit a [bug report](https://github.com/cloudquery/cloudquery/issues/new/choose). You will also need to update destinations depending on which one you use:
+    - Azure Blob Storage >= v3.2.0
+    - BigQuery >= v3.0.0
+    - ClickHouse >= v3.1.1
+    - DuckDB >= v1.1.6
+    - Elasticsearch >= v2.0.0
+    - File >= v3.2.0
+    - Firehose >= v2.0.2
+    - GCS >= v3.2.0
+    - Gremlin >= v2.1.10
+    - Kafka >= v3.0.1
+    - Meilisearch >= v2.0.1
+    - Microsoft SQL Server >= v4.2.0
+    - MongoDB >= v2.0.1
+    - MySQL >= v2.0.2
+    - Neo4j >= v3.0.0
+    - PostgreSQL >= v4.2.0
+    - S3 >= v4.4.0
+    - Snowflake >= v2.1.1
+    - SQLite >= v2.2.0
+
+### Features
+
+* Update to use [Apache Arrow](https://arrow.apache.org/) type system ([#10797](https://github.com/cloudquery/cloudquery/issues/10797)) ([e355d14](https://github.com/cloudquery/cloudquery/commit/e355d14b8dac61226e1fecd53cf9a84fc79b4640))
+
+
+### Bug Fixes
+
+* **aws:** Change names of columns which had `_ar_ns` instead of `_arns` ([#10802](https://github.com/cloudquery/cloudquery/issues/10802)) ([e00ac44](https://github.com/cloudquery/cloudquery/commit/e00ac44bfb779c0c787409383de07698a4c37a8f))
+* **aws:** Remove Hardcoded fix for AWS issue ([#10972](https://github.com/cloudquery/cloudquery/issues/10972)) ([ede53a7](https://github.com/cloudquery/cloudquery/commit/ede53a7eb262bdb6f713f538acc7ebdcddb80087))
+* **aws:** Support syncing AWS SSO Account Assignments for non management accounts ([#10881](https://github.com/cloudquery/cloudquery/issues/10881)) ([a715e4f](https://github.com/cloudquery/cloudquery/commit/a715e4f24f973d8382f9d901723baf6ee6116d18))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs to v1.20.11 ([#11066](https://github.com/cloudquery/cloudquery/issues/11066)) ([be8e23b](https://github.com/cloudquery/cloudquery/commit/be8e23bc22de28a14b7f203ffc2823a58ed0cadf))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/codebuild to v1.20.13 ([#11067](https://github.com/cloudquery/cloudquery/issues/11067)) ([c3c831a](https://github.com/cloudquery/cloudquery/commit/c3c831a2983948af8bb5769ed550aa7ce287e121))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/cognitoidentity to v1.15.11 ([#11068](https://github.com/cloudquery/cloudquery/issues/11068)) ([6708fec](https://github.com/cloudquery/cloudquery/commit/6708fecfa7a7838d60e6287fdbcf44abfdbe564c))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider to v1.22.10 ([#11069](https://github.com/cloudquery/cloudquery/issues/11069)) ([28698dc](https://github.com/cloudquery/cloudquery/commit/28698dc02a9deff8df5d0fb225ce8517ae4bd1d8))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/costexplorer to v1.25.10 ([#11070](https://github.com/cloudquery/cloudquery/issues/11070)) ([8da3107](https://github.com/cloudquery/cloudquery/commit/8da31078b1e0e71bee8e4aef8fab9c141b69f0f5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.45.0 ([#11041](https://github.com/cloudquery/cloudquery/issues/11041)) ([035e461](https://github.com/cloudquery/cloudquery/commit/035e461ae26ec14ea918a3e8b918802b1ff770e4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v3 to v3.6.7 ([#11043](https://github.com/cloudquery/cloudquery/issues/11043)) ([3c6d885](https://github.com/cloudquery/cloudquery/commit/3c6d885c3d201b0b39cbc1406c6e54a57ec5ed5f))
+
 ## [17.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v17.3.1...plugins-source-aws-v17.4.0) (2023-05-23)
 
 
