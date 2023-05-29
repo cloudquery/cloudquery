@@ -5,6 +5,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/resources/plugin"
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
@@ -52,5 +53,17 @@ func TestPlugin(t *testing.T) {
 
 			MigrateStrategyAppend: migrateStrategy,
 		},
+		destination.WithTestSourceAllowNull(func(dt arrow.DataType) bool {
+			switch dt.(type) {
+			case *arrow.StructType,
+				*arrow.MapType,
+				*arrow.ListType,
+				*arrow.LargeListType,
+				*arrow.FixedSizeListType:
+				return false
+			default:
+				return true
+			}
+		}),
 	)
 }
