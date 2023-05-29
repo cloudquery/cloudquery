@@ -125,11 +125,15 @@ func Test_mapValue(t *testing.T) {
 	require.True(t, ok)
 	// tuples are non-nullable in CH
 	require.NotNil(t, val)
-	for _, field := range mapType.ItemType().(*arrow.StructType).Fields() {
-		v, ok := val[field.Name]
-		require.True(t, ok)
-		require.Empty(t, v)
-	}
+	require.EqualValues(t, map[string]any{
+		"bool":             (*bool)(nil),
+		"bool_n":           (*bool)(nil),
+		"list":             ptr([]*uuid.UUID{}),
+		"map":              ptr(map[int32]*float64{}),
+		"map_n":            ptr(map[int32]*float64{}),
+		"map_uuid":         ptr(map[uuid.UUID]*uuid.UUID{}),
+		"mapped_to_string": (*string)(nil),
+	}, val)
 
 	// 2 values: proper & null
 	elem = elems[2]
@@ -150,11 +154,15 @@ func Test_mapValue(t *testing.T) {
 	require.True(t, ok)
 	// tuples are non-nullable in CH
 	require.NotNil(t, val)
-	for _, field := range mapType.ItemType().(*arrow.StructType).Fields() {
-		v, ok := val[field.Name]
-		require.True(t, ok)
-		require.Empty(t, v)
-	}
+	require.EqualValues(t, map[string]any{
+		"bool":             (*bool)(nil),
+		"bool_n":           (*bool)(nil),
+		"list":             ptr([]*uuid.UUID{}),
+		"map":              ptr(map[int32]*float64{}),
+		"map_n":            ptr(map[int32]*float64{}),
+		"map_uuid":         ptr(map[uuid.UUID]*uuid.UUID{}),
+		"mapped_to_string": (*string)(nil),
+	}, val)
 
 	// null
 	elem = elems[3]
