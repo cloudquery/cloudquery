@@ -15,7 +15,8 @@ func buildFromString(builder array.Builder, value any) error {
 		return builder.AppendValueFromString(v)
 	}
 
-	// binary types are handled separately, so here we have a builder that most likely can't handle empty string
-	builder.AppendEmptyValue()
+	// binary types are handled separately, so here we have a builder that most likely can't handle empty string.
+	// having empty string in CH means that this was a null value
+	builder.AppendNull()
 	return nil
 }
