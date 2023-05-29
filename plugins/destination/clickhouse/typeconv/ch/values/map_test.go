@@ -126,13 +126,13 @@ func Test_mapValue(t *testing.T) {
 	// tuples are non-nullable in CH
 	require.NotNil(t, val)
 	require.EqualValues(t, map[string]any{
-		"bool":             (*bool)(nil),
-		"bool_n":           (*bool)(nil),
+		"bool":             ptr(false),
+		"bool_n":           ptr(false),
 		"list":             ptr([]*uuid.UUID{}),
 		"map":              ptr(map[int32]*float64{}),
 		"map_n":            ptr(map[int32]*float64{}),
 		"map_uuid":         ptr(map[uuid.UUID]*uuid.UUID{}),
-		"mapped_to_string": (*string)(nil),
+		"mapped_to_string": ptr("[]"),
 	}, val)
 
 	// 2 values: proper & null
@@ -155,13 +155,13 @@ func Test_mapValue(t *testing.T) {
 	// tuples are non-nullable in CH
 	require.NotNil(t, val)
 	require.EqualValues(t, map[string]any{
-		"bool":             (*bool)(nil),
-		"bool_n":           (*bool)(nil),
+		"bool":             ptr(false),
+		"bool_n":           ptr(false),
 		"list":             ptr([]*uuid.UUID{}),
 		"map":              ptr(map[int32]*float64{}),
 		"map_n":            ptr(map[int32]*float64{}),
 		"map_uuid":         ptr(map[uuid.UUID]*uuid.UUID{}),
-		"mapped_to_string": (*string)(nil),
+		"mapped_to_string": ptr("[]"),
 	}, val)
 
 	// null

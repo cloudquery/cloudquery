@@ -29,6 +29,7 @@ func listValue(arr array.ListLike) (any, error) {
 		return nil, err
 	}
 	arr = sanitized.(array.ListLike)
+
 	elems := make([]any, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
 		from, to := arr.ValueOffsets(i)
@@ -67,5 +68,6 @@ func sanitizeNested(arr arrow.Array) (arrow.Array, error) {
 			return nil, err
 		}
 	}
+
 	return builder.NewArray(), nil
 }
