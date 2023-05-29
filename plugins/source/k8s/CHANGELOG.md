@@ -3,6 +3,10 @@
 ## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v3.5.1...plugins-source-k8s-v4.0.0) (2023-05-29)
 
 
+### This Release has the Following Changes to Tables
+- Table `k8s_core_nodes`: column type changed from `CIDRArray` to `list<item: inet, nullable>` for `spec_pod_cidrs` (:warning: breaking)
+- Table `k8s_core_nodes`: column type changed from `CIDR` to `inet` for `spec_pod_cidr` (:warning: breaking)
+
 ### ⚠ BREAKING CHANGES
 
 * This release introduces an internal change to our type system to use [Apache Arrow](https://arrow.apache.org/). This should not have any visible breaking changes, however due to the size of the change we are introducing it under a major version bump to communicate that it might have some bugs that we weren't able to catch during our internal tests. If you encounter an issue during the upgrade, please submit a [bug report](https://github.com/cloudquery/cloudquery/issues/new/choose). You will also need to update destinations depending on which one you use:
