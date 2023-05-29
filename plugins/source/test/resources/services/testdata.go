@@ -13,7 +13,7 @@ func TestDataTable() *schema.Table {
 		if strings.HasPrefix(c.Name, "_cq_") {
 			table.Columns[i].Name = "test" + c.Name
 		}
-		table.Columns[i].PrimaryKey = false
+		table.Columns[i].PrimaryKey = c.Name == "int64"
 		table.Columns[i].IncrementalKey = false
 		table.Columns[i].NotNull = false
 		table.Columns[i].Resolver = schema.PathResolver(table.Columns[i].Name)
