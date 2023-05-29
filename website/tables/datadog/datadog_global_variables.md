@@ -8,17 +8,17 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_name|String|
-|id (PK)|String|
-|attributes|JSON|
-|description|String|
-|name|String|
-|parse_test_options|JSON|
-|parse_test_public_id|String|
-|tags|StringArray|
-|value|JSON|
-|additional_properties|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_name|`utf8`|
+|id (PK)|`utf8`|
+|attributes|`json`|
+|description|`utf8`|
+|name|`utf8`|
+|parse_test_options|`json`|
+|parse_test_public_id|`utf8`|
+|tags|`list<item: utf8, nullable>`|
+|value|`json`|
+|additional_properties|`json`|

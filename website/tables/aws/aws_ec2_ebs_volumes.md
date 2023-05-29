@@ -10,26 +10,26 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|attachments|JSON|
-|availability_zone|String|
-|create_time|Timestamp|
-|encrypted|Bool|
-|fast_restored|Bool|
-|iops|Int|
-|kms_key_id|String|
-|multi_attach_enabled|Bool|
-|outpost_arn|String|
-|size|Int|
-|snapshot_id|String|
-|state|String|
-|throughput|Int|
-|volume_id|String|
-|volume_type|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|attachments|`json`|
+|availability_zone|`utf8`|
+|create_time|`timestamp[us, tz=UTC]`|
+|encrypted|`bool`|
+|fast_restored|`bool`|
+|iops|`int64`|
+|kms_key_id|`utf8`|
+|multi_attach_enabled|`bool`|
+|outpost_arn|`utf8`|
+|size|`int64`|
+|snapshot_id|`utf8`|
+|state|`utf8`|
+|throughput|`int64`|
+|volume_id|`utf8`|
+|volume_type|`utf8`|

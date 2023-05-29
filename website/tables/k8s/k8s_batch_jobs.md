@@ -8,40 +8,40 @@ The primary key for this table is **uid**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|context|String|
-|kind|String|
-|api_version|String|
-|name|String|
-|namespace|String|
-|uid (PK)|String|
-|resource_version|String|
-|generation|Int|
-|deletion_grace_period_seconds|Int|
-|labels|JSON|
-|annotations|JSON|
-|owner_references|JSON|
-|finalizers|StringArray|
-|spec_parallelism|Int|
-|spec_completions|Int|
-|spec_active_deadline_seconds|Int|
-|spec_pod_failure_policy|JSON|
-|spec_backoff_limit|Int|
-|spec_selector|JSON|
-|spec_manual_selector|Bool|
-|spec_template|JSON|
-|spec_ttl_seconds_after_finished|Int|
-|spec_completion_mode|String|
-|spec_suspend|Bool|
-|status_conditions|JSON|
-|status_start_time|Timestamp|
-|status_completion_time|Timestamp|
-|status_active|Int|
-|status_succeeded|Int|
-|status_failed|Int|
-|status_completed_indexes|String|
-|status_uncounted_terminated_pods|JSON|
-|status_ready|Int|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|context|`utf8`|
+|kind|`utf8`|
+|api_version|`utf8`|
+|name|`utf8`|
+|namespace|`utf8`|
+|uid (PK)|`utf8`|
+|resource_version|`utf8`|
+|generation|`int64`|
+|deletion_grace_period_seconds|`int64`|
+|labels|`json`|
+|annotations|`json`|
+|owner_references|`json`|
+|finalizers|`list<item: utf8, nullable>`|
+|spec_parallelism|`int64`|
+|spec_completions|`int64`|
+|spec_active_deadline_seconds|`int64`|
+|spec_pod_failure_policy|`json`|
+|spec_backoff_limit|`int64`|
+|spec_selector|`json`|
+|spec_manual_selector|`bool`|
+|spec_template|`json`|
+|spec_ttl_seconds_after_finished|`int64`|
+|spec_completion_mode|`utf8`|
+|spec_suspend|`bool`|
+|status_conditions|`json`|
+|status_start_time|`timestamp[us, tz=UTC]`|
+|status_completion_time|`timestamp[us, tz=UTC]`|
+|status_active|`int64`|
+|status_succeeded|`int64`|
+|status_failed|`int64`|
+|status_completed_indexes|`utf8`|
+|status_uncounted_terminated_pods|`json`|
+|status_ready|`int64`|

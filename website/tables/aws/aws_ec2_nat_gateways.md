@@ -10,22 +10,22 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|connectivity_type|String|
-|create_time|Timestamp|
-|delete_time|Timestamp|
-|failure_code|String|
-|failure_message|String|
-|nat_gateway_addresses|JSON|
-|nat_gateway_id|String|
-|provisioned_bandwidth|JSON|
-|state|String|
-|subnet_id|String|
-|vpc_id|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|connectivity_type|`utf8`|
+|create_time|`timestamp[us, tz=UTC]`|
+|delete_time|`timestamp[us, tz=UTC]`|
+|failure_code|`utf8`|
+|failure_message|`utf8`|
+|nat_gateway_addresses|`json`|
+|nat_gateway_id|`utf8`|
+|provisioned_bandwidth|`json`|
+|state|`utf8`|
+|subnet_id|`utf8`|
+|vpc_id|`utf8`|

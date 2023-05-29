@@ -10,22 +10,22 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|tags|JSON|
-|arn (PK)|String|
-|policy|JSON|
-|capacity|Int|
-|id|String|
-|name|String|
-|visibility_config|JSON|
-|available_labels|JSON|
-|consumed_labels|JSON|
-|custom_response_bodies|JSON|
-|description|String|
-|label_namespace|String|
-|rules|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|tags|`json`|
+|arn (PK)|`utf8`|
+|policy|`json`|
+|capacity|`int64`|
+|id|`utf8`|
+|name|`utf8`|
+|visibility_config|`json`|
+|available_labels|`json`|
+|consumed_labels|`json`|
+|custom_response_bodies|`json`|
+|description|`utf8`|
+|label_namespace|`utf8`|
+|rules|`json`|

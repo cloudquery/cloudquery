@@ -10,14 +10,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/smithy-go/logging"
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/digitalocean/godo"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 )
 
-var defaultSpacesRegions = []string{"nyc3", "sfo3", "ams3", "sgp1", "fra1"}
+var defaultSpacesRegions = []string{"nyc3", "sfo3", "ams3", "sgp1", "fra1", "syd1"}
 
 const MaxItemsPerPage = 200
 

@@ -8,21 +8,21 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|region (PK)|String|
-|compartment_id (PK)|String|
-|id (PK)|String|
-|availability_domain|String|
-|display_name|String|
-|lifecycle_state|String|
-|size_in_m_bs|Int|
-|time_created|Timestamp|
-|volume_ids|StringArray|
-|defined_tags|JSON|
-|freeform_tags|JSON|
-|size_in_g_bs|Int|
-|is_hydrated|Bool|
-|volume_group_replicas|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|availability_domain|`utf8`|
+|display_name|`utf8`|
+|lifecycle_state|`utf8`|
+|size_in_m_bs|`int64`|
+|time_created|`timestamp[us, tz=UTC]`|
+|volume_ids|`list<item: utf8, nullable>`|
+|defined_tags|`json`|
+|freeform_tags|`json`|
+|size_in_g_bs|`int64`|
+|is_hydrated|`bool`|
+|volume_group_replicas|`json`|

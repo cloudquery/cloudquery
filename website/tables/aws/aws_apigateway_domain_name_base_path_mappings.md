@@ -14,14 +14,14 @@ This table depends on [aws_apigateway_domain_names](aws_apigateway_domain_names)
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region|String|
-|domain_name_arn|String|
-|arn (PK)|String|
-|base_path|String|
-|rest_api_id|String|
-|stage|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region|`utf8`|
+|domain_name_arn|`utf8`|
+|arn (PK)|`utf8`|
+|base_path|`utf8`|
+|rest_api_id|`utf8`|
+|stage|`utf8`|

@@ -18,19 +18,19 @@ The following tables depend on aws_elbv2_listeners:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|alpn_policy|StringArray|
-|certificates|JSON|
-|default_actions|JSON|
-|listener_arn|String|
-|load_balancer_arn|String|
-|port|Int|
-|protocol|String|
-|ssl_policy|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|alpn_policy|`list<item: utf8, nullable>`|
+|certificates|`json`|
+|default_actions|`json`|
+|listener_arn|`utf8`|
+|load_balancer_arn|`utf8`|
+|port|`int64`|
+|protocol|`utf8`|
+|ssl_policy|`utf8`|

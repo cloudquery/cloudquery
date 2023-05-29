@@ -6,7 +6,7 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/cloudquery/plugin-sdk/v2/types"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
@@ -65,6 +65,11 @@ func transformArr(arr arrow.Array) []any {
 				Bool:  a.Value(i),
 				Valid: a.IsValid(i),
 			}
+		case *array.Int8:
+			pgArr[i] = pgtype.Int2{
+				Int16: int16(a.Value(i)),
+				Valid: a.IsValid(i),
+			}
 		case *array.Int16:
 			pgArr[i] = pgtype.Int2{
 				Int16: a.Value(i),
@@ -80,6 +85,23 @@ func transformArr(arr arrow.Array) []any {
 				Int64: a.Value(i),
 				Valid: a.IsValid(i),
 			}
+		case *array.Uint8:
+			pgArr[i] = pgtype.Int2{
+				Int16: int16(a.Value(i)),
+				Valid: a.IsValid(i),
+			}
+		case *array.Uint16:
+			pgArr[i] = pgtype.Int4{
+				Int32: int32(a.Value(i)),
+				Valid: a.IsValid(i),
+			}
+		case *array.Uint32:
+			pgArr[i] = pgtype.Int8{
+				Int64: int64(a.Value(i)),
+				Valid: a.IsValid(i),
+			}
+		case *array.Uint64:
+			pgArr[i] = a.Value(i)
 		case *array.Float32:
 			pgArr[i] = pgtype.Float4{
 				Float32: a.Value(i),
@@ -106,7 +128,7 @@ func transformArr(arr arrow.Array) []any {
 			}
 		case *array.Timestamp:
 			pgArr[i] = pgtype.Timestamptz{
-				Time:  a.Value(i).ToTime(arrow.Microsecond),
+				Time:  a.Value(i).ToTime(a.DataType().(*arrow.TimestampType).Unit).UTC(),
 				Valid: a.IsValid(i),
 			}
 		case *types.UUIDArray:
@@ -123,6 +145,8 @@ func transformArr(arr arrow.Array) []any {
 			start, end := a.ValueOffsets(i)
 			nested := array.NewSlice(a.ListValues(), start, end)
 			pgArr[i] = transformArr(nested)
+		case *types.JSONArray:
+			pgArr[i] = a.Storage().(*array.Binary).Value(i)
 		default:
 			pgArr[i] = stripNulls(arr.ValueStr(i))
 		}

@@ -17,32 +17,32 @@ The following tables depend on aws_apigatewayv2_api_integrations:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region|String|
-|api_arn|String|
-|api_id|String|
-|arn (PK)|String|
-|api_gateway_managed|Bool|
-|connection_id|String|
-|connection_type|String|
-|content_handling_strategy|String|
-|credentials_arn|String|
-|description|String|
-|integration_id|String|
-|integration_method|String|
-|integration_response_selection_expression|String|
-|integration_subtype|String|
-|integration_type|String|
-|integration_uri|String|
-|passthrough_behavior|String|
-|payload_format_version|String|
-|request_parameters|JSON|
-|request_templates|JSON|
-|response_parameters|JSON|
-|template_selection_expression|String|
-|timeout_in_millis|Int|
-|tls_config|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region|`utf8`|
+|api_arn|`utf8`|
+|api_id|`utf8`|
+|arn (PK)|`utf8`|
+|api_gateway_managed|`bool`|
+|connection_id|`utf8`|
+|connection_type|`utf8`|
+|content_handling_strategy|`utf8`|
+|credentials_arn|`utf8`|
+|description|`utf8`|
+|integration_id|`utf8`|
+|integration_method|`utf8`|
+|integration_response_selection_expression|`utf8`|
+|integration_subtype|`utf8`|
+|integration_type|`utf8`|
+|integration_uri|`utf8`|
+|passthrough_behavior|`utf8`|
+|payload_format_version|`utf8`|
+|request_parameters|`json`|
+|request_templates|`json`|
+|response_parameters|`json`|
+|template_selection_expression|`utf8`|
+|timeout_in_millis|`int64`|
+|tls_config|`json`|

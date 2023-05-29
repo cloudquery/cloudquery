@@ -10,28 +10,28 @@ The composite primary key for this table is (**account_id**, **region**, **spot_
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|tags|JSON|
-|actual_block_hourly_price|String|
-|availability_zone_group|String|
-|block_duration_minutes|Int|
-|create_time|Timestamp|
-|fault|JSON|
-|instance_id|String|
-|instance_interruption_behavior|String|
-|launch_group|String|
-|launch_specification|JSON|
-|launched_availability_zone|String|
-|product_description|String|
-|spot_instance_request_id (PK)|String|
-|spot_price|String|
-|state|String|
-|status|JSON|
-|type|String|
-|valid_from|Timestamp|
-|valid_until|Timestamp|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
+|tags|`json`|
+|actual_block_hourly_price|`utf8`|
+|availability_zone_group|`utf8`|
+|block_duration_minutes|`int64`|
+|create_time|`timestamp[us, tz=UTC]`|
+|fault|`json`|
+|instance_id|`utf8`|
+|instance_interruption_behavior|`utf8`|
+|launch_group|`utf8`|
+|launch_specification|`json`|
+|launched_availability_zone|`utf8`|
+|product_description|`utf8`|
+|spot_instance_request_id (PK)|`utf8`|
+|spot_price|`utf8`|
+|state|`utf8`|
+|status|`json`|
+|type|`utf8`|
+|valid_from|`timestamp[us, tz=UTC]`|
+|valid_until|`timestamp[us, tz=UTC]`|

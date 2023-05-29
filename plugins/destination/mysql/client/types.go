@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v2/types"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 	"golang.org/x/exp/maps"
 )
 
@@ -16,22 +16,30 @@ func mySQLTypeToArrowType(tableName string, columnName string, sqlType string) (
 		return arrow.FixedWidthTypes.Timestamp_us, nil
 	}
 	sqlTypeToSchemaType := map[string]arrow.DataType{
-		"tinyint(1)":        arrow.FixedWidthTypes.Boolean,
-		"tinyint":           arrow.PrimitiveTypes.Int8,
-		"smallint":          arrow.PrimitiveTypes.Int16,
-		"int":               arrow.PrimitiveTypes.Int32,
-		"bigint":            arrow.PrimitiveTypes.Int64,
-		"bigint(20)":        arrow.PrimitiveTypes.Int64,
-		"tinyint unsigned":  arrow.PrimitiveTypes.Uint8,
-		"smallint unsigned": arrow.PrimitiveTypes.Uint16,
-		"int unsigned":      arrow.PrimitiveTypes.Uint32,
-		"bigint unsigned":   arrow.PrimitiveTypes.Uint64,
-		"float":             arrow.PrimitiveTypes.Float32,
-		"double":            arrow.PrimitiveTypes.Float64,
-		"binary(16)":        types.ExtensionTypes.UUID,
-		"blob":              arrow.BinaryTypes.LargeBinary,
-		"text":              arrow.BinaryTypes.LargeString,
-		"json":              types.ExtensionTypes.JSON,
+		"tinyint(1)":           arrow.FixedWidthTypes.Boolean,
+		"tinyint":              arrow.PrimitiveTypes.Int8,
+		"tinyint(4)":           arrow.PrimitiveTypes.Int8,
+		"smallint":             arrow.PrimitiveTypes.Int16,
+		"smallint(5)":          arrow.PrimitiveTypes.Int16,
+		"smallint(6)":          arrow.PrimitiveTypes.Int16,
+		"smallint(5) unsigned": arrow.PrimitiveTypes.Uint16,
+		"int":                  arrow.PrimitiveTypes.Int32,
+		"int(10) unsigned":     arrow.PrimitiveTypes.Uint32,
+		"int(11)":              arrow.PrimitiveTypes.Int32,
+		"bigint":               arrow.PrimitiveTypes.Int64,
+		"bigint(20)":           arrow.PrimitiveTypes.Int64,
+		"tinyint unsigned":     arrow.PrimitiveTypes.Uint8,
+		"tinyint(3) unsigned":  arrow.PrimitiveTypes.Uint8,
+		"smallint unsigned":    arrow.PrimitiveTypes.Uint16,
+		"int unsigned":         arrow.PrimitiveTypes.Uint32,
+		"bigint unsigned":      arrow.PrimitiveTypes.Uint64,
+		"bigint(20) unsigned":  arrow.PrimitiveTypes.Uint64,
+		"float":                arrow.PrimitiveTypes.Float32,
+		"double":               arrow.PrimitiveTypes.Float64,
+		"binary(16)":           types.ExtensionTypes.UUID,
+		"blob":                 arrow.BinaryTypes.LargeBinary,
+		"text":                 arrow.BinaryTypes.LargeString,
+		"json":                 types.ExtensionTypes.JSON,
 	}
 
 	if v, ok := sqlTypeToSchemaType[sqlType]; ok {

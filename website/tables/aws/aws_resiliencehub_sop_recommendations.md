@@ -14,19 +14,19 @@ This table depends on [aws_resiliencehub_app_assessments](aws_resiliencehub_app_
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|app_arn (PK)|String|
-|assessment_arn (PK)|String|
-|recommendation_id (PK)|String|
-|reference_id|String|
-|service_type|String|
-|app_component_name|String|
-|description|String|
-|items|JSON|
-|name|String|
-|prerequisite|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|app_arn (PK)|`utf8`|
+|assessment_arn (PK)|`utf8`|
+|recommendation_id (PK)|`utf8`|
+|reference_id|`utf8`|
+|service_type|`utf8`|
+|app_component_name|`utf8`|
+|description|`utf8`|
+|items|`json`|
+|name|`utf8`|
+|prerequisite|`utf8`|

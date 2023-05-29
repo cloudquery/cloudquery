@@ -2,100 +2,64 @@
 
 Thanks for contributing to CloudQuery! You are awesome. This document serves as a guide for adding new services and resources to the Datadog source plugin.
 
-There are two steps to adding a new Datadog resource:
+## Prerequisites
 
-1. [Generate interfaces for the Datadog SDK function(s) that fetch the resource](#1-generate-interfaces-for-the-datadog-sdk-functions-that-fetch-the-resource)
-2. [Add a code generation recipe](#2-add-a-code-generation-recipe)
+ - A working Go installation (1.19+). See [here](https://go.dev/doc/install) for instructions.
 
+## Adding a new resource
 
-## 1. Generate Interfaces for the Datadog SDK Function(s) that Fetch the Resource
+### Step 1. Add the service to the client
 
-### Before you Start
+When adding support for new APIs, you may need to add a new service to the client. To do this:
+ 1. Open `codegen/services/clients.go` and add the client from the Datadog SDK to the list of clients
+ 2. Run `make gen-mocks` to generate the service interface and mocks
 
-Inside the Datadog plugin directory, run:
+### Step 2. Add the resource to the plugin
 
-```shell
-make install-tools
-```
+To add a new resource, you will need to add a new directory under the `resources/services` directory, if a directory for the service does not already exist. Next, add a Go file for the resource. If you are adding a Datadog resource called `Bar` as part of the `Foo` service, name the directory `foo` and call the file `bar.go`. Inside `bar.go`, create a function that returns a `Table`:
 
-This will install `mockgen` and any other tools necessary to complete the process.
+```go filename="resources/services/foo/bar.go"
+package users
 
-### Generate the Service Interface
+import (
+	"context"
 
-1. Check in [`client/services`](client/services) that the service you need has client and interfaces defined. If it does, you can skip to [2. Add a Code Generation Recipe](#2-add-a-code-generation-recipe).
-2. If the service does not exist, add an instance of service you want to add to [`codegen/services/clients.go`](codegen/services/clients.go).
-3. Add the relevant Datadog SDK import to the top of the file.
-4. [Run Code Generation](#run-code-generation) to generate the service interfaces.
-5. Ensure the new service has a `//go:generate mockgen` (see examples from above) and run `make generate` to generate the mocks.
+	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV2"
+	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
+)
 
-## 2. Add a Code Generation Recipe
-
-Every supported Datadog service has a recipe file under [`codegen/recipes`](codegen/recipes). For example, all Users resources are listed in [`codegen/recipes/users.go`](codegen/recipes/users.go).
-
-In the following example, we will use the fictional `MyService` Datadog service with `MyResource` resource as an example. We recommend taking a look at a few examples in [codegen/recipes](codegen/recipes) first, as these steps will make more sense with some examples to reference.
-
-If you are adding a service that needs a new recipe, see [Add a New Recipe File](#add-a-new-recipe-file). Otherwise, if the Datadog service is already supported but is missing resource(s), you may skip to [Add a Resource to a Recipe](#add-a-resource-to-a-recipe).
-
-### Add a New Recipe File
-
-The process to follow for adding a new recipe is:
-
-1. Add a new file under [`codegen/recipes`](codegen/recipes) called `myservice.go` under a package named `recipes`.
-2. Inside the new file, add a function called `MyServiceResources()` that returns `[]Resource`.
-3. Add my service to all resources by adding `recipes.MyServiceResources,` to [`codegen/main.go`](codegen/main.go#L17)
-4. Define the list of resources to be generated. See [Add a Resource to a Recipe](#add-a-resource-to-a-recipe) for more details.
-
-### Add a Resource to a Recipe
-
-`MyServiceResources()` should return an array of `Resource` instances. Like on example below
-
-```go
-func MyServiceResources() []*Resource {
-	resources := []*Resource{
-		{
-            SubService: "my_service",
-            Multiplex:  "client.AccountMultiplex",
-            Struct:     new(datadogV2.User),
-            SkipFields: []string{"Id"},
-            ExtraColumns: append(defaultAccountColumns, codegen.ColumnDefinition{
-                    Name:     "id",
-                    Type:     schema.TypeString,
-                    Resolver: `schema.PathResolver("Id")`,
-                    Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-                }),
-            Relations: []string{"MyServiceAttachments()", "MyServicePermissions()"},
-		},
-        {
-            SubService:   "my_service_attachments",
-            Struct:       new(datadogV2.Permission),
-            ExtraColumns: defaultAccountColumns,
-        },
-        {
-            SubService:   "my_service_permissions",
-            Struct:       new(datadogV2.User),
-            ExtraColumns: defaultAccountColumns,
-        },
-    }
-    
-    // set default values
-    for _, r := range resources {
-        r.Service = "my_service"
-    }
-    return resources
+func Bar() *schema.Table {
+	return &schema.Table{
+		// name of the table
+		Name:      "datadog_foo_bar",
+		// the resolver function is responsible for fetching data from the API
+		Resolver:  fetchBar,
+		// columns will be automatically created from the given struct
+		Transform: transformers.TransformWithStruct(&datadogV2.Bar{}),
+		// define additional columns here, or override the default columns
+		Columns: []schema.Column{},
+	}
 }
 ```
 
-### Run Code Generation
+Next, implement the resolver function:
 
-With the recipe file added and some resources defined, you are ready to run code generation. Run:
-
-```shell
-make gen-code
+```go filename="resources/services/foo/bar.go"
+func fetchBar(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
+	ctx = c.BuildContextV2(ctx)
+	resp, _, err := c.DDServices.FooAPI.ListBars(ctx)
+	if err != nil {
+		return err
+	}
+	res <- resp.GetData()
+	return nil
+}
 ```
 
-This will update all resources and generate a new directory for your service under [resources/services](resources/services).
-It should create the table files for your resources. 
-For each table fetch and mock test files should be added. for example for  `my_service.go` the  `my_service_fetch.go` and `my_service_mock_test.go` files should be created
+Finally, add another file called `bar_mock_test.go` in the same directory. This file will test the resolver function using a mock. The easiest is to copy a test from another resource and modify it to suit the new resource.
 
 ## General Tips
 

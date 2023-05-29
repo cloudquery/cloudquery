@@ -18,24 +18,24 @@ The following tables depend on gcp_vmmigration_source_migrating_vms:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|source_vm_id|String|
-|display_name|String|
-|description|String|
-|policy|JSON|
-|create_time|Timestamp|
-|update_time|Timestamp|
-|last_sync|JSON|
-|state|String|
-|state_time|Timestamp|
-|current_sync_info|JSON|
-|group|String|
-|labels|JSON|
-|recent_clone_jobs|JSON|
-|error|JSON|
-|recent_cutover_jobs|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|source_vm_id|`utf8`|
+|display_name|`utf8`|
+|description|`utf8`|
+|policy|`json`|
+|create_time|`timestamp[us, tz=UTC]`|
+|update_time|`timestamp[us, tz=UTC]`|
+|last_sync|`json`|
+|state|`utf8`|
+|state_time|`timestamp[us, tz=UTC]`|
+|current_sync_info|`json`|
+|group|`utf8`|
+|labels|`json`|
+|recent_clone_jobs|`json`|
+|error|`json`|
+|recent_cutover_jobs|`json`|

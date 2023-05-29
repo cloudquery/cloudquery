@@ -10,20 +10,20 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|blueprint_details|JSON|
-|created_on|Timestamp|
-|default_run_properties|JSON|
-|description|String|
-|graph|JSON|
-|last_modified_on|Timestamp|
-|last_run|JSON|
-|max_concurrent_runs|Int|
-|name|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|blueprint_details|`json`|
+|created_on|`timestamp[us, tz=UTC]`|
+|default_run_properties|`json`|
+|description|`utf8`|
+|graph|`json`|
+|last_modified_on|`timestamp[us, tz=UTC]`|
+|last_run|`json`|
+|max_concurrent_runs|`int64`|
+|name|`utf8`|

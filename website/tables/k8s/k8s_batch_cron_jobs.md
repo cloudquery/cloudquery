@@ -8,31 +8,31 @@ The primary key for this table is **uid**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|context|String|
-|kind|String|
-|api_version|String|
-|name|String|
-|namespace|String|
-|uid (PK)|String|
-|resource_version|String|
-|generation|Int|
-|deletion_grace_period_seconds|Int|
-|labels|JSON|
-|annotations|JSON|
-|owner_references|JSON|
-|finalizers|StringArray|
-|spec_schedule|String|
-|spec_time_zone|String|
-|spec_starting_deadline_seconds|Int|
-|spec_concurrency_policy|String|
-|spec_suspend|Bool|
-|spec_job_template|JSON|
-|spec_successful_jobs_history_limit|Int|
-|spec_failed_jobs_history_limit|Int|
-|status_active|JSON|
-|status_last_schedule_time|Timestamp|
-|status_last_successful_time|Timestamp|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|context|`utf8`|
+|kind|`utf8`|
+|api_version|`utf8`|
+|name|`utf8`|
+|namespace|`utf8`|
+|uid (PK)|`utf8`|
+|resource_version|`utf8`|
+|generation|`int64`|
+|deletion_grace_period_seconds|`int64`|
+|labels|`json`|
+|annotations|`json`|
+|owner_references|`json`|
+|finalizers|`list<item: utf8, nullable>`|
+|spec_schedule|`utf8`|
+|spec_time_zone|`utf8`|
+|spec_starting_deadline_seconds|`int64`|
+|spec_concurrency_policy|`utf8`|
+|spec_suspend|`bool`|
+|spec_job_template|`json`|
+|spec_successful_jobs_history_limit|`int64`|
+|spec_failed_jobs_history_limit|`int64`|
+|status_active|`json`|
+|status_last_schedule_time|`timestamp[us, tz=UTC]`|
+|status_last_successful_time|`timestamp[us, tz=UTC]`|

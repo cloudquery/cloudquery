@@ -14,16 +14,16 @@ This table depends on [gcp_aiplatform_featurestore_locations](gcp_aiplatform_fea
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|create_time|Timestamp|
-|update_time|Timestamp|
-|etag|String|
-|labels|JSON|
-|online_serving_config|JSON|
-|state|String|
-|encryption_spec|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|create_time|`timestamp[us, tz=UTC]`|
+|update_time|`timestamp[us, tz=UTC]`|
+|etag|`utf8`|
+|labels|`json`|
+|online_serving_config|`json`|
+|state|`utf8`|
+|encryption_spec|`json`|

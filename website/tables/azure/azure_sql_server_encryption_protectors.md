@@ -14,14 +14,14 @@ This table depends on [azure_sql_servers](azure_sql_servers).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|subscription_id|String|
-|properties|JSON|
-|id (PK)|String|
-|kind|String|
-|location|String|
-|name|String|
-|type|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|subscription_id|`utf8`|
+|properties|`json`|
+|id (PK)|`utf8`|
+|kind|`utf8`|
+|location|`utf8`|
+|name|`utf8`|
+|type|`utf8`|

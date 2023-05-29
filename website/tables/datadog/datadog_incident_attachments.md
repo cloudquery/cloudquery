@@ -12,12 +12,12 @@ This table depends on [datadog_incidents](datadog_incidents).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|account_name|String|
-|attributes|JSON|
-|id|String|
-|relationships|JSON|
-|type|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_name|`utf8`|
+|attributes|`json`|
+|id|`utf8`|
+|relationships|`json`|
+|type|`utf8`|

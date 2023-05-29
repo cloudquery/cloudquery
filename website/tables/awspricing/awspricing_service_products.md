@@ -14,10 +14,10 @@ This table depends on [awspricing_services](awspricing_services).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|sku (PK)|String|
-|product_family|String|
-|attributes|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|sku (PK)|`utf8`|
+|product_family|`utf8`|
+|attributes|`json`|

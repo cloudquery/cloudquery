@@ -10,88 +10,88 @@ The composite primary key for this table is (**account_id**, **region_id**, **in
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|hostname|String|
-|image_id|String|
-|instance_type|String|
-|auto_release_time|Timestamp|
-|last_invoked_time|Timestamp|
-|os_type|String|
-|device_available|Bool|
-|instance_network_type|String|
-|registration_time|Timestamp|
-|local_storage_amount|Int|
-|network_type|String|
-|intranet_ip|String|
-|is_spot|Bool|
-|instance_charge_type|String|
-|machine_id|String|
-|private_pool_options_id|String|
-|cluster_id|String|
-|socket_id|String|
-|instance_name|String|
-|private_pool_options_match_criteria|String|
-|deployment_set_group_no|Int|
-|credit_specification|String|
-|gpu_amount|Int|
-|connected|Bool|
-|invocation_count|Int|
-|start_time|Timestamp|
-|zone_id|String|
-|internet_max_bandwidth_in|Int|
-|internet_charge_type|String|
-|host_name|String|
-|status|String|
-|cpu|Int|
-|isp|String|
-|os_version|String|
-|spot_price_limit|Float|
-|os_name|String|
-|instance_owner_id|Int|
-|os_name_en|String|
-|serial_number|String|
-|region_id (PK)|String|
-|io_optimized|Bool|
-|internet_max_bandwidth_out|Int|
-|resource_group_id|String|
-|activation_id|String|
-|instance_type_family|String|
-|instance_id (PK)|String|
-|deployment_set_id|String|
-|gpu_spec|String|
-|description|String|
-|recyclable|Bool|
-|sale_cycle|String|
-|expired_time|Timestamp|
-|internet_ip|String|
-|memory|Int|
-|creation_time|Timestamp|
-|agent_version|String|
-|key_pair_name|String|
-|hpc_cluster_id|String|
-|local_storage_capacity|Int|
-|vlan_id|String|
-|stopped_mode|String|
-|spot_strategy|String|
-|spot_duration|Int|
-|deletion_protection|Bool|
-|security_group_ids|JSON|
-|inner_ip_address|JSON|
-|public_ip_address|JSON|
-|rdma_ip_address|JSON|
-|image_options|JSON|
-|dedicated_host_attribute|JSON|
-|ecs_capacity_reservation_attr|JSON|
-|hibernation_options|JSON|
-|dedicated_instance_attribute|JSON|
-|eip_address|JSON|
-|metadata_options|JSON|
-|cpu_options|JSON|
-|vpc_attributes|JSON|
-|network_interfaces|JSON|
-|tags|JSON|
-|operation_locks|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|hostname|`utf8`|
+|image_id|`utf8`|
+|instance_type|`utf8`|
+|auto_release_time|`timestamp[us, tz=UTC]`|
+|last_invoked_time|`timestamp[us, tz=UTC]`|
+|os_type|`utf8`|
+|device_available|`bool`|
+|instance_network_type|`utf8`|
+|registration_time|`timestamp[us, tz=UTC]`|
+|local_storage_amount|`int64`|
+|network_type|`utf8`|
+|intranet_ip|`utf8`|
+|is_spot|`bool`|
+|instance_charge_type|`utf8`|
+|machine_id|`utf8`|
+|private_pool_options_id|`utf8`|
+|cluster_id|`utf8`|
+|socket_id|`utf8`|
+|instance_name|`utf8`|
+|private_pool_options_match_criteria|`utf8`|
+|deployment_set_group_no|`int64`|
+|credit_specification|`utf8`|
+|gpu_amount|`int64`|
+|connected|`bool`|
+|invocation_count|`int64`|
+|start_time|`timestamp[us, tz=UTC]`|
+|zone_id|`utf8`|
+|internet_max_bandwidth_in|`int64`|
+|internet_charge_type|`utf8`|
+|host_name|`utf8`|
+|status|`utf8`|
+|cpu|`int64`|
+|isp|`utf8`|
+|os_version|`utf8`|
+|spot_price_limit|`float64`|
+|os_name|`utf8`|
+|instance_owner_id|`int64`|
+|os_name_en|`utf8`|
+|serial_number|`utf8`|
+|region_id (PK)|`utf8`|
+|io_optimized|`bool`|
+|internet_max_bandwidth_out|`int64`|
+|resource_group_id|`utf8`|
+|activation_id|`utf8`|
+|instance_type_family|`utf8`|
+|instance_id (PK)|`utf8`|
+|deployment_set_id|`utf8`|
+|gpu_spec|`utf8`|
+|description|`utf8`|
+|recyclable|`bool`|
+|sale_cycle|`utf8`|
+|expired_time|`timestamp[us, tz=UTC]`|
+|internet_ip|`utf8`|
+|memory|`int64`|
+|creation_time|`timestamp[us, tz=UTC]`|
+|agent_version|`utf8`|
+|key_pair_name|`utf8`|
+|hpc_cluster_id|`utf8`|
+|local_storage_capacity|`int64`|
+|vlan_id|`utf8`|
+|stopped_mode|`utf8`|
+|spot_strategy|`utf8`|
+|spot_duration|`int64`|
+|deletion_protection|`bool`|
+|security_group_ids|`json`|
+|inner_ip_address|`json`|
+|public_ip_address|`json`|
+|rdma_ip_address|`json`|
+|image_options|`json`|
+|dedicated_host_attribute|`json`|
+|ecs_capacity_reservation_attr|`json`|
+|hibernation_options|`json`|
+|dedicated_instance_attribute|`json`|
+|eip_address|`json`|
+|metadata_options|`json`|
+|cpu_options|`json`|
+|vpc_attributes|`json`|
+|network_interfaces|`json`|
+|tags|`json`|
+|operation_locks|`json`|

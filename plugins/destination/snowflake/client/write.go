@@ -2,14 +2,14 @@ package client
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"os"
 	"path"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/goccy/go-json"
 )
 
 const (
@@ -19,8 +19,8 @@ const (
 	copyIntoTable             = `copy into %s from @cq_plugin_stage/%s file_format = (format_name = cq_plugin_json_format) match_by_column_name = case_insensitive`
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *arrow.Schema, resources []arrow.Record) error {
-	tableName := schema.TableName(table)
+func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources []arrow.Record) error {
+	tableName := table.Name
 	f, err := os.CreateTemp(os.TempDir(), tableName+".json.*")
 	if err != nil {
 		return err

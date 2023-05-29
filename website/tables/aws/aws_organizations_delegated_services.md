@@ -14,10 +14,10 @@ This table depends on [aws_organizations_accounts](aws_organizations_accounts).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|delegation_enabled_date|Timestamp|
-|service_principal (PK)|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|delegation_enabled_date|`timestamp[us, tz=UTC]`|
+|service_principal (PK)|`utf8`|

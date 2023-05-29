@@ -14,18 +14,18 @@ This table depends on [gcp_kms_keyrings](gcp_kms_keyrings).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|import_method|String|
-|protection_level|String|
-|create_time|Timestamp|
-|generate_time|Timestamp|
-|expire_time|Timestamp|
-|expire_event_time|Timestamp|
-|state|String|
-|public_key|JSON|
-|attestation|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|import_method|`utf8`|
+|protection_level|`utf8`|
+|create_time|`timestamp[us, tz=UTC]`|
+|generate_time|`timestamp[us, tz=UTC]`|
+|expire_time|`timestamp[us, tz=UTC]`|
+|expire_event_time|`timestamp[us, tz=UTC]`|
+|state|`utf8`|
+|public_key|`json`|
+|attestation|`json`|

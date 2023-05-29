@@ -8,29 +8,29 @@ The primary key for this table is **uid**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|context|String|
-|kind|String|
-|api_version|String|
-|name|String|
-|namespace|String|
-|uid (PK)|String|
-|resource_version|String|
-|generation|Int|
-|deletion_grace_period_seconds|Int|
-|labels|JSON|
-|annotations|JSON|
-|owner_references|JSON|
-|finalizers|StringArray|
-|spec_group|String|
-|spec_names|JSON|
-|spec_scope|String|
-|spec_versions|JSON|
-|spec_conversion|JSON|
-|spec_preserve_unknown_fields|Bool|
-|status_conditions|JSON|
-|status_accepted_names|JSON|
-|status_stored_versions|StringArray|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|context|`utf8`|
+|kind|`utf8`|
+|api_version|`utf8`|
+|name|`utf8`|
+|namespace|`utf8`|
+|uid (PK)|`utf8`|
+|resource_version|`utf8`|
+|generation|`int64`|
+|deletion_grace_period_seconds|`int64`|
+|labels|`json`|
+|annotations|`json`|
+|owner_references|`json`|
+|finalizers|`list<item: utf8, nullable>`|
+|spec_group|`utf8`|
+|spec_names|`json`|
+|spec_scope|`utf8`|
+|spec_versions|`json`|
+|spec_conversion|`json`|
+|spec_preserve_unknown_fields|`bool`|
+|status_conditions|`json`|
+|status_accepted_names|`json`|
+|status_stored_versions|`list<item: utf8, nullable>`|

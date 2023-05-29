@@ -4,7 +4,7 @@ import (
 	"sort"
 
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 var AllNamespaces = []string{ // this is only used in applicationautoscaling
@@ -12,14 +12,18 @@ var AllNamespaces = []string{ // this is only used in applicationautoscaling
 }
 
 // Extract region from service list
-func getRegion(regionalMap map[string]*Services) string {
-	if len(regionalMap) == 0 {
+func getRegion(regionalList []string) string {
+	// TODO: We should try and find the closest region if possible. This will require checking the following locations:
+	// 1. Region defined by the ec2 metadata service
+	// 2. Region defined by the AWS_REGION environment variable
+	// 3. Region defined by the AWS_DEFAULT_REGION environment variable
+	// 4. Region defined by the local config file
+	if len(regionalList) == 0 {
 		return ""
 	}
-	regions := make([]string, 0)
-	for i := range regionalMap {
-		regions = append(regions, i)
-	}
+	regions := append([]string{}, regionalList...)
+	// Sorting is important because the plugin SDK requires that multiplexers return a deterministic client. This means if it calls
+	// Multiplex multiple times the clients returned should be the same.
 	sort.Strings(regions)
 	return regions[0]
 }
@@ -30,7 +34,7 @@ func AccountMultiplex(table string) func(meta schema.ClientMeta) []schema.Client
 		client := meta.(*Client)
 		for partition := range client.ServicesManager.services {
 			for accountID := range client.ServicesManager.services[partition] {
-				region := getRegion(client.ServicesManager.services[partition][accountID])
+				region := getRegion(client.ServicesManager.services[partition][accountID].Regions)
 				// Ensure that the region is always set by a region that has been initialized
 				if region == "" {
 					// This can only happen if a user specifies a region from a different partition
@@ -54,7 +58,7 @@ func ServiceAccountRegionMultiplexer(table, service string) func(meta schema.Cli
 		client := meta.(*Client)
 		for partition := range client.ServicesManager.services {
 			for accountID := range client.ServicesManager.services[partition] {
-				for region := range client.ServicesManager.services[partition][accountID] {
+				for _, region := range client.ServicesManager.services[partition][accountID].Regions {
 					if !isSupportedServiceForRegion(service, region) {
 						if client.specificRegions {
 							notSupportedRegions = append(notSupportedRegions, region)
@@ -92,7 +96,7 @@ func ServiceAccountRegionNamespaceMultiplexer(table, service string) func(meta s
 		client := meta.(*Client)
 		for partition := range client.ServicesManager.services {
 			for accountID := range client.ServicesManager.services[partition] {
-				for region := range client.ServicesManager.services[partition][accountID] {
+				for _, region := range client.ServicesManager.services[partition][accountID].Regions {
 					if !isSupportedServiceForRegion(service, region) {
 						if client.specificRegions {
 							notSupportedRegions = append(notSupportedRegions, region)
@@ -118,7 +122,7 @@ func ServiceAccountRegionScopeMultiplexer(table, service string) func(meta schem
 		client := meta.(*Client)
 		for partition := range client.ServicesManager.services {
 			for accountID := range client.ServicesManager.services[partition] {
-				// always fetch cloudfront related resources as long as in aws or aws-cn partition
+				// always fetch cloudfront related resources
 				switch partition {
 				case "aws":
 					l = append(l, client.withPartitionAccountIDRegionAndScope(partition, accountID, awsCloudfrontScopeRegion, wafv2types.ScopeCloudfront))
@@ -126,7 +130,7 @@ func ServiceAccountRegionScopeMultiplexer(table, service string) func(meta schem
 					l = append(l, client.withPartitionAccountIDRegionAndScope(partition, accountID, awsCnCloudfrontScopeRegion, wafv2types.ScopeCloudfront))
 				}
 
-				for region := range client.ServicesManager.services[partition][accountID] {
+				for _, region := range client.ServicesManager.services[partition][accountID].Regions {
 					if !isSupportedServiceForRegion(service, region) {
 						if client.specificRegions {
 							notSupportedRegions = append(notSupportedRegions, region)

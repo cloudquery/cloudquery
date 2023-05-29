@@ -10,19 +10,19 @@ The primary key for this table is **function_arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|current_memory_size|Int|
-|current_performance_risk|String|
-|finding|String|
-|finding_reason_codes|StringArray|
-|function_arn (PK)|String|
-|function_version|String|
-|last_refresh_timestamp|Timestamp|
-|lookback_period_in_days|Float|
-|memory_size_recommendation_options|JSON|
-|number_of_invocations|Int|
-|utilization_metrics|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|current_memory_size|`int64`|
+|current_performance_risk|`utf8`|
+|finding|`utf8`|
+|finding_reason_codes|`list<item: utf8, nullable>`|
+|function_arn (PK)|`utf8`|
+|function_version|`utf8`|
+|last_refresh_timestamp|`timestamp[us, tz=UTC]`|
+|lookback_period_in_days|`float64`|
+|memory_size_recommendation_options|`json`|
+|number_of_invocations|`int64`|
+|utilization_metrics|`json`|

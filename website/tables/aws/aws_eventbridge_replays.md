@@ -10,22 +10,22 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|description|String|
-|destination|JSON|
-|event_end_time|Timestamp|
-|event_last_replayed_time|Timestamp|
-|event_source_arn|String|
-|event_start_time|Timestamp|
-|replay_arn|String|
-|replay_end_time|Timestamp|
-|replay_name|String|
-|replay_start_time|Timestamp|
-|state|String|
-|state_reason|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|description|`utf8`|
+|destination|`json`|
+|event_end_time|`timestamp[us, tz=UTC]`|
+|event_last_replayed_time|`timestamp[us, tz=UTC]`|
+|event_source_arn|`utf8`|
+|event_start_time|`timestamp[us, tz=UTC]`|
+|replay_arn|`utf8`|
+|replay_end_time|`timestamp[us, tz=UTC]`|
+|replay_name|`utf8`|
+|replay_start_time|`timestamp[us, tz=UTC]`|
+|state|`utf8`|
+|state_reason|`utf8`|

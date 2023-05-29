@@ -10,40 +10,40 @@ The composite primary key for this table is (**billing_cycle**, **billing_date**
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|billing_cycle (PK)|String|
-|billing_date (PK)|String|
-|account_id (PK)|String|
-|account_name|String|
-|product_name|String|
-|sub_order_id|String|
-|deducted_by_cash_coupons|Float|
-|payment_time|String|
-|payment_amount|Float|
-|deducted_by_prepaid_card|Float|
-|invoice_discount|Float|
-|usage_end_time|String|
-|item|String|
-|subscription_type (PK)|String|
-|pretax_gross_amount|Float|
-|currency|String|
-|commodity_code (PK)|String|
-|usage_start_time|String|
-|adjust_amount|Float|
-|status|String|
-|deducted_by_coupons|Float|
-|round_down_discount|String|
-|product_detail|String|
-|product_code (PK)|String|
-|product_type (PK)|String|
-|outstanding_amount|Float|
-|pip_code (PK)|String|
-|pretax_amount|Float|
-|owner_id|String|
-|record_id (PK)|String|
-|resource_group|String|
-|instance_id (PK)|String|
-|cash_amount|Float|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|billing_cycle (PK)|`utf8`|
+|billing_date (PK)|`utf8`|
+|account_id (PK)|`utf8`|
+|account_name|`utf8`|
+|product_name|`utf8`|
+|sub_order_id|`utf8`|
+|deducted_by_cash_coupons|`float64`|
+|payment_time|`utf8`|
+|payment_amount|`float64`|
+|deducted_by_prepaid_card|`float64`|
+|invoice_discount|`float64`|
+|usage_end_time|`utf8`|
+|item|`utf8`|
+|subscription_type (PK)|`utf8`|
+|pretax_gross_amount|`float64`|
+|currency|`utf8`|
+|commodity_code (PK)|`utf8`|
+|usage_start_time|`utf8`|
+|adjust_amount|`float64`|
+|status|`utf8`|
+|deducted_by_coupons|`float64`|
+|round_down_discount|`utf8`|
+|product_detail|`utf8`|
+|product_code (PK)|`utf8`|
+|product_type (PK)|`utf8`|
+|outstanding_amount|`float64`|
+|pip_code (PK)|`utf8`|
+|pretax_amount|`float64`|
+|owner_id|`utf8`|
+|record_id (PK)|`utf8`|
+|resource_group|`utf8`|
+|instance_id (PK)|`utf8`|
+|cash_amount|`float64`|

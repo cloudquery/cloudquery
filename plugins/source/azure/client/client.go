@@ -19,8 +19,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/rs/zerolog"
 	"github.com/thoas/go-funk"
 	"golang.org/x/exp/maps"
@@ -293,6 +293,8 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 			return nil, err
 		}
 	}
+	// User specified subscriptions, that CloudQuery should skip syncing
+	c.subscriptions = funk.LeftJoinString(c.subscriptions, spec.SkipSubscriptions)
 
 	if len(c.subscriptions) == 0 {
 		return nil, fmt.Errorf("no subscriptions found")

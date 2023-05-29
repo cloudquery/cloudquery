@@ -15,22 +15,22 @@ The following tables depend on gcp_baremetalsolution_volumes:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|id|String|
-|storage_type|String|
-|state|String|
-|requested_size_gib|Int|
-|current_size_gib|Int|
-|emergency_size_gib|Int|
-|auto_grown_size_gib|Int|
-|remaining_space_gib|Int|
-|snapshot_reservation_detail|JSON|
-|snapshot_auto_delete_behavior|String|
-|labels|JSON|
-|snapshot_enabled|Bool|
-|pod|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|id|`utf8`|
+|storage_type|`utf8`|
+|state|`utf8`|
+|requested_size_gib|`int64`|
+|current_size_gib|`int64`|
+|emergency_size_gib|`int64`|
+|auto_grown_size_gib|`int64`|
+|remaining_space_gib|`int64`|
+|snapshot_reservation_detail|`json`|
+|snapshot_auto_delete_behavior|`utf8`|
+|labels|`json`|
+|snapshot_enabled|`bool`|
+|pod|`utf8`|

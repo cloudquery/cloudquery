@@ -1,5 +1,22 @@
 # Changelog
 
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v2.0.1...plugins-destination-duckdb-v3.0.0) (2023-05-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* **duckdb:** Move DuckDB write to Parquet ([#10874](https://github.com/cloudquery/cloudquery/issues/10874))
+
+### Features
+
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+* **duckdb:** Migrate to SDK V3 ([#10874](https://github.com/cloudquery/cloudquery/issues/10874)) ([84e6631](https://github.com/cloudquery/cloudquery/commit/84e663193b5cecdeb56f9a5debcd4ff59e1c49bb))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.8 ([#10798](https://github.com/cloudquery/cloudquery/issues/10798)) ([27ff430](https://github.com/cloudquery/cloudquery/commit/27ff430527932d59a4d488a6767547eda8853940))
+
 ## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v2.0.0...plugins-destination-duckdb-v2.0.1) (2023-05-02)
 
 

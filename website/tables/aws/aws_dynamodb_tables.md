@@ -16,33 +16,33 @@ The following tables depend on aws_dynamodb_tables:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|tags|JSON|
-|arn (PK)|String|
-|archival_summary|JSON|
-|attribute_definitions|JSON|
-|billing_mode_summary|JSON|
-|creation_date_time|Timestamp|
-|global_secondary_indexes|JSON|
-|global_table_version|String|
-|item_count|Int|
-|key_schema|JSON|
-|latest_stream_arn|String|
-|latest_stream_label|String|
-|local_secondary_indexes|JSON|
-|provisioned_throughput|JSON|
-|replicas|JSON|
-|restore_summary|JSON|
-|sse_description|JSON|
-|stream_specification|JSON|
-|table_arn|String|
-|table_class_summary|JSON|
-|table_id|String|
-|table_name|String|
-|table_size_bytes|Int|
-|table_status|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|tags|`json`|
+|arn (PK)|`utf8`|
+|archival_summary|`json`|
+|attribute_definitions|`json`|
+|billing_mode_summary|`json`|
+|creation_date_time|`timestamp[us, tz=UTC]`|
+|global_secondary_indexes|`json`|
+|global_table_version|`utf8`|
+|item_count|`int64`|
+|key_schema|`json`|
+|latest_stream_arn|`utf8`|
+|latest_stream_label|`utf8`|
+|local_secondary_indexes|`json`|
+|provisioned_throughput|`json`|
+|replicas|`json`|
+|restore_summary|`json`|
+|sse_description|`json`|
+|stream_specification|`json`|
+|table_arn|`utf8`|
+|table_class_summary|`json`|
+|table_id|`utf8`|
+|table_name|`utf8`|
+|table_size_bytes|`int64`|
+|table_status|`utf8`|

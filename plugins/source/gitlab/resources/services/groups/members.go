@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/xanzy/go-gitlab"
 )
 
@@ -28,7 +28,6 @@ func fetchMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	}
 
 	for {
-		// Get the first page with projects.
 		members, resp, err := c.Gitlab.Groups.ListGroupMembers(group.ID, opt, gitlab.WithContext(ctx))
 		if err != nil {
 			return err

@@ -8,14 +8,14 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|id (PK)|String|
-|filename|String|
-|metadata|JSON|
-|require_signed_urls|Bool|
-|variants|StringArray|
-|uploaded|Timestamp|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|id (PK)|`utf8`|
+|filename|`utf8`|
+|metadata|`json`|
+|require_signed_urls|`bool`|
+|variants|`list<item: utf8, nullable>`|
+|uploaded|`timestamp[us, tz=UTC]`|

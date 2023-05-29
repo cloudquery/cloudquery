@@ -3,12 +3,13 @@ package iot
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Things() *schema.Table {
@@ -24,16 +25,14 @@ func Things() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "principals",
-				Type:     schema.TypeStringArray,
+				Type:     arrow.ListOf(arrow.BinaryTypes.String),
 				Resolver: ResolveIotThingPrincipals,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ThingArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ThingArn"),
+				PrimaryKey: true,
 			},
 		},
 	}

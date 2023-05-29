@@ -10,25 +10,25 @@ The composite primary key for this table is (**project_id**, **name**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|create_time|Timestamp|
-|update_time|Timestamp|
-|labels|JSON|
-|input_attachments|JSON|
-|active_input|String|
-|output|JSON|
-|elementary_streams|JSON|
-|mux_streams|JSON|
-|manifests|JSON|
-|sprite_sheets|JSON|
-|streaming_state|String|
-|streaming_error|JSON|
-|log_config|JSON|
-|timecode_config|JSON|
-|encryptions|JSON|
-|input_config|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|create_time|`timestamp[us, tz=UTC]`|
+|update_time|`timestamp[us, tz=UTC]`|
+|labels|`json`|
+|input_attachments|`json`|
+|active_input|`utf8`|
+|output|`json`|
+|elementary_streams|`json`|
+|mux_streams|`json`|
+|manifests|`json`|
+|sprite_sheets|`json`|
+|streaming_state|`utf8`|
+|streaming_error|`json`|
+|log_config|`json`|
+|timecode_config|`json`|
+|encryptions|`json`|
+|input_config|`json`|

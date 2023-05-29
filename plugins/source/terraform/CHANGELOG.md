@@ -5,6 +5,51 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-terraform-v2.0.0...plugins-source-terraform-v2.0.1) (2023-05-29)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v3 to v3.6.7 ([#11043](https://github.com/cloudquery/cloudquery/issues/11043)) ([3c6d885](https://github.com/cloudquery/cloudquery/commit/3c6d885c3d201b0b39cbc1406c6e54a57ec5ed5f))
+
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-terraform-v1.5.2...plugins-source-terraform-v2.0.0) (2023-05-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release introduces an internal change to our type system to use [Apache Arrow](https://arrow.apache.org/). This should not have any visible breaking changes, however due to the size of the change we are introducing it under a major version bump to communicate that it might have some bugs that we weren't able to catch during our internal tests. If you encounter an issue during the upgrade, please submit a [bug report](https://github.com/cloudquery/cloudquery/issues/new/choose). You will also need to update destinations depending on which one you use:
+    - Azure Blob Storage >= v3.2.0
+    - BigQuery >= v3.0.0
+    - ClickHouse >= v3.1.1
+    - DuckDB >= v1.1.6
+    - Elasticsearch >= v2.0.0
+    - File >= v3.2.0
+    - Firehose >= v2.0.2
+    - GCS >= v3.2.0
+    - Gremlin >= v2.1.10
+    - Kafka >= v3.0.1
+    - Meilisearch >= v2.0.1
+    - Microsoft SQL Server >= v4.2.0
+    - MongoDB >= v2.0.1
+    - MySQL >= v2.0.2
+    - Neo4j >= v3.0.0
+    - PostgreSQL >= v4.2.0
+    - S3 >= v4.4.0
+    - Snowflake >= v2.1.1
+    - SQLite >= v2.2.0
+
+### Features
+
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+* Update to use [Apache Arrow](https://arrow.apache.org/) type system ([#10995](https://github.com/cloudquery/cloudquery/issues/10995)) ([4b9971e](https://github.com/cloudquery/cloudquery/commit/4b9971e17a160faf4bb753a24828c9d703b84225))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.25 ([#10786](https://github.com/cloudquery/cloudquery/issues/10786)) ([caca1a4](https://github.com/cloudquery/cloudquery/commit/caca1a41e298c06afb6f474b8fd911c4544a2eec))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/feature/s3/manager to v1.11.67 ([#10788](https://github.com/cloudquery/cloudquery/issues/10788)) ([fd660b2](https://github.com/cloudquery/cloudquery/commit/fd660b25463256ffc4350c2b795bf5138e03fbdb))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.8 ([#10798](https://github.com/cloudquery/cloudquery/issues/10798)) ([27ff430](https://github.com/cloudquery/cloudquery/commit/27ff430527932d59a4d488a6767547eda8853940))
+
 ## [1.5.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-terraform-v1.5.1...plugins-source-terraform-v1.5.2) (2023-05-09)
 
 

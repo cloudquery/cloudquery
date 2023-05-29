@@ -16,36 +16,36 @@ The following tables depend on aws_kms_keys:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|rotation_enabled|Bool|
-|tags|JSON|
-|arn (PK)|String|
-|replica_keys|JSON|
-|key_id|String|
-|aws_account_id|String|
-|cloud_hsm_cluster_id|String|
-|creation_date|Timestamp|
-|custom_key_store_id|String|
-|customer_master_key_spec|String|
-|deletion_date|Timestamp|
-|description|String|
-|enabled|Bool|
-|encryption_algorithms|StringArray|
-|expiration_model|String|
-|key_manager|String|
-|key_spec|String|
-|key_state|String|
-|key_usage|String|
-|mac_algorithms|StringArray|
-|multi_region|Bool|
-|multi_region_configuration|JSON|
-|origin|String|
-|pending_deletion_window_in_days|Int|
-|signing_algorithms|StringArray|
-|valid_to|Timestamp|
-|xks_key_configuration|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|rotation_enabled|`bool`|
+|tags|`json`|
+|arn (PK)|`utf8`|
+|replica_keys|`json`|
+|key_id|`utf8`|
+|aws_account_id|`utf8`|
+|cloud_hsm_cluster_id|`utf8`|
+|creation_date|`timestamp[us, tz=UTC]`|
+|custom_key_store_id|`utf8`|
+|customer_master_key_spec|`utf8`|
+|deletion_date|`timestamp[us, tz=UTC]`|
+|description|`utf8`|
+|enabled|`bool`|
+|encryption_algorithms|`list<item: utf8, nullable>`|
+|expiration_model|`utf8`|
+|key_manager|`utf8`|
+|key_spec|`utf8`|
+|key_state|`utf8`|
+|key_usage|`utf8`|
+|mac_algorithms|`list<item: utf8, nullable>`|
+|multi_region|`bool`|
+|multi_region_configuration|`json`|
+|origin|`utf8`|
+|pending_deletion_window_in_days|`int64`|
+|signing_algorithms|`list<item: utf8, nullable>`|
+|valid_to|`timestamp[us, tz=UTC]`|
+|xks_key_configuration|`json`|

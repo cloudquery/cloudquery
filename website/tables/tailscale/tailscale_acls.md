@@ -10,20 +10,20 @@ The primary key for this table is **tailnet**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|tailnet (PK)|String|
-|acls|JSON|
-|derp_map|JSON|
-|ssh|JSON|
-|disable_ipv4|Bool|
-|one_cgnat_route|String|
-|autoapprovers|JSON|
-|groups|JSON|
-|hosts|JSON|
-|tagowners|JSON|
-|tests|JSON|
-|node_attrs|JSON|
-|randomize_client_port|Bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|tailnet (PK)|`utf8`|
+|acls|`json`|
+|derp_map|`json`|
+|ssh|`json`|
+|disable_ipv4|`bool`|
+|one_cgnat_route|`utf8`|
+|autoapprovers|`json`|
+|groups|`json`|
+|hosts|`json`|
+|tagowners|`json`|
+|tests|`json`|
+|node_attrs|`json`|
+|randomize_client_port|`bool`|

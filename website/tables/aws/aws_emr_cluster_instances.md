@@ -14,22 +14,22 @@ This table depends on [aws_emr_clusters](aws_emr_clusters).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|ebs_volumes|JSON|
-|ec2_instance_id|String|
-|id|String|
-|instance_fleet_id|String|
-|instance_group_id|String|
-|instance_type|String|
-|market|String|
-|private_dns_name|String|
-|private_ip_address|String|
-|public_dns_name|String|
-|public_ip_address|String|
-|status|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|ebs_volumes|`json`|
+|ec2_instance_id|`utf8`|
+|id|`utf8`|
+|instance_fleet_id|`utf8`|
+|instance_group_id|`utf8`|
+|instance_type|`utf8`|
+|market|`utf8`|
+|private_dns_name|`utf8`|
+|private_ip_address|`utf8`|
+|public_dns_name|`utf8`|
+|public_ip_address|`utf8`|
+|status|`json`|

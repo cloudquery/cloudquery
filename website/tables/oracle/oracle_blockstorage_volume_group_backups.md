@@ -8,26 +8,26 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|region (PK)|String|
-|compartment_id (PK)|String|
-|id (PK)|String|
-|display_name|String|
-|lifecycle_state|String|
-|time_created|Timestamp|
-|type|String|
-|volume_backup_ids|StringArray|
-|defined_tags|JSON|
-|expiration_time|Timestamp|
-|freeform_tags|JSON|
-|size_in_m_bs|Int|
-|size_in_g_bs|Int|
-|source_type|String|
-|time_request_received|Timestamp|
-|unique_size_in_mbs|Int|
-|unique_size_in_gbs|Int|
-|volume_group_id|String|
-|source_volume_group_backup_id|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|display_name|`utf8`|
+|lifecycle_state|`utf8`|
+|time_created|`timestamp[us, tz=UTC]`|
+|type|`utf8`|
+|volume_backup_ids|`list<item: utf8, nullable>`|
+|defined_tags|`json`|
+|expiration_time|`timestamp[us, tz=UTC]`|
+|freeform_tags|`json`|
+|size_in_m_bs|`int64`|
+|size_in_g_bs|`int64`|
+|source_type|`utf8`|
+|time_request_received|`timestamp[us, tz=UTC]`|
+|unique_size_in_mbs|`int64`|
+|unique_size_in_gbs|`int64`|
+|volume_group_id|`utf8`|
+|source_volume_group_backup_id|`utf8`|

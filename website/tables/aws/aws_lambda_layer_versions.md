@@ -17,18 +17,18 @@ The following tables depend on aws_lambda_layer_versions:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|layer_arn|String|
-|compatible_architectures|StringArray|
-|compatible_runtimes|StringArray|
-|created_date|String|
-|description|String|
-|layer_version_arn|String|
-|license_info|String|
-|version|Int|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|layer_arn|`utf8`|
+|compatible_architectures|`list<item: utf8, nullable>`|
+|compatible_runtimes|`list<item: utf8, nullable>`|
+|created_date|`utf8`|
+|description|`utf8`|
+|layer_version_arn|`utf8`|
+|license_info|`utf8`|
+|version|`int64`|
