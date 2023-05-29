@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-terraform-v2.0.0...plugins-source-terraform-v2.0.1) (2023-05-29)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v3 to v3.6.7 ([#11043](https://github.com/cloudquery/cloudquery/issues/11043)) ([3c6d885](https://github.com/cloudquery/cloudquery/commit/3c6d885c3d201b0b39cbc1406c6e54a57ec5ed5f))
+
 ## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-terraform-v1.5.2...plugins-source-terraform-v2.0.0) (2023-05-26)
 
 
