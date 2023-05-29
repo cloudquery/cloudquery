@@ -33,7 +33,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.13
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.14.6
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.11
-	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.6
+	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.10
 	github.com/aws/aws-sdk-go-v2/service/computeoptimizer v1.21.5
 	github.com/aws/aws-sdk-go-v2/service/configservice v1.29.6
 	github.com/aws/aws-sdk-go-v2/service/costexplorer v1.25.8
