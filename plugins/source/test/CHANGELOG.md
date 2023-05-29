@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v2.0.0...plugins-source-test-v2.0.1) (2023-05-29)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v3 to v3.6.7 ([#11043](https://github.com/cloudquery/cloudquery/issues/11043)) ([3c6d885](https://github.com/cloudquery/cloudquery/commit/3c6d885c3d201b0b39cbc1406c6e54a57ec5ed5f))
+
 ## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v1.5.1...plugins-source-test-v2.0.0) (2023-05-26)
 
 
