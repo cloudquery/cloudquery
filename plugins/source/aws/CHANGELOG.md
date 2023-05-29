@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [18.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v17.4.0...plugins-source-aws-v18.0.0) (2023-05-29)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_apigateway_rest_api_authorizers`: column `provider_ar_ns` removed from table (:warning: breaking)
+- Table `aws_apigateway_rest_api_authorizers`: column added with name `provider_arns` and type `list<item: utf8, nullable>`
+- Table `aws_autoscaling_groups`: column `target_group_ar_ns` removed from table (:warning: breaking)
+- Table `aws_autoscaling_groups`: column added with name `target_group_arns` and type `list<item: utf8, nullable>`
+- Table `aws_cloudformation_stacks`: column `notification_ar_ns` removed from table (:warning: breaking)
+- Table `aws_cloudformation_stacks`: column added with name `notification_arns` and type `list<item: utf8, nullable>`
+- Table `aws_cognito_identity_pools`: column `open_id_connect_provider_ar_ns` removed from table (:warning: breaking)
+- Table `aws_cognito_identity_pools`: column `saml_provider_ar_ns` removed from table (:warning: breaking)
+- Table `aws_cognito_identity_pools`: column added with name `open_id_connect_provider_arns` and type `list<item: utf8, nullable>`
+- Table `aws_cognito_identity_pools`: column added with name `saml_provider_arns` and type `list<item: utf8, nullable>`
+- Table `aws_ssoadmin_permission_sets`: column added with name `request_account_id` and type `utf8`
+- Table `aws_ssoadmin_permission_sets`: column added with name `request_region` and type `utf8`
+
 ### ⚠ BREAKING CHANGES
 
 * **aws:** Change names of columns which had `_ar_ns` instead of `_arns` ([#10802](https://github.com/cloudquery/cloudquery/issues/10802))
