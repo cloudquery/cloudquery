@@ -1,5 +1,41 @@
 # Changelog
 
+## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v5.2.0...plugins-source-github-v6.0.0) (2023-05-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release introduces an internal change to our type system to use [Apache Arrow](https://arrow.apache.org/). This should not have any visible breaking changes, however due to the size of the change we are introducing it under a major version bump to communicate that it might have some bugs that we weren't able to catch during our internal tests. If you encounter an issue during the upgrade, please submit a [bug report](https://github.com/cloudquery/cloudquery/issues/new/choose). You will also need to update destinations depending on which one you use:
+    - Azure Blob Storage >= v3.2.0
+    - BigQuery >= v3.0.0
+    - ClickHouse >= v3.1.1
+    - DuckDB >= v1.1.6
+    - Elasticsearch >= v2.0.0
+    - File >= v3.2.0
+    - Firehose >= v2.0.2
+    - GCS >= v3.2.0
+    - Gremlin >= v2.1.10
+    - Kafka >= v3.0.1
+    - Meilisearch >= v2.0.1
+    - Microsoft SQL Server >= v4.2.0
+    - MongoDB >= v2.0.1
+    - MySQL >= v2.0.2
+    - Neo4j >= v3.0.0
+    - PostgreSQL >= v4.2.0
+    - S3 >= v4.4.0
+    - Snowflake >= v2.1.1
+    - SQLite >= v2.2.0
+
+### Features
+
+* Update to use [Apache Arrow](https://arrow.apache.org/) type system ([#11008](https://github.com/cloudquery/cloudquery/issues/11008)) ([b00e212](https://github.com/cloudquery/cloudquery/commit/b00e212e024d1cf448de675ba657adcff902d900))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v3 to v3.6.7 ([#11043](https://github.com/cloudquery/cloudquery/issues/11043)) ([3c6d885](https://github.com/cloudquery/cloudquery/commit/3c6d885c3d201b0b39cbc1406c6e54a57ec5ed5f))
+* **deps:** Update module github.com/gofri/go-github-ratelimit to v1.0.3 ([#11085](https://github.com/cloudquery/cloudquery/issues/11085)) ([4cadae8](https://github.com/cloudquery/cloudquery/commit/4cadae84e7f8949e768c38d0aa62b01d9d3c9ebf))
+
 ## [5.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v5.1.1...plugins-source-github-v5.2.0) (2023-05-16)
 
 
