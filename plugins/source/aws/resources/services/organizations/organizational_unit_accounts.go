@@ -33,7 +33,7 @@ func fetchAccountsForParent(ctx context.Context, meta schema.ClientMeta, parent 
 	cl := meta.(*client.Client)
 	svc := cl.Services().Organizations
 	paginator := organizations.NewListAccountsForParentPaginator(svc, &organizations.ListAccountsForParentInput{
-		ParentId: parent.Item.(*types.OrganizationalUnit).Id,
+		ParentId: parent.Item.(*includeParentOU).Id,
 	})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *organizations.Options) {

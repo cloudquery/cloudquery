@@ -20,6 +20,7 @@ The following tables depend on aws_organizations_organizational_units:
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id (PK)|`utf8`|
+|parent_id|`utf8`|
 |arn (PK)|`utf8`|
 |id|`utf8`|
 |name|`utf8`|

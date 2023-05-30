@@ -3,6 +3,7 @@ package organizations
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/organizations/types"
@@ -20,15 +21,30 @@ func OrganizationalUnits() *schema.Table {
 		Resolver:            fetchOUs,
 		PreResourceResolver: getOU,
 		Transform: transformers.TransformWithStruct(
-			&types.OrganizationalUnit{},
+			&includeParentOU{},
+			transformers.WithUnwrapAllEmbeddedStructs(),
 			transformers.WithPrimaryKeys("Arn"),
 		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "organizations"),
-		Columns:   []schema.Column{client.DefaultAccountIDColumn(true)},
-		Relations: []*schema.Table{
-			organizationalUnitAccounts(),
+		Columns: []schema.Column{
+			client.DefaultAccountIDColumn(true),
+			{
+				Name: "parent_id",
+				Type: arrow.BinaryTypes.String,
+			},
 		},
+		Relations: []*schema.Table{organizationalUnitAccounts()},
 	}
+}
+
+type includeParentChild struct {
+	types.Child
+	ParentID string
+}
+
+type includeParentOU struct {
+	types.OrganizationalUnit
+	ParentID string
 }
 
 func fetchOUs(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
@@ -79,7 +95,13 @@ func getOUs(ctx context.Context, meta schema.ClientMeta, accountsApi services.Or
 			if err != nil {
 				return err
 			}
-			res <- output.Children
+			for _, child := range output.Children {
+				res <- includeParentChild{
+					Child:    child,
+					ParentID: ou,
+				}
+			}
+
 			for _, child := range output.Children {
 				q = append(q, *child.Id)
 			}
@@ -91,7 +113,7 @@ func getOUs(ctx context.Context, meta schema.ClientMeta, accountsApi services.Or
 
 func getOU(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
-	child := resource.Item.(types.Child)
+	child := resource.Item.(includeParentChild)
 	svc := c.Services().Organizations
 	ou, err := svc.DescribeOrganizationalUnit(ctx, &organizations.DescribeOrganizationalUnitInput{
 		OrganizationalUnitId: child.Id,
@@ -101,6 +123,9 @@ func getOU(ctx context.Context, meta schema.ClientMeta, resource *schema.Resourc
 	if err != nil {
 		return err
 	}
-	resource.Item = ou.OrganizationalUnit
+	resource.Item = includeParentOU{
+		*ou.OrganizationalUnit,
+		child.ParentID,
+	}
 	return nil
 }
