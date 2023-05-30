@@ -12,13 +12,13 @@ This table depends on [shopify_price_rules](shopify_price_rules).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|id (PK)|int64|
-|price_rule_id (PK)|int64|
-|code|utf8|
-|usage_count|int64|
-|created_at|timestamp[us, tz=UTC]|
-|updated_at|timestamp[us, tz=UTC]|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`int64`|
+|price_rule_id (PK)|`int64`|
+|code|`utf8`|
+|usage_count|`int64`|
+|created_at|`timestamp[us, tz=UTC]`|
+|updated_at|`timestamp[us, tz=UTC]`|

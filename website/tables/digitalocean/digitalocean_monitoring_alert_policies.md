@@ -10,17 +10,17 @@ The primary key for this table is **uuid**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|uuid (PK)|utf8|
-|type|utf8|
-|description|utf8|
-|compare|utf8|
-|value|float64|
-|window|utf8|
-|entities|list<item: utf8, nullable>|
-|tags|list<item: utf8, nullable>|
-|alerts|json|
-|enabled|bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|uuid (PK)|`utf8`|
+|type|`utf8`|
+|description|`utf8`|
+|compare|`utf8`|
+|value|`float64`|
+|window|`utf8`|
+|entities|`list<item: utf8, nullable>`|
+|tags|`list<item: utf8, nullable>`|
+|alerts|`json`|
+|enabled|`bool`|

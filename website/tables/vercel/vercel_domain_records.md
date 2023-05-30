@@ -12,19 +12,19 @@ This table depends on [vercel_domains](vercel_domains).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|domain_name (PK)|utf8|
-|id (PK)|utf8|
-|slug|utf8|
-|name|utf8|
-|type|utf8|
-|value|utf8|
-|mx_priority|int64|
-|priority|int64|
-|creator|utf8|
-|created_at|timestamp[us, tz=UTC]|
-|updated_at|timestamp[us, tz=UTC]|
-|ttl|int64|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|domain_name (PK)|`utf8`|
+|id (PK)|`utf8`|
+|slug|`utf8`|
+|name|`utf8`|
+|type|`utf8`|
+|value|`utf8`|
+|mx_priority|`int64`|
+|priority|`int64`|
+|creator|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|updated_at|`timestamp[us, tz=UTC]`|
+|ttl|`int64`|

@@ -19,21 +19,21 @@ The following tables depend on aws_lambda_functions:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|policy_revision_id|utf8|
-|policy_document|json|
-|code_signing_config|json|
-|code_repository_type|utf8|
-|update_runtime_on|utf8|
-|runtime_version_arn|utf8|
-|code|json|
-|concurrency|json|
-|configuration|json|
-|tags|json|
-|result_metadata|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|policy_revision_id|`utf8`|
+|policy_document|`json`|
+|code_signing_config|`json`|
+|code_repository_type|`utf8`|
+|update_runtime_on|`utf8`|
+|runtime_version_arn|`utf8`|
+|code|`json`|
+|concurrency|`json`|
+|configuration|`json`|
+|tags|`json`|
+|result_metadata|`json`|

@@ -14,21 +14,21 @@ This table depends on [aws_kafka_clusters](aws_kafka_clusters).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|arn (PK)|utf8|
-|cluster_arn|utf8|
-|tags|json|
-|client_request_id|utf8|
-|creation_time|timestamp[us, tz=UTC]|
-|end_time|timestamp[us, tz=UTC]|
-|error_info|json|
-|operation_arn|utf8|
-|operation_state|utf8|
-|operation_steps|json|
-|operation_type|utf8|
-|source_cluster_info|json|
-|target_cluster_info|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|arn (PK)|`utf8`|
+|cluster_arn|`utf8`|
+|tags|`json`|
+|client_request_id|`utf8`|
+|creation_time|`timestamp[us, tz=UTC]`|
+|end_time|`timestamp[us, tz=UTC]`|
+|error_info|`json`|
+|operation_arn|`utf8`|
+|operation_state|`utf8`|
+|operation_steps|`json`|
+|operation_type|`utf8`|
+|source_cluster_info|`json`|
+|target_cluster_info|`json`|

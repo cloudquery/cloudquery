@@ -14,15 +14,15 @@ This table depends on [aws_secretsmanager_secrets](aws_secretsmanager_secrets).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|secret_arn (PK)|utf8|
-|created_date|timestamp[us, tz=UTC]|
-|kms_key_ids|list<item: utf8, nullable>|
-|last_accessed_date|timestamp[us, tz=UTC]|
-|version_id (PK)|utf8|
-|version_stages|list<item: utf8, nullable>|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|secret_arn (PK)|`utf8`|
+|created_date|`timestamp[us, tz=UTC]`|
+|kms_key_ids|`list<item: utf8, nullable>`|
+|last_accessed_date|`timestamp[us, tz=UTC]`|
+|version_id (PK)|`utf8`|
+|version_stages|`list<item: utf8, nullable>`|

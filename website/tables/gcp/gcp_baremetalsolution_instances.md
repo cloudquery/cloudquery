@@ -10,23 +10,23 @@ The composite primary key for this table is (**project_id**, **name**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|project_id (PK)|utf8|
-|name (PK)|utf8|
-|id|utf8|
-|create_time|timestamp[us, tz=UTC]|
-|update_time|timestamp[us, tz=UTC]|
-|machine_type|utf8|
-|state|utf8|
-|hyperthreading_enabled|bool|
-|labels|json|
-|luns|json|
-|networks|json|
-|interactive_serial_console_enabled|bool|
-|os_image|utf8|
-|pod|utf8|
-|network_template|utf8|
-|logical_interfaces|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|id|`utf8`|
+|create_time|`timestamp[us, tz=UTC]`|
+|update_time|`timestamp[us, tz=UTC]`|
+|machine_type|`utf8`|
+|state|`utf8`|
+|hyperthreading_enabled|`bool`|
+|labels|`json`|
+|luns|`json`|
+|networks|`json`|
+|interactive_serial_console_enabled|`bool`|
+|os_image|`utf8`|
+|pod|`utf8`|
+|network_template|`utf8`|
+|logical_interfaces|`json`|

@@ -14,19 +14,19 @@ This table depends on [aws_qldb_ledgers](aws_qldb_ledgers).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id (PK)|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|ledger_arn|utf8|
-|exclusive_end_time|timestamp[us, tz=UTC]|
-|export_creation_time|timestamp[us, tz=UTC]|
-|export_id|utf8|
-|inclusive_start_time|timestamp[us, tz=UTC]|
-|ledger_name|utf8|
-|role_arn|utf8|
-|s3_export_configuration|json|
-|status|utf8|
-|output_format|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|ledger_arn|`utf8`|
+|exclusive_end_time|`timestamp[us, tz=UTC]`|
+|export_creation_time|`timestamp[us, tz=UTC]`|
+|export_id|`utf8`|
+|inclusive_start_time|`timestamp[us, tz=UTC]`|
+|ledger_name|`utf8`|
+|role_arn|`utf8`|
+|s3_export_configuration|`json`|
+|status|`utf8`|
+|output_format|`utf8`|

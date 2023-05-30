@@ -14,25 +14,25 @@ The following tables depend on github_teams:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|org (PK)|utf8|
-|id (PK)|int64|
-|node_id|utf8|
-|name|utf8|
-|description|utf8|
-|url|utf8|
-|slug|utf8|
-|permission|utf8|
-|permissions|json|
-|privacy|utf8|
-|members_count|int64|
-|repos_count|int64|
-|organization|json|
-|html_url|utf8|
-|members_url|utf8|
-|repositories_url|utf8|
-|parent|json|
-|ldap_dn|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|org (PK)|`utf8`|
+|id (PK)|`int64`|
+|node_id|`utf8`|
+|name|`utf8`|
+|description|`utf8`|
+|url|`utf8`|
+|slug|`utf8`|
+|permission|`utf8`|
+|permissions|`json`|
+|privacy|`utf8`|
+|members_count|`int64`|
+|repos_count|`int64`|
+|organization|`json`|
+|html_url|`utf8`|
+|members_url|`utf8`|
+|repositories_url|`utf8`|
+|parent|`json`|
+|ldap_dn|`utf8`|

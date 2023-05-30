@@ -15,21 +15,21 @@ The following tables depend on gcp_websecurityscanner_scan_configs:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|project_id (PK)|utf8|
-|name (PK)|utf8|
-|display_name|utf8|
-|max_qps|int64|
-|starting_urls|list<item: utf8, nullable>|
-|authentication|json|
-|user_agent|utf8|
-|blacklist_patterns|list<item: utf8, nullable>|
-|schedule|json|
-|export_to_security_command_center|utf8|
-|risk_level|utf8|
-|managed_scan|bool|
-|static_ip_scan|bool|
-|ignore_http_status_errors|bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|display_name|`utf8`|
+|max_qps|`int64`|
+|starting_urls|`list<item: utf8, nullable>`|
+|authentication|`json`|
+|user_agent|`utf8`|
+|blacklist_patterns|`list<item: utf8, nullable>`|
+|schedule|`json`|
+|export_to_security_command_center|`utf8`|
+|risk_level|`utf8`|
+|managed_scan|`bool`|
+|static_ip_scan|`bool`|
+|ignore_http_status_errors|`bool`|

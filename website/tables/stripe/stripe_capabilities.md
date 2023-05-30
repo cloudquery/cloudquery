@@ -14,15 +14,15 @@ This table depends on [stripe_accounts](stripe_accounts).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|id (PK)|utf8|
-|account|json|
-|future_requirements|json|
-|object|utf8|
-|requested|bool|
-|requested_at|int64|
-|requirements|json|
-|status|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|account|`json`|
+|future_requirements|`json`|
+|object|`utf8`|
+|requested|`bool`|
+|requested_at|`int64`|
+|requirements|`json`|
+|status|`utf8`|

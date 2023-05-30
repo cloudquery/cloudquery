@@ -13,11 +13,11 @@ The following tables depend on digitalocean_spaces:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id (PK)|uuid|
-|_cq_parent_id|uuid|
-|acls|json|
-|bucket|json|
-|location|utf8|
-|public|bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|acls|`json`|
+|bucket|`json`|
+|location|`utf8`|
+|public|`bool`|

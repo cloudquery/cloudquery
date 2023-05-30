@@ -16,29 +16,29 @@ The following tables depend on aws_eks_clusters:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|certificate_authority|json|
-|client_request_token|utf8|
-|connector_config|json|
-|created_at|timestamp[us, tz=UTC]|
-|encryption_config|json|
-|endpoint|utf8|
-|health|json|
-|id|utf8|
-|identity|json|
-|kubernetes_network_config|json|
-|logging|json|
-|name|utf8|
-|outpost_config|json|
-|platform_version|utf8|
-|resources_vpc_config|json|
-|role_arn|utf8|
-|status|utf8|
-|tags|json|
-|version|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|certificate_authority|`json`|
+|client_request_token|`utf8`|
+|connector_config|`json`|
+|created_at|`timestamp[us, tz=UTC]`|
+|encryption_config|`json`|
+|endpoint|`utf8`|
+|health|`json`|
+|id|`utf8`|
+|identity|`json`|
+|kubernetes_network_config|`json`|
+|logging|`json`|
+|name|`utf8`|
+|outpost_config|`json`|
+|platform_version|`utf8`|
+|resources_vpc_config|`json`|
+|role_arn|`utf8`|
+|status|`utf8`|
+|tags|`json`|
+|version|`utf8`|

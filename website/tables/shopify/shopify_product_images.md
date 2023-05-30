@@ -12,18 +12,18 @@ This table depends on [shopify_products](shopify_products).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|product_id (PK)|int64|
-|id (PK)|int64|
-|position|int64|
-|created_at|timestamp[us, tz=UTC]|
-|updated_at|timestamp[us, tz=UTC]|
-|alt|utf8|
-|width|int64|
-|height|int64|
-|src|utf8|
-|variant_ids|json|
-|admin_graphql_api_id|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|product_id (PK)|`int64`|
+|id (PK)|`int64`|
+|position|`int64`|
+|created_at|`timestamp[us, tz=UTC]`|
+|updated_at|`timestamp[us, tz=UTC]`|
+|alt|`utf8`|
+|width|`int64`|
+|height|`int64`|
+|src|`utf8`|
+|variant_ids|`json`|
+|admin_graphql_api_id|`utf8`|

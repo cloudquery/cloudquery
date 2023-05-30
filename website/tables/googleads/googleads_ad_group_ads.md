@@ -17,17 +17,17 @@ The following tables depend on googleads_ad_group_ads:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|customer_id (PK)|int64|
-|id (PK)|int64|
-|resource_name (PK)|utf8|
-|status|utf8|
-|ad_group (PK)|utf8|
-|ad|json|
-|policy_summary|json|
-|ad_strength|utf8|
-|action_items|list<item: utf8, nullable>|
-|labels|list<item: utf8, nullable>|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|customer_id (PK)|`int64`|
+|id (PK)|`int64`|
+|resource_name (PK)|`utf8`|
+|status|`utf8`|
+|ad_group (PK)|`utf8`|
+|ad|`json`|
+|policy_summary|`json`|
+|ad_strength|`utf8`|
+|action_items|`list<item: utf8, nullable>`|
+|labels|`list<item: utf8, nullable>`|

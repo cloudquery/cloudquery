@@ -8,17 +8,17 @@ The primary key for this table is **_cq_id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id (PK)|uuid|
-|_cq_parent_id|uuid|
-|abbreviation|utf8|
-|default_team_image_url|utf8|
-|description|utf8|
-|id|uuid|
-|last_update_time|json|
-|name|utf8|
-|revision|int64|
-|state|utf8|
-|url|utf8|
-|visibility|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|abbreviation|`utf8`|
+|default_team_image_url|`utf8`|
+|description|`utf8`|
+|id|`uuid`|
+|last_update_time|`json`|
+|name|`utf8`|
+|revision|`int64`|
+|state|`utf8`|
+|url|`utf8`|
+|visibility|`utf8`|

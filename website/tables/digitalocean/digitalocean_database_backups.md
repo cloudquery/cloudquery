@@ -14,9 +14,9 @@ This table depends on [digitalocean_databases](digitalocean_databases).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id (PK)|uuid|
-|_cq_parent_id|uuid|
-|created_at|timestamp[us, tz=UTC]|
-|size_gigabytes|float64|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|created_at|`timestamp[us, tz=UTC]`|
+|size_gigabytes|`float64`|

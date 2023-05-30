@@ -15,17 +15,17 @@ The following tables depend on aws_ec2_launch_templates:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|tags|json|
-|create_time|timestamp[us, tz=UTC]|
-|created_by|utf8|
-|default_version_number|int64|
-|latest_version_number|int64|
-|launch_template_id|utf8|
-|launch_template_name|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|create_time|`timestamp[us, tz=UTC]`|
+|created_by|`utf8`|
+|default_version_number|`int64`|
+|latest_version_number|`int64`|
+|launch_template_id|`utf8`|
+|launch_template_name|`utf8`|

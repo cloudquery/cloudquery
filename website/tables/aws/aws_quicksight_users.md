@@ -10,21 +10,21 @@ The composite primary key for this table is (**account_id**, **region**, **arn**
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id (PK)|utf8|
-|region (PK)|utf8|
-|tags|json|
-|active|bool|
-|arn (PK)|utf8|
-|custom_permissions_name|utf8|
-|email|utf8|
-|external_login_federation_provider_type|utf8|
-|external_login_federation_provider_url|utf8|
-|external_login_id|utf8|
-|identity_type|utf8|
-|principal_id|utf8|
-|role|utf8|
-|user_name|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
+|tags|`json`|
+|active|`bool`|
+|arn (PK)|`utf8`|
+|custom_permissions_name|`utf8`|
+|email|`utf8`|
+|external_login_federation_provider_type|`utf8`|
+|external_login_federation_provider_url|`utf8`|
+|external_login_id|`utf8`|
+|identity_type|`utf8`|
+|principal_id|`utf8`|
+|role|`utf8`|
+|user_name|`utf8`|

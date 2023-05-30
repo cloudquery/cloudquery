@@ -14,14 +14,14 @@ This table depends on [aws_guardduty_detectors](aws_guardduty_detectors).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|detector_arn (PK)|utf8|
-|action|utf8|
-|finding_criteria|json|
-|name (PK)|utf8|
-|description|utf8|
-|rank|int64|
-|tags|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|detector_arn (PK)|`utf8`|
+|action|`utf8`|
+|finding_criteria|`json`|
+|name (PK)|`utf8`|
+|description|`utf8`|
+|rank|`int64`|
+|tags|`json`|
