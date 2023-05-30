@@ -3,6 +3,7 @@ package client
 import (
 	"strings"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
@@ -97,7 +98,7 @@ func (*Client) SchemaTypeToCockroach(t schema.ValueType) string {
 	}
 }
 
-func (c *Client) PgToSchemaType(t string) schema.ValueType {
+func (c *Client) PgToSchemaType(t string) arrow.DataType {
 	switch c.pgType {
 	case pgTypeCockroachDB:
 		return c.CockroachToSchemaType(t)
@@ -106,7 +107,7 @@ func (c *Client) PgToSchemaType(t string) schema.ValueType {
 	}
 }
 
-func (*Client) Pg10ToSchemaType(t string) schema.ValueType {
+func (*Client) Pg10ToSchemaType(t string) arrow.DataType {
 	if strings.HasPrefix(t, "timestamp") {
 		return schema.TypeTimestamp
 	}
@@ -147,7 +148,7 @@ func (*Client) Pg10ToSchemaType(t string) schema.ValueType {
 	}
 }
 
-func (*Client) CockroachToSchemaType(t string) schema.ValueType {
+func (*Client) CockroachToSchemaType(t string) arrow.DataType {
 	if strings.HasPrefix(t, "timestamp") {
 		return schema.TypeTimestamp
 	}

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 // this returns the following table in sorted manner:
@@ -76,12 +76,10 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 			table.PkConstraintName = pkName
 		}
 		table.Columns = append(table.Columns, schema.Column{
-			Name: columnName,
-			CreationOptions: schema.ColumnCreationOptions{
-				PrimaryKey: isPrimaryKey,
-				NotNull:    notNull,
-			},
-			Type: c.PgToSchemaType(columnType),
+			Name:       columnName,
+			PrimaryKey: isPrimaryKey,
+			NotNull:    notNull,
+			Type:       c.PgToSchemaType(columnType),
 		})
 	}
 	return tables, nil
