@@ -10,10 +10,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/oracledb/client"
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/testdata"
+	"github.com/cloudquery/plugin-sdk/v3/scalar"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/sync/errgroup"
@@ -52,20 +53,24 @@ func createTable(ctx context.Context, db *sql.DB, table *schema.Table) error {
 		builder.WriteString(client.Identifier(column.Name))
 		builder.WriteString(" ")
 		builder.WriteString(client.SQLType(column.Type))
-		if column.CreationOptions.NotNull {
-			builder.WriteString(" NOT NULL")
-		}
-		if column.CreationOptions.Unique {
-			builder.WriteString(" UNIQUE")
-		}
-		if column.CreationOptions.PrimaryKey {
+		if column.PrimaryKey {
 			switch client.SQLType(column.Type) {
 			case "clob", "blob":
 			// nop, ORA-02329: column of datatype LOB cannot be unique or a primary key
 			default:
 				pk = append(pk, client.Identifier(column.Name))
 			}
+		} else {
+			// In OracleDB a primary keys are implicitly NOT NULL and UNIQUE
+			// and it errors out if we try to do it explicitly
+			if column.NotNull {
+				builder.WriteString(" NOT NULL")
+			}
+			if column.Unique {
+				builder.WriteString(" UNIQUE")
+			}
 		}
+
 		if i < len(table.Columns)-1 {
 			builder.WriteString(",\n  ")
 		}
@@ -84,7 +89,7 @@ func createTable(ctx context.Context, db *sql.DB, table *schema.Table) error {
 	return err
 }
 
-func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, data schema.CQTypes) error {
+func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, data []arrow.Record) error {
 	builder := strings.Builder{}
 	builder.WriteString("INSERT INTO " + client.Identifier(table.Name))
 	builder.WriteString(" (")
@@ -102,9 +107,17 @@ func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, data sche
 		}
 	}
 	builder.WriteString(")")
-	dbData := schema.TransformWithTransformer(&client.Transformer{}, data)
-	if _, err := db.ExecContext(ctx, builder.String(), dbData...); err != nil {
-		return err
+
+	for _, data := range data {
+		transformedRecords, err := client.TransformRecord(data)
+		if err != nil {
+			return err
+		}
+		for _, transformedRecord := range transformedRecords {
+			if _, err := db.ExecContext(ctx, builder.String(), transformedRecord...); err != nil {
+				return err
+			}
+		}
 	}
 	return nil
 }
@@ -141,7 +154,7 @@ func TestPlugin(t *testing.T) {
 	}
 	defer db.Close()
 
-	testTable := testdata.TestSourceTable("test_oracledb_source")
+	testTable := schema.TestTable("test_oracledb_source", schema.TestSourceOptions{})
 	if _, err := db.ExecContext(ctx, "DROP TABLE \"test_oracledb_source\""); err != nil {
 		if !isNotExistsError(err) {
 			t.Fatal(err)
@@ -150,12 +163,12 @@ func TestPlugin(t *testing.T) {
 	if err := createTable(ctx, db, testTable); err != nil {
 		t.Fatal(err)
 	}
-	data := testdata.GenTestDataV1(testTable)
+	data := schema.GenTestData(testTable, schema.GenTestDataOptions{MaxRows: 1})
 	if err := insertTable(ctx, db, testTable, data); err != nil {
 		t.Fatal(err)
 	}
 
-	otherTable := testdata.TestSourceTable("other_oracledb_table")
+	otherTable := schema.TestTable("other_oracledb_table", schema.TestSourceOptions{})
 	if _, err := db.ExecContext(ctx, "DROP TABLE \"other_oracledb_table\""); err != nil {
 		if !isNotExistsError(err) {
 			t.Fatal(err)
@@ -164,7 +177,7 @@ func TestPlugin(t *testing.T) {
 	if err := createTable(ctx, db, otherTable); err != nil {
 		t.Fatal(err)
 	}
-	otherData := testdata.GenTestDataV1(otherTable)
+	otherData := schema.GenTestData(otherTable, schema.GenTestDataOptions{MaxRows: 1})
 	if err := insertTable(ctx, db, otherTable, otherData); err != nil {
 		t.Fatal(err)
 	}
@@ -174,9 +187,10 @@ func TestPlugin(t *testing.T) {
 	}
 	res := make(chan *schema.Resource, 1)
 	g := errgroup.Group{}
+	syncTime := time.Now()
 	g.Go(func() error {
 		defer close(res)
-		return p.Sync(ctx, res)
+		return p.Sync(ctx, syncTime, res)
 	})
 	var resource *schema.Resource
 	totalResources := 0
@@ -194,12 +208,36 @@ func TestPlugin(t *testing.T) {
 	gotData := resource.GetValues()
 	actualStrings := make([]string, len(gotData))
 	for i, v := range gotData {
+		// Oracle treats empty strings as null, so we need to convert them for comparison
+		// See https://stackoverflow.com/questions/203493/why-does-oracle-9i-treat-an-empty-string-as-null
+		// Please note this means we can't distinguish between null and empty string
+		if !v.IsValid() && v.DataType() == arrow.BinaryTypes.String {
+			v.Set("")
+		}
 		actualStrings[i] = v.String()
 	}
-	expectedStrings := make([]string, len(data))
-	for i, v := range data {
-		expectedStrings[i] = v.String()
+	// Convert test data to scalar so we can do string comparison
+	// We need this as OracleDB does not support all arrow types, so the type data is lost for some columns
+	expectedColumns := data[0].Columns()
+	expectedStrings := make([]string, len(expectedColumns))
+	for i, col := range expectedColumns {
+		if col.DataType() == arrow.PrimitiveTypes.Uint64 {
+			// When reading from the OracleDB we can't know if the value is int64 or uint64 (without parsing the data)
+			// So we skip the test for this column as we can't support it
+			actualStrings[i] = ""
+			expectedStrings[i] = ""
+			continue
+		}
+		normalizedType := client.SchemaType(client.SQLType(col.DataType()))
+		s := scalar.NewScalar(normalizedType)
+		val, err := client.GetValue(col, 0)
+		if err != nil {
+			t.Fatal(err)
+		}
+		s.Set(val)
+		expectedStrings[i] = s.String()
 	}
+
 	require.Equal(t, expectedStrings, actualStrings)
 }
 
@@ -229,8 +267,8 @@ func TestPerformance(t *testing.T) {
 	group, gtx := errgroup.WithContext(ctx)
 	const numTables = 20
 	for i := 0; i < numTables; i++ {
-		table := testdata.TestSourceTable(fmt.Sprintf("test_oracledb_source_performance_%d", i))
-		data := testdata.GenTestDataV1(table)
+		table := schema.TestTable(fmt.Sprintf("test_oracledb_source_performance_%d", i), schema.TestSourceOptions{})
+		data := schema.GenTestData(table, schema.GenTestDataOptions{MaxRows: 1})
 
 		group.Go(func() error {
 			if _, err := db.ExecContext(gtx, fmt.Sprintf("DROP TABLE \"%s\"", table.Name)); err != nil {
@@ -256,9 +294,10 @@ func TestPerformance(t *testing.T) {
 
 	res := make(chan *schema.Resource, 1)
 	g := errgroup.Group{}
+	syncTime := time.Now()
 	g.Go(func() error {
 		defer close(res)
-		return p.Sync(ctx, res)
+		return p.Sync(ctx, syncTime, res)
 	})
 	totalResources := 0
 	for range res {

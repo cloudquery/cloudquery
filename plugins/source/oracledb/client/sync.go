@@ -6,8 +6,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -27,22 +29,23 @@ func (*Client) createResultsArray(table *schema.Table) []any {
 	results := make([]any, 0, len(table.Columns))
 	for _, col := range table.Columns {
 		switch col.Type {
-		case schema.TypeUUID, schema.TypeByteArray:
+		case types.ExtensionTypes.UUID, arrow.BinaryTypes.Binary, arrow.BinaryTypes.LargeBinary:
 			var r *[]byte
 			results = append(results, &r)
-		case schema.TypeBool:
+		case arrow.FixedWidthTypes.Boolean:
 			var r *bool
 			results = append(results, &r)
-		case schema.TypeInt:
+		case arrow.PrimitiveTypes.Int8, arrow.PrimitiveTypes.Int16, arrow.PrimitiveTypes.Int32, arrow.PrimitiveTypes.Int64,
+			arrow.PrimitiveTypes.Uint8, arrow.PrimitiveTypes.Uint16, arrow.PrimitiveTypes.Uint32, arrow.PrimitiveTypes.Uint64:
 			var r *int
 			results = append(results, &r)
-		case schema.TypeFloat:
+		case arrow.FixedWidthTypes.Float16, arrow.FixedWidthTypes.Float16, arrow.PrimitiveTypes.Float32, arrow.PrimitiveTypes.Float64:
 			var r *float64
 			results = append(results, &r)
-		case schema.TypeTimestamp:
+		case arrow.FixedWidthTypes.Timestamp_us:
 			var r *time.Time
 			results = append(results, &r)
-		case schema.TypeJSON:
+		case types.ExtensionTypes.JSON:
 			var r string
 			results = append(results, &r)
 		default:
