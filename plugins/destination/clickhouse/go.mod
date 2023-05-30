@@ -4,9 +4,9 @@ go 1.19
 
 require (
 	github.com/ClickHouse/clickhouse-go/v2 v2.10.0
-	github.com/apache/arrow/go/v13 v13.0.0-20230509040948-de6c3cd2b604
+	github.com/apache/arrow/go/v13 v13.0.0-20230525142029-2d32efeedad8
 	github.com/cloudquery/plugin-pb-go v1.0.8
-	github.com/cloudquery/plugin-sdk/v3 v3.6.8-0.20230529154343-30ad7c78fcd9
+	github.com/cloudquery/plugin-sdk/v3 v3.7.0
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.1
 	github.com/stretchr/testify v1.8.3
@@ -15,9 +15,6 @@ require (
 
 // TODO: remove once all updates are merged
 replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230526062000-b3fdc24ed8d6
-
-// TODO: remove after SDK release
-replace github.com/cloudquery/plugin-sdk/v3 => github.com/cloudquery/plugin-sdk/v3 v3.6.8-0.20230529154343-30ad7c78fcd9
 
 require (
 	github.com/ClickHouse/ch-go v0.56.0 // indirect
