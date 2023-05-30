@@ -119,7 +119,7 @@
   "plugins/source/googleads+FILLER": "0.0.0",
   "plugins/destination/meilisearch": "2.0.1",
   "plugins/destination/meilisearch+FILLER": "1.0.0",
-  "plugins/source/firestore": "1.0.2",
+  "plugins/source/firestore": "2.0.0",
   "plugins/source/firestore+FILLER": "0.0.0",
   "plugins/source/oracledb": "1.1.1",
   "plugins/source/oracledb+FILLER": "0.0.0"
