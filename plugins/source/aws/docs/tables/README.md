@@ -442,6 +442,7 @@
   - [aws_organizations_organizational_unit_accounts](../../../../../website/tables/aws/aws_organizations_organizational_unit_accounts.md)
 - [aws_organizations_policies](../../../../../website/tables/aws/aws_organizations_policies.md)
 - [aws_organizations_roots](../../../../../website/tables/aws/aws_organizations_roots.md)
+  - [aws_organizations_root_accounts](../../../../../website/tables/aws/aws_organizations_root_accounts.md)
 - [aws_qldb_ledgers](../../../../../website/tables/aws/aws_qldb_ledgers.md)
   - [aws_qldb_ledger_journal_kinesis_streams](../../../../../website/tables/aws/aws_qldb_ledger_journal_kinesis_streams.md)
   - [aws_qldb_ledger_journal_s3_exports](../../../../../website/tables/aws/aws_qldb_ledger_journal_s3_exports.md)

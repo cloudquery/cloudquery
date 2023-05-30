@@ -23,6 +23,15 @@ func buildOrganizationsRoots(t *testing.T, ctrl *gomock.Controller) client.Servi
 		&organizations.ListRootsOutput{
 			Roots: []types.Root{g},
 		}, nil)
+	a := types.Account{}
+	err = faker.FakeObject(&a)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListAccountsForParent(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&organizations.ListAccountsForParentOutput{
+			Accounts: []types.Account{a},
+		}, nil)
 
 	tt := make([]types.Tag, 3)
 	if err := faker.FakeObject(&tt); err != nil {

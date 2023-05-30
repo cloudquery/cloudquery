@@ -442,6 +442,7 @@
   - [aws_organizations_organizational_unit_accounts](tables/aws_organizations_organizational_unit_accounts)
 - [aws_organizations_policies](tables/aws_organizations_policies)
 - [aws_organizations_roots](tables/aws_organizations_roots)
+  - [aws_organizations_root_accounts](tables/aws_organizations_root_accounts)
 - [aws_qldb_ledgers](tables/aws_qldb_ledgers)
   - [aws_qldb_ledger_journal_kinesis_streams](tables/aws_qldb_ledger_journal_kinesis_streams)
   - [aws_qldb_ledger_journal_s3_exports](tables/aws_qldb_ledger_journal_s3_exports)
