@@ -10,23 +10,23 @@ The primary key for this table is **_cq_id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|tags|JSON|
-|allocation_id|String|
-|association_id|String|
-|carrier_ip|String|
-|customer_owned_ip|String|
-|customer_owned_ipv4_pool|String|
-|domain|String|
-|instance_id|String|
-|network_border_group|String|
-|network_interface_id|String|
-|network_interface_owner_id|String|
-|private_ip_address|String|
-|public_ip|String|
-|public_ipv4_pool|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|tags|`json`|
+|allocation_id|`utf8`|
+|association_id|`utf8`|
+|carrier_ip|`utf8`|
+|customer_owned_ip|`utf8`|
+|customer_owned_ipv4_pool|`utf8`|
+|domain|`utf8`|
+|instance_id|`utf8`|
+|network_border_group|`utf8`|
+|network_interface_id|`utf8`|
+|network_interface_owner_id|`utf8`|
+|private_ip_address|`utf8`|
+|public_ip|`utf8`|
+|public_ipv4_pool|`utf8`|

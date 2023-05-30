@@ -11,31 +11,31 @@ The composite primary key for this table is (**request_account_id**, **request_r
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|request_account_id (PK)|String|
-|request_region (PK)|String|
-|arn (PK)|String|
-|tags|JSON|
-|assign_ipv6_address_on_creation|Bool|
-|availability_zone|String|
-|availability_zone_id|String|
-|available_ip_address_count|Int|
-|cidr_block|String|
-|customer_owned_ipv4_pool|String|
-|default_for_az|Bool|
-|enable_dns64|Bool|
-|enable_lni_at_device_index|Int|
-|ipv6_cidr_block_association_set|JSON|
-|ipv6_native|Bool|
-|map_customer_owned_ip_on_launch|Bool|
-|map_public_ip_on_launch|Bool|
-|outpost_arn|String|
-|owner_id|String|
-|private_dns_name_options_on_launch|JSON|
-|state|String|
-|subnet_arn|String|
-|subnet_id|String|
-|vpc_id|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|request_account_id (PK)|`utf8`|
+|request_region (PK)|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|assign_ipv6_address_on_creation|`bool`|
+|availability_zone|`utf8`|
+|availability_zone_id|`utf8`|
+|available_ip_address_count|`int64`|
+|cidr_block|`utf8`|
+|customer_owned_ipv4_pool|`utf8`|
+|default_for_az|`bool`|
+|enable_dns64|`bool`|
+|enable_lni_at_device_index|`int64`|
+|ipv6_cidr_block_association_set|`json`|
+|ipv6_native|`bool`|
+|map_customer_owned_ip_on_launch|`bool`|
+|map_public_ip_on_launch|`bool`|
+|outpost_arn|`utf8`|
+|owner_id|`utf8`|
+|private_dns_name_options_on_launch|`json`|
+|state|`utf8`|
+|subnet_arn|`utf8`|
+|subnet_id|`utf8`|
+|vpc_id|`utf8`|

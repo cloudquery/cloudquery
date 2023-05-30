@@ -8,50 +8,50 @@ The composite primary key for this table is (**base_url**, **id**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|base_url (PK)|String|
-|id (PK)|Int|
-|username|String|
-|email|String|
-|name|String|
-|state|String|
-|web_url|String|
-|created_at|Timestamp|
-|bio|String|
-|bot|Bool|
-|location|String|
-|public_email|String|
-|skype|String|
-|linkedin|String|
-|twitter|String|
-|website_url|String|
-|organization|String|
-|job_title|String|
-|extern_uid|String|
-|provider|String|
-|theme_id|Int|
-|last_activity_on|Timestamp|
-|color_scheme_id|Int|
-|is_admin|Bool|
-|avatar_url|String|
-|can_create_group|Bool|
-|can_create_project|Bool|
-|projects_limit|Int|
-|current_sign_in_at|Timestamp|
-|current_sign_in_ip|Inet|
-|last_sign_in_at|Timestamp|
-|last_sign_in_ip|Inet|
-|confirmed_at|Timestamp|
-|two_factor_enabled|Bool|
-|note|String|
-|identities|JSON|
-|external|Bool|
-|private_profile|Bool|
-|shared_runners_minutes_limit|Int|
-|extra_shared_runners_minutes_limit|Int|
-|using_license_seat|Bool|
-|custom_attributes|JSON|
-|namespace_id|Int|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|base_url (PK)|`utf8`|
+|id (PK)|`int64`|
+|username|`utf8`|
+|email|`utf8`|
+|name|`utf8`|
+|state|`utf8`|
+|web_url|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|bio|`utf8`|
+|bot|`bool`|
+|location|`utf8`|
+|public_email|`utf8`|
+|skype|`utf8`|
+|linkedin|`utf8`|
+|twitter|`utf8`|
+|website_url|`utf8`|
+|organization|`utf8`|
+|job_title|`utf8`|
+|extern_uid|`utf8`|
+|provider|`utf8`|
+|theme_id|`int64`|
+|last_activity_on|`timestamp[us, tz=UTC]`|
+|color_scheme_id|`int64`|
+|is_admin|`bool`|
+|avatar_url|`utf8`|
+|can_create_group|`bool`|
+|can_create_project|`bool`|
+|projects_limit|`int64`|
+|current_sign_in_at|`timestamp[us, tz=UTC]`|
+|current_sign_in_ip|`inet`|
+|last_sign_in_at|`timestamp[us, tz=UTC]`|
+|last_sign_in_ip|`inet`|
+|confirmed_at|`timestamp[us, tz=UTC]`|
+|two_factor_enabled|`bool`|
+|note|`utf8`|
+|identities|`json`|
+|external|`bool`|
+|private_profile|`bool`|
+|shared_runners_minutes_limit|`int64`|
+|extra_shared_runners_minutes_limit|`int64`|
+|using_license_seat|`bool`|
+|custom_attributes|`json`|
+|namespace_id|`int64`|

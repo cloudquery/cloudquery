@@ -12,22 +12,22 @@ This table depends on [github_organizations](github_organizations).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|org (PK)|String|
-|number|Int|
-|state|String|
-|dependency|JSON|
-|security_advisory|JSON|
-|security_vulnerability|JSON|
-|url|String|
-|html_url (PK)|String|
-|created_at|Timestamp|
-|updated_at|Timestamp|
-|dismissed_at|Timestamp|
-|dismissed_by|JSON|
-|dismissed_reason|String|
-|dismissed_comment|String|
-|fixed_at|Timestamp|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|org (PK)|`utf8`|
+|number|`int64`|
+|state|`utf8`|
+|dependency|`json`|
+|security_advisory|`json`|
+|security_vulnerability|`json`|
+|url|`utf8`|
+|html_url (PK)|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|updated_at|`timestamp[us, tz=UTC]`|
+|dismissed_at|`timestamp[us, tz=UTC]`|
+|dismissed_by|`json`|
+|dismissed_reason|`utf8`|
+|dismissed_comment|`utf8`|
+|fixed_at|`timestamp[us, tz=UTC]`|

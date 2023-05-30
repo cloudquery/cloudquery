@@ -10,35 +10,35 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|airflow_configuration_options|JSON|
-|airflow_version|String|
-|created_at|Timestamp|
-|dag_s3_path|String|
-|environment_class|String|
-|execution_role_arn|String|
-|kms_key|String|
-|last_update|JSON|
-|logging_configuration|JSON|
-|max_workers|Int|
-|min_workers|Int|
-|name|String|
-|network_configuration|JSON|
-|plugins_s3_object_version|String|
-|plugins_s3_path|String|
-|requirements_s3_object_version|String|
-|requirements_s3_path|String|
-|schedulers|Int|
-|service_role_arn|String|
-|source_bucket_arn|String|
-|status|String|
-|tags|JSON|
-|webserver_access_mode|String|
-|webserver_url|String|
-|weekly_maintenance_window_start|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|airflow_configuration_options|`json`|
+|airflow_version|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|dag_s3_path|`utf8`|
+|environment_class|`utf8`|
+|execution_role_arn|`utf8`|
+|kms_key|`utf8`|
+|last_update|`json`|
+|logging_configuration|`json`|
+|max_workers|`int64`|
+|min_workers|`int64`|
+|name|`utf8`|
+|network_configuration|`json`|
+|plugins_s3_object_version|`utf8`|
+|plugins_s3_path|`utf8`|
+|requirements_s3_object_version|`utf8`|
+|requirements_s3_path|`utf8`|
+|schedulers|`int64`|
+|service_role_arn|`utf8`|
+|source_bucket_arn|`utf8`|
+|status|`utf8`|
+|tags|`json`|
+|webserver_access_mode|`utf8`|
+|webserver_url|`utf8`|
+|weekly_maintenance_window_start|`utf8`|

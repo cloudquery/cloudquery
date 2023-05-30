@@ -10,20 +10,20 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|created_date|Timestamp|
-|customer_id|String|
-|description|String|
-|enabled|Bool|
-|id|String|
-|last_updated_date|Timestamp|
-|name|String|
-|stage_keys|StringArray|
-|tags|JSON|
-|value|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|created_date|`timestamp[us, tz=UTC]`|
+|customer_id|`utf8`|
+|description|`utf8`|
+|enabled|`bool`|
+|id|`utf8`|
+|last_updated_date|`timestamp[us, tz=UTC]`|
+|name|`utf8`|
+|stage_keys|`list<item: utf8, nullable>`|
+|tags|`json`|
+|value|`utf8`|

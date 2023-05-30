@@ -2,16 +2,14 @@ package client
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"os"
+	"time"
 
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/okta/okta-sdk-golang/v3/okta"
 	"github.com/rs/zerolog"
-	"github.com/thoas/go-funk"
 )
 
 type Client struct {
@@ -22,8 +20,6 @@ type Client struct {
 
 	*okta.APIClient
 }
-
-const exampleDomain = "https://<CHANGE_THIS_TO_YOUR_OKTA_DOMAIN>.okta.com"
 
 func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
@@ -42,48 +38,27 @@ func New(logger zerolog.Logger, s specs.Source, okt *okta.APIClient) *Client {
 	}
 }
 
-func Configure(_ context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
-	oktaSpec := &Spec{}
-	if err := s.UnmarshalSpec(oktaSpec); err != nil {
+func Configure(_ context.Context, logger zerolog.Logger, srcSpec specs.Source, _ source.Options) (schema.ClientMeta, error) {
+	spec := &Spec{}
+	if err := srcSpec.UnmarshalSpec(spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal okta spec: %w", err)
 	}
 
-	oktaToken, ok := os.LookupEnv("OKTA_API_TOKEN")
-	if !ok {
-		if oktaSpec.Token == "" {
-			return nil, errors.New("missing OKTA_API_TOKEN, either set it as an environment variable or pass it in the configuration")
-		}
-
-		oktaToken = oktaSpec.Token
-	}
-
-	if oktaSpec.Domain == "" || oktaSpec.Domain == exampleDomain {
-		return nil, errors.New(`failed to configure provider, please set your okta "domain" in okta.yml`)
+	l := logger.With().Str("module", "okta-source").Logger()
+	spec.setDefaults(&l)
+	if err := spec.validate(); err != nil {
+		return nil, err
 	}
 
 	cf := okta.NewConfiguration(
-		okta.WithOrgUrl(oktaSpec.Domain),
-		okta.WithToken(oktaToken),
+		okta.WithOrgUrl(spec.Domain),
+		okta.WithToken(spec.Token),
 		okta.WithCache(true),
+		okta.WithRateLimitMaxBackOff(int64(spec.RateLimit.MaxBackoff/time.Second)), // this param takes int64 of seconds
+		okta.WithRateLimitMaxRetries(spec.RateLimit.MaxRetries),
 	)
+	cf.Debug = spec.Debug
 	c := okta.NewAPIClient(cf)
 
-	return New(logger, s, c), nil
-}
-
-func ResolveNullableTime(path string) schema.ColumnResolver {
-	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-		data := funk.Get(resource.Item, path)
-		if data == nil {
-			return nil
-		}
-		ts, ok := data.(okta.NullableTime)
-		if !ok {
-			return fmt.Errorf("unexpected type, want \"okta.NullableTime\", have \"%T\"", data)
-		}
-		if !ts.IsSet() {
-			return resource.Set(c.Name, nil)
-		}
-		return resource.Set(c.Name, ts.Get())
-	}
+	return New(l, srcSpec, c), nil
 }

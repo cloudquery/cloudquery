@@ -1,10 +1,10 @@
 package certificate_packs
 
 import (
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func CertificatePacks() *schema.Table {
@@ -12,27 +12,25 @@ func CertificatePacks() *schema.Table {
 		Name:      "cloudflare_certificate_packs",
 		Resolver:  fetchCertificatePacks,
 		Multiplex: client.ZoneMultiplex,
-		Transform: transformers.TransformWithStruct(&cloudflare.CertificatePack{}),
+		Transform: client.TransformWithStruct(&cloudflare.CertificatePack{}),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 				Resolver:    client.ResolveAccountID,
 				Description: `The Account ID of the resource.`,
 			},
 			{
 				Name:        "zone_id",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 				Resolver:    client.ResolveZoneID,
 				Description: `Zone identifier tag.`,
 			},
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ID"),
+				PrimaryKey: true,
 			},
 		},
 	}

@@ -14,11 +14,11 @@ This table depends on [azure_storage_queues](azure_storage_queues).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|subscription_id|String|
-|queue_id (PK)|String|
-|signed_identifiers|JSON|
-|version|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|subscription_id|`utf8`|
+|queue_id (PK)|`utf8`|
+|signed_identifiers|`json`|
+|version|`utf8`|

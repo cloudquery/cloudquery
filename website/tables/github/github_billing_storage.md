@@ -8,11 +8,11 @@ The primary key for this table is **org**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|org (PK)|String|
-|days_left_in_billing_cycle|Int|
-|estimated_paid_storage_for_month|Float|
-|estimated_storage_for_month|Int|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|org (PK)|`utf8`|
+|days_left_in_billing_cycle|`int64`|
+|estimated_paid_storage_for_month|`float64`|
+|estimated_storage_for_month|`int64`|

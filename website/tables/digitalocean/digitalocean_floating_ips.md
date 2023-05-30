@@ -10,12 +10,12 @@ The primary key for this table is **ip**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|ip (PK)|String|
-|region|JSON|
-|droplet|JSON|
-|project_id|String|
-|locked|Bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|ip (PK)|`utf8`|
+|region|`json`|
+|droplet|`json`|
+|project_id|`utf8`|
+|locked|`bool`|

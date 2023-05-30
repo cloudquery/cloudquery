@@ -10,23 +10,23 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|addons_total|Int|
-|charges_total|Int|
-|created_at|Timestamp|
-|credits_total|Int|
-|database_total|Int|
-|dyno_units|Float|
-|number|Int|
-|payment_status|String|
-|period_end|String|
-|period_start|String|
-|platform_total|Int|
-|state|Int|
-|total|Int|
-|updated_at|Timestamp|
-|weighted_dyno_hours|Float|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|addons_total|`int64`|
+|charges_total|`int64`|
+|created_at|`timestamp[us, tz=UTC]`|
+|credits_total|`int64`|
+|database_total|`int64`|
+|dyno_units|`float64`|
+|number|`int64`|
+|payment_status|`utf8`|
+|period_end|`utf8`|
+|period_start|`utf8`|
+|platform_total|`int64`|
+|state|`int64`|
+|total|`int64`|
+|updated_at|`timestamp[us, tz=UTC]`|
+|weighted_dyno_hours|`float64`|

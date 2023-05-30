@@ -14,16 +14,16 @@ This table depends on [gcp_artifactregistry_repositories](gcp_artifactregistry_r
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|uri|String|
-|tags|StringArray|
-|image_size_bytes|Int|
-|upload_time|Timestamp|
-|media_type|String|
-|build_time|Timestamp|
-|update_time|Timestamp|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|uri|`utf8`|
+|tags|`list<item: utf8, nullable>`|
+|image_size_bytes|`int64`|
+|upload_time|`timestamp[us, tz=UTC]`|
+|media_type|`utf8`|
+|build_time|`timestamp[us, tz=UTC]`|
+|update_time|`timestamp[us, tz=UTC]`|

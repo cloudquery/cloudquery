@@ -16,12 +16,12 @@ The following tables depend on snyk_organizations:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|group|JSON|
-|id (PK)|String|
-|name|String|
-|slug|String|
-|url|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|group|`json`|
+|id (PK)|`utf8`|
+|name|`utf8`|
+|slug|`utf8`|
+|url|`utf8`|

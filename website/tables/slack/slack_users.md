@@ -15,30 +15,30 @@ The following tables depend on slack_users:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|updated|Timestamp|
-|team_id|String|
-|name|String|
-|deleted|Bool|
-|color|String|
-|real_name|String|
-|tz|String|
-|tz_label|String|
-|tz_offset|Int|
-|profile|JSON|
-|is_bot|Bool|
-|is_admin|Bool|
-|is_owner|Bool|
-|is_primary_owner|Bool|
-|is_restricted|Bool|
-|is_ultra_restricted|Bool|
-|is_stranger|Bool|
-|is_app_user|Bool|
-|is_invited_user|Bool|
-|has_files|Bool|
-|locale|String|
-|enterprise_user|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|updated|`timestamp[us, tz=UTC]`|
+|team_id|`utf8`|
+|name|`utf8`|
+|deleted|`bool`|
+|color|`utf8`|
+|real_name|`utf8`|
+|tz|`utf8`|
+|tz_label|`utf8`|
+|tz_offset|`int64`|
+|profile|`json`|
+|is_bot|`bool`|
+|is_admin|`bool`|
+|is_owner|`bool`|
+|is_primary_owner|`bool`|
+|is_restricted|`bool`|
+|is_ultra_restricted|`bool`|
+|is_stranger|`bool`|
+|is_app_user|`bool`|
+|is_invited_user|`bool`|
+|has_files|`bool`|
+|locale|`utf8`|
+|enterprise_user|`json`|

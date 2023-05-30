@@ -8,30 +8,30 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|region (PK)|String|
-|compartment_id (PK)|String|
-|id (PK)|String|
-|vcn_id|String|
-|lifecycle_state|String|
-|source_id|String|
-|capture_filter_id|String|
-|defined_tags|JSON|
-|display_name|String|
-|freeform_tags|JSON|
-|lifecycle_state_details|String|
-|time_created|Timestamp|
-|target_id|String|
-|target_ip|String|
-|encapsulation_protocol|String|
-|vxlan_network_identifier|Int|
-|is_vtap_enabled|Bool|
-|source_type|String|
-|traffic_mode|String|
-|max_packet_size|Int|
-|target_type|String|
-|source_private_endpoint_ip|String|
-|source_private_endpoint_subnet_id|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|vcn_id|`utf8`|
+|lifecycle_state|`utf8`|
+|source_id|`utf8`|
+|capture_filter_id|`utf8`|
+|defined_tags|`json`|
+|display_name|`utf8`|
+|freeform_tags|`json`|
+|lifecycle_state_details|`utf8`|
+|time_created|`timestamp[us, tz=UTC]`|
+|target_id|`utf8`|
+|target_ip|`utf8`|
+|encapsulation_protocol|`utf8`|
+|vxlan_network_identifier|`int64`|
+|is_vtap_enabled|`bool`|
+|source_type|`utf8`|
+|traffic_mode|`utf8`|
+|max_packet_size|`int64`|
+|target_type|`utf8`|
+|source_private_endpoint_ip|`utf8`|
+|source_private_endpoint_subnet_id|`utf8`|

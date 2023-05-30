@@ -17,25 +17,25 @@ The following tables depend on aws_glue_registry_schemas:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|compatibility|String|
-|created_time|String|
-|data_format|String|
-|description|String|
-|latest_schema_version|Int|
-|next_schema_version|Int|
-|registry_arn|String|
-|registry_name|String|
-|schema_arn|String|
-|schema_checkpoint|Int|
-|schema_name|String|
-|schema_status|String|
-|updated_time|String|
-|result_metadata|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|compatibility|`utf8`|
+|created_time|`utf8`|
+|data_format|`utf8`|
+|description|`utf8`|
+|latest_schema_version|`int64`|
+|next_schema_version|`int64`|
+|registry_arn|`utf8`|
+|registry_name|`utf8`|
+|schema_arn|`utf8`|
+|schema_checkpoint|`int64`|
+|schema_name|`utf8`|
+|schema_status|`utf8`|
+|updated_time|`utf8`|
+|result_metadata|`json`|

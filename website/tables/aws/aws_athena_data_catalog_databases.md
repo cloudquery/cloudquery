@@ -17,13 +17,13 @@ The following tables depend on aws_athena_data_catalog_databases:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|data_catalog_arn (PK)|String|
-|name (PK)|String|
-|description|String|
-|parameters|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|data_catalog_arn (PK)|`utf8`|
+|name (PK)|`utf8`|
+|description|`utf8`|
+|parameters|`json`|

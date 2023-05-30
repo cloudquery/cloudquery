@@ -8,23 +8,23 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|region (PK)|String|
-|compartment_id (PK)|String|
-|id (PK)|String|
-|display_name|String|
-|is_cross_tenancy_peering|Bool|
-|lifecycle_state|String|
-|peering_status|String|
-|peer_id|String|
-|time_created|Timestamp|
-|vcn_id|String|
-|defined_tags|JSON|
-|freeform_tags|JSON|
-|peer_advertised_cidr|String|
-|peer_advertised_cidr_details|StringArray|
-|peering_status_details|String|
-|route_table_id|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|display_name|`utf8`|
+|is_cross_tenancy_peering|`bool`|
+|lifecycle_state|`utf8`|
+|peering_status|`utf8`|
+|peer_id|`utf8`|
+|time_created|`timestamp[us, tz=UTC]`|
+|vcn_id|`utf8`|
+|defined_tags|`json`|
+|freeform_tags|`json`|
+|peer_advertised_cidr|`utf8`|
+|peer_advertised_cidr_details|`list<item: utf8, nullable>`|
+|peering_status_details|`utf8`|
+|route_table_id|`utf8`|

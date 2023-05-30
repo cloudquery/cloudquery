@@ -6,7 +6,7 @@ import (
 	"github.com/clarkmcc/go-hubspot"
 	"github.com/clarkmcc/go-hubspot/generated/v3/quotes"
 	"github.com/cloudquery/cloudquery/plugins/source/hubspot/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func fetchQuotes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
@@ -22,6 +22,7 @@ func fetchQuotes(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 		req := hubspotClient.BasicApi.
 			GetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).
 			Properties(cqClient.Spec.TableOptions.ForTable("hubspot_crm_quotes").GetProperties()).
+			Associations(cqClient.Spec.TableOptions.ForTable("hubspot_crm_quotes").GetAssociations()).
 			Limit(client.DefaultPageSize)
 
 		if len(after) > 0 {

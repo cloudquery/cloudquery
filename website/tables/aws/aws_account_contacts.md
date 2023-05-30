@@ -10,20 +10,20 @@ The primary key for this table is **account_id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|address_line1|String|
-|city|String|
-|country_code|String|
-|full_name|String|
-|phone_number|String|
-|postal_code|String|
-|address_line2|String|
-|address_line3|String|
-|company_name|String|
-|district_or_county|String|
-|state_or_region|String|
-|website_url|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|address_line1|`utf8`|
+|city|`utf8`|
+|country_code|`utf8`|
+|full_name|`utf8`|
+|phone_number|`utf8`|
+|postal_code|`utf8`|
+|address_line2|`utf8`|
+|address_line3|`utf8`|
+|company_name|`utf8`|
+|district_or_county|`utf8`|
+|state_or_region|`utf8`|
+|website_url|`utf8`|

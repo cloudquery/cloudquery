@@ -15,16 +15,16 @@ The following tables depend on gcp_iam_service_accounts:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id|String|
-|unique_id (PK)|String|
-|name (PK)|String|
-|email|String|
-|display_name|String|
-|etag|ByteArray|
-|description|String|
-|oauth2_client_id|String|
-|disabled|Bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id|`utf8`|
+|unique_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|email|`utf8`|
+|display_name|`utf8`|
+|etag|`binary`|
+|description|`utf8`|
+|oauth2_client_id|`utf8`|
+|disabled|`bool`|

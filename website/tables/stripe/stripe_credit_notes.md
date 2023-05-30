@@ -10,36 +10,36 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|amount|Int|
-|amount_shipping|Int|
-|created|Timestamp|
-|currency|String|
-|customer|JSON|
-|customer_balance_transaction|JSON|
-|discount_amount|Int|
-|discount_amounts|JSON|
-|invoice|JSON|
-|lines|JSON|
-|livemode|Bool|
-|memo|String|
-|metadata|JSON|
-|number|String|
-|object|String|
-|out_of_band_amount|Int|
-|pdf|String|
-|reason|String|
-|refund|JSON|
-|shipping_cost|JSON|
-|status|String|
-|subtotal|Int|
-|subtotal_excluding_tax|Int|
-|tax_amounts|JSON|
-|total|Int|
-|total_excluding_tax|Int|
-|type|String|
-|voided_at|Int|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|amount|`int64`|
+|amount_shipping|`int64`|
+|created|`timestamp[us, tz=UTC]`|
+|currency|`utf8`|
+|customer|`json`|
+|customer_balance_transaction|`json`|
+|discount_amount|`int64`|
+|discount_amounts|`json`|
+|invoice|`json`|
+|lines|`json`|
+|livemode|`bool`|
+|memo|`utf8`|
+|metadata|`json`|
+|number|`utf8`|
+|object|`utf8`|
+|out_of_band_amount|`int64`|
+|pdf|`utf8`|
+|reason|`utf8`|
+|refund|`json`|
+|shipping_cost|`json`|
+|status|`utf8`|
+|subtotal|`int64`|
+|subtotal_excluding_tax|`int64`|
+|tax_amounts|`json`|
+|total|`int64`|
+|total_excluding_tax|`int64`|
+|type|`utf8`|
+|voided_at|`int64`|

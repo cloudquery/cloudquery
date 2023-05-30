@@ -3,12 +3,15 @@ package kms
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/aws/aws-sdk-go-v2/service/kms/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Keys() *schema.Table {
@@ -25,24 +28,22 @@ func Keys() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "rotation_enabled",
-				Type:     schema.TypeBool,
+				Type:     arrow.FixedWidthTypes.Boolean,
 				Resolver: resolveKeysRotationEnabled,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveKeysTags,
 			},
 			{
-				Name: "arn",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				PrimaryKey: true,
 			},
 			{
 				Name:     "replica_keys",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveKeysReplicaKeys,
 			},
 		},

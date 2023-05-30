@@ -14,19 +14,19 @@ This table depends on [aws_ec2_transit_gateways](aws_ec2_transit_gateways).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|transit_gateway_arn|String|
-|tags|JSON|
-|accepter_tgw_info|JSON|
-|accepter_transit_gateway_attachment_id|String|
-|creation_time|Timestamp|
-|options|JSON|
-|requester_tgw_info|JSON|
-|state|String|
-|status|JSON|
-|transit_gateway_attachment_id|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|transit_gateway_arn|`utf8`|
+|tags|`json`|
+|accepter_tgw_info|`json`|
+|accepter_transit_gateway_attachment_id|`utf8`|
+|creation_time|`timestamp[us, tz=UTC]`|
+|options|`json`|
+|requester_tgw_info|`json`|
+|state|`utf8`|
+|status|`json`|
+|transit_gateway_attachment_id|`utf8`|

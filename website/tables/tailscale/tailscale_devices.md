@@ -10,28 +10,28 @@ The composite primary key for this table is (**tailnet**, **id**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|tailnet (PK)|String|
-|advertised_routes|StringArray|
-|enabled_routes|StringArray|
-|addresses|StringArray|
-|name|String|
-|id (PK)|String|
-|authorized|Bool|
-|user|String|
-|tags|StringArray|
-|key_expiry_disabled|Bool|
-|blocks_incoming_connections|Bool|
-|client_version|String|
-|created|Timestamp|
-|expires|Timestamp|
-|hostname|String|
-|is_external|Bool|
-|last_seen|Timestamp|
-|machine_key|String|
-|node_key|String|
-|os|String|
-|update_available|Bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|tailnet (PK)|`utf8`|
+|advertised_routes|`list<item: utf8, nullable>`|
+|enabled_routes|`list<item: utf8, nullable>`|
+|addresses|`list<item: utf8, nullable>`|
+|name|`utf8`|
+|id (PK)|`utf8`|
+|authorized|`bool`|
+|user|`utf8`|
+|tags|`list<item: utf8, nullable>`|
+|key_expiry_disabled|`bool`|
+|blocks_incoming_connections|`bool`|
+|client_version|`utf8`|
+|created|`timestamp[us, tz=UTC]`|
+|expires|`timestamp[us, tz=UTC]`|
+|hostname|`utf8`|
+|is_external|`bool`|
+|last_seen|`timestamp[us, tz=UTC]`|
+|machine_key|`utf8`|
+|node_key|`utf8`|
+|os|`utf8`|
+|update_available|`bool`|

@@ -10,29 +10,29 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|creation_timestamp|Timestamp|
-|dns_entries|JSON|
-|dns_options|JSON|
-|groups|JSON|
-|ip_address_type|String|
-|last_error|JSON|
-|network_interface_ids|StringArray|
-|owner_id|String|
-|policy_document|String|
-|private_dns_enabled|Bool|
-|requester_managed|Bool|
-|route_table_ids|StringArray|
-|service_name|String|
-|state|String|
-|subnet_ids|StringArray|
-|vpc_endpoint_id|String|
-|vpc_endpoint_type|String|
-|vpc_id|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|creation_timestamp|`timestamp[us, tz=UTC]`|
+|dns_entries|`json`|
+|dns_options|`json`|
+|groups|`json`|
+|ip_address_type|`utf8`|
+|last_error|`json`|
+|network_interface_ids|`list<item: utf8, nullable>`|
+|owner_id|`utf8`|
+|policy_document|`utf8`|
+|private_dns_enabled|`bool`|
+|requester_managed|`bool`|
+|route_table_ids|`list<item: utf8, nullable>`|
+|service_name|`utf8`|
+|state|`utf8`|
+|subnet_ids|`list<item: utf8, nullable>`|
+|vpc_endpoint_id|`utf8`|
+|vpc_endpoint_type|`utf8`|
+|vpc_id|`utf8`|

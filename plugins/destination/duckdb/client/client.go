@@ -7,7 +7,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
 	"github.com/rs/zerolog"
 
 	// import duckdb driver
@@ -44,14 +44,21 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	if err != nil {
 		return nil, err
 	}
+	_, err = c.db.Exec("INSTALL 'parquet'; LOAD 'parquet';")
+	if err != nil {
+		return nil, err
+	}
+
 	return c, nil
 }
 
 func (c *Client) Close(ctx context.Context) error {
 	var err error
+
 	if c.db == nil {
 		return fmt.Errorf("client already closed or not initialized")
 	}
+
 	err = c.db.Close()
 	c.db = nil
 	return err

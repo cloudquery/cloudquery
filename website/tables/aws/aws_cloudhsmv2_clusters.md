@@ -10,25 +10,25 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|backup_policy|String|
-|backup_retention_policy|JSON|
-|certificates|JSON|
-|cluster_id|String|
-|create_timestamp|Timestamp|
-|hsm_type|String|
-|hsms|JSON|
-|pre_co_password|String|
-|security_group|String|
-|source_backup_id|String|
-|state|String|
-|state_message|String|
-|subnet_mapping|JSON|
-|vpc_id|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|backup_policy|`utf8`|
+|backup_retention_policy|`json`|
+|certificates|`json`|
+|cluster_id|`utf8`|
+|create_timestamp|`timestamp[us, tz=UTC]`|
+|hsm_type|`utf8`|
+|hsms|`json`|
+|pre_co_password|`utf8`|
+|security_group|`utf8`|
+|source_backup_id|`utf8`|
+|state|`utf8`|
+|state_message|`utf8`|
+|subnet_mapping|`json`|
+|vpc_id|`utf8`|

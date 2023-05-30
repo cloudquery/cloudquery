@@ -13,17 +13,17 @@ The following tables depend on okta_groups:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|created|Timestamp|
-|last_membership_updated|Timestamp|
-|last_updated|Timestamp|
-|object_class|StringArray|
-|profile|JSON|
-|type|String|
-|_embedded|JSON|
-|_links|JSON|
-|additional_properties|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|created|`timestamp[us, tz=UTC]`|
+|id (PK)|`utf8`|
+|last_membership_updated|`timestamp[us, tz=UTC]`|
+|last_updated|`timestamp[us, tz=UTC]`|
+|object_class|`list<item: utf8, nullable>`|
+|profile|`json`|
+|type|`utf8`|
+|_embedded|`json`|
+|_links|`json`|
+|additional_properties|`json`|

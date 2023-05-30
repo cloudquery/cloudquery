@@ -79,7 +79,7 @@ jobs:
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: 'v2.5.3'
+          version: 'v3.5.0'
       - name: Configure AWS credentials
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
         uses: aws-actions/configure-aws-credentials@v2
@@ -162,7 +162,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: 'v2.5.3'
+          version: 'v3.5.0'
       - name: Migrate DB
         run: cloudquery migrate test/policy_cq_config.yml
         env:

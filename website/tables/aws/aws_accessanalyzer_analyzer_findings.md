@@ -14,25 +14,25 @@ This table depends on [aws_accessanalyzer_analyzers](aws_accessanalyzer_analyzer
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|analyzer_arn|String|
-|analyzed_at|Timestamp|
-|condition|JSON|
-|created_at|Timestamp|
-|id|String|
-|resource_owner_account|String|
-|resource_type|String|
-|status|String|
-|updated_at|Timestamp|
-|action|StringArray|
-|error|String|
-|is_public|Bool|
-|principal|JSON|
-|resource|String|
-|sources|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|analyzer_arn|`utf8`|
+|analyzed_at|`timestamp[us, tz=UTC]`|
+|condition|`json`|
+|created_at|`timestamp[us, tz=UTC]`|
+|id|`utf8`|
+|resource_owner_account|`utf8`|
+|resource_type|`utf8`|
+|status|`utf8`|
+|updated_at|`timestamp[us, tz=UTC]`|
+|action|`list<item: utf8, nullable>`|
+|error|`utf8`|
+|is_public|`bool`|
+|principal|`json`|
+|resource|`utf8`|
+|sources|`json`|

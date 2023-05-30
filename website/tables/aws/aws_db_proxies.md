@@ -10,26 +10,26 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|auth|JSON|
-|created_date|Timestamp|
-|db_proxy_arn|String|
-|db_proxy_name|String|
-|debug_logging|Bool|
-|endpoint|String|
-|engine_family|String|
-|idle_client_timeout|Int|
-|require_tls|Bool|
-|role_arn|String|
-|status|String|
-|updated_date|Timestamp|
-|vpc_id|String|
-|vpc_security_group_ids|StringArray|
-|vpc_subnet_ids|StringArray|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|auth|`json`|
+|created_date|`timestamp[us, tz=UTC]`|
+|db_proxy_arn|`utf8`|
+|db_proxy_name|`utf8`|
+|debug_logging|`bool`|
+|endpoint|`utf8`|
+|engine_family|`utf8`|
+|idle_client_timeout|`int64`|
+|require_tls|`bool`|
+|role_arn|`utf8`|
+|status|`utf8`|
+|updated_date|`timestamp[us, tz=UTC]`|
+|vpc_id|`utf8`|
+|vpc_security_group_ids|`list<item: utf8, nullable>`|
+|vpc_subnet_ids|`list<item: utf8, nullable>`|

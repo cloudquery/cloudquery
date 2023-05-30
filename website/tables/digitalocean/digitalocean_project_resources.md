@@ -14,11 +14,11 @@ This table depends on [digitalocean_projects](digitalocean_projects).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|urn (PK)|String|
-|assigned_at|String|
-|links|JSON|
-|status|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|urn (PK)|`utf8`|
+|assigned_at|`utf8`|
+|links|`json`|
+|status|`utf8`|

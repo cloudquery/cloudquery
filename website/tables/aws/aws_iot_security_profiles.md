@@ -10,23 +10,23 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|targets|StringArray|
-|tags|JSON|
-|arn (PK)|String|
-|additional_metrics_to_retain|StringArray|
-|additional_metrics_to_retain_v2|JSON|
-|alert_targets|JSON|
-|behaviors|JSON|
-|creation_date|Timestamp|
-|last_modified_date|Timestamp|
-|security_profile_arn|String|
-|security_profile_description|String|
-|security_profile_name|String|
-|version|Int|
-|result_metadata|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|targets|`list<item: utf8, nullable>`|
+|tags|`json`|
+|arn (PK)|`utf8`|
+|additional_metrics_to_retain|`list<item: utf8, nullable>`|
+|additional_metrics_to_retain_v2|`json`|
+|alert_targets|`json`|
+|behaviors|`json`|
+|creation_date|`timestamp[us, tz=UTC]`|
+|last_modified_date|`timestamp[us, tz=UTC]`|
+|security_profile_arn|`utf8`|
+|security_profile_description|`utf8`|
+|security_profile_name|`utf8`|
+|version|`int64`|
+|result_metadata|`json`|

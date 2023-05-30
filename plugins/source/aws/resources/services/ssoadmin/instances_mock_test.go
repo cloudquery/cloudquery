@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -44,7 +44,10 @@ func buildInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&ssoadmin.DescribePermissionSetOutput{
 			PermissionSet: &ps,
 		}, nil)
-
+	mSSOAdmin.EXPECT().ListAccountsForProvisionedPermissionSet(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&ssoadmin.ListAccountsForProvisionedPermissionSetOutput{
+			AccountIds: []string{*as.AccountId},
+		}, nil)
 	mSSOAdmin.EXPECT().ListAccountAssignments(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ssoadmin.ListAccountAssignmentsOutput{
 			AccountAssignments: []types.AccountAssignment{as},

@@ -23,23 +23,23 @@ The following tables depend on aws_apigateway_rest_apis:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|api_key_source|String|
-|binary_media_types|StringArray|
-|created_date|Timestamp|
-|description|String|
-|disable_execute_api_endpoint|Bool|
-|endpoint_configuration|JSON|
-|id|String|
-|minimum_compression_size|Int|
-|name|String|
-|policy|String|
-|tags|JSON|
-|version|String|
-|warnings|StringArray|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|api_key_source|`utf8`|
+|binary_media_types|`list<item: utf8, nullable>`|
+|created_date|`timestamp[us, tz=UTC]`|
+|description|`utf8`|
+|disable_execute_api_endpoint|`bool`|
+|endpoint_configuration|`json`|
+|id|`utf8`|
+|minimum_compression_size|`int64`|
+|name|`utf8`|
+|policy|`utf8`|
+|tags|`json`|
+|version|`utf8`|
+|warnings|`list<item: utf8, nullable>`|

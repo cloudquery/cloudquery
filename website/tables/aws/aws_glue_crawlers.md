@@ -10,31 +10,31 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|classifiers|StringArray|
-|configuration|String|
-|crawl_elapsed_time|Int|
-|crawler_security_configuration|String|
-|creation_time|Timestamp|
-|database_name|String|
-|description|String|
-|lake_formation_configuration|JSON|
-|last_crawl|JSON|
-|last_updated|Timestamp|
-|lineage_configuration|JSON|
-|name|String|
-|recrawl_policy|JSON|
-|role|String|
-|schedule|JSON|
-|schema_change_policy|JSON|
-|state|String|
-|table_prefix|String|
-|targets|JSON|
-|version|Int|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|classifiers|`list<item: utf8, nullable>`|
+|configuration|`utf8`|
+|crawl_elapsed_time|`int64`|
+|crawler_security_configuration|`utf8`|
+|creation_time|`timestamp[us, tz=UTC]`|
+|database_name|`utf8`|
+|description|`utf8`|
+|lake_formation_configuration|`json`|
+|last_crawl|`json`|
+|last_updated|`timestamp[us, tz=UTC]`|
+|lineage_configuration|`json`|
+|name|`utf8`|
+|recrawl_policy|`json`|
+|role|`utf8`|
+|schedule|`json`|
+|schema_change_policy|`json`|
+|state|`utf8`|
+|table_prefix|`utf8`|
+|targets|`json`|
+|version|`int64`|

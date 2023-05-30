@@ -14,12 +14,12 @@ This table depends on [aws_elbv2_listeners](aws_elbv2_listeners).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|listener_arn|String|
-|certificate_arn|String|
-|is_default|Bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|listener_arn|`utf8`|
+|certificate_arn|`utf8`|
+|is_default|`bool`|

@@ -10,40 +10,40 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|at_rest_encryption_enabled|Bool|
-|auth_token_enabled|Bool|
-|auth_token_last_modified_date|Timestamp|
-|auto_minor_version_upgrade|Bool|
-|automatic_failover|String|
-|cache_node_type|String|
-|cluster_enabled|Bool|
-|configuration_endpoint|JSON|
-|data_tiering|String|
-|description|String|
-|global_replication_group_info|JSON|
-|ip_discovery|String|
-|kms_key_id|String|
-|log_delivery_configurations|JSON|
-|member_clusters|StringArray|
-|member_clusters_outpost_arns|StringArray|
-|multi_az|String|
-|network_type|String|
-|node_groups|JSON|
-|pending_modified_values|JSON|
-|replication_group_create_time|Timestamp|
-|replication_group_id|String|
-|snapshot_retention_limit|Int|
-|snapshot_window|String|
-|snapshotting_cluster_id|String|
-|status|String|
-|transit_encryption_enabled|Bool|
-|transit_encryption_mode|String|
-|user_group_ids|StringArray|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|at_rest_encryption_enabled|`bool`|
+|auth_token_enabled|`bool`|
+|auth_token_last_modified_date|`timestamp[us, tz=UTC]`|
+|auto_minor_version_upgrade|`bool`|
+|automatic_failover|`utf8`|
+|cache_node_type|`utf8`|
+|cluster_enabled|`bool`|
+|configuration_endpoint|`json`|
+|data_tiering|`utf8`|
+|description|`utf8`|
+|global_replication_group_info|`json`|
+|ip_discovery|`utf8`|
+|kms_key_id|`utf8`|
+|log_delivery_configurations|`json`|
+|member_clusters|`list<item: utf8, nullable>`|
+|member_clusters_outpost_arns|`list<item: utf8, nullable>`|
+|multi_az|`utf8`|
+|network_type|`utf8`|
+|node_groups|`json`|
+|pending_modified_values|`json`|
+|replication_group_create_time|`timestamp[us, tz=UTC]`|
+|replication_group_id|`utf8`|
+|snapshot_retention_limit|`int64`|
+|snapshot_window|`utf8`|
+|snapshotting_cluster_id|`utf8`|
+|status|`utf8`|
+|transit_encryption_enabled|`bool`|
+|transit_encryption_mode|`utf8`|
+|user_group_ids|`list<item: utf8, nullable>`|

@@ -10,17 +10,17 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|created_by|JSON|
-|created_time|Timestamp|
-|evaluation_spec|JSON|
-|execution_spec|JSON|
-|id (PK)|String|
-|name|String|
-|schedule_spec|JSON|
-|status|String|
-|updated_time|Timestamp|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|created_by|`json`|
+|created_time|`timestamp[us, tz=UTC]`|
+|evaluation_spec|`json`|
+|execution_spec|`json`|
+|id (PK)|`utf8`|
+|name|`utf8`|
+|schedule_spec|`json`|
+|status|`utf8`|
+|updated_time|`timestamp[us, tz=UTC]`|

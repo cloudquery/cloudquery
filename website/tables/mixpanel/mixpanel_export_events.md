@@ -11,12 +11,12 @@ It supports incremental syncs based on the **time** column.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|Int|
-|time (PK) (Incremental Key)|Timestamp|
-|distinct_id (PK)|String|
-|event (PK)|String|
-|properties|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`int64`|
+|time (PK) (Incremental Key)|`timestamp[us, tz=UTC]`|
+|distinct_id (PK)|`utf8`|
+|event (PK)|`utf8`|
+|properties|`json`|

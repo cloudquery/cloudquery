@@ -10,16 +10,16 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|arn (PK)|String|
-|tags|JSON|
-|application_layer_automatic_response_configuration|JSON|
-|health_check_ids|StringArray|
-|id|String|
-|name|String|
-|protection_arn|String|
-|resource_arn|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|application_layer_automatic_response_configuration|`json`|
+|health_check_ids|`list<item: utf8, nullable>`|
+|id|`utf8`|
+|name|`utf8`|
+|protection_arn|`utf8`|
+|resource_arn|`utf8`|

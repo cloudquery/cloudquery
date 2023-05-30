@@ -10,17 +10,17 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|arn (PK)|String|
-|tags|JSON|
-|default_action|JSON|
-|rules|JSON|
-|web_acl_id|String|
-|metric_name|String|
-|name|String|
-|web_acl_arn|String|
-|logging_configuration|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|default_action|`json`|
+|rules|`json`|
+|web_acl_id|`utf8`|
+|metric_name|`utf8`|
+|name|`utf8`|
+|web_acl_arn|`utf8`|
+|logging_configuration|`json`|
