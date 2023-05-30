@@ -14,7 +14,9 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230526062000-b3fdc24ed8d6
+//replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230526062000-b3fdc24ed8d6
+// TODO: update once https://github.com/apache/arrow/pull/35823 is merged
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230530125834-9645ebe5ee9f
 
 require (
 	github.com/ClickHouse/ch-go v0.56.0 // indirect
