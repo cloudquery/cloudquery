@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/terraform
 go 1.19
 
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230509040948-de6c3cd2b604
+	github.com/apache/arrow/go/v13 v13.0.0-20230525142029-2d32efeedad8
 	github.com/aws/aws-sdk-go-v2 v1.18.0
 	github.com/aws/aws-sdk-go-v2/config v1.18.25
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.24
@@ -11,7 +11,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.33.1
 	github.com/aws/aws-sdk-go-v2/service/sts v1.19.0
 	github.com/cloudquery/plugin-pb-go v1.0.8
-	github.com/cloudquery/plugin-sdk/v3 v3.6.7
+	github.com/cloudquery/plugin-sdk/v3 v3.7.0
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.29.0
 )
