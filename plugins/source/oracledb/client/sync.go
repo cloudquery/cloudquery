@@ -39,7 +39,7 @@ func (*Client) createResultsArray(table *schema.Table) []any {
 			arrow.PrimitiveTypes.Uint8, arrow.PrimitiveTypes.Uint16, arrow.PrimitiveTypes.Uint32, arrow.PrimitiveTypes.Uint64:
 			var r *int
 			results = append(results, &r)
-		case arrow.FixedWidthTypes.Float16, arrow.FixedWidthTypes.Float16, arrow.PrimitiveTypes.Float32, arrow.PrimitiveTypes.Float64:
+		case arrow.FixedWidthTypes.Float16, arrow.PrimitiveTypes.Float32, arrow.PrimitiveTypes.Float64:
 			var r *float64
 			results = append(results, &r)
 		case arrow.FixedWidthTypes.Timestamp_us:

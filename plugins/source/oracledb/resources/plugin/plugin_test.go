@@ -212,7 +212,9 @@ func TestPlugin(t *testing.T) {
 		// See https://stackoverflow.com/questions/203493/why-does-oracle-9i-treat-an-empty-string-as-null
 		// Please note this means we can't distinguish between null and empty string
 		if !v.IsValid() && v.DataType() == arrow.BinaryTypes.String {
-			v.Set("")
+			if err := v.Set(""); err != nil {
+				t.Fatal(err)
+			}
 		}
 		actualStrings[i] = v.String()
 	}
@@ -234,7 +236,9 @@ func TestPlugin(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		s.Set(val)
+		if err := s.Set(val); err != nil {
+			t.Fatal(err)
+		}
 		expectedStrings[i] = s.String()
 	}
 
