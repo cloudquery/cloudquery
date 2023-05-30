@@ -16,34 +16,34 @@ The following tables depend on aws_elasticbeanstalk_environments:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id (PK)|utf8|
-|arn|utf8|
-|region|utf8|
-|tags|json|
-|id (PK)|utf8|
-|listeners|json|
-|abortable_operation_in_progress|bool|
-|application_name|utf8|
-|cname|utf8|
-|date_created|timestamp[us, tz=UTC]|
-|date_updated|timestamp[us, tz=UTC]|
-|description|utf8|
-|endpoint_url|utf8|
-|environment_arn|utf8|
-|environment_id|utf8|
-|environment_links|json|
-|environment_name|utf8|
-|health|utf8|
-|health_status|utf8|
-|operations_role|utf8|
-|platform_arn|utf8|
-|resources|json|
-|solution_stack_name|utf8|
-|status|utf8|
-|template_name|utf8|
-|tier|json|
-|version_label|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|arn|`utf8`|
+|region|`utf8`|
+|tags|`json`|
+|id (PK)|`utf8`|
+|listeners|`json`|
+|abortable_operation_in_progress|`bool`|
+|application_name|`utf8`|
+|cname|`utf8`|
+|date_created|`timestamp[us, tz=UTC]`|
+|date_updated|`timestamp[us, tz=UTC]`|
+|description|`utf8`|
+|endpoint_url|`utf8`|
+|environment_arn|`utf8`|
+|environment_id|`utf8`|
+|environment_links|`json`|
+|environment_name|`utf8`|
+|health|`utf8`|
+|health_status|`utf8`|
+|operations_role|`utf8`|
+|platform_arn|`utf8`|
+|resources|`json`|
+|solution_stack_name|`utf8`|
+|status|`utf8`|
+|template_name|`utf8`|
+|tier|`json`|
+|version_label|`utf8`|

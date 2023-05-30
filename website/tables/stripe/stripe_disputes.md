@@ -11,23 +11,23 @@ It supports incremental syncs based on the **created** column.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|id (PK)|utf8|
-|created (Incremental Key)|timestamp[us, tz=UTC]|
-|amount|int64|
-|balance_transactions|json|
-|charge|json|
-|currency|utf8|
-|evidence|json|
-|evidence_details|json|
-|is_charge_refundable|bool|
-|livemode|bool|
-|metadata|json|
-|network_reason_code|utf8|
-|object|utf8|
-|payment_intent|json|
-|reason|utf8|
-|status|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|created (Incremental Key)|`timestamp[us, tz=UTC]`|
+|amount|`int64`|
+|balance_transactions|`json`|
+|charge|`json`|
+|currency|`utf8`|
+|evidence|`json`|
+|evidence_details|`json`|
+|is_charge_refundable|`bool`|
+|livemode|`bool`|
+|metadata|`json`|
+|network_reason_code|`utf8`|
+|object|`utf8`|
+|payment_intent|`json`|
+|reason|`utf8`|
+|status|`utf8`|

@@ -13,20 +13,20 @@ The following tables depend on vercel_deployments:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|uid (PK)|utf8|
-|name|utf8|
-|url|utf8|
-|source|utf8|
-|state|utf8|
-|type|utf8|
-|inspector_url|utf8|
-|is_rollback_candidate|bool|
-|ready|timestamp[us, tz=UTC]|
-|checks_state|utf8|
-|checks_conclusion|utf8|
-|created_at|timestamp[us, tz=UTC]|
-|building_at|timestamp[us, tz=UTC]|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|uid (PK)|`utf8`|
+|name|`utf8`|
+|url|`utf8`|
+|source|`utf8`|
+|state|`utf8`|
+|type|`utf8`|
+|inspector_url|`utf8`|
+|is_rollback_candidate|`bool`|
+|ready|`timestamp[us, tz=UTC]`|
+|checks_state|`utf8`|
+|checks_conclusion|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|building_at|`timestamp[us, tz=UTC]`|

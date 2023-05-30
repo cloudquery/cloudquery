@@ -17,41 +17,41 @@ The following tables depend on aws_ecs_cluster_services:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|tags|json|
-|capacity_provider_strategy|json|
-|cluster_arn (PK)|utf8|
-|created_at|timestamp[us, tz=UTC]|
-|created_by|utf8|
-|deployment_configuration|json|
-|deployment_controller|json|
-|deployments|json|
-|desired_count|int64|
-|enable_ecs_managed_tags|bool|
-|enable_execute_command|bool|
-|events|json|
-|health_check_grace_period_seconds|int64|
-|launch_type|utf8|
-|load_balancers|json|
-|network_configuration|json|
-|pending_count|int64|
-|placement_constraints|json|
-|placement_strategy|json|
-|platform_family|utf8|
-|platform_version|utf8|
-|propagate_tags|utf8|
-|role_arn|utf8|
-|running_count|int64|
-|scheduling_strategy|utf8|
-|service_arn|utf8|
-|service_name|utf8|
-|service_registries|json|
-|status|utf8|
-|task_definition|utf8|
-|task_sets|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|capacity_provider_strategy|`json`|
+|cluster_arn (PK)|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|created_by|`utf8`|
+|deployment_configuration|`json`|
+|deployment_controller|`json`|
+|deployments|`json`|
+|desired_count|`int64`|
+|enable_ecs_managed_tags|`bool`|
+|enable_execute_command|`bool`|
+|events|`json`|
+|health_check_grace_period_seconds|`int64`|
+|launch_type|`utf8`|
+|load_balancers|`json`|
+|network_configuration|`json`|
+|pending_count|`int64`|
+|placement_constraints|`json`|
+|placement_strategy|`json`|
+|platform_family|`utf8`|
+|platform_version|`utf8`|
+|propagate_tags|`utf8`|
+|role_arn|`utf8`|
+|running_count|`int64`|
+|scheduling_strategy|`utf8`|
+|service_arn|`utf8`|
+|service_name|`utf8`|
+|service_registries|`json`|
+|status|`utf8`|
+|task_definition|`utf8`|
+|task_sets|`json`|

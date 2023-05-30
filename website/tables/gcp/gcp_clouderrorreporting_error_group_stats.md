@@ -15,17 +15,17 @@ The following tables depend on gcp_clouderrorreporting_error_group_stats:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id (PK)|uuid|
-|_cq_parent_id|uuid|
-|project_id|utf8|
-|group|json|
-|count|int64|
-|affected_users_count|int64|
-|timed_counts|json|
-|first_seen_time|timestamp[us, tz=UTC]|
-|last_seen_time|timestamp[us, tz=UTC]|
-|affected_services|json|
-|num_affected_services|int64|
-|representative|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id|`utf8`|
+|group|`json`|
+|count|`int64`|
+|affected_users_count|`int64`|
+|timed_counts|`json`|
+|first_seen_time|`timestamp[us, tz=UTC]`|
+|last_seen_time|`timestamp[us, tz=UTC]`|
+|affected_services|`json`|
+|num_affected_services|`int64`|
+|representative|`json`|

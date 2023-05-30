@@ -10,17 +10,17 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|arn (PK)|utf8|
-|tags|json|
-|cloud_watch_alarm_configuration_dimensions|json|
-|caller_reference|utf8|
-|health_check_config|json|
-|health_check_version|int64|
-|id|utf8|
-|cloud_watch_alarm_configuration|json|
-|linked_service|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|cloud_watch_alarm_configuration_dimensions|`json`|
+|caller_reference|`utf8`|
+|health_check_config|`json`|
+|health_check_version|`int64`|
+|id|`utf8`|
+|cloud_watch_alarm_configuration|`json`|
+|linked_service|`json`|

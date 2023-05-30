@@ -11,22 +11,22 @@ It supports incremental syncs based on the **created** column.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|id (PK)|utf8|
-|created (Incremental Key)|timestamp[us, tz=UTC]|
-|amount|int64|
-|available_on|int64|
-|currency|utf8|
-|description|utf8|
-|exchange_rate|float64|
-|fee|int64|
-|fee_details|json|
-|net|int64|
-|object|utf8|
-|reporting_category|utf8|
-|source|json|
-|status|utf8|
-|type|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|created (Incremental Key)|`timestamp[us, tz=UTC]`|
+|amount|`int64`|
+|available_on|`int64`|
+|currency|`utf8`|
+|description|`utf8`|
+|exchange_rate|`float64`|
+|fee|`int64`|
+|fee_details|`json`|
+|net|`int64`|
+|object|`utf8`|
+|reporting_category|`utf8`|
+|source|`json`|
+|status|`utf8`|
+|type|`utf8`|

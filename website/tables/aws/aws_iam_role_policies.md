@@ -14,13 +14,13 @@ This table depends on [aws_iam_roles](aws_iam_roles).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id (PK)|utf8|
-|role_arn (PK)|utf8|
-|policy_document|json|
-|policy_name (PK)|utf8|
-|role_name|utf8|
-|result_metadata|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|role_arn (PK)|`utf8`|
+|policy_document|`json`|
+|policy_name (PK)|`utf8`|
+|role_name|`utf8`|
+|result_metadata|`json`|

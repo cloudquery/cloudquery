@@ -17,21 +17,21 @@ The following tables depend on aws_stepfunctions_map_runs:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|state_machine_arn|utf8|
-|execution_arn|utf8|
-|execution_counts|json|
-|item_counts|json|
-|map_run_arn|utf8|
-|max_concurrency|int64|
-|start_date|timestamp[us, tz=UTC]|
-|status|utf8|
-|tolerated_failure_count|int64|
-|tolerated_failure_percentage|float64|
-|stop_date|timestamp[us, tz=UTC]|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|state_machine_arn|`utf8`|
+|execution_arn|`utf8`|
+|execution_counts|`json`|
+|item_counts|`json`|
+|map_run_arn|`utf8`|
+|max_concurrency|`int64`|
+|start_date|`timestamp[us, tz=UTC]`|
+|status|`utf8`|
+|tolerated_failure_count|`int64`|
+|tolerated_failure_percentage|`float64`|
+|stop_date|`timestamp[us, tz=UTC]`|

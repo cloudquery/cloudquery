@@ -10,26 +10,26 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|tags|json|
-|creation_time|timestamp[us, tz=UTC]|
-|deliver_cross_account_role|utf8|
-|deliver_logs_error_message|utf8|
-|deliver_logs_permission_arn|utf8|
-|deliver_logs_status|utf8|
-|destination_options|json|
-|flow_log_id|utf8|
-|flow_log_status|utf8|
-|log_destination|utf8|
-|log_destination_type|utf8|
-|log_format|utf8|
-|log_group_name|utf8|
-|max_aggregation_interval|int64|
-|resource_id|utf8|
-|traffic_type|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|creation_time|`timestamp[us, tz=UTC]`|
+|deliver_cross_account_role|`utf8`|
+|deliver_logs_error_message|`utf8`|
+|deliver_logs_permission_arn|`utf8`|
+|deliver_logs_status|`utf8`|
+|destination_options|`json`|
+|flow_log_id|`utf8`|
+|flow_log_status|`utf8`|
+|log_destination|`utf8`|
+|log_destination_type|`utf8`|
+|log_format|`utf8`|
+|log_group_name|`utf8`|
+|max_aggregation_interval|`int64`|
+|resource_id|`utf8`|
+|traffic_type|`utf8`|

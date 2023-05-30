@@ -16,18 +16,18 @@ The following tables depend on aws_accessanalyzer_analyzers:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|created_at|timestamp[us, tz=UTC]|
-|name|utf8|
-|status|utf8|
-|type|utf8|
-|last_resource_analyzed|utf8|
-|last_resource_analyzed_at|timestamp[us, tz=UTC]|
-|status_reason|json|
-|tags|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|name|`utf8`|
+|status|`utf8`|
+|type|`utf8`|
+|last_resource_analyzed|`utf8`|
+|last_resource_analyzed_at|`timestamp[us, tz=UTC]`|
+|status_reason|`json`|
+|tags|`json`|

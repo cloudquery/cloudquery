@@ -14,22 +14,22 @@ This table depends on [aws_quicksight_data_sets](aws_quicksight_data_sets).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id (PK)|utf8|
-|region (PK)|utf8|
-|tags|json|
-|data_set_arn (PK)|utf8|
-|arn (PK)|utf8|
-|created_time|timestamp[us, tz=UTC]|
-|ingestion_status|utf8|
-|error_info|json|
-|ingestion_id|utf8|
-|ingestion_size_in_bytes|int64|
-|ingestion_time_in_seconds|int64|
-|queue_info|json|
-|request_source|utf8|
-|request_type|utf8|
-|row_info|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
+|tags|`json`|
+|data_set_arn (PK)|`utf8`|
+|arn (PK)|`utf8`|
+|created_time|`timestamp[us, tz=UTC]`|
+|ingestion_status|`utf8`|
+|error_info|`json`|
+|ingestion_id|`utf8`|
+|ingestion_size_in_bytes|`int64`|
+|ingestion_time_in_seconds|`int64`|
+|queue_info|`json`|
+|request_source|`utf8`|
+|request_type|`utf8`|
+|row_info|`json`|

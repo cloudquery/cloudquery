@@ -143,6 +143,7 @@ var GcpServices = map[string]bool{
 	"genomics.googleapis.com":                         true,
 	"gkebackup.googleapis.com":                        true,
 	"gkehub.googleapis.com":                           true,
+	"gkeonprem.googleapis.com":                        true,
 	"gmail.googleapis.com":                            true,
 	"gmailpostmastertools.googleapis.com":             true,
 	"groupsmigration.googleapis.com":                  true,

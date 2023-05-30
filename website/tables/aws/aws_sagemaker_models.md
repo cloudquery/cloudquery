@@ -10,21 +10,21 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|tags|json|
-|creation_time|timestamp[us, tz=UTC]|
-|execution_role_arn|utf8|
-|model_arn|utf8|
-|model_name|utf8|
-|containers|json|
-|enable_network_isolation|bool|
-|inference_execution_config|json|
-|primary_container|json|
-|vpc_config|json|
-|result_metadata|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|creation_time|`timestamp[us, tz=UTC]`|
+|execution_role_arn|`utf8`|
+|model_arn|`utf8`|
+|model_name|`utf8`|
+|containers|`json`|
+|enable_network_isolation|`bool`|
+|inference_execution_config|`json`|
+|primary_container|`json`|
+|vpc_config|`json`|
+|result_metadata|`json`|

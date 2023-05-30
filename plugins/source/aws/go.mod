@@ -29,16 +29,16 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.10
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.22.1
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.25.7
-	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.20.7
-	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.7
+	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.20.11
+	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.13
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.14.6
-	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.6
-	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.6
+	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.11
+	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.10
 	github.com/aws/aws-sdk-go-v2/service/computeoptimizer v1.21.5
 	github.com/aws/aws-sdk-go-v2/service/configservice v1.29.6
-	github.com/aws/aws-sdk-go-v2/service/costexplorer v1.25.8
+	github.com/aws/aws-sdk-go-v2/service/costexplorer v1.25.10
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.23.5
-	github.com/aws/aws-sdk-go-v2/service/dax v1.12.6
+	github.com/aws/aws-sdk-go-v2/service/dax v1.12.10
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.8
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.20.6
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.18.6
@@ -118,7 +118,7 @@ require (
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/codegen v0.2.1
 	github.com/cloudquery/plugin-pb-go v1.0.8
-	github.com/cloudquery/plugin-sdk/v3 v3.6.4
+	github.com/cloudquery/plugin-sdk/v3 v3.6.7
 	github.com/gocarina/gocsv v0.0.0-20230325173030-9a18a846a479
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
@@ -152,7 +152,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sso v1.12.10 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.10 // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
-	github.com/cloudquery/plugin-sdk v1.24.0
+	github.com/cloudquery/plugin-sdk v1.45.0
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect

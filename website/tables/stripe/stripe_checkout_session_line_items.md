@@ -14,20 +14,20 @@ This table depends on [stripe_checkout_sessions](stripe_checkout_sessions).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|id (PK)|utf8|
-|session_id (PK)|utf8|
-|amount_discount|int64|
-|amount_subtotal|int64|
-|amount_tax|int64|
-|amount_total|int64|
-|currency|utf8|
-|description|utf8|
-|discounts|json|
-|object|utf8|
-|price|json|
-|quantity|int64|
-|taxes|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|session_id (PK)|`utf8`|
+|amount_discount|`int64`|
+|amount_subtotal|`int64`|
+|amount_tax|`int64`|
+|amount_total|`int64`|
+|currency|`utf8`|
+|description|`utf8`|
+|discounts|`json`|
+|object|`utf8`|
+|price|`json`|
+|quantity|`int64`|
+|taxes|`json`|

@@ -14,23 +14,23 @@ This table depends on [pagerduty_incidents](pagerduty_incidents).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|type|String|
-|summary|String|
-|self|String|
-|html_url|String|
-|created_at|Timestamp|
-|agent|JSON|
-|channel|JSON|
-|teams|JSON|
-|contexts|JSON|
-|acknowledgement_timeout|Int|
-|event_details|JSON|
-|assignees|JSON|
-|incident|JSON|
-|service|JSON|
-|user|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|type|`utf8`|
+|summary|`utf8`|
+|self|`utf8`|
+|html_url|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|agent|`json`|
+|channel|`json`|
+|teams|`json`|
+|contexts|`json`|
+|acknowledgement_timeout|`int64`|
+|event_details|`json`|
+|assignees|`json`|
+|incident|`json`|
+|service|`json`|
+|user|`json`|

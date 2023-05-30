@@ -11,25 +11,25 @@ It supports incremental syncs based on the **created** column.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|id (PK)|utf8|
-|created (Incremental Key)|timestamp[us, tz=UTC]|
-|amount_off|int64|
-|applies_to|json|
-|currency|utf8|
-|currency_options|json|
-|deleted|bool|
-|duration|utf8|
-|duration_in_months|int64|
-|livemode|bool|
-|max_redemptions|int64|
-|metadata|json|
-|name|utf8|
-|object|utf8|
-|percent_off|float64|
-|redeem_by|int64|
-|times_redeemed|int64|
-|valid|bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|created (Incremental Key)|`timestamp[us, tz=UTC]`|
+|amount_off|`int64`|
+|applies_to|`json`|
+|currency|`utf8`|
+|currency_options|`json`|
+|deleted|`bool`|
+|duration|`utf8`|
+|duration_in_months|`int64`|
+|livemode|`bool`|
+|max_redemptions|`int64`|
+|metadata|`json`|
+|name|`utf8`|
+|object|`utf8`|
+|percent_off|`float64`|
+|redeem_by|`int64`|
+|times_redeemed|`int64`|
+|valid|`bool`|

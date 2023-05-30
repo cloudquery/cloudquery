@@ -10,25 +10,25 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|block_offline_analytics|Bool|
-|collaborative_ads_managed_partner_eligibility|JSON|
-|collaborative_ads_partner_premium_options|JSON|
-|created_time|Timestamp|
-|extended_updated_time|Timestamp|
-|id (PK)|String|
-|is_hidden|Bool|
-|link|String|
-|name|String|
-|payment_account_id|String|
-|primary_page|JSON|
-|profile_picture_uri|String|
-|timezone_id|Int|
-|two_factor_type|String|
-|updated_time|Timestamp|
-|verification_status|String|
-|vertical|String|
-|vertical_id|Int|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|block_offline_analytics|`bool`|
+|collaborative_ads_managed_partner_eligibility|`json`|
+|collaborative_ads_partner_premium_options|`json`|
+|created_time|`timestamp[us, tz=UTC]`|
+|extended_updated_time|`timestamp[us, tz=UTC]`|
+|id (PK)|`utf8`|
+|is_hidden|`bool`|
+|link|`utf8`|
+|name|`utf8`|
+|payment_account_id|`utf8`|
+|primary_page|`json`|
+|profile_picture_uri|`utf8`|
+|timezone_id|`int64`|
+|two_factor_type|`utf8`|
+|updated_time|`timestamp[us, tz=UTC]`|
+|verification_status|`utf8`|
+|vertical|`utf8`|
+|vertical_id|`int64`|

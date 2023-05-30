@@ -22,5 +22,8 @@ func ManagedZones() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 		},
+		Relations: []*schema.Table{
+			resourceRecordSets(),
+		},
 	}
 }
