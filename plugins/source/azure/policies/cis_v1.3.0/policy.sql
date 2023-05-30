@@ -17,6 +17,7 @@ END AS "execution_time"  \gset
 \ir section_3.sql
 \ir section_4.sql
 \ir section_5.sql
+\ir section_6.sql
 \ir section_7.sql
 \ir section_8.sql
 \ir section_9.sql
