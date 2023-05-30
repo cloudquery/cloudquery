@@ -11,7 +11,7 @@ func TestSomeTable() *schema.Table {
 	return &schema.Table{
 		Name:        "test_some_table",
 		Description: "Test description",
-		Resolver:    resolveSomeTable,
+		Resolver:    fetchSomeTableData,
 		Columns: []schema.Column{
 			{
 				Name:        "column1",
@@ -30,7 +30,7 @@ func TestSomeTable() *schema.Table {
 	}
 }
 
-func resolveSomeTable(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchSomeTableData(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	res <- map[string]any{
 		"column1": "test_project_id",
 		"column2": 123,
