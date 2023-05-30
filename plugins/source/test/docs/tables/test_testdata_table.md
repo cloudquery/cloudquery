@@ -4,7 +4,7 @@ This table shows data for Test Testdata Table.
 
 Testdata table
 
-The primary key for this table is **int64**.
+The primary key for this table is **_cq_id**.
 
 ## Columns
 
@@ -12,7 +12,7 @@ The primary key for this table is **int64**.
 | ------------- | ------------- |
 |_cq_source_name|`utf8`|
 |_cq_sync_time|`timestamp[us, tz=UTC]`|
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |test_cq_source_name|`utf8`|
 |test_cq_sync_time|`timestamp[us, tz=UTC]`|
@@ -32,7 +32,7 @@ The primary key for this table is **int64**.
 |inet|`inet`|
 |int16|`int16`|
 |int32|`int32`|
-|int64 (PK)|`int64`|
+|int64|`int64`|
 |int8|`int8`|
 |largebinary|`large_binary`|
 |largestring|`large_utf8`|
