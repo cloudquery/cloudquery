@@ -61,7 +61,7 @@ func createTable(ctx context.Context, db *sql.DB, table *schema.Table) error {
 				pk = append(pk, client.Identifier(column.Name))
 			}
 		} else {
-			// In OracleDB a primary keys are implicitly NOT NULL and UNIQUE
+			// In OracleDB primary keys are implicitly NOT NULL and UNIQUE
 			// and it errors out if we try to do it explicitly
 			if column.NotNull {
 				builder.WriteString(" NOT NULL")
