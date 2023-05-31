@@ -29,11 +29,15 @@ func GetValue(arr arrow.Array, i int) (any, error) {
 		return a.Value(i), nil
 	case *array.Uint64:
 		return a.Value(i), nil
+	case *array.Float16:
+		return a.Value(i), nil
 	case *array.Float32:
 		return a.Value(i), nil
 	case *array.Float64:
 		return a.Value(i), nil
 	case *array.String:
+		return a.Value(i), nil
+	case *array.LargeString:
 		return a.Value(i), nil
 	case *array.Binary:
 		return a.Value(i), nil
@@ -42,17 +46,11 @@ func GetValue(arr arrow.Array, i int) (any, error) {
 	case *array.FixedSizeBinary:
 		return a.Value(i), nil
 	case *array.Timestamp:
-		ts := arr.(*array.Timestamp)
-		switch ts.DataType().(*arrow.TimestampType).Unit {
-		case arrow.Nanosecond:
-			return ts.Value(i).ToTime(arrow.Nanosecond), nil
-		case arrow.Millisecond:
-			return ts.Value(i).ToTime(arrow.Millisecond), nil
-		case arrow.Second:
-			return ts.Value(i).ToTime(arrow.Second), nil
-		default:
-			return ts.Value(i).ToTime(arrow.Microsecond), nil
+		toTime, err := a.DataType().(*arrow.TimestampType).GetToTimeFunc()
+		if err != nil {
+			return nil, err
 		}
+		return toTime(a.Value(i)), nil
 	case *types.UUIDArray:
 		bUUID, err := a.Value(i).MarshalBinary()
 		if err != nil {
