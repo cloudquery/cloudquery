@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
-func serverFilewallRules() *schema.Table {
+func serverFirewallRules() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_sql_server_firewall_rules",
 		Resolver:    fetchFirewallRules,

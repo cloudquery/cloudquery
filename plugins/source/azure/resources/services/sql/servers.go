@@ -26,7 +26,7 @@ func Servers() *schema.Table {
 			virtualNetworkRules(),
 			serverSecurityAlertPolicies(),
 			serverAdvancedThreatProtections(),
-			serverFilewallRules(),
+			serverFirewallRules(),
 		},
 	}
 }
