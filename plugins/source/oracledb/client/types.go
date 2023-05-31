@@ -18,7 +18,7 @@ func SQLType(t arrow.DataType) string {
 		return "binary_double"
 	case *types.UUIDType:
 		return "raw(16)"
-	case *arrow.BinaryType, *arrow.LargeBinaryType:
+	case *arrow.BinaryType, *arrow.LargeBinaryType, *arrow.FixedSizeBinaryType:
 		return "blob"
 	case *arrow.TimestampType:
 		return "timestamp"
