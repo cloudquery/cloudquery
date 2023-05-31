@@ -1,5 +1,41 @@
 # Changelog
 
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v2.4.0...plugins-source-okta-v3.0.0) (2023-05-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* This release introduces an internal change to our type system to use [Apache Arrow](https://arrow.apache.org/). This should not have any visible breaking changes, however due to the size of the change we are introducing it under a major version bump to communicate that it might have some bugs that we weren't able to catch during our internal tests. If you encounter an issue during the upgrade, please submit a [bug report](https://github.com/cloudquery/cloudquery/issues/new/choose). You will also need to update destinations depending on which one you use:
+    - Azure Blob Storage >= v3.2.0
+    - BigQuery >= v3.0.0
+    - ClickHouse >= v3.1.1
+    - DuckDB >= v1.1.6
+    - Elasticsearch >= v2.0.0
+    - File >= v3.2.0
+    - Firehose >= v2.0.2
+    - GCS >= v3.2.0
+    - Gremlin >= v2.1.10
+    - Kafka >= v3.0.1
+    - Meilisearch >= v2.0.1
+    - Microsoft SQL Server >= v4.2.0
+    - MongoDB >= v2.0.1
+    - MySQL >= v2.0.2
+    - Neo4j >= v3.0.0
+    - PostgreSQL >= v4.2.0
+    - S3 >= v4.4.0
+    - Snowflake >= v2.1.1
+    - SQLite >= v2.2.0
+
+### Features
+
+* **okta:** Deprecation notice for `OKTA_API_TOKEN` env variable support ([#10887](https://github.com/cloudquery/cloudquery/issues/10887)) ([528daaa](https://github.com/cloudquery/cloudquery/commit/528daaacd35453894c5da3e5cd8fb0078c31c5c9))
+* Update to use [Apache Arrow](https://arrow.apache.org/) type system ([#10983](https://github.com/cloudquery/cloudquery/issues/10983)) ([03473dd](https://github.com/cloudquery/cloudquery/commit/03473dd58a6d4c9dd73ccafd5eaa4a15c747c504))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v3 to v3.6.7 ([#11043](https://github.com/cloudquery/cloudquery/issues/11043)) ([3c6d885](https://github.com/cloudquery/cloudquery/commit/3c6d885c3d201b0b39cbc1406c6e54a57ec5ed5f))
+
 ## [2.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v2.3.1...plugins-source-okta-v2.4.0) (2023-05-22)
 
 

@@ -121,6 +121,7 @@
 - [azure_devhub_workflow](../../../../../website/tables/azure/azure_devhub_workflow.md)
 - [azure_devops_pipeline_template_definitions](../../../../../website/tables/azure/azure_devops_pipeline_template_definitions.md)
 - [azure_dns_zones](../../../../../website/tables/azure/azure_dns_zones.md)
+  - [azure_dns_record_sets](../../../../../website/tables/azure/azure_dns_record_sets.md)
 - [azure_dnsresolver_dns_forwarding_rulesets](../../../../../website/tables/azure/azure_dnsresolver_dns_forwarding_rulesets.md)
 - [azure_dnsresolver_dns_resolvers](../../../../../website/tables/azure/azure_dnsresolver_dns_resolvers.md)
 - [azure_elastic_monitors](../../../../../website/tables/azure/azure_elastic_monitors.md)
