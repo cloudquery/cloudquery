@@ -4,7 +4,7 @@ WITH conditions AS (
         subscription_id,
         id,
         access = 'Allow' AS acceptAccess,
-        protocol = '*' OR upper(protocol) = 'UDP' AS matchProtocol,
+        protocol = '*' OR upper(protocol) = 'TCP' AS matchProtocol,
         direction = 'Inbound' AS isInbound,
         sourceAddressPrefix IN ('*', '0.0.0.0', '<nw>/0', '/0', 'internet', 'any') AS matchPrefix,
         22 BETWEEN start_dest_port AND end_dest_port AS inRange
