@@ -28,25 +28,22 @@ func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *
 func (*Client) createResultsArray(table *schema.Table) []any {
 	results := make([]any, 0, len(table.Columns))
 	for _, col := range table.Columns {
-		switch col.Type {
-		case types.ExtensionTypes.UUID, arrow.BinaryTypes.Binary, arrow.BinaryTypes.LargeBinary:
+		// We only support types that we create based on the schema, see SchemaType function
+		switch col.Type.(type) {
+		case *types.UUIDType, *arrow.BinaryType:
 			var r *[]byte
 			results = append(results, &r)
-		case arrow.FixedWidthTypes.Boolean:
+		case *arrow.BooleanType:
 			var r *bool
 			results = append(results, &r)
-		case arrow.PrimitiveTypes.Int8, arrow.PrimitiveTypes.Int16, arrow.PrimitiveTypes.Int32, arrow.PrimitiveTypes.Int64,
-			arrow.PrimitiveTypes.Uint8, arrow.PrimitiveTypes.Uint16, arrow.PrimitiveTypes.Uint32, arrow.PrimitiveTypes.Uint64:
+		case *arrow.Int64Type:
 			var r *int
 			results = append(results, &r)
-		case arrow.FixedWidthTypes.Float16, arrow.PrimitiveTypes.Float32, arrow.PrimitiveTypes.Float64:
+		case *arrow.Float64Type:
 			var r *float64
 			results = append(results, &r)
-		case arrow.FixedWidthTypes.Timestamp_us:
+		case *arrow.TimestampType:
 			var r *time.Time
-			results = append(results, &r)
-		case types.ExtensionTypes.JSON:
-			var r string
 			results = append(results, &r)
 		default:
 			var r *string
