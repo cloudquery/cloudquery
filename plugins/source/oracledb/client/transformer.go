@@ -64,17 +64,19 @@ func GetValue(arr arrow.Array, i int) (any, error) {
 
 // used in the tests to insert the arrow.Record
 func TransformRecord(record arrow.Record) ([][]any, error) {
-	var res [][]any
-	for i := int64(0); i < record.NumRows(); i++ {
-		var row []any
-		for j := 0; int64(j) < record.NumCols(); j++ {
-			v, err := GetValue(record.Column(j), int(i))
+	numRows := record.NumRows()
+	res := make([][]any, numRows)
+	var err error
+	for i := int64(0); i < numRows; i++ {
+		numCols := record.NumCols()
+		row := make([]any, numCols)
+		for j := 0; int64(j) < numCols; j++ {
+			row[j], err = GetValue(record.Column(j), int(i))
 			if err != nil {
 				return nil, err
 			}
-			row = append(row, v)
 		}
-		res = append(res, row)
+		res[i] = row
 	}
 	return res, nil
 }
