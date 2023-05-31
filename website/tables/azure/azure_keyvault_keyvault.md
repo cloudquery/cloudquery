@@ -16,15 +16,15 @@ The following tables depend on azure_keyvault_keyvault:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|subscription_id|String|
-|properties|JSON|
-|location|String|
-|tags|JSON|
-|id (PK)|String|
-|name|String|
-|system_data|JSON|
-|type|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|subscription_id|`utf8`|
+|properties|`json`|
+|location|`utf8`|
+|tags|`json`|
+|id (PK)|`utf8`|
+|name|`utf8`|
+|system_data|`json`|
+|type|`utf8`|

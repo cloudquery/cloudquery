@@ -15,32 +15,32 @@ The following tables depend on aws_lightsail_instances:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|access_details|JSON|
-|arn (PK)|String|
-|tags|JSON|
-|add_ons|JSON|
-|blueprint_id|String|
-|blueprint_name|String|
-|bundle_id|String|
-|created_at|Timestamp|
-|hardware|JSON|
-|ip_address_type|String|
-|ipv6_addresses|StringArray|
-|is_static_ip|Bool|
-|location|JSON|
-|metadata_options|JSON|
-|name|String|
-|networking|JSON|
-|private_ip_address|String|
-|public_ip_address|String|
-|resource_type|String|
-|ssh_key_name|String|
-|state|JSON|
-|support_code|String|
-|username|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|access_details|`json`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|add_ons|`json`|
+|blueprint_id|`utf8`|
+|blueprint_name|`utf8`|
+|bundle_id|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|hardware|`json`|
+|ip_address_type|`utf8`|
+|ipv6_addresses|`list<item: utf8, nullable>`|
+|is_static_ip|`bool`|
+|location|`json`|
+|metadata_options|`json`|
+|name|`utf8`|
+|networking|`json`|
+|private_ip_address|`utf8`|
+|public_ip_address|`utf8`|
+|resource_type|`utf8`|
+|ssh_key_name|`utf8`|
+|state|`json`|
+|support_code|`utf8`|
+|username|`utf8`|

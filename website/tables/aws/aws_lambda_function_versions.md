@@ -14,44 +14,44 @@ This table depends on [aws_lambda_functions](aws_lambda_functions).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|function_arn|String|
-|architectures|StringArray|
-|code_sha256|String|
-|code_size|Int|
-|dead_letter_config|JSON|
-|description|String|
-|environment|JSON|
-|ephemeral_storage|JSON|
-|file_system_configs|JSON|
-|function_name|String|
-|handler|String|
-|image_config_response|JSON|
-|kms_key_arn|String|
-|last_modified|String|
-|last_update_status|String|
-|last_update_status_reason|String|
-|last_update_status_reason_code|String|
-|layers|JSON|
-|master_arn|String|
-|memory_size|Int|
-|package_type|String|
-|revision_id|String|
-|role|String|
-|runtime|String|
-|runtime_version_config|JSON|
-|signing_job_arn|String|
-|signing_profile_version_arn|String|
-|snap_start|JSON|
-|state|String|
-|state_reason|String|
-|state_reason_code|String|
-|timeout|Int|
-|tracing_config|JSON|
-|version|String|
-|vpc_config|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|function_arn|`utf8`|
+|architectures|`list<item: utf8, nullable>`|
+|code_sha256|`utf8`|
+|code_size|`int64`|
+|dead_letter_config|`json`|
+|description|`utf8`|
+|environment|`json`|
+|ephemeral_storage|`json`|
+|file_system_configs|`json`|
+|function_name|`utf8`|
+|handler|`utf8`|
+|image_config_response|`json`|
+|kms_key_arn|`utf8`|
+|last_modified|`utf8`|
+|last_update_status|`utf8`|
+|last_update_status_reason|`utf8`|
+|last_update_status_reason_code|`utf8`|
+|layers|`json`|
+|master_arn|`utf8`|
+|memory_size|`int64`|
+|package_type|`utf8`|
+|revision_id|`utf8`|
+|role|`utf8`|
+|runtime|`utf8`|
+|runtime_version_config|`json`|
+|signing_job_arn|`utf8`|
+|signing_profile_version_arn|`utf8`|
+|snap_start|`json`|
+|state|`utf8`|
+|state_reason|`utf8`|
+|state_reason_code|`utf8`|
+|timeout|`int64`|
+|tracing_config|`json`|
+|version|`utf8`|
+|vpc_config|`json`|

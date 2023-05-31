@@ -17,20 +17,20 @@ The following tables depend on aws_eventbridge_event_bus_rules:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|event_bus_arn|String|
-|tags|JSON|
-|arn (PK)|String|
-|description|String|
-|event_bus_name|String|
-|event_pattern|String|
-|managed_by|String|
-|name|String|
-|role_arn|String|
-|schedule_expression|String|
-|state|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|event_bus_arn|`utf8`|
+|tags|`json`|
+|arn (PK)|`utf8`|
+|description|`utf8`|
+|event_bus_name|`utf8`|
+|event_pattern|`utf8`|
+|managed_by|`utf8`|
+|name|`utf8`|
+|role_arn|`utf8`|
+|schedule_expression|`utf8`|
+|state|`utf8`|

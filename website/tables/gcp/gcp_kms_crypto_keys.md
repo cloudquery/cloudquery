@@ -17,19 +17,19 @@ The following tables depend on gcp_kms_crypto_keys:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|rotation_period|Int|
-|name (PK)|String|
-|primary|JSON|
-|purpose|String|
-|create_time|Timestamp|
-|next_rotation_time|Timestamp|
-|version_template|JSON|
-|labels|JSON|
-|import_only|Bool|
-|destroy_scheduled_duration|Int|
-|crypto_key_backend|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|rotation_period|`int64`|
+|name (PK)|`utf8`|
+|primary|`json`|
+|purpose|`utf8`|
+|create_time|`timestamp[us, tz=UTC]`|
+|next_rotation_time|`timestamp[us, tz=UTC]`|
+|version_template|`json`|
+|labels|`json`|
+|import_only|`bool`|
+|destroy_scheduled_duration|`int64`|
+|crypto_key_backend|`utf8`|

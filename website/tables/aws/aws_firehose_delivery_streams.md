@@ -10,23 +10,23 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|tags|JSON|
-|arn (PK)|String|
-|delivery_stream_arn|String|
-|delivery_stream_name|String|
-|delivery_stream_status|String|
-|delivery_stream_type|String|
-|destinations|JSON|
-|has_more_destinations|Bool|
-|version_id|String|
-|create_timestamp|Timestamp|
-|delivery_stream_encryption_configuration|JSON|
-|failure_description|JSON|
-|last_update_timestamp|Timestamp|
-|source|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|tags|`json`|
+|arn (PK)|`utf8`|
+|delivery_stream_arn|`utf8`|
+|delivery_stream_name|`utf8`|
+|delivery_stream_status|`utf8`|
+|delivery_stream_type|`utf8`|
+|destinations|`json`|
+|has_more_destinations|`bool`|
+|version_id|`utf8`|
+|create_timestamp|`timestamp[us, tz=UTC]`|
+|delivery_stream_encryption_configuration|`json`|
+|failure_description|`json`|
+|last_update_timestamp|`timestamp[us, tz=UTC]`|
+|source|`json`|

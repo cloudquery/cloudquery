@@ -10,29 +10,29 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|stateless_default_actions|StringArray|
-|stateless_fragment_default_actions|StringArray|
-|stateful_default_actions|StringArray|
-|stateful_engine_options|JSON|
-|stateful_rule_group_references|JSON|
-|stateless_custom_actions|JSON|
-|stateless_rule_group_references|JSON|
-|tls_inspection_configuration_arn|String|
-|firewall_policy_arn|String|
-|firewall_policy_id|String|
-|firewall_policy_name|String|
-|consumed_stateful_rule_capacity|Int|
-|consumed_stateless_rule_capacity|Int|
-|description|String|
-|encryption_configuration|JSON|
-|firewall_policy_status|String|
-|last_modified_time|Timestamp|
-|number_of_associations|Int|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|stateless_default_actions|`list<item: utf8, nullable>`|
+|stateless_fragment_default_actions|`list<item: utf8, nullable>`|
+|stateful_default_actions|`list<item: utf8, nullable>`|
+|stateful_engine_options|`json`|
+|stateful_rule_group_references|`json`|
+|stateless_custom_actions|`json`|
+|stateless_rule_group_references|`json`|
+|tls_inspection_configuration_arn|`utf8`|
+|firewall_policy_arn|`utf8`|
+|firewall_policy_id|`utf8`|
+|firewall_policy_name|`utf8`|
+|consumed_stateful_rule_capacity|`int64`|
+|consumed_stateless_rule_capacity|`int64`|
+|description|`utf8`|
+|encryption_configuration|`json`|
+|firewall_policy_status|`utf8`|
+|last_modified_time|`timestamp[us, tz=UTC]`|
+|number_of_associations|`int64`|

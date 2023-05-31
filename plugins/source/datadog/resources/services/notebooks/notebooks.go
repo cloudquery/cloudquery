@@ -4,9 +4,10 @@ import (
 	"context"
 
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV1"
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Notebooks() *schema.Table {
@@ -17,20 +18,16 @@ func Notebooks() *schema.Table {
 		Transform: transformers.TransformWithStruct(&datadogV1.NotebooksResponseData{}),
 		Columns: []schema.Column{
 			{
-				Name:     "account_name",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAccountName,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "account_name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAccountName,
+				PrimaryKey: true,
 			},
 			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.PrimitiveTypes.Int64,
+				Resolver:   schema.PathResolver("Id"),
+				PrimaryKey: true,
 			},
 		},
 	}

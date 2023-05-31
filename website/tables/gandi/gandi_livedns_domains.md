@@ -13,13 +13,13 @@ The following tables depend on gandi_livedns_domains:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|sharing_id|String|
-|fqdn (PK)|String|
-|domain_href|String|
-|domain_keys_href|String|
-|domain_records_href|String|
-|automatic_snapshots|Bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|sharing_id|`utf8`|
+|fqdn (PK)|`utf8`|
+|domain_href|`utf8`|
+|domain_keys_href|`utf8`|
+|domain_records_href|`utf8`|
+|automatic_snapshots|`bool`|

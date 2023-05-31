@@ -3,9 +3,10 @@ package groups
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/okta/client"
 	"github.com/cloudquery/cloudquery/plugins/source/okta/resources/services/groups/models"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/okta/okta-sdk-golang/v3/okta"
 )
 
@@ -16,12 +17,10 @@ func users() *schema.Table {
 		Transform: client.TransformWithStruct(&models.GroupUser{}),
 		Columns: []schema.Column{
 			{
-				Name:     "group_id",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "group_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("id"),
+				PrimaryKey: true,
 			},
 		},
 	}

@@ -14,18 +14,18 @@ This table depends on [gcp_aiplatform_tensorboard_locations](gcp_aiplatform_tens
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|display_name|String|
-|description|String|
-|encryption_spec|JSON|
-|blob_storage_path_prefix|String|
-|run_count|Int|
-|create_time|Timestamp|
-|update_time|Timestamp|
-|labels|JSON|
-|etag|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|display_name|`utf8`|
+|description|`utf8`|
+|encryption_spec|`json`|
+|blob_storage_path_prefix|`utf8`|
+|run_count|`int64`|
+|create_time|`timestamp[us, tz=UTC]`|
+|update_time|`timestamp[us, tz=UTC]`|
+|labels|`json`|
+|etag|`utf8`|

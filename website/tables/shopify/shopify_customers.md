@@ -9,30 +9,30 @@ It supports incremental syncs based on the **updated_at** column.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|Int|
-|updated_at (Incremental Key)|Timestamp|
-|email|String|
-|accepts_marketing|Bool|
-|created_at|Timestamp|
-|first_name|String|
-|last_name|String|
-|orders_count|Int|
-|state|String|
-|total_spent|String|
-|last_order_id|Int|
-|verified_email|Bool|
-|tax_exempt|Bool|
-|tags|String|
-|last_order_name|String|
-|currency|String|
-|addresses|JSON|
-|accepts_marketing_updated_at|Timestamp|
-|marketing_opt_in_level|String|
-|tax_exemptions|JSON|
-|email_marketing_consent|JSON|
-|admin_graphql_api_id|String|
-|default_address|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`int64`|
+|updated_at (Incremental Key)|`timestamp[us, tz=UTC]`|
+|email|`utf8`|
+|accepts_marketing|`bool`|
+|created_at|`timestamp[us, tz=UTC]`|
+|first_name|`utf8`|
+|last_name|`utf8`|
+|orders_count|`int64`|
+|state|`utf8`|
+|total_spent|`utf8`|
+|last_order_id|`int64`|
+|verified_email|`bool`|
+|tax_exempt|`bool`|
+|tags|`utf8`|
+|last_order_name|`utf8`|
+|currency|`utf8`|
+|addresses|`json`|
+|accepts_marketing_updated_at|`timestamp[us, tz=UTC]`|
+|marketing_opt_in_level|`utf8`|
+|tax_exemptions|`json`|
+|email_marketing_consent|`json`|
+|admin_graphql_api_id|`utf8`|
+|default_address|`json`|

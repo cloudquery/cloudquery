@@ -10,33 +10,33 @@ The composite primary key for this table is (**account_id**, **domain_name**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|domain_name (PK)|String|
-|tags|JSON|
-|transfer_lock|Bool|
-|abuse_contact_email|String|
-|abuse_contact_phone|String|
-|admin_contact|JSON|
-|admin_privacy|Bool|
-|auto_renew|Bool|
-|creation_date|Timestamp|
-|dns_sec|String|
-|dnssec_keys|JSON|
-|expiration_date|Timestamp|
-|nameservers|JSON|
-|registrant_contact|JSON|
-|registrant_privacy|Bool|
-|registrar_name|String|
-|registrar_url|String|
-|registry_domain_id|String|
-|reseller|String|
-|status_list|StringArray|
-|tech_contact|JSON|
-|tech_privacy|Bool|
-|updated_date|Timestamp|
-|who_is_server|String|
-|result_metadata|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|domain_name (PK)|`utf8`|
+|tags|`json`|
+|transfer_lock|`bool`|
+|abuse_contact_email|`utf8`|
+|abuse_contact_phone|`utf8`|
+|admin_contact|`json`|
+|admin_privacy|`bool`|
+|auto_renew|`bool`|
+|creation_date|`timestamp[us, tz=UTC]`|
+|dns_sec|`utf8`|
+|dnssec_keys|`json`|
+|expiration_date|`timestamp[us, tz=UTC]`|
+|nameservers|`json`|
+|registrant_contact|`json`|
+|registrant_privacy|`bool`|
+|registrar_name|`utf8`|
+|registrar_url|`utf8`|
+|registry_domain_id|`utf8`|
+|reseller|`utf8`|
+|status_list|`list<item: utf8, nullable>`|
+|tech_contact|`json`|
+|tech_privacy|`bool`|
+|updated_date|`timestamp[us, tz=UTC]`|
+|who_is_server|`utf8`|
+|result_metadata|`json`|

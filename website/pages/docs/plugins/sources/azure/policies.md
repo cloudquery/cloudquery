@@ -11,13 +11,19 @@ Azure CIS v1.3.0 requires the following tables to be synced before the policy is
 ```yaml
 tables:
   - azure_appservice_web_app_auth_settings
+  - azure_appservice_web_app_configurations
   - azure_appservice_web_apps
   - azure_compute_disks
   - azure_compute_virtual_machines
   - azure_keyvault_keyvault
   - azure_keyvault_keyvault_keys
   - azure_keyvault_keyvault_secrets
+  - azure_monitor_activity_log_alerts
+  - azure_monitor_diagnostic_settings
+  - azure_monitor_resources
+  - azure_monitor_subscription_diagnostic_settings
   - azure_mysql_servers
+  - azure_network_security_groups
   - azure_policy_assignments
   - azure_postgresql_server_configurations
   - azure_postgresql_server_firewall_rules
@@ -33,6 +39,9 @@ tables:
   - azure_sql_server_vulnerability_assessments
   - azure_sql_servers
   - azure_sql_transparent_data_encryptions
+  - azure_storage_accounts
+  - azure_storage_blob_services
+  - azure_storage_containers
 ```
 
 ### Queries
@@ -48,6 +57,11 @@ Azure CIS v1.3.0 performs the following checks:
   - Ensure that Azure Defender is set to On for Key Vault (Manual)
   - Ensure that "Automatic provisioning of monitoring agent" is set to "On" (Automated)
   - Ensure any of the ASC Default policy setting is not set to "Disabled" (Automated)
+  - Secure transfer to storage accounts should be enabled
+  - Ensure that ''Public access level'' is set to Private for blob containers
+  - Ensure default network access rule for Storage Accounts is set to deny
+  - Ensure soft delete is enabled for Azure Storage
+  - Ensure storage for critical data are encrypted with Customer Managed Key
   - Ensure that "Auditing" is set to "On" (Automated)
   - Ensure that "Data encryption" is set to "On" on a SQL Database (Automated)
   - Ensure that "Auditing" Retention is "greater than 90 days" (Automated)
@@ -66,6 +80,24 @@ Azure CIS v1.3.0 performs the following checks:
   - Ensure "Allow access to Azure services" for PostgreSQL Database Server is disabled (Automated)
   - Ensure that Azure Active Directory Admin is configured (Automated)
   - Ensure SQL server"s TDE protector is encrypted with Customer-managed key (Automated)
+  - Ensure that a ''Diagnostics Setting'' exists
+  - Ensure Diagnostic Setting captures appropriate categories
+  - Ensure the storage container storing the activity logs is not publicly accessible
+  - Ensure the storage account containing the container with activity logs is encrypted with BYOK (Use Your Own Key)
+  - Ensure that logging for Azure Key Vault is ''Enabled''
+  - Ensure that Activity Log Alert exists for Create Policy Assignment
+  - Ensure that Activity Log Alert exists for Delete Policy Assignment
+  - Ensure that Activity Log Alert exists for Create or Update Network Security Group
+  - Ensure that Activity Log Alert exists for Delete Network Security Group
+  - Ensure that Activity Log Alert exists for Create or Update Network Security Group Rule
+  - Ensure that Activity Log Alert exists for Delete Network Security Group Rule
+  - Ensure that Activity Log Alert exists for Create or Update Security Solution
+  - Ensure that Activity Log Alert exists for Delete Security Solution
+  - Ensure that Activity Log Alert exists for Create or Update or Delete SQL Server Firewall Rule
+  - Ensure that Diagnostic Logs are enabled for all services which support it.
+  - Ensure that RDP access is restricted from the Internet
+  - Ensure that SSH access is restricted from the Internet
+  - Ensure that UDP Services are restricted from the Internet
   - Ensure Virtual Machines are utilizing Managed Disks (Manual)
   - Ensure that ''OS and Data'' disks are encrypted with CMK (Automated)
   - Ensure that ''Unattached disks'' are encrypted with CMK (Automated)
@@ -78,14 +110,16 @@ Azure CIS v1.3.0 performs the following checks:
   - Ensure web app is using the latest version of TLS encryption (Automated)
   - Ensure the web app has ''Client Certificates (Incoming client certificates)'' set to ''On'' (Automated)
   - Ensure that Register with Azure Active Directory is enabled on App Service (Automated)
+  - Ensure FTP deployments are disabled (Automated)
 
 ### Dependent Views
 
 Azure CIS v1.3.0 depends on the following views:
 
+  - view_azure_nsg_dest_port_ranges<sup>*</sup>
   - view_azure_security_policy_parameters<sup>*</sup>
 
-  <sup>*</sup> This view is automatically created or updated by this policy.
+  <sup>*</sup> These views are automatically created or updated by this policy.
 ## Azure HIPAA HITRUST v9.2
 
 ### Requirements

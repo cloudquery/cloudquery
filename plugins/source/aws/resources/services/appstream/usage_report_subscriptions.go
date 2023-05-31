@@ -3,12 +3,13 @@ package appstream
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appstream/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func UsageReportSubscriptions() *schema.Table {
@@ -23,12 +24,10 @@ func UsageReportSubscriptions() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:     "s3_bucket_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("S3BucketName"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "s3_bucket_name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("S3BucketName"),
+				PrimaryKey: true,
 			},
 		},
 	}

@@ -15,19 +15,19 @@ The following tables depend on aws_batch_job_queues:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|tags|JSON|
-|arn (PK)|String|
-|compute_environment_order|JSON|
-|job_queue_arn|String|
-|job_queue_name|String|
-|priority|Int|
-|state|String|
-|scheduling_policy_arn|String|
-|status|String|
-|status_reason|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|tags|`json`|
+|arn (PK)|`utf8`|
+|compute_environment_order|`json`|
+|job_queue_arn|`utf8`|
+|job_queue_name|`utf8`|
+|priority|`int64`|
+|state|`utf8`|
+|scheduling_policy_arn|`utf8`|
+|status|`utf8`|
+|status_reason|`utf8`|

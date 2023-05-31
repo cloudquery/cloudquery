@@ -10,18 +10,18 @@ The composite primary key for this table is (**account_id**, **arn**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region|String|
-|arn (PK)|String|
-|certificate_arn|String|
-|certificate_identifier|String|
-|certificate_type|String|
-|customer_override|Bool|
-|customer_override_valid_till|Timestamp|
-|thumbprint|String|
-|valid_from|Timestamp|
-|valid_till|Timestamp|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|certificate_arn|`utf8`|
+|certificate_identifier|`utf8`|
+|certificate_type|`utf8`|
+|customer_override|`bool`|
+|customer_override_valid_till|`timestamp[us, tz=UTC]`|
+|thumbprint|`utf8`|
+|valid_from|`timestamp[us, tz=UTC]`|
+|valid_till|`timestamp[us, tz=UTC]`|

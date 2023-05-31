@@ -17,13 +17,13 @@ The following tables depend on aws_iam_groups:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|arn (PK)|String|
-|create_date|Timestamp|
-|group_id|String|
-|group_name|String|
-|path|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|arn (PK)|`utf8`|
+|create_date|`timestamp[us, tz=UTC]`|
+|group_id|`utf8`|
+|group_name|`utf8`|
+|path|`utf8`|

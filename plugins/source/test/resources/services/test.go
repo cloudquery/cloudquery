@@ -3,7 +3,8 @@ package services
 import (
 	"context"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func TestSomeTable() *schema.Table {
@@ -13,15 +14,17 @@ func TestSomeTable() *schema.Table {
 		Resolver:    fetchSomeTableData,
 		Columns: []schema.Column{
 			{
-				Name:            "column1",
-				Description:     "Test Column 1",
-				Type:            schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+				Name:        "column1",
+				Description: "Test Column 1",
+				Type:        arrow.BinaryTypes.String,
+				PrimaryKey:  true,
+				Resolver:    schema.PathResolver("column1"),
 			},
 			{
 				Name:        "column2",
 				Description: "Test Column 2",
-				Type:        schema.TypeInt,
+				Type:        arrow.PrimitiveTypes.Int64,
+				Resolver:    schema.PathResolver("column2"),
 			},
 		},
 	}
@@ -30,7 +33,7 @@ func TestSomeTable() *schema.Table {
 func fetchSomeTableData(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	res <- map[string]any{
 		"column1": "test_project_id",
-		"column2": "test_id",
+		"column2": 123,
 	}
 	return nil
 }

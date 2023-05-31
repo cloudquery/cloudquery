@@ -15,15 +15,15 @@ The following tables depend on aws_apigatewayv2_domain_names:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region|String|
-|arn (PK)|String|
-|domain_name|String|
-|api_mapping_selection_expression|String|
-|domain_name_configurations|JSON|
-|mutual_tls_authentication|JSON|
-|tags|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|domain_name|`utf8`|
+|api_mapping_selection_expression|`utf8`|
+|domain_name_configurations|`json`|
+|mutual_tls_authentication|`json`|
+|tags|`json`|

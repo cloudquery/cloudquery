@@ -10,34 +10,34 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|accelerator_types|StringArray|
-|additional_code_repositories|StringArray|
-|creation_time|Timestamp|
-|default_code_repository|String|
-|direct_internet_access|String|
-|failure_reason|String|
-|instance_metadata_service_configuration|JSON|
-|instance_type|String|
-|kms_key_id|String|
-|last_modified_time|Timestamp|
-|network_interface_id|String|
-|notebook_instance_arn|String|
-|notebook_instance_lifecycle_config_name|String|
-|notebook_instance_name|String|
-|notebook_instance_status|String|
-|platform_identifier|String|
-|role_arn|String|
-|root_access|String|
-|security_groups|StringArray|
-|subnet_id|String|
-|url|String|
-|volume_size_in_gb|Int|
-|result_metadata|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|accelerator_types|`list<item: utf8, nullable>`|
+|additional_code_repositories|`list<item: utf8, nullable>`|
+|creation_time|`timestamp[us, tz=UTC]`|
+|default_code_repository|`utf8`|
+|direct_internet_access|`utf8`|
+|failure_reason|`utf8`|
+|instance_metadata_service_configuration|`json`|
+|instance_type|`utf8`|
+|kms_key_id|`utf8`|
+|last_modified_time|`timestamp[us, tz=UTC]`|
+|network_interface_id|`utf8`|
+|notebook_instance_arn|`utf8`|
+|notebook_instance_lifecycle_config_name|`utf8`|
+|notebook_instance_name|`utf8`|
+|notebook_instance_status|`utf8`|
+|platform_identifier|`utf8`|
+|role_arn|`utf8`|
+|root_access|`utf8`|
+|security_groups|`list<item: utf8, nullable>`|
+|subnet_id|`utf8`|
+|url|`utf8`|
+|volume_size_in_gb|`int64`|
+|result_metadata|`json`|

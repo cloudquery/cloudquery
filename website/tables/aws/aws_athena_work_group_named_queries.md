@@ -14,16 +14,16 @@ This table depends on [aws_athena_work_groups](aws_athena_work_groups).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|work_group_arn|String|
-|database|String|
-|name|String|
-|query_string|String|
-|description|String|
-|named_query_id|String|
-|work_group|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|work_group_arn|`utf8`|
+|database|`utf8`|
+|name|`utf8`|
+|query_string|`utf8`|
+|description|`utf8`|
+|named_query_id|`utf8`|
+|work_group|`utf8`|

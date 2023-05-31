@@ -14,16 +14,16 @@ This table depends on [gcp_bigtableadmin_clusters](gcp_bigtableadmin_clusters).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|source_table|String|
-|size_bytes|Int|
-|start_time|Timestamp|
-|end_time|Timestamp|
-|expire_time|Timestamp|
-|state|String|
-|encryption_info|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|source_table|`utf8`|
+|size_bytes|`int64`|
+|start_time|`timestamp[us, tz=UTC]`|
+|end_time|`timestamp[us, tz=UTC]`|
+|expire_time|`timestamp[us, tz=UTC]`|
+|state|`utf8`|
+|encryption_info|`json`|

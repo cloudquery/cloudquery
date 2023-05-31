@@ -10,4 +10,6 @@ spec:
 
   spec:
     connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
+    # can be also specified in DSN format which can hold special characters in password
+    # connection_string: "user=postgres password=pass+0-[word host=localhost port=5432 dbname=postgres"
 ```

@@ -5,11 +5,14 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	cqtypes "github.com/cloudquery/plugin-sdk/v3/types"
 	"github.com/ghodss/yaml"
 )
 
@@ -25,24 +28,22 @@ func stackTemplates() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "stack_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "stack_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 			{
 				// Might be deprecated in a future release.
 				// Contains the template converted to JSON.
 				Name:     "template_body",
-				Type:     schema.TypeJSON,
+				Type:     cqtypes.ExtensionTypes.JSON,
 				Resolver: resolveTemplateBody,
 			},
 			{
 				// raw template body: could be either YAML or JSON
 				Name:     "template_body_text",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("TemplateBody"),
 			},
 		},

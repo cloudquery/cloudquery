@@ -17,15 +17,15 @@ The following tables depend on gcp_bigtableadmin_clusters:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|zone|String|
-|serve_nodes|Int|
-|state|String|
-|storage_type|Int|
-|kms_key_name|String|
-|autoscaling_config|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|zone|`utf8`|
+|serve_nodes|`int64`|
+|state|`utf8`|
+|storage_type|`int64`|
+|kms_key_name|`utf8`|
+|autoscaling_config|`json`|
