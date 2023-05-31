@@ -34,7 +34,7 @@ func createZones(router *mux.Router) error {
 		}
 	})
 
-	return nil
+	return createMockRecordSets(router)
 }
 
 func TestZones(t *testing.T) {
