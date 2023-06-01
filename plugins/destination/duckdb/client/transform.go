@@ -16,7 +16,7 @@ func transformRecord(sc *arrow.Schema, rec arrow.Record) arrow.Record {
 }
 
 func transformArray(arr arrow.Array) arrow.Array {
-	if plainWrite(arr.DataType()) {
+	if arrow.TypeEqual(arr.DataType(), transformTypeForWriting(arr.DataType())) {
 		return arr
 	}
 
