@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
-func permissionBoundaries() *schema.Table {
+func permissionsBoundaries() *schema.Table {
 	tableName := "aws_ssoadmin_permissions_boundaries"
 	return &schema.Table{
 		Name:        tableName,
