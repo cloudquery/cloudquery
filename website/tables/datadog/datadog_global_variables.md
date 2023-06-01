@@ -13,9 +13,9 @@ The primary key for this table is **id**.
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_name|`utf8`|
-|id (PK)|`utf8`|
 |attributes|`json`|
 |description|`utf8`|
+|id (PK)|`utf8`|
 |name|`utf8`|
 |parse_test_options|`json`|
 |parse_test_public_id|`utf8`|

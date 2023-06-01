@@ -2,7 +2,7 @@
 
 This table shows data for Datadog Users.
 
-The composite primary key for this table is (**account_name**, **id**).
+The primary key for this table is **id**.
 
 ## Relations
 
@@ -17,9 +17,9 @@ The following tables depend on datadog_users:
 |_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_name (PK)|`utf8`|
-|id (PK)|`utf8`|
+|account_name|`utf8`|
 |attributes|`json`|
+|id (PK)|`utf8`|
 |relationships|`json`|
 |type|`utf8`|
 |additional_properties|`json`|

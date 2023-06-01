@@ -2,46 +2,18 @@ package client
 
 import (
 	"context"
-	"fmt"
 
-	"github.com/DataDog/datadog-api-client-go/v2/api/datadog"
-
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/thoas/go-funk"
 )
-
-func ResolveParentColumn(field string) schema.ColumnResolver {
-	return func(_ context.Context, _ schema.ClientMeta, r *schema.Resource, c schema.Column) error {
-		return r.Set(c.Name, funk.Get(r.Parent.Item, field))
-	}
-}
 
 func ResolveAccountName(_ context.Context, meta schema.ClientMeta, r *schema.Resource, col schema.Column) error {
 	client := meta.(*Client)
 	return r.Set(col.Name, client.multiplexedAccount.Name)
 }
 
-type Nullable interface {
-	Get() any
-	IsSet() bool
-}
-
-func GetNullable(i any) (any, error) {
-	switch v := i.(type) {
-	case datadog.NullableTime:
-		return v.Get(), nil
-	case datadog.NullableInt64:
-		return v.Get(), nil
-	}
-	return nil, fmt.Errorf("unsupported datadog nullable type %T", i)
-}
-
-func NullableResolver(path string) schema.ColumnResolver {
-	return func(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
-		data, err := GetNullable(funk.Get(r.Item, path, funk.WithAllowZero()))
-		if err != nil {
-			return err
-		}
-		return r.Set(c.Name, data)
-	}
+var AccountNameColumn = schema.Column{
+	Name:     "account_name",
+	Type:     arrow.BinaryTypes.String,
+	Resolver: ResolveAccountName,
 }

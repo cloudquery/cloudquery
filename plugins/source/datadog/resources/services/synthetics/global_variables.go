@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV1"
-	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func GlobalVariables() *schema.Table {
@@ -14,19 +14,9 @@ func GlobalVariables() *schema.Table {
 		Name:      "datadog_global_variables",
 		Resolver:  fetchGlobalVariables,
 		Multiplex: client.AccountMultiplex,
-		Transform: client.TransformWithStruct(&datadogV1.SyntheticsGlobalVariable{}),
+		Transform: client.TransformWithStruct(&datadogV1.SyntheticsGlobalVariable{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
-			{
-				Name:     "account_name",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveAccountName,
-			},
-			{
-				Name:       "id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("Id"),
-				PrimaryKey: true,
-			},
+			client.AccountNameColumn,
 		},
 	}
 }
