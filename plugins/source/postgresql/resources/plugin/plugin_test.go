@@ -302,7 +302,13 @@ func TestPlugin(t *testing.T) {
 		t.Fatalf("expected 1 resource, got %d", totalResources)
 	}
 	gotData := resource.GetValues()
-
+	if gotData[0].Get().(string) != "test_pg_source" {
+		t.Fatalf("expected source name to be test_pg_source, got %s", gotData[0])
+	}
+	if !gotData[1].Get().(time.Time).Equal(syncTime.UTC()) {
+		t.Fatalf("expected sync time to be %s, but got %s", syncTime.UTC(), gotData[1])
+	}
+	gotData = gotData[2:] // ignore the first two columns (_cq_source_name and _cq_sync_time)
 	for i, got := range gotData {
 		expected := data[i].expect
 		if !got.Equal(expected) {

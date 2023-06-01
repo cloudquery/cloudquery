@@ -93,3 +93,13 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 	}
 	return tables, nil
 }
+
+// Add internal columns
+func (c *Client) addInternalColumns(tables []*schema.Table) error {
+	for _, table := range tables {
+		cqSourceName := schema.CqSourceNameColumn
+		cqSyncTime := schema.CqSyncTimeColumn
+		table.Columns = append([]schema.Column{cqSourceName, cqSyncTime}, table.Columns...)
+	}
+	return nil
+}

@@ -104,6 +104,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	if err != nil {
 		return nil, fmt.Errorf("failed to apply config to tables: %w", err)
 	}
+	err = c.addInternalColumns(c.Tables)
+	if err != nil {
+		return nil, fmt.Errorf("failed to add internal columns: %w", err)
+	}
 
 	if c.pluginSpec.CDC {
 		if len(c.tablesWithPks()) == 0 {

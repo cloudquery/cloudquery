@@ -3,9 +3,8 @@ module github.com/cloudquery/cloudquery/plugins/source/postgresql
 go 1.19
 
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230531201200-cbc17a98dfd9
+	github.com/apache/arrow/go/v13 v13.0.0-20230601214540-018e7d3f9c4b
 	github.com/cloudquery/plugin-pb-go v1.1.0
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0
 	github.com/cloudquery/plugin-sdk/v3 v3.10.6
 	github.com/google/uuid v1.3.0
 	github.com/jackc/pglogrepl v0.0.0-20230318140337-5ef673a9d169
@@ -17,12 +16,11 @@ require (
 
 // TODO: remove once all updates are merged
 replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230509053643-898a79b1d3c8
-replace github.com/cloudquery/plugin-sdk/v3 => ../../../../plugin-sdk
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/apache/thrift v0.16.0 // indirect
-	github.com/cloudquery/arrow v0.0.0-20230621001250-f0dffc612853 // indirect
+	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect

@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
@@ -15,7 +16,6 @@ import (
 )
 
 func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *schema.Resource) error {
-	// var conn *pgconn.PgConn
 	var err error
 	var snapshotName string
 	c.metrics = metrics
@@ -42,10 +42,12 @@ func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *
 		}
 	}
 
+	syncTime := time.Now()
+
 	if c.pluginSpec.CDC && snapshotName == "" {
 		c.logger.Info().Msg("cdc is enabled but replication slot already exists, skipping initial sync")
 	} else {
-		if err := c.syncTables(ctx, snapshotName, res); err != nil {
+		if err := c.syncTables(ctx, snapshotName, res, syncTime); err != nil {
 			return err
 		}
 	}
@@ -60,36 +62,7 @@ func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *
 	return nil
 }
 
-func (c *Client) syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- *schema.Resource) error {
-	colNames := make([]string, len(table.Columns))
-	for i, col := range table.Columns {
-		colNames[i] = pgx.Identifier{col.Name}.Sanitize()
-	}
-	query := "SELECT " + strings.Join(colNames, ",") + " FROM " + pgx.Identifier{table.Name}.Sanitize()
-	rows, err := tx.Query(ctx, query)
-	if err != nil {
-		c.metrics.TableClient[table.Name][c.ID()].Errors++
-		return err
-	}
-	defer rows.Close()
-	for rows.Next() {
-		values, err := rows.Values()
-		if err != nil {
-			c.metrics.TableClient[table.Name][c.ID()].Errors++
-			return err
-		}
-		resource, err := c.resourceFromValues(table.Name, values)
-		if err != nil {
-			c.metrics.TableClient[table.Name][c.ID()].Errors++
-			return err
-		}
-		c.metrics.TableClient[table.Name][c.ID()].Resources++
-		res <- resource
-	}
-	return nil
-}
-
-func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<- *schema.Resource) error {
+func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<- *schema.Resource, syncTime time.Time) error {
 	tx, err := c.Conn.BeginTx(ctx, pgx.TxOptions{
 		// this transaction is needed for us to take a snapshot and we need to close it only at the end of the initial sync
 		// https://www.postgresql.org/docs/current/transaction-iso.html
@@ -116,7 +89,7 @@ func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<-
 	}
 
 	for _, table := range c.Tables {
-		if err := c.syncTable(ctx, tx, table, res); err != nil {
+		if err := c.syncTable(ctx, tx, table, res, syncTime); err != nil {
 			return err
 		}
 	}
@@ -126,10 +99,56 @@ func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<-
 	return nil
 }
 
+func (c *Client) syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- *schema.Resource, syncTime time.Time) error {
+	colNames := make([]string, 0, len(table.Columns)-2)
+	for _, col := range table.Columns {
+		if col.Name == schema.CqSourceNameColumn.Name || col.Name == schema.CqSyncTimeColumn.Name {
+			continue
+		}
+		colNames = append(colNames, pgx.Identifier{col.Name}.Sanitize())
+	}
+	query := "SELECT " + strings.Join(colNames, ",") + " FROM " + pgx.Identifier{table.Name}.Sanitize()
+	rows, err := tx.Query(ctx, query)
+	if err != nil {
+		c.metrics.TableClient[table.Name][c.ID()].Errors++
+		return err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		values, err := rows.Values()
+		if err != nil {
+			c.metrics.TableClient[table.Name][c.ID()].Errors++
+			return err
+		}
+		resource, err := c.resourceFromValues(table.Name, values)
+		if err != nil {
+			c.metrics.TableClient[table.Name][c.ID()].Errors++
+			return err
+		}
+		err = resource.Set(schema.CqSourceNameColumn.Name, c.spec.Name)
+		if err != nil {
+			return fmt.Errorf("failed to set CQ source name column: %w", err)
+		}
+		err = resource.Set(schema.CqSyncTimeColumn.Name, syncTime)
+		if err != nil {
+			return fmt.Errorf("failed to set CQ sync time column: %w", err)
+		}
+
+		c.metrics.TableClient[table.Name][c.ID()].Resources++
+
+		res <- resource
+	}
+	return nil
+}
+
 func (c *Client) resourceFromValues(tableName string, values []any) (*schema.Resource, error) {
 	table := c.Tables.Get(tableName)
 	resource := schema.NewResourceData(table, nil, values)
-	for i, col := range table.Columns {
+	var i int
+	for _, col := range table.Columns {
+		if col.Name == schema.CqSourceNameColumn.Name || col.Name == schema.CqSyncTimeColumn.Name {
+			continue
+		}
 		v, err := prepareValueForResourceSet(col, values[i])
 		if err != nil {
 			return nil, err
@@ -137,6 +156,7 @@ func (c *Client) resourceFromValues(tableName string, values []any) (*schema.Res
 		if err := resource.Set(col.Name, v); err != nil {
 			return nil, err
 		}
+		i++
 	}
 	return resource, nil
 }
