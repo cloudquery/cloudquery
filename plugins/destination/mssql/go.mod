@@ -10,7 +10,7 @@ require (
 	github.com/microsoft/go-mssqldb v0.19.0
 	github.com/rs/zerolog v1.29.0
 	github.com/stretchr/testify v1.8.2
-	golang.org/x/exp v0.0.0-20230425010034-47ecfdc1ba53
+	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1
 )
 
 // TODO: remove once all updates are merged

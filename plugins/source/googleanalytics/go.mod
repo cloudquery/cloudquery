@@ -7,7 +7,7 @@ require (
 	github.com/cloudquery/plugin-pb-go v1.0.8
 	github.com/cloudquery/plugin-sdk/v3 v3.7.0
 	github.com/rs/zerolog v1.29.0
-	golang.org/x/exp v0.0.0-20230425010034-47ecfdc1ba53
+	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1
 	golang.org/x/oauth2 v0.6.0
 	google.golang.org/api v0.114.0
 )
