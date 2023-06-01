@@ -28,7 +28,7 @@ type tableInfo struct {
 	columns []columnInfo
 }
 
-func (c *Client) duckdbTables(tables schema.Tables) (schema.Tables, error) {
+func (c *Client) duckDBTables(tables schema.Tables) (schema.Tables, error) {
 	var schemaTables schema.Tables
 	for _, table := range tables {
 		info, err := c.getTableInfo(table.Name)
@@ -42,7 +42,7 @@ func (c *Client) duckdbTables(tables schema.Tables) (schema.Tables, error) {
 		for i, col := range info.columns {
 			columns[i] = schema.Column{
 				Name:       col.name,
-				Type:       c.duckdbTypeToSchema(col.typ),
+				Type:       duckDBToArrow(col.typ),
 				NotNull:    col.notNull,
 				PrimaryKey: col.pk,
 				Unique:     col.unique,
@@ -73,7 +73,7 @@ func (c *Client) normalizeColumns(tables schema.Tables) schema.Tables {
 				normalizedColumn.NotNull = true
 			}
 			// Since multiple schema types can map to the same duckdb type we need to normalize them to avoid false positives when detecting schema changes
-			normalizedColumn.Type = c.duckdbTypeToSchema(c.SchemaTypeToDuckDB(normalizedColumn.Type))
+			normalizedColumn.Type = transformType(normalizedColumn.Type)
 			normalizedTable.Columns[i] = normalizedColumn
 		}
 		normalized = append(normalized, &normalizedTable)
@@ -102,7 +102,7 @@ func (c *Client) nonAutoMigrableTables(tables schema.Tables, duckdbTables schema
 func (c *Client) autoMigrateTable(table *schema.Table, changes []schema.TableColumnChange) error {
 	for _, change := range changes {
 		if change.Type == schema.TableColumnChangeTypeAdd {
-			if err := c.addColumn(table.Name, change.Current.Name, c.SchemaTypeToDuckDB(change.Current.Type)); err != nil {
+			if err := c.addColumn(table.Name, change.Current.Name, arrowToDuckDB(change.Current.Type)); err != nil {
 				return err
 			}
 		}
@@ -129,7 +129,7 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 
 // Migrate migrates to the latest schema
 func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
-	duckdbTables, err := c.duckdbTables(tables)
+	duckdbTables, err := c.duckDBTables(tables)
 	if err != nil {
 		return err
 	}

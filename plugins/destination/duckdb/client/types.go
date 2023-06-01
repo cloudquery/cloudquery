@@ -7,10 +7,48 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/types"
 )
 
-func (c *Client) SchemaTypeToDuckDB(t arrow.DataType) string {
+type listLike interface {
+	arrow.DataType
+	Elem() arrow.DataType
+}
+
+func plainWrite(dt arrow.DataType) bool {
+	return arrow.TypeEqual(dt, transformTypeForWriting(dt))
+}
+
+func transformTypeForWriting(dt arrow.DataType) arrow.DataType {
+	switch dt := dt.(type) {
+	case listLike:
+		return arrow.ListOf(transformTypeForWriting(dt.Elem()))
+	case *arrow.MapType:
+		return arrow.ListOf(transformTypeForWriting(dt.ValueType()))
+	}
+
+	switch dt := transformType(dt).(type) {
+	case *types.UUIDType, *types.JSONType:
+		return arrow.BinaryTypes.String
+	default:
+		return dt
+	}
+}
+
+func transformSchema(sc *arrow.Schema) *arrow.Schema {
+	fields := sc.Fields()
+	for i := range fields {
+		fields[i].Type = transformType(fields[i].Type)
+	}
+	md := sc.Metadata()
+	return arrow.NewSchema(fields, &md)
+}
+
+func transformType(dt arrow.DataType) arrow.DataType {
+	return duckDBToArrow(arrowToDuckDB(dt))
+}
+
+func arrowToDuckDB(t arrow.DataType) string {
 	switch v := t.(type) {
 	case *arrow.ListType:
-		return c.SchemaTypeToDuckDB(v.Elem()) + "[]"
+		return arrowToDuckDB(v.Elem()) + "[]"
 	case *arrow.BooleanType:
 		return "boolean"
 	case *arrow.Int8Type:
