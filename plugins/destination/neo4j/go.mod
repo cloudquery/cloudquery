@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/neo4j
 go 1.19
 
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230509040948-de6c3cd2b604
+	github.com/apache/arrow/go/v13 v13.0.0-20230601070034-e07e22c5580a
 	github.com/cloudquery/plugin-pb-go v1.0.8
 	github.com/cloudquery/plugin-sdk/v3 v3.6.7
 	github.com/neo4j/neo4j-go-driver/v5 v5.6.0
