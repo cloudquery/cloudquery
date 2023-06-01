@@ -12,11 +12,11 @@ The composite primary key for this table is (**instance_arn**, **permission_set_
 This table depends on [aws_ssoadmin_instances](aws_ssoadmin_instances).
 
 The following tables depend on aws_ssoadmin_permission_sets:
-  - [aws_ssoadmin_account_assignments](aws_ssoadmin_account_assignments)
-  - [aws_ssoadmin_customer_managed_policies](aws_ssoadmin_customer_managed_policies)
-  - [aws_ssoadmin_managed_policies](aws_ssoadmin_managed_policies)
+  - [aws_ssoadmin_permission_set_account_assignments](aws_ssoadmin_permission_set_account_assignments)
+  - [aws_ssoadmin_permission_set_customer_managed_policies](aws_ssoadmin_permission_set_customer_managed_policies)
   - [aws_ssoadmin_permission_set_inline_policies](aws_ssoadmin_permission_set_inline_policies)
-  - [aws_ssoadmin_permissions_boundaries](aws_ssoadmin_permissions_boundaries)
+  - [aws_ssoadmin_permission_set_managed_policies](aws_ssoadmin_permission_set_managed_policies)
+  - [aws_ssoadmin_permission_set_permissions_boundaries](aws_ssoadmin_permission_set_permissions_boundaries)
 
 ## Columns
 

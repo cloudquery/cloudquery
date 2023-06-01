@@ -1,10 +1,10 @@
-# Table: aws_ssoadmin_customer_managed_policies
+# Table: aws_ssoadmin_permission_set_managed_policies
 
-This table shows data for Ssoadmin Customer Managed Policies.
+This table shows data for Ssoadmin Permission Set Managed Policies.
 
 https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_ListManagedPoliciesInPermissionSet.html
 
-The composite primary key for this table is (**permission_set_arn**, **instance_arn**, **name**, **path**).
+The composite primary key for this table is (**permission_set_arn**, **instance_arn**, **arn**).
 
 ## Relations
 
@@ -20,5 +20,5 @@ This table depends on [aws_ssoadmin_permission_sets](aws_ssoadmin_permission_set
 |_cq_parent_id|`uuid`|
 |permission_set_arn (PK)|`utf8`|
 |instance_arn (PK)|`utf8`|
-|name (PK)|`utf8`|
-|path (PK)|`utf8`|
+|arn (PK)|`utf8`|
+|name|`utf8`|

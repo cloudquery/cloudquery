@@ -12,7 +12,7 @@ import (
 )
 
 func managedPolicies() *schema.Table {
-	tableName := "aws_ssoadmin_managed_policies"
+	tableName := "aws_ssoadmin_permission_set_managed_policies"
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_ListManagedPoliciesInPermissionSet.html`,

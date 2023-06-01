@@ -1,6 +1,6 @@
-# Table: aws_ssoadmin_permissions_boundaries
+# Table: aws_ssoadmin_permission_set_permissions_boundaries
 
-This table shows data for Ssoadmin Permissions Boundaries.
+This table shows data for Ssoadmin Permission Set Permissions Boundaries.
 
 https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_GetPermissionsBoundaryForPermissionSet.html
 

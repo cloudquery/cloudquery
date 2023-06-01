@@ -1,6 +1,6 @@
-# Table: aws_ssoadmin_account_assignments
+# Table: aws_ssoadmin_permission_set_account_assignments
 
-This table shows data for Ssoadmin Account Assignments.
+This table shows data for Ssoadmin Permission Set Account Assignments.
 
 https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_AccountAssignment.html
 The 'request_account_id' and 'request_region' columns are added to show the account_id and region of where the request was made from.

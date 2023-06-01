@@ -13,7 +13,7 @@ import (
 )
 
 func accountAssignments() *schema.Table {
-	tableName := "aws_ssoadmin_account_assignments"
+	tableName := "aws_ssoadmin_permission_set_account_assignments"
 	return &schema.Table{
 		Name: tableName,
 		Description: `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_AccountAssignment.html

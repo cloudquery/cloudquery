@@ -12,7 +12,7 @@ import (
 )
 
 func permissionsBoundaries() *schema.Table {
-	tableName := "aws_ssoadmin_permissions_boundaries"
+	tableName := "aws_ssoadmin_permission_set_permissions_boundaries"
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_GetPermissionsBoundaryForPermissionSet.html`,
