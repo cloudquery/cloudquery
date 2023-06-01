@@ -3,12 +3,13 @@ package costexplorer
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/costexplorer"
 	"github.com/aws/aws-sdk-go-v2/service/costexplorer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func CustomCost() *schema.Table {
@@ -26,20 +27,16 @@ To sync this table you must set the 'use_paid_apis' option to 'true' in the AWS 
 			{
 				Name:        "start_date",
 				Description: `The start date covered by the forecast.`,
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 				Resolver:    schema.PathResolver("TimePeriod.Start"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey:  true,
 			},
 			{
 				Name:        "end_date",
 				Description: `The end date covered by the forecast.`,
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 				Resolver:    schema.PathResolver("TimePeriod.End"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey:  true,
 			},
 		},
 	}
