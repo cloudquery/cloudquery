@@ -8,7 +8,7 @@ require (
 	github.com/cloudquery/plugin-sdk/v3 v3.7.0
 	github.com/gorilla/mux v1.8.0
 	github.com/rs/zerolog v1.29.0
-	golang.org/x/exp v0.0.0-20230425010034-47ecfdc1ba53
+	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1
 )
 
 replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230525142029-2d32efeedad8
