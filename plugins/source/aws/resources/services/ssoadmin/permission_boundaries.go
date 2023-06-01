@@ -12,10 +12,10 @@ import (
 )
 
 func permissionBoundaries() *schema.Table {
-	tableName := "aws_ssoadmin_permission_boundaries"
+	tableName := "aws_ssoadmin_permissions_boundaries"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_GetInlinePolicyForPermissionSet.html`,
+		Description: `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_GetPermissionsBoundaryForPermissionSet.html`,
 		Resolver:    fetchPermissionBoundaries,
 		Transform:   transformers.TransformWithStruct(&types.PermissionsBoundary{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
