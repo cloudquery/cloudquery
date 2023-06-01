@@ -1,8 +1,8 @@
-# Table: aws_ssoadmin_permission_boundaries
+# Table: aws_ssoadmin_permissions_boundaries
 
-This table shows data for Ssoadmin Permission Boundaries.
+This table shows data for Ssoadmin Permissions Boundaries.
 
-https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_GetInlinePolicyForPermissionSet.html
+https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_GetPermissionsBoundaryForPermissionSet.html
 
 The composite primary key for this table is (**permission_set_arn**, **instance_arn**).
 

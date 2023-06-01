@@ -1,6 +1,6 @@
-# Table: aws_ssoadmin_inline_policies
+# Table: aws_ssoadmin_permission_set_inline_policies
 
-This table shows data for Ssoadmin Inline Policies.
+This table shows data for Ssoadmin Permission Set Inline Policies.
 
 https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_GetInlinePolicyForPermissionSet.html
 
