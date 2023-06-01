@@ -8,14 +8,14 @@ import (
 )
 
 // this returns the following table in sorted manner:
-// +----------------+-------------+-------------+------------+---------------+-----------+---------------------+
-// | ordinal_position | table_name | column_name | data_type | is_primary_key| not_null  | pk_constraint_name  |
-// +----------------+-------------+-------------+------------+---------------+-----------+---------------------+
-// |              1 | users       | id          | bigint     | YES           | true 		 | cq_users_pk 	  	   |
-// |              2 | users       | name        | text       | NO            | false 	   | 					           |
-// |              3 | users       | email       | text       | NO            | true 		 | cq_users_pk         |
-// |              1 | posts       | id          | bigint     | YES           | true 		 | cq_posts_pk			   |
-// |              2 | posts       | title       | text       | NO            | false 	   | 					           |
+// +----------------+-------------+-------------+------------+----------------+-----------+-----------+---------------------+
+// | ordinal_position | table_name | column_name | data_type | is_primary_key | not_null  | is_unique | pk_constraint_name  |
+// +----------------+-------------+-------------+------------+----------------+-----------+-----------+---------------------+
+// |              1 | users       | id          | bigint     | YES            | true      | true      | cq_users_pk         |
+// |              2 | users       | name        | text       | NO             | false     | false     |                     |
+// |              3 | users       | email       | text       | NO             | true      | false     | cq_users_pk         |
+// |              1 | posts       | id          | bigint     | YES            | true      | true      | cq_posts_pk         |
+// |              2 | posts       | title       | text       | NO             | false     | false     |                     |
 const selectTables = `
 SELECT
 	columns.ordinal_position AS ordinal_position,
@@ -30,6 +30,10 @@ SELECT
 		WHEN pg_attribute.attnotnull THEN true
 		ELSE false
 	END AS not_null,
+    CASE
+        WHEN pg_index.indisunique THEN true
+        ELSE false
+    END AS is_unique,
 	COALESCE(pg_constraint.conname, '') AS primary_key_constraint_name
 FROM
 	pg_catalog.pg_attribute
@@ -41,6 +45,8 @@ FROM
 	pg_catalog.pg_constraint ON pg_constraint.conrelid = pg_attribute.attrelid
 	AND conkey IS NOT NULL AND array_position(conkey, pg_attribute.attnum) > 0
 	AND contype = 'p'
+	LEFT JOIN pg_catalog.pg_index ON pg_index.indrelid = pg_attribute.attrelid
+        AND pg_index.indkey::text LIKE '%%' || pg_attribute.attnum || '%%'
 	INNER JOIN
 	information_schema.columns ON columns.table_name = pg_class.relname AND columns.column_name = pg_attribute.attname AND columns.table_schema = pg_catalog.pg_namespace.nspname
 WHERE
@@ -53,7 +59,9 @@ ORDER BY
 
 func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 	var tables schema.Tables
-	rows, err := c.Conn.Query(ctx, fmt.Sprintf(selectTables, c.currentSchemaName))
+	q := fmt.Sprintf(selectTables, c.currentSchemaName)
+	fmt.Println(q)
+	rows, err := c.Conn.Query(ctx, q)
 	if err != nil {
 		return nil, err
 	}
@@ -61,8 +69,8 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 	for rows.Next() {
 		var ordinalPosition int
 		var tableName, columnName, columnType, pkName string
-		var isPrimaryKey, notNull bool
-		if err := rows.Scan(&ordinalPosition, &tableName, &columnName, &columnType, &isPrimaryKey, &notNull, &pkName); err != nil {
+		var isPrimaryKey, notNull, isUnique bool
+		if err := rows.Scan(&ordinalPosition, &tableName, &columnName, &columnType, &isPrimaryKey, &notNull, &isUnique, &pkName); err != nil {
 			return nil, err
 		}
 		if ordinalPosition == 1 {
@@ -79,6 +87,7 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 			Name:       columnName,
 			PrimaryKey: isPrimaryKey,
 			NotNull:    notNull,
+			Unique:     isUnique,
 			Type:       c.PgToSchemaType(columnType),
 		})
 	}
