@@ -17,7 +17,11 @@ func groupAssignments() *schema.Table {
 	}
 }
 
-func fetchGroupAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchGroupAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) (err error) {
+	defer func() {
+		err = client.ProcessOktaAPIError(err)
+	}()
+
 	cl := meta.(*client.Client)
 	app := parent.Item.(*okta.Application)
 
