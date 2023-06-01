@@ -10,7 +10,7 @@ import (
 func ProcessOktaAPIError(err error) error {
 	var genericOpenAPIErr *okta.GenericOpenAPIError
 	if errors.As(err, &genericOpenAPIErr) {
-		return fmt.Errorf(`received error from Okta API: body: %q model %v`, genericOpenAPIErr.Body(), genericOpenAPIErr.Model())
+		return fmt.Errorf(`received error from Okta API: err: %s, body: %q model %v`, genericOpenAPIErr.Error(), genericOpenAPIErr.Body(), genericOpenAPIErr.Model())
 	}
 
 	return err
