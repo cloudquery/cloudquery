@@ -1,8 +1,8 @@
 github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c h1:RGWPOewvKIROun94nF7v2cua9qP+thov/7M50KEoeSU=
 github.com/andybalholm/brotli v1.0.5 h1:8uQZIdzKmjc/iuPu7O2ioW48L81FgatrcpfFmiq/cCs=
 github.com/andybalholm/brotli v1.0.5/go.mod h1:fO7iG3H7G2nSZ7m0zPUDn85XEX2GTukHGRSepvi9Eig=
-github.com/apache/arrow/go/v13 v13.0.0-20230525142029-2d32efeedad8 h1:kU4bhCBzbvyJsu6nVSy2Q9WnEbNscQvqlAree+hmK/I=
-github.com/apache/arrow/go/v13 v13.0.0-20230525142029-2d32efeedad8/go.mod h1:/XatdE3kDIBqZKhZ7OBUHwP2jaASDFZHqF4puOWM8po=
+github.com/apache/arrow/go/v13 v13.0.0-20230601070034-e07e22c5580a h1:aaBBrE3hCkzdE5OAybYjbgYMijWoqkaWkUknoppVTn4=
+github.com/apache/arrow/go/v13 v13.0.0-20230601070034-e07e22c5580a/go.mod h1:/XatdE3kDIBqZKhZ7OBUHwP2jaASDFZHqF4puOWM8po=
 github.com/apache/thrift v0.16.0 h1:qEy6UW60iVOlUy+b9ZR0d5WzUWYGOo4HfopoyBaNmoY=
 github.com/apache/thrift v0.16.0/go.mod h1:PHK3hniurgQaNMZYaCLEqXKsYK8upmhPbmdP2FXSqgU=
 github.com/bluekeyes/go-gitdiff v0.7.1 h1:graP4ElLRshr8ecu0UtqfNTCHrtSyZd3DABQm/DWesQ=
