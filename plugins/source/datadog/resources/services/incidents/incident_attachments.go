@@ -7,38 +7,21 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func IncidentAttachments() *schema.Table {
 	return &schema.Table{
-		Name:     "datadog_incident_attachments",
-		Resolver: fetchIncidentAttachments,
+		Name:      "datadog_incident_attachments",
+		Transform: client.TransformWithStruct(&datadogV2.IncidentAttachmentData{}, transformers.WithPrimaryKeys("Id")),
+		Resolver:  fetchIncidentAttachments,
 		Columns: []schema.Column{
+			client.AccountNameColumn,
 			{
-				Name:     "account_name",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveAccountName,
-			},
-			{
-				Name:     "attributes",
-				Type:     types.ExtensionTypes.JSON,
-				Resolver: schema.PathResolver("Attributes"),
-			},
-			{
-				Name:     "id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.PathResolver("Id"),
-			},
-			{
-				Name:     "relationships",
-				Type:     types.ExtensionTypes.JSON,
-				Resolver: schema.PathResolver("Relationships"),
-			},
-			{
-				Name:     "type",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.PathResolver("Type"),
+				Name:       "incident_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("id"),
+				PrimaryKey: true,
 			},
 		},
 	}
