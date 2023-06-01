@@ -43,7 +43,7 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 		Relations: []*schema.Table{
 			accountAssignments(),
 			inlinePolicies(),
-			customerMangedPolices(),
+			customerManagedPolicies(),
 			managedPolicies(),
 			permissionBoundaries(),
 		},

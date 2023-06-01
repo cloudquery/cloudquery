@@ -11,8 +11,8 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
-func customerMangedPolices() *schema.Table {
-	tableName := "aws_ssoadmin__customer_managed_policies"
+func customerManagedPolicies() *schema.Table {
+	tableName := "aws_ssoadmin_customer_managed_policies"
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_ListManagedPoliciesInPermissionSet.html`,

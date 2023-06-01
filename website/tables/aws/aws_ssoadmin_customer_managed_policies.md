@@ -1,4 +1,4 @@
-# Table: aws_ssoadmin__customer_managed_policies
+# Table: aws_ssoadmin_customer_managed_policies
 
 This table shows data for Ssoadmin Customer Managed Policies.
 
