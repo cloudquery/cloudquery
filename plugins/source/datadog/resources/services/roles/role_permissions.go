@@ -7,7 +7,6 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/cloudquery/plugin-sdk/v3/types"
 )
 
@@ -15,7 +14,7 @@ func RolePermissions() *schema.Table {
 	return &schema.Table{
 		Name:      "datadog_role_permissions",
 		Resolver:  fetchRolePermissions,
-		Transform: transformers.TransformWithStruct(&datadogV2.Permission{}),
+		Transform: client.TransformWithStruct(&datadogV2.Permission{}),
 		Columns: []schema.Column{
 			{
 				Name:     "account_name",

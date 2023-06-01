@@ -7,7 +7,6 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Dashboards() *schema.Table {
@@ -15,7 +14,7 @@ func Dashboards() *schema.Table {
 		Name:      "datadog_dashboards",
 		Resolver:  fetchDashboards,
 		Multiplex: client.AccountMultiplex,
-		Transform: transformers.TransformWithStruct(&datadogV1.DashboardSummaryDefinition{}),
+		Transform: client.TransformWithStruct(&datadogV1.DashboardSummaryDefinition{}),
 		Columns: []schema.Column{
 			{
 				Name:       "account_name",

@@ -7,7 +7,6 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Users() *schema.Table {
@@ -15,7 +14,7 @@ func Users() *schema.Table {
 		Name:      "datadog_users",
 		Resolver:  fetchUsers,
 		Multiplex: client.AccountMultiplex,
-		Transform: transformers.TransformWithStruct(&datadogV2.User{}),
+		Transform: client.TransformWithStruct(&datadogV2.User{}),
 		Columns: []schema.Column{
 			{
 				Name:       "account_name",

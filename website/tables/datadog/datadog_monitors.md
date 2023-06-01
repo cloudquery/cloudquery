@@ -23,6 +23,7 @@ The following tables depend on datadog_monitors:
 |priority|`int64`|
 |created|`timestamp[us, tz=UTC]`|
 |creator|`json`|
+|matching_downtimes|`json`|
 |message|`utf8`|
 |modified|`timestamp[us, tz=UTC]`|
 |multi|`bool`|

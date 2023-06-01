@@ -13,6 +13,8 @@ import (
 //go:generate mockgen -package=mocks -destination=../mocks/incidents_api.go -source=incidents_api.go IncidentsAPIClient
 type IncidentsAPIClient interface {
 	ListIncidentAttachments(context.Context, string, ...datadogV2.ListIncidentAttachmentsOptionalParameters) (datadogV2.IncidentAttachmentsResponse, *http.Response, error)
+	ListIncidentIntegrations(context.Context, string) (datadogV2.IncidentIntegrationMetadataListResponse, *http.Response, error)
+	ListIncidentTodos(context.Context, string) (datadogV2.IncidentTodoListResponse, *http.Response, error)
 	ListIncidents(context.Context, ...datadogV2.ListIncidentsOptionalParameters) (datadogV2.IncidentsResponse, *http.Response, error)
 	ListIncidentsWithPagination(context.Context, ...datadogV2.ListIncidentsOptionalParameters) (<-chan datadog.PaginationResult[datadogV2.IncidentResponseData], func())
 }

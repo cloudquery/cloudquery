@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/datadog
 go 1.19
 
 require (
-	github.com/DataDog/datadog-api-client-go/v2 v2.9.0
+	github.com/DataDog/datadog-api-client-go/v2 v2.13.0
 	github.com/apache/arrow/go/v13 v13.0.0-20230601070034-e07e22c5580a
 	github.com/cloudquery/plugin-pb-go v1.0.8
 	github.com/cloudquery/plugin-sdk/v3 v3.7.0

@@ -7,7 +7,6 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Synthetics() *schema.Table {
@@ -15,7 +14,7 @@ func Synthetics() *schema.Table {
 		Name:      "datadog_synthetics",
 		Resolver:  fetchSynthetics,
 		Multiplex: client.AccountMultiplex,
-		Transform: transformers.TransformWithStruct(&datadogV1.SyntheticsTestDetails{}),
+		Transform: client.TransformWithStruct(&datadogV1.SyntheticsTestDetails{}),
 		Columns: []schema.Column{
 			{
 				Name:       "account_name",
