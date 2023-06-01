@@ -19,8 +19,8 @@ The following tables depend on datadog_roles:
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_name (PK)|`utf8`|
-|id (PK)|`utf8`|
 |attributes|`json`|
+|id (PK)|`utf8`|
 |relationships|`json`|
 |type|`utf8`|
 |additional_properties|`json`|
