@@ -73,7 +73,7 @@ func (c *Client) normalizeColumns(tables schema.Tables) schema.Tables {
 				normalizedColumn.NotNull = true
 			}
 			// Since multiple schema types can map to the same duckdb type we need to normalize them to avoid false positives when detecting schema changes
-			normalizedColumn.Type = transformType(normalizedColumn.Type)
+			normalizedColumn.Type = duckDBToArrow(arrowToDuckDB(normalizedColumn.Type))
 			normalizedTable.Columns[i] = normalizedColumn
 		}
 		normalized = append(normalized, &normalizedTable)

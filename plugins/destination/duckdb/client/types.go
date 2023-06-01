@@ -12,16 +12,12 @@ type listLike interface {
 	Elem() arrow.DataType
 }
 
-func plainWrite(dt arrow.DataType) bool {
-	return arrow.TypeEqual(dt, transformTypeForWriting(dt))
-}
-
 func transformTypeForWriting(dt arrow.DataType) arrow.DataType {
 	if dt, ok := dt.(listLike); ok {
 		return arrow.ListOf(transformTypeForWriting(dt.Elem()))
 	}
 
-	switch dt := transformType(dt).(type) {
+	switch dt := duckDBToArrow(arrowToDuckDB(dt)).(type) {
 	case *types.UUIDType, *types.JSONType:
 		return arrow.BinaryTypes.String
 	default:
@@ -36,10 +32,6 @@ func transformSchemaForWriting(sc *arrow.Schema) *arrow.Schema {
 	}
 	md := sc.Metadata()
 	return arrow.NewSchema(fields, &md)
-}
-
-func transformType(dt arrow.DataType) arrow.DataType {
-	return duckDBToArrow(arrowToDuckDB(dt))
 }
 
 func arrowToDuckDB(t arrow.DataType) string {
