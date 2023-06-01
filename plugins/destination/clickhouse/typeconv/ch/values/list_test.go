@@ -12,12 +12,15 @@ import (
 
 func Test_listValue(t *testing.T) {
 	const (
-		amount = 100
+		amount = 200
 		width  = 5
 	)
 
 	values := make([][]uuid.UUID, amount)
 	for i := range values {
+		if i%2 == 0 {
+			continue
+		}
 		row := make([]uuid.UUID, width)
 		for j := range row {
 			row[j] = uuid.New()
@@ -27,12 +30,15 @@ func Test_listValue(t *testing.T) {
 
 	builder := array.NewListBuilder(memory.DefaultAllocator, types.NewUUIDType())
 	uidBuilder := builder.ValueBuilder().(*types.UUIDBuilder)
-	for _, row := range values {
+	for i, row := range values {
+		if i%2 == 0 {
+			builder.AppendNull()
+			continue
+		}
 		builder.Append(true)
 		for _, uid := range row {
 			uidBuilder.Append(uid)
 		}
-		builder.AppendNull()
 	}
 
 	data, err := listValue(builder.NewListArray())
@@ -40,30 +46,32 @@ func Test_listValue(t *testing.T) {
 
 	uidSlices := data.([]*[]*uuid.UUID)
 
-	require.Equal(t, 2*amount, len(uidSlices))
+	require.Equal(t, amount, len(uidSlices))
 	for i, row := range uidSlices {
 		require.NotNil(t, row)
-		if i%2 == 1 {
-			// empty
+		if i%2 == 0 {
 			require.Empty(t, *row)
 			continue
 		}
 		require.Equal(t, width, len(*row))
 		for j, uid := range *row {
 			require.NotNil(t, uid)
-			require.Exactly(t, values[i/2][j], *uid)
+			require.Exactly(t, values[i][j], *uid)
 		}
 	}
 }
 
 func Test_largeListValue(t *testing.T) {
 	const (
-		amount = 100
+		amount = 200
 		width  = 5
 	)
 
 	values := make([][]uuid.UUID, amount)
 	for i := range values {
+		if i%2 == 0 {
+			continue
+		}
 		row := make([]uuid.UUID, width)
 		for j := range row {
 			row[j] = uuid.New()
@@ -73,12 +81,15 @@ func Test_largeListValue(t *testing.T) {
 
 	builder := array.NewLargeListBuilder(memory.DefaultAllocator, types.NewUUIDType())
 	uidBuilder := builder.ValueBuilder().(*types.UUIDBuilder)
-	for _, row := range values {
+	for i, row := range values {
+		if i%2 == 0 {
+			builder.AppendNull()
+			continue
+		}
 		builder.Append(true)
 		for _, uid := range row {
 			uidBuilder.Append(uid)
 		}
-		builder.AppendNull()
 	}
 
 	data, err := listValue(builder.NewLargeListArray())
@@ -86,25 +97,24 @@ func Test_largeListValue(t *testing.T) {
 
 	uidSlices := data.([]*[]*uuid.UUID)
 
-	require.Equal(t, 2*amount, len(uidSlices))
+	require.Equal(t, amount, len(uidSlices))
 	for i, row := range uidSlices {
 		require.NotNil(t, row)
-		if i%2 == 1 {
-			// empty
+		if i%2 == 0 {
 			require.Empty(t, *row)
 			continue
 		}
 		require.Equal(t, width, len(*row))
 		for j, uid := range *row {
 			require.NotNil(t, uid)
-			require.Exactly(t, values[i/2][j], *uid)
+			require.Exactly(t, values[i][j], *uid)
 		}
 	}
 }
 
 func Test_fixedSizeListValue(t *testing.T) {
 	const (
-		amount = 100
+		amount = 200
 		width  = 5
 	)
 
@@ -112,6 +122,9 @@ func Test_fixedSizeListValue(t *testing.T) {
 	for i := range values {
 		row := make([]uuid.UUID, width)
 		for j := range row {
+			if i%2 == 0 {
+				continue
+			}
 			row[j] = uuid.New()
 		}
 		values[i] = row
@@ -119,12 +132,15 @@ func Test_fixedSizeListValue(t *testing.T) {
 
 	builder := array.NewFixedSizeListBuilder(memory.DefaultAllocator, width, types.NewUUIDType())
 	uidBuilder := builder.ValueBuilder().(*types.UUIDBuilder)
-	for _, row := range values {
+	for i, row := range values {
+		if i%2 == 0 {
+			builder.AppendNull()
+			continue
+		}
 		builder.Append(true)
 		for _, uid := range row {
 			uidBuilder.Append(uid)
 		}
-		builder.AppendNull()
 	}
 
 	data, err := listValue(builder.NewListArray())
@@ -132,17 +148,13 @@ func Test_fixedSizeListValue(t *testing.T) {
 
 	uidSlices := data.([]*[]*uuid.UUID)
 
-	require.Equal(t, 2*amount, len(uidSlices))
+	require.Equal(t, amount, len(uidSlices))
 	for i, row := range uidSlices {
 		require.NotNil(t, row)
 		require.Equal(t, width, len(*row))
 		for j, uid := range *row {
 			require.NotNil(t, uid)
-			if i%2 == 0 {
-				require.Exactly(t, values[i/2][j], *uid)
-			} else {
-				require.Exactly(t, uuid.Nil, *uid)
-			}
+			require.Exactly(t, values[i][j], *uid)
 		}
 	}
 }
