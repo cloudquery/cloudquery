@@ -11,7 +11,7 @@ require (
 	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1
 )
 
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230525142029-2d32efeedad8
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230601143348-c67fb399078b
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
