@@ -1,4 +1,4 @@
-package notebooks
+package slos
 
 import (
 	"context"
@@ -9,22 +9,22 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
-func Notebooks() *schema.Table {
+func Objectives() *schema.Table {
 	return &schema.Table{
-		Name:      "datadog_notebooks",
-		Resolver:  fetchNotebooks,
+		Name:      "datadog_slos",
+		Resolver:  fetchObjectives,
 		Multiplex: client.AccountMultiplex,
-		Transform: client.TransformWithStruct(&datadogV1.NotebooksResponseData{}, transformers.WithPrimaryKeys("Id")),
+		Transform: client.TransformWithStruct(&datadogV1.ServiceLevelObjective{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			client.AccountNameColumn,
 		},
 	}
 }
 
-func fetchNotebooks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchObjectives(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
-	ctx = c.BuildContextV1(ctx)
-	resp, _, err := c.DDServices.NotebooksAPI.ListNotebooks(ctx)
+	ctx = c.BuildContextV2(ctx)
+	resp, _, err := c.DDServices.ServiceLevelObjectivesAPI.ListSLOs(ctx)
 	if err != nil {
 		return err
 	}

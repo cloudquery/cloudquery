@@ -37,7 +37,7 @@ func Bar() *schema.Table {
 		// the resolver function is responsible for fetching data from the API
 		Resolver:  fetchBar,
 		// columns will be automatically created from the given struct
-		Transform: transformers.TransformWithStruct(&datadogV2.Bar{}),
+		Transform: client.TransformWithStruct(&datadogV2.Bar{}),
 		// define additional columns here, or override the default columns
 		Columns: []schema.Column{},
 	}
