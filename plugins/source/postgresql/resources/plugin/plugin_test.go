@@ -339,7 +339,7 @@ func TestPluginCDC(t *testing.T) {
 		t.Fatal(err)
 	}
 	var pgErr *pgconn.PgError
-	if _, err := conn.Exec(ctx, "SELECT pg_drop_replication_slot('\"user\"')"); err != nil {
+	if _, err := conn.Exec(ctx, "SELECT pg_drop_replication_slot('test_pg_source')"); err != nil {
 		if !(errors.As(err, &pgErr) && pgErr.Code == "42704") {
 			t.Fatal(err)
 		}
