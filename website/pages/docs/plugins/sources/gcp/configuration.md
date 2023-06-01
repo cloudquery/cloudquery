@@ -73,7 +73,7 @@ This is the (nested) spec used by GCP Source Plugin
 If enabled CloudQuery will skip any resources that belong to a service that has been disabled or not been enabled. If you use this option on a large organization (with more than 500 projects) you should also set the `backoff_retries` to a value greater than `0` otherwise you may hit the API rate limits. In `v9.0.0` and greater if an error is returned then CloudQuery will assume that all services are enabled and will continue to attempt to sync all specified tables rather than just ending the sync.
 
 - `discovery_concurrency` (int) (default: 100).
-  The number of concurrent requests that CloudQuery will make to resolve the enabled services. This is only used when `enabled_services_only` is enabled.
+  The number of concurrent requests that CloudQuery will make to resolve enabled services. This is only used when `enabled_services_only` is set to `true`.
 
 ## GCP + Kubernetes (GKE)
 
