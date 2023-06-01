@@ -23,6 +23,7 @@ func buildDowntimesMock(t *testing.T, ctrl *gomock.Controller) client.DatadogSer
 	}
 	i64val := int64(123)
 	i32val := int32(123)
+	textVal := "test string"
 	d[0].ActiveChild.Set(datadogV1.NewDowntimeChild())
 	d[0].Canceled.Set(&i64val)
 	d[0].End.Set(&i64val)
@@ -30,6 +31,7 @@ func buildDowntimesMock(t *testing.T, ctrl *gomock.Controller) client.DatadogSer
 	d[0].ParentId.Set(&i64val)
 	d[0].Recurrence.Set(datadogV1.NewDowntimeRecurrence())
 	d[0].UpdaterId.Set(&i32val)
+	d[0].Message.Set(&textVal)
 
 	m.EXPECT().ListDowntimes(gomock.Any()).Return(d, nil, nil)
 

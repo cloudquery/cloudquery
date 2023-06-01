@@ -27,8 +27,8 @@ const (
 
 func (s *Spec) setDefaults(logger *zerolog.Logger) {
 	const (
-		minRetries = int32(3)
-		minBackOff = 5 * time.Second
+		minRetries = int32(2)
+		minBackOff = 30 * time.Second
 	)
 
 	if s.RateLimit == nil {

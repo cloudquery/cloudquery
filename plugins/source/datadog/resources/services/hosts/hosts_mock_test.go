@@ -21,6 +21,9 @@ func buildHostsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogService
 	if err != nil {
 		t.Fatal(err)
 	}
+	i64val := int64(123)
+	h.HostList[0].MuteTimeout.Set(&i64val)
+
 	m.EXPECT().ListHosts(gomock.Any()).Return(h, nil, nil)
 
 	return services
