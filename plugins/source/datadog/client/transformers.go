@@ -13,8 +13,10 @@ import (
 
 func typeTransformer(field reflect.StructField) (arrow.DataType, error) {
 	switch reflect.New(field.Type).Elem().Interface().(type) {
-	case datadog.NullableInt, datadog.NullableInt32, datadog.NullableInt64:
+	case datadog.NullableInt, datadog.NullableInt64:
 		return arrow.PrimitiveTypes.Int64, nil
+	case datadog.NullableInt32:
+		return arrow.PrimitiveTypes.Int32, nil
 	case datadog.NullableBool:
 		return arrow.FixedWidthTypes.Boolean, nil
 	case datadog.NullableFloat32:
@@ -36,10 +38,13 @@ type nullable interface {
 
 func resolverTransformer(field reflect.StructField, path string) schema.ColumnResolver {
 	switch reflect.New(field.Type).Elem().Interface().(type) {
-	case datadog.NullableInt, datadog.NullableInt32, datadog.NullableInt64,
+	case
 		datadog.NullableBool,
 		datadog.NullableFloat32,
 		datadog.NullableFloat64,
+		datadog.NullableInt32,
+		datadog.NullableInt64,
+		datadog.NullableInt,
 		datadog.NullableString,
 		datadog.NullableTime:
 

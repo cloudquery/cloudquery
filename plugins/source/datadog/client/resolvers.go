@@ -17,4 +17,5 @@ var AccountNameColumn = schema.Column{
 	Type:       arrow.BinaryTypes.String,
 	Resolver:   ResolveAccountName,
 	PrimaryKey: true,
+	NotNull:    true,
 }

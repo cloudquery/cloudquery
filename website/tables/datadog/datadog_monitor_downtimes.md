@@ -36,5 +36,5 @@ This table depends on [datadog_monitors](datadog_monitors).
 |scope|`list<item: utf8, nullable>`|
 |start|`int64`|
 |timezone|`utf8`|
-|updater_id|`int64`|
+|updater_id|`int32`|
 |additional_properties|`json`|
