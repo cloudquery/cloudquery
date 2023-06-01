@@ -7,10 +7,37 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/types"
 )
 
-func (c *Client) SchemaTypeToDuckDB(t arrow.DataType) string {
+type listLike interface {
+	arrow.DataType
+	Elem() arrow.DataType
+}
+
+func transformTypeForWriting(dt arrow.DataType) arrow.DataType {
+	if dt, ok := dt.(listLike); ok {
+		return arrow.ListOf(transformTypeForWriting(dt.Elem()))
+	}
+
+	switch dt := duckDBToArrow(arrowToDuckDB(dt)).(type) {
+	case *types.UUIDType, *types.JSONType:
+		return arrow.BinaryTypes.String
+	default:
+		return dt
+	}
+}
+
+func transformSchemaForWriting(sc *arrow.Schema) *arrow.Schema {
+	fields := sc.Fields()
+	for i := range fields {
+		fields[i].Type = transformTypeForWriting(fields[i].Type)
+	}
+	md := sc.Metadata()
+	return arrow.NewSchema(fields, &md)
+}
+
+func arrowToDuckDB(t arrow.DataType) string {
 	switch v := t.(type) {
 	case *arrow.ListType:
-		return c.SchemaTypeToDuckDB(v.Elem()) + "[]"
+		return arrowToDuckDB(v.Elem()) + "[]"
 	case *arrow.BooleanType:
 		return "boolean"
 	case *arrow.Int8Type:
@@ -54,9 +81,9 @@ func (c *Client) SchemaTypeToDuckDB(t arrow.DataType) string {
 	}
 }
 
-func (c *Client) duckdbTypeToSchema(t string) arrow.DataType {
+func duckDBToArrow(t string) arrow.DataType {
 	if strings.HasSuffix(t, "[]") {
-		return arrow.ListOf(c.duckdbTypeToSchema(strings.TrimSuffix(t, "[]")))
+		return arrow.ListOf(duckDBToArrow(strings.TrimSuffix(t, "[]")))
 	}
 	if strings.HasPrefix(t, "struct") {
 		return types.ExtensionTypes.JSON
