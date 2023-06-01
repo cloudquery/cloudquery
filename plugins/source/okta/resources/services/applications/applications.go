@@ -18,7 +18,11 @@ func Applications() *schema.Table {
 	}
 }
 
-func fetchApplications(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+func fetchApplications(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) (err error) {
+	defer func() {
+		err = client.ProcessOktaAPIError(err)
+	}()
+
 	cl := meta.(*client.Client)
 
 	req := cl.ApplicationApi.ListApplications(ctx).Limit(200)
