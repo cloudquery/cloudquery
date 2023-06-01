@@ -2,6 +2,7 @@ package costexplorer
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -10,6 +11,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/mitchellh/hashstructure/v2"
 )
 
 func CustomCost() *schema.Table {
@@ -20,7 +22,7 @@ func CustomCost() *schema.Table {
 		Title:    "CUSTOM",
 		Description: `https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetCostAndUsage.html
 To sync this table you must set the 'use_paid_apis' option to 'true' in the AWS provider configuration. `,
-		Transform: transformers.TransformWithStruct(&types.ResultByTime{}),
+		Transform: transformers.TransformWithStruct(&wrappedResultByTime{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Multiplex: client.AccountMultiplex(tableName),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
@@ -38,8 +40,20 @@ To sync this table you must set the 'use_paid_apis' option to 'true' in the AWS 
 				Resolver:    schema.PathResolver("TimePeriod.End"),
 				PrimaryKey:  true,
 			},
+			{
+				Name:        "input_hash",
+				Description: `The hash of the input used to generate this result.`,
+				Type:        arrow.BinaryTypes.String,
+				Resolver:    schema.PathResolver("hash"),
+				PrimaryKey:  true,
+			},
 		},
 	}
+}
+
+type wrappedResultByTime struct {
+	types.ResultByTime
+	hash string
 }
 
 func fetchCustom(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
@@ -57,6 +71,11 @@ func fetchCustom(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	svc := cl.Services().Costexplorer
 	allConfigs := cl.Spec.TableOptions.CustomCostExplorer.GetCostAndUsageOpts
 	for _, input := range allConfigs {
+		hash, err := hashstructure.Hash(input, hashstructure.FormatV2, nil)
+		if err != nil {
+			return err
+		}
+
 		for {
 			resp, err := svc.GetCostAndUsage(ctx, &input.GetCostAndUsageInput, func(options *costexplorer.Options) {
 				options.Region = cl.Region
@@ -64,7 +83,12 @@ func fetchCustom(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 			if err != nil {
 				return err
 			}
-			res <- resp.ResultsByTime
+			for _, r := range resp.ResultsByTime {
+				res <- wrappedResultByTime{
+					ResultByTime: r,
+					hash:         fmt.Sprintf("%d", hash),
+				}
+			}
 			if aws.ToString(resp.NextPageToken) == "" {
 				break
 			}
