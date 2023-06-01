@@ -13,7 +13,7 @@ The composite primary key for this table is (**account_name**, **id**).
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_name (PK)|`utf8`|
-|id (PK)|`int64`|
 |attributes|`json`|
+|id (PK)|`int64`|
 |type|`utf8`|
 |additional_properties|`json`|

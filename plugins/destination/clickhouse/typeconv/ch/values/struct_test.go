@@ -38,26 +38,23 @@ func Test_structValue(t *testing.T) {
 	// both filled in
 	elem := elems[0]
 	require.NotNil(t, elem)
-	nullable, ok := (*elem)["nullable_bool"]
-	require.True(t, ok)
-	require.True(t, *nullable.(*bool))
-
-	nonNullable, ok := (*elem)["non_nullable_bool"]
-	require.True(t, ok)
-	require.True(t, *nonNullable.(*bool))
+	require.Equal(t, map[string]any{
+		"nullable_bool":     ptr(true),
+		"non_nullable_bool": ptr(true),
+	}, *elem)
 
 	// 1 filled in, the other is nil
 	elem = elems[1]
 	require.NotNil(t, elem)
-	nullable, ok = (*elem)["nullable_bool"]
-	require.True(t, ok)
-	require.Nil(t, nullable)
+	require.Equal(t, map[string]any{
+		"nullable_bool":     (*bool)(nil),
+		"non_nullable_bool": ptr(true),
+	}, *elem)
 
-	nonNullable, ok = (*elem)["non_nullable_bool"]
-	require.True(t, ok)
-	require.True(t, *nonNullable.(*bool))
-
-	// nil
+	// nil, but for CH we have a map for every key with nil value
 	elem = elems[2]
-	require.Nil(t, elem)
+	require.Equal(t, map[string]any{
+		"nullable_bool":     ptr(false),
+		"non_nullable_bool": ptr(false),
+	}, *elem)
 }
