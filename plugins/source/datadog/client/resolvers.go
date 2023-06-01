@@ -13,7 +13,8 @@ func ResolveAccountName(_ context.Context, meta schema.ClientMeta, r *schema.Res
 }
 
 var AccountNameColumn = schema.Column{
-	Name:     "account_name",
-	Type:     arrow.BinaryTypes.String,
-	Resolver: ResolveAccountName,
+	Name:       "account_name",
+	Type:       arrow.BinaryTypes.String,
+	Resolver:   ResolveAccountName,
+	PrimaryKey: true,
 }

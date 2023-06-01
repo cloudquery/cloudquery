@@ -2,7 +2,7 @@
 
 This table shows data for Datadog Incident Attachments.
 
-The composite primary key for this table is (**incident_id**, **id**).
+The composite primary key for this table is (**account_name**, **incident_id**, **id**).
 
 ## Relations
 
@@ -16,7 +16,7 @@ This table depends on [datadog_incidents](datadog_incidents).
 |_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_name|`utf8`|
+|account_name (PK)|`utf8`|
 |incident_id (PK)|`utf8`|
 |attributes|`json`|
 |id (PK)|`utf8`|

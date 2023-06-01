@@ -2,7 +2,7 @@
 
 This table shows data for Datadog Monitor Downtimes.
 
-The composite primary key for this table is (**monitor_id**, **id**).
+The composite primary key for this table is (**account_name**, **monitor_id**, **id**).
 
 ## Relations
 
@@ -16,7 +16,7 @@ This table depends on [datadog_monitors](datadog_monitors).
 |_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_name|`utf8`|
+|account_name (PK)|`utf8`|
 |monitor_id (PK)|`int64`|
 |active|`bool`|
 |active_child|`json`|
