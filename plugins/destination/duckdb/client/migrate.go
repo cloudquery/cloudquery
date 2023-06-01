@@ -28,10 +28,10 @@ type tableInfo struct {
 	columns []columnInfo
 }
 
-func (c *Client) duckDBTables(tables schema.Tables) (schema.Tables, error) {
+func (c *Client) duckDBTables(ctx context.Context, tables schema.Tables) (schema.Tables, error) {
 	var schemaTables schema.Tables
 	for _, table := range tables {
-		info, err := c.getTableInfo(table.Name)
+		info, err := c.getTableInfo(ctx, table.Name)
 		if err != nil {
 			return nil, err
 		}
@@ -82,7 +82,7 @@ func (c *Client) normalizeColumns(tables schema.Tables) schema.Tables {
 	return normalized
 }
 
-func (c *Client) nonAutoMigrableTables(tables schema.Tables, duckdbTables schema.Tables) ([]string, [][]schema.TableColumnChange) {
+func (c *Client) nonAutoMigratableTables(tables schema.Tables, duckdbTables schema.Tables) ([]string, [][]schema.TableColumnChange) {
 	var result []string
 	var tableChanges [][]schema.TableColumnChange
 	for _, t := range tables {
@@ -99,10 +99,10 @@ func (c *Client) nonAutoMigrableTables(tables schema.Tables, duckdbTables schema
 	return result, tableChanges
 }
 
-func (c *Client) autoMigrateTable(table *schema.Table, changes []schema.TableColumnChange) error {
+func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, changes []schema.TableColumnChange) error {
 	for _, change := range changes {
 		if change.Type == schema.TableColumnChangeTypeAdd {
-			if err := c.addColumn(table.Name, change.Current.Name, arrowToDuckDB(change.Current.Type)); err != nil {
+			if err := c.addColumn(ctx, table.Name, change.Current.Name, arrowToDuckDB(change.Current.Type)); err != nil {
 				return err
 			}
 		}
@@ -129,16 +129,17 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 
 // Migrate migrates to the latest schema
 func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
-	duckdbTables, err := c.duckDBTables(tables)
+	duckdbTables, err := c.duckDBTables(ctx, tables)
 	if err != nil {
 		return err
 	}
 
 	normalizedTables := c.normalizeColumns(tables)
 	if c.spec.MigrateMode != specs.MigrateModeForced {
-		nonAutoMigrableTables, changes := c.nonAutoMigrableTables(normalizedTables, duckdbTables)
-		if len(nonAutoMigrableTables) > 0 {
-			return fmt.Errorf("tables %s with changes %s require force migration. use 'migrate_mode: forced'", strings.Join(nonAutoMigrableTables, ","), changes)
+		nonAutoMigratableTables, changes := c.nonAutoMigratableTables(normalizedTables, duckdbTables)
+		if len(nonAutoMigratableTables) > 0 {
+			return fmt.Errorf("tables %s with changes %s require force migration. use 'migrate_mode: forced'",
+				strings.Join(nonAutoMigratableTables, ","), changes)
 		}
 	}
 
@@ -151,7 +152,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 		duckdb := duckdbTables.Get(table.Name)
 		if duckdb == nil {
 			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
-			if err := c.createTableIfNotExist(table.Name, table); err != nil {
+			if err := c.createTableIfNotExist(ctx, table.Name, table); err != nil {
 				return err
 			}
 			continue
@@ -160,12 +161,12 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 		changes := table.GetChanges(duckdb)
 		if c.canAutoMigrate(changes) {
 			c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
-			if err := c.autoMigrateTable(table, changes); err != nil {
+			if err := c.autoMigrateTable(ctx, table, changes); err != nil {
 				return err
 			}
 		} else {
 			c.logger.Info().Str("table", table.Name).Msg("Table exists, force migration required")
-			if err := c.recreateTable(table); err != nil {
+			if err := c.recreateTable(ctx, table); err != nil {
 				return err
 			}
 		}
@@ -174,24 +175,24 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	return nil
 }
 
-func (c *Client) recreateTable(table *schema.Table) error {
+func (c *Client) recreateTable(ctx context.Context, table *schema.Table) error {
 	tableName := table.Name
 	sql := "drop table if exists \"" + tableName + "\""
-	if _, err := c.db.Exec(sql); err != nil {
+	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to drop table %s: %w", tableName, err)
 	}
-	return c.createTableIfNotExist(tableName, table)
+	return c.createTableIfNotExist(ctx, tableName, table)
 }
 
-func (c *Client) addColumn(tableName string, columnName string, columnType string) error {
+func (c *Client) addColumn(ctx context.Context, tableName string, columnName string, columnType string) error {
 	sql := "alter table \"" + tableName + "\" add column \"" + columnName + "\" \"" + columnType + `"`
-	if _, err := c.db.Exec(sql); err != nil {
+	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to add column %s on table %s: %w", columnName, tableName, err)
 	}
 	return nil
 }
 
-func (c *Client) createTableIfNotExist(tableName string, table *schema.Table) error {
+func (c *Client) createTableIfNotExist(ctx context.Context, tableName string, table *schema.Table) error {
 	var sb strings.Builder
 	sb.WriteString("CREATE TABLE IF NOT EXISTS ")
 	sb.WriteString(`"` + tableName + `"`)
@@ -200,7 +201,7 @@ func (c *Client) createTableIfNotExist(tableName string, table *schema.Table) er
 
 	var pks []string
 	for i, col := range table.Columns {
-		sqlType := c.SchemaTypeToDuckDB(col.Type)
+		sqlType := arrowToDuckDB(col.Type)
 		// TODO: sanitize column name
 		fieldDef := `"` + col.Name + `" ` + sqlType
 		if col.PrimaryKey {
@@ -228,15 +229,15 @@ func (c *Client) createTableIfNotExist(tableName string, table *schema.Table) er
 		sb.WriteString(")")
 	}
 	sb.WriteString(")")
-	_, err := c.db.Exec(sb.String())
+	_, err := c.db.ExecContext(ctx, sb.String())
 	if err != nil {
 		return fmt.Errorf("failed to create table with '%s': %w", sb.String(), err)
 	}
 	return nil
 }
 
-func (c *Client) isColumnUnique(tableName string, columName string) (bool, error) {
-	rows, err := c.db.Query(isColumnUniqueSQL, tableName, columName)
+func (c *Client) isColumnUnique(ctx context.Context, tableName string, columName string) (bool, error) {
+	rows, err := c.db.QueryContext(ctx, isColumnUniqueSQL, tableName, columName)
 	if err != nil {
 		return false, err
 	}
@@ -257,9 +258,9 @@ func (c *Client) isColumnUnique(tableName string, columName string) (bool, error
 	return false, nil
 }
 
-func (c *Client) getTableInfo(tableName string) (*tableInfo, error) {
+func (c *Client) getTableInfo(ctx context.Context, tableName string) (*tableInfo, error) {
 	info := tableInfo{}
-	rows, err := c.db.Query(fmt.Sprintf(sqlTableInfo, tableName))
+	rows, err := c.db.QueryContext(ctx, fmt.Sprintf(sqlTableInfo, tableName))
 	if err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("Table with name %s does not exist!", tableName)) {
 			// Table doesn't exist
@@ -280,7 +281,7 @@ func (c *Client) getTableInfo(tableName string) (*tableInfo, error) {
 			return nil, err
 		}
 		colInfo.typ = strings.ToLower(colInfo.typ)
-		colInfo.unique, err = c.isColumnUnique(tableName, colInfo.name)
+		colInfo.unique, err = c.isColumnUnique(ctx, tableName, colInfo.name)
 		if err != nil {
 			return nil, err
 		}

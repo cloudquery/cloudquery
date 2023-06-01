@@ -16,35 +16,37 @@ func transformRecord(sc *arrow.Schema, rec arrow.Record) arrow.Record {
 }
 
 func transformArray(arr arrow.Array) arrow.Array {
-	dt := arr.DataType()
-	switch {
-	case arrow.TypeEqual(dt, types.ExtensionTypes.UUID) ||
-		arrow.TypeEqual(dt, types.ExtensionTypes.Inet) ||
-		arrow.TypeEqual(dt, types.ExtensionTypes.MAC) ||
-		arrow.TypeEqual(dt, types.ExtensionTypes.JSON) ||
-		dt.ID() == arrow.STRUCT:
+	if plainWrite(arr.DataType()) {
+		return arr
+	}
+
+	switch arr := arr.(type) {
+	case *types.UUIDArray, *types.InetArray, *types.MACArray, *types.JSONArray, *array.Struct:
 		return transformToStringArray(arr)
-	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint8):
-		return transformUint8ToUint32Array(arr.(*array.Uint8))
-	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint16):
-		return transformUint16ToUint32Array(arr.(*array.Uint16))
-	case arrow.IsListLike(dt.ID()):
-		child := transformArray(arr.(*array.List).ListValues()).Data()
+	case *array.Uint8:
+		return transformUint8ToUint32Array(arr)
+	case *array.Uint16:
+		return transformUint16ToUint32Array(arr)
+	case *array.Timestamp:
+		// mismatching unit or tz
+		return transformTimestamp(duckDBToArrow(arrowToDuckDB(arr.DataType())).(*arrow.TimestampType), arr)
+	case array.ListLike:
+		child := transformArray(arr.ListValues()).Data()
 		newType := arrow.ListOf(child.DataType())
 		return array.NewListData(array.NewData(newType, arr.Len(), arr.Data().Buffers(), []arrow.ArrayData{child}, arr.NullN(), arr.Data().Offset()))
 	default:
-		return arr
+		return transformToStringArray(arr)
 	}
 }
 
 func transformUint16ToUint32Array(arr *array.Uint16) arrow.Array {
 	bldr := array.NewUint32Builder(memory.DefaultAllocator)
 	for i := 0; i < arr.Len(); i++ {
-		if arr.IsValid(i) {
-			bldr.Append(uint32(arr.Value(i)))
-		} else {
+		if arr.IsNull(i) {
 			bldr.AppendNull()
+			continue
 		}
+		bldr.Append(uint32(arr.Value(i)))
 	}
 	return bldr.NewArray()
 }
@@ -52,11 +54,11 @@ func transformUint16ToUint32Array(arr *array.Uint16) arrow.Array {
 func transformUint8ToUint32Array(arr *array.Uint8) arrow.Array {
 	bldr := array.NewUint32Builder(memory.DefaultAllocator)
 	for i := 0; i < arr.Len(); i++ {
-		if arr.IsValid(i) {
-			bldr.Append(uint32(arr.Value(i)))
-		} else {
+		if arr.IsNull(i) {
 			bldr.AppendNull()
+			continue
 		}
+		bldr.Append(uint32(arr.Value(i)))
 	}
 	return bldr.NewArray()
 }
@@ -64,11 +66,27 @@ func transformUint8ToUint32Array(arr *array.Uint8) arrow.Array {
 func transformToStringArray(arr arrow.Array) arrow.Array {
 	bldr := array.NewStringBuilder(memory.DefaultAllocator)
 	for i := 0; i < arr.Len(); i++ {
-		if arr.IsValid(i) {
-			bldr.Append(arr.ValueStr(i))
-		} else {
+		if arr.IsNull(i) {
 			bldr.AppendNull()
+			continue
 		}
+		bldr.Append(arr.ValueStr(i))
 	}
 	return bldr.NewArray()
+}
+
+func transformTimestamp(dt *arrow.TimestampType, arr *array.Timestamp) arrow.Array {
+	builder := array.NewTimestampBuilder(memory.DefaultAllocator, dt)
+	in, out := arr.DataType().(*arrow.TimestampType).Unit, dt.Unit
+
+	for i := 0; i < arr.Len(); i++ {
+		if arr.IsNull(i) {
+			builder.AppendNull()
+			continue
+		}
+
+		builder.Append(arrow.Timestamp(arrow.ConvertTimestampValue(in, out, int64(arr.Value(i)))))
+	}
+
+	return builder.NewArray()
 }
