@@ -17,11 +17,8 @@ func plainWrite(dt arrow.DataType) bool {
 }
 
 func transformTypeForWriting(dt arrow.DataType) arrow.DataType {
-	switch dt := dt.(type) {
-	case listLike:
+	if dt, ok := dt.(listLike); ok {
 		return arrow.ListOf(transformTypeForWriting(dt.Elem()))
-	case *arrow.MapType:
-		return arrow.ListOf(transformTypeForWriting(dt.ValueType()))
 	}
 
 	switch dt := transformType(dt).(type) {
