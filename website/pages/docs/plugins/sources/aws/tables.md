@@ -136,6 +136,7 @@
   - [aws_config_delivery_channel_statuses](tables/aws_config_delivery_channel_statuses)
 - [aws_config_retention_configurations](tables/aws_config_retention_configurations)
 - [aws_costexplorer_cost_30d](tables/aws_costexplorer_cost_30d)
+- [aws_costexplorer_cost_custom](tables/aws_costexplorer_cost_custom)
 - [aws_costexplorer_cost_forecast_30d](tables/aws_costexplorer_cost_forecast_30d)
 - [aws_dax_clusters](tables/aws_dax_clusters)
 - [aws_db_proxies](tables/aws_db_proxies)

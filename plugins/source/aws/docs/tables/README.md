@@ -136,6 +136,7 @@
   - [aws_config_delivery_channel_statuses](../../../../../website/tables/aws/aws_config_delivery_channel_statuses.md)
 - [aws_config_retention_configurations](../../../../../website/tables/aws/aws_config_retention_configurations.md)
 - [aws_costexplorer_cost_30d](../../../../../website/tables/aws/aws_costexplorer_cost_30d.md)
+- [aws_costexplorer_cost_custom](../../../../../website/tables/aws/aws_costexplorer_cost_custom.md)
 - [aws_costexplorer_cost_forecast_30d](../../../../../website/tables/aws/aws_costexplorer_cost_forecast_30d.md)
 - [aws_dax_clusters](../../../../../website/tables/aws/aws_dax_clusters.md)
 - [aws_db_proxies](../../../../../website/tables/aws/aws_db_proxies.md)
