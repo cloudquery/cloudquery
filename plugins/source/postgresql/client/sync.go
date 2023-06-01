@@ -2,13 +2,16 @@ package client
 
 import (
 	"context"
+	"database/sql/driver"
 	"errors"
 	"fmt"
 	"strings"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *schema.Resource) error {
@@ -127,9 +130,64 @@ func (c *Client) resourceFromValues(tableName string, values []any) (*schema.Res
 	table := c.Tables.Get(tableName)
 	resource := schema.NewResourceData(table, nil, values)
 	for i, col := range table.Columns {
-		if err := resource.Set(col.Name, values[i]); err != nil {
+		v, err := prepareValueForResourceSet(col, values[i])
+		if err != nil {
+			return nil, err
+		}
+		if err := resource.Set(col.Name, v); err != nil {
 			return nil, err
 		}
 	}
 	return resource, nil
+}
+
+func prepareValueForResourceSet(col schema.Column, v any) (any, error) {
+	switch tp := col.Type.(type) {
+	case *arrow.StringType:
+		if value, ok := v.(driver.Valuer); ok {
+			if value == driver.Valuer(nil) {
+				v = nil
+			} else {
+				val, err := value.Value()
+				if err != nil {
+					return nil, err
+				}
+				if s, ok := val.(string); ok {
+					v = s
+				}
+			}
+		}
+	case *arrow.Time32Type:
+		t, err := v.(pgtype.Time).TimeValue()
+		if err != nil {
+			return nil, err
+		}
+		v = stringForTime(t, tp.Unit)
+	case *arrow.Time64Type:
+		t, err := v.(pgtype.Time).TimeValue()
+		if err != nil {
+			return nil, err
+		}
+		v = stringForTime(t, tp.Unit)
+	}
+	return v, nil
+}
+
+func stringForTime(t pgtype.Time, unit arrow.TimeUnit) string {
+	extra := ""
+	hour := t.Microseconds / 1e6 / 60 / 60
+	minute := t.Microseconds / 1e6 / 60 % 60
+	second := t.Microseconds / 1e6 % 60
+	micros := t.Microseconds % 1e6
+	switch unit {
+	case arrow.Millisecond:
+		extra = fmt.Sprintf(".%03d", (micros)/1e3)
+	case arrow.Microsecond:
+		extra = fmt.Sprintf(".%06d", micros)
+	case arrow.Nanosecond:
+		// postgres doesn't support nanosecond precision
+		extra = fmt.Sprintf(".%06d", micros)
+	}
+
+	return fmt.Sprintf("%02d:%02d:%02d"+extra, hour, minute, second)
 }

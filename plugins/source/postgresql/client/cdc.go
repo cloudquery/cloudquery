@@ -282,7 +282,11 @@ func (c *Client) resourceFromCDCValues(tableName string, values map[string]any) 
 	table := c.Tables.Get(tableName)
 	resource := schema.NewResourceData(table, nil, values)
 	for _, col := range table.Columns {
-		if err := resource.Set(col.Name, values[col.Name]); err != nil {
+		v, err := prepareValueForResourceSet(col, values[col.Name])
+		if err != nil {
+			return nil, err
+		}
+		if err := resource.Set(col.Name, v); err != nil {
 			return nil, err
 		}
 	}

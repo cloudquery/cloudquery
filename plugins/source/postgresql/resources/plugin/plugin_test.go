@@ -5,14 +5,15 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"reflect"
 	"strings"
 	"sync"
 	"testing"
 	"time"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/postgresql/client"
 	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v3/scalar"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/google/uuid"
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
@@ -53,62 +54,119 @@ func getTestConnectionString() string {
 	return testConn
 }
 
-type pgTypeToValue struct {
+type testCase struct {
 	typeName string
 	value    any
+	expect   scalar.Scalar
 }
 
-func getPgTypesToData() []pgTypeToValue {
-	var pgTypesToData = []pgTypeToValue{
-		{"bigint", 1},
-		{"bigserial", nil},
-		{"bit", "1"},
-		{"bit(5)", "11111"},
-		{"bit varying", "1"},
-		{"bit varying(5)", "11111"},
-		{"boolean", true},
-		{"box", "((1,2),(3,4))"},
-		{"bytea", []byte("test")},
-		{"character", "a"},
-		{"character(5)", "aaaaa"},
-		{"character varying", "a"},
-		{"character varying(5)", "aaaaa"},
-		{"cidr", "10.1.2.3/32"},
-		{"circle", "<(1,2),3>"},
-		{"date", "1999-01-08"},
-		{"double precision", 1.1},
-		{"inet", "192.168.0.1/24"},
-		{"integer", 1},
-		{"interval", "1-2"},
-		{"json", `{"a":1}`},
-		{"jsonb", `{"a":1}`},
-		{"line", "{1,2,3}"},
-		{"lseg", "[(1,2),(3,4)]"},
-		{"macaddr", "08:00:2b:01:02:03"},
-		{"macaddr8", "08:00:2b:01:02:03:04:05"},
-		{"money", "$1,000.00"},
-		{"path", `[(1,2),(3,4)]`},
-		{"point", "(1,2)"},
-		{"polygon", `((1,2),(3,4))`},
-		{"real", 1.1},
-		{"smallint", 1},
-		{"smallserial", nil},
-		{"serial", nil},
-		{"text", "test"},
-		{"time without time zone", "04:05:06.789"},
-		{"time(3)", "04:05:06.789"},
-		{"time(3) without time zone", "04:05:06.789"},
-		{"timestamp", "1999-01-08 04:05:06.789"},
-		{"timestamp without time zone", "1999-01-08 04:05:06.789"},
-		{"timestamp(3)", "1999-01-08 04:05:06.789"},
-		{"timestamp(3) without time zone", "1999-01-08 04:05:06.789"},
-		{"tsquery", "a & b"},
-		{"tsvector", "'a':1 'b':2"},
-		{"uuid", uuid.New().String()},
-		{"xml", "<a>1</a>"},
+func getTestCases(serialValue int64) []testCase {
+	cidr := scalar.Inet{}
+	err := cidr.Set("10.1.2.3/32")
+	if err != nil {
+		panic(err)
 	}
-
-	return pgTypesToData
+	mac1 := scalar.Mac{}
+	err = mac1.Set("08:00:2b:01:02:03")
+	if err != nil {
+		panic(err)
+	}
+	mac2 := scalar.Mac{}
+	err = mac2.Set("08:00:2b:01:02:03:04:05")
+	if err != nil {
+		panic(err)
+	}
+	inet := scalar.Inet{}
+	err = inet.Set("192.168.0.1/24")
+	if err != nil {
+		panic(err)
+	}
+	timeMicrosecond := scalar.Time{
+		Unit: arrow.Microsecond,
+	}
+	err = timeMicrosecond.Set("04:05:06.789000")
+	if err != nil {
+		panic(err)
+	}
+	timeMillisecond := scalar.Time{
+		Int: scalar.Int{
+			BitWidth: 32,
+		},
+		Unit: arrow.Millisecond,
+	}
+	err = timeMillisecond.Set("04:05:06.789")
+	if err != nil {
+		panic(err)
+	}
+	timestamp := scalar.Timestamp{}
+	err = timestamp.Set("1999-01-08 04:05:06.789")
+	if err != nil {
+		panic(err)
+	}
+	timestampMillisecond := scalar.Timestamp{
+		Type: &arrow.TimestampType{
+			Unit:     arrow.Millisecond,
+			TimeZone: "UTC",
+		},
+	}
+	err = timestampMillisecond.Set("1999-01-08 04:05:06.789")
+	if err != nil {
+		panic(err)
+	}
+	uuidData := scalar.UUID{}
+	err = uuidData.Set(uuid.New())
+	if err != nil {
+		panic(err)
+	}
+	return []testCase{
+		{"int", 1, &scalar.Int{Value: 1, Valid: true, BitWidth: 32}},
+		{"bigint", 1, &scalar.Int{Value: 1, Valid: true, BitWidth: 64}},
+		{"bigserial", nil, &scalar.Int{Value: serialValue, Valid: true, BitWidth: 64}},
+		{"bit", "1", &scalar.String{Value: "1", Valid: true}},
+		{"bit(5)", "11111", &scalar.String{Value: "11111", Valid: true}},
+		{"bit varying", "1", &scalar.String{Value: "1", Valid: true}},
+		{"bit varying(5)", "11111", &scalar.String{Value: "11111", Valid: true}},
+		{"boolean", true, &scalar.Bool{Value: true, Valid: true}},
+		{"box", "((1,2),(3,4))", &scalar.String{Value: "(3,4),(1,2)", Valid: true}},
+		{"bytea", []byte("test"), &scalar.Binary{Value: []byte("test"), Valid: true}},
+		{"character", "a", &scalar.String{Value: "a", Valid: true}},
+		{"character(5)", "aaaaa", &scalar.String{Value: "aaaaa", Valid: true}},
+		{"character varying", "a", &scalar.String{Value: "a", Valid: true}},
+		{"character varying(5)", "aaaaa", &scalar.String{Value: "aaaaa", Valid: true}},
+		{"cidr", "10.1.2.3/32", &cidr},
+		{"circle", "<(1,2),3>", &scalar.String{Value: "<(1,2),3>", Valid: true}},
+		{"date", "1999-01-08", &scalar.Date32{Value: 10599, Valid: true}},
+		{"double precision", 1.1, &scalar.Float{Value: 1.1, Valid: true, BitWidth: 64}},
+		{"inet", "192.168.0.1/24", &inet},
+		{"integer", 1, &scalar.Int{Value: 1, Valid: true, BitWidth: 32}},
+		{"interval", "1-2", &scalar.String{Value: "14 mon 00:00:00.000000", Valid: true}},
+		{"json", `{"a":1}`, &scalar.JSON{Value: []byte(`{"a":1}`), Valid: true}},
+		{"jsonb", `{"a":1}`, &scalar.JSON{Value: []byte(`{"a":1}`), Valid: true}},
+		{"line", "{1,2,3}", &scalar.String{Value: "{1,2,3}", Valid: true}},
+		{"lseg", "[(1,2),(3,4)]", &scalar.String{Value: "[(1,2),(3,4)]", Valid: true}},
+		{"macaddr", "08:00:2b:01:02:03", &mac1},
+		{"macaddr8", "08:00:2b:01:02:03:04:05", &mac2},
+		{"money", "$1,000.00", &scalar.String{Value: "$1,000.00", Valid: true}},
+		{"path", `[(1,2),(3,4)]`, &scalar.String{Value: "[(1,2),(3,4)]", Valid: true}},
+		{"point", "(1,2)", &scalar.String{Value: "(1,2)", Valid: true}},
+		{"polygon", `((1,2),(3,4))`, &scalar.String{Value: "((1,2),(3,4))", Valid: true}},
+		{"real", 1.1, &scalar.Float{Value: 1.100000023841858, Valid: true, BitWidth: 32}},
+		{"smallint", 1, &scalar.Int{Value: 1, Valid: true, BitWidth: 16}},
+		{"smallserial", nil, &scalar.Int{Value: serialValue, Valid: true, BitWidth: 16}},
+		{"serial", nil, &scalar.Int{Value: serialValue, Valid: true, BitWidth: 32}},
+		{"text", "test", &scalar.String{Value: "test", Valid: true}},
+		{"time without time zone", "04:05:06.789", &timeMicrosecond},
+		{"time(3)", "04:05:06.789", &timeMillisecond},
+		{"time(3) without time zone", "04:05:06.789", &timeMillisecond},
+		{"timestamp", "1999-01-08 04:05:06.789", &timestamp},
+		{"timestamp without time zone", "1999-01-08 04:05:06.789", &timestamp},
+		{"timestamp(3)", "1999-01-08 04:05:06.789", &timestampMillisecond},
+		{"timestamp(3) without time zone", "1999-01-08 04:05:06.789", &timestampMillisecond},
+		{"tsquery", "a & b", &scalar.String{Value: "'a' & 'b'", Valid: true}},
+		{"tsvector", "'a':1 'b':2", &scalar.String{Value: "'a':1 'b':2", Valid: true}},
+		{"uuid", &uuidData, &uuidData},
+		{"xml", "<a>1</a>", &scalar.String{Value: "<a>1</a>", Valid: true}},
+	}
 }
 
 func createTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string) error {
@@ -116,7 +174,7 @@ func createTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string) 
 	sb.WriteString("CREATE TABLE ")
 	sb.WriteString(pgx.Identifier{tableName}.Sanitize())
 	sb.WriteString(" (")
-	columns := getPgTypesToData()
+	columns := getTestCases(0)
 	for i, col := range columns {
 		sb.WriteString(pgx.Identifier{col.typeName + "_type"}.Sanitize())
 		sb.WriteString(" ")
@@ -135,10 +193,10 @@ func createTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string) 
 	return nil
 }
 
-func insertTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string, columns []pgTypeToValue) error {
+func insertTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string, testCases []testCase) error {
 	var query = ""
 	query += "INSERT INTO " + pgx.Identifier{tableName}.Sanitize() + " ("
-	for _, col := range columns {
+	for _, col := range testCases {
 		if col.value == nil {
 			continue
 		}
@@ -146,7 +204,7 @@ func insertTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string, 
 	}
 	query = query[:len(query)-2] + ") VALUES ("
 	dataIndex := 0
-	for _, col := range columns {
+	for _, col := range testCases {
 		if col.value == nil {
 			continue
 		}
@@ -156,7 +214,7 @@ func insertTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string, 
 	query = query[:len(query)-2] + ")"
 	pgData := make([]any, dataIndex)
 	i := 0
-	for _, col := range columns {
+	for _, col := range testCases {
 		if col.value == nil {
 			continue
 		}
@@ -168,70 +226,6 @@ func insertTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string, 
 	}
 
 	return nil
-}
-
-func getExpectedData(uuidValue any, serialValue int64) schema.CQTypes {
-	cidr := schema.CIDR{}
-	_ = cidr.Set("10.1.2.3/32")
-	mac1 := schema.Macaddr{}
-	_ = mac1.Set("08:00:2b:01:02:03")
-	mac2 := schema.Macaddr{}
-	_ = mac2.Set("08:00:2b:01:02:03:04:05")
-	inet := schema.Inet{}
-	_ = inet.Set("192.168.0.1/24")
-	timestamp := schema.Timestamptz{}
-	_ = timestamp.Set("1999-01-08 04:05:06.789")
-	uuidData := schema.UUID{}
-	_ = uuidData.Set(uuidValue)
-	expectedData := schema.CQTypes{
-		&schema.Int8{Int: 1, Status: schema.Present},
-		&schema.Int8{Int: serialValue, Status: schema.Present},
-		&schema.Text{Str: "1", Status: schema.Present},
-		&schema.Text{Str: "11111", Status: schema.Present},
-		&schema.Text{Str: "1", Status: schema.Present},
-		&schema.Text{Str: "11111", Status: schema.Present},
-		&schema.Bool{Bool: true, Status: schema.Present},
-		&schema.Text{Str: "(3,4),(1,2)", Status: schema.Present},
-		&schema.Bytea{Bytes: []byte("test"), Status: schema.Present},
-		&schema.Text{Str: "a", Status: schema.Present},
-		&schema.Text{Str: "aaaaa", Status: schema.Present},
-		&schema.Text{Str: "a", Status: schema.Present},
-		&schema.Text{Str: "aaaaa", Status: schema.Present},
-		&cidr,
-		&schema.Text{Str: "<(1,2),3>", Status: schema.Present},
-		&schema.Text{Str: "1999-01-08 00:00:00 +0000 UTC", Status: schema.Present},
-		&schema.Float8{Float: 1.1, Status: schema.Present},
-		&inet,
-		&schema.Int8{Int: 1, Status: schema.Present},
-		&schema.Text{Str: "14 mon 00:00:00.000000", Status: schema.Present},
-		&schema.JSON{Bytes: []byte(`{"a":1}`), Status: schema.Present},
-		&schema.JSON{Bytes: []byte(`{"a":1}`), Status: schema.Present},
-		&schema.Text{Str: "{1,2,3}", Status: schema.Present},
-		&schema.Text{Str: "[(1,2),(3,4)]", Status: schema.Present},
-		&mac1,
-		&mac2,
-		&schema.Text{Str: "$1,000.00", Status: schema.Present},
-		&schema.Text{Str: "[(1,2),(3,4)]", Status: schema.Present},
-		&schema.Text{Str: "(1,2)", Status: schema.Present},
-		&schema.Text{Str: "((1,2),(3,4))", Status: schema.Present},
-		&schema.Float8{Float: 1.100000023841858, Status: schema.Present},
-		&schema.Int8{Int: 1, Status: schema.Present},
-		&schema.Int8{Int: serialValue, Status: schema.Present},
-		&schema.Int8{Int: serialValue, Status: schema.Present},
-		&schema.Text{Str: "test", Status: schema.Present},
-		&schema.Text{Str: "04:05:06.789000", Status: schema.Present},
-		&schema.Text{Str: "04:05:06.789000", Status: schema.Present},
-		&schema.Text{Str: "04:05:06.789000", Status: schema.Present},
-		&timestamp,
-		&timestamp,
-		&timestamp,
-		&timestamp,
-		&schema.Text{Str: "'a' & 'b'", Status: schema.Present},
-		&schema.Text{Str: "'a':1 'b':2", Status: schema.Present},
-		&uuidData,
-		&schema.Text{Str: "<a>1</a>", Status: schema.Present},
-	}
-	return expectedData
 }
 
 func TestPlugin(t *testing.T) {
@@ -265,7 +259,7 @@ func TestPlugin(t *testing.T) {
 	if err := createTestTable(ctx, conn, testTable); err != nil {
 		t.Fatal(err)
 	}
-	data := getPgTypesToData()
+	data := getTestCases(1)
 	err = insertTestTable(ctx, conn, testTable, data)
 	if err != nil {
 		t.Fatal(err)
@@ -278,7 +272,7 @@ func TestPlugin(t *testing.T) {
 	if err := createTestTable(ctx, conn, otherTable); err != nil {
 		t.Fatal(err)
 	}
-	err = insertTestTable(ctx, conn, otherTable, getPgTypesToData())
+	err = insertTestTable(ctx, conn, otherTable, getTestCases(2))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -289,9 +283,10 @@ func TestPlugin(t *testing.T) {
 	}
 	res := make(chan *schema.Resource, 1)
 	g := errgroup.Group{}
+	syncTime := time.Now()
 	g.Go(func() error {
 		defer close(res)
-		return p.Sync(ctx, res)
+		return p.Sync(ctx, syncTime, res)
 	})
 	var resource *schema.Resource
 	totalResources := 0
@@ -307,12 +302,11 @@ func TestPlugin(t *testing.T) {
 		t.Fatalf("expected 1 resource, got %d", totalResources)
 	}
 	gotData := resource.GetValues()
-	expectedData := getExpectedData(data[44].value, 1)
 
-	for i, v := range gotData {
-		expected := expectedData[i]
-		if !reflect.DeepEqual(v, expected) {
-			t.Fatalf("expected %v, got %v", expected, v)
+	for i, got := range gotData {
+		expected := data[i].expect
+		if !got.Equal(expected) {
+			t.Fatalf("type %v: expected %v, got %v", data[i].typeName, expected, got)
 		}
 	}
 }
@@ -322,7 +316,7 @@ func TestPluginCDC(t *testing.T) {
 	ctx := context.Background()
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
-	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+	).Level(zerolog.WarnLevel).With().Timestamp().Logger()
 	p.SetLogger(l)
 	spec := specs.Source{
 		Name:         "test_pg_source",
@@ -356,7 +350,7 @@ func TestPluginCDC(t *testing.T) {
 	if err := createTestTable(ctx, conn, testTable); err != nil {
 		t.Fatal(err)
 	}
-	data := getPgTypesToData()
+	data := getTestCases(1)
 	err = insertTestTable(ctx, conn, testTable, data)
 	if err != nil {
 		t.Fatal(err)
@@ -374,12 +368,13 @@ func TestPluginCDC(t *testing.T) {
 	defer cancel()
 	wg.Add(1)
 
+	syncTime := time.Now()
 	go func() {
 		defer wg.Done()
 		defer close(res)
-		syncErr = p.Sync(syncCtx, res)
+		syncErr = p.Sync(syncCtx, syncTime, res)
 	}()
-	data2 := getPgTypesToData()
+	data2 := getTestCases(2)
 	time.AfterFunc(2*time.Second, func() {
 		err = insertTestTable(ctx, conn, testTable, data2)
 		if err != nil {
@@ -391,19 +386,17 @@ func TestPluginCDC(t *testing.T) {
 	for r := range res {
 		gotData := r.GetValues()
 		if totalResources == 0 {
-			expectedData := getExpectedData(data[44].value, 1)
-			for i, v := range gotData {
-				expected := expectedData[i]
-				if !reflect.DeepEqual(v, expected) {
-					t.Fatalf("expected %v, got %v", expected, v)
+			for i, got := range gotData {
+				expected := data[i].expect
+				if !got.Equal(expected) {
+					t.Fatalf("type %v: expected %v, got %v", data[i].typeName, expected, got)
 				}
 			}
 		} else {
-			expectedData := getExpectedData(data2[44].value, 2)
-			for i, v := range gotData {
-				expected := expectedData[i]
-				if !reflect.DeepEqual(v, expected) {
-					t.Fatalf("expected %v, got %v", expected, v)
+			for i, got := range gotData {
+				expected := data2[i].expect
+				if !got.Equal(expected) {
+					t.Fatalf("type %v: expected %v, got %v", data[i].typeName, expected, got)
 				}
 			}
 		}
