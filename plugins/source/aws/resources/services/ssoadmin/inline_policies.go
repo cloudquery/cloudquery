@@ -15,7 +15,7 @@ import (
 )
 
 func inlinePolicies() *schema.Table {
-	tableName := "aws_ssoadmin_inline_policies"
+	tableName := "aws_ssoadmin_permission_set_inline_policies"
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_GetInlinePolicyForPermissionSet.html`,
