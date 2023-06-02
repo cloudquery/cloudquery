@@ -36,7 +36,7 @@ func transformTypeForWriting(dt arrow.DataType) arrow.DataType {
 	case *types.UUIDType, *types.JSONType:
 		return arrow.BinaryTypes.String
 	default:
-		return dt
+		return duckDBToArrow(arrowToDuckDB(dt))
 	}
 }
 
