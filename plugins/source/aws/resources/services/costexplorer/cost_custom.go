@@ -54,7 +54,6 @@ To sync this table you must set the 'use_paid_apis' option to 'true' in the AWS 
 				Description: `The JSON of the input used to generate this result.`,
 				Type:        cqtypes.ExtensionTypes.JSON,
 				Resolver:    schema.PathResolver("inputJSON"),
-				PrimaryKey:  false,
 			},
 		},
 	}
