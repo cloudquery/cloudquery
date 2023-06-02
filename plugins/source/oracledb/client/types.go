@@ -39,7 +39,7 @@ func getPrecisionAndScale(dataType string) (precision, scale int32) {
 		precision = defaultPrecision
 		scale = defaultScale
 	}
-	return
+	return precision, scale
 }
 
 func SQLType(t arrow.DataType) string {

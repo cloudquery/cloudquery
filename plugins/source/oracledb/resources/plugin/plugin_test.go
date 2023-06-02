@@ -183,7 +183,7 @@ func getExpectedStrings(t *testing.T, table *schema.Table, records []arrow.Recor
 	return expectedStrings
 }
 
-func sortResults(t *testing.T, table *schema.Table, records [][]string) {
+func sortResults(table *schema.Table, records [][]string) {
 	cqIDIndex := table.Columns.Index(schema.CqIDColumn.Name)
 	sort.Slice(records, func(i, j int) bool {
 		firstUUID := records[i][cqIDIndex]
@@ -192,10 +192,10 @@ func sortResults(t *testing.T, table *schema.Table, records [][]string) {
 	})
 }
 
-func normalizedUint64Columns(schema *schema.Table) {
-	for i, col := range schema.Columns {
+func normalizedUint64Columns(table *schema.Table) {
+	for i, col := range table.Columns {
 		if col.Type == arrow.PrimitiveTypes.Uint64 {
-			schema.Columns[i].Type = arrow.PrimitiveTypes.Uint32
+			table.Columns[i].Type = arrow.PrimitiveTypes.Uint32
 		}
 	}
 }
@@ -277,7 +277,7 @@ func TestPlugin(t *testing.T) {
 
 	expectedStrings := getExpectedStrings(t, testTable, data)
 	actualStrings := getActualStrings(t, resources)
-	sortResults(t, testTable, actualStrings)
+	sortResults(testTable, actualStrings)
 
 	require.Equal(t, expectedStrings, actualStrings)
 }
