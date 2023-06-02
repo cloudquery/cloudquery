@@ -16,6 +16,8 @@
 - [datadog_roles](../../../../../website/tables/datadog/datadog_roles.md)
   - [datadog_role_permissions](../../../../../website/tables/datadog/datadog_role_permissions.md)
   - [datadog_role_users](../../../../../website/tables/datadog/datadog_role_users.md)
+- [datadog_slo_corrections](../../../../../website/tables/datadog/datadog_slo_corrections.md)
+- [datadog_slos](../../../../../website/tables/datadog/datadog_slos.md)
 - [datadog_synthetics](../../../../../website/tables/datadog/datadog_synthetics.md)
 - [datadog_users](../../../../../website/tables/datadog/datadog_users.md)
   - [datadog_user_permissions](../../../../../website/tables/datadog/datadog_user_permissions.md)
