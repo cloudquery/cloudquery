@@ -7,7 +7,7 @@ import (
 )
 
 func getValue(arr arrow.Array, i int) (any, error) {
-	if arr.IsNull(i) || !arr.IsValid(i) {
+	if arr.IsNull(i) {
 		return nil, nil
 	}
 	switch a := arr.(type) {
@@ -28,6 +28,8 @@ func getValue(arr arrow.Array, i int) (any, error) {
 	case *array.Uint32:
 		return a.Value(i), nil
 	case *array.Uint64:
+		return a.Value(i), nil
+	case *array.Float16:
 		return a.Value(i), nil
 	case *array.Float32:
 		return a.Value(i), nil
@@ -67,17 +69,17 @@ func getValue(arr arrow.Array, i int) (any, error) {
 }
 
 func transformRecord(record arrow.Record) ([][]any, error) {
-	var res [][]any
+	res := make([][]any, record.NumRows())
+	var err error
 	for i := int64(0); i < record.NumRows(); i++ {
-		var row []any
+		row := make([]any, record.NumCols())
 		for j := 0; int64(j) < record.NumCols(); j++ {
-			v, err := getValue(record.Column(j), int(i))
+			row[j], err = getValue(record.Column(j), int(i))
 			if err != nil {
 				return nil, err
 			}
-			row = append(row, v)
 		}
-		res = append(res, row)
+		res[i] = row
 	}
 	return res, nil
 }
