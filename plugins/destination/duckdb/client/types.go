@@ -5,6 +5,7 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-sdk/v3/types"
+	"golang.org/x/exp/slices"
 )
 
 type listLike interface {
@@ -39,10 +40,21 @@ func transformTypeForWriting(dt arrow.DataType) arrow.DataType {
 
 func arrowToDuckDB(dt arrow.DataType) string {
 	switch dt := dt.(type) {
+	case *arrow.StructType:
+		builder := new(strings.Builder)
+		builder.WriteString("struct(")
+		for i, field := range dt.Fields() {
+			if i > 0 {
+				builder.WriteString(", ")
+			}
+			builder.WriteString(sanitizeID(field.Name) + " " + arrowToDuckDB(field.Type))
+		}
+		builder.WriteString(")")
+		return builder.String()
+	case *arrow.MapType:
+		return "map(" + arrowToDuckDB(dt.KeyType()) + ", " + arrowToDuckDB(dt.ItemType()) + ")"
 	case listLike:
 		return arrowToDuckDB(dt.Elem()) + "[]"
-	case *arrow.MapType:
-		return arrowToDuckDB(arrow.ListOf(dt.ValueType()))
 	case *arrow.BooleanType:
 		return "boolean"
 	case *arrow.Int8Type:
@@ -79,20 +91,21 @@ func arrowToDuckDB(dt arrow.DataType) string {
 		return "date"
 	case *arrow.DayTimeIntervalType:
 		return "interval"
-	case *arrow.StructType:
-		return "json"
 	default:
 		return "varchar"
 	}
 }
 
 func duckDBToArrow(t string) arrow.DataType {
-	if strings.HasSuffix(t, "[]") {
+	switch {
+	case strings.HasSuffix(t, "[]"):
 		return arrow.ListOf(duckDBToArrow(strings.TrimSuffix(t, "[]")))
+	case strings.HasPrefix(t, "struct"):
+		return duckDBStructToArrow(t)
+	case strings.HasPrefix(t, "map"):
+		return duckDBMapToArrow(t)
 	}
-	if strings.HasPrefix(t, "struct") {
-		return types.ExtensionTypes.JSON
-	}
+
 	switch t {
 	case "tinyint", "int1":
 		return arrow.PrimitiveTypes.Int8
@@ -131,6 +144,73 @@ func duckDBToArrow(t string) arrow.DataType {
 	default:
 		return arrow.BinaryTypes.String
 	}
+}
+
+func duckDBStructToArrow(spec string) *arrow.StructType {
+	params := strings.TrimPrefix("map", spec)
+	params = strings.TrimSpace(params)
+	params = strings.TrimPrefix("(", strings.TrimSuffix(")", params))
+
+	fieldsSpec := splitParams(spec)
+	if len(fieldsSpec) == 0 {
+		panic("unsupported struct spec: " + spec)
+	}
+
+	fields := make([]arrow.Field, len(fieldsSpec))
+	for i, fieldSpec := range fieldsSpec {
+		parts := strings.SplitN(fieldSpec, " ", 2)
+		if len(parts) != 2 {
+			panic("unsupported field spec: " + fieldSpec)
+		}
+
+		fields[i] = arrow.Field{
+			Name:     strings.Trim(parts[0], `"`),
+			Type:     duckDBToArrow(strings.TrimSpace(parts[1])),
+			Nullable: true, // all duckdb columns are nullable
+		}
+	}
+
+	return arrow.StructOf(fields...)
+}
+
+func duckDBMapToArrow(spec string) *arrow.MapType {
+	params := strings.TrimPrefix("map", spec)
+	params = strings.TrimSpace(params)
+	params = strings.TrimPrefix("(", strings.TrimSuffix(")", params))
+
+	kv := splitParams(spec)
+	if len(kv) != 2 {
+		panic("unsupported map spec: " + spec)
+	}
+
+	// these should only be types
+	return arrow.MapOf(duckDBToArrow(kv[0]), duckDBToArrow(kv[1]))
+}
+
+func splitParams(params string) []string {
+	params = strings.TrimSpace(params)
+
+	var brackets int
+	var parts []string
+	var elem []rune
+
+	for _, r := range params {
+		switch r {
+		case '(':
+			brackets++
+		case ')':
+			brackets--
+		case ',':
+			if brackets == 0 {
+				parts = append(parts, string(elem))
+				elem = elem[:0] // cleanup
+				continue
+			}
+		}
+		elem = append(elem, r)
+	}
+
+	return slices.Clip(parts)
 }
 
 func sanitizeID(id string) string {

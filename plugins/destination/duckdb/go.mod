@@ -9,6 +9,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/marcboeker/go-duckdb v1.3.0
 	github.com/rs/zerolog v1.29.0
+	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1
 )
 
 // TODO: remove once all updates are merged
@@ -46,7 +47,6 @@ require (
 	github.com/stretchr/testify v1.8.2 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
-	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1 // indirect
 	golang.org/x/mod v0.9.0 // indirect
 	golang.org/x/net v0.9.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
