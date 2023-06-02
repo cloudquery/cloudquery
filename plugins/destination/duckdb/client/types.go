@@ -127,3 +127,7 @@ func duckDBToArrow(t string) arrow.DataType {
 		return arrow.BinaryTypes.String
 	}
 }
+
+func sanitizeID(id string) string {
+	return `"` + id + `"`
+}
