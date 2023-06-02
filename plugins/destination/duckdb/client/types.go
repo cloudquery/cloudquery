@@ -14,20 +14,25 @@ type listLike interface {
 }
 
 func transformSchemaForWriting(sc *arrow.Schema) *arrow.Schema {
-	fields := sc.Fields()
+	md := arrow.MetadataFrom(sc.Metadata().ToMap())
+	return arrow.NewSchema(transformFieldsForWriting(sc.Fields()), &md)
+}
+
+func transformFieldsForWriting(fields []arrow.Field) []arrow.Field {
 	for i := range fields {
 		fields[i].Type = transformTypeForWriting(fields[i].Type)
 	}
-	md := sc.Metadata()
-	return arrow.NewSchema(fields, &md)
+	return fields
 }
 
 func transformTypeForWriting(dt arrow.DataType) arrow.DataType {
 	switch dt := dt.(type) {
-	case listLike:
-		return arrow.ListOf(transformTypeForWriting(dt.Elem()))
+	case *arrow.StructType:
+		return arrow.StructOf(transformFieldsForWriting(dt.Fields())...)
 	case *arrow.MapType:
 		return arrow.ListOf(transformTypeForWriting(dt.ValueType()))
+	case listLike:
+		return arrow.ListOf(transformTypeForWriting(dt.Elem()))
 	}
 
 	switch dt := duckDBToArrow(arrowToDuckDB(dt)).(type) {
