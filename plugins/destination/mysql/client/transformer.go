@@ -35,6 +35,8 @@ func getValue(arr arrow.Array, i int) (any, error) {
 		return a.Value(i), nil
 	case *array.String:
 		return a.Value(i), nil
+	case *array.LargeString:
+		return a.Value(i), nil
 	case *array.Binary:
 		return a.Value(i), nil
 	case *array.LargeBinary:
