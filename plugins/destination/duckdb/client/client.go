@@ -42,11 +42,11 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, err
 	}
 	c.db = db
-	_, err = c.db.ExecContext(ctx, "INSTALL 'json'; LOAD 'json';")
+	err = c.exec(ctx, "INSTALL 'json'; LOAD 'json';")
 	if err != nil {
 		return nil, err
 	}
-	_, err = c.db.ExecContext(ctx, "INSTALL 'parquet'; LOAD 'parquet';")
+	err = c.exec(ctx, "INSTALL 'parquet'; LOAD 'parquet';")
 	if err != nil {
 		return nil, err
 	}
@@ -68,4 +68,9 @@ func (c *Client) Close(_ context.Context) error {
 
 func (c *Client) Metrics() destination.Metrics {
 	return c.metrics
+}
+
+func (c *Client) exec(ctx context.Context, query string, args ...any) error {
+	_, err := c.db.ExecContext(ctx, query, args...)
+	return err
 }
