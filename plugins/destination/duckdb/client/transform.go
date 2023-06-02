@@ -54,6 +54,7 @@ func transformArray(arr arrow.Array) arrow.Array {
 			[]arrow.ArrayData{transformArray(arr.ListValues()).Data()},
 			arr.NullN(), arr.Data().Offset(),
 		))
+
 	default:
 		return transformToStringArray(arr)
 	}

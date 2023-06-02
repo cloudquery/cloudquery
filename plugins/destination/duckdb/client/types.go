@@ -30,7 +30,7 @@ func transformTypeForWriting(dt arrow.DataType) arrow.DataType {
 	case *arrow.StructType:
 		return arrow.StructOf(transformFieldsForWriting(dt.Fields())...)
 	case *arrow.MapType:
-		return arrow.ListOf(transformTypeForWriting(dt.ValueType()))
+		return arrow.MapOf(transformTypeForWriting(dt.KeyType()), transformTypeForWriting(dt.ItemType()))
 	case listLike:
 		return arrow.ListOf(transformTypeForWriting(dt.Elem()))
 	}
