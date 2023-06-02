@@ -8,11 +8,6 @@ import (
 	"golang.org/x/exp/slices"
 )
 
-type listLike interface {
-	arrow.DataType
-	Elem() arrow.DataType
-}
-
 func transformSchemaForWriting(sc *arrow.Schema) *arrow.Schema {
 	md := arrow.MetadataFrom(sc.Metadata().ToMap())
 	return arrow.NewSchema(transformFieldsForWriting(sc.Fields()), &md)
@@ -31,7 +26,7 @@ func transformTypeForWriting(dt arrow.DataType) arrow.DataType {
 		return arrow.StructOf(transformFieldsForWriting(dt.Fields())...)
 	case *arrow.MapType:
 		return arrow.MapOf(transformTypeForWriting(dt.KeyType()), transformTypeForWriting(dt.ItemType()))
-	case listLike:
+	case arrow.ListLikeType:
 		return arrow.ListOf(transformTypeForWriting(dt.Elem()))
 	case *types.UUIDType, *types.JSONType:
 		return arrow.BinaryTypes.String
@@ -55,7 +50,7 @@ func arrowToDuckDB(dt arrow.DataType) string {
 		return builder.String()
 	case *arrow.MapType:
 		return "map(" + arrowToDuckDB(dt.KeyType()) + ", " + arrowToDuckDB(dt.ItemType()) + ")"
-	case listLike:
+	case arrow.ListLikeType:
 		return arrowToDuckDB(dt.Elem()) + "[]"
 	case *arrow.BooleanType:
 		return "boolean"

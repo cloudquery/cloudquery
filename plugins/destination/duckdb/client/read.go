@@ -121,12 +121,15 @@ func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
 		return transformTimestamp(dt, arr.(*array.Timestamp))
 	case *arrow.StructType:
 		return reverseTransformStruct(dt, arr.(*array.Struct))
-	case *arrow.MapType:
-		child := reverseTransformArray(dt.ValueType(), arr.(*array.Map).ListValues()).Data()
-		return array.NewMapData(array.NewData(dt, arr.Len(), arr.Data().Buffers(), []arrow.ArrayData{child}, arr.NullN(), arr.Data().Offset()))
-	case listLike:
-		child := reverseTransformArray(dt.Elem(), arr.(array.ListLike).ListValues()).Data()
-		return array.MakeFromData(array.NewData(dt, arr.Len(), arr.Data().Buffers(), []arrow.ArrayData{child}, arr.NullN(), arr.Data().Offset()))
+
+	case arrow.ListLikeType: // also handles maps
+		return array.MakeFromData(array.NewData(
+			dt, arr.Len(),
+			arr.Data().Buffers(),
+			[]arrow.ArrayData{reverseTransformArray(dt.Elem(), arr.(array.ListLike).ListValues()).Data()},
+			arr.NullN(), arr.Data().Offset(),
+		))
+
 	default:
 		return reverseTransformFromString(dt, arr.(*array.String))
 	}
