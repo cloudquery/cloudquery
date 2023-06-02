@@ -1,11 +1,46 @@
 package client
 
 import (
+	"strconv"
 	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-sdk/v3/types"
 )
+
+const defaultPrecision = 38
+const defaultScale = 0
+
+func getValue(str string, defaultValue int32) int32 {
+	val, err := strconv.ParseInt(str, 10, 32)
+	if err != nil {
+		return defaultValue
+	}
+	return int32(val)
+}
+
+func getPrecisionAndScale(dataType string) (precision, scale int32) {
+	str := strings.TrimPrefix(dataType, "number")
+	if str == "" {
+		return defaultPrecision, defaultScale
+	}
+	str = strings.TrimPrefix(str, "(")
+	str = strings.TrimSuffix(str, ")")
+	parts := strings.Split(str, ",")
+
+	switch len(parts) {
+	case 1:
+		precision = getValue(parts[0], defaultPrecision)
+		scale = defaultScale
+	case 2:
+		precision = getValue(parts[0], defaultPrecision)
+		scale = getValue(parts[1], defaultScale)
+	default:
+		precision = defaultPrecision
+		scale = defaultScale
+	}
+	return
+}
 
 func SQLType(t arrow.DataType) string {
 	switch t.(type) {
@@ -13,7 +48,7 @@ func SQLType(t arrow.DataType) string {
 		return "char(1)"
 	case *arrow.Int8Type, *arrow.Int16Type, *arrow.Int32Type, *arrow.Int64Type,
 		*arrow.Uint8Type, *arrow.Uint16Type, *arrow.Uint32Type, *arrow.Uint64Type:
-		return "NUMBER(19)"
+		return "NUMBER(38)"
 	case *arrow.Float16Type, *arrow.Float32Type, *arrow.Float64Type:
 		return "binary_double"
 	case *types.UUIDType:
@@ -34,7 +69,8 @@ func SchemaType(dataType string) arrow.DataType {
 	}
 
 	if strings.HasPrefix(dataTypeLower, "number") {
-		return arrow.PrimitiveTypes.Int64
+		precision, scale := getPrecisionAndScale(dataTypeLower)
+		return &arrow.Decimal128Type{Precision: precision, Scale: scale}
 	}
 
 	switch dataTypeLower {

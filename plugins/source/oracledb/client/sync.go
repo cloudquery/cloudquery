@@ -36,8 +36,8 @@ func (*Client) createResultsArray(table *schema.Table) []any {
 		case *arrow.BooleanType:
 			var r *bool
 			results = append(results, &r)
-		case *arrow.Int64Type:
-			var r *int
+		case *arrow.Decimal128Type:
+			var r *string
 			results = append(results, &r)
 		case *arrow.Float64Type:
 			var r *float64

@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"sort"
 	"strings"
 	"testing"
 	"time"
@@ -13,7 +14,6 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/oracledb/client"
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/scalar"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
@@ -89,7 +89,7 @@ func createTable(ctx context.Context, db *sql.DB, table *schema.Table) error {
 	return err
 }
 
-func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, data []arrow.Record) error {
+func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, records []arrow.Record) error {
 	builder := strings.Builder{}
 	builder.WriteString("INSERT INTO " + client.Identifier(table.Name))
 	builder.WriteString(" (")
@@ -108,8 +108,8 @@ func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, data []ar
 	}
 	builder.WriteString(")")
 
-	for _, data := range data {
-		transformedRecords, err := client.TransformRecord(data)
+	for _, record := range records {
+		transformedRecords, err := client.TransformRecord(record)
 		if err != nil {
 			return err
 		}
@@ -129,6 +129,75 @@ func isNotExistsError(err error) bool {
 	}
 
 	return false
+}
+
+func getActualStringsForResource(t *testing.T, resource *schema.Resource) []string {
+	actualData := resource.GetValues()
+	actualStrings := make([]string, len(actualData))
+	for i, v := range actualData {
+		// Oracle treats empty strings as null, so we need to convert them for comparison
+		// See https://stackoverflow.com/questions/203493/why-does-oracle-9i-treat-an-empty-string-as-null
+		// Please note this means we can't distinguish between null and empty string
+		if !v.IsValid() && v.DataType() == arrow.BinaryTypes.String {
+			if err := v.Set(""); err != nil {
+				t.Fatal(err)
+			}
+		}
+		actualStrings[i] = v.String()
+	}
+	return actualStrings
+}
+
+func getActualStrings(t *testing.T, resources []*schema.Resource) [][]string {
+	actualStrings := make([][]string, len(resources))
+	for i, resource := range resources {
+		actualStrings[i] = getActualStringsForResource(t, resource)
+	}
+	return actualStrings
+}
+
+func getExpectedStringsForRecord(t *testing.T, table *schema.Table, record arrow.Record) []string {
+	cloned := table.Copy(nil)
+	for i := range cloned.Columns {
+		// Normalize column types to the ones supported by OracleDB
+		cloned.Columns[i].Type = client.SchemaType(client.SQLType(cloned.Columns[i].Type))
+	}
+
+	transformedRecord, _ := client.TransformRecord(record)
+	values := transformedRecord[0]
+	resource := schema.NewResourceData(cloned, nil, values)
+	for i, col := range cloned.Columns {
+		if err := resource.Set(col.Name, values[i]); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	return getActualStringsForResource(t, resource)
+}
+
+func getExpectedStrings(t *testing.T, table *schema.Table, records []arrow.Record) [][]string {
+	expectedStrings := make([][]string, len(records))
+	for i, record := range records {
+		expectedStrings[i] = getExpectedStringsForRecord(t, table, record)
+	}
+	return expectedStrings
+}
+
+func sortResults(t *testing.T, table *schema.Table, records [][]string) {
+	cqIDIndex := table.Columns.Index(schema.CqIDColumn.Name)
+	sort.Slice(records, func(i, j int) bool {
+		firstUUID := records[i][cqIDIndex]
+		secondUUID := records[j][cqIDIndex]
+		return strings.Compare(firstUUID, secondUUID) < 0
+	})
+}
+
+func normalizedUint64Columns(schema *schema.Table) {
+	for i, col := range schema.Columns {
+		if col.Type == arrow.PrimitiveTypes.Uint64 {
+			schema.Columns[i].Type = arrow.PrimitiveTypes.Uint32
+		}
+	}
 }
 
 func TestPlugin(t *testing.T) {
@@ -155,6 +224,8 @@ func TestPlugin(t *testing.T) {
 	defer db.Close()
 
 	testTable := schema.TestTable("test_oracledb_source", schema.TestSourceOptions{})
+	// TODO: Remove this once https://github.com/sijms/go-ora/issues/378 is fixed
+	normalizedUint64Columns(testTable)
 	if _, err := db.ExecContext(ctx, "DROP TABLE \"test_oracledb_source\""); err != nil {
 		if !isNotExistsError(err) {
 			t.Fatal(err)
@@ -163,7 +234,7 @@ func TestPlugin(t *testing.T) {
 	if err := createTable(ctx, db, testTable); err != nil {
 		t.Fatal(err)
 	}
-	data := schema.GenTestData(testTable, schema.GenTestDataOptions{MaxRows: 1})
+	data := schema.GenTestData(testTable, schema.GenTestDataOptions{MaxRows: 2})
 	if err := insertTable(ctx, db, testTable, data); err != nil {
 		t.Fatal(err)
 	}
@@ -192,55 +263,21 @@ func TestPlugin(t *testing.T) {
 		defer close(res)
 		return p.Sync(ctx, syncTime, res)
 	})
-	var resource *schema.Resource
-	totalResources := 0
+	resources := make([]*schema.Resource, 0)
 	for r := range res {
-		resource = r
-		totalResources++
+		resources = append(resources, r)
 	}
 	err = g.Wait()
 	if err != nil {
 		t.Fatal("got unexpected error:", err)
 	}
-	if totalResources != 1 {
-		t.Fatalf("expected 1 resource, got %d", totalResources)
+	if len(resources) != 2 {
+		t.Fatalf("expected 2 resource, got %d", len(resources))
 	}
-	gotData := resource.GetValues()
-	actualStrings := make([]string, len(gotData))
-	for i, v := range gotData {
-		// Oracle treats empty strings as null, so we need to convert them for comparison
-		// See https://stackoverflow.com/questions/203493/why-does-oracle-9i-treat-an-empty-string-as-null
-		// Please note this means we can't distinguish between null and empty string
-		if !v.IsValid() && v.DataType() == arrow.BinaryTypes.String {
-			if err := v.Set(""); err != nil {
-				t.Fatal(err)
-			}
-		}
-		actualStrings[i] = v.String()
-	}
-	// Convert test data to scalar so we can do string comparison
-	// We need this as OracleDB does not support all arrow types, so the type data is lost for some columns
-	expectedColumns := data[0].Columns()
-	expectedStrings := make([]string, len(expectedColumns))
-	for i, col := range expectedColumns {
-		if col.DataType() == arrow.PrimitiveTypes.Uint64 {
-			// When reading from the OracleDB we can't know if the value is int64 or uint64 (without parsing the data)
-			// So we skip the test for this column as we can't support it
-			actualStrings[i] = ""
-			expectedStrings[i] = ""
-			continue
-		}
-		normalizedType := client.SchemaType(client.SQLType(col.DataType()))
-		s := scalar.NewScalar(normalizedType)
-		val, err := client.GetValue(col, 0)
-		if err != nil {
-			t.Fatal(err)
-		}
-		if err := s.Set(val); err != nil {
-			t.Fatal(err)
-		}
-		expectedStrings[i] = s.String()
-	}
+
+	expectedStrings := getExpectedStrings(t, testTable, data)
+	actualStrings := getActualStrings(t, resources)
+	sortResults(t, testTable, actualStrings)
 
 	require.Equal(t, expectedStrings, actualStrings)
 }
