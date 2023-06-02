@@ -15,6 +15,7 @@ tables:
   - azure_appservice_web_apps
   - azure_compute_disks
   - azure_compute_virtual_machines
+  - azure_containerservice_managed_clusters
   - azure_keyvault_keyvault
   - azure_keyvault_keyvault_keys
   - azure_keyvault_keyvault_secrets
@@ -24,6 +25,8 @@ tables:
   - azure_monitor_subscription_diagnostic_settings
   - azure_mysql_servers
   - azure_network_security_groups
+  - azure_network_watcher_flow_logs
+  - azure_network_watchers
   - azure_policy_assignments
   - azure_postgresql_server_configurations
   - azure_postgresql_server_firewall_rules
@@ -36,6 +39,7 @@ tables:
   - azure_sql_server_database_blob_auditing_policies
   - azure_sql_server_databases
   - azure_sql_server_encryption_protectors
+  - azure_sql_server_firewall_rules
   - azure_sql_server_vulnerability_assessments
   - azure_sql_servers
   - azure_sql_transparent_data_encryptions
@@ -97,6 +101,8 @@ Azure CIS v1.3.0 performs the following checks:
   - Ensure that Diagnostic Logs are enabled for all services which support it.
   - Ensure that RDP access is restricted from the Internet
   - Ensure that SSH access is restricted from the Internet
+  - Ensure no SQL Databases allow ingress 0.0.0.0/0 (ANY IP)
+  - Ensure that Network Security Group Flow Log retention period is ''greater than 90 days''
   - Ensure that UDP Services are restricted from the Internet
   - Ensure Virtual Machines are utilizing Managed Disks (Manual)
   - Ensure that ''OS and Data'' disks are encrypted with CMK (Automated)
@@ -105,6 +111,7 @@ Azure CIS v1.3.0 performs the following checks:
   - Ensure that the expiration date is set on all keys (Automated)
   - Ensure that the expiration date is set on all Secrets (Automated)
   - Ensure the key vault is recoverable (Automated)
+  - Role-Based Access Control (RBAC) should be used on Kubernetes Services
   - Ensure App Service Authentication is set on Azure App Service (Automated)
   - Ensure web app redirects all HTTP traffic to HTTPS in Azure App Service (Automated)
   - Ensure web app is using the latest version of TLS encryption (Automated)
