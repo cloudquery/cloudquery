@@ -13,10 +13,10 @@ The composite primary key for this table is (**account_name**, **id**).
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_name (PK)|`utf8`|
-|id (PK)|`int64`|
 |author|`json`|
 |created|`timestamp[us, tz=UTC]`|
 |dashboard_count|`int64`|
+|id (PK)|`int64`|
 |is_favorite|`bool`|
 |modified|`timestamp[us, tz=UTC]`|
 |name|`utf8`|

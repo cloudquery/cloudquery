@@ -12,12 +12,15 @@ import (
 
 func Test_listValue(t *testing.T) {
 	const (
-		amount = 100
+		amount = 200
 		width  = 5
 	)
 
 	values := make([][]uuid.UUID, amount)
 	for i := range values {
+		if i%2 == 0 {
+			continue
+		}
 		row := make([]uuid.UUID, width)
 		for j := range row {
 			row[j] = uuid.New()
@@ -27,7 +30,11 @@ func Test_listValue(t *testing.T) {
 
 	builder := array.NewListBuilder(memory.DefaultAllocator, types.NewUUIDType())
 	uidBuilder := builder.ValueBuilder().(*types.UUIDBuilder)
-	for _, row := range values {
+	for i, row := range values {
+		if i%2 == 0 {
+			builder.AppendNull()
+			continue
+		}
 		builder.Append(true)
 		for _, uid := range row {
 			uidBuilder.Append(uid)
@@ -42,6 +49,10 @@ func Test_listValue(t *testing.T) {
 	require.Equal(t, amount, len(uidSlices))
 	for i, row := range uidSlices {
 		require.NotNil(t, row)
+		if i%2 == 0 {
+			require.Empty(t, *row)
+			continue
+		}
 		require.Equal(t, width, len(*row))
 		for j, uid := range *row {
 			require.NotNil(t, uid)
@@ -52,12 +63,15 @@ func Test_listValue(t *testing.T) {
 
 func Test_largeListValue(t *testing.T) {
 	const (
-		amount = 100
+		amount = 200
 		width  = 5
 	)
 
 	values := make([][]uuid.UUID, amount)
 	for i := range values {
+		if i%2 == 0 {
+			continue
+		}
 		row := make([]uuid.UUID, width)
 		for j := range row {
 			row[j] = uuid.New()
@@ -67,7 +81,11 @@ func Test_largeListValue(t *testing.T) {
 
 	builder := array.NewLargeListBuilder(memory.DefaultAllocator, types.NewUUIDType())
 	uidBuilder := builder.ValueBuilder().(*types.UUIDBuilder)
-	for _, row := range values {
+	for i, row := range values {
+		if i%2 == 0 {
+			builder.AppendNull()
+			continue
+		}
 		builder.Append(true)
 		for _, uid := range row {
 			uidBuilder.Append(uid)
@@ -82,6 +100,10 @@ func Test_largeListValue(t *testing.T) {
 	require.Equal(t, amount, len(uidSlices))
 	for i, row := range uidSlices {
 		require.NotNil(t, row)
+		if i%2 == 0 {
+			require.Empty(t, *row)
+			continue
+		}
 		require.Equal(t, width, len(*row))
 		for j, uid := range *row {
 			require.NotNil(t, uid)
@@ -92,7 +114,7 @@ func Test_largeListValue(t *testing.T) {
 
 func Test_fixedSizeListValue(t *testing.T) {
 	const (
-		amount = 100
+		amount = 200
 		width  = 5
 	)
 
@@ -100,6 +122,9 @@ func Test_fixedSizeListValue(t *testing.T) {
 	for i := range values {
 		row := make([]uuid.UUID, width)
 		for j := range row {
+			if i%2 == 0 {
+				continue
+			}
 			row[j] = uuid.New()
 		}
 		values[i] = row
@@ -107,7 +132,11 @@ func Test_fixedSizeListValue(t *testing.T) {
 
 	builder := array.NewFixedSizeListBuilder(memory.DefaultAllocator, width, types.NewUUIDType())
 	uidBuilder := builder.ValueBuilder().(*types.UUIDBuilder)
-	for _, row := range values {
+	for i, row := range values {
+		if i%2 == 0 {
+			builder.AppendNull()
+			continue
+		}
 		builder.Append(true)
 		for _, uid := range row {
 			uidBuilder.Append(uid)
