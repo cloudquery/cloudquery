@@ -21,7 +21,9 @@ func transformArray(arr arrow.Array) arrow.Array {
 	}
 
 	switch arr := arr.(type) {
-	case *types.UUIDArray, *types.InetArray, *types.MACArray, *types.JSONArray:
+	case *types.UUIDArray:
+		return arr.Storage()
+	case *types.InetArray, *types.MACArray, *types.JSONArray:
 		return transformToStringArray(arr)
 	case *array.Uint8:
 		return transformUint8ToUint32Array(arr)
