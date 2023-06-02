@@ -168,7 +168,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	if gcpSpec.ServiceAccountImpersonation != nil {
 		// Base credentials sourced from ADC or provided client options.
 		ts, err := impersonate.CredentialsTokenSource(ctx, impersonate.CredentialsConfig{
-			TargetPrincipal: gcpSpec.ServiceAccountImpersonation.TargetPrincipal
+			TargetPrincipal: gcpSpec.ServiceAccountImpersonation.TargetPrincipal,
 			Scopes:          gcpSpec.ServiceAccountImpersonation.Scopes,
 			// Optionally supply delegates.
 			Delegates: gcpSpec.ServiceAccountImpersonation.Delegates,
