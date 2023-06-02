@@ -179,7 +179,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	}
 
 	switch {
-	case len(projects) == 0 && len(gcpSpec.FolderIDs) == 0 && len(gcpSpec.ProjectFilter) == 0:
+	case len(projects) == 0 && len(gcpSpec.FolderIDs) == 0 && len(gcpSpec.ProjectFilter) == 0 && len(gcpSpec.FolderFilter) == 0:
 		c.logger.Info().Msg("No project_ids, folder_ids, or project_filter specified - assuming all active projects")
 		projects, err = getProjectsV1(ctx, c.ClientOptions...)
 		if err != nil {
