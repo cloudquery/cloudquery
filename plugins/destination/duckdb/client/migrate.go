@@ -176,16 +176,15 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 }
 
 func (c *Client) recreateTable(ctx context.Context, table *schema.Table) error {
-	tableName := table.Name
-	sql := "drop table if exists \"" + tableName + "\""
+	sql := "drop table if exists " + sanitizeID(table.Name)
 	if _, err := c.db.ExecContext(ctx, sql); err != nil {
-		return fmt.Errorf("failed to drop table %s: %w", tableName, err)
+		return fmt.Errorf("failed to drop table %s: %w", table.Name, err)
 	}
-	return c.createTableIfNotExist(ctx, tableName, table)
+	return c.createTableIfNotExist(ctx, table.Name, table)
 }
 
 func (c *Client) addColumn(ctx context.Context, tableName string, columnName string, columnType string) error {
-	sql := "alter table \"" + tableName + "\" add column \"" + columnName + "\" \"" + columnType + `"`
+	sql := "alter table " + sanitizeID(tableName) + " add column " + sanitizeID(columnName) + " " + columnType
 	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to add column %s on table %s: %w", columnName, tableName, err)
 	}
@@ -195,15 +194,14 @@ func (c *Client) addColumn(ctx context.Context, tableName string, columnName str
 func (c *Client) createTableIfNotExist(ctx context.Context, tableName string, table *schema.Table) error {
 	var sb strings.Builder
 	sb.WriteString("CREATE TABLE IF NOT EXISTS ")
-	sb.WriteString(`"` + tableName + `"`)
+	sb.WriteString(sanitizeID(tableName))
 	sb.WriteString(" (")
 	totalColumns := len(table.Columns)
 
 	var pks []string
 	for i, col := range table.Columns {
 		sqlType := arrowToDuckDB(col.Type)
-		// TODO: sanitize column name
-		fieldDef := `"` + col.Name + `" ` + sqlType
+		fieldDef := sanitizeID(col.Name) + ` ` + sqlType
 		if col.PrimaryKey {
 			pks = append(pks, col.Name)
 		}
@@ -221,7 +219,7 @@ func (c *Client) createTableIfNotExist(ctx context.Context, tableName string, ta
 	if len(pks) > 0 && c.enabledPks() {
 		sb.WriteString(", PRIMARY KEY (")
 		for i, pk := range pks {
-			sb.WriteString(`"` + pk + `"`)
+			sb.WriteString(sanitizeID(pk))
 			if i != len(pks)-1 {
 				sb.WriteString(",")
 			}

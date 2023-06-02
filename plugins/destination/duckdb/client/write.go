@@ -80,7 +80,7 @@ func (c *Client) copyFromFile(ctx context.Context, tableName string, fileName st
 	var sb strings.Builder
 	sb.WriteString("copy " + tableName + "(")
 	for i, col := range sc.Fields() {
-		sb.WriteString("\"" + col.Name + "\"")
+		sb.WriteString(sanitizeID(col.Name))
 		if i < len(sc.Fields())-1 {
 			sb.WriteString(", ")
 		}
