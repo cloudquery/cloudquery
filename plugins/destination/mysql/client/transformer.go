@@ -29,6 +29,8 @@ func getValue(arr arrow.Array, i int) (any, error) {
 		return a.Value(i), nil
 	case *array.Uint64:
 		return a.Value(i), nil
+	case *array.Float16:
+		return a.Value(i), nil
 	case *array.Float32:
 		return a.Value(i), nil
 	case *array.Float64:
