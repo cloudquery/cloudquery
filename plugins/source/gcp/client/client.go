@@ -166,6 +166,8 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		c.ClientOptions = append(c.ClientOptions, option.WithCredentialsJSON(serviceAccountKeyJSON))
 	}
 	if gcpSpec.ServiceAccountImpersonation != nil {
+		c.logger.Info().Msgf("%v", gcpSpec.ServiceAccountImpersonation)
+
 		// Base credentials sourced from ADC or provided client options.
 		ts, err := impersonate.CredentialsTokenSource(ctx, impersonate.CredentialsConfig{
 			TargetPrincipal: gcpSpec.ServiceAccountImpersonation.TargetPrincipal,
