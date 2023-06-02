@@ -7,7 +7,7 @@ import (
 )
 
 func getValue(arr arrow.Array, i int) (any, error) {
-	if arr.IsNull(i) || !arr.IsValid(i) {
+	if arr.IsNull(i) {
 		return nil, nil
 	}
 	switch a := arr.(type) {
