@@ -202,13 +202,14 @@ func splitParams(params string) []string {
 			brackets--
 		case ',':
 			if brackets == 0 {
-				parts = append(parts, string(elem))
+				parts = append(parts, strings.TrimSpace(string(elem)))
 				elem = elem[:0] // cleanup
 				continue
 			}
 		}
 		elem = append(elem, r)
 	}
+	parts = append(parts, strings.TrimSpace(string(elem)))
 
 	return slices.Clip(parts)
 }
