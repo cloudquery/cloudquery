@@ -40,11 +40,11 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, err
 	}
 	c.db = db
-	_, err = c.db.Exec("INSTALL 'json'; LOAD 'json';")
+	_, err = c.db.ExecContext(ctx, "INSTALL 'json'; LOAD 'json';")
 	if err != nil {
 		return nil, err
 	}
-	_, err = c.db.Exec("INSTALL 'parquet'; LOAD 'parquet';")
+	_, err = c.db.ExecContext(ctx, "INSTALL 'parquet'; LOAD 'parquet';")
 	if err != nil {
 		return nil, err
 	}

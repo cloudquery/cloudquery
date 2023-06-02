@@ -13,7 +13,6 @@ The composite primary key for this table is (**account_name**, **public_id**).
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_name (PK)|`utf8`|
-|public_id (PK)|`utf8`|
 |config|`json`|
 |creator|`json`|
 |locations|`list<item: utf8, nullable>`|
@@ -21,6 +20,7 @@ The composite primary key for this table is (**account_name**, **public_id**).
 |monitor_id|`int64`|
 |name|`utf8`|
 |options|`json`|
+|public_id (PK)|`utf8`|
 |status|`utf8`|
 |steps|`json`|
 |subtype|`utf8`|

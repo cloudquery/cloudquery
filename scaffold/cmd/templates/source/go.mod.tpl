@@ -8,4 +8,4 @@ require (
 	github.com/apache/arrow/go/v13 e07e22c5580a
 )
 
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230525142029-2d32efeedad8
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 c67fb399078b
