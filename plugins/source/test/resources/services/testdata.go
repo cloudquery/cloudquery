@@ -8,7 +8,9 @@ import (
 )
 
 func TestDataTable() *schema.Table {
-	table := schema.TestTable("test_testdata_table", schema.TestSourceOptions{})
+	table := schema.TestTable("test_testdata_table", schema.TestSourceOptions{
+		SkipMaps: true,
+	})
 	for i, c := range table.Columns {
 		if strings.HasPrefix(c.Name, "_cq_") {
 			table.Columns[i].Name = "test" + c.Name
