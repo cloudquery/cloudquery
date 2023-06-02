@@ -23,6 +23,8 @@ type Client struct {
 	metrics   destination.Metrics
 }
 
+var _ destination.Client = (*Client)(nil)
+
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
 	var err error
 	c := &Client{
@@ -52,7 +54,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	return c, nil
 }
 
-func (c *Client) Close(ctx context.Context) error {
+func (c *Client) Close(_ context.Context) error {
 	var err error
 
 	if c.db == nil {
@@ -62,4 +64,8 @@ func (c *Client) Close(ctx context.Context) error {
 	err = c.db.Close()
 	c.db = nil
 	return err
+}
+
+func (c *Client) Metrics() destination.Metrics {
+	return c.metrics
 }
