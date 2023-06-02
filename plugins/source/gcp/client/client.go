@@ -165,9 +165,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		}
 		c.ClientOptions = append(c.ClientOptions, option.WithCredentialsJSON(serviceAccountKeyJSON))
 	}
-	if gcpSpec.ServiceAccountImpersonation != nil {
-		c.logger.Info().Msgf("%v", gcpSpec.ServiceAccountImpersonation)
-
+	if gcpSpec.ServiceAccountImpersonation != nil && gcpSpec.ServiceAccountImpersonation.TargetPrincipal != "" {
 		// Base credentials sourced from ADC or provided client options.
 		ts, err := impersonate.CredentialsTokenSource(ctx, impersonate.CredentialsConfig{
 			TargetPrincipal: gcpSpec.ServiceAccountImpersonation.TargetPrincipal,
@@ -179,9 +177,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		})
 		if err != nil {
 			return nil, fmt.Errorf("failed to generate token source: %w", err)
-
 		}
-
 		c.ClientOptions = append(c.ClientOptions, option.WithTokenSource(ts))
 	}
 	if len(gcpSpec.ProjectFilter) > 0 && len(gcpSpec.FolderIDs) > 0 {
