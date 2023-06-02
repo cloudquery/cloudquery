@@ -185,6 +185,21 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		if err != nil {
 			return nil, fmt.Errorf("failed to get projects: %w", err)
 		}
+	case len(gcpSpec.FolderFilter) > 0:
+
+		folderIds, err := searchFolders(ctx, foldersClient, gcpSpec.FolderFilter)
+		if err != nil {
+			return nil, fmt.Errorf("failed to search folders: %w", err)
+		}
+
+		logFolderIds(&c.logger, folderIds)
+
+		c.logger.Info().Msg("listing folder projects...")
+		folderProjects, err := listProjectsInFolders(ctx, projectsClient, folderIds)
+		projects = setUnion(projects, folderProjects)
+		if err != nil {
+			return nil, fmt.Errorf("failed to list projects: %w", err)
+		}
 
 	case len(gcpSpec.FolderIDs) > 0:
 		var folderIds []string
@@ -376,6 +391,30 @@ func getProjectsV1WithFilter(ctx context.Context, filter string, options ...opti
 	}
 
 	return projects, nil
+}
+
+// searchFolders finds all folders that match the filter.
+func searchFolders(ctx context.Context, folderClient *resourcemanager.FoldersClient, filter string) ([]string, error) {
+	folders := []string{}
+
+	it := folderClient.SearchFolders(ctx, &resourcemanagerpb.SearchFoldersRequest{
+		Query: filter,
+	})
+
+	for {
+		folder, err := it.Next()
+
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			return nil, err
+		}
+
+		folders = append(folders, folder.Name)
+	}
+
+	return folders, nil
 }
 
 // listFolders recursively lists the folders in the 'parent' folder. Includes the 'parent' folder itself.
