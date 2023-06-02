@@ -104,6 +104,10 @@ func reverseTransformRecord(sc *arrow.Schema, rec arrow.Record) arrow.Record {
 }
 
 func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
+	if arrow.TypeEqual(dt, transformTypeForWriting(dt)) {
+		return arr
+	}
+
 	switch dt := dt.(type) {
 	case *types.UUIDType:
 		return array.NewExtensionArrayWithStorage(dt, arr.(*array.FixedSizeBinary))
@@ -114,12 +118,15 @@ func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
 	case *arrow.Uint8Type:
 		return reverseTransformUint8(arr.(*array.Uint32))
 	case *arrow.TimestampType:
-		return reverseTransformTimestamp(dt, arr.(*array.Timestamp))
+		return transformTimestamp(dt, arr.(*array.Timestamp))
+	case *arrow.MapType:
+		child := reverseTransformArray(dt.ValueType(), arr.(*array.List).ListValues()).Data()
+		return array.NewMapData(array.NewData(dt, arr.Len(), arr.Data().Buffers(), []arrow.ArrayData{child}, arr.NullN(), arr.Data().Offset()))
 	case listLike:
 		child := reverseTransformArray(dt.Elem(), arr.(array.ListLike).ListValues()).Data()
 		return array.NewListData(array.NewData(dt, arr.Len(), arr.Data().Buffers(), []arrow.ArrayData{child}, arr.NullN(), arr.Data().Offset()))
 	default:
-		return arr
+		return reverseTransformFromString(dt, arr.(*array.String))
 	}
 }
 
@@ -162,28 +169,4 @@ func reverseTransformUint16(arr *array.Uint32) arrow.Array {
 	}
 
 	return builder.NewArray()
-}
-
-func reverseTransformTimestamp(dt *arrow.TimestampType, arr *array.Timestamp) arrow.Array {
-	builder := array.NewTimestampBuilder(memory.DefaultAllocator, dt)
-	for i := 0; i < arr.Len(); i++ {
-		if arr.IsNull(i) {
-			builder.AppendNull()
-			continue
-		}
-		t := arr.Value(i).ToTime(arr.DataType().(*arrow.TimestampType).Unit)
-		switch dt.Unit {
-		case arrow.Second:
-			builder.Append(arrow.Timestamp(t.Unix()))
-		case arrow.Millisecond:
-			builder.Append(arrow.Timestamp(t.UnixMilli()))
-		case arrow.Microsecond:
-			builder.Append(arrow.Timestamp(t.UnixMicro()))
-		case arrow.Nanosecond:
-			builder.Append(arrow.Timestamp(t.UnixNano()))
-		default:
-			panic(fmt.Errorf("unsupported timestamp unit: %s", dt.Unit))
-		}
-	}
-	return builder.NewTimestampArray()
 }

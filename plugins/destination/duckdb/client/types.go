@@ -12,9 +12,21 @@ type listLike interface {
 	Elem() arrow.DataType
 }
 
+func transformSchemaForWriting(sc *arrow.Schema) *arrow.Schema {
+	fields := sc.Fields()
+	for i := range fields {
+		fields[i].Type = transformTypeForWriting(fields[i].Type)
+	}
+	md := sc.Metadata()
+	return arrow.NewSchema(fields, &md)
+}
+
 func transformTypeForWriting(dt arrow.DataType) arrow.DataType {
-	if dt, ok := dt.(listLike); ok {
+	switch dt := dt.(type) {
+	case listLike:
 		return arrow.ListOf(transformTypeForWriting(dt.Elem()))
+	case *arrow.MapType:
+		return arrow.ListOf(transformTypeForWriting(dt.ValueType()))
 	}
 
 	switch dt := duckDBToArrow(arrowToDuckDB(dt)).(type) {
@@ -25,19 +37,12 @@ func transformTypeForWriting(dt arrow.DataType) arrow.DataType {
 	}
 }
 
-func transformSchemaForWriting(sc *arrow.Schema) *arrow.Schema {
-	fields := sc.Fields()
-	for i := range fields {
-		fields[i].Type = transformTypeForWriting(fields[i].Type)
-	}
-	md := sc.Metadata()
-	return arrow.NewSchema(fields, &md)
-}
-
-func arrowToDuckDB(t arrow.DataType) string {
-	switch v := t.(type) {
-	case *arrow.ListType:
-		return arrowToDuckDB(v.Elem()) + "[]"
+func arrowToDuckDB(dt arrow.DataType) string {
+	switch dt := dt.(type) {
+	case listLike:
+		return arrowToDuckDB(dt.Elem()) + "[]"
+	case *arrow.MapType:
+		return arrowToDuckDB(arrow.ListOf(dt.ValueType()))
 	case *arrow.BooleanType:
 		return "boolean"
 	case *arrow.Int8Type:
