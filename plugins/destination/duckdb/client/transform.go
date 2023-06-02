@@ -21,7 +21,7 @@ func transformArray(arr arrow.Array) arrow.Array {
 	}
 
 	switch arr := arr.(type) {
-	case *types.UUIDArray, *types.InetArray, *types.MACArray, *types.JSONArray, *array.Struct:
+	case *types.UUIDArray, *types.InetArray, *types.MACArray, *types.JSONArray:
 		return transformToStringArray(arr)
 	case *array.Uint8:
 		return transformUint8ToUint32Array(arr)
@@ -30,10 +30,30 @@ func transformArray(arr arrow.Array) arrow.Array {
 	case *array.Timestamp:
 		// mismatching unit or tz
 		return transformTimestamp(duckDBToArrow(arrowToDuckDB(arr.DataType())).(*arrow.TimestampType), arr)
-	case array.ListLike:
-		child := transformArray(arr.ListValues()).Data()
-		newType := arrow.ListOf(child.DataType())
-		return array.NewListData(array.NewData(newType, arr.Len(), arr.Data().Buffers(), []arrow.ArrayData{child}, arr.NullN(), arr.Data().Offset()))
+
+	case *array.Struct:
+		dt := arr.DataType().(*arrow.StructType)
+		children := make([]arrow.ArrayData, arr.NumField())
+		names := make([]string, arr.NumField())
+		for i := range children {
+			children[i] = transformArray(arr.Field(i)).Data()
+			names[i] = dt.Field(i).Name
+		}
+
+		return array.NewStructData(array.NewData(
+			transformTypeForWriting(dt), arr.Len(),
+			arr.Data().Buffers(),
+			children,
+			arr.NullN(), arr.Data().Offset(),
+		))
+
+	case array.ListLike: // this includes maps, too
+		return array.MakeFromData(array.NewData(
+			transformTypeForWriting(arr.DataType()), arr.Len(),
+			arr.Data().Buffers(),
+			[]arrow.ArrayData{transformArray(arr.ListValues()).Data()},
+			arr.NullN(), arr.Data().Offset(),
+		))
 	default:
 		return transformToStringArray(arr)
 	}

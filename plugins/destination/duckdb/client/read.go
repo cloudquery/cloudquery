@@ -111,7 +111,7 @@ func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
 	switch dt := dt.(type) {
 	case *types.UUIDType:
 		return array.NewExtensionArrayWithStorage(dt, arr.(*array.FixedSizeBinary))
-	case *types.InetType, *types.MACType, *types.JSONType, *arrow.StructType:
+	case *types.InetType, *types.MACType, *types.JSONType:
 		return reverseTransformFromString(dt, arr.(*array.String))
 	case *arrow.Uint16Type:
 		return reverseTransformUint16(arr.(*array.Uint32))
@@ -119,12 +119,14 @@ func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
 		return reverseTransformUint8(arr.(*array.Uint32))
 	case *arrow.TimestampType:
 		return transformTimestamp(dt, arr.(*array.Timestamp))
+	case *arrow.StructType:
+		return reverseTransformStruct(dt, arr.(*array.Struct))
 	case *arrow.MapType:
-		child := reverseTransformArray(dt.ValueType(), arr.(*array.List).ListValues()).Data()
+		child := reverseTransformArray(dt.ValueType(), arr.(*array.Map).ListValues()).Data()
 		return array.NewMapData(array.NewData(dt, arr.Len(), arr.Data().Buffers(), []arrow.ArrayData{child}, arr.NullN(), arr.Data().Offset()))
 	case listLike:
 		child := reverseTransformArray(dt.Elem(), arr.(array.ListLike).ListValues()).Data()
-		return array.NewListData(array.NewData(dt, arr.Len(), arr.Data().Buffers(), []arrow.ArrayData{child}, arr.NullN(), arr.Data().Offset()))
+		return array.MakeFromData(array.NewData(dt, arr.Len(), arr.Data().Buffers(), []arrow.ArrayData{child}, arr.NullN(), arr.Data().Offset()))
 	default:
 		return reverseTransformFromString(dt, arr.(*array.String))
 	}
@@ -169,4 +171,32 @@ func reverseTransformUint16(arr *array.Uint32) arrow.Array {
 	}
 
 	return builder.NewArray()
+}
+
+func reverseTransformStruct(dt *arrow.StructType, arr *array.Struct) *array.Struct {
+	children := make([]arrow.Array, arr.NumField())
+	names := make([]string, arr.NumField())
+	for i := range children {
+		children[i] = reverseTransformArray(dt.Field(i).Type, arr.Field(i))
+		names[i] = dt.Field(i).Name
+	}
+
+	// structs are sometimes read oddly when the outer struct is nullable but the inner one isn't
+	builder := array.NewStructBuilder(memory.DefaultAllocator, dt)
+
+	for i := 0; i < arr.Len(); i++ {
+		if arr.IsNull(i) {
+			builder.AppendNull()
+			continue
+		}
+
+		builder.Append(true)
+		for j, c := range children {
+			if err := builder.FieldBuilder(j).AppendValueFromString(c.ValueStr(i)); err != nil {
+				panic(err)
+			}
+		}
+	}
+
+	return builder.NewStructArray()
 }
