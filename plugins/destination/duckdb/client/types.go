@@ -147,11 +147,11 @@ func duckDBToArrow(t string) arrow.DataType {
 }
 
 func duckDBStructToArrow(spec string) *arrow.StructType {
-	params := strings.TrimPrefix("map", spec)
+	params := strings.TrimPrefix(spec, "struct")
 	params = strings.TrimSpace(params)
-	params = strings.TrimPrefix("(", strings.TrimSuffix(")", params))
+	params = strings.TrimSuffix(strings.TrimPrefix(params, "("), ")")
 
-	fieldsSpec := splitParams(spec)
+	fieldsSpec := splitParams(params)
 	if len(fieldsSpec) == 0 {
 		panic("unsupported struct spec: " + spec)
 	}
@@ -174,11 +174,11 @@ func duckDBStructToArrow(spec string) *arrow.StructType {
 }
 
 func duckDBMapToArrow(spec string) *arrow.MapType {
-	params := strings.TrimPrefix("map", spec)
+	params := strings.TrimPrefix(spec, "map")
 	params = strings.TrimSpace(params)
-	params = strings.TrimPrefix("(", strings.TrimSuffix(")", params))
+	params = strings.TrimSuffix(strings.TrimPrefix(params, "("), ")")
 
-	kv := splitParams(spec)
+	kv := splitParams(params)
 	if len(kv) != 2 {
 		panic("unsupported map spec: " + spec)
 	}
@@ -192,7 +192,7 @@ func splitParams(params string) []string {
 
 	var brackets int
 	var parts []string
-	var elem []rune
+	elem := make([]rune, 0, len(params))
 
 	for _, r := range params {
 		switch r {
