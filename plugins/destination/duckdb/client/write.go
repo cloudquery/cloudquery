@@ -12,6 +12,7 @@ import (
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/google/uuid"
+	"golang.org/x/exp/slices"
 )
 
 func nonPkIndices(sc *schema.Table) []int {
@@ -29,12 +30,20 @@ func nonPkIndices(sc *schema.Table) []int {
 // but this is unavoidable until support is added to duckdb itself.
 // See https://github.com/duckdb/duckdb/blob/c5d9afb97bbf0be12216f3b89ae3131afbbc3156/src/storage/table/list_column_data.cpp#L243-L251
 func containsList(sc *schema.Table) bool {
-	for _, f := range sc.Columns {
-		if arrow.IsListLike(f.Type.ID()) {
-			return true
-		}
+	return slices.ContainsFunc(sc.Columns, func(c schema.Column) bool { return dtContainsList(c.Type) })
+}
+
+func dtContainsList(dt arrow.DataType) bool {
+	switch dt := dt.(type) {
+	case *arrow.StructType:
+		return slices.ContainsFunc(dt.Fields(), func(f arrow.Field) bool { return dtContainsList(f.Type) })
+	case *arrow.MapType:
+		return dtContainsList(dt.KeyType()) || dtContainsList(dt.ItemType())
+	case arrow.ListLikeType:
+		return true
+	default:
+		return false
 	}
-	return false
 }
 
 func (c *Client) upsert(ctx context.Context, tmpTableName string, tableName string, table *schema.Table) error {
