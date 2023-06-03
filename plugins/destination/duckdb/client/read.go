@@ -120,7 +120,22 @@ func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
 	case *arrow.TimestampType:
 		return transformTimestamp(dt, arr.(*array.Timestamp))
 	case *arrow.StructType:
-		return reverseTransformStruct(dt, arr.(*array.Struct))
+		arr := arr.(*array.Struct)
+		children := make([]arrow.ArrayData, arr.NumField())
+		names := make([]string, arr.NumField())
+		for i := range children {
+			// struct fields can be odd when read from parquet, but the data is intact
+			child := array.MakeFromData(arr.Data().Children()[i])
+			children[i] = reverseTransformArray(dt.Field(i).Type, child).Data()
+			names[i] = dt.Field(i).Name
+		}
+
+		return array.NewStructData(array.NewData(
+			dt, arr.Len(),
+			arr.Data().Buffers(),
+			children,
+			arr.NullN(), arr.Data().Offset(),
+		))
 
 	case arrow.ListLikeType: // also handles maps
 		return array.MakeFromData(array.NewData(
@@ -174,32 +189,4 @@ func reverseTransformUint16(arr *array.Uint32) arrow.Array {
 	}
 
 	return builder.NewArray()
-}
-
-func reverseTransformStruct(dt *arrow.StructType, arr *array.Struct) *array.Struct {
-	children := make([]arrow.Array, arr.NumField())
-	names := make([]string, arr.NumField())
-	for i := range children {
-		children[i] = reverseTransformArray(dt.Field(i).Type, arr.Field(i))
-		names[i] = dt.Field(i).Name
-	}
-
-	// structs are sometimes read oddly when the outer struct is nullable but the inner one isn't
-	builder := array.NewStructBuilder(memory.DefaultAllocator, dt)
-
-	for i := 0; i < arr.Len(); i++ {
-		if arr.IsNull(i) {
-			builder.AppendNull()
-			continue
-		}
-
-		builder.Append(true)
-		for j, c := range children {
-			if err := builder.FieldBuilder(j).AppendValueFromString(c.ValueStr(i)); err != nil {
-				panic(err)
-			}
-		}
-	}
-
-	return builder.NewStructArray()
 }
