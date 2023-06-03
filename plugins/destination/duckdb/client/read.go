@@ -122,12 +122,10 @@ func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
 	case *arrow.StructType:
 		arr := arr.(*array.Struct)
 		children := make([]arrow.ArrayData, arr.NumField())
-		names := make([]string, arr.NumField())
 		for i := range children {
 			// struct fields can be odd when read from parquet, but the data is intact
 			child := array.MakeFromData(arr.Data().Children()[i])
 			children[i] = reverseTransformArray(dt.Field(i).Type, child).Data()
-			names[i] = dt.Field(i).Name
 		}
 
 		return array.NewStructData(array.NewData(
