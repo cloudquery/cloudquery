@@ -95,13 +95,15 @@ func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, records [
 	sb.WriteString(") VALUES (")
 	sb.WriteString(strings.TrimSuffix(strings.Repeat("?,", len(table.Columns)), ","))
 	sb.WriteString(")")
+
+	query := sb.String()
 	for _, record := range records {
 		transformedRecords, err := client.TransformRecord(record)
 		if err != nil {
 			return err
 		}
 		for _, transformedRecord := range transformedRecords {
-			if _, err := db.ExecContext(ctx, sb.String(), transformedRecord...); err != nil {
+			if _, err := db.ExecContext(ctx, query, transformedRecord...); err != nil {
 				return err
 			}
 		}
