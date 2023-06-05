@@ -14,9 +14,9 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 |_cq_parent_id|`uuid`|
 |region (PK)|`utf8`|
 |compartment_id (PK)|`utf8`|
-|id (PK)|`utf8`|
 |cidr_block|`utf8`|
 |cidr_blocks|`list<item: utf8, nullable>`|
+|id (PK)|`utf8`|
 |lifecycle_state|`utf8`|
 |byoipv6_cidr_blocks|`list<item: utf8, nullable>`|
 |ipv6_private_cidr_blocks|`list<item: utf8, nullable>`|

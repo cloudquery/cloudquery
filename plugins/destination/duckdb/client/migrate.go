@@ -177,18 +177,15 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 
 func (c *Client) recreateTable(ctx context.Context, table *schema.Table) error {
 	sql := "drop table if exists " + sanitizeID(table.Name)
-	if _, err := c.db.ExecContext(ctx, sql); err != nil {
-		return fmt.Errorf("failed to drop table %s: %w", table.Name, err)
+	if err := c.exec(ctx, sql); err != nil {
+		return err
 	}
 	return c.createTableIfNotExist(ctx, table.Name, table)
 }
 
 func (c *Client) addColumn(ctx context.Context, tableName string, columnName string, columnType string) error {
 	sql := "alter table " + sanitizeID(tableName) + " add column " + sanitizeID(columnName) + " " + columnType
-	if _, err := c.db.ExecContext(ctx, sql); err != nil {
-		return fmt.Errorf("failed to add column %s on table %s: %w", columnName, tableName, err)
-	}
-	return nil
+	return c.exec(ctx, sql)
 }
 
 func (c *Client) createTableIfNotExist(ctx context.Context, tableName string, table *schema.Table) error {
@@ -227,11 +224,7 @@ func (c *Client) createTableIfNotExist(ctx context.Context, tableName string, ta
 		sb.WriteString(")")
 	}
 	sb.WriteString(")")
-	_, err := c.db.ExecContext(ctx, sb.String())
-	if err != nil {
-		return fmt.Errorf("failed to create table with '%s': %w", sb.String(), err)
-	}
-	return nil
+	return c.exec(ctx, sb.String())
 }
 
 func (c *Client) isColumnUnique(ctx context.Context, tableName string, columName string) (bool, error) {

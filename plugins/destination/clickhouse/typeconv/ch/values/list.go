@@ -5,9 +5,7 @@ import (
 	"time"
 
 	"github.com/ClickHouse/clickhouse-go/v2/lib/column"
-	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/apache/arrow/go/v13/arrow/memory"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
 )
 
@@ -24,11 +22,7 @@ func listValue(arr array.ListLike) (any, error) {
 	}
 	valueType := col.ScanType()
 
-	sanitized, err := sanitizeNested(arr)
-	if err != nil {
-		return nil, err
-	}
-	arr = sanitized.(array.ListLike)
+	arr = sanitizeNested(arr).(array.ListLike)
 
 	elems := make([]any, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
@@ -49,25 +43,4 @@ func listValue(arr array.ListLike) (any, error) {
 	}
 
 	return res.Interface(), nil
-}
-
-// sanitizeNested will replace all null entries with empty ones as in CH nested types aren't nullable themselves
-// https://clickhouse.com/docs/en/sql-reference/data-types/nullable
-func sanitizeNested(arr arrow.Array) (arrow.Array, error) {
-	if arr.NullN() == 0 {
-		return arr, nil
-	}
-
-	builder := array.NewBuilder(memory.DefaultAllocator, arr.DataType())
-	for i := 0; i < arr.Len(); i++ {
-		if arr.IsNull(i) {
-			builder.AppendEmptyValue()
-			continue
-		}
-		if err := builder.AppendValueFromString(arr.ValueStr(i)); err != nil {
-			return nil, err
-		}
-	}
-
-	return builder.NewArray(), nil
 }

@@ -18,10 +18,10 @@ func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source s
 		sb.WriteString(" = $1 and ")
 		sb.WriteString(schema.CqSyncTimeColumn.Name)
 		sb.WriteString(" < to_timestamp($2)")
-		sql := sb.String()
-		if _, err := c.db.ExecContext(ctx, sql, source, syncTime.Unix()); err != nil {
+		if err := c.exec(ctx, sb.String(), source, syncTime.Unix()); err != nil {
 			return err
 		}
 	}
+
 	return nil
 }
