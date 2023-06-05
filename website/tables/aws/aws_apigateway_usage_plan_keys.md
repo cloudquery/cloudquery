@@ -14,15 +14,15 @@ This table depends on [aws_apigateway_usage_plans](aws_apigateway_usage_plans).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id (PK)|utf8|
-|region|utf8|
-|usage_plan_arn|utf8|
-|arn (PK)|utf8|
-|id|utf8|
-|name|utf8|
-|type|utf8|
-|value|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region|`utf8`|
+|usage_plan_arn|`utf8`|
+|arn (PK)|`utf8`|
+|id|`utf8`|
+|name|`utf8`|
+|type|`utf8`|
+|value|`utf8`|

@@ -14,19 +14,19 @@ This table depends on [aws_resiliencehub_app_versions](aws_resiliencehub_app_ver
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|app_arn (PK)|utf8|
-|app_version (PK)|utf8|
-|physical_resource_identifier (PK)|utf8|
-|mapping_type|utf8|
-|physical_resource_id|json|
-|app_registry_app_name|utf8|
-|logical_stack_name|utf8|
-|resource_group_name|utf8|
-|resource_name|utf8|
-|terraform_source_name|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|app_arn (PK)|`utf8`|
+|app_version (PK)|`utf8`|
+|physical_resource_identifier (PK)|`utf8`|
+|mapping_type|`utf8`|
+|physical_resource_id|`json`|
+|app_registry_app_name|`utf8`|
+|logical_stack_name|`utf8`|
+|resource_group_name|`utf8`|
+|resource_name|`utf8`|
+|terraform_source_name|`utf8`|

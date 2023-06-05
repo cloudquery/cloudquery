@@ -7,14 +7,12 @@ import (
 	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/apache/arrow/go/v13/arrow/memory"
 	"github.com/apache/arrow/go/v13/parquet"
 	"github.com/apache/arrow/go/v13/parquet/pqarrow"
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/types"
 	"github.com/google/uuid"
+	"golang.org/x/exp/slices"
 )
 
 func nonPkIndices(sc *schema.Table) []int {
@@ -32,15 +30,23 @@ func nonPkIndices(sc *schema.Table) []int {
 // but this is unavoidable until support is added to duckdb itself.
 // See https://github.com/duckdb/duckdb/blob/c5d9afb97bbf0be12216f3b89ae3131afbbc3156/src/storage/table/list_column_data.cpp#L243-L251
 func containsList(sc *schema.Table) bool {
-	for _, f := range sc.Columns {
-		if arrow.IsListLike(f.Type.ID()) {
-			return true
-		}
-	}
-	return false
+	return slices.ContainsFunc(sc.Columns, func(c schema.Column) bool { return dtContainsList(c.Type) })
 }
 
-func (c *Client) upsert(tmpTableName string, tableName string, table *schema.Table) error {
+func dtContainsList(dt arrow.DataType) bool {
+	switch dt := dt.(type) {
+	case *arrow.StructType:
+		return slices.ContainsFunc(dt.Fields(), func(f arrow.Field) bool { return dtContainsList(f.Type) })
+	case *arrow.MapType:
+		return dtContainsList(dt.KeyType()) || dtContainsList(dt.ItemType())
+	case arrow.ListLikeType:
+		return true
+	default:
+		return false
+	}
+}
+
+func (c *Client) upsert(ctx context.Context, tmpTableName string, tableName string, table *schema.Table) error {
 	var sb strings.Builder
 	sb.WriteString("insert into " + tableName + " select * from " + tmpTableName + " on conflict (")
 	sb.WriteString(strings.Join(table.PrimaryKeys(), ", "))
@@ -55,13 +61,13 @@ func (c *Client) upsert(tmpTableName string, tableName string, table *schema.Tab
 			sb.WriteString(", ")
 		}
 	}
-	if _, err := c.db.Exec(sb.String()); err != nil {
+	if _, err := c.db.ExecContext(ctx, sb.String()); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *Client) delete_by_pk(tmpTableName string, tableName string, table *schema.Table) error {
+func (c *Client) deleteByPK(ctx context.Context, tmpTableName string, tableName string, table *schema.Table) error {
 	var sb strings.Builder
 	sb.WriteString("delete from " + tableName + " using " + tmpTableName + " where ")
 	pks := table.PrimaryKeys()
@@ -73,23 +79,23 @@ func (c *Client) delete_by_pk(tmpTableName string, tableName string, table *sche
 			sb.WriteString(" and ")
 		}
 	}
-	if _, err := c.db.Exec(sb.String()); err != nil {
+	if _, err := c.db.ExecContext(ctx, sb.String()); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *Client) copy_from_file(tableName string, fileName string, sc *arrow.Schema) error {
+func (c *Client) copyFromFile(ctx context.Context, tableName string, fileName string, sc *arrow.Schema) error {
 	var sb strings.Builder
 	sb.WriteString("copy " + tableName + "(")
 	for i, col := range sc.Fields() {
-		sb.WriteString("\"" + col.Name + "\"")
+		sb.WriteString(sanitizeID(col.Name))
 		if i < len(sc.Fields())-1 {
 			sb.WriteString(", ")
 		}
 	}
 	sb.WriteString(") from '" + fileName + "' (FORMAT PARQUET)")
-	if _, err := c.db.Exec(sb.String()); err != nil {
+	if _, err := c.db.ExecContext(ctx, sb.String()); err != nil {
 		return err
 	}
 	return nil
@@ -102,7 +108,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 	}
 	defer os.Remove(f.Name())
 	defer f.Close()
-	sc := transformSchema(table.ToArrowSchema())
+	sc := transformSchemaForWriting(table.ToArrowSchema())
 
 	props := parquet.NewWriterProperties(
 		parquet.WithVersion(parquet.V2_4),
@@ -129,15 +135,15 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 	}
 
 	if c.spec.WriteMode == specs.WriteModeAppend || len(table.PrimaryKeys()) == 0 {
-		if err := c.copy_from_file(table.Name, f.Name(), sc); err != nil {
+		if err := c.copyFromFile(ctx, table.Name, f.Name(), sc); err != nil {
 			return err
 		}
 	} else {
 		tmpTableName := table.Name + strings.ReplaceAll(uuid.New().String(), "-", "_")
-		if err := c.createTableIfNotExist(tmpTableName, table); err != nil {
+		if err := c.createTableIfNotExist(ctx, tmpTableName, table); err != nil {
 			return fmt.Errorf("failed to create table %s: %w", tmpTableName, err)
 		}
-		if err := c.copy_from_file(tmpTableName, f.Name(), sc); err != nil {
+		if err := c.copyFromFile(ctx, tmpTableName, f.Name(), sc); err != nil {
 			return fmt.Errorf("failed to copy from file %s: %w", f.Name(), err)
 		}
 
@@ -146,115 +152,21 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 		// but this is unavoidable until support is added to duckdb itself.
 		// See https://github.com/duckdb/duckdb/blob/c5d9afb97bbf0be12216f3b89ae3131afbbc3156/src/storage/table/list_column_data.cpp#L243-L251
 		if containsList(table) {
-			if err := c.delete_by_pk(tmpTableName, table.Name, table); err != nil {
+			if err := c.deleteByPK(ctx, tmpTableName, table.Name, table); err != nil {
 				return err
 			}
-			if _, err = c.db.Exec("insert into " + table.Name + " from " + tmpTableName); err != nil {
+			if _, err = c.db.ExecContext(ctx, "insert into "+table.Name+" from "+tmpTableName); err != nil {
 				return fmt.Errorf("failed to insert into %s from %s: %w", table.Name, tmpTableName, err)
 			}
 		} else {
-			if err := c.upsert(tmpTableName, table.Name, table); err != nil {
+			if err := c.upsert(ctx, tmpTableName, table.Name, table); err != nil {
 				return err
 			}
 		}
-		if _, err = c.db.Exec("drop table " + tmpTableName); err != nil {
+		if _, err = c.db.ExecContext(ctx, "drop table "+tmpTableName); err != nil {
 			return err
 		}
 	}
 
 	return nil
-}
-
-func transformSchema(sc *arrow.Schema) *arrow.Schema {
-	fields := sc.Fields()
-	for i := range fields {
-		fields[i].Type = transformType(fields[i].Type)
-	}
-	md := sc.Metadata()
-	return arrow.NewSchema(fields, &md)
-}
-
-func transformType(dt arrow.DataType) arrow.DataType {
-	switch {
-	case arrow.TypeEqual(dt, types.ExtensionTypes.UUID) ||
-		arrow.TypeEqual(dt, types.ExtensionTypes.Inet) ||
-		arrow.TypeEqual(dt, types.ExtensionTypes.MAC) ||
-		arrow.TypeEqual(dt, types.ExtensionTypes.JSON) ||
-		dt.ID() == arrow.STRUCT:
-		return arrow.BinaryTypes.String
-	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint8):
-		return arrow.PrimitiveTypes.Uint32
-	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint16):
-		return arrow.PrimitiveTypes.Uint32
-	case arrow.IsListLike(dt.ID()):
-		return arrow.ListOf(transformType(dt.(*arrow.ListType).Elem()))
-	default:
-		return dt
-	}
-}
-
-func transformRecord(sc *arrow.Schema, rec arrow.Record) arrow.Record {
-	cols := make([]arrow.Array, rec.NumCols())
-	for i := 0; i < int(rec.NumCols()); i++ {
-		cols[i] = transformArray(rec.Column(i))
-	}
-	return array.NewRecord(sc, cols, rec.NumRows())
-}
-
-func transformArray(arr arrow.Array) arrow.Array {
-	dt := arr.DataType()
-	switch {
-	case arrow.TypeEqual(dt, types.ExtensionTypes.UUID) ||
-		arrow.TypeEqual(dt, types.ExtensionTypes.Inet) ||
-		arrow.TypeEqual(dt, types.ExtensionTypes.MAC) ||
-		arrow.TypeEqual(dt, types.ExtensionTypes.JSON) ||
-		dt.ID() == arrow.STRUCT:
-		return transformToStringArray(arr)
-	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint8):
-		return transformUint8ToUint32Array(arr.(*array.Uint8))
-	case arrow.TypeEqual(dt, arrow.PrimitiveTypes.Uint16):
-		return transformUint16ToUint32Array(arr.(*array.Uint16))
-	case arrow.IsListLike(dt.ID()):
-		child := transformArray(arr.(*array.List).ListValues()).Data()
-		newType := arrow.ListOf(child.DataType())
-		return array.NewListData(array.NewData(newType, arr.Len(), arr.Data().Buffers(), []arrow.ArrayData{child}, arr.NullN(), arr.Data().Offset()))
-	default:
-		return arr
-	}
-}
-
-func transformUint16ToUint32Array(arr *array.Uint16) arrow.Array {
-	bldr := array.NewUint32Builder(memory.DefaultAllocator)
-	for i := 0; i < arr.Len(); i++ {
-		if arr.IsValid(i) {
-			bldr.Append(uint32(arr.Value(i)))
-		} else {
-			bldr.AppendNull()
-		}
-	}
-	return bldr.NewArray()
-}
-
-func transformUint8ToUint32Array(arr *array.Uint8) arrow.Array {
-	bldr := array.NewUint32Builder(memory.DefaultAllocator)
-	for i := 0; i < arr.Len(); i++ {
-		if arr.IsValid(i) {
-			bldr.Append(uint32(arr.Value(i)))
-		} else {
-			bldr.AppendNull()
-		}
-	}
-	return bldr.NewArray()
-}
-
-func transformToStringArray(arr arrow.Array) arrow.Array {
-	bldr := array.NewStringBuilder(memory.DefaultAllocator)
-	for i := 0; i < arr.Len(); i++ {
-		if arr.IsValid(i) {
-			bldr.Append(arr.ValueStr(i))
-		} else {
-			bldr.AppendNull()
-		}
-	}
-	return bldr.NewArray()
 }

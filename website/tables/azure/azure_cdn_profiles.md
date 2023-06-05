@@ -17,16 +17,16 @@ The following tables depend on azure_cdn_profiles:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|location|utf8|
-|sku|json|
-|properties|json|
-|tags|json|
-|id (PK)|utf8|
-|kind|utf8|
-|name|utf8|
-|system_data|json|
-|type|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|location|`utf8`|
+|sku|`json`|
+|properties|`json`|
+|tags|`json`|
+|id (PK)|`utf8`|
+|kind|`utf8`|
+|name|`utf8`|
+|system_data|`json`|
+|type|`utf8`|

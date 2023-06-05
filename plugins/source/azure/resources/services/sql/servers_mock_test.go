@@ -54,6 +54,9 @@ func createServers(router *mux.Router) error {
 	if err := createServerAdvancedThreatProtectionSettings(router); err != nil {
 		return err
 	}
+	if err := createFirewallRules(router); err != nil {
+		return err
+	}
 	return createDatabases(router)
 }
 

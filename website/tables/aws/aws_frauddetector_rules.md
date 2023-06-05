@@ -14,19 +14,19 @@ This table depends on [aws_frauddetector_detectors](aws_frauddetector_detectors)
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|created_time|utf8|
-|description|utf8|
-|detector_id|utf8|
-|expression|utf8|
-|language|utf8|
-|last_updated_time|utf8|
-|outcomes|list<item: utf8, nullable>|
-|rule_id|utf8|
-|rule_version|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|created_time|`utf8`|
+|description|`utf8`|
+|detector_id|`utf8`|
+|expression|`utf8`|
+|language|`utf8`|
+|last_updated_time|`utf8`|
+|outcomes|`list<item: utf8, nullable>`|
+|rule_id|`utf8`|
+|rule_version|`utf8`|

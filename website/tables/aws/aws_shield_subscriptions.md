@@ -10,17 +10,17 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|arn (PK)|utf8|
-|subscription_limits|json|
-|auto_renew|utf8|
-|end_time|timestamp[us, tz=UTC]|
-|limits|json|
-|proactive_engagement_status|utf8|
-|start_time|timestamp[us, tz=UTC]|
-|subscription_arn|utf8|
-|time_commitment_in_seconds|int64|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|arn (PK)|`utf8`|
+|subscription_limits|`json`|
+|auto_renew|`utf8`|
+|end_time|`timestamp[us, tz=UTC]`|
+|limits|`json`|
+|proactive_engagement_status|`utf8`|
+|start_time|`timestamp[us, tz=UTC]`|
+|subscription_arn|`utf8`|
+|time_commitment_in_seconds|`int64`|

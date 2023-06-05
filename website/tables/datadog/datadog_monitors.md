@@ -13,25 +13,26 @@ The following tables depend on datadog_monitors:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_name (PK)|utf8|
-|id (PK)|int64|
-|deleted|timestamp[us, tz=UTC]|
-|priority|int64|
-|created|timestamp[us, tz=UTC]|
-|creator|json|
-|message|utf8|
-|modified|timestamp[us, tz=UTC]|
-|multi|bool|
-|name|utf8|
-|options|json|
-|overall_state|utf8|
-|query|utf8|
-|restricted_roles|list<item: utf8, nullable>|
-|state|json|
-|tags|list<item: utf8, nullable>|
-|type|utf8|
-|additional_properties|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_name (PK)|`utf8`|
+|created|`timestamp[us, tz=UTC]`|
+|creator|`json`|
+|deleted|`timestamp[us, tz=UTC]`|
+|id (PK)|`int64`|
+|matching_downtimes|`json`|
+|message|`utf8`|
+|modified|`timestamp[us, tz=UTC]`|
+|multi|`bool`|
+|name|`utf8`|
+|options|`json`|
+|overall_state|`utf8`|
+|priority|`int64`|
+|query|`utf8`|
+|restricted_roles|`list<item: utf8, nullable>`|
+|state|`json`|
+|tags|`list<item: utf8, nullable>`|
+|type|`utf8`|
+|additional_properties|`json`|

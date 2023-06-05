@@ -3,14 +3,14 @@ module github.com/cloudquery/cloudquery/plugins/source/k8s
 go 1.19
 
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230509040948-de6c3cd2b604
+	github.com/apache/arrow/go/v13 v13.0.0-20230601070034-e07e22c5580a
 	github.com/cloudquery/plugin-pb-go v1.0.8
-	github.com/cloudquery/plugin-sdk/v3 v3.6.4
+	github.com/cloudquery/plugin-sdk/v3 v3.10.3
 	github.com/golang/mock v1.6.0
 	github.com/google/gnostic v0.6.9
 	github.com/rs/zerolog v1.29.0
 	github.com/thoas/go-funk v0.9.3
-	golang.org/x/exp v0.0.0-20230425010034-47ecfdc1ba53
+	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1
 	k8s.io/api v0.26.3
 	k8s.io/apiextensions-apiserver v0.26.3
 	k8s.io/apimachinery v0.26.3
@@ -18,7 +18,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230509053643-898a79b1d3c8
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230604001431-20b0de916698
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
@@ -66,7 +66,7 @@ require (
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	golang.org/x/mod v0.8.0 // indirect
 	golang.org/x/net v0.9.0 // indirect
-	golang.org/x/oauth2 v0.4.0 // indirect
+	golang.org/x/oauth2 v0.6.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.7.0 // indirect
 	golang.org/x/term v0.7.0 // indirect
@@ -75,8 +75,8 @@ require (
 	golang.org/x/tools v0.6.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1 // indirect
-	google.golang.org/grpc v1.54.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20230530153820-e85fd2cbaebc // indirect
+	google.golang.org/grpc v1.55.0 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect

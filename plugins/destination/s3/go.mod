@@ -3,22 +3,22 @@ module github.com/cloudquery/cloudquery/plugins/destination/s3
 go 1.19
 
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230525061349-6bd31f37ae66
+	github.com/apache/arrow/go/v13 v13.0.0-20230601070034-e07e22c5580a
 	github.com/aws/aws-sdk-go-v2 v1.18.0
 	github.com/aws/aws-sdk-go-v2/config v1.18.25
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.67
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.33.1
-	github.com/cloudquery/filetypes/v3 v3.1.0
+	github.com/cloudquery/filetypes/v3 v3.1.4
 	github.com/cloudquery/plugin-pb-go v1.0.8
-	github.com/cloudquery/plugin-sdk/v3 v3.6.4
+	github.com/cloudquery/plugin-sdk/v3 v3.10.3
 	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.1
-	github.com/stretchr/testify v1.8.2
+	github.com/stretchr/testify v1.8.4
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230521112802-adef07d4bbaa
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230604001431-20b0de916698
 
 require (
 	github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c // indirect
@@ -55,7 +55,7 @@ require (
 	github.com/klauspost/compress v1.16.5 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
-	github.com/mattn/go-isatty v0.0.18 // indirect
+	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/minio/asm2plan9s v0.0.0-20200509001527-cdd76441f9d8 // indirect
 	github.com/minio/c2goasm v0.0.0-20190812172519-36a3d3bbc4f3 // indirect
 	github.com/pierrec/lz4/v4 v4.1.17 // indirect
@@ -73,7 +73,7 @@ require (
 	golang.org/x/text v0.9.0 // indirect
 	golang.org/x/tools v0.9.1 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
-	google.golang.org/genproto v0.0.0-20230524185152-1884fd1fac28 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20230530153820-e85fd2cbaebc // indirect
 	google.golang.org/grpc v1.55.0 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect

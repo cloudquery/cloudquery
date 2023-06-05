@@ -12,22 +12,22 @@ This table depends on [github_releases](github_releases).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|org (PK)|utf8|
-|repository_id (PK)|int64|
-|id (PK)|int64|
-|url|utf8|
-|name|utf8|
-|label|utf8|
-|state|utf8|
-|content_type|utf8|
-|size|int64|
-|download_count|int64|
-|created_at|timestamp[us, tz=UTC]|
-|updated_at|timestamp[us, tz=UTC]|
-|browser_download_url|utf8|
-|uploader|json|
-|node_id|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|org (PK)|`utf8`|
+|repository_id (PK)|`int64`|
+|id (PK)|`int64`|
+|url|`utf8`|
+|name|`utf8`|
+|label|`utf8`|
+|state|`utf8`|
+|content_type|`utf8`|
+|size|`int64`|
+|download_count|`int64`|
+|created_at|`timestamp[us, tz=UTC]`|
+|updated_at|`timestamp[us, tz=UTC]`|
+|browser_download_url|`utf8`|
+|uploader|`json`|
+|node_id|`utf8`|

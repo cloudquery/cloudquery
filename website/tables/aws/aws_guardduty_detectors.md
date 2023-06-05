@@ -20,19 +20,19 @@ The following tables depend on aws_guardduty_detectors:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id (PK)|utf8|
-|region (PK)|utf8|
-|arn|utf8|
-|id (PK)|utf8|
-|service_role|utf8|
-|status|utf8|
-|created_at|timestamp[us, tz=UTC]|
-|data_sources|json|
-|finding_publishing_frequency|utf8|
-|tags|json|
-|updated_at|timestamp[us, tz=UTC]|
-|result_metadata|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
+|arn|`utf8`|
+|id (PK)|`utf8`|
+|service_role|`utf8`|
+|status|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|data_sources|`json`|
+|finding_publishing_frequency|`utf8`|
+|tags|`json`|
+|updated_at|`timestamp[us, tz=UTC]`|
+|result_metadata|`json`|

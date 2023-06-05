@@ -15,17 +15,17 @@ The following tables depend on pagerduty_rulesets:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|id (PK)|utf8|
-|created_at|timestamp[us, tz=UTC]|
-|name|utf8|
-|type|utf8|
-|self|utf8|
-|routing_keys|list<item: utf8, nullable>|
-|creator|json|
-|updated_at|utf8|
-|updater|json|
-|team|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|name|`utf8`|
+|type|`utf8`|
+|self|`utf8`|
+|routing_keys|`list<item: utf8, nullable>`|
+|creator|`json`|
+|updated_at|`utf8`|
+|updater|`json`|
+|team|`json`|

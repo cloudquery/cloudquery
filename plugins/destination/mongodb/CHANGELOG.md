@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.0.1...plugins-destination-mongodb-v2.1.0) (2023-06-01)
+
+
+### Features
+
+* **deps:** Upgrade to Apache Arrow v13 (latest `cqmain`) ([#10605](https://github.com/cloudquery/cloudquery/issues/10605)) ([a55da3d](https://github.com/cloudquery/cloudquery/commit/a55da3dbefafdc68a6bda2d5f1d334d12dd97b97))
+* **mongodb:** Upgrade to SDK V3 with native arrow support ([#10819](https://github.com/cloudquery/cloudquery/issues/10819)) ([f7b5329](https://github.com/cloudquery/cloudquery/commit/f7b5329e696e160b2874a826cf4e5fbe03121004))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v13 digest to e07e22c ([#11151](https://github.com/cloudquery/cloudquery/issues/11151)) ([5083cf7](https://github.com/cloudquery/cloudquery/commit/5083cf720f0ae98e07448ba2ae1116048e2d3a90))
+* **deps:** Update golang.org/x/exp digest to 2e198f4 ([#11155](https://github.com/cloudquery/cloudquery/issues/11155)) ([c46c62b](https://github.com/cloudquery/cloudquery/commit/c46c62b68692f527485d7f4b84265abc5dc1142c))
+* **deps:** Update google.golang.org/genproto digest to e85fd2c ([#11156](https://github.com/cloudquery/cloudquery/issues/11156)) ([dbe7e92](https://github.com/cloudquery/cloudquery/commit/dbe7e9293d693a6821570e0e0b80202a936b6d3c))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.8 ([#10798](https://github.com/cloudquery/cloudquery/issues/10798)) ([27ff430](https://github.com/cloudquery/cloudquery/commit/27ff430527932d59a4d488a6767547eda8853940))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v3 to v3.6.7 ([#11043](https://github.com/cloudquery/cloudquery/issues/11043)) ([3c6d885](https://github.com/cloudquery/cloudquery/commit/3c6d885c3d201b0b39cbc1406c6e54a57ec5ed5f))
+
 ## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.0.0...plugins-destination-mongodb-v2.0.1) (2023-05-02)
 
 

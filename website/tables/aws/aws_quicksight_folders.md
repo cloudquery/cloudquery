@@ -10,17 +10,17 @@ The composite primary key for this table is (**account_id**, **region**, **arn**
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id (PK)|utf8|
-|region (PK)|utf8|
-|tags|json|
-|arn (PK)|utf8|
-|created_time|timestamp[us, tz=UTC]|
-|folder_id|utf8|
-|folder_path|list<item: utf8, nullable>|
-|folder_type|utf8|
-|last_updated_time|timestamp[us, tz=UTC]|
-|name|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
+|tags|`json`|
+|arn (PK)|`utf8`|
+|created_time|`timestamp[us, tz=UTC]`|
+|folder_id|`utf8`|
+|folder_path|`list<item: utf8, nullable>`|
+|folder_type|`utf8`|
+|last_updated_time|`timestamp[us, tz=UTC]`|
+|name|`utf8`|

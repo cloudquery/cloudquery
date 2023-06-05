@@ -12,14 +12,14 @@ func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source s
 	for _, table := range tables {
 		var sb strings.Builder
 		sb.WriteString("delete from ")
-		sb.WriteString(`"` + table.Name + `"`)
+		sb.WriteString(sanitizeID(table.Name))
 		sb.WriteString(" where ")
-		sb.WriteString(`"` + schema.CqSourceNameColumn.Name + `"`)
+		sb.WriteString(sanitizeID(schema.CqSourceNameColumn.Name))
 		sb.WriteString(" = $1 and ")
 		sb.WriteString(schema.CqSyncTimeColumn.Name)
 		sb.WriteString(" < to_timestamp($2)")
 		sql := sb.String()
-		if _, err := c.db.Exec(sql, source, syncTime.Unix()); err != nil {
+		if _, err := c.db.ExecContext(ctx, sql, source, syncTime.Unix()); err != nil {
 			return err
 		}
 	}

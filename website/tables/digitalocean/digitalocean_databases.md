@@ -17,24 +17,24 @@ The following tables depend on digitalocean_databases:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|id (PK)|utf8|
-|name|utf8|
-|engine|utf8|
-|version|utf8|
-|connection|json|
-|private_connection|json|
-|users|json|
-|num_nodes|int64|
-|size|utf8|
-|db_names|list<item: utf8, nullable>|
-|region|utf8|
-|status|utf8|
-|maintenance_window|json|
-|created_at|timestamp[us, tz=UTC]|
-|private_network_uuid|utf8|
-|tags|list<item: utf8, nullable>|
-|project_id|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|name|`utf8`|
+|engine|`utf8`|
+|version|`utf8`|
+|connection|`json`|
+|private_connection|`json`|
+|users|`json`|
+|num_nodes|`int64`|
+|size|`utf8`|
+|db_names|`list<item: utf8, nullable>`|
+|region|`utf8`|
+|status|`utf8`|
+|maintenance_window|`json`|
+|created_at|`timestamp[us, tz=UTC]`|
+|private_network_uuid|`utf8`|
+|tags|`list<item: utf8, nullable>`|
+|project_id|`utf8`|

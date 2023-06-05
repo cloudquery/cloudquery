@@ -21,18 +21,18 @@ The following tables depend on azure_sql_server_databases:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|subscription_id|utf8|
-|location|utf8|
-|identity|json|
-|properties|json|
-|sku|json|
-|tags|json|
-|id (PK)|utf8|
-|kind|utf8|
-|managed_by|utf8|
-|name|utf8|
-|type|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|subscription_id|`utf8`|
+|location|`utf8`|
+|identity|`json`|
+|properties|`json`|
+|sku|`json`|
+|tags|`json`|
+|id (PK)|`utf8`|
+|kind|`utf8`|
+|managed_by|`utf8`|
+|name|`utf8`|
+|type|`utf8`|

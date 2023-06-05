@@ -14,17 +14,17 @@ This table depends on [digitalocean_domains](digitalocean_domains).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|id (PK)|int64|
-|type|utf8|
-|name|utf8|
-|data|utf8|
-|priority|int64|
-|port|int64|
-|ttl|int64|
-|weight|int64|
-|flags|int64|
-|tag|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`int64`|
+|type|`utf8`|
+|name|`utf8`|
+|data|`utf8`|
+|priority|`int64`|
+|port|`int64`|
+|ttl|`int64`|
+|weight|`int64`|
+|flags|`int64`|
+|tag|`utf8`|

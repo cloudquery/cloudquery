@@ -14,15 +14,15 @@ This table depends on [aws_apigateway_rest_apis](aws_apigateway_rest_apis).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id (PK)|utf8|
-|region|utf8|
-|rest_api_arn|utf8|
-|arn (PK)|utf8|
-|id|utf8|
-|name|utf8|
-|validate_request_body|bool|
-|validate_request_parameters|bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region|`utf8`|
+|rest_api_arn|`utf8`|
+|arn (PK)|`utf8`|
+|id|`utf8`|
+|name|`utf8`|
+|validate_request_body|`bool`|
+|validate_request_parameters|`bool`|

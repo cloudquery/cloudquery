@@ -11,27 +11,27 @@ It supports incremental syncs based on the **created** column.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|id (PK)|utf8|
-|created (Incremental Key)|timestamp[us, tz=UTC]|
-|amount|int64|
-|amount_details|json|
-|authorization|json|
-|balance_transaction|json|
-|card|json|
-|cardholder|json|
-|currency|utf8|
-|dispute|json|
-|livemode|bool|
-|merchant_amount|int64|
-|merchant_currency|utf8|
-|merchant_data|json|
-|metadata|json|
-|object|utf8|
-|purchase_details|json|
-|treasury|json|
-|type|utf8|
-|wallet|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|created (Incremental Key)|`timestamp[us, tz=UTC]`|
+|amount|`int64`|
+|amount_details|`json`|
+|authorization|`json`|
+|balance_transaction|`json`|
+|card|`json`|
+|cardholder|`json`|
+|currency|`utf8`|
+|dispute|`json`|
+|livemode|`bool`|
+|merchant_amount|`int64`|
+|merchant_currency|`utf8`|
+|merchant_data|`json`|
+|metadata|`json`|
+|object|`utf8`|
+|purchase_details|`json`|
+|treasury|`json`|
+|type|`utf8`|
+|wallet|`utf8`|

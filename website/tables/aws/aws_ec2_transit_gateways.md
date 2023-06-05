@@ -19,19 +19,19 @@ The following tables depend on aws_ec2_transit_gateways:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id (PK)|utf8|
-|region (PK)|utf8|
-|id|utf8|
-|arn (PK)|utf8|
-|tags|json|
-|creation_time|timestamp[us, tz=UTC]|
-|description|utf8|
-|options|json|
-|owner_id|utf8|
-|state|utf8|
-|transit_gateway_arn|utf8|
-|transit_gateway_id|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
+|id|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|creation_time|`timestamp[us, tz=UTC]`|
+|description|`utf8`|
+|options|`json`|
+|owner_id|`utf8`|
+|state|`utf8`|
+|transit_gateway_arn|`utf8`|
+|transit_gateway_id|`utf8`|

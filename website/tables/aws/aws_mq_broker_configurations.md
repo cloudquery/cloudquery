@@ -17,20 +17,20 @@ The following tables depend on aws_mq_broker_configurations:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|broker_arn|utf8|
-|arn (PK)|utf8|
-|authentication_strategy|utf8|
-|created|timestamp[us, tz=UTC]|
-|description|utf8|
-|engine_type|utf8|
-|engine_version|utf8|
-|id|utf8|
-|latest_revision|json|
-|name|utf8|
-|tags|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|broker_arn|`utf8`|
+|arn (PK)|`utf8`|
+|authentication_strategy|`utf8`|
+|created|`timestamp[us, tz=UTC]`|
+|description|`utf8`|
+|engine_type|`utf8`|
+|engine_version|`utf8`|
+|id|`utf8`|
+|latest_revision|`json`|
+|name|`utf8`|
+|tags|`json`|

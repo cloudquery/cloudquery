@@ -10,17 +10,17 @@ The primary key for this table is **volume_arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|volume_arn (PK)|utf8|
-|actions|json|
-|attachment_statuses|json|
-|availability_zone|utf8|
-|events|json|
-|outpost_arn|utf8|
-|volume_id|utf8|
-|volume_status|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|volume_arn (PK)|`utf8`|
+|actions|`json`|
+|attachment_statuses|`json`|
+|availability_zone|`utf8`|
+|events|`json`|
+|outpost_arn|`utf8`|
+|volume_id|`utf8`|
+|volume_status|`json`|

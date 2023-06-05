@@ -10,25 +10,25 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|tags|json|
-|creation_time|timestamp[us, tz=UTC]|
-|lifecycle|utf8|
-|task_id|utf8|
-|type|utf8|
-|capacity_to_release|int64|
-|end_time|timestamp[us, tz=UTC]|
-|failure_details|json|
-|file_cache_id|utf8|
-|file_system_id|utf8|
-|paths|list<item: utf8, nullable>|
-|report|json|
-|resource_arn|utf8|
-|start_time|timestamp[us, tz=UTC]|
-|status|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|creation_time|`timestamp[us, tz=UTC]`|
+|lifecycle|`utf8`|
+|task_id|`utf8`|
+|type|`utf8`|
+|capacity_to_release|`int64`|
+|end_time|`timestamp[us, tz=UTC]`|
+|failure_details|`json`|
+|file_cache_id|`utf8`|
+|file_system_id|`utf8`|
+|paths|`list<item: utf8, nullable>`|
+|report|`json`|
+|resource_arn|`utf8`|
+|start_time|`timestamp[us, tz=UTC]`|
+|status|`json`|
