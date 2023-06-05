@@ -10,7 +10,6 @@ import (
 	"github.com/apache/arrow/go/v13/parquet"
 	"github.com/apache/arrow/go/v13/parquet/pqarrow"
 	backoff "github.com/cenkalti/backoff/v4"
-	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/google/uuid"
 	"golang.org/x/exp/slices"
@@ -126,7 +125,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 		return err
 	}
 
-	if c.spec.WriteMode == specs.WriteModeAppend || len(table.PrimaryKeys()) == 0 {
+	if !c.enabledPks() || len(table.PrimaryKeys()) == 0 {
 		return c.copyFromFile(ctx, table.Name, f.Name(), sc)
 	}
 
@@ -149,7 +148,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 	// As a workaround, we delete the row and insert it again. This makes it non-atomic, unfortunately,
 	// but this is unavoidable until support is added to duckdb itself.
 	// See https://github.com/duckdb/duckdb/blob/c5d9afb97bbf0be12216f3b89ae3131afbbc3156/src/storage/table/list_column_data.cpp#L243-L251
-	if containsList(table) || c.enabledPks() {
+	if containsList(table) {
 		return c.deleteInsert(ctx, tmpTableName, table)
 	}
 
