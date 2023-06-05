@@ -41,5 +41,6 @@ func TestPlugin(t *testing.T) {
 			MigrateStrategyAppend:    migrateStrategy,
 		},
 		destination.WithTestIgnoreNullsInLists(),
+		destination.WithTestSourceSkipMaps(),
 	)
 }
