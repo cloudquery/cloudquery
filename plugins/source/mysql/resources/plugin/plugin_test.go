@@ -67,7 +67,7 @@ func createTable(ctx context.Context, db *sql.DB, table *schema.Table) error {
 		builder.WriteString(" PRIMARY KEY (")
 		for i, pk := range pks {
 			builder.WriteString(client.Identifier(pk))
-			if table.Columns.Get(pk).Type == arrow.BinaryTypes.String {
+			if arrow.TypeEqual(table.Columns.Get(pk).Type, arrow.BinaryTypes.String) {
 				// Since we use `text` for strings we need to specify the prefix length to use for the primary key
 				builder.WriteString("(64)")
 			}
