@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"time"
 
 	"cloud.google.com/go/firestore"
 	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
@@ -68,11 +67,11 @@ func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- 
 			if err != nil {
 				return err
 			}
-			err = resource.Set("__created_at", docSnap.CreateTime.Format(time.RFC3339))
+			err = resource.Set("__created_at", docSnap.CreateTime)
 			if err != nil {
 				return err
 			}
-			err = resource.Set("__updated_at", docSnap.UpdateTime.Format(time.RFC3339))
+			err = resource.Set("__updated_at", docSnap.UpdateTime)
 			if err != nil {
 				return err
 			}
