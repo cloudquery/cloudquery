@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/parquet"
@@ -68,7 +69,7 @@ func (c *Client) upsert(ctx context.Context, tmpTableName string, table *schema.
 		func() error {
 			return c.exec(ctx, query)
 		},
-		backoff.WithContext(backoff.WithMaxRetries(backoff.NewExponentialBackOff(), 3), ctx),
+		backoff.WithContext(backoff.WithMaxRetries(backoff.NewConstantBackOff(50*time.Millisecond), 3), ctx),
 	)
 }
 
@@ -173,6 +174,6 @@ func (c *Client) deleteInsert(ctx context.Context, tmpTableName string, table *s
 		func() error {
 			return c.exec(ctx, "insert into "+table.Name+" from "+tmpTableName)
 		},
-		backoff.WithContext(backoff.WithMaxRetries(backoff.NewExponentialBackOff(), 3), ctx),
+		backoff.WithContext(backoff.WithMaxRetries(backoff.NewConstantBackOff(50*time.Millisecond), 3), ctx),
 	)
 }
