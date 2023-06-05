@@ -14,7 +14,6 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 |_cq_parent_id|`uuid`|
 |region (PK)|`utf8`|
 |compartment_id (PK)|`utf8`|
-|id (PK)|`utf8`|
 |bandwidth_shape_name|`utf8`|
 |bgp_management|`utf8`|
 |bgp_session_state|`utf8`|
@@ -29,6 +28,7 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 |display_name|`utf8`|
 |freeform_tags|`json`|
 |gateway_id|`utf8`|
+|id (PK)|`utf8`|
 |lifecycle_state|`utf8`|
 |oracle_bgp_asn|`int64`|
 |provider_name|`utf8`|
