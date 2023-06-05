@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230601070034-e07e22c5580a
 	github.com/bluekeyes/go-gitdiff v0.7.1
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0
-	github.com/cloudquery/plugin-sdk/v3 v3.7.0
+	github.com/cloudquery/plugin-sdk/v3 v3.10.3
 	github.com/google/go-cmp v0.5.9
 	github.com/stretchr/testify v1.8.2
 )

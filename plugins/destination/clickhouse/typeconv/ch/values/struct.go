@@ -9,11 +9,7 @@ import (
 )
 
 func structValue(arr *array.Struct) (any, error) {
-	sanitized, err := sanitizeNested(arr)
-	if err != nil {
-		return nil, err
-	}
-	arr = sanitized.(*array.Struct)
+	arr = sanitizeNested(arr).(*array.Struct)
 
 	fields := arr.DataType().(*arrow.StructType).Fields()
 	columns := make(map[string][]any, len(fields))
