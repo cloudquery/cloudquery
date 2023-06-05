@@ -40,7 +40,7 @@ func AvailibilityDomainCompartmentMultiplex(meta schema.ClientMeta) []schema.Cli
 				multiplexedClients = append(multiplexedClients, cqClient.
 					withRegion(region).
 					withCompartment(compartmentOcid).
-					withAvailibilityDomain(availibilityDomain))
+					withAvailabilityDomain(availibilityDomain))
 			}
 		}
 	}
