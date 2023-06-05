@@ -39,19 +39,19 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/costexplorer v1.25.10
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.23.5
 	github.com/aws/aws-sdk-go-v2/service/dax v1.12.10
-	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.8
+	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.14
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.20.6
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.18.6
-	github.com/aws/aws-sdk-go-v2/service/dynamodbstreams v1.14.7
+	github.com/aws/aws-sdk-go-v2/service/dynamodbstreams v1.14.11
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.80.0
-	github.com/aws/aws-sdk-go-v2/service/ecr v1.18.7
+	github.com/aws/aws-sdk-go-v2/service/ecr v1.18.11
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.15.6
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.23.2
 	github.com/aws/aws-sdk-go-v2/service/efs v1.19.9
-	github.com/aws/aws-sdk-go-v2/service/eks v1.27.8
+	github.com/aws/aws-sdk-go-v2/service/eks v1.27.12
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.26.6
-	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.15.6
-	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.15.6
+	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.15.10
+	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.15.10
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.19.7
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.18.7
 	github.com/aws/aws-sdk-go-v2/service/elastictranscoder v1.14.6
@@ -118,7 +118,7 @@ require (
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/codegen v0.2.1
 	github.com/cloudquery/plugin-pb-go v1.0.8
-	github.com/cloudquery/plugin-sdk/v3 v3.7.0
+	github.com/cloudquery/plugin-sdk/v3 v3.10.3
 	github.com/gocarina/gocsv v0.0.0-20230513223533-9ddd7fd60602
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
@@ -133,7 +133,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230602001318-a7aad4c5365c
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230604001431-20b0de916698
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
@@ -188,7 +188,7 @@ require (
 	golang.org/x/sys v0.7.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
 	golang.org/x/tools v0.6.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20230526203410-71b5a4ffd15e // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20230530153820-e85fd2cbaebc // indirect
 	google.golang.org/grpc v1.55.0 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect

@@ -32,12 +32,7 @@ func mapValue(arr *array.Map) (any, error) {
 		return nil, fmt.Errorf("unexpected reflect type for map: %q", valueType.String())
 	}
 
-	sanitized, err := sanitizeNested(arr)
-	if err != nil {
-		return nil, err
-	}
-
-	return makeMapSlice(valueType, sanitized.(*array.Map))
+	return makeMapSlice(valueType, sanitizeNested(arr).(*array.Map))
 }
 
 func makeMapSlice(mapType reflect.Type, arr *array.Map) (any, error) {
