@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/parquet"
 	"github.com/apache/arrow/go/v13/parquet/pqarrow"
+	backoff "github.com/cenkalti/backoff/v4"
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/google/uuid"
@@ -47,9 +47,9 @@ func dtContainsList(dt arrow.DataType) bool {
 	}
 }
 
-func (c *Client) upsert(ctx context.Context, tmpTableName string, tableName string, table *schema.Table) error {
+func (c *Client) upsert(ctx context.Context, tmpTableName string, table *schema.Table) error {
 	var sb strings.Builder
-	sb.WriteString("insert into " + tableName + " select * from " + tmpTableName + " on conflict (")
+	sb.WriteString("insert into " + table.Name + " select * from " + tmpTableName + " on conflict (")
 	sb.WriteString(strings.Join(table.PrimaryKeys(), ", "))
 	sb.WriteString(" ) do update set ")
 	indices := nonPkIndices(table)
@@ -65,24 +65,19 @@ func (c *Client) upsert(ctx context.Context, tmpTableName string, tableName stri
 	return c.exec(ctx, sb.String())
 }
 
-func (c *Client) deleteByPK(ctx context.Context, tmpTableName string, tableName string, table *schema.Table) error {
+func (c *Client) deleteByPK(ctx context.Context, tmpTableName string, table *schema.Table) error {
 	var sb strings.Builder
-	sb.WriteString("delete from " + tableName + " using " + tmpTableName + " where ")
+	sb.WriteString("delete from " + table.Name + " using " + tmpTableName + " where ")
 	for i, col := range table.PrimaryKeys() {
 		if i > 0 {
 			sb.WriteString(" and ")
 		}
-		sb.WriteString(tableName + "." + col)
+		sb.WriteString(table.Name + "." + col)
 		sb.WriteString(" = ")
 		sb.WriteString(tmpTableName + "." + col)
 	}
-	if err := c.exec(ctx, sb.String()); err != nil {
-		return err
-	}
 
-	// per https://duckdb.org/docs/sql/indexes#over-eager-unique-constraint-checking we'll wait a bit just to be sure
-	time.Sleep(c.waitAfterDelete)
-	return nil
+	return c.exec(ctx, sb.String())
 }
 
 func (c *Client) copyFromFile(ctx context.Context, tableName string, fileName string, sc *arrow.Schema) error {
@@ -154,13 +149,23 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 	// As a workaround, we delete the row and insert it again. This makes it non-atomic, unfortunately,
 	// but this is unavoidable until support is added to duckdb itself.
 	// See https://github.com/duckdb/duckdb/blob/c5d9afb97bbf0be12216f3b89ae3131afbbc3156/src/storage/table/list_column_data.cpp#L243-L251
-	if !containsList(table) {
-		return c.upsert(ctx, tmpTableName, table.Name, table)
+	if containsList(table) || c.enabledPks() {
+		return c.deleteInsert(ctx, tmpTableName, table)
 	}
 
-	if err := c.deleteByPK(ctx, tmpTableName, table.Name, table); err != nil {
+	return c.upsert(ctx, tmpTableName, table)
+}
+
+func (c *Client) deleteInsert(ctx context.Context, tmpTableName string, table *schema.Table) error {
+	if err := c.deleteByPK(ctx, tmpTableName, table); err != nil {
 		return err
 	}
 
-	return c.exec(ctx, "insert into "+table.Name+" from "+tmpTableName)
+	// per https://duckdb.org/docs/sql/indexes#over-eager-unique-constraint-checking we might need to retry
+	return backoff.Retry(
+		func() error {
+			return c.exec(ctx, "insert into "+table.Name+" from "+tmpTableName)
+		},
+		backoff.WithContext(backoff.WithMaxRetries(backoff.NewExponentialBackOff(), 3), ctx),
+	)
 }

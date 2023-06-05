@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"database/sql/driver"
 	"fmt"
-	"time"
 
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
@@ -17,29 +16,25 @@ import (
 
 type Client struct {
 	destination.UnimplementedUnmanagedWriter
-	db              *sql.DB
-	connector       driver.Connector
-	logger          zerolog.Logger
-	spec            specs.Destination
-	metrics         destination.Metrics
-	waitAfterDelete time.Duration
+	db        *sql.DB
+	connector driver.Connector
+	logger    zerolog.Logger
+	spec      specs.Destination
+	metrics   destination.Metrics
 }
 
 var _ destination.Client = (*Client)(nil)
 
 func New(ctx context.Context, logger zerolog.Logger, dstSpec specs.Destination) (destination.Client, error) {
 	var err error
+	c := &Client{
+		logger: logger.With().Str("module", "duckdb-dest").Logger(),
+		spec:   dstSpec,
+	}
 
 	var spec Spec
 	if err := dstSpec.UnmarshalSpec(&spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal duckdb spec: %w", err)
-	}
-	spec.SetDefaults()
-
-	c := &Client{
-		logger:          logger.With().Str("module", "duckdb-dest").Logger(),
-		spec:            dstSpec,
-		waitAfterDelete: spec.WaitAfterDelete,
 	}
 
 	c.connector, err = duckdb.NewConnector(spec.ConnectionString, nil)
