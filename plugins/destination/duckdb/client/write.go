@@ -61,7 +61,15 @@ func (c *Client) upsert(ctx context.Context, tmpTableName string, table *schema.
 		sb.WriteString(" = excluded.")
 		sb.WriteString(col.Name)
 	}
-	return c.exec(ctx, sb.String())
+	query := sb.String()
+	// per https://duckdb.org/docs/sql/indexes#over-eager-unique-constraint-checking we might need some retries
+	// as the upsert for tables with PKs is transformed into delete + insert internally
+	return backoff.Retry(
+		func() error {
+			return c.exec(ctx, query)
+		},
+		backoff.WithContext(backoff.WithMaxRetries(backoff.NewExponentialBackOff(), 3), ctx),
+	)
 }
 
 func (c *Client) deleteByPK(ctx context.Context, tmpTableName string, table *schema.Table) error {
