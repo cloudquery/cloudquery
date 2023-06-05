@@ -77,7 +77,7 @@ func SQLType(t arrow.DataType) string {
 	case *arrow.BinaryType, *arrow.LargeBinaryType, *arrow.FixedSizeBinaryType:
 		return "blob"
 	case *arrow.TimestampType:
-		return "datetime"
+		return "datetime(6)"
 	case *types.JSONType:
 		return "json"
 	default:
@@ -95,6 +95,9 @@ func SchemaType(dataType string, columnType string) arrow.DataType {
 	}
 	if columnType == "tinyint(1)" {
 		return arrow.FixedWidthTypes.Boolean
+	}
+	if strings.HasPrefix(columnType, "datetime") {
+		return arrow.FixedWidthTypes.Timestamp_us
 	}
 	if strings.HasPrefix(columnType, "decimal") || strings.HasPrefix(columnType, "numeric") {
 		precision, scale := getPrecisionAndScale(columnType)
@@ -131,7 +134,7 @@ func SchemaType(dataType string, columnType string) arrow.DataType {
 		return arrow.PrimitiveTypes.Float32
 	case "double":
 		return arrow.PrimitiveTypes.Float64
-	case "datetime", "timestamp":
+	case "timestamp":
 		return arrow.FixedWidthTypes.Timestamp_us
 	case "json":
 		return types.ExtensionTypes.JSON

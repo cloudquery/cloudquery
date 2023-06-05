@@ -197,7 +197,7 @@ func TestPlugin(t *testing.T) {
 	if err := createTable(ctx, db, testTable); err != nil {
 		t.Fatal(err)
 	}
-	syncTime := time.Now().UTC()
+	syncTime := time.Now()
 	data := schema.GenTestData(testTable, schema.GenTestDataOptions{MaxRows: 2, SyncTime: syncTime})
 	if err := insertTable(ctx, db, testTable, data); err != nil {
 		t.Fatal(err)
