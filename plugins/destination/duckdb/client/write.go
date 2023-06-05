@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/parquet"
@@ -75,7 +76,13 @@ func (c *Client) deleteByPK(ctx context.Context, tmpTableName string, tableName 
 		sb.WriteString(" = ")
 		sb.WriteString(tmpTableName + "." + col)
 	}
-	return c.exec(ctx, sb.String())
+	if err := c.exec(ctx, sb.String()); err != nil {
+		return err
+	}
+
+	// per https://duckdb.org/docs/sql/indexes#over-eager-unique-constraint-checking we'll wait a bit just to be sure
+	time.Sleep(c.waitAfterDelete)
+	return nil
 }
 
 func (c *Client) copyFromFile(ctx context.Context, tableName string, fileName string, sc *arrow.Schema) error {

@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"database/sql/driver"
 	"fmt"
+	"time"
 
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
@@ -16,32 +17,38 @@ import (
 
 type Client struct {
 	destination.UnimplementedUnmanagedWriter
-	db        *sql.DB
-	connector driver.Connector
-	logger    zerolog.Logger
-	spec      specs.Destination
-	metrics   destination.Metrics
+	db              *sql.DB
+	connector       driver.Connector
+	logger          zerolog.Logger
+	spec            specs.Destination
+	metrics         destination.Metrics
+	waitAfterDelete time.Duration
 }
 
 var _ destination.Client = (*Client)(nil)
 
-func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, dstSpec specs.Destination) (destination.Client, error) {
 	var err error
-	c := &Client{
-		logger: logger.With().Str("module", "duckdb-dest").Logger(),
-	}
 
-	var duckdbSpec Spec
-	c.spec = spec
-	if err := spec.UnmarshalSpec(&duckdbSpec); err != nil {
+	var spec Spec
+	if err := dstSpec.UnmarshalSpec(&spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal duckdb spec: %w", err)
 	}
-	c.connector, err = duckdb.NewConnector(duckdbSpec.ConnectionString, nil)
-	db := sql.OpenDB(c.connector)
+	spec.SetDefaults()
+
+	c := &Client{
+		logger:          logger.With().Str("module", "duckdb-dest").Logger(),
+		spec:            dstSpec,
+		waitAfterDelete: spec.WaitAfterDelete,
+	}
+
+	c.connector, err = duckdb.NewConnector(spec.ConnectionString, nil)
 	if err != nil {
 		return nil, err
 	}
-	c.db = db
+
+	c.db = sql.OpenDB(c.connector)
+
 	err = c.exec(ctx, "INSTALL 'json'; LOAD 'json';")
 	if err != nil {
 		return nil, err

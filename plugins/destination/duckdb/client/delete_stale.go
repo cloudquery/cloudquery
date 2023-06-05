@@ -22,5 +22,9 @@ func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source s
 			return err
 		}
 	}
+
+	// per https://duckdb.org/docs/sql/indexes#over-eager-unique-constraint-checking we'll wait a bit just to be sure
+	time.Sleep(c.waitAfterDelete)
+
 	return nil
 }
