@@ -14,11 +14,11 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 |_cq_parent_id|`uuid`|
 |region (PK)|`utf8`|
 |compartment_id (PK)|`utf8`|
-|id (PK)|`utf8`|
 |connection_string|`utf8`|
 |defined_tags|`json`|
 |fingerprint|`utf8`|
 |freeform_tags|`json`|
+|id (PK)|`utf8`|
 |instance_id|`utf8`|
 |lifecycle_state|`utf8`|
 |service_host_key_fingerprint|`utf8`|

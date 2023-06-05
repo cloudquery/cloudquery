@@ -47,7 +47,7 @@ func Test_structValue(t *testing.T) {
 	elem = elems[1]
 	require.NotNil(t, elem)
 	require.Equal(t, map[string]any{
-		"nullable_bool":     (*bool)(nil),
+		"nullable_bool":     ptr(false),
 		"non_nullable_bool": ptr(true),
 	}, *elem)
 
