@@ -68,10 +68,8 @@ func SQLType(t arrow.DataType) string {
 		return "float"
 	case *arrow.Float64Type:
 		return "double"
-	case *arrow.Decimal128Type:
-		return fmt.Sprintf("decimal(%d,%d)", v.Precision, v.Scale)
-	case *arrow.Decimal256Type:
-		return fmt.Sprintf("decimal(%d,%d)", v.Precision, v.Scale)
+	case arrow.DecimalType:
+		return fmt.Sprintf("decimal(%d,%d)", v.GetPrecision(), v.GetScale())
 	case *types.UUIDType:
 		return "binary(16)"
 	case *arrow.BinaryType, *arrow.LargeBinaryType, *arrow.FixedSizeBinaryType:
