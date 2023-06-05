@@ -130,6 +130,10 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	}
 
 	gcpSpec.setDefaults()
+	if err := gcpSpec.validate(); err != nil {
+		return nil, fmt.Errorf("invalid spec: %w", err)
+	}
+
 	projects := gcpSpec.ProjectIDs
 	organizations := make([]*crmv1.Organization, 0)
 	if gcpSpec.BackoffRetries > 0 {
@@ -186,7 +190,6 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 			return nil, fmt.Errorf("failed to get projects: %w", err)
 		}
 	case len(gcpSpec.FolderFilter) > 0:
-
 		folderIds, err := searchFolders(ctx, foldersClient, gcpSpec.FolderFilter)
 		if err != nil {
 			return nil, fmt.Errorf("failed to search folders: %w", err)
@@ -232,6 +235,12 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		projects = setUnion(projects, projectsWithFilter)
 	}
 
+	if gcpSpec.Projects.Organizations.isNull() {
+		err := c.getProjects(ctx, gcpSpec)
+		if err != nil {
+			return nil, err
+		}
+	}
 	if len(gcpSpec.OrganizationIDs) == 0 && len(gcpSpec.OrganizationFilter) == 0 {
 		c.logger.Info().Msg("No organization_ids or organization_filter specified - assuming all organizations")
 		c.logger.Info().Msg("Listing organizations...")
