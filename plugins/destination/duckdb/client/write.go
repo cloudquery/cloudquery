@@ -10,7 +10,7 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/parquet"
 	"github.com/apache/arrow/go/v13/parquet/pqarrow"
-	backoff "github.com/cenkalti/backoff/v4"
+	"github.com/cenkalti/backoff/v4"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/google/uuid"
 	"golang.org/x/exp/slices"
