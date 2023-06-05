@@ -3,7 +3,7 @@ module github.com/{{.Org}}/cq-source-{{.Name}}
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk/v3 v3.10.3
+	github.com/cloudquery/plugin-sdk/v3 v3.7.0
 	github.com/rs/zerolog v1.28.0
 	github.com/apache/arrow/go/v13 e07e22c5580a
 )
