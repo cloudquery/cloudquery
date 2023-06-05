@@ -39,8 +39,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, _ string, res ch
 	}
 	sb.WriteString(") to '" + f.Name() + "' (FORMAT PARQUET)")
 
-	_, err = c.db.ExecContext(ctx, sb.String())
-	if err != nil {
+	if err := c.exec(ctx, sb.String()); err != nil {
 		return err
 	}
 	f, err = os.Open(fName)
