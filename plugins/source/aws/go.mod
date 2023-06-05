@@ -42,13 +42,13 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.14
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.20.6
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.18.6
-	github.com/aws/aws-sdk-go-v2/service/dynamodbstreams v1.14.7
+	github.com/aws/aws-sdk-go-v2/service/dynamodbstreams v1.14.11
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.80.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.18.11
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.15.6
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.23.2
 	github.com/aws/aws-sdk-go-v2/service/efs v1.19.9
-	github.com/aws/aws-sdk-go-v2/service/eks v1.27.8
+	github.com/aws/aws-sdk-go-v2/service/eks v1.27.12
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.26.6
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.15.10
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.15.10
