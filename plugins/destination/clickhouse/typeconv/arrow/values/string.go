@@ -5,18 +5,21 @@ import (
 )
 
 func buildFromString(builder array.Builder, value any) error {
+	return buildFromStringWithZero(builder, value, "")
+}
+
+// buildFromStringWithZero will use builder.AppendEmptyValue if the v is "" or matches the passed empty value
+func buildFromStringWithZero(builder array.Builder, value any, zero string) error {
 	v, ok := unwrap[string](value)
 	if !ok {
 		builder.AppendNull()
 		return nil
 	}
 
-	if len(v) > 0 {
-		return builder.AppendValueFromString(v)
+	if len(v) == 0 || v == zero {
+		builder.AppendEmptyValue()
+		return nil
 	}
 
-	// binary types are handled separately, so here we have a builder that most likely can't handle empty string.
-	// having empty string in CH means that this was an empty value
-	builder.AppendEmptyValue()
-	return nil
+	return builder.AppendValueFromString(v)
 }

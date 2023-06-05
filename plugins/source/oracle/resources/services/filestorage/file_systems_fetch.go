@@ -16,7 +16,7 @@ func fetchFileSystems(ctx context.Context, meta schema.ClientMeta, parent *schem
 	for {
 		request := filestorage.ListFileSystemsRequest{
 			CompartmentId:      common.String(cqClient.CompartmentOcid),
-			AvailabilityDomain: common.String(cqClient.AvailibilityDomain),
+			AvailabilityDomain: common.String(cqClient.AvailabilityDomain),
 			Page:               page,
 		}
 

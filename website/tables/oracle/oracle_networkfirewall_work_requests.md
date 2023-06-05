@@ -14,9 +14,9 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 |_cq_parent_id|`uuid`|
 |region (PK)|`utf8`|
 |compartment_id (PK)|`utf8`|
-|id (PK)|`utf8`|
 |operation_type|`utf8`|
 |status|`utf8`|
+|id (PK)|`utf8`|
 |resources|`json`|
 |percent_complete|`float64`|
 |time_accepted|`timestamp[us, tz=UTC]`|

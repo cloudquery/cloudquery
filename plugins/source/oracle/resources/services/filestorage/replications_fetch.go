@@ -16,7 +16,7 @@ func fetchReplications(ctx context.Context, meta schema.ClientMeta, parent *sche
 	for {
 		request := filestorage.ListReplicationsRequest{
 			CompartmentId:      common.String(cqClient.CompartmentOcid),
-			AvailabilityDomain: common.String(cqClient.AvailibilityDomain),
+			AvailabilityDomain: common.String(cqClient.AvailabilityDomain),
 			Page:               page,
 		}
 
