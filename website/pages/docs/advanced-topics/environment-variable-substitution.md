@@ -40,5 +40,5 @@ kind: "destination"
 spec:
   name: "bigquery"
   spec:
-    service_account_key_json: '${file:./path/to/secret/file.json}'
+    service_account_key_json: '${file:./path/to/secret/file.json}' # single quotes only for CLI versions before 3.5.0
 ```
