@@ -50,6 +50,9 @@ func createTable(ctx context.Context, db *sql.DB, table *schema.Table) error {
 	builder.WriteString(" (\n  ")
 	pk := make([]string, 0, len(table.PrimaryKeys()))
 	for i, column := range table.Columns {
+		if i > 0 {
+			builder.WriteString(",\n  ")
+		}
 		builder.WriteString(client.Identifier(column.Name))
 		builder.WriteString(" ")
 		builder.WriteString(client.SQLType(column.Type))
@@ -60,19 +63,16 @@ func createTable(ctx context.Context, db *sql.DB, table *schema.Table) error {
 			default:
 				pk = append(pk, client.Identifier(column.Name))
 			}
-		} else {
 			// In OracleDB primary keys are implicitly NOT NULL and UNIQUE
 			// and it errors out if we try to do it explicitly
-			if column.NotNull {
-				builder.WriteString(" NOT NULL")
-			}
-			if column.Unique {
-				builder.WriteString(" UNIQUE")
-			}
+			continue
 		}
 
-		if i < len(table.Columns)-1 {
-			builder.WriteString(",\n  ")
+		if column.NotNull {
+			builder.WriteString(" NOT NULL")
+		}
+		if column.Unique {
+			builder.WriteString(" UNIQUE")
 		}
 	}
 	if len(pk) > 0 {
