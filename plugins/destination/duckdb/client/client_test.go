@@ -44,3 +44,25 @@ func TestPlugin(t *testing.T) {
 		destination.WithTestSourceSkipLargeTypes(),
 	)
 }
+
+func TestParseConnectionString(t *testing.T) {
+	cases := []struct {
+		give string
+		want parsedConnectionString
+	}{
+		{give: "md:", want: parsedConnectionString{label: "md"}},
+		{give: "motherduck:", want: parsedConnectionString{label: "motherduck"}},
+		{give: "md:mydb", want: parsedConnectionString{label: "md", path: "mydb"}},
+		{give: "md:mydb?threads=1", want: parsedConnectionString{label: "md", path: "mydb", query: "threads=1"}},
+		{give: "md:mydb?threads=1&other=2", want: parsedConnectionString{label: "md", path: "mydb", query: "threads=1&other=2"}},
+		{give: "mydb.db", want: parsedConnectionString{path: "mydb.db"}},
+		{give: "/absolute/path/to/mydb.db", want: parsedConnectionString{path: "/absolute/path/to/mydb.db"}},
+		{give: "../../relative/path/to/mydb.db", want: parsedConnectionString{path: "../../relative/path/to/mydb.db"}},
+	}
+	for _, c := range cases {
+		got := parseConnectionString(c.give)
+		if got != c.want {
+			t.Errorf("got %v, want %v", got, c.want)
+		}
+	}
+}
