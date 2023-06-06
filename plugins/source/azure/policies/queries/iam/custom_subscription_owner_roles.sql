@@ -1,15 +1,21 @@
+INSERT INTO azure_policy_results
 --check if definition matches scopes
-WITH assignable_scopes AS (
+WITH custom_roles AS (
+    SELECT *
+    FROM azure_authorization_role_definitions
+    WHERE properties->>'type' = 'CustomRole'
+),
+assignable_scopes AS (
     SELECT
         _cq_id,
         scope AS assignable_scope
-    FROM azure_authorization_role_definitions,
+    FROM custom_roles,
          jsonb_array_elements_text(properties->'assignableScopes') scope
 ),
 meets_scopes AS (
     SELECT
         _cq_id,
-        bool_or(assignable_scope = '/' OR assignable_scope = 'subscription') AS has_wide_scope
+        bool_or(assignable_scope = '/' OR assignable_scope ~ '^\/subscriptions\/[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$') AS has_wide_scope
     FROM assignable_scopes
     GROUP BY _cq_id
 ),
@@ -18,7 +24,7 @@ definition_actions AS (
     SELECT
         _cq_id,
         actions AS action
-    FROM azure_authorization_role_definitions,
+    FROM custom_roles,
          jsonb_array_elements(properties->'permissions') p,
          jsonb_array_elements_text(p->'actions') actions
 ),
@@ -41,5 +47,5 @@ SELECT
         THEN 'fail'
         ELSE 'pass'
     END                                                            AS status
-FROM azure_authorization_role_definitions 
+FROM custom_roles 
     JOIN meets_scopes USING (_cq_id) JOIN meets_actions USING (_cq_id)
