@@ -208,6 +208,14 @@ export const SOURCE_PLUGINS: Plugin[] = [
     category: "cloud-infrastructure",
   },
   {
+    name: "Onfleet",
+    logo: "/images/logos/plugins/onfleet.svg",
+    id: "onfleet",
+    href: "https://github.com/onfleet/cq-source-onfleet",
+    kind: "partner",
+    category: "fleet-management",
+  },
+  {
     name: "Oracle",
     logo: "/images/logos/plugins/oracle.svg",
     id: "oracle",
@@ -687,13 +695,6 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/9040",
     kind: "unpublished",
     category: "product-analytics",
-  },
-  {
-    name: "OnFleet",
-    id: "onfleet",
-    href: "https://github.com/cloudquery/cloudquery/issues/9053",
-    kind: "unpublished",
-    category: "fleet-management",
   },
   {
     name: "Paypal",
