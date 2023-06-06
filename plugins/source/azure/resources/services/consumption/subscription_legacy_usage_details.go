@@ -7,14 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
-	"github.com/cloudquery/plugin-sdk/v3/types"
 )
-
-type usageDetail struct {
-	*armconsumption.UsageDetail
-
-	Properties any `json:"properties"`
-}
 
 func SubscriptionLegacyUsageDetails() *schema.Table {
 	return &schema.Table{
@@ -22,18 +15,7 @@ func SubscriptionLegacyUsageDetails() *schema.Table {
 		Resolver:    fetchSubscriptionLegacyUsageDetails,
 		Description: "https://learn.microsoft.com/en-us/rest/api/consumption/usage-details/list?tabs=HTTP#legacyusagedetail",
 		Multiplex:   client.SubscriptionBillingPeriodMultiplex,
-		Transform: transformers.TransformWithStruct(
-			&usageDetail{},
-			transformers.WithPrimaryKeys("ID"),
-			transformers.WithUnwrapAllEmbeddedStructs(),
-		),
-		Columns: schema.ColumnList{
-			{
-				Name:     "properties",
-				Type:     types.ExtensionTypes.JSON,
-				Resolver: schema.PathResolver("Properties"),
-			},
-		},
+		Transform:   transformers.TransformWithStruct(&armconsumption.LegacyUsageDetail{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 
@@ -50,14 +32,11 @@ func fetchSubscriptionLegacyUsageDetails(ctx context.Context, meta schema.Client
 			return err
 		}
 		for _, v := range p.Value {
-			ud := &usageDetail{UsageDetail: v.GetUsageDetail()}
-			switch d := v.(type) {
-			case *armconsumption.LegacyUsageDetail:
-				ud.Properties = d.Properties
-			case *armconsumption.ModernUsageDetail:
-				ud.Properties = d.Properties
+			lud, ok := v.(*armconsumption.LegacyUsageDetail)
+			if !ok {
+				continue // skip
 			}
-			res <- ud
+			res <- lud
 		}
 	}
 	return nil

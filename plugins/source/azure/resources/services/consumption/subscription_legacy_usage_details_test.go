@@ -25,7 +25,7 @@ func createSubscriptionLegacyUsageDetails(router *mux.Router) error {
 	if err := faker.FakeObject(&item2); err != nil {
 		return err
 	}
-	item2.Kind = to.Ptr(armconsumption.UsageDetailsKindModern)
+	item2.Kind = to.Ptr(armconsumption.UsageDetailsKindModern) // will be skipped, but API seems to return both
 
 	resp := armconsumption.UsageDetailsClientListResponse{
 		UsageDetailsListResult: armconsumption.UsageDetailsListResult{
