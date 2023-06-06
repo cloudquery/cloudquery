@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.18.25
 	github.com/cenkalti/backoff/v4 v4.2.0
 	github.com/cloudquery/plugin-pb-go v1.0.9
-	github.com/cloudquery/plugin-sdk/v3 v3.10.3
+	github.com/cloudquery/plugin-sdk/v3 v3.10.4
 	github.com/rs/zerolog v1.29.0
 )
 
