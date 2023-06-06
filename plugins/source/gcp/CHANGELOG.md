@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.1.0...plugins-source-gcp-v9.2.0) (2023-06-06)
+
+
+### Features
+
+* **gcp:** Add Support For Service Account Impersonation ([#11201](https://github.com/cloudquery/cloudquery/issues/11201)) ([25c5cee](https://github.com/cloudquery/cloudquery/commit/25c5cee44c6d94fb0e0e1168aa99a6f6c8aaa19b)), closes [#10903](https://github.com/cloudquery/cloudquery/issues/10903)
+
 ## [9.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.0.0...plugins-source-gcp-v9.1.0) (2023-06-06)
 
 
