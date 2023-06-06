@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230601070034-e07e22c5580a
-	github.com/cloudquery/plugin-pb-go v1.0.8
+	github.com/cloudquery/plugin-pb-go v1.0.9
 	github.com/cloudquery/plugin-sdk/v3 v3.10.3
 	github.com/goccy/go-json v0.9.11
 	github.com/google/uuid v1.3.0
@@ -45,7 +45,7 @@ require (
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/testify v1.8.2 // indirect
+	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	golang.org/x/crypto v0.7.0 // indirect
