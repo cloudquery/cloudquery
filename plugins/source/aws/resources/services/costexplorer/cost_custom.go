@@ -87,7 +87,6 @@ func fetchCustom(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 
 		jsonInput, err := json.Marshal(input)
 		if err != nil {
-
 			return err
 		}
 
