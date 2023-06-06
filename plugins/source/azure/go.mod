@@ -99,12 +99,12 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads v0.2.0
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue v0.1.0
 	github.com/apache/arrow/go/v13 v13.0.0-20230601070034-e07e22c5580a
-	github.com/cloudquery/plugin-pb-go v1.0.8
-	github.com/cloudquery/plugin-sdk/v3 v3.10.3
+	github.com/cloudquery/plugin-pb-go v1.0.9
+	github.com/cloudquery/plugin-sdk/v3 v3.10.4
 	github.com/gorilla/mux v1.8.0
 	github.com/mitchellh/hashstructure/v2 v2.0.2
 	github.com/rs/zerolog v1.29.0
-	github.com/stretchr/testify v1.8.2
+	github.com/stretchr/testify v1.8.4
 	github.com/thoas/go-funk v0.9.3
 	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1
 	golang.org/x/sync v0.1.0
