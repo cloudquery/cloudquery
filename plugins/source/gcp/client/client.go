@@ -33,8 +33,18 @@ import (
 const maxIdsToLog int = 100
 
 type Client struct {
-	projects  []string
-	orgs      []*crmv1.Organization
+	projects     []string
+	orgs         []*crmv1.Organization
+	excludedOrgs []*crmv1.Organization
+	includedOrgs []*crmv1.Organization
+
+	includeProjects []*crmv1.Project
+	excludeProjects []*crmv1.Project
+
+	allFolders     []*resourcemanagerpb.Folder
+	includeFolders []*resourcemanagerpb.Folder
+	excludeFolders []*resourcemanagerpb.Folder
+
 	folderIds []string
 
 	ClientOptions []option.ClientOption
@@ -189,21 +199,6 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		if err != nil {
 			return nil, fmt.Errorf("failed to get projects: %w", err)
 		}
-	case len(gcpSpec.FolderFilter) > 0:
-		folderIds, err := searchFolders(ctx, foldersClient, gcpSpec.FolderFilter)
-		if err != nil {
-			return nil, fmt.Errorf("failed to search folders: %w", err)
-		}
-
-		logFolderIds(&c.logger, folderIds)
-
-		c.logger.Info().Msg("listing folder projects...")
-		folderProjects, err := listProjectsInFolders(ctx, projectsClient, folderIds)
-		projects = setUnion(projects, folderProjects)
-		if err != nil {
-			return nil, fmt.Errorf("failed to list projects: %w", err)
-		}
-
 	case len(gcpSpec.FolderIDs) > 0:
 		var folderIds []string
 
@@ -236,7 +231,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	}
 
 	if gcpSpec.Projects.Organizations.isNull() {
-		err := c.getProjects(ctx, gcpSpec)
+		err := c.resolveDiscovery(ctx, gcpSpec)
 		if err != nil {
 			return nil, err
 		}
@@ -403,8 +398,8 @@ func getProjectsV1WithFilter(ctx context.Context, filter string, options ...opti
 }
 
 // searchFolders finds all folders that match the filter.
-func searchFolders(ctx context.Context, folderClient *resourcemanager.FoldersClient, filter string) ([]string, error) {
-	folders := []string{}
+func searchFolders(ctx context.Context, folderClient *resourcemanager.FoldersClient, filter string) ([]*resourcemanagerpb.Folder, error) {
+	folders := make([]*resourcemanagerpb.Folder, 0)
 
 	it := folderClient.SearchFolders(ctx, &resourcemanagerpb.SearchFoldersRequest{
 		Query: filter,
@@ -420,7 +415,7 @@ func searchFolders(ctx context.Context, folderClient *resourcemanager.FoldersCli
 			return nil, err
 		}
 
-		folders = append(folders, folder.Name)
+		folders = append(folders, folder)
 	}
 
 	return folders, nil
