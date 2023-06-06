@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230601070034-e07e22c5580a
 	github.com/clarkmcc/go-hubspot v0.0.0-20221010213350-20c2f9cbf936
 	github.com/cloudquery/plugin-pb-go v1.0.9
-	github.com/cloudquery/plugin-sdk/v3 v3.10.3
+	github.com/cloudquery/plugin-sdk/v3 v3.10.4
 	github.com/rs/zerolog v1.29.0
 	golang.org/x/time v0.3.0
 )
