@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/monitors"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/notebooks"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/roles"
+	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/rum"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/slos"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/synthetics"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/users"
@@ -26,6 +27,7 @@ func Tables() []*schema.Table {
 		notebooks.Notebooks(),
 		roles.Roles(),
 		roles.Permissions(),
+		rum.Events(),
 		slos.Objectives(),
 		slos.ObjectiveCorrections(),
 		synthetics.GlobalVariables(),
