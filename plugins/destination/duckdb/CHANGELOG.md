@@ -1,5 +1,33 @@
 # Changelog
 
+## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v3.0.0...plugins-destination-duckdb-v4.0.0) (2023-06-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* **types:** Support writing Apache Arrow nested types:
+    * Structs as DuckDB structs
+    * Maps as DuckDB maps
+
+### Features
+
+* **types:** Proper support for nested types ([#11196](https://github.com/cloudquery/cloudquery/issues/11196)) ([7c6a3e2](https://github.com/cloudquery/cloudquery/commit/7c6a3e2d24632ffd0ac3eacd6bd65b89394ebe0f))
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/cloudquery/plugin-sdk/v3` to `v3.10.0` ([#11116](https://github.com/cloudquery/cloudquery/issues/11116)) ([bba7c4e](https://github.com/cloudquery/cloudquery/commit/bba7c4ef9368741ed00e5c04bdc2bc9a1de9a521))
+* **deps:** Update github.com/apache/arrow/go/v13 digest to e07e22c ([#11151](https://github.com/cloudquery/cloudquery/issues/11151)) ([5083cf7](https://github.com/cloudquery/cloudquery/commit/5083cf720f0ae98e07448ba2ae1116048e2d3a90))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 88d5dc2 ([#11226](https://github.com/cloudquery/cloudquery/issues/11226)) ([9f306bc](https://github.com/cloudquery/cloudquery/commit/9f306bcaf3833b4611f0df5c50277be43aa19cbb))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to a7aad4c ([#11184](https://github.com/cloudquery/cloudquery/issues/11184)) ([8a0822e](https://github.com/cloudquery/cloudquery/commit/8a0822e31fc0eef99de2cdd2bd6d7e4c8b4131bf))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to c67fb39 ([#11169](https://github.com/cloudquery/cloudquery/issues/11169)) ([dcb0f92](https://github.com/cloudquery/cloudquery/commit/dcb0f9296a770a5cc2eb6bffd6b1ee30fbccb5dc))
+* **deps:** Update golang.org/x/exp digest to 2e198f4 ([#11155](https://github.com/cloudquery/cloudquery/issues/11155)) ([c46c62b](https://github.com/cloudquery/cloudquery/commit/c46c62b68692f527485d7f4b84265abc5dc1142c))
+* **deps:** Update google.golang.org/genproto digest to e85fd2c ([#11156](https://github.com/cloudquery/cloudquery/issues/11156)) ([dbe7e92](https://github.com/cloudquery/cloudquery/commit/dbe7e9293d693a6821570e0e0b80202a936b6d3c))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.9 ([#11240](https://github.com/cloudquery/cloudquery/issues/11240)) ([f92cd4b](https://github.com/cloudquery/cloudquery/commit/f92cd4bfe3c3d0088964d52ab9cd01ca4cf622e1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v3 to v3.10.3 ([#11150](https://github.com/cloudquery/cloudquery/issues/11150)) ([dc00994](https://github.com/cloudquery/cloudquery/commit/dc00994e32936af7e9893c93561d0f9df225a929))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v3 to v3.10.4 ([#11244](https://github.com/cloudquery/cloudquery/issues/11244)) ([8fceef6](https://github.com/cloudquery/cloudquery/commit/8fceef6f9041e173923555d8ff221cfe83b424c2))
+* **race:** Fix issue caused by [Over-Eager Unique Constraint Checking](https://duckdb.org/docs/sql/indexes#over-eager-unique-constraint-checking) in DuckDB overwrite ([#11215](https://github.com/cloudquery/cloudquery/issues/11215)) ([c0b9f0a](https://github.com/cloudquery/cloudquery/commit/c0b9f0af37b70b7a386ae4b1c20e52794db87681))
+
 ## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v2.0.1...plugins-destination-duckdb-v3.0.0) (2023-05-24)
 
 
