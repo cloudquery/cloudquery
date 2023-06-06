@@ -41,6 +41,7 @@ func Images() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			imageAttributesLaunchPermissions(),
+			imageAttributesLastLaunchTime(),
 		},
 	}
 }
