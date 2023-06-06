@@ -75,7 +75,7 @@ If enabled CloudQuery will skip any resources that belong to a service that has 
 - `discovery_concurrency` (int) (default: 100).
   The number of concurrent requests that CloudQuery will make to resolve enabled services. This is only used when `enabled_services_only` is set to `true`.
 
-- `service_account_impersonation` ([Rate limit](#service-account-impersonation-spec) spec, optional. Default: empty)
+- `service_account_impersonation` ([Service Account Impersonation](#service-account-impersonation-spec) spec, optional. Default: empty)
 
   Service Account impersonation configuration.
 
