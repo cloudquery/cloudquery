@@ -12,14 +12,14 @@ import { Callout } from 'nextra-theme-docs';
 
 <BlogHeader/>
 
-MotherDuck is a serverless analytics service powered by DuckDB. If you have data in a Postgres database that you'd like to analyze using MotherDuck, this tutorial will show you how to do this using the open source ELT tool, CloudQuery. We will cover:
+MotherDuck is a serverless analytics service powered by DuckDB. If you have data in a Postgres database that you'd like to analyze using MotherDuck, this tutorial will show you how to do this using CloudQuery, an open source ELT framework. We will cover:
  
  1. How to copy a Postgres database into MotherDuck as one-off batch operation, and
  2. How to continuously stream Postgres data from Postgres to MotherDuck using Postgres Change Data Capture (CDC).
 
 Which option you choose is up to you. Either way, by the end of this tutorial you will be able to analyze data from your Postgres database using MotherDuck.
 
-## [Optional] Step 0. Create a Test Table in Postgres
+## Step 0. Create a Test Table in Postgres (Optional)
 
 To demonstrate the steps in this tutorial, we will create a basic `customers` table in Postgres and insert 10,000 generated rows:
 
@@ -57,15 +57,15 @@ SELECT 3
 
 ## Step 1. Install CloudQuery
 
-CloudQuery is a cross-platform command-line tool for extracting and loading data that can be run just about anywhere: locally, on a virtual machine, or in a containerized environment. In this tutorial we'll try it out locally, and we'll use it to copy data from a local Postgres database to Motherduck. On MacOS, you can install it using Homebrew:
+CloudQuery is a cross-platform command-line tool for extracting and loading data that can be run just about anywhere: locally, on a virtual machine, or in a containerized environment. In this tutorial we'll try it out locally, and we'll use it to copy data from a local Postgres database to MotherDuck. On MacOS, you can install it using Homebrew:
 
 ```shell copy
 brew install cloudquery/tap/cloudquery
 ```
 
-See the [CloudQuery Quickstart guide](/docs/quickstart) for installation instructions on other platforms.
+See the [CloudQuery Quickstart guide](/docs/quickstart) for installation instructions on other platforms. Please note that the DuckDB plugin (that we will use later) [does not support Windows](https://github.com/cloudquery/cloudquery/issues/8854) at this time.
 
-Once it's installed, you should be able to invoke it from the command line:
+Once CloudQuery is installed, you should be able to invoke it from the command line:
 
 ```shell
 $ cloudquery --version
@@ -184,4 +184,4 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY?playlist=sWGDsIiXEa8">
 
 ## Next Steps
 
-In this post we covered how to sync both once-off and continuously from Postgres to MotherDuck from your local machine, using CloudQuery. Since your local machine won't always be available, the next step is to schedule the sync and get it production-ready. For more information on this, head over to the [CloudQuery Deployment Documentation](/docs/deployment/overview).
+In this post we covered how to sync both once-off and continuously from Postgres to MotherDuck from your local machine, using CloudQuery. Since your local machine won't always be available, the next step is to schedule the sync and get it production-ready. For more information about this, head over to the [CloudQuery Deployment Documentation](/docs/deployment/overview). Or if you have any questions, we're also always happy to help on [Discord](https://cloudquery.io/discord). Happy syncing! 🦆
