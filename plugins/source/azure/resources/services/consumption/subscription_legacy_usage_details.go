@@ -32,7 +32,11 @@ func fetchSubscriptionLegacyUsageDetails(ctx context.Context, meta schema.Client
 			return err
 		}
 		for _, v := range p.Value {
-			res <- v.(*armconsumption.LegacyUsageDetail)
+			lud, ok := v.(*armconsumption.LegacyUsageDetail)
+			if !ok {
+				continue // skip
+			}
+			res <- lud
 		}
 	}
 	return nil
