@@ -1,6 +1,6 @@
 # Table: datadog_rum_events
 
-This table shows data for Datadog Rum Events.
+This table shows data for Datadog Real User Monitoring (RUM) Events.
 
 The composite primary key for this table is (**account_name**, **id**).
 
