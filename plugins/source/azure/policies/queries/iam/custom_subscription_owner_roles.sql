@@ -15,7 +15,7 @@ assignable_scopes AS (
 meets_scopes AS (
     SELECT
         _cq_id,
-        bool_or(assignable_scope = '/' OR assignable_scope LIKE '/subscriptions/%') AS has_wide_scope
+        bool_or(assignable_scope = '/' OR assignable_scope ~ '^\/subscriptions\/[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$') AS has_wide_scope
     FROM assignable_scopes
     GROUP BY _cq_id
 ),
