@@ -1,4 +1,4 @@
-package dashboard_lists
+package dashboards
 
 import (
 	"context"
@@ -9,19 +9,17 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
-func DashboardLists() *schema.Table {
+func Lists() *schema.Table {
 	return &schema.Table{
 		Name:      "datadog_dashboard_lists",
-		Resolver:  fetchDashboardLists,
+		Resolver:  fetchLists,
 		Multiplex: client.AccountMultiplex,
 		Transform: client.TransformWithStruct(&datadogV1.DashboardList{}, transformers.WithPrimaryKeys("Id")),
-		Columns: []schema.Column{
-			client.AccountNameColumn,
-		},
+		Columns:   schema.ColumnList{client.AccountNameColumn},
 	}
 }
 
-func fetchDashboardLists(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchLists(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	ctx = c.BuildContextV1(ctx)
 	resp, _, err := c.DDServices.DashboardListsAPI.ListDashboardLists(ctx)
