@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"fmt"
+	"math/big"
 	"strings"
 	"time"
 
@@ -10,6 +11,8 @@ import (
 	"cloud.google.com/go/civil"
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
+	"github.com/apache/arrow/go/v13/arrow/decimal128"
+	"github.com/apache/arrow/go/v13/arrow/decimal256"
 	"github.com/apache/arrow/go/v13/arrow/memory"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugin-sdk/v3/types"
@@ -56,6 +59,15 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		res <- rb.NewRecord()
 	}
 	return nil
+}
+
+func parseRat(v *big.Rat) (str string, precision int32, scale int32) {
+	str = v.FloatString(10)
+	parts := strings.Split(str, ".")
+	if len(parts) == 2 {
+		return str, int32(len(parts[0]) + len(parts[1])), int32(len(parts[1]))
+	}
+	return str, int32(len(parts[0])), 0
 }
 
 func appendValue(builder array.Builder, value any) error {
@@ -150,6 +162,24 @@ func appendValue(builder array.Builder, value any) error {
 			bldr.Append(ts)
 			return nil
 		}
+	case *array.Decimal128Builder:
+		r := value.(*big.Rat)
+		str, precision, scale := parseRat(r)
+		dec, err := decimal128.FromString(str, precision, scale)
+		if err != nil {
+			return err
+		}
+		bldr.Append(dec)
+		return nil
+	case *array.Decimal256Builder:
+		r := value.(*big.Rat)
+		str, precision, scale := parseRat(r)
+		dec, err := decimal256.FromString(str, precision, scale)
+		if err != nil {
+			return err
+		}
+		bldr.Append(dec)
+		return nil
 	case *types.JSONBuilder:
 		return bldr.AppendValueFromString(value.(string))
 	default:

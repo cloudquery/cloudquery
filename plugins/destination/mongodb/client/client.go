@@ -33,7 +33,7 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	if err := spec.Validate(); err != nil {
 		return nil, err
 	}
-	c.client, err = mongo.NewClient(options.Client().ApplyURI(spec.ConnectionString))
+	c.client, err = mongo.NewClient(options.Client().ApplyURI(spec.ConnectionString).SetRegistry(getRegistry()))
 	if err != nil {
 		return nil, err
 	}

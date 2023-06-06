@@ -38,7 +38,9 @@ func transformArr(arr arrow.Array) []any {
 		case *array.Uint32:
 			dbArr[i] = a.Value(i)
 		case *array.Uint64:
-			dbArr[i] = a.Value(i)
+			val := a.Value(i)
+			var custom = CustomUnit64(val)
+			dbArr[i] = custom
 		case *array.Float32:
 			dbArr[i] = a.Value(i)
 		case *array.Float64:
