@@ -44,3 +44,25 @@ The following tables depend on aws_lightsail_instances:
 |state|`json`|
 |support_code|`utf8`|
 |username|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Lightsail instances should use IMDSv2
+
+```sql
+SELECT
+  'Lightsail instances should use IMDSv2' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN metadata_options->>'HttpTokens' IS DISTINCT FROM 'required' THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_lightsail_instances;
+```
+
+

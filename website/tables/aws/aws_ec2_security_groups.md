@@ -25,3 +25,77 @@ The primary key for this table is **arn**.
 |ip_permissions_egress|`json`|
 |owner_id|`utf8`|
 |vpc_id|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### The VPC default security group should not allow inbound and outbound traffic
+
+```sql
+SELECT
+  'The VPC default security group should not allow inbound and outbound traffic'
+    AS title,
+  account_id,
+  arn,
+  CASE
+  WHEN group_name = 'default'
+  AND (
+      jsonb_array_length(ip_permissions) > 0
+      OR jsonb_array_length(ip_permissions_egress) > 0
+    )
+  THEN 'fail'
+  ELSE 'pass'
+  END
+FROM
+  aws_ec2_security_groups;
+```
+
+### Security group is not currently in use so it should be deleted
+
+```sql
+WITH
+  interface_groups
+    AS (
+      SELECT
+        DISTINCT g->>'GroupId' AS id
+      FROM
+        aws_ec2_instances AS i,
+        jsonb_array_elements(network_interfaces) AS a,
+        jsonb_array_elements(a->'Groups') AS g
+    )
+SELECT
+  'security group is not currently in use so it should be deleted' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE WHEN interface_groups.id IS NULL THEN 'fail' ELSE 'pass' END AS status
+FROM
+  aws_ec2_security_groups
+  LEFT JOIN interface_groups ON
+      aws_ec2_security_groups.group_id = interface_groups.id;
+```
+
+### Unused EC2 security group
+
+```sql
+WITH
+  interface_groups
+    AS (
+      SELECT
+        DISTINCT a->>'GroupId' AS group_id
+      FROM
+        aws_ec2_instances, jsonb_array_elements(security_groups) AS a
+    )
+SELECT
+  'Unused EC2 security group' AS title,
+  sg.account_id,
+  sg.arn AS resource_id,
+  'fail' AS status
+FROM
+  aws_ec2_security_groups AS sg
+  LEFT JOIN interface_groups ON interface_groups.group_id = sg.group_id
+WHERE
+  interface_groups.group_id IS NULL;
+```
+
+

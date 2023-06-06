@@ -40,3 +40,51 @@ The primary key for this table is **account_id**.
 |versions_per_policy_quota|`int64`|
 |global_endpoint_token_version|`int64`|
 |aliases|`list<item: utf8, nullable>`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### S3 Block Public Access setting should be enabled
+
+```sql
+SELECT
+  'S3 Block Public Access setting should be enabled' AS title,
+  aws_iam_accounts.account_id,
+  aws_iam_accounts.account_id AS resource_id,
+  CASE
+  WHEN config_exists IS NOT true
+  OR block_public_acls IS NOT true
+  OR block_public_policy IS NOT true
+  OR ignore_public_acls IS NOT true
+  OR restrict_public_buckets IS NOT true
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_iam_accounts
+  LEFT JOIN aws_s3_accounts ON
+      aws_iam_accounts.account_id = aws_s3_accounts.account_id;
+```
+
+### SSM documents should not be public
+
+```sql
+SELECT
+  'SSM documents should not be public' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN 'all' = ANY (ARRAY (SELECT jsonb_array_elements_text(p->'AccountIds')))
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_ssm_documents, jsonb_array_elements(aws_ssm_documents.permissions) AS p
+WHERE
+  owner IN (SELECT account_id FROM aws_iam_accounts);
+```
+
+

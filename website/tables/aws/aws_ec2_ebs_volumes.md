@@ -33,3 +33,35 @@ The primary key for this table is **arn**.
 |throughput|`int64`|
 |volume_id|`utf8`|
 |volume_type|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Detached EBS volume
+
+```sql
+SELECT
+  'Detached EBS volume' AS title,
+  account_id,
+  arn AS resource_id,
+  'fail' AS status
+FROM
+  aws_ec2_ebs_volumes
+WHERE
+  COALESCE(jsonb_array_length(attachments), 0) = 0;
+```
+
+### Attached EBS volumes should be encrypted at rest
+
+```sql
+SELECT
+  'Attached EBS volumes should be encrypted at rest' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE WHEN encrypted IS false THEN 'fail' ELSE 'pass' END AS status
+FROM
+  aws_ec2_ebs_volumes;
+```
+
+

@@ -21,3 +21,23 @@ The primary key for this table is **arn**.
 |attachments|`json`|
 |internet_gateway_id|`utf8`|
 |owner_id|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Unused internet gateway
+
+```sql
+SELECT
+  'Unused internet gateway' AS title,
+  account_id,
+  arn AS resource_id,
+  'fail' AS status
+FROM
+  aws_ec2_internet_gateways
+WHERE
+  COALESCE(jsonb_array_length(attachments), 0) = 0;
+```
+
+
