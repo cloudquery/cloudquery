@@ -6,7 +6,7 @@ run:
     - client/mocks
     - resources/forks
     - codegen
-  timeout: 10m
+  timeout: 15m
   build-tags:
     - all
 
