@@ -3,6 +3,49 @@
 ## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-datadog-v2.0.0...plugins-source-datadog-v3.0.0) (2023-06-06)
 
 
+### This Release has the Following Changes to Tables
+- Table `datadog_dashboards`: column type changed from `json` to `utf8` for `description` (:warning: breaking)
+- Table `datadog_downtimes`: column type changed from `json` to `int32` for `updater_id` (:warning: breaking)
+- Table `datadog_downtimes`: column type changed from `json` to `int64` for `canceled` (:warning: breaking)
+- Table `datadog_downtimes`: column type changed from `json` to `int64` for `end` (:warning: breaking)
+- Table `datadog_downtimes`: column type changed from `json` to `int64` for `monitor_id` (:warning: breaking)
+- Table `datadog_downtimes`: column type changed from `json` to `int64` for `parent_id` (:warning: breaking)
+- Table `datadog_downtimes`: column added with name `notify_end_states` and type `list<item: utf8, nullable>`
+- Table `datadog_downtimes`: column added with name `notify_end_types` and type `list<item: utf8, nullable>`
+- Table `datadog_global_variables`: primary key constraint added to column `account_name` (:warning: breaking)
+- Table `datadog_incident_attachments`: column added with name `incident_id (PK)` and type `utf8` (:warning: breaking)
+- Table `datadog_incident_attachments`: primary key constraint added to column `account_name` (:warning: breaking)
+- Table `datadog_incident_attachments`: primary key constraint added to column `id` (:warning: breaking)
+- Table `datadog_incident_attachments`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `datadog_incident_attachments`: column added with name `additional_properties` and type `json`
+- Table `datadog_monitor_downtimes`: column type changed from `json` to `int32` for `updater_id` (:warning: breaking)
+- Table `datadog_monitor_downtimes`: column type changed from `json` to `int64` for `canceled` (:warning: breaking)
+- Table `datadog_monitor_downtimes`: column type changed from `json` to `int64` for `end` (:warning: breaking)
+- Table `datadog_monitor_downtimes`: column type changed from `json` to `int64` for `monitor_id` (:warning: breaking)
+- Table `datadog_monitor_downtimes`: column type changed from `json` to `int64` for `parent_id` (:warning: breaking)
+- Table `datadog_monitor_downtimes`: primary key constraint added to column `account_name` (:warning: breaking)
+- Table `datadog_monitor_downtimes`: primary key constraint added to column `id` (:warning: breaking)
+- Table `datadog_monitor_downtimes`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `datadog_monitor_downtimes`: column added with name `additional_properties` and type `json`
+- Table `datadog_monitor_downtimes`: column added with name `notify_end_states` and type `list<item: utf8, nullable>`
+- Table `datadog_monitor_downtimes`: column added with name `notify_end_types` and type `list<item: utf8, nullable>`
+- Table `datadog_monitors`: column added with name `matching_downtimes` and type `json`
+- Table `datadog_role_permissions`: column added with name `role_id (PK)` and type `utf8` (:warning: breaking)
+- Table `datadog_role_permissions`: primary key constraint added to column `account_name` (:warning: breaking)
+- Table `datadog_role_permissions`: primary key constraint added to column `id` (:warning: breaking)
+- Table `datadog_role_permissions`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `datadog_role_users`: column added with name `role_id (PK)` and type `utf8` (:warning: breaking)
+- Table `datadog_role_users`: primary key constraint added to column `account_name` (:warning: breaking)
+- Table `datadog_role_users`: primary key constraint added to column `id` (:warning: breaking)
+- Table `datadog_role_users`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `datadog_rum_events` was added
+- Table `datadog_slo_corrections` was added
+- Table `datadog_slos` was added
+- Table `datadog_user_permissions`: column added with name `user_id (PK)` and type `utf8` (:warning: breaking)
+- Table `datadog_user_permissions`: primary key constraint added to column `account_name` (:warning: breaking)
+- Table `datadog_user_permissions`: primary key constraint added to column `id` (:warning: breaking)
+- Table `datadog_user_permissions`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+
 ### ⚠ BREAKING CHANGES
 
 * **datadog:** Add SLO tables, housekeeping ([#11166](https://github.com/cloudquery/cloudquery/issues/11166))
