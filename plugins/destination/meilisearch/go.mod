@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230601070034-e07e22c5580a
 	github.com/cloudquery/plugin-pb-go v1.0.9
-	github.com/cloudquery/plugin-sdk/v3 v3.10.3
+	github.com/cloudquery/plugin-sdk/v3 v3.10.4
 	github.com/goccy/go-json v0.9.11
 	github.com/google/uuid v1.3.0
 	github.com/meilisearch/meilisearch-go v0.24.0

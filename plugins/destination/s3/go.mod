@@ -10,7 +10,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.33.1
 	github.com/cloudquery/filetypes/v3 v3.1.5
 	github.com/cloudquery/plugin-pb-go v1.0.9
-	github.com/cloudquery/plugin-sdk/v3 v3.10.3
+	github.com/cloudquery/plugin-sdk/v3 v3.10.4
 	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.1
