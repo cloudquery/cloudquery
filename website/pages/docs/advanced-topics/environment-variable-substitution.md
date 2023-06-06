@@ -31,9 +31,9 @@ spec:
 
 Local path `./path/to/secret/file` will be read and replaced with the contents of the file before processing.
 
-## JSON Files
+## JSON Files in older versions
 
-If the file or environment variable being substituted in contains JSON, it should be imported inside single quotes:
+If the file or environment variable being substituted in contains JSON, it should be imported as-is. If you're using cloudquery cli version 3.5.0 or prior, it should be imported inside single quotes and content should be escaped and newlines removed.
 
 ```yaml copy
 kind: "destination"
