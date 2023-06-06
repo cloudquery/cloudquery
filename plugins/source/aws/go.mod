@@ -117,7 +117,7 @@ require (
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/codegen v0.2.1
-	github.com/cloudquery/plugin-pb-go v1.0.8
+	github.com/cloudquery/plugin-pb-go v1.0.9
 	github.com/cloudquery/plugin-sdk/v3 v3.10.3
 	github.com/gocarina/gocsv v0.0.0-20230513223533-9ddd7fd60602
 	github.com/golang/mock v1.6.0
@@ -126,7 +126,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.29.0
-	github.com/stretchr/testify v1.8.2
+	github.com/stretchr/testify v1.8.4
 	github.com/thoas/go-funk v0.9.3
 	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1
 	golang.org/x/sync v0.1.0
