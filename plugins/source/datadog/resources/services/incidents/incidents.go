@@ -25,13 +25,9 @@ func Incidents() *schema.Table {
 	}
 }
 
-func fetchIncidents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchIncidents(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	ctx = c.BuildContextV2(ctx)
-	resp, _, err := c.DDServices.IncidentsAPI.ListIncidents(ctx)
-	if err != nil {
-		return err
-	}
-	res <- resp.GetData()
-	return nil
+	resp, cancel := c.DDServices.IncidentsAPI.ListIncidentsWithPagination(ctx)
+	return client.ConsumePaginatedResponse(resp, cancel, res)
 }
