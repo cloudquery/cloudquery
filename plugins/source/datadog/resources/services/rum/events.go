@@ -12,7 +12,7 @@ import (
 func Events() *schema.Table {
 	return &schema.Table{
 		Name:      "datadog_rum_events",
-		Title:         "Datadog Real User Monitoring (RUM) Events",
+		Title:     "Datadog Real User Monitoring (RUM) Events",
 		Resolver:  fetchEvents,
 		Multiplex: client.AccountMultiplex,
 		Transform: client.TransformWithStruct(new(datadogV2.RUMEvent), transformers.WithPrimaryKeys("Id")),
