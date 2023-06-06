@@ -3,7 +3,6 @@ package consumption
 import (
 	"encoding/json"
 	"net/http"
-
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -14,16 +13,24 @@ import (
 )
 
 func createSubscriptionLegacyUsageDetails(router *mux.Router) error {
-	var item armconsumption.LegacyUsageDetail
-	if err := faker.FakeObject(&item); err != nil {
+	var (
+		item1 armconsumption.LegacyUsageDetail
+		item2 armconsumption.ModernUsageDetail
+	)
+	if err := faker.FakeObject(&item1); err != nil {
 		return err
 	}
-	item.Kind = to.Ptr(armconsumption.UsageDetailsKindLegacy)
+	item1.Kind = to.Ptr(armconsumption.UsageDetailsKindLegacy)
+
+	if err := faker.FakeObject(&item2); err != nil {
+		return err
+	}
+	item2.Kind = to.Ptr(armconsumption.UsageDetailsKindModern)
 
 	resp := armconsumption.UsageDetailsClientListResponse{
 		UsageDetailsListResult: armconsumption.UsageDetailsListResult{
 			// Value is an interface{} so we can't mock it directly
-			Value: []armconsumption.UsageDetailClassification{&item},
+			Value: []armconsumption.UsageDetailClassification{&item1, &item2},
 		},
 	}
 	resp.NextLink = to.Ptr("")

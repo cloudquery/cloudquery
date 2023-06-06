@@ -14,8 +14,8 @@ The primary key for this table is **id**.
 |_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|kind|`utf8`|
 |properties|`json`|
+|kind|`utf8`|
 |etag|`utf8`|
 |id (PK)|`utf8`|
 |name|`utf8`|
