@@ -6,6 +6,7 @@ import (
 
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
+	"google.golang.org/api/iterator"
 )
 
 func (c *Client) resolveFolders(ctx context.Context, folder ResourceDiscovery) error {
@@ -38,9 +39,55 @@ func (c *Client) resolveFolders(ctx context.Context, folder ResourceDiscovery) e
 		c.includeFolders = append(c.includeFolders, folder)
 	}
 
-	return nil
+	allFolders, err := searchFolders(ctx, foldersClient, "name:*")
+	if err != nil {
+		return fmt.Errorf("failed to get all folders: %w", err)
+	}
+	for {
+
+		for _, folder := range allFolders {
+			existingNode := findNodeByID(c.graph, folder.Parent)
+			if existingNode != nil {
+				newNode := node{
+					parentID: &folder.Parent,
+					included: true,
+					folder:   folder,
+				}
+				existingNode.relations = append(existingNode.relations, &newNode)
+			}
+		}
+		if len(allFolders) == 0 {
+			break
+		}
+	}
+
+	return err
 }
 
 func getFolderFromId(ctx context.Context, foldersClient *resourcemanager.FoldersClient, id string) (*resourcemanagerpb.Folder, error) {
 	return foldersClient.GetFolder(ctx, &resourcemanagerpb.GetFolderRequest{Name: "folders/" + id})
+}
+
+// searchFolders finds all folders that match the filter.
+func searchFolders(ctx context.Context, folderClient *resourcemanager.FoldersClient, filter string) ([]*resourcemanagerpb.Folder, error) {
+	folders := make([]*resourcemanagerpb.Folder, 0)
+
+	it := folderClient.SearchFolders(ctx, &resourcemanagerpb.SearchFoldersRequest{
+		Query: filter,
+	})
+
+	for {
+		folder, err := it.Next()
+
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			return nil, err
+		}
+
+		folders = append(folders, folder)
+	}
+
+	return folders, nil
 }

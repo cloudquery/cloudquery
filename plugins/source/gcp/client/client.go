@@ -44,8 +44,8 @@ type Client struct {
 	allFolders     []*resourcemanagerpb.Folder
 	includeFolders []*resourcemanagerpb.Folder
 	excludeFolders []*resourcemanagerpb.Folder
-
-	folderIds []string
+	graph          *node
+	folderIds      []string
 
 	ClientOptions []option.ClientOption
 	CallOptions   []gax.CallOption
@@ -191,7 +191,13 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	if err != nil {
 		return nil, fmt.Errorf("failed to create folders client: %w", err)
 	}
+	err = c.resolveDiscovery(ctx, gcpSpec)
+	if err != nil {
+		return nil, err
+	}
+	// if gcpSpec.Projects.Organizations.isNull() {
 
+	// }
 	switch {
 	case len(projects) == 0 && len(gcpSpec.FolderIDs) == 0 && len(gcpSpec.ProjectFilter) == 0 && len(gcpSpec.FolderFilter) == 0:
 		c.logger.Info().Msg("No project_ids, folder_ids, or project_filter specified - assuming all active projects")
@@ -230,12 +236,6 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		projects = setUnion(projects, projectsWithFilter)
 	}
 
-	if gcpSpec.Projects.Organizations.isNull() {
-		err := c.resolveDiscovery(ctx, gcpSpec)
-		if err != nil {
-			return nil, err
-		}
-	}
 	if len(gcpSpec.OrganizationIDs) == 0 && len(gcpSpec.OrganizationFilter) == 0 {
 		c.logger.Info().Msg("No organization_ids or organization_filter specified - assuming all organizations")
 		c.logger.Info().Msg("Listing organizations...")
@@ -395,30 +395,6 @@ func getProjectsV1WithFilter(ctx context.Context, filter string, options ...opti
 	}
 
 	return projects, nil
-}
-
-// searchFolders finds all folders that match the filter.
-func searchFolders(ctx context.Context, folderClient *resourcemanager.FoldersClient, filter string) ([]*resourcemanagerpb.Folder, error) {
-	folders := make([]*resourcemanagerpb.Folder, 0)
-
-	it := folderClient.SearchFolders(ctx, &resourcemanagerpb.SearchFoldersRequest{
-		Query: filter,
-	})
-
-	for {
-		folder, err := it.Next()
-
-		if err == iterator.Done {
-			break
-		}
-		if err != nil {
-			return nil, err
-		}
-
-		folders = append(folders, folder)
-	}
-
-	return folders, nil
 }
 
 // listFolders recursively lists the folders in the 'parent' folder. Includes the 'parent' folder itself.

@@ -19,32 +19,44 @@ func (c *Client) resolveOrgs(ctx context.Context, org ResourceDiscovery) error {
 			if err != nil {
 				return fmt.Errorf("failed to get organizations with filter: %w", err)
 			}
-			c.included_orgs = append(c.included_orgs, orgs...)
+			c.includedOrgs = append(c.includedOrgs, orgs...)
 		}
 		for _, excludeFilter := range org.ExcludeFilter {
 			orgs, err := getOrganizationsFilter(ctx, service, excludeFilter)
 			if err != nil {
 				return fmt.Errorf("failed to get organizations with filter: %w", err)
 			}
-			c.excluded_orgs = append(c.excluded_orgs, orgs...)
+			c.excludedOrgs = append(c.excludedOrgs, orgs...)
 
 		}
-		// Resolve organization from gcpSpec.Projects.Organizations.id_include_list and add to c.included_orgs
+		// Resolve organization from gcpSpec.Projects.Organizations.id_include_list and add to c.includedOrgs
 		for _, orgId := range org.IncludeListId {
 			org, err := getOrganizationFromId(ctx, service, orgId)
 			if err != nil {
 				return fmt.Errorf("failed to get organization with id %s: %w", orgId, err)
 			}
-			c.included_orgs = append(c.included_orgs, org)
+			c.includedOrgs = append(c.includedOrgs, org)
 		}
-		// Resolve organization from gcpSpec.Projects.Organizations.id_exclude_list and add to c.excluded_orgs
+		// Resolve organization from gcpSpec.Projects.Organizations.id_exclude_list and add to c.excludedOrgs
 		for _, orgId := range org.ExcludeListId {
 			org, err := getOrganizationFromId(ctx, service, orgId)
 			if err != nil {
 				return fmt.Errorf("failed to get organization with id %s: %w", orgId, err)
 			}
-			c.excluded_orgs = append(c.excluded_orgs, org)
+			c.excludedOrgs = append(c.excludedOrgs, org)
 		}
+	}
+	for _, orgId := range c.includedOrgs {
+		c.graph.relations = append(c.graph.relations, &node{
+			org:      orgId,
+			included: true,
+		})
+	}
+	for _, orgId := range c.excludedOrgs {
+		c.graph.relations = append(c.graph.relations, &node{
+			org:      orgId,
+			included: false,
+		})
 	}
 	return nil
 }

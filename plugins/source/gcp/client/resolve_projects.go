@@ -15,7 +15,7 @@ func (c *Client) resolveProjects(ctx context.Context, project ResourceDiscovery)
 	}
 
 	if project.isIncludeNull() {
-		c.include_projects, err = listProjectsFilter(ctx, service, "lifecycleState=ACTIVE")
+		c.includeProjects, err = listProjectsFilter(ctx, service, "lifecycleState=ACTIVE")
 		if err != nil {
 			return fmt.Errorf("failed to list active projects: %w", err)
 		}
@@ -25,28 +25,28 @@ func (c *Client) resolveProjects(ctx context.Context, project ResourceDiscovery)
 		if err != nil {
 			return fmt.Errorf("failed to list projects with filter (%s): %w", includeFilter, err)
 		}
-		c.include_projects = append(c.include_projects, projects...)
+		c.includeProjects = append(c.includeProjects, projects...)
 	}
 	for _, excludeFilter := range project.ExcludeFilter {
 		projects, err := listProjectsFilter(ctx, service, excludeFilter)
 		if err != nil {
 			return fmt.Errorf("failed to list projects with filter (%s): %w", excludeFilter, err)
 		}
-		c.exclude_projects = append(c.exclude_projects, projects...)
+		c.excludeProjects = append(c.excludeProjects, projects...)
 	}
 	for _, includeId := range project.IncludeListId {
 		project, err := service.Projects.Get(includeId).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("failed to get project with id %s: %w", includeId, err)
 		}
-		c.include_projects = append(c.include_projects, project)
+		c.includeProjects = append(c.includeProjects, project)
 	}
 	for _, excludeId := range project.ExcludeListId {
 		project, err := service.Projects.Get(excludeId).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("failed to get project with id %s: %w", excludeId, err)
 		}
-		c.exclude_projects = append(c.exclude_projects, project)
+		c.excludeProjects = append(c.excludeProjects, project)
 	}
 
 	return nil
