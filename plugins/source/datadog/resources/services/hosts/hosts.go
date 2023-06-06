@@ -15,13 +15,11 @@ func Hosts() *schema.Table {
 		Resolver:  fetchHosts,
 		Multiplex: client.AccountMultiplex,
 		Transform: client.TransformWithStruct(&datadogV1.Host{}, transformers.WithPrimaryKeys("Id")),
-		Columns: []schema.Column{
-			client.AccountNameColumn,
-		},
+		Columns:   schema.ColumnList{client.AccountNameColumn},
 	}
 }
 
-func fetchHosts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchHosts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	ctx = c.BuildContextV1(ctx)
 	resp, _, err := c.DDServices.HostsAPI.ListHosts(ctx)
