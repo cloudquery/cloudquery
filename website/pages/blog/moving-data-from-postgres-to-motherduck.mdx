@@ -1,9 +1,9 @@
 ---
-title: Moving Data from Postgres to Motherduck
+title: Moving Data from Postgres to MotherDuck
 tag: product
 date: 2023/06/06
 description: >-
-  How to continuously stream Postgres data from Postgres to Motherduck using CloudQuery and Postgres CDC.  
+  How to continuously stream Postgres data from Postgres to MotherDuck using CloudQuery and Postgres CDC.  
 author: hermanschaaf
 ---
 
@@ -14,10 +14,10 @@ import { Callout } from 'nextra-theme-docs';
 
 MotherDuck is a serverless analytics service powered by DuckDB. In this tutorial, we'll cover:
  
- 1. How to copy a Postgres database into Motherduck as one-off batch operation, and
- 2. How to continuously stream Postgres data from Postgres to Motherduck using CloudQuery and Postgres Change Data Capture (CDC).
+ 1. How to copy a Postgres database into MotherDuck as one-off batch operation, and
+ 2. How to continuously stream Postgres data from Postgres to MotherDuck using CloudQuery and Postgres Change Data Capture (CDC).
 
-Which option you choose is up to you; by the end of this tutorial you will be able to analyze data from your Postgres database using Motherduck.
+Which option you choose is up to you; by the end of this tutorial you will be able to analyze data from your Postgres database using MotherDuck.
 
 ## [Optional] Step 0. Create a Test Table in Postgres
 
@@ -98,7 +98,7 @@ spec:
     connection_string: "md:cloudquery"
 ```
 
-A typical CloudQuery configuration consists of two parts: a source and a destination. A Postgres database is the source in this case, and we've configured it to copy the `customers` table from a locally running Postgres database. The destination is Motherduck, and we've configured it to write to a database with the alias `cloudquery`.
+A typical CloudQuery configuration consists of two parts: a source and a destination. A Postgres database is the source in this case, and we've configured it to copy the `customers` table from a locally running Postgres database. The destination is MotherDuck, and we've configured it to write to a database with the alias `cloudquery`.
 
 <Callout type="info">
 
@@ -113,9 +113,9 @@ In production, you should use environment variable expansion to reference the co
 
 ## Step 3. Set Up Authentication
 
-To authenticate with Motherduck, we need to export our service token as an environment variable. You can find the token by navigating to `https://app.motherduck.com/` and clicking the cog in the top right-hand corner:
+To authenticate with MotherDuck, we need to export our service token as an environment variable. You can find the token by navigating to `https://app.motherduck.com/` and clicking the cog in the top right-hand corner:
 
-![Where to find your token on the Motherduck app page](/images/blog/moving-data-from-postgres-to-motherduck/motherduck-token.png)
+![Where to find your token on the MotherDuck app page](/images/blog/moving-data-from-postgres-to-motherduck/motherduck-token.png)
 
 Copy the token to your clipboard and then export it as an environment variable called `motherduck_token`:
 
@@ -127,7 +127,7 @@ You may also choose to place the token in your `.bashrc` or `.zshrc` file so tha
 
 ## Step 4. Run a Sync
 
-The last step is to start the sync. This will automatically create new tables in Motherduck and start loading data from Postgres to Motherduck.
+The last step is to start the sync. This will automatically create new tables in MotherDuck and start loading data from Postgres to MotherDuck.
 
 ### Option 1: Run a One-Off Sync
 
@@ -137,7 +137,7 @@ In your terminal, run:
 cloudquery sync postgres-to-motherduck.yml
 ```
 
-This will load the rows from Postgres into Motherduck, and exit once all the data has been copied. You should see output similar to the following:
+This will load the rows from Postgres into MotherDuck, and exit once all the data has been copied. You should see output similar to the following:
 
 <iframe width="100%" height="480"
 src="https://www.youtube.com/embed/tgbNymZ7vqY?playlist=sRDKgCuEIMI">
@@ -145,7 +145,7 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY?playlist=sRDKgCuEIMI">
 
 ### Option 2: Run a Continuous Sync with Change Data Capture (CDC)
 
-To continuously load changes from Postgres to Motherduck in a streaming fashion, we can add the `cdc: true` option to the source configuration:
+To continuously load changes from Postgres to MotherDuck in a streaming fashion, we can add the `cdc: true` option to the source configuration:
 
 ```yaml copy filename="postgres-to-motherduck-cdc.yml"
 kind: source
@@ -183,7 +183,7 @@ insert into customers (id, email, created_at) values
     ('Scrooge McDuck', 'scrooge@duckempire.test', '2023-06-05 09:45:00');
 ```
 
-The count of rows in the sync should tick up by one, and the new row should appear in the Motherduck table:
+The count of rows in the sync should tick up by one, and the new row should appear in the MotherDuck table:
 
 ![](/images/blog/load-data-from-postgres-to-motherduck/cloudquery-sync-cdc.png)
 
@@ -195,4 +195,4 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY?playlist=sWGDsIiXEa8">
 
 ## Next Steps
 
-Running a sync continuously from your local machine is not the most reliable way to sync data from Postgres. There are many options for getting your sync production-ready. For more information on this, see the [CloudQuery Deployment Documentation](/docs/deployment/overview). 
+In this post, we covered how to sync both once-off and continuously from postgres to MotherDuck from your local machine. Since your local machine won't always be available, the next step is to get the sync production-ready. For more information on this, head over to the [CloudQuery Deployment Documentation](/docs/deployment/overview).
