@@ -15,13 +15,8 @@ func Incidents() *schema.Table {
 		Resolver:  fetchIncidents,
 		Multiplex: client.AccountMultiplex,
 		Transform: client.TransformWithStruct(&datadogV2.IncidentResponseData{}, transformers.WithPrimaryKeys("Id")),
-		Columns: []schema.Column{
-			client.AccountNameColumn,
-		},
-
-		Relations: []*schema.Table{
-			IncidentAttachments(),
-		},
+		Columns:   schema.ColumnList{client.AccountNameColumn},
+		Relations: schema.Tables{attachments()},
 	}
 }
 

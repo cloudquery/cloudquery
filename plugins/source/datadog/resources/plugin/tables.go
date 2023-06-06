@@ -1,7 +1,6 @@
 package plugin
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/dashboard_lists"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/dashboards"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/downtimes"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/hosts"
@@ -18,8 +17,8 @@ import (
 
 func Tables() []*schema.Table {
 	return []*schema.Table{
-		dashboard_lists.DashboardLists(),
 		dashboards.Dashboards(),
+		dashboards.Lists(),
 		downtimes.Downtimes(),
 		hosts.Hosts(),
 		incidents.Incidents(),
@@ -29,7 +28,7 @@ func Tables() []*schema.Table {
 		roles.Permissions(),
 		rum.Events(),
 		slos.Objectives(),
-		slos.ObjectiveCorrections(),
+		slos.Corrections(),
 		synthetics.GlobalVariables(),
 		synthetics.Synthetics(),
 		users.Users(),

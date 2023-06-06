@@ -11,7 +11,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildObjectiveCorrectionsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogServices {
+func buildCorrectionsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogServices {
 	m := mocks.NewMockServiceLevelObjectiveCorrectionsAPIClient(ctrl)
 	services := client.DatadogServices{
 		ServiceLevelObjectiveCorrectionsAPI: m,
@@ -28,6 +28,6 @@ func buildObjectiveCorrectionsMock(t *testing.T, ctrl *gomock.Controller) client
 	return services
 }
 
-func TestObjectiveCorrections(t *testing.T) {
-	client.DatadogMockTestHelper(t, ObjectiveCorrections(), buildObjectiveCorrectionsMock, client.TestOptions{})
+func TestCorrections(t *testing.T) {
+	client.DatadogMockTestHelper(t, Corrections(), buildCorrectionsMock, client.TestOptions{})
 }
