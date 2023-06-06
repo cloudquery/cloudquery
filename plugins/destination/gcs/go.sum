@@ -58,8 +58,8 @@ github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMn
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudquery/arrow/go/v13 v13.0.0-20230606001313-88d5dc2ed455 h1:PYZgpqjvE8E9p84h7lwTB5riplw7JcEGzlESBW4Wcrw=
 github.com/cloudquery/arrow/go/v13 v13.0.0-20230606001313-88d5dc2ed455/go.mod h1:/XatdE3kDIBqZKhZ7OBUHwP2jaASDFZHqF4puOWM8po=
-github.com/cloudquery/filetypes/v3 v3.1.5 h1:6SPNTjH5WL8KFGFZNnL9r+uMQ9D7As7uq5XrwRhKe4A=
-github.com/cloudquery/filetypes/v3 v3.1.5/go.mod h1:xcgXHWH1KXTX+t3ZKTz/abyEPGV04J2CYPau0bZ/ZjM=
+github.com/cloudquery/filetypes/v3 v3.1.6 h1:1oQ5wABn6A/w5Cj0lVnOkS01zTyNSXU7clIFEt6A5Q4=
+github.com/cloudquery/filetypes/v3 v3.1.6/go.mod h1:2VzUnabUYP1oFVcQNT+UhF0+NKEmcZw3MIX8Jhv1NFA=
 github.com/cloudquery/plugin-pb-go v1.0.9 h1:1apMGcRdBCc1N6/0IQD3UtHm7XHMCPyV6mNnklOHETA=
 github.com/cloudquery/plugin-pb-go v1.0.9/go.mod h1:iQwZ/jiKmoSu2H8U5otCX9gCMJtAOkb3HAnGIKvg0oU=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
