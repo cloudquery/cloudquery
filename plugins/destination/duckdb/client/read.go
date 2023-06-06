@@ -39,8 +39,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, _ string, res ch
 	}
 	sb.WriteString(") to '" + f.Name() + "' (FORMAT PARQUET)")
 
-	_, err = c.db.ExecContext(ctx, sb.String())
-	if err != nil {
+	if err := c.exec(ctx, sb.String()); err != nil {
 		return err
 	}
 	f, err = os.Open(fName)
@@ -111,7 +110,7 @@ func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
 	switch dt := dt.(type) {
 	case *types.UUIDType:
 		return array.NewExtensionArrayWithStorage(dt, arr.(*array.FixedSizeBinary))
-	case *types.InetType, *types.MACType, *types.JSONType, *arrow.StructType:
+	case *types.InetType, *types.MACType, *types.JSONType:
 		return reverseTransformFromString(dt, arr.(*array.String))
 	case *arrow.Uint16Type:
 		return reverseTransformUint16(arr.(*array.Uint32))
@@ -119,12 +118,30 @@ func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
 		return reverseTransformUint8(arr.(*array.Uint32))
 	case *arrow.TimestampType:
 		return transformTimestamp(dt, arr.(*array.Timestamp))
-	case *arrow.MapType:
-		child := reverseTransformArray(dt.ValueType(), arr.(*array.List).ListValues()).Data()
-		return array.NewMapData(array.NewData(dt, arr.Len(), arr.Data().Buffers(), []arrow.ArrayData{child}, arr.NullN(), arr.Data().Offset()))
-	case listLike:
-		child := reverseTransformArray(dt.Elem(), arr.(array.ListLike).ListValues()).Data()
-		return array.NewListData(array.NewData(dt, arr.Len(), arr.Data().Buffers(), []arrow.ArrayData{child}, arr.NullN(), arr.Data().Offset()))
+	case *arrow.StructType:
+		arr := arr.(*array.Struct)
+		children := make([]arrow.ArrayData, arr.NumField())
+		for i := range children {
+			// struct fields can be odd when read from parquet, but the data is intact
+			child := array.MakeFromData(arr.Data().Children()[i])
+			children[i] = reverseTransformArray(dt.Field(i).Type, child).Data()
+		}
+
+		return array.NewStructData(array.NewData(
+			dt, arr.Len(),
+			arr.Data().Buffers(),
+			children,
+			arr.NullN(), arr.Data().Offset(),
+		))
+
+	case arrow.ListLikeType: // also handles maps
+		return array.MakeFromData(array.NewData(
+			dt, arr.Len(),
+			arr.Data().Buffers(),
+			[]arrow.ArrayData{reverseTransformArray(dt.Elem(), arr.(array.ListLike).ListValues()).Data()},
+			arr.NullN(), arr.Data().Offset(),
+		))
+
 	default:
 		return reverseTransformFromString(dt, arr.(*array.String))
 	}

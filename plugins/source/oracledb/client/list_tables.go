@@ -57,7 +57,11 @@ func (c *Client) updateTableConstraints(ctx context.Context, table *schema.Table
 
 func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 	// Please note we don't use ORDER BY here because it's slower than sorting in memory via Go sort.SliceStable
-	query := `SELECT TABLE_NAME, COLUMN_ID, COLUMN_NAME, DATA_TYPE, DATA_LENGTH, NULLABLE FROM USER_TAB_COLS`
+	query := `
+	SELECT ALL_TAB_COLS.TABLE_NAME, COLUMN_ID, COLUMN_NAME, DATA_TYPE, DATA_LENGTH, NULLABLE FROM ALL_TABLES
+	LEFT JOIN ALL_TAB_COLS ON ALL_TABLES.TABLE_NAME = ALL_TAB_COLS.TABLE_NAME
+	WHERE ALL_TABLES.TABLESPACE_NAME = 'USERS'
+	`
 	rows, err := c.db.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err
