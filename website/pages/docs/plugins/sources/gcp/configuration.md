@@ -83,7 +83,7 @@ If enabled CloudQuery will skip any resources that belong to a service that has 
 
 - `target_principal` (`string`, optional. Default: empty)
 
-  	The email address of the service account to impersonate
+    The email address of the service account to impersonate
 
 ## GCP + Kubernetes (GKE)
 
