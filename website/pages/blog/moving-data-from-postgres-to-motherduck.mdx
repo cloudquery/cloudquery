@@ -12,12 +12,12 @@ import { Callout } from 'nextra-theme-docs';
 
 <BlogHeader/>
 
-MotherDuck is a serverless analytics service powered by DuckDB. In this tutorial, we'll cover:
+MotherDuck is a serverless analytics service powered by DuckDB. If you have data in a Postgres database that you'd like to analyze using MotherDuck, this tutorial will show you how to do this using the open source ELT tool, CloudQuery. We will cover:
  
  1. How to copy a Postgres database into MotherDuck as one-off batch operation, and
- 2. How to continuously stream Postgres data from Postgres to MotherDuck using CloudQuery and Postgres Change Data Capture (CDC).
+ 2. How to continuously stream Postgres data from Postgres to MotherDuck using Postgres Change Data Capture (CDC).
 
-Which option you choose is up to you; by the end of this tutorial you will be able to analyze data from your Postgres database using MotherDuck.
+Which option you choose is up to you. Either way, by the end of this tutorial you will be able to analyze data from your Postgres database using MotherDuck.
 
 ## [Optional] Step 0. Create a Test Table in Postgres
 
@@ -57,7 +57,7 @@ SELECT 3
 
 ## Step 1. Install CloudQuery
 
-CloudQuery is a cross-platform command-line tool for extracting and loading data that can be run locally, on a virtual machine, or in a containerized environment. In this tutorial we'll try it out locally. On MacOS, you can install it using Homebrew:
+CloudQuery is a cross-platform command-line tool for extracting and loading data that can be run just about anywhere: locally, on a virtual machine, or in a containerized environment. In this tutorial we'll try it out locally, and we'll use it to copy data from a local Postgres database to Motherduck. On MacOS, you can install it using Homebrew:
 
 ```shell copy
 brew install cloudquery/tap/cloudquery
@@ -65,7 +65,7 @@ brew install cloudquery/tap/cloudquery
 
 See the [CloudQuery Quickstart guide](/docs/quickstart) for installation instructions on other platforms.
 
-Once it's installed, you should be able to run it from the command line:
+Once it's installed, you should be able to invoke it from the command line:
 
 ```shell
 $ cloudquery --version
@@ -95,10 +95,10 @@ spec:
   write_mode: "overwrite-delete-stale"
   migrate_mode: "safe"
   spec:
-    connection_string: "md:cloudquery"
+    connection_string: "md:"
 ```
 
-A typical CloudQuery configuration consists of two parts: a source and a destination. A Postgres database is the source in this case, and we've configured it to copy the `customers` table from a locally running Postgres database. The destination is MotherDuck, and we've configured it to write to a database with the alias `cloudquery`.
+A typical CloudQuery configuration consists of two parts: a source and a destination. A Postgres database is the source in this case, and we've configured it to copy the `customers` table from a locally running Postgres database. The destination is the DuckDB plugin, and instead of a local file we've configured it to write to the main MotherDuck database. You can also use an alias for the MotherDuck database, such as `md:cloudquery`.
 
 <Callout type="info">
 
@@ -113,7 +113,7 @@ In production, you should use environment variable expansion to reference the co
 
 ## Step 3. Set Up Authentication
 
-To authenticate with MotherDuck, we need to export our service token as an environment variable. You can find the token by navigating to `https://app.motherduck.com/` and clicking the cog in the top right-hand corner:
+To authenticate with MotherDuck, we need to export our service token as an environment variable. As documented in the [MotherDuck documentation](https://motherduck.notion.site/Authentication-in-MotherDuck-bcd0ac1911d54623bd3ab8995877d63d), you can find the token by navigating to `https://app.motherduck.com/` and clicking the cog in the top right-hand corner:
 
 ![Where to find your token on the MotherDuck app page](/images/blog/moving-data-from-postgres-to-motherduck/motherduck-token.png)
 
@@ -156,7 +156,7 @@ spec:
   destinations: ["motherduck"]
   tables: ["customers"]
   spec:
-    cdc: true # This enables CDC
+    cdc: true  # <- This enables Change Data Capture mode
     connection_string: "postgresql://postgres:pass@localhost:5432/cloudquery?sslmode=disable"
 ---
 kind: destination
@@ -176,18 +176,7 @@ Now, back in the terminal, let's start a sync again:
 cloudquery sync postgres-to-motherduck-cdc.yml
 ```
 
-This time the sync will run continuously, and will automatically load any new rows that are inserted into the `customers` table. To test this out, let's insert a new row into the `customers` table while the sync is still running:
-
-```sql
-insert into customers (id, email, created_at) values
-    ('Scrooge McDuck', 'scrooge@duckempire.test', '2023-06-05 09:45:00');
-```
-
-The count of rows in the sync should tick up by one, and the new row should appear in the MotherDuck table:
-
-![](/images/blog/load-data-from-postgres-to-motherduck/cloudquery-sync-cdc.png)
-
-The video below shows all this in action:
+This time the sync will run continuously, and any changes made to the Postgres database will be automatically copied to MotherDuck.
 
 <iframe width="100%" height="480"
 src="https://www.youtube.com/embed/tgbNymZ7vqY?playlist=sWGDsIiXEa8">
@@ -195,4 +184,4 @@ src="https://www.youtube.com/embed/tgbNymZ7vqY?playlist=sWGDsIiXEa8">
 
 ## Next Steps
 
-In this post, we covered how to sync both once-off and continuously from postgres to MotherDuck from your local machine. Since your local machine won't always be available, the next step is to get the sync production-ready. For more information on this, head over to the [CloudQuery Deployment Documentation](/docs/deployment/overview).
+In this post we covered how to sync both once-off and continuously from Postgres to MotherDuck from your local machine, using CloudQuery. Since your local machine won't always be available, the next step is to schedule the sync and get it production-ready. For more information on this, head over to the [CloudQuery Deployment Documentation](/docs/deployment/overview).
