@@ -15,18 +15,12 @@ func Roles() *schema.Table {
 		Resolver:  fetchRoles,
 		Multiplex: client.AccountMultiplex,
 		Transform: client.TransformWithStruct(&datadogV2.Role{}, transformers.WithPrimaryKeys("Id")),
-		Columns: []schema.Column{
-			client.AccountNameColumn,
-		},
-
-		Relations: []*schema.Table{
-			RolePermissions(),
-			RoleUsers(),
-		},
+		Columns:   schema.ColumnList{client.AccountNameColumn},
+		Relations: schema.Tables{rolePermissions(), roleUsers()},
 	}
 }
 
-func fetchRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchRoles(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	ctx = c.BuildContextV2(ctx)
 	resp, _, err := c.DDServices.RolesAPI.ListRoles(ctx)

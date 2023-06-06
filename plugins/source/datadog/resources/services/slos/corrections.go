@@ -9,19 +9,17 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
-func ObjectiveCorrections() *schema.Table {
+func Corrections() *schema.Table {
 	return &schema.Table{
 		Name:      "datadog_slo_corrections",
-		Resolver:  fetchObjectiveCorrections,
+		Resolver:  fetchCorrections,
 		Multiplex: client.AccountMultiplex,
 		Transform: client.TransformWithStruct(&datadogV1.SLOCorrection{}, transformers.WithPrimaryKeys("Id")),
-		Columns: []schema.Column{
-			client.AccountNameColumn,
-		},
+		Columns:   schema.ColumnList{client.AccountNameColumn},
 	}
 }
 
-func fetchObjectiveCorrections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchCorrections(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	ctx = c.BuildContextV2(ctx)
 	resp, _, err := c.DDServices.ServiceLevelObjectiveCorrectionsAPI.ListSLOCorrection(ctx)
