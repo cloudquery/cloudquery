@@ -1,4 +1,4 @@
-package incidents
+package users
 
 import (
 	"context"
@@ -10,15 +10,15 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
-func IncidentAttachments() *schema.Table {
+func permissions() *schema.Table {
 	return &schema.Table{
-		Name:      "datadog_incident_attachments",
-		Transform: client.TransformWithStruct(&datadogV2.IncidentAttachmentData{}, transformers.WithPrimaryKeys("Id")),
-		Resolver:  fetchIncidentAttachments,
-		Columns: []schema.Column{
+		Name:      "datadog_user_permissions",
+		Resolver:  fetchPermissions,
+		Transform: client.TransformWithStruct(&datadogV2.Permission{}, transformers.WithPrimaryKeys("Id")),
+		Columns: schema.ColumnList{
 			client.AccountNameColumn,
 			{
-				Name:       "incident_id",
+				Name:       "user_id",
 				Type:       arrow.BinaryTypes.String,
 				Resolver:   schema.ParentColumnResolver("id"),
 				PrimaryKey: true,
@@ -27,11 +27,11 @@ func IncidentAttachments() *schema.Table {
 	}
 }
 
-func fetchIncidentAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	p := parent.Item.(datadogV2.IncidentResponseData)
+func fetchPermissions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	p := parent.Item.(datadogV2.User)
 	c := meta.(*client.Client)
 	ctx = c.BuildContextV2(ctx)
-	resp, _, err := c.DDServices.IncidentsAPI.ListIncidentAttachments(ctx, p.Id)
+	resp, _, err := c.DDServices.UsersAPI.ListUserPermissions(ctx, *p.Id)
 	if err != nil {
 		return err
 	}

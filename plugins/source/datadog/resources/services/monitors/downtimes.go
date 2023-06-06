@@ -10,12 +10,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
-func MonitorDowntimes() *schema.Table {
+func downtimes() *schema.Table {
 	return &schema.Table{
 		Name:      "datadog_monitor_downtimes",
 		Transform: client.TransformWithStruct(&datadogV1.Downtime{}, transformers.WithPrimaryKeys("Id")),
 		Resolver:  fetchMonitorDowntimes,
-		Columns: []schema.Column{
+		Columns: schema.ColumnList{
 			client.AccountNameColumn,
 			{
 				Name:       "monitor_id",

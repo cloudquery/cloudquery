@@ -15,13 +15,11 @@ func Synthetics() *schema.Table {
 		Resolver:  fetchSynthetics,
 		Multiplex: client.AccountMultiplex,
 		Transform: client.TransformWithStruct(&datadogV1.SyntheticsTestDetails{}, transformers.WithPrimaryKeys("PublicId")),
-		Columns: []schema.Column{
-			client.AccountNameColumn,
-		},
+		Columns:   schema.ColumnList{client.AccountNameColumn},
 	}
 }
 
-func fetchSynthetics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchSynthetics(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	ctx = c.BuildContextV1(ctx)
 	resp, _, err := c.DDServices.SyntheticsAPI.ListTests(ctx)

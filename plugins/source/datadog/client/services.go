@@ -21,6 +21,7 @@ type DatadogServices struct {
 	ServiceLevelObjectiveCorrectionsAPI services.ServiceLevelObjectiveCorrectionsAPIClient
 	SyntheticsAPI                       services.SyntheticsAPIClient
 	UsersAPI                            services.UsersAPIClient
+	RumAPI                              services.RumAPIClient
 }
 
 func NewDatadogServices(apiClient *datadog.APIClient) DatadogServices {
@@ -37,5 +38,6 @@ func NewDatadogServices(apiClient *datadog.APIClient) DatadogServices {
 		ServiceLevelObjectiveCorrectionsAPI: datadogV1.NewServiceLevelObjectiveCorrectionsApi(apiClient),
 		SyntheticsAPI:                       datadogV1.NewSyntheticsApi(apiClient),
 		UsersAPI:                            datadogV2.NewUsersApi(apiClient),
+		RumAPI:                              datadogV2.NewRUMApi(apiClient),
 	}
 }
