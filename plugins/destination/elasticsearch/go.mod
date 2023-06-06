@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230601070034-e07e22c5580a
 	github.com/cenkalti/backoff/v4 v4.2.0
 	github.com/cloudquery/plugin-pb-go v1.0.9
-	github.com/cloudquery/plugin-sdk/v3 v3.7.0
+	github.com/cloudquery/plugin-sdk/v3 v3.10.4
 	github.com/elastic/go-elasticsearch/v8 v8.6.0
 	github.com/goccy/go-json v0.9.11
 	github.com/rs/zerolog v1.29.0

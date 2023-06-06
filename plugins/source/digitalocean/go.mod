@@ -10,7 +10,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.30.0
 	github.com/aws/smithy-go v1.13.5
 	github.com/cloudquery/plugin-pb-go v1.0.9
-	github.com/cloudquery/plugin-sdk/v3 v3.10.3
+	github.com/cloudquery/plugin-sdk/v3 v3.10.4
 	github.com/digitalocean/godo v1.99.0
 	github.com/golang/mock v1.6.0
 	github.com/pkg/errors v0.9.1
