@@ -15,17 +15,12 @@ func Monitors() *schema.Table {
 		Resolver:  fetchMonitors,
 		Multiplex: client.AccountMultiplex,
 		Transform: client.TransformWithStruct(&datadogV1.Monitor{}, transformers.WithPrimaryKeys("Id")),
-		Columns: []schema.Column{
-			client.AccountNameColumn,
-		},
-
-		Relations: []*schema.Table{
-			MonitorDowntimes(),
-		},
+		Columns:   schema.ColumnList{client.AccountNameColumn},
+		Relations: schema.Tables{downtimes()},
 	}
 }
 
-func fetchMonitors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchMonitors(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	ctx = c.BuildContextV1(ctx)
 	resp, _, err := c.DDServices.MonitorsAPI.ListMonitors(ctx)

@@ -1,4 +1,4 @@
-package dashboard_lists
+package dashboards
 
 import (
 	"testing"
@@ -29,5 +29,5 @@ func buildDashboardListsMock(t *testing.T, ctrl *gomock.Controller) client.Datad
 }
 
 func TestDashboardLists(t *testing.T) {
-	client.DatadogMockTestHelper(t, DashboardLists(), buildDashboardListsMock, client.TestOptions{})
+	client.DatadogMockTestHelper(t, Lists(), buildDashboardListsMock, client.TestOptions{})
 }
