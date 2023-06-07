@@ -11,6 +11,8 @@ import (
 
 func (c *Client) resolveFolders(ctx context.Context, folder ResourceDiscovery) error {
 	var err error
+	// nolint:prealloc
+	var includeFolders, excludeFolders []*resourcemanagerpb.Folder
 	foldersClient, err := resourcemanager.NewFoldersClient(ctx, c.ClientOptions...)
 	if err != nil {
 		return fmt.Errorf("failed to create folders client: %w", err)
@@ -20,22 +22,22 @@ func (c *Client) resolveFolders(ctx context.Context, folder ResourceDiscovery) e
 		if err != nil {
 			return fmt.Errorf("failed to get organizations with filter: %w", err)
 		}
-		c.includeFolders = append(c.includeFolders, folders...)
+		includeFolders = append(includeFolders, folders...)
 	}
 	for _, excludeFilter := range folder.ExcludeFilter {
 		folders, err := searchFolders(ctx, foldersClient, excludeFilter)
 		if err != nil {
 			return fmt.Errorf("failed to get organizations with filter: %w", err)
 		}
-		c.excludeFolders = append(c.excludeFolders, folders...)
+		excludeFolders = append(excludeFolders, folders...)
 	}
-	// Resolve folder from gcpSpec.Projects.Folders.id_include_list and add to c.include_folders
+	// Resolve folder from gcpSpec.Projects.Folders.id_include_list and add to include_folders
 	for _, folderId := range folder.IncludeListId {
 		folder, err := getFolderFromId(ctx, foldersClient, folderId)
 		if err != nil {
 			return fmt.Errorf("failed to get folder with id %s: %w", folderId, err)
 		}
-		c.includeFolders = append(c.includeFolders, folder)
+		includeFolders = append(includeFolders, folder)
 	}
 
 	// Cannot directly add all excluded/included folders to the graph because the graph is not yet fully populated
@@ -58,12 +60,12 @@ func (c *Client) resolveFolders(ctx context.Context, folder ResourceDiscovery) e
 	// Update include status for all excluded/included folders
 	boolFalse := false
 	boolTrue := true
-	for _, folder := range c.excludeFolders {
+	for _, folder := range excludeFolders {
 		if !updateFolder(c.graph, folder, &boolFalse) {
 			c.logger.Warn().Msgf("folder %s is excluded but could not be added to the dependency graph", folder.Name)
 		}
 	}
-	for _, folder := range c.includeFolders {
+	for _, folder := range includeFolders {
 		if !updateFolder(c.graph, folder, &boolTrue) {
 			c.logger.Warn().Msgf("folder %s is included but could not be added to the dependency graph", folder.Name)
 		}

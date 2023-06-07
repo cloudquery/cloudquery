@@ -13,6 +13,7 @@ func (c *Client) resolveProjects(ctx context.Context, project ResourceDiscovery)
 	if err != nil {
 		return fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
 	}
+	// nolint:prealloc
 	var includedProjects, excludedProjects []*crmv1.Project
 
 	if project.isIncludeNull() {

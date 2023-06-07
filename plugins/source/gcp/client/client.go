@@ -33,15 +33,11 @@ import (
 const maxIdsToLog int = 100
 
 type Client struct {
-	projects     []string
-	orgs         []*crmv1.Organization
-	excludedOrgs []*crmv1.Organization
-	includedOrgs []*crmv1.Organization
+	projects []string
+	orgs     []*crmv1.Organization
 
-	includeFolders []*resourcemanagerpb.Folder
-	excludeFolders []*resourcemanagerpb.Folder
-	graph          *node
-	folderIds      []string
+	graph     *node
+	folderIds []string
 
 	ClientOptions []option.ClientOption
 	CallOptions   []gax.CallOption
@@ -140,8 +136,6 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		return nil, fmt.Errorf("invalid spec: %w", err)
 	}
 
-	projects := gcpSpec.ProjectIDs
-	organizations := make([]*crmv1.Organization, 0)
 	if gcpSpec.BackoffRetries > 0 {
 		c.CallOptions = append(c.CallOptions, gax.WithRetry(func() gax.Retryer {
 			return &Retrier{
@@ -175,120 +169,23 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		c.ClientOptions = append(c.ClientOptions, option.WithCredentialsJSON(serviceAccountKeyJSON))
 	}
 
-	if len(gcpSpec.ProjectFilter) > 0 && len(gcpSpec.FolderIDs) > 0 {
-		return nil, fmt.Errorf("project_filter and folder_ids are mutually exclusive")
-	}
-
-	projectsClient, err := resourcemanager.NewProjectsClient(ctx, c.ClientOptions...)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create projects client: %w", err)
-	}
-	foldersClient, err := resourcemanager.NewFoldersClient(ctx, c.ClientOptions...)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create folders client: %w", err)
-	}
-	err = c.resolveDiscovery(ctx, gcpSpec)
-	if err != nil {
-		return nil, err
-	}
-	// if gcpSpec.Projects.Organizations.isNull() {
-
-	// }
-	switch {
-	case len(projects) == 0 && len(gcpSpec.FolderIDs) == 0 && len(gcpSpec.ProjectFilter) == 0 && len(gcpSpec.FolderFilter) == 0:
-		c.logger.Info().Msg("No project_ids, folder_ids, or project_filter specified - assuming all active projects")
-		projects, err = getProjectsV1(ctx, c.ClientOptions...)
+	if !gcpSpec.Projects.isNull() {
+		err = c.resolveDiscovery(ctx, gcpSpec)
 		if err != nil {
-			return nil, fmt.Errorf("failed to get projects: %w", err)
-		}
-	case len(gcpSpec.FolderIDs) > 0:
-		var folderIds []string
-
-		for _, parentFolder := range gcpSpec.FolderIDs {
-			c.logger.Info().Msg("Listing folders...")
-			childFolders, err := listFolders(ctx, foldersClient, parentFolder, *gcpSpec.FolderRecursionDepth)
-			if err != nil {
-				return nil, fmt.Errorf("failed to list folders: %w", err)
-			}
-			folderIds = append(folderIds, childFolders...)
-		}
-
-		logFolderIds(&c.logger, folderIds)
-
-		c.logger.Info().Msg("listing folder projects...")
-		folderProjects, err := listProjectsInFolders(ctx, projectsClient, folderIds)
-		projects = setUnion(projects, folderProjects)
-		if err != nil {
-			return nil, fmt.Errorf("failed to list projects: %w", err)
-		}
-
-	case len(gcpSpec.ProjectFilter) > 0:
-		c.logger.Info().Msg("Listing projects with filter...")
-		projectsWithFilter, err := getProjectsV1WithFilter(ctx, gcpSpec.ProjectFilter, c.ClientOptions...)
-		if err != nil {
-			return nil, fmt.Errorf("failed to get projects with filter: %w", err)
-		}
-
-		projects = setUnion(projects, projectsWithFilter)
-	}
-
-	if len(gcpSpec.OrganizationIDs) == 0 && len(gcpSpec.OrganizationFilter) == 0 {
-		c.logger.Info().Msg("No organization_ids or organization_filter specified - assuming all organizations")
-		c.logger.Info().Msg("Listing organizations...")
-
-		organizations, err = getOrganizations(ctx, "", c.ClientOptions...)
-		if err != nil {
-			c.logger.Err(err).Msg("failed to get organizations")
+			return nil, err
 		}
 	} else {
-		if len(gcpSpec.OrganizationIDs) > 0 {
-			for _, orgID := range gcpSpec.OrganizationIDs {
-				c.logger.Info().Msgf("Getting spec organization %q...", orgID)
-				org, err := getOrganization(ctx, orgID, c.ClientOptions...)
-				if err != nil {
-					return nil, fmt.Errorf("failed to get spec organization: %w", err)
-				}
-				organizations = append(organizations, org)
-			}
+		if len(gcpSpec.ProjectFilter) > 0 && len(gcpSpec.FolderIDs) > 0 {
+			return nil, fmt.Errorf("project_filter and folder_ids are mutually exclusive")
 		}
-		if len(gcpSpec.OrganizationFilter) > 0 {
-			c.logger.Info().Msg("Listing organizations with filter...")
-			organizationsWithFilter, err := getOrganizations(ctx, gcpSpec.OrganizationFilter, c.ClientOptions...)
-			if err != nil {
-				return nil, fmt.Errorf("failed to get organizations with filter: %w", err)
-			}
-			for i := range organizationsWithFilter {
-				found := false
-				for _, org := range organizations {
-					if organizationsWithFilter[i].Name == org.Name {
-						found = true
-						break
-					}
-				}
-				if !found {
-					organizations = append(organizations, organizationsWithFilter[i])
-				}
-			}
+		err = c.resolveLegacy(ctx, gcpSpec)
+		if err != nil {
+			return nil, err
 		}
 	}
 
-	logProjectIds(&logger, projects)
-	logOrganizationIds(&logger, organizations)
-
-	if len(projects) == 0 {
-		return nil, fmt.Errorf("no active projects")
-	}
-
-	c.projects = projects
-	c.folderIds = gcpSpec.FolderIDs
-	c.orgs = organizations
-	if err != nil {
-		c.logger.Err(err).Msg("failed to get organizations")
-	}
-	c.logger.Info().Interface("orgs", c.orgs).Msg("Retrieved organizations")
-
-	if len(projects) == 1 {
-		c.ProjectId = projects[0]
+	if len(gcpSpec.ProjectIDs) == 1 {
+		c.ProjectId = gcpSpec.ProjectIDs[0]
 	}
 	if gcpSpec.EnabledServicesOnly {
 		if err := c.configureEnabledServices(ctx, *gcpSpec.DiscoveryConcurrency); err != nil {
