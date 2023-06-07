@@ -39,10 +39,7 @@ func (c *Client) normalizeTable(table *schema.Table) (*schema.Table, error) {
 }
 
 func (*Client) normalizeField(field arrow.Field) (*arrow.Field, error) {
-	normalizedType, err := mySQLTypeToArrowType("", "", arrowTypeToMySqlStr(field.Type))
-	if err != nil {
-		return nil, err
-	}
+	normalizedType := mySQLTypeToArrowType(arrowTypeToMySqlStr(field.Type))
 	return &arrow.Field{
 		Name:     field.Name,
 		Type:     normalizedType,
