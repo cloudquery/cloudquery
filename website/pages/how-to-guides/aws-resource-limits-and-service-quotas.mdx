@@ -18,6 +18,20 @@ In 2019, [AWS introduced Service Quotas](https://aws.amazon.com/blogs/mt/introdu
 
 ### Example Limit Scenarios
 
+Example scenarios we've seen where resource management (as of June 2023):
+
+* Reaching the maximum number of S3 buckets in an account.  The default limit of S3 buckets in an account is 100.
+
+* Reaching the maximum number of Lambda network interfaces.  The default limit of network interfaces that Lambda creates for a VPC with functions attached is 250.  Lambda creates a network interface for each combination of function subnets and seurity groups.
+
+* Reaching KMS Key API Limits.  KMS has API Limits that are adjustable such as CreateAlias and CreateKey request rates which by default are set to 5 per second.  Some applications and enterprise architectures may require higher request rates.
+
+* Reaching CloudFormation Stack Limits.  Accounts by default have a default limit of 2000 Stacks.  For teams with heavy infrastructure as code practices and in accounts with heavy infrastructure, teams could reach the maximum number of stacks. 
+
+* Reaching Identity and Access limits including managed policies per role.  By default, roles can have a maximum number of 10 attached managed policies.  For teams that use many managed policies to attach custom permissions to IAM principals, they may reach the limit of 10 managed policies and be unable to attach more policies or have failed attachments.
+
+Other limits include EC2 with spot instances, networking, number of running dedicated hosts.
+
 
 ## Managing Service Quotas
 
