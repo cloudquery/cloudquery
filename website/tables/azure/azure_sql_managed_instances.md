@@ -29,3 +29,67 @@ The following tables depend on azure_sql_managed_instances:
 |id (PK)|`utf8`|
 |name|`utf8`|
 |type|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### SQL managed instances should use customer-managed keys to encrypt data at rest
+
+```sql
+WITH
+  protected_instances
+    AS (
+      SELECT
+        s.id AS instance_id
+      FROM
+        azure_sql_managed_instances AS s
+        LEFT JOIN azure_sql_managed_instance_encryption_protectors AS ep ON
+            s._cq_id = ep._cq_parent_id
+      WHERE
+        ep.properties->>'serverKeyType' = 'AzureKeyVault'
+        AND (ep.properties->>'uri') IS NOT NULL
+    )
+SELECT
+  'SQL managed instances should use customer-managed keys to encrypt data at rest'
+    AS title,
+  i.subscription_id,
+  i.id AS instance_id,
+  CASE
+  WHEN p.instance_id IS NULL THEN 'fail'
+  ELSE 'pass'
+  END
+FROM
+  azure_sql_managed_instances AS i
+  LEFT JOIN protected_instances AS p ON p.instance_id = i.id;
+```
+
+### Vulnerability assessment should be enabled on SQL Managed Instance
+
+```sql
+WITH
+  protected_instances
+    AS (
+      SELECT
+        s.id AS instance_id
+      FROM
+        azure_sql_managed_instances AS s
+        LEFT JOIN azure_sql_managed_instance_vulnerability_assessments AS va ON
+            s._cq_id = va._cq_parent_id
+      WHERE
+        (va.properties->'recurringScans'->>'isEnabled')::BOOL IS true
+    )
+SELECT
+  'Vulnerability assessment should be enabled on SQL Managed Instance' AS title,
+  i.subscription_id,
+  i.id AS instance_id,
+  CASE
+  WHEN p.instance_id IS NULL THEN 'fail'
+  ELSE 'pass'
+  END
+FROM
+  azure_sql_managed_instances AS i
+  LEFT JOIN protected_instances AS p ON p.instance_id = i.id;
+```
+
+

@@ -24,3 +24,9 @@ This table depends on [azure_keyvault_keyvault](azure_keyvault_keyvault).
 |name|`utf8`|
 |tags|`json`|
 |type|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+

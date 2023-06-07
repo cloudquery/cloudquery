@@ -32,3 +32,9 @@ The following tables depend on azure_compute_virtual_machine_scale_sets:
 |id (PK)|`utf8`|
 |name|`utf8`|
 |type|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+
