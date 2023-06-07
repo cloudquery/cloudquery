@@ -16,11 +16,12 @@ import (
 
 func topicRuleAccessKeys() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_servicebus_namespace_topic_rule_access_keys",
-		Resolver:    fetchTopicRuleAccessKeys,
-		Description: "https://learn.microsoft.com/en-us/rest/api/servicebus/stable/topics%20%E2%80%93%20authorization%20rules/list-keys?tabs=HTTP#accesskeys",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_servicebus_namespaces", client.Namespacemicrosoft_servicebus),
-		Transform:   transformers.TransformWithStruct(&armservicebus.AccessKeys{}, transformers.WithPrimaryKeys("KeyName")),
+		Name:                 "azure_servicebus_namespace_topic_rule_access_keys",
+		Resolver:             fetchTopicRuleAccessKeys,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/servicebus/stable/topics%20%E2%80%93%20authorization%20rules/list-keys?tabs=HTTP#accesskeys",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_servicebus_namespaces", client.Namespacemicrosoft_servicebus),
+		Transform:            transformers.TransformWithStruct(&armservicebus.AccessKeys{}, transformers.WithPrimaryKeys("KeyName")),
 		Columns: schema.ColumnList{
 			client.SubscriptionID,
 			schema.Column{

@@ -11,12 +11,13 @@ import (
 
 func RouteTables() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_route_tables",
-		Resolver:    fetchRouteTables,
-		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/route-tables/list?tabs=HTTP#routetable",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_route_tables", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.RouteTable{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_route_tables",
+		Resolver:             fetchRouteTables,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/route-tables/list?tabs=HTTP#routetable",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_network_route_tables", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armnetwork.RouteTable{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

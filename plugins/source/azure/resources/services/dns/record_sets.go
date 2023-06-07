@@ -15,12 +15,13 @@ import (
 
 func recordSets() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_dns_record_sets",
-		Resolver:    fetchRecordSets,
-		Description: "https://learn.microsoft.com/en-us/rest/api/dns/record-sets/list-by-dns-zone?tabs=HTTP#recordset",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_dns_record_sets", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armdns.RecordSet{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_dns_record_sets",
+		Resolver:             fetchRecordSets,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/dns/record-sets/list-by-dns-zone?tabs=HTTP#recordset",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_dns_record_sets", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armdns.RecordSet{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

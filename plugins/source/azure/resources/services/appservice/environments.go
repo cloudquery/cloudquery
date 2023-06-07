@@ -11,12 +11,13 @@ import (
 
 func Environments() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_appservice_environments",
-		Resolver:    fetchEnvironments,
-		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/app-service-environments/list?tabs=HTTP#appserviceenvironmentresource",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_environments", client.Namespacemicrosoft_web),
-		Transform:   transformers.TransformWithStruct(&armappservice.EnvironmentResource{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_appservice_environments",
+		Resolver:             fetchEnvironments,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/appservice/app-service-environments/list?tabs=HTTP#appserviceenvironmentresource",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_environments", client.Namespacemicrosoft_web),
+		Transform:            transformers.TransformWithStruct(&armappservice.EnvironmentResource{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

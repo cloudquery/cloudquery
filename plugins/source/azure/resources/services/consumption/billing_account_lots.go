@@ -13,11 +13,12 @@ import (
 
 func BillingAccountLots() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_consumption_billing_account_lots",
-		Resolver:    fetchBillingAccountLots,
-		Description: "https://learn.microsoft.com/en-us/rest/api/consumption/lots/list-by-billing-account?tabs=HTTP#lotsummary",
-		Multiplex:   client.BillingAccountMultiplex,
-		Transform:   transformers.TransformWithStruct(&armconsumption.LotSummary{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_consumption_billing_account_lots",
+		Resolver:             fetchBillingAccountLots,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/consumption/lots/list-by-billing-account?tabs=HTTP#lotsummary",
+		Multiplex:            client.BillingAccountMultiplex,
+		Transform:            transformers.TransformWithStruct(&armconsumption.LotSummary{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 
