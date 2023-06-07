@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v2.1.1...plugins-destination-mysql-v2.2.0) (2023-06-07)
+
+
+### Features
+
+* **dest-mysql:** Handle all MySQL types ([#11360](https://github.com/cloudquery/cloudquery/issues/11360)) ([f0ec33e](https://github.com/cloudquery/cloudquery/commit/f0ec33ec84c98f1cae03c21693a27204491cd1fc))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 90670b8 ([#11279](https://github.com/cloudquery/cloudquery/issues/11279)) ([a6cdc91](https://github.com/cloudquery/cloudquery/commit/a6cdc912e4b38a3faf798c5147a986ffe2539643))
+
 ## [2.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v2.1.0...plugins-destination-mysql-v2.1.1) (2023-06-06)
 
 
