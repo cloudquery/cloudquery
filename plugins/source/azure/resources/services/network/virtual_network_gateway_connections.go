@@ -11,12 +11,13 @@ import (
 
 func VirtualNetworkGatewayConnections() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_virtual_network_gateway_connections",
-		Resolver:    fetchVirtualNetworkGatewayConnections,
-		Description: "https://learn.microsoft.com/en-us/rest/api/network-gateway/virtual-network-gateway-connections/list?tabs=HTTP#virtualnetworkgatewayconnection",
-		Multiplex:   client.SubscriptionResourceGroupMultiplexRegisteredNamespace("azure_network_virtual_network_gateway_connections", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.VirtualNetworkGatewayConnection{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_virtual_network_gateway_connections",
+		Resolver:             fetchVirtualNetworkGatewayConnections,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/network-gateway/virtual-network-gateway-connections/list?tabs=HTTP#virtualnetworkgatewayconnection",
+		Multiplex:            client.SubscriptionResourceGroupMultiplexRegisteredNamespace("azure_network_virtual_network_gateway_connections", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armnetwork.VirtualNetworkGatewayConnection{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

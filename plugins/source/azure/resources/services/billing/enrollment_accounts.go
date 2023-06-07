@@ -11,10 +11,11 @@ import (
 
 func EnrollmentAccounts() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_billing_enrollment_accounts",
-		Resolver:    fetchEnrollmentAccounts,
-		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling@v0.5.0#EnrollmentAccountSummary",
-		Transform:   transformers.TransformWithStruct(&armbilling.EnrollmentAccountSummary{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_billing_enrollment_accounts",
+		Resolver:             fetchEnrollmentAccounts,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling@v0.5.0#EnrollmentAccountSummary",
+		Transform:            transformers.TransformWithStruct(&armbilling.EnrollmentAccountSummary{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

@@ -14,8 +14,9 @@ import (
 func virtualMachinePatchAssessments() *schema.Table {
 	tableName := `azure_compute_virtual_machine_patch_assessments`
 	return &schema.Table{
-		Name:     tableName,
-		Resolver: fetchVirtualMachinePatchAssessments,
+		Name:                 tableName,
+		Resolver:             fetchVirtualMachinePatchAssessments,
+		PostResourceResolver: client.LowercaseIDResolver,
 		Description: `https://learn.microsoft.com/en-us/rest/api/compute/virtual-machines/assess-patches?tabs=HTTP#virtualmachineassesspatchesresult.
 
 This will begin patch assessments on available virtual machines and can take long to complete.

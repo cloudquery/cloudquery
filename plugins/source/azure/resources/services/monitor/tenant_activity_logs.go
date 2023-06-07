@@ -11,12 +11,13 @@ import (
 
 func TenantActivityLogs() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_monitor_tenant_activity_logs",
-		Resolver:    fetchTenantActivityLogs,
-		Description: "https://learn.microsoft.com/en-us/rest/api/monitor/tenant-activity-logs/list?tabs=HTTP#eventdata",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_monitor_tenant_activity_logs", client.Namespacemicrosoft_insights),
-		Transform:   transformers.TransformWithStruct(&armmonitor.EventData{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_monitor_tenant_activity_logs",
+		Resolver:             fetchTenantActivityLogs,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/monitor/tenant-activity-logs/list?tabs=HTTP#eventdata",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_monitor_tenant_activity_logs", client.Namespacemicrosoft_insights),
+		Transform:            transformers.TransformWithStruct(&armmonitor.EventData{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

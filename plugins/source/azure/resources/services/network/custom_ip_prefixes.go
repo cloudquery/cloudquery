@@ -11,12 +11,13 @@ import (
 
 func CustomIpPrefixes() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_custom_ip_prefixes",
-		Resolver:    fetchCustomIpPrefixes,
-		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/custom-ip-prefixes/list?tabs=HTTP#customipprefix",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_custom_ip_prefixes", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.CustomIPPrefix{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_custom_ip_prefixes",
+		Resolver:             fetchCustomIpPrefixes,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/custom-ip-prefixes/list?tabs=HTTP#customipprefix",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_network_custom_ip_prefixes", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armnetwork.CustomIPPrefix{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

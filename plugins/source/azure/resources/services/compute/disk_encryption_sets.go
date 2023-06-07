@@ -11,12 +11,13 @@ import (
 
 func DiskEncryptionSets() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_compute_disk_encryption_sets",
-		Resolver:    fetchDiskEncryptionSets,
-		Description: "https://learn.microsoft.com/en-us/rest/api/compute/disk-encryption-sets/list?tabs=HTTP#diskencryptionset",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_disk_encryption_sets", client.Namespacemicrosoft_compute),
-		Transform:   transformers.TransformWithStruct(&armcompute.DiskEncryptionSet{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_compute_disk_encryption_sets",
+		Resolver:             fetchDiskEncryptionSets,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/compute/disk-encryption-sets/list?tabs=HTTP#diskencryptionset",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_compute_disk_encryption_sets", client.Namespacemicrosoft_compute),
+		Transform:            transformers.TransformWithStruct(&armcompute.DiskEncryptionSet{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

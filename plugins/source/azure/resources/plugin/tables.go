@@ -1,7 +1,6 @@
 package plugin
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/advisor"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/analysisservices"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/apimanagement"
@@ -353,7 +352,9 @@ func tables() []*schema.Table {
 		workloads.Monitors(),
 	}
 	for i := range list {
-		list[i].PostResourceResolver = client.ChainRowResolvers(list[i].PostResourceResolver, client.LowercaseIDResolver)
+		if list[i].PostResourceResolver == nil {
+			panic("no PostResourceResolver in " + list[i].Name)
+		}
 	}
 	return list
 }

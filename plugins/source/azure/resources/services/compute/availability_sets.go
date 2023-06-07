@@ -11,12 +11,13 @@ import (
 
 func AvailabilitySets() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_compute_availability_sets",
-		Resolver:    fetchAvailabilitySets,
-		Description: "https://learn.microsoft.com/en-us/rest/api/compute/availability-sets/list-by-subscription?tabs=HTTP#availabilityset",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_availability_sets", client.Namespacemicrosoft_compute),
-		Transform:   transformers.TransformWithStruct(&armcompute.AvailabilitySet{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_compute_availability_sets",
+		Resolver:             fetchAvailabilitySets,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/compute/availability-sets/list-by-subscription?tabs=HTTP#availabilityset",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_compute_availability_sets", client.Namespacemicrosoft_compute),
+		Transform:            transformers.TransformWithStruct(&armcompute.AvailabilitySet{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 
