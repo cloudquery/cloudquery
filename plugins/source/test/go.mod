@@ -9,7 +9,7 @@ require (
 	github.com/rs/zerolog v1.29.0
 )
 
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230606001313-88d5dc2ed455
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230607001322-90670b8e0786
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
