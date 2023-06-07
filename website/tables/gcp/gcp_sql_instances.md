@@ -565,6 +565,30 @@ FROM
       f->>'name' = 'remote access';
 ```
 
+### Ensure "3625 (trace flag)" database flag for Cloud SQL SQL Server instance is set to "on" (Automated)
+
+```sql
+-- In the original document in CIS GCP v1.2.0, it describes the configuration should be 'off', but it is a typo.
+-- This constraint has been updated on CIS GCP v1.3.0, this flag should be 'on'.
+
+SELECT
+  gsi.name AS resource_id,
+  'Ensure "3625 (trace flag)" database flag for Cloud SQL SQL Server instance is set to "on" (Automated)'
+    AS title,
+  gsi.project_id AS project_id,
+  CASE
+  WHEN gsi.database_version LIKE 'SQLSERVER%'
+  AND ((f->>'value') IS NULL OR f->>'value' != 'on')
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  gcp_sql_instances AS gsi
+  LEFT JOIN jsonb_array_elements(gsi.settings->'databaseFlags') AS f ON
+      f->>'name' = '3625';
+```
+
 ### Ensure "user connections" database flag for Cloud SQL SQL Server instance is set as appropriate (Automated)
 
 ```sql
