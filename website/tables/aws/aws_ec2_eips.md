@@ -35,6 +35,20 @@ The primary key for this table is **_cq_id**.
 
 These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
 
+### Unused EC2 EIP
+
+```sql
+SELECT
+  'Unused EC2 EIP' AS title,
+  account_id,
+  allocation_id AS resource_id,
+  'fail' AS status
+FROM
+  aws_ec2_eips
+WHERE
+  association_id IS NULL;
+```
+
 ### Unused EC2 EIPs should be removed
 
 ```sql

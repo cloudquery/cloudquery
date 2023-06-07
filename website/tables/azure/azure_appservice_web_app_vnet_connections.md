@@ -24,9 +24,3 @@ This table depends on [azure_appservice_web_apps](azure_appservice_web_apps).
 |id (PK)|`utf8`|
 |name|`utf8`|
 |type|`utf8`|
-
-## Example Queries
-
-These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
-
-

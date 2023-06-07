@@ -24,6 +24,60 @@ The primary key for this table is **id**.
 
 These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
 
+### There should be more than one owner assigned to your subscription
+
+```sql
+WITH
+  owners_in_sub
+    AS (
+      SELECT
+        a.subscription_id, count(*) AS owners, d.id AS id
+      FROM
+        azure_authorization_role_assignments AS a
+        JOIN azure_authorization_role_definitions AS d ON
+            a.properties->>'roleDefinitionId' = d.id
+      WHERE
+        a.properties->>'roleName' = 'Owner'
+        AND a.properties->>'roleType' = 'BuiltInRole'
+      GROUP BY
+        d.id, a.subscription_id
+    )
+SELECT
+  'There should be more than one owner assigned to your subscription' AS title,
+  subscription_id AS subscription_id,
+  id AS resource_id,
+  CASE WHEN owners > 1 THEN 'fail' ELSE 'pass' END AS status
+FROM
+  owners_in_sub;
+```
+
+### A maximum of 3 owners should be designated for your subscription
+
+```sql
+WITH
+  owners_in_sub
+    AS (
+      SELECT
+        a.subscription_id, count(*) AS owners, d.id AS id
+      FROM
+        azure_authorization_role_assignments AS a
+        JOIN azure_authorization_role_definitions AS d ON
+            a.properties->>'roleDefinitionId' = d.id
+      WHERE
+        a.properties->>'roleName' = 'Owner'
+        AND a.properties->>'roleType' = 'BuiltInRole'
+      GROUP BY
+        d.id, a.subscription_id
+    )
+SELECT
+  'A maximum of 3 owners should be designated for your subscription' AS title,
+  subscription_id AS subscription_id,
+  id AS resource_id,
+  CASE WHEN owners > 3 THEN 'fail' ELSE 'pass' END AS status
+FROM
+  owners_in_sub;
+```
+
 ### Ensure That No Custom Subscription Administrator Roles Exist
 
 ```sql

@@ -1,11 +1,3 @@
--- SELECT gsi.project_id, gsi.name, gsi.self_link AS link
--- FROM gcp_sql_instances gsi
--- WHERE database_version LIKE 'MYSQL%'
---     AND (settings_database_flags IS NULL
---         OR settings_database_flags ->> 'skip_show_database' != 'on'
---         OR settings_database_flags ->> 'skip_show_database' IS NULL);
-
-
 INSERT INTO gcp_policy_results (resource_id, execution_time, framework, check_id, title, project_id, status)
 SELECT gsi.name                                                                                            AS resource_id,
        :'execution_time'::timestamp                                                                        AS execution_time,

@@ -1,8 +1,3 @@
--- select * from gcp_dns_managed_zones
--- where visibility != 'private'
--- and ((dnssec_config is null) or (dnssec_config->>'state' = 'off'));
-
-
 INSERT INTO gcp_policy_results (resource_id, execution_time, framework, check_id, title, project_id, status)
 SELECT "id"                                                      AS resource_id,
        :'execution_time'::timestamp                              AS execution_time,
