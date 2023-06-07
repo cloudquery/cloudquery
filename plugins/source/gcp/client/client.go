@@ -38,10 +38,6 @@ type Client struct {
 	excludedOrgs []*crmv1.Organization
 	includedOrgs []*crmv1.Organization
 
-	includeProjects []*crmv1.Project
-	excludeProjects []*crmv1.Project
-
-	allFolders     []*resourcemanagerpb.Folder
 	includeFolders []*resourcemanagerpb.Folder
 	excludeFolders []*resourcemanagerpb.Folder
 	graph          *node

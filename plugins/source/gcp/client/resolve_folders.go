@@ -10,7 +10,6 @@ import (
 )
 
 func (c *Client) resolveFolders(ctx context.Context, folder ResourceDiscovery) error {
-
 	var err error
 	foldersClient, err := resourcemanager.NewFoldersClient(ctx, c.ClientOptions...)
 	if err != nil {
@@ -39,25 +38,34 @@ func (c *Client) resolveFolders(ctx context.Context, folder ResourceDiscovery) e
 		c.includeFolders = append(c.includeFolders, folder)
 	}
 
+	// Cannot directly add all excluded/included folders to the graph because the graph is not yet fully populated
+	// So first must grab all folders and then add them to the graph
 	allFolders, err := searchFolders(ctx, foldersClient, "name:*")
 	if err != nil {
 		return fmt.Errorf("failed to get all folders: %w", err)
 	}
+	added := 0
 	for {
-
 		for _, folder := range allFolders {
-			existingNode := findNodeByID(c.graph, folder.Parent)
-			if existingNode != nil {
-				newNode := node{
-					parentID: &folder.Parent,
-					included: true,
-					folder:   folder,
-				}
-				existingNode.relations = append(existingNode.relations, &newNode)
+			if addFolder(c.graph, folder, nil) {
+				added++
 			}
 		}
-		if len(allFolders) == 0 {
+		if len(allFolders) == added {
 			break
+		}
+	}
+	// Update include status for all excluded/included folders
+	boolFalse := false
+	boolTrue := true
+	for _, folder := range c.excludeFolders {
+		if !updateFolder(c.graph, folder, &boolFalse) {
+			c.logger.Warn().Msgf("folder %s is excluded but could not be added to the dependency graph", folder.Name)
+		}
+	}
+	for _, folder := range c.includeFolders {
+		if !updateFolder(c.graph, folder, &boolTrue) {
+			c.logger.Warn().Msgf("folder %s is included but could not be added to the dependency graph", folder.Name)
 		}
 	}
 

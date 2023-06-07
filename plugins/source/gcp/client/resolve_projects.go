@@ -13,9 +13,10 @@ func (c *Client) resolveProjects(ctx context.Context, project ResourceDiscovery)
 	if err != nil {
 		return fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
 	}
+	var includedProjects, excludedProjects []*crmv1.Project
 
 	if project.isIncludeNull() {
-		c.includeProjects, err = listProjectsFilter(ctx, service, "lifecycleState=ACTIVE")
+		includedProjects, err = listProjectsFilter(ctx, service, "lifecycleState=ACTIVE")
 		if err != nil {
 			return fmt.Errorf("failed to list active projects: %w", err)
 		}
@@ -25,30 +26,42 @@ func (c *Client) resolveProjects(ctx context.Context, project ResourceDiscovery)
 		if err != nil {
 			return fmt.Errorf("failed to list projects with filter (%s): %w", includeFilter, err)
 		}
-		c.includeProjects = append(c.includeProjects, projects...)
+		includedProjects = append(includedProjects, projects...)
 	}
 	for _, excludeFilter := range project.ExcludeFilter {
 		projects, err := listProjectsFilter(ctx, service, excludeFilter)
 		if err != nil {
 			return fmt.Errorf("failed to list projects with filter (%s): %w", excludeFilter, err)
 		}
-		c.excludeProjects = append(c.excludeProjects, projects...)
+		excludedProjects = append(excludedProjects, projects...)
 	}
 	for _, includeId := range project.IncludeListId {
 		project, err := service.Projects.Get(includeId).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("failed to get project with id %s: %w", includeId, err)
 		}
-		c.includeProjects = append(c.includeProjects, project)
+		includedProjects = append(includedProjects, project)
 	}
 	for _, excludeId := range project.ExcludeListId {
 		project, err := service.Projects.Get(excludeId).Context(ctx).Do()
 		if err != nil {
 			return fmt.Errorf("failed to get project with id %s: %w", excludeId, err)
 		}
-		c.excludeProjects = append(c.excludeProjects, project)
+		excludedProjects = append(excludedProjects, project)
 	}
-
+	trueBool := true
+	for _, project := range includedProjects {
+		addProject(c.graph, project, &trueBool)
+		if !addProject(c.graph, project, &trueBool) {
+			c.logger.Warn().Msgf("project %s is included but could not be added to the dependency graph", project.Name)
+		}
+	}
+	falseBool := false
+	for _, project := range excludedProjects {
+		if !addProject(c.graph, project, &falseBool) {
+			c.logger.Warn().Msgf("project %s is excluded but could not be added to the dependency graph", project.Name)
+		}
+	}
 	return nil
 }
 

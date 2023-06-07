@@ -7,55 +7,67 @@ import (
 	crmv1 "google.golang.org/api/cloudresourcemanager/v1"
 )
 
-func (c *Client) resolveOrgs(ctx context.Context, org ResourceDiscovery) error {
+func (c *Client) resolveOrgs(ctx context.Context, organization ResourceDiscovery) error {
 	var err error
 	service, err := crmv1.NewService(ctx, c.ClientOptions...)
 	if err != nil {
 		return fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
 	}
-	if !org.isNull() {
-		for _, includeFilter := range org.IncludeFilter {
+	var includedOrgs, excludedOrgs []*crmv1.Organization
+	if !organization.isNull() {
+		for _, includeFilter := range organization.IncludeFilter {
 			orgs, err := getOrganizationsFilter(ctx, service, includeFilter)
 			if err != nil {
 				return fmt.Errorf("failed to get organizations with filter: %w", err)
 			}
-			c.includedOrgs = append(c.includedOrgs, orgs...)
+			includedOrgs = append(includedOrgs, orgs...)
 		}
-		for _, excludeFilter := range org.ExcludeFilter {
+		for _, excludeFilter := range organization.ExcludeFilter {
 			orgs, err := getOrganizationsFilter(ctx, service, excludeFilter)
 			if err != nil {
 				return fmt.Errorf("failed to get organizations with filter: %w", err)
 			}
-			c.excludedOrgs = append(c.excludedOrgs, orgs...)
-
+			excludedOrgs = append(excludedOrgs, orgs...)
 		}
-		// Resolve organization from gcpSpec.Projects.Organizations.id_include_list and add to c.includedOrgs
-		for _, orgId := range org.IncludeListId {
+		// Resolve organization from gcpSpec.Projects.Organizations.id_include_list and add to includedOrgs
+		for _, orgId := range organization.IncludeListId {
 			org, err := getOrganizationFromId(ctx, service, orgId)
 			if err != nil {
 				return fmt.Errorf("failed to get organization with id %s: %w", orgId, err)
 			}
-			c.includedOrgs = append(c.includedOrgs, org)
+			includedOrgs = append(includedOrgs, org)
 		}
-		// Resolve organization from gcpSpec.Projects.Organizations.id_exclude_list and add to c.excludedOrgs
-		for _, orgId := range org.ExcludeListId {
+		// Resolve organization from gcpSpec.Projects.Organizations.id_exclude_list and add to excludedOrgs
+		for _, orgId := range organization.ExcludeListId {
 			org, err := getOrganizationFromId(ctx, service, orgId)
 			if err != nil {
 				return fmt.Errorf("failed to get organization with id %s: %w", orgId, err)
 			}
-			c.excludedOrgs = append(c.excludedOrgs, org)
+			excludedOrgs = append(excludedOrgs, org)
 		}
 	}
-	for _, orgId := range c.includedOrgs {
+	if organization.isIncludeNull() {
+		orgs, err := getOrganizationsFilter(ctx, service, "name:*")
+		if err != nil {
+			return fmt.Errorf("failed to get organizations with filter: %w", err)
+		}
+		includedOrgs = append(includedOrgs, orgs...)
+	}
+	if c.graph == nil {
+		c.graph = &node{}
+	}
+	trueBool := true
+	for _, orgId := range includedOrgs {
 		c.graph.relations = append(c.graph.relations, &node{
 			org:      orgId,
-			included: true,
+			included: &trueBool,
 		})
 	}
-	for _, orgId := range c.excludedOrgs {
+	falseBool := false
+	for _, orgId := range excludedOrgs {
 		c.graph.relations = append(c.graph.relations, &node{
 			org:      orgId,
-			included: false,
+			included: &falseBool,
 		})
 	}
 	return nil
@@ -80,14 +92,4 @@ func getOrganizationsFilter(ctx context.Context, service *crmv1.Service, filter 
 
 func getOrganizationFromId(ctx context.Context, service *crmv1.Service, id string) (*crmv1.Organization, error) {
 	return service.Organizations.Get("organizations/" + id).Context(ctx).Do()
-}
-
-func compareOrgs(org1, org2 *crmv1.Organization) bool {
-	if org1.Name != org2.Name {
-		return false
-	}
-	if org1.CreationTime != org2.CreationTime {
-		return false
-	}
-	return true
 }
