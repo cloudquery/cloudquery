@@ -28,3 +28,28 @@ The primary key for this table is **uid**.
 |secrets|`json`|
 |image_pull_secrets|`json`|
 |automount_service_account_token|`bool`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Pod service account tokens disabled"
+
+```sql
+SELECT
+  DISTINCT
+  uid AS resource_id,
+  'Pod service account tokens disabled"' AS title,
+  context AS context,
+  namespace AS namespace,
+  name AS resource_name,
+  CASE
+  WHEN automount_service_account_token THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  k8s_core_service_accounts;
+```
+
+

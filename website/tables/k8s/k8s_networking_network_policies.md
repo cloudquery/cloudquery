@@ -30,3 +30,71 @@ The primary key for this table is **uid**.
 |spec_egress|`json`|
 |spec_policy_types|`list<item: utf8, nullable>`|
 |status_conditions|`json`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Network policy default deny egress
+
+```sql
+SELECT
+  uid AS resource_id,
+  'Network policy default deny egress' AS title,
+  context AS context,
+  name AS namespace,
+  name AS resource_name,
+  CASE
+  WHEN (
+    SELECT
+      count(*)
+    FROM
+      k8s_networking_network_policies
+    WHERE
+      namespace = k8s_core_namespaces.name
+      AND context = k8s_core_namespaces.context
+      AND spec_policy_types @> ARRAY['Egress']
+      AND spec_pod_selector::STRING = '{}'
+      AND ((spec_egress IS NULL) OR jsonb_array_length(spec_egress) = 0)
+  )
+  = 0
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  k8s_core_namespaces;
+```
+
+### Network policy default deny ingress
+
+```sql
+SELECT
+  uid AS resource_id,
+  'Network policy default deny ingress' AS title,
+  context AS context,
+  name AS namespace,
+  name AS resource_name,
+  CASE
+  WHEN (
+    SELECT
+      count(*)
+    FROM
+      k8s_networking_network_policies
+    WHERE
+      namespace = k8s_core_namespaces.name
+      AND context = k8s_core_namespaces.context
+      AND spec_policy_types @> ARRAY['Ingress']
+      AND spec_pod_selector::STRING = '{}'
+      AND ((spec_ingress IS NULL) OR jsonb_array_length(spec_ingress) = 0)
+  )
+  = 0
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  k8s_core_namespaces;
+```
+
+
