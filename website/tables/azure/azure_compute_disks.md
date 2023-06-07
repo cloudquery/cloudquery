@@ -93,4 +93,22 @@ WHERE
   properties->>'diskState' = 'Unattached';
 ```
 
+### Ensure that VHD''s are encrypted (Manual)
+
+```sql
+SELECT
+  e'Ensure that VHD\'s are encrypted (Manual)' AS title,
+  subscription_id AS subscription_id,
+  id AS resource_id,
+  CASE
+  WHEN (properties->'encryptionSettingsCollection'->>'enabled')::BOOL
+  IS NOT true
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  azure_compute_disks;
+```
+
 

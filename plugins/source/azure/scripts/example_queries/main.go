@@ -14,7 +14,7 @@ import (
 	"github.com/mjibson/sqlfmt"
 )
 
-const policyResultsTable = "azure_policy_results"
+const policyResultsTable = `azure_policy_results`
 
 // Add example queries to the generated table docs from the policies/queries
 // directory.
@@ -69,8 +69,9 @@ func addQueriesToTable(t table, qs []query) error {
 	if strings.Contains(s, "## Example Queries") {
 		s = strings.Split(s, "## Example Queries")[0]
 	}
-	s += "\n\n## Example Queries\n\n"
-	s += "These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.\n\n"
+	add := "\n\n## Example Queries\n\n"
+	add += "These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.\n\n"
+	entries := 0
 	for _, q := range qs {
 		if q.title == "" {
 			// Skip queries without titles
@@ -82,10 +83,14 @@ func addQueriesToTable(t table, qs []query) error {
 			log.Println("Skipping query due to error:", err)
 			continue
 		}
-		s += fmt.Sprintf("### %s\n\n", q.title)
-		s += fmt.Sprintf("```sql\n%s\n```\n\n", smp)
+		add += fmt.Sprintf("### %s\n\n", q.title)
+		add += fmt.Sprintf("```sql\n%s\n```\n\n", smp)
+		entries++
 	}
-	s += "\n"
+	add += "\n"
+	if entries > 0 {
+		s += add
+	}
 	return os.WriteFile(t.path, []byte(s), 0644)
 }
 
@@ -125,7 +130,7 @@ type query struct {
 func (q query) Simplify() (string, error) {
 	qs := q.query
 	qs = regexp.MustCompile(`[ \t]+`).ReplaceAllString(qs, " ")
-	qs = regexp.MustCompile(`(?i)insert into `+policyResultsTable).ReplaceAllString(qs, "")
+	qs = regexp.MustCompile(`(?i)insert into `+policyResultsTable+`(?: \([^)]+\))?`).ReplaceAllString(qs, "")
 	qs = strings.Trim(qs, "\n ")
 	qs = regexp.MustCompile(`(?i):'execution_time'::timestamp as execution_time,`).ReplaceAllString(qs, "")
 	qs = regexp.MustCompile(`(?i):'execution_time' as execution_time,`).ReplaceAllString(qs, "")
