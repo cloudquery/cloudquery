@@ -17,6 +17,9 @@ func Watchers() *schema.Table {
 		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_watchers", client.Namespacemicrosoft_network),
 		Transform:   transformers.TransformWithStruct(&armnetwork.Watcher{}, transformers.WithPrimaryKeys("ID")),
 		Columns:     schema.ColumnList{client.SubscriptionID},
+		Relations: []*schema.Table{
+			watcherFlowLogs(),
+		},
 	}
 }
 

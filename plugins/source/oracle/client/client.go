@@ -32,7 +32,7 @@ type Client struct {
 	// By default (if no multiplexer is defined), Region is set to the home region, and CompartmentOcid is set to the tenancy ocid.
 	Region             string
 	CompartmentOcid    string
-	AvailibilityDomain string // For fetches that are multiplexed by availibility domain (and not region)
+	AvailabilityDomain string // For fetches that are multiplexed by availibility domain (and not region)
 
 	logger zerolog.Logger
 }
@@ -98,7 +98,7 @@ func (c *Client) ID() string {
 	idStrings := []string{
 		c.Region,
 		c.CompartmentOcid,
-		c.AvailibilityDomain,
+		c.AvailabilityDomain,
 		c.HomeRegion,
 		c.TenancyOcid,
 	}
@@ -123,10 +123,10 @@ func (c *Client) withCompartment(compartmentOcid string) *Client {
 	return &newClient
 }
 
-func (c *Client) withAvailibilityDomain(availabilityDomain string) *Client {
+func (c *Client) withAvailabilityDomain(availabilityDomain string) *Client {
 	newClient := *c
 	newClient.logger = c.logger.With().Str("availability_domain", availabilityDomain).Logger()
-	newClient.AvailibilityDomain = availabilityDomain
+	newClient.AvailabilityDomain = availabilityDomain
 	return &newClient
 }
 

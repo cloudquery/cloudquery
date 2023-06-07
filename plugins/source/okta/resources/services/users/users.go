@@ -16,7 +16,11 @@ func Users() *schema.Table {
 	}
 }
 
-func fetchUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+func fetchUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) (err error) {
+	defer func() {
+		err = client.ProcessOktaAPIError(err)
+	}()
+
 	cl := meta.(*client.Client)
 
 	req := cl.UserApi.ListUsers(ctx).Limit(200)

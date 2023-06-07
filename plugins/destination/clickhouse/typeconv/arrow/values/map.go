@@ -40,10 +40,10 @@ func buildMapFromReflect(builder *array.MapBuilder, value reflect.Value) error {
 		return nil
 	}
 
+	builder.Append(true)
 	keyBuilder, itemBuilder := builder.KeyBuilder(), builder.ItemBuilder()
 	it := value.MapRange()
 	for it.Next() {
-		builder.Append(true)
 		if err := buildValue(keyBuilder, it.Key().Interface()); err != nil {
 			return err
 		}

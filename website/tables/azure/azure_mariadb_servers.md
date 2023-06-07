@@ -27,3 +27,27 @@ The following tables depend on azure_mariadb_servers:
 |id (PK)|`utf8`|
 |name|`utf8`|
 |type|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Geo-redundant backup should be enabled for Azure Database for MariaDB
+
+```sql
+SELECT
+  'Geo-redundant backup should be enabled for Azure Database for MariaDB'
+    AS title,
+  subscription_id,
+  id,
+  CASE
+  WHEN properties->'storageProfile'->>'geoRedundantBackup'
+  IS DISTINCT FROM 'Enabled'
+  THEN 'fail'
+  ELSE 'pass'
+  END
+FROM
+  azure_mariadb_servers;
+```
+
+

@@ -6,6 +6,11 @@ https://learn.microsoft.com/en-us/rest/api/dns/zones/list?tabs=HTTP#zone
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on azure_dns_zones:
+  - [azure_dns_record_sets](azure_dns_record_sets)
+
 ## Columns
 
 | Name          | Type          |

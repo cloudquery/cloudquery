@@ -4,20 +4,30 @@ import (
 	"reflect"
 
 	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/oracle/oci-go-sdk/v65/common"
 )
 
-func OracleTypeTransformer(field reflect.StructField) (arrow.DataType, error) {
+func typeTransformer(field reflect.StructField) (arrow.DataType, error) {
 	fieldType := field.Type
 
-	if fieldType.Kind() == reflect.Ptr {
+	for fieldType.Kind() == reflect.Pointer {
 		fieldType = fieldType.Elem()
 	}
 
-	if fieldType.Kind() == reflect.Struct && fieldType == reflect.TypeOf(common.SDKTime{}) {
+	if fieldType == reflect.TypeOf(common.SDKTime{}) {
 		return arrow.FixedWidthTypes.Timestamp_us, nil
 	}
 
-	return transformers.DefaultTypeTransformer(field)
+	return nil, nil
+}
+
+var options = []transformers.StructTransformerOption{
+	transformers.WithPrimaryKeys("Id"),
+	transformers.WithTypeTransformer(typeTransformer),
+}
+
+func TransformWithStruct(t any, opts ...transformers.StructTransformerOption) schema.Transform {
+	return transformers.TransformWithStruct(t, append(options, opts...)...)
 }

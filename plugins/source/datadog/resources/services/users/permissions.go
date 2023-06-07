@@ -10,22 +10,24 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
-func UserPermissions() *schema.Table {
+func permissions() *schema.Table {
 	return &schema.Table{
 		Name:      "datadog_user_permissions",
-		Resolver:  fetchUserPermissions,
-		Transform: transformers.TransformWithStruct(&datadogV2.Permission{}),
-		Columns: []schema.Column{
+		Resolver:  fetchPermissions,
+		Transform: client.TransformWithStruct(&datadogV2.Permission{}, transformers.WithPrimaryKeys("Id")),
+		Columns: schema.ColumnList{
+			client.AccountNameColumn,
 			{
-				Name:     "account_name",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveAccountName,
+				Name:       "user_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("id"),
+				PrimaryKey: true,
 			},
 		},
 	}
 }
 
-func fetchUserPermissions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchPermissions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(datadogV2.User)
 	c := meta.(*client.Client)
 	ctx = c.BuildContextV2(ctx)

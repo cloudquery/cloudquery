@@ -26,7 +26,11 @@ func users() *schema.Table {
 	}
 }
 
-func fetchUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) (err error) {
+	defer func() {
+		err = client.ProcessOktaAPIError(err)
+	}()
+
 	cl := meta.(*client.Client)
 	grp := parent.Item.(okta.Group)
 
