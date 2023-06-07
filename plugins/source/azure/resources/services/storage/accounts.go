@@ -11,12 +11,13 @@ import (
 
 func Accounts() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_storage_accounts",
-		Resolver:    fetchAccounts,
-		Description: "https://learn.microsoft.com/en-us/rest/api/storagerp/storage-accounts/list?tabs=HTTP#storageaccount",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_storage_accounts", client.Namespacemicrosoft_storage),
-		Transform:   transformers.TransformWithStruct(&armstorage.Account{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_storage_accounts",
+		Resolver:             fetchAccounts,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/storagerp/storage-accounts/list?tabs=HTTP#storageaccount",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_storage_accounts", client.Namespacemicrosoft_storage),
+		Transform:            transformers.TransformWithStruct(&armstorage.Account{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 
 		Relations: []*schema.Table{
 			tables(),

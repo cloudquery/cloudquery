@@ -11,11 +11,12 @@ import (
 
 func queueServices() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_storage_queue_services",
-		Resolver:    fetchQueueServices,
-		Description: "https://learn.microsoft.com/en-us/rest/api/storagerp/queue-services/list?tabs=HTTP#queueserviceproperties",
-		Transform:   transformers.TransformWithStruct(&armstorage.QueueServiceProperties{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_storage_queue_services",
+		Resolver:             fetchQueueServices,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/storagerp/queue-services/list?tabs=HTTP#queueserviceproperties",
+		Transform:            transformers.TransformWithStruct(&armstorage.QueueServiceProperties{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

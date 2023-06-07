@@ -11,12 +11,13 @@ import (
 
 func VirtualHubs() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_virtual_hubs",
-		Resolver:    fetchVirtualHubs,
-		Description: "https://learn.microsoft.com/en-us/rest/api/virtualwan/virtual-hubs/list?tabs=HTTP#virtualhub",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_virtual_hubs", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.VirtualHub{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_virtual_hubs",
+		Resolver:             fetchVirtualHubs,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/virtualwan/virtual-hubs/list?tabs=HTTP#virtualhub",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_network_virtual_hubs", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armnetwork.VirtualHub{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 
