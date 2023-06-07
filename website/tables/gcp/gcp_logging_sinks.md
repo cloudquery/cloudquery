@@ -34,20 +34,6 @@ These SQL queries are sampled from CloudQuery policies and are compatible with P
 ### Ensure that retention policies on log buckets are configured using Bucket Lock (Automated)
 
 ```sql
--- SELECT
--- gls.project_id,
--- gls.name AS "sink_name",
--- gsb.name AS "bucket_name",
--- gsb.retention_policy_is_locked,
--- gsb.retention_policy_retention_period,
--- gls.destination
--- FROM gcp_logging_sinks gls
--- JOIN gcp_storage_buckets gsb ON
--- gsb.name = REPLACE(gls.destination, 'storage.googleapis.com/', '')
--- WHERE gls.destination LIKE 'storage.googleapis.com/%'
--- AND ( gsb.retention_policy_is_locked = FALSE
--- OR gsb.retention_policy_retention_period = 0)
-
 SELECT
   DISTINCT
   gsb.name AS resource_id,
@@ -73,15 +59,6 @@ FROM
 ### Ensure that sinks are configured for all log entries (Automated)
 
 ```sql
--- WITH found_sinks AS (
--- SELECT count(*) AS configured_sinks
--- FROM gcp_logging_sinks gls
--- WHERE gls.FILTER = ''
--- )
--- SELECT 'no sinks for all log entries configured' AS description
--- FROM found_sinks
--- WHERE configured_sinks = 0;
-
 WITH
   found_sinks
     AS (

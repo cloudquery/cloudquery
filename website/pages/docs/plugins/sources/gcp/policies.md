@@ -10,8 +10,6 @@ GCP CIS v1.2.0 requires the following tables to be synced before the policy is e
 
 ```yaml
 tables:
-  - gcp_bigquery_dataset_accesses
-  - gcp_bigquery_dataset_tables
   - gcp_bigquery_datasets
   - gcp_bigquery_tables
   - gcp_compute_disks
@@ -20,18 +18,14 @@ tables:
   - gcp_compute_networks
   - gcp_compute_projects
   - gcp_compute_subnetworks
-  - gcp_dns_managed_zone_dnssec_config_default_key_specs
   - gcp_dns_managed_zones
   - gcp_dns_policies
-  - gcp_dns_policy_networks
   - gcp_firewall_allowed_rules
   - gcp_iam_service_account_keys
   - gcp_iam_service_accounts
   - gcp_kms_crypto_keys
-  - gcp_kms_keyring_crypto_keys
   - gcp_kms_keyrings
   - gcp_kms_locations
-  - gcp_log_metric_filters
   - gcp_logging_metrics
   - gcp_logging_sinks
   - gcp_monitoring_alert_policies
@@ -123,8 +117,14 @@ GCP CIS v1.2.0 performs the following checks:
 GCP CIS v1.2.0 depends on the following views:
 
   - gcp_firewall_allowed_rules<sup>*</sup>
-  - gcp_log_metric_filters<sup>*</sup>
   - gcp_project_policy_members<sup>*</sup>
   - gcp_public_buckets_accesses<sup>*</sup>
 
   <sup>*</sup> These views are automatically created or updated by this policy.
+
+### Unused Views
+
+GCP CIS v1.2.0 creates this view but does not use it:
+
+  - gcp_log_metric_filters
+

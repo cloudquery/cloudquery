@@ -61,13 +61,6 @@ FROM
 ### Ensure that DNSSEC is enabled for Cloud DNS (Automated)
 
 ```sql
--- SELECT gdmz.project_id, gdmz.id, gdmz.name, gdmz.dns_name, gdmzdcdks."key_type", gdmzdcdks.algorithm
--- FROM gcp_dns_managed_zones gdmz
--- JOIN gcp_dns_managed_zone_dnssec_config_default_key_specs gdmzdcdks ON
--- gdmz.id = gdmzdcdks.managed_zone_id
--- WHERE gdmzdcdks."key_type" = 'keySigning'
--- AND gdmzdcdks.algorithm = 'rsasha1';
-
 SELECT
   DISTINCT
   gdmz.id AS resource_id,
@@ -88,13 +81,6 @@ FROM
 ### Ensure that RSASHA1 is not used for the zone-signing key in Cloud DNS DNSSEC (Manual)
 
 ```sql
--- SELECT gdmz.id, gdmz.project_id, gdmz.dns_name, gdmzdcdks."key_type", gdmzdcdks.algorithm
--- FROM gcp_dns_managed_zones gdmz
--- JOIN gcp_dns_managed_zone_dnssec_config_default_key_specs gdmzdcdks ON
--- gdmz.id = gdmzdcdks.managed_zone_id
--- WHERE gdmzdcdks."key_type" = 'zoneSigning'
--- AND gdmzdcdks.algorithm = 'rsasha1'
-
 SELECT
   DISTINCT
   gdmz.id AS resource_id,
@@ -116,10 +102,6 @@ FROM
 ### Ensure that DNSSEC is enabled for Cloud DNS (Automated)
 
 ```sql
--- select * from gcp_dns_managed_zones
--- where visibility != 'private'
--- and ((dnssec_config is null) or (dnssec_config->>'state' = 'off'));
-
 SELECT
   id AS resource_id,
   'Ensure that DNSSEC is enabled for Cloud DNS (Automated)' AS title,

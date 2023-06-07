@@ -27,29 +27,6 @@ These SQL queries are sampled from CloudQuery policies and are compatible with P
 ### Ensure that Cloud Audit Logging is configured properly across all services and all users from a project (Automated)
 
 ```sql
--- WITH project_policy_audit_configs AS (
--- SELECT
--- project_id,
--- jsonb_array_elements(audit_configs) AS audit_config
--- FROM gcp_resourcemanager_project_policies
--- ),
--- log_types AS (
--- SELECT
--- project_id,
--- audit_config ->> 'service' AS "service",
--- jsonb_array_elements(audit_config -> 'auditLogConfigs') ->> 'logType' AS logs,
--- jsonb_array_elements(audit_config -> 'auditLogConfigs') ->> 'exemptedMembers' AS exempted
--- FROM project_policy_audit_configs
--- )
--- SELECT project_id, service, count(*)
--- FROM log_types
--- WHERE exempted IS NULL
--- AND logs IN ('DATA_READ', 'DATA_WRITE')
--- AND service = 'allServices'
--- GROUP BY project_id, service
--- --count(*) > 2 means DATA_READ and DATA_WRITE are there
--- HAVING count(*) = 2;
-
 WITH
   project_policy_audit_configs
     AS (

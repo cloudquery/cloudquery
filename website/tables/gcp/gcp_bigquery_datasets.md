@@ -50,19 +50,6 @@ These SQL queries are sampled from CloudQuery policies and are compatible with P
 ### Ensure that BigQuery datasets are not anonymously or publicly accessible (Automated)
 
 ```sql
--- SELECT
--- d.project_id,
--- d.id,
--- d.friendly_name,
--- d.self_link AS dataset_link,
--- a.special_group AS "group",
--- a."role"
--- FROM gcp_bigquery_datasets d
--- JOIN gcp_bigquery_dataset_accesses a ON
--- d.id = a.dataset_id
--- WHERE a."role" = 'allUsers'
--- OR a."role" = 'allAuthenticatedUsers';
-
 SELECT
   DISTINCT
   d.id AS resource_id,
@@ -82,11 +69,6 @@ FROM
 ### Ensure that all BigQuery Tables are encrypted with Customer-managed encryption key (CMEK) (Automated)
 
 ```sql
--- SELECT project_id, id, friendly_name, self_link AS link
--- FROM gcp_bigquery_datasets
--- WHERE default_encryption_configuration_kms_key_name = ''
--- OR default_encryption_configuration_kms_key_name IS NULL;
-
 SELECT
   d.id AS resource_id,
   'Ensure that all BigQuery Tables are encrypted with Customer-managed encryption key (CMEK) (Automated)'
@@ -106,12 +88,6 @@ FROM
 ### Ensure that a Default Customer-managed encryption key (CMEK) is specified for all BigQuery Data Sets (Automated)
 
 ```sql
--- SELECT d.project_id, d.id, d.friendly_name, d.self_link AS dataset_link, t.self_link AS table_link
--- FROM gcp_bigquery_datasets d
--- JOIN gcp_bigquery_dataset_tables t ON
--- d.id = t.dataset_id
--- WHERE encryption_configuration_kms_key_name = '' OR default_encryption_configuration_kms_key_name IS NULL;
-
 SELECT
   DISTINCT
   d.id AS resource_id,
