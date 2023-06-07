@@ -44,3 +44,69 @@ The following tables depend on aws_ssm_instances:
 |resource_type|`utf8`|
 |source_id|`utf8`|
 |source_type|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### EC2 instances should be managed by AWS Systems Manager
+
+```sql
+SELECT
+  'EC2 instances should be managed by AWS Systems Manager' AS title,
+  aws_ec2_instances.account_id,
+  aws_ec2_instances.arn AS resource_id,
+  CASE
+  WHEN aws_ssm_instances.instance_id IS NULL THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_ec2_instances
+  LEFT JOIN aws_ssm_instances ON
+      aws_ec2_instances.instance_id = aws_ssm_instances.instance_id;
+```
+
+### Instances managed by Systems Manager should have an association compliance status of COMPLIANT
+
+```sql
+SELECT
+  'Instances managed by Systems Manager should have an association compliance status of COMPLIANT'
+    AS title,
+  aws_ssm_instances.account_id,
+  aws_ssm_instances.arn,
+  CASE
+  WHEN aws_ssm_instance_compliance_items.compliance_type = 'Association'
+  AND aws_ssm_instance_compliance_items.status IS DISTINCT FROM 'COMPLIANT'
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_ssm_instances
+  INNER JOIN aws_ssm_instance_compliance_items ON
+      aws_ssm_instances.arn = aws_ssm_instance_compliance_items.instance_arn;
+```
+
+### All EC2 instances managed by Systems Manager should be compliant with patching requirements
+
+```sql
+SELECT
+  'All EC2 instances managed by Systems Manager should be compliant with patching requirements'
+    AS title,
+  aws_ssm_instances.account_id,
+  aws_ssm_instances.arn,
+  CASE
+  WHEN aws_ssm_instance_compliance_items.compliance_type = 'Patch'
+  AND aws_ssm_instance_compliance_items.status IS DISTINCT FROM 'COMPLIANT'
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_ssm_instances
+  INNER JOIN aws_ssm_instance_compliance_items ON
+      aws_ssm_instances.arn = aws_ssm_instance_compliance_items.instance_arn;
+```
+
+

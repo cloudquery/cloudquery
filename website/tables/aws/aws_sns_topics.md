@@ -30,3 +30,42 @@ The primary key for this table is **arn**.
 |fifo_topic|`bool`|
 |content_based_deduplication|`bool`|
 |unknown_fields|`json`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### SNS topics should be encrypted at rest using AWS KMS
+
+```sql
+SELECT
+  'SNS topics should be encrypted at rest using AWS KMS' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN kms_master_key_id IS NULL OR kms_master_key_id = '' THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_sns_topics;
+```
+
+### Unused SNS topic
+
+```sql
+WITH
+  subscription AS (SELECT DISTINCT topic_arn FROM aws_sns_subscriptions)
+SELECT
+  'Unused SNS topic' AS title,
+  topic.account_id,
+  topic.arn AS resource_id,
+  'fail' AS status
+FROM
+  aws_sns_topics AS topic
+  LEFT JOIN subscription ON subscription.topic_arn = topic.arn
+WHERE
+  subscription.topic_arn IS NULL;
+```
+
+

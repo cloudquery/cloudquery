@@ -44,3 +44,53 @@ The primary key for this table is **arn**.
 |timeout_in_minutes|`int64`|
 |vpc_config|`json`|
 |webhook|`json`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### CodeBuild project environment variables should not contain clear text credentials
+
+```sql
+SELECT
+  DISTINCT
+  'CodeBuild project environment variables should not contain clear text credentials'
+    AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN e->>'Type' = 'PLAINTEXT'
+  AND (
+      upper(e->>'Name') LIKE '%ACCESS_KEY%'
+      OR upper(e->>'Name') LIKE '%SECRET%'
+      OR upper(e->>'Name') LIKE '%PASSWORD%'
+    )
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_codebuild_projects,
+  jsonb_array_elements(environment->'EnvironmentVariables') AS e;
+```
+
+### CodeBuild GitHub or Bitbucket source repository URLs should use OAuth
+
+```sql
+SELECT
+  'CodeBuild GitHub or Bitbucket source repository URLs should use OAuth'
+    AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN source->>'Type' IN ('GITHUB', 'BITBUCKET')
+  AND source->'Auth'->>'Type' != 'OAUTH'
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_codebuild_projects;
+```
+
+
