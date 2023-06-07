@@ -1,0 +1,56 @@
+---
+title: How to Manage AWS Resource and Usage Limits with CloudQuery and Service Quotas
+tag: tutorial
+description: >-
+  Cloud Usage
+author: jsonkao
+---
+
+import { HowToGuideHeader } from "../../components/HowToGuideHeader"
+
+<HowToGuideHeader/>
+
+## Introduction
+
+AWS Accounts come with over 200 services and each service has different types of resources.  Benefits of cloud computing include the ease of use, elasticity, and advantages of using these cloud services.  However, cloud services come with usage and resource limits.  Proper management of these usage and resource limits can prevent against availability issues when a resource cannot be created, a service is throttled, and helps with proactive management and troubleshooting of limit constraints that may impact active production applications and development environments. 
+
+In 2019, [AWS introduced Service Quotas](https://aws.amazon.com/blogs/mt/introducing-service-quotas-view-and-manage-your-quotas-for-aws-services-from-one-central-location/), a new service to help with managing these limits (now called quotas) from a central location.
+
+### Example Limit Scenarios
+
+
+## Managing Service Quotas
+
+https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_servicequotas_quotas
+
+One option provided by AWS is to utilize AWS Trusted Advisor (and AWS Support).  [AWS Trusted Advisor](https://aws.amazon.com/premiumsupport/technology/trusted-advisor/) offers checks for service quotas with AWS Basic Support and AWS Developer Support Plans.  AWS Business and Enterprise Support customers get all checks which include service quota checks.  However, Trusted Advisor currently (as of June 2023) only supports 51 checks.  Additionally, programmatic access to Trusted Advisor APIs (and Support) requires either a Business, Enterprise On-Ramp, or Enterprise Support Plan with AWS.
+
+![Trusted Advisor Console](/images/how-to-guides/aws-resource-limits-and-service-quotas/trusted-advisor.png)
+
+Another option is to integrate AWS Service Quotas with CloudWatch for alerting.  However, these integrations only [work with Service Quotas that support CloudWatch Alarms](https://docs.aws.amazon.com/servicequotas/latest/userguide/configure-cloudwatch.html).
+
+With CloudQuery, we'll demonstrate another option: how to use CloudQuery to manage and monitor resource utilization and service quota usage.  We'll also use CloudQuery to sync information from Trusted Advisor and Support
+
+## Walkthrough
+
+We'll focus on the following tables and services:
+* AWS Service Quotas
+* AWS Trusted Advisor
+
+
+### Queries
+
+```
+SELECT * FROM AWS_support_trusted_advisor_checks
+WHERE category='service_limits' and language_code='en';
+```
+
+
+
+## Summary
+
+
+## References
+
+[CloudQuery: AWS Source Plugin](/docs/plugins/sources/aws/overview)
+
