@@ -8,8 +8,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
-func LowercaseIDResolver(_ context.Context, _ schema.ClientMeta, resource *schema.Resource) error {
-	resource.SetItem(lowercaseID(resource.GetItem()))
+func LowercaseIDResolver(_ context.Context, c schema.ClientMeta, resource *schema.Resource) error {
+	if c.(*Client).pluginSpec.NormalizeIDs {
+		resource.SetItem(lowercaseID(resource.GetItem()))
+	}
 	return nil
 }
 
