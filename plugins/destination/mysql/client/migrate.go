@@ -10,42 +10,35 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
-func (c *Client) normalizeTables(tables schema.Tables) (schema.Tables, error) {
+func (c *Client) normalizeTables(tables schema.Tables) schema.Tables {
 	flattened := tables.FlattenTables()
 	normalized := make(schema.Tables, len(flattened))
-	var err error
 	for i, table := range flattened {
-		normalized[i], err = c.normalizeTable(table)
-		if err != nil {
-			return nil, err
-		}
+		normalized[i] = c.normalizeTable(table)
 	}
-	return normalized, nil
+	return normalized
 }
 
-func (c *Client) normalizeTable(table *schema.Table) (*schema.Table, error) {
+func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 	columns := make([]schema.Column, len(table.Columns))
 	for i, col := range table.Columns {
 		if !c.pkEnabled() {
 			col.PrimaryKey = false
 		}
-		normalized, err := c.normalizeField(col.ToArrowField())
-		if err != nil {
-			return nil, err
-		}
+		normalized := c.normalizeField(col.ToArrowField())
 		columns[i] = schema.NewColumnFromArrowField(*normalized)
 	}
-	return &schema.Table{Name: table.Name, Columns: columns}, nil
+	return &schema.Table{Name: table.Name, Columns: columns}
 }
 
-func (*Client) normalizeField(field arrow.Field) (*arrow.Field, error) {
+func (*Client) normalizeField(field arrow.Field) *arrow.Field {
 	normalizedType := mySQLTypeToArrowType(arrowTypeToMySqlStr(field.Type))
 	return &arrow.Field{
 		Name:     field.Name,
 		Type:     normalizedType,
 		Nullable: field.Nullable,
 		Metadata: field.Metadata,
-	}, nil
+	}
 }
 
 func (c *Client) nonAutoMigratableTables(tables schema.Tables, mysqlTables schema.Tables) ([]string, [][]schema.TableColumnChange) {
@@ -102,11 +95,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 		return err
 	}
 
-	normalizedTables, err := c.normalizeTables(tables)
-	if err != nil {
-		return err
-	}
-
+	normalizedTables := c.normalizeTables(tables)
 	if c.spec.MigrateMode != specs.MigrateModeForced {
 		nonAutoMigrtableTables, changes := c.nonAutoMigratableTables(normalizedTables, mysqlTables)
 		if len(nonAutoMigrtableTables) > 0 {
