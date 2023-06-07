@@ -169,7 +169,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		c.ClientOptions = append(c.ClientOptions, option.WithCredentialsJSON(serviceAccountKeyJSON))
 	}
 
-	if !gcpSpec.Projects.isNull() {
+	if !gcpSpec.HierarchyDiscovery.isNull() {
 		err = c.resolveDiscovery(ctx, gcpSpec)
 		if err != nil {
 			return nil, err

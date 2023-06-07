@@ -43,11 +43,12 @@ type Spec struct {
 	OrganizationIDs       []string `json:"organization_ids"`
 	OrganizationFilter    string   `json:"organization_filter"`
 
-	Projects HierarchyDiscovery `json:"hierarchy_discovery"`
+	// Experimental
+	HierarchyDiscovery HierarchyDiscovery `json:"hierarchy_discovery"`
 }
 
 func (spec *Spec) validate() error {
-	if !spec.Projects.isNull() {
+	if !spec.HierarchyDiscovery.isNull() {
 		if len(spec.ProjectIDs) > 0 {
 			return fmt.Errorf("cannot specify both project_ids and projects")
 		}

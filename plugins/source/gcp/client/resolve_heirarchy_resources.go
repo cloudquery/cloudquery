@@ -11,13 +11,13 @@ import (
 )
 
 func (c *Client) resolveDiscovery(ctx context.Context, gcpSpec Spec) error {
-	if err := c.resolveOrgs(ctx, gcpSpec.Projects.Organizations); err != nil {
+	if err := c.resolveOrgs(ctx, gcpSpec.HierarchyDiscovery.Organizations); err != nil {
 		return fmt.Errorf("failed to resolve organizations: %w", err)
 	}
-	if err := c.resolveFolders(ctx, gcpSpec.Projects.Folders); err != nil {
+	if err := c.resolveFolders(ctx, gcpSpec.HierarchyDiscovery.Folders); err != nil {
 		return fmt.Errorf("failed to resolve organizations: %w", err)
 	}
-	if err := c.resolveProjects(ctx, gcpSpec.Projects.Projects); err != nil {
+	if err := c.resolveProjects(ctx, gcpSpec.HierarchyDiscovery.Projects); err != nil {
 		return fmt.Errorf("failed to resolve organizations: %w", err)
 	}
 
