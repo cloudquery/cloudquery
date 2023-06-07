@@ -11,13 +11,12 @@ import (
 
 func AllowedConnections() *schema.Table {
 	return &schema.Table{
-		Name:                 "azure_security_allowed_connections",
-		Resolver:             fetchAllowedConnections,
-		PostResourceResolver: client.LowercaseIDResolver,
-		Description:          "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/allowed-connections/list?tabs=HTTP#allowedconnectionsresource",
-		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_security_allowed_connections", client.Namespacemicrosoft_security),
-		Transform:            transformers.TransformWithStruct(&armsecurity.AllowedConnectionsResource{}, transformers.WithPrimaryKeys("ID")),
-		Columns:              schema.ColumnList{client.SubscriptionID},
+		Name:        "azure_security_allowed_connections",
+		Resolver:    fetchAllowedConnections,
+		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/allowed-connections/list?tabs=HTTP#allowedconnectionsresource",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_allowed_connections", client.Namespacemicrosoft_security),
+		Transform:   transformers.TransformWithStruct(&armsecurity.AllowedConnectionsResource{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

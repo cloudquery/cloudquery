@@ -11,13 +11,12 @@ import (
 
 func Tasks() *schema.Table {
 	return &schema.Table{
-		Name:                 "azure_security_tasks",
-		Resolver:             fetchTasks,
-		PostResourceResolver: client.LowercaseIDResolver,
-		Description:          "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/tasks/list?tabs=HTTP#securitytask",
-		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_security_tasks", client.Namespacemicrosoft_security),
-		Transform:            transformers.TransformWithStruct(&armsecurity.Task{}, transformers.WithPrimaryKeys("ID")),
-		Columns:              schema.ColumnList{client.SubscriptionID},
+		Name:        "azure_security_tasks",
+		Resolver:    fetchTasks,
+		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/tasks/list?tabs=HTTP#securitytask",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_tasks", client.Namespacemicrosoft_security),
+		Transform:   transformers.TransformWithStruct(&armsecurity.Task{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

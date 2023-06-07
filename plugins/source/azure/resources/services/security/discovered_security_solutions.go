@@ -11,13 +11,12 @@ import (
 
 func DiscoveredSecuritySolutions() *schema.Table {
 	return &schema.Table{
-		Name:                 "azure_security_discovered_security_solutions",
-		Resolver:             fetchDiscoveredSecuritySolutions,
-		PostResourceResolver: client.LowercaseIDResolver,
-		Description:          "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/discovered-security-solutions/list?tabs=HTTP#discoveredsecuritysolution",
-		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_security_discovered_security_solutions", client.Namespacemicrosoft_security),
-		Transform:            transformers.TransformWithStruct(&armsecurity.DiscoveredSecuritySolution{}, transformers.WithPrimaryKeys("ID")),
-		Columns:              schema.ColumnList{client.SubscriptionID},
+		Name:        "azure_security_discovered_security_solutions",
+		Resolver:    fetchDiscoveredSecuritySolutions,
+		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/discovered-security-solutions/list?tabs=HTTP#discoveredsecuritysolution",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_discovered_security_solutions", client.Namespacemicrosoft_security),
+		Transform:   transformers.TransformWithStruct(&armsecurity.DiscoveredSecuritySolution{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 

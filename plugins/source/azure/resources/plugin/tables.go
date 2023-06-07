@@ -96,7 +96,7 @@ import (
 )
 
 func tables() []*schema.Table {
-	list := []*schema.Table{
+	return []*schema.Table{
 		advisor.RecommendationMetadata(),
 		advisor.Recommendations(),
 		advisor.Suppressions(),
@@ -351,10 +351,4 @@ func tables() []*schema.Table {
 		windowsiot.Services(),
 		workloads.Monitors(),
 	}
-	for i := range list {
-		if list[i].PostResourceResolver == nil {
-			panic("no PostResourceResolver in " + list[i].Name)
-		}
-	}
-	return list
 }

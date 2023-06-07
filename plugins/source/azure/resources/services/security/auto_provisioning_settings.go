@@ -11,13 +11,12 @@ import (
 
 func AutoProvisioningSettings() *schema.Table {
 	return &schema.Table{
-		Name:                 "azure_security_auto_provisioning_settings",
-		Resolver:             fetchAutoProvisioningSettings,
-		PostResourceResolver: client.LowercaseIDResolver,
-		Description:          "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/auto-provisioning-settings/list?tabs=HTTP#autoprovisioningsetting",
-		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_security_auto_provisioning_settings", client.Namespacemicrosoft_security),
-		Transform:            transformers.TransformWithStruct(&armsecurity.AutoProvisioningSetting{}, transformers.WithPrimaryKeys("ID")),
-		Columns:              schema.ColumnList{client.SubscriptionID},
+		Name:        "azure_security_auto_provisioning_settings",
+		Resolver:    fetchAutoProvisioningSettings,
+		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/auto-provisioning-settings/list?tabs=HTTP#autoprovisioningsetting",
+		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_auto_provisioning_settings", client.Namespacemicrosoft_security),
+		Transform:   transformers.TransformWithStruct(&armsecurity.AutoProvisioningSetting{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     schema.ColumnList{client.SubscriptionID},
 	}
 }
 
