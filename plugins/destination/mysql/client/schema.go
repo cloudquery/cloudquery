@@ -59,10 +59,7 @@ func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schem
 			return nil, err
 		}
 
-		schemaType, err := mySQLTypeToArrowType(tableName, name, typ)
-		if err != nil {
-			return nil, err
-		}
+		schemaType := mySQLTypeToArrowType(typ)
 		var primaryKey bool
 		if constraintType != nil && c.pkEnabled() {
 			primaryKey = strings.Contains(*constraintType, "PRIMARY KEY")
