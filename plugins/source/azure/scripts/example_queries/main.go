@@ -197,7 +197,7 @@ func readQuery(path string, tables []table) (query, error) {
 }
 
 func extractTitleFromQuery(q string) string {
-	r := regexp.MustCompile(`(?i)'(.+)' as title,`)
+	r := regexp.MustCompile(`(?i)'(.+)'\s+as\s+title,`)
 	matches := r.FindStringSubmatch(q)
 	if len(matches) == 0 {
 		return ""

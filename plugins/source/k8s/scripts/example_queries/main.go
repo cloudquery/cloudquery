@@ -14,7 +14,7 @@ import (
 	"github.com/mjibson/sqlfmt"
 )
 
-const policyResultsTable = `aws_policy_results`
+const policyResultsTable = `k8s_policy_results`
 
 // Add example queries to the generated table docs from the policies/queries
 // directory.
@@ -200,6 +200,7 @@ func extractTitleFromQuery(q string) string {
 	r := regexp.MustCompile(`(?i)'(.+)'\s+as\s+title,`)
 	matches := r.FindStringSubmatch(q)
 	if len(matches) == 0 {
+		fmt.Println("no matches for", q)
 		return ""
 	}
 	title := matches[1]
