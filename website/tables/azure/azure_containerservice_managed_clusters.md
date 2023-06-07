@@ -30,3 +30,9 @@ The following tables depend on azure_containerservice_managed_clusters:
 |name|`utf8`|
 |system_data|`json`|
 |type|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+

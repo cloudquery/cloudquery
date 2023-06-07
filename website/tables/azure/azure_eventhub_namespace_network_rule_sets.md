@@ -25,3 +25,9 @@ This table depends on [azure_eventhub_namespaces](azure_eventhub_namespaces).
 |name|`utf8`|
 |system_data|`json`|
 |type|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+

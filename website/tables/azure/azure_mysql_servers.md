@@ -28,3 +28,43 @@ The following tables depend on azure_mysql_servers:
 |id (PK)|`utf8`|
 |name|`utf8`|
 |type|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Geo-redundant backup should be enabled for Azure Database for MySQL
+
+```sql
+SELECT
+  'Geo-redundant backup should be enabled for Azure Database for MySQL'
+    AS title,
+  subscription_id,
+  id,
+  CASE
+  WHEN properties->'storageProfile'->>'geoRedundantBackup'
+  IS DISTINCT FROM 'Enabled'
+  THEN 'fail'
+  ELSE 'pass'
+  END
+FROM
+  azure_mysql_servers;
+```
+
+### Ensure "Enforce SSL connection" is set to "ENABLED" for MySQL Database Server (Automated)
+
+```sql
+SELECT
+  'Ensure "Enforce SSL connection" is set to "ENABLED" for MySQL Database Server (Automated)'
+    AS title,
+  subscription_id,
+  id AS server_id,
+  CASE
+  WHEN properties->>'sslEnforcement' IS DISTINCT FROM 'Enabled' THEN 'fail'
+  ELSE 'pass'
+  END
+FROM
+  azure_mysql_servers;
+```
+
+

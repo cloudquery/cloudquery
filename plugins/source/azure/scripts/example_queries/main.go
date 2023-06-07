@@ -14,7 +14,7 @@ import (
 	"github.com/mjibson/sqlfmt"
 )
 
-const policyResultsTable = "aws_policy_results"
+const policyResultsTable = "azure_policy_results"
 
 // Add example queries to the generated table docs from the policies/queries
 // directory.

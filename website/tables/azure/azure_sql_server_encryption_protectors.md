@@ -25,3 +25,30 @@ This table depends on [azure_sql_servers](azure_sql_servers).
 |location|`utf8`|
 |name|`utf8`|
 |type|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Ensure SQL server"s TDE protector is encrypted with Customer-managed key (Automated)
+
+```sql
+SELECT
+  'Ensure SQL server"s TDE protector is encrypted with Customer-managed key (Automated)'
+    AS title,
+  s.subscription_id,
+  s.id AS server_id,
+  CASE
+  WHEN p.kind != 'azurekeyvault'
+  OR p.properties->>'serverKeyType' IS DISTINCT FROM 'AzureKeyVault'
+  OR (p.properties->>'uri') IS NULL
+  THEN 'fail'
+  ELSE 'pass'
+  END
+FROM
+  azure_sql_servers AS s
+  LEFT JOIN azure_sql_server_encryption_protectors AS p ON
+      s._cq_id = p._cq_parent_id;
+```
+
+
