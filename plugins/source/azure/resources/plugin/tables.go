@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/advisor"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/analysisservices"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/apimanagement"
@@ -96,7 +97,7 @@ import (
 )
 
 func tables() []*schema.Table {
-	return []*schema.Table{
+	list := []*schema.Table{
 		advisor.RecommendationMetadata(),
 		advisor.Recommendations(),
 		advisor.Suppressions(),
@@ -351,4 +352,8 @@ func tables() []*schema.Table {
 		windowsiot.Services(),
 		workloads.Monitors(),
 	}
+	for i := range list {
+		list[i].PostResourceResolver = client.ChainRowResolvers(list[i].PostResourceResolver, client.LowercaseIDResolver)
+	}
+	return list
 }
