@@ -16,7 +16,6 @@ tables:
   - gcp_bigquery_tables
   - gcp_compute_disks
   - gcp_compute_firewalls
-  - gcp_compute_instance_service_accounts
   - gcp_compute_instances
   - gcp_compute_networks
   - gcp_compute_projects
