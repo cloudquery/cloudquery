@@ -8,7 +8,7 @@ import (
 // Array, Map & Tuple can't be Nullable
 func canBeNullable(dataType arrow.DataType) bool {
 	switch dataType.(type) {
-	case *arrow.MapType, listDataType, *arrow.StructType:
+	case arrow.ListLikeType, *arrow.MapType, *arrow.StructType:
 		return false
 	default:
 		return true
