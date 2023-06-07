@@ -130,7 +130,7 @@ type query struct {
 func (q query) Simplify() (string, error) {
 	qs := q.query
 	qs = regexp.MustCompile(`[ \t]+`).ReplaceAllString(qs, " ")
-	qs = regexp.MustCompile(`(?i)insert into `+policyResultsTable+`(?: \([^)]+\))`).ReplaceAllString(qs, "")
+	qs = regexp.MustCompile(`(?i)insert into `+policyResultsTable+`(?: \([^)]+\))?`).ReplaceAllString(qs, "")
 	qs = strings.Trim(qs, "\n ")
 	qs = regexp.MustCompile(`(?i):'execution_time'::timestamp as execution_time,`).ReplaceAllString(qs, "")
 	qs = regexp.MustCompile(`(?i):'execution_time' as execution_time,`).ReplaceAllString(qs, "")
