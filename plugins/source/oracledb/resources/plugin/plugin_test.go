@@ -138,7 +138,7 @@ func getActualStringsForResource(t *testing.T, resource *schema.Resource) []stri
 		// Oracle treats empty strings as null, so we need to convert them for comparison
 		// See https://stackoverflow.com/questions/203493/why-does-oracle-9i-treat-an-empty-string-as-null
 		// Please note this means we can't distinguish between null and empty string
-		if !v.IsValid() && v.DataType() == arrow.BinaryTypes.String {
+		if !v.IsValid() && arrow.TypeEqual(v.DataType(), arrow.BinaryTypes.String) {
 			if err := v.Set(""); err != nil {
 				t.Fatal(err)
 			}
