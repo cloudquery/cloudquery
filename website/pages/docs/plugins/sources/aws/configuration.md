@@ -101,7 +101,7 @@ This is the (nested) spec used by the AWS source plugin.
 
 - `use_paid_apis` (boolean) (default: false)
 
-  When set to `true` plugin will sync data from APIs that incur a fee. Currently only `aws_costexplorer*` and `aws_cloudwatch_metrics_custom` tables require this flag to be set to `true`.
+  When set to `true` plugin will sync data from APIs that incur a fee. Currently only `aws_costexplorer*` and `aws_cloudwatch_metric_stats_custom` tables require this flag to be set to `true`.
 
 - **experimental** `table_options` (map) (default: not used)
 
@@ -143,9 +143,9 @@ This is the (nested) spec used by the AWS source plugin.
     aws_accessanalyzer_analyzer_findings:
       list_findings:
         - <[ListFindings](https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_ListFindings.html)>
-    aws_cloudwatch_metrics_custom:
-      list_metrics:
-        - <[ListMetrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_ListMetrics.html)>
+    aws_cloudwatch_metric_stats_custom:
+      get_metric_statistics:
+        - <[GetMetricStatistics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html)>
     aws_cloudtrail_events:
       lookup_events:
         - <[LookupEvents](https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_LookupEvents.html)>

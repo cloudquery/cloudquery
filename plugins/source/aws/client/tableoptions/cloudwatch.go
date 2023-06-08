@@ -2,24 +2,22 @@ package tableoptions
 
 import (
 	"encoding/json"
-	"errors"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/cloudquery/plugin-sdk/v3/caser"
 )
 
-type CloudwatchMetrics struct {
-	ListMetricsOpts []CustomCloudwatchListMetricsInput `json:"list_metrics,omitempty"`
+type CloudwatchMetricStatistics struct {
+	GetMetricStatisticsOpts []CustomCloudwatchGetMetricStatisticsInput `json:"get_metric_statistics,omitempty"`
 }
 
-type CustomCloudwatchListMetricsInput struct {
-	cloudwatch.ListMetricsInput
+type CustomCloudwatchGetMetricStatisticsInput struct {
+	cloudwatch.GetMetricStatisticsInput
 }
 
-// UnmarshalJSON implements the json.Unmarshaler interface for the CustomCloudwatchListMetricsInput type.
+// UnmarshalJSON implements the json.Unmarshaler interface for the CustomCloudwatchGetMetricStatisticsInput type.
 // It is the same as default, but allows the use of underscore in the JSON field names.
-func (c *CustomCloudwatchListMetricsInput) UnmarshalJSON(data []byte) error {
+func (c *CustomCloudwatchGetMetricStatisticsInput) UnmarshalJSON(data []byte) error {
 	m := map[string]any{}
 	err := json.Unmarshal(data, &m)
 	if err != nil {
@@ -28,18 +26,5 @@ func (c *CustomCloudwatchListMetricsInput) UnmarshalJSON(data []byte) error {
 	csr := caser.New()
 	changeCaseForObject(m, csr.ToPascal)
 	b, _ := json.Marshal(m)
-	return json.Unmarshal(b, &c.ListMetricsInput)
-}
-
-func (c *CloudwatchMetrics) validateListMetrics() error {
-	for _, opt := range c.ListMetricsOpts {
-		if aws.ToString(opt.NextToken) != "" {
-			return errors.New("invalid input: cannot set NextToken in ListMetrics")
-		}
-	}
-	return nil
-}
-
-func (c *CloudwatchMetrics) Validate() error {
-	return c.validateListMetrics()
+	return json.Unmarshal(b, &c.GetMetricStatisticsInput)
 }

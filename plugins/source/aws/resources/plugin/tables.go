@@ -164,7 +164,7 @@ func tables() []*schema.Table {
 		cloudtrail.Events(),
 		cloudtrail.Trails(),
 		cloudwatch.Alarms(),
-		cloudwatch.Metrics(),
+		cloudwatch.MetricStatistics(),
 		cloudwatchlogs.LogGroups(),
 		cloudwatchlogs.MetricFilters(),
 		cloudwatchlogs.ResourcePolicies(),

@@ -1,8 +1,8 @@
-# Table: aws_cloudwatch_metrics_custom
+# Table: aws_cloudwatch_metric_stats_custom
 
-This table shows data for Cloudwatch Metrics Custom.
+This table shows data for Cloudwatch Metric Stats Custom.
 
-https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_Metric.html
+https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html
 
 The primary key for this table is **_cq_id**.
 
@@ -16,6 +16,6 @@ The primary key for this table is **_cq_id**.
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|dimensions|`json`|
-|metric_name|`utf8`|
-|namespace|`utf8`|
+|datapoints|`json`|
+|label|`utf8`|
+|input_json|`json`|
