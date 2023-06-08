@@ -11,12 +11,13 @@ import (
 
 func Account() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_batch_account",
-		Resolver:    fetchAccount,
-		Description: "https://learn.microsoft.com/en-us/rest/api/batchmanagement/batch-account/list?tabs=HTTP#batchaccount",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_batch_account", client.Namespacemicrosoft_batch),
-		Transform:   transformers.TransformWithStruct(&armbatch.Account{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_batch_account",
+		Resolver:             fetchAccount,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/batchmanagement/batch-account/list?tabs=HTTP#batchaccount",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_batch_account", client.Namespacemicrosoft_batch),
+		Transform:            transformers.TransformWithStruct(&armbatch.Account{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

@@ -1,55 +1,106 @@
 package client
 
 import (
-	"fmt"
-	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-sdk/v3/types"
-	"golang.org/x/exp/maps"
 )
 
-func mySQLTypeToArrowType(tableName string, columnName string, sqlType string) (arrow.DataType, error) {
+const defaultPrecision = 10
+const defaultScale = 0
+
+func isUnsigned(sqlType string) bool {
+	return strings.Contains(sqlType, "unsigned")
+}
+
+func parseStringValue(str string, defaultValue int32) int32 {
+	val, err := strconv.ParseInt(str, 10, 32)
+	if err != nil {
+		return defaultValue
+	}
+	return int32(val)
+}
+
+func getPrecisionAndScale(dataType string) (precision, scale int32) {
+	str := strings.TrimPrefix(dataType, "decimal")
+	str = strings.TrimPrefix(str, "numeric")
+	if str == "" {
+		return defaultPrecision, defaultScale
+	}
+	str = strings.TrimPrefix(str, "(")
+	str = strings.TrimSuffix(str, ")")
+	parts := strings.Split(str, ",")
+
+	switch len(parts) {
+	case 1:
+		precision = parseStringValue(parts[0], defaultPrecision)
+		scale = defaultScale
+	case 2:
+		precision = parseStringValue(parts[0], defaultPrecision)
+		scale = parseStringValue(parts[1], defaultScale)
+	default:
+		precision = defaultPrecision
+		scale = defaultScale
+	}
+	return precision, scale
+}
+
+func mySQLTypeToArrowType(sqlType string) arrow.DataType {
+	if sqlType == "binary(16)" {
+		return types.ExtensionTypes.UUID
+	}
+	if sqlType == "tinyint(1)" {
+		return arrow.FixedWidthTypes.Boolean
+	}
 	if strings.HasPrefix(sqlType, "datetime") {
-		// MySQL permits up to microseconds (6 digits) precision
-		return arrow.FixedWidthTypes.Timestamp_us, nil
+		return arrow.FixedWidthTypes.Timestamp_us
 	}
-	sqlTypeToSchemaType := map[string]arrow.DataType{
-		"tinyint(1)":           arrow.FixedWidthTypes.Boolean,
-		"tinyint":              arrow.PrimitiveTypes.Int8,
-		"tinyint(4)":           arrow.PrimitiveTypes.Int8,
-		"smallint":             arrow.PrimitiveTypes.Int16,
-		"smallint(5)":          arrow.PrimitiveTypes.Int16,
-		"smallint(6)":          arrow.PrimitiveTypes.Int16,
-		"smallint(5) unsigned": arrow.PrimitiveTypes.Uint16,
-		"int":                  arrow.PrimitiveTypes.Int32,
-		"int(10) unsigned":     arrow.PrimitiveTypes.Uint32,
-		"int(11)":              arrow.PrimitiveTypes.Int32,
-		"bigint":               arrow.PrimitiveTypes.Int64,
-		"bigint(20)":           arrow.PrimitiveTypes.Int64,
-		"tinyint unsigned":     arrow.PrimitiveTypes.Uint8,
-		"tinyint(3) unsigned":  arrow.PrimitiveTypes.Uint8,
-		"smallint unsigned":    arrow.PrimitiveTypes.Uint16,
-		"int unsigned":         arrow.PrimitiveTypes.Uint32,
-		"bigint unsigned":      arrow.PrimitiveTypes.Uint64,
-		"bigint(20) unsigned":  arrow.PrimitiveTypes.Uint64,
-		"float":                arrow.PrimitiveTypes.Float32,
-		"double":               arrow.PrimitiveTypes.Float64,
-		"binary(16)":           types.ExtensionTypes.UUID,
-		"blob":                 arrow.BinaryTypes.LargeBinary,
-		"text":                 arrow.BinaryTypes.LargeString,
-		"json":                 types.ExtensionTypes.JSON,
+	if strings.HasPrefix(sqlType, "decimal") || strings.HasPrefix(sqlType, "numeric") {
+		precision, scale := getPrecisionAndScale(sqlType)
+		return &arrow.Decimal128Type{Precision: precision, Scale: scale}
+	}
+	if strings.HasPrefix(sqlType, "tinyint") {
+		if isUnsigned(sqlType) {
+			return arrow.PrimitiveTypes.Uint8
+		}
+		return arrow.PrimitiveTypes.Int8
+	}
+	if strings.HasPrefix(sqlType, "smallint") {
+		if isUnsigned(sqlType) {
+			return arrow.PrimitiveTypes.Uint16
+		}
+		return arrow.PrimitiveTypes.Int16
+	}
+	if strings.HasPrefix(sqlType, "int") {
+		if isUnsigned(sqlType) {
+			return arrow.PrimitiveTypes.Uint32
+		}
+		return arrow.PrimitiveTypes.Int32
+	}
+	if strings.HasPrefix(sqlType, "bigint") {
+		if isUnsigned(sqlType) {
+			return arrow.PrimitiveTypes.Uint64
+		}
+		return arrow.PrimitiveTypes.Int64
+	}
+	switch sqlType {
+	case "bool", "boolean":
+		return arrow.FixedWidthTypes.Boolean
+	case "float":
+		return arrow.PrimitiveTypes.Float32
+	case "double":
+		return arrow.PrimitiveTypes.Float64
+	case "timestamp":
+		return arrow.FixedWidthTypes.Timestamp_us
+	case "json":
+		return types.ExtensionTypes.JSON
+	case "binary", "blob":
+		return arrow.BinaryTypes.Binary
 	}
 
-	if v, ok := sqlTypeToSchemaType[sqlType]; ok {
-		return v, nil
-	}
-
-	supportedTypes := maps.Keys(sqlTypeToSchemaType)
-	supportedTypes = append(supportedTypes, "datetime")
-	sort.Strings(supportedTypes)
-	return nil, fmt.Errorf("got unknown MySQL type %q for column %q of table %q while trying to convert it to CloudQuery internal schema type. Supported MySQL types are %q", sqlType, columnName, tableName, supportedTypes)
+	return arrow.BinaryTypes.String
 }
 
 func arrowTypeToMySqlStr(t arrow.DataType) string {

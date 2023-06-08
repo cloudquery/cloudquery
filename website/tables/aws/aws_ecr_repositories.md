@@ -32,3 +32,31 @@ The following tables depend on aws_ecr_repositories:
 |repository_arn|`utf8`|
 |repository_name|`utf8`|
 |repository_uri|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Unused ECR repository
+
+```sql
+WITH
+  image
+    AS (
+      SELECT DISTINCT account_id, repository_name FROM aws_ecr_repository_images
+    )
+SELECT
+  'Unused ECR repository' AS title,
+  repository.account_id,
+  repository.arn AS resource_id,
+  'fail' AS status
+FROM
+  aws_ecr_repositories AS repository
+  LEFT JOIN image ON
+      image.account_id = repository.account_id
+      AND image.repository_name = repository.repository_name
+WHERE
+  image.repository_name IS NULL;
+```
+
+

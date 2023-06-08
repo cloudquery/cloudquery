@@ -11,12 +11,13 @@ import (
 
 func ExpressRouteServiceProviders() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_express_route_service_providers",
-		Resolver:    fetchExpressRouteServiceProviders,
-		Description: "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-service-providers/list?tabs=HTTP#expressrouteserviceprovider",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_express_route_service_providers", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.ExpressRouteServiceProvider{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionIDPK},
+		Name:                 "azure_network_express_route_service_providers",
+		Resolver:             fetchExpressRouteServiceProviders,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-service-providers/list?tabs=HTTP#expressrouteserviceprovider",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_network_express_route_service_providers", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armnetwork.ExpressRouteServiceProvider{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionIDPK},
 	}
 }
 

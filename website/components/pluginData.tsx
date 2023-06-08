@@ -68,6 +68,14 @@ export const SOURCE_PLUGINS: Plugin[] = [
     category: "cloud-infrastructure",
   },
   {
+    name: "Coinpaprika",
+    logo: "/images/logos/plugins/coinpaprika.svg",
+    id: "coinpaprika",
+    href: "https://github.com/coinpaprika/cq-source-coinpaprika",
+    kind: "partner",
+    category: "other",
+  },
+  {
     name: "Datadog",
     logo: "/images/logos/plugins/datadog.svg",
     logoDark: "/images/logos/plugins/datadog-dark.svg",

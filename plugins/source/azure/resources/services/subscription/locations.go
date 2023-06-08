@@ -11,11 +11,12 @@ import (
 
 func locations() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_subscription_subscription_locations",
-		Resolver:    fetchLocations,
-		Description: "https://learn.microsoft.com/en-us/rest/api/resources/subscriptions/list-locations?tabs=HTTP#location",
-		Transform:   transformers.TransformWithStruct(&armsubscription.Location{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_subscription_subscription_locations",
+		Resolver:             fetchLocations,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/resources/subscriptions/list-locations?tabs=HTTP#location",
+		Transform:            transformers.TransformWithStruct(&armsubscription.Location{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 
