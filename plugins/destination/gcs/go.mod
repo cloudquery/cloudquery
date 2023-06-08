@@ -13,7 +13,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230607001322-90670b8e0786
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230608001318-8f72077aac49
 
 require (
 	cloud.google.com/go v0.110.0 // indirect
