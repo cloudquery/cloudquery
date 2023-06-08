@@ -71,6 +71,7 @@
 - [oracle_virtualnetwork_ip_sec_connections](tables/oracle_virtualnetwork_ip_sec_connections)
 - [oracle_virtualnetwork_local_peering_gateways](tables/oracle_virtualnetwork_local_peering_gateways)
 - [oracle_virtualnetwork_nat_gateways](tables/oracle_virtualnetwork_nat_gateways)
+- [oracle_virtualnetwork_private_ips](tables/oracle_virtualnetwork_private_ips)
 - [oracle_virtualnetwork_public_ip_pools](tables/oracle_virtualnetwork_public_ip_pools)
 - [oracle_virtualnetwork_remote_peering_connections](tables/oracle_virtualnetwork_remote_peering_connections)
 - [oracle_virtualnetwork_route_tables](tables/oracle_virtualnetwork_route_tables)

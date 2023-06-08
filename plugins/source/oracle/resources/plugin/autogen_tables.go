@@ -38,6 +38,7 @@ func Tables() []*schema.Table {
 		virtualnetwork.IPSecConnections(),
 		virtualnetwork.LocalPeeringGateways(),
 		virtualnetwork.NATGateways(),
+		virtualnetwork.PrivateIPs(),
 		virtualnetwork.PublicIpPools(),
 		virtualnetwork.RemotePeeringConnections(),
 		virtualnetwork.RouteTables(),
