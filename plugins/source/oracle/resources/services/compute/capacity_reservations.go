@@ -9,7 +9,17 @@ import (
 	"github.com/oracle/oci-go-sdk/v65/core"
 )
 
-func fetchComputeCapacityReservations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func CapacityReservations() *schema.Table {
+	return &schema.Table{
+		Name:      "oracle_compute_compute_capacity_reservations",
+		Resolver:  fetchCapacityReservations,
+		Multiplex: client.RegionCompartmentMultiplex,
+		Transform: client.TransformWithStruct(&core.ComputeCapacityReservationSummary{}),
+		Columns:   schema.ColumnList{client.RegionColumn, client.CompartmentIDColumn},
+	}
+}
+
+func fetchCapacityReservations(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cqClient := meta.(*client.Client)
 
 	var page *string
