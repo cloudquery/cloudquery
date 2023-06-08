@@ -21,9 +21,3 @@ The primary key for this table is **id**.
 |properties|`json`|
 |tags|`json`|
 |type|`utf8`|
-
-## Example Queries
-
-These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
-
-

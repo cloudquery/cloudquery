@@ -11,12 +11,13 @@ import (
 
 func VirtualNetworkTaps() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_virtual_network_taps",
-		Resolver:    fetchVirtualNetworkTaps,
-		Description: "https://learn.microsoft.com/en-us/rest/api/network-gateway/virtual-network-taps/list-all?tabs=HTTP#virtualnetworktap",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_virtual_network_taps", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.VirtualNetworkTap{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_virtual_network_taps",
+		Resolver:             fetchVirtualNetworkTaps,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/network-gateway/virtual-network-taps/list-all?tabs=HTTP#virtualnetworktap",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_network_virtual_network_taps", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armnetwork.VirtualNetworkTap{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

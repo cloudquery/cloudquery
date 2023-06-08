@@ -11,11 +11,12 @@ import (
 
 func serverAdvancedThreatProtections() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_sql_server_advanced_threat_protection_settings",
-		Resolver:    fetchServerAdvancedThreatProtections,
-		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/server-advanced-threat-protection-settings/list-by-server?tabs=HTTP#advancedthreatprotectionstate",
-		Transform:   transformers.TransformWithStruct(&armsql.ServerAdvancedThreatProtection{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_sql_server_advanced_threat_protection_settings",
+		Resolver:             fetchServerAdvancedThreatProtections,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/server-advanced-threat-protection-settings/list-by-server?tabs=HTTP#advancedthreatprotectionstate",
+		Transform:            transformers.TransformWithStruct(&armsql.ServerAdvancedThreatProtection{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

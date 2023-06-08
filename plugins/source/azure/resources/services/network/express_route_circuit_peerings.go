@@ -11,11 +11,12 @@ import (
 
 func expressRouteCircuitPeerings() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_express_route_circuit_peerings",
-		Resolver:    fetchExpressRouteCircuitPeerings,
-		Description: "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-circuit-peerings/list?tabs=HTTP#expressroutecircuitpeering",
-		Transform:   transformers.TransformWithStruct(&armnetwork.ExpressRouteCircuitPeering{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_express_route_circuit_peerings",
+		Resolver:             fetchExpressRouteCircuitPeerings,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-circuit-peerings/list?tabs=HTTP#expressroutecircuitpeering",
+		Transform:            transformers.TransformWithStruct(&armnetwork.ExpressRouteCircuitPeering{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

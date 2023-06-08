@@ -11,12 +11,13 @@ import (
 
 func BgpServiceCommunities() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_bgp_service_communities",
-		Resolver:    fetchBgpServiceCommunities,
-		Description: "https://learn.microsoft.com/en-us/rest/api/expressroute/bgp-service-communities/list?tabs=HTTP#bgpservicecommunity",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_bgp_service_communities", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.BgpServiceCommunity{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionIDPK},
+		Name:                 "azure_network_bgp_service_communities",
+		Resolver:             fetchBgpServiceCommunities,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/expressroute/bgp-service-communities/list?tabs=HTTP#bgpservicecommunity",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_network_bgp_service_communities", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armnetwork.BgpServiceCommunity{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionIDPK},
 	}
 }
 

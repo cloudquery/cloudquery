@@ -11,12 +11,13 @@ import (
 
 func Definitions() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_policy_definitions",
-		Resolver:    fetchDefinitions,
-		Description: "https://learn.microsoft.com/en-us/rest/api/policy/policy-definitions/list?tabs=HTTP#policydefinition",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_policy_definitions", client.Namespacemicrosoft_authorization),
-		Transform:   transformers.TransformWithStruct(&armpolicy.Definition{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionIDPK},
+		Name:                 "azure_policy_definitions",
+		Resolver:             fetchDefinitions,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/policy/policy-definitions/list?tabs=HTTP#policydefinition",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_policy_definitions", client.Namespacemicrosoft_authorization),
+		Transform:            transformers.TransformWithStruct(&armpolicy.Definition{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionIDPK},
 	}
 }
 

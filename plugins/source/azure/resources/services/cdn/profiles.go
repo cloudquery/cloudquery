@@ -11,12 +11,13 @@ import (
 
 func Profiles() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_cdn_profiles",
-		Resolver:    fetchProfiles,
-		Description: "https://learn.microsoft.com/en-us/rest/api/cdn/profiles/list?tabs=HTTP#profile",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_cdn_profiles", client.Namespacemicrosoft_cdn),
-		Transform:   transformers.TransformWithStruct(&armcdn.Profile{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{},
+		Name:                 "azure_cdn_profiles",
+		Resolver:             fetchProfiles,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/cdn/profiles/list?tabs=HTTP#profile",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_cdn_profiles", client.Namespacemicrosoft_cdn),
+		Transform:            transformers.TransformWithStruct(&armcdn.Profile{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{},
 
 		Relations: []*schema.Table{
 			endpoints(),

@@ -11,12 +11,13 @@ import (
 
 func subAssessments() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_security_sub_assessments",
-		Resolver:    fetchSubAssessments,
-		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/sub-assessments/list?tabs=HTTP#securitysubassessment",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_sub_assessments", client.Namespacemicrosoft_security),
-		Transform:   transformers.TransformWithStruct(&armsecurity.SubAssessment{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_security_sub_assessments",
+		Resolver:             fetchSubAssessments,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/sub-assessments/list?tabs=HTTP#securitysubassessment",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_security_sub_assessments", client.Namespacemicrosoft_security),
+		Transform:            transformers.TransformWithStruct(&armsecurity.SubAssessment{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

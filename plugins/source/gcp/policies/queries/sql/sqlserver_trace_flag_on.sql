@@ -1,10 +1,3 @@
--- SELECT gsi.project_id, gsi.name, gsi.self_link AS link
--- FROM gcp_sql_instances gsi
--- WHERE database_version LIKE 'SQLSERVER%'
---   AND (settings_database_flags IS NULL
---     OR settings_database_flags ->> '3625' != 'off'
---     OR settings_database_flags ->> '3625' IS NULL);
-
 -- In the original document in CIS GCP v1.2.0, it describes the configuration should be 'off', but it is a typo.
 -- This constraint has been updated on CIS GCP v1.3.0, this flag should be 'on'.
 INSERT INTO gcp_policy_results (resource_id, execution_time, framework, check_id, title, project_id, status)
