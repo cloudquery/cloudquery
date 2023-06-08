@@ -2,16 +2,26 @@ package client
 
 import (
 	"context"
-	"reflect"
 	"strings"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func LowercaseIDResolver(_ context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	if meta.(*Client).pluginSpec.NormalizeIDs {
-		resource.SetItem(lowercaseID(resource.GetItem()))
+	if !meta.(*Client).pluginSpec.NormalizeIDs {
+		return nil
 	}
+
+	if resource.Table.Columns.Index("id") == -1 {
+		return nil
+	}
+
+	id := resource.Get("id")
+	if arrow.TypeEqual(id.DataType(), arrow.BinaryTypes.String) {
+		return id.Set(strings.ToLower(id.String()))
+	}
+
 	return nil
 }
 
@@ -27,28 +37,4 @@ func ChainRowResolvers(next ...schema.RowResolver) schema.RowResolver {
 		}
 		return nil
 	}
-}
-
-func lowercaseID(obj any) any {
-	value := reflect.Indirect(reflect.ValueOf(obj))
-	if value.Kind() != reflect.Struct {
-		return obj
-	}
-
-	vt := value.Type()
-	for i := 0; i < value.NumField(); i++ {
-		if tag := strings.SplitN(vt.Field(i).Tag.Get("json"), ",", 2)[0]; tag != "id" {
-			continue
-		}
-
-		f := value.Field(i)
-		if f.Kind() == reflect.String || (f.Kind() == reflect.Ptr && f.Elem().Kind() == reflect.String) {
-			if f.Kind() == reflect.String {
-				f.SetString(strings.ToLower(f.String()))
-			} else if f.Kind() == reflect.Ptr && f.Elem().Kind() == reflect.String {
-				f.Elem().SetString(strings.ToLower(f.Elem().String()))
-			}
-		}
-	}
-	return obj
 }
