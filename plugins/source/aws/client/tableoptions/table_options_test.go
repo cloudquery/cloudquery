@@ -9,6 +9,7 @@ import (
 	accessanalyzertypes "github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	cloudtrailtypes "github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
+	costexplorertypes "github.com/aws/aws-sdk-go-v2/service/costexplorer/types"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 
 	inspector2types "github.com/aws/aws-sdk-go-v2/service/inspector2/types"
@@ -88,6 +89,7 @@ func TestTableOptionsUnmarshal(t *testing.T) {
 		inspector2types.PackageFilter{},
 		inspector2types.FilterCriteria{},
 		inspector2types.SortCriteria{},
+		costexplorertypes.DateInterval{},
 	)); diff != "" {
 		t.Fatalf("mismatch between objects after loading from snake case json: %v", diff)
 	}
