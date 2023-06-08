@@ -17,6 +17,7 @@
 - [oracle_compute_instance_console_connections](tables/oracle_compute_instance_console_connections)
 - [oracle_compute_instances](tables/oracle_compute_instances)
 - [oracle_compute_vnic_attachments](tables/oracle_compute_vnic_attachments)
+- [oracle_compute_volume_attachments](tables/oracle_compute_volume_attachments)
 - [oracle_database_autonomous_container_databases](tables/oracle_database_autonomous_container_databases)
 - [oracle_database_autonomous_databases](tables/oracle_database_autonomous_databases)
 - [oracle_database_autonomous_exadata_infrastructures](tables/oracle_database_autonomous_exadata_infrastructures)

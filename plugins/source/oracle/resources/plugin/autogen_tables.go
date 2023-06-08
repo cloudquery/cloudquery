@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
-func AutogenTables() []*schema.Table {
+func Tables() []*schema.Table {
 	return []*schema.Table{
 		compute.CapacityReservations(),
 		compute.ConsoleHistories(),
@@ -18,6 +18,7 @@ func AutogenTables() []*schema.Table {
 		compute.InstanceConsoleConnections(),
 		compute.Instances(),
 		compute.VNICAttachments(),
+		compute.VolumeAttachments(),
 		loadbalancer.LoadBalancers(),
 		networkfirewall.FirewallPolicies(),
 		networkfirewall.NetworkFirewalls(),
