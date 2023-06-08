@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/caser"
 )
 
-type CloudwatchAPIs struct {
+type CloudwatchMetrics struct {
 	ListMetricsOpts []CustomCloudwatchListMetricsInput `json:"list_metrics,omitempty"`
 }
 
@@ -31,7 +31,7 @@ func (c *CustomCloudwatchListMetricsInput) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(b, &c.ListMetricsInput)
 }
 
-func (c *CloudwatchAPIs) validateListMetrics() error {
+func (c *CloudwatchMetrics) validateListMetrics() error {
 	for _, opt := range c.ListMetricsOpts {
 		if aws.ToString(opt.NextToken) != "" {
 			return errors.New("invalid input: cannot set NextToken in ListMetrics")
@@ -40,6 +40,6 @@ func (c *CloudwatchAPIs) validateListMetrics() error {
 	return nil
 }
 
-func (c *CloudwatchAPIs) Validate() error {
+func (c *CloudwatchMetrics) Validate() error {
 	return c.validateListMetrics()
 }

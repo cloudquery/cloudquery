@@ -12,7 +12,7 @@ func TestCloudwatchListMetrics(t *testing.T) {
 	if err := faker.FakeObject(&u); err != nil {
 		t.Fatal(err)
 	}
-	api := CloudwatchAPIs{
+	api := CloudwatchMetrics{
 		ListMetricsOpts: []CustomCloudwatchListMetricsInput{u},
 	}
 	// Ensure that the validation works as expected

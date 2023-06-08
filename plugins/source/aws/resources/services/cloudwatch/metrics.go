@@ -37,8 +37,8 @@ func fetchCloudwatchMetrics(ctx context.Context, meta schema.ClientMeta, parent 
 	cl := meta.(*client.Client)
 
 	var allConfigs []tableoptions.CustomCloudwatchListMetricsInput
-	if cl.Spec.TableOptions.CloudwatchEvents != nil {
-		allConfigs = cl.Spec.TableOptions.CloudwatchEvents.ListMetricsOpts
+	if cl.Spec.TableOptions.CloudwatchMetrics != nil {
+		allConfigs = cl.Spec.TableOptions.CloudwatchMetrics.ListMetricsOpts
 	}
 
 	if len(allConfigs) > 0 && !cl.Spec.UsePaidAPIs {
