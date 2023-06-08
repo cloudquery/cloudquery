@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v3/scalar"
@@ -18,9 +19,11 @@ import (
 	"github.com/rs/zerolog"
 )
 
-type TestOptions struct{}
+type TestOptions struct {
+	TableOptions tableoptions.TableOptions
+}
 
-func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) Services, _ TestOptions) {
+func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) Services, testOpts TestOptions) {
 	version := "vDev"
 
 	table.IgnoreInTests = false
@@ -37,6 +40,7 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 		}
 		awsSpec.SetDefaults()
 		awsSpec.UsePaidAPIs = true
+		awsSpec.TableOptions = &testOpts.TableOptions
 		c := NewAwsClient(l, nil, &awsSpec)
 		services := builder(t, ctrl)
 		services.Regions = []string{"us-east-1"}

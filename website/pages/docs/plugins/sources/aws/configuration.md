@@ -101,7 +101,7 @@ This is the (nested) spec used by the AWS source plugin.
 
 - `use_paid_apis` (boolean) (default: false)
 
-  When set to `true` plugin will sync data from APIs that incur a fee. Currently only `aws_costexplorer*` tables require this flag to be set to `true`.
+  When set to `true` plugin will sync data from APIs that incur a fee. Currently only `aws_costexplorer*` and `aws_cloudwatch_metrics_custom` tables require this flag to be set to `true`.
 
 - **experimental** `table_options` (map) (default: not used)
 
@@ -137,12 +137,15 @@ This is the (nested) spec used by the AWS source plugin.
                 attribute_value: StopInstances
   ```
 
-  The naming for all of the fields is the same as the AWS API but in snake case. For example `EndTime` is represented as `end_time`. As of `v17.3.0` the following tables and APIs are supported:
+  The naming for all of the fields is the same as the AWS API but in snake case. For example `EndTime` is represented as `end_time`. As of `v18.2.0` the following tables and APIs are supported:
   ```yaml
   table_options:
     aws_accessanalyzer_analyzer_findings:
       list_findings:
         - <[ListFindings](https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_ListFindings.html)>
+    aws_cloudwatch_metrics_custom:
+      list_metrics:
+        - <[ListMetrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_ListMetrics.html)>
     aws_cloudtrail_events:
       lookup_events:
         - <[LookupEvents](https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_LookupEvents.html)>

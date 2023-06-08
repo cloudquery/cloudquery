@@ -107,6 +107,7 @@
 - [aws_cloudtrail_trails](tables/aws_cloudtrail_trails)
   - [aws_cloudtrail_trail_event_selectors](tables/aws_cloudtrail_trail_event_selectors)
 - [aws_cloudwatch_alarms](tables/aws_cloudwatch_alarms)
+- [aws_cloudwatch_metrics_custom](tables/aws_cloudwatch_metrics_custom)
 - [aws_cloudwatchlogs_log_groups](tables/aws_cloudwatchlogs_log_groups)
   - [aws_cloudwatchlogs_log_group_data_protection_policies](tables/aws_cloudwatchlogs_log_group_data_protection_policies)
   - [aws_cloudwatchlogs_log_group_subscription_filters](tables/aws_cloudwatchlogs_log_group_subscription_filters)
