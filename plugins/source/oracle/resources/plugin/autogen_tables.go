@@ -11,13 +11,13 @@ import (
 
 func AutogenTables() []*schema.Table {
 	return []*schema.Table{
-		compute.ComputeCapacityReservations(),
+		compute.CapacityReservations(),
 		compute.ConsoleHistories(),
-		compute.DedicatedVmHosts(),
+		compute.DedicatedVMHosts(),
 		compute.Images(),
 		compute.InstanceConsoleConnections(),
 		compute.Instances(),
-		compute.VnicAttachments(),
+		compute.VNICAttachments(),
 		loadbalancer.LoadBalancers(),
 		networkfirewall.NetworkFirewallPolicies(),
 		networkfirewall.NetworkFirewalls(),
