@@ -16,6 +16,10 @@ AWS Accounts come with over 200 services and each service has different types of
 
 In 2019, [AWS introduced Service Quotas](https://aws.amazon.com/blogs/mt/introducing-service-quotas-view-and-manage-your-quotas-for-aws-services-from-one-central-location/), a new service to help with managing these limits (now called quotas) from a central location.
 
+For companies managing multiple AWS accounts, 
+
+In this guide, we'll show how to use open source CloudQuery to augment existing capabilities from Amazon Web Services with additional data to better manage and monitor service limits in AWS.
+
 ### Example Limit Scenarios
 
 Example scenarios we've seen where resource management (as of June 2023):
@@ -48,17 +52,72 @@ With CloudQuery, we'll demonstrate another option: how to use CloudQuery to mana
 ## Walkthrough
 
 We'll focus on the following tables and services:
-* AWS Service Quotas
-* AWS Trusted Advisor
+* [AWS Service Quotas Quotas](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_servicequotas_quotas)
+* [AWS Trusted Advisor Checks](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_support_trusted_advisor_checks)
+* [AWS Trusted Advisor Check Results](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_support_trusted_advisor_check_results)
+* [AWS Support Cases](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_support_cases) 
 
-
-### Queries
+To start with the sync, check out the [AWS Configuration Guide](https://www.cloudquery.io/docs/plugins/sources/aws/configuration).  We'll start with the following `aws.yml` source configuration file.
 
 ```
-SELECT * FROM AWS_support_trusted_advisor_checks
-WHERE category='service_limits' and language_code='en';
+kind: source
+spec:
+  # Source spec section
+  name: aws
+  path: cloudquery/aws
+  version: "VERSION_SOURCE_AWS"
+  tables: 
+    - aws_servicequotas_services
+    - aws_support_trusted_advisor_checks
+    - aws_support_cases
+  destinations: ["DESTINATION_NAME"]
+  spec: 
+    # AWS Spec section described below
+    regions: 
+      - us-east-1
+    accounts:
+      - id: "account1"
+        local_profile: "account1"
+    aws_debug: false
 ```
 
+
+### Reference Queries
+
+We will first look for all Service Quotas that are adjustable.  Service Quotas can either be a hard limit (non-adjustable) or a soft limit (adjustable).
+
+```sql copy
+SELECT * FROM aws_servicequotas_quotas
+WHERE adjustable = TRUE;
+```
+
+
+
+```sql copy
+SELECT * FROM aws_support_trusted_advisor_checks
+WHERE category='service_limits';
+```
+
+
+Now let's check our S3 service limits and augment that with statistics on our S3 usage.
+
+```sql copy
+
+```
+
+
+We can repeat that for other use cases as well
+
+```sql copy
+
+```
+
+
+Now, we can look for more complex use cases such as API limits.  For this query, we'll need to sync `aws_cloudtrail_events` as a resource from AWS.  This resource can take time to sync due to the sheer amount of data in `aws_cloudtrail_events`.
+
+```sql copy
+
+```
 
 
 ## Summary
