@@ -11,7 +11,7 @@ import (
 
 func VCNs() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_vcns",
+		Name:      "oracle_virtual_network_vcns",
 		Resolver:  fetchVCNs,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.Vcn{}),

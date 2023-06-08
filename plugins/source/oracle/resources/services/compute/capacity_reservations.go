@@ -11,7 +11,7 @@ import (
 
 func CapacityReservations() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_compute_compute_capacity_reservations",
+		Name:      "oracle_compute_capacity_reservations",
 		Resolver:  fetchCapacityReservations,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.ComputeCapacityReservationSummary{}),

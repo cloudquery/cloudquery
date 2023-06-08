@@ -11,7 +11,7 @@ import (
 
 func IPSecConnections() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_ip_sec_connections",
+		Name:      "oracle_virtual_network_ip_sec_connections",
 		Resolver:  fetchIPSecConnections,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.IpSecConnection{}),

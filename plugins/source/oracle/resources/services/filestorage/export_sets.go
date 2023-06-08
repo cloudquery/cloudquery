@@ -11,7 +11,7 @@ import (
 
 func ExportSets() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_filestorage_export_sets",
+		Name:      "oracle_file_storage_export_sets",
 		Resolver:  fetchExportSets,
 		Multiplex: client.AvailibilityDomainCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&filestorage.ExportSetSummary{}),

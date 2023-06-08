@@ -11,7 +11,7 @@ import (
 
 func VolumeGroupBackups() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_blockstorage_volume_group_backups",
+		Name:      "oracle_block_storage_volume_group_backups",
 		Resolver:  fetchVolumeGroupBackups,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.VolumeGroupBackup{}),

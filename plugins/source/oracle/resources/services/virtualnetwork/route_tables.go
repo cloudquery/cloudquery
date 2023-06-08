@@ -11,7 +11,7 @@ import (
 
 func RouteTables() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_route_tables",
+		Name:      "oracle_virtual_network_route_tables",
 		Resolver:  fetchRouteTables,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.RouteTable{}),

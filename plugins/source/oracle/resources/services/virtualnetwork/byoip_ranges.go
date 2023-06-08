@@ -11,7 +11,7 @@ import (
 
 func BYOIPRanges() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_byoip_ranges",
+		Name:      "oracle_virtual_network_byoip_ranges",
 		Resolver:  fetchBYOIPRanges,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.ByoipRangeSummary{}),

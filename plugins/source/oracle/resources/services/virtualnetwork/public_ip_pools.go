@@ -11,7 +11,7 @@ import (
 
 func PublicIpPools() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_public_ip_pools",
+		Name:      "oracle_virtual_network_public_ip_pools",
 		Resolver:  fetchPublicIpPools,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.PublicIpPoolSummary{}),

@@ -11,7 +11,7 @@ import (
 
 func DRGs() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_drgs",
+		Name:      "oracle_virtual_network_drgs",
 		Resolver:  fetchDRGs,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.Drg{}),

@@ -11,7 +11,7 @@ import (
 
 func MountTargets() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_filestorage_mount_targets",
+		Name:      "oracle_file_storage_mount_targets",
 		Resolver:  fetchMountTargets,
 		Multiplex: client.AvailibilityDomainCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&filestorage.MountTargetSummary{}),

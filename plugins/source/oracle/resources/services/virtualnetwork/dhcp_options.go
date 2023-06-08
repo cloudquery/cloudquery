@@ -11,7 +11,7 @@ import (
 
 func DHCPOptions() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_dhcp_options",
+		Name:      "oracle_virtual_network_dhcp_options",
 		Resolver:  fetchDHCPOptions,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.DhcpOptions{}),

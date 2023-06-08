@@ -11,7 +11,7 @@ import (
 
 func VolumeGroups() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_blockstorage_volume_groups",
+		Name:      "oracle_block_storage_volume_groups",
 		Resolver:  fetchVolumeGroups,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.VolumeGroup{}),

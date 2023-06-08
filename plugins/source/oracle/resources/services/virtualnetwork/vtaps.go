@@ -11,7 +11,7 @@ import (
 
 func VTAPs() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_vtaps",
+		Name:      "oracle_virtual_network_vtaps",
 		Resolver:  fetchVTAPs,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.Vtap{}),

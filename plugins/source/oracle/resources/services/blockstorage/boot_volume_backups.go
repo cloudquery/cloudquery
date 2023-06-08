@@ -11,7 +11,7 @@ import (
 
 func BootVolumeBackups() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_blockstorage_boot_volume_backups",
+		Name:      "oracle_block_storage_boot_volume_backups",
 		Resolver:  fetchBootVolumeBackups,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.BootVolumeBackup{}),

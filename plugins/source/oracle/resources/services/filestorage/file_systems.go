@@ -11,7 +11,7 @@ import (
 
 func FileSystems() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_filestorage_file_systems",
+		Name:      "oracle_file_storage_file_systems",
 		Resolver:  fetchFileSystems,
 		Multiplex: client.AvailibilityDomainCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&filestorage.FileSystemSummary{}),

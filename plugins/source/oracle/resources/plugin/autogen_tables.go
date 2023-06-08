@@ -19,7 +19,7 @@ func AutogenTables() []*schema.Table {
 		compute.Instances(),
 		compute.VNICAttachments(),
 		loadbalancer.LoadBalancers(),
-		networkfirewall.FirewallPolicies(),
+		networkfirewall.Policies(),
 		networkfirewall.NetworkFirewalls(),
 		networkfirewall.WorkRequests(),
 		networkloadbalancer.NetworkLoadBalancers(),

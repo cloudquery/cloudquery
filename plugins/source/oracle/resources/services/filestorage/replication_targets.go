@@ -11,7 +11,7 @@ import (
 
 func ReplicationTargets() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_filestorage_replication_targets",
+		Name:      "oracle_file_storage_replication_targets",
 		Resolver:  fetchReplicationTargets,
 		Multiplex: client.AvailibilityDomainCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&filestorage.ReplicationTargetSummary{}),

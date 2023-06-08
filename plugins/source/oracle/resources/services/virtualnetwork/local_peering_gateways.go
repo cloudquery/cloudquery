@@ -11,7 +11,7 @@ import (
 
 func LocalPeeringGateways() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_local_peering_gateways",
+		Name:      "oracle_virtual_network_local_peering_gateways",
 		Resolver:  fetchLocalPeeringGateways,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.LocalPeeringGateway{}),

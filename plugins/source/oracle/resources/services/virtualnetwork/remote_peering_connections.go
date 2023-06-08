@@ -11,7 +11,7 @@ import (
 
 func RemotePeeringConnections() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_remote_peering_connections",
+		Name:      "oracle_virtual_network_remote_peering_connections",
 		Resolver:  fetchRemotePeeringConnections,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.RemotePeeringConnection{}),

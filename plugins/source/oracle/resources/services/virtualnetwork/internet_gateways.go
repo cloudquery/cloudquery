@@ -11,7 +11,7 @@ import (
 
 func InternetGateways() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_internet_gateways",
+		Name:      "oracle_virtual_network_internet_gateways",
 		Resolver:  fetchInternetGateways,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.InternetGateway{}),

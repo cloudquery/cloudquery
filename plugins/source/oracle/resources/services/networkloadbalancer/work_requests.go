@@ -11,7 +11,7 @@ import (
 
 func WorkRequests() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_networkloadbalancer_work_requests",
+		Name:      "oracle_network_load_balancer_work_requests",
 		Resolver:  fetchWorkRequests,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&networkloadbalancer.WorkRequestSummary{}),

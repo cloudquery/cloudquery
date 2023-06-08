@@ -11,7 +11,7 @@ import (
 
 func DRGAttachments() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_drg_attachments",
+		Name:      "oracle_virtual_network_drg_attachments",
 		Resolver:  fetchDRGAttachments,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.DrgAttachment{}),

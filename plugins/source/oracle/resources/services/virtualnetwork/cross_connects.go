@@ -11,7 +11,7 @@ import (
 
 func CrossConnects() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_cross_connects",
+		Name:      "oracle_virtual_network_cross_connects",
 		Resolver:  fetchCrossConnects,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.CrossConnect{}),

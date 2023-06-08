@@ -11,7 +11,7 @@ import (
 
 func CrossConnectGroups() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_cross_connect_groups",
+		Name:      "oracle_virtual_network_cross_connect_groups",
 		Resolver:  fetchCrossConnectGroups,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.CrossConnectGroup{}),

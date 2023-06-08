@@ -11,7 +11,7 @@ import (
 
 func CPEs() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_cpes",
+		Name:      "oracle_virtual_network_cpes",
 		Resolver:  fetchCPEs,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.Cpe{}),

@@ -11,7 +11,7 @@ import (
 
 func WorkRequests() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_objectstorage_work_requests",
+		Name:      "oracle_object_storage_work_requests",
 		Resolver:  fetchWorkRequests,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&objectstorage.WorkRequestSummary{}),

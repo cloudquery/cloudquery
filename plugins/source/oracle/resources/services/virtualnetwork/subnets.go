@@ -11,7 +11,7 @@ import (
 
 func Subnets() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_subnets",
+		Name:      "oracle_virtual_network_subnets",
 		Resolver:  fetchSubnets,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.Subnet{}),

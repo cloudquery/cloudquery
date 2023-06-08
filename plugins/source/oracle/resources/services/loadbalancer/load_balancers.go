@@ -11,7 +11,7 @@ import (
 
 func LoadBalancers() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_loadbalancer_load_balancers",
+		Name:      "oracle_load_balancers",
 		Resolver:  fetchLoadBalancers,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&loadbalancer.LoadBalancer{}),

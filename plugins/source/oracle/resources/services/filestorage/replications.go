@@ -11,7 +11,7 @@ import (
 
 func Replications() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_filestorage_replications",
+		Name:      "oracle_file_storage_replications",
 		Resolver:  fetchReplications,
 		Multiplex: client.AvailibilityDomainCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&filestorage.ReplicationSummary{}),

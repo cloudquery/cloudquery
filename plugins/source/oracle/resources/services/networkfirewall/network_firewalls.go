@@ -11,7 +11,7 @@ import (
 
 func NetworkFirewalls() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_networkfirewall_network_firewalls",
+		Name:      "oracle_network_firewalls",
 		Resolver:  fetchNetworkFirewalls,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&networkfirewall.NetworkFirewallSummary{}),

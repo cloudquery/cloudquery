@@ -11,7 +11,7 @@ import (
 
 func FastConnectProviderServices() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_fast_connect_provider_services",
+		Name:      "oracle_virtual_network_fast_connect_provider_services",
 		Resolver:  fetchFastConnectProviderServices,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.FastConnectProviderService{}),

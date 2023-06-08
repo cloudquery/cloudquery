@@ -11,7 +11,7 @@ import (
 
 func Exports() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_filestorage_exports",
+		Name:      "oracle_file_storage_exports",
 		Resolver:  fetchExports,
 		Multiplex: client.AvailibilityDomainCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&filestorage.ExportSummary{}),

@@ -12,7 +12,7 @@ import (
 
 func Buckets() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_objectstorage_buckets",
+		Name:      "oracle_object_storage_buckets",
 		Resolver:  fetchBuckets,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&objectstorage.BucketSummary{}, transformers.WithPrimaryKeys("Namespace", "Name")),

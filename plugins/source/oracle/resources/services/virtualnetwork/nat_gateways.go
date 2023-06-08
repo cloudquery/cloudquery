@@ -11,7 +11,7 @@ import (
 
 func NATGateways() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_nat_gateways",
+		Name:      "oracle_virtual_network_nat_gateways",
 		Resolver:  fetchNATGateways,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.NatGateway{}),

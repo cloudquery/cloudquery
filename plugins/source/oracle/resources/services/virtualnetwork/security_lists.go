@@ -11,7 +11,7 @@ import (
 
 func SecurityLists() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_security_lists",
+		Name:      "oracle_virtual_network_security_lists",
 		Resolver:  fetchSecurityLists,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.SecurityList{}),

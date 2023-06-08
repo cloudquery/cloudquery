@@ -11,7 +11,7 @@ import (
 
 func VLANs() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_vlans",
+		Name:      "oracle_virtual_network_vlans",
 		Resolver:  fetchVLANs,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.Vlan{}),

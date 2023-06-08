@@ -11,7 +11,7 @@ import (
 
 func CaptureFilters() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_capture_filters",
+		Name:      "oracle_virtual_network_capture_filters",
 		Resolver:  fetchCaptureFilters,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.CaptureFilter{}),

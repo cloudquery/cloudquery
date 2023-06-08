@@ -11,7 +11,7 @@ import (
 
 func NetworkLoadBalancers() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_networkloadbalancer_network_load_balancers",
+		Name:      "oracle_network_load_balancers",
 		Resolver:  fetchNetworkLoadBalancers,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&networkloadbalancer.NetworkLoadBalancerSummary{}),

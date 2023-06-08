@@ -11,7 +11,7 @@ import (
 
 func VirtualCircuits() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_virtual_circuits",
+		Name:      "oracle_virtual_network_virtual_circuits",
 		Resolver:  fetchVirtualCircuits,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.VirtualCircuit{}),

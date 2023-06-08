@@ -11,7 +11,7 @@ import (
 
 func ServiceGateways() *schema.Table {
 	return &schema.Table{
-		Name:      "oracle_virtualnetwork_service_gateways",
+		Name:      "oracle_virtual_network_service_gateways",
 		Resolver:  fetchServiceGateways,
 		Multiplex: client.RegionCompartmentMultiplex,
 		Transform: client.TransformWithStruct(&core.ServiceGateway{}),
