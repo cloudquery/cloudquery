@@ -74,16 +74,16 @@ func fetchPublicIPs(
 
 		var page *string
 		limit := 100
-		request := core.ListPublicIpsRequest{
-			CompartmentId:      common.String(cqClient.CompartmentOcid),
-			AvailabilityDomain: availabilityDomain,
-			Scope:              scope,
-			Lifetime:           lifetime,
-			Page:               page,
-			Limit:              &limit,
-		}
-
 		for {
+			request := core.ListPublicIpsRequest{
+				CompartmentId:      common.String(cqClient.CompartmentOcid),
+				AvailabilityDomain: availabilityDomain,
+				Scope:              scope,
+				Lifetime:           lifetime,
+				Page:               page,
+				Limit:              &limit,
+			}
+
 			response, err := cqClient.OracleClients[cqClient.Region].CoreVirtualnetworkClient.ListPublicIps(ctx, request)
 
 			if err != nil {
