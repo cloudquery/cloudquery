@@ -31,7 +31,7 @@ func (c *CustomGetCostAndUsageInput) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(b, &c.GetCostAndUsageInput)
 }
 
-func (c *CostExplorerAPIs) validateListFindings() error {
+func (c *CostExplorerAPIs) validateCustomGetCostAndUsage() error {
 	for _, opt := range c.GetCostAndUsageOpts {
 		if aws.ToString(opt.NextPageToken) != "" {
 			return errors.New("invalid input: cannot set NextToken in GetCostAndUsage")
@@ -41,5 +41,5 @@ func (c *CostExplorerAPIs) validateListFindings() error {
 }
 
 func (c *CostExplorerAPIs) Validate() error {
-	return c.validateListFindings()
+	return c.validateCustomGetCostAndUsage()
 }
