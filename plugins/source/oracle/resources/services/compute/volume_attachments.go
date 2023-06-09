@@ -5,45 +5,21 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/client"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/oracle/oci-go-sdk/v65/common"
 	"github.com/oracle/oci-go-sdk/v65/core"
 )
 
-type VolumeAttachment struct {
-	// Both core.ParavirtualizedVolumeAttachment & core.EmulatedVolumeAttachment
-	// have the same fields (listed here).
-	// We fill them in based on the core.VolumeAttachment interface.
-	AvailabilityDomain             *string
-	CompartmentId                  *string
-	Id                             *string
-	InstanceId                     *string
-	TimeCreated                    *common.SDKTime
-	VolumeId                       *string
-	Device                         *string
-	DisplayName                    *string
-	IsReadOnly                     *bool
-	IsShareable                    *bool
-	IsPvEncryptionInTransitEnabled *bool
-	IsMultipath                    *bool
-	LifecycleState                 core.VolumeAttachmentLifecycleStateEnum
-	IscsiLoginState                core.VolumeAttachmentIscsiLoginStateEnum
-
-	// This will be filled in and used only if the underlying attachment is core.IScsiVolumeAttachment.
-	// It gives us extra fields to report, too.
-	*core.IScsiVolumeAttachment
-}
-
 func VolumeAttachments() *schema.Table {
+	// We base this resource on core.IScsiVolumeAttachment.
+	// The other supported type core.ParavirtualizedVolumeAttachment has just a subset of fields available.
+	// We try to cast the result to *core.IScsiVolumeAttachment.
+	// If unsuccessful, we just fill in the common fields using core.VolumeAttachment interface.
 	return &schema.Table{
-		Name:                "oracle_compute_volume_attachments",
-		Resolver:            fetchVolumeAttachments,
-		PreResourceResolver: unwrapVolumeAttachment,
-		Multiplex:           client.RegionCompartmentMultiplex,
-		Transform: client.TransformWithStruct(new(VolumeAttachment),
-			transformers.WithUnwrapAllEmbeddedStructs(),
-		),
-		Columns: schema.ColumnList{client.RegionColumn, client.CompartmentIDColumn},
+		Name:      "oracle_compute_volume_attachments",
+		Resolver:  fetchVolumeAttachments,
+		Multiplex: client.RegionCompartmentMultiplex,
+		Transform: client.TransformWithStruct(new(core.IScsiVolumeAttachment)),
+		Columns:   schema.ColumnList{client.RegionColumn, client.CompartmentIDColumn},
 	}
 }
 
@@ -63,7 +39,7 @@ func fetchVolumeAttachments(ctx context.Context, meta schema.ClientMeta, _ *sche
 			return err
 		}
 
-		res <- response.Items
+		res <- unwrapVolumeAttachments(response.Items)
 
 		if response.OpcNextPage == nil {
 			break
@@ -75,28 +51,36 @@ func fetchVolumeAttachments(ctx context.Context, meta schema.ClientMeta, _ *sche
 	return nil
 }
 
-func unwrapVolumeAttachment(_ context.Context, _ schema.ClientMeta, r *schema.Resource) error {
-	item := r.Item.(core.VolumeAttachment)
-	res := &VolumeAttachment{
-		AvailabilityDomain:             item.GetAvailabilityDomain(),
-		CompartmentId:                  item.GetCompartmentId(),
-		Id:                             item.GetId(),
-		InstanceId:                     item.GetInstanceId(),
-		LifecycleState:                 item.GetLifecycleState(),
-		TimeCreated:                    item.GetTimeCreated(),
-		VolumeId:                       item.GetVolumeId(),
-		Device:                         item.GetDevice(),
-		DisplayName:                    item.GetDisplayName(),
-		IsReadOnly:                     item.GetIsReadOnly(),
-		IsShareable:                    item.GetIsShareable(),
-		IsPvEncryptionInTransitEnabled: item.GetIsPvEncryptionInTransitEnabled(),
-		IsMultipath:                    item.GetIsMultipath(),
-		IscsiLoginState:                item.GetIscsiLoginState(),
+func unwrapVolumeAttachments(attachments []core.VolumeAttachment) []*core.IScsiVolumeAttachment {
+	if attachments == nil {
+		return nil
 	}
 
-	if iSCSI, ok := item.(*core.IScsiVolumeAttachment); ok {
-		res.IScsiVolumeAttachment = iSCSI
+	result := make([]*core.IScsiVolumeAttachment, len(attachments))
+	for i, va := range attachments {
+		switch va := va.(type) {
+		case core.IScsiVolumeAttachment:
+			result[i] = &va
+		case *core.IScsiVolumeAttachment:
+			result[i] = va
+		default:
+			result[i] = &core.IScsiVolumeAttachment{
+				AvailabilityDomain:             va.GetAvailabilityDomain(),
+				CompartmentId:                  va.GetCompartmentId(),
+				Id:                             va.GetId(),
+				InstanceId:                     va.GetInstanceId(),
+				TimeCreated:                    va.GetTimeCreated(),
+				VolumeId:                       va.GetVolumeId(),
+				Device:                         va.GetDevice(),
+				DisplayName:                    va.GetDisplayName(),
+				IsReadOnly:                     va.GetIsReadOnly(),
+				IsShareable:                    va.GetIsShareable(),
+				IsPvEncryptionInTransitEnabled: va.GetIsPvEncryptionInTransitEnabled(),
+				IsMultipath:                    va.GetIsMultipath(),
+				LifecycleState:                 va.GetLifecycleState(),
+				IscsiLoginState:                va.GetIscsiLoginState(),
+			}
+		}
 	}
-	r.SetItem(res)
-	return nil
+	return result
 }
