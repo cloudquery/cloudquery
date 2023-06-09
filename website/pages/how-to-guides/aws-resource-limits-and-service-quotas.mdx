@@ -22,9 +22,9 @@ In this guide, we'll show how to use open source CloudQuery to augment existing 
 
 ### Example Limit Scenarios
 
-Example scenarios we've seen where resource management (as of June 2023):
+Example scenarios we've seen where resource management can cause application issues or development challenges such as time spent troubleshooting (as of June 2023):
 
-* Reaching the maximum number of S3 buckets in an account.  The default limit of S3 buckets in an account is 100.
+* Reaching the maximum number of S3 buckets in an account.  The default limit of S3 buckets in an account is 100.  Note, as of June 2023, S3 is not supported in Service Quotas and Service Quotas will only display the default limit in Console and via CLI even if the limit has been increased.  We've reached out to AWS and there's a feature request for adding Service Quota support for S3.
 
 * Reaching the maximum number of Lambda network interfaces.  The default limit of network interfaces that Lambda creates for a VPC with functions attached is 250.  Lambda creates a network interface for each combination of function subnets and security groups.
 
