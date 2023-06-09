@@ -38,7 +38,7 @@ Other limits include EC2 with spot instances, networking, number of running dedi
 
 ## Managing Service Quotas
 
-https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_servicequotas_quotas
+We will go through a couple different methods for managing service limits.  These options include using AWS-provided services, some of the current limitations of the services and coverage, as well as using CloudQuery to augment information provided by AWS.
 
 One option provided by AWS is to utilize AWS Trusted Advisor (and AWS Support).  [AWS Trusted Advisor](https://aws.amazon.com/premiumsupport/technology/trusted-advisor/) offers checks for service quotas with AWS Basic Support and AWS Developer Support Plans.  AWS Business and Enterprise Support customers get all checks which include service quota checks.  However, Trusted Advisor currently (as of June 2023) only supports 51 checks.  Additionally, programmatic access to Trusted Advisor APIs (and Support) requires either a Business, Enterprise On-Ramp, or Enterprise Support Plan with AWS.
 
@@ -79,8 +79,6 @@ spec:
         local_profile: "account1-profile"
     aws_debug: false
 ```
-
-
 
 ### Reference Queries
 
