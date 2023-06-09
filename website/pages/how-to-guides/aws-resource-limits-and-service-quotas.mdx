@@ -36,7 +36,6 @@ Example scenarios we've seen where resource management (as of June 2023):
 
 Other limits include EC2 with spot instances, networking, number of running dedicated hosts.
 
-
 ## Managing Service Quotas
 
 https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_servicequotas_quotas
@@ -57,9 +56,9 @@ We'll focus on the following tables and services:
 * [AWS Trusted Advisor Check Results](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_support_trusted_advisor_check_results)
 * [AWS Support Cases](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_support_cases) 
 
-To start with the sync, check out the [AWS Configuration Guide](https://www.cloudquery.io/docs/plugins/sources/aws/configuration).  We'll start with the following `aws.yml` source configuration file.
+To start with the sync, check out the [AWS Configuration Guide](https://www.cloudquery.io/docs/plugins/sources/aws/configuration).  We'll start with the following `aws.yml` source configuration file.  We recommend adjusting your configuration file and tables synced to meet your specific needs.
 
-```
+```yaml copy
 kind: source
 spec:
   # Source spec section
@@ -77,9 +76,10 @@ spec:
       - us-east-1
     accounts:
       - id: "account1"
-        local_profile: "account1"
+        local_profile: "account1-profile"
     aws_debug: false
 ```
+
 
 
 ### Reference Queries
@@ -98,26 +98,41 @@ SELECT * FROM aws_support_trusted_advisor_checks
 WHERE category='service_limits';
 ```
 
+Now let's check our CloudFormation limits and augment that with statistics on our CloudFormation usage.  For this query, we'll need to sync additional CloudFormation resources including [`aws_cloudformation_stacks`](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_cloudformation_stacks).
 
-Now let's check our S3 service limits and augment that with statistics on our S3 usage.
+```sql copy
+SELECT  quotas.quota_code, quotas.service_code, quotas.quota_name, 
+        quotas.value, quotas.region, quotas.account_id, 
+        quotas.adjustable, quotas.global_quota, quotas.quota_arn, 
+        COUNT(stacks.stack_id) as current_usage
+FROM aws_servicequotas_quotas quotas 
+LEFT JOIN aws_cloudformation_stacks stacks 
+ON quotas.account_id = stacks.account_id 
+AND quotas.region = stacks.region
+WHERE quota_code = 'L-0485CB21'
+GROUP BY quotas.quota_code, quotas.service_code, quotas.quota_name, 
+          quotas.value, quotas.region, quotas.account_id, 
+          quotas.adjustable, quotas.global_quota, quotas.quota_arn;
+```
+
+We can repeat that for other use cases as well such as IAM.  In this case, we'll also pull information on [IAM account summary](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_iam_accounts) and other IAM resources such as [IAM Policies](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_iam_policies).  IAM limits are global limits, so we'll look for account usage.
+
+```sql copy
+SELECT quotas.*, accounts.policies 
+FROM aws_servicequotas_quotas quotas
+LEFT JOIN aws_iam_accounts accounts
+ON quotas.account_id = accounts.account_id
+WHERE quota_code = 'L-E95E4862';
+```
+
+Now, we can look for additional use cases such as API limits.  For this query, we'll need to sync `aws_cloudtrail_events` as a resource from AWS.  This resource can take time to sync due to the sheer amount of data in []`aws_cloudtrail_events`](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_cloudtrail_events).
 
 ```sql copy
 
 ```
 
+### Next Steps
 
-We can repeat that for other use cases as well
-
-```sql copy
-
-```
-
-
-Now, we can look for more complex use cases such as API limits.  For this query, we'll need to sync `aws_cloudtrail_events` as a resource from AWS.  This resource can take time to sync due to the sheer amount of data in `aws_cloudtrail_events`.
-
-```sql copy
-
-```
 
 
 ## Summary
