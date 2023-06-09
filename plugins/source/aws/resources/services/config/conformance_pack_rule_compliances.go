@@ -34,15 +34,15 @@ func conformancePackRuleCompliances() *schema.Table {
 
 func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	conformancePackDetail := parent.Item.(types.ConformancePackDetail)
-	c := meta.(*client.Client)
-	cs := c.Services().Configservice
+	cl := meta.(*client.Client)
+	cs := cl.Services().Configservice
 	params := configservice.DescribeConformancePackComplianceInput{
 		ConformancePackName: conformancePackDetail.ConformancePackName,
 	}
 	paginator := configservice.NewDescribeConformancePackCompliancePaginator(cs, &params)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *configservice.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -57,7 +57,7 @@ func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.
 			getPaginator := configservice.NewGetConformancePackComplianceDetailsPaginator(cs, detailParams)
 			for getPaginator.HasMorePages() {
 				getPage, err := getPaginator.NextPage(ctx, func(options *configservice.Options) {
-					options.Region = c.Region
+					options.Region = cl.Region
 				})
 				if err != nil {
 					return err
