@@ -22,7 +22,7 @@ func MetricStatistics() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html`,
 		Resolver:    fetchCloudwatchMetricStats,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "logs"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "monitoring"),
 		Transform:   transformers.TransformWithStruct(&statOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
