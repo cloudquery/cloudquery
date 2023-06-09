@@ -34,11 +34,11 @@ func Events() *schema.Table {
 
 func fetchElasticacheEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input elasticache.DescribeEventsInput
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	paginator := elasticache.NewDescribeEventsPaginator(meta.(*client.Client).Services().Elasticache, &input)
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx, func(options *elasticache.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

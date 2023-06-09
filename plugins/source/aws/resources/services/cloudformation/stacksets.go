@@ -51,8 +51,8 @@ func StackSets() *schema.Table {
 }
 
 func fetchCloudformationStackSets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudformation
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudformation
 	var err error
 	var page *cloudformation.ListStackSetsOutput
 	// There is no way of determining if an account is a delegated admin or not. So just need to test it out and fail over to the other one
@@ -63,10 +63,10 @@ func fetchCloudformationStackSets(ctx context.Context, meta schema.ClientMeta, _
 		paginator := cloudformation.NewListStackSetsPaginator(svc, &config)
 		for paginator.HasMorePages() {
 			page, err = paginator.NextPage(ctx, func(options *cloudformation.Options) {
-				options.Region = c.Region
+				options.Region = cl.Region
 			})
 			if err != nil {
-				c.Logger().Info().Err(err).Msgf("failed to list stack sets with callAs: %s", string(callAs))
+				cl.Logger().Info().Err(err).Msgf("failed to list stack sets with callAs: %s", string(callAs))
 				break
 			}
 			for _, summary := range page.Summaries {
@@ -88,7 +88,7 @@ func getStackSet(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 	var stackSet *cloudformation.DescribeStackSetOutput
 
 	stack := resource.Item.(models.ExpandedSummary)
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 
 	input := &cloudformation.DescribeStackSetInput{
 		StackSetName: stack.StackSetName,
@@ -96,7 +96,7 @@ func getStackSet(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 	}
 
 	stackSet, err = meta.(*client.Client).Services().Cloudformation.DescribeStackSet(ctx, input, func(options *cloudformation.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

@@ -42,13 +42,13 @@ The 'request_account_id' column is added to show from where the request was made
 }
 
 func fetchOrganizationsAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Organizations
+	cl := meta.(*client.Client)
+	svc := cl.Services().Organizations
 	var input organizations.ListAccountsInput
 	paginator := organizations.NewListAccountsPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *organizations.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

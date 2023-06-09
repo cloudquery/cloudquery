@@ -35,18 +35,18 @@ func endpointAuthorization() *schema.Table {
 
 func fetchEndpointAuthorization(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cluster := parent.Item.(types.Cluster)
-	c := meta.(*client.Client)
-	svc := c.Services().Redshift
+	cl := meta.(*client.Client)
+	svc := cl.Services().Redshift
 
 	config := redshift.DescribeEndpointAuthorizationInput{
-		Account:           &c.AccountID,
+		Account:           &cl.AccountID,
 		ClusterIdentifier: cluster.ClusterIdentifier,
 		MaxRecords:        aws.Int32(100),
 	}
 	paginator := redshift.NewDescribeEndpointAuthorizationPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *redshift.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

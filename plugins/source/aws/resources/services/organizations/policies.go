@@ -33,15 +33,15 @@ func Policies() *schema.Table {
 }
 
 func fetchOrganizationsPolicies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	for _, policyType := range types.PolicyType("").Values() {
-		paginator := organizations.NewListPoliciesPaginator(c.Services().Organizations, &organizations.ListPoliciesInput{
+		paginator := organizations.NewListPoliciesPaginator(cl.Services().Organizations, &organizations.ListPoliciesInput{
 			Filter: policyType,
 		})
 
 		for paginator.HasMorePages() {
 			page, err := paginator.NextPage(ctx, func(options *organizations.Options) {
-				options.Region = c.Region
+				options.Region = cl.Region
 			})
 			if err != nil {
 				return err

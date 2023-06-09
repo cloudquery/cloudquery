@@ -50,8 +50,8 @@ type Route53HealthCheckWrapper struct {
 
 func fetchRoute53HealthChecks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config route53.ListHealthChecksInput
-	c := meta.(*client.Client)
-	svc := c.Services().Route53
+	cl := meta.(*client.Client)
+	svc := cl.Services().Route53
 
 	processHealthChecksBundle := func(healthChecks []types.HealthCheck) error {
 		tagsCfg := &route53.ListTagsForResourcesInput{ResourceType: types.TagResourceTypeHealthcheck, ResourceIds: make([]string, 0, len(healthChecks))}
@@ -59,7 +59,7 @@ func fetchRoute53HealthChecks(ctx context.Context, meta schema.ClientMeta, paren
 			tagsCfg.ResourceIds = append(tagsCfg.ResourceIds, *h.Id)
 		}
 		tagsResponse, err := svc.ListTagsForResources(ctx, tagsCfg, func(options *route53.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -77,7 +77,7 @@ func fetchRoute53HealthChecks(ctx context.Context, meta schema.ClientMeta, paren
 	paginator := route53.NewListHealthChecksPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *route53.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

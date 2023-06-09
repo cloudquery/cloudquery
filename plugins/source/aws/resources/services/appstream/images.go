@@ -25,12 +25,12 @@ func Images() *schema.Table {
 
 func fetchAppstreamImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	input := appstream.DescribeImagesInput{MaxResults: aws.Int32(25)}
-	c := meta.(*client.Client)
-	svc := c.Services().Appstream
+	cl := meta.(*client.Client)
+	svc := cl.Services().Appstream
 	paginator := appstream.NewDescribeImagesPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *appstream.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

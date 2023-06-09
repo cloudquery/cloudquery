@@ -39,17 +39,17 @@ func ConformancePacks() *schema.Table {
 }
 
 func fetchConfigConformancePacks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	config := configservice.DescribeConformancePacksInput{}
 	var ae smithy.APIError
-	configService := c.Services().Configservice
+	configService := cl.Services().Configservice
 	paginator := configservice.NewDescribeConformancePacksPaginator(configService, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *configservice.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		// This is a workaround until this bug is fixed = https://github.com/aws/aws-sdk-go-v2/issues/1539
-		if (c.Region == "af-south-1" || c.Region == "ap-northeast-3") && errors.As(err, &ae) && ae.ErrorCode() == "AccessDeniedException" {
+		if (cl.Region == "af-south-1" || cl.Region == "ap-northeast-3") && errors.As(err, &ae) && ae.ErrorCode() == "AccessDeniedException" {
 			return nil
 		}
 		if err != nil {

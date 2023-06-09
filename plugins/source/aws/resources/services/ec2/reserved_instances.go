@@ -43,12 +43,12 @@ func ReservedInstances() *schema.Table {
 
 func fetchEc2ReservedInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config ec2.DescribeReservedInstancesInput
-	c := meta.(*client.Client)
-	svc := c.Services().Ec2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ec2
 
 	// this API does not seem to support any form of pagination
 	output, err := svc.DescribeReservedInstances(ctx, &config, func(options *ec2.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

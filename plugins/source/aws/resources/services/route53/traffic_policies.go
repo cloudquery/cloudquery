@@ -38,12 +38,12 @@ func TrafficPolicies() *schema.Table {
 
 func fetchRoute53TrafficPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config route53.ListTrafficPoliciesInput
-	c := meta.(*client.Client)
-	svc := c.Services().Route53
+	cl := meta.(*client.Client)
+	svc := cl.Services().Route53
 
 	for {
 		response, err := svc.ListTrafficPolicies(ctx, &config, func(options *route53.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

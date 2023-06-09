@@ -33,14 +33,14 @@ func workGroupPreparedStatements() *schema.Table {
 }
 
 func fetchAthenaWorkGroupPreparedStatements(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Athena
+	cl := meta.(*client.Client)
+	svc := cl.Services().Athena
 	wg := parent.Item.(types.WorkGroup)
 	input := athena.ListPreparedStatementsInput{WorkGroup: wg.Name}
 	paginator := athena.NewListPreparedStatementsPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *athena.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -51,8 +51,8 @@ func fetchAthenaWorkGroupPreparedStatements(ctx context.Context, meta schema.Cli
 }
 
 func getWorkGroupPreparedStatement(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Athena
+	cl := meta.(*client.Client)
+	svc := cl.Services().Athena
 	wg := resource.Parent.Item.(types.WorkGroup)
 
 	d := resource.Item.(types.PreparedStatementSummary)
@@ -60,7 +60,7 @@ func getWorkGroupPreparedStatement(ctx context.Context, meta schema.ClientMeta, 
 		WorkGroup:     wg.Name,
 		StatementName: d.StatementName,
 	}, func(options *athena.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
