@@ -34,7 +34,9 @@ func BatchPredictions() *schema.Table {
 
 func fetchFrauddetectorBatchPredictions(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	paginator := frauddetector.NewGetBatchPredictionJobsPaginator(meta.(*client.Client).Services().Frauddetector, nil)
+	svc := cl.Services().Frauddetector
+
+	paginator := frauddetector.NewGetBatchPredictionJobsPaginator(svc, nil)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *frauddetector.Options) {
 			options.Region = cl.Region

@@ -43,7 +43,8 @@ func AvailabilityZones() *schema.Table {
 
 func fetchAvailabilityZones(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	output, err := cl.Services().Ec2.DescribeAvailabilityZones(ctx, &ec2.DescribeAvailabilityZonesInput{AllAvailabilityZones: aws.Bool(true)}, func(options *ec2.Options) {
+	svc := cl.Services().Ec2
+	output, err := svc.DescribeAvailabilityZones(ctx, &ec2.DescribeAvailabilityZonesInput{AllAvailabilityZones: aws.Bool(true)}, func(options *ec2.Options) {
 		options.Region = cl.Region
 	})
 	if err != nil {

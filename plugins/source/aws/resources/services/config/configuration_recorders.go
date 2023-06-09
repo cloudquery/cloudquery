@@ -38,8 +38,8 @@ func ConfigurationRecorders() *schema.Table {
 
 func fetchConfigConfigurationRecorders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-
-	resp, err := cl.Services().Configservice.DescribeConfigurationRecorders(ctx, &configservice.DescribeConfigurationRecordersInput{}, func(options *configservice.Options) {
+	svc := cl.Services().Configservice
+	resp, err := svc.DescribeConfigurationRecorders(ctx, &configservice.DescribeConfigurationRecordersInput{}, func(options *configservice.Options) {
 		options.Region = cl.Region
 	})
 	if err != nil {
@@ -52,7 +52,7 @@ func fetchConfigConfigurationRecorders(ctx context.Context, meta schema.ClientMe
 	for i, configurationRecorder := range resp.ConfigurationRecorders {
 		names[i] = *configurationRecorder.Name
 	}
-	status, err := cl.Services().Configservice.DescribeConfigurationRecorderStatus(ctx, &configservice.DescribeConfigurationRecorderStatusInput{
+	status, err := svc.DescribeConfigurationRecorderStatus(ctx, &configservice.DescribeConfigurationRecorderStatusInput{
 		ConfigurationRecorderNames: names,
 	}, func(options *configservice.Options) {
 		options.Region = cl.Region

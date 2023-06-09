@@ -34,8 +34,9 @@ func Policies() *schema.Table {
 
 func fetchOrganizationsPolicies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
+	svc := cl.Services().Organizations
 	for _, policyType := range types.PolicyType("").Values() {
-		paginator := organizations.NewListPoliciesPaginator(cl.Services().Organizations, &organizations.ListPoliciesInput{
+		paginator := organizations.NewListPoliciesPaginator(svc, &organizations.ListPoliciesInput{
 			Filter: policyType,
 		})
 

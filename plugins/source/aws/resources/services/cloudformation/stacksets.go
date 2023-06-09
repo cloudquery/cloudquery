@@ -89,13 +89,13 @@ func getStackSet(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 
 	stack := resource.Item.(models.ExpandedSummary)
 	cl := meta.(*client.Client)
-
+	svc := cl.Services().Cloudformation
 	input := &cloudformation.DescribeStackSetInput{
 		StackSetName: stack.StackSetName,
 		CallAs:       stack.CallAs,
 	}
 
-	stackSet, err = meta.(*client.Client).Services().Cloudformation.DescribeStackSet(ctx, input, func(options *cloudformation.Options) {
+	stackSet, err = svc.DescribeStackSet(ctx, input, func(options *cloudformation.Options) {
 		options.Region = cl.Region
 	})
 	if err != nil {

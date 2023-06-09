@@ -43,7 +43,8 @@ func Regions() *schema.Table {
 
 func fetchEc2Regions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	output, err := cl.Services().Ec2.DescribeRegions(ctx, &ec2.DescribeRegionsInput{AllRegions: aws.Bool(true)}, func(options *ec2.Options) {
+	svc := cl.Services().Ec2
+	output, err := svc.DescribeRegions(ctx, &ec2.DescribeRegionsInput{AllRegions: aws.Bool(true)}, func(options *ec2.Options) {
 		options.Region = cl.Region
 	})
 	if err != nil {

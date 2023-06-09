@@ -60,6 +60,7 @@ func fetchRamResourceSharePermissions(ctx context.Context, meta schema.ClientMet
 
 func resolveResourceSharePermissionDetailPermission(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
+	svc := cl.Services().Ram
 	permission := resource.Item.(types.ResourceSharePermissionSummary)
 	version, err := strconv.ParseInt(aws.ToString(permission.Version), 10, 32)
 	if err != nil {
@@ -69,7 +70,7 @@ func resolveResourceSharePermissionDetailPermission(ctx context.Context, meta sc
 		PermissionArn:     permission.Arn,
 		PermissionVersion: aws.Int32(int32(version)),
 	}
-	response, err := meta.(*client.Client).Services().Ram.GetPermission(ctx, input, func(options *ram.Options) {
+	response, err := svc.GetPermission(ctx, input, func(options *ram.Options) {
 		options.Region = cl.Region
 	})
 	if err != nil {

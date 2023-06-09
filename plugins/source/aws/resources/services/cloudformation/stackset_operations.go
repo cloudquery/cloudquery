@@ -71,6 +71,7 @@ func fetchCloudformationStackSetOperations(ctx context.Context, meta schema.Clie
 
 func getStackSetOperation(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudformation
 	stack := resource.Parent.Item.(models.ExpandedStackSet)
 	operation := resource.Item.(models.ExpandedStackSetOperationSummary)
 
@@ -80,7 +81,7 @@ func getStackSetOperation(ctx context.Context, meta schema.ClientMeta, resource 
 		CallAs:       stack.CallAs,
 	}
 
-	stackSetOperation, err := meta.(*client.Client).Services().Cloudformation.DescribeStackSetOperation(ctx, &input, func(options *cloudformation.Options) {
+	stackSetOperation, err := svc.DescribeStackSetOperation(ctx, &input, func(options *cloudformation.Options) {
 		options.Region = cl.Region
 	})
 	if err != nil {
