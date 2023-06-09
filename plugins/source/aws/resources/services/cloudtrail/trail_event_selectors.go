@@ -34,8 +34,8 @@ func trailEventSelectors() *schema.Table {
 
 func fetchCloudtrailTrailEventSelectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(*models.CloudTrailWrapper)
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudtrail
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudtrail
 	response, err := svc.GetEventSelectors(ctx, &cloudtrail.GetEventSelectorsInput{TrailName: r.TrailARN}, func(options *cloudtrail.Options) {
 		options.Region = *r.HomeRegion
 	})

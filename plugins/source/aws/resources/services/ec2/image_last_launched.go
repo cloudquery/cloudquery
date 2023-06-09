@@ -34,17 +34,17 @@ The date and time, in ISO 8601 date-time format, when the AMI was last used to l
 }
 
 func fetchEc2ImageAttributeLastLaunchTime(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	p := parent.Item.(types.Image)
-	if aws.ToString(p.OwnerId) != c.AccountID {
+	if aws.ToString(p.OwnerId) != cl.AccountID {
 		return nil
 	}
-	svc := c.Services().Ec2
+	svc := cl.Services().Ec2
 	output, err := svc.DescribeImageAttribute(ctx, &ec2.DescribeImageAttributeInput{
 		Attribute: types.ImageAttributeNameLastLaunchedTime,
 		ImageId:   p.ImageId,
 	}, func(options *ec2.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

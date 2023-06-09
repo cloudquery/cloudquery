@@ -28,8 +28,8 @@ func clusterParameters() *schema.Table {
 }
 
 func fetchDocdbClusterParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Docdb
+	cl := meta.(*client.Client)
+	svc := cl.Services().Docdb
 	switch item := parent.Item.(type) {
 	case types.DBClusterParameterGroup:
 		return fetchParameterGroupParameters(ctx, meta, svc, item, res)
@@ -40,14 +40,14 @@ func fetchDocdbClusterParameters(ctx context.Context, meta schema.ClientMeta, pa
 }
 
 func fetchParameterGroupParameters(ctx context.Context, meta schema.ClientMeta, svc services.DocdbClient, item types.DBClusterParameterGroup, res chan<- any) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	input := &docdb.DescribeDBClusterParametersInput{
 		DBClusterParameterGroupName: item.DBClusterParameterGroupName,
 	}
 	p := docdb.NewDescribeDBClusterParametersPaginator(svc, input)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *docdb.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -58,12 +58,12 @@ func fetchParameterGroupParameters(ctx context.Context, meta schema.ClientMeta, 
 }
 
 func fetchEngineVersionParameters(ctx context.Context, meta schema.ClientMeta, svc services.DocdbClient, item types.DBEngineVersion, res chan<- any) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	input := &docdb.DescribeEngineDefaultClusterParametersInput{
 		DBParameterGroupFamily: item.DBParameterGroupFamily,
 	}
 	output, err := svc.DescribeEngineDefaultClusterParameters(ctx, input, func(options *docdb.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

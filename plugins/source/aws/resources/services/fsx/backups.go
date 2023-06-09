@@ -40,12 +40,12 @@ func Backups() *schema.Table {
 }
 
 func fetchFsxBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Fsx
+	cl := meta.(*client.Client)
+	svc := cl.Services().Fsx
 	paginator := fsx.NewDescribeBackupsPaginator(svc, &fsx.DescribeBackupsInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *fsx.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

@@ -33,8 +33,8 @@ func EngineVersions() *schema.Table {
 }
 
 func fetchDocdbEngineVersions(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Docdb
+	cl := meta.(*client.Client)
+	svc := cl.Services().Docdb
 
 	input := &docdb.DescribeDBEngineVersionsInput{
 		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"docdb"}}},
@@ -43,7 +43,7 @@ func fetchDocdbEngineVersions(ctx context.Context, meta schema.ClientMeta, _ *sc
 	p := docdb.NewDescribeDBEngineVersionsPaginator(svc, input)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *docdb.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

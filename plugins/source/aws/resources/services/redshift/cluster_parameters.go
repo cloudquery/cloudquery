@@ -41,8 +41,8 @@ func clusterParameters() *schema.Table {
 
 func fetchClusterParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	group := parent.Item.(types.ClusterParameterGroupStatus)
-	c := meta.(*client.Client)
-	svc := c.Services().Redshift
+	cl := meta.(*client.Client)
+	svc := cl.Services().Redshift
 
 	config := redshift.DescribeClusterParametersInput{
 		ParameterGroupName: group.ParameterGroupName,
@@ -50,7 +50,7 @@ func fetchClusterParameters(ctx context.Context, meta schema.ClientMeta, parent 
 	paginator := redshift.NewDescribeClusterParametersPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *redshift.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

@@ -47,12 +47,12 @@ func fetchKafkaNodes(ctx context.Context, meta schema.ClientMeta, parent *schema
 	}
 
 	var input = getListNodesInput(parent)
-	c := meta.(*client.Client)
-	svc := c.Services().Kafka
+	cl := meta.(*client.Client)
+	svc := cl.Services().Kafka
 	paginator := kafka.NewListNodesPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *kafka.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

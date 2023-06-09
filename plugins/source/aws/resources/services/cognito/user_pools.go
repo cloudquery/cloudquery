@@ -38,8 +38,8 @@ func UserPools() *schema.Table {
 }
 
 func fetchCognitoUserPools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Cognitoidentityprovider
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cognitoidentityprovider
 	params := cognitoidentityprovider.ListUserPoolsInput{
 		// we want max results to reduce List calls as much as possible, services limited to less than or equal to 60"
 		MaxResults: 60,
@@ -47,7 +47,7 @@ func fetchCognitoUserPools(ctx context.Context, meta schema.ClientMeta, parent *
 	paginator := cognitoidentityprovider.NewListUserPoolsPaginator(svc, &params)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cognitoidentityprovider.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -58,12 +58,12 @@ func fetchCognitoUserPools(ctx context.Context, meta schema.ClientMeta, parent *
 }
 
 func getUserPool(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Cognitoidentityprovider
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cognitoidentityprovider
 	item := resource.Item.(types.UserPoolDescriptionType)
 
 	upo, err := svc.DescribeUserPool(ctx, &cognitoidentityprovider.DescribeUserPoolInput{UserPoolId: item.Id}, func(options *cognitoidentityprovider.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

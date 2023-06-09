@@ -51,12 +51,15 @@ func Instances() *schema.Table {
 var stateTransitionReasonTimeRegex = regexp.MustCompile(`\((.*)\)`)
 
 func fetchEc2Instances(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	p := ec2.NewDescribeInstancesPaginator(meta.(*client.Client).Services().Ec2,
+
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ec2
+	p := ec2.NewDescribeInstancesPaginator(svc,
 		&ec2.DescribeInstancesInput{MaxResults: aws.Int32(1000)})
-	c := meta.(*client.Client)
+
 	for p.HasMorePages() {
 		output, err := p.NextPage(ctx, func(options *ec2.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

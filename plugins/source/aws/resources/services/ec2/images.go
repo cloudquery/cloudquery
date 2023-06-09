@@ -47,9 +47,9 @@ func Images() *schema.Table {
 }
 
 func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 
-	svc := c.Services().Ec2
+	svc := cl.Services().Ec2
 	g, ctx := errgroup.WithContext(ctx)
 	g.Go(func() error {
 		// fetch ec2.Images owned by this account
@@ -58,7 +58,7 @@ func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.
 		})
 		for pag.HasMorePages() {
 			resp, err := pag.NextPage(ctx, func(options *ec2.Options) {
-				options.Region = c.Region
+				options.Region = cl.Region
 			})
 			if err != nil {
 				return err
@@ -75,13 +75,13 @@ func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.
 		})
 		for pag.HasMorePages() {
 			resp, err := pag.NextPage(ctx, func(options *ec2.Options) {
-				options.Region = c.Region
+				options.Region = cl.Region
 			})
 			if err != nil {
 				return err
 			}
 			for _, image := range resp.Images {
-				if aws.ToString(image.OwnerId) != c.AccountID {
+				if aws.ToString(image.OwnerId) != cl.AccountID {
 					res <- image
 				}
 			}
