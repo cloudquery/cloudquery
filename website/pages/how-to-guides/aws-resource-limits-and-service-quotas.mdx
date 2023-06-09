@@ -125,18 +125,16 @@ ON quotas.account_id = accounts.account_id
 WHERE quota_code = 'L-E95E4862';
 ```
 
-Now, we can look for additional use cases such as API limits.  For this query, we'll need to sync `aws_cloudtrail_events` as a resource from AWS.  This resource can take time to sync due to the sheer amount of data in []`aws_cloudtrail_events`](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_cloudtrail_events).
-
-```sql copy
-
-```
+We can also look for additional use cases such as API limits.  For this query, we'll need to sync `aws_cloudtrail_events` as a resource from AWS.  This resource can take time to sync due to the sheer amount of data in 
 
 ### Next Steps
 
-
+Additional insights can be made with data loaded from CloudQuery.  For example, [`CloudTrail events`](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_cloudtrail_events).
+ can be used to check for API calls.  CloudQuery can also be used to monitor service limit increases via Support Cases and customizable dashboards can be [built with Grafana](https://www.cloudquery.io/how-to-guides/open-source-cspm).  We'd love to hear your use cases with CloudQuery!
 
 ## Summary
 
+We've now gone through how to use CloudQuery to monitor AWS resource limits and Service Quotas to supplement the information provided by AWS via Service Quotas, Trusted Advisor, and Support in one central place.  
 
 ## References
 
