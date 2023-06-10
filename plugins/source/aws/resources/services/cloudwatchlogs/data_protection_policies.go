@@ -41,10 +41,10 @@ func fetchDataProtectionPolicy(ctx context.Context, meta schema.ClientMeta, pare
 	config := cloudwatchlogs.GetDataProtectionPolicyInput{
 		LogGroupIdentifier: lg.LogGroupName,
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudwatchlogs
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudwatchlogs
 	resp, err := svc.GetDataProtectionPolicy(ctx, &config, func(options *cloudwatchlogs.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 
 	if err != nil {

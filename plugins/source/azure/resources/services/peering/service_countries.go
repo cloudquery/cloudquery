@@ -11,12 +11,13 @@ import (
 
 func ServiceCountries() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_peering_service_countries",
-		Resolver:    fetchServiceCountries,
-		Description: "https://learn.microsoft.com/en-us/rest/api/peering/peering-service-countries/list?tabs=HTTP#peeringservicecountry",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_peering_service_countries", client.Namespacemicrosoft_peering),
-		Transform:   transformers.TransformWithStruct(&armpeering.ServiceCountry{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_peering_service_countries",
+		Resolver:             fetchServiceCountries,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/peering/peering-service-countries/list?tabs=HTTP#peeringservicecountry",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_peering_service_countries", client.Namespacemicrosoft_peering),
+		Transform:            transformers.TransformWithStruct(&armpeering.ServiceCountry{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

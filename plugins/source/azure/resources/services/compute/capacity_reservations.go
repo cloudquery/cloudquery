@@ -11,11 +11,12 @@ import (
 
 func capacityReservations() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_compute_capacity_reservations",
-		Resolver:    fetchCapacityReservations,
-		Description: "https://learn.microsoft.com/en-us/rest/api/compute/capacity-reservations/list-by-capacity-reservation-group?tabs=HTTP#capacityreservation",
-		Transform:   transformers.TransformWithStruct(&armcompute.CapacityReservation{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_compute_capacity_reservations",
+		Resolver:             fetchCapacityReservations,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/compute/capacity-reservations/list-by-capacity-reservation-group?tabs=HTTP#capacityreservation",
+		Transform:            transformers.TransformWithStruct(&armcompute.CapacityReservation{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

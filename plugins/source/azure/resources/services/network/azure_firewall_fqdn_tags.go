@@ -11,12 +11,13 @@ import (
 
 func AzureFirewallFqdnTags() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_azure_firewall_fqdn_tags",
-		Resolver:    fetchAzureFirewallFqdnTags,
-		Description: "https://learn.microsoft.com/en-us/rest/api/firewall/azure-firewall-fqdn-tags/list-all?tabs=HTTP#azurefirewallfqdntag",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_azure_firewall_fqdn_tags", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.AzureFirewallFqdnTag{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionIDPK},
+		Name:                 "azure_network_azure_firewall_fqdn_tags",
+		Resolver:             fetchAzureFirewallFqdnTags,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/firewall/azure-firewall-fqdn-tags/list-all?tabs=HTTP#azurefirewallfqdntag",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_network_azure_firewall_fqdn_tags", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armnetwork.AzureFirewallFqdnTag{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionIDPK},
 	}
 }
 

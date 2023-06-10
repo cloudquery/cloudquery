@@ -38,3 +38,23 @@ The following tables depend on aws_lightsail_disks:
 |size_in_gb|`int64`|
 |state|`utf8`|
 |support_code|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Unused Lightsail disks
+
+```sql
+SELECT
+  'Unused Lightsail disks' AS title,
+  account_id,
+  arn AS resource_id,
+  'fail' AS status
+FROM
+  aws_lightsail_disks
+WHERE
+  is_attached = false;
+```
+
+

@@ -46,12 +46,12 @@ The 'request_account_id' and 'request_region' columns are added to show from whe
 }
 
 func fetchInspector2Findings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Inspector2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Inspector2
 
 	allConfigs := []tableoptions.CustomInspector2ListFindingsInput{{}}
-	if c.Spec.TableOptions.Inspector2Findings != nil {
-		allConfigs = c.Spec.TableOptions.Inspector2Findings.ListFindingsOpts
+	if cl.Spec.TableOptions.Inspector2Findings != nil {
+		allConfigs = cl.Spec.TableOptions.Inspector2Findings.ListFindingsOpts
 	}
 	for _, input := range allConfigs {
 		if input.MaxResults == nil {
@@ -61,7 +61,7 @@ func fetchInspector2Findings(ctx context.Context, meta schema.ClientMeta, parent
 		paginator := inspector2.NewListFindingsPaginator(svc, &input.ListFindingsInput)
 		for paginator.HasMorePages() {
 			page, err := paginator.NextPage(ctx, func(options *inspector2.Options) {
-				options.Region = c.Region
+				options.Region = cl.Region
 			})
 			if err != nil {
 				return err

@@ -42,13 +42,13 @@ func Pipelines() *schema.Table {
 }
 
 func fetchCodepipelinePipelines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Codepipeline
+	cl := meta.(*client.Client)
+	svc := cl.Services().Codepipeline
 	config := codepipeline.ListPipelinesInput{}
 	paginator := codepipeline.NewListPipelinesPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *codepipeline.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -59,11 +59,11 @@ func fetchCodepipelinePipelines(ctx context.Context, meta schema.ClientMeta, par
 }
 
 func getPipeline(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Codepipeline
+	cl := meta.(*client.Client)
+	svc := cl.Services().Codepipeline
 	item := resource.Item.(types.PipelineSummary)
 	response, err := svc.GetPipeline(ctx, &codepipeline.GetPipelineInput{Name: item.Name}, func(options *codepipeline.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

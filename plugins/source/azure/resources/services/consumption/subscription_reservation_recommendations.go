@@ -13,11 +13,12 @@ import (
 
 func SubscriptionReservationRecommendations() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_consumption_subscription_reservation_recommendations",
-		Resolver:    fetchSubscriptionReservationRecommendations,
-		Description: "https://learn.microsoft.com/en-us/rest/api/consumption/reservation-recommendations/list?tabs=HTTP#legacyreservationrecommendation",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_consumption_subscription_reservation_recommendations", client.Namespacemicrosoft_consumption),
-		Transform:   transformers.TransformWithStruct(&armconsumption.LegacyReservationRecommendation{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_consumption_subscription_reservation_recommendations",
+		Resolver:             fetchSubscriptionReservationRecommendations,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/consumption/reservation-recommendations/list?tabs=HTTP#legacyreservationrecommendation",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_consumption_subscription_reservation_recommendations", client.Namespacemicrosoft_consumption),
+		Transform:            transformers.TransformWithStruct(&armconsumption.LegacyReservationRecommendation{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

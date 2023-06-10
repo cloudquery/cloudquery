@@ -1,8 +1,3 @@
--- SELECT project_id, id, "name", self_link AS link
--- FROM gcp_compute_networks gcn
--- WHERE name = 'default';
-
-
 INSERT INTO gcp_policy_results (resource_id, execution_time, framework, check_id, title, project_id, status)
 SELECT "name"                                                                    AS resource_id,
        :'execution_time'::timestamp                                              AS execution_time,

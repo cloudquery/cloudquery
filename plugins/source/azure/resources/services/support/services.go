@@ -11,10 +11,11 @@ import (
 
 func Services() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_support_services",
-		Resolver:    fetchServices,
-		Description: "https://learn.microsoft.com/en-us/rest/api/support/services/list?tabs=HTTP#service",
-		Transform:   transformers.TransformWithStruct(&armsupport.Service{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_support_services",
+		Resolver:             fetchServices,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/support/services/list?tabs=HTTP#service",
+		Transform:            transformers.TransformWithStruct(&armsupport.Service{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

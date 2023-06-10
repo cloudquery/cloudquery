@@ -44,12 +44,12 @@ func fetchBatchJobDefinitions(ctx context.Context, meta schema.ClientMeta, paren
 	config := batch.DescribeJobDefinitionsInput{
 		MaxResults: aws.Int32(100),
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Batch
+	cl := meta.(*client.Client)
+	svc := cl.Services().Batch
 	p := batch.NewDescribeJobDefinitionsPaginator(svc, &config)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *batch.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

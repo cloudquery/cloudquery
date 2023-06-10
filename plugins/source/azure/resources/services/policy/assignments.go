@@ -11,12 +11,13 @@ import (
 
 func Assignments() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_policy_assignments",
-		Resolver:    fetchAssignments,
-		Description: "https://learn.microsoft.com/en-us/rest/api/policy/policy-assignments/list?tabs=HTTP#policyassignment",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_policy_assignments", client.Namespacemicrosoft_authorization),
-		Transform:   transformers.TransformWithStruct(&armpolicy.Assignment{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_policy_assignments",
+		Resolver:             fetchAssignments,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/policy/policy-assignments/list?tabs=HTTP#policyassignment",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_policy_assignments", client.Namespacemicrosoft_authorization),
+		Transform:            transformers.TransformWithStruct(&armpolicy.Assignment{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

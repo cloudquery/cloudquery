@@ -34,12 +34,12 @@ func Aliases() *schema.Table {
 
 func fetchKmsAliases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input kms.ListAliasesInput
-	c := meta.(*client.Client)
-	svc := c.Services().Kms
+	cl := meta.(*client.Client)
+	svc := cl.Services().Kms
 	paginator := kms.NewListAliasesPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *kms.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

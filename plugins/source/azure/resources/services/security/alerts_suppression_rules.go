@@ -11,12 +11,13 @@ import (
 
 func AlertsSuppressionRules() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_security_alerts_suppression_rules",
-		Resolver:    fetchAlertsSuppressionRules,
-		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/alerts-suppression-rules/list?tabs=HTTP#alertssuppressionrule",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_alerts_suppression_rules", client.Namespacemicrosoft_security),
-		Transform:   transformers.TransformWithStruct(&armsecurity.AlertsSuppressionRule{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_security_alerts_suppression_rules",
+		Resolver:             fetchAlertsSuppressionRules,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/alerts-suppression-rules/list?tabs=HTTP#alertssuppressionrule",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_security_alerts_suppression_rules", client.Namespacemicrosoft_security),
+		Transform:            transformers.TransformWithStruct(&armsecurity.AlertsSuppressionRule{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

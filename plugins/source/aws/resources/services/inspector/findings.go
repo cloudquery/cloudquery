@@ -45,13 +45,13 @@ func Findings() *schema.Table {
 }
 
 func fetchInspectorFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Inspector
+	cl := meta.(*client.Client)
+	svc := cl.Services().Inspector
 	input := inspector.ListFindingsInput{MaxResults: aws.Int32(50)}
 	paginator := inspector.NewListFindingsPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *inspector.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -67,10 +67,10 @@ func fetchInspectorFindings(ctx context.Context, meta schema.ClientMeta, parent 
 				j = len(page.FindingArns) - 1
 			}
 			out, err := svc.DescribeFindings(ctx, &inspector.DescribeFindingsInput{FindingArns: page.FindingArns[i:j]}, func(options *inspector.Options) {
-				options.Region = c.Region
+				options.Region = cl.Region
 			})
 			if err != nil {
-				if c.IsNotFoundError(err) {
+				if cl.IsNotFoundError(err) {
 					continue
 				}
 				return err

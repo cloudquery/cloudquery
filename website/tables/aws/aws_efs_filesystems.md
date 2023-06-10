@@ -35,3 +35,56 @@ The primary key for this table is **arn**.
 |name|`utf8`|
 |provisioned_throughput_in_mibps|`float64`|
 |throughput_mode|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Amazon EFS volumes should be in backup plans
+
+```sql
+SELECT
+  'Amazon EFS volumes should be in backup plans' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN backup_policy_status IS DISTINCT FROM 'ENABLED' THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_efs_filesystems;
+```
+
+### Unused EFS filesystem
+
+```sql
+SELECT
+  'Unused EFS filesystem' AS title,
+  account_id,
+  arn AS resource_id,
+  'fail' AS status
+FROM
+  aws_efs_filesystems
+WHERE
+  number_of_mount_targets = 0;
+```
+
+### Amazon EFS should be configured to encrypt file data at rest using AWS KMS
+
+```sql
+SELECT
+  'Amazon EFS should be configured to encrypt file data at rest using AWS KMS'
+    AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN encrypted IS NOT true OR kms_key_id IS NULL THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_efs_filesystems;
+```
+
+

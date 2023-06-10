@@ -11,12 +11,13 @@ import (
 
 func Locations() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_cosmos_locations",
-		Resolver:    fetchLocations,
-		Description: "https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/2022-05-15/locations/list?tabs=HTTP#locationgetresult",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_cosmos_locations", client.Namespacemicrosoft_documentdb),
-		Transform:   transformers.TransformWithStruct(&armcosmos.LocationGetResult{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_cosmos_locations",
+		Resolver:             fetchLocations,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/2022-05-15/locations/list?tabs=HTTP#locationgetresult",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_cosmos_locations", client.Namespacemicrosoft_documentdb),
+		Transform:            transformers.TransformWithStruct(&armcosmos.LocationGetResult{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

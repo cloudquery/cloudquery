@@ -11,11 +11,12 @@ import (
 
 func watcherFlowLogs() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_watcher_flow_logs",
-		Resolver:    fetchWatcherFlowLogs,
-		Description: "https://learn.microsoft.com/en-us/rest/api/network-watcher/flow-logs/list?tabs=HTTP#definitions",
-		Transform:   transformers.TransformWithStruct(&armnetwork.FlowLog{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_watcher_flow_logs",
+		Resolver:             fetchWatcherFlowLogs,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/network-watcher/flow-logs/list?tabs=HTTP#definitions",
+		Transform:            transformers.TransformWithStruct(&armnetwork.FlowLog{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

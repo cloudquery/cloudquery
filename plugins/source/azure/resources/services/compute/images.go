@@ -11,12 +11,13 @@ import (
 
 func Images() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_compute_images",
-		Resolver:    fetchImages,
-		Description: "https://learn.microsoft.com/en-us/rest/api/compute/images/list?tabs=HTTP#image",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_images", client.Namespacemicrosoft_compute),
-		Transform:   transformers.TransformWithStruct(&armcompute.Image{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_compute_images",
+		Resolver:             fetchImages,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/compute/images/list?tabs=HTTP#image",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_compute_images", client.Namespacemicrosoft_compute),
+		Transform:            transformers.TransformWithStruct(&armcompute.Image{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

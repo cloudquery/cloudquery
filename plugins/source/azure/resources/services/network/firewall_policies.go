@@ -11,12 +11,13 @@ import (
 
 func FirewallPolicies() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_firewall_policies",
-		Resolver:    fetchFirewallPolicies,
-		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/firewall-policies/list-all?tabs=HTTP#firewallpolicy",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_firewall_policies", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.FirewallPolicy{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_firewall_policies",
+		Resolver:             fetchFirewallPolicies,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/firewall-policies/list-all?tabs=HTTP#firewallpolicy",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_network_firewall_policies", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armnetwork.FirewallPolicy{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

@@ -77,3 +77,135 @@ The following tables depend on aws_redshift_clusters:
 |total_storage_capacity_in_mega_bytes|`int64`|
 |vpc_id|`utf8`|
 |vpc_security_groups|`json`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Amazon Redshift clusters should prohibit public access
+
+```sql
+SELECT
+  'Amazon Redshift clusters should prohibit public access' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE WHEN publicly_accessible IS true THEN 'fail' ELSE 'pass' END AS status
+FROM
+  aws_redshift_clusters;
+```
+
+### Connections to Amazon Redshift clusters should be encrypted in transit
+
+```sql
+SELECT
+  'Connections to Amazon Redshift clusters should be encrypted in transit'
+    AS title,
+  account_id,
+  arn AS resource_id,
+  'fail' AS status
+FROM
+  aws_redshift_clusters AS rsc
+WHERE
+  EXISTS(
+    SELECT
+      1
+    FROM
+      aws_redshift_cluster_parameter_groups AS rscpg
+      INNER JOIN aws_redshift_cluster_parameters AS rscp ON
+          rscpg.cluster_arn = rscp.cluster_arn
+    WHERE
+      rsc.arn = rscpg.cluster_arn
+      AND (
+          rscp.parameter_name = 'require_ssl'
+          AND rscp.parameter_value = 'false'
+        )
+      OR (rscp.parameter_name = 'require_ssl' AND rscp.parameter_value IS NULL)
+      OR NOT
+          EXISTS(
+            (
+              SELECT
+                1
+              FROM
+                aws_redshift_cluster_parameters
+              WHERE
+                cluster_arn = rscpg.cluster_arn
+                AND parameter_name = 'require_ssl'
+            )
+          )
+  );
+```
+
+### Amazon Redshift clusters should have audit logging enabled
+
+```sql
+SELECT
+  'Amazon Redshift clusters should have audit logging enabled' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN jsonb_typeof(logging_status->'LoggingEnabled') IS NULL
+  OR (
+      jsonb_typeof(logging_status->'LoggingEnabled') IS NOT NULL
+      AND (logging_status->>'LoggingEnabled')::BOOL IS false
+    )
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_redshift_clusters;
+```
+
+### Amazon Redshift clusters should have automatic snapshots enabled
+
+```sql
+SELECT
+  'Amazon Redshift clusters should have automatic snapshots enabled' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN automated_snapshot_retention_period < 7
+  OR automated_snapshot_retention_period IS NULL
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_redshift_clusters;
+```
+
+### Amazon Redshift should have automatic upgrades to major versions enabled
+
+```sql
+SELECT
+  'Amazon Redshift should have automatic upgrades to major versions enabled'
+    AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN allow_version_upgrade IS false OR allow_version_upgrade IS NULL
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_redshift_clusters;
+```
+
+### Amazon Redshift clusters should use enhanced VPC routing
+
+```sql
+SELECT
+  'Amazon Redshift clusters should use enhanced VPC routing' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN enhanced_vpc_routing IS false OR enhanced_vpc_routing IS NULL THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_redshift_clusters;
+```
+
+

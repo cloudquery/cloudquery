@@ -11,11 +11,12 @@ import (
 
 func SubscriptionBudgets() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_consumption_subscription_budgets",
-		Resolver:    fetchSubscriptionBudgets,
-		Description: "https://learn.microsoft.com/en-us/rest/api/consumption/budgets/list?tabs=HTTP#budget",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_consumption_billing_account_budgets", client.Namespacemicrosoft_consumption),
-		Transform:   transformers.TransformWithStruct(&armconsumption.Budget{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_consumption_subscription_budgets",
+		Resolver:             fetchSubscriptionBudgets,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/consumption/budgets/list?tabs=HTTP#budget",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_consumption_billing_account_budgets", client.Namespacemicrosoft_consumption),
+		Transform:            transformers.TransformWithStruct(&armconsumption.Budget{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

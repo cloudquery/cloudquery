@@ -49,12 +49,12 @@ func fetchCloudformationStackSetOperations(ctx context.Context, meta schema.Clie
 		CallAs:       stack.CallAs,
 	}
 
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudformation
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudformation
 	paginator := cloudformation.NewListStackSetOperationsPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cloudformation.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -70,7 +70,8 @@ func fetchCloudformationStackSetOperations(ctx context.Context, meta schema.Clie
 }
 
 func getStackSetOperation(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudformation
 	stack := resource.Parent.Item.(models.ExpandedStackSet)
 	operation := resource.Item.(models.ExpandedStackSetOperationSummary)
 
@@ -80,8 +81,8 @@ func getStackSetOperation(ctx context.Context, meta schema.ClientMeta, resource 
 		CallAs:       stack.CallAs,
 	}
 
-	stackSetOperation, err := meta.(*client.Client).Services().Cloudformation.DescribeStackSetOperation(ctx, &input, func(options *cloudformation.Options) {
-		options.Region = c.Region
+	stackSetOperation, err := svc.DescribeStackSetOperation(ctx, &input, func(options *cloudformation.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
