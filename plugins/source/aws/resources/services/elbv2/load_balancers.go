@@ -25,11 +25,6 @@ func LoadBalancers() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "web_acl_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: resolveLoadBalancerWebACLArn,
-			},
-			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveLoadBalancerTags,
