@@ -35,12 +35,12 @@ func fargateProfiles() *schema.Table {
 
 func fetchFargateProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cluster := parent.Item.(*types.Cluster)
-	c := meta.(*client.Client)
-	svc := c.Services().Eks
+	cl := meta.(*client.Client)
+	svc := cl.Services().Eks
 	paginator := eks.NewListFargateProfilesPaginator(svc, &eks.ListFargateProfilesInput{ClusterName: cluster.Name})
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *eks.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -51,8 +51,8 @@ func fetchFargateProfiles(ctx context.Context, meta schema.ClientMeta, parent *s
 }
 
 func getFargateProfile(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Eks
+	cl := meta.(*client.Client)
+	svc := cl.Services().Eks
 	name := resource.Item.(string)
 	cluster := resource.Parent.Item.(*types.Cluster)
 	output, err := svc.DescribeFargateProfile(
@@ -60,7 +60,7 @@ func getFargateProfile(ctx context.Context, meta schema.ClientMeta, resource *sc
 			ClusterName:        cluster.Name,
 			FargateProfileName: &name},
 		func(options *eks.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 	if err != nil {
 		return err

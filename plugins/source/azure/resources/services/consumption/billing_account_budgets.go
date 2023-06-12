@@ -11,11 +11,12 @@ import (
 
 func BillingAccountBudgets() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_consumption_billing_account_budgets",
-		Resolver:    fetchBillingAccountBudgets,
-		Description: "https://learn.microsoft.com/en-us/rest/api/consumption/budgets/list?tabs=HTTP#budget",
-		Multiplex:   client.BillingAccountMultiplex,
-		Transform:   transformers.TransformWithStruct(&armconsumption.Budget{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_consumption_billing_account_budgets",
+		Resolver:             fetchBillingAccountBudgets,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/consumption/budgets/list?tabs=HTTP#budget",
+		Multiplex:            client.BillingAccountMultiplex,
+		Transform:            transformers.TransformWithStruct(&armconsumption.Budget{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

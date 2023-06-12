@@ -38,12 +38,12 @@ func fetchLightsailDatabaseEvents(ctx context.Context, meta schema.ClientMeta, p
 		RelationalDatabaseName: r.Name,
 		DurationInMinutes:      aws.Int32(20160), // two weeks
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Lightsail
+	cl := meta.(*client.Client)
+	svc := cl.Services().Lightsail
 	// No paginator available
 	for {
 		response, err := svc.GetRelationalDatabaseEvents(ctx, &input, func(options *lightsail.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

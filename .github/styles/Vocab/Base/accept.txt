@@ -31,6 +31,7 @@ CMK
 CMKs
 codegen
 Codegen
+Coinpaprika
 compinit
 config
 Config

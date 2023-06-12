@@ -41,12 +41,12 @@ func Distributions() *schema.Table {
 
 func fetchCloudfrontDistributions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config cloudfront.ListDistributionsInput
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudfront
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudfront
 	paginator := cloudfront.NewListDistributionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cloudfront.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -57,15 +57,15 @@ func fetchCloudfrontDistributions(ctx context.Context, meta schema.ClientMeta, p
 }
 
 func getDistribution(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudfront
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudfront
 
 	d := resource.Item.(types.DistributionSummary)
 
 	distribution, err := svc.GetDistribution(ctx, &cloudfront.GetDistributionInput{
 		Id: d.Id,
 	}, func(options *cloudfront.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

@@ -29,30 +29,21 @@ func (*Client) listTables(ctx context.Context, client *firestore.Client) (schema
 			}
 			return nil, err
 		}
-		columns := make(schema.ColumnList, 0, 4)
-		columns = append(columns, schema.Column{
-			Name:       "__id",
-			Type:       arrow.BinaryTypes.String,
-			PrimaryKey: true,
-			Unique:     true,
-			NotNull:    true,
-		})
-		columns = append(columns, schema.Column{
-			Name: "__created_at",
-			Type: arrow.FixedWidthTypes.Timestamp_us,
-		})
-		columns = append(columns, schema.Column{
-			Name: "__updated_at",
-			Type: arrow.FixedWidthTypes.Timestamp_us,
-		})
-		columns = append(columns, schema.Column{
-			Name: "data",
-			Type: types.ExtensionTypes.JSON,
-		})
 
 		schemaTables = append(schemaTables, &schema.Table{
-			Name:    collection.ID,
-			Columns: columns,
+			Name: collection.ID,
+			Columns: schema.ColumnList{
+				{
+					Name:       "__id",
+					Type:       arrow.BinaryTypes.String,
+					PrimaryKey: true,
+					Unique:     true,
+					NotNull:    true,
+				},
+				{Name: "__created_at", Type: arrow.FixedWidthTypes.Timestamp_us},
+				{Name: "__updated_at", Type: arrow.FixedWidthTypes.Timestamp_us},
+				{Name: "data", Type: types.ExtensionTypes.JSON},
+			},
 		})
 	}
 	return schemaTables, nil

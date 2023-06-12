@@ -44,3 +44,25 @@ This table depends on [aws_backup_vaults](aws_backup_vaults).
 |source_backup_vault_arn|`utf8`|
 |status|`utf8`|
 |status_message|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Vaults with no recovery points
+
+```sql
+WITH
+  "point" AS (SELECT DISTINCT vault_arn FROM aws_backup_vault_recovery_points)
+SELECT
+  'Vaults with no recovery points' AS title,
+  vault.account_id,
+  vault.arn AS resource_id,
+  'fail' AS status
+FROM
+  aws_backup_vaults AS vault LEFT JOIN "point" ON "point".vault_arn = vault.arn
+WHERE
+  "point".vault_arn IS NULL;
+```
+
+

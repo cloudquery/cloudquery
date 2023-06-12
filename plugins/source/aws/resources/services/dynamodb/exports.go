@@ -34,13 +34,13 @@ func Exports() *schema.Table {
 }
 
 func listExports(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Dynamodb
+	cl := meta.(*client.Client)
+	svc := cl.Services().Dynamodb
 
 	paginator := dynamodb.NewListExportsPaginator(svc, &dynamodb.ListExportsInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *dynamodb.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

@@ -11,12 +11,13 @@ import (
 
 func VirtualMachineScaleSetsVMs() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_compute_virtual_machine_scale_set_vms",
-		Resolver:    fetchVirtualMachineScaleSetsVMs,
-		Description: "https://learn.microsoft.com/en-us/rest/api/compute/virtual-machine-scale-set-vms/list?tabs=HTTP#virtualmachinescalesetvm",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_virtual_machine_scale_sets_vms", client.Namespacemicrosoft_compute),
-		Transform:   transformers.TransformWithStruct(&armcompute.VirtualMachineScaleSetVM{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_compute_virtual_machine_scale_set_vms",
+		Resolver:             fetchVirtualMachineScaleSetsVMs,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/compute/virtual-machine-scale-set-vms/list?tabs=HTTP#virtualmachinescalesetvm",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_compute_virtual_machine_scale_sets_vms", client.Namespacemicrosoft_compute),
+		Transform:            transformers.TransformWithStruct(&armcompute.VirtualMachineScaleSetVM{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

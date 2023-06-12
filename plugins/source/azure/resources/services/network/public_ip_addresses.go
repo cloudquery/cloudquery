@@ -11,12 +11,13 @@ import (
 
 func PublicIpAddresses() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_public_ip_addresses",
-		Resolver:    fetchPublicIpAddresses,
-		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/public-ip-addresses/list?tabs=HTTP#publicipaddress",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_public_ip_addresses", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.PublicIPAddress{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_public_ip_addresses",
+		Resolver:             fetchPublicIpAddresses,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/public-ip-addresses/list?tabs=HTTP#publicipaddress",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_network_public_ip_addresses", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armnetwork.PublicIPAddress{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

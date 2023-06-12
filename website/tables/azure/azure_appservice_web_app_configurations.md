@@ -24,3 +24,27 @@ This table depends on [azure_appservice_web_apps](azure_appservice_web_apps).
 |id (PK)|`utf8`|
 |name|`utf8`|
 |type|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Ensure FTP deployments are disabled (Automated)
+
+```sql
+SELECT
+  'Ensure FTP deployments are disabled (Automated)' AS title,
+  aawac.subscription_id AS subscription_id,
+  aawac.id AS resource_id,
+  CASE
+  WHEN aawac.properties->>'ftpsState' = 'AllAllowed' THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  azure_appservice_web_apps AS aawa
+  JOIN azure_appservice_web_app_configurations AS aawac ON
+      aawa._cq_id = aawac._cq_parent_id;
+```
+
+

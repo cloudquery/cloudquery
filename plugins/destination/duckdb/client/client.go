@@ -23,28 +23,32 @@ type Client struct {
 	metrics   destination.Metrics
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
+var _ destination.Client = (*Client)(nil)
+
+func New(ctx context.Context, logger zerolog.Logger, dstSpec specs.Destination) (destination.Client, error) {
 	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "duckdb-dest").Logger(),
+		spec:   dstSpec,
 	}
 
-	var duckdbSpec Spec
-	c.spec = spec
-	if err := spec.UnmarshalSpec(&duckdbSpec); err != nil {
+	var spec Spec
+	if err := dstSpec.UnmarshalSpec(&spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal duckdb spec: %w", err)
 	}
-	c.connector, err = duckdb.NewConnector(duckdbSpec.ConnectionString, nil)
-	db := sql.OpenDB(c.connector)
+
+	c.connector, err = duckdb.NewConnector(spec.ConnectionString, nil)
 	if err != nil {
 		return nil, err
 	}
-	c.db = db
-	_, err = c.db.Exec("INSTALL 'json'; LOAD 'json';")
+
+	c.db = sql.OpenDB(c.connector)
+
+	err = c.exec(ctx, "INSTALL 'json'; LOAD 'json';")
 	if err != nil {
 		return nil, err
 	}
-	_, err = c.db.Exec("INSTALL 'parquet'; LOAD 'parquet';")
+	err = c.exec(ctx, "INSTALL 'parquet'; LOAD 'parquet';")
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +56,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	return c, nil
 }
 
-func (c *Client) Close(ctx context.Context) error {
+func (c *Client) Close(_ context.Context) error {
 	var err error
 
 	if c.db == nil {
@@ -61,5 +65,14 @@ func (c *Client) Close(ctx context.Context) error {
 
 	err = c.db.Close()
 	c.db = nil
+	return err
+}
+
+func (c *Client) Metrics() destination.Metrics {
+	return c.metrics
+}
+
+func (c *Client) exec(ctx context.Context, query string, args ...any) error {
+	_, err := c.db.ExecContext(ctx, query, args...)
 	return err
 }

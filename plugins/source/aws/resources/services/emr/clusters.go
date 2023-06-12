@@ -50,12 +50,12 @@ func fetchEmrClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 			types.ClusterStateWaiting,
 		},
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Emr
+	cl := meta.(*client.Client)
+	svc := cl.Services().Emr
 	paginator := emr.NewListClustersPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *emr.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -66,10 +66,10 @@ func fetchEmrClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 }
 
 func getCluster(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Emr
+	cl := meta.(*client.Client)
+	svc := cl.Services().Emr
 	response, err := svc.DescribeCluster(ctx, &emr.DescribeClusterInput{ClusterId: resource.Item.(types.ClusterSummary).Id}, func(options *emr.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

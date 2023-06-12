@@ -51,14 +51,14 @@ func Tables() *schema.Table {
 }
 
 func fetchDynamodbTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Dynamodb
+	cl := meta.(*client.Client)
+	svc := cl.Services().Dynamodb
 
 	config := dynamodb.ListTablesInput{}
 	// No paginator available
 	for {
 		output, err := svc.ListTables(ctx, &config, func(options *dynamodb.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -75,13 +75,13 @@ func fetchDynamodbTables(ctx context.Context, meta schema.ClientMeta, parent *sc
 }
 
 func getTable(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Dynamodb
+	cl := meta.(*client.Client)
+	svc := cl.Services().Dynamodb
 
 	tableName := resource.Item.(string)
 
 	response, err := svc.DescribeTable(ctx, &dynamodb.DescribeTableInput{TableName: &tableName}, func(options *dynamodb.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -128,16 +128,16 @@ func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.Clie
 		return nil
 	}
 
-	c := meta.(*client.Client)
-	svc := c.Services().Dynamodb
+	cl := meta.(*client.Client)
+	svc := cl.Services().Dynamodb
 
 	output, err := svc.DescribeTableReplicaAutoScaling(ctx, &dynamodb.DescribeTableReplicaAutoScalingInput{
 		TableName: par.TableName,
 	}, func(options *dynamodb.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
+		if cl.IsNotFoundError(err) {
 			return nil
 		}
 		return err
@@ -151,16 +151,16 @@ func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.Clie
 func fetchDynamodbTableContinuousBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	par := parent.Item.(*types.TableDescription)
 
-	c := meta.(*client.Client)
-	svc := c.Services().Dynamodb
+	cl := meta.(*client.Client)
+	svc := cl.Services().Dynamodb
 
 	output, err := svc.DescribeContinuousBackups(ctx, &dynamodb.DescribeContinuousBackupsInput{
 		TableName: par.TableName,
 	}, func(options *dynamodb.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
+		if cl.IsNotFoundError(err) {
 			return nil
 		}
 		return err

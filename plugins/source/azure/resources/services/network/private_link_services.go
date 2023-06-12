@@ -11,12 +11,13 @@ import (
 
 func PrivateLinkServices() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_private_link_services",
-		Resolver:    fetchPrivateLinkServices,
-		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/private-link-services/list-by-subscription?tabs=HTTP#privatelinkservice",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_private_link_services", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.PrivateLinkService{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_private_link_services",
+		Resolver:             fetchPrivateLinkServices,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/private-link-services/list-by-subscription?tabs=HTTP#privatelinkservice",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_network_private_link_services", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armnetwork.PrivateLinkService{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

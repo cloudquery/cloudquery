@@ -33,12 +33,12 @@ func ReplicationInstances() *schema.Table {
 }
 
 func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Databasemigrationservice
+	cl := meta.(*client.Client)
+	svc := cl.Services().Databasemigrationservice
 
 	var describeReplicationInstancesInput *databasemigrationservice.DescribeReplicationInstancesInput
 	describeReplicationInstancesOutput, err := svc.DescribeReplicationInstances(ctx, describeReplicationInstancesInput, func(options *databasemigrationservice.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -53,7 +53,7 @@ func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _
 	}
 	var listTagsForResourceOutput *databasemigrationservice.ListTagsForResourceOutput
 	listTagsForResourceOutput, err = svc.ListTagsForResource(ctx, &listTagsForResourceInput, func(options *databasemigrationservice.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

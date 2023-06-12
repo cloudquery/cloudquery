@@ -51,13 +51,13 @@ func Detectors() *schema.Table {
 }
 
 func fetchGuarddutyDetectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Guardduty
+	cl := meta.(*client.Client)
+	svc := cl.Services().Guardduty
 	config := &guardduty.ListDetectorsInput{}
 	paginator := guardduty.NewListDetectorsPaginator(svc, config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *guardduty.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -68,12 +68,12 @@ func fetchGuarddutyDetectors(ctx context.Context, meta schema.ClientMeta, parent
 }
 
 func getDetector(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Guardduty
+	cl := meta.(*client.Client)
+	svc := cl.Services().Guardduty
 	dId := resource.Item.(string)
 
 	d, err := svc.GetDetector(ctx, &guardduty.GetDetectorInput{DetectorId: &dId}, func(options *guardduty.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

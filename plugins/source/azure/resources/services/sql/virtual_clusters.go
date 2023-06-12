@@ -11,12 +11,13 @@ import (
 
 func VirtualClusters() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_sql_virtual_clusters",
-		Resolver:    fetchVirtualClusters,
-		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/virtual-clusters/list?tabs=HTTP#virtualcluster",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_sql_virtual_clusters", client.Namespacemicrosoft_sql),
-		Transform:   transformers.TransformWithStruct(&armsql.VirtualCluster{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_sql_virtual_clusters",
+		Resolver:             fetchVirtualClusters,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/virtual-clusters/list?tabs=HTTP#virtualcluster",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_sql_virtual_clusters", client.Namespacemicrosoft_sql),
+		Transform:            transformers.TransformWithStruct(&armsql.VirtualCluster{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

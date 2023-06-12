@@ -11,12 +11,13 @@ import (
 
 func RouteFilters() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_route_filters",
-		Resolver:    fetchRouteFilters,
-		Description: "https://learn.microsoft.com/en-us/rest/api/expressroute/route-filters/list?tabs=HTTP#routefilter",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_route_filters", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.RouteFilter{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_route_filters",
+		Resolver:             fetchRouteFilters,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/expressroute/route-filters/list?tabs=HTTP#routefilter",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_network_route_filters", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armnetwork.RouteFilter{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

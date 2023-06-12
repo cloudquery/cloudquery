@@ -31,3 +31,26 @@ The primary key for this table is **arn**.
 |raw_message_delivery|`bool`|
 |subscription_role_arn|`utf8`|
 |unknown_fields|`json`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Unused SNS topic
+
+```sql
+WITH
+  subscription AS (SELECT DISTINCT topic_arn FROM aws_sns_subscriptions)
+SELECT
+  'Unused SNS topic' AS title,
+  topic.account_id,
+  topic.arn AS resource_id,
+  'fail' AS status
+FROM
+  aws_sns_topics AS topic
+  LEFT JOIN subscription ON subscription.topic_arn = topic.arn
+WHERE
+  subscription.topic_arn IS NULL;
+```
+
+

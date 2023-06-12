@@ -56,14 +56,14 @@ func Keys() *schema.Table {
 }
 
 func fetchKmsKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Kms
+	cl := meta.(*client.Client)
+	svc := cl.Services().Kms
 
 	config := kms.ListKeysInput{Limit: aws.Int32(1000)}
 	p := kms.NewListKeysPaginator(svc, &config)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *kms.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -74,12 +74,12 @@ func fetchKmsKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 }
 
 func getKey(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Kms
+	cl := meta.(*client.Client)
+	svc := cl.Services().Kms
 	item := resource.Item.(types.KeyListEntry)
 
 	d, err := svc.DescribeKey(ctx, &kms.DescribeKeyInput{KeyId: item.KeyId}, func(options *kms.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

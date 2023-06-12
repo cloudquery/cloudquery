@@ -30,3 +30,45 @@ The following tables depend on azure_containerservice_managed_clusters:
 |name|`utf8`|
 |system_data|`json`|
 |type|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### External accounts with owner permissions should be removed from your subscription
+
+```sql
+SELECT
+  'External accounts with owner permissions should be removed from your subscription'
+    AS title,
+  mc.subscription_id AS subscription_id,
+  mc.id AS resource_id,
+  CASE
+  WHEN (properties->>'enableRBAC')::BOOL IS NOT true THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  azure_containerservice_managed_clusters AS mc
+  INNER JOIN azure_subscription_subscriptions AS sub ON
+      sub.id = mc.subscription_id;
+```
+
+### Role-Based Access Control (RBAC) should be used on Kubernetes Services
+
+```sql
+SELECT
+  'Role-Based Access Control (RBAC) should be used on Kubernetes Services'
+    AS title,
+  subscription_id AS subscription_id,
+  id AS resource_id,
+  CASE
+  WHEN (properties->>'enableRBAC')::BOOL IS NOT true THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  azure_containerservice_managed_clusters;
+```
+
+

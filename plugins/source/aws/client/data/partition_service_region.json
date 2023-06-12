@@ -893,6 +893,7 @@
             "ap-southeast-1": {},
             "ap-southeast-2": {},
             "ap-southeast-3": {},
+            "ap-southeast-4": {},
             "ca-central-1": {},
             "eu-central-1": {},
             "eu-central-2": {},
@@ -3189,6 +3190,7 @@
             "ap-southeast-2": {},
             "ca-central-1": {},
             "eu-west-1": {},
+            "eu-west-2": {},
             "us-east-1": {},
             "us-east-2": {},
             "us-west-2": {}
@@ -3888,13 +3890,17 @@
             "ap-northeast-2": {},
             "ap-northeast-3": {},
             "ap-south-1": {},
+            "ap-south-2": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
             "ap-southeast-3": {},
+            "ap-southeast-4": {},
             "ca-central-1": {},
             "eu-central-1": {},
+            "eu-central-2": {},
             "eu-north-1": {},
             "eu-south-1": {},
+            "eu-south-2": {},
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
@@ -5098,6 +5104,8 @@
         "securitylake": {
           "regions": {
             "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
             "eu-central-1": {},
@@ -5106,6 +5114,7 @@
             "sa-east-1": {},
             "us-east-1": {},
             "us-east-2": {},
+            "us-west-1": {},
             "us-west-2": {}
           }
         },
@@ -5831,13 +5840,16 @@
             "ap-northeast-2": {},
             "ap-northeast-3": {},
             "ap-south-1": {},
+            "ap-south-2": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
             "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
+            "eu-central-2": {},
             "eu-north-1": {},
             "eu-south-1": {},
+            "eu-south-2": {},
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
@@ -7186,7 +7198,8 @@
         },
         "route53resolver": {
           "regions": {
-            "us-iso-east-1": {}
+            "us-iso-east-1": {},
+            "us-iso-west-1": {}
           }
         },
         "runtime.sagemaker": {
@@ -7266,7 +7279,8 @@
         },
         "tagging": {
           "regions": {
-            "us-iso-east-1": {}
+            "us-iso-east-1": {},
+            "us-iso-west-1": {}
           }
         },
         "transcribe": {
@@ -8157,6 +8171,12 @@
             "us-gov-west-1": {}
           }
         },
+        "mgn": {
+          "regions": {
+            "us-gov-east-1": {},
+            "us-gov-west-1": {}
+          }
+        },
         "models.lex": {
           "regions": {
             "us-gov-west-1": {}
@@ -8368,6 +8388,12 @@
           }
         },
         "servicequotas": {
+          "regions": {
+            "us-gov-east-1": {},
+            "us-gov-west-1": {}
+          }
+        },
+        "simspaceweaver": {
           "regions": {
             "us-gov-east-1": {},
             "us-gov-west-1": {}

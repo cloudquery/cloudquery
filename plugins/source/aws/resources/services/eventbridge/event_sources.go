@@ -35,12 +35,12 @@ func EventSources() *schema.Table {
 
 func fetchEventSources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input eventbridge.ListEventSourcesInput
-	c := meta.(*client.Client)
-	svc := c.Services().Eventbridge
+	cl := meta.(*client.Client)
+	svc := cl.Services().Eventbridge
 	// No paginator available
 	for {
 		response, err := svc.ListEventSources(ctx, &input, func(options *eventbridge.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

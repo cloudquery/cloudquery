@@ -1,10 +1,11 @@
 package identity
 
 import (
-	"github.com/apache/arrow/go/v13/arrow"
+	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/client"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/oracle/oci-go-sdk/v65/common"
 	"github.com/oracle/oci-go-sdk/v65/identity"
 )
 
@@ -13,15 +14,35 @@ func Users() *schema.Table {
 		Name:      "oracle_identity_users",
 		Resolver:  fetchUsers,
 		Multiplex: client.TenancyMultiplex,
-		Transform: transformers.TransformWithStruct(&identity.User{},
-			transformers.WithTypeTransformer(client.OracleTypeTransformer)),
-		Columns: []schema.Column{
-			{
-				Name:       "id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("Id"),
-				PrimaryKey: true,
-			},
-		},
+		Transform: client.TransformWithStruct(&identity.User{}),
+		Columns:   schema.ColumnList{client.RegionColumn},
 	}
+}
+
+func fetchUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+	cqClient := meta.(*client.Client)
+
+	var page *string
+	for {
+		request := identity.ListUsersRequest{
+			CompartmentId: common.String(cqClient.CompartmentOcid),
+			Page:          page,
+		}
+
+		response, err := cqClient.OracleClients[cqClient.Region].IdentityIdentityClient.ListUsers(ctx, request)
+
+		if err != nil {
+			return err
+		}
+
+		res <- response.Items
+
+		if response.OpcNextPage == nil {
+			break
+		}
+
+		page = response.OpcNextPage
+	}
+
+	return nil
 }

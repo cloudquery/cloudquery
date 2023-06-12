@@ -39,3 +39,45 @@ The composite primary key for this table is (**request_account_id**, **request_r
 |subnet_arn|`utf8`|
 |subnet_id|`utf8`|
 |vpc_id|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### EC2 subnets should not automatically assign public IP addresses
+
+```sql
+SELECT
+  'EC2 subnets should not automatically assign public IP addresses' AS title,
+  owner_id AS account_id,
+  arn AS resource_id,
+  CASE
+  WHEN map_public_ip_on_launch IS true THEN 'fail'
+  ELSE 'pass'
+  END
+FROM
+  aws_ec2_subnets;
+```
+
+### EMR clusters should not have public IP addresses
+
+```sql
+SELECT
+  'EMR clusters should not have public IP addresses' AS title,
+  aws_emr_clusters.account_id,
+  aws_emr_clusters.arn AS resource_id,
+  CASE
+  WHEN aws_ec2_subnets.map_public_ip_on_launch
+  AND aws_emr_clusters.status->>'State' IN ('RUNNING', 'WAITING')
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_emr_clusters
+  LEFT JOIN aws_ec2_subnets ON
+      aws_emr_clusters.ec2_instance_attributes->>'Ec2SubnetId'
+      = aws_ec2_subnets.subnet_id;
+```
+
+

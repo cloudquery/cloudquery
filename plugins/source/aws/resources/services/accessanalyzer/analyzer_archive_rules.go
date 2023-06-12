@@ -31,15 +31,15 @@ func analyzerArchiveRules() *schema.Table {
 
 func fetchAccessanalyzerAnalyzerArchiveRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	analyzer := parent.Item.(types.AnalyzerSummary)
-	c := meta.(*client.Client)
-	svc := c.Services().Accessanalyzer
+	cl := meta.(*client.Client)
+	svc := cl.Services().Accessanalyzer
 	config := accessanalyzer.ListArchiveRulesInput{
 		AnalyzerName: analyzer.Name,
 	}
 	paginator := accessanalyzer.NewListArchiveRulesPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *accessanalyzer.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

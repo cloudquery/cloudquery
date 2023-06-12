@@ -1,39 +1,48 @@
 package compute
 
 import (
-	"github.com/apache/arrow/go/v13/arrow"
+	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/client"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/oracle/oci-go-sdk/v65/common"
 	"github.com/oracle/oci-go-sdk/v65/core"
 )
 
-func VnicAttachments() *schema.Table {
+func VNICAttachments() *schema.Table {
 	return &schema.Table{
 		Name:      "oracle_compute_vnic_attachments",
-		Resolver:  fetchVnicAttachments,
+		Resolver:  fetchVNICAttachments,
 		Multiplex: client.RegionCompartmentMultiplex,
-		Transform: transformers.TransformWithStruct(&core.VnicAttachment{},
-			transformers.WithTypeTransformer(client.OracleTypeTransformer)),
-		Columns: []schema.Column{
-			{
-				Name:       "region",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveOracleRegion,
-				PrimaryKey: true,
-			},
-			{
-				Name:       "compartment_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveCompartmentId,
-				PrimaryKey: true,
-			},
-			{
-				Name:       "id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("Id"),
-				PrimaryKey: true,
-			},
-		},
+		Transform: client.TransformWithStruct(&core.VnicAttachment{}),
+		Columns:   schema.ColumnList{client.RegionColumn, client.CompartmentIDColumn},
 	}
+}
+
+func fetchVNICAttachments(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+	cqClient := meta.(*client.Client)
+
+	var page *string
+	for {
+		request := core.ListVnicAttachmentsRequest{
+			CompartmentId: common.String(cqClient.CompartmentOcid),
+			Page:          page,
+		}
+
+		response, err := cqClient.OracleClients[cqClient.Region].CoreComputeClient.ListVnicAttachments(ctx, request)
+
+		if err != nil {
+			return err
+		}
+
+		res <- response.Items
+
+		if response.OpcNextPage == nil {
+			break
+		}
+
+		page = response.OpcNextPage
+	}
+
+	return nil
 }

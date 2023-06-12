@@ -24,3 +24,29 @@ This table depends on [azure_keyvault_keyvault](azure_keyvault_keyvault).
 |name|`utf8`|
 |tags|`json`|
 |type|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Ensure that the expiration date is set on all Secrets (Automated)
+
+```sql
+SELECT
+  'Ensure that the expiration date is set on all Secrets (Automated)' AS title,
+  akv.subscription_id AS subscription_id,
+  akvs.id AS resource_id,
+  CASE
+  WHEN (akvs.properties->'attributes'->>'enabled')::BOOL = true
+  AND (akvs.properties->'attributes'->>'exp') IS NULL
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  azure_keyvault_keyvault AS akv
+  JOIN azure_keyvault_keyvault_secrets AS akvs ON
+      akv._cq_id = akvs._cq_parent_id;
+```
+
+

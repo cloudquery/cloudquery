@@ -70,7 +70,20 @@ This is the (nested) spec used by GCP Source Plugin
   If specified APIs will be retried with exponential backoff if they are rate limited. This is the max number of retries.
 
 - `enabled_services_only` (bool) (default: false).
-If enabled CloudQuery will skip any resources that belong to a service that has been disabled or not been enabled. If you use this option on a large organization (with more than 500 projects) you should also set the `backoff_retries` to a value greater than `0` otherwise the sync could fail because of rate limiting.
+If enabled CloudQuery will skip any resources that belong to a service that has been disabled or not been enabled. If you use this option on a large organization (with more than 500 projects) you should also set the `backoff_retries` to a value greater than `0` otherwise you may hit the API rate limits. In `v9.0.0` and greater if an error is returned then CloudQuery will assume that all services are enabled and will continue to attempt to sync all specified tables rather than just ending the sync.
+
+- `discovery_concurrency` (int) (default: 100).
+  The number of concurrent requests that CloudQuery will make to resolve enabled services. This is only used when `enabled_services_only` is set to `true`.
+
+- `service_account_impersonation` ([Service Account Impersonation](#service-account-impersonation-spec) spec, optional. Default: empty)
+
+  Service Account impersonation configuration.
+
+### Service Account Impersonation Spec
+
+- `target_principal` (`string`, optional. Default: empty)
+
+    The email address of the service account to impersonate
 
 ## GCP + Kubernetes (GKE)
 
