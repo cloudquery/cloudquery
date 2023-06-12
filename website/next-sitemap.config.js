@@ -6,6 +6,8 @@ module.exports = {
   siteUrl: "https://www.cloudquery.io",
   generateRobotsTxt: true,
   exclude: [
+    "/docs/plugins/sources/_meta",
+    "/docs/plugins/destinations/_meta",
     "/docs/plugins/sources/*/_*",
     "/docs/plugins/destinations/*/_*",
   ],
@@ -16,6 +18,8 @@ module.exports = {
         allow: '/',
         disallow: [
           // disallow pages that start with underscores
+          "/docs/plugins/sources/_*",
+          "/docs/plugins/destinations/_*",
           '/docs/plugins/sources/*/_*',
           '/docs/plugins/destinations/*/_*',
         ],
