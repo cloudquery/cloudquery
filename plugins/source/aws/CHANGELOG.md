@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [18.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v18.1.0...plugins-source-aws-v18.2.0) (2023-06-12)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_ec2_image_last_launched_times` was added
+
 ### Features
 
 * **aws-services:** Support newly added regions ([#11446](https://github.com/cloudquery/cloudquery/issues/11446)) ([ab16ec5](https://github.com/cloudquery/cloudquery/commit/ab16ec5009958c0654b049318aee9822ce504b2e))
