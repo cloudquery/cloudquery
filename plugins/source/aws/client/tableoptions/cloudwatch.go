@@ -50,9 +50,6 @@ func (c *CloudwatchListMetricsInput) UnmarshalJSON(data []byte) error {
 	if err := json.Unmarshal(data, &m); err != nil {
 		return err
 	}
-	if err := processRelativeTimes(m, time.Now().UTC(), []string{"start_time", "end_time"}); err != nil {
-		return err
-	}
 	csr := caser.New()
 	changeCaseForObject(m, csr.ToPascal)
 	b, _ := json.Marshal(m)
