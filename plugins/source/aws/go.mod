@@ -39,7 +39,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/costexplorer v1.25.10
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.23.5
 	github.com/aws/aws-sdk-go-v2/service/dax v1.12.10
-	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.14
+	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.15
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.20.6
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.18.6
 	github.com/aws/aws-sdk-go-v2/service/dynamodbstreams v1.14.11
@@ -135,7 +135,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230609001322-b359e7498fd2
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230610001216-0f7bd3beda2c
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
