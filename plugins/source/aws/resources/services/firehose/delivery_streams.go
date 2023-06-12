@@ -42,12 +42,12 @@ func DeliveryStreams() *schema.Table {
 }
 
 func fetchFirehoseDeliveryStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Firehose
+	cl := meta.(*client.Client)
+	svc := cl.Services().Firehose
 	input := firehose.ListDeliveryStreamsInput{}
 	for {
 		response, err := svc.ListDeliveryStreams(ctx, &input, func(options *firehose.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -62,13 +62,13 @@ func fetchFirehoseDeliveryStreams(ctx context.Context, meta schema.ClientMeta, p
 }
 
 func getDeliveryStream(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	streamName := resource.Item.(string)
-	svc := c.Services().Firehose
+	svc := cl.Services().Firehose
 	streamSummary, err := svc.DescribeDeliveryStream(ctx, &firehose.DescribeDeliveryStreamInput{
 		DeliveryStreamName: aws.String(streamName),
 	}, func(options *firehose.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

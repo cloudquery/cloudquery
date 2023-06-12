@@ -38,6 +38,8 @@ export function CategoryTitle(cat: Category) {
             return "Product Analytics";
         case "project-management":
             return "Project Management";
+        case "security":
+            return "Security";
         case "shipment-tracking":
             return "Shipment Tracking";
         case "other":

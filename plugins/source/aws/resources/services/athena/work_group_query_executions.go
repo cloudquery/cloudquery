@@ -51,14 +51,14 @@ func fetchAthenaWorkGroupQueryExecutions(ctx context.Context, meta schema.Client
 }
 
 func getWorkGroupQueryExecution(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Athena
+	cl := meta.(*client.Client)
+	svc := cl.Services().Athena
 
 	d := resource.Item.(string)
 	dc, err := svc.GetQueryExecution(ctx, &athena.GetQueryExecutionInput{
 		QueryExecutionId: aws.String(d),
 	}, func(options *athena.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

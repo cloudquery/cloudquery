@@ -42,12 +42,12 @@ func ResourceGroups() *schema.Table {
 }
 func fetchResourcegroupsResourceGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config resourcegroups.ListGroupsInput
-	c := meta.(*client.Client)
-	svc := c.Services().Resourcegroups
+	cl := meta.(*client.Client)
+	svc := cl.Services().Resourcegroups
 	paginator := resourcegroups.NewListGroupsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *resourcegroups.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -58,13 +58,13 @@ func fetchResourcegroupsResourceGroups(ctx context.Context, meta schema.ClientMe
 }
 
 func getResourceGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	group := resource.Item.(types.GroupIdentifier)
-	svc := c.Services().Resourcegroups
+	svc := cl.Services().Resourcegroups
 	groupResponse, err := svc.GetGroup(ctx, &resourcegroups.GetGroupInput{
 		Group: group.GroupArn,
 	}, func(options *resourcegroups.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -74,7 +74,7 @@ func getResourceGroup(ctx context.Context, meta schema.ClientMeta, resource *sch
 		Group: groupResponse.Group.GroupArn,
 	}
 	output, err := svc.GetGroupQuery(ctx, &input, func(options *resourcegroups.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

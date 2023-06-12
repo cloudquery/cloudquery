@@ -35,12 +35,12 @@ func DirectoryConfigs() *schema.Table {
 
 func fetchAppstreamDirectoryConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input appstream.DescribeDirectoryConfigsInput
-	c := meta.(*client.Client)
-	svc := c.Services().Appstream
+	cl := meta.(*client.Client)
+	svc := cl.Services().Appstream
 	// No paginator available
 	for {
 		response, err := svc.DescribeDirectoryConfigs(ctx, &input, func(options *appstream.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

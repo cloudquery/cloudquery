@@ -47,15 +47,15 @@ func templateSummaries() *schema.Table {
 }
 
 func fetchTemplateSummary(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudformation
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudformation
 
 	stack := parent.Item.(types.Stack)
 
 	summary, err := svc.GetTemplateSummary(ctx, &cloudformation.GetTemplateSummaryInput{
 		StackName: stack.StackName,
 	}, func(o *cloudformation.Options) {
-		o.Region = c.Region
+		o.Region = cl.Region
 	})
 	if err != nil {
 		return err

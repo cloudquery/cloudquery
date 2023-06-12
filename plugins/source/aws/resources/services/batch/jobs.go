@@ -57,12 +57,12 @@ func fetchBatchJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.
 			JobQueue:   parent.Item.(types.JobQueueDetail).JobQueueArn,
 			JobStatus:  status,
 		}
-		c := meta.(*client.Client)
-		svc := c.Services().Batch
+		cl := meta.(*client.Client)
+		svc := cl.Services().Batch
 		p := batch.NewListJobsPaginator(svc, &config)
 		for p.HasMorePages() {
 			response, err := p.NextPage(ctx, func(options *batch.Options) {
-				options.Region = c.Region
+				options.Region = cl.Region
 			})
 			if err != nil {
 				return err
@@ -79,7 +79,7 @@ func fetchBatchJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.
 			details, err := svc.DescribeJobs(ctx, &batch.DescribeJobsInput{
 				Jobs: ids,
 			}, func(options *batch.Options) {
-				options.Region = c.Region
+				options.Region = cl.Region
 			})
 			if err != nil {
 				return err

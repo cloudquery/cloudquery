@@ -26,11 +26,11 @@ func DataRetrievalPolicies() *schema.Table {
 }
 
 func fetchGlacierDataRetrievalPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Glacier
+	cl := meta.(*client.Client)
+	svc := cl.Services().Glacier
 
 	response, err := svc.GetDataRetrievalPolicy(ctx, &glacier.GetDataRetrievalPolicyInput{}, func(options *glacier.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

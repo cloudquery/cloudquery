@@ -68,7 +68,9 @@ func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, parent *s
 }
 
 func resolveRepositoryTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	output, err := meta.(*client.Client).Services().Ecr.ListTagsForResource(ctx, &ecr.ListTagsForResourceInput{
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ecr
+	output, err := svc.ListTagsForResource(ctx, &ecr.ListTagsForResourceInput{
 		ResourceArn: resource.Item.(types.Repository).RepositoryArn,
 	}, func(options *ecr.Options) {
 		options.Region = meta.(*client.Client).Region

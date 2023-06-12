@@ -49,12 +49,12 @@ func fetchApigatewayv2ApiDeployments(ctx context.Context, meta schema.ClientMeta
 	config := apigatewayv2.GetDeploymentsInput{
 		ApiId: r.ApiId,
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Apigatewayv2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Apigatewayv2
 	// No paginator available
 	for {
 		response, err := svc.GetDeployments(ctx, &config, func(options *apigatewayv2.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 
 		if err != nil {
