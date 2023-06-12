@@ -108,6 +108,8 @@
   - [aws_cloudtrail_trail_event_selectors](../../../../../website/tables/aws/aws_cloudtrail_trail_event_selectors.md)
 - [aws_cloudwatch_alarms](../../../../../website/tables/aws/aws_cloudwatch_alarms.md)
 - [aws_cloudwatch_metric_stats_custom](../../../../../website/tables/aws/aws_cloudwatch_metric_stats_custom.md)
+- [aws_cloudwatch_metrics](../../../../../website/tables/aws/aws_cloudwatch_metrics.md)
+  - [aws_cloudwatch_metric_stats](../../../../../website/tables/aws/aws_cloudwatch_metric_stats.md)
 - [aws_cloudwatchlogs_log_groups](../../../../../website/tables/aws/aws_cloudwatchlogs_log_groups.md)
   - [aws_cloudwatchlogs_log_group_data_protection_policies](../../../../../website/tables/aws/aws_cloudwatchlogs_log_group_data_protection_policies.md)
   - [aws_cloudwatchlogs_log_group_subscription_filters](../../../../../website/tables/aws/aws_cloudwatchlogs_log_group_subscription_filters.md)

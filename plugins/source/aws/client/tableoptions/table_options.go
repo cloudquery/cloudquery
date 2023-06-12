@@ -1,10 +1,12 @@
 package tableoptions
 
 type TableOptions struct {
-	CloudwatchMetricStats  *CloudwatchMetricStatistics `json:"aws_cloudwatch_metric_stats_custom,omitempty"`
-	CloudTrailEvents       *CloudtrailAPIs             `json:"aws_cloudtrail_events,omitempty"`
-	AccessAnalyzerFindings *AccessanalyzerFindings     `json:"aws_accessanalyzer_analyzer_findings,omitempty"`
-	Inspector2Findings     *Inspector2APIs             `json:"aws_inspector2_findings,omitempty"`
+	CloudwatchMetrics           *CloudwatchMetrics                `json:"aws_cloudwatch_metrics,omitempty"`
+	CloudwatchCustomMetricStats *CloudwatchCustomMetricStatistics `json:"aws_cloudwatch_metric_stats_custom,omitempty"`
+
+	CloudTrailEvents       *CloudtrailAPIs         `json:"aws_cloudtrail_events,omitempty"`
+	AccessAnalyzerFindings *AccessanalyzerFindings `json:"aws_accessanalyzer_analyzer_findings,omitempty"`
+	Inspector2Findings     *Inspector2APIs         `json:"aws_inspector2_findings,omitempty"`
 }
 
 func (t TableOptions) Validate() error {
@@ -28,5 +30,12 @@ func (t TableOptions) Validate() error {
 			return err
 		}
 	}
+
+	if t.CloudwatchMetrics != nil {
+		if err := t.CloudwatchMetrics.Validate(); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }

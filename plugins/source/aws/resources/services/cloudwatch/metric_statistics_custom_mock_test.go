@@ -12,7 +12,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildCloudWatchMetricStatsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildCloudWatchCustomMetricStatsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockCloudwatchClient(ctrl)
 	services := client.Services{
 		Cloudwatch: m,
@@ -28,11 +28,11 @@ func buildCloudWatchMetricStatsMock(t *testing.T, ctrl *gomock.Controller) clien
 	return services
 }
 
-func TestCloudwatchMetricStats(t *testing.T) {
-	client.AwsMockTestHelper(t, MetricStatistics(), buildCloudWatchMetricStatsMock, client.TestOptions{
+func TestCloudwatchCustomMetricStats(t *testing.T) {
+	client.AwsMockTestHelper(t, MetricStatisticsCustom(), buildCloudWatchCustomMetricStatsMock, client.TestOptions{
 		TableOptions: tableoptions.TableOptions{
-			CloudwatchMetricStats: &tableoptions.CloudwatchMetricStatistics{
-				GetMetricStatisticsOpts: []tableoptions.CustomCloudwatchGetMetricStatisticsInput{{
+			CloudwatchCustomMetricStats: &tableoptions.CloudwatchCustomMetricStatistics{
+				GetMetricStatisticsOpts: []tableoptions.CloudwatchGetMetricStatisticsInput{{
 					GetMetricStatisticsInput: cloudwatch.GetMetricStatisticsInput{
 						MetricName: aws.String("foo"),
 						Namespace:  aws.String("bar"),

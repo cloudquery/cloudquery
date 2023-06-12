@@ -11,17 +11,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
-type statOutput struct {
-	*cloudwatch.GetMetricStatisticsOutput
-	InputJSON tableoptions.CloudwatchGetMetricStatisticsInput `json:"input_json"`
-}
-
-func metricStatistics() *schema.Table {
-	tableName := "aws_cloudwatch_metric_stats"
+func MetricStatisticsCustom() *schema.Table {
+	tableName := "aws_cloudwatch_metric_stats_custom"
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html`,
-		Resolver:    fetchCloudwatchMetricStats,
+		Resolver:    fetchCloudwatchMetricStatsCustom,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "monitoring"),
 		Transform:   transformers.TransformWithStruct(&statOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
@@ -31,23 +26,22 @@ func metricStatistics() *schema.Table {
 	}
 }
 
-func fetchCloudwatchMetricStats(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchCloudwatchMetricStatsCustom(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	item := parent.Item.(metricOutput)
 
 	var allConfigs []tableoptions.CloudwatchGetMetricStatisticsInput
-	if cl.Spec.TableOptions.CloudwatchMetrics.GetMetricStatisticsOpts != nil {
-		allConfigs = cl.Spec.TableOptions.CloudwatchMetrics.GetMetricStatisticsOpts
+	if cl.Spec.TableOptions.CloudwatchCustomMetricStats != nil {
+		allConfigs = cl.Spec.TableOptions.CloudwatchCustomMetricStats.GetMetricStatisticsOpts
+	}
+
+	if len(allConfigs) > 0 && !cl.Spec.UsePaidAPIs {
+		cl.Logger().Info().Msg("skipping `aws_cloudwatch_metric_stats_custom` because `use_paid_apis` is set to false")
+		return nil
 	}
 
 	svc := cl.Services().Cloudwatch
 	for _, input := range allConfigs {
 		input := input
-
-		input.Dimensions = item.Dimensions
-		input.Namespace = item.Namespace
-		input.MetricName = item.MetricName
-
 		data, err := svc.GetMetricStatistics(ctx, &input.GetMetricStatisticsInput, func(options *cloudwatch.Options) {
 			options.Region = cl.Region
 		})
