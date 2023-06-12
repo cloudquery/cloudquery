@@ -51,7 +51,6 @@ func Instances() *schema.Table {
 var stateTransitionReasonTimeRegex = regexp.MustCompile(`\((.*)\)`)
 
 func fetchEc2Instances(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-
 	cl := meta.(*client.Client)
 	svc := cl.Services().Ec2
 	p := ec2.NewDescribeInstancesPaginator(svc,
