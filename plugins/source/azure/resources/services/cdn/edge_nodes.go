@@ -11,10 +11,11 @@ import (
 
 func EdgeNodes() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_cdn_edge_nodes",
-		Resolver:    fetchEdgeNodes,
-		Description: "https://learn.microsoft.com/en-us/rest/api/cdn/edge-nodes/list?tabs=HTTP#edgenode",
-		Transform:   transformers.TransformWithStruct(&armcdn.EdgeNode{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_cdn_edge_nodes",
+		Resolver:             fetchEdgeNodes,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/cdn/edge-nodes/list?tabs=HTTP#edgenode",
+		Transform:            transformers.TransformWithStruct(&armcdn.EdgeNode{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

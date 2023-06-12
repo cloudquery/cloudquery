@@ -68,6 +68,22 @@ export const SOURCE_PLUGINS: Plugin[] = [
     category: "cloud-infrastructure",
   },
   {
+    name: "Coinpaprika",
+    logo: "/images/logos/plugins/coinpaprika.svg",
+    id: "coinpaprika",
+    href: "https://github.com/coinpaprika/cq-source-coinpaprika",
+    kind: "partner",
+    category: "other",
+  },
+  {
+    name: "Crowdstrike",
+    logo: "/images/logos/plugins/crowdstrike.svg",
+    id: "crowdstrike",
+    href: "https://github.com/justmiles/cq-source-crowdstrike",
+    kind: "community",
+    category: "security",
+  },
+  {
     name: "Datadog",
     logo: "/images/logos/plugins/datadog.svg",
     logoDark: "/images/logos/plugins/datadog-dark.svg",
@@ -208,6 +224,14 @@ export const SOURCE_PLUGINS: Plugin[] = [
     category: "cloud-infrastructure",
   },
   {
+    name: "Onfleet",
+    logo: "/images/logos/plugins/onfleet.svg",
+    id: "onfleet",
+    href: "https://github.com/onfleet/cq-source-onfleet",
+    kind: "partner",
+    category: "fleet-management",
+  },
+  {
     name: "Oracle",
     logo: "/images/logos/plugins/oracle.svg",
     id: "oracle",
@@ -300,7 +324,7 @@ export const SOURCE_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/snyk.svg",
     id: "snyk",
     kind: "official",
-    category: "engineering-analytics",
+    category: "security",
   },
   {
     name: "Stripe",
@@ -572,13 +596,6 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/cloudinary.svg",
   },
   {
-    name: "Crowdstrike",
-    id: "crowdstrike",
-    href: "https://github.com/cloudquery/cloudquery/issues/9133",
-    kind: "unpublished",
-    category: "security",
-  },
-  {
     name: "Detrack",
     id: "detrack",
     href: "https://github.com/cloudquery/cloudquery/issues/9054",
@@ -687,13 +704,6 @@ export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = [
     href: "https://github.com/cloudquery/cloudquery/issues/9040",
     kind: "unpublished",
     category: "product-analytics",
-  },
-  {
-    name: "OnFleet",
-    id: "onfleet",
-    href: "https://github.com/cloudquery/cloudquery/issues/9053",
-    kind: "unpublished",
-    category: "fleet-management",
   },
   {
     name: "Paypal",

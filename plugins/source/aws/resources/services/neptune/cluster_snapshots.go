@@ -46,15 +46,15 @@ func ClusterSnapshots() *schema.Table {
 }
 
 func fetchNeptuneClusterSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Neptune
+	cl := meta.(*client.Client)
+	svc := cl.Services().Neptune
 	input := neptune.DescribeDBClusterSnapshotsInput{
 		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
 	}
 	paginator := neptune.NewDescribeDBClusterSnapshotsPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *neptune.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return nil
@@ -66,17 +66,17 @@ func fetchNeptuneClusterSnapshots(ctx context.Context, meta schema.ClientMeta, p
 
 func resolveNeptuneClusterSnapshotAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
 	s := resource.Item.(types.DBClusterSnapshot)
-	c := meta.(*client.Client)
-	svc := c.Services().Neptune
+	cl := meta.(*client.Client)
+	svc := cl.Services().Neptune
 	out, err := svc.DescribeDBClusterSnapshotAttributes(
 		ctx,
 		&neptune.DescribeDBClusterSnapshotAttributesInput{DBClusterSnapshotIdentifier: s.DBClusterSnapshotIdentifier},
 		func(o *neptune.Options) {
-			o.Region = c.Region
+			o.Region = cl.Region
 		},
 	)
 	if err != nil {
-		if c.IsNotFoundError(err) {
+		if cl.IsNotFoundError(err) {
 			return nil
 		}
 		return err

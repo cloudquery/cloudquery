@@ -22,12 +22,10 @@ func listValue(arr array.ListLike) (any, error) {
 	}
 	valueType := col.ScanType()
 
+	arr = sanitizeNested(arr).(array.ListLike)
+
 	elems := make([]any, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
-		if arr.IsNull(i) {
-			continue
-		}
-
 		from, to := arr.ValueOffsets(i)
 		elems[i], err = FromArray(array.NewSlice(arr.ListValues(), from, to))
 		if err != nil {
@@ -37,11 +35,10 @@ func listValue(arr array.ListLike) (any, error) {
 
 	res := reflect.MakeSlice(reflect.SliceOf(reflect.PointerTo(valueType)), len(elems), len(elems)) // we do []*(type) for nullable assignment
 	for i, elem := range elems {
-		// we need to fill in for the in-depth recursive parsing by ClickHouse SDK
+		// lists aren't nullable themselves
+		// https://clickhouse.com/docs/en/sql-reference/data-types/nullable
 		val := reflect.New(valueType)
-		if elem != nil {
-			val.Elem().Set(reflect.ValueOf(elem))
-		}
+		val.Elem().Set(reflect.ValueOf(elem))
 		res.Index(i).Set(val)
 	}
 

@@ -56,7 +56,6 @@ jobs:
             return changesList
       - name: Find Comment
         uses: peter-evans/find-comment@ebedc736bfc43efd7c55ac003e2f7c66dab94fe2
-        if: steps.get-changes.outputs.result != ''
         id: find-comment
         with:
           issue-number: ${{ github.event.pull_request.number }}
@@ -73,6 +72,17 @@ jobs:
 
             ${{steps.get-changes.outputs.result}}
           edit-mode: replace
+      # Inspired by https://github.com/peter-evans/create-or-update-comment/issues/110#issuecomment-1086997843
+      - if: steps.get-changes.outputs.result == '' && steps.find-comment.outputs.comment-id != ''
+        uses: actions/github-script@v6
+        name: Delete existing comment if there are no changes
+        with:
+          script: |
+            github.rest.issues.deleteComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: ${{ steps.find-comment.outputs.comment-id }}
+            })
       - name: Mark as breaking
         id: breaking
         if: contains(steps.get-changes.outputs.result, 'BREAKING CHANGE')

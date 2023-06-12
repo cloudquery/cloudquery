@@ -11,12 +11,16 @@ import (
 
 func Zones() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_dns_zones",
-		Resolver:    fetchZones,
-		Description: "https://learn.microsoft.com/en-us/rest/api/dns/zones/list?tabs=HTTP#zone",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_dns_zones", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armdns.Zone{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_dns_zones",
+		Resolver:             fetchZones,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/dns/zones/list?tabs=HTTP#zone",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_dns_zones", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armdns.Zone{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
+		Relations: []*schema.Table{
+			recordSets(),
+		},
 	}
 }
 

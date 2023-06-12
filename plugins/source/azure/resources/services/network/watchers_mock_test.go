@@ -31,7 +31,7 @@ func createWatchers(router *mux.Router) error {
 		}
 	})
 
-	return nil
+	return createWatcherflowLogs(router)
 }
 
 func TestWatchers(t *testing.T) {

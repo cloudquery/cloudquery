@@ -1,12 +1,12 @@
 ---
-title: Google Cloud Run
+title: Deploying CloudQuery with Google Cloud Run
 ---
 
 import { Callout } from 'nextra-theme-docs';
 
 # Scheduling CloudQuery Syncs with Google Cloud Run and Cloud Scheduler
 
-[Google Cloud Run](https://cloud.google.com/run) is a managed compute platform that enables you to run stateless containers that can be invoked via web requests or Pub/Sub events. It provides a serverless experience for developers to deploy and run highly scalable applications without worrying about the underlying infrastructure. While not a perfect fit for CloudQuery syncs, it provides a relatively simple way to run CloudQuery as a serverless container on Google Cloud. If your use case is more complex but still requires deployment on GCP, you may want to consider deploying to a [Virtual Machine](https://cloud.google.com/compute/docs/instances/create-start-instance), [Cloud Composer](https://cloud.google.com/composer/docs/concepts/overview) or [Google Data Flow](https://cloud.google.com/dataflow) instead.
+[Google Cloud Run](https://cloud.google.com/run) is a managed compute platform that enables you to run stateless containers that can be invoked via web requests or Pub/Sub events. It provides a serverless experience for developers to deploy and run highly scalable applications without worrying about the underlying infrastructure. While not a perfect fit for CloudQuery syncs, it provides a relatively simple way to run CloudQuery as a serverless container on Google Cloud. If your use case is more complex but still requires deployment on GCP, you may want to consider deploying to a [Virtual Machine](/docs/deployment/google-cloud-vm), [Cloud Composer](https://cloud.google.com/composer/docs/concepts/overview) or [Google Data Flow](https://cloud.google.com/dataflow) instead.
 
 <Callout type="warning">
 

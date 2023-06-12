@@ -41,3 +41,57 @@ The primary key for this table is **arn**.
 |status|`utf8`|
 |storage_encrypted|`bool`|
 |vpc_id|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### RDS cluster snapshots and database snapshots should be encrypted at rest
+
+```sql
+(
+  SELECT
+    'RDS cluster snapshots and database snapshots should be encrypted at rest'
+      AS title,
+    account_id,
+    arn AS resource_id,
+    CASE
+    WHEN storage_encrypted IS NOT true THEN 'fail'
+    ELSE 'pass'
+    END
+      AS status
+  FROM
+    aws_rds_cluster_snapshots
+)
+UNION
+  (
+    SELECT
+      'RDS cluster snapshots and database snapshots should be encrypted at rest'
+        AS title,
+      account_id,
+      arn AS resource_id,
+      CASE WHEN encrypted IS NOT true THEN 'fail' ELSE 'pass' END AS status
+    FROM
+      aws_rds_db_snapshots
+  );
+```
+
+### RDS snapshots should be private
+
+```sql
+SELECT
+  'RDS snapshots should be private' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN attrs->>'AttributeName' IS NOT DISTINCT FROM 'restore'
+  AND (attrs->'AttributeValues')::JSONB ? 'all'
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_rds_cluster_snapshots, jsonb_array_elements(attributes) AS attrs;
+```
+
+

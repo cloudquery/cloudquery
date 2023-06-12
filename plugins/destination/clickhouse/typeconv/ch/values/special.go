@@ -27,11 +27,11 @@ func float16Value(arr *array.Float16) []*float32 {
 	return res
 }
 
-func byteArrValue(arr primitive[[]byte]) [][]byte {
-	res := make([][]byte, arr.Len())
+func byteArrValue(arr primitive[[]byte]) []*string {
+	res := make([]*string, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
 		if arr.IsValid(i) {
-			res[i] = arr.Value(i)
+			res[i] = ptr(string(arr.Value(i)))
 		}
 	}
 	return res

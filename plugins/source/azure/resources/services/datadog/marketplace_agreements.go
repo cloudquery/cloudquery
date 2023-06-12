@@ -11,12 +11,13 @@ import (
 
 func MarketplaceAgreements() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_datadog_marketplace_agreements",
-		Resolver:    fetchMarketplaceAgreements,
-		Description: "https://learn.microsoft.com/en-us/rest/api/datadog/marketplace-agreements/list?tabs=HTTP#datadogagreementresource",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_datadog_marketplace_agreements", client.Namespacemicrosoft_datadog),
-		Transform:   transformers.TransformWithStruct(&armdatadog.AgreementResource{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_datadog_marketplace_agreements",
+		Resolver:             fetchMarketplaceAgreements,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/datadog/marketplace-agreements/list?tabs=HTTP#datadogagreementresource",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_datadog_marketplace_agreements", client.Namespacemicrosoft_datadog),
+		Transform:            transformers.TransformWithStruct(&armdatadog.AgreementResource{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

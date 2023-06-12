@@ -11,11 +11,12 @@ import (
 
 func BillingAccountMarketplaces() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_consumption_billing_account_marketplaces",
-		Resolver:    fetchBillingAccountMarketplaces,
-		Description: "https://learn.microsoft.com/en-us/rest/api/consumption/marketplaces/list?tabs=HTTP#marketplace",
-		Multiplex:   client.BillingAccountMultiplex,
-		Transform:   transformers.TransformWithStruct(&armconsumption.Marketplace{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_consumption_billing_account_marketplaces",
+		Resolver:             fetchBillingAccountMarketplaces,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/consumption/marketplaces/list?tabs=HTTP#marketplace",
+		Multiplex:            client.BillingAccountMultiplex,
+		Transform:            transformers.TransformWithStruct(&armconsumption.Marketplace{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

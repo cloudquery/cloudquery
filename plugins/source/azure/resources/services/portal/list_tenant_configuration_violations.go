@@ -11,12 +11,13 @@ import (
 
 func ListTenantConfigurationViolations() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_portal_list_tenant_configuration_violations",
-		Resolver:    fetchListTenantConfigurationViolations,
-		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal@v0.5.0#Violation",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_portal_list_tenant_configuration_violations", client.Namespacemicrosoft_portal),
-		Transform:   transformers.TransformWithStruct(&armportal.Violation{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_portal_list_tenant_configuration_violations",
+		Resolver:             fetchListTenantConfigurationViolations,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal@v0.5.0#Violation",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_portal_list_tenant_configuration_violations", client.Namespacemicrosoft_portal),
+		Transform:            transformers.TransformWithStruct(&armportal.Violation{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

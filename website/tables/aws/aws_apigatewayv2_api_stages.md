@@ -37,3 +37,48 @@ This table depends on [aws_apigatewayv2_apis](aws_apigatewayv2_apis).
 |route_settings|`json`|
 |stage_variables|`json`|
 |tags|`json`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### API Gateway REST and WebSocket API logging should be enabled
+
+```sql
+(
+  SELECT
+    DISTINCT
+    'API Gateway REST and WebSocket API logging should be enabled' AS title,
+    r.account_id,
+    'arn:' || 'aws' || ':apigateway:' || r.region || ':/restapis/' || r.id
+      AS resource_id,
+    CASE
+    WHEN s.logging_level NOT IN ('"ERROR"', '"INFO"') THEN 'fail'
+    ELSE 'pass'
+    END
+      AS status
+  FROM
+    view_aws_apigateway_method_settings AS s
+    LEFT JOIN aws_apigateway_rest_apis AS r ON s.rest_api_arn = r.arn
+)
+UNION
+  (
+    SELECT
+      DISTINCT
+      'API Gateway REST and WebSocket API logging should be enabled' AS title,
+      a.account_id,
+      'arn:' || 'aws' || ':apigateway:' || a.region || ':/apis/' || a.id
+        AS resource_id,
+      CASE
+      WHEN s.default_route_settings->>'LoggingLevel' IN (NULL, 'OFF')
+      THEN 'fail'
+      ELSE 'pass'
+      END
+        AS status
+    FROM
+      aws_apigatewayv2_api_stages AS s
+      LEFT JOIN aws_apigatewayv2_apis AS a ON s.api_arn = a.arn
+  );
+```
+
+

@@ -48,14 +48,14 @@ type includeParentOU struct {
 }
 
 func fetchOUs(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Organizations
+	cl := meta.(*client.Client)
+	svc := cl.Services().Organizations
 	var input organizations.ListRootsInput
 	paginator := organizations.NewListRootsPaginator(svc, &input)
 	var roots []types.Root
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *organizations.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -112,13 +112,13 @@ func getOUs(ctx context.Context, meta schema.ClientMeta, accountsApi services.Or
 }
 
 func getOU(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	child := resource.Item.(includeParentChild)
-	svc := c.Services().Organizations
+	svc := cl.Services().Organizations
 	ou, err := svc.DescribeOrganizationalUnit(ctx, &organizations.DescribeOrganizationalUnitInput{
 		OrganizationalUnitId: child.Id,
 	}, func(options *organizations.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

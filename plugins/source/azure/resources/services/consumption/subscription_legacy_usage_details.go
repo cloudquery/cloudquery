@@ -11,11 +11,12 @@ import (
 
 func SubscriptionLegacyUsageDetails() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_consumption_subscription_legacy_usage_details",
-		Resolver:    fetchSubscriptionLegacyUsageDetails,
-		Description: "https://learn.microsoft.com/en-us/rest/api/consumption/usage-details/list?tabs=HTTP#legacyusagedetail",
-		Multiplex:   client.SubscriptionBillingPeriodMultiplex,
-		Transform:   transformers.TransformWithStruct(&armconsumption.LegacyUsageDetail{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_consumption_subscription_legacy_usage_details",
+		Resolver:             fetchSubscriptionLegacyUsageDetails,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/consumption/usage-details/list?tabs=HTTP#legacyusagedetail",
+		Multiplex:            client.SubscriptionBillingPeriodMultiplex,
+		Transform:            transformers.TransformWithStruct(&armconsumption.LegacyUsageDetail{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 
@@ -32,7 +33,11 @@ func fetchSubscriptionLegacyUsageDetails(ctx context.Context, meta schema.Client
 			return err
 		}
 		for _, v := range p.Value {
-			res <- v.(*armconsumption.LegacyUsageDetail)
+			lud, ok := v.(*armconsumption.LegacyUsageDetail)
+			if !ok {
+				continue // skip
+			}
+			res <- lud
 		}
 	}
 	return nil

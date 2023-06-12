@@ -32,7 +32,10 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedsource.Client, d
 	}()
 	syncTime := time.Now().UTC()
 	sourceSpec := sourceClient.Spec
-	destinationStrings := destinationsClients.Names()
+	destinationStrings := make([]string, len(destinationsClients))
+	for i := range destinationsClients {
+		destinationStrings[i] = destinationsClients[i].Spec.VersionString()
+	}
 	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("Start sync")
 	defer log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("End sync")
 
@@ -95,17 +98,6 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedsource.Client, d
 		return err
 	}
 	writeClients := make([]destination.Destination_WriteClient, len(destinationsPbClients))
-	defer func() {
-		for i, wc := range writeClients {
-			if wc == nil {
-				continue
-			}
-			if _, closeErr := wc.CloseAndRecv(); closeErr != nil {
-				log.Err(closeErr).Str("destination", destinationsClients[i].Spec.Name).Msg("Failed to close write stream")
-			}
-		}
-	}()
-
 	for i := range destinationsPbClients {
 		writeClients[i], err = destinationsPbClients[i].Write(ctx)
 		if err != nil {
@@ -160,6 +152,12 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedsource.Client, d
 			}
 		}
 	}
+	for i := range destinationsClients {
+		if _, err := writeClients[i].CloseAndRecv(); err != nil {
+			return err
+		}
+	}
+
 	getMetricsRes, err := sourcePbClient.GetMetrics(ctx, &source.GetMetrics_Request{})
 	if err != nil {
 		return err

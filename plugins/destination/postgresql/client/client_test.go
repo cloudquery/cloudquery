@@ -38,5 +38,7 @@ func TestPgPlugin(t *testing.T) {
 		destination.PluginTestSuiteTests{
 			MigrateStrategyOverwrite: strategy,
 			MigrateStrategyAppend:    strategy,
-		})
+		},
+		destination.WithTestSourceSkipMaps(),
+	)
 }

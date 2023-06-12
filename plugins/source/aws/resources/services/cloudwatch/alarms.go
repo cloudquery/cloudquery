@@ -46,12 +46,12 @@ func Alarms() *schema.Table {
 
 func fetchCloudwatchAlarms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config cloudwatch.DescribeAlarmsInput
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudwatch
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudwatch
 	paginator := cloudwatch.NewDescribeAlarmsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cloudwatch.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

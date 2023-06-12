@@ -27,7 +27,8 @@ func getValue(arr arrow.Array, i int) any {
 	case arrow.UINT32:
 		return arr.(*array.Uint32).Value(i)
 	case arrow.UINT64:
-		return arr.(*array.Uint64).Value(i)
+		// SQLite fails if uint64 overflows int64
+		return int64(arr.(*array.Uint64).Value(i))
 	case arrow.FLOAT32:
 		return arr.(*array.Float32).Value(i)
 	case arrow.FLOAT64:

@@ -40,3 +40,25 @@ The primary key for this table is **arn**.
 |deduplication_scope|`utf8`|
 |fifo_throughput_limit|`utf8`|
 |unknown_fields|`json`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### SQS queues should be encrypted at rest using AWS KMS
+
+```sql
+SELECT
+  'SQS queues should be encrypted at rest using AWS KMS' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN kms_master_key_id IS NULL OR kms_master_key_id = '' THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_sqs_queues;
+```
+
+

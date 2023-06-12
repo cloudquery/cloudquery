@@ -1,0 +1,83 @@
+---
+title: "CloudQuery Product Updates #6"
+tag: product
+date: 2023/06/10
+description: >-
+  Monthly updates on CloudQuery product and roadmap.
+author: yevgenypats
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
+Hey everyone! Our monthly round-up of CloudQuery product and roadmap updates is here!
+
+## Apache Arrow
+
+We were heads down adopting Apache Arrow as our [in-memory data format](/blog/adopting-apache-arrow-at-cloudquery)!
+
+TLDR:
+
+- Support for more than [30 types](https://arrow.apache.org/docs/python/api/datatypes.html) for any source plugin including repeated and nested types like lists, structs, maps.
+- Database source plugins (with CDC) will be able to sync their schema accurately using Apache Arrow type system.
+- Any database that already supports Arrow format natively like ClickHouse, DuckDB will be able to enjoy enhanced performance.
+
+## Sources
+
+### New Sources
+
+Welcoming 4 new partner and community plugins!
+
+* [Coinpaprika](https://github.com/coinpaprika/cq-source-coinpaprika)
+* [Onfleet](https://github.com/onfleet/cq-source-onfleet)
+* [CrowdStrike](https://github.com/justmiles/cq-source-crowdstrike)
+* [SharePoint](https://github.com/koltyakov/cq-source-sharepoint)
+
+New Official plugins:
+
+* [OracleDB](/docs/plugins/sources/oracledb/overview)
+* [Firestore](/docs/plugins/sources/firestore/overview) Thanks to [@BubbaJoe](https://github.com/BubbaJoe) for initial contribution!
+
+Community Contributions to Security Policies:
+
+* [Azure CIS](https://github.com/cloudquery/cloudquery/pull/10928) Thanks to [`aruneko`](https://github.com/aruneko) for community contribution!
+
+### New Resources
+
+- AWS: 30 New [tables](/docs/plugins/sources/aws/tables): `aws_config_config_rule_compliance_details`, `aws_config_remediation_configurations`, `aws_acmpca_certificate_authorities`,
+       `aws_cloudformation_stack_templates`, `aws_cloudformation_template_summaries`, `aws_cloudwatchlogs_log_group_data_protection_policies`,
+       `aws_config_config_rule_compliance_details`, `aws_config_remediation_configurations`, `aws_config_configuration_aggregators`,
+       `aws_config_delivery_channels`, `aws_config_retention_configurations`, `aws_costexplorer_cost_30d`, `aws_costexplorer_cost_forecast_30d`,
+       `aws_efs_access_points`, `aws_networkfirewall_firewall_policies`, `aws_networkfirewall_rule_groups`, `aws_securityhub_enabled_standards`,
+       `aws_securityhub_hubs`
+- Azure: 39 New [tables](/docs/plugins/sources/azure/tables): `azure_consumption_billing_*`,`azure_consumption_subscription_*`,
+  `azure_dns_record_sets`, `azure_network_private_link_services`, `azure_network_watcher_flow_logs`, `azure_security_sub_assessments`,
+  `azure_sql_server_advanced_threat_protection_settings`, `azure_sql_server_firewall_rules`, `azure_storage_queue_acl`
+- GCP: New [Table](/docs/plugins/sources/gcp/tables)!: `gcp_dns_resource_record_sets`
+- Datadog: 3 [Tables](/docs/plugins/sources/datadog/tables): `datadog_rum_events`, `datadog_slo_corrections`, `datadog_slos`
+- Digital Ocean: 2 [Tables](/docs/plugins/sources/digitalocean/tables): `digitalocean_load_balancers`, `digitalocean_regions`
+- GitLab: 2 [Tables](/docs/plugins/sources/gitlab/tables): `gitlab_group_billable_members`, `gitlab_project_members`
+- Oracle: 3 [Tables](/docs/plugins/sources/oracle/tables): `oracle_compute_volume_attachments`, `oracle_virtualnetwork_assigned_public_ips`,
+  `oracle_virtualnetwork_ephemeral_public_ips`, `oracle_virtualnetwork_private_ips`, `oracle_virtualnetwork_reserved_public_ips`
+- Snyk: 2 [Tables](/docs/plugins/sources/snyk/tables): `snyk_groups`, `snyk_group_members`
+- Stripe: 2 [Tables](/docs/plugins/sources/stripe/tables): `stripe_checkout_session_line_items`, `stripe_payment_link_line_items`
+
+## Policies
+
+- Thanks to [@aruneko](https://github.com/aruneko) for contribution to our [Azure CIS Policies](https://github.com/cloudquery/cloudquery/pull/10928)!
+
+## Other notable blogs and use-cases
+
+### Engineering
+
+- [How to Manage AWS Resource and Usage Limits with CloudQuery and Service Quotas](/how-to-guides/aws-resource-limits-and-service-quotas)
+- [Video: Deploying CloudQuery to a Virtual Machine on Google Cloud](https://www.youtube.com/watch?v=rz4aU1IMF30)
+- [Adopting Apache Arrow at CloudQuery](https://arrow.apache.org/blog/2023/05/04/adopting-apache-arrow-at-cloudquery/)
+- [Video: Neo4j and CloudQuery](https://www.youtube.com/watch?v=o-thc4SVDFg)
+- [Powering Community Driven Cloud Security CSPM with CloudQuery and SumoLogic](https://www.sumologic.com/blog/power-community-driven-cloud-security-cspm/)
+
+### Security
+
+- [AWS Identity Center (formerly known as AWS SSO): A Guide to Privilege Escalation and Identity and Access Management](/blog/aws-priv-esc-identity-center)
+
