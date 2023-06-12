@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
 	cqtypes "github.com/cloudquery/plugin-sdk/v3/types"
 	"github.com/mitchellh/hashstructure/v2"
@@ -17,7 +18,8 @@ import (
 )
 
 type statOutput struct {
-	*cloudwatch.GetMetricStatisticsOutput
+	types.Datapoint
+	Label     *string
 	InputJSON tableoptions.CloudwatchGetMetricStatisticsInput `json:"input_json"`
 	InputHash string                                          `json:"input_hash"`
 }
@@ -31,7 +33,11 @@ To sync this table you must set the 'use_paid_apis' option to 'true' and set the
 `,
 		Resolver:  fetchCloudwatchMetricStatistics,
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "monitoring"),
-		Transform: transformers.TransformWithStruct(&statOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithUnwrapAllEmbeddedStructs()),
+		Transform: transformers.TransformWithStruct(&statOutput{},
+			transformers.WithPrimaryKeys("Timestamp", "Label"),
+			transformers.WithSkipFields("ResultMetadata"),
+			transformers.WithUnwrapAllEmbeddedStructs(),
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
@@ -86,11 +92,15 @@ func fetchCloudwatchMetricStatistics(ctx context.Context, meta schema.ClientMeta
 		if err != nil {
 			return err
 		}
-		res <- statOutput{
-			GetMetricStatisticsOutput: data,
-			InputJSON:                 input,
-			InputHash:                 strconv.FormatUint(hash, 10),
+		for i := range data.Datapoints {
+			res <- statOutput{
+				Datapoint: data.Datapoints[i],
+				Label:     data.Label,
+				InputJSON: input,
+				InputHash: strconv.FormatUint(hash, 10),
+			}
 		}
+
 	}
 	return nil
 }
