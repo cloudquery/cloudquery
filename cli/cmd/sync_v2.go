@@ -98,17 +98,6 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedsource.Client, d
 		return err
 	}
 	writeClients := make([]destination.Destination_WriteClient, len(destinationsPbClients))
-	defer func() {
-		for i, wc := range writeClients {
-			if wc == nil {
-				continue
-			}
-			if _, closeErr := wc.CloseAndRecv(); closeErr != nil {
-				log.Err(closeErr).Str("destination", destinationsClients[i].Spec.Name).Msg("Failed to close write stream")
-			}
-		}
-	}()
-
 	for i := range destinationsPbClients {
 		writeClients[i], err = destinationsPbClients[i].Write(ctx)
 		if err != nil {
@@ -163,6 +152,27 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedsource.Client, d
 			}
 		}
 	}
+
+	var destErrors uint64
+	for i := range destinationsClients {
+		if _, err := writeClients[i].CloseAndRecv(); err != nil {
+			return err
+		}
+		if resp, err := destinationsPbClients[i].GetMetrics(ctx, &destination.GetDestinationMetrics_Request{}); err != nil {
+			log.Err(err).Str("destination", destinationsClients[i].Spec.Name).Msg("Failed to get metrics")
+		} else {
+			// TODO: move this struct to `plugin-pb-go`
+			var dtMetrics struct {
+				Errors uint64 `json:"errors"`
+			}
+			if err := json.Unmarshal(resp.Metrics, &dtMetrics); err != nil {
+				log.Err(err).Str("destination", destinationsClients[i].Spec.Name).Msg("Failed to unmarshal metrics")
+			} else {
+				destErrors += dtMetrics.Errors
+			}
+		}
+	}
+
 	getMetricsRes, err := sourcePbClient.GetMetrics(ctx, &source.GetMetrics_Request{})
 	if err != nil {
 		return err
@@ -177,6 +187,6 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedsource.Client, d
 	}
 	syncTimeTook := time.Since(syncTime)
 	exitReason = ExitReasonCompleted
-	fmt.Printf("Sync completed successfully. Resources: %d, Errors: %d, Panics: %d, Time: %s\n", mt.TotalResources(), mt.TotalErrors(), mt.TotalPanics(), syncTimeTook.Truncate(time.Second).String())
+	fmt.Printf("Sync completed successfully. Resources: %d, Errors: %d, Panics: %d, Time: %s\n", mt.TotalResources(), mt.TotalErrors()+destErrors, mt.TotalPanics(), syncTimeTook.Truncate(time.Second).String())
 	return nil
 }
