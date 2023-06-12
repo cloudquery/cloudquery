@@ -2,8 +2,12 @@ package cloudwatch
 
 import (
 	"context"
+	"strconv"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
+	cqtypes "github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/mitchellh/hashstructure/v2"
 
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -23,8 +27,21 @@ To sync this table you must set the 'use_paid_apis' option to 'true' and set the
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "monitoring"),
 		Transform: transformers.TransformWithStruct(&statOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
+			{
+				Name:        "input_hash",
+				Description: `The hash of the input used to generate this result.`,
+				Type:        arrow.BinaryTypes.String,
+				Resolver:    schema.PathResolver("InputHash"),
+				PrimaryKey:  true,
+			},
+			{
+				Name:        "input_json",
+				Description: `The JSON of the input used to generate this result.`,
+				Type:        cqtypes.ExtensionTypes.JSON,
+				Resolver:    schema.PathResolver("InputJSON"),
+			},
 		},
 	}
 }
@@ -44,6 +61,11 @@ func fetchCloudwatchMetricStatisticsCustom(ctx context.Context, meta schema.Clie
 	svc := cl.Services().Cloudwatch
 	for _, input := range allConfigs {
 		input := input
+		hash, err := hashstructure.Hash(input, hashstructure.FormatV2, nil)
+		if err != nil {
+			return err
+		}
+
 		data, err := svc.GetMetricStatistics(ctx, &input.GetMetricStatisticsInput, func(options *cloudwatch.Options) {
 			options.Region = cl.Region
 		})
@@ -53,6 +75,7 @@ func fetchCloudwatchMetricStatisticsCustom(ctx context.Context, meta schema.Clie
 		res <- statOutput{
 			GetMetricStatisticsOutput: data,
 			InputJSON:                 input,
+			InputHash:                 strconv.FormatUint(hash, 10),
 		}
 	}
 	return nil

@@ -2,9 +2,13 @@ package cloudwatch
 
 import (
 	"context"
+	"strconv"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
+	cqtypes "github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/mitchellh/hashstructure/v2"
 
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -15,6 +19,7 @@ import (
 type metricOutput struct {
 	types.Metric
 	InputJSON tableoptions.CloudwatchListMetricsInput `json:"input_json"`
+	InputHash string                                  `json:"input_hash"`
 
 	getStatsInputs []tableoptions.CloudwatchGetMetricStatisticsInput
 }
@@ -30,9 +35,21 @@ To sync this table you must set the 'use_paid_apis' option to 'true' and set the
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "monitoring"),
 		Transform: transformers.TransformWithStruct(&metricOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
-		},
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
+			{
+				Name:        "input_hash",
+				Description: `The hash of the input used to generate this result.`,
+				Type:        arrow.BinaryTypes.String,
+				Resolver:    schema.PathResolver("InputHash"),
+				PrimaryKey:  true,
+			},
+			{
+				Name:        "input_json",
+				Description: `The JSON of the input used to generate this result.`,
+				Type:        cqtypes.ExtensionTypes.JSON,
+				Resolver:    schema.PathResolver("InputJSON"),
+			}},
 		Relations: []*schema.Table{
 			metricStatistics(),
 		},
@@ -49,6 +66,12 @@ func fetchCloudwatchMetrics(ctx context.Context, meta schema.ClientMeta, parent 
 	svc := cl.Services().Cloudwatch
 	for _, input := range cl.Spec.TableOptions.CloudwatchMetrics {
 		input := input
+
+		hash, err := hashstructure.Hash(input, hashstructure.FormatV2, nil)
+		if err != nil {
+			return err
+		}
+
 		paginator := cloudwatch.NewListMetricsPaginator(svc, &input.ListMetricsOpts.ListMetricsInput)
 		for paginator.HasMorePages() {
 			page, err := paginator.NextPage(ctx, func(options *cloudwatch.Options) {
@@ -61,6 +84,7 @@ func fetchCloudwatchMetrics(ctx context.Context, meta schema.ClientMeta, parent 
 				res <- metricOutput{
 					Metric:         page.Metrics[i],
 					InputJSON:      input.ListMetricsOpts,
+					InputHash:      strconv.FormatUint(hash, 10),
 					getStatsInputs: input.GetMetricStatisticsOpts,
 				}
 			}
