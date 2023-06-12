@@ -44,13 +44,13 @@ func Triggers() *schema.Table {
 }
 
 func fetchGlueTriggers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Glue
+	cl := meta.(*client.Client)
+	svc := cl.Services().Glue
 	input := glue.ListTriggersInput{MaxResults: aws.Int32(200)}
 	paginator := glue.NewListTriggersPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *glue.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -61,13 +61,13 @@ func fetchGlueTriggers(ctx context.Context, meta schema.ClientMeta, parent *sche
 }
 
 func getTrigger(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	name := resource.Item.(string)
-	svc := c.Services().Glue
+	svc := cl.Services().Glue
 	dc, err := svc.GetTrigger(ctx, &glue.GetTriggerInput{
 		Name: &name,
 	}, func(options *glue.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

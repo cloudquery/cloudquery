@@ -40,14 +40,14 @@ func vaultLockPolicies() *schema.Table {
 }
 
 func fetchGlacierVaultLockPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Glacier
+	cl := meta.(*client.Client)
+	svc := cl.Services().Glacier
 	p := parent.Item.(types.DescribeVaultOutput)
 
 	response, err := svc.GetVaultLock(ctx, &glacier.GetVaultLockInput{
 		VaultName: p.VaultName,
 	}, func(options *glacier.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

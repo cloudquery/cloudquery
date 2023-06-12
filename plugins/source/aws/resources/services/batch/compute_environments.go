@@ -44,12 +44,12 @@ func fetchBatchComputeEnvironments(ctx context.Context, meta schema.ClientMeta, 
 	config := batch.DescribeComputeEnvironmentsInput{
 		MaxResults: aws.Int32(100),
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Batch
+	cl := meta.(*client.Client)
+	svc := cl.Services().Batch
 	p := batch.NewDescribeComputeEnvironmentsPaginator(svc, &config)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *batch.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

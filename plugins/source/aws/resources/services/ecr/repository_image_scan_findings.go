@@ -25,7 +25,8 @@ func repositoryImageScanFindings() *schema.Table {
 	}
 }
 func fetchEcrRepositoryImageScanFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ecr
 	image := parent.Item.(types.ImageDetail)
 	repo := parent.Parent.Item.(types.Repository)
 	for _, tag := range image.ImageTags {
@@ -38,10 +39,10 @@ func fetchEcrRepositoryImageScanFindings(ctx context.Context, meta schema.Client
 			MaxResults: aws.Int32(1000),
 		}
 
-		paginator := ecr.NewDescribeImageScanFindingsPaginator(meta.(*client.Client).Services().Ecr, &config)
+		paginator := ecr.NewDescribeImageScanFindingsPaginator(svc, &config)
 		for paginator.HasMorePages() {
 			output, err := paginator.NextPage(ctx, func(options *ecr.Options) {
-				options.Region = c.Region
+				options.Region = cl.Region
 			})
 			if err != nil {
 				if client.IsAWSError(err, "ScanNotFoundException") {

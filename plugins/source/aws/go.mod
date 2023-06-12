@@ -10,7 +10,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.12
 	github.com/aws/aws-sdk-go-v2/service/account v1.8.0
 	github.com/aws/aws-sdk-go-v2/service/acm v1.17.11
-	github.com/aws/aws-sdk-go-v2/service/acmpca v1.21.12
+	github.com/aws/aws-sdk-go-v2/service/acmpca v1.21.13
 	github.com/aws/aws-sdk-go-v2/service/amp v1.16.11
 	github.com/aws/aws-sdk-go-v2/service/amplify v1.13.10
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.11
@@ -39,7 +39,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/costexplorer v1.25.10
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.23.5
 	github.com/aws/aws-sdk-go-v2/service/dax v1.12.10
-	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.14
+	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.15
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.20.6
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.18.6
 	github.com/aws/aws-sdk-go-v2/service/dynamodbstreams v1.14.11
@@ -52,14 +52,14 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.26.6
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.15.10
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.15.10
-	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.19.7
+	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.19.11
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.18.7
-	github.com/aws/aws-sdk-go-v2/service/elastictranscoder v1.14.6
+	github.com/aws/aws-sdk-go-v2/service/elastictranscoder v1.14.10
 	github.com/aws/aws-sdk-go-v2/service/emr v1.22.2
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.17.0
-	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.8
+	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.12
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.21.0
-	github.com/aws/aws-sdk-go-v2/service/fsx v1.28.7
+	github.com/aws/aws-sdk-go-v2/service/fsx v1.28.13
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.14.7
 	github.com/aws/aws-sdk-go-v2/service/glue v1.40.0
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.17.6
@@ -135,7 +135,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230609001322-b359e7498fd2
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230612001358-7f6aaffc2d2a
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect

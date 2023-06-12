@@ -34,15 +34,15 @@ func detectorIPSets() *schema.Table {
 func fetchDetectorIPSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	detector := parent.Item.(*models.DetectorWrapper)
 
-	c := meta.(*client.Client)
-	svc := c.Services().Guardduty
+	cl := meta.(*client.Client)
+	svc := cl.Services().Guardduty
 	config := &guardduty.ListIPSetsInput{
 		DetectorId: &detector.Id,
 	}
 	paginator := guardduty.NewListIPSetsPaginator(svc, config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *guardduty.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -53,8 +53,8 @@ func fetchDetectorIPSets(ctx context.Context, meta schema.ClientMeta, parent *sc
 }
 
 func getDetectorIPSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Guardduty
+	cl := meta.(*client.Client)
+	svc := cl.Services().Guardduty
 	id := resource.Item.(string)
 	detector := resource.Parent.Item.(*models.DetectorWrapper)
 
@@ -62,7 +62,7 @@ func getDetectorIPSet(ctx context.Context, meta schema.ClientMeta, resource *sch
 		DetectorId: &detector.Id,
 		IpSetId:    &id,
 	}, func(options *guardduty.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

@@ -62,7 +62,9 @@ func fetchTimestreamDatabases(ctx context.Context, meta schema.ClientMeta, _ *sc
 
 func fetchDatabaseTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	output, err := cl.Services().Timestreamwrite.ListTagsForResource(ctx,
+	svc := cl.Services().Timestreamwrite
+
+	output, err := svc.ListTagsForResource(ctx,
 		&timestreamwrite.ListTagsForResourceInput{
 			ResourceARN: resource.Item.(types.Database).Arn,
 		},

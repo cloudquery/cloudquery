@@ -64,8 +64,8 @@ func Groups() *schema.Table {
 }
 
 func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Autoscaling
+	cl := meta.(*client.Client)
+	svc := cl.Services().Autoscaling
 	processGroupsBundle := func(groups []types.AutoScalingGroup) error {
 		input := autoscaling.DescribeNotificationConfigurationsInput{
 			MaxRecords: aws.Int32(100),
@@ -77,7 +77,7 @@ func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent 
 		paginator := autoscaling.NewDescribeNotificationConfigurationsPaginator(svc, &input)
 		for paginator.HasMorePages() {
 			page, err := paginator.NextPage(ctx, func(options *autoscaling.Options) {
-				options.Region = c.Region
+				options.Region = cl.Region
 			})
 			if err != nil {
 				return err
@@ -98,7 +98,7 @@ func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent 
 	paginator := autoscaling.NewDescribeAutoScalingGroupsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *autoscaling.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

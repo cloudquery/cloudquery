@@ -44,13 +44,13 @@ func fetchIotThingTypes(ctx context.Context, meta schema.ClientMeta, parent *sch
 	input := iot.ListThingTypesInput{
 		MaxResults: aws.Int32(250),
 	}
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 
-	svc := c.Services().Iot
+	svc := cl.Services().Iot
 	paginator := iot.NewListThingTypesPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

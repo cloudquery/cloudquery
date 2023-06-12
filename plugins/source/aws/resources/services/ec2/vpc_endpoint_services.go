@@ -45,12 +45,12 @@ func VpcEndpointServices() *schema.Table {
 }
 func fetchEc2VpcEndpointServices(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	var config ec2.DescribeVpcEndpointServicesInput
-	c := meta.(*client.Client)
-	svc := c.Services().Ec2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ec2
 	// No paginator available
 	for {
 		output, err := svc.DescribeVpcEndpointServices(ctx, &config, func(options *ec2.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
