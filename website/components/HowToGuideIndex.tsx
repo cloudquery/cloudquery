@@ -16,15 +16,15 @@ export function HowToGuideIndex({ more = "Read the guide" }) {
   const allGuides = [...howTo, ...deploy];
   return allGuides
     .slice()
-    .sort((a, b) => {
+    .sort((a: Page, b: Page) => {
         const aTitle = a.frontMatter?.title || a.meta?.title || a.name;
         const bTitle = b.frontMatter?.title || b.meta?.title || b.name;
         return aTitle.localeCompare(bTitle);
     })
-    .filter((page) => {
+    .filter((page: Page) => {
         return page.name !== "overview";
     })
-    .map((page) => {
+    .map((page: Page) => {
       return (
         <div key={page.route} className="mb-10">
           <Link
