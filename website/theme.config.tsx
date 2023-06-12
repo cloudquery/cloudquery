@@ -75,8 +75,13 @@ const theme: DocsThemeConfig = {
             <meta property="og:title" content={frontMatter.title} />
             : null
         }
+        {(frontMatter.image) ?
+              <meta property="og:image" content={frontMatter.image} />
+          :
+          null
+        }
         {(frontMatter.video) ?
-              <meta property="og:video" content={frontMatter.video} />
+          <meta property="og:video" content={frontMatter.video} />
           :
           null
         }
