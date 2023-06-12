@@ -166,7 +166,6 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
 			if sqlType == "blob" || sqlType == "text" {
 				// `blob/text` SQL types require specifying prefix length to use for the primary key
 				builder.WriteString("(64)")
-
 			}
 			if i < len(primaryKeysIndices)-1 {
 				builder.WriteString(", ")
