@@ -21,14 +21,15 @@ func webACLs() *schema.Table {
 		Description: `https://docs.aws.amazon.com/waf/latest/APIReference/API_GetWebACLForResource.html`,
 		Resolver:    resolveLoadBalancerWebACL,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "waf-regional"),
-		Transform:   transformers.TransformWithStruct(&wafv2types.WebACL{}),
+		Transform:   transformers.TransformWithStruct(&wafv2types.WebACL{}, transformers.WithPrimaryKeys("ARN")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "load_balancer_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "load_balancer_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
