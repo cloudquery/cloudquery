@@ -3,8 +3,9 @@
 This table shows data for Organizations Organizational Units.
 
 https://docs.aws.amazon.com/organizations/latest/APIReference/API_OrganizationalUnit.html
+The 'request_account_id' column is added to show from where the request was made.
 
-The composite primary key for this table is (**account_id**, **arn**).
+The composite primary key for this table is (**request_account_id**, **arn**).
 
 ## Relations
 
@@ -19,7 +20,7 @@ The following tables depend on aws_organizations_organizational_units:
 |_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
+|request_account_id (PK)|`utf8`|
 |parent_id|`utf8`|
 |arn (PK)|`utf8`|
 |id|`utf8`|
