@@ -15,6 +15,8 @@ import (
 type metricOutput struct {
 	types.Metric
 	InputJSON tableoptions.CloudwatchListMetricsInput `json:"input_json"`
+
+	getStatsInputs []tableoptions.CloudwatchGetMetricStatisticsInput
 }
 
 func Metrics() *schema.Table {
@@ -38,20 +40,15 @@ func Metrics() *schema.Table {
 func fetchCloudwatchMetrics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 
-	var allConfigs []tableoptions.CloudwatchListMetricsInput
-	if cl.Spec.TableOptions.CloudwatchMetrics != nil {
-		allConfigs = cl.Spec.TableOptions.CloudwatchMetrics.ListMetricsOpts
-	}
-
-	if len(allConfigs) > 0 && !cl.Spec.UsePaidAPIs {
+	if len(cl.Spec.TableOptions.CloudwatchMetrics) > 0 && !cl.Spec.UsePaidAPIs {
 		cl.Logger().Info().Msg("skipping `aws_cloudwatch_metrics` because `use_paid_apis` is set to false")
 		return nil
 	}
 
 	svc := cl.Services().Cloudwatch
-	for _, input := range allConfigs {
+	for _, input := range cl.Spec.TableOptions.CloudwatchMetrics {
 		input := input
-		paginator := cloudwatch.NewListMetricsPaginator(svc, &input.ListMetricsInput)
+		paginator := cloudwatch.NewListMetricsPaginator(svc, &input.ListMetricsOpts.ListMetricsInput)
 		for paginator.HasMorePages() {
 			page, err := paginator.NextPage(ctx, func(options *cloudwatch.Options) {
 				options.Region = cl.Region
@@ -61,8 +58,9 @@ func fetchCloudwatchMetrics(ctx context.Context, meta schema.ClientMeta, parent 
 			}
 			for i := range page.Metrics {
 				res <- metricOutput{
-					Metric:    page.Metrics[i],
-					InputJSON: input,
+					Metric:         page.Metrics[i],
+					InputJSON:      input.ListMetricsOpts,
+					getStatsInputs: input.GetMetricStatisticsOpts,
 				}
 			}
 		}

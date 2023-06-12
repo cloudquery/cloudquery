@@ -35,13 +35,8 @@ func fetchCloudwatchMetricStats(ctx context.Context, meta schema.ClientMeta, par
 	cl := meta.(*client.Client)
 	item := parent.Item.(metricOutput)
 
-	var allConfigs []tableoptions.CloudwatchGetMetricStatisticsInput
-	if cl.Spec.TableOptions.CloudwatchMetrics.GetMetricStatisticsOpts != nil {
-		allConfigs = cl.Spec.TableOptions.CloudwatchMetrics.GetMetricStatisticsOpts
-	}
-
 	svc := cl.Services().Cloudwatch
-	for _, input := range allConfigs {
+	for _, input := range item.getStatsInputs {
 		input := input
 
 		input.Dimensions = item.Dimensions

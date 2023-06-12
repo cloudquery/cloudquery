@@ -1,7 +1,7 @@
 package tableoptions
 
 type TableOptions struct {
-	CloudwatchMetrics           *CloudwatchMetrics                `json:"aws_cloudwatch_metrics,omitempty"`
+	CloudwatchMetrics           []CloudwatchMetrics               `json:"aws_cloudwatch_metrics,omitempty"`
 	CloudwatchCustomMetricStats *CloudwatchCustomMetricStatistics `json:"aws_cloudwatch_metric_stats_custom,omitempty"`
 
 	CloudTrailEvents       *CloudtrailAPIs         `json:"aws_cloudtrail_events,omitempty"`
@@ -31,8 +31,8 @@ func (t TableOptions) Validate() error {
 		}
 	}
 
-	if t.CloudwatchMetrics != nil {
-		if err := t.CloudwatchMetrics.Validate(); err != nil {
+	for _, m := range t.CloudwatchMetrics {
+		if err := m.Validate(); err != nil {
 			return err
 		}
 	}

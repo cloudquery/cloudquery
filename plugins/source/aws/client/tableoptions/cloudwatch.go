@@ -35,7 +35,7 @@ func (c *CloudwatchGetMetricStatisticsInput) UnmarshalJSON(data []byte) error {
 }
 
 type CloudwatchMetrics struct {
-	ListMetricsOpts         []CloudwatchListMetricsInput         `json:"list_metrics,omitempty"`
+	ListMetricsOpts         CloudwatchListMetricsInput           `json:"list_metrics,omitempty"`
 	GetMetricStatisticsOpts []CloudwatchGetMetricStatisticsInput `json:"get_metric_statistics,omitempty"`
 }
 
@@ -60,10 +60,8 @@ func (c *CloudwatchListMetricsInput) UnmarshalJSON(data []byte) error {
 }
 
 func (c *CloudwatchMetrics) validateListMetricsOpts() error {
-	for _, opt := range c.ListMetricsOpts {
-		if aws.ToString(opt.NextToken) != "" {
-			return errors.New("invalid input: cannot set NextToken in CloudwatchMetrics.ListMetricsOpts")
-		}
+	if aws.ToString(c.ListMetricsOpts.NextToken) != "" {
+		return errors.New("invalid input: cannot set NextToken in CloudwatchMetrics.ListMetricsOpts")
 	}
 	return nil
 }
