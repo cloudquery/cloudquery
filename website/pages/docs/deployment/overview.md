@@ -12,5 +12,6 @@ Apart from these options, we have also written some guides to help you get start
  - [Amazon ECS](/docs/deployment/ecs)
  - [Docker](/docs/deployment/docker)
  - [GitHub Actions](/docs/deployment/github-actions)
- - [Google Cloud Virtual Machine](/docs/deployment/google-cloud-vm)
+ - [Google Cloud Run](/docs/deployment/cloud-run)
+ - [Google Cloud Virtual Machine (VM)](/docs/deployment/google-cloud-vm) 🎥
  - [Kestra](/docs/deployment/kestra)
