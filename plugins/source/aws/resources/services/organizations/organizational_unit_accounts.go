@@ -20,7 +20,6 @@ The 'request_account_id' column is added to show from where the request was made
 		Resolver:  fetchAccountsForParent,
 		Transform: transformers.TransformWithStruct(&types.Account{}, transformers.WithPrimaryKeys("Arn")),
 		Columns: []schema.Column{
-
 			{
 				Name:       "request_account_id",
 				Type:       arrow.BinaryTypes.String,
