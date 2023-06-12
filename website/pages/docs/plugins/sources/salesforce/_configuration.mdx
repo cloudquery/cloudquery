@@ -4,6 +4,8 @@ spec:
   name: slack
   path: cloudquery/salesforce
   version: "VERSION_SOURCE_SALESFORCE"
+  # adjust this value up or down to change the number of tables that are resolved in parallel
+  concurrency: 10000
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
   # Salesforce specific configuration

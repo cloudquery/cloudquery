@@ -4,6 +4,8 @@ spec:
   name: "mysql"
   path: "cloudquery/mysql"
   version: "VERSION_SOURCE_MYSQL"
+  # adjust this value up or down to change the number of tables that are resolved in parallel
+  concurrency: 10000
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
   spec:

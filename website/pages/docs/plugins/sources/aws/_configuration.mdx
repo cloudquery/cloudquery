@@ -5,6 +5,8 @@ spec:
   name: aws
   path: cloudquery/aws
   version: "VERSION_SOURCE_AWS"
+  # adjust this value up or down to change the number of tables that are resolved in parallel
+  concurrency: 10000
   tables: ["aws_s3_buckets"]
   destinations: ["DESTINATION_NAME"]
   spec:
