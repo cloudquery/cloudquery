@@ -3,7 +3,6 @@ package tableoptions
 import (
 	"encoding/json"
 	"errors"
-	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
@@ -23,9 +22,6 @@ type CloudwatchGetMetricStatisticsInput struct {
 func (c *CloudwatchGetMetricStatisticsInput) UnmarshalJSON(data []byte) error {
 	m := map[string]any{}
 	if err := json.Unmarshal(data, &m); err != nil {
-		return err
-	}
-	if err := processRelativeTimes(m, time.Now().UTC(), []string{"start_time", "end_time"}); err != nil {
 		return err
 	}
 	csr := caser.New()
