@@ -69,21 +69,16 @@ const theme: DocsThemeConfig = {
         <meta name="twitter:site" content="@cloudqueryio" />
         <meta name="twitter:creator" content="@cloudqueryio" />
         <meta property="og:type" content="website" />
-        <meta property="og:locale" content="en_IE" />
+        <meta property="og:locale" content="en_US" />
         <meta property="og:site_name" content="CloudQuery" />
         {(frontMatter.title) ?
             <meta property="og:title" content={frontMatter.title} />
             : null
         }
         {(frontMatter.video) ?
-          <>
-              <meta property="og:video:url" content={frontMatter.video} />
-              <meta property="og:video:secure_url" content={frontMatter.video} />
-              <meta property="og:video:type" content="application/x-shockwave-flash"/>
-              <meta property="og:video:width" content="1280" />
-              <meta property="og:video:height" content="720" />
-          </>
-          : null
+              <meta property="og:video" content={frontMatter.video} />
+          :
+          null
         }
       </>
     );
