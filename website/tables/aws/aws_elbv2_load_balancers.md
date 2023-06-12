@@ -11,6 +11,7 @@ The primary key for this table is **arn**.
 The following tables depend on aws_elbv2_load_balancers:
   - [aws_elbv2_listeners](aws_elbv2_listeners)
   - [aws_elbv2_load_balancer_attributes](aws_elbv2_load_balancer_attributes)
+  - [aws_elbv2_load_balancer_web_acls](aws_elbv2_load_balancer_web_acls)
 
 ## Columns
 
@@ -22,7 +23,6 @@ The following tables depend on aws_elbv2_load_balancers:
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|web_acl_arn|`utf8`|
 |tags|`json`|
 |arn (PK)|`utf8`|
 |availability_zones|`json`|

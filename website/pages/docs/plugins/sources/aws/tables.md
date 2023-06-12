@@ -267,6 +267,7 @@
     - [aws_elbv2_listener_certificates](tables/aws_elbv2_listener_certificates)
     - [aws_elbv2_listener_rules](tables/aws_elbv2_listener_rules)
   - [aws_elbv2_load_balancer_attributes](tables/aws_elbv2_load_balancer_attributes)
+  - [aws_elbv2_load_balancer_web_acls](tables/aws_elbv2_load_balancer_web_acls)
 - [aws_elbv2_target_groups](tables/aws_elbv2_target_groups)
   - [aws_elbv2_target_group_target_health_descriptions](tables/aws_elbv2_target_group_target_health_descriptions)
 - [aws_emr_block_public_access_configs](tables/aws_emr_block_public_access_configs)
