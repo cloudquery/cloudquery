@@ -127,7 +127,7 @@ Similarly, if you are using a different source, follow the [documentation for yo
    ```bash copy
    ./cloudquery sync config.yaml
    ```
-2. Hopefully, you should see a successful sync! If not, check `cloudquery.log` for errors.
+2. You should see a successful sync! If not, check the CLI output and `cloudquery.log` for errors.
 3. You can now fine-tune your configuration file: you may want to try `tables: ["*"]` to sync all tables at least once and get a complete asset inventory. Be aware, however, that this can take a long time on large account. We also don't recommend using `*` in production, as when you perform version upgrades, this will cause new tables to automatically get synced and may cause unexpected issues. In general, we recommend only syncing the tables you need.
 
 <Callout type="info">
@@ -169,7 +169,7 @@ crontab -e
 0 1 * * * /path/to/cloudquery sync /path/to/config.yaml
 ```
 
-4. Save the file and exit the editor. The sync will now run every day at 1am.
+4. Save the file and exit the editor. The sync will now run every day at 1 AM.
 
 ### Option 2: Run on reboot
 
