@@ -6,15 +6,14 @@ import (
 	"strconv"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
-	cqtypes "github.com/cloudquery/plugin-sdk/v3/types"
-	"github.com/mitchellh/hashstructure/v2"
-
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
+	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	cqtypes "github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/mitchellh/hashstructure/v2"
 )
 
 type statOutput struct {
@@ -100,7 +99,6 @@ func fetchCloudwatchMetricStatistics(ctx context.Context, meta schema.ClientMeta
 				InputHash: strconv.FormatUint(hash, 10),
 			}
 		}
-
 	}
 	return nil
 }
