@@ -59,7 +59,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.17.0
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.12
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.21.0
-	github.com/aws/aws-sdk-go-v2/service/fsx v1.28.7
+	github.com/aws/aws-sdk-go-v2/service/fsx v1.28.13
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.14.7
 	github.com/aws/aws-sdk-go-v2/service/glue v1.40.0
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.17.6
@@ -135,7 +135,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230610001216-0f7bd3beda2c
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230612001358-7f6aaffc2d2a
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
