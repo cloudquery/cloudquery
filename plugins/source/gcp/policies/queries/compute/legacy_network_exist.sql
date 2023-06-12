@@ -1,8 +1,3 @@
--- SELECT gdmz.project_id, gdmz.id, gdmz.name, gdmz.dns_name
--- FROM gcp_dns_managed_zones gdmz
--- WHERE gdmz.dnssec_config_state != 'on'
-
-
 INSERT INTO gcp_policy_results (resource_id, execution_time, framework, check_id, title, project_id, status)
 SELECT "id"                                                            AS resource_id,
        :'execution_time'::timestamp                                    AS execution_time,

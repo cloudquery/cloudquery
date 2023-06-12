@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
@@ -140,18 +139,21 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
 		builder.WriteString(identifier(column.Name))
 		builder.WriteString(" ")
 		builder.WriteString(arrowTypeToMySqlStr(column.Type))
-		if column.Unique {
-			builder.WriteString(" UNIQUE")
-		}
-		if column.NotNull {
-			builder.WriteString(" NOT NULL")
-		}
-		if i < totalColumns-1 {
-			builder.WriteString(",\n  ")
-		}
 
 		if c.pkEnabled() && column.PrimaryKey {
 			primaryKeysIndices = append(primaryKeysIndices, i)
+		} else {
+			// Primary keys are implicitly not null and unique, so we only need to add these constraints if the column is not a primary key
+			if column.Unique {
+				builder.WriteString(" UNIQUE")
+			}
+			if column.NotNull {
+				builder.WriteString(" NOT NULL")
+			}
+		}
+
+		if i < totalColumns-1 {
+			builder.WriteString(",\n  ")
 		}
 	}
 	if len(primaryKeysIndices) > 0 {
@@ -160,8 +162,9 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
 		for i, pk := range primaryKeysIndices {
 			column := table.Columns[pk]
 			builder.WriteString(identifier(column.Name))
-			if column.Type == arrow.BinaryTypes.LargeString {
-				// Since we use `text` for strings we need to specify the prefix length to use for the primary key
+			sqlType := arrowTypeToMySqlStr(column.Type)
+			if sqlType == "blob" || sqlType == "text" {
+				// `blob/text` SQL types require specifying prefix length to use for the primary key
 				builder.WriteString("(64)")
 			}
 			if i < len(primaryKeysIndices)-1 {

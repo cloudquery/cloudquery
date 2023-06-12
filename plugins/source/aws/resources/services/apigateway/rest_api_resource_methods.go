@@ -51,12 +51,12 @@ func restApiResourceMethods() *schema.Table {
 func fetchApigatewayRestApiResourceMethods(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	api := parent.Parent.Item.(types.RestApi)
 	resource := parent.Item.(types.Resource)
-	c := meta.(*client.Client)
-	svc := c.Services().Apigateway
+	cl := meta.(*client.Client)
+	svc := cl.Services().Apigateway
 	for method := range resource.ResourceMethods {
 		config := apigateway.GetMethodInput{RestApiId: api.Id, ResourceId: resource.Id, HttpMethod: aws.String(method)}
 		resp, err := svc.GetMethod(ctx, &config, func(options *apigateway.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

@@ -48,3 +48,51 @@ The following tables depend on gcp_storage_buckets:
 |project_number|`int64`|
 |rpo|`int64`|
 |autoclass|`json`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Ensure that retention policies on log buckets are configured using Bucket Lock (Automated)
+
+```sql
+SELECT
+  DISTINCT
+  gsb.name AS resource_id,
+  'Ensure that retention policies on log buckets are configured using Bucket Lock (Automated)'
+    AS title,
+  gls.project_id AS project_id,
+  CASE
+  WHEN gls.destination LIKE 'storage.googleapis.com/%'
+  AND (
+      (gsb.retention_policy->>'IsLocked')::BOOL = false
+      OR (gsb.retention_policy->>'RetentionPeriod')::INT8 = 0
+    )
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  gcp_logging_sinks AS gls
+  JOIN gcp_storage_buckets AS gsb ON
+      gsb.name = replace(gls.destination, 'storage.googleapis.com/', '');
+```
+
+### Ensure that Cloud Storage buckets have uniform bucket-level access enabled (Automated)
+
+```sql
+SELECT
+  name AS resource_id,
+  'Ensure that Cloud Storage buckets have uniform bucket-level access enabled (Automated)'
+    AS title,
+  project_id AS project_id,
+  CASE
+  WHEN (uniform_bucket_level_access->>'Enabled')::BOOL = false THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  gcp_storage_buckets;
+```
+
+

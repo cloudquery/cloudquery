@@ -46,17 +46,17 @@ func userPolicies() *schema.Table {
 }
 
 func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Iam
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iam
 	user := parent.Item.(*types.User)
 	config := iam.ListUserPoliciesInput{UserName: user.UserName}
 	paginator := iam.NewListUserPoliciesPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *iam.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
-			if c.IsNotFoundError(err) {
+			if cl.IsNotFoundError(err) {
 				return nil
 			}
 			return err

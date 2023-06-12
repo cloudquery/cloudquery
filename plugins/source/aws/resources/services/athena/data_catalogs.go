@@ -47,13 +47,13 @@ func DataCatalogs() *schema.Table {
 }
 
 func fetchAthenaDataCatalogs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Athena
+	cl := meta.(*client.Client)
+	svc := cl.Services().Athena
 	input := athena.ListDataCatalogsInput{}
 	paginator := athena.NewListDataCatalogsPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *athena.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -64,13 +64,13 @@ func fetchAthenaDataCatalogs(ctx context.Context, meta schema.ClientMeta, parent
 }
 
 func getDataCatalog(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Athena
+	cl := meta.(*client.Client)
+	svc := cl.Services().Athena
 	catalogSummary := resource.Item.(types.DataCatalogSummary)
 	dc, err := svc.GetDataCatalog(ctx, &athena.GetDataCatalogInput{
 		Name: catalogSummary.CatalogName,
 	}, func(options *athena.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		// retrieving of default data catalog (AwsDataCatalog) returns "not found error" (with statuscode 400: InvalidRequestException:...) but it exists and its

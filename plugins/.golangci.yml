@@ -76,11 +76,11 @@ linters-settings:
     - pattern:     'a[b:len(a)]'
       replacement: 'a[b:]'
 
+
 linters:
   enable:
     - asciicheck
     - bodyclose
-    - depguard
     - dupl
     - errcheck
     - gocritic

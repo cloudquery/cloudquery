@@ -26,13 +26,13 @@ func PasswordPolicies() *schema.Table {
 
 func fetchIamPasswordPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config iam.GetAccountPasswordPolicyInput
-	c := meta.(*client.Client)
-	svc := c.Services().Iam
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iam
 	response, err := svc.GetAccountPasswordPolicy(ctx, &config, func(options *iam.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
+		if cl.IsNotFoundError(err) {
 			res <- models.PasswordPolicyWrapper{PolicyExists: false}
 			return nil
 		}

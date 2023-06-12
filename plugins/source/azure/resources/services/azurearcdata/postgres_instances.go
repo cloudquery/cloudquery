@@ -11,12 +11,13 @@ import (
 
 func PostgresInstances() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_azurearcdata_postgres_instances",
-		Resolver:    fetchPostgresInstances,
-		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata@v0.5.0#PostgresInstance",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_azurearcdata_postgres_instances", client.Namespacemicrosoft_azurearcdata),
-		Transform:   transformers.TransformWithStruct(&armazurearcdata.PostgresInstance{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_azurearcdata_postgres_instances",
+		Resolver:             fetchPostgresInstances,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata@v0.5.0#PostgresInstance",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_azurearcdata_postgres_instances", client.Namespacemicrosoft_azurearcdata),
+		Transform:            transformers.TransformWithStruct(&armazurearcdata.PostgresInstance{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

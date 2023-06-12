@@ -11,11 +11,12 @@ import (
 
 func serverFirewallRules() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_sql_server_firewall_rules",
-		Resolver:    fetchFirewallRules,
-		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/firewall-rules/list-by-server?tabs=HTTP#firewallrule",
-		Transform:   transformers.TransformWithStruct(&armsql.FirewallRule{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_sql_server_firewall_rules",
+		Resolver:             fetchFirewallRules,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/firewall-rules/list-by-server?tabs=HTTP#firewallrule",
+		Transform:            transformers.TransformWithStruct(&armsql.FirewallRule{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

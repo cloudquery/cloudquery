@@ -35,14 +35,14 @@ func Streams() *schema.Table {
 }
 
 func fetchIotStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Iot
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iot
 	paginator := iot.NewListStreamsPaginator(svc, &iot.ListStreamsInput{
 		MaxResults: aws.Int32(250),
 	})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

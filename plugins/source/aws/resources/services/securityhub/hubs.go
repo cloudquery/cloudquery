@@ -37,7 +37,8 @@ func Hubs() *schema.Table {
 
 func fetchHubs(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	hub, err := cl.Services().Securityhub.DescribeHub(ctx, nil, func(o *securityhub.Options) {
+	svc := cl.Services().Securityhub
+	hub, err := svc.DescribeHub(ctx, nil, func(o *securityhub.Options) {
 		o.Region = cl.Region
 	})
 	if err != nil {
@@ -49,8 +50,9 @@ func fetchHubs(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, 
 
 func fetchHubTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
+	svc := cl.Services().Securityhub
 	config := &securityhub.ListTagsForResourceInput{ResourceArn: resource.Item.(*securityhub.DescribeHubOutput).HubArn}
-	tags, err := cl.Services().Securityhub.ListTagsForResource(ctx, config, func(o *securityhub.Options) {
+	tags, err := svc.ListTagsForResource(ctx, config, func(o *securityhub.Options) {
 		o.Region = cl.Region
 	})
 	if err != nil {

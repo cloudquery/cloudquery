@@ -35,12 +35,12 @@ func nodeGroups() *schema.Table {
 
 func fetchNodeGroups(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, res chan<- any) error {
 	cluster := resource.Item.(*types.Cluster)
-	c := meta.(*client.Client)
-	svc := c.Services().Eks
+	cl := meta.(*client.Client)
+	svc := cl.Services().Eks
 	paginator := eks.NewListNodegroupsPaginator(svc, &eks.ListNodegroupsInput{ClusterName: cluster.Name})
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *eks.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -51,15 +51,15 @@ func fetchNodeGroups(ctx context.Context, meta schema.ClientMeta, resource *sche
 }
 
 func getNodeGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Eks
+	cl := meta.(*client.Client)
+	svc := cl.Services().Eks
 	name := resource.Item.(string)
 	cluster := resource.Parent.Item.(*types.Cluster)
 	output, err := svc.DescribeNodegroup(
 		ctx, &eks.DescribeNodegroupInput{
 			ClusterName:   cluster.Name,
 			NodegroupName: &name}, func(options *eks.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 	if err != nil {
 		return err

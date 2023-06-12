@@ -15,13 +15,14 @@ import (
 
 func topicAuthorizationRules() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_servicebus_namespace_topic_authorization_rules",
-		Resolver:    fetchTopicAuthorizationRules,
-		Description: "https://learn.microsoft.com/en-us/rest/api/servicebus/stable/topics%20%E2%80%93%20authorization%20rules/list-authorization-rules?tabs=HTTP#sbauthorizationrule",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_servicebus_namespaces", client.Namespacemicrosoft_servicebus),
-		Transform:   transformers.TransformWithStruct(&armservicebus.SBAuthorizationRule{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
-		Relations:   []*schema.Table{topicRuleAccessKeys()},
+		Name:                 "azure_servicebus_namespace_topic_authorization_rules",
+		Resolver:             fetchTopicAuthorizationRules,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/servicebus/stable/topics%20%E2%80%93%20authorization%20rules/list-authorization-rules?tabs=HTTP#sbauthorizationrule",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_servicebus_namespaces", client.Namespacemicrosoft_servicebus),
+		Transform:            transformers.TransformWithStruct(&armservicebus.SBAuthorizationRule{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
+		Relations:            []*schema.Table{topicRuleAccessKeys()},
 	}
 }
 

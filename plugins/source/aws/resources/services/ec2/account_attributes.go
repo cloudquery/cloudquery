@@ -30,9 +30,10 @@ func AccountAttributes() *schema.Table {
 	}
 }
 func fetchAccountAttributes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	output, err := c.Services().Ec2.DescribeAccountAttributes(ctx, &ec2.DescribeAccountAttributesInput{}, func(options *ec2.Options) {
-		options.Region = c.Region
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ec2
+	output, err := svc.DescribeAccountAttributes(ctx, &ec2.DescribeAccountAttributesInput{}, func(options *ec2.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

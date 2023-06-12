@@ -11,13 +11,14 @@ import (
 
 func Galleries() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_compute_galleries",
-		Resolver:    fetchGalleries,
-		Description: "https://learn.microsoft.com/en-us/rest/api/compute/galleries/list?tabs=HTTP#gallery",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_galleries", client.Namespacemicrosoft_compute),
-		Transform:   transformers.TransformWithStruct(&armcompute.Gallery{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
-		Relations:   []*schema.Table{galleryImages()},
+		Name:                 "azure_compute_galleries",
+		Resolver:             fetchGalleries,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/compute/galleries/list?tabs=HTTP#gallery",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_compute_galleries", client.Namespacemicrosoft_compute),
+		Transform:            transformers.TransformWithStruct(&armcompute.Gallery{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
+		Relations:            []*schema.Table{galleryImages()},
 	}
 }
 

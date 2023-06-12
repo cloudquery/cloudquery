@@ -37,12 +37,12 @@ func VpcLinks() *schema.Table {
 
 func fetchApigatewayVpcLinks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apigateway.GetVpcLinksInput
-	c := meta.(*client.Client)
-	svc := c.Services().Apigateway
+	cl := meta.(*client.Client)
+	svc := cl.Services().Apigateway
 	paginator := apigateway.NewGetVpcLinksPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		response, err := paginator.NextPage(ctx, func(options *apigateway.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

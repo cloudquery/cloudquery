@@ -11,10 +11,11 @@ import (
 
 func ManagementGroups() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_managementgroups_management_groups",
-		Resolver:    fetchManagementGroups,
-		Description: "https://learn.microsoft.com/en-us/rest/api/managementgroups/management-groups/list?tabs=HTTP#managementgrouplistresult",
-		Transform:   transformers.TransformWithStruct(&armmanagementgroups.ManagementGroupInfo{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_managementgroups_management_groups",
+		Resolver:             fetchManagementGroups,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/managementgroups/management-groups/list?tabs=HTTP#managementgrouplistresult",
+		Transform:            transformers.TransformWithStruct(&armmanagementgroups.ManagementGroupInfo{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

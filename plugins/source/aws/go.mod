@@ -10,7 +10,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.12
 	github.com/aws/aws-sdk-go-v2/service/account v1.8.0
 	github.com/aws/aws-sdk-go-v2/service/acm v1.17.11
-	github.com/aws/aws-sdk-go-v2/service/acmpca v1.21.12
+	github.com/aws/aws-sdk-go-v2/service/acmpca v1.21.13
 	github.com/aws/aws-sdk-go-v2/service/amp v1.16.11
 	github.com/aws/aws-sdk-go-v2/service/amplify v1.13.10
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.11
@@ -39,7 +39,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/costexplorer v1.25.10
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.23.5
 	github.com/aws/aws-sdk-go-v2/service/dax v1.12.10
-	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.14
+	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.15
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.20.6
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.18.6
 	github.com/aws/aws-sdk-go-v2/service/dynamodbstreams v1.14.11
@@ -52,14 +52,14 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.26.6
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.15.10
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing v1.15.10
-	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.19.7
+	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.19.11
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.18.7
-	github.com/aws/aws-sdk-go-v2/service/elastictranscoder v1.14.6
+	github.com/aws/aws-sdk-go-v2/service/elastictranscoder v1.14.10
 	github.com/aws/aws-sdk-go-v2/service/emr v1.22.2
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.17.0
-	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.8
+	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.12
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.21.0
-	github.com/aws/aws-sdk-go-v2/service/fsx v1.28.7
+	github.com/aws/aws-sdk-go-v2/service/fsx v1.28.13
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.14.7
 	github.com/aws/aws-sdk-go-v2/service/glue v1.40.0
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.17.6
@@ -135,7 +135,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230607001322-90670b8e0786
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230612001358-7f6aaffc2d2a
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
@@ -159,10 +159,10 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
 	github.com/ghodss/yaml v1.0.0
-	github.com/goccy/go-json v0.9.11 // indirect
+	github.com/goccy/go-json v0.10.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
-	github.com/google/flatbuffers v2.0.8+incompatible // indirect
+	github.com/google/flatbuffers v23.1.21+incompatible // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3 // indirect
@@ -170,12 +170,12 @@ require (
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/klauspost/asmfmt v1.3.2 // indirect
 	github.com/klauspost/compress v1.16.0 // indirect
-	github.com/klauspost/cpuid/v2 v2.0.9 // indirect
+	github.com/klauspost/cpuid/v2 v2.2.3 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.18 // indirect
 	github.com/minio/asm2plan9s v0.0.0-20200509001527-cdd76441f9d8 // indirect
 	github.com/minio/c2goasm v0.0.0-20190812172519-36a3d3bbc4f3 // indirect
-	github.com/pierrec/lz4/v4 v4.1.15 // indirect
+	github.com/pierrec/lz4/v4 v4.1.17 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect

@@ -9,10 +9,11 @@ import (
 
 func serverDatabaseBlobAuditingPolicies() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_sql_server_database_blob_auditing_policies",
-		Resolver:    fetchDatabaseBlobAuditingPolicies,
-		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/database-blob-auditing-policies/list-by-database?tabs=HTTP#databaseblobauditingpolicy",
-		Transform:   transformers.TransformWithStruct(&armsql.DatabaseBlobAuditingPolicy{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_sql_server_database_blob_auditing_policies",
+		Resolver:             fetchDatabaseBlobAuditingPolicies,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/database-blob-auditing-policies/list-by-database?tabs=HTTP#databaseblobauditingpolicy",
+		Transform:            transformers.TransformWithStruct(&armsql.DatabaseBlobAuditingPolicy{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }

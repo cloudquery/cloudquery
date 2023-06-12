@@ -24,12 +24,12 @@ func operations() *schema.Table {
 }
 
 func fetchApprunnerOperations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	paginator := apprunner.NewListOperationsPaginator(c.Services().Apprunner,
+	cl := meta.(*client.Client)
+	paginator := apprunner.NewListOperationsPaginator(cl.Services().Apprunner,
 		&apprunner.ListOperationsInput{ServiceArn: parent.Item.(*types.Service).ServiceArn})
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *apprunner.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
