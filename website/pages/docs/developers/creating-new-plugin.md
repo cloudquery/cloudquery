@@ -63,7 +63,7 @@ brew install cloudquery/tap/scaffold
 With the tool installed, you can create a new plugin by running (replace `<org>` and `<name>` with values for your GitHub org and the name of your plugin):
 
 ```bash
-scaffold source <org> <name>
+cq-scaffold source <org> <name>
 ```
 
 This will create a new directory called `cq-source-<name>`. You should then `cd` into the directory and run `go mod tidy` to download the dependencies.
