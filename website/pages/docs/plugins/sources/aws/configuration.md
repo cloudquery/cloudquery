@@ -149,9 +149,6 @@ This is the (nested) spec used by the AWS source plugin.
         get_metric_statistics:
           # Namespace, MetricName and Dimensions fields cannot be set here and are derived from the result of the respective ListMetrics call 
           - <[GetMetricStatistics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html)>
-    aws_cloudwatch_metric_stats_custom:
-      get_metric_statistics:
-        - <[GetMetricStatistics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html)>
     aws_cloudtrail_events:
       lookup_events:
         - <[LookupEvents](https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_LookupEvents.html)>

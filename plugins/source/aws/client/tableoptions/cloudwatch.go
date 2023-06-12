@@ -9,10 +9,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/caser"
 )
 
-type CloudwatchCustomMetricStatistics struct {
-	GetMetricStatisticsOpts []CloudwatchGetMetricStatisticsInput `json:"get_metric_statistics,omitempty"`
-}
-
 type CloudwatchGetMetricStatisticsInput struct {
 	cloudwatch.GetMetricStatisticsInput
 }
