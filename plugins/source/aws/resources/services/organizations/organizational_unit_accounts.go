@@ -14,12 +14,19 @@ import (
 func organizationalUnitAccounts() *schema.Table {
 	tableName := "aws_organizations_organizational_unit_accounts"
 	return &schema.Table{
-		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_ListAccountsForParent.html`,
-		Resolver:    fetchAccountsForParent,
-		Transform:   transformers.TransformWithStruct(&types.Account{}, transformers.WithPrimaryKeys("Arn")),
+		Name: tableName,
+		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_ListAccountsForParent.html
+The 'request_account_id' column is added to show from where the request was made.`,
+		Resolver:  fetchAccountsForParent,
+		Transform: transformers.TransformWithStruct(&types.Account{}, transformers.WithPrimaryKeys("Arn")),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true),
+
+			{
+				Name:       "request_account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSAccount,
+				PrimaryKey: true,
+			},
 			{
 				Name:       "parent_id",
 				Type:       arrow.BinaryTypes.String,
