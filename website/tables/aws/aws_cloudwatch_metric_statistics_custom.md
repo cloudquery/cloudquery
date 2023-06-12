@@ -1,14 +1,11 @@
-# Table: aws_cloudwatch_metric_stats
+# Table: aws_cloudwatch_metric_statistics_custom
 
-This table shows data for Cloudwatch Metric Stats.
+This table shows data for Cloudwatch Metric Statistics custom query.
 
 https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html
+To sync this table you must set the 'use_paid_apis' option to 'true' and set the relevant 'table_options' entry in the AWS provider configuration.
 
 The primary key for this table is **_cq_id**.
-
-## Relations
-
-This table depends on [aws_cloudwatch_metrics](aws_cloudwatch_metrics).
 
 ## Columns
 

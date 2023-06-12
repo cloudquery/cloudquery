@@ -147,6 +147,7 @@ This is the (nested) spec used by the AWS source plugin.
       - list_metrics:
           <[ListMetrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_ListMetrics.html)>
         get_metric_statistics:
+          # Namespace, MetricName and Dimensions fields cannot be set here and are derived from the result of the respective ListMetrics call 
           - <[GetMetricStatistics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html)>
     aws_cloudwatch_metric_stats_custom:
       get_metric_statistics:

@@ -12,13 +12,16 @@ import (
 )
 
 func MetricStatisticsCustom() *schema.Table {
-	tableName := "aws_cloudwatch_metric_stats_custom"
+	tableName := "aws_cloudwatch_metric_statistics_custom"
 	return &schema.Table{
-		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html`,
-		Resolver:    fetchCloudwatchMetricStatsCustom,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "monitoring"),
-		Transform:   transformers.TransformWithStruct(&statOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithUnwrapAllEmbeddedStructs()),
+		Name:  tableName,
+		Title: "Cloudwatch Metric Statistics custom query",
+		Description: `https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html
+To sync this table you must set the 'use_paid_apis' option to 'true' and set the relevant 'table_options' entry in the AWS provider configuration.
+`,
+		Resolver:  fetchCloudwatchMetricStatisticsCustom,
+		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "monitoring"),
+		Transform: transformers.TransformWithStruct(&statOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -26,7 +29,7 @@ func MetricStatisticsCustom() *schema.Table {
 	}
 }
 
-func fetchCloudwatchMetricStatsCustom(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchCloudwatchMetricStatisticsCustom(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 
 	var allConfigs []tableoptions.CloudwatchGetMetricStatisticsInput
@@ -35,8 +38,7 @@ func fetchCloudwatchMetricStatsCustom(ctx context.Context, meta schema.ClientMet
 	}
 
 	if len(allConfigs) > 0 && !cl.Spec.UsePaidAPIs {
-		cl.Logger().Info().Msg("skipping `aws_cloudwatch_metric_stats_custom` because `use_paid_apis` is set to false")
-		return nil
+		return client.ErrPaidAPIsNotEnabled
 	}
 
 	svc := cl.Services().Cloudwatch

@@ -3,13 +3,14 @@
 This table shows data for Cloudwatch Metrics.
 
 https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_ListMetrics.html
+To sync this table you must set the 'use_paid_apis' option to 'true' and set the relevant 'table_options' entry in the AWS provider configuration.
 
 The primary key for this table is **_cq_id**.
 
 ## Relations
 
 The following tables depend on aws_cloudwatch_metrics:
-  - [aws_cloudwatch_metric_stats](aws_cloudwatch_metric_stats)
+  - [aws_cloudwatch_metric_statistics](aws_cloudwatch_metric_statistics)
 
 ## Columns
 

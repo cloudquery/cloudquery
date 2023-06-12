@@ -64,6 +64,8 @@ var errUnknownRegion = func(region string) error {
 }
 var errRetrievingCredentials = errors.New("error retrieving AWS credentials (see logs for details). Please verify your credentials and try again")
 
+var ErrPaidAPIsNotEnabled = errors.New("not fetching resource because `use_paid_apis` is set to false")
+
 func (s *ServicesManager) ServicesByPartitionAccount(partition, accountId string) *Services {
 	return s.services[partition][accountId]
 }

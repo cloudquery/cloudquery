@@ -22,11 +22,13 @@ type metricOutput struct {
 func Metrics() *schema.Table {
 	tableName := "aws_cloudwatch_metrics"
 	return &schema.Table{
-		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_ListMetrics.html`,
-		Resolver:    fetchCloudwatchMetrics,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "monitoring"),
-		Transform:   transformers.TransformWithStruct(&metricOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithUnwrapAllEmbeddedStructs()),
+		Name: tableName,
+		Description: `https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_ListMetrics.html
+To sync this table you must set the 'use_paid_apis' option to 'true' and set the relevant 'table_options' entry in the AWS provider configuration.
+`,
+		Resolver:  fetchCloudwatchMetrics,
+		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "monitoring"),
+		Transform: transformers.TransformWithStruct(&metricOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -41,8 +43,7 @@ func fetchCloudwatchMetrics(ctx context.Context, meta schema.ClientMeta, parent 
 	cl := meta.(*client.Client)
 
 	if len(cl.Spec.TableOptions.CloudwatchMetrics) > 0 && !cl.Spec.UsePaidAPIs {
-		cl.Logger().Info().Msg("skipping `aws_cloudwatch_metrics` because `use_paid_apis` is set to false")
-		return nil
+		return client.ErrPaidAPIsNotEnabled
 	}
 
 	svc := cl.Services().Cloudwatch

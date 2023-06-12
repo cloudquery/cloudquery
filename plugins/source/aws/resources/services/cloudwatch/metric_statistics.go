@@ -2,6 +2,7 @@ package cloudwatch
 
 import (
 	"context"
+	"errors"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
 
@@ -17,13 +18,15 @@ type statOutput struct {
 }
 
 func metricStatistics() *schema.Table {
-	tableName := "aws_cloudwatch_metric_stats"
+	tableName := "aws_cloudwatch_metric_statistics"
 	return &schema.Table{
-		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html`,
-		Resolver:    fetchCloudwatchMetricStats,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "monitoring"),
-		Transform:   transformers.TransformWithStruct(&statOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithUnwrapAllEmbeddedStructs()),
+		Name: tableName,
+		Description: `https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html
+To sync this table you must set the 'use_paid_apis' option to 'true' and set the relevant 'table_options' entry in the AWS provider configuration.
+`,
+		Resolver:  fetchCloudwatchMetricStatistics,
+		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "monitoring"),
+		Transform: transformers.TransformWithStruct(&statOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -31,13 +34,12 @@ func metricStatistics() *schema.Table {
 	}
 }
 
-func fetchCloudwatchMetricStats(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchCloudwatchMetricStatistics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	item := parent.Item.(metricOutput)
 
 	if len(item.getStatsInputs) == 0 {
-		cl.Logger().Info().Msg("skipping `aws_cloudwatch_metric_stats` because `get_metric_statistics` is not specified in `table_options`")
-		return nil
+		return errors.New("skipping `aws_cloudwatch_metric_statistics` because `get_metric_statistics` is not specified in `table_options`")
 	}
 
 	svc := cl.Services().Cloudwatch
