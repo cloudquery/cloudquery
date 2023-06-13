@@ -115,7 +115,7 @@ func (c *Client) copyFromFile(ctx context.Context, tableName string, fileName st
 }
 
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, records []arrow.Record) (err error) {
-	tmpFile, err := c.writeTMPFile(table, records)
+	tmpFile, err := writeTMPFile(table, records)
 	if err != nil {
 		return err
 	}
@@ -152,7 +152,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 	return c.upsert(ctx, tmpTableName, table)
 }
 
-func (c *Client) writeTMPFile(table *schema.Table, records []arrow.Record) (fileName string, err error) {
+func writeTMPFile(table *schema.Table, records []arrow.Record) (fileName string, err error) {
 	sc := transformSchemaForWriting(table.ToArrowSchema())
 
 	// create temp file
