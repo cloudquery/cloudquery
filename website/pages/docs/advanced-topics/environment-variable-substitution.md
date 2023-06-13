@@ -1,3 +1,8 @@
+---
+title: Environment and File Variable Substitution
+description: CloudQuery configuration .yml files support substitution of values from environment variables. This allows you to keep sensitive data (like passwords & tokens) or variable data (that you want to change without touching CloudQuery configuration) outside the configuration file and load them from environment variables at run-time.
+---
+
 # Environment and file variable substitution
 
 CloudQuery configuration `.yml` files support substitution of values
