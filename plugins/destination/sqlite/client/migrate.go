@@ -27,6 +27,10 @@ type tableInfo struct {
 	columns []columnInfo
 }
 
+func identifier(str string) string {
+	return `"` + str + `"`
+}
+
 func (c *Client) sqliteTables(tables schema.Tables) (schema.Tables, error) {
 	var schemaTables schema.Tables
 	for _, table := range tables {
@@ -174,7 +178,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 }
 
 func (c *Client) recreateTable(table *schema.Table) error {
-	sql := "drop table if exists \"" + table.Name + "\""
+	sql := "drop table if exists " + identifier(table.Name)
 	if _, err := c.db.Exec(sql); err != nil {
 		return fmt.Errorf("failed to drop table %s: %w", table.Name, err)
 	}
@@ -182,7 +186,7 @@ func (c *Client) recreateTable(table *schema.Table) error {
 }
 
 func (c *Client) addColumn(tableName string, columnName string, columnType string) error {
-	sql := "alter table \"" + tableName + "\" add column \"" + columnName + "\" \"" + columnType + `"`
+	sql := "alter table " + identifier(tableName) + " add column " + identifier(columnName) + " " + identifier(columnType)
 	if _, err := c.db.Exec(sql); err != nil {
 		return fmt.Errorf("failed to add column %s on table %s: %w", columnName, tableName, err)
 	}
@@ -192,9 +196,8 @@ func (c *Client) addColumn(tableName string, columnName string, columnType strin
 func (c *Client) createTableIfNotExist(table *schema.Table) error {
 	var sb strings.Builder
 
-	// TODO sanitize table.Name
 	sb.WriteString("CREATE TABLE IF NOT EXISTS ")
-	sb.WriteString(`"` + table.Name + `"`)
+	sb.WriteString(identifier(table.Name))
 	sb.WriteString(" (")
 	totalColumns := len(table.Columns)
 
@@ -205,8 +208,7 @@ func (c *Client) createTableIfNotExist(table *schema.Table) error {
 			c.logger.Warn().Str("table", table.Name).Str("column", col.Name).Msg("Column type is not supported, skipping")
 			continue
 		}
-		// TODO: sanitize column name
-		fieldDef := `"` + col.Name + `" ` + sqlType
+		fieldDef := identifier(col.Name) + ` ` + sqlType
 		if col.NotNull {
 			fieldDef += " NOT NULL"
 		}
@@ -216,15 +218,15 @@ func (c *Client) createTableIfNotExist(table *schema.Table) error {
 		}
 
 		if c.enabledPks() && col.PrimaryKey {
-			primaryKeys = append(primaryKeys, `"`+col.Name+`"`)
+			primaryKeys = append(primaryKeys, identifier(col.Name))
 		}
 	}
 
 	if len(primaryKeys) > 0 {
 		// add composite PK constraint on primary key columns
 		sb.WriteString(", CONSTRAINT ")
-		sb.WriteString(table.Name)
-		sb.WriteString("_cqpk PRIMARY KEY (")
+		sb.WriteString(identifier(table.Name + "_cqpk"))
+		sb.WriteString(" PRIMARY KEY (")
 		sb.WriteString(strings.Join(primaryKeys, ","))
 		sb.WriteString(")")
 	}
