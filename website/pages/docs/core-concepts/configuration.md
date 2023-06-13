@@ -1,3 +1,8 @@
+---
+title: CloudQuery Plugin Configuration
+description: CloudQuery syncs fetch data from cloud accounts (sources) and writes it to one or more destinations. A sync requires at least one source- and one destination configuration. Configuration files are specified in YAML format and can be either split across multiple files or combined.
+---
+
 # CloudQuery Plugin Configuration
 
 A CloudQuery sync fetches data from cloud accounts (sources) and writes it to one or more destinations. 

@@ -1,5 +1,6 @@
 ---
 title: Security
+description: This section will list key security points regarding CloudQuery. Make sure you follow best practices if you decide to "host it yourself."
 ---
 
 # Security
@@ -13,4 +14,4 @@ This section will list key security points regarding CloudQuery. Make sure you f
 
 ## CloudQuery Database
 
-Even though the CloudQuery database contains only configuration and meta-data, you should protect it and keep it secure with correct access and permissions.
+Even though in most cases the CloudQuery database contains only configuration and meta-data, you should protect it and keep it secure with correct access and permissions.
