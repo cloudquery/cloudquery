@@ -51,9 +51,9 @@ func (c *Client) upsert(ctx context.Context, tmpTableName string, table *schema.
 	var sb strings.Builder
 	sb.WriteString("INSERT INTO ")
 	sb.WriteString(table.Name)
-	sb.WriteString("(" + strings.Join(table.Columns.Names(), ", ") + ")")
+	sb.WriteString("(" + strings.Join(sanitized(table.Columns.Names()), ", ") + ")")
 	sb.WriteString(" SELECT ")
-	sb.WriteString(strings.Join(table.Columns.Names(), ", "))
+	sb.WriteString(strings.Join(sanitized(table.Columns.Names()), ", "))
 	sb.WriteString(" FROM ")
 	sb.WriteString(tmpTableName)
 	sb.WriteString(" ON CONFLICT (" + strings.Join(table.PrimaryKeys(), ", ") + ")")
@@ -101,17 +101,10 @@ func (c *Client) deleteByPK(ctx context.Context, tmpTableName string, table *sch
 	return c.exec(ctx, sb.String())
 }
 
-func (c *Client) copyFromFile(ctx context.Context, tableName string, fileName string, sc *arrow.Schema) error {
-	var sb strings.Builder
-	sb.WriteString("copy " + tableName + "(")
-	for i, col := range sc.Fields() {
-		if i > 0 {
-			sb.WriteString(", ")
-		}
-		sb.WriteString(sanitizeID(col.Name))
-	}
-	sb.WriteString(") from '" + fileName + "' (FORMAT PARQUET)")
-	return c.exec(ctx, sb.String())
+func (c *Client) copyFromFile(ctx context.Context, tableName string, fileName string, table *schema.Table) error {
+	return c.exec(ctx, "copy "+tableName+
+		"("+strings.Join(sanitized(table.Columns.Names()), ", ")+
+		") from '"+fileName+"' (FORMAT PARQUET)")
 }
 
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, records []arrow.Record) (err error) {
@@ -121,9 +114,8 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 	}
 	defer os.Remove(tmpFile)
 
-	sc := transformSchemaForWriting(table.ToArrowSchema())
 	if !c.enabledPks() || len(table.PrimaryKeys()) == 0 {
-		return c.copyFromFile(ctx, table.Name, tmpFile, sc)
+		return c.copyFromFile(ctx, table.Name, tmpFile, table)
 	}
 
 	tmpTableName := table.Name + strings.ReplaceAll(uuid.New().String(), "-", "_")
@@ -137,7 +129,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 			err = e
 		}
 	}()
-	if err := c.copyFromFile(ctx, tmpTableName, tmpFile, sc); err != nil {
+	if err := c.copyFromFile(ctx, tmpTableName, tmpFile, table); err != nil {
 		return fmt.Errorf("failed to copy from file %s: %w", tmpFile, err)
 	}
 
@@ -195,9 +187,9 @@ func (c *Client) deleteInsert(ctx context.Context, tmpTableName string, table *s
 	sb := new(strings.Builder)
 	sb.WriteString("INSERT INTO ")
 	sb.WriteString(table.Name)
-	sb.WriteString("(" + strings.Join(table.Columns.Names(), ", ") + ")")
+	sb.WriteString("(" + strings.Join(sanitized(table.Columns.Names()), ", ") + ")")
 	sb.WriteString(" SELECT ")
-	sb.WriteString(strings.Join(table.Columns.Names(), ", "))
+	sb.WriteString(strings.Join(sanitized(table.Columns.Names()), ", "))
 	sb.WriteString(" FROM ")
 	sb.WriteString(tmpTableName)
 	sb.WriteString(" ON CONFLICT DO NOTHING")
