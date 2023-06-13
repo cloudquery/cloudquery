@@ -18,11 +18,6 @@ func buildProtectedResourcesMock(t *testing.T, ctrl *gomock.Controller) client.S
 	if err := faker.FakeObject(&pr); err != nil {
 		t.Fatal(err)
 	}
-
-	var dpo backup.DescribeProtectedResourceOutput
-	if err := faker.FakeObject(&dpo); err != nil {
-		t.Fatal(err)
-	}
 	m.EXPECT().ListProtectedResources(
 		gomock.Any(),
 		gomock.Any(),
@@ -31,15 +26,6 @@ func buildProtectedResourcesMock(t *testing.T, ctrl *gomock.Controller) client.S
 		&backup.ListProtectedResourcesOutput{
 			Results: []types.ProtectedResource{pr},
 		},
-		nil,
-	)
-
-	m.EXPECT().DescribeProtectedResource(
-		gomock.Any(),
-		gomock.Any(),
-		gomock.Any(),
-	).Return(
-		&dpo,
 		nil,
 	)
 

@@ -2,7 +2,7 @@
 
 This table shows data for Backup Protected Resources.
 
-https://docs.aws.amazon.com/aws-backup/latest/devguide/API_DescribeProtectedResource.html
+https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListProtectedResources.html
 
 The primary key for this table is **arn**.
 
@@ -20,4 +20,3 @@ The primary key for this table is **arn**.
 |last_backup_time|`timestamp[us, tz=UTC]`|
 |resource_arn|`utf8`|
 |resource_type|`utf8`|
-|result_metadata|`json`|

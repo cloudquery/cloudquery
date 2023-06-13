@@ -16,7 +16,7 @@ func ProtectedResources() *schema.Table {
 	tableName := "aws_backup_protected_resources"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/aws-backup/latest/devguide/API_DescribeProtectedResource.html`,
+		Description: `https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListProtectedResources.html`,
 		Resolver:    listResources,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "backup"),
 		Transform:   transformers.TransformWithStruct(&types.ProtectedResource{}),
