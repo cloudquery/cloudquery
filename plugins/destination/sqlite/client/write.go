@@ -36,12 +36,12 @@ func (*Client) insert(sc *arrow.Schema) string {
 		panic("missing table name in schema metadata")
 	}
 	sb.WriteString("insert into ")
-	sb.WriteString(`"` + tableName + `"`)
+	sb.WriteString(identifier(tableName))
 	sb.WriteString(" (")
 	columns := sc.Fields()
 	columnsLen := len(columns)
 	for i, c := range columns {
-		sb.WriteString(`"` + c.Name + `"`)
+		sb.WriteString(identifier(c.Name))
 		if i < columnsLen-1 {
 			sb.WriteString(",")
 		} else {
@@ -66,12 +66,12 @@ func (*Client) upsert(sc *arrow.Schema) string {
 		panic("missing table name in schema metadata")
 	}
 	sb.WriteString("insert or replace into ")
-	sb.WriteString(`"` + tableName + `"`)
+	sb.WriteString(identifier(tableName))
 	sb.WriteString(" (")
 	columns := sc.Fields()
 	columnsLen := len(columns)
 	for i, c := range columns {
-		sb.WriteString(`"` + c.Name + `"`)
+		sb.WriteString(identifier(c.Name))
 		if i < columnsLen-1 {
 			sb.WriteString(",")
 		} else {
