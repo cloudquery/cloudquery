@@ -166,7 +166,7 @@ func writeTMPFile(table *schema.Table, records []arrow.Record) (fileName string,
 	// prep file writer
 	fw, err := pqarrow.NewFileWriter(sc, f,
 		parquet.NewWriterProperties(
-			parquet.WithVersion(parquet.V2_4),
+			parquet.WithVersion(parquet.V2_LATEST),       // use latest
 			parquet.WithMaxRowGroupLength(128*1024*1024), // 128M
 		),
 		pqarrow.NewArrowWriterProperties(pqarrow.WithStoreSchema()),
