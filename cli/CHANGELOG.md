@@ -5,6 +5,14 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.2](https://github.com/cloudquery/cloudquery/compare/cli-v3.5.1...cli-v3.5.2) (2023-06-13)
+
+
+### Bug Fixes
+
+* **cli:** Print full destinations string during sync ([#11437](https://github.com/cloudquery/cloudquery/issues/11437)) ([29e8503](https://github.com/cloudquery/cloudquery/commit/29e85031ab8208d28f2b26d0cc84746de32b0bbc))
+* **cli:** Propagate destinations errors ([#11445](https://github.com/cloudquery/cloudquery/issues/11445)) ([fcc2289](https://github.com/cloudquery/cloudquery/commit/fcc22898489c89f65e17860b75f9f90b85b15eba))
+
 ## [3.5.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.5.0...cli-v3.5.1) (2023-06-06)
 
 
