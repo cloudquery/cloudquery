@@ -49,20 +49,33 @@ func dtContainsList(dt arrow.DataType) bool {
 
 func (c *Client) upsert(ctx context.Context, tmpTableName string, table *schema.Table) error {
 	var sb strings.Builder
-	sb.WriteString("insert into " + table.Name + " select * from " + tmpTableName + " on conflict (")
-	sb.WriteString(strings.Join(table.PrimaryKeys(), ", "))
-	sb.WriteString(" ) do update set ")
-	indices := nonPkIndices(table)
-	for i, index := range indices {
-		if i > 0 {
+	sb.WriteString("INSERT INTO ")
+	sb.WriteString(table.Name)
+	sb.WriteString("(" + strings.Join(sanitized(table.Columns.Names()), ", ") + ")")
+	sb.WriteString(" SELECT ")
+	sb.WriteString(strings.Join(sanitized(table.Columns.Names()), ", "))
+	sb.WriteString(" FROM ")
+	sb.WriteString(tmpTableName)
+	sb.WriteString(" ON CONFLICT (" + strings.Join(table.PrimaryKeys(), ", ") + ")")
+	sb.WriteString(" DO UPDATE SET ")
+
+	written := 0
+	for _, index := range nonPkIndices(table) {
+		col := table.Columns[index]
+		if col.Unique {
+			// we skip this stuff, as unique constraint can't be updated by DuckDB
+			continue
+		}
+		if written > 0 {
 			sb.WriteString(", ")
 		}
-		col := table.Columns[index]
 		sb.WriteString(col.Name)
 		sb.WriteString(" = excluded.")
 		sb.WriteString(col.Name)
+		written++
 	}
 	query := sb.String()
+
 	// per https://duckdb.org/docs/sql/indexes#over-eager-unique-constraint-checking we might need some retries
 	// as the upsert for tables with PKs is transformed into delete + insert internally
 	return backoff.Retry(
@@ -88,54 +101,21 @@ func (c *Client) deleteByPK(ctx context.Context, tmpTableName string, table *sch
 	return c.exec(ctx, sb.String())
 }
 
-func (c *Client) copyFromFile(ctx context.Context, tableName string, fileName string, sc *arrow.Schema) error {
-	var sb strings.Builder
-	sb.WriteString("copy " + tableName + "(")
-	for i, col := range sc.Fields() {
-		if i > 0 {
-			sb.WriteString(", ")
-		}
-		sb.WriteString(sanitizeID(col.Name))
-	}
-	sb.WriteString(") from '" + fileName + "' (FORMAT PARQUET)")
-	return c.exec(ctx, sb.String())
+func (c *Client) copyFromFile(ctx context.Context, tableName string, fileName string, table *schema.Table) error {
+	return c.exec(ctx, "copy "+tableName+
+		"("+strings.Join(sanitized(table.Columns.Names()), ", ")+
+		") from '"+fileName+"' (FORMAT PARQUET)")
 }
 
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, records []arrow.Record) (err error) {
-	f, err := os.CreateTemp("", fmt.Sprintf("%s-*.parquet", table.Name))
+	tmpFile, err := writeTMPFile(table, records)
 	if err != nil {
 		return err
 	}
-	defer os.Remove(f.Name())
-	defer f.Close()
-	sc := transformSchemaForWriting(table.ToArrowSchema())
-
-	props := parquet.NewWriterProperties(
-		parquet.WithVersion(parquet.V2_4),
-		parquet.WithMaxRowGroupLength(128*1024*1024), // 128M
-	)
-	arrprops := pqarrow.NewArrowWriterProperties(
-		pqarrow.WithStoreSchema(),
-	)
-	fw, err := pqarrow.NewFileWriter(sc, f, props, arrprops)
-	if err != nil {
-		return err
-	}
-	defer fw.Close()
-
-	for _, r := range records {
-		transformedRec := transformRecord(sc, r)
-		err := fw.Write(transformedRec)
-		if err != nil {
-			return err
-		}
-	}
-	if err := fw.Close(); err != nil {
-		return err
-	}
+	defer os.Remove(tmpFile)
 
 	if !c.enabledPks() || len(table.PrimaryKeys()) == 0 {
-		return c.copyFromFile(ctx, table.Name, f.Name(), sc)
+		return c.copyFromFile(ctx, table.Name, tmpFile, table)
 	}
 
 	tmpTableName := table.Name + strings.ReplaceAll(uuid.New().String(), "-", "_")
@@ -149,8 +129,8 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 			err = e
 		}
 	}()
-	if err := c.copyFromFile(ctx, tmpTableName, f.Name(), sc); err != nil {
-		return fmt.Errorf("failed to copy from file %s: %w", f.Name(), err)
+	if err := c.copyFromFile(ctx, tmpTableName, tmpFile, table); err != nil {
+		return fmt.Errorf("failed to copy from file %s: %w", tmpFile, err)
 	}
 
 	// At time of writing (March 2023), duckdb does not support updating list columns.
@@ -164,15 +144,61 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 	return c.upsert(ctx, tmpTableName, table)
 }
 
+func writeTMPFile(table *schema.Table, records []arrow.Record) (fileName string, err error) {
+	sc := transformSchemaForWriting(table.ToArrowSchema())
+
+	// create temp file
+	f, err := os.CreateTemp("", fmt.Sprintf("%s-*.parquet", table.Name))
+	if err != nil {
+		return "", err
+	}
+	defer f.Close() // we don't care here, as the happy-path will actually check the error
+	fileName = f.Name()
+
+	// prep file writer
+	fw, err := pqarrow.NewFileWriter(sc, f,
+		parquet.NewWriterProperties(
+			parquet.WithVersion(parquet.V2_LATEST),       // use latest
+			parquet.WithMaxRowGroupLength(128*1024*1024), // 128M
+		),
+		pqarrow.NewArrowWriterProperties(pqarrow.WithStoreSchema()),
+	)
+	if err != nil {
+		return "", err
+	}
+	defer fw.Close() // we don't care here either as the happy path will check the error
+
+	// write records
+	for _, r := range records {
+		if err = fw.Write(transformRecord(sc, r)); err != nil {
+			return "", err
+		}
+	}
+
+	// close file writer (will close the underlying file, too)
+	return fileName, fw.Close()
+}
+
 func (c *Client) deleteInsert(ctx context.Context, tmpTableName string, table *schema.Table) error {
 	if err := c.deleteByPK(ctx, tmpTableName, table); err != nil {
 		return err
 	}
 
+	sb := new(strings.Builder)
+	sb.WriteString("INSERT INTO ")
+	sb.WriteString(table.Name)
+	sb.WriteString("(" + strings.Join(sanitized(table.Columns.Names()), ", ") + ")")
+	sb.WriteString(" SELECT ")
+	sb.WriteString(strings.Join(sanitized(table.Columns.Names()), ", "))
+	sb.WriteString(" FROM ")
+	sb.WriteString(tmpTableName)
+	sb.WriteString(" ON CONFLICT DO NOTHING")
+	query := sb.String()
+
 	// per https://duckdb.org/docs/sql/indexes#over-eager-unique-constraint-checking we might need to retry
 	return backoff.Retry(
 		func() error {
-			return c.exec(ctx, "insert into "+table.Name+" from "+tmpTableName)
+			return c.exec(ctx, query)
 		},
 		backoff.WithContext(backoff.WithMaxRetries(backoff.NewConstantBackOff(50*time.Millisecond), 3), ctx),
 	)
