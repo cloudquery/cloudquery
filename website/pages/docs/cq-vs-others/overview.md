@@ -1,3 +1,8 @@
+---
+title: CloudQuery Vs Others
+description: CloudQuery is an open source ELT framework that can be used as an alternative to Fivetran, Airbyte, and more. CloudQuery is built for performance, and is easy to deploy and maintain.
+---
+
 # Overview
 
 CloudQuery is an [open source](https://github.com/cloudquery/cloudquery) high-performance data integration platform for developers, data teams, security teams and infrastructure teams.
