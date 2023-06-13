@@ -72,7 +72,7 @@ func fetchCloudwatchMetricStatistics(ctx context.Context, meta schema.ClientMeta
 	item := parent.Item.(metricOutput)
 
 	if len(item.getStatsInputs) == 0 {
-		return errors.New("skipping `aws_cloudwatch_metric_statistics` because `get_metric_statistics` is not specified in `table_options`")
+		return errors.New("skipping `aws_alpha_cloudwatch_metric_statistics` because `get_metric_statistics` is not specified in `table_options`")
 	}
 
 	svc := cl.Services().Cloudwatch

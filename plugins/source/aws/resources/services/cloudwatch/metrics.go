@@ -2,6 +2,7 @@ package cloudwatch
 
 import (
 	"context"
+	"errors"
 	"strconv"
 
 	"github.com/apache/arrow/go/v13/arrow"
@@ -64,6 +65,10 @@ func fetchCloudwatchMetrics(ctx context.Context, meta schema.ClientMeta, parent 
 
 	if len(cl.Spec.TableOptions.CloudwatchMetrics) > 0 && !cl.Spec.UsePaidAPIs {
 		return client.ErrPaidAPIsNotEnabled
+	}
+
+	if len(cl.Spec.TableOptions.CloudwatchMetrics) == 0 {
+		return errors.New("skipping `aws_alpha_cloudwatch_metrics` because `list_metrics` is not specified in `table_options`")
 	}
 
 	svc := cl.Services().Cloudwatch
