@@ -71,10 +71,8 @@ const theme: DocsThemeConfig = {
         <meta property="og:type" content="website" />
         <meta property="og:locale" content="en_US" />
         <meta property="og:site_name" content="CloudQuery" />
-        {(frontMatter.title) ?
-            <meta property="og:title" content={frontMatter.title} />
-            : null
-        }
+        <meta property="og:title" content={frontMatter.title || "CloudQuery"} />
+        <meta property="og:description" content={frontMatter.description || "The open source high performance data integration platform built for developers."} />
         {(frontMatter.image) ?
               <meta property="og:image" content={frontMatter.image} />
           :

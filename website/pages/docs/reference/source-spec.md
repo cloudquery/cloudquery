@@ -1,3 +1,8 @@
+---
+title: Source Spec Reference
+description: Reference for the source spec CloudQuery configuration object.
+---
+
 # Source Spec Reference
 
 Following are available options for the top level source plugin `spec` object.

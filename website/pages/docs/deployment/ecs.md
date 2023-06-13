@@ -1,5 +1,6 @@
 ---
 title: Running CloudQuery on Amazon ECS
+description: In this tutorial we will be deploying CloudQuery on AWS ECS using Fargate. You will be using the AWS CLI to create the required resources. You can also use the AWS Management Console to create the resources. At the end of the tutorial you will have a CloudQuery instance running on AWS ECS that will collect data from your AWS account and store it in an S3 bucket. You can then query the data using Athena.
 tag: tutorial
 date: 2023/03/03
 ---

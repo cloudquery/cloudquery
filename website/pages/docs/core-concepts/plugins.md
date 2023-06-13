@@ -1,3 +1,8 @@
+---
+title: Plugins
+description: CloudQuery has a pluggable architecture and relies on two types of plugins: source plugins and destination plugins.
+---
+
 # Plugins
 
 CloudQuery has a pluggable architecture and relies on two types of plugins:

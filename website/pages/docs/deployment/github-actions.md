@@ -1,5 +1,6 @@
 ---
 title: Running CloudQuery with GitHub Actions
+description: Learn how to use GitHub Actions to run CloudQuery syncs.
 tag: tutorial
 date: 2022/10/25
 ---

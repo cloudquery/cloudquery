@@ -1,3 +1,8 @@
+---
+title: What is CIEM?
+description: Learn about Cloud Infrastructure Entitlement Management.
+---
+
 # What is CIEM?
 
 As more and more businesses move their operations to the cloud, the need for robust security measures has become increasingly apparent. One of the most critical aspects of cloud security is managing access to cloud resources. That's where **Cloud Infrastructure Entitlement Management** (CIEM) comes in.

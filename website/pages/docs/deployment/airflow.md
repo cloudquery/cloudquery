@@ -1,5 +1,6 @@
 ---
 title: Orchestrating CloudQuery Syncs with Airflow and Kubernetes
+description: Learn how to use Apache Airflow to orchestrate CloudQuery syncs.
 tag: tutorial
 date: 2023/04/26
 ---

@@ -1,5 +1,6 @@
 ---
 title: Telemetry
+description: Information about telemetry data collected by the CloudQuery CLI.
 ---
 
 # Telemetry

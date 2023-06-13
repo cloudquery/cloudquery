@@ -1,3 +1,8 @@
+---
+title: Running Plugins Locally
+description: Learn how to run custom-built or downloaded CloudQuery plugins locally.
+---
+
 # Running Plugins Locally
 
 Plugins are normally invoked as separate processes inside CloudQuery CLI. However, for development purposes, it is possible to run plugins directly from the command line.

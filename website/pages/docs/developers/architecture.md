@@ -1,3 +1,8 @@
+---
+title: CloudQuery Architecture
+description: Learn about the architecture of CloudQuery.
+---
+
 # Architecture
 
 This is an advanced section describing the inner workings and design of CloudQuery. \(It might be useful when developing new plugins\).

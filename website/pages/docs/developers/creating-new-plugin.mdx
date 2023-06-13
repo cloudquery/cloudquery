@@ -1,3 +1,10 @@
+---
+title: Creating a New Plugin
+description: Learn how to write a new CloudQuery plugin from scratch.
+image: "https://i3.ytimg.com/vi/3Ka_Ob8E6P8/maxresdefault.jpg"
+video: "https://youtu.be/3Ka_Ob8E6P8"
+---
+
 # Creating a New Plugin
 
 This guide will help you write your own CloudQuery source plugin. CloudQuery's modular architecture means that a source plugin can be used to fetch data from any third-party API, and then be combined with a destination plugin to insert data into any supported destination. 
@@ -5,6 +12,9 @@ This guide will help you write your own CloudQuery source plugin. CloudQuery's m
 This guide assumes that you are somewhat familiar with CloudQuery. If you are not, we recommend starting by reading the [Quickstart guide](/docs/quickstart) and playing around with the CloudQuery CLI a bit first.
 
 Though you by no means need to be an expert, you will also need some familiarity with Go. The official [Go Tutorial](https://go.dev/doc/tutorial/getting-started) and [A Tour of Go](https://go.dev/tour/welcome/1) are great resources to learn the basics and prepare your environment.
+
+<br/>
+<iframe width="100%" height="480" src="https://www.youtube.com/embed/3Ka_Ob8E6P8"></iframe>
 
 ## Core Concepts
 
@@ -359,10 +369,6 @@ func fetchSampleTable(ctx context.Context, meta schema.ClientMeta, parent *schem
 ``` 
 
 The [GitHub plugin multiplexers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/client/multiplexer.go) can serve as a good example of how to implement and use multiplexing. In that case, some tables multiplex on organization, while others multiplex on organization and repository combined.
-
-<!-- TODO
-## Testing Strategies
--->
 
 ## Releasing and Deploying Your Plugin
 

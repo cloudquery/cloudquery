@@ -1,3 +1,8 @@
+---
+title: Destination Spec Reference
+description: Reference for the destination spec CloudQuery configuration object.
+---
+
 # Destination Spec Reference
 
 This goes through all the available options for the destination plugin `spec` object.

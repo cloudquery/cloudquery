@@ -1,5 +1,6 @@
 ---
 title: Troubleshooting
+description: Troubleshooting common issues with CloudQuery.
 ---
 
 # Troubleshooting

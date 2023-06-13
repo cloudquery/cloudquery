@@ -1,3 +1,8 @@
+---
+title: Managing Versions
+description: CloudQuery plugins are versioned independently of the CLI. Releases happen on a weekly schedule, using semantic versioning to indicate breaking schema changes.
+---
+
 # Managing Versions
 
 ## Managing CLI Versions

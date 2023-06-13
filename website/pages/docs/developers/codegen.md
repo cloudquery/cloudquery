@@ -1,3 +1,8 @@
+---
+title: Codegen
+description: Learn how to generate code for CloudQuery plugins.
+---
+
 # Generating resources
 
 Adding resources to a plugins can sometimes be a tedious task, some resources can have more than hundreds of fields and relations, and adding them all can
