@@ -14,7 +14,6 @@ func Plugin() *source.Plugin {
 		nil,
 		client.Configure,
 		source.WithDynamicTableOption(getDynamicTables),
-		source.WithNoInternalColumns(),
 		source.WithUnmanaged(),
 	)
 }
