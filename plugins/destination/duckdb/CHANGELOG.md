@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v4.0.1...plugins-destination-duckdb-v4.0.2) (2023-06-13)
+
+
+### Bug Fixes
+
+* Don't update `UNIQUE` columns (DuckDB contraint) ([#11516](https://github.com/cloudquery/cloudquery/issues/11516)) ([697a9d9](https://github.com/cloudquery/cloudquery/commit/697a9d9a19fe05e5f93d34e45497fbaf3dab1b00))
+
 ## [4.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v4.0.0...plugins-destination-duckdb-v4.0.1) (2023-06-13)
 
 
