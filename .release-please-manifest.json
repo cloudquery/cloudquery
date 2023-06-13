@@ -81,7 +81,7 @@
   "plugins/destination/mssql+FILLER": "0.0.0",
   "plugins/source/plausible": "2.0.1",
   "plugins/source/plausible+FILLER": "0.0.0",
-  "plugins/source/shopify": "2.0.1",
+  "plugins/source/shopify": "2.0.2",
   "plugins/source/shopify+FILLER": "0.0.0",
   "plugins/source/stripe": "2.0.1",
   "plugins/source/stripe+FILLER": "0.0.0",
