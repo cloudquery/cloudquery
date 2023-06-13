@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	readSQL = `SELECT %s FROM "%s" WHERE _cq_source_name = $1 order by _cq_sync_time asc`
+	readSQL = `SELECT %s FROM %s WHERE _cq_source_name = $1 order by _cq_sync_time asc`
 )
 
 func (*Client) createResultsArray(table *arrow.Schema) []any {
@@ -151,10 +151,10 @@ func reverseTransform(sc *arrow.Schema, values []any) (arrow.Record, error) {
 func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
 	colNames := make([]string, len(table.Columns))
 	for i, col := range table.Columns {
-		colNames[i] = `"` + col.Name + `"`
+		colNames[i] = identifier(col.Name)
 	}
 	cols := strings.Join(colNames, ", ")
-	rows, err := c.db.Query(fmt.Sprintf(readSQL, cols, table.Name), sourceName)
+	rows, err := c.db.Query(fmt.Sprintf(readSQL, cols, identifier(table.Name)), sourceName)
 	if err != nil {
 		return err
 	}
