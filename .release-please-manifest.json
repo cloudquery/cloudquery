@@ -47,7 +47,7 @@
   "plugins/source/pagerduty+FILLER": "0.0.0",
   "plugins/destination/mongodb": "2.1.1",
   "plugins/destination/mongodb+FILLER": "0.0.0",
-  "plugins/source/gitlab": "4.0.1",
+  "plugins/source/gitlab": "4.0.2",
   "plugins/source/gitlab+FILLER": "0.0.0",
   "plugins/source/azuredevops": "2.0.1",
   "plugins/source/azuredevops+FILLER": "0.0.0",
