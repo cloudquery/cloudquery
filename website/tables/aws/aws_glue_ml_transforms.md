@@ -15,30 +15,30 @@ The following tables depend on aws_glue_ml_transforms:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|tags|json|
-|schema|json|
-|created_on|timestamp[us, tz=UTC]|
-|description|utf8|
-|evaluation_metrics|json|
-|glue_version|utf8|
-|input_record_tables|json|
-|label_count|int64|
-|last_modified_on|timestamp[us, tz=UTC]|
-|max_capacity|float64|
-|max_retries|int64|
-|name|utf8|
-|number_of_workers|int64|
-|parameters|json|
-|role|utf8|
-|status|utf8|
-|timeout|int64|
-|transform_encryption|json|
-|transform_id|utf8|
-|worker_type|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|schema|`json`|
+|created_on|`timestamp[us, tz=UTC]`|
+|description|`utf8`|
+|evaluation_metrics|`json`|
+|glue_version|`utf8`|
+|input_record_tables|`json`|
+|label_count|`int64`|
+|last_modified_on|`timestamp[us, tz=UTC]`|
+|max_capacity|`float64`|
+|max_retries|`int64`|
+|name|`utf8`|
+|number_of_workers|`int64`|
+|parameters|`json`|
+|role|`utf8`|
+|status|`utf8`|
+|timeout|`int64`|
+|transform_encryption|`json`|
+|transform_id|`utf8`|
+|worker_type|`utf8`|

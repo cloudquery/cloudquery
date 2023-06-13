@@ -14,11 +14,11 @@ This table depends on [gcp_cloudiot_devices](gcp_cloudiot_devices).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|project_id (PK)|utf8|
-|device_name (PK)|utf8|
-|update_time (PK)|timestamp[us, tz=UTC]|
-|binary_data|binary|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|device_name (PK)|`utf8`|
+|update_time (PK)|`timestamp[us, tz=UTC]`|
+|binary_data|`binary`|

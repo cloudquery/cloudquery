@@ -10,12 +10,12 @@ The primary key for this table is **name**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|project_id|utf8|
-|name (PK)|utf8|
-|parent|utf8|
-|config|json|
-|state|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id|`utf8`|
+|name (PK)|`utf8`|
+|parent|`utf8`|
+|config|`json`|
+|state|`utf8`|

@@ -10,22 +10,22 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|administrative_actions|json|
-|tags|json|
-|creation_time|timestamp[us, tz=UTC]|
-|file_system_id|utf8|
-|lifecycle|utf8|
-|lifecycle_transition_reason|json|
-|name|utf8|
-|ontap_configuration|json|
-|open_zfs_configuration|json|
-|resource_arn|utf8|
-|volume_id|utf8|
-|volume_type|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|administrative_actions|`json`|
+|tags|`json`|
+|creation_time|`timestamp[us, tz=UTC]`|
+|file_system_id|`utf8`|
+|lifecycle|`utf8`|
+|lifecycle_transition_reason|`json`|
+|name|`utf8`|
+|ontap_configuration|`json`|
+|open_zfs_configuration|`json`|
+|resource_arn|`utf8`|
+|volume_id|`utf8`|
+|volume_type|`utf8`|

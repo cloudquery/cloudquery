@@ -3,8 +3,9 @@ package dns
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/tailscale/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func Searchpaths() *schema.Table {
@@ -14,19 +15,15 @@ func Searchpaths() *schema.Table {
 		Resolver:    fetchSearchpaths,
 		Columns: []schema.Column{
 			{
-				Name:     "tailnet",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveTailnet,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "tailnet",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveTailnet,
+				PrimaryKey: true,
 			},
 			{
-				Name: "name",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "name",
+				Type:       arrow.BinaryTypes.String,
+				PrimaryKey: true,
 			},
 		},
 	}

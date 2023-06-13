@@ -15,14 +15,14 @@ The following tables depend on aws_quicksight_groups:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id (PK)|utf8|
-|region (PK)|utf8|
-|tags|json|
-|arn (PK)|utf8|
-|description|utf8|
-|group_name|utf8|
-|principal_id|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
+|tags|`json`|
+|arn (PK)|`utf8`|
+|description|`utf8`|
+|group_name|`utf8`|
+|principal_id|`utf8`|

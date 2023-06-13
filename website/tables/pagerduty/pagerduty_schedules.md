@@ -10,21 +10,21 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|html_url|String|
-|type|String|
-|summary|String|
-|self|String|
-|name|String|
-|time_zone|String|
-|description|String|
-|escalation_policies|JSON|
-|users|JSON|
-|teams|JSON|
-|schedule_layers|JSON|
-|override_subschedule|JSON|
-|final_schedule|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|html_url|`utf8`|
+|type|`utf8`|
+|summary|`utf8`|
+|self|`utf8`|
+|name|`utf8`|
+|time_zone|`utf8`|
+|description|`utf8`|
+|escalation_policies|`json`|
+|users|`json`|
+|teams|`json`|
+|schedule_layers|`json`|
+|override_subschedule|`json`|
+|final_schedule|`json`|

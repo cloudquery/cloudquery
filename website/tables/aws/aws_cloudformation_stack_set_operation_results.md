@@ -15,17 +15,17 @@ This table depends on [aws_cloudformation_stack_set_operations](aws_cloudformati
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id (PK)|uuid|
-|_cq_parent_id|uuid|
-|request_account_id|utf8|
-|request_region|utf8|
-|operation_id|utf8|
-|stack_set_arn|utf8|
-|account|utf8|
-|account_gate_result|json|
-|organizational_unit_id|utf8|
-|region|utf8|
-|status|utf8|
-|status_reason|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|request_account_id|`utf8`|
+|request_region|`utf8`|
+|operation_id|`utf8`|
+|stack_set_arn|`utf8`|
+|account|`utf8`|
+|account_gate_result|`json`|
+|organizational_unit_id|`utf8`|
+|region|`utf8`|
+|status|`utf8`|
+|status_reason|`utf8`|

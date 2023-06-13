@@ -14,23 +14,23 @@ This table depends on [aws_apigatewayv2_apis](aws_apigatewayv2_apis).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id (PK)|utf8|
-|region|utf8|
-|api_arn|utf8|
-|api_id|utf8|
-|arn (PK)|utf8|
-|name|utf8|
-|authorizer_credentials_arn|utf8|
-|authorizer_id|utf8|
-|authorizer_payload_format_version|utf8|
-|authorizer_result_ttl_in_seconds|int64|
-|authorizer_type|utf8|
-|authorizer_uri|utf8|
-|enable_simple_responses|bool|
-|identity_source|list<item: utf8, nullable>|
-|identity_validation_expression|utf8|
-|jwt_configuration|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region|`utf8`|
+|api_arn|`utf8`|
+|api_id|`utf8`|
+|arn (PK)|`utf8`|
+|name|`utf8`|
+|authorizer_credentials_arn|`utf8`|
+|authorizer_id|`utf8`|
+|authorizer_payload_format_version|`utf8`|
+|authorizer_result_ttl_in_seconds|`int64`|
+|authorizer_type|`utf8`|
+|authorizer_uri|`utf8`|
+|enable_simple_responses|`bool`|
+|identity_source|`list<item: utf8, nullable>`|
+|identity_validation_expression|`utf8`|
+|jwt_configuration|`json`|

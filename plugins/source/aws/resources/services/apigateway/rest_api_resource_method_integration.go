@@ -55,11 +55,11 @@ func fetchApigatewayRestApiResourceMethodIntegration(ctx context.Context, meta s
 	method := parent.Item.(*apigateway.GetMethodOutput)
 	api := parent.Parent.Parent.Item.(types.RestApi)
 
-	c := meta.(*client.Client)
-	svc := c.Services().Apigateway
+	cl := meta.(*client.Client)
+	svc := cl.Services().Apigateway
 	config := apigateway.GetIntegrationInput{RestApiId: api.Id, ResourceId: resource.Id, HttpMethod: method.HttpMethod}
 	resp, err := svc.GetIntegration(ctx, &config, func(options *apigateway.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

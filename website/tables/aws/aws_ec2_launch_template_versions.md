@@ -14,18 +14,18 @@ This table depends on [aws_ec2_launch_templates](aws_ec2_launch_templates).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|version_number (PK)|int64|
-|create_time|timestamp[us, tz=UTC]|
-|created_by|utf8|
-|default_version|bool|
-|launch_template_data|json|
-|launch_template_id|utf8|
-|launch_template_name|utf8|
-|version_description|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|version_number (PK)|`int64`|
+|create_time|`timestamp[us, tz=UTC]`|
+|created_by|`utf8`|
+|default_version|`bool`|
+|launch_template_data|`json`|
+|launch_template_id|`utf8`|
+|launch_template_name|`utf8`|
+|version_description|`utf8`|

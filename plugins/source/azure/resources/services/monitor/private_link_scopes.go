@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func PrivateLinkScopes() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_monitor_private_link_scopes",
-		Resolver:    fetchPrivateLinkScopes,
-		Description: "https://learn.microsoft.com/en-us/rest/api/monitor/privatelinkscopes(preview)/private%20link%20scopes%20(preview)/list?tabs=HTTP#azuremonitorprivatelinkscope",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_monitor_private_link_scopes", client.Namespacemicrosoft_insights),
-		Transform:   transformers.TransformWithStruct(&armmonitor.AzureMonitorPrivateLinkScope{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_monitor_private_link_scopes",
+		Resolver:             fetchPrivateLinkScopes,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/monitor/privatelinkscopes(preview)/private%20link%20scopes%20(preview)/list?tabs=HTTP#azuremonitorprivatelinkscope",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_monitor_private_link_scopes", client.Namespacemicrosoft_insights),
+		Transform:            transformers.TransformWithStruct(&armmonitor.AzureMonitorPrivateLinkScope{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

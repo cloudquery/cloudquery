@@ -14,12 +14,12 @@ This table depends on [gcp_clouderrorreporting_error_group_stats](gcp_clouderror
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id (PK)|uuid|
-|_cq_parent_id|uuid|
-|project_id|utf8|
-|event_time|timestamp[us, tz=UTC]|
-|service_context|json|
-|message|utf8|
-|context|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id|`utf8`|
+|event_time|`timestamp[us, tz=UTC]`|
+|service_context|`json`|
+|message|`utf8`|
+|context|`json`|

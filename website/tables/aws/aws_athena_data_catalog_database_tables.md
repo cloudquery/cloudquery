@@ -14,18 +14,18 @@ This table depends on [aws_athena_data_catalog_databases](aws_athena_data_catalo
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|data_catalog_arn (PK)|utf8|
-|data_catalog_database_name (PK)|utf8|
-|name (PK)|utf8|
-|columns|json|
-|create_time|timestamp[us, tz=UTC]|
-|last_access_time|timestamp[us, tz=UTC]|
-|parameters|json|
-|partition_keys|json|
-|table_type|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|data_catalog_arn (PK)|`utf8`|
+|data_catalog_database_name (PK)|`utf8`|
+|name (PK)|`utf8`|
+|columns|`json`|
+|create_time|`timestamp[us, tz=UTC]`|
+|last_access_time|`timestamp[us, tz=UTC]`|
+|parameters|`json`|
+|partition_keys|`json`|
+|table_type|`utf8`|

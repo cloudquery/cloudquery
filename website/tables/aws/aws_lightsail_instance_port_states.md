@@ -14,17 +14,17 @@ This table depends on [aws_lightsail_instances](aws_lightsail_instances).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id (PK)|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|instance_arn|utf8|
-|cidr_list_aliases|list<item: utf8, nullable>|
-|cidrs|list<item: utf8, nullable>|
-|from_port|int64|
-|ipv6_cidrs|list<item: utf8, nullable>|
-|protocol|utf8|
-|state|utf8|
-|to_port|int64|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|instance_arn|`utf8`|
+|cidr_list_aliases|`list<item: utf8, nullable>`|
+|cidrs|`list<item: utf8, nullable>`|
+|from_port|`int64`|
+|ipv6_cidrs|`list<item: utf8, nullable>`|
+|protocol|`utf8`|
+|state|`utf8`|
+|to_port|`int64`|

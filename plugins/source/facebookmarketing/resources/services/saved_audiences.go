@@ -3,8 +3,8 @@ package services
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/facebookmarketing/client"
 	"github.com/cloudquery/cloudquery/plugins/source/facebookmarketing/rest"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func SavedAudiences() *schema.Table {

@@ -45,12 +45,12 @@ func fetchNeptuneInstances(ctx context.Context, meta schema.ClientMeta, parent *
 		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
 	}
 
-	c := meta.(*client.Client)
-	svc := c.Services().Neptune
+	cl := meta.(*client.Client)
+	svc := cl.Services().Neptune
 	paginator := neptune.NewDescribeDBInstancesPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *neptune.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

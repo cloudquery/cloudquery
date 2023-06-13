@@ -17,16 +17,16 @@ The following tables depend on aws_athena_work_groups:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|tags|json|
-|name|utf8|
-|configuration|json|
-|creation_time|timestamp[us, tz=UTC]|
-|description|utf8|
-|state|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|name|`utf8`|
+|configuration|`json`|
+|creation_time|`timestamp[us, tz=UTC]`|
+|description|`utf8`|
+|state|`utf8`|

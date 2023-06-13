@@ -14,13 +14,37 @@ This table depends on [azure_sql_servers](azure_sql_servers).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|subscription_id|String|
-|properties|JSON|
-|id (PK)|String|
-|name|String|
-|system_data|JSON|
-|type|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|subscription_id|`utf8`|
+|properties|`json`|
+|id (PK)|`utf8`|
+|name|`utf8`|
+|system_data|`json`|
+|type|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Ensure that Advanced Threat Protection (ATP) on a SQL server is set to "Enabled" (Automated)
+
+```sql
+SELECT
+  'Ensure that Advanced Threat Protection (ATP) on a SQL server is set to "Enabled" (Automated)'
+    AS title,
+  s.subscription_id,
+  s.id AS server_id,
+  CASE
+  WHEN atp.properties->>'state' IS DISTINCT FROM 'Enabled' THEN 'fail'
+  ELSE 'pass'
+  END
+FROM
+  azure_sql_servers AS s
+  JOIN azure_sql_server_advanced_threat_protection_settings AS atp ON
+      s._cq_id = atp._cq_parent_id;
+```
+
+

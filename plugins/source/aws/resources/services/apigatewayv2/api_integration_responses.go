@@ -52,12 +52,12 @@ func fetchApigatewayv2ApiIntegrationResponses(ctx context.Context, meta schema.C
 		ApiId:         p.ApiId,
 		IntegrationId: r.IntegrationId,
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Apigatewayv2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Apigatewayv2
 	// No paginator available
 	for {
 		response, err := svc.GetIntegrationResponses(ctx, &config, func(options *apigatewayv2.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 
 		if err != nil {

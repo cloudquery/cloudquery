@@ -54,8 +54,8 @@ func (c *Client) startCDC(ctx context.Context, conn *pgconn.PgConn) (string, err
 	if err := c.createPublicationForTables(ctx, conn); err != nil {
 		return "", err
 	}
-
-	sql := fmt.Sprintf("CREATE_REPLICATION_SLOT %s LOGICAL pgoutput EXPORT_SNAPSHOT", c.spec.Name)
+	replicationName := pgx.Identifier{getReplicationName(c.spec.Name)}.Sanitize()
+	sql := fmt.Sprintf("CREATE_REPLICATION_SLOT %s LOGICAL pgoutput EXPORT_SNAPSHOT", replicationName)
 	createReplicationSlotResult, err := pglogrepl.ParseCreateReplicationSlot(conn.Exec(ctx, sql))
 	if err != nil {
 		var pgErr *pgconn.PgError
@@ -65,12 +65,16 @@ func (c *Client) startCDC(ctx context.Context, conn *pgconn.PgConn) (string, err
 		}
 		if pgErr.Code != "42710" {
 			// not recoverable error
-			return "", fmt.Errorf("failed to create replication slot %s with pgerror %s: %w", c.spec.Name, pgErrToStr(pgErr), err)
+			return "", fmt.Errorf("failed to create replication slot %s with pgerror %s: %w", replicationName, pgErrToStr(pgErr), err)
 		}
 		// replication slot already exists
 		return "", nil
 	}
 	return createReplicationSlotResult.SnapshotName, nil
+}
+
+func getReplicationName(specName string) string {
+	return strings.ReplaceAll(specName, "-", "_")
 }
 
 func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) error {
@@ -89,7 +93,7 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 		return fmt.Errorf("didn't find last xlog pos")
 	}
 
-	if err := pglogrepl.StartReplication(ctx, conn, c.spec.Name, clientXLogPos,
+	if err := pglogrepl.StartReplication(ctx, conn, getReplicationName(c.spec.Name), clientXLogPos,
 		pglogrepl.StartReplicationOptions{
 			PluginArgs: []string{"proto_version '1'", "publication_names '" + c.spec.Name + "'"},
 		}); err != nil {
@@ -253,7 +257,8 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 
 func (c *Client) getLastXlogPos(ctx context.Context) (pglogrepl.LSN, error) {
 	var xLogPosStr string
-	if err := c.Conn.QueryRow(ctx, "SELECT confirmed_flush_lsn FROM pg_replication_slots WHERE slot_name = $1", c.spec.Name).Scan(&xLogPosStr); err != nil {
+	replicationName := getReplicationName(c.spec.Name)
+	if err := c.Conn.QueryRow(ctx, "SELECT confirmed_flush_lsn FROM pg_replication_slots WHERE slot_name = $1", replicationName).Scan(&xLogPosStr); err != nil {
 		if err == pgx.ErrNoRows {
 			return 0, fmt.Errorf("slot not found: %w", err)
 		}

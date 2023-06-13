@@ -22,26 +22,26 @@ The following tables depend on aws_resiliencehub_app_assessments:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|app_arn (PK)|utf8|
-|arn (PK)|utf8|
-|assessment_arn|utf8|
-|assessment_status|utf8|
-|invoker|utf8|
-|app_version|utf8|
-|assessment_name|utf8|
-|compliance|json|
-|compliance_status|utf8|
-|cost|json|
-|end_time|timestamp[us, tz=UTC]|
-|message|utf8|
-|policy|json|
-|resiliency_score|json|
-|resource_errors_details|json|
-|start_time|timestamp[us, tz=UTC]|
-|tags|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|app_arn (PK)|`utf8`|
+|arn (PK)|`utf8`|
+|assessment_arn|`utf8`|
+|assessment_status|`utf8`|
+|invoker|`utf8`|
+|app_version|`utf8`|
+|assessment_name|`utf8`|
+|compliance|`json`|
+|compliance_status|`utf8`|
+|cost|`json`|
+|end_time|`timestamp[us, tz=UTC]`|
+|message|`utf8`|
+|policy|`json`|
+|resiliency_score|`json`|
+|resource_errors_details|`json`|
+|start_time|`timestamp[us, tz=UTC]`|
+|tags|`json`|

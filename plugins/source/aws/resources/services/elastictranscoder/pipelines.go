@@ -37,13 +37,13 @@ func Pipelines() *schema.Table {
 }
 
 func fetchElastictranscoderPipelines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Elastictranscoder
+	cl := meta.(*client.Client)
+	svc := cl.Services().Elastictranscoder
 
 	p := elastictranscoder.NewListPipelinesPaginator(svc, nil)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *elastictranscoder.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

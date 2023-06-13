@@ -14,16 +14,16 @@ This table depends on [aws_mq_brokers](aws_mq_brokers).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id (PK)|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|broker_arn|utf8|
-|broker_id|utf8|
-|console_access|bool|
-|groups|list<item: utf8, nullable>|
-|pending|json|
-|username|utf8|
-|result_metadata|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|broker_arn|`utf8`|
+|broker_id|`utf8`|
+|console_access|`bool`|
+|groups|`list<item: utf8, nullable>`|
+|pending|`json`|
+|username|`utf8`|
+|result_metadata|`json`|

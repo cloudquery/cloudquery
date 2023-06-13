@@ -13,7 +13,7 @@ func extensionValue(arr array.ExtensionArray) any {
 	case *types.InetArray, *types.MACArray, *types.JSONArray:
 		return valueStrData(arr)
 	default:
-		// we fallback here to string representation
+		// we fall back here to string representation
 		return valueStrData(arr)
 	}
 }

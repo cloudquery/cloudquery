@@ -10,14 +10,14 @@ The primary key for this table is **_event_hash**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|_event_hash (PK)|utf8|
-|date|timestamp[us, tz=UTC]|
-|message|utf8|
-|source_identifier|utf8|
-|source_type|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|_event_hash (PK)|`utf8`|
+|date|`timestamp[us, tz=UTC]`|
+|message|`utf8`|
+|source_identifier|`utf8`|
+|source_type|`utf8`|

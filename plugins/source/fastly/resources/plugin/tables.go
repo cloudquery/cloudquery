@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/fastly/resources/services/auth"
 	"github.com/cloudquery/cloudquery/plugins/source/fastly/resources/services/services"
 	"github.com/cloudquery/cloudquery/plugins/source/fastly/resources/services/stats"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func tables() []*schema.Table {

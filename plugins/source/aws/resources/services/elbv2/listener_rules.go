@@ -39,9 +39,9 @@ func listenerRules() *schema.Table {
 }
 
 func fetchListenerRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	region := c.Region
-	svc := c.Services().Elasticloadbalancingv2
+	cl := meta.(*client.Client)
+	region := cl.Region
+	svc := cl.Services().Elasticloadbalancingv2
 	listener := parent.Item.(types.Listener)
 	config := elbv2.DescribeRulesInput{ListenerArn: listener.ListenerArn}
 	// no paginator available

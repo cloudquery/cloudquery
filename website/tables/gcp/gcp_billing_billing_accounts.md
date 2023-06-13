@@ -15,12 +15,12 @@ The following tables depend on gcp_billing_billing_accounts:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|project_id|utf8|
-|name (PK)|utf8|
-|open|bool|
-|display_name|utf8|
-|master_billing_account|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id|`utf8`|
+|name (PK)|`utf8`|
+|open|`bool`|
+|display_name|`utf8`|
+|master_billing_account|`utf8`|

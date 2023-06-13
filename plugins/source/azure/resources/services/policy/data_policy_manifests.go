@@ -5,16 +5,17 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func DataPolicyManifests() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_policy_data_policy_manifests",
-		Resolver:    fetchDataPolicyManifests,
-		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy@v0.6.0#DataPolicyManifest",
-		Transform:   transformers.TransformWithStruct(&armpolicy.DataPolicyManifest{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_policy_data_policy_manifests",
+		Resolver:             fetchDataPolicyManifests,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy@v0.6.0#DataPolicyManifest",
+		Transform:            transformers.TransformWithStruct(&armpolicy.DataPolicyManifest{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

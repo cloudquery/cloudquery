@@ -14,22 +14,22 @@ This table depends on [gcp_aiplatform_endpoint_locations](gcp_aiplatform_endpoin
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|project_id (PK)|utf8|
-|name (PK)|utf8|
-|display_name|utf8|
-|description|utf8|
-|deployed_models|json|
-|traffic_split|json|
-|etag|utf8|
-|labels|json|
-|create_time|timestamp[us, tz=UTC]|
-|update_time|timestamp[us, tz=UTC]|
-|encryption_spec|json|
-|network|utf8|
-|enable_private_service_connect|bool|
-|model_deployment_monitoring_job|utf8|
-|predict_request_response_logging_config|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|display_name|`utf8`|
+|description|`utf8`|
+|deployed_models|`json`|
+|traffic_split|`json`|
+|etag|`utf8`|
+|labels|`json`|
+|create_time|`timestamp[us, tz=UTC]`|
+|update_time|`timestamp[us, tz=UTC]`|
+|encryption_spec|`json`|
+|network|`utf8`|
+|enable_private_service_connect|`bool`|
+|model_deployment_monitoring_job|`utf8`|
+|predict_request_response_logging_config|`json`|

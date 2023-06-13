@@ -8,21 +8,21 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|region (PK)|String|
-|compartment_id (PK)|String|
-|id (PK)|String|
-|private_peering_bgp_management|String|
-|provider_name|String|
-|provider_service_name|String|
-|public_peering_bgp_management|String|
-|customer_asn_management|String|
-|provider_service_key_management|String|
-|bandwith_shape_management|String|
-|required_total_cross_connects|Int|
-|type|String|
-|description|String|
-|supported_virtual_circuit_types|StringArray|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|private_peering_bgp_management|`utf8`|
+|provider_name|`utf8`|
+|provider_service_name|`utf8`|
+|public_peering_bgp_management|`utf8`|
+|customer_asn_management|`utf8`|
+|provider_service_key_management|`utf8`|
+|bandwith_shape_management|`utf8`|
+|required_total_cross_connects|`int64`|
+|type|`utf8`|
+|description|`utf8`|
+|supported_virtual_circuit_types|`list<item: utf8, nullable>`|

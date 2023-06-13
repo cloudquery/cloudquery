@@ -16,15 +16,15 @@ The following tables depend on aws_support_trusted_advisor_checks:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id (PK)|utf8|
-|region (PK)|utf8|
-|language_code (PK)|utf8|
-|category|utf8|
-|description|utf8|
-|id (PK)|utf8|
-|metadata|list<item: utf8, nullable>|
-|name|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
+|language_code (PK)|`utf8`|
+|category|`utf8`|
+|description|`utf8`|
+|id (PK)|`utf8`|
+|metadata|`list<item: utf8, nullable>`|
+|name|`utf8`|

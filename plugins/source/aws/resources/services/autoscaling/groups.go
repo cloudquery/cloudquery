@@ -22,7 +22,10 @@ func Groups() *schema.Table {
 		Description: `https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_AutoScalingGroup.html`,
 		Resolver:    fetchAutoscalingGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "autoscaling"),
-		Transform:   transformers.TransformWithStruct(&models.AutoScalingGroupWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
+		Transform: transformers.TransformWithStruct(&models.AutoScalingGroupWrapper{},
+			transformers.WithUnwrapAllEmbeddedStructs(),
+			transformers.WithNameTransformer(client.CreateReplaceTransformer(map[string]string{"ar_ns": "arns"})),
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -61,8 +64,8 @@ func Groups() *schema.Table {
 }
 
 func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Autoscaling
+	cl := meta.(*client.Client)
+	svc := cl.Services().Autoscaling
 	processGroupsBundle := func(groups []types.AutoScalingGroup) error {
 		input := autoscaling.DescribeNotificationConfigurationsInput{
 			MaxRecords: aws.Int32(100),
@@ -74,7 +77,7 @@ func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent 
 		paginator := autoscaling.NewDescribeNotificationConfigurationsPaginator(svc, &input)
 		for paginator.HasMorePages() {
 			page, err := paginator.NextPage(ctx, func(options *autoscaling.Options) {
-				options.Region = c.Region
+				options.Region = cl.Region
 			})
 			if err != nil {
 				return err
@@ -95,7 +98,7 @@ func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent 
 	paginator := autoscaling.NewDescribeAutoScalingGroupsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *autoscaling.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

@@ -33,7 +33,7 @@ func ParameterGroups() *schema.Table {
 }
 
 func fetchElasticacheParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	awsProviderClient := meta.(*client.Client)
 	svc := awsProviderClient.Services().Elasticache
 
@@ -41,7 +41,7 @@ func fetchElasticacheParameterGroups(ctx context.Context, meta schema.ClientMeta
 	paginator := elasticache.NewDescribeCacheParameterGroupsPaginator(svc, &describeCacheParameterGroupsInput)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *elasticache.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

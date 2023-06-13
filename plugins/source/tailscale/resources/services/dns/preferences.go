@@ -3,9 +3,10 @@ package dns
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/tailscale/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/tailscale/tailscale-client-go/tailscale"
 )
 
@@ -17,16 +18,14 @@ func Preferences() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&tailscale.DNSPreferences{}, transformers.WithSkipFields("MagicDNS")),
 		Columns: []schema.Column{
 			{
-				Name:     "tailnet",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveTailnet,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "tailnet",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveTailnet,
+				PrimaryKey: true,
 			},
 			{
 				Name: "magic_dns",
-				Type: schema.TypeBool,
+				Type: arrow.FixedWidthTypes.Boolean,
 			},
 		},
 	}

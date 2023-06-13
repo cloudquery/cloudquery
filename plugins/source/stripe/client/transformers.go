@@ -3,8 +3,9 @@ package client
 import (
 	"reflect"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 var options = []transformers.StructTransformerOption{
@@ -14,10 +15,10 @@ var options = []transformers.StructTransformerOption{
 func TransformWithStruct(t any, opts ...transformers.StructTransformerOption) schema.Transform {
 	return transformers.TransformWithStruct(t, append(options, opts...)...)
 }
-func typeTransformer(field reflect.StructField) (schema.ValueType, error) {
+func typeTransformer(field reflect.StructField) (arrow.DataType, error) {
 	if field.Name == "Created" && field.Type == reflect.TypeOf(int64(0)) {
-		return schema.TypeTimestamp, nil
+		return arrow.FixedWidthTypes.Timestamp_us, nil
 	}
 
-	return schema.TypeInvalid, nil
+	return nil, nil
 }

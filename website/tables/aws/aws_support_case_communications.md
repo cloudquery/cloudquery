@@ -14,13 +14,13 @@ This table depends on [aws_support_cases](aws_support_cases).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id (PK)|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|attachment_set|json|
-|body|utf8|
-|case_id|utf8|
-|submitted_by|utf8|
-|time_created|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|attachment_set|`json`|
+|body|`utf8`|
+|case_id|`utf8`|
+|submitted_by|`utf8`|
+|time_created|`utf8`|

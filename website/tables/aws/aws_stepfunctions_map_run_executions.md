@@ -14,24 +14,24 @@ This table depends on [aws_stepfunctions_map_runs](aws_stepfunctions_map_runs).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|map_run_arn|utf8|
-|state_machine_arn|utf8|
-|execution_arn|utf8|
-|start_date|timestamp[us, tz=UTC]|
-|status|utf8|
-|cause|utf8|
-|error|utf8|
-|input|utf8|
-|input_details|json|
-|name|utf8|
-|output|utf8|
-|output_details|json|
-|stop_date|timestamp[us, tz=UTC]|
-|trace_header|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|map_run_arn|`utf8`|
+|state_machine_arn|`utf8`|
+|execution_arn|`utf8`|
+|start_date|`timestamp[us, tz=UTC]`|
+|status|`utf8`|
+|cause|`utf8`|
+|error|`utf8`|
+|input|`utf8`|
+|input_details|`json`|
+|name|`utf8`|
+|output|`utf8`|
+|output_details|`json`|
+|stop_date|`timestamp[us, tz=UTC]`|
+|trace_header|`utf8`|

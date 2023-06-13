@@ -14,21 +14,21 @@ This table depends on [gcp_aiplatform_indexendpoint_locations](gcp_aiplatform_in
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|project_id (PK)|utf8|
-|name (PK)|utf8|
-|display_name|utf8|
-|description|utf8|
-|deployed_indexes|json|
-|etag|utf8|
-|labels|json|
-|create_time|timestamp[us, tz=UTC]|
-|update_time|timestamp[us, tz=UTC]|
-|network|utf8|
-|enable_private_service_connect|bool|
-|private_service_connect_config|json|
-|public_endpoint_enabled|bool|
-|public_endpoint_domain_name|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|display_name|`utf8`|
+|description|`utf8`|
+|deployed_indexes|`json`|
+|etag|`utf8`|
+|labels|`json`|
+|create_time|`timestamp[us, tz=UTC]`|
+|update_time|`timestamp[us, tz=UTC]`|
+|network|`utf8`|
+|enable_private_service_connect|`bool`|
+|private_service_connect_config|`json`|
+|public_endpoint_enabled|`bool`|
+|public_endpoint_domain_name|`utf8`|

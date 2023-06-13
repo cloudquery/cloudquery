@@ -10,20 +10,20 @@ The composite primary key for this table is (**project_id**, **name**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|project_id (PK)|utf8|
-|name (PK)|utf8|
-|domain_name|utf8|
-|create_time|timestamp[us, tz=UTC]|
-|expire_time|timestamp[us, tz=UTC]|
-|state|utf8|
-|issues|list<item: int64, nullable>|
-|labels|json|
-|management_settings|json|
-|dns_settings|json|
-|contact_settings|json|
-|pending_contact_settings|json|
-|supported_privacy|list<item: int64, nullable>|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|domain_name|`utf8`|
+|create_time|`timestamp[us, tz=UTC]`|
+|expire_time|`timestamp[us, tz=UTC]`|
+|state|`utf8`|
+|issues|`list<item: int64, nullable>`|
+|labels|`json`|
+|management_settings|`json`|
+|dns_settings|`json`|
+|contact_settings|`json`|
+|pending_contact_settings|`json`|
+|supported_privacy|`list<item: int64, nullable>`|

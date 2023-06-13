@@ -10,16 +10,16 @@ The composite primary key for this table is (**account_id**, **id**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|business_owner_id|String|
-|id (PK)|String|
-|is_auto_blocking_on|Bool|
-|is_eligible_at_campaign_level|Bool|
-|last_update_time|Timestamp|
-|last_update_user|String|
-|name|String|
-|owner_ad_account_id|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|business_owner_id|`utf8`|
+|id (PK)|`utf8`|
+|is_auto_blocking_on|`bool`|
+|is_eligible_at_campaign_level|`bool`|
+|last_update_time|`timestamp[us, tz=UTC]`|
+|last_update_user|`utf8`|
+|name|`utf8`|
+|owner_ad_account_id|`utf8`|

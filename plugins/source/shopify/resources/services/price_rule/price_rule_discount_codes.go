@@ -1,9 +1,10 @@
 package price_rule
 
 import (
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/internal/shopify"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func PriceRuleDiscountCodes() *schema.Table {
@@ -13,20 +14,16 @@ func PriceRuleDiscountCodes() *schema.Table {
 		Transform: transformers.TransformWithStruct(&shopify.DiscountCode{}),
 		Columns: []schema.Column{
 			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.PrimitiveTypes.Int64,
+				Resolver:   schema.PathResolver("ID"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "price_rule_id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("PriceRuleID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "price_rule_id",
+				Type:       arrow.PrimitiveTypes.Int64,
+				Resolver:   schema.PathResolver("PriceRuleID"),
+				PrimaryKey: true,
 			},
 		},
 	}

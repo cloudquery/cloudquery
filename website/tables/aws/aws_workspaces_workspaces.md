@@ -10,25 +10,25 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|arn (PK)|utf8|
-|bundle_id|utf8|
-|computer_name|utf8|
-|directory_id|utf8|
-|error_code|utf8|
-|error_message|utf8|
-|ip_address|utf8|
-|modification_states|json|
-|related_workspaces|json|
-|root_volume_encryption_enabled|bool|
-|state|utf8|
-|subnet_id|utf8|
-|user_name|utf8|
-|user_volume_encryption_enabled|bool|
-|volume_encryption_key|utf8|
-|workspace_id|utf8|
-|workspace_properties|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|arn (PK)|`utf8`|
+|bundle_id|`utf8`|
+|computer_name|`utf8`|
+|directory_id|`utf8`|
+|error_code|`utf8`|
+|error_message|`utf8`|
+|ip_address|`utf8`|
+|modification_states|`json`|
+|related_workspaces|`json`|
+|root_volume_encryption_enabled|`bool`|
+|state|`utf8`|
+|subnet_id|`utf8`|
+|user_name|`utf8`|
+|user_volume_encryption_enabled|`bool`|
+|volume_encryption_key|`utf8`|
+|workspace_id|`utf8`|
+|workspace_properties|`json`|

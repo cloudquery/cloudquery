@@ -14,15 +14,15 @@ This table depends on [aws_mq_broker_configurations](aws_mq_broker_configuration
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id (PK)|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|broker_configuration_arn|utf8|
-|data|json|
-|configuration_id|utf8|
-|created|timestamp[us, tz=UTC]|
-|description|utf8|
-|result_metadata|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|broker_configuration_arn|`utf8`|
+|data|`json`|
+|configuration_id|`utf8`|
+|created|`timestamp[us, tz=UTC]`|
+|description|`utf8`|
+|result_metadata|`json`|

@@ -26,9 +26,8 @@ func Ec2InstanceRecommendations() *schema.Table {
 }
 
 func fetchEc2InstanceRecommendations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	s := c.Services()
-	svc := s.Computeoptimizer
+	cl := meta.(*client.Client)
+	svc := cl.Services().Computeoptimizer
 
 	input := computeoptimizer.GetEC2InstanceRecommendationsInput{
 		MaxResults: aws.Int32(1000),
@@ -36,14 +35,14 @@ func fetchEc2InstanceRecommendations(ctx context.Context, meta schema.ClientMeta
 	// No paginator available
 	for {
 		response, err := svc.GetEC2InstanceRecommendations(ctx, &input, func(options *computeoptimizer.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
 		}
 
 		if len(response.Errors) > 0 {
-			c.Logger().Error().Str("table", "aws_computeoptimizer_ec2_instance_recommendations").Msgf("Errors in response: %v", response.Errors)
+			cl.Logger().Error().Str("table", "aws_computeoptimizer_ec2_instance_recommendations").Msgf("Errors in response: %v", response.Errors)
 		}
 
 		if response.InstanceRecommendations != nil {

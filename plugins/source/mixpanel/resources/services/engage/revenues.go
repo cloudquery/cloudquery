@@ -3,10 +3,11 @@ package engage
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/client"
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/internal/mixpanel"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func EngageRevenues() *schema.Table {
@@ -16,12 +17,10 @@ func EngageRevenues() *schema.Table {
 		Transform: client.TransformWithStruct(&mixpanel.EngageRevenue{}, transformers.WithPrimaryKeys("Date")),
 		Columns: schema.ColumnList{
 			{
-				Name:     "project_id",
-				Type:     schema.TypeInt,
-				Resolver: client.ResolveProjectID,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "project_id",
+				Type:       arrow.PrimitiveTypes.Int64,
+				Resolver:   client.ResolveProjectID,
+				PrimaryKey: true,
 			},
 		},
 	}

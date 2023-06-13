@@ -10,14 +10,14 @@ The primary key for this table is **_cq_id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id (PK)|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|allow_publicly_accessible_consumers|bool|
-|data_share_arn|utf8|
-|data_share_associations|json|
-|managed_by|utf8|
-|producer_arn|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|allow_publicly_accessible_consumers|`bool`|
+|data_share_arn|`utf8`|
+|data_share_associations|`json`|
+|managed_by|`utf8`|
+|producer_arn|`utf8`|

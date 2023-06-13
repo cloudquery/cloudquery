@@ -14,17 +14,17 @@ This table depends on [aws_apigatewayv2_api_routes](aws_apigatewayv2_api_routes)
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id (PK)|utf8|
-|region|utf8|
-|api_route_arn|utf8|
-|route_id|utf8|
-|arn (PK)|utf8|
-|route_response_key|utf8|
-|model_selection_expression|utf8|
-|response_models|json|
-|response_parameters|json|
-|route_response_id|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region|`utf8`|
+|api_route_arn|`utf8`|
+|route_id|`utf8`|
+|arn (PK)|`utf8`|
+|route_response_key|`utf8`|
+|model_selection_expression|`utf8`|
+|response_models|`json`|
+|response_parameters|`json`|
+|route_response_id|`utf8`|

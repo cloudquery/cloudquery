@@ -10,23 +10,23 @@ The composite primary key for this table is (**project_id**, **name**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|project_id (PK)|utf8|
-|name (PK)|utf8|
-|id|utf8|
-|dispatch_rules|json|
-|auth_domain|utf8|
-|location_id|utf8|
-|code_bucket|utf8|
-|default_cookie_expiration|int64|
-|serving_status|utf8|
-|default_hostname|utf8|
-|default_bucket|utf8|
-|service_account|utf8|
-|iap|json|
-|gcr_domain|utf8|
-|database_type|utf8|
-|feature_settings|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|id|`utf8`|
+|dispatch_rules|`json`|
+|auth_domain|`utf8`|
+|location_id|`utf8`|
+|code_bucket|`utf8`|
+|default_cookie_expiration|`int64`|
+|serving_status|`utf8`|
+|default_hostname|`utf8`|
+|default_bucket|`utf8`|
+|service_account|`utf8`|
+|iap|`json`|
+|gcr_domain|`utf8`|
+|database_type|`utf8`|
+|feature_settings|`json`|

@@ -16,23 +16,23 @@ The following tables depend on aws_appstream_stacks:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|name|utf8|
-|access_endpoints|json|
-|application_settings|json|
-|created_time|timestamp[us, tz=UTC]|
-|description|utf8|
-|display_name|utf8|
-|embed_host_domains|list<item: utf8, nullable>|
-|feedback_url|utf8|
-|redirect_url|utf8|
-|stack_errors|json|
-|storage_connectors|json|
-|streaming_experience_settings|json|
-|user_settings|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|name|`utf8`|
+|access_endpoints|`json`|
+|application_settings|`json`|
+|created_time|`timestamp[us, tz=UTC]`|
+|description|`utf8`|
+|display_name|`utf8`|
+|embed_host_domains|`list<item: utf8, nullable>`|
+|feedback_url|`utf8`|
+|redirect_url|`utf8`|
+|stack_errors|`json`|
+|storage_connectors|`json`|
+|streaming_experience_settings|`json`|
+|user_settings|`json`|

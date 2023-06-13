@@ -8,24 +8,24 @@ The composite primary key for this table is (**account_id**, **id**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|biography|String|
-|business_discovery|JSON|
-|followers_count|Int|
-|follows_count|Int|
-|id (PK)|String|
-|ig_id|Int|
-|media_count|Int|
-|mentioned_comment|JSON|
-|mentioned_media|JSON|
-|name|String|
-|owner_business|JSON|
-|profile_picture_url|String|
-|shopping_product_tag_eligibility|Bool|
-|shopping_review_status|String|
-|username|String|
-|website|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|biography|`utf8`|
+|business_discovery|`json`|
+|followers_count|`int64`|
+|follows_count|`int64`|
+|id (PK)|`utf8`|
+|ig_id|`int64`|
+|media_count|`int64`|
+|mentioned_comment|`json`|
+|mentioned_media|`json`|
+|name|`utf8`|
+|owner_business|`json`|
+|profile_picture_url|`utf8`|
+|shopping_product_tag_eligibility|`bool`|
+|shopping_review_status|`utf8`|
+|username|`utf8`|
+|website|`utf8`|

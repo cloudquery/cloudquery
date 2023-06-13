@@ -12,11 +12,11 @@ import { BlogHeader } from "../../components/BlogHeader"
 <BlogHeader/>
 We recently published a [blog post](/blog/aws-encryption-and-multi-account-access) about Encryption in AWS and Multi-Account Access.  As a follow-up to that post, we’re focusing on encryption access in AWS and information on [how CloudQuery can help](/docs/plugins/sources/overview) including how to audit access to those encryption keys and the underlying data to help assist with your security and compliance needs.
 
-CloudQuery has released the following updates to encryption resources to aid with Encryption discovery in AWS in addition to our [existing coverage of AWS](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/README.md) and [AWS resources](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/docs/tables):
+CloudQuery has released the following updates to encryption resources to aid with Encryption discovery in AWS in addition to our [existing coverage of AWS](https://www.cloudquery.io/docs/plugins/sources/aws/overview) and [AWS resources](https://www.cloudquery.io/docs/plugins/sources/aws/tables):
 
-- Support for [KMS Key Aliases](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_kms_aliases.md)
-- Support for [KMS Key Grants](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/aws_kms_key_grants.md)
-- Support for [CloudHSMv2](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/docs/tables)
+- Support for [KMS Key Aliases](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_kms_aliases)
+- Support for [KMS Key Grants](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_kms_key_grants)
+- Support for [CloudHSMv2](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_cloudhsmv2_clusters)
 
 In this post, we will deep dive on KMS Key Access via KMS Key Grants and best practices with KMS Key Grants.  Access via KMS Key Grants can be a forgotten means of allowing unauthorized applications, users, and other undesired access to use and manage KMS Keys.
 
@@ -301,4 +301,4 @@ If you have comments, feedback on this post, follow-up topics you’d like to se
 
 [CloudQuery: Source Plugins](/docs/plugins/sources/overview)
 
-[CloudQuery: AWS Plugin](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws)
+[CloudQuery: AWS Plugin](https://www.cloudquery.io/docs/plugins/sources/aws/overview)

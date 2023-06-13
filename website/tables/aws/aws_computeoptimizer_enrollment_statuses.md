@@ -10,13 +10,13 @@ The primary key for this table is **account_id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id (PK)|utf8|
-|last_updated_timestamp|timestamp[us, tz=UTC]|
-|member_accounts_enrolled|bool|
-|number_of_member_accounts_opted_in|int64|
-|status|utf8|
-|status_reason|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|last_updated_timestamp|`timestamp[us, tz=UTC]`|
+|member_accounts_enrolled|`bool`|
+|number_of_member_accounts_opted_in|`int64`|
+|status|`utf8`|
+|status_reason|`utf8`|

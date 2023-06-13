@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/gorilla/mux"
 )
 
@@ -52,6 +52,9 @@ func createServers(router *mux.Router) error {
 		return err
 	}
 	if err := createServerAdvancedThreatProtectionSettings(router); err != nil {
+		return err
+	}
+	if err := createFirewallRules(router); err != nil {
 		return err
 	}
 	return createDatabases(router)

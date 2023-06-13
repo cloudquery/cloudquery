@@ -10,22 +10,22 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|completion_time|utf8|
-|event_type_name|utf8|
-|failed_records_count|int64|
-|failure_reason|utf8|
-|iam_role_arn|utf8|
-|input_path|utf8|
-|job_id|utf8|
-|output_path|utf8|
-|processed_records_count|int64|
-|start_time|utf8|
-|status|utf8|
-|total_records_count|int64|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|completion_time|`utf8`|
+|event_type_name|`utf8`|
+|failed_records_count|`int64`|
+|failure_reason|`utf8`|
+|iam_role_arn|`utf8`|
+|input_path|`utf8`|
+|job_id|`utf8`|
+|output_path|`utf8`|
+|processed_records_count|`int64`|
+|start_time|`utf8`|
+|status|`utf8`|
+|total_records_count|`int64`|

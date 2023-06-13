@@ -14,20 +14,20 @@ This table depends on [aws_ssm_documents](aws_ssm_documents).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|document_arn (PK)|utf8|
-|created_date|timestamp[us, tz=UTC]|
-|display_name|utf8|
-|document_format|utf8|
-|document_version (PK)|utf8|
-|is_default_version|bool|
-|name|utf8|
-|review_status|utf8|
-|status|utf8|
-|status_information|utf8|
-|version_name|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|document_arn (PK)|`utf8`|
+|created_date|`timestamp[us, tz=UTC]`|
+|display_name|`utf8`|
+|document_format|`utf8`|
+|document_version (PK)|`utf8`|
+|is_default_version|`bool`|
+|name|`utf8`|
+|review_status|`utf8`|
+|status|`utf8`|
+|status_information|`utf8`|
+|version_name|`utf8`|

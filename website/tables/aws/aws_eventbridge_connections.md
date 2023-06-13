@@ -10,18 +10,18 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|authorization_type|utf8|
-|connection_arn|utf8|
-|connection_state|utf8|
-|creation_time|timestamp[us, tz=UTC]|
-|last_authorized_time|timestamp[us, tz=UTC]|
-|last_modified_time|timestamp[us, tz=UTC]|
-|name|utf8|
-|state_reason|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|authorization_type|`utf8`|
+|connection_arn|`utf8`|
+|connection_state|`utf8`|
+|creation_time|`timestamp[us, tz=UTC]`|
+|last_authorized_time|`timestamp[us, tz=UTC]`|
+|last_modified_time|`timestamp[us, tz=UTC]`|
+|name|`utf8`|
+|state_reason|`utf8`|

@@ -20,6 +20,7 @@ gen-docs:
 
 	rm -rf ../../../website/tables/gcp
 	go run main.go doc ../../../website/tables/gcp
+	go run scripts/example_queries/main.go policies/queries ../../../website/tables/gcp
 	sed 's_(\(.*\))_(../../../../../website/tables/gcp/\1)_' ../../../website/tables/gcp/README.md > ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/gcp/README.md
 	mv ../../../website/tables/gcp/README.md ../../../website/pages/docs/plugins/sources/gcp/tables.md

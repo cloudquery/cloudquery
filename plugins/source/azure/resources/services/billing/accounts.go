@@ -5,16 +5,17 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Accounts() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_billing_accounts",
-		Resolver:    fetchAccounts,
-		Description: "https://learn.microsoft.com/en-us/rest/api/billing/2020-05-01/billing-accounts/list?tabs=HTTP#billingaccount",
-		Transform:   transformers.TransformWithStruct(&armbilling.Account{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_billing_accounts",
+		Resolver:             fetchAccounts,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/billing/2020-05-01/billing-accounts/list?tabs=HTTP#billingaccount",
+		Transform:            transformers.TransformWithStruct(&armbilling.Account{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

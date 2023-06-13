@@ -14,16 +14,16 @@ This table depends on [aws_backup_plans](aws_backup_plans).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id (PK)|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|plan_arn|utf8|
-|backup_plan_id|utf8|
-|backup_selection|json|
-|creation_date|timestamp[us, tz=UTC]|
-|creator_request_id|utf8|
-|selection_id|utf8|
-|result_metadata|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|plan_arn|`utf8`|
+|backup_plan_id|`utf8`|
+|backup_selection|`json`|
+|creation_date|`timestamp[us, tz=UTC]`|
+|creator_request_id|`utf8`|
+|selection_id|`utf8`|
+|result_metadata|`json`|

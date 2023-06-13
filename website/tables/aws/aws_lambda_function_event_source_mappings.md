@@ -14,35 +14,35 @@ This table depends on [aws_lambda_functions](aws_lambda_functions).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id (PK)|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|function_arn|utf8|
-|amazon_managed_kafka_event_source_config|json|
-|batch_size|int64|
-|bisect_batch_on_function_error|bool|
-|destination_config|json|
-|event_source_arn|utf8|
-|filter_criteria|json|
-|function_response_types|list<item: utf8, nullable>|
-|last_modified|timestamp[us, tz=UTC]|
-|last_processing_result|utf8|
-|maximum_batching_window_in_seconds|int64|
-|maximum_record_age_in_seconds|int64|
-|maximum_retry_attempts|int64|
-|parallelization_factor|int64|
-|queues|list<item: utf8, nullable>|
-|scaling_config|json|
-|self_managed_event_source|json|
-|self_managed_kafka_event_source_config|json|
-|source_access_configurations|json|
-|starting_position|utf8|
-|starting_position_timestamp|timestamp[us, tz=UTC]|
-|state|utf8|
-|state_transition_reason|utf8|
-|topics|list<item: utf8, nullable>|
-|tumbling_window_in_seconds|int64|
-|uuid|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|function_arn|`utf8`|
+|amazon_managed_kafka_event_source_config|`json`|
+|batch_size|`int64`|
+|bisect_batch_on_function_error|`bool`|
+|destination_config|`json`|
+|event_source_arn|`utf8`|
+|filter_criteria|`json`|
+|function_response_types|`list<item: utf8, nullable>`|
+|last_modified|`timestamp[us, tz=UTC]`|
+|last_processing_result|`utf8`|
+|maximum_batching_window_in_seconds|`int64`|
+|maximum_record_age_in_seconds|`int64`|
+|maximum_retry_attempts|`int64`|
+|parallelization_factor|`int64`|
+|queues|`list<item: utf8, nullable>`|
+|scaling_config|`json`|
+|self_managed_event_source|`json`|
+|self_managed_kafka_event_source_config|`json`|
+|source_access_configurations|`json`|
+|starting_position|`utf8`|
+|starting_position_timestamp|`timestamp[us, tz=UTC]`|
+|state|`utf8`|
+|state_transition_reason|`utf8`|
+|topics|`list<item: utf8, nullable>`|
+|tumbling_window_in_seconds|`int64`|
+|uuid|`utf8`|

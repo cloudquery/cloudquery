@@ -3,9 +3,10 @@ package organization
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 )
 
@@ -18,12 +19,10 @@ func organizationMembers() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&snyk.OrganizationMember{}, transformers.WithPrimaryKeys("ID")),
 		Columns: []schema.Column{
 			{
-				Name: "organization_id",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-				Resolver: schema.ParentColumnResolver("id"),
+				Name:       "organization_id",
+				Type:       arrow.BinaryTypes.String,
+				PrimaryKey: true,
+				Resolver:   schema.ParentColumnResolver("id"),
 			},
 		},
 	}

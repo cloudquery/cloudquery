@@ -10,21 +10,21 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|tags|json|
-|backup_id|utf8|
-|backup_state|utf8|
-|cluster_id|utf8|
-|copy_timestamp|timestamp[us, tz=UTC]|
-|create_timestamp|timestamp[us, tz=UTC]|
-|delete_timestamp|timestamp[us, tz=UTC]|
-|never_expires|bool|
-|source_backup|utf8|
-|source_cluster|utf8|
-|source_region|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|backup_id|`utf8`|
+|backup_state|`utf8`|
+|cluster_id|`utf8`|
+|copy_timestamp|`timestamp[us, tz=UTC]`|
+|create_timestamp|`timestamp[us, tz=UTC]`|
+|delete_timestamp|`timestamp[us, tz=UTC]`|
+|never_expires|`bool`|
+|source_backup|`utf8`|
+|source_cluster|`utf8`|
+|source_region|`utf8`|

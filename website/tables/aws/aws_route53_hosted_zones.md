@@ -17,18 +17,38 @@ The following tables depend on aws_route53_hosted_zones:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|arn (PK)|utf8|
-|caller_reference|utf8|
-|id|utf8|
-|name|utf8|
-|config|json|
-|linked_service|json|
-|resource_record_set_count|int64|
-|tags|json|
-|delegation_set_id|utf8|
-|vpcs|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|arn (PK)|`utf8`|
+|caller_reference|`utf8`|
+|id|`utf8`|
+|name|`utf8`|
+|config|`json`|
+|linked_service|`json`|
+|resource_record_set_count|`int64`|
+|tags|`json`|
+|delegation_set_id|`utf8`|
+|vpcs|`json`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Unused Route 53 hosted zones
+
+```sql
+SELECT
+  'Unused Route 53 hosted zones' AS title,
+  account_id,
+  arn AS resource_id,
+  'fail' AS status
+FROM
+  aws_route53_hosted_zones
+WHERE
+  resource_record_set_count = 0;
+```
+
+

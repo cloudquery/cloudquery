@@ -14,21 +14,21 @@ This table depends on [aws_config_config_rules](aws_config_config_rules).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|config_rule_name|utf8|
-|target_id|utf8|
-|target_type|utf8|
-|arn (PK)|utf8|
-|automatic|bool|
-|created_by_service|utf8|
-|execution_controls|json|
-|maximum_automatic_attempts|int64|
-|parameters|json|
-|resource_type|utf8|
-|retry_attempt_seconds|int64|
-|target_version|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|config_rule_name|`utf8`|
+|target_id|`utf8`|
+|target_type|`utf8`|
+|arn (PK)|`utf8`|
+|automatic|`bool`|
+|created_by_service|`utf8`|
+|execution_controls|`json`|
+|maximum_automatic_attempts|`int64`|
+|parameters|`json`|
+|resource_type|`utf8`|
+|retry_attempt_seconds|`int64`|
+|target_version|`utf8`|

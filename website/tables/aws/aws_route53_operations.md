@@ -10,16 +10,16 @@ The composite primary key for this table is (**account_id**, **operation_id**, *
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id (PK)|utf8|
-|domain_name|utf8|
-|last_updated_date|timestamp[us, tz=UTC]|
-|message|utf8|
-|operation_id (PK)|utf8|
-|status (PK)|utf8|
-|status_flag|utf8|
-|submitted_date (PK)|timestamp[us, tz=UTC]|
-|type (PK)|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|domain_name|`utf8`|
+|last_updated_date|`timestamp[us, tz=UTC]`|
+|message|`utf8`|
+|operation_id (PK)|`utf8`|
+|status (PK)|`utf8`|
+|status_flag|`utf8`|
+|submitted_date (PK)|`timestamp[us, tz=UTC]`|
+|type (PK)|`utf8`|

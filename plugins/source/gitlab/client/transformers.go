@@ -4,8 +4,10 @@ import (
 	"net"
 	"reflect"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 	"github.com/xanzy/go-gitlab"
 )
 
@@ -19,15 +21,15 @@ func TransformWithStruct(t any, opts ...transformers.StructTransformerOption) sc
 	return transformers.TransformWithStruct(t, append(options, opts...)...)
 }
 
-func typeTransformer(field reflect.StructField) (schema.ValueType, error) {
+func typeTransformer(field reflect.StructField) (arrow.DataType, error) {
 	timestamp := gitlab.ISOTime{}
 	ip := net.IP{}
 	switch field.Type {
 	case reflect.TypeOf(timestamp), reflect.TypeOf(&timestamp):
-		return schema.TypeTimestamp, nil
+		return arrow.FixedWidthTypes.Timestamp_us, nil
 	case reflect.TypeOf(ip), reflect.TypeOf(&ip):
-		return schema.TypeInet, nil
+		return types.ExtensionTypes.Inet, nil
 	default:
-		return schema.TypeInvalid, nil
+		return nil, nil
 	}
 }

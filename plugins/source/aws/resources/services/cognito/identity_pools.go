@@ -19,7 +19,10 @@ func IdentityPools() *schema.Table {
 		Resolver:            fetchCognitoIdentityPools,
 		PreResourceResolver: getIdentityPool,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "cognito-identity"),
-		Transform:           transformers.TransformWithStruct(&cognitoidentity.DescribeIdentityPoolOutput{}),
+		Transform: transformers.TransformWithStruct(
+			&cognitoidentity.DescribeIdentityPoolOutput{},
+			transformers.WithNameTransformer(client.CreateReplaceTransformer(map[string]string{"ar_ns": "arns"})),
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
@@ -35,7 +38,7 @@ func IdentityPools() *schema.Table {
 				PrimaryKey: true,
 			},
 			{
-				Name:     "saml_provider_ar_ns",
+				Name:     "saml_provider_arns",
 				Type:     arrow.ListOf(arrow.BinaryTypes.String),
 				Resolver: schema.PathResolver("SamlProviderARNs"),
 			},
@@ -44,8 +47,8 @@ func IdentityPools() *schema.Table {
 }
 
 func fetchCognitoIdentityPools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Cognitoidentity
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cognitoidentity
 	params := cognitoidentity.ListIdentityPoolsInput{
 		// we want max results to reduce List calls as much as possible, services limited to less than or equal to 60"
 		MaxResults: 60,
@@ -53,7 +56,7 @@ func fetchCognitoIdentityPools(ctx context.Context, meta schema.ClientMeta, pare
 	paginator := cognitoidentity.NewListIdentityPoolsPaginator(svc, &params)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cognitoidentity.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -64,12 +67,12 @@ func fetchCognitoIdentityPools(ctx context.Context, meta schema.ClientMeta, pare
 }
 
 func getIdentityPool(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Cognitoidentity
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cognitoidentity
 	item := resource.Item.(types.IdentityPoolShortDescription)
 
 	ipo, err := svc.DescribeIdentityPool(ctx, &cognitoidentity.DescribeIdentityPoolInput{IdentityPoolId: item.IdentityPoolId}, func(options *cognitoidentity.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

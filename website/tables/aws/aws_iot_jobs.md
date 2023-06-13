@@ -10,34 +10,34 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|tags|json|
-|arn (PK)|utf8|
-|abort_config|json|
-|comment|utf8|
-|completed_at|timestamp[us, tz=UTC]|
-|created_at|timestamp[us, tz=UTC]|
-|description|utf8|
-|document_parameters|json|
-|force_canceled|bool|
-|is_concurrent|bool|
-|job_arn|utf8|
-|job_executions_retry_config|json|
-|job_executions_rollout_config|json|
-|job_id|utf8|
-|job_process_details|json|
-|job_template_arn|utf8|
-|last_updated_at|timestamp[us, tz=UTC]|
-|namespace_id|utf8|
-|presigned_url_config|json|
-|reason_code|utf8|
-|scheduling_config|json|
-|status|utf8|
-|target_selection|utf8|
-|targets|list<item: utf8, nullable>|
-|timeout_config|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|tags|`json`|
+|arn (PK)|`utf8`|
+|abort_config|`json`|
+|comment|`utf8`|
+|completed_at|`timestamp[us, tz=UTC]`|
+|created_at|`timestamp[us, tz=UTC]`|
+|description|`utf8`|
+|document_parameters|`json`|
+|force_canceled|`bool`|
+|is_concurrent|`bool`|
+|job_arn|`utf8`|
+|job_executions_retry_config|`json`|
+|job_executions_rollout_config|`json`|
+|job_id|`utf8`|
+|job_process_details|`json`|
+|job_template_arn|`utf8`|
+|last_updated_at|`timestamp[us, tz=UTC]`|
+|namespace_id|`utf8`|
+|presigned_url_config|`json`|
+|reason_code|`utf8`|
+|scheduling_config|`json`|
+|status|`utf8`|
+|target_selection|`utf8`|
+|targets|`list<item: utf8, nullable>`|
+|timeout_config|`json`|

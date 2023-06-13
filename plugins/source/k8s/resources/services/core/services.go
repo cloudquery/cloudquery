@@ -3,9 +3,11 @@ package core
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -20,22 +22,22 @@ func Services() *schema.Table {
 			client.ContextColumn,
 			{
 				Name:     "spec_cluster_ip",
-				Type:     schema.TypeInet,
+				Type:     types.ExtensionTypes.Inet,
 				Resolver: client.StringToInetPathResolver("Spec.ClusterIP"),
 			},
 			{
 				Name:     "spec_cluster_ips",
-				Type:     schema.TypeInetArray,
+				Type:     arrow.ListOf(types.ExtensionTypes.Inet),
 				Resolver: client.StringToInetArrayPathResolver("Spec.ClusterIPs"),
 			},
 			{
 				Name:     "spec_external_ips",
-				Type:     schema.TypeInetArray,
+				Type:     arrow.ListOf(types.ExtensionTypes.Inet),
 				Resolver: client.StringToInetArrayPathResolver("Spec.ExternalIPs"),
 			},
 			{
 				Name:     "spec_load_balancer_ip",
-				Type:     schema.TypeInet,
+				Type:     types.ExtensionTypes.Inet,
 				Resolver: client.StringToInetPathResolver("Spec.LoadBalancerIP"),
 			},
 		},

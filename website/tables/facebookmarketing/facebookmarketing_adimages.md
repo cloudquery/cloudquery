@@ -10,23 +10,23 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|created_time|Timestamp|
-|creatives|StringArray|
-|hash|String|
-|height|Int|
-|id (PK)|String|
-|is_associated_creatives_in_adgroups|Bool|
-|name|String|
-|original_height|Int|
-|original_width|Int|
-|permalink_url|String|
-|status|String|
-|updated_time|Timestamp|
-|url|String|
-|url_128|String|
-|width|Int|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|created_time|`timestamp[us, tz=UTC]`|
+|creatives|`list<item: utf8, nullable>`|
+|hash|`utf8`|
+|height|`int64`|
+|id (PK)|`utf8`|
+|is_associated_creatives_in_adgroups|`bool`|
+|name|`utf8`|
+|original_height|`int64`|
+|original_width|`int64`|
+|permalink_url|`utf8`|
+|status|`utf8`|
+|updated_time|`timestamp[us, tz=UTC]`|
+|url|`utf8`|
+|url_128|`utf8`|
+|width|`int64`|

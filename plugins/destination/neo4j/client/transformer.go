@@ -33,7 +33,8 @@ func transformArr(arr arrow.Array) []any {
 		case *array.Uint32:
 			pgArr = append(pgArr, uint64(a.Value(i)))
 		case *array.Uint64:
-			pgArr = append(pgArr, a.Value(i))
+			// Neo4j fails if uint64 overflows int64
+			pgArr = append(pgArr, int64(a.Value(i)))
 		case *array.Float32:
 			pgArr = append(pgArr, float64(a.Value(i)))
 		case *array.Float64:

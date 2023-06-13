@@ -10,43 +10,43 @@ The composite primary key for this table is (**account_id**, **id**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|ad_breaks|IntArray|
-|backdated_time|Timestamp|
-|backdated_time_granularity|String|
-|content_category|String|
-|content_tags|StringArray|
-|created_time|Timestamp|
-|custom_labels|StringArray|
-|description|String|
-|embed_html|String|
-|embeddable|Bool|
-|event|JSON|
-|icon|String|
-|id (PK)|String|
-|is_crosspost_video|Bool|
-|is_crossposting_eligible|Bool|
-|is_episode|Bool|
-|is_instagram_eligible|Bool|
-|length|Float|
-|live_audience_count|Int|
-|live_status|String|
-|permalink_url|String|
-|picture|String|
-|place|JSON|
-|post_views|Int|
-|premiere_living_room_status|String|
-|privacy|JSON|
-|published|Bool|
-|scheduled_publish_time|Timestamp|
-|source|String|
-|spherical|Bool|
-|status|JSON|
-|title|String|
-|universal_video_id|String|
-|updated_time|Timestamp|
-|views|Int|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|ad_breaks|`list<item: int64, nullable>`|
+|backdated_time|`timestamp[us, tz=UTC]`|
+|backdated_time_granularity|`utf8`|
+|content_category|`utf8`|
+|content_tags|`list<item: utf8, nullable>`|
+|created_time|`timestamp[us, tz=UTC]`|
+|custom_labels|`list<item: utf8, nullable>`|
+|description|`utf8`|
+|embed_html|`utf8`|
+|embeddable|`bool`|
+|event|`json`|
+|icon|`utf8`|
+|id (PK)|`utf8`|
+|is_crosspost_video|`bool`|
+|is_crossposting_eligible|`bool`|
+|is_episode|`bool`|
+|is_instagram_eligible|`bool`|
+|length|`float64`|
+|live_audience_count|`int64`|
+|live_status|`utf8`|
+|permalink_url|`utf8`|
+|picture|`utf8`|
+|place|`json`|
+|post_views|`int64`|
+|premiere_living_room_status|`utf8`|
+|privacy|`json`|
+|published|`bool`|
+|scheduled_publish_time|`timestamp[us, tz=UTC]`|
+|source|`utf8`|
+|spherical|`bool`|
+|status|`json`|
+|title|`utf8`|
+|universal_video_id|`utf8`|
+|updated_time|`timestamp[us, tz=UTC]`|
+|views|`int64`|

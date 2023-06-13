@@ -14,28 +14,28 @@ This table depends on [aws_emr_clusters](aws_emr_clusters).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|cluster_arn (PK)|utf8|
-|auto_scaling_policy|json|
-|bid_price|utf8|
-|configurations|json|
-|configurations_version|int64|
-|custom_ami_id|utf8|
-|ebs_block_devices|json|
-|ebs_optimized|bool|
-|id (PK)|utf8|
-|instance_group_type|utf8|
-|instance_type|utf8|
-|last_successfully_applied_configurations|json|
-|last_successfully_applied_configurations_version|int64|
-|market|utf8|
-|name|utf8|
-|requested_instance_count|int64|
-|running_instance_count|int64|
-|shrink_policy|json|
-|status|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|cluster_arn (PK)|`utf8`|
+|auto_scaling_policy|`json`|
+|bid_price|`utf8`|
+|configurations|`json`|
+|configurations_version|`int64`|
+|custom_ami_id|`utf8`|
+|ebs_block_devices|`json`|
+|ebs_optimized|`bool`|
+|id (PK)|`utf8`|
+|instance_group_type|`utf8`|
+|instance_type|`utf8`|
+|last_successfully_applied_configurations|`json`|
+|last_successfully_applied_configurations_version|`int64`|
+|market|`utf8`|
+|name|`utf8`|
+|requested_instance_count|`int64`|
+|running_instance_count|`int64`|
+|shrink_policy|`json`|
+|status|`json`|

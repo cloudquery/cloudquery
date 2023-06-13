@@ -14,25 +14,25 @@ This table depends on [gcp_aiplatform_pipeline_locations](gcp_aiplatform_pipelin
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|project_id (PK)|utf8|
-|name (PK)|utf8|
-|display_name|utf8|
-|input_data_config|json|
-|training_task_definition|utf8|
-|training_task_inputs|json|
-|training_task_metadata|json|
-|model_to_upload|json|
-|model_id|utf8|
-|parent_model|utf8|
-|state|utf8|
-|error|json|
-|create_time|timestamp[us, tz=UTC]|
-|start_time|timestamp[us, tz=UTC]|
-|end_time|timestamp[us, tz=UTC]|
-|update_time|timestamp[us, tz=UTC]|
-|labels|json|
-|encryption_spec|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|display_name|`utf8`|
+|input_data_config|`json`|
+|training_task_definition|`utf8`|
+|training_task_inputs|`json`|
+|training_task_metadata|`json`|
+|model_to_upload|`json`|
+|model_id|`utf8`|
+|parent_model|`utf8`|
+|state|`utf8`|
+|error|`json`|
+|create_time|`timestamp[us, tz=UTC]`|
+|start_time|`timestamp[us, tz=UTC]`|
+|end_time|`timestamp[us, tz=UTC]`|
+|update_time|`timestamp[us, tz=UTC]`|
+|labels|`json`|
+|encryption_spec|`json`|

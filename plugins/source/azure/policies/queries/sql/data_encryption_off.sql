@@ -16,3 +16,4 @@ FROM azure_sql_servers s
         s._cq_id = asd._cq_parent_id
     LEFT JOIN azure_sql_transparent_data_encryptions tde ON
         asd._cq_id = tde._cq_parent_id
+WHERE asd.name != 'master'

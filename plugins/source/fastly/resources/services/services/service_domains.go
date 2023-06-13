@@ -1,8 +1,9 @@
 package services
 
 import (
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/fastly/go-fastly/v7/fastly"
 )
 
@@ -14,28 +15,22 @@ func ServiceDomains() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&fastly.Domain{}),
 		Columns: []schema.Column{
 			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Name"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "service_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ServiceID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "service_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ServiceID"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "service_version",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ServiceVersion"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "service_version",
+				Type:       arrow.PrimitiveTypes.Int64,
+				Resolver:   schema.PathResolver("ServiceVersion"),
+				PrimaryKey: true,
 			},
 		},
 	}

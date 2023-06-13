@@ -10,23 +10,23 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|cache_node_count|int64|
-|cache_node_type|utf8|
-|duration|int64|
-|fixed_price|float64|
-|offering_type|utf8|
-|product_description|utf8|
-|recurring_charges|json|
-|reservation_arn|utf8|
-|reserved_cache_node_id|utf8|
-|reserved_cache_nodes_offering_id|utf8|
-|start_time|timestamp[us, tz=UTC]|
-|state|utf8|
-|usage_price|float64|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|cache_node_count|`int64`|
+|cache_node_type|`utf8`|
+|duration|`int64`|
+|fixed_price|`float64`|
+|offering_type|`utf8`|
+|product_description|`utf8`|
+|recurring_charges|`json`|
+|reservation_arn|`utf8`|
+|reserved_cache_node_id|`utf8`|
+|reserved_cache_nodes_offering_id|`utf8`|
+|start_time|`timestamp[us, tz=UTC]`|
+|state|`utf8`|
+|usage_price|`float64`|

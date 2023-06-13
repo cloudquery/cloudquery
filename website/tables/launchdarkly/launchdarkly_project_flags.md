@@ -14,28 +14,28 @@ This table depends on [launchdarkly_projects](launchdarkly_projects).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name|String|
-|kind|String|
-|description|String|
-|key (PK)|String|
-|version|Int|
-|creation_date|Int|
-|include_in_snippet|Bool|
-|client_side_availability|JSON|
-|variations|JSON|
-|temporary|Bool|
-|tags|StringArray|
-|maintainer_id|String|
-|maintainer|JSON|
-|goal_ids|StringArray|
-|experiments|JSON|
-|custom_properties|JSON|
-|archived|Bool|
-|archived_date|Int|
-|defaults|JSON|
-|environments|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name|`utf8`|
+|kind|`utf8`|
+|description|`utf8`|
+|key (PK)|`utf8`|
+|version|`int64`|
+|creation_date|`int64`|
+|include_in_snippet|`bool`|
+|client_side_availability|`json`|
+|variations|`json`|
+|temporary|`bool`|
+|tags|`list<item: utf8, nullable>`|
+|maintainer_id|`utf8`|
+|maintainer|`json`|
+|goal_ids|`list<item: utf8, nullable>`|
+|experiments|`json`|
+|custom_properties|`json`|
+|archived|`bool`|
+|archived_date|`int64`|
+|defaults|`json`|
+|environments|`json`|

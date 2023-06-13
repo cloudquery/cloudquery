@@ -14,16 +14,16 @@ This table depends on [aws_apprunner_services](aws_apprunner_services).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id (PK)|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|ended_at|timestamp[us, tz=UTC]|
-|id|utf8|
-|started_at|timestamp[us, tz=UTC]|
-|status|utf8|
-|target_arn|utf8|
-|type|utf8|
-|updated_at|timestamp[us, tz=UTC]|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|ended_at|`timestamp[us, tz=UTC]`|
+|id|`utf8`|
+|started_at|`timestamp[us, tz=UTC]`|
+|status|`utf8`|
+|target_arn|`utf8`|
+|type|`utf8`|
+|updated_at|`timestamp[us, tz=UTC]`|

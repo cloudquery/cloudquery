@@ -121,6 +121,7 @@
 - [gcp_container_clusters](tables/gcp_container_clusters)
 - [gcp_containeranalysis_occurrences](tables/gcp_containeranalysis_occurrences)
 - [gcp_dns_managed_zones](tables/gcp_dns_managed_zones)
+  - [gcp_dns_resource_record_sets](tables/gcp_dns_resource_record_sets)
 - [gcp_dns_policies](tables/gcp_dns_policies)
 - [gcp_domains_registrations](tables/gcp_domains_registrations)
 - [gcp_functions_functions](tables/gcp_functions_functions)

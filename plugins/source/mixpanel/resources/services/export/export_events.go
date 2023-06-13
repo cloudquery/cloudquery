@@ -6,10 +6,11 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/client"
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/internal/mixpanel"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/pkg/errors"
 )
 
@@ -25,29 +26,23 @@ func ExportEvents() *schema.Table {
 		IsIncremental:        true,
 		Columns: []schema.Column{
 			{
-				Name:     "project_id",
-				Type:     schema.TypeInt,
-				Resolver: client.ResolveProjectID,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "project_id",
+				Type:       arrow.PrimitiveTypes.Int64,
+				Resolver:   client.ResolveProjectID,
+				PrimaryKey: true,
 			},
 			{
-				Name:     "time",
-				Type:     schema.TypeTimestamp,
-				Resolver: resolveExportTime,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey:     true,
-					IncrementalKey: true,
-				},
+				Name:           "time",
+				Type:           arrow.FixedWidthTypes.Timestamp_us,
+				Resolver:       resolveExportTime,
+				PrimaryKey:     true,
+				IncrementalKey: true,
 			},
 			{
-				Name:     "distinct_id",
-				Type:     schema.TypeString,
-				Resolver: resolveDistinctID,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "distinct_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveDistinctID,
+				PrimaryKey: true,
 			},
 		},
 	}

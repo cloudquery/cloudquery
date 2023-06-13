@@ -14,20 +14,20 @@ This table depends on [aws_redshift_clusters](aws_redshift_clusters).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id (PK)|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|cluster_arn|utf8|
-|address|utf8|
-|cluster_identifier|utf8|
-|endpoint_create_time|timestamp[us, tz=UTC]|
-|endpoint_name|utf8|
-|endpoint_status|utf8|
-|port|int64|
-|resource_owner|utf8|
-|subnet_group_name|utf8|
-|vpc_endpoint|json|
-|vpc_security_groups|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|cluster_arn|`utf8`|
+|address|`utf8`|
+|cluster_identifier|`utf8`|
+|endpoint_create_time|`timestamp[us, tz=UTC]`|
+|endpoint_name|`utf8`|
+|endpoint_status|`utf8`|
+|port|`int64`|
+|resource_owner|`utf8`|
+|subnet_group_name|`utf8`|
+|vpc_endpoint|`json`|
+|vpc_security_groups|`json`|

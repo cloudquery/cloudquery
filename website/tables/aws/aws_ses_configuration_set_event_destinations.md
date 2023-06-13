@@ -14,17 +14,17 @@ This table depends on [aws_ses_configuration_sets](aws_ses_configuration_sets).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id (PK)|utf8|
-|region (PK)|utf8|
-|configuration_set_name (PK)|utf8|
-|name (PK)|utf8|
-|matching_event_types|list<item: utf8, nullable>|
-|cloud_watch_destination|json|
-|enabled|bool|
-|kinesis_firehose_destination|json|
-|pinpoint_destination|json|
-|sns_destination|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
+|configuration_set_name (PK)|`utf8`|
+|name (PK)|`utf8`|
+|matching_event_types|`list<item: utf8, nullable>`|
+|cloud_watch_destination|`json`|
+|enabled|`bool`|
+|kinesis_firehose_destination|`json`|
+|pinpoint_destination|`json`|
+|sns_destination|`json`|

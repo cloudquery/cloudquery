@@ -50,12 +50,12 @@ func fetchAppstreamStackUserAssociations(ctx context.Context, meta schema.Client
 	input.StackName = parent.Item.(types.Stack).Name
 	input.MaxResults = aws.Int32(25)
 
-	c := meta.(*client.Client)
-	svc := c.Services().Appstream
+	cl := meta.(*client.Client)
+	svc := cl.Services().Appstream
 	// No paginator available
 	for {
 		response, err := svc.DescribeUserStackAssociations(ctx, &input, func(options *appstream.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

@@ -10,16 +10,16 @@ The primary key for this table is **volume_arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|current_configuration|json|
-|current_performance_risk|utf8|
-|finding|utf8|
-|last_refresh_timestamp|timestamp[us, tz=UTC]|
-|look_back_period_in_days|float64|
-|utilization_metrics|json|
-|volume_arn (PK)|utf8|
-|volume_recommendation_options|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|current_configuration|`json`|
+|current_performance_risk|`utf8`|
+|finding|`utf8`|
+|last_refresh_timestamp|`timestamp[us, tz=UTC]`|
+|look_back_period_in_days|`float64`|
+|utilization_metrics|`json`|
+|volume_arn (PK)|`utf8`|
+|volume_recommendation_options|`json`|

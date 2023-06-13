@@ -36,12 +36,12 @@ func MetricFilters() *schema.Table {
 
 func fetchCloudwatchlogsMetricFilters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config cloudwatchlogs.DescribeMetricFiltersInput
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudwatchlogs
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudwatchlogs
 	paginator := cloudwatchlogs.NewDescribeMetricFiltersPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cloudwatchlogs.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

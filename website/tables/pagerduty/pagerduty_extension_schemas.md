@@ -10,20 +10,20 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|html_url|String|
-|icon_url|String|
-|logo_url|String|
-|guide_url|String|
-|url|String|
-|type|String|
-|summary|String|
-|self|String|
-|label|String|
-|key|String|
-|description|String|
-|send_types|StringArray|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|html_url|`utf8`|
+|icon_url|`utf8`|
+|logo_url|`utf8`|
+|guide_url|`utf8`|
+|url|`utf8`|
+|type|`utf8`|
+|summary|`utf8`|
+|self|`utf8`|
+|label|`utf8`|
+|key|`utf8`|
+|description|`utf8`|
+|send_types|`list<item: utf8, nullable>`|

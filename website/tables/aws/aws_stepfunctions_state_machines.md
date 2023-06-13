@@ -15,21 +15,21 @@ The following tables depend on aws_stepfunctions_state_machines:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|arn (PK)|utf8|
-|tags|json|
-|creation_date|timestamp[us, tz=UTC]|
-|definition|utf8|
-|name|utf8|
-|role_arn|utf8|
-|state_machine_arn|utf8|
-|type|utf8|
-|label|utf8|
-|logging_configuration|json|
-|status|utf8|
-|tracing_configuration|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|creation_date|`timestamp[us, tz=UTC]`|
+|definition|`utf8`|
+|name|`utf8`|
+|role_arn|`utf8`|
+|state_machine_arn|`utf8`|
+|type|`utf8`|
+|label|`utf8`|
+|logging_configuration|`json`|
+|status|`utf8`|
+|tracing_configuration|`json`|

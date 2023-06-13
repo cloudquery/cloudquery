@@ -1,20 +1,21 @@
 package waf_packages
 
 import (
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudflare/cloudflare-go"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func WAFRules() *schema.Table {
 	return &schema.Table{
 		Name:      "cloudflare_waf_rules",
 		Resolver:  fetchWAFRules,
-		Transform: transformers.TransformWithStruct(&cloudflare.WAFRule{}),
+		Transform: client.TransformWithStruct(&cloudflare.WAFRule{}),
 		Columns: []schema.Column{
 			{
 				Name:     "waf_package_id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("id"),
 			},
 		},

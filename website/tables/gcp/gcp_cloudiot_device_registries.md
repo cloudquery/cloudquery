@@ -15,16 +15,16 @@ The following tables depend on gcp_cloudiot_device_registries:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|project_id (PK)|utf8|
-|id|utf8|
-|name (PK)|utf8|
-|event_notification_configs|json|
-|state_notification_config|json|
-|mqtt_config|json|
-|http_config|json|
-|log_level|utf8|
-|credentials|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|id|`utf8`|
+|name (PK)|`utf8`|
+|event_notification_configs|`json`|
+|state_notification_config|`json`|
+|mqtt_config|`json`|
+|http_config|`json`|
+|log_level|`utf8`|
+|credentials|`json`|

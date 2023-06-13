@@ -14,17 +14,17 @@ This table depends on [aws_cloudwatchlogs_log_groups](aws_cloudwatchlogs_log_gro
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|account_id|utf8|
-|region|utf8|
-|log_group_arn (PK)|utf8|
-|creation_time (PK)|int64|
-|destination_arn|utf8|
-|distribution|utf8|
-|filter_name (PK)|utf8|
-|filter_pattern|utf8|
-|log_group_name|utf8|
-|role_arn|utf8|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|log_group_arn (PK)|`utf8`|
+|creation_time (PK)|`int64`|
+|destination_arn|`utf8`|
+|distribution|`utf8`|
+|filter_name (PK)|`utf8`|
+|filter_pattern|`utf8`|
+|log_group_name|`utf8`|
+|role_arn|`utf8`|

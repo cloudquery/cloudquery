@@ -14,26 +14,26 @@ This table depends on [gcp_websecurityscanner_scan_config_scan_runs](gcp_websecu
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|utf8|
-|_cq_sync_time|timestamp[us, tz=UTC]|
-|_cq_id|uuid|
-|_cq_parent_id|uuid|
-|project_id (PK)|utf8|
-|name (PK)|utf8|
-|finding_type|utf8|
-|severity|utf8|
-|http_method|utf8|
-|fuzzed_url|utf8|
-|body|utf8|
-|description|utf8|
-|reproduction_url|utf8|
-|frame_url|utf8|
-|final_url|utf8|
-|tracking_id|utf8|
-|form|json|
-|outdated_library|json|
-|violating_resource|json|
-|vulnerable_headers|json|
-|vulnerable_parameters|json|
-|xss|json|
-|xxe|json|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|finding_type|`utf8`|
+|severity|`utf8`|
+|http_method|`utf8`|
+|fuzzed_url|`utf8`|
+|body|`utf8`|
+|description|`utf8`|
+|reproduction_url|`utf8`|
+|frame_url|`utf8`|
+|final_url|`utf8`|
+|tracking_id|`utf8`|
+|form|`json`|
+|outdated_library|`json`|
+|violating_resource|`json`|
+|vulnerable_headers|`json`|
+|vulnerable_parameters|`json`|
+|xss|`json`|
+|xxe|`json`|

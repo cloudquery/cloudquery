@@ -8,12 +8,12 @@ The primary key for this table is **org**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|org (PK)|String|
-|total_minutes_used|Int|
-|total_paid_minutes_used|Float|
-|included_minutes|Int|
-|minutes_used_breakdown|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|org (PK)|`utf8`|
+|total_minutes_used|`int64`|
+|total_paid_minutes_used|`float64`|
+|included_minutes|`int64`|
+|minutes_used_breakdown|`json`|
