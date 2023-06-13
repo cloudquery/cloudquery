@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [18.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v18.2.0...plugins-source-aws-v18.3.0) (2023-06-13)
+
+
+### Features
+
+* **aws-services:** Support newly added regions ([#11451](https://github.com/cloudquery/cloudquery/issues/11451)) ([5adf992](https://github.com/cloudquery/cloudquery/commit/5adf992c115c37cd7a4f4cf57789622acf993893))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to d8eacf8 ([#11449](https://github.com/cloudquery/cloudquery/issues/11449)) ([742dafd](https://github.com/cloudquery/cloudquery/commit/742dafd5bf5cdc8facb94fda5de1d84c88897cbd))
+
 ## [18.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v18.1.0...plugins-source-aws-v18.2.0) (2023-06-12)
 
 
