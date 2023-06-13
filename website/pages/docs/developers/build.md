@@ -1,3 +1,8 @@
+---
+title: Building CloudQuery
+description: Learn how to build CloudQuery from source.
+---
+
 # Building From Source
 
 The preferred way to use CloudQuery is through the available distribution, see the [Quickstart](/docs/quickstart) section of the [Docs](/docs)
