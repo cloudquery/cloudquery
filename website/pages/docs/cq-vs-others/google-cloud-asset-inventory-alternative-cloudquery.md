@@ -1,5 +1,6 @@
 ---
 title: Google Cloud Asset Inventory alternative | Comparison with CloudQuery
+description: CloudQuery is an open source ELT framework that can be used as an alternative to Google Cloud Asset Inventory. CloudQuery is built for performance, and is easy to deploy and maintain.
 ---
 
 # CloudQuery vs Google Cloud Asset Inventory
