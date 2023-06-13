@@ -60,24 +60,22 @@ func (c *Client) upsert(ctx context.Context, tmpTableName string, table *schema.
 	sb.WriteString(" DO UPDATE SET ")
 
 	written := 0
-	indices := nonPkIndices(table)
-	for _, index := range indices {
+	for _, index := range nonPkIndices(table) {
 		col := table.Columns[index]
 		if col.Unique {
 			// we skip this stuff, as unique constraint can't be updated by DuckDB
 			continue
 		}
 		if written > 0 {
-			sb.WriteString(",\n")
+			sb.WriteString(", ")
 		}
 		sb.WriteString(col.Name)
 		sb.WriteString(" = excluded.")
 		sb.WriteString(col.Name)
 		written++
 	}
-
 	query := sb.String()
-	c.logger.Info().Str("query", query).Msg("upsert")
+
 	// per https://duckdb.org/docs/sql/indexes#over-eager-unique-constraint-checking we might need some retries
 	// as the upsert for tables with PKs is transformed into delete + insert internally
 	return backoff.Retry(
@@ -125,18 +123,15 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 
 	sc := transformSchemaForWriting(table.ToArrowSchema())
 	if !c.enabledPks() || len(table.PrimaryKeys()) == 0 {
-		c.logger.Warn().Str("table", table.Name).Msg("simple copyFromFile")
 		return c.copyFromFile(ctx, table.Name, tmpFile, sc)
 	}
 
 	tmpTableName := table.Name + strings.ReplaceAll(uuid.New().String(), "-", "_")
-	c.logger.Warn().Str("table", table.Name).Msg("copy to tmp table")
 	if err := c.createTableIfNotExist(ctx, tmpTableName, table); err != nil {
 		return fmt.Errorf("failed to create table %s: %w", tmpTableName, err)
 	}
 	defer func() {
 		e := c.exec(ctx, "drop table "+tmpTableName)
-		c.logger.Err(e).Str("table", table.Name).Msg("dropped " + tmpTableName)
 		if err == nil {
 			// we preserve original error, so update only on nil err
 			err = e
@@ -145,18 +140,15 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 	if err := c.copyFromFile(ctx, tmpTableName, tmpFile, sc); err != nil {
 		return fmt.Errorf("failed to copy from file %s: %w", tmpFile, err)
 	}
-	c.logger.Warn().Str("table", table.Name).Msg("copied to " + tmpTableName)
 
 	// At time of writing (March 2023), duckdb does not support updating list columns.
 	// As a workaround, we delete the row and insert it again. This makes it non-atomic, unfortunately,
 	// but this is unavoidable until support is added to duckdb itself.
 	// See https://github.com/duckdb/duckdb/blob/c5d9afb97bbf0be12216f3b89ae3131afbbc3156/src/storage/table/list_column_data.cpp#L243-L251
 	if containsList(table) {
-		c.logger.Warn().Str("table", table.Name).Msg("will call deleteInsert " + tmpTableName)
 		return c.deleteInsert(ctx, tmpTableName, table)
 	}
 
-	c.logger.Warn().Str("table", table.Name).Msg("will call upsert " + tmpTableName)
 	return c.upsert(ctx, tmpTableName, table)
 }
 
@@ -199,7 +191,6 @@ func (c *Client) deleteInsert(ctx context.Context, tmpTableName string, table *s
 	if err := c.deleteByPK(ctx, tmpTableName, table); err != nil {
 		return err
 	}
-	c.logger.Warn().Str("table", table.Name).Msg("del by PK OK " + tmpTableName)
 
 	sb := new(strings.Builder)
 	sb.WriteString("INSERT INTO ")
@@ -209,18 +200,13 @@ func (c *Client) deleteInsert(ctx context.Context, tmpTableName string, table *s
 	sb.WriteString(strings.Join(table.Columns.Names(), ", "))
 	sb.WriteString(" FROM ")
 	sb.WriteString(tmpTableName)
-	sb.WriteString(" ON CONFLICT (" + strings.Join(table.PrimaryKeys(), ", ") + ")")
-	sb.WriteString(" DO NOTHING")
+	sb.WriteString(" ON CONFLICT DO NOTHING")
 	query := sb.String()
-	c.logger.Info().Str("table", table.Name).Str("query", query).Msg("will call insert")
 
 	// per https://duckdb.org/docs/sql/indexes#over-eager-unique-constraint-checking we might need to retry
 	return backoff.Retry(
 		func() error {
-			c.logger.Info().Str("table", table.Name).Str("query", query).Msg("calling insert")
-			err := c.exec(ctx, query)
-			c.logger.Err(err).Str("table", table.Name).Str("query", query).Msg("inserted")
-			return err
+			return c.exec(ctx, query)
 		},
 		backoff.WithContext(backoff.WithMaxRetries(backoff.NewConstantBackOff(50*time.Millisecond), 3), ctx),
 	)
