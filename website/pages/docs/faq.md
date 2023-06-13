@@ -1,12 +1,13 @@
 ---
 title: FAQ
+description: Frequently asked questions about CloudQuery.
 ---
 
 # FAQ
 
 ## Does CloudQuery access any application data in my cloud?
 
-No. CloudQuery only accesses metadata and configuration data. It never pulls data from your application databases or cloud storage files.
+No. CloudQuery cloud provider plugins like AWS, GCP and Azure generally only access metadata and configuration data. Some tables like `aws_cloudwatch_metrics` and `aws_cloudwatch_logs` can be used to sync log and metric data, but only if you select these tables.
 
 ## What happens when I run two (or more) syncs? Will the second sync remove resources that no longer exist from the database?
 
