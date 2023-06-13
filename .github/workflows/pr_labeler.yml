@@ -19,4 +19,5 @@ jobs:
         with:
           repo-token: ${{ secrets.GH_CQ_BOT }}
           sync-labels: true
+          continue-on-error: true
           configuration-path: .github/pr_labeler.yml
