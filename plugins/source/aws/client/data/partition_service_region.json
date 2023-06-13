@@ -3862,6 +3862,7 @@
             "eu-south-2": {},
             "eu-west-1": {},
             "eu-west-2": {},
+            "eu-west-3": {},
             "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
@@ -7004,6 +7005,12 @@
           }
         },
         "directconnect": {
+          "regions": {
+            "us-iso-east-1": {},
+            "us-iso-west-1": {}
+          }
+        },
+        "dlm": {
           "regions": {
             "us-iso-east-1": {},
             "us-iso-west-1": {}
