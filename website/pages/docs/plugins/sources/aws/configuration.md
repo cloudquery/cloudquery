@@ -143,7 +143,7 @@ This is the (nested) spec used by the AWS source plugin.
     aws_accessanalyzer_analyzer_findings:
       list_findings:
         - <[ListFindings](https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_ListFindings.html)>
-    aws_cloudwatch_metrics:
+    aws_alpha_cloudwatch_metrics:
       - list_metrics:
           <[ListMetrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_ListMetrics.html)>
         get_metric_statistics:

@@ -1,6 +1,6 @@
-# Table: aws_cloudwatch_metrics
+# Table: aws_alpha_cloudwatch_metrics
 
-This table shows data for Cloudwatch Metrics.
+This table shows data for Alpha Cloudwatch Metrics.
 
 https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_ListMetrics.html
 To sync this table you must set the 'use_paid_apis' option to 'true' and set the relevant 'table_options' entry in the AWS provider configuration.
@@ -9,8 +9,8 @@ The composite primary key for this table is (**account_id**, **region**, **input
 
 ## Relations
 
-The following tables depend on aws_cloudwatch_metrics:
-  - [aws_cloudwatch_metric_statistics](aws_cloudwatch_metric_statistics)
+The following tables depend on aws_alpha_cloudwatch_metrics:
+  - [aws_alpha_cloudwatch_metric_statistics](aws_alpha_cloudwatch_metric_statistics)
 
 ## Columns
 

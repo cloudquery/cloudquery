@@ -1,7 +1,7 @@
 package tableoptions
 
 type TableOptions struct {
-	CloudwatchMetrics []CloudwatchMetrics `json:"aws_cloudwatch_metrics,omitempty"`
+	CloudwatchMetrics []CloudwatchMetrics `json:"aws_alpha_cloudwatch_metrics,omitempty"`
 
 	CloudTrailEvents       *CloudtrailAPIs         `json:"aws_cloudtrail_events,omitempty"`
 	AccessAnalyzerFindings *AccessanalyzerFindings `json:"aws_accessanalyzer_analyzer_findings,omitempty"`

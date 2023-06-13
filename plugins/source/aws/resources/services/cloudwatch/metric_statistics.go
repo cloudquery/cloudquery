@@ -24,7 +24,7 @@ type statOutput struct {
 }
 
 func metricStatistics() *schema.Table {
-	tableName := "aws_cloudwatch_metric_statistics"
+	tableName := "aws_alpha_cloudwatch_metric_statistics"
 	return &schema.Table{
 		Name: tableName,
 		Description: `https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html
