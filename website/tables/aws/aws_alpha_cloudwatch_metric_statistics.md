@@ -1,9 +1,11 @@
 # Table: aws_alpha_cloudwatch_metric_statistics
 
-This table shows data for Alpha Cloudwatch Metric Statistics.
+This table shows data for Cloudwatch Metric Statistics (Alpha).
 
 https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html
 To sync this table you must set the 'use_paid_apis' option to 'true' and set the relevant 'table_options' entry in the AWS provider configuration.
+
+Please note that this table is considered **alpha** (experimental) and may have breaking changes or be removed in the future.
 
 The composite primary key for this table is (**account_id**, **region**, **parent_input_hash**, **input_hash**, **timestamp**, **label**).
 

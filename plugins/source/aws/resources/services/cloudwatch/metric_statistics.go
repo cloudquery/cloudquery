@@ -26,9 +26,12 @@ type statOutput struct {
 func metricStatistics() *schema.Table {
 	tableName := "aws_alpha_cloudwatch_metric_statistics"
 	return &schema.Table{
-		Name: tableName,
+		Name:  tableName,
+		Title: `Cloudwatch Metric Statistics (Alpha)`,
 		Description: `https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html
 To sync this table you must set the 'use_paid_apis' option to 'true' and set the relevant 'table_options' entry in the AWS provider configuration.
+
+Please note that this table is considered **alpha** (experimental) and may have breaking changes or be removed in the future.
 `,
 		Resolver:  fetchCloudwatchMetricStatistics,
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "monitoring"),
