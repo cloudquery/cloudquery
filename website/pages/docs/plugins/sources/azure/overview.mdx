@@ -133,5 +133,22 @@ FROM
    WHERE (caps ->> 'name') = 'MemoryGB'
  ) memory
 WHERE
- vm.resource_type = 'virtualMachines' order by name ;
+ vm.resource_type = 'virtualMachines' order by name;
+```
+
+Results:
+
+```
++---------------------------+-------+--------+
+| name                      | vCPUs | Memory |
+|---------------------------+-------+--------|
+| Basic_A0                  | 1     | 0.75   |
+| Basic_A1                  | 1     | 1.75   |
+| Basic_A2                  | 2     | 3.5    |
+| Basic_A3                  | 4     | 7      |
+| Basic_A4                  | 8     | 14     |
+| Standard_A0               | 1     | 0.75   |
+| Standard_A1               | 1     | 1.75   |
+| Standard_A1_v2            | 1     | 2      |
+... (truncated)
 ```
