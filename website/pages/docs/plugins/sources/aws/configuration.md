@@ -101,7 +101,7 @@ This is the (nested) spec used by the AWS source plugin.
 
 - `use_paid_apis` (boolean) (default: false)
 
-  When set to `true` plugin will sync data from APIs that incur a fee. Currently only `aws_costexplorer*` and `aws_cloudwatch_metric*` tables require this flag to be set to `true`.
+  When set to `true` plugin will sync data from APIs that incur a fee. Currently only `aws_costexplorer*` and `aws_alpha_cloudwatch_metric*` tables require this flag to be set to `true`.
 
 - **experimental** `table_options` (map) (default: not used)
 
