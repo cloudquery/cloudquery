@@ -214,3 +214,11 @@ func splitParams(params string) []string {
 func sanitizeID(id string) string {
 	return `"` + id + `"`
 }
+
+func sanitized(ids []string) []string {
+	res := make([]string, len(ids))
+	for i, id := range ids {
+		res[i] = sanitizeID(id)
+	}
+	return res
+}
