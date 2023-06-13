@@ -15,12 +15,11 @@ import (
 func ProtectedResources() *schema.Table {
 	tableName := "aws_backup_protected_resources"
 	return &schema.Table{
-		Name:                tableName,
-		Description:         `https://docs.aws.amazon.com/aws-backup/latest/devguide/API_DescribeProtectedResource.html`,
-		Resolver:            listResources,
-		PreResourceResolver: getResource,
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "backup"),
-		Transform:           transformers.TransformWithStruct(&backup.DescribeProtectedResourceOutput{}),
+		Name:        tableName,
+		Description: `https://docs.aws.amazon.com/aws-backup/latest/devguide/API_DescribeProtectedResource.html`,
+		Resolver:    listResources,
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "backup"),
+		Transform:   transformers.TransformWithStruct(&types.ProtectedResource{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -48,21 +47,5 @@ func listResources(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		}
 		res <- page.Results
 	}
-	return nil
-}
-
-func getResource(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services().Backup
-	pr := resource.Item.(types.ProtectedResource)
-	resp, err := svc.DescribeProtectedResource(ctx, &backup.DescribeProtectedResourceInput{
-		ResourceArn: pr.ResourceArn,
-	}, func(options *backup.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		return err
-	}
-	resource.Item = resp
 	return nil
 }
