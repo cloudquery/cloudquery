@@ -184,6 +184,7 @@
 - [aws_ec2_images](tables/aws_ec2_images)
   - [aws_ec2_image_last_launched_times](tables/aws_ec2_image_last_launched_times)
   - [aws_ec2_image_launch_permissions](tables/aws_ec2_image_launch_permissions)
+- [aws_ec2_instance_connect_endpoints](tables/aws_ec2_instance_connect_endpoints)
 - [aws_ec2_instance_statuses](tables/aws_ec2_instance_statuses)
 - [aws_ec2_instance_types](tables/aws_ec2_instance_types)
 - [aws_ec2_instances](tables/aws_ec2_instances)

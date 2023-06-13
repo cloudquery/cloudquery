@@ -1385,6 +1385,36 @@ func (mr *MockEc2ClientMockRecorder) DescribeInstanceAttribute(arg0, arg1 interf
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeInstanceAttribute", reflect.TypeOf((*MockEc2Client)(nil).DescribeInstanceAttribute), varargs...)
 }
 
+// DescribeInstanceConnectEndpoints mocks base method.
+func (m *MockEc2Client) DescribeInstanceConnectEndpoints(arg0 context.Context, arg1 *ec2.DescribeInstanceConnectEndpointsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeInstanceConnectEndpointsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInstanceConnectEndpoints")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeInstanceConnectEndpoints", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeInstanceConnectEndpointsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeInstanceConnectEndpoints indicates an expected call of DescribeInstanceConnectEndpoints.
+func (mr *MockEc2ClientMockRecorder) DescribeInstanceConnectEndpoints(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeInstanceConnectEndpoints", reflect.TypeOf((*MockEc2Client)(nil).DescribeInstanceConnectEndpoints), varargs...)
+}
+
 // DescribeInstanceCreditSpecifications mocks base method.
 func (m *MockEc2Client) DescribeInstanceCreditSpecifications(arg0 context.Context, arg1 *ec2.DescribeInstanceCreditSpecificationsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeInstanceCreditSpecificationsOutput, error) {
 
@@ -1653,6 +1683,66 @@ func (mr *MockEc2ClientMockRecorder) DescribeIpamPools(arg0, arg1 interface{}, a
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeIpamPools", reflect.TypeOf((*MockEc2Client)(nil).DescribeIpamPools), varargs...)
+}
+
+// DescribeIpamResourceDiscoveries mocks base method.
+func (m *MockEc2Client) DescribeIpamResourceDiscoveries(arg0 context.Context, arg1 *ec2.DescribeIpamResourceDiscoveriesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeIpamResourceDiscoveriesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeIpamResourceDiscoveries")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeIpamResourceDiscoveries", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeIpamResourceDiscoveriesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeIpamResourceDiscoveries indicates an expected call of DescribeIpamResourceDiscoveries.
+func (mr *MockEc2ClientMockRecorder) DescribeIpamResourceDiscoveries(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeIpamResourceDiscoveries", reflect.TypeOf((*MockEc2Client)(nil).DescribeIpamResourceDiscoveries), varargs...)
+}
+
+// DescribeIpamResourceDiscoveryAssociations mocks base method.
+func (m *MockEc2Client) DescribeIpamResourceDiscoveryAssociations(arg0 context.Context, arg1 *ec2.DescribeIpamResourceDiscoveryAssociationsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeIpamResourceDiscoveryAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeIpamResourceDiscoveryAssociations")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeIpamResourceDiscoveryAssociations", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeIpamResourceDiscoveryAssociationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeIpamResourceDiscoveryAssociations indicates an expected call of DescribeIpamResourceDiscoveryAssociations.
+func (mr *MockEc2ClientMockRecorder) DescribeIpamResourceDiscoveryAssociations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeIpamResourceDiscoveryAssociations", reflect.TypeOf((*MockEc2Client)(nil).DescribeIpamResourceDiscoveryAssociations), varargs...)
 }
 
 // DescribeIpamScopes mocks base method.
@@ -4775,6 +4865,66 @@ func (mr *MockEc2ClientMockRecorder) GetIpamAddressHistory(arg0, arg1 interface{
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetIpamAddressHistory", reflect.TypeOf((*MockEc2Client)(nil).GetIpamAddressHistory), varargs...)
 }
 
+// GetIpamDiscoveredAccounts mocks base method.
+func (m *MockEc2Client) GetIpamDiscoveredAccounts(arg0 context.Context, arg1 *ec2.GetIpamDiscoveredAccountsInput, arg2 ...func(*ec2.Options)) (*ec2.GetIpamDiscoveredAccountsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetIpamDiscoveredAccounts")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetIpamDiscoveredAccounts", varargs...)
+	ret0, _ := ret[0].(*ec2.GetIpamDiscoveredAccountsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetIpamDiscoveredAccounts indicates an expected call of GetIpamDiscoveredAccounts.
+func (mr *MockEc2ClientMockRecorder) GetIpamDiscoveredAccounts(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetIpamDiscoveredAccounts", reflect.TypeOf((*MockEc2Client)(nil).GetIpamDiscoveredAccounts), varargs...)
+}
+
+// GetIpamDiscoveredResourceCidrs mocks base method.
+func (m *MockEc2Client) GetIpamDiscoveredResourceCidrs(arg0 context.Context, arg1 *ec2.GetIpamDiscoveredResourceCidrsInput, arg2 ...func(*ec2.Options)) (*ec2.GetIpamDiscoveredResourceCidrsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetIpamDiscoveredResourceCidrs")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetIpamDiscoveredResourceCidrs", varargs...)
+	ret0, _ := ret[0].(*ec2.GetIpamDiscoveredResourceCidrsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetIpamDiscoveredResourceCidrs indicates an expected call of GetIpamDiscoveredResourceCidrs.
+func (mr *MockEc2ClientMockRecorder) GetIpamDiscoveredResourceCidrs(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetIpamDiscoveredResourceCidrs", reflect.TypeOf((*MockEc2Client)(nil).GetIpamDiscoveredResourceCidrs), varargs...)
+}
+
 // GetIpamPoolAllocations mocks base method.
 func (m *MockEc2Client) GetIpamPoolAllocations(arg0 context.Context, arg1 *ec2.GetIpamPoolAllocationsInput, arg2 ...func(*ec2.Options)) (*ec2.GetIpamPoolAllocationsOutput, error) {
 
@@ -5493,6 +5643,36 @@ func (mr *MockEc2ClientMockRecorder) GetVpnConnectionDeviceTypes(arg0, arg1 inte
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVpnConnectionDeviceTypes", reflect.TypeOf((*MockEc2Client)(nil).GetVpnConnectionDeviceTypes), varargs...)
+}
+
+// GetVpnTunnelReplacementStatus mocks base method.
+func (m *MockEc2Client) GetVpnTunnelReplacementStatus(arg0 context.Context, arg1 *ec2.GetVpnTunnelReplacementStatusInput, arg2 ...func(*ec2.Options)) (*ec2.GetVpnTunnelReplacementStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetVpnTunnelReplacementStatus")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetVpnTunnelReplacementStatus", varargs...)
+	ret0, _ := ret[0].(*ec2.GetVpnTunnelReplacementStatusOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVpnTunnelReplacementStatus indicates an expected call of GetVpnTunnelReplacementStatus.
+func (mr *MockEc2ClientMockRecorder) GetVpnTunnelReplacementStatus(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVpnTunnelReplacementStatus", reflect.TypeOf((*MockEc2Client)(nil).GetVpnTunnelReplacementStatus), varargs...)
 }
 
 // ListImagesInRecycleBin mocks base method.
