@@ -1,3 +1,8 @@
+---
+title: What is SOC2 Compliance?
+description: Learn about SOC2 compliance and how to achieve it.
+---
+
 # What is SOC2 Compliance?
 
 SOC2 (Service Organization Control 2) compliance is a set of auditing standards that measures how well a company manages and protects its customers' data. The SOC2 compliance framework was developed by the AICPA to provide a standardized way to assess and report on a company's data security practices.
