@@ -1,3 +1,8 @@
+---
+title: Managing Incremental Tables
+description: Incremental tables are tables that fetch only the data that changed since the last sync. Tables that support this mode are marked as "incremental" in plugin table documentation.
+---
+
 # Managing Incremental Tables
 
 Incremental tables are tables that fetch only the data that changed since the last sync. Tables that support this mode are marked as "incremental" in plugin table documentation.

@@ -1,6 +1,7 @@
 import {DESTINATION_PLUGINS, Plugin} from "../pluginData";
 import {LogoContainer} from "../LogoContainer";
 import React from "react";
+import Head from "next/head";
 
 export default function Integration({
     source
@@ -8,7 +9,9 @@ export default function Integration({
     source: Plugin;
 }) {
     return <>
-
+        <Head>
+            <meta property="og:description" content={"Sync from " + source.name + " to any destination: PostgreSQL, MySQL, BigQuery, S3, DuckDB and many more"} />
+        </Head>
         <div className="max-w-5xl px-4 pb-12 mx-auto lg:px-8">
             <div className="flex flex-col md:flex-row justify-between px-4 pt-16 pb-8 mx-auto sm:pt-24 lg:px-8 w-auto lg:max-w-7xl">
                 <div>
