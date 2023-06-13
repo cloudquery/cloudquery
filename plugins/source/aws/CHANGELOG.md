@@ -6,6 +6,34 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [18.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v18.1.0...plugins-source-aws-v18.2.0) (2023-06-12)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_ec2_image_last_launched_times` was added
+
+### Features
+
+* **aws-services:** Support newly added regions ([#11446](https://github.com/cloudquery/cloudquery/issues/11446)) ([ab16ec5](https://github.com/cloudquery/cloudquery/commit/ab16ec5009958c0654b049318aee9822ce504b2e))
+* **aws:** Add support for EC2 Image Last Launched Time ([#11224](https://github.com/cloudquery/cloudquery/issues/11224)) ([eaee4df](https://github.com/cloudquery/cloudquery/commit/eaee4dfb2c72441a7702eb648741f87f0e63d225))
+
+
+### Bug Fixes
+
+* **aws:** Resolve All types of attached Resources in `aws_wafv2_web_acls` ([#11420](https://github.com/cloudquery/cloudquery/issues/11420)) ([799211f](https://github.com/cloudquery/cloudquery/commit/799211f17ac6dd6b01c39d7a002714c1f6af7e0e))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 0f7bd3b ([#11412](https://github.com/cloudquery/cloudquery/issues/11412)) ([dd1e2e8](https://github.com/cloudquery/cloudquery/commit/dd1e2e892d95515fd7332339262abaefd2a256c5))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 7f6aaff ([#11432](https://github.com/cloudquery/cloudquery/issues/11432)) ([55dfebc](https://github.com/cloudquery/cloudquery/commit/55dfebc064608fb47caaf3b8e68c8002de8a7dc3))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 8f72077 ([#11395](https://github.com/cloudquery/cloudquery/issues/11395)) ([d91fc5c](https://github.com/cloudquery/cloudquery/commit/d91fc5ce24f64c29fff6988b19ec2c2775cc379b))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 90670b8 ([#11279](https://github.com/cloudquery/cloudquery/issues/11279)) ([a6cdc91](https://github.com/cloudquery/cloudquery/commit/a6cdc912e4b38a3faf798c5147a986ffe2539643))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to b359e74 ([#11405](https://github.com/cloudquery/cloudquery/issues/11405)) ([5d92765](https://github.com/cloudquery/cloudquery/commit/5d927659bd4f7c445a0e312487f1655ffb9a60f6))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to e258cfb ([#11391](https://github.com/cloudquery/cloudquery/issues/11391)) ([eacbe9a](https://github.com/cloudquery/cloudquery/commit/eacbe9ad3ea16d88f27c4593fa2774574ac8fe4e))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/acmpca to v1.21.13 ([#11423](https://github.com/cloudquery/cloudquery/issues/11423)) ([86b3afe](https://github.com/cloudquery/cloudquery/commit/86b3afe5af3e997d0526a4be64465d1c2ed14b1b))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/directconnect to v1.18.15 ([#11424](https://github.com/cloudquery/cloudquery/issues/11424)) ([44c33ee](https://github.com/cloudquery/cloudquery/commit/44c33ee861a896553c45cc052a139b2566c98af3))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 to v1.19.11 ([#11425](https://github.com/cloudquery/cloudquery/issues/11425)) ([7089538](https://github.com/cloudquery/cloudquery/commit/7089538299881c1673a2c2e8a63101917246bbb7))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/elastictranscoder to v1.14.10 ([#11426](https://github.com/cloudquery/cloudquery/issues/11426)) ([f87fe41](https://github.com/cloudquery/cloudquery/commit/f87fe414ffe46d7d59b01a128f987c12c3410017))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/firehose to v1.16.12 ([#11427](https://github.com/cloudquery/cloudquery/issues/11427)) ([f9a494b](https://github.com/cloudquery/cloudquery/commit/f9a494bb0b128695a4ee9f0695551fe7c4971fe1))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/fsx to v1.28.13 ([#11428](https://github.com/cloudquery/cloudquery/issues/11428)) ([043aa2b](https://github.com/cloudquery/cloudquery/commit/043aa2bbf628b3b6f8c002d3dd930858b5c09e22))
+
 ## [18.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v18.0.0...plugins-source-aws-v18.1.0) (2023-06-06)
 
 
