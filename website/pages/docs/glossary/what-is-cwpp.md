@@ -1,3 +1,8 @@
+---
+title: What is a CWPP?
+description: Learn about Cloud Workload Protection Platforms.
+---
+
 # What is a CWPP?
 
 With the growing adoption of cloud and organizations moving their operations and technology to cloud, the need for effective cloud security solutions has increased.  One such trend that has emerged is the adoption of Cloud Workload Protection Platforms (CWPP).
