@@ -1,6 +1,7 @@
 import {Plugin} from "../pluginData";
 import DownloadSection from '../mdx/_download-all.mdx'
 import React, {ReactNode} from "react";
+import Head from "next/head";
 
 function unpublishedPlugin({
                                source,
@@ -10,6 +11,9 @@ function unpublishedPlugin({
     destination: Plugin;
 }) {
     return <>
+        <Head>
+            <meta property="og:description" content={"Sync data from " + source.name + " to " + destination.name + ": Upvote and subscribe to show your interest and get notified when this upcoming integration is released."} />
+        </Head>
         <div className="max-w-5xl px-4 pb-12 mx-auto lg:px-8">
             <div className="flex flex-col md:flex-row justify-between px-4 pt-16 pb-8 mx-auto sm:pt-24 lg:px-8 w-auto">
                 <div className="flex flex-col justify-between md:mr-4">
@@ -68,6 +72,9 @@ export default function Integration({
         return unpublishedPlugin({source, destination});
     }
     return <>
+        <Head>
+            <meta property="og:description" content={"Sync data from " + source.name + " to " + destination.name + ": A step-by-step guide"} />
+        </Head>
         <div className="max-w-5xl px-4 pb-12 mx-auto lg:px-8">
             <div className="flex flex-col md:flex-row justify-between px-4 pt-16 pb-8 mx-auto sm:pt-24 lg:px-8 w-auto">
                 <div className="flex flex-col justify-between md:mr-4">
