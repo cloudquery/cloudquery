@@ -1,3 +1,8 @@
+---
+title: CloudQuery Policies
+description: CloudQuery maintains official SQL policies, and dashboards for security, compliance and cost that you can visualize and monitor with your current BI stack such as Grafana, Apache Superset, QuickSight, PowerBI, etc…
+---
+
 # Policies
 
 CloudQuery maintains a few official SQL policies, and dashboards for security, compliance and cost that you can visualize and monitor with your current BI stack such as [Grafana](/how-to-guides/open-source-cspm), [Apache Superset](/how-to-guides/cloud-asset-inventory-cloudquery-apache-superset), [QuickSight](/how-to-guides/cloud-asset-inventory-cloudquery-aws-quicksight), [PowerBI](/how-to-guides/cloud-asset-inventory-cloudquery-microsoft-power-bi), etc…
