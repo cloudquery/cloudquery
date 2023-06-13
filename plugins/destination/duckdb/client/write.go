@@ -102,40 +102,15 @@ func (c *Client) copyFromFile(ctx context.Context, tableName string, fileName st
 }
 
 func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, records []arrow.Record) (err error) {
-	f, err := os.CreateTemp("", fmt.Sprintf("%s-*.parquet", table.Name))
+	tmpFile, err := c.writeTMPFile(table, records)
 	if err != nil {
 		return err
 	}
-	defer os.Remove(f.Name())
-	defer f.Close()
+	defer os.Remove(tmpFile)
+
 	sc := transformSchemaForWriting(table.ToArrowSchema())
-
-	props := parquet.NewWriterProperties(
-		parquet.WithVersion(parquet.V2_4),
-		parquet.WithMaxRowGroupLength(128*1024*1024), // 128M
-	)
-	arrprops := pqarrow.NewArrowWriterProperties(
-		pqarrow.WithStoreSchema(),
-	)
-	fw, err := pqarrow.NewFileWriter(sc, f, props, arrprops)
-	if err != nil {
-		return err
-	}
-	defer fw.Close()
-
-	for _, r := range records {
-		transformedRec := transformRecord(sc, r)
-		err := fw.Write(transformedRec)
-		if err != nil {
-			return err
-		}
-	}
-	if err := fw.Close(); err != nil {
-		return err
-	}
-
 	if !c.enabledPks() || len(table.PrimaryKeys()) == 0 {
-		return c.copyFromFile(ctx, table.Name, f.Name(), sc)
+		return c.copyFromFile(ctx, table.Name, tmpFile, sc)
 	}
 
 	tmpTableName := table.Name + strings.ReplaceAll(uuid.New().String(), "-", "_")
@@ -149,8 +124,8 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 			err = e
 		}
 	}()
-	if err := c.copyFromFile(ctx, tmpTableName, f.Name(), sc); err != nil {
-		return fmt.Errorf("failed to copy from file %s: %w", f.Name(), err)
+	if err := c.copyFromFile(ctx, tmpTableName, tmpFile, sc); err != nil {
+		return fmt.Errorf("failed to copy from file %s: %w", tmpFile, err)
 	}
 
 	// At time of writing (March 2023), duckdb does not support updating list columns.
@@ -162,6 +137,41 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 	}
 
 	return c.upsert(ctx, tmpTableName, table)
+}
+
+func (c *Client) writeTMPFile(table *schema.Table, records []arrow.Record) (fileName string, err error) {
+	sc := transformSchemaForWriting(table.ToArrowSchema())
+
+	// create temp file
+	f, err := os.CreateTemp("", fmt.Sprintf("%s-*.parquet", table.Name))
+	if err != nil {
+		return "", err
+	}
+	defer f.Close() // we don't care here, as the happy-path will actually check the error
+	fileName = f.Name()
+
+	// prep file writer
+	fw, err := pqarrow.NewFileWriter(sc, f,
+		parquet.NewWriterProperties(
+			parquet.WithVersion(parquet.V2_4),
+			parquet.WithMaxRowGroupLength(128*1024*1024), // 128M
+		),
+		pqarrow.NewArrowWriterProperties(pqarrow.WithStoreSchema()),
+	)
+	if err != nil {
+		return "", err
+	}
+	defer fw.Close() // we don't care here either as the happy path will check the error
+
+	// write records
+	for _, r := range records {
+		if err = fw.Write(transformRecord(sc, r)); err != nil {
+			return "", err
+		}
+	}
+
+	// close file writer (will close the underlying file, too)
+	return fileName, fw.Close()
 }
 
 func (c *Client) deleteInsert(ctx context.Context, tmpTableName string, table *schema.Table) error {
