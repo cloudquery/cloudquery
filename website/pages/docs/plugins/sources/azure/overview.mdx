@@ -112,3 +112,26 @@ SELECT * from azure_storage_accounts where enable_https_traffic_only = false;
 ```sql copy
 SELECT * from azure_keyvault_vault_keys where attributes_expires >= extract(epoch from now()) * 1000;
 ```
+
+### List the Memory and vCPUs of all available Azure Compute VM types
+
+```sql copy
+SELECT
+ distinct(vm.name),
+ vcpus.capability_value AS "vCPUs",
+ memory.capability_value AS "Memory"
+FROM
+ azure_compute_skus vm
+ CROSS JOIN LATERAL (
+   SELECT (caps ->> 'value') AS capability_value
+   FROM jsonb_array_elements(vm.capabilities) caps
+   WHERE (caps ->> 'name') = 'vCPUs'
+ ) vcpus
+ CROSS JOIN LATERAL (
+   SELECT (caps ->> 'value') AS capability_value
+   FROM jsonb_array_elements(vm.capabilities) caps
+   WHERE (caps ->> 'name') = 'MemoryGB'
+ ) memory
+WHERE
+ vm.resource_type = 'virtualMachines' order by name ;
+```
