@@ -86,6 +86,7 @@
 - [aws_backup_global_settings](tables/aws_backup_global_settings)
 - [aws_backup_plans](tables/aws_backup_plans)
   - [aws_backup_plan_selections](tables/aws_backup_plan_selections)
+- [aws_backup_protected_resources](tables/aws_backup_protected_resources)
 - [aws_backup_region_settings](tables/aws_backup_region_settings)
 - [aws_backup_vaults](tables/aws_backup_vaults)
   - [aws_backup_vault_recovery_points](tables/aws_backup_vault_recovery_points)
