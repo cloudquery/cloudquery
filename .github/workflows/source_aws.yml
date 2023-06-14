@@ -62,8 +62,6 @@ jobs:
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
           skip-build-cache: true
-      - name: Get dependencies
-        run: go get -t -d ./...
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
