@@ -11,12 +11,13 @@ import (
 
 func SapMonitors() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_hanaonazure_sap_monitors",
-		Resolver:    fetchSapMonitors,
-		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hanaonazure/armhanaonazure@v0.5.0#SapMonitor",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_hanaonazure_sap_monitors", client.Namespacemicrosoft_hanaonazure),
-		Transform:   transformers.TransformWithStruct(&armhanaonazure.SapMonitor{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_hanaonazure_sap_monitors",
+		Resolver:             fetchSapMonitors,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hanaonazure/armhanaonazure@v0.5.0#SapMonitor",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_hanaonazure_sap_monitors", client.Namespacemicrosoft_hanaonazure),
+		Transform:            transformers.TransformWithStruct(&armhanaonazure.SapMonitor{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

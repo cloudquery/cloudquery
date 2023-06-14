@@ -52,8 +52,8 @@ func keyPolicies() *schema.Table {
 }
 
 func fetchKeyPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Kms
+	cl := meta.(*client.Client)
+	svc := cl.Services().Kms
 
 	const policyName = "default"
 
@@ -62,7 +62,7 @@ func fetchKeyPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 		KeyId:      k.Arn,
 		PolicyName: aws.String(policyName),
 	}, func(o *kms.Options) {
-		o.Region = c.Region
+		o.Region = cl.Region
 	})
 	if err != nil {
 		return err

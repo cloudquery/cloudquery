@@ -11,11 +11,12 @@ import (
 
 func Tenants() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_subscription_tenants",
-		Resolver:    fetchTenants,
-		Description: "https://learn.microsoft.com/en-us/rest/api/resources/tenants/list?tabs=HTTP#tenantiddescription",
-		Transform:   transformers.TransformWithStruct(&armsubscription.TenantIDDescription{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{},
+		Name:                 "azure_subscription_tenants",
+		Resolver:             fetchTenants,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/resources/tenants/list?tabs=HTTP#tenantiddescription",
+		Transform:            transformers.TransformWithStruct(&armsubscription.TenantIDDescription{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{},
 	}
 }
 

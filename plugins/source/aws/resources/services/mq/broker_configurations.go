@@ -41,8 +41,8 @@ func fetchMqBrokerConfigurations(ctx context.Context, meta schema.ClientMeta, pa
 	if broker.Configurations == nil {
 		return nil
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Mq
+	cl := meta.(*client.Client)
+	svc := cl.Services().Mq
 	list := broker.Configurations.History
 	if broker.Configurations.Current != nil {
 		list = append(list, *broker.Configurations.Current)
@@ -63,7 +63,7 @@ func fetchMqBrokerConfigurations(ctx context.Context, meta schema.ClientMeta, pa
 
 		input := mq.DescribeConfigurationInput{ConfigurationId: cfg.Id}
 		output, err := svc.DescribeConfiguration(ctx, &input, func(options *mq.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

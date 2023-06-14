@@ -33,8 +33,8 @@ func GlobalClusters() *schema.Table {
 }
 
 func fetchDocdbGlobalClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Docdb
+	cl := meta.(*client.Client)
+	svc := cl.Services().Docdb
 
 	input := &docdb.DescribeGlobalClustersInput{
 		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"docdb"}}},
@@ -42,7 +42,7 @@ func fetchDocdbGlobalClusters(ctx context.Context, meta schema.ClientMeta, paren
 	p := docdb.NewDescribeGlobalClustersPaginator(svc, input)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *docdb.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

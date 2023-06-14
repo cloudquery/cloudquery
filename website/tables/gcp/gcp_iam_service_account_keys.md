@@ -28,3 +28,55 @@ This table depends on [gcp_iam_service_accounts](gcp_iam_service_accounts).
 |key_origin|`utf8`|
 |key_type|`utf8`|
 |disabled|`bool`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Ensure that there are only GCP-managed service account keys for each service account (Automated)
+
+```sql
+SELECT
+  DISTINCT
+  gisa.name AS resource_id,
+  'Ensure that there are only GCP-managed service account keys for each service account (Automated)'
+    AS title,
+  gisa.project_id AS project_id,
+  CASE
+  WHEN gisa.email LIKE '%iam.gserviceaccount.com'
+  AND gisak.key_type = 'USER_MANAGED'
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  gcp_iam_service_accounts AS gisa
+  JOIN gcp_iam_service_account_keys AS gisak ON
+      gisa.project_id = gisak.project_id
+      AND gisa.unique_id = gisak.service_account_unique_id;
+```
+
+### Ensure user-managed/external keys for service accounts are rotated every 90 days or less (Automated)
+
+```sql
+SELECT
+  DISTINCT
+  gisa.name AS resource_id,
+  'Ensure user-managed/external keys for service accounts are rotated every 90 days or less (Automated)'
+    AS title,
+  gisa.project_id AS project_id,
+  CASE
+  WHEN gisa.email LIKE '%iam.gserviceaccount.com'
+  AND gisak.valid_after_time::TIMESTAMP <= (now() - '90'::INTERVAL DAY)
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  gcp_iam_service_accounts AS gisa
+  JOIN gcp_iam_service_account_keys AS gisak ON
+      gisa.project_id = gisak.project_id
+      AND gisa.unique_id = gisak.service_account_unique_id;
+```
+
+

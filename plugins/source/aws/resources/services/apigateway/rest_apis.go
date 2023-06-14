@@ -50,11 +50,11 @@ func fetchApigatewayRestApis(ctx context.Context, meta schema.ClientMeta, parent
 	config := apigateway.GetRestApisInput{
 		Limit: aws.Int32(500),
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Apigateway
+	cl := meta.(*client.Client)
+	svc := cl.Services().Apigateway
 	for p := apigateway.NewGetRestApisPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx, func(options *apigateway.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

@@ -36,3 +36,38 @@ The primary key for this table is **arn**.
 |vpc_endpoint_id|`utf8`|
 |vpc_endpoint_type|`utf8`|
 |vpc_id|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Amazon EC2 should be configured to use VPC endpoints that are created for the Amazon EC2 service
+
+```sql
+WITH
+  endpoints
+    AS (
+      SELECT
+        vpc_endpoint_id
+      FROM
+        aws_ec2_vpc_endpoints
+      WHERE
+        vpc_endpoint_type = 'Interface'
+        AND service_name ~ concat('com.amazonaws.', region, '.ec2')
+    )
+SELECT
+  'Amazon EC2 should be configured to use VPC endpoints that are created for the Amazon EC2 service'
+    AS title,
+  account_id,
+  vpc_id AS resource_id,
+  CASE
+  WHEN endpoints.vpc_endpoint_id IS NULL THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_ec2_vpcs
+  LEFT JOIN endpoints ON aws_ec2_vpcs.vpc_id = endpoints.vpc_endpoint_id;
+```
+
+

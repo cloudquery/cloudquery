@@ -97,7 +97,7 @@ var customTables = []*schema.Table{
 }
 
 func Plugin() *source.Plugin {
-	allTables := append(AutogenTables(), customTables...)
+	allTables := append(Tables(), customTables...)
 
 	sort.Slice(allTables, func(i, j int) bool {
 		return allTables[i].Name < allTables[j].Name

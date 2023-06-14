@@ -11,11 +11,12 @@ import (
 
 func webAppConfigurations() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_appservice_web_app_configurations",
-		Resolver:    fetchWebAppConfigurations,
-		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/web-apps/list-configurations#siteconfigresource",
-		Transform:   transformers.TransformWithStruct(&armappservice.SiteConfigResource{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_appservice_web_app_configurations",
+		Resolver:             fetchWebAppConfigurations,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/appservice/web-apps/list-configurations#siteconfigresource",
+		Transform:            transformers.TransformWithStruct(&armappservice.SiteConfigResource{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

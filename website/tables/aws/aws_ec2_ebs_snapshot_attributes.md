@@ -24,3 +24,39 @@ This table depends on [aws_ec2_ebs_snapshots](aws_ec2_ebs_snapshots).
 |create_volume_permissions|`json`|
 |product_codes|`json`|
 |snapshot_id|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Amazon EBS snapshots should not be public, determined by the ability to be restorable by anyone
+
+```sql
+WITH
+  snapshot_access_groups
+    AS (
+      SELECT
+        account_id,
+        region,
+        snapshot_id,
+        jsonb_array_elements(create_volume_permissions)->>'Group' AS group,
+        jsonb_array_elements(create_volume_permissions)->>'UserId' AS user_id
+      FROM
+        aws_ec2_ebs_snapshot_attributes
+    )
+SELECT
+  DISTINCT
+  'Amazon EBS snapshots should not be public, determined by the ability to be restorable by anyone'
+    AS title,
+  account_id,
+  snapshot_id AS resource_id,
+  CASE
+  WHEN "group" = 'all' OR user_id IS DISTINCT FROM '' THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  snapshot_access_groups;
+```
+
+

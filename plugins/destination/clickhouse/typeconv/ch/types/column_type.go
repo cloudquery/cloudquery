@@ -63,7 +63,7 @@ func ColumnType(dataType arrow.DataType) (string, error) {
 		return mapType(dataType)
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/array
-	case listDataType:
+	case arrow.ListLikeType:
 		return listType(dataType)
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/tuple

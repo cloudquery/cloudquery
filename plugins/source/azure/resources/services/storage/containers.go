@@ -9,10 +9,11 @@ import (
 
 func containers() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_storage_containers",
-		Resolver:    fetchContainers,
-		Description: "https://learn.microsoft.com/en-us/rest/api/storagerp/blob-containers/list?tabs=HTTP#listcontaineritem",
-		Transform:   transformers.TransformWithStruct(&armstorage.ListContainerItem{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_storage_containers",
+		Resolver:             fetchContainers,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/storagerp/blob-containers/list?tabs=HTTP#listcontaineritem",
+		Transform:            transformers.TransformWithStruct(&armstorage.ListContainerItem{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }

@@ -93,3 +93,187 @@ The following tables depend on aws_rds_clusters:
 |storage_encrypted|`bool`|
 |storage_type|`utf8`|
 |vpc_security_groups|`json`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Amazon Aurora clusters should have backtracking enabled
+
+```sql
+SELECT
+  'Amazon Aurora clusters should have backtracking enabled' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE WHEN backtrack_window IS NULL THEN 'fail' ELSE 'pass' END AS status
+FROM
+  aws_rds_clusters
+WHERE
+  engine IN ('aurora', 'aurora-mysql', 'mysql');
+```
+
+### IAM authentication should be configured for RDS clusters
+
+```sql
+SELECT
+  'IAM authentication should be configured for RDS clusters' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN iam_database_authentication_enabled IS NOT true THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_rds_clusters;
+```
+
+### RDS clusters should have deletion protection enabled
+
+```sql
+SELECT
+  'RDS clusters should have deletion protection enabled' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN deletion_protection IS NOT true THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_rds_clusters;
+```
+
+### RDS databases and clusters should not use a database engine default port
+
+```sql
+(
+  SELECT
+    'RDS databases and clusters should not use a database engine default port'
+      AS title,
+    account_id,
+    arn AS resource_id,
+    CASE
+    WHEN (engine IN ('aurora', 'aurora-mysql', 'mysql') AND port = 3306)
+    OR (engine LIKE '%postgres%' AND port = 5432)
+    THEN 'fail'
+    ELSE 'pass'
+    END
+      AS status
+  FROM
+    aws_rds_clusters
+)
+UNION
+  (
+    SELECT
+      'RDS databases and clusters should not use a database engine default port'
+        AS title,
+      account_id,
+      arn AS resource_id,
+      CASE
+      WHEN (
+        engine IN ('aurora', 'aurora-mysql', 'mariadb', 'mysql')
+        AND db_instance_port = 3306
+      )
+      OR (engine LIKE '%postgres%' AND db_instance_port = 5432)
+      OR (engine LIKE '%oracle%' AND db_instance_port = 1521)
+      OR (engine LIKE '%sqlserver%' AND db_instance_port = 1433)
+      THEN 'fail'
+      ELSE 'pass'
+      END
+        AS status
+    FROM
+      aws_rds_instances
+  );
+```
+
+### RDS DB clusters should be configured for multiple Availability Zones
+
+```sql
+SELECT
+  'RDS DB clusters should be configured for multiple Availability Zones'
+    AS title,
+  account_id,
+  arn AS resource_id,
+  CASE WHEN multi_az IS NOT true THEN 'fail' ELSE 'pass' END AS status
+FROM
+  aws_rds_clusters;
+```
+
+### RDS DB clusters should be configured to copy tags to snapshots
+
+```sql
+SELECT
+  'RDS DB clusters should be configured to copy tags to snapshots' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN copy_tags_to_snapshot IS NOT true THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_rds_clusters;
+```
+
+### An RDS event notifications subscription should be configured for critical cluster events
+
+```sql
+WITH
+  any_category
+    AS (
+      SELECT
+        DISTINCT true AS any_category
+      FROM
+        aws_rds_event_subscriptions
+      WHERE
+        (source_type IS NULL OR source_type = 'db-cluster')
+        AND event_categories_list IS NULL
+    ),
+  any_source_id
+    AS (
+      SELECT
+        COALESCE(array_agg(category), '{}'::STRING[]) AS any_source_categories
+      FROM
+        aws_rds_event_subscriptions, unnest(event_categories_list) AS category
+      WHERE
+        source_type = 'db-cluster' AND event_categories_list IS NOT NULL
+    ),
+  specific_categories
+    AS (
+      SELECT
+        source_id, array_agg(category) AS specific_cats
+      FROM
+        aws_rds_event_subscriptions,
+        unnest(source_ids_list) AS source_id,
+        unnest(event_categories_list) AS category
+      WHERE
+        source_type = 'db-cluster'
+      GROUP BY
+        source_id
+    )
+SELECT
+  'An RDS event notifications subscription should be configured for critical cluster events'
+    AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN any_category IS NOT true
+  AND NOT (any_source_categories @> '{"failure","maintenance"}')
+  AND (
+      specific_cats IS NULL
+      OR NOT (specific_cats @> '{"failure","maintenance"}')
+    )
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_rds_clusters
+  LEFT JOIN any_category ON true
+  INNER JOIN any_source_id ON true
+  LEFT JOIN specific_categories ON
+      db_cluster_identifier = specific_categories.source_id;
+```
+
+

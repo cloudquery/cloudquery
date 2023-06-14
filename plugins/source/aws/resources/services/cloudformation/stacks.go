@@ -55,12 +55,12 @@ func Stacks() *schema.Table {
 
 func fetchCloudformationStacks(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	var config cloudformation.DescribeStacksInput
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudformation
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudformation
 	paginator := cloudformation.NewDescribeStacksPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cloudformation.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

@@ -11,12 +11,13 @@ import (
 
 func VirtualMachineExtensions() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_compute_virtual_machine_extensions",
-		Resolver:    fetchVirtualMachineExtnsions,
-		Description: "https://learn.microsoft.com/en-us/rest/api/compute/virtual-machine-extensions/list?tabs=HTTP#virtualmachineextension",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_virtual_machine_extensions", client.Namespacemicrosoft_compute),
-		Transform:   transformers.TransformWithStruct(&armcompute.VirtualMachineExtension{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_compute_virtual_machine_extensions",
+		Resolver:             fetchVirtualMachineExtnsions,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/compute/virtual-machine-extensions/list?tabs=HTTP#virtualmachineextension",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_compute_virtual_machine_extensions", client.Namespacemicrosoft_compute),
+		Transform:            transformers.TransformWithStruct(&armcompute.VirtualMachineExtension{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

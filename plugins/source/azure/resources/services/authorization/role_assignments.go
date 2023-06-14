@@ -11,12 +11,13 @@ import (
 
 func RoleAssignments() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_authorization_role_assignments",
-		Resolver:    fetchRoleAssignments,
-		Description: "https://learn.microsoft.com/en-us/rest/api/authorization/role-assignments/get?tabs=HTTP#roleassignment",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_authorization_role_assignments", client.Namespacemicrosoft_authorization),
-		Transform:   transformers.TransformWithStruct(&armauthorization.RoleAssignment{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionIDPK},
+		Name:                 "azure_authorization_role_assignments",
+		Resolver:             fetchRoleAssignments,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/authorization/role-assignments/get?tabs=HTTP#roleassignment",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_authorization_role_assignments", client.Namespacemicrosoft_authorization),
+		Transform:            transformers.TransformWithStruct(&armauthorization.RoleAssignment{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionIDPK},
 	}
 }
 

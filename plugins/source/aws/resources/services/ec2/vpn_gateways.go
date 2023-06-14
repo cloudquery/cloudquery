@@ -43,10 +43,10 @@ func VpnGateways() *schema.Table {
 
 func fetchEc2VpnGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config ec2.DescribeVpnGatewaysInput
-	c := meta.(*client.Client)
-	svc := c.Services().Ec2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ec2
 	output, err := svc.DescribeVpnGateways(ctx, &config, func(options *ec2.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

@@ -9,6 +9,8 @@ type customInputValidation interface {
 }
 
 type TableOptions struct {
+	CloudwatchMetrics []CloudwatchMetrics `json:"aws_alpha_cloudwatch_metrics,omitempty"`
+
 	CloudTrailEvents       *CloudtrailAPIs         `json:"aws_cloudtrail_events,omitempty"`
 	AccessAnalyzerFindings *AccessanalyzerFindings `json:"aws_accessanalyzer_analyzer_findings,omitempty"`
 	Inspector2Findings     *Inspector2APIs         `json:"aws_inspector2_findings,omitempty"`
@@ -27,5 +29,12 @@ func (t TableOptions) Validate() error {
 			}
 		}
 	}
+
+	for _, m := range t.CloudwatchMetrics {
+		if err := m.Validate(); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }

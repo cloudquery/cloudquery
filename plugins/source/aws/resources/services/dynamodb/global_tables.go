@@ -44,16 +44,16 @@ This table only contains version 2017.11.29 (Legacy) Global Tables. See aws_dyna
 }
 
 func fetchGlobalTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Dynamodb
+	cl := meta.(*client.Client)
+	svc := cl.Services().Dynamodb
 
 	config := dynamodb.ListGlobalTablesInput{
-		RegionName: aws.String(c.Region),
+		RegionName: aws.String(cl.Region),
 	}
 	// No paginator available
 	for {
 		output, err := svc.ListGlobalTables(ctx, &config, func(options *dynamodb.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

@@ -57,7 +57,7 @@ func fetchRamResourceShares(ctx context.Context, meta schema.ClientMeta, _ *sche
 }
 
 func fetchRamResourceSharesByType(ctx context.Context, meta schema.ClientMeta, shareType types.ResourceOwner, res chan<- any) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	input := &ram.GetResourceSharesInput{
 		MaxResults:    aws.Int32(500),
 		ResourceOwner: shareType,
@@ -65,7 +65,7 @@ func fetchRamResourceSharesByType(ctx context.Context, meta schema.ClientMeta, s
 	paginator := ram.NewGetResourceSharesPaginator(meta.(*client.Client).Services().Ram, input)
 	for paginator.HasMorePages() {
 		response, err := paginator.NextPage(ctx, func(options *ram.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
