@@ -51,8 +51,7 @@ jobs:
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
           skip-build-cache: true
-      - name: Get dependencies
-        run: go get -t -d ./...
+      - run: go mod tidy
       - name: Build
         run: go build .
       - name: Test mysql
