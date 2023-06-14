@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracledb-v1.2.2...plugins-source-oracledb-v1.2.3) (2023-06-14)
+
+
+### Bug Fixes
+
+* Filter out invisible columns ([#11535](https://github.com/cloudquery/cloudquery/issues/11535)) ([5afd0df](https://github.com/cloudquery/cloudquery/commit/5afd0dfb8f95b21b0eabbfddeaca3e61b9dade0a))
+
 ## [1.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracledb-v1.2.1...plugins-source-oracledb-v1.2.2) (2023-06-14)
 
 
