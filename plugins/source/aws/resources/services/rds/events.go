@@ -26,8 +26,8 @@ func Events() *schema.Table {
 }
 
 func fetchRdsEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Rds
+	cl := meta.(*client.Client)
+	svc := cl.Services().Rds
 	duration := int32(60 * 24 * 14) // 14 days (maximum)
 	config := rds.DescribeEventsInput{
 		Duration: &duration,
@@ -35,7 +35,7 @@ func fetchRdsEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	p := rds.NewDescribeEventsPaginator(svc, &config)
 	for p.HasMorePages() {
 		page, err := p.NextPage(ctx, func(options *rds.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

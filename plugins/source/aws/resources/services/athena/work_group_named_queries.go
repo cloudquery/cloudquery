@@ -34,14 +34,14 @@ func workGroupNamedQueries() *schema.Table {
 }
 
 func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Athena
+	cl := meta.(*client.Client)
+	svc := cl.Services().Athena
 	wg := parent.Item.(types.WorkGroup)
 	input := athena.ListNamedQueriesInput{WorkGroup: wg.Name}
 	paginator := athena.NewListNamedQueriesPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *athena.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -52,14 +52,14 @@ func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMet
 }
 
 func getWorkGroupNamedQuery(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Athena
+	cl := meta.(*client.Client)
+	svc := cl.Services().Athena
 
 	d := resource.Item.(string)
 	dc, err := svc.GetNamedQuery(ctx, &athena.GetNamedQueryInput{
 		NamedQueryId: aws.String(d),
 	}, func(options *athena.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

@@ -36,12 +36,12 @@ func SpotFleetRequests() *schema.Table {
 }
 
 func fetchEC2SpotFleetRequests(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Ec2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ec2
 	pag := ec2.NewDescribeSpotFleetRequestsPaginator(svc, &ec2.DescribeSpotFleetRequestsInput{})
 	for pag.HasMorePages() {
 		resp, err := pag.NextPage(ctx, func(options *ec2.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

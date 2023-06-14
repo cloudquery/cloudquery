@@ -37,12 +37,12 @@ func VpcLinks() *schema.Table {
 
 func fetchApigatewayv2VpcLinks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apigatewayv2.GetVpcLinksInput
-	c := meta.(*client.Client)
-	svc := c.Services().Apigatewayv2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Apigatewayv2
 	// No paginator available
 	for {
 		response, err := svc.GetVpcLinks(ctx, &config, func(options *apigatewayv2.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 
 		if err != nil {

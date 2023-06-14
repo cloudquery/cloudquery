@@ -8,13 +8,13 @@ require (
 	github.com/cloudquery/plugin-pb-go v1.0.9
 	github.com/cloudquery/plugin-sdk/v3 v3.10.4
 	github.com/google/uuid v1.3.0
-	github.com/marcboeker/go-duckdb v1.3.0
+	github.com/marcboeker/go-duckdb v1.4.0
 	github.com/rs/zerolog v1.29.0
 	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230608001318-8f72077aac49
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230613001316-d8eacf81a163
 
 require (
 	github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c // indirect

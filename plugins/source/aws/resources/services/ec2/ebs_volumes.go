@@ -42,13 +42,13 @@ func EbsVolumes() *schema.Table {
 }
 
 func fetchEc2EbsVolumes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Ec2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ec2
 	config := ec2.DescribeVolumesInput{}
 	paginator := ec2.NewDescribeVolumesPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *ec2.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

@@ -26,9 +26,9 @@ func EbsVolumeRecommendations() *schema.Table {
 }
 
 func fetchEbsVolumeRecommendations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	s := c.Services()
-	svc := s.Computeoptimizer
+	cl := meta.(*client.Client)
+
+	svc := cl.Services().Computeoptimizer
 
 	input := computeoptimizer.GetEBSVolumeRecommendationsInput{
 		MaxResults: aws.Int32(1000),
@@ -36,14 +36,14 @@ func fetchEbsVolumeRecommendations(ctx context.Context, meta schema.ClientMeta, 
 	// No paginator available
 	for {
 		response, err := svc.GetEBSVolumeRecommendations(ctx, &input, func(options *computeoptimizer.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
 		}
 
 		if len(response.Errors) > 0 {
-			c.Logger().Error().Str("table", "aws_computeoptimizer_ebs_volume_recommendations").Msgf("Errors in response: %v", response.Errors)
+			cl.Logger().Error().Str("table", "aws_computeoptimizer_ebs_volume_recommendations").Msgf("Errors in response: %v", response.Errors)
 		}
 
 		if response.VolumeRecommendations != nil {

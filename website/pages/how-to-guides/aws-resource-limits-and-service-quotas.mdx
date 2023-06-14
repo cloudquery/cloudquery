@@ -1,0 +1,140 @@
+---
+title: How to Manage AWS Resource and Usage Limits with CloudQuery and Service Quotas
+tag: tutorial
+description: >-
+  A Guide on how to use open source CloudQuery for cloud utilization and service limits for better operational uptime and troubleshooting.  This guide covers managing AWS Service Quotas and how to monitor limits across cloud resources.
+author: jsonkao
+---
+
+import { HowToGuideHeader } from "../../components/HowToGuideHeader"
+
+<HowToGuideHeader/>
+
+## Introduction
+
+Cloud services come with usage and resource limits that may cause adverse impact with cloud applications and infrastructure.  Proper management of these usage and resource limits can prevent against availability issues when a resource cannot be created, a service is throttled, and helps with proactive management and troubleshooting of limit constraints that may impact active production applications and development environments. 
+
+In 2019, [AWS introduced Service Quotas](https://aws.amazon.com/blogs/mt/introducing-service-quotas-view-and-manage-your-quotas-for-aws-services-from-one-central-location/), a new service to help with managing these limits (now called quotas) from a central location.
+
+For companies managing a handful of AWS accounts or to the scale of many accounts and even many Organizations, managing service limits is crucial to avoid scalability and inadvertent issues with limits.  Examples such as platform infrastructure accounts that may contain core enterprise infrastructure, flagship AWS accounts that may contain critical business applications, and customer-facing accounts with many repeated infrastructure may all run into issues with service limits in AWS.
+
+In this guide, we'll show how to use open source CloudQuery to augment existing capabilities from Amazon Web Services with additional data to better manage and monitor service limits in AWS.
+
+### Example Limit Scenarios
+
+Example scenarios we've seen where resource management can cause application issues or development challenges such as time spent troubleshooting (as of June 2023):
+
+* Reaching the maximum number of S3 buckets in an account.  The default limit of S3 buckets in an account is 100.  Note, as of June 2023, S3 is not supported in Service Quotas and Service Quotas will only display the default limit in Console and via CLI even if the limit has been increased.  We've reached out to AWS and there's a feature request for adding Service Quota support for S3.
+
+* Reaching the maximum number of Lambda network interfaces.  The default limit of network interfaces that Lambda creates for a VPC with functions attached is 250.  Lambda creates a network interface for each combination of function subnets and security groups.
+
+* Reaching KMS Key API Limits.  KMS has API Limits that are adjustable such as CreateAlias and CreateKey request rates which by default are set to 5 per second.  Some applications and enterprise architectures may require higher request rates.
+
+* Reaching CloudFormation Stack Limits.  Accounts by default have a default limit of 2000 Stacks.  For teams with heavy infrastructure as code practices and in accounts with heavy infrastructure, teams could reach the maximum number of stacks. 
+
+* Reaching Identity and Access limits including managed policies per role.  By default, roles can have a maximum number of 10 attached managed policies.  For teams that use many managed policies to attach custom permissions to IAM principals, they may reach the limit of 10 managed policies and be unable to attach more policies or have failed attachments.
+
+Other limits include EC2 with spot instances, networking, number of running dedicated hosts.
+
+## Managing Service Quotas
+
+We will go through a couple different methods for managing service limits.  These options include using AWS-provided services, some of the current limitations of the services and coverage, as well as using CloudQuery to augment information provided by AWS.
+
+One option provided by AWS is to utilize AWS Trusted Advisor (and AWS Support).  [AWS Trusted Advisor](https://aws.amazon.com/premiumsupport/technology/trusted-advisor/) offers checks for service quotas with AWS Basic Support and AWS Developer Support Plans.  AWS Business and Enterprise Support customers get all checks which include service quota checks.  However, Trusted Advisor currently (as of June 2023) only supports 51 checks.  Additionally, programmatic access to Trusted Advisor APIs (and Support) requires either a Business, Enterprise On-Ramp, or Enterprise Support Plan with AWS.
+
+![Trusted Advisor Console](/images/how-to-guides/aws-resource-limits-and-service-quotas/trusted-advisor.png)
+
+Another option is to integrate AWS Service Quotas with CloudWatch for alerting.  However, these integrations only [work with Service Quotas that support CloudWatch Alarms](https://docs.aws.amazon.com/servicequotas/latest/userguide/configure-cloudwatch.html).
+
+With CloudQuery, we'll demonstrate another option: how to use CloudQuery to manage and monitor resource utilization and service quota usage.  We'll also use CloudQuery to sync information from Trusted Advisor, Support, and Service Quotas along with infrastructure data in AWS for a better understanding of service limits and utilization in AWS.
+
+## Walkthrough
+
+We'll focus on the following tables and services:
+* [AWS Service Quotas](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_servicequotas_quotas)
+* [AWS Trusted Advisor Checks](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_support_trusted_advisor_checks)
+* [AWS Trusted Advisor Check Results](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_support_trusted_advisor_check_results)
+* [AWS Support Cases](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_support_cases) 
+
+To start with the sync, check out the [AWS Configuration Guide](https://www.cloudquery.io/docs/plugins/sources/aws/configuration).  We'll start with the following `aws.yml` source configuration file.  We recommend adjusting your configuration file and tables synced to meet your specific needs.
+
+```yaml copy
+kind: source
+spec:
+  # Source spec section
+  name: aws
+  path: cloudquery/aws
+  version: "VERSION_SOURCE_AWS"
+  tables: 
+    - aws_servicequotas_services
+    - aws_support_trusted_advisor_checks
+    - aws_support_cases
+  destinations: ["DESTINATION_NAME"]
+  spec: 
+    # AWS Spec section described below
+    regions: 
+      - us-east-1
+    accounts:
+      - id: "account1"
+        local_profile: "account1-profile"
+    aws_debug: false
+```
+
+### Reference Queries
+
+We will first look for all Service Quotas that are adjustable.  Service Quotas can either be a hard limit (non-adjustable) or a soft limit (adjustable).
+
+```sql copy
+SELECT * FROM aws_servicequotas_quotas
+WHERE adjustable = TRUE;
+```
+
+Now, if you have either a Business, Enterprise On-Ramp, or Enterprise Support Plan with AWS, we can check the Trusted Advisor Service Limit checks programmatically.  CloudQuery uses AWS APIs, so without those plans and the Trusted Advisor API enabled, this table will not be populated.
+
+```sql copy
+SELECT * FROM aws_support_trusted_advisor_checks
+WHERE category='service_limits';
+```
+
+Now let's check our CloudFormation limits and augment that with statistics on our CloudFormation usage.  For this query, we'll need to sync additional CloudFormation resources including [`aws_cloudformation_stacks`](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_cloudformation_stacks).
+
+```sql copy
+SELECT  quotas.quota_code, quotas.service_code, quotas.quota_name, 
+        quotas.value, quotas.region, quotas.account_id, 
+        quotas.adjustable, quotas.global_quota, quotas.quota_arn, 
+        COUNT(stacks.stack_id) as current_usage
+FROM aws_servicequotas_quotas quotas 
+LEFT JOIN aws_cloudformation_stacks stacks 
+ON quotas.account_id = stacks.account_id 
+AND quotas.region = stacks.region
+WHERE quota_code = 'L-0485CB21'
+GROUP BY quotas.quota_code, quotas.service_code, quotas.quota_name, 
+          quotas.value, quotas.region, quotas.account_id, 
+          quotas.adjustable, quotas.global_quota, quotas.quota_arn;
+```
+
+We can repeat that for other use cases as well such as IAM.  In this case, we'll also pull information on [IAM account summary](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_iam_accounts) and other IAM resources such as [IAM Policies](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_iam_policies).  IAM limits are global limits, so we'll look for account usage.
+
+```sql copy
+SELECT quotas.*, accounts.policies 
+FROM aws_servicequotas_quotas quotas
+LEFT JOIN aws_iam_accounts accounts
+ON quotas.account_id = accounts.account_id
+WHERE quota_code = 'L-E95E4862';
+```
+
+We can also look for additional use cases such as API limits.  For this query, we'll need to sync `aws_cloudtrail_events` as a resource from AWS.  This resource can take time to sync due to the sheer amount of data in 
+
+### Next Steps
+
+Additional insights can be made with data loaded from CloudQuery.  For example, [`CloudTrail events`](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_cloudtrail_events).
+ can be used to check for API calls.  CloudQuery can also be used to monitor service limit increases via Support Cases and customizable dashboards can be [built with Grafana](https://www.cloudquery.io/how-to-guides/open-source-cspm).  We'd love to hear your use cases with CloudQuery!
+
+## Summary
+
+We've now gone through how to use CloudQuery to monitor AWS resource limits and Service Quotas to supplement the information provided by AWS via Service Quotas, Trusted Advisor, and Support in one central place.  
+
+## References
+
+[CloudQuery: AWS Source Plugin](/docs/plugins/sources/aws/overview)
+

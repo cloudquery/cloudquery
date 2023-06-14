@@ -26,8 +26,8 @@ func AutoscalingGroupsRecommendations() *schema.Table {
 }
 
 func fetchAutoscalingGroupsRecommendations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	s := c.Services()
+	cl := meta.(*client.Client)
+	s := cl.Services()
 	svc := s.Computeoptimizer
 
 	input := computeoptimizer.GetAutoScalingGroupRecommendationsInput{
@@ -36,14 +36,14 @@ func fetchAutoscalingGroupsRecommendations(ctx context.Context, meta schema.Clie
 	// No paginator available
 	for {
 		response, err := svc.GetAutoScalingGroupRecommendations(ctx, &input, func(options *computeoptimizer.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
 		}
 
 		if len(response.Errors) > 0 {
-			c.Logger().Error().Str("table", "aws_computeoptimizer_autoscaling_group_recommendations").Msgf("Errors in response: %v", response.Errors)
+			cl.Logger().Error().Str("table", "aws_computeoptimizer_autoscaling_group_recommendations").Msgf("Errors in response: %v", response.Errors)
 		}
 
 		if response.AutoScalingGroupRecommendations != nil {

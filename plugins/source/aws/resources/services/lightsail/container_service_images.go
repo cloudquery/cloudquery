@@ -36,10 +36,10 @@ func fetchLightsailContainerServiceImages(ctx context.Context, meta schema.Clien
 	input := lightsail.GetContainerImagesInput{
 		ServiceName: r.ContainerServiceName,
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Lightsail
+	cl := meta.(*client.Client)
+	svc := cl.Services().Lightsail
 	deployments, err := svc.GetContainerImages(ctx, &input, func(options *lightsail.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
