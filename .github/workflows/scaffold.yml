@@ -38,7 +38,6 @@ jobs:
           working-directory: cli
           skip-pkg-cache: true
           skip-build-cache: true
-      - run: go mod tidy
       - name: Build
         run: go build .
       - name: Test
