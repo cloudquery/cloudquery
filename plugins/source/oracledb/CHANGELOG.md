@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracledb-v1.2.3...plugins-source-oracledb-v2.0.0) (2023-06-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* Support for parsing `number` type precision and scale was added. As a result number columns with scale that is different than `0`, e.g. `number(6,2)` will be converted to `float` type at the destination instead of `int`. You might need to either run with [forced migration mode](https://www.cloudquery.io/docs/reference/destination-spec#migrate_mode) or migrate the destination manually.
+
+### Features
+
+* Support number type with precision and scale ([6a1bd00](https://github.com/cloudquery/cloudquery/commit/6a1bd005b7e32f08bcc093ba14c0f38130489c20))
+
 ## [1.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracledb-v1.2.2...plugins-source-oracledb-v1.2.3) (2023-06-14)
 
 
