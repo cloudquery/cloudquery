@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracledb-v1.2.1...plugins-source-oracledb-v1.2.2) (2023-06-14)
+
+
+### Bug Fixes
+
+* Change list tables to exclude default namespaces except `USERS` ([#11526](https://github.com/cloudquery/cloudquery/issues/11526)) ([3524e4e](https://github.com/cloudquery/cloudquery/commit/3524e4e810104e7470da03f5efc6d52cabe793d3))
+
 ## [1.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracledb-v1.2.0...plugins-source-oracledb-v1.2.1) (2023-06-13)
 
 
