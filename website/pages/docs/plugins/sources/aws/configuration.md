@@ -137,7 +137,7 @@ This is the (nested) spec used by the AWS source plugin.
                 attribute_value: StopInstances
   ```
 
-  The naming for all of the fields is the same as the AWS API but in snake case. For example `EndTime` is represented as `end_time`. As of `v18.2.0` the following tables and APIs are supported:
+  The naming for all of the fields is the same as the AWS API but in snake case. For example `EndTime` is represented as `end_time`. As of `v18.4.0` the following tables and APIs are supported:
   ```yaml
   table_options:
     aws_accessanalyzer_analyzer_findings:
