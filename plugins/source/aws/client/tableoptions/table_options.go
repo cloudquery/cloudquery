@@ -2,6 +2,10 @@ package tableoptions
 
 import "reflect"
 
+type customInputValidation interface {
+	Validate() error
+}
+
 type TableOptions struct {
 	CloudwatchMetrics      CloudwatchMetrics       `json:"aws_alpha_cloudwatch_metrics,omitempty"`
 	CloudTrailEvents       *CloudtrailAPIs         `json:"aws_cloudtrail_events,omitempty"`
