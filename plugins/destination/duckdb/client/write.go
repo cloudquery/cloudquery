@@ -170,7 +170,7 @@ func writeTMPFile(table *schema.Table, records []arrow.Record) (fileName string,
 
 	// write records
 	for _, r := range records {
-		if err = fw.Write(transformRecord(sc, r)); err != nil {
+		if err = fw.WriteBuffered(transformRecord(sc, r)); err != nil {
 			return "", err
 		}
 	}

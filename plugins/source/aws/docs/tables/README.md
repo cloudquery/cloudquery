@@ -9,6 +9,8 @@
 - [aws_account_contacts](../../../../../website/tables/aws/aws_account_contacts.md)
 - [aws_acm_certificates](../../../../../website/tables/aws/aws_acm_certificates.md)
 - [aws_acmpca_certificate_authorities](../../../../../website/tables/aws/aws_acmpca_certificate_authorities.md)
+- [aws_alpha_cloudwatch_metrics](../../../../../website/tables/aws/aws_alpha_cloudwatch_metrics.md)
+  - [aws_alpha_cloudwatch_metric_statistics](../../../../../website/tables/aws/aws_alpha_cloudwatch_metric_statistics.md)
 - [aws_amp_workspaces](../../../../../website/tables/aws/aws_amp_workspaces.md)
   - [aws_amp_rule_groups_namespaces](../../../../../website/tables/aws/aws_amp_rule_groups_namespaces.md)
 - [aws_amplify_apps](../../../../../website/tables/aws/aws_amplify_apps.md)
