@@ -1,5 +1,7 @@
 package tableoptions
 
+import "reflect"
+
 type TableOptions struct {
 	CloudwatchMetrics      CloudwatchMetrics       `json:"aws_alpha_cloudwatch_metrics,omitempty"`
 	CloudTrailEvents       *CloudtrailAPIs         `json:"aws_cloudtrail_events,omitempty"`
@@ -8,26 +10,16 @@ type TableOptions struct {
 }
 
 func (t TableOptions) Validate() error {
-	if t.CloudTrailEvents != nil {
-		err := t.CloudTrailEvents.Validate()
-		if err != nil {
-			return err
+	v := reflect.ValueOf(t)
+	for i := 0; i < v.NumField(); i++ {
+		table := v.Field(i).Interface()
+		if !reflect.ValueOf(table).IsNil() {
+			tableInput := table.(customInputValidation)
+			err := tableInput.Validate()
+			if err != nil {
+				return err
+			}
 		}
 	}
-
-	if t.AccessAnalyzerFindings != nil {
-		err := t.AccessAnalyzerFindings.Validate()
-		if err != nil {
-			return err
-		}
-	}
-
-	if t.Inspector2Findings != nil {
-		err := t.Inspector2Findings.Validate()
-		if err != nil {
-			return err
-		}
-	}
-
 	return nil
 }
