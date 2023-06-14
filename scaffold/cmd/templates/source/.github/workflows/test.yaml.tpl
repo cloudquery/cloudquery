@@ -24,6 +24,7 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         with:
           version: v1.51.2
+      - run: go mod tidy
       - name: Build
         run: go build .
       - name: Test
