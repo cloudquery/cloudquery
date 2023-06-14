@@ -11,12 +11,13 @@ import (
 
 func PublicMaintenanceConfigurations() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_maintenance_public_maintenance_configurations",
-		Resolver:    fetchPublicMaintenanceConfigurations,
-		Description: "https://learn.microsoft.com/en-us/rest/api/maintenance/public-maintenance-configurations/list?tabs=HTTP#maintenanceconfiguration",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_maintenance_public_maintenance_configurations", client.Namespacemicrosoft_maintenance),
-		Transform:   transformers.TransformWithStruct(&armmaintenance.Configuration{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_maintenance_public_maintenance_configurations",
+		Resolver:             fetchPublicMaintenanceConfigurations,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/maintenance/public-maintenance-configurations/list?tabs=HTTP#maintenanceconfiguration",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_maintenance_public_maintenance_configurations", client.Namespacemicrosoft_maintenance),
+		Transform:            transformers.TransformWithStruct(&armmaintenance.Configuration{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

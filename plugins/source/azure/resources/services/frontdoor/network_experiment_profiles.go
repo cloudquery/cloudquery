@@ -11,12 +11,13 @@ import (
 
 func NetworkExperimentProfiles() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_frontdoor_network_experiment_profiles",
-		Resolver:    fetchNetworkExperimentProfiles,
-		Description: "https://learn.microsoft.com/en-us/rest/api/internetanalyzer/network-experiment-profiles/list?tabs=HTTP#profile",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_frontdoor_network_experiment_profiles", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armfrontdoor.Profile{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_frontdoor_network_experiment_profiles",
+		Resolver:             fetchNetworkExperimentProfiles,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/internetanalyzer/network-experiment-profiles/list?tabs=HTTP#profile",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_frontdoor_network_experiment_profiles", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armfrontdoor.Profile{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

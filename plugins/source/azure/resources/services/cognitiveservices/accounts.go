@@ -11,12 +11,13 @@ import (
 
 func Accounts() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_cognitiveservices_accounts",
-		Resolver:    fetchAccounts,
-		Description: "https://learn.microsoft.com/en-us/rest/api/cognitiveservices/accountmanagement/accounts/list?tabs=HTTP#account",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_cognitiveservices_accounts", client.Namespacemicrosoft_cognitiveservices),
-		Transform:   transformers.TransformWithStruct(&armcognitiveservices.Account{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_cognitiveservices_accounts",
+		Resolver:             fetchAccounts,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/cognitiveservices/accountmanagement/accounts/list?tabs=HTTP#account",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_cognitiveservices_accounts", client.Namespacemicrosoft_cognitiveservices),
+		Transform:            transformers.TransformWithStruct(&armcognitiveservices.Account{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

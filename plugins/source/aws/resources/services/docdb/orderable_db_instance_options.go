@@ -24,15 +24,15 @@ func orderableDbInstanceOptions() *schema.Table {
 
 func fetchDocdbOrderableDbInstanceOptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	item := parent.Item.(types.DBEngineVersion)
-	c := meta.(*client.Client)
-	svc := c.Services().Docdb
+	cl := meta.(*client.Client)
+	svc := cl.Services().Docdb
 
 	input := &docdb.DescribeOrderableDBInstanceOptionsInput{Engine: item.Engine}
 
 	p := docdb.NewDescribeOrderableDBInstanceOptionsPaginator(svc, input)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *docdb.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

@@ -7,10 +7,6 @@ test:
 lint:
 	golangci-lint run --config ../../.golangci.yml
 
-.PHONY: gen-code
-gen-code:
-	go run codegen/*.go
-
 .PHONY: gen-docs
 gen-docs:
 	rm -rf ../../../website/tables/oracle

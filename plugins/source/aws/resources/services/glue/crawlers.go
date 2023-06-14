@@ -43,12 +43,12 @@ func Crawlers() *schema.Table {
 }
 
 func fetchGlueCrawlers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Glue
+	cl := meta.(*client.Client)
+	svc := cl.Services().Glue
 	paginator := glue.NewGetCrawlersPaginator(svc, &glue.GetCrawlersInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *glue.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

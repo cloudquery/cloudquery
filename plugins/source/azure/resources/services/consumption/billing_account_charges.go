@@ -11,11 +11,12 @@ import (
 
 func BillingAccountCharges() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_consumption_billing_account_charges",
-		Resolver:    fetchBillingAccountCharges,
-		Description: "https://learn.microsoft.com/en-us/rest/api/consumption/charges/list?tabs=HTTP#modernchargesummary",
-		Multiplex:   client.BillingAccountMultiplex,
-		Transform:   transformers.TransformWithStruct(&armconsumption.ModernChargeSummary{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_consumption_billing_account_charges",
+		Resolver:             fetchBillingAccountCharges,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/consumption/charges/list?tabs=HTTP#modernchargesummary",
+		Multiplex:            client.BillingAccountMultiplex,
+		Transform:            transformers.TransformWithStruct(&armconsumption.ModernChargeSummary{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

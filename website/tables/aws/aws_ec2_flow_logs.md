@@ -33,3 +33,26 @@ The primary key for this table is **arn**.
 |max_aggregation_interval|`int64`|
 |resource_id|`utf8`|
 |traffic_type|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### VPC flow logging should be enabled in all VPCs
+
+```sql
+SELECT
+  'VPC flow logging should be enabled in all VPCs' AS title,
+  aws_ec2_vpcs.account_id,
+  aws_ec2_vpcs.arn,
+  CASE
+  WHEN aws_ec2_flow_logs.resource_id IS NULL THEN 'fail'
+  ELSE 'pass'
+  END
+FROM
+  aws_ec2_vpcs
+  LEFT JOIN aws_ec2_flow_logs ON
+      aws_ec2_vpcs.vpc_id = aws_ec2_flow_logs.resource_id;
+```
+
+

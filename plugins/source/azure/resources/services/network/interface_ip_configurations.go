@@ -11,11 +11,12 @@ import (
 
 func interfaceIPConfigurations() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_interface_ip_configurations",
-		Resolver:    fetchInterfaceIPConfigurations,
-		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/network-interface-ip-configurations/list?tabs=HTTP#ipconfiguration",
-		Transform:   transformers.TransformWithStruct(&armnetwork.InterfaceIPConfiguration{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_interface_ip_configurations",
+		Resolver:             fetchInterfaceIPConfigurations,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/network-interface-ip-configurations/list?tabs=HTTP#ipconfiguration",
+		Transform:            transformers.TransformWithStruct(&armnetwork.InterfaceIPConfiguration{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

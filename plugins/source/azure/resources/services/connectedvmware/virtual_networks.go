@@ -11,12 +11,13 @@ import (
 
 func VirtualNetworks() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_connectedvmware_virtual_networks",
-		Resolver:    fetchVirtualNetworks,
-		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware@v0.1.0#VirtualNetwork",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_connectedvmware_virtual_networks", client.Namespacemicrosoft_connectedvmwarevsphere),
-		Transform:   transformers.TransformWithStruct(&armconnectedvmware.VirtualNetwork{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_connectedvmware_virtual_networks",
+		Resolver:             fetchVirtualNetworks,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware@v0.1.0#VirtualNetwork",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_connectedvmware_virtual_networks", client.Namespacemicrosoft_connectedvmwarevsphere),
+		Transform:            transformers.TransformWithStruct(&armconnectedvmware.VirtualNetwork{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

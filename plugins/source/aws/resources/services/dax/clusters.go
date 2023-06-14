@@ -41,13 +41,13 @@ func Clusters() *schema.Table {
 }
 
 func fetchDaxClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Dax
+	cl := meta.(*client.Client)
+	svc := cl.Services().Dax
 	config := dax.DescribeClustersInput{}
 	// No paginator available
 	for {
 		output, err := svc.DescribeClusters(ctx, &config, func(options *dax.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

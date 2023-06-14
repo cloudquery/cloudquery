@@ -11,11 +11,12 @@ import (
 
 func SubscriptionLegacyUsageDetails() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_consumption_subscription_legacy_usage_details",
-		Resolver:    fetchSubscriptionLegacyUsageDetails,
-		Description: "https://learn.microsoft.com/en-us/rest/api/consumption/usage-details/list?tabs=HTTP#legacyusagedetail",
-		Multiplex:   client.SubscriptionBillingPeriodMultiplex,
-		Transform:   transformers.TransformWithStruct(&armconsumption.LegacyUsageDetail{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_consumption_subscription_legacy_usage_details",
+		Resolver:             fetchSubscriptionLegacyUsageDetails,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/consumption/usage-details/list?tabs=HTTP#legacyusagedetail",
+		Multiplex:            client.SubscriptionBillingPeriodMultiplex,
+		Transform:            transformers.TransformWithStruct(&armconsumption.LegacyUsageDetail{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

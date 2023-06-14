@@ -35,12 +35,12 @@ func Environments() *schema.Table {
 
 func fetchMwaaEnvironments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	config := mwaa.ListEnvironmentsInput{}
-	c := meta.(*client.Client)
-	svc := c.Services().Mwaa
+	cl := meta.(*client.Client)
+	svc := cl.Services().Mwaa
 	p := mwaa.NewListEnvironmentsPaginator(svc, &config)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *mwaa.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

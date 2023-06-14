@@ -53,3 +53,28 @@ The following tables depend on aws_ssm_documents:
 |status_information|`utf8`|
 |target_type|`utf8`|
 |version_name|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### SSM documents should not be public
+
+```sql
+SELECT
+  'SSM documents should not be public' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN 'all' = ANY (ARRAY (SELECT jsonb_array_elements_text(p->'AccountIds')))
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_ssm_documents, jsonb_array_elements(aws_ssm_documents.permissions) AS p
+WHERE
+  owner IN (SELECT account_id FROM aws_iam_accounts);
+```
+
+

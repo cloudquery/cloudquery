@@ -11,12 +11,13 @@ import (
 
 func Caches() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_storagecache_caches",
-		Resolver:    fetchCaches,
-		Description: "https://learn.microsoft.com/en-us/rest/api/storagecache/caches/list?tabs=HTTP#cache",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_storagecache_caches", client.Namespacemicrosoft_storagecache),
-		Transform:   transformers.TransformWithStruct(&armstoragecache.Cache{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_storagecache_caches",
+		Resolver:             fetchCaches,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/storagecache/caches/list?tabs=HTTP#cache",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_storagecache_caches", client.Namespacemicrosoft_storagecache),
+		Transform:            transformers.TransformWithStruct(&armstoragecache.Cache{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

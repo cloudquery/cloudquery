@@ -34,12 +34,12 @@ func StaticIps() *schema.Table {
 
 func fetchLightsailStaticIps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lightsail.GetStaticIpsInput
-	c := meta.(*client.Client)
-	svc := c.Services().Lightsail
+	cl := meta.(*client.Client)
+	svc := cl.Services().Lightsail
 	// No paginator available
 	for {
 		response, err := svc.GetStaticIps(ctx, &input, func(options *lightsail.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

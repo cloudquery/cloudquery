@@ -42,12 +42,12 @@ func AutoScalingConfigurations() *schema.Table {
 
 func fetchApprunnerAutoScalingConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apprunner.ListAutoScalingConfigurationsInput
-	c := meta.(*client.Client)
-	svc := meta.(*client.Client).Services().Apprunner
+	cl := meta.(*client.Client)
+	svc := cl.Services().Apprunner
 	paginator := apprunner.NewListAutoScalingConfigurationsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *apprunner.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -57,12 +57,12 @@ func fetchApprunnerAutoScalingConfigurations(ctx context.Context, meta schema.Cl
 	return nil
 }
 func getAutoScalingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Apprunner
+	cl := meta.(*client.Client)
+	svc := cl.Services().Apprunner
 	asConfig := resource.Item.(types.AutoScalingConfigurationSummary)
 
 	describeTaskDefinitionOutput, err := svc.DescribeAutoScalingConfiguration(ctx, &apprunner.DescribeAutoScalingConfigurationInput{AutoScalingConfigurationArn: asConfig.AutoScalingConfigurationArn}, func(options *apprunner.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

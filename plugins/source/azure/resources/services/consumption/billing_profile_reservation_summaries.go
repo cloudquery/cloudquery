@@ -13,11 +13,12 @@ import (
 
 func BillingProfileReservationSummaries() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_consumption_billing_profile_reservation_summaries",
-		Resolver:    fetchBillingProfileReservationSummaries,
-		Description: "https://learn.microsoft.com/en-us/rest/api/consumption/reservations-summaries/list?tabs=HTTP#reservationsummary",
-		Multiplex:   client.BillingAccountProfileMultiplex,
-		Transform:   transformers.TransformWithStruct(&armconsumption.ReservationSummary{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_consumption_billing_profile_reservation_summaries",
+		Resolver:             fetchBillingProfileReservationSummaries,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/consumption/reservations-summaries/list?tabs=HTTP#reservationsummary",
+		Multiplex:            client.BillingAccountProfileMultiplex,
+		Transform:            transformers.TransformWithStruct(&armconsumption.ReservationSummary{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

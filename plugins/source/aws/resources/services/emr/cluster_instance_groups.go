@@ -38,14 +38,14 @@ func fetchClusterInstanceGroups(ctx context.Context, meta schema.ClientMeta, par
 	if cluster.InstanceCollectionType != types.InstanceCollectionTypeInstanceGroup {
 		return nil
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Emr
+	cl := meta.(*client.Client)
+	svc := cl.Services().Emr
 	paginator := emr.NewListInstanceGroupsPaginator(svc, &emr.ListInstanceGroupsInput{
 		ClusterId: cluster.Id,
 	})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *emr.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

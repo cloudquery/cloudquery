@@ -11,11 +11,12 @@ import (
 
 func databases() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_postgresql_databases",
-		Resolver:    fetchDatabases,
-		Description: "https://learn.microsoft.com/en-us/rest/api/postgresql/singleserver/databases/list-by-server?tabs=HTTP#database",
-		Transform:   transformers.TransformWithStruct(&armpostgresql.Database{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_postgresql_databases",
+		Resolver:             fetchDatabases,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/postgresql/singleserver/databases/list-by-server?tabs=HTTP#database",
+		Transform:            transformers.TransformWithStruct(&armpostgresql.Database{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

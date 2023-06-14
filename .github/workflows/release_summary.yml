@@ -7,9 +7,31 @@ on:
       - ".github/workflows/release_summary.yml"
 
 jobs:
+  trigger-summary:
+    runs-on: ubuntu-latest
+    name: Commits Check
+    # only run on release-please branches
+    if:  startsWith(github.head_ref, 'release-please--branches--main--components--plugins-source')
+    outputs:
+      result: ${{ steps.pr-commits.outputs.result }}
+    steps:
+      - uses: actions/github-script@v6
+        name: Check number of commits
+        id: pr-commits
+        with:
+          result-encoding: string
+          script: |
+            const { data: commits } = await github.rest.pulls.listCommits({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+            })
+            // only run if there is one commit to avoid a recursive workflow run
+            const cqBotCommits = commits.filter(commit => commit.author.login === 'cq-bot')
+            return cqBotCommits.length === 1 ? 'true' : 'false'
   release-summary:
-    # only run on release-please branches and if there is only one commit to avoid a recursive workflow run
-    if:  startsWith(github.head_ref, 'release-please--branches--main--components--plugins-source') && github.event.pull_request.commits == 1
+    needs: trigger-summary
+    if:  needs.trigger-summary.outputs.result == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository

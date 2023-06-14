@@ -11,12 +11,13 @@ import (
 
 func OpenShiftClusters() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_redhatopenshift_open_shift_clusters",
-		Resolver:    fetchOpenShiftClusters,
-		Description: "https://learn.microsoft.com/en-us/rest/api/openshift/open-shift-clusters/list?tabs=HTTP#openshiftcluster",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_redhatopenshift_open_shift_clusters", client.Namespacemicrosoft_redhatopenshift),
-		Transform:   transformers.TransformWithStruct(&armredhatopenshift.OpenShiftCluster{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_redhatopenshift_open_shift_clusters",
+		Resolver:             fetchOpenShiftClusters,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/openshift/open-shift-clusters/list?tabs=HTTP#openshiftcluster",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_redhatopenshift_open_shift_clusters", client.Namespacemicrosoft_redhatopenshift),
+		Transform:            transformers.TransformWithStruct(&armredhatopenshift.OpenShiftCluster{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

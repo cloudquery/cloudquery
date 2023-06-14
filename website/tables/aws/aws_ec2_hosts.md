@@ -35,3 +35,23 @@ The primary key for this table is **arn**.
 |owner_id|`utf8`|
 |release_time|`timestamp[us, tz=UTC]`|
 |state|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Unused dedicated host
+
+```sql
+SELECT
+  'Unused dedicated host' AS title,
+  account_id,
+  arn AS resource_id,
+  'fail' AS status
+FROM
+  aws_ec2_hosts
+WHERE
+  COALESCE(jsonb_array_length(instances), 0) = 0;
+```
+
+

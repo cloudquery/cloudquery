@@ -11,12 +11,13 @@ import (
 
 func VirtualWans() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_virtual_wans",
-		Resolver:    fetchVirtualWans,
-		Description: "https://learn.microsoft.com/en-us/rest/api/virtualwan/virtual-wans/list?tabs=HTTP#virtualwan",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_virtual_wans", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.VirtualWAN{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_virtual_wans",
+		Resolver:             fetchVirtualWans,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/virtualwan/virtual-wans/list?tabs=HTTP#virtualwan",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_network_virtual_wans", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armnetwork.VirtualWAN{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

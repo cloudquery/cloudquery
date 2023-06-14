@@ -11,11 +11,12 @@ import (
 
 func expressRouteCircuitAuthorizations() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_express_route_circuit_authorizations",
-		Resolver:    fetchExpressRouteCircuitAuthorizations,
-		Description: "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-circuit-authorizations/list?tabs=HTTP#expressroutecircuitauthorization",
-		Transform:   transformers.TransformWithStruct(&armnetwork.ExpressRouteCircuitAuthorization{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_express_route_circuit_authorizations",
+		Resolver:             fetchExpressRouteCircuitAuthorizations,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-circuit-authorizations/list?tabs=HTTP#expressroutecircuitauthorization",
+		Transform:            transformers.TransformWithStruct(&armnetwork.ExpressRouteCircuitAuthorization{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

@@ -12,12 +12,13 @@ import (
 
 func virtualMachineScaleSetsNetworkInterfaces() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_compute_virtual_machine_scale_set_network_interfaces",
-		Resolver:    fetchVirtualMachineScaleSetsNetworkInterfaces,
-		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/network-interface-in-vm-ss/list-virtual-machine-scale-set-network-interfaces?tabs=HTTP#networkinterface",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_virtual_machine_scale_set_network_interfaces", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.Interface{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_compute_virtual_machine_scale_set_network_interfaces",
+		Resolver:             fetchVirtualMachineScaleSetsNetworkInterfaces,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/network-interface-in-vm-ss/list-virtual-machine-scale-set-network-interfaces?tabs=HTTP#networkinterface",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_compute_virtual_machine_scale_set_network_interfaces", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armnetwork.Interface{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

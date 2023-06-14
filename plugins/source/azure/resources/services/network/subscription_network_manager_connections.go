@@ -11,12 +11,13 @@ import (
 
 func SubscriptionNetworkManagerConnections() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_subscription_network_manager_connections",
-		Resolver:    fetchSubscriptionNetworkManagerConnections,
-		Description: "https://learn.microsoft.com/en-us/rest/api/networkmanager/management-group-network-manager-connections/list?tabs=HTTP#networkmanagerconnection",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_subscription_network_manager_connections", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.ManagerConnection{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_subscription_network_manager_connections",
+		Resolver:             fetchSubscriptionNetworkManagerConnections,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/networkmanager/management-group-network-manager-connections/list?tabs=HTTP#networkmanagerconnection",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_network_subscription_network_manager_connections", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armnetwork.ManagerConnection{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

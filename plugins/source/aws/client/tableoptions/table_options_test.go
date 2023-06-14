@@ -11,9 +11,11 @@ import (
 	cloudtrailtypes "github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/aws/aws-sdk-go-v2/service/costexplorer"
 	costexplorertypes "github.com/aws/aws-sdk-go-v2/service/costexplorer/types"
+	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
+	cloudwatchtypes "github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
-
 	inspector2types "github.com/aws/aws-sdk-go-v2/service/inspector2/types"
+
 	"github.com/cloudquery/plugin-sdk/v3/caser"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/google/go-cmp/cmp"
@@ -79,6 +81,10 @@ func TestTableOptionsUnmarshal(t *testing.T) {
 		accessanalyzer.ListFindingsInput{},
 		accessanalyzertypes.SortCriteria{},
 		accessanalyzertypes.Criterion{},
+		cloudwatch.GetMetricStatisticsInput{},
+		cloudwatch.ListMetricsInput{},
+		cloudwatchtypes.Dimension{},
+		cloudwatchtypes.DimensionFilter{},
 		cloudtrail.LookupEventsInput{},
 		cloudtrailtypes.LookupAttribute{},
 		inspector2.ListFindingsInput{},

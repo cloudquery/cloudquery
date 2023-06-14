@@ -32,10 +32,10 @@ func Registries() *schema.Table {
 }
 
 func fetchEcrRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Ecr
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ecr
 	output, err := svc.DescribeRegistry(ctx, &ecr.DescribeRegistryInput{}, func(options *ecr.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
