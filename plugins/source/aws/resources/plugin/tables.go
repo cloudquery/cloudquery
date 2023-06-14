@@ -151,6 +151,7 @@ func tables() []*schema.Table {
 		autoscalingplans.Plans(),
 		backup.GlobalSettings(),
 		backup.Plans(),
+		backup.ProtectedResources(),
 		backup.RegionSettings(),
 		backup.Vaults(),
 		batch.JobQueues(),
