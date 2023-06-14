@@ -52,7 +52,7 @@ func buildCloudWatchMetricsMock(t *testing.T, ctrl *gomock.Controller) client.Se
 func TestCloudwatchMetrics(t *testing.T) {
 	client.AwsMockTestHelper(t, Metrics(), buildCloudWatchMetricsMock, client.TestOptions{
 		TableOptions: tableoptions.TableOptions{
-			CloudwatchMetrics: []tableoptions.CloudwatchMetrics{
+			CloudwatchMetrics: tableoptions.CloudwatchMetrics{
 				{
 					ListMetricsOpts: tableoptions.CloudwatchListMetricsInput{},
 					GetMetricStatisticsOpts: []tableoptions.CloudwatchGetMetricStatisticsInput{{

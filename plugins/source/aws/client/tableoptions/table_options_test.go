@@ -43,6 +43,13 @@ func TestTableOptionsValidate(t *testing.T) {
 			},
 		},
 	}
+
+	tOpts.CloudwatchMetrics = CloudwatchMetrics{
+		CloudwatchMetric{
+			ListMetricsOpts:         CloudwatchListMetricsInput{},
+			GetMetricStatisticsOpts: []CloudwatchGetMetricStatisticsInput{},
+		},
+	}
 	err = tOpts.Validate()
 	if err == nil {
 		t.Fatal("expected error validating cloud_trail_events, got nil")
