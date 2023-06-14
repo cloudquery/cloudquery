@@ -16,14 +16,17 @@ import (
 	"github.com/mitchellh/hashstructure/v2"
 )
 
+var tableName = "aws_alpha_costexplorer_cost_custom"
+
 func CustomCost() *schema.Table {
-	tableName := "aws_costexplorer_cost_custom"
 	return &schema.Table{
 		Name:     tableName,
 		Resolver: fetchCustom,
 		Title:    "AWS Cost Explorer costs based on custom inputs",
 		Description: `https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetCostAndUsage.html
-To sync this table you must set the 'use_paid_apis' option to 'true' in the AWS provider configuration as well as specify the request parameters in the 'table_options' attribute. `,
+To sync this table you must set the 'use_paid_apis' option to 'true' in the AWS provider configuration as well as specify the request parameters in the 'table_options' attribute. 
+Please note that this table is considered **alpha** (experimental) and may have breaking changes or be removed in the future.`,
+
 		Transform: transformers.TransformWithStruct(&wrappedResultByTime{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Multiplex: client.AccountMultiplex(tableName),
 		Columns: []schema.Column{
@@ -67,14 +70,13 @@ type wrappedResultByTime struct {
 
 func fetchCustom(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	if !cl.Spec.UsePaidAPIs {
-		cl.Logger().Info().Msg("skipping `aws_costexplorer_cost_current_month` because `use_paid_apis` is set to false")
-		return nil
+
+	if len(cl.Spec.TableOptions.CloudwatchMetrics) > 0 && !cl.Spec.UsePaidAPIs {
+		return client.ErrPaidAPIsNotEnabled
 	}
 
 	if cl.Spec.TableOptions.CustomCostExplorer == nil {
-		cl.Logger().Info().Msg("skipping `aws_costexplorer_cost_custom` because no inputs are set")
-		return nil
+		return fmt.Errorf("skipping `%s` because `get_cost_and_usage` is not specified in `table_options`", tableName)
 	}
 
 	svc := cl.Services().Costexplorer
