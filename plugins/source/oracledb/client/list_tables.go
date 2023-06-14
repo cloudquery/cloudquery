@@ -58,10 +58,12 @@ func (c *Client) updateTableConstraints(ctx context.Context, table *schema.Table
 func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 	// Please note we don't use ORDER BY here because it's slower than sorting in memory via Go sort.SliceStable
 	// See more about the default namespaces we exclude in https://www.oracletutorial.com/oracle-administration/oracle-tablespace/
+	// Also invisible columns have COLUMN_ID = NULL so we exclude them as well. See https://forums.oracle.com/ords/apexds/post/oracle-12c-invisible-columns-0462
 	query := `
 	SELECT ALL_TAB_COLS.TABLE_NAME, COLUMN_ID, COLUMN_NAME, DATA_TYPE, DATA_LENGTH, NULLABLE FROM ALL_TABLES
 	LEFT JOIN ALL_TAB_COLS ON ALL_TABLES.TABLE_NAME = ALL_TAB_COLS.TABLE_NAME
 	WHERE ALL_TABLES.TABLESPACE_NAME NOT IN ('SYSAUX', 'SYSTEM', 'TEMP', 'UNDOTBS1')
+	AND ALL_TAB_COLS.COLUMN_ID IS NOT NULL
 	`
 	rows, err := c.db.QueryContext(ctx, query)
 	if err != nil {
