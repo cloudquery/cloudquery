@@ -11,6 +11,7 @@
 - [aws_acmpca_certificate_authorities](tables/aws_acmpca_certificate_authorities)
 - [aws_alpha_cloudwatch_metrics](tables/aws_alpha_cloudwatch_metrics)
   - [aws_alpha_cloudwatch_metric_statistics](tables/aws_alpha_cloudwatch_metric_statistics)
+- [aws_alpha_costexplorer_cost_custom](tables/aws_alpha_costexplorer_cost_custom)
 - [aws_amp_workspaces](tables/aws_amp_workspaces)
   - [aws_amp_rule_groups_namespaces](tables/aws_amp_rule_groups_namespaces)
 - [aws_amplify_apps](tables/aws_amplify_apps)
