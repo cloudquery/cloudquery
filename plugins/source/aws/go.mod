@@ -106,7 +106,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.35.0
 	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/sts v1.19.0
-	github.com/aws/aws-sdk-go-v2/service/support v1.14.1
+	github.com/aws/aws-sdk-go-v2/service/support v1.15.1
 	github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/transfer v1.28.0
 	github.com/aws/aws-sdk-go-v2/service/waf v1.12.0
