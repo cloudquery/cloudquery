@@ -225,6 +225,7 @@ func tables() []*schema.Table {
 		ec2.FlowLogs(),
 		ec2.Hosts(),
 		ec2.Images(),
+		ec2.InstanceConnectEndpoints(),
 		ec2.Instances(),
 		ec2.InstanceStatuses(),
 		ec2.InstanceTypes(),

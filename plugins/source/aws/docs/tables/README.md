@@ -188,6 +188,7 @@
 - [aws_ec2_images](../../../../../website/tables/aws/aws_ec2_images.md)
   - [aws_ec2_image_last_launched_times](../../../../../website/tables/aws/aws_ec2_image_last_launched_times.md)
   - [aws_ec2_image_launch_permissions](../../../../../website/tables/aws/aws_ec2_image_launch_permissions.md)
+- [aws_ec2_instance_connect_endpoints](../../../../../website/tables/aws/aws_ec2_instance_connect_endpoints.md)
 - [aws_ec2_instance_statuses](../../../../../website/tables/aws/aws_ec2_instance_statuses.md)
 - [aws_ec2_instance_types](../../../../../website/tables/aws/aws_ec2_instance_types.md)
 - [aws_ec2_instances](../../../../../website/tables/aws/aws_ec2_instances.md)
