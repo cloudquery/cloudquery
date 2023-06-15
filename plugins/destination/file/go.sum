@@ -45,10 +45,10 @@ github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWR
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
 github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMnBNeIyt5eFwwo7qiLfzFZmjNmxjkiQlU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/arrow/go/v13 v13.0.0-20230614001223-4d762310b3c9 h1:p1/RUfSRRADArykpBww2KASgn6lBNriH30dzNwnGhLc=
-github.com/cloudquery/arrow/go/v13 v13.0.0-20230614001223-4d762310b3c9/go.mod h1:W69eByFNO0ZR30q1/7Sr9d83zcVZmF2MiP3fFYAWJOc=
-github.com/cloudquery/filetypes/v3 v3.1.6 h1:1oQ5wABn6A/w5Cj0lVnOkS01zTyNSXU7clIFEt6A5Q4=
-github.com/cloudquery/filetypes/v3 v3.1.6/go.mod h1:2VzUnabUYP1oFVcQNT+UhF0+NKEmcZw3MIX8Jhv1NFA=
+github.com/cloudquery/arrow/go/v13 v13.0.0-20230615001300-d86471932763 h1:OCtX7KKgVmPL1/Gpc4gFEfzyO5fK4+VXykq6/i2sLC8=
+github.com/cloudquery/arrow/go/v13 v13.0.0-20230615001300-d86471932763/go.mod h1:W69eByFNO0ZR30q1/7Sr9d83zcVZmF2MiP3fFYAWJOc=
+github.com/cloudquery/filetypes/v3 v3.2.0 h1:W4gDsQOg3DBY2nM9bjjSZusmz/clRQ0q+g22qYp5omA=
+github.com/cloudquery/filetypes/v3 v3.2.0/go.mod h1:tzqdkel0FXMJc1F+oLTqEAYJDralyM6YYqse1YxSO5o=
 github.com/cloudquery/plugin-pb-go v1.0.9 h1:1apMGcRdBCc1N6/0IQD3UtHm7XHMCPyV6mNnklOHETA=
 github.com/cloudquery/plugin-pb-go v1.0.9/go.mod h1:iQwZ/jiKmoSu2H8U5otCX9gCMJtAOkb3HAnGIKvg0oU=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
@@ -161,7 +161,7 @@ github.com/klauspost/compress v1.16.5/go.mod h1:ntbaceVETuRiXiv4DpjP66DpAtAGkEQs
 github.com/klauspost/cpuid/v2 v2.2.4 h1:acbojRNwl3o09bUq+yDCtZFc1aiwaAAxtcn8YkZXnvk=
 github.com/klauspost/cpuid/v2 v2.2.4/go.mod h1:RVVoqg1df56z8g3pUjL/3lE5UfnlrJX8tyFgg4nqhuY=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
-github.com/kr/pretty v0.3.1 h1:flRD4NNwYAUpkphVc1HcthR4KEIFJ65n8Mw5qdRn3LE=
+github.com/kr/pretty v0.3.0 h1:WgNl7dwNpEZ6jJ9k1snq4pZsg7DOEN8hP9Xw0Tsjwk0=
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
 github.com/kr/text v0.2.0 h1:5Nx0Ya0ZqY2ygV366QzturHI13Jq95ApcVaJBhpS+AY=
