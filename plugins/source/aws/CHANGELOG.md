@@ -6,6 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [18.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v18.3.0...plugins-source-aws-v18.4.0) (2023-06-15)
+
+
+### Features
+
+* **aws:** Add `aws_alpha_cloudwatch_metric*` tables to fetch Cloudwatch Metrics and statistics ([#11402](https://github.com/cloudquery/cloudquery/issues/11402)) ([07b76d2](https://github.com/cloudquery/cloudquery/commit/07b76d218664595692d05bc1d0b6aa1a9b288766))
+* **aws:** Add Support for EC2 Instance Connect Endpoints ([#11531](https://github.com/cloudquery/cloudquery/issues/11531)) ([73ae77b](https://github.com/cloudquery/cloudquery/commit/73ae77b755b37de21687937e5b7f75917355a3d3))
+* **aws:** Add Support for fully customizable Cost Explorer Data syncing ([#11185](https://github.com/cloudquery/cloudquery/issues/11185)) ([04fd769](https://github.com/cloudquery/cloudquery/commit/04fd769b5b194b0020c0cf36f39f41c62216bd88)), closes [#10805](https://github.com/cloudquery/cloudquery/issues/10805)
+* **aws:** Add support for Protected Resources in AWS Backup ([#11522](https://github.com/cloudquery/cloudquery/issues/11522)) ([12a1bc0](https://github.com/cloudquery/cloudquery/commit/12a1bc09605aa019a6e4196ae94bcc11abfcbc5b))
+* **aws:** Table Options Validation ([#11548](https://github.com/cloudquery/cloudquery/issues/11548)) ([ea858fc](https://github.com/cloudquery/cloudquery/commit/ea858fc26f13c564bcae3a409d36c2c6ebb8f009))
+
+
+### Bug Fixes
+
+* **aws:** Upgrade all AWS SDK to latest version ([#11626](https://github.com/cloudquery/cloudquery/issues/11626)) ([71f787f](https://github.com/cloudquery/cloudquery/commit/71f787f81c800cfd171a924d1158fe3100479c35))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 4d76231 ([#11532](https://github.com/cloudquery/cloudquery/issues/11532)) ([6f04233](https://github.com/cloudquery/cloudquery/commit/6f042333acbd2506f7800ccb89a8c5cbfb7ad8d4))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to d864719 ([#11611](https://github.com/cloudquery/cloudquery/issues/11611)) ([557a290](https://github.com/cloudquery/cloudquery/commit/557a2903af272b8e2e4c9eebb36e39cd8a41a805))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v3 to v3.10.6 ([#11473](https://github.com/cloudquery/cloudquery/issues/11473)) ([7272133](https://github.com/cloudquery/cloudquery/commit/72721336632e127dd37de4541f2f503bf4f73fb6))
+
 ## [18.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v18.2.0...plugins-source-aws-v18.3.0) (2023-06-13)
 
 
