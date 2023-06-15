@@ -5,27 +5,31 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
 )
 
 // CreateTableBatch migrates a table. It forms part of the writer.MixedBatchWriter interface.
-func (c *Client) CreateTableBatch(ctx context.Context, messages []plugin.MessageCreateTable) error {
+func (c *Client) CreateTableBatch(ctx context.Context, messages []*plugin.MessageCreateTable, options plugin.WriteOptions) error {
 	tables, err := tablesFromMessages(messages)
 	if err != nil {
 		return err
 	}
-	pgTables, err := c.listPgTables(ctx, tables)
+	include := make([]string, len(tables))
+	for i, table := range tables {
+		include[i] = table.Name
+	}
+	var exclude []string
+	pgTables, err := c.listTables(ctx, include, exclude)
 	if err != nil {
 		return fmt.Errorf("failed listing postgres tables: %w", err)
 	}
-	tables = c.normalizeTables(tables, pgTables)
-	if c.spec.MigrateMode != specs.MigrateModeForced {
+	tables = c.normalizeTables(tables, pgTables, options.EnablePrimaryKeys)
+	if !options.MigrateForce {
 		nonAutoMigrableTables, changes := c.nonAutoMigrableTables(tables, pgTables)
 		if len(nonAutoMigrableTables) > 0 {
-			return fmt.Errorf("tables %s with changes %v require force migration. use 'migrate_mode: forced'", strings.Join(nonAutoMigrableTables, ","), changes)
+			return fmt.Errorf("tables %s with changes %v require migration. Migrate manually or consider using 'migrate_mode: forced'", strings.Join(nonAutoMigrableTables, ","), changes)
 		}
 	}
 
@@ -39,7 +43,7 @@ func (c *Client) CreateTableBatch(ctx context.Context, messages []plugin.Message
 		pgTable := pgTables.Get(tableName)
 		if pgTable == nil {
 			c.logger.Debug().Str("table", tableName).Msg("Table doesn't exist, creating")
-			if err := c.createTableIfNotExist(ctx, table); err != nil {
+			if err := c.createTableIfNotExist(ctx, table, options.EnablePrimaryKeys); err != nil {
 				return err
 			}
 		} else {
@@ -54,7 +58,7 @@ func (c *Client) CreateTableBatch(ctx context.Context, messages []plugin.Message
 				if err := c.dropTable(ctx, tableName); err != nil {
 					return err
 				}
-				if err := c.createTableIfNotExist(ctx, table); err != nil {
+				if err := c.createTableIfNotExist(ctx, table, options.EnablePrimaryKeys); err != nil {
 					return err
 				}
 			}
@@ -71,12 +75,12 @@ func (c *Client) CreateTableBatch(ctx context.Context, messages []plugin.Message
 	return nil
 }
 
-func (c *Client) normalizeTable(table *schema.Table, pgTable *schema.Table) *schema.Table {
+func (c *Client) normalizeTable(table *schema.Table, pgTable *schema.Table, enablePrimaryKeys bool) *schema.Table {
 	normalizedTable := schema.Table{
 		Name: table.Name,
 	}
 	for _, col := range table.Columns {
-		if c.enabledPks() && col.PrimaryKey {
+		if enablePrimaryKeys && col.PrimaryKey {
 			col.NotNull = true
 		} else {
 			col.PrimaryKey = false
@@ -130,14 +134,14 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 }
 
 // normalize the requested schema to be compatible with what Postgres supports
-func (c *Client) normalizeTables(tables schema.Tables, pgTables schema.Tables) schema.Tables {
+func (c *Client) normalizeTables(tables schema.Tables, pgTables schema.Tables, enablePrimaryKeys bool) schema.Tables {
 	var result schema.Tables
 	for _, table := range tables {
 		pgTable := pgTables.Get(table.Name)
 		if pgTable == nil {
 			result = append(result, table)
 		} else {
-			result = append(result, c.normalizeTable(table, pgTable))
+			result = append(result, c.normalizeTable(table, pgTable, enablePrimaryKeys))
 		}
 	}
 	return result
@@ -180,7 +184,7 @@ func (c *Client) addColumn(ctx context.Context, tableName string, column schema.
 	return nil
 }
 
-func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table) error {
+func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table, enablePrimaryKeys bool) error {
 	var sb strings.Builder
 	tName := table.Name
 	tableName := pgx.Identifier{tName}.Sanitize()
@@ -204,7 +208,7 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		if i != totalColumns-1 {
 			sb.WriteString(",")
 		}
-		if c.enabledPks() && col.PrimaryKey {
+		if enablePrimaryKeys && col.PrimaryKey {
 			primaryKeys = append(primaryKeys, pgx.Identifier{col.Name}.Sanitize())
 		}
 	}
@@ -223,8 +227,4 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		return fmt.Errorf("failed to create table %s: %w", tName, err)
 	}
 	return nil
-}
-
-func (c *Client) enabledPks() bool {
-	return c.spec.WriteMode == specs.WriteModeOverwrite || c.spec.WriteMode == specs.WriteModeOverwriteDeleteStale
 }

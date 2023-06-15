@@ -11,7 +11,7 @@ import (
 )
 
 // DeleteStaleBatch deletes stale records from the destination table. It forms part of the writer.MixedBatchWriter interface.
-func (c *Client) DeleteStaleBatch(ctx context.Context, messages []plugin.MessageDeleteStale) error {
+func (c *Client) DeleteStaleBatch(ctx context.Context, messages []*plugin.MessageDeleteStale, options plugin.WriteOptions) error {
 	batch := &pgx.Batch{}
 	for _, msg := range messages {
 		var sb strings.Builder

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-pb-go/specs/v1"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers"
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
@@ -18,11 +18,14 @@ import (
 type Client struct {
 	conn                *pgxpool.Pool
 	logger              zerolog.Logger
-	spec                specs.Destination
+	spec                specs.Spec
 	currentDatabaseName string
 	currentSchemaName   string
 	pgType              pgType
 	batchSize           int
+	writer              *writers.MixedBatchWriter
+
+	plugin.UnimplementedSync
 }
 
 // Assert that Client implements plugin.Client interface.
@@ -36,17 +39,14 @@ const (
 	pgTypeCockroachDB
 )
 
-func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec any) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "pg-dest").Logger(),
 	}
-	var specPostgreSql Spec
-	c.spec = spec
-	if err := spec.UnmarshalSpec(&specPostgreSql); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
-	}
+	specPostgreSql := spec.(*Spec)
 	specPostgreSql.SetDefaults()
-	c.batchSize = spec.BatchSize
+	// TODO(v4): batch size handling
+	// c.batchSize = specPostgreSql.BatchSize
 	logLevel, err := tracelog.LogLevelFromString(specPostgreSql.PgxLogLevel.String())
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse pgx log level %s: %w", specPostgreSql.PgxLogLevel, err)
@@ -83,20 +83,15 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 	if err != nil {
 		return nil, fmt.Errorf("failed to get database type: %w", err)
 	}
+	c.writer, err = writers.NewMixedBatchWriter(c)
+	if err != nil {
+		return nil, err
+	}
 	return c, nil
 }
 
-// 	Tables(ctx context.Context) (schema.Tables, error)
-//	Sync(ctx context.Context, options SyncOptions, res chan<- Message) error
-//	Write(ctx context.Context, options WriteOptions, res <-chan Message) error
-//	Close(ctx context.Context) error
-
 func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, res <-chan plugin.Message) error {
-	w, err := writers.NewMixedBatchWriter(c)
-	if err != nil {
-		return err
-	}
-	return w.Write(ctx, res)
+	return c.writer.Write(ctx, options, res)
 }
 
 func (c *Client) Close(ctx context.Context) error {

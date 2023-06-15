@@ -7,7 +7,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
@@ -15,22 +14,28 @@ import (
 )
 
 // InsertBatch inserts records into the destination table. It forms part of the writer.MixedBatchWriter interface.
-func (c *Client) InsertBatch(ctx context.Context, messages []plugin.MessageInsert) error {
-	tables, err := tablesFromMessages[plugin.MessageInsert](messages)
+func (c *Client) InsertBatch(ctx context.Context, messages []*plugin.MessageInsert, options plugin.WriteOptions) error {
+	tables, err := tablesFromMessages[*plugin.MessageInsert](messages)
 	if err != nil {
 		return err
 	}
 
+	include := make([]string, len(tables))
+	for i, table := range tables {
+		include[i] = table.Name
+	}
+	var exclude []string
+	pgTables, err := c.listTables(ctx, include, exclude)
+	if err != nil {
+		return err
+	}
+	tables = c.normalizeTables(tables, pgTables, options.EnablePrimaryKeys)
+	if err != nil {
+		return err
+	}
+	
 	var sql string
 	batch := &pgx.Batch{}
-	pgTables, err := c.listPgTables(ctx, tables)
-	if err != nil {
-		return err
-	}
-	tables = c.normalizeTables(tables, pgTables)
-	if err != nil {
-		return err
-	}
 	for _, msg := range messages {
 		r := msg.Record
 		md := r.Schema().Metadata()
@@ -42,7 +47,7 @@ func (c *Client) InsertBatch(ctx context.Context, messages []plugin.MessageInser
 		if table == nil {
 			return fmt.Errorf("table %s not found", tableName)
 		}
-		if c.spec.WriteMode == specs.WriteModeAppend {
+		if !msg.Upsert {
 			sql = c.insert(table)
 		} else {
 			if len(table.PrimaryKeysIndexes()) > 0 {
