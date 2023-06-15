@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
-
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/writers"
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -16,16 +16,17 @@ import (
 )
 
 type Client struct {
-	destination.UnimplementedManagedWriter
 	conn                *pgxpool.Pool
 	logger              zerolog.Logger
 	spec                specs.Destination
 	currentDatabaseName string
 	currentSchemaName   string
 	pgType              pgType
-	metrics             destination.Metrics
 	batchSize           int
 }
+
+// Assert that Client implements plugin.Client interface.
+var _ plugin.Client = (*Client)(nil)
 
 type pgType int
 
@@ -35,7 +36,7 @@ const (
 	pgTypeCockroachDB
 )
 
-func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "pg-dest").Logger(),
 	}
@@ -83,6 +84,19 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, fmt.Errorf("failed to get database type: %w", err)
 	}
 	return c, nil
+}
+
+// 	Tables(ctx context.Context) (schema.Tables, error)
+//	Sync(ctx context.Context, options SyncOptions, res chan<- Message) error
+//	Write(ctx context.Context, options WriteOptions, res <-chan Message) error
+//	Close(ctx context.Context) error
+
+func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, res <-chan plugin.Message) error {
+	w, err := writers.NewMixedBatchWriter(c)
+	if err != nil {
+		return err
+	}
+	return w.Write(ctx, res)
 }
 
 func (c *Client) Close(ctx context.Context) error {

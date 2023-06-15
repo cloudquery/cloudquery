@@ -6,6 +6,7 @@ import (
 
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 
 func getTestConnection() string {
@@ -16,16 +17,16 @@ func getTestConnection() string {
 	return testConn
 }
 
-var strategy = destination.MigrateStrategy{
-	AddColumn:           specs.MigrateModeSafe,
-	AddColumnNotNull:    specs.MigrateModeForced,
-	RemoveColumn:        specs.MigrateModeSafe,
-	RemoveColumnNotNull: specs.MigrateModeForced,
-	ChangeColumn:        specs.MigrateModeForced,
+var strategy = plugin.MigrateStrategy{
+	AddColumn:           plugin.MigrateModeSafe,
+	AddColumnNotNull:    plugin.MigrateModeForce,
+	RemoveColumn:        plugin.MigrateModeSafe,
+	RemoveColumnNotNull: plugin.MigrateModeForce,
+	ChangeColumn:        plugin.MigrateModeForce,
 }
 
 func TestPgPlugin(t *testing.T) {
-	destination.PluginTestSuiteRunner(t,
+	plugin.PluginTestSuiteRunner(t,
 		func() *destination.Plugin {
 			return destination.NewPlugin("postgresql", "development", New)
 		},
