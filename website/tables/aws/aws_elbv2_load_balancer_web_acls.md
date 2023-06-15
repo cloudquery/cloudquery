@@ -26,6 +26,7 @@ This table depends on [aws_elbv2_load_balancers](aws_elbv2_load_balancers).
 |id|`utf8`|
 |name|`utf8`|
 |visibility_config|`json`|
+|association_config|`json`|
 |capacity|`int64`|
 |captcha_config|`json`|
 |challenge_config|`json`|
