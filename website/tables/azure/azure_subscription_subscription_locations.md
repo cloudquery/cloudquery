@@ -19,6 +19,8 @@ This table depends on [azure_subscription_subscriptions](azure_subscription_subs
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |subscription_id|`utf8`|
+|latitude|`utf8`|
+|longitude|`utf8`|
 |metadata|`json`|
 |display_name|`utf8`|
 |id (PK)|`utf8`|

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
@@ -16,7 +17,19 @@ func locations() *schema.Table {
 		PostResourceResolver: client.LowercaseIDResolver,
 		Description:          "https://learn.microsoft.com/en-us/rest/api/resources/subscriptions/list-locations?tabs=HTTP#location",
 		Transform:            transformers.TransformWithStruct(&armsubscriptions.Location{}, transformers.WithPrimaryKeys("ID")),
-		Columns:              schema.ColumnList{client.SubscriptionID},
+		Columns: schema.ColumnList{
+			client.SubscriptionID,
+			{
+				Name:     "latitude",
+				Type:     arrow.BinaryTypes.String,
+				Resolver: schema.PathResolver("Metadata.Latitude"),
+			},
+			{
+				Name:     "longitude",
+				Type:     arrow.BinaryTypes.String,
+				Resolver: schema.PathResolver("Metadata.Longitude"),
+			},
+		},
 	}
 }
 
