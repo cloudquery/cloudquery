@@ -86,6 +86,7 @@ The primary key for this table is **arn**.
 |publicly_accessible|`bool`|
 |read_replica_db_cluster_identifiers|`list<item: utf8, nullable>`|
 |read_replica_db_instance_identifiers|`list<item: utf8, nullable>`|
+|read_replica_source_db_cluster_identifier|`utf8`|
 |read_replica_source_db_instance_identifier|`utf8`|
 |replica_mode|`utf8`|
 |resume_full_automation_mode_time|`timestamp[us, tz=UTC]`|

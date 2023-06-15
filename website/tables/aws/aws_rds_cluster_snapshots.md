@@ -40,6 +40,7 @@ The primary key for this table is **arn**.
 |source_db_cluster_snapshot_arn|`utf8`|
 |status|`utf8`|
 |storage_encrypted|`bool`|
+|storage_type|`utf8`|
 |vpc_id|`utf8`|
 
 ## Example Queries

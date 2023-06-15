@@ -6,6 +6,83 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [18.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v18.3.0...plugins-source-aws-v18.4.0) (2023-06-15)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_alpha_cloudwatch_metric_statistics` was added
+- Table `aws_alpha_cloudwatch_metrics` was added
+- Table `aws_alpha_costexplorer_cost_custom` was added
+- Table `aws_applicationautoscaling_scalable_targets`: column added with name `scalable_target_arn` and type `utf8`
+- Table `aws_appsync_graphql_apis`: column added with name `api_type` and type `utf8`
+- Table `aws_appsync_graphql_apis`: column added with name `dns` and type `json`
+- Table `aws_appsync_graphql_apis`: column added with name `merged_api_execution_role_arn` and type `utf8`
+- Table `aws_appsync_graphql_apis`: column added with name `owner_contact` and type `utf8`
+- Table `aws_appsync_graphql_apis`: column added with name `owner` and type `utf8`
+- Table `aws_appsync_graphql_apis`: column added with name `visibility` and type `utf8`
+- Table `aws_athena_work_group_query_executions`: column added with name `substatement_type` and type `utf8`
+- Table `aws_backup_protected_resources` was added
+- Table `aws_backup_vault_recovery_points`: column added with name `resource_name` and type `utf8`
+- Table `aws_cloudformation_stack_sets`: column added with name `regions` and type `list<item: utf8, nullable>`
+- Table `aws_cloudwatchlogs_log_groups`: column added with name `inherited_properties` and type `list<item: utf8, nullable>`
+- Table `aws_computeoptimizer_ebs_volume_recommendations`: column added with name `tags` and type `json`
+- Table `aws_computeoptimizer_ec2_instance_recommendations`: column added with name `external_metric_status` and type `json`
+- Table `aws_computeoptimizer_ec2_instance_recommendations`: column added with name `instance_state` and type `utf8`
+- Table `aws_computeoptimizer_ec2_instance_recommendations`: column added with name `tags` and type `json`
+- Table `aws_computeoptimizer_ecs_service_recommendations`: column added with name `tags` and type `json`
+- Table `aws_computeoptimizer_lambda_function_recommendations`: column added with name `tags` and type `json`
+- Table `aws_dynamodb_tables`: column added with name `deletion_protection_enabled` and type `bool`
+- Table `aws_ec2_hosts`: column added with name `host_maintenance` and type `utf8`
+- Table `aws_ec2_instance_connect_endpoints` was added
+- Table `aws_ec2_instances`: column added with name `current_instance_boot_mode` and type `utf8`
+- Table `aws_elasticache_replication_groups`: column added with name `cluster_mode` and type `utf8`
+- Table `aws_emr_cluster_instance_fleets`: column added with name `resize_specifications` and type `json`
+- Table `aws_frauddetector_event_types`: column added with name `event_orchestration` and type `json`
+- Table `aws_glue_database_tables`: column added with name `federated_table` and type `json`
+- Table `aws_glue_databases`: column added with name `federated_database` and type `json`
+- Table `aws_guardduty_detectors`: column added with name `features` and type `json`
+- Table `aws_iot_jobs`: column added with name `destination_package_versions` and type `list<item: utf8, nullable>`
+- Table `aws_iot_jobs`: column added with name `scheduled_job_rollouts` and type `json`
+- Table `aws_kafka_cluster_operations`: column added with name `vpc_connection_info` and type `json`
+- Table `aws_lambda_function_event_source_mappings`: column added with name `document_db_event_source_config` and type `json`
+- Table `aws_lightsail_disks`: column added with name `auto_mount_status` and type `utf8`
+- Table `aws_mwaa_environments`: column added with name `startup_script_s3_object_version` and type `utf8`
+- Table `aws_mwaa_environments`: column added with name `startup_script_s3_path` and type `utf8`
+- Table `aws_neptune_clusters`: column added with name `global_cluster_identifier` and type `utf8`
+- Table `aws_neptune_clusters`: column added with name `pending_modified_values` and type `json`
+- Table `aws_networkfirewall_firewall_policies`: column added with name `policy_variables` and type `json`
+- Table `aws_ram_resource_share_permissions`: column added with name `feature_set` and type `utf8`
+- Table `aws_ram_resource_share_permissions`: column added with name `permission_type` and type `utf8`
+- Table `aws_ram_resource_share_permissions`: column added with name `tags` and type `json`
+- Table `aws_rds_cluster_snapshots`: column added with name `storage_type` and type `utf8`
+- Table `aws_rds_clusters`: column added with name `io_optimized_next_allowed_modification_time` and type `timestamp[us, tz=UTC]`
+- Table `aws_rds_instances`: column added with name `read_replica_source_db_cluster_identifier` and type `utf8`
+- Table `aws_resiliencehub_app_version_resource_mappings`: column added with name `eks_source_name` and type `utf8`
+- Table `aws_resiliencehub_app_version_resources`: column added with name `additional_info` and type `json`
+- Table `aws_resiliencehub_app_version_resources`: column added with name `excluded` and type `bool`
+- Table `aws_resiliencehub_app_version_resources`: column added with name `parent_resource_name` and type `utf8`
+- Table `aws_resiliencehub_app_version_resources`: column added with name `source_type` and type `utf8`
+- Table `aws_sagemaker_models`: column added with name `deployment_recommendation` and type `json`
+- Table `aws_securityhub_hubs`: column added with name `control_finding_generator` and type `utf8`
+- Table `aws_timestream_tables`: column added with name `schema` and type `json`
+- Table `aws_wafv2_web_acls`: column added with name `association_config` and type `json`
+
+### Features
+
+* **aws:** Add `aws_alpha_cloudwatch_metric*` tables to fetch Cloudwatch Metrics and statistics ([#11402](https://github.com/cloudquery/cloudquery/issues/11402)) ([07b76d2](https://github.com/cloudquery/cloudquery/commit/07b76d218664595692d05bc1d0b6aa1a9b288766))
+* **aws:** Add Support for EC2 Instance Connect Endpoints ([#11531](https://github.com/cloudquery/cloudquery/issues/11531)) ([73ae77b](https://github.com/cloudquery/cloudquery/commit/73ae77b755b37de21687937e5b7f75917355a3d3))
+* **aws:** Add Support for fully customizable Cost Explorer Data syncing ([#11185](https://github.com/cloudquery/cloudquery/issues/11185)) ([04fd769](https://github.com/cloudquery/cloudquery/commit/04fd769b5b194b0020c0cf36f39f41c62216bd88)), closes [#10805](https://github.com/cloudquery/cloudquery/issues/10805)
+* **aws:** Add support for Protected Resources in AWS Backup ([#11522](https://github.com/cloudquery/cloudquery/issues/11522)) ([12a1bc0](https://github.com/cloudquery/cloudquery/commit/12a1bc09605aa019a6e4196ae94bcc11abfcbc5b))
+* **aws:** Table Options Validation ([#11548](https://github.com/cloudquery/cloudquery/issues/11548)) ([ea858fc](https://github.com/cloudquery/cloudquery/commit/ea858fc26f13c564bcae3a409d36c2c6ebb8f009))
+
+
+### Bug Fixes
+
+* **aws:** Upgrade all AWS SDK to latest version ([#11626](https://github.com/cloudquery/cloudquery/issues/11626)) ([71f787f](https://github.com/cloudquery/cloudquery/commit/71f787f81c800cfd171a924d1158fe3100479c35))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 4d76231 ([#11532](https://github.com/cloudquery/cloudquery/issues/11532)) ([6f04233](https://github.com/cloudquery/cloudquery/commit/6f042333acbd2506f7800ccb89a8c5cbfb7ad8d4))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to d864719 ([#11611](https://github.com/cloudquery/cloudquery/issues/11611)) ([557a290](https://github.com/cloudquery/cloudquery/commit/557a2903af272b8e2e4c9eebb36e39cd8a41a805))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v3 to v3.10.6 ([#11473](https://github.com/cloudquery/cloudquery/issues/11473)) ([7272133](https://github.com/cloudquery/cloudquery/commit/72721336632e127dd37de4541f2f503bf4f73fb6))
+
 ## [18.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v18.2.0...plugins-source-aws-v18.3.0) (2023-06-13)
 
 

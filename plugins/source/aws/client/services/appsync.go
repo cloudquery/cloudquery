@@ -17,6 +17,7 @@ type AppsyncClient interface {
 	GetIntrospectionSchema(context.Context, *appsync.GetIntrospectionSchemaInput, ...func(*appsync.Options)) (*appsync.GetIntrospectionSchemaOutput, error)
 	GetResolver(context.Context, *appsync.GetResolverInput, ...func(*appsync.Options)) (*appsync.GetResolverOutput, error)
 	GetSchemaCreationStatus(context.Context, *appsync.GetSchemaCreationStatusInput, ...func(*appsync.Options)) (*appsync.GetSchemaCreationStatusOutput, error)
+	GetSourceApiAssociation(context.Context, *appsync.GetSourceApiAssociationInput, ...func(*appsync.Options)) (*appsync.GetSourceApiAssociationOutput, error)
 	GetType(context.Context, *appsync.GetTypeInput, ...func(*appsync.Options)) (*appsync.GetTypeOutput, error)
 	ListApiKeys(context.Context, *appsync.ListApiKeysInput, ...func(*appsync.Options)) (*appsync.ListApiKeysOutput, error)
 	ListDataSources(context.Context, *appsync.ListDataSourcesInput, ...func(*appsync.Options)) (*appsync.ListDataSourcesOutput, error)
@@ -25,6 +26,8 @@ type AppsyncClient interface {
 	ListGraphqlApis(context.Context, *appsync.ListGraphqlApisInput, ...func(*appsync.Options)) (*appsync.ListGraphqlApisOutput, error)
 	ListResolvers(context.Context, *appsync.ListResolversInput, ...func(*appsync.Options)) (*appsync.ListResolversOutput, error)
 	ListResolversByFunction(context.Context, *appsync.ListResolversByFunctionInput, ...func(*appsync.Options)) (*appsync.ListResolversByFunctionOutput, error)
+	ListSourceApiAssociations(context.Context, *appsync.ListSourceApiAssociationsInput, ...func(*appsync.Options)) (*appsync.ListSourceApiAssociationsOutput, error)
 	ListTagsForResource(context.Context, *appsync.ListTagsForResourceInput, ...func(*appsync.Options)) (*appsync.ListTagsForResourceOutput, error)
 	ListTypes(context.Context, *appsync.ListTypesInput, ...func(*appsync.Options)) (*appsync.ListTypesOutput, error)
+	ListTypesByAssociation(context.Context, *appsync.ListTypesByAssociationInput, ...func(*appsync.Options)) (*appsync.ListTypesByAssociationOutput, error)
 }

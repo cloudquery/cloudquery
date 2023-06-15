@@ -8,9 +8,11 @@ import (
 
 //go:generate mockgen -package=mocks -destination=../mocks/timestreamwrite.go -source=timestreamwrite.go TimestreamwriteClient
 type TimestreamwriteClient interface {
+	DescribeBatchLoadTask(context.Context, *timestreamwrite.DescribeBatchLoadTaskInput, ...func(*timestreamwrite.Options)) (*timestreamwrite.DescribeBatchLoadTaskOutput, error)
 	DescribeDatabase(context.Context, *timestreamwrite.DescribeDatabaseInput, ...func(*timestreamwrite.Options)) (*timestreamwrite.DescribeDatabaseOutput, error)
 	DescribeEndpoints(context.Context, *timestreamwrite.DescribeEndpointsInput, ...func(*timestreamwrite.Options)) (*timestreamwrite.DescribeEndpointsOutput, error)
 	DescribeTable(context.Context, *timestreamwrite.DescribeTableInput, ...func(*timestreamwrite.Options)) (*timestreamwrite.DescribeTableOutput, error)
+	ListBatchLoadTasks(context.Context, *timestreamwrite.ListBatchLoadTasksInput, ...func(*timestreamwrite.Options)) (*timestreamwrite.ListBatchLoadTasksOutput, error)
 	ListDatabases(context.Context, *timestreamwrite.ListDatabasesInput, ...func(*timestreamwrite.Options)) (*timestreamwrite.ListDatabasesOutput, error)
 	ListTables(context.Context, *timestreamwrite.ListTablesInput, ...func(*timestreamwrite.Options)) (*timestreamwrite.ListTablesOutput, error)
 	ListTagsForResource(context.Context, *timestreamwrite.ListTagsForResourceInput, ...func(*timestreamwrite.Options)) (*timestreamwrite.ListTagsForResourceOutput, error)

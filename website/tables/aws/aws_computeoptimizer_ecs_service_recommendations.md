@@ -15,6 +15,7 @@ The primary key for this table is **service_arn**.
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
+|tags|`json`|
 |current_performance_risk|`utf8`|
 |current_service_configuration|`json`|
 |finding|`utf8`|
