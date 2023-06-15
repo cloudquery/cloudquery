@@ -22,9 +22,10 @@ func CustomCost() *schema.Table {
 	return &schema.Table{
 		Name:     tableName,
 		Resolver: fetchCustom,
-		Title:    "AWS Cost Explorer costs based on custom inputs",
+		Title:    "AWS Cost Explorer costs based on custom inputs (Alpha)",
 		Description: `https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_GetCostAndUsage.html
 To sync this table you must set the 'use_paid_apis' option to 'true' in the AWS provider configuration as well as specify the request parameters in the 'table_options' attribute. 
+
 Please note that this table is considered **alpha** (experimental) and may have breaking changes or be removed in the future.`,
 
 		Transform: transformers.TransformWithStruct(&wrappedResultByTime{}, transformers.WithUnwrapAllEmbeddedStructs()),
