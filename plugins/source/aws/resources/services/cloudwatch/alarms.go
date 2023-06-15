@@ -19,7 +19,7 @@ func Alarms() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_MetricAlarm.html`,
 		Resolver:    fetchCloudwatchAlarms,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "logs"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "monitoring"),
 		Transform:   transformers.TransformWithStruct(&types.MetricAlarm{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

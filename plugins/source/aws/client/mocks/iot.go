@@ -1265,6 +1265,96 @@ func (mr *MockIotClientMockRecorder) GetOTAUpdate(arg0, arg1 interface{}, arg2 .
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOTAUpdate", reflect.TypeOf((*MockIotClient)(nil).GetOTAUpdate), varargs...)
 }
 
+// GetPackage mocks base method.
+func (m *MockIotClient) GetPackage(arg0 context.Context, arg1 *iot.GetPackageInput, arg2 ...func(*iot.Options)) (*iot.GetPackageOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPackage")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetPackage", varargs...)
+	ret0, _ := ret[0].(*iot.GetPackageOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetPackage indicates an expected call of GetPackage.
+func (mr *MockIotClientMockRecorder) GetPackage(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPackage", reflect.TypeOf((*MockIotClient)(nil).GetPackage), varargs...)
+}
+
+// GetPackageConfiguration mocks base method.
+func (m *MockIotClient) GetPackageConfiguration(arg0 context.Context, arg1 *iot.GetPackageConfigurationInput, arg2 ...func(*iot.Options)) (*iot.GetPackageConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPackageConfiguration")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetPackageConfiguration", varargs...)
+	ret0, _ := ret[0].(*iot.GetPackageConfigurationOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetPackageConfiguration indicates an expected call of GetPackageConfiguration.
+func (mr *MockIotClientMockRecorder) GetPackageConfiguration(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPackageConfiguration", reflect.TypeOf((*MockIotClient)(nil).GetPackageConfiguration), varargs...)
+}
+
+// GetPackageVersion mocks base method.
+func (m *MockIotClient) GetPackageVersion(arg0 context.Context, arg1 *iot.GetPackageVersionInput, arg2 ...func(*iot.Options)) (*iot.GetPackageVersionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPackageVersion")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetPackageVersion", varargs...)
+	ret0, _ := ret[0].(*iot.GetPackageVersionOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetPackageVersion indicates an expected call of GetPackageVersion.
+func (mr *MockIotClientMockRecorder) GetPackageVersion(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPackageVersion", reflect.TypeOf((*MockIotClient)(nil).GetPackageVersion), varargs...)
+}
+
 // GetPercentiles mocks base method.
 func (m *MockIotClient) GetPercentiles(arg0 context.Context, arg1 *iot.GetPercentilesInput, arg2 ...func(*iot.Options)) (*iot.GetPercentilesOutput, error) {
 
@@ -2343,6 +2433,66 @@ func (mr *MockIotClientMockRecorder) ListOutgoingCertificates(arg0, arg1 interfa
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListOutgoingCertificates", reflect.TypeOf((*MockIotClient)(nil).ListOutgoingCertificates), varargs...)
+}
+
+// ListPackageVersions mocks base method.
+func (m *MockIotClient) ListPackageVersions(arg0 context.Context, arg1 *iot.ListPackageVersionsInput, arg2 ...func(*iot.Options)) (*iot.ListPackageVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPackageVersions")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListPackageVersions", varargs...)
+	ret0, _ := ret[0].(*iot.ListPackageVersionsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListPackageVersions indicates an expected call of ListPackageVersions.
+func (mr *MockIotClientMockRecorder) ListPackageVersions(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListPackageVersions", reflect.TypeOf((*MockIotClient)(nil).ListPackageVersions), varargs...)
+}
+
+// ListPackages mocks base method.
+func (m *MockIotClient) ListPackages(arg0 context.Context, arg1 *iot.ListPackagesInput, arg2 ...func(*iot.Options)) (*iot.ListPackagesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &iot.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPackages")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListPackages", varargs...)
+	ret0, _ := ret[0].(*iot.ListPackagesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListPackages indicates an expected call of ListPackages.
+func (mr *MockIotClientMockRecorder) ListPackages(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListPackages", reflect.TypeOf((*MockIotClient)(nil).ListPackages), varargs...)
 }
 
 // ListPolicies mocks base method.

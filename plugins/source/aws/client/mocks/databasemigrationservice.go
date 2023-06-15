@@ -545,6 +545,66 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribePendingMainten
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribePendingMaintenanceActions", reflect.TypeOf((*MockDatabasemigrationserviceClient)(nil).DescribePendingMaintenanceActions), varargs...)
 }
 
+// DescribeRecommendationLimitations mocks base method.
+func (m *MockDatabasemigrationserviceClient) DescribeRecommendationLimitations(arg0 context.Context, arg1 *databasemigrationservice.DescribeRecommendationLimitationsInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeRecommendationLimitationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRecommendationLimitations")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeRecommendationLimitations", varargs...)
+	ret0, _ := ret[0].(*databasemigrationservice.DescribeRecommendationLimitationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeRecommendationLimitations indicates an expected call of DescribeRecommendationLimitations.
+func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeRecommendationLimitations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeRecommendationLimitations", reflect.TypeOf((*MockDatabasemigrationserviceClient)(nil).DescribeRecommendationLimitations), varargs...)
+}
+
+// DescribeRecommendations mocks base method.
+func (m *MockDatabasemigrationserviceClient) DescribeRecommendations(arg0 context.Context, arg1 *databasemigrationservice.DescribeRecommendationsInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeRecommendationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRecommendations")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeRecommendations", varargs...)
+	ret0, _ := ret[0].(*databasemigrationservice.DescribeRecommendationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeRecommendations indicates an expected call of DescribeRecommendations.
+func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeRecommendations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeRecommendations", reflect.TypeOf((*MockDatabasemigrationserviceClient)(nil).DescribeRecommendations), varargs...)
+}
+
 // DescribeRefreshSchemasStatus mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeRefreshSchemasStatus(arg0 context.Context, arg1 *databasemigrationservice.DescribeRefreshSchemasStatusInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeRefreshSchemasStatusOutput, error) {
 

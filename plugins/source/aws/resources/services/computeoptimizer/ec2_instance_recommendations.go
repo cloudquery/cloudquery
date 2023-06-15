@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
 )
 
 func Ec2InstanceRecommendations() *schema.Table {
@@ -21,6 +22,11 @@ func Ec2InstanceRecommendations() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.InstanceRecommendation{}, transformers.WithPrimaryKeys("InstanceArn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
+			{
+				Name:     "tags",
+				Type:     sdkTypes.ExtensionTypes.JSON,
+				Resolver: client.ResolveTags,
+			},
 		},
 	}
 }

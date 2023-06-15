@@ -28,6 +28,7 @@ This table depends on [aws_emr_clusters](aws_emr_clusters).
 |name|`utf8`|
 |provisioned_on_demand_capacity|`int64`|
 |provisioned_spot_capacity|`int64`|
+|resize_specifications|`json`|
 |status|`json`|
 |target_on_demand_capacity|`int64`|
 |target_spot_capacity|`int64`|

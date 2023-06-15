@@ -32,6 +32,7 @@ The following tables depend on aws_guardduty_detectors:
 |status|`utf8`|
 |created_at|`timestamp[us, tz=UTC]`|
 |data_sources|`json`|
+|features|`json`|
 |finding_publishing_frequency|`utf8`|
 |tags|`json`|
 |updated_at|`timestamp[us, tz=UTC]`|

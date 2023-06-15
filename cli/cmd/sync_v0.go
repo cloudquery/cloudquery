@@ -22,7 +22,10 @@ import (
 func syncConnectionV0_2(ctx context.Context, sourceClient *managedsource.Client, destinationsClients manageddestination.Clients, uid string, noMigrate bool) error {
 	syncTime := time.Now().UTC()
 	sourceSpec := sourceClient.Spec
-	destinationStrings := destinationsClients.Names()
+	destinationStrings := make([]string, len(destinationsClients))
+	for i := range destinationsClients {
+		destinationStrings[i] = destinationsClients[i].Spec.VersionString()
+	}
 	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("Start sync")
 	defer log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("End sync")
 
