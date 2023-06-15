@@ -2,7 +2,7 @@
 
 The AWS Resources view, called `aws_resources`, is a view that shows all the resources that are supported by the AWS plugin. It collects all resources into a single view and allows them to be queried by ARN, region, service or tag. With the view in place, selecting resources of different types in a single query becomes easy. For example:
 
-```
+```sql
 SELECT * FROM aws_resources
 WHERE
   region LIKE 'us-east%'
