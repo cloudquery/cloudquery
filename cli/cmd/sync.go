@@ -98,7 +98,7 @@ func sync(cmd *cobra.Command, args []string) error {
 
 	for _, cl := range sourcesClients {
 		maxVersion, err := cl.MaxVersion(ctx)
-		destinationClientsForSource := make([]*manageddestination.Client, 0)
+		var destinationClientsForSource []*manageddestination.Client
 		for _, destination := range destinationsClients {
 			if slices.Contains(cl.Spec.Destinations, destination.Spec.Name) {
 				destinationClientsForSource = append(destinationClientsForSource, destination)
