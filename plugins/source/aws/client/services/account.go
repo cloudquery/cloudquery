@@ -10,4 +10,6 @@ import (
 type AccountClient interface {
 	GetAlternateContact(context.Context, *account.GetAlternateContactInput, ...func(*account.Options)) (*account.GetAlternateContactOutput, error)
 	GetContactInformation(context.Context, *account.GetContactInformationInput, ...func(*account.Options)) (*account.GetContactInformationOutput, error)
+	GetRegionOptStatus(context.Context, *account.GetRegionOptStatusInput, ...func(*account.Options)) (*account.GetRegionOptStatusOutput, error)
+	ListRegions(context.Context, *account.ListRegionsInput, ...func(*account.Options)) (*account.ListRegionsOutput, error)
 }
