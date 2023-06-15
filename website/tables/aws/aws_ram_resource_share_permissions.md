@@ -22,6 +22,7 @@ This table depends on [aws_ram_resource_shares](aws_ram_resource_shares).
 |region (PK)|`utf8`|
 |resource_share_arn (PK)|`utf8`|
 |permission|`json`|
+|tags|`json`|
 |arn (PK)|`utf8`|
 |creation_time|`timestamp[us, tz=UTC]`|
 |default_version|`bool`|
@@ -32,5 +33,4 @@ This table depends on [aws_ram_resource_shares](aws_ram_resource_shares).
 |permission_type|`utf8`|
 |resource_type|`utf8`|
 |status|`utf8`|
-|tags|`json`|
 |version (PK)|`utf8`|

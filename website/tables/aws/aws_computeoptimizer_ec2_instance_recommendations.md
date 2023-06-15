@@ -15,6 +15,7 @@ The primary key for this table is **instance_arn**.
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
+|tags|`json`|
 |current_instance_type|`utf8`|
 |current_performance_risk|`utf8`|
 |effective_recommendation_preferences|`json`|
@@ -29,5 +30,4 @@ The primary key for this table is **instance_arn**.
 |look_back_period_in_days|`float64`|
 |recommendation_options|`json`|
 |recommendation_sources|`json`|
-|tags|`json`|
 |utilization_metrics|`json`|

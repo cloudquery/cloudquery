@@ -15,12 +15,12 @@ The primary key for this table is **volume_arn**.
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
+|tags|`json`|
 |current_configuration|`json`|
 |current_performance_risk|`utf8`|
 |finding|`utf8`|
 |last_refresh_timestamp|`timestamp[us, tz=UTC]`|
 |look_back_period_in_days|`float64`|
-|tags|`json`|
 |utilization_metrics|`json`|
 |volume_arn (PK)|`utf8`|
 |volume_recommendation_options|`json`|
