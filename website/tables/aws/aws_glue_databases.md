@@ -28,6 +28,7 @@ The following tables depend on aws_glue_databases:
 |create_table_default_permissions|`json`|
 |create_time|`timestamp[us, tz=UTC]`|
 |description|`utf8`|
+|federated_database|`json`|
 |location_uri|`utf8`|
 |parameters|`json`|
 |target_database|`json`|

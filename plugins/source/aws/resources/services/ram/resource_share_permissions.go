@@ -35,6 +35,11 @@ func resourceSharePermissions() *schema.Table {
 				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveResourceSharePermissionDetailPermission,
 			},
+			{
+				Name:     "tags",
+				Type:     sdkTypes.ExtensionTypes.JSON,
+				Resolver: client.ResolveTags,
+			},
 		},
 	}
 }
