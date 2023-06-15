@@ -11,6 +11,8 @@ import (
 	cloudtrailtypes "github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	cloudwatchtypes "github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
+	"github.com/aws/aws-sdk-go-v2/service/costexplorer"
+	costexplorertypes "github.com/aws/aws-sdk-go-v2/service/costexplorer/types"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	inspector2types "github.com/aws/aws-sdk-go-v2/service/inspector2/types"
 
@@ -101,6 +103,13 @@ func TestTableOptionsUnmarshal(t *testing.T) {
 		inspector2types.PackageFilter{},
 		inspector2types.FilterCriteria{},
 		inspector2types.SortCriteria{},
+		costexplorertypes.DateInterval{},
+		costexplorertypes.Expression{},
+		costexplorertypes.CostCategoryValues{},
+		costexplorertypes.DimensionValues{},
+		costexplorertypes.TagValues{},
+		costexplorertypes.GroupDefinition{},
+		costexplorer.GetCostAndUsageInput{},
 	)); diff != "" {
 		t.Fatalf("mismatch between objects after loading from snake case json: %v", diff)
 	}
