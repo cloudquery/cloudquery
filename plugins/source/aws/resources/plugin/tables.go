@@ -188,6 +188,7 @@ func tables() []*schema.Table {
 		config.RetentionConfigurations(),
 		costexplorer.ThirtyDayCost(),
 		costexplorer.ThirtyDayCostForecast(),
+		costexplorer.CustomCost(),
 		dax.Clusters(),
 		directconnect.Connections(),
 		directconnect.Gateways(),
