@@ -24,4 +24,5 @@ The primary key for this table is **service_arn**.
 |lookback_period_in_days|`float64`|
 |service_arn (PK)|`utf8`|
 |service_recommendation_options|`json`|
+|tags|`json`|
 |utilization_metrics|`json`|

@@ -18,13 +18,16 @@ The primary key for this table is **instance_arn**.
 |current_instance_type|`utf8`|
 |current_performance_risk|`utf8`|
 |effective_recommendation_preferences|`json`|
+|external_metric_status|`json`|
 |finding|`utf8`|
 |finding_reason_codes|`list<item: utf8, nullable>`|
 |inferred_workload_types|`list<item: utf8, nullable>`|
 |instance_arn (PK)|`utf8`|
 |instance_name|`utf8`|
+|instance_state|`utf8`|
 |last_refresh_timestamp|`timestamp[us, tz=UTC]`|
 |look_back_period_in_days|`float64`|
 |recommendation_options|`json`|
 |recommendation_sources|`json`|
+|tags|`json`|
 |utilization_metrics|`json`|

@@ -25,4 +25,5 @@ The primary key for this table is **function_arn**.
 |lookback_period_in_days|`float64`|
 |memory_size_recommendation_options|`json`|
 |number_of_invocations|`int64`|
+|tags|`json`|
 |utilization_metrics|`json`|
