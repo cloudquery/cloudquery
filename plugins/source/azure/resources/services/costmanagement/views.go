@@ -20,20 +20,18 @@ func Views() *schema.Table {
 			transformers.WithNameTransformer(client.ETagNameTransformer),
 			transformers.WithPrimaryKeys("ID"),
 		),
-		Columns: schema.ColumnList{client.SubscriptionID},
-		Relations: []*schema.Table{
-			view_queries(),
-		},
+		Columns:   schema.ColumnList{client.SubscriptionIDPK},
+		Relations: schema.Tables{view_queries()},
 	}
 }
 
-func fetchViews(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchViews(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc, err := armcostmanagement.NewViewsClient(cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListByScopePager("subscriptions/"+cl.SubscriptionId, nil)
+	pager := svc.NewListPager(nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

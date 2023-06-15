@@ -21,7 +21,7 @@ func createViews(router *mux.Router) error {
 	emptyStr := ""
 	item.NextLink = &emptyStr
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.CostManagement/views", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/providers/Microsoft.CostManagement/views", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
