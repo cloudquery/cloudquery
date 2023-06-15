@@ -14,6 +14,7 @@ type SagemakerClient interface {
 	DescribeAppImageConfig(context.Context, *sagemaker.DescribeAppImageConfigInput, ...func(*sagemaker.Options)) (*sagemaker.DescribeAppImageConfigOutput, error)
 	DescribeArtifact(context.Context, *sagemaker.DescribeArtifactInput, ...func(*sagemaker.Options)) (*sagemaker.DescribeArtifactOutput, error)
 	DescribeAutoMLJob(context.Context, *sagemaker.DescribeAutoMLJobInput, ...func(*sagemaker.Options)) (*sagemaker.DescribeAutoMLJobOutput, error)
+	DescribeAutoMLJobV2(context.Context, *sagemaker.DescribeAutoMLJobV2Input, ...func(*sagemaker.Options)) (*sagemaker.DescribeAutoMLJobV2Output, error)
 	DescribeCodeRepository(context.Context, *sagemaker.DescribeCodeRepositoryInput, ...func(*sagemaker.Options)) (*sagemaker.DescribeCodeRepositoryOutput, error)
 	DescribeCompilationJob(context.Context, *sagemaker.DescribeCompilationJobInput, ...func(*sagemaker.Options)) (*sagemaker.DescribeCompilationJobOutput, error)
 	DescribeContext(context.Context, *sagemaker.DescribeContextInput, ...func(*sagemaker.Options)) (*sagemaker.DescribeContextOutput, error)

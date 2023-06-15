@@ -98,12 +98,18 @@ func sync(cmd *cobra.Command, args []string) error {
 
 	for _, cl := range sourcesClients {
 		maxVersion, err := cl.MaxVersion(ctx)
+		var destinationClientsForSource []*manageddestination.Client
+		for _, destination := range destinationsClients {
+			if slices.Contains(cl.Spec.Destinations, destination.Spec.Name) {
+				destinationClientsForSource = append(destinationClientsForSource, destination)
+			}
+		}
 		if err != nil {
 			return err
 		}
 		switch maxVersion {
 		case 2:
-			for _, destination := range destinationsClients {
+			for _, destination := range destinationClientsForSource {
 				versions, err := destination.Versions(ctx)
 				if err != nil {
 					return fmt.Errorf("failed to get destination versions: %w", err)
@@ -112,15 +118,15 @@ func sync(cmd *cobra.Command, args []string) error {
 					return fmt.Errorf("destination %[1]s does not support CloudQuery SDK version 1. Please upgrade to newer version of %[1]s", destination.Spec.Name)
 				}
 			}
-			if err := syncConnectionV2(ctx, cl, destinationsClients, invocationUUID.String(), noMigrate); err != nil {
+			if err := syncConnectionV2(ctx, cl, destinationClientsForSource, invocationUUID.String(), noMigrate); err != nil {
 				return fmt.Errorf("failed to sync v2 source %s: %w", cl.Spec.Name, err)
 			}
 		case 1:
-			if err := syncConnectionV1(ctx, cl, destinationsClients, invocationUUID.String(), noMigrate); err != nil {
+			if err := syncConnectionV1(ctx, cl, destinationClientsForSource, invocationUUID.String(), noMigrate); err != nil {
 				return fmt.Errorf("failed to sync v1 source %s: %w", cl.Spec.Name, err)
 			}
 		case 0:
-			if err := syncConnectionV0_2(ctx, cl, destinationsClients, invocationUUID.String(), noMigrate); err != nil {
+			if err := syncConnectionV0_2(ctx, cl, destinationClientsForSource, invocationUUID.String(), noMigrate); err != nil {
 				return fmt.Errorf("failed to sync v1 source %s: %w", cl.Spec.Name, err)
 			}
 		case -1:

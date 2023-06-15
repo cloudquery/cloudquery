@@ -15,6 +15,7 @@ The primary key for this table is **volume_arn**.
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
+|tags|`json`|
 |current_configuration|`json`|
 |current_performance_risk|`utf8`|
 |finding|`utf8`|

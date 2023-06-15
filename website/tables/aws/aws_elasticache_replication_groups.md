@@ -25,6 +25,7 @@ The primary key for this table is **arn**.
 |automatic_failover|`utf8`|
 |cache_node_type|`utf8`|
 |cluster_enabled|`bool`|
+|cluster_mode|`utf8`|
 |configuration_endpoint|`json`|
 |data_tiering|`utf8`|
 |description|`utf8`|
