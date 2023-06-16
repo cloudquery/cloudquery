@@ -11,33 +11,9 @@ import (
 
 func (c *Client) resolveFolders(ctx context.Context, folder ResourceDiscovery) error {
 	var err error
-	// nolint:prealloc
-	var includeFolders, excludeFolders []*resourcemanagerpb.Folder
 	foldersClient, err := resourcemanager.NewFoldersClient(ctx, c.ClientOptions...)
 	if err != nil {
 		return fmt.Errorf("failed to create folders client: %w", err)
-	}
-	for _, includeFilter := range folder.IncludeFilter {
-		folders, err := searchFolders(ctx, foldersClient, includeFilter)
-		if err != nil {
-			return fmt.Errorf("failed to get organizations with filter: %w", err)
-		}
-		includeFolders = append(includeFolders, folders...)
-	}
-	for _, excludeFilter := range folder.ExcludeFilter {
-		folders, err := searchFolders(ctx, foldersClient, excludeFilter)
-		if err != nil {
-			return fmt.Errorf("failed to get organizations with filter: %w", err)
-		}
-		excludeFolders = append(excludeFolders, folders...)
-	}
-	// Resolve folder from gcpSpec.Projects.Folders.id_include_list and add to include_folders
-	for _, folderId := range folder.IncludeListId {
-		folder, err := getFolderFromId(ctx, foldersClient, folderId)
-		if err != nil {
-			return fmt.Errorf("failed to get folder with id %s: %w", folderId, err)
-		}
-		includeFolders = append(includeFolders, folder)
 	}
 
 	// Cannot directly add all excluded/included folders to the graph because the graph is not yet fully populated
@@ -57,16 +33,50 @@ func (c *Client) resolveFolders(ctx context.Context, folder ResourceDiscovery) e
 			break
 		}
 	}
-	// Update include status for all excluded/included folders
-	boolFalse := false
-	boolTrue := true
-	for _, folder := range excludeFolders {
-		if !updateFolder(c.graph, folder, &boolFalse) {
-			c.logger.Warn().Msgf("folder %s is excluded but could not be added to the dependency graph", folder.Name)
+
+	// Resolve folder from gcpSpec.Projects.Folders.id_include_filter and add to graph
+	for _, includeFilter := range folder.IncludeFilter {
+		folders, err := searchFolders(ctx, foldersClient, includeFilter)
+		if err != nil {
+			return fmt.Errorf("failed to get organizations with filter: %w", err)
+		}
+		for _, folder := range folders {
+			if !updateFolder(c.graph, folder, &boolTrue) {
+				c.logger.Warn().Msgf("folder %s is included but could not be added to the dependency graph", folder.Name)
+			}
 		}
 	}
-	for _, folder := range includeFolders {
+	// Resolve folder from gcpSpec.Projects.Folders.id_include_list and add to graph
+	for _, folderId := range folder.IncludeListId {
+		folder, err := getFolderFromId(ctx, foldersClient, folderId)
+		if err != nil {
+			return fmt.Errorf("failed to get folder with id %s: %w", folderId, err)
+		}
 		if !updateFolder(c.graph, folder, &boolTrue) {
+			c.logger.Warn().Msgf("folder %s is included but could not be added to the dependency graph", folder.Name)
+		}
+	}
+
+	// Resolve folder from gcpSpec.Projects.Folders.id_exclude_filter and add to graph
+	for _, excludeFilter := range folder.ExcludeFilter {
+		folders, err := searchFolders(ctx, foldersClient, excludeFilter)
+		if err != nil {
+			return fmt.Errorf("failed to get organizations with filter: %w", err)
+		}
+		for _, folder := range folders {
+			if !updateFolder(c.graph, folder, &boolFalse) {
+				c.logger.Warn().Msgf("folder %s is included but could not be added to the dependency graph", folder.Name)
+			}
+		}
+	}
+
+	// Resolve folder from gcpSpec.Projects.Folders.id_exclude_list and add to graph
+	for _, folderId := range folder.ExcludeListId {
+		folder, err := getFolderFromId(ctx, foldersClient, folderId)
+		if err != nil {
+			return fmt.Errorf("failed to get folder with id %s: %w", folderId, err)
+		}
+		if !updateFolder(c.graph, folder, &boolFalse) {
 			c.logger.Warn().Msgf("folder %s is included but could not be added to the dependency graph", folder.Name)
 		}
 	}

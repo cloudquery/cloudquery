@@ -12,12 +12,16 @@ type node struct {
 	parentID  *string
 	included  *bool
 	relations nodes
-	project   *crmv1.Project
-	folder    *resourcemanagerpb.Folder
-	org       *crmv1.Organization
+	// This could probably be replaced with a placeholder that just holds an interface and then use a typecast to check the type when need to access the data
+	project *crmv1.Project
+	folder  *resourcemanagerpb.Folder
+	org     *crmv1.Organization
 }
 
 type nodes []*node
+
+var boolFalse = false
+var boolTrue = true
 
 func findNodeByParentID(node *node, id string) *node {
 	if node.folder != nil && node.folder.Name == id {
@@ -58,6 +62,35 @@ func addFolder(topNode *node, folder *resourcemanagerpb.Folder, toBeIncluded *bo
 	return true
 }
 
+func addOrg(topNode *node, newOrg *crmv1.Organization, toBeIncluded *bool) bool {
+	var existingOrgs []*crmv1.Organization
+	for _, rel := range topNode.relations {
+		if rel.org != nil {
+			existingOrgs = append(existingOrgs, rel.org)
+		}
+	}
+	// if length of existing orgs + new org after uniqueness check is unaltered, then the new org is not already in the graph
+	if len(uniqOrg(append(existingOrgs, newOrg))) == len(existingOrgs) {
+		if toBeIncluded == nil {
+			return true
+		}
+		// If the newOrg is already in the graph, don't add it, but check the included value
+		existingNode := findNodeByParentID(topNode, newOrg.Name)
+		if existingNode.included == nil || !*toBeIncluded {
+			existingNode.included = toBeIncluded
+			return true
+		}
+		return false
+	}
+	topNode.relations = append(topNode.relations, &node{
+		org:      newOrg,
+		included: toBeIncluded,
+	})
+
+	return true
+
+}
+
 func updateFolder(topNode *node, folder *resourcemanagerpb.Folder, toBeIncluded *bool) bool {
 	existingNode := findNodeByParentID(topNode, folder.Name)
 	if existingNode == nil {
@@ -65,6 +98,7 @@ func updateFolder(topNode *node, folder *resourcemanagerpb.Folder, toBeIncluded 
 	}
 	for _, existingFolder := range existingNode.relations {
 		if existingFolder.folder.Name == folder.Name {
+			// Only update the value if going from nil --> value or true --> false. Never go from false --> true
 			existingFolder.included = toBeIncluded
 			return true
 		}
@@ -72,6 +106,7 @@ func updateFolder(topNode *node, folder *resourcemanagerpb.Folder, toBeIncluded 
 	return true
 }
 
+// addProject adds a project to the dependency graph only if it doesn't already exist and as long as the parent exists in the graph
 func addProject(topNode *node, project *crmv1.Project, toBeIncluded *bool) bool {
 	parentID := strings.ToLower(project.Parent.Type) + "s/" + strings.ToLower(project.Parent.Id)
 	existingNode := findNodeByParentID(topNode, parentID)
