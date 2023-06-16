@@ -88,7 +88,6 @@ func addOrg(topNode *node, newOrg *crmv1.Organization, toBeIncluded *bool) bool 
 	})
 
 	return true
-
 }
 
 func updateFolder(topNode *node, folder *resourcemanagerpb.Folder, toBeIncluded *bool) bool {

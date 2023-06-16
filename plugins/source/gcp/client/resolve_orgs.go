@@ -55,7 +55,6 @@ func (c *Client) resolveOrgs(ctx context.Context, organization ResourceDiscovery
 		if !addOrg(c.graph, org, &boolTrue) {
 			c.logger.Warn().Msgf("organization %s is excluded but could not be added to the dependency graph", org.Name)
 		}
-
 	}
 	for _, orgId := range organization.ExcludeListId {
 		org, err := getOrganizationFromId(ctx, service, orgId)
