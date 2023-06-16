@@ -10,33 +10,33 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|compute_capacity_status|JSON|
-|instance_type|String|
-|name|String|
-|state|String|
-|created_time|Timestamp|
-|description|String|
-|disconnect_timeout_in_seconds|Int|
-|display_name|String|
-|domain_join_info|JSON|
-|enable_default_internet_access|Bool|
-|fleet_errors|JSON|
-|fleet_type|String|
-|iam_role_arn|String|
-|idle_disconnect_timeout_in_seconds|Int|
-|image_arn|String|
-|image_name|String|
-|max_concurrent_sessions|Int|
-|max_user_duration_in_seconds|Int|
-|platform|String|
-|session_script_s3_location|JSON|
-|stream_view|String|
-|usb_device_filter_strings|StringArray|
-|vpc_config|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|compute_capacity_status|`json`|
+|instance_type|`utf8`|
+|name|`utf8`|
+|state|`utf8`|
+|created_time|`timestamp[us, tz=UTC]`|
+|description|`utf8`|
+|disconnect_timeout_in_seconds|`int64`|
+|display_name|`utf8`|
+|domain_join_info|`json`|
+|enable_default_internet_access|`bool`|
+|fleet_errors|`json`|
+|fleet_type|`utf8`|
+|iam_role_arn|`utf8`|
+|idle_disconnect_timeout_in_seconds|`int64`|
+|image_arn|`utf8`|
+|image_name|`utf8`|
+|max_concurrent_sessions|`int64`|
+|max_user_duration_in_seconds|`int64`|
+|platform|`utf8`|
+|session_script_s3_location|`json`|
+|stream_view|`utf8`|
+|usb_device_filter_strings|`list<item: utf8, nullable>`|
+|vpc_config|`json`|

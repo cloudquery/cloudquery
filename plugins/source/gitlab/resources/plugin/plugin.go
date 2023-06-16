@@ -6,19 +6,17 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/resources/services/projects"
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/resources/services/settings"
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/resources/services/users"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
-var (
-	Version = "Development"
-)
+var Version = "Development"
 
 func Plugin() *source.Plugin {
 	return source.NewPlugin(
 		"gitlab",
 		Version,
-		[]*schema.Table{
+		schema.Tables{
 			groups.Groups(),
 			projects.Projects(),
 			settings.Settings(),

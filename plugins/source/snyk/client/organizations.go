@@ -2,12 +2,10 @@ package client
 
 import (
 	"context"
-
-	"golang.org/x/exp/slices"
 )
 
 func (c *Client) initOrganizations(ctx context.Context) error {
-	if len(c.organizations) > 0 {
+	if len(c.Organizations) > 0 {
 		// already set
 		return nil
 	}
@@ -16,15 +14,15 @@ func (c *Client) initOrganizations(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	organizations := make([]string, 0, len(orgs))
-	for _, org := range orgs {
-		organizations = append(organizations, org.ID)
-	}
-
-	c.organizations = organizations
+	c.Organizations = orgs
 	return nil
 }
 
 func (c *Client) WantOrganization(organizationID string) bool {
-	return slices.Contains(c.organizations, organizationID)
+	for _, org := range c.Organizations {
+		if org.ID == organizationID {
+			return true
+		}
+	}
+	return false
 }

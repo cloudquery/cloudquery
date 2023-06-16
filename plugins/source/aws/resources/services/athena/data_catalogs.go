@@ -4,12 +4,15 @@ import (
 	"context"
 	"fmt"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func DataCatalogs() *schema.Table {
@@ -25,16 +28,14 @@ func DataCatalogs() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveAthenaDataCatalogArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveAthenaDataCatalogArn,
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveAthenaDataCatalogTags,
 			},
 		},
@@ -46,12 +47,14 @@ func DataCatalogs() *schema.Table {
 }
 
 func fetchAthenaDataCatalogs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Athena
+	cl := meta.(*client.Client)
+	svc := cl.Services().Athena
 	input := athena.ListDataCatalogsInput{}
 	paginator := athena.NewListDataCatalogsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *athena.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -61,11 +64,13 @@ func fetchAthenaDataCatalogs(ctx context.Context, meta schema.ClientMeta, parent
 }
 
 func getDataCatalog(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Athena
+	cl := meta.(*client.Client)
+	svc := cl.Services().Athena
 	catalogSummary := resource.Item.(types.DataCatalogSummary)
 	dc, err := svc.GetDataCatalog(ctx, &athena.GetDataCatalogInput{
 		Name: catalogSummary.CatalogName,
+	}, func(options *athena.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		// retrieving of default data catalog (AwsDataCatalog) returns "not found error" (with statuscode 400: InvalidRequestException:...) but it exists and its
@@ -94,7 +99,9 @@ func resolveAthenaDataCatalogTags(ctx context.Context, meta schema.ClientMeta, r
 	paginator := athena.NewListTagsForResourcePaginator(svc, &athena.ListTagsForResourceInput{ResourceARN: &arnStr})
 	tags := make(map[string]string)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *athena.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if cl.IsNotFoundError(err) {
 				return nil

@@ -20,8 +20,6 @@ clickhouse:
   - plugins/destination/clickhouse/**/*
 cloudflare:
   - plugins/source/cloudflare/**/*
-csv:
-  - plugins/destination/csv/**/*
 datadog:
   - plugins/source/datadog/**/*
 digitalocean:
@@ -86,6 +84,8 @@ okta:
   - plugins/source/okta/**/*
 oracle:
   - plugins/source/oracle/**/*
+oracledb:
+  - plugins/source/oracledb/**/*
 pagerduty:
   - plugins/source/pagerduty/**/*
 plausible:

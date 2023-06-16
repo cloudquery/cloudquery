@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
@@ -16,7 +16,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 		return err
 	}
 
-	want := c.tablesIndexSchemas(tables)
+	want := c.tablesIndexSchemas(tables.FlattenTables())
 
 	var recreate, create, update []*indexSchema
 	for uid, need := range want {

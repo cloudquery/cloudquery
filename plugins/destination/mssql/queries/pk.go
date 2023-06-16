@@ -1,33 +1,21 @@
 package queries
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 type pkQueryBuilder struct {
+	Schema  string
 	Table   string
 	Name    string // constraint name
 	Columns []string
 }
 
 func pkConstraint(table *schema.Table) string {
+	if len(table.PkConstraintName) > 0 {
+		return sanitizeID(table.PkConstraintName)
+	}
+
 	const pkSuffix = "_cqpk"
 	return sanitizeID(table.Name + pkSuffix)
-}
-
-// AddPK should be called only for mode with PK enabled.
-func AddPK(schemaName string, table *schema.Table) string {
-	return execTemplate("pk_add.sql.tpl", &pkQueryBuilder{
-		Table:   sanitizeID(schemaName, table.Name),
-		Name:    pkConstraint(table),
-		Columns: GetPKColumns(table),
-	})
-}
-
-// DropPK should be called only for mode with PK enabled.
-func DropPK(schemaName string, table *schema.Table) string {
-	return execTemplate("pk_drop.sql.tpl", &pkQueryBuilder{
-		Table: sanitizeID(schemaName, table.Name),
-		Name:  pkConstraint(table),
-	})
 }

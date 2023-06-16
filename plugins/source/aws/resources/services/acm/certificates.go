@@ -3,11 +3,14 @@ package acm
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/acm"
 	"github.com/aws/aws-sdk-go-v2/service/acm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Certificates() *schema.Table {
@@ -23,16 +26,14 @@ func Certificates() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CertificateArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("CertificateArn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveCertificateTags,
 			},
 		},
@@ -45,7 +46,9 @@ func fetchAcmCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 	var input acm.ListCertificatesInput
 	paginator := acm.NewListCertificatesPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(o *acm.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -58,7 +61,7 @@ func getCertificate(ctx context.Context, meta schema.ClientMeta, resource *schem
 	cl := meta.(*client.Client)
 	svc := cl.Services().Acm
 	input := acm.DescribeCertificateInput{CertificateArn: resource.Item.(types.CertificateSummary).CertificateArn}
-	output, err := svc.DescribeCertificate(ctx, &input)
+	output, err := svc.DescribeCertificate(ctx, &input, func(o *acm.Options) { o.Region = cl.Region })
 	if err != nil {
 		return err
 	}
@@ -70,7 +73,12 @@ func resolveCertificateTags(ctx context.Context, meta schema.ClientMeta, resourc
 	cert := resource.Item.(*types.CertificateDetail)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Acm
-	out, err := svc.ListTagsForCertificate(ctx, &acm.ListTagsForCertificateInput{CertificateArn: cert.CertificateArn})
+	out, err := svc.ListTagsForCertificate(ctx,
+		&acm.ListTagsForCertificateInput{CertificateArn: cert.CertificateArn},
+		func(o *acm.Options) {
+			o.Region = cl.Region
+		},
+	)
 	if err != nil {
 		return err
 	}

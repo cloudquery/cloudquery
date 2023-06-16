@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/organizations/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -18,7 +18,7 @@ func buildDelegatedAdministrators(t *testing.T, ctrl *gomock.Controller) client.
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListDelegatedAdministrators(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListDelegatedAdministrators(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&organizations.ListDelegatedAdministratorsOutput{
 			DelegatedAdministrators: []types.DelegatedAdministrator{da},
 		}, nil)

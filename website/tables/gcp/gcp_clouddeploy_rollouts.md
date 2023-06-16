@@ -17,28 +17,28 @@ The following tables depend on gcp_clouddeploy_rollouts:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|uid|String|
-|description|String|
-|annotations|JSON|
-|labels|JSON|
-|create_time|Timestamp|
-|approve_time|Timestamp|
-|enqueue_time|Timestamp|
-|deploy_start_time|Timestamp|
-|deploy_end_time|Timestamp|
-|target_id|String|
-|approval_state|String|
-|state|String|
-|failure_reason|String|
-|deploying_build|String|
-|etag|String|
-|deploy_failure_cause|String|
-|phases|JSON|
-|metadata|JSON|
-|controller_rollout|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|uid|`utf8`|
+|description|`utf8`|
+|annotations|`json`|
+|labels|`json`|
+|create_time|`timestamp[us, tz=UTC]`|
+|approve_time|`timestamp[us, tz=UTC]`|
+|enqueue_time|`timestamp[us, tz=UTC]`|
+|deploy_start_time|`timestamp[us, tz=UTC]`|
+|deploy_end_time|`timestamp[us, tz=UTC]`|
+|target_id|`utf8`|
+|approval_state|`utf8`|
+|state|`utf8`|
+|failure_reason|`utf8`|
+|deploying_build|`utf8`|
+|etag|`utf8`|
+|deploy_failure_cause|`utf8`|
+|phases|`json`|
+|metadata|`json`|
+|controller_rollout|`utf8`|

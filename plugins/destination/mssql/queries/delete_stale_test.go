@@ -5,7 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -26,7 +27,7 @@ func TestDeleteStale(t *testing.T) {
 				schema.CqParentIDColumn,
 				schema.CqSourceNameColumn,
 				schema.CqSyncTimeColumn,
-				schema.Column{Name: "extra_col", Type: schema.TypeFloat},
+				schema.Column{Name: "extra_col", Type: arrow.PrimitiveTypes.Float64},
 			},
 		},
 		sourceName, now)

@@ -7,12 +7,11 @@ import (
 	s3Types "github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mgr := mocks.NewMockS3managerClient(ctrl)
 	m := mocks.NewMockS3Client(ctrl)
 	b := s3Types.Bucket{}
 	err := faker.FakeObject(&b)
@@ -121,8 +120,7 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}
 
 	m.EXPECT().GetBucketLifecycleConfiguration(gomock.Any(), gomock.Any(), gomock.Any()).Return(&glco, nil)
-	mgr.EXPECT().GetBucketRegion(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		"us-east-1", nil)
+	m.EXPECT().GetBucketLocation(gomock.Any(), gomock.Any(), gomock.Any()).Return(&bloc, nil)
 
 	websiteOutput := s3.GetBucketWebsiteOutput{}
 	if err := faker.FakeObject(&websiteOutput); err != nil {
@@ -132,8 +130,7 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetBucketWebsite(gomock.Any(), gomock.Any(), gomock.Any()).Return(&websiteOutput, nil)
 
 	return client.Services{
-		S3:        m,
-		S3manager: mgr,
+		S3: m,
 	}
 }
 

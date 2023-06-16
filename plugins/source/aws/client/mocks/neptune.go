@@ -37,6 +37,16 @@ func (m *MockNeptuneClient) EXPECT() *MockNeptuneClientMockRecorder {
 
 // DescribeDBClusterEndpoints mocks base method.
 func (m *MockNeptuneClient) DescribeDBClusterEndpoints(arg0 context.Context, arg1 *neptune.DescribeDBClusterEndpointsInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeDBClusterEndpointsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &neptune.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBClusterEndpoints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockNeptuneClientMockRecorder) DescribeDBClusterEndpoints(arg0, arg1 i
 
 // DescribeDBClusterParameterGroups mocks base method.
 func (m *MockNeptuneClient) DescribeDBClusterParameterGroups(arg0 context.Context, arg1 *neptune.DescribeDBClusterParameterGroupsInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeDBClusterParameterGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &neptune.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBClusterParameterGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockNeptuneClientMockRecorder) DescribeDBClusterParameterGroups(arg0, 
 
 // DescribeDBClusterParameters mocks base method.
 func (m *MockNeptuneClient) DescribeDBClusterParameters(arg0 context.Context, arg1 *neptune.DescribeDBClusterParametersInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeDBClusterParametersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &neptune.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBClusterParameters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockNeptuneClientMockRecorder) DescribeDBClusterParameters(arg0, arg1 
 
 // DescribeDBClusterSnapshotAttributes mocks base method.
 func (m *MockNeptuneClient) DescribeDBClusterSnapshotAttributes(arg0 context.Context, arg1 *neptune.DescribeDBClusterSnapshotAttributesInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeDBClusterSnapshotAttributesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &neptune.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBClusterSnapshotAttributes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockNeptuneClientMockRecorder) DescribeDBClusterSnapshotAttributes(arg
 
 // DescribeDBClusterSnapshots mocks base method.
 func (m *MockNeptuneClient) DescribeDBClusterSnapshots(arg0 context.Context, arg1 *neptune.DescribeDBClusterSnapshotsInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeDBClusterSnapshotsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &neptune.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBClusterSnapshots")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockNeptuneClientMockRecorder) DescribeDBClusterSnapshots(arg0, arg1 i
 
 // DescribeDBClusters mocks base method.
 func (m *MockNeptuneClient) DescribeDBClusters(arg0 context.Context, arg1 *neptune.DescribeDBClustersInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeDBClustersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &neptune.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBClusters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockNeptuneClientMockRecorder) DescribeDBClusters(arg0, arg1 interface
 
 // DescribeDBEngineVersions mocks base method.
 func (m *MockNeptuneClient) DescribeDBEngineVersions(arg0 context.Context, arg1 *neptune.DescribeDBEngineVersionsInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeDBEngineVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &neptune.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBEngineVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockNeptuneClientMockRecorder) DescribeDBEngineVersions(arg0, arg1 int
 
 // DescribeDBInstances mocks base method.
 func (m *MockNeptuneClient) DescribeDBInstances(arg0 context.Context, arg1 *neptune.DescribeDBInstancesInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeDBInstancesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &neptune.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBInstances")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockNeptuneClientMockRecorder) DescribeDBInstances(arg0, arg1 interfac
 
 // DescribeDBParameterGroups mocks base method.
 func (m *MockNeptuneClient) DescribeDBParameterGroups(arg0 context.Context, arg1 *neptune.DescribeDBParameterGroupsInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeDBParameterGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &neptune.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBParameterGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockNeptuneClientMockRecorder) DescribeDBParameterGroups(arg0, arg1 in
 
 // DescribeDBParameters mocks base method.
 func (m *MockNeptuneClient) DescribeDBParameters(arg0 context.Context, arg1 *neptune.DescribeDBParametersInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeDBParametersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &neptune.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBParameters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockNeptuneClientMockRecorder) DescribeDBParameters(arg0, arg1 interfa
 
 // DescribeDBSubnetGroups mocks base method.
 func (m *MockNeptuneClient) DescribeDBSubnetGroups(arg0 context.Context, arg1 *neptune.DescribeDBSubnetGroupsInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeDBSubnetGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &neptune.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBSubnetGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockNeptuneClientMockRecorder) DescribeDBSubnetGroups(arg0, arg1 inter
 
 // DescribeEngineDefaultClusterParameters mocks base method.
 func (m *MockNeptuneClient) DescribeEngineDefaultClusterParameters(arg0 context.Context, arg1 *neptune.DescribeEngineDefaultClusterParametersInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeEngineDefaultClusterParametersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &neptune.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEngineDefaultClusterParameters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockNeptuneClientMockRecorder) DescribeEngineDefaultClusterParameters(
 
 // DescribeEngineDefaultParameters mocks base method.
 func (m *MockNeptuneClient) DescribeEngineDefaultParameters(arg0 context.Context, arg1 *neptune.DescribeEngineDefaultParametersInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeEngineDefaultParametersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &neptune.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEngineDefaultParameters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockNeptuneClientMockRecorder) DescribeEngineDefaultParameters(arg0, a
 
 // DescribeEventCategories mocks base method.
 func (m *MockNeptuneClient) DescribeEventCategories(arg0 context.Context, arg1 *neptune.DescribeEventCategoriesInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeEventCategoriesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &neptune.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEventCategories")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockNeptuneClientMockRecorder) DescribeEventCategories(arg0, arg1 inte
 
 // DescribeEventSubscriptions mocks base method.
 func (m *MockNeptuneClient) DescribeEventSubscriptions(arg0 context.Context, arg1 *neptune.DescribeEventSubscriptionsInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeEventSubscriptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &neptune.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEventSubscriptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockNeptuneClientMockRecorder) DescribeEventSubscriptions(arg0, arg1 i
 
 // DescribeEvents mocks base method.
 func (m *MockNeptuneClient) DescribeEvents(arg0 context.Context, arg1 *neptune.DescribeEventsInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeEventsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &neptune.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEvents")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockNeptuneClientMockRecorder) DescribeEvents(arg0, arg1 interface{}, 
 
 // DescribeGlobalClusters mocks base method.
 func (m *MockNeptuneClient) DescribeGlobalClusters(arg0 context.Context, arg1 *neptune.DescribeGlobalClustersInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeGlobalClustersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &neptune.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeGlobalClusters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockNeptuneClientMockRecorder) DescribeGlobalClusters(arg0, arg1 inter
 
 // DescribeOrderableDBInstanceOptions mocks base method.
 func (m *MockNeptuneClient) DescribeOrderableDBInstanceOptions(arg0 context.Context, arg1 *neptune.DescribeOrderableDBInstanceOptionsInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeOrderableDBInstanceOptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &neptune.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeOrderableDBInstanceOptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockNeptuneClientMockRecorder) DescribeOrderableDBInstanceOptions(arg0
 
 // DescribePendingMaintenanceActions mocks base method.
 func (m *MockNeptuneClient) DescribePendingMaintenanceActions(arg0 context.Context, arg1 *neptune.DescribePendingMaintenanceActionsInput, arg2 ...func(*neptune.Options)) (*neptune.DescribePendingMaintenanceActionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &neptune.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePendingMaintenanceActions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockNeptuneClientMockRecorder) DescribePendingMaintenanceActions(arg0,
 
 // DescribeValidDBInstanceModifications mocks base method.
 func (m *MockNeptuneClient) DescribeValidDBInstanceModifications(arg0 context.Context, arg1 *neptune.DescribeValidDBInstanceModificationsInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeValidDBInstanceModificationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &neptune.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeValidDBInstanceModifications")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockNeptuneClientMockRecorder) DescribeValidDBInstanceModifications(ar
 
 // ListTagsForResource mocks base method.
 func (m *MockNeptuneClient) ListTagsForResource(arg0 context.Context, arg1 *neptune.ListTagsForResourceInput, arg2 ...func(*neptune.Options)) (*neptune.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &neptune.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

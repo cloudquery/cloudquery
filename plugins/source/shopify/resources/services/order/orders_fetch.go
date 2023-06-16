@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func fetchOrders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
@@ -16,6 +16,7 @@ func fetchOrders(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	const key = "orders"
 
 	p := url.Values{}
+	p.Set("status", "any")
 	min := time.Time{}
 
 	if cl.Backend != nil {

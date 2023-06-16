@@ -37,6 +37,16 @@ func (m *MockEcrClient) EXPECT() *MockEcrClientMockRecorder {
 
 // BatchGetImage mocks base method.
 func (m *MockEcrClient) BatchGetImage(arg0 context.Context, arg1 *ecr.BatchGetImageInput, arg2 ...func(*ecr.Options)) (*ecr.BatchGetImageOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetImage")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockEcrClientMockRecorder) BatchGetImage(arg0, arg1 interface{}, arg2 
 
 // BatchGetRepositoryScanningConfiguration mocks base method.
 func (m *MockEcrClient) BatchGetRepositoryScanningConfiguration(arg0 context.Context, arg1 *ecr.BatchGetRepositoryScanningConfigurationInput, arg2 ...func(*ecr.Options)) (*ecr.BatchGetRepositoryScanningConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetRepositoryScanningConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockEcrClientMockRecorder) BatchGetRepositoryScanningConfiguration(arg
 
 // DescribeImageReplicationStatus mocks base method.
 func (m *MockEcrClient) DescribeImageReplicationStatus(arg0 context.Context, arg1 *ecr.DescribeImageReplicationStatusInput, arg2 ...func(*ecr.Options)) (*ecr.DescribeImageReplicationStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeImageReplicationStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockEcrClientMockRecorder) DescribeImageReplicationStatus(arg0, arg1 i
 
 // DescribeImageScanFindings mocks base method.
 func (m *MockEcrClient) DescribeImageScanFindings(arg0 context.Context, arg1 *ecr.DescribeImageScanFindingsInput, arg2 ...func(*ecr.Options)) (*ecr.DescribeImageScanFindingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeImageScanFindings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockEcrClientMockRecorder) DescribeImageScanFindings(arg0, arg1 interf
 
 // DescribeImages mocks base method.
 func (m *MockEcrClient) DescribeImages(arg0 context.Context, arg1 *ecr.DescribeImagesInput, arg2 ...func(*ecr.Options)) (*ecr.DescribeImagesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeImages")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockEcrClientMockRecorder) DescribeImages(arg0, arg1 interface{}, arg2
 
 // DescribePullThroughCacheRules mocks base method.
 func (m *MockEcrClient) DescribePullThroughCacheRules(arg0 context.Context, arg1 *ecr.DescribePullThroughCacheRulesInput, arg2 ...func(*ecr.Options)) (*ecr.DescribePullThroughCacheRulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePullThroughCacheRules")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockEcrClientMockRecorder) DescribePullThroughCacheRules(arg0, arg1 in
 
 // DescribeRegistry mocks base method.
 func (m *MockEcrClient) DescribeRegistry(arg0 context.Context, arg1 *ecr.DescribeRegistryInput, arg2 ...func(*ecr.Options)) (*ecr.DescribeRegistryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRegistry")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockEcrClientMockRecorder) DescribeRegistry(arg0, arg1 interface{}, ar
 
 // DescribeRepositories mocks base method.
 func (m *MockEcrClient) DescribeRepositories(arg0 context.Context, arg1 *ecr.DescribeRepositoriesInput, arg2 ...func(*ecr.Options)) (*ecr.DescribeRepositoriesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRepositories")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockEcrClientMockRecorder) DescribeRepositories(arg0, arg1 interface{}
 
 // GetAuthorizationToken mocks base method.
 func (m *MockEcrClient) GetAuthorizationToken(arg0 context.Context, arg1 *ecr.GetAuthorizationTokenInput, arg2 ...func(*ecr.Options)) (*ecr.GetAuthorizationTokenOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAuthorizationToken")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockEcrClientMockRecorder) GetAuthorizationToken(arg0, arg1 interface{
 
 // GetDownloadUrlForLayer mocks base method.
 func (m *MockEcrClient) GetDownloadUrlForLayer(arg0 context.Context, arg1 *ecr.GetDownloadUrlForLayerInput, arg2 ...func(*ecr.Options)) (*ecr.GetDownloadUrlForLayerOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDownloadUrlForLayer")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockEcrClientMockRecorder) GetDownloadUrlForLayer(arg0, arg1 interface
 
 // GetLifecyclePolicy mocks base method.
 func (m *MockEcrClient) GetLifecyclePolicy(arg0 context.Context, arg1 *ecr.GetLifecyclePolicyInput, arg2 ...func(*ecr.Options)) (*ecr.GetLifecyclePolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetLifecyclePolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockEcrClientMockRecorder) GetLifecyclePolicy(arg0, arg1 interface{}, 
 
 // GetLifecyclePolicyPreview mocks base method.
 func (m *MockEcrClient) GetLifecyclePolicyPreview(arg0 context.Context, arg1 *ecr.GetLifecyclePolicyPreviewInput, arg2 ...func(*ecr.Options)) (*ecr.GetLifecyclePolicyPreviewOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetLifecyclePolicyPreview")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockEcrClientMockRecorder) GetLifecyclePolicyPreview(arg0, arg1 interf
 
 // GetRegistryPolicy mocks base method.
 func (m *MockEcrClient) GetRegistryPolicy(arg0 context.Context, arg1 *ecr.GetRegistryPolicyInput, arg2 ...func(*ecr.Options)) (*ecr.GetRegistryPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRegistryPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockEcrClientMockRecorder) GetRegistryPolicy(arg0, arg1 interface{}, a
 
 // GetRegistryScanningConfiguration mocks base method.
 func (m *MockEcrClient) GetRegistryScanningConfiguration(arg0 context.Context, arg1 *ecr.GetRegistryScanningConfigurationInput, arg2 ...func(*ecr.Options)) (*ecr.GetRegistryScanningConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRegistryScanningConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockEcrClientMockRecorder) GetRegistryScanningConfiguration(arg0, arg1
 
 // GetRepositoryPolicy mocks base method.
 func (m *MockEcrClient) GetRepositoryPolicy(arg0 context.Context, arg1 *ecr.GetRepositoryPolicyInput, arg2 ...func(*ecr.Options)) (*ecr.GetRepositoryPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRepositoryPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockEcrClientMockRecorder) GetRepositoryPolicy(arg0, arg1 interface{},
 
 // ListImages mocks base method.
 func (m *MockEcrClient) ListImages(arg0 context.Context, arg1 *ecr.ListImagesInput, arg2 ...func(*ecr.Options)) (*ecr.ListImagesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListImages")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockEcrClientMockRecorder) ListImages(arg0, arg1 interface{}, arg2 ...
 
 // ListTagsForResource mocks base method.
 func (m *MockEcrClient) ListTagsForResource(arg0 context.Context, arg1 *ecr.ListTagsForResourceInput, arg2 ...func(*ecr.Options)) (*ecr.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecr.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

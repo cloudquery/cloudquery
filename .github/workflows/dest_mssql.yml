@@ -61,16 +61,15 @@ jobs:
     - name: golangci-lint
       uses: golangci/golangci-lint-action@v3
       with:
-        version:           v1.51.2
+        version: v1.52.2
         working-directory: plugins/destination/mssql
         args:              "--config ../../.golangci.yml"
         skip-pkg-cache:    true
         skip-build-cache:  true
-    - name: Get dependencies
-      run:  go get -t -d ./...
+    - run: go mod tidy
     - name: Build
       run:  go build .
-    - name: Test Microsoft SQL
+    - name: Test Microsoft SQL Server
       run:  make test
   validate-release:
     timeout-minutes: 30

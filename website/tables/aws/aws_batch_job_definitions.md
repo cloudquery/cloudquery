@@ -10,26 +10,26 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|tags|JSON|
-|arn (PK)|String|
-|job_definition_arn|String|
-|job_definition_name|String|
-|revision|Int|
-|type|String|
-|container_orchestration_type|String|
-|container_properties|JSON|
-|eks_properties|JSON|
-|node_properties|JSON|
-|parameters|JSON|
-|platform_capabilities|StringArray|
-|propagate_tags|Bool|
-|retry_strategy|JSON|
-|scheduling_priority|Int|
-|status|String|
-|timeout|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|tags|`json`|
+|arn (PK)|`utf8`|
+|job_definition_arn|`utf8`|
+|job_definition_name|`utf8`|
+|revision|`int64`|
+|type|`utf8`|
+|container_orchestration_type|`utf8`|
+|container_properties|`json`|
+|eks_properties|`json`|
+|node_properties|`json`|
+|parameters|`json`|
+|platform_capabilities|`list<item: utf8, nullable>`|
+|propagate_tags|`bool`|
+|retry_strategy|`json`|
+|scheduling_priority|`int64`|
+|status|`utf8`|
+|timeout|`json`|

@@ -3,12 +3,15 @@ package servicecatalog
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog/types"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Products() *schema.Table {
@@ -22,16 +25,14 @@ func Products() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProductARN"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ProductARN"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveProductTags,
 			},
 		},
@@ -39,13 +40,15 @@ func Products() *schema.Table {
 }
 
 func fetchServicecatalogProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Servicecatalog
+	cl := meta.(*client.Client)
+	svc := cl.Services().Servicecatalog
 
 	listInput := new(servicecatalog.SearchProductsAsAdminInput)
 	paginator := servicecatalog.NewSearchProductsAsAdminPaginator(svc, listInput)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *servicecatalog.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -62,6 +65,8 @@ func resolveProductTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	svc := cl.Services().Servicecatalogappregistry
 	response, err := svc.ListTagsForResource(ctx, &servicecatalogappregistry.ListTagsForResourceInput{
 		ResourceArn: p.ProductARN,
+	}, func(o *servicecatalogappregistry.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {

@@ -14,22 +14,22 @@ This table depends on [gcp_vmmigration_sources](gcp_vmmigration_sources).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|create_time|Timestamp|
-|update_time|Timestamp|
-|name (PK)|String|
-|registration_id|String|
-|service_account|String|
-|version|String|
-|bucket|String|
-|state|String|
-|state_time|Timestamp|
-|error|JSON|
-|appliance_infrastructure_version|String|
-|appliance_software_version|String|
-|available_versions|JSON|
-|upgrade_status|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|create_time|`timestamp[us, tz=UTC]`|
+|update_time|`timestamp[us, tz=UTC]`|
+|name (PK)|`utf8`|
+|registration_id|`utf8`|
+|service_account|`utf8`|
+|version|`utf8`|
+|bucket|`utf8`|
+|state|`utf8`|
+|state_time|`timestamp[us, tz=UTC]`|
+|error|`json`|
+|appliance_infrastructure_version|`utf8`|
+|appliance_software_version|`utf8`|
+|available_versions|`json`|
+|upgrade_status|`json`|

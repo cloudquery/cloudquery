@@ -5,7 +5,7 @@ import (
 	"time"
 
 	gremlingo "github.com/apache/tinkerpop/gremlin-go/v3/driver"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source string, syncTime time.Time) error {
@@ -19,8 +19,8 @@ func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source s
 		g := gremlingo.Traversal_().WithRemote(session).
 			V().
 			HasLabel(table.Name).
-			Has("_cq_source_name", source).
-			Has("_cq_sync_time", gremlingo.P.Lt(syncTime)).
+			Has(schema.CqSourceNameColumn.Name, source).
+			Has(schema.CqSyncTimeColumn.Name, gremlingo.P.Lt(syncTime)).
 			SideEffect(AnonT.Drop())
 		if err := <-g.Iterate(); err != nil {
 			return err

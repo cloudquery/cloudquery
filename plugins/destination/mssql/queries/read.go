@@ -3,12 +3,12 @@ package queries
 import (
 	"database/sql"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 type readQueryBuilder struct {
-	Table            string
-	Columns          []string
+	Schema           string
+	Table            *schema.Table
 	SourceNameColumn string
 	SyncTimeColumn   string
 }
@@ -16,8 +16,8 @@ type readQueryBuilder struct {
 func Read(schemaName, sourceName string, table *schema.Table) (query string, params []any) {
 	return execTemplate("read.sql.tpl",
 			&readQueryBuilder{
-				Table:            SanitizedTableName(schemaName, table),
-				Columns:          sanitized(table.Columns.Names()...),
+				Schema:           schemaName,
+				Table:            table,
 				SourceNameColumn: sanitizeID(schema.CqSourceNameColumn.Name),
 				SyncTimeColumn:   sanitizeID(schema.CqSyncTimeColumn.Name),
 			},

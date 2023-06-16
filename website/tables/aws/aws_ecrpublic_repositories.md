@@ -15,16 +15,16 @@ The following tables depend on aws_ecrpublic_repositories:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|created_at|Timestamp|
-|registry_id|String|
-|repository_arn|String|
-|repository_name|String|
-|repository_uri|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|created_at|`timestamp[us, tz=UTC]`|
+|registry_id|`utf8`|
+|repository_arn|`utf8`|
+|repository_name|`utf8`|
+|repository_uri|`utf8`|

@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/organizations/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -18,7 +18,7 @@ func buildOrganizationalUnits(t *testing.T, ctrl *gomock.Controller) client.Serv
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListRoots(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListRoots(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&organizations.ListRootsOutput{
 			Roots: []types.Root{g},
 		}, nil)
@@ -27,8 +27,7 @@ func buildOrganizationalUnits(t *testing.T, ctrl *gomock.Controller) client.Serv
 	if err := faker.FakeObject(&c); err != nil {
 		t.Fatal(err)
 	}
-
-	m.EXPECT().ListChildren(gomock.Any(), gomock.Any()).MinTimes(1).Return(
+	m.EXPECT().ListChildren(gomock.Any(), gomock.Any(), gomock.Any()).MinTimes(1).Return(
 		&organizations.ListChildrenOutput{
 			Children: []types.Child{c},
 		}, nil)
@@ -37,9 +36,18 @@ func buildOrganizationalUnits(t *testing.T, ctrl *gomock.Controller) client.Serv
 	if err := faker.FakeObject(&ou); err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().DescribeOrganizationalUnit(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().DescribeOrganizationalUnit(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&organizations.DescribeOrganizationalUnitOutput{
 			OrganizationalUnit: &ou,
+		}, nil)
+
+	p := types.Parent{}
+	if err := faker.FakeObject(&p); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListParents(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&organizations.ListParentsOutput{
+			Parents: []types.Parent{p},
 		}, nil)
 
 	return client.Services{

@@ -3,12 +3,15 @@ package glue
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Jobs() *schema.Table {
@@ -23,16 +26,14 @@ func Jobs() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveGlueJobArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveGlueJobArn,
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveGlueJobTags,
 			},
 		},
@@ -48,7 +49,9 @@ func fetchGlueJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	svc := cl.Services().Glue
 	paginator := glue.NewGetJobsPaginator(svc, &glue.GetJobsInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *glue.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -66,6 +69,8 @@ func resolveGlueJobTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	svc := cl.Services().Glue
 	result, err := svc.GetTags(ctx, &glue.GetTagsInput{
 		ResourceArn: aws.String(jobARN(cl, aws.ToString(resource.Item.(types.Job).Name))),
+	}, func(options *glue.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {

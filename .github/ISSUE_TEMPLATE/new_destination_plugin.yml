@@ -1,7 +1,7 @@
 name: 🔄 New Destination Plugin
 description: Request a new destination plugin
 title: "feat: Add a <plugin-name> destination plugin"
-labels: [new-destination-plugin, needs-triage]
+labels: [new-destination-plugin]
 body:
   - type: textarea
     id: description

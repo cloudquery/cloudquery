@@ -14,20 +14,20 @@ This table depends on [gcp_aiplatform_dataset_locations](gcp_aiplatform_dataset_
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|display_name|String|
-|description|String|
-|metadata_schema_uri|String|
-|metadata|JSON|
-|create_time|Timestamp|
-|update_time|Timestamp|
-|etag|String|
-|labels|JSON|
-|saved_queries|JSON|
-|encryption_spec|JSON|
-|metadata_artifact|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|display_name|`utf8`|
+|description|`utf8`|
+|metadata_schema_uri|`utf8`|
+|metadata|`json`|
+|create_time|`timestamp[us, tz=UTC]`|
+|update_time|`timestamp[us, tz=UTC]`|
+|etag|`utf8`|
+|labels|`json`|
+|saved_queries|`json`|
+|encryption_spec|`json`|
+|metadata_artifact|`utf8`|

@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -52,27 +52,27 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListUsers(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListUsers(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.ListUsersOutput{
 			Users: []types.User{u},
 		}, nil)
-	m.EXPECT().GetUser(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().GetUser(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.GetUserOutput{
 			User: &u,
 		}, nil)
-	m.EXPECT().ListGroupsForUser(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListGroupsForUser(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.ListGroupsForUserOutput{
 			Groups: []types.Group{g},
 		}, nil)
-	m.EXPECT().ListAccessKeys(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListAccessKeys(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.ListAccessKeysOutput{
 			AccessKeyMetadata: []types.AccessKeyMetadata{km},
 		}, nil)
-	m.EXPECT().ListAttachedUserPolicies(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListAttachedUserPolicies(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.ListAttachedUserPoliciesOutput{
 			AttachedPolicies: []types.AttachedPolicy{aup},
 		}, nil)
-	m.EXPECT().GetAccessKeyLastUsed(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().GetAccessKeyLastUsed(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&akl, nil)
 
 	var l []string
@@ -95,7 +95,7 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetUserPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&p, nil)
 
-	m.EXPECT().ListSSHPublicKeys(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListSSHPublicKeys(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.ListSSHPublicKeysOutput{
 			SSHPublicKeys: []types.SSHPublicKeyMetadata{sshPublicKey},
 		}, nil)

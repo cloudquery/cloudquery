@@ -37,6 +37,16 @@ func (m *MockOrganizationsClient) EXPECT() *MockOrganizationsClientMockRecorder 
 
 // DescribeAccount mocks base method.
 func (m *MockOrganizationsClient) DescribeAccount(arg0 context.Context, arg1 *organizations.DescribeAccountInput, arg2 ...func(*organizations.Options)) (*organizations.DescribeAccountOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAccount")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockOrganizationsClientMockRecorder) DescribeAccount(arg0, arg1 interf
 
 // DescribeCreateAccountStatus mocks base method.
 func (m *MockOrganizationsClient) DescribeCreateAccountStatus(arg0 context.Context, arg1 *organizations.DescribeCreateAccountStatusInput, arg2 ...func(*organizations.Options)) (*organizations.DescribeCreateAccountStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCreateAccountStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockOrganizationsClientMockRecorder) DescribeCreateAccountStatus(arg0,
 
 // DescribeEffectivePolicy mocks base method.
 func (m *MockOrganizationsClient) DescribeEffectivePolicy(arg0 context.Context, arg1 *organizations.DescribeEffectivePolicyInput, arg2 ...func(*organizations.Options)) (*organizations.DescribeEffectivePolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEffectivePolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockOrganizationsClientMockRecorder) DescribeEffectivePolicy(arg0, arg
 
 // DescribeHandshake mocks base method.
 func (m *MockOrganizationsClient) DescribeHandshake(arg0 context.Context, arg1 *organizations.DescribeHandshakeInput, arg2 ...func(*organizations.Options)) (*organizations.DescribeHandshakeOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeHandshake")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockOrganizationsClientMockRecorder) DescribeHandshake(arg0, arg1 inte
 
 // DescribeOrganization mocks base method.
 func (m *MockOrganizationsClient) DescribeOrganization(arg0 context.Context, arg1 *organizations.DescribeOrganizationInput, arg2 ...func(*organizations.Options)) (*organizations.DescribeOrganizationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeOrganization")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockOrganizationsClientMockRecorder) DescribeOrganization(arg0, arg1 i
 
 // DescribeOrganizationalUnit mocks base method.
 func (m *MockOrganizationsClient) DescribeOrganizationalUnit(arg0 context.Context, arg1 *organizations.DescribeOrganizationalUnitInput, arg2 ...func(*organizations.Options)) (*organizations.DescribeOrganizationalUnitOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeOrganizationalUnit")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockOrganizationsClientMockRecorder) DescribeOrganizationalUnit(arg0, 
 
 // DescribePolicy mocks base method.
 func (m *MockOrganizationsClient) DescribePolicy(arg0 context.Context, arg1 *organizations.DescribePolicyInput, arg2 ...func(*organizations.Options)) (*organizations.DescribePolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockOrganizationsClientMockRecorder) DescribePolicy(arg0, arg1 interfa
 
 // DescribeResourcePolicy mocks base method.
 func (m *MockOrganizationsClient) DescribeResourcePolicy(arg0 context.Context, arg1 *organizations.DescribeResourcePolicyInput, arg2 ...func(*organizations.Options)) (*organizations.DescribeResourcePolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeResourcePolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockOrganizationsClientMockRecorder) DescribeResourcePolicy(arg0, arg1
 
 // ListAWSServiceAccessForOrganization mocks base method.
 func (m *MockOrganizationsClient) ListAWSServiceAccessForOrganization(arg0 context.Context, arg1 *organizations.ListAWSServiceAccessForOrganizationInput, arg2 ...func(*organizations.Options)) (*organizations.ListAWSServiceAccessForOrganizationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAWSServiceAccessForOrganization")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockOrganizationsClientMockRecorder) ListAWSServiceAccessForOrganizati
 
 // ListAccounts mocks base method.
 func (m *MockOrganizationsClient) ListAccounts(arg0 context.Context, arg1 *organizations.ListAccountsInput, arg2 ...func(*organizations.Options)) (*organizations.ListAccountsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAccounts")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockOrganizationsClientMockRecorder) ListAccounts(arg0, arg1 interface
 
 // ListAccountsForParent mocks base method.
 func (m *MockOrganizationsClient) ListAccountsForParent(arg0 context.Context, arg1 *organizations.ListAccountsForParentInput, arg2 ...func(*organizations.Options)) (*organizations.ListAccountsForParentOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAccountsForParent")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockOrganizationsClientMockRecorder) ListAccountsForParent(arg0, arg1 
 
 // ListChildren mocks base method.
 func (m *MockOrganizationsClient) ListChildren(arg0 context.Context, arg1 *organizations.ListChildrenInput, arg2 ...func(*organizations.Options)) (*organizations.ListChildrenOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListChildren")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockOrganizationsClientMockRecorder) ListChildren(arg0, arg1 interface
 
 // ListCreateAccountStatus mocks base method.
 func (m *MockOrganizationsClient) ListCreateAccountStatus(arg0 context.Context, arg1 *organizations.ListCreateAccountStatusInput, arg2 ...func(*organizations.Options)) (*organizations.ListCreateAccountStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCreateAccountStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockOrganizationsClientMockRecorder) ListCreateAccountStatus(arg0, arg
 
 // ListDelegatedAdministrators mocks base method.
 func (m *MockOrganizationsClient) ListDelegatedAdministrators(arg0 context.Context, arg1 *organizations.ListDelegatedAdministratorsInput, arg2 ...func(*organizations.Options)) (*organizations.ListDelegatedAdministratorsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDelegatedAdministrators")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockOrganizationsClientMockRecorder) ListDelegatedAdministrators(arg0,
 
 // ListDelegatedServicesForAccount mocks base method.
 func (m *MockOrganizationsClient) ListDelegatedServicesForAccount(arg0 context.Context, arg1 *organizations.ListDelegatedServicesForAccountInput, arg2 ...func(*organizations.Options)) (*organizations.ListDelegatedServicesForAccountOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDelegatedServicesForAccount")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockOrganizationsClientMockRecorder) ListDelegatedServicesForAccount(a
 
 // ListHandshakesForAccount mocks base method.
 func (m *MockOrganizationsClient) ListHandshakesForAccount(arg0 context.Context, arg1 *organizations.ListHandshakesForAccountInput, arg2 ...func(*organizations.Options)) (*organizations.ListHandshakesForAccountOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListHandshakesForAccount")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockOrganizationsClientMockRecorder) ListHandshakesForAccount(arg0, ar
 
 // ListHandshakesForOrganization mocks base method.
 func (m *MockOrganizationsClient) ListHandshakesForOrganization(arg0 context.Context, arg1 *organizations.ListHandshakesForOrganizationInput, arg2 ...func(*organizations.Options)) (*organizations.ListHandshakesForOrganizationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListHandshakesForOrganization")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockOrganizationsClientMockRecorder) ListHandshakesForOrganization(arg
 
 // ListOrganizationalUnitsForParent mocks base method.
 func (m *MockOrganizationsClient) ListOrganizationalUnitsForParent(arg0 context.Context, arg1 *organizations.ListOrganizationalUnitsForParentInput, arg2 ...func(*organizations.Options)) (*organizations.ListOrganizationalUnitsForParentOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListOrganizationalUnitsForParent")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockOrganizationsClientMockRecorder) ListOrganizationalUnitsForParent(
 
 // ListParents mocks base method.
 func (m *MockOrganizationsClient) ListParents(arg0 context.Context, arg1 *organizations.ListParentsInput, arg2 ...func(*organizations.Options)) (*organizations.ListParentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListParents")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockOrganizationsClientMockRecorder) ListParents(arg0, arg1 interface{
 
 // ListPolicies mocks base method.
 func (m *MockOrganizationsClient) ListPolicies(arg0 context.Context, arg1 *organizations.ListPoliciesInput, arg2 ...func(*organizations.Options)) (*organizations.ListPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockOrganizationsClientMockRecorder) ListPolicies(arg0, arg1 interface
 
 // ListPoliciesForTarget mocks base method.
 func (m *MockOrganizationsClient) ListPoliciesForTarget(arg0 context.Context, arg1 *organizations.ListPoliciesForTargetInput, arg2 ...func(*organizations.Options)) (*organizations.ListPoliciesForTargetOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPoliciesForTarget")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockOrganizationsClientMockRecorder) ListPoliciesForTarget(arg0, arg1 
 
 // ListRoots mocks base method.
 func (m *MockOrganizationsClient) ListRoots(arg0 context.Context, arg1 *organizations.ListRootsInput, arg2 ...func(*organizations.Options)) (*organizations.ListRootsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRoots")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockOrganizationsClientMockRecorder) ListRoots(arg0, arg1 interface{},
 
 // ListTagsForResource mocks base method.
 func (m *MockOrganizationsClient) ListTagsForResource(arg0 context.Context, arg1 *organizations.ListTagsForResourceInput, arg2 ...func(*organizations.Options)) (*organizations.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockOrganizationsClientMockRecorder) ListTagsForResource(arg0, arg1 in
 
 // ListTargetsForPolicy mocks base method.
 func (m *MockOrganizationsClient) ListTargetsForPolicy(arg0 context.Context, arg1 *organizations.ListTargetsForPolicyInput, arg2 ...func(*organizations.Options)) (*organizations.ListTargetsForPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &organizations.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTargetsForPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

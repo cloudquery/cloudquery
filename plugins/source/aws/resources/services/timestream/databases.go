@@ -3,12 +3,15 @@ package timestream
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/timestreamwrite"
 	"github.com/aws/aws-sdk-go-v2/service/timestreamwrite/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Databases() *schema.Table {
@@ -24,16 +27,14 @@ func Databases() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: fetchDatabaseTags,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Arn"),
+				PrimaryKey: true,
 			},
 		},
 
@@ -44,10 +45,13 @@ func Databases() *schema.Table {
 }
 
 func fetchTimestreamDatabases(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
 	input := &timestreamwrite.ListDatabasesInput{MaxResults: aws.Int32(20)}
-	paginator := timestreamwrite.NewListDatabasesPaginator(meta.(*client.Client).Services().Timestreamwrite, input)
+	paginator := timestreamwrite.NewListDatabasesPaginator(cl.Services().Timestreamwrite, input)
 	for paginator.HasMorePages() {
-		response, err := paginator.NextPage(ctx)
+		response, err := paginator.NextPage(ctx, func(o *timestreamwrite.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -57,9 +61,15 @@ func fetchTimestreamDatabases(ctx context.Context, meta schema.ClientMeta, _ *sc
 }
 
 func fetchDatabaseTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	output, err := meta.(*client.Client).Services().Timestreamwrite.ListTagsForResource(ctx,
+	cl := meta.(*client.Client)
+	svc := cl.Services().Timestreamwrite
+
+	output, err := svc.ListTagsForResource(ctx,
 		&timestreamwrite.ListTagsForResourceInput{
 			ResourceARN: resource.Item.(types.Database).Arn,
+		},
+		func(o *timestreamwrite.Options) {
+			o.Region = cl.Region
 		},
 	)
 	if err != nil {

@@ -4,11 +4,14 @@ import (
 	"context"
 	"fmt"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func SubnetGroups() *schema.Table {
@@ -24,16 +27,14 @@ func SubnetGroups() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:        "arn",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 				Resolver:    resolveSubnetGroupArn(),
 				Description: `The Amazon Resource Name (ARN) for the resource.`,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey:  true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: client.ResolveTags,
 			},
 		},
@@ -42,11 +43,13 @@ func SubnetGroups() *schema.Table {
 
 func fetchSubnetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config redshift.DescribeClusterSubnetGroupsInput
-	c := meta.(*client.Client)
-	svc := c.Services().Redshift
+	cl := meta.(*client.Client)
+	svc := cl.Services().Redshift
 	paginator := redshift.NewDescribeClusterSubnetGroupsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *redshift.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

@@ -3,12 +3,15 @@ package ecrpublic
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecrpublic"
 	"github.com/aws/aws-sdk-go-v2/service/ecrpublic/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Repositories() *schema.Table {
@@ -23,16 +26,14 @@ func Repositories() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("RepositoryArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("RepositoryArn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveRepositoryTags,
 			},
 		},
@@ -44,13 +45,15 @@ func Repositories() *schema.Table {
 }
 
 func fetchEcrpublicRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Ecrpublic
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ecrpublic
 	paginator := ecrpublic.NewDescribeRepositoriesPaginator(svc, &ecrpublic.DescribeRepositoriesInput{
 		MaxResults: aws.Int32(1000),
 	})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ecrpublic.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if client.IsAWSError(err, "UnsupportedCommandException") {
 				return nil
@@ -70,7 +73,9 @@ func resolveRepositoryTags(ctx context.Context, meta schema.ClientMeta, resource
 	input := ecrpublic.ListTagsForResourceInput{
 		ResourceArn: repo.RepositoryArn,
 	}
-	output, err := svc.ListTagsForResource(ctx, &input)
+	output, err := svc.ListTagsForResource(ctx, &input, func(options *ecrpublic.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

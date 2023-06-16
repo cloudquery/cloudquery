@@ -37,6 +37,16 @@ func (m *MockAutoscalingplansClient) EXPECT() *MockAutoscalingplansClientMockRec
 
 // DescribeScalingPlanResources mocks base method.
 func (m *MockAutoscalingplansClient) DescribeScalingPlanResources(arg0 context.Context, arg1 *autoscalingplans.DescribeScalingPlanResourcesInput, arg2 ...func(*autoscalingplans.Options)) (*autoscalingplans.DescribeScalingPlanResourcesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &autoscalingplans.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeScalingPlanResources")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockAutoscalingplansClientMockRecorder) DescribeScalingPlanResources(a
 
 // DescribeScalingPlans mocks base method.
 func (m *MockAutoscalingplansClient) DescribeScalingPlans(arg0 context.Context, arg1 *autoscalingplans.DescribeScalingPlansInput, arg2 ...func(*autoscalingplans.Options)) (*autoscalingplans.DescribeScalingPlansOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &autoscalingplans.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeScalingPlans")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockAutoscalingplansClientMockRecorder) DescribeScalingPlans(arg0, arg
 
 // GetScalingPlanResourceForecastData mocks base method.
 func (m *MockAutoscalingplansClient) GetScalingPlanResourceForecastData(arg0 context.Context, arg1 *autoscalingplans.GetScalingPlanResourceForecastDataInput, arg2 ...func(*autoscalingplans.Options)) (*autoscalingplans.GetScalingPlanResourceForecastDataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &autoscalingplans.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetScalingPlanResourceForecastData")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

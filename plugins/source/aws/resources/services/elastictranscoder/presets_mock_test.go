@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elastictranscoder/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -19,7 +19,7 @@ func buildElastictranscoderPresetsMock(t *testing.T, ctrl *gomock.Controller) cl
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListPresets(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListPresets(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elastictranscoder.ListPresetsOutput{Presets: []types.Preset{object}},
 		nil,
 	)

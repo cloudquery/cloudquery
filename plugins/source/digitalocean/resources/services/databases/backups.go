@@ -1,16 +1,17 @@
 package databases
 
 import (
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/digitalocean/godo"
 )
 
 func backups() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_database_backups",
-		Resolver:  fetchDatabasesBackups,
-		Transform: transformers.TransformWithStruct(&godo.DatabaseBackup{}),
-		Columns:   []schema.Column{},
+		Name:        "digitalocean_database_backups",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#operation/databases_list_backups",
+		Resolver:    fetchDatabasesBackups,
+		Transform:   transformers.TransformWithStruct(&godo.DatabaseBackup{}),
+		Columns:     []schema.Column{},
 	}
 }

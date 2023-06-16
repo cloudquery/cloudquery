@@ -8,54 +8,54 @@ The composite primary key for this table is (**region**, **compartment_id**, **i
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|region (PK)|String|
-|compartment_id (PK)|String|
-|id (PK)|String|
-|lifecycle_state|String|
-|display_name|String|
-|shape|String|
-|time_zone|String|
-|cpus_enabled|Int|
-|max_cpu_count|Int|
-|memory_size_in_g_bs|Int|
-|max_memory_in_g_bs|Int|
-|db_node_storage_size_in_g_bs|Int|
-|max_db_node_storage_in_g_bs|Int|
-|data_storage_size_in_t_bs|Float|
-|max_data_storage_in_t_bs|Float|
-|rack_serial_number|String|
-|storage_count|Int|
-|additional_storage_count|Int|
-|activated_storage_count|Int|
-|compute_count|Int|
-|is_multi_rack_deployment|Bool|
-|multi_rack_configuration_file|ByteArray|
-|additional_compute_count|Int|
-|additional_compute_system_model|String|
-|cloud_control_plane_server1|String|
-|cloud_control_plane_server2|String|
-|netmask|String|
-|gateway|String|
-|admin_network_cidr|String|
-|infini_band_network_cidr|String|
-|corporate_proxy|String|
-|dns_server|StringArray|
-|ntp_server|StringArray|
-|time_created|Timestamp|
-|lifecycle_details|String|
-|csi_number|String|
-|contacts|JSON|
-|maintenance_slo_status|String|
-|maintenance_window|JSON|
-|storage_server_version|String|
-|db_server_version|String|
-|monthly_db_server_version|String|
-|last_maintenance_run_id|String|
-|next_maintenance_run_id|String|
-|is_cps_offline_report_enabled|Bool|
-|freeform_tags|JSON|
-|defined_tags|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|lifecycle_state|`utf8`|
+|display_name|`utf8`|
+|shape|`utf8`|
+|time_zone|`utf8`|
+|cpus_enabled|`int64`|
+|max_cpu_count|`int64`|
+|memory_size_in_g_bs|`int64`|
+|max_memory_in_g_bs|`int64`|
+|db_node_storage_size_in_g_bs|`int64`|
+|max_db_node_storage_in_g_bs|`int64`|
+|data_storage_size_in_t_bs|`float64`|
+|max_data_storage_in_t_bs|`float64`|
+|rack_serial_number|`utf8`|
+|storage_count|`int64`|
+|additional_storage_count|`int64`|
+|activated_storage_count|`int64`|
+|compute_count|`int64`|
+|is_multi_rack_deployment|`bool`|
+|multi_rack_configuration_file|`binary`|
+|additional_compute_count|`int64`|
+|additional_compute_system_model|`utf8`|
+|cloud_control_plane_server1|`utf8`|
+|cloud_control_plane_server2|`utf8`|
+|netmask|`utf8`|
+|gateway|`utf8`|
+|admin_network_cidr|`utf8`|
+|infini_band_network_cidr|`utf8`|
+|corporate_proxy|`utf8`|
+|dns_server|`list<item: utf8, nullable>`|
+|ntp_server|`list<item: utf8, nullable>`|
+|time_created|`timestamp[us, tz=UTC]`|
+|lifecycle_details|`utf8`|
+|csi_number|`utf8`|
+|contacts|`json`|
+|maintenance_slo_status|`utf8`|
+|maintenance_window|`json`|
+|storage_server_version|`utf8`|
+|db_server_version|`utf8`|
+|monthly_db_server_version|`utf8`|
+|last_maintenance_run_id|`utf8`|
+|next_maintenance_run_id|`utf8`|
+|is_cps_offline_report_enabled|`bool`|
+|freeform_tags|`json`|
+|defined_tags|`json`|

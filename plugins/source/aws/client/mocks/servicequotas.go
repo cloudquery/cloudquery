@@ -37,6 +37,16 @@ func (m *MockServicequotasClient) EXPECT() *MockServicequotasClientMockRecorder 
 
 // GetAWSDefaultServiceQuota mocks base method.
 func (m *MockServicequotasClient) GetAWSDefaultServiceQuota(arg0 context.Context, arg1 *servicequotas.GetAWSDefaultServiceQuotaInput, arg2 ...func(*servicequotas.Options)) (*servicequotas.GetAWSDefaultServiceQuotaOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicequotas.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAWSDefaultServiceQuota")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockServicequotasClientMockRecorder) GetAWSDefaultServiceQuota(arg0, a
 
 // GetAssociationForServiceQuotaTemplate mocks base method.
 func (m *MockServicequotasClient) GetAssociationForServiceQuotaTemplate(arg0 context.Context, arg1 *servicequotas.GetAssociationForServiceQuotaTemplateInput, arg2 ...func(*servicequotas.Options)) (*servicequotas.GetAssociationForServiceQuotaTemplateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicequotas.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAssociationForServiceQuotaTemplate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockServicequotasClientMockRecorder) GetAssociationForServiceQuotaTemp
 
 // GetRequestedServiceQuotaChange mocks base method.
 func (m *MockServicequotasClient) GetRequestedServiceQuotaChange(arg0 context.Context, arg1 *servicequotas.GetRequestedServiceQuotaChangeInput, arg2 ...func(*servicequotas.Options)) (*servicequotas.GetRequestedServiceQuotaChangeOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicequotas.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRequestedServiceQuotaChange")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockServicequotasClientMockRecorder) GetRequestedServiceQuotaChange(ar
 
 // GetServiceQuota mocks base method.
 func (m *MockServicequotasClient) GetServiceQuota(arg0 context.Context, arg1 *servicequotas.GetServiceQuotaInput, arg2 ...func(*servicequotas.Options)) (*servicequotas.GetServiceQuotaOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicequotas.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetServiceQuota")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockServicequotasClientMockRecorder) GetServiceQuota(arg0, arg1 interf
 
 // GetServiceQuotaIncreaseRequestFromTemplate mocks base method.
 func (m *MockServicequotasClient) GetServiceQuotaIncreaseRequestFromTemplate(arg0 context.Context, arg1 *servicequotas.GetServiceQuotaIncreaseRequestFromTemplateInput, arg2 ...func(*servicequotas.Options)) (*servicequotas.GetServiceQuotaIncreaseRequestFromTemplateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicequotas.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetServiceQuotaIncreaseRequestFromTemplate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockServicequotasClientMockRecorder) GetServiceQuotaIncreaseRequestFro
 
 // ListAWSDefaultServiceQuotas mocks base method.
 func (m *MockServicequotasClient) ListAWSDefaultServiceQuotas(arg0 context.Context, arg1 *servicequotas.ListAWSDefaultServiceQuotasInput, arg2 ...func(*servicequotas.Options)) (*servicequotas.ListAWSDefaultServiceQuotasOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicequotas.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAWSDefaultServiceQuotas")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockServicequotasClientMockRecorder) ListAWSDefaultServiceQuotas(arg0,
 
 // ListRequestedServiceQuotaChangeHistory mocks base method.
 func (m *MockServicequotasClient) ListRequestedServiceQuotaChangeHistory(arg0 context.Context, arg1 *servicequotas.ListRequestedServiceQuotaChangeHistoryInput, arg2 ...func(*servicequotas.Options)) (*servicequotas.ListRequestedServiceQuotaChangeHistoryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicequotas.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRequestedServiceQuotaChangeHistory")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockServicequotasClientMockRecorder) ListRequestedServiceQuotaChangeHi
 
 // ListRequestedServiceQuotaChangeHistoryByQuota mocks base method.
 func (m *MockServicequotasClient) ListRequestedServiceQuotaChangeHistoryByQuota(arg0 context.Context, arg1 *servicequotas.ListRequestedServiceQuotaChangeHistoryByQuotaInput, arg2 ...func(*servicequotas.Options)) (*servicequotas.ListRequestedServiceQuotaChangeHistoryByQuotaOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicequotas.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRequestedServiceQuotaChangeHistoryByQuota")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockServicequotasClientMockRecorder) ListRequestedServiceQuotaChangeHi
 
 // ListServiceQuotaIncreaseRequestsInTemplate mocks base method.
 func (m *MockServicequotasClient) ListServiceQuotaIncreaseRequestsInTemplate(arg0 context.Context, arg1 *servicequotas.ListServiceQuotaIncreaseRequestsInTemplateInput, arg2 ...func(*servicequotas.Options)) (*servicequotas.ListServiceQuotaIncreaseRequestsInTemplateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicequotas.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListServiceQuotaIncreaseRequestsInTemplate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockServicequotasClientMockRecorder) ListServiceQuotaIncreaseRequestsI
 
 // ListServiceQuotas mocks base method.
 func (m *MockServicequotasClient) ListServiceQuotas(arg0 context.Context, arg1 *servicequotas.ListServiceQuotasInput, arg2 ...func(*servicequotas.Options)) (*servicequotas.ListServiceQuotasOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicequotas.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListServiceQuotas")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockServicequotasClientMockRecorder) ListServiceQuotas(arg0, arg1 inte
 
 // ListServices mocks base method.
 func (m *MockServicequotasClient) ListServices(arg0 context.Context, arg1 *servicequotas.ListServicesInput, arg2 ...func(*servicequotas.Options)) (*servicequotas.ListServicesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicequotas.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListServices")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockServicequotasClientMockRecorder) ListServices(arg0, arg1 interface
 
 // ListTagsForResource mocks base method.
 func (m *MockServicequotasClient) ListTagsForResource(arg0 context.Context, arg1 *servicequotas.ListTagsForResourceInput, arg2 ...func(*servicequotas.Options)) (*servicequotas.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &servicequotas.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

@@ -1,6 +1,6 @@
 insert into aws_policy_results
 with enabled_detector_regions as (
-    select region
+    select account_id, region
     from aws_guardduty_detectors
     where status = 'ENABLED'
 )
@@ -16,7 +16,7 @@ select
         enabled = TRUE and e.region is null
     then 'fail' else 'pass' end AS status
 from aws_regions r
-left join enabled_detector_regions e on e.region = r.region
+left join enabled_detector_regions e on e.region = r.region AND e.account_id = r.account_id
 union
 -- Add any detector that is enabled but all data sources are disabled
 select

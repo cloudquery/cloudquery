@@ -10,22 +10,22 @@ The composite primary key for this table is (**account_id**, **region**, **id**)
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|arn|String|
-|id (PK)|String|
-|saml_provider_ar_ns|StringArray|
-|allow_unauthenticated_identities|Bool|
-|identity_pool_id|String|
-|identity_pool_name|String|
-|allow_classic_flow|Bool|
-|cognito_identity_providers|JSON|
-|developer_provider_name|String|
-|identity_pool_tags|JSON|
-|open_id_connect_provider_ar_ns|StringArray|
-|supported_login_providers|JSON|
-|result_metadata|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
+|arn|`utf8`|
+|id (PK)|`utf8`|
+|saml_provider_arns|`list<item: utf8, nullable>`|
+|allow_unauthenticated_identities|`bool`|
+|identity_pool_id|`utf8`|
+|identity_pool_name|`utf8`|
+|allow_classic_flow|`bool`|
+|cognito_identity_providers|`json`|
+|developer_provider_name|`utf8`|
+|identity_pool_tags|`json`|
+|open_id_connect_provider_arns|`list<item: utf8, nullable>`|
+|supported_login_providers|`json`|
+|result_metadata|`json`|

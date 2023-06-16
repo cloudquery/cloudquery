@@ -20,16 +20,16 @@ It supports incremental syncs based on the **date** column.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|property_id (PK)|String|
-|date (PK) (Incremental Key)|Timestamp|
-|dimensions|JSON|
-|dimension_hash (PK)|ByteArray|
-|metrics|JSON|
-|data_loss|Bool|
+|_cq_source_name|utf8|
+|_cq_sync_time|timestamp[us, tz=UTC]|
+|_cq_id|uuid|
+|_cq_parent_id|uuid|
+|property_id (PK)|utf8|
+|date (PK) (Incremental Key)|timestamp[us, tz=UTC]|
+|dimensions|json|
+|dimension_hash (PK)|binary|
+|metrics|json|
+|data_loss|bool|
 
 ### `dat_loss` column
 

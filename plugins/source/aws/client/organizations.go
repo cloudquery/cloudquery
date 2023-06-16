@@ -28,7 +28,11 @@ func loadOrgAccounts(ctx context.Context, logger zerolog.Logger, awsPluginSpec *
 		return nil, nil, err
 	}
 	svc := organizations.NewFromConfig(awsCfg)
-	accounts, err := loadAccounts(ctx, awsPluginSpec, svc)
+	region := awsCfg.Region
+	if region == "" {
+		region = defaultRegion
+	}
+	accounts, err := loadAccounts(ctx, awsPluginSpec, svc, region)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -42,13 +46,13 @@ func loadOrgAccounts(ctx context.Context, logger zerolog.Logger, awsPluginSpec *
 }
 
 // Load accounts from the appropriate endpoint as well as normalizing response
-func loadAccounts(ctx context.Context, awsPluginSpec *Spec, accountsApi services.OrganizationsClient) ([]Account, error) {
+func loadAccounts(ctx context.Context, awsPluginSpec *Spec, accountsApi services.OrganizationsClient, region string) ([]Account, error) {
 	var rawAccounts []orgTypes.Account
 	var err error
 	if len(awsPluginSpec.Organization.OrganizationUnits) > 0 {
-		rawAccounts, err = getOUAccounts(ctx, accountsApi, awsPluginSpec.Organization)
+		rawAccounts, err = getOUAccounts(ctx, accountsApi, awsPluginSpec.Organization, region)
 	} else {
-		rawAccounts, err = getAllAccounts(ctx, accountsApi, awsPluginSpec.Organization)
+		rawAccounts, err = getAllAccounts(ctx, accountsApi, awsPluginSpec.Organization, region)
 	}
 
 	if err != nil {
@@ -93,7 +97,7 @@ func loadAccounts(ctx context.Context, awsPluginSpec *Spec, accountsApi services
 }
 
 // Get Accounts for specific Organizational Units
-func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient, awsOrg *AwsOrg) ([]orgTypes.Account, error) {
+func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient, awsOrg *AwsOrg, region string) ([]orgTypes.Account, error) {
 	q := awsOrg.OrganizationUnits
 	var ou string
 	var rawAccounts []orgTypes.Account
@@ -117,7 +121,9 @@ func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient
 			ParentId: aws.String(ou),
 		})
 		for accountsPaginator.HasMorePages() {
-			output, err := accountsPaginator.NextPage(ctx)
+			output, err := accountsPaginator.NextPage(ctx, func(options *organizations.Options) {
+				options.Region = region
+			})
 			if err != nil {
 				return nil, err
 			}
@@ -136,7 +142,9 @@ func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient
 			ParentId:  aws.String(ou),
 		})
 		for ouPaginator.HasMorePages() {
-			output, err := ouPaginator.NextPage(ctx)
+			output, err := ouPaginator.NextPage(ctx, func(options *organizations.Options) {
+				options.Region = region
+			})
 			if err != nil {
 				return nil, err
 			}
@@ -150,11 +158,13 @@ func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient
 }
 
 // Get All accounts in a specific organization
-func getAllAccounts(ctx context.Context, accountsApi services.OrganizationsClient, org *AwsOrg) ([]orgTypes.Account, error) {
+func getAllAccounts(ctx context.Context, accountsApi services.OrganizationsClient, org *AwsOrg, region string) ([]orgTypes.Account, error) {
 	var rawAccounts []orgTypes.Account
 	accountsPaginator := organizations.NewListAccountsPaginator(accountsApi, &organizations.ListAccountsInput{})
 	for accountsPaginator.HasMorePages() {
-		output, err := accountsPaginator.NextPage(ctx)
+		output, err := accountsPaginator.NextPage(ctx, func(options *organizations.Options) {
+			options.Region = region
+		})
 		if err != nil {
 			return nil, err
 		}

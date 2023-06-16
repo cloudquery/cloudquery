@@ -37,6 +37,16 @@ func (m *MockFsxClient) EXPECT() *MockFsxClientMockRecorder {
 
 // DescribeBackups mocks base method.
 func (m *MockFsxClient) DescribeBackups(arg0 context.Context, arg1 *fsx.DescribeBackupsInput, arg2 ...func(*fsx.Options)) (*fsx.DescribeBackupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &fsx.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeBackups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockFsxClientMockRecorder) DescribeBackups(arg0, arg1 interface{}, arg
 
 // DescribeDataRepositoryAssociations mocks base method.
 func (m *MockFsxClient) DescribeDataRepositoryAssociations(arg0 context.Context, arg1 *fsx.DescribeDataRepositoryAssociationsInput, arg2 ...func(*fsx.Options)) (*fsx.DescribeDataRepositoryAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &fsx.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDataRepositoryAssociations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockFsxClientMockRecorder) DescribeDataRepositoryAssociations(arg0, ar
 
 // DescribeDataRepositoryTasks mocks base method.
 func (m *MockFsxClient) DescribeDataRepositoryTasks(arg0 context.Context, arg1 *fsx.DescribeDataRepositoryTasksInput, arg2 ...func(*fsx.Options)) (*fsx.DescribeDataRepositoryTasksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &fsx.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDataRepositoryTasks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockFsxClientMockRecorder) DescribeDataRepositoryTasks(arg0, arg1 inte
 
 // DescribeFileCaches mocks base method.
 func (m *MockFsxClient) DescribeFileCaches(arg0 context.Context, arg1 *fsx.DescribeFileCachesInput, arg2 ...func(*fsx.Options)) (*fsx.DescribeFileCachesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &fsx.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFileCaches")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockFsxClientMockRecorder) DescribeFileCaches(arg0, arg1 interface{}, 
 
 // DescribeFileSystemAliases mocks base method.
 func (m *MockFsxClient) DescribeFileSystemAliases(arg0 context.Context, arg1 *fsx.DescribeFileSystemAliasesInput, arg2 ...func(*fsx.Options)) (*fsx.DescribeFileSystemAliasesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &fsx.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFileSystemAliases")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockFsxClientMockRecorder) DescribeFileSystemAliases(arg0, arg1 interf
 
 // DescribeFileSystems mocks base method.
 func (m *MockFsxClient) DescribeFileSystems(arg0 context.Context, arg1 *fsx.DescribeFileSystemsInput, arg2 ...func(*fsx.Options)) (*fsx.DescribeFileSystemsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &fsx.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFileSystems")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockFsxClientMockRecorder) DescribeFileSystems(arg0, arg1 interface{},
 
 // DescribeSnapshots mocks base method.
 func (m *MockFsxClient) DescribeSnapshots(arg0 context.Context, arg1 *fsx.DescribeSnapshotsInput, arg2 ...func(*fsx.Options)) (*fsx.DescribeSnapshotsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &fsx.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSnapshots")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockFsxClientMockRecorder) DescribeSnapshots(arg0, arg1 interface{}, a
 
 // DescribeStorageVirtualMachines mocks base method.
 func (m *MockFsxClient) DescribeStorageVirtualMachines(arg0 context.Context, arg1 *fsx.DescribeStorageVirtualMachinesInput, arg2 ...func(*fsx.Options)) (*fsx.DescribeStorageVirtualMachinesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &fsx.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeStorageVirtualMachines")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockFsxClientMockRecorder) DescribeStorageVirtualMachines(arg0, arg1 i
 
 // DescribeVolumes mocks base method.
 func (m *MockFsxClient) DescribeVolumes(arg0 context.Context, arg1 *fsx.DescribeVolumesInput, arg2 ...func(*fsx.Options)) (*fsx.DescribeVolumesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &fsx.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVolumes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockFsxClientMockRecorder) DescribeVolumes(arg0, arg1 interface{}, arg
 
 // ListTagsForResource mocks base method.
 func (m *MockFsxClient) ListTagsForResource(arg0 context.Context, arg1 *fsx.ListTagsForResourceInput, arg2 ...func(*fsx.Options)) (*fsx.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &fsx.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

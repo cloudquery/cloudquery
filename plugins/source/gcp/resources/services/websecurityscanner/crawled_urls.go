@@ -2,7 +2,8 @@ package websecurityscanner
 
 import (
 	pb "cloud.google.com/go/websecurityscanner/apiv1/websecurityscannerpb"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
@@ -15,36 +16,28 @@ func CrawledUrls() *schema.Table {
 		Transform:   client.TransformWithStruct(&pb.CrawledUrl{}),
 		Columns: []schema.Column{
 			{
-				Name:     "project_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "project_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveProject,
+				PrimaryKey: true,
 			},
 			{
-				Name:     "scan_run_name",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "scan_run_name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("name"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "http_method",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("HttpMethod"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "http_method",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("HttpMethod"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "url",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Url"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "url",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Url"),
+				PrimaryKey: true,
 			},
 		},
 	}

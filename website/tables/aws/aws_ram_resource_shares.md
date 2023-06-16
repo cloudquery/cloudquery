@@ -15,20 +15,20 @@ The following tables depend on aws_ram_resource_shares:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|arn (PK)|String|
-|tags|JSON|
-|allow_external_principals|Bool|
-|creation_time|Timestamp|
-|feature_set|String|
-|last_updated_time|Timestamp|
-|name|String|
-|owning_account_id|String|
-|resource_share_arn|String|
-|status|String|
-|status_message|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|allow_external_principals|`bool`|
+|creation_time|`timestamp[us, tz=UTC]`|
+|feature_set|`utf8`|
+|last_updated_time|`timestamp[us, tz=UTC]`|
+|name|`utf8`|
+|owning_account_id|`utf8`|
+|resource_share_arn|`utf8`|
+|status|`utf8`|
+|status_message|`utf8`|

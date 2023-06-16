@@ -5,10 +5,12 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	ttypes "github.com/aws/aws-sdk-go-v2/service/acm/types"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/scalar"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -31,8 +33,8 @@ func TestResolveARN(t *testing.T) {
 			func(resource *schema.Resource) ([]string, error) {
 				return []string{"restapis", *resource.Item.(types.RestApi).Id}, nil
 			},
-			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn", Type: schema.TypeString}}}, nil, types.RestApi{Id: aws.String("myid")}),
-			&schema.Text{Status: schema.Present, Str: "arn:aws:apigateway:region::restapis/myid"},
+			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn", Type: arrow.BinaryTypes.String}}}, nil, types.RestApi{Id: aws.String("myid")}),
+			&scalar.String{Valid: true, Value: "arn:aws:apigateway:region::restapis/myid"},
 			false,
 		},
 		{
@@ -42,8 +44,8 @@ func TestResolveARN(t *testing.T) {
 			func(resource *schema.Resource) ([]string, error) {
 				return []string{"", "restapis", *resource.Item.(types.RestApi).Id}, nil
 			},
-			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn", Type: schema.TypeString}}}, nil, types.RestApi{Id: aws.String("myid")}),
-			&schema.Text{Status: schema.Present, Str: "arn:aws:apigateway:region::/restapis/myid"},
+			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn", Type: arrow.BinaryTypes.String}}}, nil, types.RestApi{Id: aws.String("myid")}),
+			&scalar.String{Valid: true, Value: "arn:aws:apigateway:region::/restapis/myid"},
 			false,
 		},
 		{
@@ -53,8 +55,8 @@ func TestResolveARN(t *testing.T) {
 			func(resource *schema.Resource) ([]string, error) {
 				return nil, errors.New("test")
 			},
-			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn", Type: schema.TypeString}}}, nil, types.RestApi{Id: aws.String("myid")}),
-			&schema.Text{Status: schema.Undefined},
+			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn", Type: arrow.BinaryTypes.String}}}, nil, types.RestApi{Id: aws.String("myid")}),
+			&scalar.String{},
 			true,
 		},
 	}

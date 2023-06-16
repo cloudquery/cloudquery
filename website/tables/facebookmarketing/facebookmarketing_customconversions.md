@@ -8,26 +8,26 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|aggregation_rule|String|
-|business|JSON|
-|creation_time|Timestamp|
-|custom_event_type|String|
-|data_sources|JSON|
-|default_conversion_value|Int|
-|description|String|
-|event_source_type|String|
-|first_fired_time|Timestamp|
-|id (PK)|String|
-|is_archived|Bool|
-|is_unavailable|Bool|
-|last_fired_time|Timestamp|
-|name|String|
-|offline_conversion_data_set|JSON|
-|pixel|JSON|
-|retention_days|Int|
-|rule|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|aggregation_rule|`utf8`|
+|business|`json`|
+|creation_time|`timestamp[us, tz=UTC]`|
+|custom_event_type|`utf8`|
+|data_sources|`json`|
+|default_conversion_value|`int64`|
+|description|`utf8`|
+|event_source_type|`utf8`|
+|first_fired_time|`timestamp[us, tz=UTC]`|
+|id (PK)|`utf8`|
+|is_archived|`bool`|
+|is_unavailable|`bool`|
+|last_fired_time|`timestamp[us, tz=UTC]`|
+|name|`utf8`|
+|offline_conversion_data_set|`json`|
+|pixel|`json`|
+|retention_days|`int64`|
+|rule|`utf8`|

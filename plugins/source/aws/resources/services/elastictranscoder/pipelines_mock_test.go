@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elastictranscoder/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -19,7 +19,7 @@ func buildElastictranscoderPipelinesMock(t *testing.T, ctrl *gomock.Controller) 
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListPipelines(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListPipelines(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elastictranscoder.ListPipelinesOutput{Pipelines: []types.Pipeline{pipeline}},
 		nil,
 	)
@@ -30,7 +30,7 @@ func buildElastictranscoderPipelinesMock(t *testing.T, ctrl *gomock.Controller) 
 	}
 	job.PipelineId = pipeline.Id
 
-	m.EXPECT().ListJobsByPipeline(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListJobsByPipeline(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elastictranscoder.ListJobsByPipelineOutput{Jobs: []types.Job{job}},
 		nil,
 	)

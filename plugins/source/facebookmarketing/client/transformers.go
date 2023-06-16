@@ -3,17 +3,19 @@ package client
 import (
 	"reflect"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/apache/arrow/go/v13/arrow"
+
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 // We can't use the *time.Time type because facebook's time format is not RFC3339.
 // '2023-03-05T16:46:23+0200' instead of RFC3339 '2023-03-05T16:46:23+02:00'.
 // We use the 'string' golang type, and lated convert to *time.Time in the cq resolver.
 // We use the 'datetime' tag to recognize thiese datetime fields
-func TypeTransformer(field reflect.StructField) (schema.ValueType, error) {
+func TypeTransformer(field reflect.StructField) (arrow.DataType, error) {
 	if field.Tag.Get("datetime") != "" {
-		return schema.TypeTimestamp, nil
+		return arrow.FixedWidthTypes.Timestamp_us, nil
 	}
 
 	return transformers.DefaultTypeTransformer(field)

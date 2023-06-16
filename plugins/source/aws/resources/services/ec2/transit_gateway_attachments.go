@@ -3,12 +3,15 @@ package ec2
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func transitGatewayAttachments() *schema.Table {
@@ -24,12 +27,12 @@ func transitGatewayAttachments() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "transit_gateway_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: client.ResolveTags,
 			},
 		},
@@ -47,11 +50,13 @@ func fetchEc2TransitGatewayAttachments(ctx context.Context, meta schema.ClientMe
 			},
 		},
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Ec2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ec2
 	paginator := ec2.NewDescribeTransitGatewayAttachmentsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ec2.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

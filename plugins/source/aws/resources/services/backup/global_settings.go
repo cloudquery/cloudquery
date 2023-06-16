@@ -5,8 +5,8 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/backup"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func GlobalSettings() *schema.Table {
@@ -25,11 +25,13 @@ func GlobalSettings() *schema.Table {
 }
 
 func fetchBackupGlobalSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Backup
+	cl := meta.(*client.Client)
+	svc := cl.Services().Backup
 	input := backup.DescribeGlobalSettingsInput{}
 
-	output, err := svc.DescribeGlobalSettings(ctx, &input)
+	output, err := svc.DescribeGlobalSettings(ctx, &input, func(options *backup.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

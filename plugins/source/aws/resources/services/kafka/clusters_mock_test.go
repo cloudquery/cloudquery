@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/kafka/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -36,7 +36,7 @@ func buildKafkaClustersMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 	if err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
 
 	return client.Services{
 		Kafka: m,

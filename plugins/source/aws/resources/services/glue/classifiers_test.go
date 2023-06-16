@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -18,7 +18,7 @@ func buildClassifiers(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 	c.NextToken = nil
-	m.EXPECT().GetClassifiers(gomock.Any(), gomock.Any()).Return(&c, nil)
+	m.EXPECT().GetClassifiers(gomock.Any(), gomock.Any(), gomock.Any()).Return(&c, nil)
 
 	return client.Services{
 		Glue: m,

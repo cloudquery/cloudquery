@@ -3,11 +3,12 @@ package frauddetector
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/frauddetector"
 	"github.com/aws/aws-sdk-go-v2/service/frauddetector/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func modelVersions() *schema.Table {
@@ -20,22 +21,23 @@ func modelVersions() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
 }
 
 func fetchFrauddetectorModelVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
 	paginator := frauddetector.NewDescribeModelVersionsPaginator(meta.(*client.Client).Services().Frauddetector,
 		&frauddetector.DescribeModelVersionsInput{ModelId: parent.Item.(types.Model).ModelId})
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(options *frauddetector.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

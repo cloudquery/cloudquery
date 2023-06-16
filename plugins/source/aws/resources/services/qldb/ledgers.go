@@ -3,11 +3,14 @@ package qldb
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/aws/aws-sdk-go-v2/service/qldb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Ledgers() *schema.Table {
@@ -24,16 +27,14 @@ func Ledgers() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:        "tags",
-				Type:        schema.TypeJSON,
+				Type:        sdkTypes.ExtensionTypes.JSON,
 				Resolver:    resolveQldbLedgerTags,
 				Description: `The tags associated with the pipeline.`,
 			},
 			{
-				Name: "arn",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				PrimaryKey: true,
 			},
 		},
 
@@ -45,12 +46,14 @@ func Ledgers() *schema.Table {
 }
 
 func fetchQldbLedgers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Qldb
+	cl := meta.(*client.Client)
+	svc := cl.Services().Qldb
 	config := qldb.ListLedgersInput{}
 	paginator := qldb.NewListLedgersPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *qldb.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -60,11 +63,13 @@ func fetchQldbLedgers(ctx context.Context, meta schema.ClientMeta, _ *schema.Res
 }
 
 func getLedger(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Qldb
+	cl := meta.(*client.Client)
+	svc := cl.Services().Qldb
 	l := resource.Item.(types.LedgerSummary)
 
-	response, err := svc.DescribeLedger(ctx, &qldb.DescribeLedgerInput{Name: l.Name})
+	response, err := svc.DescribeLedger(ctx, &qldb.DescribeLedgerInput{Name: l.Name}, func(options *qldb.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -79,6 +84,8 @@ func resolveQldbLedgerTags(ctx context.Context, meta schema.ClientMeta, resource
 	svc := cl.Services().Qldb
 	response, err := svc.ListTagsForResource(ctx, &qldb.ListTagsForResourceInput{
 		ResourceArn: ledger.Arn,
+	}, func(options *qldb.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

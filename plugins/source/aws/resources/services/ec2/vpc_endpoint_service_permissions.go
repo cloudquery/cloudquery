@@ -3,12 +3,14 @@ package ec2
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func vpcEndpointServicePermissions() *schema.Table {
@@ -24,7 +26,7 @@ func vpcEndpointServicePermissions() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: client.ResolveTags,
 			},
 		},
@@ -35,12 +37,15 @@ func fetchEc2VpcEndpointServicePermissions(ctx context.Context, meta schema.Clie
 	if aws.ToString(endpointService.Owner) == "amazon" {
 		return nil
 	}
-	svc := meta.(*client.Client).Services().Ec2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ec2
 	paginator := ec2.NewDescribeVpcEndpointServicePermissionsPaginator(svc, &ec2.DescribeVpcEndpointServicePermissionsInput{
 		ServiceId: endpointService.ServiceId,
 	})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ec2.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

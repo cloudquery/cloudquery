@@ -6,14 +6,20 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/client"
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/internal/mixpanel"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/google/uuid"
 	"github.com/pkg/errors"
 )
 
-const key = "mixpanel_export_events"
+const (
+	key        = "mixpanel_export_events"
+	distinctID = "distinct_id"
+	insertID   = "$insert_id"
+)
 
 func ExportEvents() *schema.Table {
 	return &schema.Table{
@@ -25,29 +31,23 @@ func ExportEvents() *schema.Table {
 		IsIncremental:        true,
 		Columns: []schema.Column{
 			{
-				Name:     "project_id",
-				Type:     schema.TypeInt,
-				Resolver: client.ResolveProjectID,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "project_id",
+				Type:       arrow.PrimitiveTypes.Int64,
+				Resolver:   client.ResolveProjectID,
+				PrimaryKey: true,
 			},
 			{
-				Name:     "time",
-				Type:     schema.TypeTimestamp,
-				Resolver: resolveExportTime,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey:     true,
-					IncrementalKey: true,
-				},
+				Name:           "time",
+				Type:           arrow.FixedWidthTypes.Timestamp_us,
+				Resolver:       resolveExportTime,
+				PrimaryKey:     true,
+				IncrementalKey: true,
 			},
 			{
-				Name:     "distinct_id",
-				Type:     schema.TypeString,
-				Resolver: resolveDistinctID,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "distinct_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveDistinctID,
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -95,7 +95,7 @@ func postExportEvents(ctx context.Context, meta schema.ClientMeta, resource *sch
 	return nil
 }
 
-func resolveExportTime(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+func resolveExportTime(_ context.Context, _ schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 	e := r.Item.(mixpanel.ExportEvent)
 	ts, ok := e.Properties["time"]
 	if !ok {
@@ -108,11 +108,18 @@ func resolveExportTime(_ context.Context, meta schema.ClientMeta, r *schema.Reso
 	return r.Set(c.Name, time.Unix(int64(tf), 0))
 }
 
-func resolveDistinctID(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+// resolveDistinctID will try "distinct_id" & "$insert_id" properties first, generating some random ID if unsuccessful.
+func resolveDistinctID(_ context.Context, _ schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 	e := r.Item.(mixpanel.ExportEvent)
-	val, ok := e.Properties["distinct_id"]
-	if !ok {
-		return errors.New("event does not have a distinct_id property")
+
+	var val any
+	if v, ok := e.Properties[distinctID]; ok {
+		val = v
+	} else if v, ok = e.Properties[insertID]; ok {
+		val = v
+	} else {
+		val = "cq-generated:" + uuid.NewString()
 	}
+
 	return r.Set(c.Name, val)
 }

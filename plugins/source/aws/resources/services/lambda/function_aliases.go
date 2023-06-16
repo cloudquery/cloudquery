@@ -3,12 +3,13 @@ package lambda
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda/models"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func functionAliases() *schema.Table {
@@ -25,16 +26,14 @@ func functionAliases() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "function_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AliasArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("AliasArn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -46,19 +45,21 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 		return nil
 	}
 
-	c := meta.(*client.Client)
-	svc := c.Services().Lambda
+	cl := meta.(*client.Client)
+	svc := cl.Services().Lambda
 	config := lambda.ListAliasesInput{
 		FunctionName: p.Configuration.FunctionName,
 	}
 	paginator := lambda.NewListAliasesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *lambda.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
 		if err != nil {
-			if c.IsNotFoundError(err) {
+			if cl.IsNotFoundError(err) {
 				return nil
 			}
 			return err
@@ -69,16 +70,18 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 }
 
 func getFunctionAliasURLConfig(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Lambda
+	cl := meta.(*client.Client)
+	svc := cl.Services().Lambda
 	alias := resource.Item.(types.AliasConfiguration)
 	p := resource.Parent.Item.(*lambda.GetFunctionOutput)
 
 	urlConfig, err := svc.GetFunctionUrlConfig(ctx, &lambda.GetFunctionUrlConfigInput{
 		FunctionName: p.Configuration.FunctionName,
 		Qualifier:    alias.Name,
+	}, func(options *lambda.Options) {
+		options.Region = cl.Region
 	})
-	if err != nil && !c.IsNotFoundError(err) {
+	if err != nil && !cl.IsNotFoundError(err) {
 		return err
 	}
 

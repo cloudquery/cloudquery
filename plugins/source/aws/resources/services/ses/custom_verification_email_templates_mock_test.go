@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sesv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -25,13 +25,13 @@ func buildCustomVerificationEmailTemplates(t *testing.T, ctrl *gomock.Controller
 	}
 	metadata.TemplateName = get.TemplateName
 
-	sesClient.EXPECT().ListCustomVerificationEmailTemplates(gomock.Any(), gomock.Any()).Return(
+	sesClient.EXPECT().ListCustomVerificationEmailTemplates(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&sesv2.ListCustomVerificationEmailTemplatesOutput{
 			CustomVerificationEmailTemplates: []types.CustomVerificationEmailTemplateMetadata{metadata},
 		},
 		nil,
 	)
-	sesClient.EXPECT().GetCustomVerificationEmailTemplate(gomock.Any(), gomock.Any()).Return(
+	sesClient.EXPECT().GetCustomVerificationEmailTemplate(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		get,
 		nil,
 	)

@@ -1,3 +1,8 @@
+---
+title: Running Plugins Locally
+description: Learn how to run custom-built or downloaded CloudQuery plugins locally.
+---
+
 # Running Plugins Locally
 
 Plugins are normally invoked as separate processes inside CloudQuery CLI. However, for development purposes, it is possible to run plugins directly from the command line.
@@ -18,6 +23,7 @@ spec:
   name: "cloudwidgets"
   registry: "local"
   path: "/home/user/path/to/plugin/binary"
+  tables: ['*']
 # other settings like tables, etc.
 ```
 
@@ -48,6 +54,7 @@ spec:
   name: "cloudwidgets"
   registry: "grpc"
   path: "localhost:7778"
+  tables: ['*']
 # other settings like tables, etc.
 ```
 

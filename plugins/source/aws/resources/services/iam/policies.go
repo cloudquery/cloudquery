@@ -4,12 +4,15 @@ import (
 	"context"
 	"net/url"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Policies() *schema.Table {
@@ -23,21 +26,19 @@ func Policies() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PolicyId"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("PolicyId"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveIamPolicyTags,
 			},
 			{
 				Name:     "policy_version_list",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveIamPolicyVersionList,
 			},
 		},
@@ -53,11 +54,14 @@ func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 			types.EntityTypeAWSManagedPolicy, types.EntityTypeLocalManagedPolicy,
 		},
 	}
-	svc := meta.(*client.Client).Services().Iam
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iam
 	paginator := iam.NewGetAccountAuthorizationDetailsPaginator(svc, &config)
 
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iam.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -70,7 +74,9 @@ func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource 
 	r := resource.Item.(types.ManagedPolicyDetail)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Iam
-	response, err := svc.ListPolicyTags(ctx, &iam.ListPolicyTagsInput{PolicyArn: r.Arn})
+	response, err := svc.ListPolicyTags(ctx, &iam.ListPolicyTagsInput{PolicyArn: r.Arn}, func(options *iam.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {
 			return nil

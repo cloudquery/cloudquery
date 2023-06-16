@@ -3,7 +3,7 @@ package queries
 import (
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func SanitizedTableName(schemaName string, table *schema.Table) string {
@@ -15,12 +15,4 @@ func sanitizeID(parts ...string) string {
 		parts[i] = `[` + strings.ReplaceAll(pt, string([]byte{0}), ``) + `]`
 	}
 	return strings.Join(parts, ".")
-}
-
-func sanitized(elems ...string) []string {
-	result := make([]string, len(elems))
-	for i, column := range elems {
-		result[i] = sanitizeID(column)
-	}
-	return result
 }

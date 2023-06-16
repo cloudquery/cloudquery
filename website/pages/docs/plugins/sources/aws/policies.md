@@ -12,6 +12,8 @@ AWS CIS V1.2.0 requires the following tables to be synced before the policy is e
 tables:
   - aws_cloudtrail_trail_event_selectors
   - aws_cloudtrail_trails
+  - aws_cloudwatch_alarms
+  - aws_cloudwatchlogs_metric_filters
   - aws_ec2_flow_logs
   - aws_ec2_security_groups
   - aws_ec2_vpcs
@@ -22,9 +24,11 @@ tables:
   - aws_iam_virtual_mfa_devices
   - aws_kms_keys
   - aws_s3_buckets
+  - aws_sns_subscriptions
 ```
 
 ### Queries
+
 AWS CIS V1.2.0 performs the following checks:
   - Avoid the use of "root" account. Show used in last 30 days (Scored)
   - Ensure MFA is enabled for all IAM users that have a console password (Scored)
@@ -48,7 +52,30 @@ AWS CIS V1.2.0 performs the following checks:
   - Ensure rotation for customer created custom master keys is enabled (Scored)
   - VPC flow logging should be enabled in all VPCs
   - Ensure a log metric filter and alarm exist for Management Console sign-in without MFA (Scored)
+  - Ensure a log metric filter and alarm exist for usage of "root" account (Score)
+  - Ensure a log metric filter and alarm exist for IAM policy changes (Score)
+  - Ensure a log metric filter and alarm exist for CloudTrail configuration changes (Scored)
+  - Ensure a log metric filter and alarm exist for AWS Management Console authentication failures (Scored)
+  - Ensure a log metric filter and alarm exist for disabling or scheduled deletion of customer created CMKs (Scored)
+  - Ensure a log metric filter and alarm exist for S3 bucket policy changes (Scored)
+  - Ensure a log metric filter and alarm exist for AWS Config configuration changes (Scored)
+  - Ensure a log metric filter and alarm exist for security group changes (Scored)
+  - Ensure a log metric filter and alarm exist for changes to Network Access Control Lists (NACL) (Scored)
+  - Ensure a log metric filter and alarm exist for changes to network gateways (Scored)
+  - Ensure a log metric filter and alarm exist for route table changes (Scored)
+  - Ensure a log metric filter and alarm exist for VPC changes (Scored)
+  - Ensure no security groups allow ingress from 0.0.0.0/0 to port 22 (Scored)
+  - Ensure no security groups allow ingress from 0.0.0.0/0 to port 3389 (Scored)
   - The VPC default security group should not allow inbound and outbound traffic
+
+### Dependent Views
+
+AWS CIS V1.2.0 depends on the following views:
+
+  - view_aws_log_metric_filter_and_alarm<sup>*</sup>
+  - view_aws_security_group_ingress_rules<sup>*</sup>
+
+  <sup>*</sup> These views are automatically created or updated by this policy.
 ## AWS PCI DSS v3.2.1
 
 ### Requirements
@@ -59,9 +86,12 @@ tables:
   - aws_autoscaling_groups
   - aws_cloudtrail_trail_event_selectors
   - aws_cloudtrail_trails
+  - aws_cloudwatch_alarms
+  - aws_cloudwatchlogs_metric_filters
   - aws_codebuild_projects
   - aws_config_configuration_recorders
   - aws_dms_replication_instances
+  - aws_ec2_ebs_snapshot_attributes
   - aws_ec2_ebs_snapshots
   - aws_ec2_eips
   - aws_ec2_flow_logs
@@ -92,6 +122,7 @@ tables:
   - aws_s3_buckets
   - aws_sagemaker_notebook_instances
   - aws_secretsmanager_secrets
+  - aws_sns_subscriptions
   - aws_ssm_instance_compliance_items
   - aws_ssm_instances
   - aws_waf_web_acls
@@ -99,6 +130,7 @@ tables:
 ```
 
 ### Queries
+
 AWS PCI DSS v3.2.1 performs the following checks:
   - Auto Scaling groups associated with a load balancer should use health checks
   - CloudTrail should have encryption at rest enabled
@@ -113,6 +145,7 @@ AWS PCI DSS v3.2.1 performs the following checks:
   - Amazon EBS snapshots should not be public, determined by the ability to be restorable by anyone
   - The VPC default security group should not allow inbound and outbound traffic
   - Unused EC2 EIPs should be removed
+  - Ensure no security groups allow ingress from 0.0.0.0/0 to port 22 (Scored)
   - VPC flow logging should be enabled in all VPCs
   - Application Load Balancer should be configured to redirect all HTTP requests to HTTPS
   - Elasticsearch domains should be in a VPC
@@ -147,6 +180,15 @@ AWS PCI DSS v3.2.1 performs the following checks:
   - Instances managed by Systems Manager should have an association compliance status of COMPLIANT
   - EC2 instances should be managed by AWS Systems Manager
   - AWS WAF Classic global web ACL logging should be enabled
+
+### Dependent Views
+
+AWS PCI DSS v3.2.1 depends on the following views:
+
+  - view_aws_log_metric_filter_and_alarm<sup>*</sup>
+  - view_aws_security_group_ingress_rules<sup>*</sup>
+
+  <sup>*</sup> These views are automatically created or updated by this policy.
 ## AWS Foundational Security Best Practices
 
 ### Requirements
@@ -155,6 +197,7 @@ AWS Foundational Security Best Practices requires the following tables to be syn
 ```yaml
 tables:
   - aws_acm_certificates
+  - aws_apigateway_rest_api_stages
   - aws_apigateway_rest_apis
   - aws_apigatewayv2_api_stages
   - aws_apigatewayv2_apis
@@ -170,6 +213,7 @@ tables:
   - aws_dynamodb_table_continuous_backups
   - aws_dynamodb_table_replica_auto_scalings
   - aws_dynamodb_tables
+  - aws_ec2_ebs_snapshot_attributes
   - aws_ec2_ebs_snapshots
   - aws_ec2_ebs_volumes
   - aws_ec2_flow_logs
@@ -235,10 +279,14 @@ tables:
 ```
 
 ### Queries
+
 AWS Foundational Security Best Practices performs the following checks:
   - certificate has less than 30 days to be renewed
   - API Gateway REST and WebSocket API logging should be enabled
   - API Gateway REST API stages should be configured to use SSL certificates for backend authentication
+  - API Gateway REST API stages should have AWS X-Ray tracing enabled
+  - API Gateway should be associated with an AWS WAF web ACL
+  - API Gateway REST API cache data should be encrypted at rest
   - Auto Scaling groups associated with a load balancer should use health checks
   - AWS Config should be enabled
   - CloudFront distributions should have a default root object configured
@@ -269,6 +317,8 @@ AWS Foundational Security Best Practices performs the following checks:
   - EC2 subnets should not automatically assign public IP addresses
   - Unused network access control lists should be removed
   - EC2 instances should not use multiple ENIs
+  - Aggregates rules of security groups with ports and IPs including ipv6
+  - Security groups should not allow unrestricted access to ports with high risk
   - Amazon ECS task definitions should have secure networking modes and user definitions
   - Amazon ECS services should not have public IP addresses assigned to them automatically
   - Amazon EFS should be configured to encrypt file data at rest using AWS KMS
@@ -353,6 +403,15 @@ AWS Foundational Security Best Practices performs the following checks:
   - Instances managed by Systems Manager should have an association compliance status of COMPLIANT
   - SSM documents should not be public
   - AWS WAF Classic global web ACL logging should be enabled
+
+### Dependent Views
+
+AWS Foundational Security Best Practices depends on the following views:
+
+  - view_aws_apigateway_method_settings<sup>*</sup>
+  - view_aws_security_group_ingress_rules<sup>*</sup>
+
+  <sup>*</sup> These views are automatically created or updated by this policy.
 ## AWS Public Egress
 
 ### Requirements
@@ -362,14 +421,24 @@ AWS Public Egress requires the following tables to be synced before the policy i
 tables:
   - aws_ec2_instances
   - aws_ec2_route_tables
+  - aws_ec2_security_groups
   - aws_lambda_functions
 ```
 
 ### Queries
+
 AWS Public Egress performs the following checks:
   - Find all ec2 instances that have unrestricted access to the internet with a wide open security group and routing
   - All ec2 instances that have unrestricted access to the internet via a security group
   - Find all lambda functions that have unrestricted access to the internet
+
+### Dependent Views
+
+AWS Public Egress depends on the following views:
+
+  - view_aws_security_group_egress_rules<sup>*</sup>
+
+  <sup>*</sup> This view is automatically created or updated by this policy.
 ## AWS Publicly Available
 
 ### Requirements
@@ -388,6 +457,7 @@ tables:
 ```
 
 ### Queries
+
 AWS Publicly Available performs the following checks:
   - Find all API Gateway instances that are publicly accessible
   - Find all API Gateway V2 instances (HTTP and Webhook) that are publicly accessible
@@ -442,6 +512,7 @@ tables:
 ```
 
 ### Queries
+
 AWS Unused Resources performs the following checks:
   - Unused ACM certificate
   - Unused API Gateway API key

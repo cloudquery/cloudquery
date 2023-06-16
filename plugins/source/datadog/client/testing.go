@@ -6,9 +6,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
+	"github.com/DataDog/datadog-api-client-go/v2/api/datadog"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/golang/mock/gomock"
 	"github.com/rs/zerolog"
 )
@@ -45,4 +46,11 @@ func DatadogMockTestHelper(t *testing.T, table *schema.Table, builder func(*test
 		Tables:       []string{table.Name},
 		Destinations: []string{"mock-destination"},
 	})
+}
+
+func MockPaginatedResponse[T any](result T) (<-chan datadog.PaginationResult[T], func()) {
+	ch := make(chan datadog.PaginationResult[T], 1)
+	ch <- datadog.PaginationResult[T]{Item: result}
+	close(ch)
+	return ch, func() {}
 }

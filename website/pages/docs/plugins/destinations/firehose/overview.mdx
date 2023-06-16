@@ -1,3 +1,9 @@
+---
+name: Amazon Kinesis Firehose
+title: Amazon Kinesis Firehose Destination Plugin
+description: CloudQuery Amazon Kinesis Firehose destination plugin documentation
+---
+
 # Amazon Kinesis Firehose Destination Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -7,7 +13,7 @@ import Configuration from "./_configuration.mdx";
 
 <Badge text={"Latest: " + getLatestVersion("destination", "firehose")}/>
 
-This destination plugin lets you sync data from a CloudQuery source to a Amazon Kinesis Firehose in various formats such as CSV, JSON.
+This destination plugin lets you sync data from a CloudQuery source to Amazon Kinesis Firehose.
 
 ## Authentication
 
@@ -24,8 +30,6 @@ The Amazon Kinesis Firehose destination utilizes batching, and supports [`batch_
 It is important to note that Amazon Kinesis Firehose has the following limitations that cannot be changed:
   - The maximum size of a record sent to Kinesis Data Firehose, before base64-encoding, is 1,000 KiB.
   - The `PutRecordBatch` operation can take up to 500 records per batch or 4 MiB per batch, whichever is smaller.
-
-
 
 ## Firehose Spec
 

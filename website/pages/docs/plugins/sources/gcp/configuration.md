@@ -11,6 +11,7 @@ spec:
   name: "gcp"
   path: "cloudquery/gcp"
   version: "VERSION_SOURCE_GCP"
+  tables: ["gcp_storage_buckets"]
   destinations: ["postgresql"]
 
   spec:
@@ -44,9 +45,15 @@ This is the (nested) spec used by GCP Source Plugin
 
 - `project_filter` (string) (default: empty).
 
-  A filter to determine the projects that are synced. For instance, to only sync projects where the name starts with `how-`,
-  set `project_filter` to `name:how-*`. Another example is: `"name:how-* OR name:test-*"`. For syntax and example queries refer to API Reference [here](https://cloud.google.com/resource-manager/reference/rest/v1/projects/list#google.cloudresourcemanager.v1.Projects.ListProjects).
-  Mutually exclusive with `folder_ids`.
+  A filter to determine the projects that are synced, mutually exclusive with `folder_ids`. For instance, to only sync projects where the name starts with `how-`,
+  set `project_filter` to `name:how-*`. 
+  
+  More examples:
+    - `"name:how-* OR name:test-*"` matches projects starting with `how-` or `test-`
+    - `"NOT name:test-*"` matches all projects *not* starting with `test-`
+  
+  For syntax and example queries refer to API References [here](https://cloud.google.com/resource-manager/reference/rest/v1/projects/list#google.cloudresourcemanager.v1.Projects.ListProjects) and [here](https://cloud.google.com/sdk/gcloud/reference/topic/filters).
+  
 
 - `organization_ids` ([]string) (default: empty. will use all organizations available to the current authenticated account)
 
@@ -63,7 +70,20 @@ This is the (nested) spec used by GCP Source Plugin
   If specified APIs will be retried with exponential backoff if they are rate limited. This is the max number of retries.
 
 - `enabled_services_only` (bool) (default: false).
-If enabled CloudQuery will skip any resources that belong to a service that has been disabled or not been enabled. If you use this option on a large organization (with more than 500 projects) you should also set the `backoff_retries` to a value greater than `0` otherwise the sync could fail because of rate limiting.
+If enabled CloudQuery will skip any resources that belong to a service that has been disabled or not been enabled. If you use this option on a large organization (with more than 500 projects) you should also set the `backoff_retries` to a value greater than `0` otherwise you may hit the API rate limits. In `v9.0.0` and greater if an error is returned then CloudQuery will assume that all services are enabled and will continue to attempt to sync all specified tables rather than just ending the sync.
+
+- `discovery_concurrency` (int) (default: 100).
+  The number of concurrent requests that CloudQuery will make to resolve enabled services. This is only used when `enabled_services_only` is set to `true`.
+
+- `service_account_impersonation` ([Service Account Impersonation](#service-account-impersonation-spec) spec, optional. Default: empty)
+
+  Service Account impersonation configuration.
+
+### Service Account Impersonation Spec
+
+- `target_principal` (`string`, optional. Default: empty)
+
+    The email address of the service account to impersonate
 
 ## GCP + Kubernetes (GKE)
 
@@ -73,6 +93,7 @@ spec:
   name: gcp
   path: "cloudquery/gcp"
   version: "VERSION_SOURCE_GCP"
+  tables: ["gcp_container_clusters"]
   destinations: ["<destination>"]
 ---
 kind: source
@@ -80,6 +101,7 @@ spec:
   name: k8s
   path: "cloudquery/k8s"
   version: "VERSION_SOURCE_K8S"
+  tables: ["*"]
   destinations: ["<destination>"]
 ```
 

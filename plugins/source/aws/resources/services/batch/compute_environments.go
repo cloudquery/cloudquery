@@ -3,12 +3,15 @@ package batch
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/batch"
 	"github.com/aws/aws-sdk-go-v2/service/batch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func ComputeEnvironments() *schema.Table {
@@ -24,16 +27,14 @@ func ComputeEnvironments() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveBatchComputeEnvironmentTags,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ComputeEnvironmentArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ComputeEnvironmentArn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -43,11 +44,13 @@ func fetchBatchComputeEnvironments(ctx context.Context, meta schema.ClientMeta, 
 	config := batch.DescribeComputeEnvironmentsInput{
 		MaxResults: aws.Int32(100),
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Batch
+	cl := meta.(*client.Client)
+	svc := cl.Services().Batch
 	p := batch.NewDescribeComputeEnvironmentsPaginator(svc, &config)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *batch.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -64,7 +67,9 @@ func resolveBatchComputeEnvironmentTags(ctx context.Context, meta schema.ClientM
 	input := batch.ListTagsForResourceInput{
 		ResourceArn: summary.ComputeEnvironmentArn,
 	}
-	output, err := svc.ListTagsForResource(ctx, &input)
+	output, err := svc.ListTagsForResource(ctx, &input, func(options *batch.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

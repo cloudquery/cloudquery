@@ -10,20 +10,20 @@ The primary key for this table is **self_link**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id|String|
-|creation_timestamp|String|
-|description|String|
-|id|Int|
-|kind|String|
-|label_fingerprint|String|
-|labels|JSON|
-|name|String|
-|network|String|
-|region|String|
-|self_link (PK)|String|
-|stack_type|String|
-|vpn_interfaces|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id|`utf8`|
+|creation_timestamp|`utf8`|
+|description|`utf8`|
+|id|`int64`|
+|kind|`utf8`|
+|label_fingerprint|`utf8`|
+|labels|`json`|
+|name|`utf8`|
+|network|`utf8`|
+|region|`utf8`|
+|self_link (PK)|`utf8`|
+|stack_type|`utf8`|
+|vpn_interfaces|`json`|

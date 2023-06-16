@@ -8,7 +8,7 @@ import (
 	iamTypes "github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -25,7 +25,7 @@ func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 		g.PolicyVersionList[i].Document = &document
 	}
 
-	m.EXPECT().GetAccountAuthorizationDetails(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().GetAccountAuthorizationDetails(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.GetAccountAuthorizationDetailsOutput{
 			Policies: []iamTypes.ManagedPolicyDetail{g},
 		}, nil)

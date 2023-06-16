@@ -15,21 +15,21 @@ The following tables depend on gcp_websecurityscanner_scan_configs:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|display_name|String|
-|max_qps|Int|
-|starting_urls|StringArray|
-|authentication|JSON|
-|user_agent|String|
-|blacklist_patterns|StringArray|
-|schedule|JSON|
-|export_to_security_command_center|String|
-|risk_level|String|
-|managed_scan|Bool|
-|static_ip_scan|Bool|
-|ignore_http_status_errors|Bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|display_name|`utf8`|
+|max_qps|`int64`|
+|starting_urls|`list<item: utf8, nullable>`|
+|authentication|`json`|
+|user_agent|`utf8`|
+|blacklist_patterns|`list<item: utf8, nullable>`|
+|schedule|`json`|
+|export_to_security_command_center|`utf8`|
+|risk_level|`utf8`|
+|managed_scan|`bool`|
+|static_ip_scan|`bool`|
+|ignore_http_status_errors|`bool`|

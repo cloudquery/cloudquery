@@ -6,6 +6,7 @@ var GcpServices = map[string]bool{
 	// Non discoverable services
 	"aiplatform.googleapis.com": true,
 	"livestream.googleapis.com": true,
+	"cloudiot.googleapis.com":   true,
 	// Discoverable services
 	"abusiveexperiencereport.googleapis.com":          true,
 	"acceleratedmobilepageurl.googleapis.com":         true,
@@ -68,7 +69,6 @@ var GcpServices = map[string]bool{
 	"clouderrorreporting.googleapis.com":              true,
 	"cloudfunctions.googleapis.com":                   true,
 	"cloudidentity.googleapis.com":                    true,
-	"cloudiot.googleapis.com":                         true,
 	"cloudkms.googleapis.com":                         true,
 	"cloudprofiler.googleapis.com":                    true,
 	"cloudresourcemanager.googleapis.com":             true,
@@ -143,6 +143,7 @@ var GcpServices = map[string]bool{
 	"genomics.googleapis.com":                         true,
 	"gkebackup.googleapis.com":                        true,
 	"gkehub.googleapis.com":                           true,
+	"gkeonprem.googleapis.com":                        true,
 	"gmail.googleapis.com":                            true,
 	"gmailpostmastertools.googleapis.com":             true,
 	"groupsmigration.googleapis.com":                  true,

@@ -8,8 +8,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/quicksight/types"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/pkg/errors"
 )
 
@@ -38,7 +38,9 @@ func fetchQuicksightDataSources(ctx context.Context, meta schema.ClientMeta, par
 
 	paginator := quicksight.NewListDataSourcesPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		result, err := paginator.NextPage(ctx)
+		result, err := paginator.NextPage(ctx, func(options *quicksight.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if errors.As(err, &ae) && ae.ErrorCode() == "UnsupportedUserEditionException" {
 				return nil

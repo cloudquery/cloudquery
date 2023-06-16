@@ -12,17 +12,17 @@ import (
 	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	serviceusage "cloud.google.com/go/serviceusage/apiv1"
 	pb "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
-	"github.com/cloudquery/plugin-sdk/v2/backend"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v3/backend"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/googleapis/gax-go/v2"
 	grpczerolog "github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2"
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	"github.com/rs/zerolog"
 	"golang.org/x/sync/errgroup"
-	"golang.org/x/sync/semaphore"
 	crmv1 "google.golang.org/api/cloudresourcemanager/v1"
+	"google.golang.org/api/impersonate"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 
@@ -165,7 +165,21 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		}
 		c.ClientOptions = append(c.ClientOptions, option.WithCredentialsJSON(serviceAccountKeyJSON))
 	}
-
+	if gcpSpec.ServiceAccountImpersonation != nil && gcpSpec.ServiceAccountImpersonation.TargetPrincipal != "" {
+		// Base credentials sourced from ADC or provided client options.
+		ts, err := impersonate.CredentialsTokenSource(ctx, impersonate.CredentialsConfig{
+			TargetPrincipal: gcpSpec.ServiceAccountImpersonation.TargetPrincipal,
+			Scopes:          gcpSpec.ServiceAccountImpersonation.Scopes,
+			// Optionally supply delegates.
+			Delegates: gcpSpec.ServiceAccountImpersonation.Delegates,
+			// Specify user to impersonate
+			Subject: gcpSpec.ServiceAccountImpersonation.Subject,
+		})
+		if err != nil {
+			return nil, fmt.Errorf("failed to generate token source: %w", err)
+		}
+		c.ClientOptions = append(c.ClientOptions, option.WithTokenSource(ts))
+	}
 	if len(gcpSpec.ProjectFilter) > 0 && len(gcpSpec.FolderIDs) > 0 {
 		return nil, fmt.Errorf("project_filter and folder_ids are mutually exclusive")
 	}
@@ -277,12 +291,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		c.ProjectId = projects[0]
 	}
 	if gcpSpec.EnabledServicesOnly {
-		if err := c.configureEnabledServices(ctx, s.Concurrency); err != nil {
-			if status.Code(err) == codes.ResourceExhausted {
-				c.logger.Err(err).Msg("failed to list enabled services because of rate limiting. Consider setting larger values for `backoff_retries` and `backoff_delay`")
-			} else {
-				c.logger.Err(err).Msg("failed to list enabled services")
-			}
+		if err := c.configureEnabledServices(ctx, *gcpSpec.DiscoveryConcurrency); err != nil {
 			return nil, err
 		}
 	}
@@ -488,19 +497,28 @@ func setUnion(a []string, b []string) []string {
 	return union
 }
 
-func (c *Client) configureEnabledServices(ctx context.Context, concurrency uint64) error {
+func (c *Client) configureEnabledServices(ctx context.Context, concurrency int) error {
 	var esLock sync.Mutex
 	g, ctx := errgroup.WithContext(ctx)
-	goroutinesSem := semaphore.NewWeighted(int64(concurrency))
+	g.SetLimit(concurrency)
 	for _, p := range c.projects {
 		project := p
-		if err := goroutinesSem.Acquire(ctx, 1); err != nil {
-			return err
-		}
 		g.Go(func() error {
-			defer goroutinesSem.Release(1)
 			cl := c.withProject(project)
 			svc, err := cl.fetchEnabledServices(ctx)
+			if err != nil {
+				switch status.Code(err) {
+				case codes.ResourceExhausted:
+					c.logger.Warn().Err(err).Msgf("failed to list enabled services because of rate limiting. Sync will continue without filtering out disabled services for this project: %s. Consider setting larger values for `backoff_retries` and `backoff_delay`", project)
+				case codes.PermissionDenied:
+					c.logger.Warn().Err(err).Msgf("failed to list enabled services because of insufficient permissions. Sync will continue without filtering out disabled services for this project: %s", project)
+				default:
+					c.logger.Err(err).Msg("failed to list enabled services")
+					return err
+				}
+				return nil
+			}
+			// Only update the enabled services if we were able to list all services successfully
 			esLock.Lock()
 			c.EnabledServices[project] = svc
 			esLock.Unlock()

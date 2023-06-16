@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Events() *schema.Table {
@@ -38,7 +38,9 @@ func fetchEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	}
 	paginator := redshift.NewDescribeEventsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *redshift.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

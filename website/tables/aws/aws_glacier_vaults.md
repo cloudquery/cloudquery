@@ -17,17 +17,17 @@ The following tables depend on aws_glacier_vaults:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|tags|JSON|
-|arn (PK)|String|
-|creation_date|String|
-|last_inventory_date|String|
-|number_of_archives|Int|
-|size_in_bytes|Int|
-|vault_arn|String|
-|vault_name|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|tags|`json`|
+|arn (PK)|`utf8`|
+|creation_date|`utf8`|
+|last_inventory_date|`utf8`|
+|number_of_archives|`int64`|
+|size_in_bytes|`int64`|
+|vault_arn|`utf8`|
+|vault_name|`utf8`|

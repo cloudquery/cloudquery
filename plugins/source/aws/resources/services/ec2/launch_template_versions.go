@@ -3,11 +3,12 @@ package ec2
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func launchTemplateVersions() *schema.Table {
@@ -22,20 +23,16 @@ func launchTemplateVersions() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "version_number",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("VersionNumber"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "version_number",
+				Type:       arrow.PrimitiveTypes.Int64,
+				Resolver:   schema.PathResolver("VersionNumber"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -45,11 +42,13 @@ func fetchEc2LaunchTemplateVersions(ctx context.Context, meta schema.ClientMeta,
 	config := ec2.DescribeLaunchTemplateVersionsInput{
 		LaunchTemplateId: parent.Item.(types.LaunchTemplate).LaunchTemplateId,
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Ec2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ec2
 	paginator := ec2.NewDescribeLaunchTemplateVersionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ec2.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

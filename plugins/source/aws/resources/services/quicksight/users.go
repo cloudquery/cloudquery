@@ -8,8 +8,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/quicksight/types"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/pkg/errors"
 )
 
@@ -35,7 +35,9 @@ func fetchQuicksightUsers(ctx context.Context, meta schema.ClientMeta, parent *s
 	var ae smithy.APIError
 	// No paginator available
 	for {
-		out, err := svc.ListUsers(ctx, &input)
+		out, err := svc.ListUsers(ctx, &input, func(options *quicksight.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if errors.As(err, &ae) && ae.ErrorCode() == "UnsupportedUserEditionException" {
 				return nil

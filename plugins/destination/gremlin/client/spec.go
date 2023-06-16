@@ -24,6 +24,9 @@ type Spec struct {
 
 	// Connection settings
 	MaxConcurrentConnections int `json:"max_concurrent_connections"`
+
+	// Whether to use all Gremlin types or just a basic subset
+	CompleteTypes bool `json:"complete_types"`
 }
 
 type authMode string

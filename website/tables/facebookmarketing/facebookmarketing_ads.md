@@ -10,40 +10,40 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|ad_review_feedback|JSON|
-|adlabels|JSON|
-|adset|JSON|
-|adset_id|String|
-|bid_amount|Int|
-|bid_info|JSON|
-|bid_type|String|
-|campaign|JSON|
-|campaign_id|String|
-|configured_status|String|
-|conversion_domain|String|
-|conversion_specs|JSON|
-|created_time|Timestamp|
-|creative|JSON|
-|demolink_hash|String|
-|display_sequence|Int|
-|effective_status|String|
-|engagement_audience|Bool|
-|failed_delivery_checks|JSON|
-|id (PK)|String|
-|issues_info|JSON|
-|last_updated_by_app_id|String|
-|name|String|
-|preview_shareable_link|String|
-|priority|Int|
-|recommendations|JSON|
-|source_ad_id|String|
-|status|String|
-|targeting|JSON|
-|tracking_and_conversion_with_defaults|JSON|
-|tracking_specs|JSON|
-|updated_time|Timestamp|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|ad_review_feedback|`json`|
+|adlabels|`json`|
+|adset|`json`|
+|adset_id|`utf8`|
+|bid_amount|`int64`|
+|bid_info|`json`|
+|bid_type|`utf8`|
+|campaign|`json`|
+|campaign_id|`utf8`|
+|configured_status|`utf8`|
+|conversion_domain|`utf8`|
+|conversion_specs|`json`|
+|created_time|`timestamp[us, tz=UTC]`|
+|creative|`json`|
+|demolink_hash|`utf8`|
+|display_sequence|`int64`|
+|effective_status|`utf8`|
+|engagement_audience|`bool`|
+|failed_delivery_checks|`json`|
+|id (PK)|`utf8`|
+|issues_info|`json`|
+|last_updated_by_app_id|`utf8`|
+|name|`utf8`|
+|preview_shareable_link|`utf8`|
+|priority|`int64`|
+|recommendations|`json`|
+|source_ad_id|`utf8`|
+|status|`utf8`|
+|targeting|`json`|
+|tracking_and_conversion_with_defaults|`json`|
+|tracking_specs|`json`|
+|updated_time|`timestamp[us, tz=UTC]`|

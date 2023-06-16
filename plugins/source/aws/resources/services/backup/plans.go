@@ -3,12 +3,15 @@ package backup
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
 	"github.com/aws/aws-sdk-go-v2/service/backup/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Plans() *schema.Table {
@@ -24,16 +27,14 @@ func Plans() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("BackupPlanArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("BackupPlanArn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolvePlanTags,
 			},
 		},
@@ -50,7 +51,9 @@ func fetchBackupPlans(ctx context.Context, meta schema.ClientMeta, parent *schem
 	params := backup.ListBackupPlansInput{MaxResults: aws.Int32(1000)} // maximum value from https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListBackupPlans.html
 	paginator := backup.NewListBackupPlansPaginator(svc, &params)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *backup.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -67,6 +70,9 @@ func getPlan(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 	plan, err := svc.GetBackupPlan(
 		ctx,
 		&backup.GetBackupPlanInput{BackupPlanId: m.BackupPlanId, VersionId: m.VersionId},
+		func(options *backup.Options) {
+			options.Region = cl.Region
+		},
 	)
 	if err != nil {
 		return err
@@ -83,7 +89,9 @@ func resolvePlanTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 	tags := make(map[string]string)
 	paginator := backup.NewListTagsPaginator(svc, &params)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *backup.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

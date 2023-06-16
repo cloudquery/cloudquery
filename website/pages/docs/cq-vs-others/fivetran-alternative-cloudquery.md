@@ -1,5 +1,6 @@
 ---
 title: Fivetran alternative | Comparison with CloudQuery
+description: CloudQuery is an open source ELT framework that can be used as an alternative to Fivetran. CloudQuery is built for performance, and is easy to deploy and maintain.
 ---
 
 # CloudQuery Vs Fivetran

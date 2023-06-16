@@ -8,17 +8,17 @@ The composite primary key for this table is (**account_id**, **id**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|id (PK)|String|
-|name|String|
-|owner|JSON|
-|playable_ad_file_size|Int|
-|playable_ad_orientation|String|
-|playable_ad_package_name|String|
-|playable_ad_reject_reason|String|
-|playable_ad_status|String|
-|playable_ad_upload_time|Timestamp|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|name|`utf8`|
+|owner|`json`|
+|playable_ad_file_size|`int64`|
+|playable_ad_orientation|`utf8`|
+|playable_ad_package_name|`utf8`|
+|playable_ad_reject_reason|`utf8`|
+|playable_ad_status|`utf8`|
+|playable_ad_upload_time|`timestamp[us, tz=UTC]`|

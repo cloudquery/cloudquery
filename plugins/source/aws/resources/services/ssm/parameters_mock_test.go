@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -20,6 +20,7 @@ func buildParameters(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock.EXPECT().DescribeParameters(
 		gomock.Any(),
 		&ssm.DescribeParametersInput{},
+		gomock.Any(),
 	).Return(
 		&ssm.DescribeParametersOutput{Parameters: []types.ParameterMetadata{pm}},
 		nil,

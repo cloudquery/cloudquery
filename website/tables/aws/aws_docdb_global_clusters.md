@@ -10,19 +10,19 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|arn (PK)|String|
-|database_name|String|
-|deletion_protection|Bool|
-|engine|String|
-|engine_version|String|
-|global_cluster_arn|String|
-|global_cluster_identifier|String|
-|global_cluster_members|JSON|
-|global_cluster_resource_id|String|
-|status|String|
-|storage_encrypted|Bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|arn (PK)|`utf8`|
+|database_name|`utf8`|
+|deletion_protection|`bool`|
+|engine|`utf8`|
+|engine_version|`utf8`|
+|global_cluster_arn|`utf8`|
+|global_cluster_identifier|`utf8`|
+|global_cluster_members|`json`|
+|global_cluster_resource_id|`utf8`|
+|status|`utf8`|
+|storage_encrypted|`bool`|

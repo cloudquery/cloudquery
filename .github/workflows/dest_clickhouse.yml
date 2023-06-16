@@ -55,13 +55,12 @@ jobs:
     - name: golangci-lint
       uses: cloudquery/golangci-lint-action@master
       with:
-        version:           v1.51.2
+        version: v1.52.2
         working-directory: plugins/destination/clickhouse
         args:              "--config ../../.golangci.yml"
         skip-pkg-cache:    true
         skip-build-cache:  true
-    - name: Get dependencies
-      run:  go get -t -d ./...
+    - run: go mod tidy
     - name: Build
       run:  go build .
     - name: Test ClickHouse

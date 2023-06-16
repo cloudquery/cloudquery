@@ -1,7 +1,7 @@
 name: ✅ New Resource
 description: Ask to add a new resource to an existing source plugin
 title: "feat: Add <resource-name> to <plugin-name> source plugin"
-labels: [enhancement, resource, needs-triage]
+labels: [enhancement, resource]
 body:
   - type: textarea
     id: description

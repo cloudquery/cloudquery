@@ -19,35 +19,3 @@ jobs:
           command: manifest
           token: ${{ secrets.GH_CQ_BOT }}
           default-branch: main
-      - uses: actions/github-script@v6
-        env:
-          RELEASES: '${{ toJSON(steps.release.outputs) }}'
-        # We mark all releases as pre-release until we finish building & uploading the binaries
-        with:
-          github-token: ${{ secrets.GH_CQ_BOT }}
-          script: |
-            const { RELEASES } = process.env
-            const parsedReleases = JSON.parse(RELEASES)
-            const releases = Object.entries(parsedReleases)
-            const released = releases.filter(([key, value]) => key.includes('--release_created') && value === 'true')
-            const releasedComponents = released.map(([key]) => key.split('--')[0])
-            for (const component of releasedComponents) {
-              console.log(`Released component: ${component}`)
-              const tag = parsedReleases[`${component}--tag_name`]
-              const release = await github.rest.repos.getReleaseByTag({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                tag
-              })
-              const { data: { id, body, draft, name } } = release
-              await github.rest.repos.updateRelease({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                release_id: id,
-                tag_name: tag,
-                name,
-                body,
-                draft,
-                prerelease: true
-              })
-            }

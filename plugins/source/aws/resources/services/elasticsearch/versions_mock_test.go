@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -18,7 +18,7 @@ func buildElasticSearchVersions(t *testing.T, ctrl *gomock.Controller) client.Se
 	if err := faker.FakeObject(&versions); err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListElasticsearchVersions(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListElasticsearchVersions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticsearchservice.ListElasticsearchVersionsOutput{
 			ElasticsearchVersions: versions,
 		},
@@ -29,7 +29,7 @@ func buildElasticSearchVersions(t *testing.T, ctrl *gomock.Controller) client.Se
 	if err := faker.FakeObject(&versions); err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListElasticsearchInstanceTypes(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListElasticsearchInstanceTypes(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticsearchservice.ListElasticsearchInstanceTypesOutput{
 			ElasticsearchInstanceTypes: instanceTypes,
 		},

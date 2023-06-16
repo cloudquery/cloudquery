@@ -13,20 +13,20 @@ The following tables depend on github_hooks:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|org (PK)|String|
-|created_at|Timestamp|
-|updated_at|Timestamp|
-|url|String|
-|id (PK)|Int|
-|type|String|
-|name|String|
-|test_url|String|
-|ping_url|String|
-|last_response|JSON|
-|config|JSON|
-|events|StringArray|
-|active|Bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|org (PK)|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|updated_at|`timestamp[us, tz=UTC]`|
+|url|`utf8`|
+|id (PK)|`int64`|
+|type|`utf8`|
+|name|`utf8`|
+|test_url|`utf8`|
+|ping_url|`utf8`|
+|last_response|`json`|
+|config|`json`|
+|events|`list<item: utf8, nullable>`|
+|active|`bool`|

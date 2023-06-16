@@ -6,57 +6,64 @@ import (
 	"strings"
 	"time"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	gremlingo "github.com/apache/tinkerpop/gremlin-go/v3/driver"
 	"github.com/cenkalti/backoff/v4"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources [][]any) error {
+func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, records []arrow.Record) error {
 	session, closer, err := c.newSession()
 	if err != nil {
 		return err
 	}
 	defer closer()
 
-	rows := make([]map[string]any, len(resources))
-	for i, resource := range resources {
-		rows[i] = make(map[string]any)
-		for j, column := range table.Columns {
-			rows[i][column.Name] = resource[j]
+	cqTimeIndex := -1
+	for i := range table.Columns {
+		if table.Columns[i].Name == schema.CqSyncTimeColumn.Name {
+			cqTimeIndex = i
+			break
 		}
+	}
+
+	rows := make([]map[string]any, 0)
+	for _, record := range records {
+		rows = append(rows, c.transformValues(record, cqTimeIndex)...)
 	}
 
 	pks := table.PrimaryKeys()
 	if len(pks) == 0 {
 		// If no primary keys are defined, use all columns
-		pks = table.Columns.Names()
+		for i := range table.Columns {
+			pks = append(pks, table.Columns[i].Name)
+		}
 	}
 	nonPKs := make(map[string]struct{})
-	for _, column := range table.Columns {
-		nonPKs[column.Name] = struct{}{}
-	}
-	for _, pk := range pks {
-		delete(nonPKs, pk)
+	for _, c := range table.Columns {
+		if !c.PrimaryKey {
+			nonPKs[c.Name] = struct{}{}
+		}
 	}
 
 	g := gremlingo.Traversal_().WithRemote(session).V().HasLabel(table.Name)
 	for i := range rows {
-		for _, column := range pks {
-			g = g.Has(column, rows[i][column])
+		for _, colName := range pks {
+			g = g.Has(colName, rows[i][colName])
 		}
 		g = g.Fold()
 
 		ins := AnonT.AddV(table.Name)
-		for _, column := range pks {
-			ins = ins.Property(column, rows[i][column])
+		for _, colName := range pks {
+			ins = ins.Property(colName, rows[i][colName])
 		}
 		g = g.Coalesce(
 			AnonT.Unfold(),
 			ins,
 		)
 
-		for column := range nonPKs {
-			g = g.Property(gremlingo.Cardinality.Single, column, rows[i][column])
+		for colName := range nonPKs {
+			g = g.Property(gremlingo.Cardinality.Single, colName, rows[i][colName])
 		}
 	}
 

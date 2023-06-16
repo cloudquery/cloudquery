@@ -37,6 +37,16 @@ func (m *MockCognitoidentityproviderClient) EXPECT() *MockCognitoidentityprovide
 
 // DescribeIdentityProvider mocks base method.
 func (m *MockCognitoidentityproviderClient) DescribeIdentityProvider(arg0 context.Context, arg1 *cognitoidentityprovider.DescribeIdentityProviderInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.DescribeIdentityProviderOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeIdentityProvider")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) DescribeIdentityProvide
 
 // DescribeResourceServer mocks base method.
 func (m *MockCognitoidentityproviderClient) DescribeResourceServer(arg0 context.Context, arg1 *cognitoidentityprovider.DescribeResourceServerInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.DescribeResourceServerOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeResourceServer")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) DescribeResourceServer(
 
 // DescribeRiskConfiguration mocks base method.
 func (m *MockCognitoidentityproviderClient) DescribeRiskConfiguration(arg0 context.Context, arg1 *cognitoidentityprovider.DescribeRiskConfigurationInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.DescribeRiskConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRiskConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) DescribeRiskConfigurati
 
 // DescribeUserImportJob mocks base method.
 func (m *MockCognitoidentityproviderClient) DescribeUserImportJob(arg0 context.Context, arg1 *cognitoidentityprovider.DescribeUserImportJobInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.DescribeUserImportJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeUserImportJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) DescribeUserImportJob(a
 
 // DescribeUserPool mocks base method.
 func (m *MockCognitoidentityproviderClient) DescribeUserPool(arg0 context.Context, arg1 *cognitoidentityprovider.DescribeUserPoolInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.DescribeUserPoolOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeUserPool")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) DescribeUserPool(arg0, 
 
 // DescribeUserPoolClient mocks base method.
 func (m *MockCognitoidentityproviderClient) DescribeUserPoolClient(arg0 context.Context, arg1 *cognitoidentityprovider.DescribeUserPoolClientInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.DescribeUserPoolClientOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeUserPoolClient")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) DescribeUserPoolClient(
 
 // DescribeUserPoolDomain mocks base method.
 func (m *MockCognitoidentityproviderClient) DescribeUserPoolDomain(arg0 context.Context, arg1 *cognitoidentityprovider.DescribeUserPoolDomainInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.DescribeUserPoolDomainOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeUserPoolDomain")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) DescribeUserPoolDomain(
 
 // GetCSVHeader mocks base method.
 func (m *MockCognitoidentityproviderClient) GetCSVHeader(arg0 context.Context, arg1 *cognitoidentityprovider.GetCSVHeaderInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.GetCSVHeaderOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCSVHeader")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) GetCSVHeader(arg0, arg1
 
 // GetDevice mocks base method.
 func (m *MockCognitoidentityproviderClient) GetDevice(arg0 context.Context, arg1 *cognitoidentityprovider.GetDeviceInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.GetDeviceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDevice")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) GetDevice(arg0, arg1 in
 
 // GetGroup mocks base method.
 func (m *MockCognitoidentityproviderClient) GetGroup(arg0 context.Context, arg1 *cognitoidentityprovider.GetGroupInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.GetGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) GetGroup(arg0, arg1 int
 
 // GetIdentityProviderByIdentifier mocks base method.
 func (m *MockCognitoidentityproviderClient) GetIdentityProviderByIdentifier(arg0 context.Context, arg1 *cognitoidentityprovider.GetIdentityProviderByIdentifierInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.GetIdentityProviderByIdentifierOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetIdentityProviderByIdentifier")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) GetIdentityProviderById
 
 // GetSigningCertificate mocks base method.
 func (m *MockCognitoidentityproviderClient) GetSigningCertificate(arg0 context.Context, arg1 *cognitoidentityprovider.GetSigningCertificateInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.GetSigningCertificateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSigningCertificate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) GetSigningCertificate(a
 
 // GetUICustomization mocks base method.
 func (m *MockCognitoidentityproviderClient) GetUICustomization(arg0 context.Context, arg1 *cognitoidentityprovider.GetUICustomizationInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.GetUICustomizationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetUICustomization")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) GetUICustomization(arg0
 
 // GetUser mocks base method.
 func (m *MockCognitoidentityproviderClient) GetUser(arg0 context.Context, arg1 *cognitoidentityprovider.GetUserInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.GetUserOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetUser")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) GetUser(arg0, arg1 inte
 
 // GetUserAttributeVerificationCode mocks base method.
 func (m *MockCognitoidentityproviderClient) GetUserAttributeVerificationCode(arg0 context.Context, arg1 *cognitoidentityprovider.GetUserAttributeVerificationCodeInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.GetUserAttributeVerificationCodeOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetUserAttributeVerificationCode")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) GetUserAttributeVerific
 
 // GetUserPoolMfaConfig mocks base method.
 func (m *MockCognitoidentityproviderClient) GetUserPoolMfaConfig(arg0 context.Context, arg1 *cognitoidentityprovider.GetUserPoolMfaConfigInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.GetUserPoolMfaConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetUserPoolMfaConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) GetUserPoolMfaConfig(ar
 
 // ListDevices mocks base method.
 func (m *MockCognitoidentityproviderClient) ListDevices(arg0 context.Context, arg1 *cognitoidentityprovider.ListDevicesInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.ListDevicesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDevices")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) ListDevices(arg0, arg1 
 
 // ListGroups mocks base method.
 func (m *MockCognitoidentityproviderClient) ListGroups(arg0 context.Context, arg1 *cognitoidentityprovider.ListGroupsInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.ListGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) ListGroups(arg0, arg1 i
 
 // ListIdentityProviders mocks base method.
 func (m *MockCognitoidentityproviderClient) ListIdentityProviders(arg0 context.Context, arg1 *cognitoidentityprovider.ListIdentityProvidersInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.ListIdentityProvidersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListIdentityProviders")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) ListIdentityProviders(a
 
 // ListResourceServers mocks base method.
 func (m *MockCognitoidentityproviderClient) ListResourceServers(arg0 context.Context, arg1 *cognitoidentityprovider.ListResourceServersInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.ListResourceServersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListResourceServers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) ListResourceServers(arg
 
 // ListTagsForResource mocks base method.
 func (m *MockCognitoidentityproviderClient) ListTagsForResource(arg0 context.Context, arg1 *cognitoidentityprovider.ListTagsForResourceInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) ListTagsForResource(arg
 
 // ListUserImportJobs mocks base method.
 func (m *MockCognitoidentityproviderClient) ListUserImportJobs(arg0 context.Context, arg1 *cognitoidentityprovider.ListUserImportJobsInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.ListUserImportJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListUserImportJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) ListUserImportJobs(arg0
 
 // ListUserPoolClients mocks base method.
 func (m *MockCognitoidentityproviderClient) ListUserPoolClients(arg0 context.Context, arg1 *cognitoidentityprovider.ListUserPoolClientsInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.ListUserPoolClientsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListUserPoolClients")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) ListUserPoolClients(arg
 
 // ListUserPools mocks base method.
 func (m *MockCognitoidentityproviderClient) ListUserPools(arg0 context.Context, arg1 *cognitoidentityprovider.ListUserPoolsInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.ListUserPoolsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListUserPools")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) ListUserPools(arg0, arg
 
 // ListUsers mocks base method.
 func (m *MockCognitoidentityproviderClient) ListUsers(arg0 context.Context, arg1 *cognitoidentityprovider.ListUsersInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.ListUsersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListUsers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) ListUsers(arg0, arg1 in
 
 // ListUsersInGroup mocks base method.
 func (m *MockCognitoidentityproviderClient) ListUsersInGroup(arg0 context.Context, arg1 *cognitoidentityprovider.ListUsersInGroupInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.ListUsersInGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListUsersInGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

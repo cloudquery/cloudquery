@@ -17,13 +17,13 @@ The following tables depend on gcp_vmmigration_sources:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|create_time|Timestamp|
-|update_time|Timestamp|
-|labels|JSON|
-|description|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|create_time|`timestamp[us, tz=UTC]`|
+|update_time|`timestamp[us, tz=UTC]`|
+|labels|`json`|
+|description|`utf8`|

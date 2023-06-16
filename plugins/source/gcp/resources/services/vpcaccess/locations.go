@@ -1,8 +1,9 @@
 package vpcaccess
 
 import (
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	locationpb "google.golang.org/genproto/googleapis/cloud/location"
 )
@@ -16,12 +17,10 @@ func Locations() *schema.Table {
 		Transform:   client.TransformWithStruct(&locationpb.Location{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
-				Name:     "project_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "project_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveProject,
+				PrimaryKey: true,
 			},
 		},
 

@@ -1,8 +1,10 @@
 package spaces
 
 import (
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"
 )
@@ -17,22 +19,22 @@ func Spaces() *schema.Table {
 		Columns: []schema.Column{
 			{
 				Name:     "acls",
-				Type:     schema.TypeJSON,
+				Type:     types.ExtensionTypes.JSON,
 				Resolver: schema.PathResolver("ACLs"),
 			},
 			{
 				Name:     "bucket",
-				Type:     schema.TypeJSON,
+				Type:     types.ExtensionTypes.JSON,
 				Resolver: schema.PathResolver("Bucket"),
 			},
 			{
 				Name:     "location",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("Location"),
 			},
 			{
 				Name:     "public",
-				Type:     schema.TypeBool,
+				Type:     arrow.FixedWidthTypes.Boolean,
 				Resolver: schema.PathResolver("Public"),
 			},
 		},

@@ -3,12 +3,15 @@ package elasticbeanstalk
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Environments() *schema.Table {
@@ -23,26 +26,24 @@ func Environments() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("EnvironmentArn"),
 			},
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveElasticbeanstalkEnvironmentTags,
 			},
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("EnvironmentId"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("EnvironmentId"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "listeners",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveElasticbeanstalkEnvironmentListeners,
 			},
 		},
@@ -56,11 +57,13 @@ func Environments() *schema.Table {
 
 func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config elasticbeanstalk.DescribeEnvironmentsInput
-	c := meta.(*client.Client)
-	svc := c.Services().Elasticbeanstalk
+	cl := meta.(*client.Client)
+	svc := cl.Services().Elasticbeanstalk
 	// No paginator available
 	for {
-		response, err := svc.DescribeEnvironments(ctx, &config)
+		response, err := svc.DescribeEnvironments(ctx, &config, func(options *elasticbeanstalk.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -89,7 +92,9 @@ func resolveElasticbeanstalkEnvironmentTags(ctx context.Context, meta schema.Cli
 	svc := cl.Services().Elasticbeanstalk
 	tagsOutput, err := svc.ListTagsForResource(ctx, &elasticbeanstalk.ListTagsForResourceInput{
 		ResourceArn: p.EnvironmentArn,
-	}, func(o *elasticbeanstalk.Options) {})
+	}, func(o *elasticbeanstalk.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		// It takes a few minutes for an environment to be terminated
 		// This ensures we don't error while trying to fetch related resources for a terminated environment

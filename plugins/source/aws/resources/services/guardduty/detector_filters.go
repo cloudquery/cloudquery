@@ -3,11 +3,12 @@ package guardduty
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty/models"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func detectorFilters() *schema.Table {
@@ -21,12 +22,10 @@ func detectorFilters() *schema.Table {
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
 		Columns: []schema.Column{
 			{
-				Name:     "detector_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "detector_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -35,14 +34,16 @@ func detectorFilters() *schema.Table {
 func fetchDetectorFilters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	detector := parent.Item.(*models.DetectorWrapper)
 
-	c := meta.(*client.Client)
-	svc := c.Services().Guardduty
+	cl := meta.(*client.Client)
+	svc := cl.Services().Guardduty
 	config := &guardduty.ListFiltersInput{
 		DetectorId: &detector.Id,
 	}
 	paginator := guardduty.NewListFiltersPaginator(svc, config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *guardduty.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -52,14 +53,16 @@ func fetchDetectorFilters(ctx context.Context, meta schema.ClientMeta, parent *s
 }
 
 func getDetectorFilter(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Guardduty
+	cl := meta.(*client.Client)
+	svc := cl.Services().Guardduty
 	filterName := resource.Item.(string)
 	detector := resource.Parent.Item.(*models.DetectorWrapper)
 
 	out, err := svc.GetFilter(ctx, &guardduty.GetFilterInput{
 		DetectorId: &detector.Id,
 		FilterName: &filterName,
+	}, func(options *guardduty.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

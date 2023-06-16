@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func TenantConfigurations() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_portal_tenant_configurations",
-		Resolver:    fetchTenantConfigurations,
-		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal@v0.5.0#Configuration",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_portal_tenant_configurations", client.Namespacemicrosoft_portal),
-		Transform:   transformers.TransformWithStruct(&armportal.Configuration{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_portal_tenant_configurations",
+		Resolver:             fetchTenantConfigurations,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal@v0.5.0#Configuration",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_portal_tenant_configurations", client.Namespacemicrosoft_portal),
+		Transform:            transformers.TransformWithStruct(&armportal.Configuration{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

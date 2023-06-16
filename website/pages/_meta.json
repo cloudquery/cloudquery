@@ -27,6 +27,12 @@
       "typesetting": "article"
     }
   },
+  "case-studies": {
+    "title": "Case Studies",
+    "theme": {
+      "typesetting": "article"
+    }
+  },
   "pricing": {
     "title": "Pricing",
     "theme": {

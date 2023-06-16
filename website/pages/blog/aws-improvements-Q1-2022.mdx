@@ -44,9 +44,8 @@ CloudQuery key use-cases and features:
     name: aws-0
     registry: github
     path: cloudquery/aws
-    version: <LatestVersion>
-    tables: ['*']
-    # skip_tables: []
+    version: "VERSION_SOURCE_AWS"
+    tables: ['aws_s3_buckets']
     destinations: ["postgresql"]
     spec:
       aws_debug: false
@@ -71,9 +70,8 @@ CloudQuery key use-cases and features:
     name: aws-0
     registry: github
     path: cloudquery/aws
-    version: <LatestVersion>
-    tables: ['*']
-    # skip_tables: []
+    version: "VERSION_SOURCE_AWS"
+    tables: ['aws_s3_buckets']
     destinations: ["postgresql"]
     spec:
       accounts:

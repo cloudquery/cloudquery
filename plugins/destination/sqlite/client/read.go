@@ -6,14 +6,14 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/apache/arrow/go/v12/arrow/array"
-	"github.com/apache/arrow/go/v12/arrow/memory"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v13/arrow/array"
+	"github.com/apache/arrow/go/v13/arrow/memory"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 const (
-	readSQL = `SELECT %s FROM "%s" WHERE _cq_source_name = $1 order by _cq_sync_time asc`
+	readSQL = `SELECT %s FROM %s WHERE _cq_source_name = $1 order by _cq_sync_time asc`
 )
 
 func (*Client) createResultsArray(table *arrow.Schema) []any {
@@ -42,7 +42,6 @@ func (*Client) createResultsArray(table *arrow.Schema) []any {
 
 func reverseTransform(sc *arrow.Schema, values []any) (arrow.Record, error) {
 	bldr := array.NewRecordBuilder(memory.DefaultAllocator, sc)
-	defer bldr.Release()
 	for i, val := range values {
 		switch sc.Field(i).Type.ID() {
 		case arrow.BOOL:
@@ -128,7 +127,7 @@ func reverseTransform(sc *arrow.Schema, values []any) (arrow.Record, error) {
 			} else {
 				bldr.Field(i).(*array.StringBuilder).Append(val.(*sql.NullString).String)
 			}
-		case arrow.BINARY:
+		case arrow.BINARY, arrow.LARGE_BINARY:
 			if *val.(*[]byte) == nil {
 				bldr.Field(i).AppendNull()
 			} else {
@@ -149,23 +148,23 @@ func reverseTransform(sc *arrow.Schema, values []any) (arrow.Record, error) {
 	return rec, nil
 }
 
-func (c *Client) Read(ctx context.Context, table *arrow.Schema, sourceName string, res chan<- arrow.Record) error {
-	colNames := make([]string, 0, len(table.Fields()))
-	for _, col := range table.Fields() {
-		colNames = append(colNames, `"`+col.Name+`"`)
+func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
+	colNames := make([]string, len(table.Columns))
+	for i, col := range table.Columns {
+		colNames[i] = identifier(col.Name)
 	}
 	cols := strings.Join(colNames, ", ")
-	tableName := schema.TableName(table)
-	rows, err := c.db.Query(fmt.Sprintf(readSQL, cols, tableName), sourceName)
+	rows, err := c.db.Query(fmt.Sprintf(readSQL, cols, identifier(table.Name)), sourceName)
 	if err != nil {
 		return err
 	}
+	arrowSchema := table.ToArrowSchema()
 	for rows.Next() {
-		values := c.createResultsArray(table)
+		values := c.createResultsArray(arrowSchema)
 		if err := rows.Scan(values...); err != nil {
-			return fmt.Errorf("failed to read from table %s: %w", tableName, err)
+			return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
 		}
-		record, err := reverseTransform(table, values)
+		record, err := reverseTransform(arrowSchema, values)
 		if err != nil {
 			return err
 		}

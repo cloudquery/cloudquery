@@ -1,8 +1,8 @@
 package client
 
 import (
-	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/apache/arrow/go/v12/arrow/array"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v13/arrow/array"
 )
 
 func getValue(arr arrow.Array, i int) any {
@@ -27,7 +27,8 @@ func getValue(arr arrow.Array, i int) any {
 	case arrow.UINT32:
 		return arr.(*array.Uint32).Value(i)
 	case arrow.UINT64:
-		return arr.(*array.Uint64).Value(i)
+		// SQLite fails if uint64 overflows int64
+		return int64(arr.(*array.Uint64).Value(i))
 	case arrow.FLOAT32:
 		return arr.(*array.Float32).Value(i)
 	case arrow.FLOAT64:
@@ -36,6 +37,8 @@ func getValue(arr arrow.Array, i int) any {
 		return arr.(*array.String).Value(i)
 	case arrow.BINARY:
 		return arr.(*array.Binary).Value(i)
+	case arrow.LARGE_BINARY:
+		return arr.(*array.LargeBinary).Value(i)
 	case arrow.FIXED_SIZE_BINARY:
 		return arr.(*array.FixedSizeBinary).Value(i)
 	default:

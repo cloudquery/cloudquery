@@ -8,8 +8,8 @@ import (
 	s3controlTypes "github.com/aws/aws-sdk-go-v2/service/s3control/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3/models"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/pkg/errors"
 )
 
@@ -27,12 +27,14 @@ func Accounts() *schema.Table {
 }
 
 func fetchS3Accounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
+	svc := cl.Services().S3control
 
-	svc := c.Services().S3control
 	var accountConfig s3control.GetPublicAccessBlockInput
-	accountConfig.AccountId = aws.String(c.AccountID)
-	resp, err := svc.GetPublicAccessBlock(ctx, &accountConfig)
+	accountConfig.AccountId = aws.String(cl.AccountID)
+	resp, err := svc.GetPublicAccessBlock(ctx, &accountConfig, func(o *s3control.Options) {
+		o.Region = cl.Region
+	})
 
 	if err != nil {
 		// If we received any error other than NoSuchPublicAccessBlockConfiguration, we return and error

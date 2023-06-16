@@ -8,10 +8,9 @@ import (
 	"path"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/cli/internal/pb"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
+	"github.com/cloudquery/plugin-pb-go/metrics"
+	"github.com/cloudquery/plugin-pb-go/pb/analytics/v0"
+	"github.com/cloudquery/plugin-pb-go/specs"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
@@ -21,8 +20,14 @@ const (
 	defaultAnalyticsHost = "analyticsv1.cloudquery.io:443"
 )
 
+const (
+	ExitReasonUnset     ExitReason = ""
+	ExitReasonStopped   ExitReason = "stopped"
+	ExitReasonCompleted ExitReason = "completed"
+)
+
 type AnalyticsClient struct {
-	client pb.AnalyticsClient
+	client analytics.AnalyticsClient
 	conn   *grpc.ClientConn
 	host   string
 }
@@ -47,72 +52,45 @@ func initAnalytics() (*AnalyticsClient, error) {
 		return nil, fmt.Errorf("failed to dial analytics host %v: %w", host, err)
 	}
 	return &AnalyticsClient{
-		client: pb.NewAnalyticsClient(conn),
+		client: analytics.NewAnalyticsClient(conn),
 		conn:   conn,
 		host:   host,
 	}, nil
 }
 
-func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, invocationUUID string, metrics *source.Metrics, exitReason string) error {
-	if metrics == nil {
+func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, invocationUUID string, m *metrics.Metrics, exitReason ExitReason) error {
+	if m == nil {
 		// handle nil metrics
-		metrics = &source.Metrics{TableClient: map[string]map[string]*source.TableClientMetrics{}}
+		m = &metrics.Metrics{TableClient: map[string]map[string]*metrics.TableClientMetrics{}}
 	}
 	if c.client != nil {
 		sourcePath := sourceSpec.Path
 		if sourceSpec.Registry == specs.RegistryLocal || sourceSpec.Registry == specs.RegistryGrpc {
 			_, sourcePath = path.Split(sourceSpec.Path)
 		}
-		syncSummary := &pb.SyncSummary{
+		syncSummary := &analytics.SyncSummary{
 			Invocation_UUID: invocationUUID,
 			SourcePath:      sourcePath,
 			SourceVersion:   sourceSpec.Version,
-			Destinations:    make([]*pb.Destination, 0, 1),
-			Resources:       int64(metrics.TotalResources()),
-			Errors:          int64(metrics.TotalErrors()),
-			Panics:          int64(metrics.TotalPanics()),
+			Destinations:    make([]*analytics.Destination, 0, 1),
+			Resources:       int64(m.TotalResources()),
+			Errors:          int64(m.TotalErrors()),
+			Panics:          int64(m.TotalPanics()),
 			ClientVersion:   Version,
-			ExitReason:      exitReason,
+			ExitReason:      string(exitReason),
 		}
 		for _, destinationSpec := range destinationsSpecs {
 			destPath := destinationSpec.Path
 			if destinationSpec.Registry == specs.RegistryLocal || destinationSpec.Registry == specs.RegistryGrpc {
 				_, destPath = path.Split(destinationSpec.Path)
 			}
-			syncSummary.Destinations = append(syncSummary.Destinations, &pb.Destination{
+			syncSummary.Destinations = append(syncSummary.Destinations, &analytics.Destination{
 				Path:    destPath,
 				Version: destinationSpec.Version,
 			})
 		}
 
-		_, err := c.client.SendEvent(ctx, &pb.Event_Request{
-			SyncSummary: syncSummary,
-		})
-		return err
-	}
-	return nil
-}
-
-func (c *AnalyticsClient) SendSyncSummary(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, invocationUUID string, summary schema.SyncSummary) error {
-	if c.client != nil {
-		syncSummary := &pb.SyncSummary{
-			Invocation_UUID: invocationUUID,
-			SourcePath:      sourceSpec.Path,
-			SourceVersion:   sourceSpec.Version,
-			Destinations:    make([]*pb.Destination, 0, 1),
-			Resources:       int64(summary.Resources),
-			Errors:          int64(summary.Errors),
-			Panics:          int64(summary.Panics),
-			ClientVersion:   Version,
-		}
-		for _, destinationSpec := range destinationsSpecs {
-			syncSummary.Destinations = append(syncSummary.Destinations, &pb.Destination{
-				Path:    destinationSpec.Path,
-				Version: destinationSpec.Version,
-			})
-		}
-
-		_, err := c.client.SendEvent(ctx, &pb.Event_Request{
+		_, err := c.client.SendEvent(ctx, &analytics.Event_Request{
 			SyncSummary: syncSummary,
 		})
 		return err

@@ -37,6 +37,16 @@ func (m *MockWafClient) EXPECT() *MockWafClientMockRecorder {
 
 // GetByteMatchSet mocks base method.
 func (m *MockWafClient) GetByteMatchSet(arg0 context.Context, arg1 *waf.GetByteMatchSetInput, arg2 ...func(*waf.Options)) (*waf.GetByteMatchSetOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetByteMatchSet")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockWafClientMockRecorder) GetByteMatchSet(arg0, arg1 interface{}, arg
 
 // GetChangeToken mocks base method.
 func (m *MockWafClient) GetChangeToken(arg0 context.Context, arg1 *waf.GetChangeTokenInput, arg2 ...func(*waf.Options)) (*waf.GetChangeTokenOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetChangeToken")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockWafClientMockRecorder) GetChangeToken(arg0, arg1 interface{}, arg2
 
 // GetChangeTokenStatus mocks base method.
 func (m *MockWafClient) GetChangeTokenStatus(arg0 context.Context, arg1 *waf.GetChangeTokenStatusInput, arg2 ...func(*waf.Options)) (*waf.GetChangeTokenStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetChangeTokenStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockWafClientMockRecorder) GetChangeTokenStatus(arg0, arg1 interface{}
 
 // GetGeoMatchSet mocks base method.
 func (m *MockWafClient) GetGeoMatchSet(arg0 context.Context, arg1 *waf.GetGeoMatchSetInput, arg2 ...func(*waf.Options)) (*waf.GetGeoMatchSetOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetGeoMatchSet")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockWafClientMockRecorder) GetGeoMatchSet(arg0, arg1 interface{}, arg2
 
 // GetIPSet mocks base method.
 func (m *MockWafClient) GetIPSet(arg0 context.Context, arg1 *waf.GetIPSetInput, arg2 ...func(*waf.Options)) (*waf.GetIPSetOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetIPSet")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockWafClientMockRecorder) GetIPSet(arg0, arg1 interface{}, arg2 ...in
 
 // GetLoggingConfiguration mocks base method.
 func (m *MockWafClient) GetLoggingConfiguration(arg0 context.Context, arg1 *waf.GetLoggingConfigurationInput, arg2 ...func(*waf.Options)) (*waf.GetLoggingConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetLoggingConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockWafClientMockRecorder) GetLoggingConfiguration(arg0, arg1 interfac
 
 // GetPermissionPolicy mocks base method.
 func (m *MockWafClient) GetPermissionPolicy(arg0 context.Context, arg1 *waf.GetPermissionPolicyInput, arg2 ...func(*waf.Options)) (*waf.GetPermissionPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPermissionPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockWafClientMockRecorder) GetPermissionPolicy(arg0, arg1 interface{},
 
 // GetRateBasedRule mocks base method.
 func (m *MockWafClient) GetRateBasedRule(arg0 context.Context, arg1 *waf.GetRateBasedRuleInput, arg2 ...func(*waf.Options)) (*waf.GetRateBasedRuleOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRateBasedRule")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockWafClientMockRecorder) GetRateBasedRule(arg0, arg1 interface{}, ar
 
 // GetRateBasedRuleManagedKeys mocks base method.
 func (m *MockWafClient) GetRateBasedRuleManagedKeys(arg0 context.Context, arg1 *waf.GetRateBasedRuleManagedKeysInput, arg2 ...func(*waf.Options)) (*waf.GetRateBasedRuleManagedKeysOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRateBasedRuleManagedKeys")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockWafClientMockRecorder) GetRateBasedRuleManagedKeys(arg0, arg1 inte
 
 // GetRegexMatchSet mocks base method.
 func (m *MockWafClient) GetRegexMatchSet(arg0 context.Context, arg1 *waf.GetRegexMatchSetInput, arg2 ...func(*waf.Options)) (*waf.GetRegexMatchSetOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRegexMatchSet")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockWafClientMockRecorder) GetRegexMatchSet(arg0, arg1 interface{}, ar
 
 // GetRegexPatternSet mocks base method.
 func (m *MockWafClient) GetRegexPatternSet(arg0 context.Context, arg1 *waf.GetRegexPatternSetInput, arg2 ...func(*waf.Options)) (*waf.GetRegexPatternSetOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRegexPatternSet")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockWafClientMockRecorder) GetRegexPatternSet(arg0, arg1 interface{}, 
 
 // GetRule mocks base method.
 func (m *MockWafClient) GetRule(arg0 context.Context, arg1 *waf.GetRuleInput, arg2 ...func(*waf.Options)) (*waf.GetRuleOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRule")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockWafClientMockRecorder) GetRule(arg0, arg1 interface{}, arg2 ...int
 
 // GetRuleGroup mocks base method.
 func (m *MockWafClient) GetRuleGroup(arg0 context.Context, arg1 *waf.GetRuleGroupInput, arg2 ...func(*waf.Options)) (*waf.GetRuleGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRuleGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockWafClientMockRecorder) GetRuleGroup(arg0, arg1 interface{}, arg2 .
 
 // GetSampledRequests mocks base method.
 func (m *MockWafClient) GetSampledRequests(arg0 context.Context, arg1 *waf.GetSampledRequestsInput, arg2 ...func(*waf.Options)) (*waf.GetSampledRequestsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSampledRequests")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockWafClientMockRecorder) GetSampledRequests(arg0, arg1 interface{}, 
 
 // GetSizeConstraintSet mocks base method.
 func (m *MockWafClient) GetSizeConstraintSet(arg0 context.Context, arg1 *waf.GetSizeConstraintSetInput, arg2 ...func(*waf.Options)) (*waf.GetSizeConstraintSetOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSizeConstraintSet")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockWafClientMockRecorder) GetSizeConstraintSet(arg0, arg1 interface{}
 
 // GetSqlInjectionMatchSet mocks base method.
 func (m *MockWafClient) GetSqlInjectionMatchSet(arg0 context.Context, arg1 *waf.GetSqlInjectionMatchSetInput, arg2 ...func(*waf.Options)) (*waf.GetSqlInjectionMatchSetOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSqlInjectionMatchSet")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockWafClientMockRecorder) GetSqlInjectionMatchSet(arg0, arg1 interfac
 
 // GetWebACL mocks base method.
 func (m *MockWafClient) GetWebACL(arg0 context.Context, arg1 *waf.GetWebACLInput, arg2 ...func(*waf.Options)) (*waf.GetWebACLOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetWebACL")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockWafClientMockRecorder) GetWebACL(arg0, arg1 interface{}, arg2 ...i
 
 // GetXssMatchSet mocks base method.
 func (m *MockWafClient) GetXssMatchSet(arg0 context.Context, arg1 *waf.GetXssMatchSetInput, arg2 ...func(*waf.Options)) (*waf.GetXssMatchSetOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetXssMatchSet")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockWafClientMockRecorder) GetXssMatchSet(arg0, arg1 interface{}, arg2
 
 // ListActivatedRulesInRuleGroup mocks base method.
 func (m *MockWafClient) ListActivatedRulesInRuleGroup(arg0 context.Context, arg1 *waf.ListActivatedRulesInRuleGroupInput, arg2 ...func(*waf.Options)) (*waf.ListActivatedRulesInRuleGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListActivatedRulesInRuleGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockWafClientMockRecorder) ListActivatedRulesInRuleGroup(arg0, arg1 in
 
 // ListByteMatchSets mocks base method.
 func (m *MockWafClient) ListByteMatchSets(arg0 context.Context, arg1 *waf.ListByteMatchSetsInput, arg2 ...func(*waf.Options)) (*waf.ListByteMatchSetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListByteMatchSets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockWafClientMockRecorder) ListByteMatchSets(arg0, arg1 interface{}, a
 
 // ListGeoMatchSets mocks base method.
 func (m *MockWafClient) ListGeoMatchSets(arg0 context.Context, arg1 *waf.ListGeoMatchSetsInput, arg2 ...func(*waf.Options)) (*waf.ListGeoMatchSetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListGeoMatchSets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockWafClientMockRecorder) ListGeoMatchSets(arg0, arg1 interface{}, ar
 
 // ListIPSets mocks base method.
 func (m *MockWafClient) ListIPSets(arg0 context.Context, arg1 *waf.ListIPSetsInput, arg2 ...func(*waf.Options)) (*waf.ListIPSetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListIPSets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockWafClientMockRecorder) ListIPSets(arg0, arg1 interface{}, arg2 ...
 
 // ListLoggingConfigurations mocks base method.
 func (m *MockWafClient) ListLoggingConfigurations(arg0 context.Context, arg1 *waf.ListLoggingConfigurationsInput, arg2 ...func(*waf.Options)) (*waf.ListLoggingConfigurationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListLoggingConfigurations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockWafClientMockRecorder) ListLoggingConfigurations(arg0, arg1 interf
 
 // ListRateBasedRules mocks base method.
 func (m *MockWafClient) ListRateBasedRules(arg0 context.Context, arg1 *waf.ListRateBasedRulesInput, arg2 ...func(*waf.Options)) (*waf.ListRateBasedRulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRateBasedRules")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockWafClientMockRecorder) ListRateBasedRules(arg0, arg1 interface{}, 
 
 // ListRegexMatchSets mocks base method.
 func (m *MockWafClient) ListRegexMatchSets(arg0 context.Context, arg1 *waf.ListRegexMatchSetsInput, arg2 ...func(*waf.Options)) (*waf.ListRegexMatchSetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRegexMatchSets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockWafClientMockRecorder) ListRegexMatchSets(arg0, arg1 interface{}, 
 
 // ListRegexPatternSets mocks base method.
 func (m *MockWafClient) ListRegexPatternSets(arg0 context.Context, arg1 *waf.ListRegexPatternSetsInput, arg2 ...func(*waf.Options)) (*waf.ListRegexPatternSetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRegexPatternSets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +817,16 @@ func (mr *MockWafClientMockRecorder) ListRegexPatternSets(arg0, arg1 interface{}
 
 // ListRuleGroups mocks base method.
 func (m *MockWafClient) ListRuleGroups(arg0 context.Context, arg1 *waf.ListRuleGroupsInput, arg2 ...func(*waf.Options)) (*waf.ListRuleGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRuleGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -577,6 +847,16 @@ func (mr *MockWafClientMockRecorder) ListRuleGroups(arg0, arg1 interface{}, arg2
 
 // ListRules mocks base method.
 func (m *MockWafClient) ListRules(arg0 context.Context, arg1 *waf.ListRulesInput, arg2 ...func(*waf.Options)) (*waf.ListRulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRules")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -597,6 +877,16 @@ func (mr *MockWafClientMockRecorder) ListRules(arg0, arg1 interface{}, arg2 ...i
 
 // ListSizeConstraintSets mocks base method.
 func (m *MockWafClient) ListSizeConstraintSets(arg0 context.Context, arg1 *waf.ListSizeConstraintSetsInput, arg2 ...func(*waf.Options)) (*waf.ListSizeConstraintSetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSizeConstraintSets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -617,6 +907,16 @@ func (mr *MockWafClientMockRecorder) ListSizeConstraintSets(arg0, arg1 interface
 
 // ListSqlInjectionMatchSets mocks base method.
 func (m *MockWafClient) ListSqlInjectionMatchSets(arg0 context.Context, arg1 *waf.ListSqlInjectionMatchSetsInput, arg2 ...func(*waf.Options)) (*waf.ListSqlInjectionMatchSetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSqlInjectionMatchSets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -637,6 +937,16 @@ func (mr *MockWafClientMockRecorder) ListSqlInjectionMatchSets(arg0, arg1 interf
 
 // ListSubscribedRuleGroups mocks base method.
 func (m *MockWafClient) ListSubscribedRuleGroups(arg0 context.Context, arg1 *waf.ListSubscribedRuleGroupsInput, arg2 ...func(*waf.Options)) (*waf.ListSubscribedRuleGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSubscribedRuleGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -657,6 +967,16 @@ func (mr *MockWafClientMockRecorder) ListSubscribedRuleGroups(arg0, arg1 interfa
 
 // ListTagsForResource mocks base method.
 func (m *MockWafClient) ListTagsForResource(arg0 context.Context, arg1 *waf.ListTagsForResourceInput, arg2 ...func(*waf.Options)) (*waf.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -677,6 +997,16 @@ func (mr *MockWafClientMockRecorder) ListTagsForResource(arg0, arg1 interface{},
 
 // ListWebACLs mocks base method.
 func (m *MockWafClient) ListWebACLs(arg0 context.Context, arg1 *waf.ListWebACLsInput, arg2 ...func(*waf.Options)) (*waf.ListWebACLsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListWebACLs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -697,6 +1027,16 @@ func (mr *MockWafClientMockRecorder) ListWebACLs(arg0, arg1 interface{}, arg2 ..
 
 // ListXssMatchSets mocks base method.
 func (m *MockWafClient) ListXssMatchSets(arg0 context.Context, arg1 *waf.ListXssMatchSetsInput, arg2 ...func(*waf.Options)) (*waf.ListXssMatchSetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &waf.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListXssMatchSets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

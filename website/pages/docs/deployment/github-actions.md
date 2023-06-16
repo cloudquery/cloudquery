@@ -1,5 +1,6 @@
 ---
 title: Running CloudQuery with GitHub Actions
+description: Learn how to use GitHub Actions to run CloudQuery syncs.
 tag: tutorial
 date: 2022/10/25
 ---
@@ -26,6 +27,7 @@ spec:
   name: 'aws'
   path: cloudquery/aws
   version: "VERSION_SOURCE_AWS"
+  tables: ['*']
   destinations: ['postgresql']
 ---
 kind: destination
@@ -93,6 +95,7 @@ spec:
   path: cloudquery/aws
   version: "VERSION_SOURCE_AWS"
   destinations: ['postgresql-REGION_PLACEHOLDER']
+  tables: ['*']
   spec:
     regions:
       - REGION_PLACEHOLDER # This will be replaced by the matrix value

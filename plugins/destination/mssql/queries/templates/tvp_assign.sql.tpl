@@ -2,5 +2,5 @@
 {{- range .}}
   {{- if $first}}{{$first = false}}  {{else}},
   {{end -}}
-  [tgt].{{.}} = [src].{{.}}
+  {{sanitizeID "tgt" .}} = {{sanitizeID "src" .}}
 {{- end -}}

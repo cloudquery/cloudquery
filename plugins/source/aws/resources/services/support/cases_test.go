@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/support/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -21,7 +21,7 @@ func buildCases(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}
 
 	input := support.DescribeCasesInput{MaxResults: aws.Int32(100), IncludeResolvedCases: true}
-	m.EXPECT().DescribeCases(gomock.Any(), &input).Return(&support.DescribeCasesOutput{Cases: details}, nil)
+	m.EXPECT().DescribeCases(gomock.Any(), &input, gomock.Any()).Return(&support.DescribeCasesOutput{Cases: details}, nil)
 
 	err = mockCommunications(details[0], m)
 	if err != nil {

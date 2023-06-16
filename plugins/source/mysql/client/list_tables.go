@@ -3,7 +3,7 @@ package client
 import (
 	"context"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
 
 func Identifier(name string) string {
@@ -11,10 +11,10 @@ func Identifier(name string) string {
 }
 
 func (c *Client) getTableColumns(ctx context.Context, table *schema.Table) (schema.ColumnList, error) {
-	query := `SELECT COLUMN_NAME, DATA_TYPE, COLUMN_TYPE, IS_NULLABLE, COLUMN_KEY FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = ?;`
+	query := `SELECT COLUMN_NAME, DATA_TYPE, COLUMN_TYPE, IS_NULLABLE, COLUMN_KEY FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = ? AND TABLE_SCHEMA = ?;`
 	var tc schema.ColumnList
 
-	rows, err := c.db.QueryContext(ctx, query, table.Name)
+	rows, err := c.db.QueryContext(ctx, query, table.Name, c.tableSchema)
 	if err != nil {
 		return nil, err
 	}

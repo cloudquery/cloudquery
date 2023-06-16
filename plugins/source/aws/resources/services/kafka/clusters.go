@@ -3,11 +3,12 @@ package kafka
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/kafka"
 	"github.com/aws/aws-sdk-go-v2/service/kafka/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Clusters() *schema.Table {
@@ -22,12 +23,10 @@ func Clusters() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ClusterArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ClusterArn"),
+				PrimaryKey: true,
 			},
 		},
 
@@ -40,11 +39,13 @@ func Clusters() *schema.Table {
 
 func fetchKafkaClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input kafka.ListClustersV2Input
-	c := meta.(*client.Client)
-	svc := c.Services().Kafka
+	cl := meta.(*client.Client)
+	svc := cl.Services().Kafka
 	paginator := kafka.NewListClustersV2Paginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *kafka.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -57,7 +58,9 @@ func getCluster(ctx context.Context, meta schema.ClientMeta, resource *schema.Re
 	cl := meta.(*client.Client)
 	svc := cl.Services().Kafka
 	var input kafka.DescribeClusterV2Input = describeClustersInput(resource)
-	output, err := svc.DescribeClusterV2(ctx, &input)
+	output, err := svc.DescribeClusterV2(ctx, &input, func(options *kafka.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

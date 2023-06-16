@@ -37,6 +37,16 @@ func (m *MockEcsClient) EXPECT() *MockEcsClientMockRecorder {
 
 // DescribeCapacityProviders mocks base method.
 func (m *MockEcsClient) DescribeCapacityProviders(arg0 context.Context, arg1 *ecs.DescribeCapacityProvidersInput, arg2 ...func(*ecs.Options)) (*ecs.DescribeCapacityProvidersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCapacityProviders")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockEcsClientMockRecorder) DescribeCapacityProviders(arg0, arg1 interf
 
 // DescribeClusters mocks base method.
 func (m *MockEcsClient) DescribeClusters(arg0 context.Context, arg1 *ecs.DescribeClustersInput, arg2 ...func(*ecs.Options)) (*ecs.DescribeClustersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClusters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockEcsClientMockRecorder) DescribeClusters(arg0, arg1 interface{}, ar
 
 // DescribeContainerInstances mocks base method.
 func (m *MockEcsClient) DescribeContainerInstances(arg0 context.Context, arg1 *ecs.DescribeContainerInstancesInput, arg2 ...func(*ecs.Options)) (*ecs.DescribeContainerInstancesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeContainerInstances")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockEcsClientMockRecorder) DescribeContainerInstances(arg0, arg1 inter
 
 // DescribeServices mocks base method.
 func (m *MockEcsClient) DescribeServices(arg0 context.Context, arg1 *ecs.DescribeServicesInput, arg2 ...func(*ecs.Options)) (*ecs.DescribeServicesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeServices")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockEcsClientMockRecorder) DescribeServices(arg0, arg1 interface{}, ar
 
 // DescribeTaskDefinition mocks base method.
 func (m *MockEcsClient) DescribeTaskDefinition(arg0 context.Context, arg1 *ecs.DescribeTaskDefinitionInput, arg2 ...func(*ecs.Options)) (*ecs.DescribeTaskDefinitionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTaskDefinition")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockEcsClientMockRecorder) DescribeTaskDefinition(arg0, arg1 interface
 
 // DescribeTaskSets mocks base method.
 func (m *MockEcsClient) DescribeTaskSets(arg0 context.Context, arg1 *ecs.DescribeTaskSetsInput, arg2 ...func(*ecs.Options)) (*ecs.DescribeTaskSetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTaskSets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockEcsClientMockRecorder) DescribeTaskSets(arg0, arg1 interface{}, ar
 
 // DescribeTasks mocks base method.
 func (m *MockEcsClient) DescribeTasks(arg0 context.Context, arg1 *ecs.DescribeTasksInput, arg2 ...func(*ecs.Options)) (*ecs.DescribeTasksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTasks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockEcsClientMockRecorder) DescribeTasks(arg0, arg1 interface{}, arg2 
 
 // GetTaskProtection mocks base method.
 func (m *MockEcsClient) GetTaskProtection(arg0 context.Context, arg1 *ecs.GetTaskProtectionInput, arg2 ...func(*ecs.Options)) (*ecs.GetTaskProtectionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTaskProtection")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockEcsClientMockRecorder) GetTaskProtection(arg0, arg1 interface{}, a
 
 // ListAccountSettings mocks base method.
 func (m *MockEcsClient) ListAccountSettings(arg0 context.Context, arg1 *ecs.ListAccountSettingsInput, arg2 ...func(*ecs.Options)) (*ecs.ListAccountSettingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAccountSettings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockEcsClientMockRecorder) ListAccountSettings(arg0, arg1 interface{},
 
 // ListAttributes mocks base method.
 func (m *MockEcsClient) ListAttributes(arg0 context.Context, arg1 *ecs.ListAttributesInput, arg2 ...func(*ecs.Options)) (*ecs.ListAttributesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAttributes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockEcsClientMockRecorder) ListAttributes(arg0, arg1 interface{}, arg2
 
 // ListClusters mocks base method.
 func (m *MockEcsClient) ListClusters(arg0 context.Context, arg1 *ecs.ListClustersInput, arg2 ...func(*ecs.Options)) (*ecs.ListClustersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListClusters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockEcsClientMockRecorder) ListClusters(arg0, arg1 interface{}, arg2 .
 
 // ListContainerInstances mocks base method.
 func (m *MockEcsClient) ListContainerInstances(arg0 context.Context, arg1 *ecs.ListContainerInstancesInput, arg2 ...func(*ecs.Options)) (*ecs.ListContainerInstancesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListContainerInstances")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockEcsClientMockRecorder) ListContainerInstances(arg0, arg1 interface
 
 // ListServices mocks base method.
 func (m *MockEcsClient) ListServices(arg0 context.Context, arg1 *ecs.ListServicesInput, arg2 ...func(*ecs.Options)) (*ecs.ListServicesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListServices")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockEcsClientMockRecorder) ListServices(arg0, arg1 interface{}, arg2 .
 
 // ListServicesByNamespace mocks base method.
 func (m *MockEcsClient) ListServicesByNamespace(arg0 context.Context, arg1 *ecs.ListServicesByNamespaceInput, arg2 ...func(*ecs.Options)) (*ecs.ListServicesByNamespaceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListServicesByNamespace")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockEcsClientMockRecorder) ListServicesByNamespace(arg0, arg1 interfac
 
 // ListTagsForResource mocks base method.
 func (m *MockEcsClient) ListTagsForResource(arg0 context.Context, arg1 *ecs.ListTagsForResourceInput, arg2 ...func(*ecs.Options)) (*ecs.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockEcsClientMockRecorder) ListTagsForResource(arg0, arg1 interface{},
 
 // ListTaskDefinitionFamilies mocks base method.
 func (m *MockEcsClient) ListTaskDefinitionFamilies(arg0 context.Context, arg1 *ecs.ListTaskDefinitionFamiliesInput, arg2 ...func(*ecs.Options)) (*ecs.ListTaskDefinitionFamiliesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTaskDefinitionFamilies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockEcsClientMockRecorder) ListTaskDefinitionFamilies(arg0, arg1 inter
 
 // ListTaskDefinitions mocks base method.
 func (m *MockEcsClient) ListTaskDefinitions(arg0 context.Context, arg1 *ecs.ListTaskDefinitionsInput, arg2 ...func(*ecs.Options)) (*ecs.ListTaskDefinitionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTaskDefinitions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockEcsClientMockRecorder) ListTaskDefinitions(arg0, arg1 interface{},
 
 // ListTasks mocks base method.
 func (m *MockEcsClient) ListTasks(arg0 context.Context, arg1 *ecs.ListTasksInput, arg2 ...func(*ecs.Options)) (*ecs.ListTasksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTasks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

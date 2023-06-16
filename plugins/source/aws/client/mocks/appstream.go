@@ -37,6 +37,16 @@ func (m *MockAppstreamClient) EXPECT() *MockAppstreamClientMockRecorder {
 
 // DescribeAppBlocks mocks base method.
 func (m *MockAppstreamClient) DescribeAppBlocks(arg0 context.Context, arg1 *appstream.DescribeAppBlocksInput, arg2 ...func(*appstream.Options)) (*appstream.DescribeAppBlocksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &appstream.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAppBlocks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockAppstreamClientMockRecorder) DescribeAppBlocks(arg0, arg1 interfac
 
 // DescribeApplicationFleetAssociations mocks base method.
 func (m *MockAppstreamClient) DescribeApplicationFleetAssociations(arg0 context.Context, arg1 *appstream.DescribeApplicationFleetAssociationsInput, arg2 ...func(*appstream.Options)) (*appstream.DescribeApplicationFleetAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &appstream.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeApplicationFleetAssociations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockAppstreamClientMockRecorder) DescribeApplicationFleetAssociations(
 
 // DescribeApplications mocks base method.
 func (m *MockAppstreamClient) DescribeApplications(arg0 context.Context, arg1 *appstream.DescribeApplicationsInput, arg2 ...func(*appstream.Options)) (*appstream.DescribeApplicationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &appstream.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeApplications")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockAppstreamClientMockRecorder) DescribeApplications(arg0, arg1 inter
 
 // DescribeDirectoryConfigs mocks base method.
 func (m *MockAppstreamClient) DescribeDirectoryConfigs(arg0 context.Context, arg1 *appstream.DescribeDirectoryConfigsInput, arg2 ...func(*appstream.Options)) (*appstream.DescribeDirectoryConfigsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &appstream.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDirectoryConfigs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockAppstreamClientMockRecorder) DescribeDirectoryConfigs(arg0, arg1 i
 
 // DescribeEntitlements mocks base method.
 func (m *MockAppstreamClient) DescribeEntitlements(arg0 context.Context, arg1 *appstream.DescribeEntitlementsInput, arg2 ...func(*appstream.Options)) (*appstream.DescribeEntitlementsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &appstream.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEntitlements")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockAppstreamClientMockRecorder) DescribeEntitlements(arg0, arg1 inter
 
 // DescribeFleets mocks base method.
 func (m *MockAppstreamClient) DescribeFleets(arg0 context.Context, arg1 *appstream.DescribeFleetsInput, arg2 ...func(*appstream.Options)) (*appstream.DescribeFleetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &appstream.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFleets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockAppstreamClientMockRecorder) DescribeFleets(arg0, arg1 interface{}
 
 // DescribeImageBuilders mocks base method.
 func (m *MockAppstreamClient) DescribeImageBuilders(arg0 context.Context, arg1 *appstream.DescribeImageBuildersInput, arg2 ...func(*appstream.Options)) (*appstream.DescribeImageBuildersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &appstream.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeImageBuilders")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockAppstreamClientMockRecorder) DescribeImageBuilders(arg0, arg1 inte
 
 // DescribeImagePermissions mocks base method.
 func (m *MockAppstreamClient) DescribeImagePermissions(arg0 context.Context, arg1 *appstream.DescribeImagePermissionsInput, arg2 ...func(*appstream.Options)) (*appstream.DescribeImagePermissionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &appstream.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeImagePermissions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockAppstreamClientMockRecorder) DescribeImagePermissions(arg0, arg1 i
 
 // DescribeImages mocks base method.
 func (m *MockAppstreamClient) DescribeImages(arg0 context.Context, arg1 *appstream.DescribeImagesInput, arg2 ...func(*appstream.Options)) (*appstream.DescribeImagesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &appstream.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeImages")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockAppstreamClientMockRecorder) DescribeImages(arg0, arg1 interface{}
 
 // DescribeSessions mocks base method.
 func (m *MockAppstreamClient) DescribeSessions(arg0 context.Context, arg1 *appstream.DescribeSessionsInput, arg2 ...func(*appstream.Options)) (*appstream.DescribeSessionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &appstream.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSessions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockAppstreamClientMockRecorder) DescribeSessions(arg0, arg1 interface
 
 // DescribeStacks mocks base method.
 func (m *MockAppstreamClient) DescribeStacks(arg0 context.Context, arg1 *appstream.DescribeStacksInput, arg2 ...func(*appstream.Options)) (*appstream.DescribeStacksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &appstream.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeStacks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockAppstreamClientMockRecorder) DescribeStacks(arg0, arg1 interface{}
 
 // DescribeUsageReportSubscriptions mocks base method.
 func (m *MockAppstreamClient) DescribeUsageReportSubscriptions(arg0 context.Context, arg1 *appstream.DescribeUsageReportSubscriptionsInput, arg2 ...func(*appstream.Options)) (*appstream.DescribeUsageReportSubscriptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &appstream.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeUsageReportSubscriptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockAppstreamClientMockRecorder) DescribeUsageReportSubscriptions(arg0
 
 // DescribeUserStackAssociations mocks base method.
 func (m *MockAppstreamClient) DescribeUserStackAssociations(arg0 context.Context, arg1 *appstream.DescribeUserStackAssociationsInput, arg2 ...func(*appstream.Options)) (*appstream.DescribeUserStackAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &appstream.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeUserStackAssociations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockAppstreamClientMockRecorder) DescribeUserStackAssociations(arg0, a
 
 // DescribeUsers mocks base method.
 func (m *MockAppstreamClient) DescribeUsers(arg0 context.Context, arg1 *appstream.DescribeUsersInput, arg2 ...func(*appstream.Options)) (*appstream.DescribeUsersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &appstream.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeUsers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockAppstreamClientMockRecorder) DescribeUsers(arg0, arg1 interface{},
 
 // ListAssociatedFleets mocks base method.
 func (m *MockAppstreamClient) ListAssociatedFleets(arg0 context.Context, arg1 *appstream.ListAssociatedFleetsInput, arg2 ...func(*appstream.Options)) (*appstream.ListAssociatedFleetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &appstream.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAssociatedFleets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockAppstreamClientMockRecorder) ListAssociatedFleets(arg0, arg1 inter
 
 // ListAssociatedStacks mocks base method.
 func (m *MockAppstreamClient) ListAssociatedStacks(arg0 context.Context, arg1 *appstream.ListAssociatedStacksInput, arg2 ...func(*appstream.Options)) (*appstream.ListAssociatedStacksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &appstream.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAssociatedStacks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockAppstreamClientMockRecorder) ListAssociatedStacks(arg0, arg1 inter
 
 // ListEntitledApplications mocks base method.
 func (m *MockAppstreamClient) ListEntitledApplications(arg0 context.Context, arg1 *appstream.ListEntitledApplicationsInput, arg2 ...func(*appstream.Options)) (*appstream.ListEntitledApplicationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &appstream.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListEntitledApplications")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockAppstreamClientMockRecorder) ListEntitledApplications(arg0, arg1 i
 
 // ListTagsForResource mocks base method.
 func (m *MockAppstreamClient) ListTagsForResource(arg0 context.Context, arg1 *appstream.ListTagsForResourceInput, arg2 ...func(*appstream.Options)) (*appstream.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &appstream.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

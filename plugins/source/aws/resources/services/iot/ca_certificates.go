@@ -3,12 +3,13 @@ package iot
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func CaCertificates() *schema.Table {
@@ -25,16 +26,14 @@ func CaCertificates() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "certificates",
-				Type:     schema.TypeStringArray,
+				Type:     arrow.ListOf(arrow.BinaryTypes.String),
 				Resolver: ResolveIotCaCertificateCertificates,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CertificateArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("CertificateArn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -44,12 +43,14 @@ func fetchIotCaCertificates(ctx context.Context, meta schema.ClientMeta, parent 
 	input := iot.ListCACertificatesInput{
 		PageSize: aws.Int32(250),
 	}
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 
-	svc := c.Services().Iot
+	svc := cl.Services().Iot
 	paginator := iot.NewListCACertificatesPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -64,6 +65,8 @@ func getCaCertificate(ctx context.Context, meta schema.ClientMeta, resource *sch
 
 	output, err := svc.DescribeCACertificate(ctx, &iot.DescribeCACertificateInput{
 		CertificateId: resource.Item.(types.CACertificate).CertificateId,
+	}, func(options *iot.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -83,7 +86,9 @@ func ResolveIotCaCertificateCertificates(ctx context.Context, meta schema.Client
 	var certs []string
 	paginator := iot.NewListCertificatesByCAPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/batch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -22,7 +22,7 @@ func buildBatchComputeEnvironmentsMock(t *testing.T, ctrl *gomock.Controller) cl
 		t.Fatal(err)
 	}
 
-	m.EXPECT().DescribeComputeEnvironments(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().DescribeComputeEnvironments(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&batch.DescribeComputeEnvironmentsOutput{
 			ComputeEnvironments: []types.ComputeEnvironmentDetail{a},
 		}, nil)

@@ -14,18 +14,18 @@ This table depends on [gcp_vmmigration_sources](gcp_vmmigration_sources).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|display_name|String|
-|state|String|
-|state_time|Timestamp|
-|error|JSON|
-|create_time|Timestamp|
-|time_frame|String|
-|frame_end_time|Timestamp|
-|vm_count|Int|
-|vms|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|display_name|`utf8`|
+|state|`utf8`|
+|state_time|`timestamp[us, tz=UTC]`|
+|error|`json`|
+|create_time|`timestamp[us, tz=UTC]`|
+|time_frame|`utf8`|
+|frame_end_time|`timestamp[us, tz=UTC]`|
+|vm_count|`int64`|
+|vms|`json`|

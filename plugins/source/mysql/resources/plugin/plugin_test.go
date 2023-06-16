@@ -10,9 +10,9 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/mysql/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/cloudquery/plugin-sdk/testdata"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v2/testdata"
 	"github.com/go-sql-driver/mysql"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
@@ -130,7 +130,7 @@ func TestPlugin(t *testing.T) {
 	if err := createTable(ctx, db, testTable); err != nil {
 		t.Fatal(err)
 	}
-	data := testdata.GenTestData(testTable)
+	data := testdata.GenTestDataV1(testTable)
 	if err := insertTable(ctx, db, testTable, data); err != nil {
 		t.Fatal(err)
 	}
@@ -142,7 +142,7 @@ func TestPlugin(t *testing.T) {
 	if err := createTable(ctx, db, otherTable); err != nil {
 		t.Fatal(err)
 	}
-	otherData := testdata.GenTestData(otherTable)
+	otherData := testdata.GenTestDataV1(otherTable)
 	if err := insertTable(ctx, db, otherTable, otherData); err != nil {
 		t.Fatal(err)
 	}

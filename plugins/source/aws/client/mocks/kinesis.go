@@ -37,6 +37,16 @@ func (m *MockKinesisClient) EXPECT() *MockKinesisClientMockRecorder {
 
 // DescribeLimits mocks base method.
 func (m *MockKinesisClient) DescribeLimits(arg0 context.Context, arg1 *kinesis.DescribeLimitsInput, arg2 ...func(*kinesis.Options)) (*kinesis.DescribeLimitsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kinesis.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLimits")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockKinesisClientMockRecorder) DescribeLimits(arg0, arg1 interface{}, 
 
 // DescribeStream mocks base method.
 func (m *MockKinesisClient) DescribeStream(arg0 context.Context, arg1 *kinesis.DescribeStreamInput, arg2 ...func(*kinesis.Options)) (*kinesis.DescribeStreamOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kinesis.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeStream")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockKinesisClientMockRecorder) DescribeStream(arg0, arg1 interface{}, 
 
 // DescribeStreamConsumer mocks base method.
 func (m *MockKinesisClient) DescribeStreamConsumer(arg0 context.Context, arg1 *kinesis.DescribeStreamConsumerInput, arg2 ...func(*kinesis.Options)) (*kinesis.DescribeStreamConsumerOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kinesis.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeStreamConsumer")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockKinesisClientMockRecorder) DescribeStreamConsumer(arg0, arg1 inter
 
 // DescribeStreamSummary mocks base method.
 func (m *MockKinesisClient) DescribeStreamSummary(arg0 context.Context, arg1 *kinesis.DescribeStreamSummaryInput, arg2 ...func(*kinesis.Options)) (*kinesis.DescribeStreamSummaryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kinesis.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeStreamSummary")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockKinesisClientMockRecorder) DescribeStreamSummary(arg0, arg1 interf
 
 // GetRecords mocks base method.
 func (m *MockKinesisClient) GetRecords(arg0 context.Context, arg1 *kinesis.GetRecordsInput, arg2 ...func(*kinesis.Options)) (*kinesis.GetRecordsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kinesis.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRecords")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockKinesisClientMockRecorder) GetRecords(arg0, arg1 interface{}, arg2
 
 // GetShardIterator mocks base method.
 func (m *MockKinesisClient) GetShardIterator(arg0 context.Context, arg1 *kinesis.GetShardIteratorInput, arg2 ...func(*kinesis.Options)) (*kinesis.GetShardIteratorOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kinesis.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetShardIterator")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockKinesisClientMockRecorder) GetShardIterator(arg0, arg1 interface{}
 
 // ListShards mocks base method.
 func (m *MockKinesisClient) ListShards(arg0 context.Context, arg1 *kinesis.ListShardsInput, arg2 ...func(*kinesis.Options)) (*kinesis.ListShardsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kinesis.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListShards")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockKinesisClientMockRecorder) ListShards(arg0, arg1 interface{}, arg2
 
 // ListStreamConsumers mocks base method.
 func (m *MockKinesisClient) ListStreamConsumers(arg0 context.Context, arg1 *kinesis.ListStreamConsumersInput, arg2 ...func(*kinesis.Options)) (*kinesis.ListStreamConsumersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kinesis.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListStreamConsumers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockKinesisClientMockRecorder) ListStreamConsumers(arg0, arg1 interfac
 
 // ListStreams mocks base method.
 func (m *MockKinesisClient) ListStreams(arg0 context.Context, arg1 *kinesis.ListStreamsInput, arg2 ...func(*kinesis.Options)) (*kinesis.ListStreamsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kinesis.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListStreams")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockKinesisClientMockRecorder) ListStreams(arg0, arg1 interface{}, arg
 
 // ListTagsForStream mocks base method.
 func (m *MockKinesisClient) ListTagsForStream(arg0 context.Context, arg1 *kinesis.ListTagsForStreamInput, arg2 ...func(*kinesis.Options)) (*kinesis.ListTagsForStreamOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kinesis.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForStream")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

@@ -6,11 +6,10 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
-	"github.com/cloudquery/filetypes"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/filetypes/v3"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
 	"github.com/rs/zerolog"
 )
 

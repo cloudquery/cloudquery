@@ -57,13 +57,9 @@ func TestTables(t *testing.T) {
 			require.NoError(t, commandError)
 
 			if tc.format == "markdown" {
-				require.FileExists(t, path.Join(cqDir, "cq-docs/aws/README.md"))
-				require.FileExists(t, path.Join(cqDir, "cq-docs/gcp/README.md"))
-				require.FileExists(t, path.Join(cqDir, "cq-docs/azure/README.md"))
+				require.FileExists(t, path.Join(cqDir, "cq-docs/test/README.md"))
 			} else {
-				require.FileExists(t, path.Join(cqDir, "cq-docs/aws/__tables.json"))
-				require.FileExists(t, path.Join(cqDir, "cq-docs/gcp/__tables.json"))
-				require.FileExists(t, path.Join(cqDir, "cq-docs/azure/__tables.json"))
+				require.FileExists(t, path.Join(cqDir, "cq-docs/test/__tables.json"))
 			}
 		})
 	}

@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/kafka"
 	"github.com/aws/aws-sdk-go-v2/service/kafka/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/thoas/go-funk"
 )
 
@@ -37,7 +37,9 @@ func resolveKafkaTags(path string) schema.ColumnResolver {
 		svc := cl.Services().Kafka
 		params := kafka.ListTagsForResourceInput{ResourceArn: arn}
 
-		output, err := svc.ListTagsForResource(ctx, &params)
+		output, err := svc.ListTagsForResource(ctx, &params, func(options *kafka.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if cl.IsNotFoundError(err) {
 				return nil

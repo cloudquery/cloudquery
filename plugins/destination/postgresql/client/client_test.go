@@ -4,8 +4,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
 )
 
 func getTestConnection() string {
@@ -38,5 +38,7 @@ func TestPgPlugin(t *testing.T) {
 		destination.PluginTestSuiteTests{
 			MigrateStrategyOverwrite: strategy,
 			MigrateStrategyAppend:    strategy,
-		})
+		},
+		destination.WithTestSourceSkipMaps(),
+	)
 }

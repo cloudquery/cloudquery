@@ -1,12 +1,15 @@
 package cmd
 
 import (
+	"bytes"
 	"fmt"
+	"os/exec"
 	"path"
 	"strings"
 
-	source "github.com/cloudquery/plugin-sdk/v2/clients/source/v1"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
+	"github.com/cloudquery/cloudquery/cli/internal/plugin/managedsource"
+	"github.com/cloudquery/plugin-pb-go/pb/source/v1"
+	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
@@ -57,27 +60,39 @@ func tables(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
-
-	for _, sourceSpec := range specReader.Sources {
-		opts := []source.ClientOption{
-			source.WithLogger(log.Logger),
-			source.WithDirectory(cqDir),
+	opts := []managedsource.Option{
+		managedsource.WithLogger(log.Logger),
+		managedsource.WithDirectory(cqDir),
+	}
+	sourceClients, err := managedsource.NewClients(ctx, specReader.Sources, opts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err := sourceClients.Terminate(); err != nil {
+			fmt.Println(err)
 		}
-		sourceClient, err := source.NewClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version, opts...)
-		if err != nil {
-			return fmt.Errorf("failed to create source client. Error: %w", err)
+	}()
+	for _, sourceClient := range sourceClients {
+		outputPath := path.Join(outputDir, sourceClient.Spec.Name)
+		pbSourceClient := source.NewSourceClient(sourceClient.Conn)
+		if _, err := pbSourceClient.GenDocs(ctx, &source.GenDocs_Request{
+			Format: source.GenDocs_FORMAT(source.GenDocs_FORMAT_value[format]),
+			Path:   outputPath,
+		}); err == nil {
+			continue
 		}
-
-		outputPath := path.Join(outputDir, sourceSpec.Name)
-		fmt.Printf("Generating docs for: %s to %s\n", sourceSpec.VersionString(), outputPath)
-		err = sourceClient.GenDocs(ctx, outputPath, format)
-		if err != nil {
-			return fmt.Errorf("failed to generate docs. Error: %w", err)
+		// If we have a local path, we can fallback to running the docs command
+		if err != nil && sourceClient.LocalPath == "" {
+			return fmt.Errorf("failed to call GenDocs: %w", err)
 		}
-
-		err = sourceClient.Terminate()
-		if err != nil {
-			fmt.Println("Failed to terminate source client. Error: ", err)
+		args := []string{"doc", "--format", format, outputPath}
+		cmd := exec.CommandContext(ctx, sourceClient.LocalPath, args...)
+		var outb, errb bytes.Buffer
+		cmd.Stdout = &outb
+		cmd.Stderr = &errb
+		if err := cmd.Run(); err != nil {
+			return fmt.Errorf("failed to run source plugin %s: %w. Output: %s. Error: %s", sourceClient.LocalPath, err, outb.String(), errb.String())
 		}
 	}
 

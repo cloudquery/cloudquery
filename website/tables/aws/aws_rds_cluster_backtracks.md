@@ -14,16 +14,16 @@ This table depends on [aws_rds_clusters](aws_rds_clusters).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|db_cluster_arn (PK)|String|
-|backtrack_identifier (PK)|String|
-|backtrack_request_creation_time|Timestamp|
-|backtrack_to|Timestamp|
-|backtracked_from|Timestamp|
-|db_cluster_identifier|String|
-|status|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|db_cluster_arn (PK)|`utf8`|
+|backtrack_identifier (PK)|`utf8`|
+|backtrack_request_creation_time|`timestamp[us, tz=UTC]`|
+|backtrack_to|`timestamp[us, tz=UTC]`|
+|backtracked_from|`timestamp[us, tz=UTC]`|
+|db_cluster_identifier|`utf8`|
+|status|`utf8`|

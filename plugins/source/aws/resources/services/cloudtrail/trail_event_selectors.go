@@ -3,12 +3,13 @@ package cloudtrail
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudtrail/models"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func trailEventSelectors() *schema.Table {
@@ -24,7 +25,7 @@ func trailEventSelectors() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "trail_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 		},
@@ -33,8 +34,8 @@ func trailEventSelectors() *schema.Table {
 
 func fetchCloudtrailTrailEventSelectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(*models.CloudTrailWrapper)
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudtrail
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudtrail
 	response, err := svc.GetEventSelectors(ctx, &cloudtrail.GetEventSelectorsInput{TrailName: r.TrailARN}, func(options *cloudtrail.Options) {
 		options.Region = *r.HomeRegion
 	})

@@ -10,15 +10,15 @@ The composite primary key for this table is (**account_id**, **region**, **scope
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|scope (PK)|String|
-|properties|JSON|
-|description|String|
-|name (PK)|String|
-|vendor_name (PK)|String|
-|versioning_supported|Bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
+|scope (PK)|`utf8`|
+|properties|`json`|
+|description|`utf8`|
+|name (PK)|`utf8`|
+|vendor_name (PK)|`utf8`|
+|versioning_supported|`bool`|

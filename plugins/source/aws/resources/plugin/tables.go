@@ -4,6 +4,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/accessanalyzer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/account"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/acm"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/acmpca"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/amp"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/amplify"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigateway"
@@ -28,6 +29,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cognito"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/computeoptimizer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/config"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/costexplorer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dax"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/directconnect"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dms"
@@ -67,6 +69,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/mq"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/mwaa"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/neptune"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/networkfirewall"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/organizations"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/qldb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/quicksight"
@@ -99,7 +102,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wafv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/workspaces"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/xray"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func tables() []*schema.Table {
@@ -108,6 +111,7 @@ func tables() []*schema.Table {
 		account.AlternateContacts(),
 		account.Contacts(),
 		acm.Certificates(),
+		acmpca.CertificateAuthorities(),
 		amp.Workspaces(),
 		amplify.Apps(),
 		apigateway.ApiKeys(),
@@ -147,6 +151,7 @@ func tables() []*schema.Table {
 		autoscalingplans.Plans(),
 		backup.GlobalSettings(),
 		backup.Plans(),
+		backup.ProtectedResources(),
 		backup.RegionSettings(),
 		backup.Vaults(),
 		batch.JobQueues(),
@@ -160,6 +165,7 @@ func tables() []*schema.Table {
 		cloudtrail.Events(),
 		cloudtrail.Trails(),
 		cloudwatch.Alarms(),
+		cloudwatch.Metrics(),
 		cloudwatchlogs.LogGroups(),
 		cloudwatchlogs.MetricFilters(),
 		cloudwatchlogs.ResourcePolicies(),
@@ -175,9 +181,14 @@ func tables() []*schema.Table {
 		computeoptimizer.EnrollmentStatuses(),
 		computeoptimizer.LambdaFunctionsRecommendations(),
 		config.ConfigRules(),
+		config.ConfigurationAggregators(),
 		config.ConfigurationRecorders(),
 		config.ConformancePacks(),
 		config.DeliveryChannels(),
+		config.RetentionConfigurations(),
+		costexplorer.ThirtyDayCost(),
+		costexplorer.ThirtyDayCostForecast(),
+		costexplorer.CustomCost(),
 		dax.Clusters(),
 		directconnect.Connections(),
 		directconnect.Gateways(),
@@ -214,6 +225,7 @@ func tables() []*schema.Table {
 		ec2.FlowLogs(),
 		ec2.Hosts(),
 		ec2.Images(),
+		ec2.InstanceConnectEndpoints(),
 		ec2.Instances(),
 		ec2.InstanceStatuses(),
 		ec2.InstanceTypes(),
@@ -245,6 +257,7 @@ func tables() []*schema.Table {
 		ecrpublic.Repositories(),
 		ecs.Clusters(),
 		ecs.TaskDefinitions(),
+		efs.AccessPoints(),
 		efs.Filesystems(),
 		eks.Clusters(),
 		elasticache.Clusters(),
@@ -374,6 +387,8 @@ func tables() []*schema.Table {
 		neptune.GlobalClusters(),
 		neptune.Instances(),
 		neptune.SubnetGroups(),
+		networkfirewall.FirewallPolicies(),
+		networkfirewall.RuleGroups(),
 		organizations.Accounts(),
 		organizations.DelegatedAdministrators(),
 		organizations.OrganizationalUnits(),
@@ -438,7 +453,9 @@ func tables() []*schema.Table {
 		scheduler.ScheduleGroups(),
 		scheduler.Schedules(),
 		secretsmanager.Secrets(),
+		securityhub.EnabledStandards(),
 		securityhub.Findings(),
+		securityhub.Hubs(),
 		servicecatalog.Portfolios(),
 		servicecatalog.Products(),
 		servicecatalog.ProvisionedProducts(),

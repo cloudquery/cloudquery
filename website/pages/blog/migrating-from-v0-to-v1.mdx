@@ -44,9 +44,9 @@ spec:
   ## Plugin path. For official plugins, this should be in the format "cloudquery/<name>", e.g. "cloudquery/aws"
   path: "cloudquery/aws"
  
-  ## Optional. Default: ["*"] - all tables. We recommend to specify specific tables that you need to sync as this
-  ## will reduce the amount of data synced and improve performance.
-  # tables: ["*"]
+  ## Required. You can use ["*"] to sync all tables or specify specific tables. Please note that syncing all tables can be slow
+  ## See all tables: https://www.cloudquery.io/docs/plugins/sources/aws/tables
+  tables: ["aws_s3_buckets"]
  
   ## Required. all destinations you want to sync data to.
   destinations: ["postgresql"]

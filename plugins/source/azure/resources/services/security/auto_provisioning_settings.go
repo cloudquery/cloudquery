@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func AutoProvisioningSettings() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_security_auto_provisioning_settings",
-		Resolver:    fetchAutoProvisioningSettings,
-		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/auto-provisioning-settings/list?tabs=HTTP#autoprovisioningsetting",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_auto_provisioning_settings", client.Namespacemicrosoft_security),
-		Transform:   transformers.TransformWithStruct(&armsecurity.AutoProvisioningSetting{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_security_auto_provisioning_settings",
+		Resolver:             fetchAutoProvisioningSettings,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/auto-provisioning-settings/list?tabs=HTTP#autoprovisioningsetting",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_security_auto_provisioning_settings", client.Namespacemicrosoft_security),
+		Transform:            transformers.TransformWithStruct(&armsecurity.AutoProvisioningSetting{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

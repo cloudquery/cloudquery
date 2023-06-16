@@ -3,12 +3,15 @@ package docdb
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/docdb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func instances() *schema.Table {
@@ -24,16 +27,14 @@ func instances() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveDBInstanceTags,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DBInstanceArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("DBInstanceArn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -41,14 +42,16 @@ func instances() *schema.Table {
 
 func fetchDocdbInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	item := parent.Item.(types.DBCluster)
-	c := meta.(*client.Client)
-	svc := c.Services().Docdb
+	cl := meta.(*client.Client)
+	svc := cl.Services().Docdb
 
 	input := &docdb.DescribeDBInstancesInput{Filters: []types.Filter{{Name: aws.String("db-cluster-id"), Values: []string{*item.DBClusterIdentifier}}}}
 
 	p := docdb.NewDescribeDBInstancesPaginator(svc, input)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *docdb.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

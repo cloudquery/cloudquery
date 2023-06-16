@@ -3,12 +3,15 @@ package glue
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Registries() *schema.Table {
@@ -24,16 +27,14 @@ func Registries() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveGlueRegistryTags,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("RegistryArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("RegistryArn"),
+				PrimaryKey: true,
 			},
 		},
 
@@ -50,7 +51,9 @@ func fetchGlueRegistries(ctx context.Context, meta schema.ClientMeta, parent *sc
 		MaxResults: aws.Int32(100),
 	})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *glue.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -65,6 +68,8 @@ func resolveGlueRegistryTags(ctx context.Context, meta schema.ClientMeta, resour
 	r := resource.Item.(types.RegistryListItem)
 	result, err := svc.GetTags(ctx, &glue.GetTagsInput{
 		ResourceArn: r.RegistryArn,
+	}, func(options *glue.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {

@@ -35,8 +35,48 @@ func (m *MockTimestreamwriteClient) EXPECT() *MockTimestreamwriteClientMockRecor
 	return m.recorder
 }
 
+// DescribeBatchLoadTask mocks base method.
+func (m *MockTimestreamwriteClient) DescribeBatchLoadTask(arg0 context.Context, arg1 *timestreamwrite.DescribeBatchLoadTaskInput, arg2 ...func(*timestreamwrite.Options)) (*timestreamwrite.DescribeBatchLoadTaskOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &timestreamwrite.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeBatchLoadTask")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeBatchLoadTask", varargs...)
+	ret0, _ := ret[0].(*timestreamwrite.DescribeBatchLoadTaskOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeBatchLoadTask indicates an expected call of DescribeBatchLoadTask.
+func (mr *MockTimestreamwriteClientMockRecorder) DescribeBatchLoadTask(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeBatchLoadTask", reflect.TypeOf((*MockTimestreamwriteClient)(nil).DescribeBatchLoadTask), varargs...)
+}
+
 // DescribeDatabase mocks base method.
 func (m *MockTimestreamwriteClient) DescribeDatabase(arg0 context.Context, arg1 *timestreamwrite.DescribeDatabaseInput, arg2 ...func(*timestreamwrite.Options)) (*timestreamwrite.DescribeDatabaseOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &timestreamwrite.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDatabase")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +97,16 @@ func (mr *MockTimestreamwriteClientMockRecorder) DescribeDatabase(arg0, arg1 int
 
 // DescribeEndpoints mocks base method.
 func (m *MockTimestreamwriteClient) DescribeEndpoints(arg0 context.Context, arg1 *timestreamwrite.DescribeEndpointsInput, arg2 ...func(*timestreamwrite.Options)) (*timestreamwrite.DescribeEndpointsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &timestreamwrite.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEndpoints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +127,16 @@ func (mr *MockTimestreamwriteClientMockRecorder) DescribeEndpoints(arg0, arg1 in
 
 // DescribeTable mocks base method.
 func (m *MockTimestreamwriteClient) DescribeTable(arg0 context.Context, arg1 *timestreamwrite.DescribeTableInput, arg2 ...func(*timestreamwrite.Options)) (*timestreamwrite.DescribeTableOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &timestreamwrite.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTable")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -95,8 +155,48 @@ func (mr *MockTimestreamwriteClientMockRecorder) DescribeTable(arg0, arg1 interf
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTable", reflect.TypeOf((*MockTimestreamwriteClient)(nil).DescribeTable), varargs...)
 }
 
+// ListBatchLoadTasks mocks base method.
+func (m *MockTimestreamwriteClient) ListBatchLoadTasks(arg0 context.Context, arg1 *timestreamwrite.ListBatchLoadTasksInput, arg2 ...func(*timestreamwrite.Options)) (*timestreamwrite.ListBatchLoadTasksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &timestreamwrite.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBatchLoadTasks")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListBatchLoadTasks", varargs...)
+	ret0, _ := ret[0].(*timestreamwrite.ListBatchLoadTasksOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListBatchLoadTasks indicates an expected call of ListBatchLoadTasks.
+func (mr *MockTimestreamwriteClientMockRecorder) ListBatchLoadTasks(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListBatchLoadTasks", reflect.TypeOf((*MockTimestreamwriteClient)(nil).ListBatchLoadTasks), varargs...)
+}
+
 // ListDatabases mocks base method.
 func (m *MockTimestreamwriteClient) ListDatabases(arg0 context.Context, arg1 *timestreamwrite.ListDatabasesInput, arg2 ...func(*timestreamwrite.Options)) (*timestreamwrite.ListDatabasesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &timestreamwrite.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDatabases")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +217,16 @@ func (mr *MockTimestreamwriteClientMockRecorder) ListDatabases(arg0, arg1 interf
 
 // ListTables mocks base method.
 func (m *MockTimestreamwriteClient) ListTables(arg0 context.Context, arg1 *timestreamwrite.ListTablesInput, arg2 ...func(*timestreamwrite.Options)) (*timestreamwrite.ListTablesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &timestreamwrite.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTables")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +247,16 @@ func (mr *MockTimestreamwriteClientMockRecorder) ListTables(arg0, arg1 interface
 
 // ListTagsForResource mocks base method.
 func (m *MockTimestreamwriteClient) ListTagsForResource(arg0 context.Context, arg1 *timestreamwrite.ListTagsForResourceInput, arg2 ...func(*timestreamwrite.Options)) (*timestreamwrite.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &timestreamwrite.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

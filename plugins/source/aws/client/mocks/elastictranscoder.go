@@ -37,6 +37,16 @@ func (m *MockElastictranscoderClient) EXPECT() *MockElastictranscoderClientMockR
 
 // ListJobsByPipeline mocks base method.
 func (m *MockElastictranscoderClient) ListJobsByPipeline(arg0 context.Context, arg1 *elastictranscoder.ListJobsByPipelineInput, arg2 ...func(*elastictranscoder.Options)) (*elastictranscoder.ListJobsByPipelineOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elastictranscoder.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListJobsByPipeline")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockElastictranscoderClientMockRecorder) ListJobsByPipeline(arg0, arg1
 
 // ListJobsByStatus mocks base method.
 func (m *MockElastictranscoderClient) ListJobsByStatus(arg0 context.Context, arg1 *elastictranscoder.ListJobsByStatusInput, arg2 ...func(*elastictranscoder.Options)) (*elastictranscoder.ListJobsByStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elastictranscoder.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListJobsByStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockElastictranscoderClientMockRecorder) ListJobsByStatus(arg0, arg1 i
 
 // ListPipelines mocks base method.
 func (m *MockElastictranscoderClient) ListPipelines(arg0 context.Context, arg1 *elastictranscoder.ListPipelinesInput, arg2 ...func(*elastictranscoder.Options)) (*elastictranscoder.ListPipelinesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elastictranscoder.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPipelines")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockElastictranscoderClientMockRecorder) ListPipelines(arg0, arg1 inte
 
 // ListPresets mocks base method.
 func (m *MockElastictranscoderClient) ListPresets(arg0 context.Context, arg1 *elastictranscoder.ListPresetsInput, arg2 ...func(*elastictranscoder.Options)) (*elastictranscoder.ListPresetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elastictranscoder.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPresets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

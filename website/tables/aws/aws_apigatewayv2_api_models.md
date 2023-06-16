@@ -14,18 +14,18 @@ This table depends on [aws_apigatewayv2_apis](aws_apigatewayv2_apis).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region|String|
-|api_arn|String|
-|api_id|String|
-|arn (PK)|String|
-|model_template|String|
-|name|String|
-|content_type|String|
-|description|String|
-|model_id|String|
-|schema|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region|`utf8`|
+|api_arn|`utf8`|
+|api_id|`utf8`|
+|arn (PK)|`utf8`|
+|model_template|`utf8`|
+|name|`utf8`|
+|content_type|`utf8`|
+|description|`utf8`|
+|model_id|`utf8`|
+|schema|`utf8`|

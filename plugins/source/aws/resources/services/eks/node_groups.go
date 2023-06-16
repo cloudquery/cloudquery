@@ -3,11 +3,12 @@ package eks
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/eks"
 	"github.com/aws/aws-sdk-go-v2/service/eks/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func nodeGroups() *schema.Table {
@@ -23,12 +24,10 @@ func nodeGroups() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("NodegroupArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("NodegroupArn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -36,11 +35,13 @@ func nodeGroups() *schema.Table {
 
 func fetchNodeGroups(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, res chan<- any) error {
 	cluster := resource.Item.(*types.Cluster)
-	c := meta.(*client.Client)
-	svc := c.Services().Eks
+	cl := meta.(*client.Client)
+	svc := cl.Services().Eks
 	paginator := eks.NewListNodegroupsPaginator(svc, &eks.ListNodegroupsInput{ClusterName: cluster.Name})
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(options *eks.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -50,14 +51,16 @@ func fetchNodeGroups(ctx context.Context, meta schema.ClientMeta, resource *sche
 }
 
 func getNodeGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Eks
+	cl := meta.(*client.Client)
+	svc := cl.Services().Eks
 	name := resource.Item.(string)
 	cluster := resource.Parent.Item.(*types.Cluster)
 	output, err := svc.DescribeNodegroup(
 		ctx, &eks.DescribeNodegroupInput{
 			ClusterName:   cluster.Name,
-			NodegroupName: &name})
+			NodegroupName: &name}, func(options *eks.Options) {
+			options.Region = cl.Region
+		})
 	if err != nil {
 		return err
 	}

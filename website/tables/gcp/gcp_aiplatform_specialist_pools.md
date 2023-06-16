@@ -14,14 +14,14 @@ This table depends on [gcp_aiplatform_specialistpool_locations](gcp_aiplatform_s
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|display_name|String|
-|specialist_managers_count|Int|
-|specialist_manager_emails|StringArray|
-|pending_data_labeling_jobs|StringArray|
-|specialist_worker_emails|StringArray|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|display_name|`utf8`|
+|specialist_managers_count|`int64`|
+|specialist_manager_emails|`list<item: utf8, nullable>`|
+|pending_data_labeling_jobs|`list<item: utf8, nullable>`|
+|specialist_worker_emails|`list<item: utf8, nullable>`|

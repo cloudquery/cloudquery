@@ -10,26 +10,26 @@ The composite primary key for this table is (**account_id**, **id**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|business|JSON|
-|canceled_time|Timestamp|
-|client_business|JSON|
-|cooldown_start_time|Timestamp|
-|created_by|JSON|
-|created_time|Timestamp|
-|description|String|
-|end_time|Timestamp|
-|id (PK)|String|
-|measurement_contact|JSON|
-|name|String|
-|observation_end_time|Timestamp|
-|results_first_available_date|String|
-|sales_contact|JSON|
-|start_time|Timestamp|
-|type|String|
-|updated_by|JSON|
-|updated_time|Timestamp|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|business|`json`|
+|canceled_time|`timestamp[us, tz=UTC]`|
+|client_business|`json`|
+|cooldown_start_time|`timestamp[us, tz=UTC]`|
+|created_by|`json`|
+|created_time|`timestamp[us, tz=UTC]`|
+|description|`utf8`|
+|end_time|`timestamp[us, tz=UTC]`|
+|id (PK)|`utf8`|
+|measurement_contact|`json`|
+|name|`utf8`|
+|observation_end_time|`timestamp[us, tz=UTC]`|
+|results_first_available_date|`utf8`|
+|sales_contact|`json`|
+|start_time|`timestamp[us, tz=UTC]`|
+|type|`utf8`|
+|updated_by|`json`|
+|updated_time|`timestamp[us, tz=UTC]`|

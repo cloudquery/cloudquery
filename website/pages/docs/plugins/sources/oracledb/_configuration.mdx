@@ -4,6 +4,8 @@ spec:
   name: "oracledb"
   path: "cloudquery/oracledb"
   version: "VERSION_SOURCE_ORACLEDB"
+  concurrency: 10000
+  tables: ["*"]
   destinations: ["DESTINATION_NAME"]
   spec:
     # To use the default port (1521) use `server:` instead of `server:port`

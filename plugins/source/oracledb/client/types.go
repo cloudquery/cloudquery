@@ -1,10 +1,45 @@
 package client
 
 import (
+	"strconv"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 )
+
+const defaultPrecision = 38
+const defaultScale = 0
+
+func getValue(str string, defaultValue int32) int32 {
+	val, err := strconv.ParseInt(str, 10, 32)
+	if err != nil {
+		return defaultValue
+	}
+	return int32(val)
+}
+
+func getPrecisionAndScale(dataType string) (precision, scale int32) {
+	str := strings.TrimPrefix(dataType, "number")
+	if str == "" {
+		return defaultPrecision, defaultScale
+	}
+	str = strings.TrimPrefix(str, "(")
+	str = strings.TrimSuffix(str, ")")
+	parts := strings.Split(str, ",")
+
+	switch len(parts) {
+	case 1:
+		precision = getValue(parts[0], defaultPrecision)
+		scale = defaultScale
+	case 2:
+		precision = getValue(parts[0], defaultPrecision)
+		scale = getValue(parts[1], defaultScale)
+	default:
+		precision = defaultPrecision
+		scale = defaultScale
+	}
+	return precision, scale
+}
 
 func SQLType(t schema.ValueType) string {
 	switch t {
@@ -42,6 +77,14 @@ func SchemaType(tableName string, columnName string, dataType string) schema.Val
 		return schema.TypeTimestamp
 	}
 
+	if strings.HasPrefix(dataType, "number") {
+		_, scale := getPrecisionAndScale(dataType)
+		if scale == 0 {
+			return schema.TypeInt
+		}
+		return schema.TypeFloat
+	}
+
 	switch dataType {
 	case "raw(16)":
 		return schema.TypeUUID
@@ -51,8 +94,6 @@ func SchemaType(tableName string, columnName string, dataType string) schema.Val
 		return schema.TypeFloat
 	case "binary":
 		return schema.TypeByteArray
-	case "number":
-		return schema.TypeInt
 	case "blob", "raw", "long raw":
 		return schema.TypeByteArray
 	}

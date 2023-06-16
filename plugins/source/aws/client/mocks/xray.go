@@ -37,6 +37,16 @@ func (m *MockXrayClient) EXPECT() *MockXrayClientMockRecorder {
 
 // BatchGetTraces mocks base method.
 func (m *MockXrayClient) BatchGetTraces(arg0 context.Context, arg1 *xray.BatchGetTracesInput, arg2 ...func(*xray.Options)) (*xray.BatchGetTracesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &xray.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetTraces")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockXrayClientMockRecorder) BatchGetTraces(arg0, arg1 interface{}, arg
 
 // GetEncryptionConfig mocks base method.
 func (m *MockXrayClient) GetEncryptionConfig(arg0 context.Context, arg1 *xray.GetEncryptionConfigInput, arg2 ...func(*xray.Options)) (*xray.GetEncryptionConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &xray.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEncryptionConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockXrayClientMockRecorder) GetEncryptionConfig(arg0, arg1 interface{}
 
 // GetGroup mocks base method.
 func (m *MockXrayClient) GetGroup(arg0 context.Context, arg1 *xray.GetGroupInput, arg2 ...func(*xray.Options)) (*xray.GetGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &xray.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockXrayClientMockRecorder) GetGroup(arg0, arg1 interface{}, arg2 ...i
 
 // GetGroups mocks base method.
 func (m *MockXrayClient) GetGroups(arg0 context.Context, arg1 *xray.GetGroupsInput, arg2 ...func(*xray.Options)) (*xray.GetGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &xray.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockXrayClientMockRecorder) GetGroups(arg0, arg1 interface{}, arg2 ...
 
 // GetInsight mocks base method.
 func (m *MockXrayClient) GetInsight(arg0 context.Context, arg1 *xray.GetInsightInput, arg2 ...func(*xray.Options)) (*xray.GetInsightOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &xray.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInsight")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockXrayClientMockRecorder) GetInsight(arg0, arg1 interface{}, arg2 ..
 
 // GetInsightEvents mocks base method.
 func (m *MockXrayClient) GetInsightEvents(arg0 context.Context, arg1 *xray.GetInsightEventsInput, arg2 ...func(*xray.Options)) (*xray.GetInsightEventsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &xray.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInsightEvents")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockXrayClientMockRecorder) GetInsightEvents(arg0, arg1 interface{}, a
 
 // GetInsightImpactGraph mocks base method.
 func (m *MockXrayClient) GetInsightImpactGraph(arg0 context.Context, arg1 *xray.GetInsightImpactGraphInput, arg2 ...func(*xray.Options)) (*xray.GetInsightImpactGraphOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &xray.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInsightImpactGraph")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockXrayClientMockRecorder) GetInsightImpactGraph(arg0, arg1 interface
 
 // GetInsightSummaries mocks base method.
 func (m *MockXrayClient) GetInsightSummaries(arg0 context.Context, arg1 *xray.GetInsightSummariesInput, arg2 ...func(*xray.Options)) (*xray.GetInsightSummariesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &xray.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInsightSummaries")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockXrayClientMockRecorder) GetInsightSummaries(arg0, arg1 interface{}
 
 // GetSamplingRules mocks base method.
 func (m *MockXrayClient) GetSamplingRules(arg0 context.Context, arg1 *xray.GetSamplingRulesInput, arg2 ...func(*xray.Options)) (*xray.GetSamplingRulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &xray.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSamplingRules")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockXrayClientMockRecorder) GetSamplingRules(arg0, arg1 interface{}, a
 
 // GetSamplingStatisticSummaries mocks base method.
 func (m *MockXrayClient) GetSamplingStatisticSummaries(arg0 context.Context, arg1 *xray.GetSamplingStatisticSummariesInput, arg2 ...func(*xray.Options)) (*xray.GetSamplingStatisticSummariesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &xray.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSamplingStatisticSummaries")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockXrayClientMockRecorder) GetSamplingStatisticSummaries(arg0, arg1 i
 
 // GetSamplingTargets mocks base method.
 func (m *MockXrayClient) GetSamplingTargets(arg0 context.Context, arg1 *xray.GetSamplingTargetsInput, arg2 ...func(*xray.Options)) (*xray.GetSamplingTargetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &xray.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSamplingTargets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockXrayClientMockRecorder) GetSamplingTargets(arg0, arg1 interface{},
 
 // GetServiceGraph mocks base method.
 func (m *MockXrayClient) GetServiceGraph(arg0 context.Context, arg1 *xray.GetServiceGraphInput, arg2 ...func(*xray.Options)) (*xray.GetServiceGraphOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &xray.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetServiceGraph")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockXrayClientMockRecorder) GetServiceGraph(arg0, arg1 interface{}, ar
 
 // GetTimeSeriesServiceStatistics mocks base method.
 func (m *MockXrayClient) GetTimeSeriesServiceStatistics(arg0 context.Context, arg1 *xray.GetTimeSeriesServiceStatisticsInput, arg2 ...func(*xray.Options)) (*xray.GetTimeSeriesServiceStatisticsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &xray.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTimeSeriesServiceStatistics")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockXrayClientMockRecorder) GetTimeSeriesServiceStatistics(arg0, arg1 
 
 // GetTraceGraph mocks base method.
 func (m *MockXrayClient) GetTraceGraph(arg0 context.Context, arg1 *xray.GetTraceGraphInput, arg2 ...func(*xray.Options)) (*xray.GetTraceGraphOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &xray.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTraceGraph")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockXrayClientMockRecorder) GetTraceGraph(arg0, arg1 interface{}, arg2
 
 // GetTraceSummaries mocks base method.
 func (m *MockXrayClient) GetTraceSummaries(arg0 context.Context, arg1 *xray.GetTraceSummariesInput, arg2 ...func(*xray.Options)) (*xray.GetTraceSummariesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &xray.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTraceSummaries")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockXrayClientMockRecorder) GetTraceSummaries(arg0, arg1 interface{}, 
 
 // ListResourcePolicies mocks base method.
 func (m *MockXrayClient) ListResourcePolicies(arg0 context.Context, arg1 *xray.ListResourcePoliciesInput, arg2 ...func(*xray.Options)) (*xray.ListResourcePoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &xray.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListResourcePolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockXrayClientMockRecorder) ListResourcePolicies(arg0, arg1 interface{
 
 // ListTagsForResource mocks base method.
 func (m *MockXrayClient) ListTagsForResource(arg0 context.Context, arg1 *xray.ListTagsForResourceInput, arg2 ...func(*xray.Options)) (*xray.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &xray.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

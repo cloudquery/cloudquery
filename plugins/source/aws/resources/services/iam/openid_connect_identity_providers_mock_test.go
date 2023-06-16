@@ -7,7 +7,7 @@ import (
 	iamTypes "github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -18,7 +18,7 @@ func buildIamOpenIDConnectProviders(t *testing.T, ctrl *gomock.Controller) clien
 	if err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListOpenIDConnectProviders(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListOpenIDConnectProviders(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.ListOpenIDConnectProvidersOutput{
 			OpenIDConnectProviderList: []iamTypes.OpenIDConnectProviderListEntry{l},
 		}, nil)
@@ -28,7 +28,7 @@ func buildIamOpenIDConnectProviders(t *testing.T, ctrl *gomock.Controller) clien
 	if err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().GetOpenIDConnectProvider(gomock.Any(), gomock.Any()).Return(&p, nil)
+	m.EXPECT().GetOpenIDConnectProvider(gomock.Any(), gomock.Any(), gomock.Any()).Return(&p, nil)
 
 	return client.Services{
 		Iam: m,

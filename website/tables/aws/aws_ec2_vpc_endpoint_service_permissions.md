@@ -14,14 +14,14 @@ This table depends on [aws_ec2_vpc_endpoint_services](aws_ec2_vpc_endpoint_servi
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region|String|
-|tags|JSON|
-|principal|String|
-|principal_type|String|
-|service_id (PK)|String|
-|service_permission_id (PK)|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region|`utf8`|
+|tags|`json`|
+|principal|`utf8`|
+|principal_type|`utf8`|
+|service_id (PK)|`utf8`|
+|service_permission_id (PK)|`utf8`|

@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/amp"
 	"github.com/aws/aws-sdk-go-v2/service/amp/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -16,7 +16,7 @@ func buildRuleGroupsNamespaces(t *testing.T, m *mocks.MockAmpClient) {
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListRuleGroupsNamespaces(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListRuleGroupsNamespaces(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&amp.ListRuleGroupsNamespacesOutput{
 			RuleGroupsNamespaces: []types.RuleGroupsNamespaceSummary{summary},
 		},
@@ -28,7 +28,7 @@ func buildRuleGroupsNamespaces(t *testing.T, m *mocks.MockAmpClient) {
 		t.Fatal(err)
 	}
 
-	m.EXPECT().DescribeRuleGroupsNamespace(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().DescribeRuleGroupsNamespace(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&amp.DescribeRuleGroupsNamespaceOutput{
 			RuleGroupsNamespace: &description,
 		},

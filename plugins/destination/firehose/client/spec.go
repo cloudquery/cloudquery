@@ -4,14 +4,12 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
-	"github.com/cloudquery/filetypes"
 )
 
 type Spec struct {
 	StreamARN  string `json:"stream_arn,omitempty"`
 	NoRotate   bool   `json:"no_rotate,omitempty"`
 	MaxRetries *int   `json:"max_retries,omitempty"`
-	*filetypes.FileSpec
 }
 
 func (s *Spec) SetDefaults() {
@@ -32,6 +30,5 @@ func (s *Spec) Validate() error {
 	if parsedARN.Service != "firehose" {
 		return fmt.Errorf("kinesis firehose Stream ARN is invalid")
 	}
-
 	return nil
 }

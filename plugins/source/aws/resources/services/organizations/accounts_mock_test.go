@@ -7,7 +7,7 @@ import (
 	organizationsTypes "github.com/aws/aws-sdk-go-v2/service/organizations/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -19,7 +19,7 @@ func buildOrganizationsAccounts(t *testing.T, ctrl *gomock.Controller) client.Se
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListAccounts(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListAccounts(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&organizations.ListAccountsOutput{
 			Accounts: []organizationsTypes.Account{g},
 		}, nil)
@@ -40,11 +40,18 @@ func buildOrganizationsAccounts(t *testing.T, ctrl *gomock.Controller) client.Se
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListDelegatedServicesForAccount(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListDelegatedServicesForAccount(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&organizations.ListDelegatedServicesForAccountOutput{
 			DelegatedServices: []organizationsTypes.DelegatedService{ds},
 		}, nil)
-
+	p := organizationsTypes.Parent{}
+	if err := faker.FakeObject(&p); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListParents(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&organizations.ListParentsOutput{
+			Parents: []organizationsTypes.Parent{p},
+		}, nil)
 	return client.Services{
 		Organizations: m,
 	}

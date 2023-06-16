@@ -37,6 +37,16 @@ func (m *MockApplicationautoscalingClient) EXPECT() *MockApplicationautoscalingC
 
 // DescribeScalableTargets mocks base method.
 func (m *MockApplicationautoscalingClient) DescribeScalableTargets(arg0 context.Context, arg1 *applicationautoscaling.DescribeScalableTargetsInput, arg2 ...func(*applicationautoscaling.Options)) (*applicationautoscaling.DescribeScalableTargetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &applicationautoscaling.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeScalableTargets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockApplicationautoscalingClientMockRecorder) DescribeScalableTargets(
 
 // DescribeScalingActivities mocks base method.
 func (m *MockApplicationautoscalingClient) DescribeScalingActivities(arg0 context.Context, arg1 *applicationautoscaling.DescribeScalingActivitiesInput, arg2 ...func(*applicationautoscaling.Options)) (*applicationautoscaling.DescribeScalingActivitiesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &applicationautoscaling.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeScalingActivities")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockApplicationautoscalingClientMockRecorder) DescribeScalingActivitie
 
 // DescribeScalingPolicies mocks base method.
 func (m *MockApplicationautoscalingClient) DescribeScalingPolicies(arg0 context.Context, arg1 *applicationautoscaling.DescribeScalingPoliciesInput, arg2 ...func(*applicationautoscaling.Options)) (*applicationautoscaling.DescribeScalingPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &applicationautoscaling.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeScalingPolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockApplicationautoscalingClientMockRecorder) DescribeScalingPolicies(
 
 // DescribeScheduledActions mocks base method.
 func (m *MockApplicationautoscalingClient) DescribeScheduledActions(arg0 context.Context, arg1 *applicationautoscaling.DescribeScheduledActionsInput, arg2 ...func(*applicationautoscaling.Options)) (*applicationautoscaling.DescribeScheduledActionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &applicationautoscaling.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeScheduledActions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -113,4 +153,34 @@ func (mr *MockApplicationautoscalingClientMockRecorder) DescribeScheduledActions
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeScheduledActions", reflect.TypeOf((*MockApplicationautoscalingClient)(nil).DescribeScheduledActions), varargs...)
+}
+
+// ListTagsForResource mocks base method.
+func (m *MockApplicationautoscalingClient) ListTagsForResource(arg0 context.Context, arg1 *applicationautoscaling.ListTagsForResourceInput, arg2 ...func(*applicationautoscaling.Options)) (*applicationautoscaling.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &applicationautoscaling.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListTagsForResource", varargs...)
+	ret0, _ := ret[0].(*applicationautoscaling.ListTagsForResourceOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTagsForResource indicates an expected call of ListTagsForResource.
+func (mr *MockApplicationautoscalingClientMockRecorder) ListTagsForResource(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTagsForResource", reflect.TypeOf((*MockApplicationautoscalingClient)(nil).ListTagsForResource), varargs...)
 }

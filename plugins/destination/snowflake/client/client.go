@@ -2,13 +2,12 @@ package client
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
 	"github.com/rs/zerolog"
-
-	"database/sql"
 
 	"github.com/snowflakedb/gosnowflake"
 )
@@ -62,7 +61,7 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	return c, nil
 }
 
-func (c *Client) Close(ctx context.Context) error {
+func (c *Client) Close(context.Context) error {
 	var err error
 	if c.db == nil {
 		return fmt.Errorf("client already closed or not initialized")

@@ -13,15 +13,17 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/floating_ips"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/images"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/keys"
+	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/load_balancers"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/monitoring"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/projects"
+	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/regions"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/registries"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/sizes"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/snapshots"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/spaces"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/storage"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/vpcs"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func Tables() []*schema.Table {
@@ -39,7 +41,9 @@ func Tables() []*schema.Table {
 		floating_ips.FloatingIps(),
 		images.Images(),
 		keys.Keys(),
+		load_balancers.LoadBalancers(),
 		projects.Projects(),
+		regions.Regions(),
 		registries.Registries(),
 		sizes.Sizes(),
 		snapshots.Snapshots(),

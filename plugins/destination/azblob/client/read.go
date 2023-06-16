@@ -1,15 +1,18 @@
 package client
 
 import (
+	"bytes"
 	"context"
 	"fmt"
+	"io"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
+func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
 	if !c.pluginSpec.NoRotate {
-		return fmt.Errorf("reading is not supported when no_rotate is false. Table: %q; Source: %q", table.Name, sourceName)
+		return fmt.Errorf("reading is not supported when `no_rotate` is false. Table: %q; Source: %q", table.Name, sourceName)
 	}
 	name := fmt.Sprintf("%s/%s.%s", c.pluginSpec.Path, table.Name, c.pluginSpec.Format)
 
@@ -18,6 +21,10 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		return err
 	}
 	defer response.Body.Close()
-
-	return c.Client.Read(response.Body, table, sourceName, res)
+	b, err := io.ReadAll(response.Body)
+	if err != nil {
+		return err
+	}
+	byteReader := bytes.NewReader(b)
+	return c.Client.Read(byteReader, table, sourceName, res)
 }

@@ -1,7 +1,7 @@
 name: 🔄 New Source Plugin
 description: Request a new source plugin
 title: "feat: Add a <plugin-name> source plugin"
-labels: [new-source-plugin, needs-triage]
+labels: [new-source-plugin]
 body:
   - type: textarea
     id: description

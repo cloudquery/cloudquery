@@ -14,18 +14,18 @@ This table depends on [aws_apigatewayv2_api_integrations](aws_apigatewayv2_api_i
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region|String|
-|api_integration_arn|String|
-|integration_id|String|
-|arn (PK)|String|
-|integration_response_key|String|
-|content_handling_strategy|String|
-|integration_response_id|String|
-|response_parameters|JSON|
-|response_templates|JSON|
-|template_selection_expression|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region|`utf8`|
+|api_integration_arn|`utf8`|
+|integration_id|`utf8`|
+|arn (PK)|`utf8`|
+|integration_response_key|`utf8`|
+|content_handling_strategy|`utf8`|
+|integration_response_id|`utf8`|
+|response_parameters|`json`|
+|response_templates|`json`|
+|template_selection_expression|`utf8`|

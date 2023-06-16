@@ -10,7 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -66,7 +66,7 @@ func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services
 	}
 	m.EXPECT().ListResourcesForWebACL(gomock.Any(), gomock.Any(), gomock.Any()).Return(&wafv2.ListResourcesForWebACLOutput{
 		ResourceArns: tempResourceArns,
-	}, nil)
+	}, nil).MinTimes(1)
 
 	distributionList := cftypes.DistributionList{}
 	if err := faker.FakeObject(&distributionList); err != nil {

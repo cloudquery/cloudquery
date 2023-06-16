@@ -8,17 +8,17 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|bucket|String|
-|name|String|
-|network_origin|String|
-|access_point_arn|String|
-|alias|String|
-|bucket_account_id|String|
-|vpc_configuration|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|bucket|`utf8`|
+|name|`utf8`|
+|network_origin|`utf8`|
+|access_point_arn|`utf8`|
+|alias|`utf8`|
+|bucket_account_id|`utf8`|
+|vpc_configuration|`json`|

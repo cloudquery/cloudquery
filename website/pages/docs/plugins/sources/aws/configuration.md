@@ -1,6 +1,8 @@
 # AWS Source Plugin Configuration Reference
 
-## Simple Example
+## Examples
+
+### Single Account Example
 
 This example connects a single AWS account in one region to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
@@ -11,7 +13,7 @@ spec:
   name: aws
   path: cloudquery/aws
   version: "VERSION_SOURCE_AWS"
-  tables: ["*"]
+  tables: ["aws_s3_buckets"]
   destinations: ["DESTINATION_NAME"]
   spec: 
     # AWS Spec section described below
@@ -23,44 +25,7 @@ spec:
     aws_debug: false
 ```
 
-## Skipping tables with configuration parameters
-
-Some tables document the parameters and options available to your AWS accounts and don't correspond to real resources. If you don't need these tables, the time it takes to sync can be reduced by skipping these tables: 
-
-```yaml copy
-kind: source
-spec:
-  name: aws
-  path: cloudquery/aws
-  version: "VERSION_SOURCE_AWS"
-  tables: ["*"]
-
-  # Comment out any of the following tables if you want to sync them
-  # unless otherwise indicated they are configuration parameters rather than configured resources
-  skip_tables:
-    - aws_ec2_vpc_endpoint_services # this resource includes services that are available from AWS as well as other AWS Accounts
-    - aws_cloudtrail_events
-    - aws_docdb_cluster_parameter_groups
-    - aws_docdb_engine_versions
-    - aws_ec2_instance_types
-    - aws_elasticache_engine_versions
-    - aws_elasticache_parameter_groups
-    - aws_elasticache_reserved_cache_nodes_offerings
-    - aws_elasticache_service_updates
-    - aws_iam_group_last_accessed_details
-    - aws_iam_policy_last_accessed_details
-    - aws_iam_role_last_accessed_details
-    - aws_iam_user_last_accessed_details
-    - aws_neptune_cluster_parameter_groups
-    - aws_neptune_db_parameter_groups
-    - aws_rds_cluster_parameter_groups
-    - aws_rds_db_parameter_groups
-    - aws_rds_engine_versions
-    - aws_servicequotas_services
-  destinations: ["DESTINATION_NAME"]
-``` 
-
-## AWS Organization Example
+### AWS Organization Example
 
 CloudQuery supports discovery of AWS Accounts via AWS Organizations. This means that as Accounts get added or removed from your organization CloudQuery will be able to handle new or removed accounts without any configuration changes.
 
@@ -71,7 +36,7 @@ spec:
   registry: github
   path: cloudquery/aws
   version: "VERSION_SOURCE_AWS"
-  tables: ['*']
+  tables: ['aws_s3_buckets']
   destinations: ["DESTINATION_NAME"]
   spec:
     aws_debug: false
@@ -101,6 +66,11 @@ This is the (nested) spec used by the AWS source plugin.
 
   In AWS organization mode, CloudQuery will source all accounts underneath automatically
 
+- `initialization_concurrency` (int) (default: 4)
+
+  During initialization the AWS source plugin fetches information about each account and region. This setting controls how many accounts can be initialized concurrently.
+  Only configurations with many accounts (either hardcoded or discovered via Organizations) should require modifying this setting, to either lower it to avoid rate limit errors, or to increase it to speed up the initialization process.
+
 - `aws_debug` (bool) (default: false)
 
   If true, will log AWS debug logs, including retries and other request/response metadata
@@ -129,8 +99,67 @@ This is the (nested) spec used by the AWS source plugin.
 
   The region that should be used for signing the request to the endpoint
 
+- `use_paid_apis` (boolean) (default: false)
 
-## account
+  When set to `true` plugin will sync data from APIs that incur a fee. Currently only `aws_costexplorer*` and `aws_alpha_cloudwatch_metric*` tables require this flag to be set to `true`.
+
+- **experimental** `table_options` (map) (default: not used)
+
+  This is an experimental feature that enables users to override the default options for specific tables. The root of the object takes a table name, and the next level takes an API method name. The final level is the actual input object as defined by the API. 
+  The format of the `table_options` object is as follows:
+  ```yaml
+  table_options:
+    <table_name>:
+      <api_method_name>:
+        - <input_object>
+  ```
+
+  A list of `<input_object>` objects should be provided. CloudQuery will iterate through these to make multiple API calls. This is useful for APIs like CloudTrail's `LookupEvents` that only supports a single event type per call. For example:
+
+  ```yaml
+    table_options:
+      aws_cloudtrail_events:
+        lookup_events:
+          - start_time: 2023-05-01T20:20:52Z
+            end_time:   2023-05-03T20:20:52Z
+            lookup_attributes:
+              - attribute_key: EventName
+                attribute_value: RunInstances
+          - start_time: 2023-05-01T20:20:52Z
+            end_time:   2023-05-03T20:20:52Z
+            lookup_attributes:
+              - attribute_key: EventName
+                attribute_value: StartInstances
+          - start_time: 2023-05-01T20:20:52Z
+            end_time:   2023-05-03T20:20:52Z
+            lookup_attributes:
+              - attribute_key: EventName
+                attribute_value: StopInstances
+  ```
+
+  The naming for all of the fields is the same as the AWS API but in snake case. For example `EndTime` is represented as `end_time`. As of `v18.4.0` the following tables and APIs are supported:
+  ```yaml
+  table_options:
+    aws_accessanalyzer_analyzer_findings:
+      list_findings:
+        - <[ListFindings](https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_ListFindings.html)>
+    aws_alpha_cloudwatch_metrics:
+      - list_metrics:
+          <[ListMetrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_ListMetrics.html)>
+        get_metric_statistics:
+          # Namespace, MetricName and Dimensions fields cannot be set here and are derived from the result of the respective ListMetrics call 
+          - <[GetMetricStatistics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html)>
+    aws_cloudtrail_events:
+      lookup_events:
+        - <[LookupEvents](https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_LookupEvents.html)>
+    aws_inspector2_findings:
+      list_findings:
+        - <[ListFindings](https://docs.aws.amazon.com/inspector/v2/APIReference/API_ListFindings.html)>
+  ```
+
+
+
+### account
 
 This is used to specify one or more accounts to extract information from. Note that it should be an array of objects, each with the following fields:
 
@@ -140,7 +169,7 @@ This is used to specify one or more accounts to extract information from. Note t
 
 - `local_profile` (string) (default: will use current credentials)
 
-  [Local profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) to use to authenticate this account with.
+  [Local profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) to use to authenticate this account with.
   Please note this should be set to the name of the profile. For example, with the following credentials file:
 
   ```ini copy
@@ -176,7 +205,7 @@ This is used to specify one or more accounts to extract information from. Note t
   Regions to use for this account. Defaults to global `regions` setting.
 
 
-## org
+### org
 
 - `admin_account` ([Account](#account))
 
@@ -213,3 +242,42 @@ This is used to specify one or more accounts to extract information from. Note t
 - `skip_member_accounts` ([]string)
 
   List of OU member accounts to skip. This is useful in conjunction with `organization_units` if there are accounts under the selected OUs that should be ignored.
+
+## Advanced Configuration
+
+### Skip Tables
+
+AWS has tables that may contain many resources, nested information, and AWS-provided data.  These tables may cause certain syncs to be slow due to the amount of AWS-provided data and may not be needed.  We recommend only specifying syncing from necessary tables.  If `*` is necessary for tables, Below is a reference configuration of skip tables, where certain tables are skipped.  
+
+```yaml
+kind: source
+spec:
+  # Source spec section
+  name: aws
+  path: cloudquery/aws
+  version: "VERSION_SOURCE_AWS"
+  tables: ["*"]
+  skip_tables:
+    - aws_ec2_vpc_endpoint_services 
+    - aws_cloudtrail_events
+    - aws_docdb_cluster_parameter_groups
+    - aws_docdb_engine_versions
+    - aws_ec2_instance_types
+    - aws_elasticache_engine_versions
+    - aws_elasticache_parameter_groups
+    - aws_elasticache_reserved_cache_nodes_offerings
+    - aws_elasticache_service_updates
+    - aws_iam_group_last_accessed_details
+    - aws_iam_policy_last_accessed_details
+    - aws_iam_role_last_accessed_details
+    - aws_iam_user_last_accessed_details
+    - aws_neptune_cluster_parameter_groups
+    - aws_neptune_db_parameter_groups
+    - aws_rds_cluster_parameter_groups
+    - aws_rds_db_parameter_groups
+    - aws_rds_engine_versions
+    - aws_servicequotas_services
+  destinations: ["postgresql"]
+  spec: 
+    # AWS Spec section described below
+```

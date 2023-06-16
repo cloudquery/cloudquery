@@ -5,17 +5,18 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func queueServices() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_storage_queue_services",
-		Resolver:    fetchQueueServices,
-		Description: "https://learn.microsoft.com/en-us/rest/api/storagerp/queue-services/list?tabs=HTTP#queueserviceproperties",
-		Transform:   transformers.TransformWithStruct(&armstorage.QueueServiceProperties{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_storage_queue_services",
+		Resolver:             fetchQueueServices,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/storagerp/queue-services/list?tabs=HTTP#queueserviceproperties",
+		Transform:            transformers.TransformWithStruct(&armstorage.QueueServiceProperties{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

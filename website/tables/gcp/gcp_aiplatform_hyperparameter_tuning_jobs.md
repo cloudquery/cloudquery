@@ -14,24 +14,24 @@ This table depends on [gcp_aiplatform_job_locations](gcp_aiplatform_job_location
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|display_name|String|
-|study_spec|JSON|
-|max_trial_count|Int|
-|parallel_trial_count|Int|
-|max_failed_trial_count|Int|
-|trial_job_spec|JSON|
-|trials|JSON|
-|state|String|
-|create_time|Timestamp|
-|start_time|Timestamp|
-|end_time|Timestamp|
-|update_time|Timestamp|
-|error|JSON|
-|labels|JSON|
-|encryption_spec|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|display_name|`utf8`|
+|study_spec|`json`|
+|max_trial_count|`int64`|
+|parallel_trial_count|`int64`|
+|max_failed_trial_count|`int64`|
+|trial_job_spec|`json`|
+|trials|`json`|
+|state|`utf8`|
+|create_time|`timestamp[us, tz=UTC]`|
+|start_time|`timestamp[us, tz=UTC]`|
+|end_time|`timestamp[us, tz=UTC]`|
+|update_time|`timestamp[us, tz=UTC]`|
+|error|`json`|
+|labels|`json`|
+|encryption_spec|`json`|

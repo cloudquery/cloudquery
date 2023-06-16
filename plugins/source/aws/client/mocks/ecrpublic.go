@@ -37,6 +37,16 @@ func (m *MockEcrpublicClient) EXPECT() *MockEcrpublicClientMockRecorder {
 
 // DescribeImageTags mocks base method.
 func (m *MockEcrpublicClient) DescribeImageTags(arg0 context.Context, arg1 *ecrpublic.DescribeImageTagsInput, arg2 ...func(*ecrpublic.Options)) (*ecrpublic.DescribeImageTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecrpublic.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeImageTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockEcrpublicClientMockRecorder) DescribeImageTags(arg0, arg1 interfac
 
 // DescribeImages mocks base method.
 func (m *MockEcrpublicClient) DescribeImages(arg0 context.Context, arg1 *ecrpublic.DescribeImagesInput, arg2 ...func(*ecrpublic.Options)) (*ecrpublic.DescribeImagesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecrpublic.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeImages")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockEcrpublicClientMockRecorder) DescribeImages(arg0, arg1 interface{}
 
 // DescribeRegistries mocks base method.
 func (m *MockEcrpublicClient) DescribeRegistries(arg0 context.Context, arg1 *ecrpublic.DescribeRegistriesInput, arg2 ...func(*ecrpublic.Options)) (*ecrpublic.DescribeRegistriesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecrpublic.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRegistries")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockEcrpublicClientMockRecorder) DescribeRegistries(arg0, arg1 interfa
 
 // DescribeRepositories mocks base method.
 func (m *MockEcrpublicClient) DescribeRepositories(arg0 context.Context, arg1 *ecrpublic.DescribeRepositoriesInput, arg2 ...func(*ecrpublic.Options)) (*ecrpublic.DescribeRepositoriesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecrpublic.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRepositories")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockEcrpublicClientMockRecorder) DescribeRepositories(arg0, arg1 inter
 
 // GetAuthorizationToken mocks base method.
 func (m *MockEcrpublicClient) GetAuthorizationToken(arg0 context.Context, arg1 *ecrpublic.GetAuthorizationTokenInput, arg2 ...func(*ecrpublic.Options)) (*ecrpublic.GetAuthorizationTokenOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecrpublic.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAuthorizationToken")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockEcrpublicClientMockRecorder) GetAuthorizationToken(arg0, arg1 inte
 
 // GetRegistryCatalogData mocks base method.
 func (m *MockEcrpublicClient) GetRegistryCatalogData(arg0 context.Context, arg1 *ecrpublic.GetRegistryCatalogDataInput, arg2 ...func(*ecrpublic.Options)) (*ecrpublic.GetRegistryCatalogDataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecrpublic.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRegistryCatalogData")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockEcrpublicClientMockRecorder) GetRegistryCatalogData(arg0, arg1 int
 
 // GetRepositoryCatalogData mocks base method.
 func (m *MockEcrpublicClient) GetRepositoryCatalogData(arg0 context.Context, arg1 *ecrpublic.GetRepositoryCatalogDataInput, arg2 ...func(*ecrpublic.Options)) (*ecrpublic.GetRepositoryCatalogDataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecrpublic.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRepositoryCatalogData")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockEcrpublicClientMockRecorder) GetRepositoryCatalogData(arg0, arg1 i
 
 // GetRepositoryPolicy mocks base method.
 func (m *MockEcrpublicClient) GetRepositoryPolicy(arg0 context.Context, arg1 *ecrpublic.GetRepositoryPolicyInput, arg2 ...func(*ecrpublic.Options)) (*ecrpublic.GetRepositoryPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecrpublic.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRepositoryPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockEcrpublicClientMockRecorder) GetRepositoryPolicy(arg0, arg1 interf
 
 // ListTagsForResource mocks base method.
 func (m *MockEcrpublicClient) ListTagsForResource(arg0 context.Context, arg1 *ecrpublic.ListTagsForResourceInput, arg2 ...func(*ecrpublic.Options)) (*ecrpublic.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ecrpublic.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

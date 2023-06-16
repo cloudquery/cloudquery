@@ -17,23 +17,23 @@ The following tables depend on aws_apigateway_rest_api_resource_methods:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region|String|
-|rest_api_arn|String|
-|resource_arn|String|
-|arn (PK)|String|
-|api_key_required|Bool|
-|authorization_scopes|StringArray|
-|authorization_type|String|
-|authorizer_id|String|
-|http_method|String|
-|method_integration|JSON|
-|method_responses|JSON|
-|operation_name|String|
-|request_models|JSON|
-|request_parameters|JSON|
-|request_validator_id|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region|`utf8`|
+|rest_api_arn|`utf8`|
+|resource_arn|`utf8`|
+|arn (PK)|`utf8`|
+|api_key_required|`bool`|
+|authorization_scopes|`list<item: utf8, nullable>`|
+|authorization_type|`utf8`|
+|authorizer_id|`utf8`|
+|http_method|`utf8`|
+|method_integration|`json`|
+|method_responses|`json`|
+|operation_name|`utf8`|
+|request_models|`json`|
+|request_parameters|`json`|
+|request_validator_id|`utf8`|

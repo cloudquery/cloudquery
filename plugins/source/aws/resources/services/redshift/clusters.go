@@ -4,11 +4,14 @@ import (
 	"context"
 	"fmt"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Clusters() *schema.Table {
@@ -24,22 +27,20 @@ func Clusters() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:        "arn",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 				Resolver:    resolveClusterArn(),
 				Description: `The Amazon Resource Name (ARN) for the resource.`,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey:  true,
 			},
 			{
 				Name:        "logging_status",
-				Type:        schema.TypeJSON,
+				Type:        sdkTypes.ExtensionTypes.JSON,
 				Resolver:    resolveRedshiftClusterLoggingStatus,
 				Description: `Describes the status of logging for a cluster.`,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: client.ResolveTags,
 			},
 		},
@@ -55,11 +56,13 @@ func Clusters() *schema.Table {
 
 func fetchClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config redshift.DescribeClustersInput
-	c := meta.(*client.Client)
-	svc := c.Services().Redshift
+	cl := meta.(*client.Client)
+	svc := cl.Services().Redshift
 	paginator := redshift.NewDescribeClustersPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *redshift.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -76,7 +79,9 @@ func resolveRedshiftClusterLoggingStatus(ctx context.Context, meta schema.Client
 	cfg := redshift.DescribeLoggingStatusInput{
 		ClusterIdentifier: r.ClusterIdentifier,
 	}
-	response, err := svc.DescribeLoggingStatus(ctx, &cfg)
+	response, err := svc.DescribeLoggingStatus(ctx, &cfg, func(options *redshift.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

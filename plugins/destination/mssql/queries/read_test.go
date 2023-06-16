@@ -4,7 +4,8 @@ import (
 	"database/sql"
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -30,7 +31,7 @@ ORDER BY [_cq_sync_time] ASC;`
 			schema.CqParentIDColumn,
 			schema.CqSourceNameColumn,
 			schema.CqSyncTimeColumn,
-			schema.Column{Name: "extra_col", Type: schema.TypeFloat},
+			schema.Column{Name: "extra_col", Type: arrow.PrimitiveTypes.Float64},
 		},
 	})
 

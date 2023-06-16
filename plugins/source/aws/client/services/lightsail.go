@@ -27,6 +27,7 @@ type LightsailClient interface {
 	GetContainerServiceMetricData(context.Context, *lightsail.GetContainerServiceMetricDataInput, ...func(*lightsail.Options)) (*lightsail.GetContainerServiceMetricDataOutput, error)
 	GetContainerServicePowers(context.Context, *lightsail.GetContainerServicePowersInput, ...func(*lightsail.Options)) (*lightsail.GetContainerServicePowersOutput, error)
 	GetContainerServices(context.Context, *lightsail.GetContainerServicesInput, ...func(*lightsail.Options)) (*lightsail.GetContainerServicesOutput, error)
+	GetCostEstimate(context.Context, *lightsail.GetCostEstimateInput, ...func(*lightsail.Options)) (*lightsail.GetCostEstimateOutput, error)
 	GetDisk(context.Context, *lightsail.GetDiskInput, ...func(*lightsail.Options)) (*lightsail.GetDiskOutput, error)
 	GetDiskSnapshot(context.Context, *lightsail.GetDiskSnapshotInput, ...func(*lightsail.Options)) (*lightsail.GetDiskSnapshotOutput, error)
 	GetDiskSnapshots(context.Context, *lightsail.GetDiskSnapshotsInput, ...func(*lightsail.Options)) (*lightsail.GetDiskSnapshotsOutput, error)

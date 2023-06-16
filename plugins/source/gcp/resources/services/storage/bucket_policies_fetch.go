@@ -4,13 +4,14 @@ import (
 	"context"
 
 	"cloud.google.com/go/storage"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/scalar"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
 func fetchBucketPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
-	bkt := parent.Get("name").(*schema.Text).Str
+	bkt := parent.Get("name").(*scalar.String).Value
 	storageClient, err := storage.NewClient(ctx, c.ClientOptions...)
 	if err != nil {
 		return err

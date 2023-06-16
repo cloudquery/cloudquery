@@ -33,7 +33,12 @@ func (c *Client) ExportData(ctx context.Context, startDate, endDate string, sinc
 	for s.Scan() {
 		var d ExportEvent
 		if err := json.Unmarshal(s.Bytes(), &d); err != nil {
-			return fmt.Errorf("error parsing line %d: %w", line, err)
+			if s.Text() == "terminated early" {
+				// this happens when the incorrect region is set
+				// https://github.com/mixpanel/mixpanel-utils/issues/5#issuecomment-1470024270
+				return fmt.Errorf(`terminated early. Does the "region" configuration match the Mixpanel project? Possible values: "US", "EU". Current value is %q`, c.opts.Region)
+			}
+			return fmt.Errorf("error parsing line %d: %w. Content: %v", line, err, s.Text())
 		}
 
 		out <- d

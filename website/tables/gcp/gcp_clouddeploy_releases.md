@@ -17,28 +17,28 @@ The following tables depend on gcp_clouddeploy_releases:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|uid|String|
-|description|String|
-|annotations|JSON|
-|labels|JSON|
-|abandoned|Bool|
-|create_time|Timestamp|
-|render_start_time|Timestamp|
-|render_end_time|Timestamp|
-|skaffold_config_uri|String|
-|skaffold_config_path|String|
-|build_artifacts|JSON|
-|delivery_pipeline_snapshot|JSON|
-|target_snapshots|JSON|
-|render_state|String|
-|etag|String|
-|skaffold_version|String|
-|target_artifacts|JSON|
-|target_renders|JSON|
-|condition|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|uid|`utf8`|
+|description|`utf8`|
+|annotations|`json`|
+|labels|`json`|
+|abandoned|`bool`|
+|create_time|`timestamp[us, tz=UTC]`|
+|render_start_time|`timestamp[us, tz=UTC]`|
+|render_end_time|`timestamp[us, tz=UTC]`|
+|skaffold_config_uri|`utf8`|
+|skaffold_config_path|`utf8`|
+|build_artifacts|`json`|
+|delivery_pipeline_snapshot|`json`|
+|target_snapshots|`json`|
+|render_state|`utf8`|
+|etag|`utf8`|
+|skaffold_version|`utf8`|
+|target_artifacts|`json`|
+|target_renders|`json`|
+|condition|`json`|

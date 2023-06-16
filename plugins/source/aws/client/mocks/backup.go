@@ -37,6 +37,16 @@ func (m *MockBackupClient) EXPECT() *MockBackupClientMockRecorder {
 
 // DescribeBackupJob mocks base method.
 func (m *MockBackupClient) DescribeBackupJob(arg0 context.Context, arg1 *backup.DescribeBackupJobInput, arg2 ...func(*backup.Options)) (*backup.DescribeBackupJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeBackupJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockBackupClientMockRecorder) DescribeBackupJob(arg0, arg1 interface{}
 
 // DescribeBackupVault mocks base method.
 func (m *MockBackupClient) DescribeBackupVault(arg0 context.Context, arg1 *backup.DescribeBackupVaultInput, arg2 ...func(*backup.Options)) (*backup.DescribeBackupVaultOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeBackupVault")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockBackupClientMockRecorder) DescribeBackupVault(arg0, arg1 interface
 
 // DescribeCopyJob mocks base method.
 func (m *MockBackupClient) DescribeCopyJob(arg0 context.Context, arg1 *backup.DescribeCopyJobInput, arg2 ...func(*backup.Options)) (*backup.DescribeCopyJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCopyJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockBackupClientMockRecorder) DescribeCopyJob(arg0, arg1 interface{}, 
 
 // DescribeFramework mocks base method.
 func (m *MockBackupClient) DescribeFramework(arg0 context.Context, arg1 *backup.DescribeFrameworkInput, arg2 ...func(*backup.Options)) (*backup.DescribeFrameworkOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFramework")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockBackupClientMockRecorder) DescribeFramework(arg0, arg1 interface{}
 
 // DescribeGlobalSettings mocks base method.
 func (m *MockBackupClient) DescribeGlobalSettings(arg0 context.Context, arg1 *backup.DescribeGlobalSettingsInput, arg2 ...func(*backup.Options)) (*backup.DescribeGlobalSettingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeGlobalSettings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockBackupClientMockRecorder) DescribeGlobalSettings(arg0, arg1 interf
 
 // DescribeProtectedResource mocks base method.
 func (m *MockBackupClient) DescribeProtectedResource(arg0 context.Context, arg1 *backup.DescribeProtectedResourceInput, arg2 ...func(*backup.Options)) (*backup.DescribeProtectedResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeProtectedResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockBackupClientMockRecorder) DescribeProtectedResource(arg0, arg1 int
 
 // DescribeRecoveryPoint mocks base method.
 func (m *MockBackupClient) DescribeRecoveryPoint(arg0 context.Context, arg1 *backup.DescribeRecoveryPointInput, arg2 ...func(*backup.Options)) (*backup.DescribeRecoveryPointOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRecoveryPoint")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockBackupClientMockRecorder) DescribeRecoveryPoint(arg0, arg1 interfa
 
 // DescribeRegionSettings mocks base method.
 func (m *MockBackupClient) DescribeRegionSettings(arg0 context.Context, arg1 *backup.DescribeRegionSettingsInput, arg2 ...func(*backup.Options)) (*backup.DescribeRegionSettingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRegionSettings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockBackupClientMockRecorder) DescribeRegionSettings(arg0, arg1 interf
 
 // DescribeReportJob mocks base method.
 func (m *MockBackupClient) DescribeReportJob(arg0 context.Context, arg1 *backup.DescribeReportJobInput, arg2 ...func(*backup.Options)) (*backup.DescribeReportJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReportJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockBackupClientMockRecorder) DescribeReportJob(arg0, arg1 interface{}
 
 // DescribeReportPlan mocks base method.
 func (m *MockBackupClient) DescribeReportPlan(arg0 context.Context, arg1 *backup.DescribeReportPlanInput, arg2 ...func(*backup.Options)) (*backup.DescribeReportPlanOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReportPlan")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockBackupClientMockRecorder) DescribeReportPlan(arg0, arg1 interface{
 
 // DescribeRestoreJob mocks base method.
 func (m *MockBackupClient) DescribeRestoreJob(arg0 context.Context, arg1 *backup.DescribeRestoreJobInput, arg2 ...func(*backup.Options)) (*backup.DescribeRestoreJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRestoreJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockBackupClientMockRecorder) DescribeRestoreJob(arg0, arg1 interface{
 
 // GetBackupPlan mocks base method.
 func (m *MockBackupClient) GetBackupPlan(arg0 context.Context, arg1 *backup.GetBackupPlanInput, arg2 ...func(*backup.Options)) (*backup.GetBackupPlanOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBackupPlan")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockBackupClientMockRecorder) GetBackupPlan(arg0, arg1 interface{}, ar
 
 // GetBackupPlanFromJSON mocks base method.
 func (m *MockBackupClient) GetBackupPlanFromJSON(arg0 context.Context, arg1 *backup.GetBackupPlanFromJSONInput, arg2 ...func(*backup.Options)) (*backup.GetBackupPlanFromJSONOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBackupPlanFromJSON")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockBackupClientMockRecorder) GetBackupPlanFromJSON(arg0, arg1 interfa
 
 // GetBackupPlanFromTemplate mocks base method.
 func (m *MockBackupClient) GetBackupPlanFromTemplate(arg0 context.Context, arg1 *backup.GetBackupPlanFromTemplateInput, arg2 ...func(*backup.Options)) (*backup.GetBackupPlanFromTemplateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBackupPlanFromTemplate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockBackupClientMockRecorder) GetBackupPlanFromTemplate(arg0, arg1 int
 
 // GetBackupSelection mocks base method.
 func (m *MockBackupClient) GetBackupSelection(arg0 context.Context, arg1 *backup.GetBackupSelectionInput, arg2 ...func(*backup.Options)) (*backup.GetBackupSelectionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBackupSelection")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockBackupClientMockRecorder) GetBackupSelection(arg0, arg1 interface{
 
 // GetBackupVaultAccessPolicy mocks base method.
 func (m *MockBackupClient) GetBackupVaultAccessPolicy(arg0 context.Context, arg1 *backup.GetBackupVaultAccessPolicyInput, arg2 ...func(*backup.Options)) (*backup.GetBackupVaultAccessPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBackupVaultAccessPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockBackupClientMockRecorder) GetBackupVaultAccessPolicy(arg0, arg1 in
 
 // GetBackupVaultNotifications mocks base method.
 func (m *MockBackupClient) GetBackupVaultNotifications(arg0 context.Context, arg1 *backup.GetBackupVaultNotificationsInput, arg2 ...func(*backup.Options)) (*backup.GetBackupVaultNotificationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBackupVaultNotifications")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockBackupClientMockRecorder) GetBackupVaultNotifications(arg0, arg1 i
 
 // GetLegalHold mocks base method.
 func (m *MockBackupClient) GetLegalHold(arg0 context.Context, arg1 *backup.GetLegalHoldInput, arg2 ...func(*backup.Options)) (*backup.GetLegalHoldOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetLegalHold")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockBackupClientMockRecorder) GetLegalHold(arg0, arg1 interface{}, arg
 
 // GetRecoveryPointRestoreMetadata mocks base method.
 func (m *MockBackupClient) GetRecoveryPointRestoreMetadata(arg0 context.Context, arg1 *backup.GetRecoveryPointRestoreMetadataInput, arg2 ...func(*backup.Options)) (*backup.GetRecoveryPointRestoreMetadataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRecoveryPointRestoreMetadata")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockBackupClientMockRecorder) GetRecoveryPointRestoreMetadata(arg0, ar
 
 // GetSupportedResourceTypes mocks base method.
 func (m *MockBackupClient) GetSupportedResourceTypes(arg0 context.Context, arg1 *backup.GetSupportedResourceTypesInput, arg2 ...func(*backup.Options)) (*backup.GetSupportedResourceTypesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSupportedResourceTypes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockBackupClientMockRecorder) GetSupportedResourceTypes(arg0, arg1 int
 
 // ListBackupJobs mocks base method.
 func (m *MockBackupClient) ListBackupJobs(arg0 context.Context, arg1 *backup.ListBackupJobsInput, arg2 ...func(*backup.Options)) (*backup.ListBackupJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBackupJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockBackupClientMockRecorder) ListBackupJobs(arg0, arg1 interface{}, a
 
 // ListBackupPlanTemplates mocks base method.
 func (m *MockBackupClient) ListBackupPlanTemplates(arg0 context.Context, arg1 *backup.ListBackupPlanTemplatesInput, arg2 ...func(*backup.Options)) (*backup.ListBackupPlanTemplatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBackupPlanTemplates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockBackupClientMockRecorder) ListBackupPlanTemplates(arg0, arg1 inter
 
 // ListBackupPlanVersions mocks base method.
 func (m *MockBackupClient) ListBackupPlanVersions(arg0 context.Context, arg1 *backup.ListBackupPlanVersionsInput, arg2 ...func(*backup.Options)) (*backup.ListBackupPlanVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBackupPlanVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockBackupClientMockRecorder) ListBackupPlanVersions(arg0, arg1 interf
 
 // ListBackupPlans mocks base method.
 func (m *MockBackupClient) ListBackupPlans(arg0 context.Context, arg1 *backup.ListBackupPlansInput, arg2 ...func(*backup.Options)) (*backup.ListBackupPlansOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBackupPlans")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockBackupClientMockRecorder) ListBackupPlans(arg0, arg1 interface{}, 
 
 // ListBackupSelections mocks base method.
 func (m *MockBackupClient) ListBackupSelections(arg0 context.Context, arg1 *backup.ListBackupSelectionsInput, arg2 ...func(*backup.Options)) (*backup.ListBackupSelectionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBackupSelections")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockBackupClientMockRecorder) ListBackupSelections(arg0, arg1 interfac
 
 // ListBackupVaults mocks base method.
 func (m *MockBackupClient) ListBackupVaults(arg0 context.Context, arg1 *backup.ListBackupVaultsInput, arg2 ...func(*backup.Options)) (*backup.ListBackupVaultsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBackupVaults")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +817,16 @@ func (mr *MockBackupClientMockRecorder) ListBackupVaults(arg0, arg1 interface{},
 
 // ListCopyJobs mocks base method.
 func (m *MockBackupClient) ListCopyJobs(arg0 context.Context, arg1 *backup.ListCopyJobsInput, arg2 ...func(*backup.Options)) (*backup.ListCopyJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCopyJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -577,6 +847,16 @@ func (mr *MockBackupClientMockRecorder) ListCopyJobs(arg0, arg1 interface{}, arg
 
 // ListFrameworks mocks base method.
 func (m *MockBackupClient) ListFrameworks(arg0 context.Context, arg1 *backup.ListFrameworksInput, arg2 ...func(*backup.Options)) (*backup.ListFrameworksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListFrameworks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -597,6 +877,16 @@ func (mr *MockBackupClientMockRecorder) ListFrameworks(arg0, arg1 interface{}, a
 
 // ListLegalHolds mocks base method.
 func (m *MockBackupClient) ListLegalHolds(arg0 context.Context, arg1 *backup.ListLegalHoldsInput, arg2 ...func(*backup.Options)) (*backup.ListLegalHoldsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListLegalHolds")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -617,6 +907,16 @@ func (mr *MockBackupClientMockRecorder) ListLegalHolds(arg0, arg1 interface{}, a
 
 // ListProtectedResources mocks base method.
 func (m *MockBackupClient) ListProtectedResources(arg0 context.Context, arg1 *backup.ListProtectedResourcesInput, arg2 ...func(*backup.Options)) (*backup.ListProtectedResourcesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListProtectedResources")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -637,6 +937,16 @@ func (mr *MockBackupClientMockRecorder) ListProtectedResources(arg0, arg1 interf
 
 // ListRecoveryPointsByBackupVault mocks base method.
 func (m *MockBackupClient) ListRecoveryPointsByBackupVault(arg0 context.Context, arg1 *backup.ListRecoveryPointsByBackupVaultInput, arg2 ...func(*backup.Options)) (*backup.ListRecoveryPointsByBackupVaultOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRecoveryPointsByBackupVault")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -657,6 +967,16 @@ func (mr *MockBackupClientMockRecorder) ListRecoveryPointsByBackupVault(arg0, ar
 
 // ListRecoveryPointsByLegalHold mocks base method.
 func (m *MockBackupClient) ListRecoveryPointsByLegalHold(arg0 context.Context, arg1 *backup.ListRecoveryPointsByLegalHoldInput, arg2 ...func(*backup.Options)) (*backup.ListRecoveryPointsByLegalHoldOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRecoveryPointsByLegalHold")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -677,6 +997,16 @@ func (mr *MockBackupClientMockRecorder) ListRecoveryPointsByLegalHold(arg0, arg1
 
 // ListRecoveryPointsByResource mocks base method.
 func (m *MockBackupClient) ListRecoveryPointsByResource(arg0 context.Context, arg1 *backup.ListRecoveryPointsByResourceInput, arg2 ...func(*backup.Options)) (*backup.ListRecoveryPointsByResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRecoveryPointsByResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -697,6 +1027,16 @@ func (mr *MockBackupClientMockRecorder) ListRecoveryPointsByResource(arg0, arg1 
 
 // ListReportJobs mocks base method.
 func (m *MockBackupClient) ListReportJobs(arg0 context.Context, arg1 *backup.ListReportJobsInput, arg2 ...func(*backup.Options)) (*backup.ListReportJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListReportJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -717,6 +1057,16 @@ func (mr *MockBackupClientMockRecorder) ListReportJobs(arg0, arg1 interface{}, a
 
 // ListReportPlans mocks base method.
 func (m *MockBackupClient) ListReportPlans(arg0 context.Context, arg1 *backup.ListReportPlansInput, arg2 ...func(*backup.Options)) (*backup.ListReportPlansOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListReportPlans")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -737,6 +1087,16 @@ func (mr *MockBackupClientMockRecorder) ListReportPlans(arg0, arg1 interface{}, 
 
 // ListRestoreJobs mocks base method.
 func (m *MockBackupClient) ListRestoreJobs(arg0 context.Context, arg1 *backup.ListRestoreJobsInput, arg2 ...func(*backup.Options)) (*backup.ListRestoreJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRestoreJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -757,6 +1117,16 @@ func (mr *MockBackupClientMockRecorder) ListRestoreJobs(arg0, arg1 interface{}, 
 
 // ListTags mocks base method.
 func (m *MockBackupClient) ListTags(arg0 context.Context, arg1 *backup.ListTagsInput, arg2 ...func(*backup.Options)) (*backup.ListTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

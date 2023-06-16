@@ -4,13 +4,14 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func restApiModels() *schema.Table {
@@ -26,20 +27,18 @@ func restApiModels() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "rest_api_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveApigatewayRestAPIModelArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveApigatewayRestAPIModelArn,
+				PrimaryKey: true,
 			},
 			{
 				Name:     "model_template",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: resolveApigatewayRestAPIModelModelTemplate,
 			},
 		},
@@ -48,13 +47,15 @@ func restApiModels() *schema.Table {
 
 func fetchApigatewayRestApiModels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.RestApi)
-	c := meta.(*client.Client)
-	svc := c.Services().Apigateway
+	cl := meta.(*client.Client)
+	svc := cl.Services().Apigateway
 	config := apigateway.GetModelsInput{RestApiId: r.Id, Limit: aws.Int32(500)}
 	for p := apigateway.NewGetModelsPaginator(svc, &config); p.HasMorePages(); {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *apigateway.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
-			if c.IsNotFoundError(err) {
+			if cl.IsNotFoundError(err) {
 				return nil
 			}
 			return err
@@ -91,7 +92,9 @@ func resolveApigatewayRestAPIModelModelTemplate(ctx context.Context, meta schema
 		ModelName: r.Name,
 	}
 
-	response, err := svc.GetModelTemplate(ctx, &config)
+	response, err := svc.GetModelTemplate(ctx, &config, func(options *apigateway.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		if client.IsAWSError(err, "BadRequestException") {
 			// This is an application level error and the user has nothing to do with that.

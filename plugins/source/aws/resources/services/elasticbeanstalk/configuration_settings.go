@@ -4,14 +4,15 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elasticbeanstalk/models"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func configurationSettings() *schema.Table {
@@ -27,7 +28,7 @@ func configurationSettings() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "environment_id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("id"),
 			},
 		},
@@ -43,7 +44,9 @@ func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema
 		ApplicationName: p.ApplicationName,
 		EnvironmentName: p.EnvironmentName,
 	}
-	output, err := svc.DescribeConfigurationSettings(ctx, &configOptionsIn)
+	output, err := svc.DescribeConfigurationSettings(ctx, &configOptionsIn, func(options *elasticbeanstalk.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		// It takes a few minutes for an environment to be terminated
 		// This ensures we don't error while trying to fetch related resources for a terminated environment

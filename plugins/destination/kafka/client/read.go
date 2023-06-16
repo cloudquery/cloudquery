@@ -6,14 +6,15 @@ import (
 	"time"
 
 	"github.com/Shopify/sarama"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 const (
 	maxWaitTime = 3 * time.Second
 )
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
+func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
 	consumer, err := sarama.NewConsumer(c.pluginSpec.Brokers, c.conf)
 	if err != nil {
 		return err

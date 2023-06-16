@@ -3,12 +3,15 @@ package iot
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func ThingGroups() *schema.Table {
@@ -25,26 +28,24 @@ func ThingGroups() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "things_in_group",
-				Type:     schema.TypeStringArray,
+				Type:     arrow.ListOf(arrow.BinaryTypes.String),
 				Resolver: ResolveIotThingGroupThingsInGroup,
 			},
 			{
 				Name:     "policies",
-				Type:     schema.TypeStringArray,
+				Type:     arrow.ListOf(arrow.BinaryTypes.String),
 				Resolver: ResolveIotThingGroupPolicies,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: ResolveIotThingGroupTags,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ThingGroupArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ThingGroupArn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -54,12 +55,14 @@ func fetchIotThingGroups(ctx context.Context, meta schema.ClientMeta, parent *sc
 	input := iot.ListThingGroupsInput{
 		MaxResults: aws.Int32(250),
 	}
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 
-	svc := c.Services().Iot
+	svc := cl.Services().Iot
 	paginator := iot.NewListThingGroupsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -74,6 +77,8 @@ func getThingGroup(ctx context.Context, meta schema.ClientMeta, resource *schema
 
 	output, err := svc.DescribeThingGroup(ctx, &iot.DescribeThingGroupInput{
 		ThingGroupName: resource.Item.(types.GroupNameAndArn).GroupName,
+	}, func(options *iot.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -94,7 +99,9 @@ func ResolveIotThingGroupThingsInGroup(ctx context.Context, meta schema.ClientMe
 	var things []string
 	paginator := iot.NewListThingsInThingGroupPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -115,7 +122,9 @@ func ResolveIotThingGroupPolicies(ctx context.Context, meta schema.ClientMeta, r
 	var policies []string
 	paginator := iot.NewListAttachedPoliciesPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -127,6 +136,7 @@ func ResolveIotThingGroupPolicies(ctx context.Context, meta schema.ClientMeta, r
 }
 func ResolveIotThingGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeThingGroupOutput)
-	svc := meta.(*client.Client).Services().Iot
-	return resolveIotTags(ctx, svc, resource, c, i.ThingGroupArn)
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iot
+	return resolveIotTags(ctx, meta, svc, resource, c, i.ThingGroupArn)
 }

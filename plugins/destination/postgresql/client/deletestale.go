@@ -6,16 +6,16 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/jackc/pgx/v5"
 )
 
-func (c *Client) DeleteStale(ctx context.Context, tables schema.Schemas, source string, syncTime time.Time) error {
+func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source string, syncTime time.Time) error {
 	batch := &pgx.Batch{}
 	for _, table := range tables {
 		var sb strings.Builder
 		sb.WriteString("delete from ")
-		sb.WriteString(pgx.Identifier{schema.TableName(table)}.Sanitize())
+		sb.WriteString(pgx.Identifier{table.Name}.Sanitize())
 		sb.WriteString(" where ")
 		sb.WriteString(schema.CqSourceNameColumn.Name)
 		sb.WriteString(" = $1 and ")

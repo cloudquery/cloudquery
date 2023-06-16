@@ -3,12 +3,13 @@ package s3
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
 	"github.com/aws/aws-sdk-go-v2/service/s3control/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func AccessPoints() *schema.Table {
@@ -22,26 +23,26 @@ func AccessPoints() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AccessPointArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("AccessPointArn"),
+				PrimaryKey: true,
 			},
 		},
 	}
 }
 
 func fetchAccessPoints(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
+	svc := cl.Services().S3control
 
-	svc := c.Services().S3control
 	paginator := s3control.NewListAccessPointsPaginator(svc, &s3control.ListAccessPointsInput{
-		AccountId: aws.String(c.AccountID),
+		AccountId: aws.String(cl.AccountID),
 	})
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(o *s3control.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

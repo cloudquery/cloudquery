@@ -2,21 +2,28 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"testing"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/specs"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v3/scalar"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 	"github.com/golang/mock/gomock"
 	"github.com/rs/zerolog"
 )
 
-type TestOptions struct{}
+type TestOptions struct {
+	TableOptions tableoptions.TableOptions
+}
 
-func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) Services, _ TestOptions) {
+func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) Services, testOpts TestOptions) {
 	version := "vDev"
 
 	table.IgnoreInTests = false
@@ -31,8 +38,13 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 		if err := spec.UnmarshalSpec(&awsSpec); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal aws spec: %w", err)
 		}
-		c := NewAwsClient(l, nil)
-		c.ServicesManager.InitServicesForPartitionAccountAndRegion("aws", "testAccount", "us-east-1", builder(t, ctrl))
+		awsSpec.SetDefaults()
+		awsSpec.UsePaidAPIs = true
+		awsSpec.TableOptions = &testOpts.TableOptions
+		c := NewAwsClient(l, nil, &awsSpec)
+		services := builder(t, ctrl)
+		services.Regions = []string{"us-east-1"}
+		c.ServicesManager.InitServicesForPartitionAccount("aws", "testAccount", services)
 		c.Partition = "aws"
 		return &c, nil
 	}
@@ -69,7 +81,7 @@ func validateTagStructure(t *testing.T, plugin *source.Plugin, resources []*sche
 				if column.Name != "tags" {
 					continue
 				}
-				if column.Type != schema.TypeJSON {
+				if !arrow.TypeEqual(column.Type, types.ExtensionTypes.JSON) {
 					t.Fatalf("tags column in %s should be of type JSON", table.Name)
 				}
 				for _, resource := range resources {
@@ -77,9 +89,9 @@ func validateTagStructure(t *testing.T, plugin *source.Plugin, resources []*sche
 						continue
 					}
 					value := resource.Get(column.Name)
-					val, ok := value.Get().(map[string]any)
-					if !ok {
-						t.Fatalf("unexpected type for tags column: got %v, want type map[string]any", val)
+					var tags map[string]any
+					if err := json.Unmarshal(value.(*scalar.JSON).Value, &tags); err != nil {
+						t.Fatalf("failed to unmarshal tags column %s: %v", value.(*scalar.JSON).Value, err)
 					}
 				}
 			}

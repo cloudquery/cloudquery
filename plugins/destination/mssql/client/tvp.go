@@ -5,12 +5,17 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
+func (c *Client) useTVP(table *schema.Table) bool {
+	return c.pkEnabled() && len(table.PrimaryKeys()) > 0
+}
+
 func (c *Client) ensureTVP(ctx context.Context, table *schema.Table) (err error) {
-	if !c.pkEnabled() {
+	if !c.useTVP(table) {
 		return nil
 	}
 
@@ -39,8 +44,12 @@ func (c *Client) ensureTVP(ctx context.Context, table *schema.Table) (err error)
 	return nil
 }
 
-func (c *Client) insertTVP(ctx context.Context, table *schema.Table, data [][]any) error {
-	query, params := queries.TVPQuery(c.schemaName, table, data)
+func (c *Client) insertTVP(ctx context.Context, table *schema.Table, records []arrow.Record) error {
+	query, params, err := queries.TVPQuery(c.schemaName, table, records)
+	if err != nil {
+		return err
+	}
+
 	return c.doInTx(ctx, func(tx *sql.Tx) error {
 		_, err := tx.ExecContext(ctx, query, params...)
 		return err

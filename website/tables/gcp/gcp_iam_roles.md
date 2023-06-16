@@ -10,15 +10,15 @@ The composite primary key for this table is (**project_id**, **name**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|title|String|
-|description|String|
-|included_permissions|StringArray|
-|stage|String|
-|etag|ByteArray|
-|deleted|Bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|title|`utf8`|
+|description|`utf8`|
+|included_permissions|`list<item: utf8, nullable>`|
+|stage|`utf8`|
+|etag|`binary`|
+|deleted|`bool`|

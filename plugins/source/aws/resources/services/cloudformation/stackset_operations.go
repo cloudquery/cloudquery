@@ -3,11 +3,12 @@ package cloudformation
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudformation/models"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func stackSetOperations() *schema.Table {
@@ -24,16 +25,14 @@ func stackSetOperations() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("OperationId"),
 			},
 			{
-				Name:     "stack_set_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("stack_set_arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "stack_set_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("stack_set_arn"),
+				PrimaryKey: true,
 			},
 		},
 
@@ -50,10 +49,13 @@ func fetchCloudformationStackSetOperations(ctx context.Context, meta schema.Clie
 		CallAs:       stack.CallAs,
 	}
 
-	svc := meta.(*client.Client).Services().Cloudformation
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudformation
 	paginator := cloudformation.NewListStackSetOperationsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *cloudformation.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -68,6 +70,8 @@ func fetchCloudformationStackSetOperations(ctx context.Context, meta schema.Clie
 }
 
 func getStackSetOperation(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudformation
 	stack := resource.Parent.Item.(models.ExpandedStackSet)
 	operation := resource.Item.(models.ExpandedStackSetOperationSummary)
 
@@ -77,7 +81,9 @@ func getStackSetOperation(ctx context.Context, meta schema.ClientMeta, resource 
 		CallAs:       stack.CallAs,
 	}
 
-	stackSetOperation, err := meta.(*client.Client).Services().Cloudformation.DescribeStackSetOperation(ctx, &input)
+	stackSetOperation, err := svc.DescribeStackSetOperation(ctx, &input, func(options *cloudformation.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

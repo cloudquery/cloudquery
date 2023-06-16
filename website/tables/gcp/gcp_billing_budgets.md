@@ -14,15 +14,15 @@ This table depends on [gcp_billing_billing_accounts](gcp_billing_billing_account
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|display_name|String|
-|budget_filter|JSON|
-|amount|JSON|
-|threshold_rules|JSON|
-|notifications_rule|JSON|
-|etag|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|display_name|`utf8`|
+|budget_filter|`json`|
+|amount|`json`|
+|threshold_rules|`json`|
+|notifications_rule|`json`|
+|etag|`utf8`|

@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
 	"github.com/rs/zerolog"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -13,7 +13,6 @@ import (
 
 type Client struct {
 	destination.UnimplementedUnmanagedWriter
-	destination.DefaultReverseTransformer
 	logger     zerolog.Logger
 	spec       specs.Destination
 	pluginSpec Spec
@@ -34,7 +33,7 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	if err := spec.Validate(); err != nil {
 		return nil, err
 	}
-	c.client, err = mongo.NewClient(options.Client().ApplyURI(spec.ConnectionString))
+	c.client, err = mongo.NewClient(options.Client().ApplyURI(spec.ConnectionString).SetRegistry(getRegistry()))
 	if err != nil {
 		return nil, err
 	}

@@ -1,5 +1,7 @@
 ---
 name: PostgreSQL
+title: PostgreSQL Source Plugin
+description: CloudQuery PostgreSQL source plugin documentation
 ---
 # PostgreSQL Source Plugin
 
@@ -28,6 +30,7 @@ spec:
   registry: "github"
   path: "cloudquery/postgresql"
   version: "VERSION_SOURCE_POSTGRESQL"
+  tables: ["*"]
 
   spec:
     connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
@@ -74,6 +77,7 @@ spec:
   name: postgresql
   path: cloudquery/postgresql
   version: "VERSION_SOURCE_POSTGRESQL"
+  tables: ["*"]
   spec:
     connection_string: ${PG_CONNECTION_STRING}
     pgx_log_level: debug # Available: error, warn, info, debug, trace. Default: "error"

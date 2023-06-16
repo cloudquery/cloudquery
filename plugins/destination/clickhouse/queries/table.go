@@ -2,8 +2,9 @@ package queries
 
 import (
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"golang.org/x/exp/maps"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/arrow/types"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func GetTablesSchema(database string) (query string, params []any) {
@@ -12,8 +13,8 @@ func GetTablesSchema(database string) (query string, params []any) {
 }
 
 // ScanTableSchemas doesn't close rows, so that's on caller.
-func ScanTableSchemas(rows driver.Rows) (schema.Tables, error) {
-	defs := make(map[string]*schema.Table)
+func ScanTableSchemas(rows driver.Rows, need schema.Tables) (schema.Tables, error) {
+	defs := make(map[string]schema.ColumnList)
 
 	var table, name, typ string
 	for rows.Next() {
@@ -21,43 +22,29 @@ func ScanTableSchemas(rows driver.Rows) (schema.Tables, error) {
 			return nil, err
 		}
 
-		def := defs[table]
-		if def == nil {
-			def = &schema.Table{Name: table}
-			defs[table] = def
+		if need.Get(table) == nil {
+			// only save the info about required tables
+			continue
 		}
 
-		def.Columns = append(def.Columns, cqCol(name, typ))
+		field, err := types.Field(name, typ)
+		if err != nil {
+			return nil, err
+		}
+		defs[table] = append(defs[table], schema.NewColumnFromArrowField(*field))
 	}
 
-	return maps.Values(defs), nil
-}
-
-// NormalizedTables returns flattened normalized table definitions
-func NormalizedTables(tables schema.Tables) schema.Tables {
-	flattened := tables.FlattenTables()
-	defs := make(schema.Tables, len(flattened))
-
-	for i, tbl := range flattened {
-		defs[i] = normalizeTable(tbl)
+	res := make(schema.Tables, 0, len(defs))
+	for name, columns := range defs {
+		res = append(res, &schema.Table{Name: name, Columns: columns})
 	}
 
-	return defs
-}
-
-func normalizeTable(table *schema.Table) *schema.Table {
-	columns := make(schema.ColumnList, len(table.Columns))
-
-	for i, col := range table.Columns {
-		columns[i] = normalizeColumn(col)
-	}
-
-	return &schema.Table{Name: table.Name, Columns: columns}
+	return res, nil
 }
 
 func tableNamePart(table, cluster string) string {
 	if len(cluster) > 0 {
-		return sanitizeID(table) + " ON CLUSTER " + sanitizeID(cluster)
+		return util.SanitizeID(table) + " ON CLUSTER " + util.SanitizeID(cluster)
 	}
-	return sanitizeID(table)
+	return util.SanitizeID(table)
 }

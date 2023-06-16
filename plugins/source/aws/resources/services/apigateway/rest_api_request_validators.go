@@ -4,13 +4,14 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func restApiRequestValidators() *schema.Table {
@@ -26,16 +27,14 @@ func restApiRequestValidators() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "rest_api_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveApigatewayRestAPIRequestValidatorArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveApigatewayRestAPIRequestValidatorArn,
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -43,14 +42,16 @@ func restApiRequestValidators() *schema.Table {
 
 func fetchApigatewayRestApiRequestValidators(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.RestApi)
-	c := meta.(*client.Client)
-	svc := c.Services().Apigateway
+	cl := meta.(*client.Client)
+	svc := cl.Services().Apigateway
 	config := apigateway.GetRequestValidatorsInput{RestApiId: r.Id, Limit: aws.Int32(500)}
 	// No paginator available
 	for {
-		response, err := svc.GetRequestValidators(ctx, &config)
+		response, err := svc.GetRequestValidators(ctx, &config, func(options *apigateway.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
-			if c.IsNotFoundError(err) {
+			if cl.IsNotFoundError(err) {
 				return nil
 			}
 			return err

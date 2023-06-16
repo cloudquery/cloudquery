@@ -3,9 +3,10 @@ package items
 import (
 	"reflect"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/hermanschaaf/hackernews"
 )
 
@@ -23,21 +24,19 @@ func Items() *schema.Table {
 		),
 		Columns: []schema.Column{
 			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey:     true,
-					IncrementalKey: true,
-				},
+				Name:           "id",
+				Type:           arrow.PrimitiveTypes.Int64,
+				Resolver:       schema.PathResolver("ID"),
+				PrimaryKey:     true,
+				IncrementalKey: true,
 			},
 		},
 	}
 }
 
-func typeTransformer(f reflect.StructField) (schema.ValueType, error) {
+func typeTransformer(f reflect.StructField) (arrow.DataType, error) {
 	if f.Name == "Time" {
-		return schema.TypeTimestamp, nil
+		return arrow.FixedWidthTypes.Timestamp_us, nil
 	}
 	return transformers.DefaultTypeTransformer(f)
 }

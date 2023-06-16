@@ -7,7 +7,7 @@ select
     account_id,
     arn as resource_id,
     case
-        when (stage_data_trace_enabled is not true or caching_enabled is not true) then 'fail'
+        when stage_data_trace_enabled is not true then 'fail'
         else 'pass'
         end as status
 from

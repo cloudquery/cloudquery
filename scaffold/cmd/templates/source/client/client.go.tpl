@@ -3,9 +3,10 @@ package client
 import (
 	"context"
 	"fmt"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
-  "github.com/cloudquery/plugin-sdk/plugins/source"
+
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
 	"github.com/rs/zerolog"
 )
 

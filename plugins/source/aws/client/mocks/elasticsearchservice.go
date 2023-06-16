@@ -37,6 +37,16 @@ func (m *MockElasticsearchserviceClient) EXPECT() *MockElasticsearchserviceClien
 
 // DescribeDomainAutoTunes mocks base method.
 func (m *MockElasticsearchserviceClient) DescribeDomainAutoTunes(arg0 context.Context, arg1 *elasticsearchservice.DescribeDomainAutoTunesInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.DescribeDomainAutoTunesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDomainAutoTunes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) DescribeDomainAutoTunes(ar
 
 // DescribeDomainChangeProgress mocks base method.
 func (m *MockElasticsearchserviceClient) DescribeDomainChangeProgress(arg0 context.Context, arg1 *elasticsearchservice.DescribeDomainChangeProgressInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.DescribeDomainChangeProgressOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDomainChangeProgress")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) DescribeDomainChangeProgre
 
 // DescribeElasticsearchDomain mocks base method.
 func (m *MockElasticsearchserviceClient) DescribeElasticsearchDomain(arg0 context.Context, arg1 *elasticsearchservice.DescribeElasticsearchDomainInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.DescribeElasticsearchDomainOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeElasticsearchDomain")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) DescribeElasticsearchDomai
 
 // DescribeElasticsearchDomainConfig mocks base method.
 func (m *MockElasticsearchserviceClient) DescribeElasticsearchDomainConfig(arg0 context.Context, arg1 *elasticsearchservice.DescribeElasticsearchDomainConfigInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.DescribeElasticsearchDomainConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeElasticsearchDomainConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) DescribeElasticsearchDomai
 
 // DescribeElasticsearchDomains mocks base method.
 func (m *MockElasticsearchserviceClient) DescribeElasticsearchDomains(arg0 context.Context, arg1 *elasticsearchservice.DescribeElasticsearchDomainsInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.DescribeElasticsearchDomainsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeElasticsearchDomains")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) DescribeElasticsearchDomai
 
 // DescribeElasticsearchInstanceTypeLimits mocks base method.
 func (m *MockElasticsearchserviceClient) DescribeElasticsearchInstanceTypeLimits(arg0 context.Context, arg1 *elasticsearchservice.DescribeElasticsearchInstanceTypeLimitsInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.DescribeElasticsearchInstanceTypeLimitsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeElasticsearchInstanceTypeLimits")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) DescribeElasticsearchInsta
 
 // DescribeInboundCrossClusterSearchConnections mocks base method.
 func (m *MockElasticsearchserviceClient) DescribeInboundCrossClusterSearchConnections(arg0 context.Context, arg1 *elasticsearchservice.DescribeInboundCrossClusterSearchConnectionsInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.DescribeInboundCrossClusterSearchConnectionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInboundCrossClusterSearchConnections")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) DescribeInboundCrossCluste
 
 // DescribeOutboundCrossClusterSearchConnections mocks base method.
 func (m *MockElasticsearchserviceClient) DescribeOutboundCrossClusterSearchConnections(arg0 context.Context, arg1 *elasticsearchservice.DescribeOutboundCrossClusterSearchConnectionsInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.DescribeOutboundCrossClusterSearchConnectionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeOutboundCrossClusterSearchConnections")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) DescribeOutboundCrossClust
 
 // DescribePackages mocks base method.
 func (m *MockElasticsearchserviceClient) DescribePackages(arg0 context.Context, arg1 *elasticsearchservice.DescribePackagesInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.DescribePackagesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePackages")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) DescribePackages(arg0, arg
 
 // DescribeReservedElasticsearchInstanceOfferings mocks base method.
 func (m *MockElasticsearchserviceClient) DescribeReservedElasticsearchInstanceOfferings(arg0 context.Context, arg1 *elasticsearchservice.DescribeReservedElasticsearchInstanceOfferingsInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.DescribeReservedElasticsearchInstanceOfferingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReservedElasticsearchInstanceOfferings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) DescribeReservedElasticsea
 
 // DescribeReservedElasticsearchInstances mocks base method.
 func (m *MockElasticsearchserviceClient) DescribeReservedElasticsearchInstances(arg0 context.Context, arg1 *elasticsearchservice.DescribeReservedElasticsearchInstancesInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.DescribeReservedElasticsearchInstancesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReservedElasticsearchInstances")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) DescribeReservedElasticsea
 
 // DescribeVpcEndpoints mocks base method.
 func (m *MockElasticsearchserviceClient) DescribeVpcEndpoints(arg0 context.Context, arg1 *elasticsearchservice.DescribeVpcEndpointsInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.DescribeVpcEndpointsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVpcEndpoints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) DescribeVpcEndpoints(arg0,
 
 // GetCompatibleElasticsearchVersions mocks base method.
 func (m *MockElasticsearchserviceClient) GetCompatibleElasticsearchVersions(arg0 context.Context, arg1 *elasticsearchservice.GetCompatibleElasticsearchVersionsInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.GetCompatibleElasticsearchVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCompatibleElasticsearchVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) GetCompatibleElasticsearch
 
 // GetPackageVersionHistory mocks base method.
 func (m *MockElasticsearchserviceClient) GetPackageVersionHistory(arg0 context.Context, arg1 *elasticsearchservice.GetPackageVersionHistoryInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.GetPackageVersionHistoryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPackageVersionHistory")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) GetPackageVersionHistory(a
 
 // GetUpgradeHistory mocks base method.
 func (m *MockElasticsearchserviceClient) GetUpgradeHistory(arg0 context.Context, arg1 *elasticsearchservice.GetUpgradeHistoryInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.GetUpgradeHistoryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetUpgradeHistory")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) GetUpgradeHistory(arg0, ar
 
 // GetUpgradeStatus mocks base method.
 func (m *MockElasticsearchserviceClient) GetUpgradeStatus(arg0 context.Context, arg1 *elasticsearchservice.GetUpgradeStatusInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.GetUpgradeStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetUpgradeStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) GetUpgradeStatus(arg0, arg
 
 // ListDomainNames mocks base method.
 func (m *MockElasticsearchserviceClient) ListDomainNames(arg0 context.Context, arg1 *elasticsearchservice.ListDomainNamesInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.ListDomainNamesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDomainNames")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) ListDomainNames(arg0, arg1
 
 // ListDomainsForPackage mocks base method.
 func (m *MockElasticsearchserviceClient) ListDomainsForPackage(arg0 context.Context, arg1 *elasticsearchservice.ListDomainsForPackageInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.ListDomainsForPackageOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDomainsForPackage")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) ListDomainsForPackage(arg0
 
 // ListElasticsearchInstanceTypes mocks base method.
 func (m *MockElasticsearchserviceClient) ListElasticsearchInstanceTypes(arg0 context.Context, arg1 *elasticsearchservice.ListElasticsearchInstanceTypesInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.ListElasticsearchInstanceTypesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListElasticsearchInstanceTypes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) ListElasticsearchInstanceT
 
 // ListElasticsearchVersions mocks base method.
 func (m *MockElasticsearchserviceClient) ListElasticsearchVersions(arg0 context.Context, arg1 *elasticsearchservice.ListElasticsearchVersionsInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.ListElasticsearchVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListElasticsearchVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) ListElasticsearchVersions(
 
 // ListPackagesForDomain mocks base method.
 func (m *MockElasticsearchserviceClient) ListPackagesForDomain(arg0 context.Context, arg1 *elasticsearchservice.ListPackagesForDomainInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.ListPackagesForDomainOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPackagesForDomain")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) ListPackagesForDomain(arg0
 
 // ListTags mocks base method.
 func (m *MockElasticsearchserviceClient) ListTags(arg0 context.Context, arg1 *elasticsearchservice.ListTagsInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.ListTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) ListTags(arg0, arg1 interf
 
 // ListVpcEndpointAccess mocks base method.
 func (m *MockElasticsearchserviceClient) ListVpcEndpointAccess(arg0 context.Context, arg1 *elasticsearchservice.ListVpcEndpointAccessInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.ListVpcEndpointAccessOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListVpcEndpointAccess")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) ListVpcEndpointAccess(arg0
 
 // ListVpcEndpoints mocks base method.
 func (m *MockElasticsearchserviceClient) ListVpcEndpoints(arg0 context.Context, arg1 *elasticsearchservice.ListVpcEndpointsInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.ListVpcEndpointsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListVpcEndpoints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockElasticsearchserviceClientMockRecorder) ListVpcEndpoints(arg0, arg
 
 // ListVpcEndpointsForDomain mocks base method.
 func (m *MockElasticsearchserviceClient) ListVpcEndpointsForDomain(arg0 context.Context, arg1 *elasticsearchservice.ListVpcEndpointsForDomainInput, arg2 ...func(*elasticsearchservice.Options)) (*elasticsearchservice.ListVpcEndpointsForDomainOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticsearchservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListVpcEndpointsForDomain")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

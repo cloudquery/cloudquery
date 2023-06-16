@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -29,6 +29,8 @@ func buildConfigRules(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&configservice.DescribeComplianceByConfigRuleOutput{
 			ComplianceByConfigRules: []types.ComplianceByConfigRule{sl},
 		}, nil)
+	buildRemediationConfigurations(t, m)
+	buildComplianceDetails(t, m)
 	return client.Services{
 		Configservice: m,
 	}

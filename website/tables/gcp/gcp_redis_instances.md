@@ -10,38 +10,38 @@ The primary key for this table is **name**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id|String|
-|name (PK)|String|
-|display_name|String|
-|labels|JSON|
-|location_id|String|
-|alternative_location_id|String|
-|redis_version|String|
-|reserved_ip_range|String|
-|secondary_ip_range|String|
-|host|String|
-|port|Int|
-|current_location_id|String|
-|create_time|Timestamp|
-|state|String|
-|status_message|String|
-|redis_configs|JSON|
-|tier|String|
-|memory_size_gb|Int|
-|authorized_network|String|
-|persistence_iam_identity|String|
-|connect_mode|String|
-|auth_enabled|Bool|
-|server_ca_certs|JSON|
-|transit_encryption_mode|String|
-|maintenance_policy|JSON|
-|maintenance_schedule|JSON|
-|replica_count|Int|
-|nodes|JSON|
-|read_endpoint|String|
-|read_endpoint_port|Int|
-|read_replicas_mode|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id|`utf8`|
+|name (PK)|`utf8`|
+|display_name|`utf8`|
+|labels|`json`|
+|location_id|`utf8`|
+|alternative_location_id|`utf8`|
+|redis_version|`utf8`|
+|reserved_ip_range|`utf8`|
+|secondary_ip_range|`utf8`|
+|host|`utf8`|
+|port|`int64`|
+|current_location_id|`utf8`|
+|create_time|`timestamp[us, tz=UTC]`|
+|state|`utf8`|
+|status_message|`utf8`|
+|redis_configs|`json`|
+|tier|`utf8`|
+|memory_size_gb|`int64`|
+|authorized_network|`utf8`|
+|persistence_iam_identity|`utf8`|
+|connect_mode|`utf8`|
+|auth_enabled|`bool`|
+|server_ca_certs|`json`|
+|transit_encryption_mode|`utf8`|
+|maintenance_policy|`json`|
+|maintenance_schedule|`json`|
+|replica_count|`int64`|
+|nodes|`json`|
+|read_endpoint|`utf8`|
+|read_endpoint_port|`int64`|
+|read_replicas_mode|`utf8`|

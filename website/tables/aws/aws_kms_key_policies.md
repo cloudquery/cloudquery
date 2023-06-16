@@ -14,12 +14,12 @@ This table depends on [aws_kms_keys](aws_kms_keys).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|key_arn (PK)|String|
-|name (PK)|String|
-|policy|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|key_arn (PK)|`utf8`|
+|name (PK)|`utf8`|
+|policy|`json`|

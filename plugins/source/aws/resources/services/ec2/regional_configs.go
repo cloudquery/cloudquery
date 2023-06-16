@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ec2/models"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func RegionalConfigs() *schema.Table {
@@ -25,17 +25,21 @@ func RegionalConfigs() *schema.Table {
 }
 
 func fetchEc2RegionalConfigs(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 
-	svc := c.Services().Ec2
+	svc := cl.Services().Ec2
 	var regionalConfig models.RegionalConfig
-	resp, err := svc.GetEbsDefaultKmsKeyId(ctx, &ec2.GetEbsDefaultKmsKeyIdInput{})
+	resp, err := svc.GetEbsDefaultKmsKeyId(ctx, &ec2.GetEbsDefaultKmsKeyIdInput{}, func(options *ec2.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
 	regionalConfig.EbsDefaultKmsKeyId = resp.KmsKeyId
 
-	ebsResp, err := svc.GetEbsEncryptionByDefault(ctx, &ec2.GetEbsEncryptionByDefaultInput{})
+	ebsResp, err := svc.GetEbsEncryptionByDefault(ctx, &ec2.GetEbsEncryptionByDefaultInput{}, func(options *ec2.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

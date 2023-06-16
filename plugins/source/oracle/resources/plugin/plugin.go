@@ -9,9 +9,9 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/resources/services/filestorage"
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/resources/services/identity"
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/resources/services/objectstorage"
-	"github.com/cloudquery/plugin-sdk/v2/caser"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/caser"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 var (
@@ -97,7 +97,7 @@ var customTables = []*schema.Table{
 }
 
 func Plugin() *source.Plugin {
-	allTables := append(AutogenTables(), customTables...)
+	allTables := append(Tables(), customTables...)
 
 	sort.Slice(allTables, func(i, j int) bool {
 		return allTables[i].Name < allTables[j].Name

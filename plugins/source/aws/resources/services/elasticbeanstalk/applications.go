@@ -3,11 +3,14 @@ package elasticbeanstalk
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Applications() *schema.Table {
@@ -22,23 +25,19 @@ func Applications() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ApplicationArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ApplicationArn"),
+				PrimaryKey: true,
 			},
 			{
-				Name: "date_created",
-				Type: schema.TypeTimestamp,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "date_created",
+				Type:       arrow.FixedWidthTypes.Timestamp_us,
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveElasticbeanstalkApplicationTags,
 			},
 		},
@@ -47,9 +46,11 @@ func Applications() *schema.Table {
 
 func fetchElasticbeanstalkApplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config elasticbeanstalk.DescribeApplicationsInput
-	c := meta.(*client.Client)
-	svc := c.Services().Elasticbeanstalk
-	output, err := svc.DescribeApplications(ctx, &config)
+	cl := meta.(*client.Client)
+	svc := cl.Services().Elasticbeanstalk
+	output, err := svc.DescribeApplications(ctx, &config, func(options *elasticbeanstalk.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -63,7 +64,9 @@ func resolveElasticbeanstalkApplicationTags(ctx context.Context, meta schema.Cli
 	svc := cl.Services().Elasticbeanstalk
 	tagsOutput, err := svc.ListTagsForResource(ctx, &elasticbeanstalk.ListTagsForResourceInput{
 		ResourceArn: p.ApplicationArn,
-	}, func(o *elasticbeanstalk.Options) {})
+	}, func(o *elasticbeanstalk.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		// It takes a few minutes for an environment to be terminated
 		// This ensures we don't error while trying to fetch related resources for a terminated environment

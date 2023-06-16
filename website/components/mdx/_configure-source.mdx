@@ -25,31 +25,12 @@ spec:
   ## checkout latest versions here https://github.com/cloudquery/cloudquery/releases?q=plugins-source-aws&expanded=true
   version: "VERSION_SOURCE_AWS"
 
-  ## Optional. Default: ["*"] - all tables. We recommend to specify specific tables that you need to sync as this
-  ## will reduce the amount of data synced and improve performance.
-  ## See all tables: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/tables/README.md
-  # tables: ["*"]
+  ## Required. You can use ["*"] to sync all tables or specify specific tables. Please note that syncing all tables can be slow
+  ## See all tables: https://www.cloudquery.io/docs/plugins/sources/aws/tables
+  tables: ["aws_s3_buckets"]
 
   ## Required. all destinations you want to sync data to.
   destinations: ["postgresql"]
-
-  # These specific AWS tables are quite slow - we highly recommend skipping them if you are not using them
-  skip_tables:
-    - aws_ec2_vpc_endpoint_services # this resource includes services that are available from AWS as well as other AWS Accounts
-    - aws_cloudtrail_events
-    - aws_docdb_cluster_parameter_groups
-    - aws_docdb_engine_versions
-    - aws_ec2_instance_types
-    - aws_elasticache_engine_versions
-    - aws_elasticache_parameter_groups
-    - aws_elasticache_reserved_cache_nodes_offerings
-    - aws_elasticache_service_updates
-    - aws_neptune_cluster_parameter_groups
-    - aws_neptune_db_parameter_groups
-    - aws_rds_cluster_parameter_groups
-    - aws_rds_db_parameter_groups
-    - aws_rds_engine_versions
-    - aws_servicequotas_services
 
   spec:
     ## Optional. plugin specific configuration

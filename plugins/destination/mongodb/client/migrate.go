@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -22,26 +22,21 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 }
 
 func (c *Client) migrateTable(ctx context.Context, table *schema.Table) error {
+	tableName := table.Name
 	for _, mdl := range c.getIndexTemplates(table) {
-		res, err := c.client.Database(c.pluginSpec.Database).Collection(table.Name).Indexes().CreateOne(ctx, mdl)
+		res, err := c.client.Database(c.pluginSpec.Database).Collection(tableName).Indexes().CreateOne(ctx, mdl)
 		switch {
 		case err == nil:
-			c.logger.Debug().Str("index_name", res).Str("table", table.Name).Msg("created index")
+			c.logger.Debug().Str("index_name", res).Str("table", tableName).Msg("created index")
 		case isIndexConflictError(err):
-			c.logger.Debug().Str("index_name", res).Str("table", table.Name).Err(err).Msg("create index conflict")
+			c.logger.Debug().Str("index_name", res).Str("table", tableName).Err(err).Msg("create index conflict")
 			if err := c.migrateTableOnConflict(ctx, table, mdl); err != nil {
 				return err
 			}
 		case isIndexOptionsConflictError(err):
-			c.logger.Debug().Str("table", table.Name).Err(err).Msg("skipped create index")
+			c.logger.Debug().Str("table", tableName).Err(err).Msg("skipped create index")
 		default:
-			return fmt.Errorf("create index on %s: %w", table.Name, err)
-		}
-	}
-
-	for _, subTable := range table.Relations {
-		if err := c.migrateTable(ctx, subTable); err != nil {
-			return err
+			return fmt.Errorf("create index on %s: %w", tableName, err)
 		}
 	}
 
@@ -49,18 +44,19 @@ func (c *Client) migrateTable(ctx context.Context, table *schema.Table) error {
 }
 
 func (c *Client) migrateTableOnConflict(ctx context.Context, table *schema.Table, mdl mongo.IndexModel) error {
+	tableName := table.Name
 	if c.spec.MigrateMode != specs.MigrateModeForced {
-		return fmt.Errorf("collection %s requires forced migration due to changes in unique indexes. use 'migrate_mode: forced'", table.Name)
+		return fmt.Errorf("collection %s requires forced migration due to changes in unique indexes. use 'migrate_mode: forced'", tableName)
 	}
 
-	if _, err := c.client.Database(c.pluginSpec.Database).Collection(table.Name).Indexes().DropOne(ctx, *mdl.Options.Name); err != nil {
-		return fmt.Errorf("drop index on %s: %w", table.Name, err)
+	if _, err := c.client.Database(c.pluginSpec.Database).Collection(tableName).Indexes().DropOne(ctx, *mdl.Options.Name); err != nil {
+		return fmt.Errorf("drop index on %s: %w", tableName, err)
 	}
-	res, err := c.client.Database(c.pluginSpec.Database).Collection(table.Name).Indexes().CreateOne(ctx, mdl)
+	res, err := c.client.Database(c.pluginSpec.Database).Collection(tableName).Indexes().CreateOne(ctx, mdl)
 	if err != nil {
-		return fmt.Errorf("recreate index on %s: %w", table.Name, err)
+		return fmt.Errorf("recreate index on %s: %w", tableName, err)
 	}
-	c.logger.Debug().Str("index_name", res).Str("table", table.Name).Msg("recreated index")
+	c.logger.Debug().Str("index_name", res).Str("table", tableName).Msg("recreated index")
 	return nil
 }
 
@@ -70,8 +66,8 @@ func (c *Client) getIndexTemplates(table *schema.Table) []mongo.IndexModel {
 	pks := table.PrimaryKeys()
 	if len(pks) > 0 {
 		indexCols := bson.D{}
-		for _, col := range pks {
-			indexCols = append(indexCols, bson.E{Key: col, Value: 1})
+		for _, name := range pks {
+			indexCols = append(indexCols, bson.E{Key: name, Value: 1})
 		}
 
 		pkIndexName := "cq_pk"

@@ -3,12 +3,15 @@ package kinesis
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/kinesis"
 	"github.com/aws/aws-sdk-go-v2/service/kinesis/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Streams() *schema.Table {
@@ -24,16 +27,14 @@ func Streams() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("StreamARN"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("StreamARN"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveKinesisStreamTags,
 			},
 		},
@@ -41,12 +42,14 @@ func Streams() *schema.Table {
 }
 
 func fetchKinesisStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Kinesis
+	cl := meta.(*client.Client)
+	svc := cl.Services().Kinesis
 	input := kinesis.ListStreamsInput{}
 	paginator := kinesis.NewListStreamsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *kinesis.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -56,11 +59,13 @@ func fetchKinesisStreams(ctx context.Context, meta schema.ClientMeta, parent *sc
 }
 
 func getStream(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	streamName := resource.Item.(string)
-	svc := c.Services().Kinesis
+	svc := cl.Services().Kinesis
 	streamSummary, err := svc.DescribeStreamSummary(ctx, &kinesis.DescribeStreamSummaryInput{
 		StreamName: aws.String(streamName),
+	}, func(options *kinesis.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -78,7 +83,9 @@ func resolveKinesisStreamTags(ctx context.Context, meta schema.ClientMeta, resou
 	}
 	var tags []types.Tag
 	for {
-		output, err := svc.ListTagsForStream(ctx, &input)
+		output, err := svc.ListTagsForStream(ctx, &input, func(options *kinesis.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

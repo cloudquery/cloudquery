@@ -14,35 +14,35 @@ This table depends on [gcp_aiplatform_job_locations](gcp_aiplatform_job_location
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|display_name|String|
-|model|String|
-|model_version_id|String|
-|unmanaged_container_model|JSON|
-|input_config|JSON|
-|instance_config|JSON|
-|model_parameters|JSON|
-|output_config|JSON|
-|dedicated_resources|JSON|
-|service_account|String|
-|manual_batch_tuning_parameters|JSON|
-|generate_explanation|Bool|
-|explanation_spec|JSON|
-|output_info|JSON|
-|state|String|
-|error|JSON|
-|partial_failures|JSON|
-|resources_consumed|JSON|
-|completion_stats|JSON|
-|create_time|Timestamp|
-|start_time|Timestamp|
-|end_time|Timestamp|
-|update_time|Timestamp|
-|labels|JSON|
-|encryption_spec|JSON|
-|disable_container_logging|Bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|display_name|`utf8`|
+|model|`utf8`|
+|model_version_id|`utf8`|
+|unmanaged_container_model|`json`|
+|input_config|`json`|
+|instance_config|`json`|
+|model_parameters|`json`|
+|output_config|`json`|
+|dedicated_resources|`json`|
+|service_account|`utf8`|
+|manual_batch_tuning_parameters|`json`|
+|generate_explanation|`bool`|
+|explanation_spec|`json`|
+|output_info|`json`|
+|state|`utf8`|
+|error|`json`|
+|partial_failures|`json`|
+|resources_consumed|`json`|
+|completion_stats|`json`|
+|create_time|`timestamp[us, tz=UTC]`|
+|start_time|`timestamp[us, tz=UTC]`|
+|end_time|`timestamp[us, tz=UTC]`|
+|update_time|`timestamp[us, tz=UTC]`|
+|labels|`json`|
+|encryption_spec|`json`|
+|disable_container_logging|`bool`|

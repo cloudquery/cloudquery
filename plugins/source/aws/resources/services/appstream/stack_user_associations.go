@@ -3,12 +3,13 @@ package appstream
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appstream/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func stackUserAssociations() *schema.Table {
@@ -23,28 +24,22 @@ func stackUserAssociations() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:     "stack_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("StackName"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "stack_name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("StackName"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "user_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UserName"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "user_name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("UserName"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "authentication_type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AuthenticationType"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "authentication_type",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("AuthenticationType"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -55,11 +50,13 @@ func fetchAppstreamStackUserAssociations(ctx context.Context, meta schema.Client
 	input.StackName = parent.Item.(types.Stack).Name
 	input.MaxResults = aws.Int32(25)
 
-	c := meta.(*client.Client)
-	svc := c.Services().Appstream
+	cl := meta.(*client.Client)
+	svc := cl.Services().Appstream
 	// No paginator available
 	for {
-		response, err := svc.DescribeUserStackAssociations(ctx, &input)
+		response, err := svc.DescribeUserStackAssociations(ctx, &input, func(options *appstream.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

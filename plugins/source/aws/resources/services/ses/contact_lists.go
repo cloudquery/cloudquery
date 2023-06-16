@@ -3,11 +3,14 @@ package ses
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func ContactLists() *schema.Table {
@@ -23,16 +26,14 @@ func ContactLists() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ContactListName"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ContactListName"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: client.ResolveTags,
 			},
 		},
@@ -40,12 +41,14 @@ func ContactLists() *schema.Table {
 }
 
 func fetchSesContactLists(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sesv2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sesv2
 
 	p := sesv2.NewListContactListsPaginator(svc, nil)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(o *sesv2.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -56,11 +59,16 @@ func fetchSesContactLists(ctx context.Context, meta schema.ClientMeta, parent *s
 }
 
 func getContactList(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sesv2
-	cl := resource.Item.(types.ContactList)
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sesv2
+	item := resource.Item.(types.ContactList)
 
-	getOutput, err := svc.GetContactList(ctx, &sesv2.GetContactListInput{ContactListName: cl.ContactListName})
+	getOutput, err := svc.GetContactList(ctx,
+		&sesv2.GetContactListInput{ContactListName: item.ContactListName},
+		func(o *sesv2.Options) {
+			o.Region = cl.Region
+		},
+	)
 	if err != nil {
 		return err
 	}

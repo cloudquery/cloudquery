@@ -11,6 +11,7 @@ type CloudformationClient interface {
 	DescribeAccountLimits(context.Context, *cloudformation.DescribeAccountLimitsInput, ...func(*cloudformation.Options)) (*cloudformation.DescribeAccountLimitsOutput, error)
 	DescribeChangeSet(context.Context, *cloudformation.DescribeChangeSetInput, ...func(*cloudformation.Options)) (*cloudformation.DescribeChangeSetOutput, error)
 	DescribeChangeSetHooks(context.Context, *cloudformation.DescribeChangeSetHooksInput, ...func(*cloudformation.Options)) (*cloudformation.DescribeChangeSetHooksOutput, error)
+	DescribeOrganizationsAccess(context.Context, *cloudformation.DescribeOrganizationsAccessInput, ...func(*cloudformation.Options)) (*cloudformation.DescribeOrganizationsAccessOutput, error)
 	DescribePublisher(context.Context, *cloudformation.DescribePublisherInput, ...func(*cloudformation.Options)) (*cloudformation.DescribePublisherOutput, error)
 	DescribeStackDriftDetectionStatus(context.Context, *cloudformation.DescribeStackDriftDetectionStatusInput, ...func(*cloudformation.Options)) (*cloudformation.DescribeStackDriftDetectionStatusOutput, error)
 	DescribeStackEvents(context.Context, *cloudformation.DescribeStackEventsInput, ...func(*cloudformation.Options)) (*cloudformation.DescribeStackEventsOutput, error)

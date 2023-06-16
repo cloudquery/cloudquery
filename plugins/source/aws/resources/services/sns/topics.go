@@ -3,12 +3,15 @@ package sns
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sns/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sns/models"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/mitchellh/mapstructure"
 )
 
@@ -25,31 +28,29 @@ func Topics() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Arn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveSnsTopicTags,
 			},
 			{
 				Name:     "delivery_policy",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: schema.PathResolver("DeliveryPolicy"),
 			},
 			{
 				Name:     "policy",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: schema.PathResolver("Policy"),
 			},
 			{
 				Name:     "effective_delivery_policy",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: schema.PathResolver("EffectiveDeliveryPolicy"),
 			},
 		},
@@ -57,12 +58,14 @@ func Topics() *schema.Table {
 }
 
 func fetchSnsTopics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sns
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sns
 	config := sns.ListTopicsInput{}
 	paginator := sns.NewListTopicsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *sns.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -72,11 +75,16 @@ func fetchSnsTopics(ctx context.Context, meta schema.ClientMeta, parent *schema.
 }
 
 func getTopic(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sns
+	cl := meta.(*client.Client)
+	svc := cl.Services().Sns
 	topic := resource.Item.(types.Topic)
 
-	attrs, err := svc.GetTopicAttributes(ctx, &sns.GetTopicAttributesInput{TopicArn: topic.TopicArn})
+	attrs, err := svc.GetTopicAttributes(ctx,
+		&sns.GetTopicAttributesInput{TopicArn: topic.TopicArn},
+		func(o *sns.Options) {
+			o.Region = cl.Region
+		},
+	)
 	if err != nil {
 		return err
 	}
@@ -101,7 +109,9 @@ func resolveSnsTopicTags(ctx context.Context, meta schema.ClientMeta, resource *
 	tagParams := sns.ListTagsForResourceInput{
 		ResourceArn: topic.Arn,
 	}
-	tags, err := svc.ListTagsForResource(ctx, &tagParams)
+	tags, err := svc.ListTagsForResource(ctx, &tagParams, func(o *sns.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

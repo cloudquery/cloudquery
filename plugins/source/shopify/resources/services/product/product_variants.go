@@ -1,9 +1,10 @@
 package product
 
 import (
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/internal/shopify"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func ProductVariants() *schema.Table {
@@ -13,20 +14,16 @@ func ProductVariants() *schema.Table {
 		Transform: transformers.TransformWithStruct(&shopify.ProductVariant{}),
 		Columns: []schema.Column{
 			{
-				Name:     "product_id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ProductID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "product_id",
+				Type:       arrow.PrimitiveTypes.Int64,
+				Resolver:   schema.PathResolver("ProductID"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.PrimitiveTypes.Int64,
+				Resolver:   schema.PathResolver("ID"),
+				PrimaryKey: true,
 			},
 		},
 	}

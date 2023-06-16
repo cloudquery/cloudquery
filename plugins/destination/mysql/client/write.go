@@ -5,14 +5,16 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func getInsertQueryBuild(table *schema.Table) *strings.Builder {
 	builder := strings.Builder{}
-	builder.WriteString("INSERT INTO " + table.Name)
+	builder.WriteString("INSERT INTO " + identifier(table.Name))
 	builder.WriteString(" (")
+
 	for i, col := range table.Columns {
 		builder.WriteString(identifier(col.Name))
 		if i < len(table.Columns)-1 {
@@ -25,21 +27,29 @@ func getInsertQueryBuild(table *schema.Table) *strings.Builder {
 	return &builder
 }
 
-func (c *Client) appendTableBatch(ctx context.Context, table *schema.Table, resources [][]any) error {
-	builder := getInsertQueryBuild(table)
-	builder.WriteString(";")
-
+func (c *Client) writeResources(ctx context.Context, query string, resources []arrow.Record) error {
 	for _, data := range resources {
-		_, err := c.db.ExecContext(ctx, builder.String(), data...)
+		transformedRecords, err := transformRecord(data)
 		if err != nil {
 			return err
 		}
+		for _, transformedRecord := range transformedRecords {
+			_, err := c.db.ExecContext(ctx, query, transformedRecord...)
+			if err != nil {
+				return err
+			}
+		}
 	}
-
 	return nil
 }
 
-func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, resources [][]any) error {
+func (c *Client) appendTableBatch(ctx context.Context, table *schema.Table, resources []arrow.Record) error {
+	builder := getInsertQueryBuild(table)
+	builder.WriteString(";")
+	return c.writeResources(ctx, builder.String(), resources)
+}
+
+func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, resources []arrow.Record) error {
 	builder := getInsertQueryBuild(table)
 	builder.WriteString(" ON DUPLICATE KEY UPDATE ")
 	for i, col := range table.Columns {
@@ -48,25 +58,16 @@ func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, r
 			builder.WriteString(", ")
 		}
 	}
-	builder.WriteString(";")
-
-	for _, data := range resources {
-		_, err := c.db.ExecContext(ctx, builder.String(), data...)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
+	return c.writeResources(ctx, builder.String(), resources)
 }
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources [][]any) error {
+func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources []arrow.Record) error {
 	switch c.spec.WriteMode {
 	case specs.WriteModeAppend:
 		return c.appendTableBatch(ctx, table, resources)
 	case specs.WriteModeOverwrite, specs.WriteModeOverwriteDeleteStale:
 		return c.overwriteTableBatch(ctx, table, resources)
 	default:
-		panic("unsupported write mode " + c.spec.WriteMode.String())
+		return fmt.Errorf("unsupported write mode %s", c.spec.WriteMode.String())
 	}
 }

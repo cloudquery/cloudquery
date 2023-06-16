@@ -15,18 +15,18 @@ The following tables depend on aws_ses_configuration_sets:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|name|String|
-|delivery_options|JSON|
-|reputation_options|JSON|
-|sending_options|JSON|
-|suppression_options|JSON|
-|tracking_options|JSON|
-|vdm_options|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|name|`utf8`|
+|delivery_options|`json`|
+|reputation_options|`json`|
+|sending_options|`json`|
+|suppression_options|`json`|
+|tracking_options|`json`|
+|vdm_options|`json`|

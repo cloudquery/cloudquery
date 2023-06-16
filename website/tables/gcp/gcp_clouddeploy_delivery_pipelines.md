@@ -15,18 +15,18 @@ The following tables depend on gcp_clouddeploy_delivery_pipelines:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|uid|String|
-|description|String|
-|annotations|JSON|
-|labels|JSON|
-|create_time|Timestamp|
-|update_time|Timestamp|
-|condition|JSON|
-|etag|String|
-|suspended|Bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|uid|`utf8`|
+|description|`utf8`|
+|annotations|`json`|
+|labels|`json`|
+|create_time|`timestamp[us, tz=UTC]`|
+|update_time|`timestamp[us, tz=UTC]`|
+|condition|`json`|
+|etag|`utf8`|
+|suspended|`bool`|

@@ -37,6 +37,16 @@ func (m *MockFirehoseClient) EXPECT() *MockFirehoseClientMockRecorder {
 
 // DescribeDeliveryStream mocks base method.
 func (m *MockFirehoseClient) DescribeDeliveryStream(arg0 context.Context, arg1 *firehose.DescribeDeliveryStreamInput, arg2 ...func(*firehose.Options)) (*firehose.DescribeDeliveryStreamOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &firehose.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDeliveryStream")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockFirehoseClientMockRecorder) DescribeDeliveryStream(arg0, arg1 inte
 
 // ListDeliveryStreams mocks base method.
 func (m *MockFirehoseClient) ListDeliveryStreams(arg0 context.Context, arg1 *firehose.ListDeliveryStreamsInput, arg2 ...func(*firehose.Options)) (*firehose.ListDeliveryStreamsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &firehose.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDeliveryStreams")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockFirehoseClientMockRecorder) ListDeliveryStreams(arg0, arg1 interfa
 
 // ListTagsForDeliveryStream mocks base method.
 func (m *MockFirehoseClient) ListTagsForDeliveryStream(arg0 context.Context, arg1 *firehose.ListTagsForDeliveryStreamInput, arg2 ...func(*firehose.Options)) (*firehose.ListTagsForDeliveryStreamOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &firehose.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForDeliveryStream")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

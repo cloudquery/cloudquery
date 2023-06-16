@@ -45,5 +45,4 @@
 \ir ../queries/cloudwatch/alarm_organization_changes.sql
 \set check_id '4.16'
 \echo "Executing check 4.16"
--- todo add security hub resources to aws provider
-
+\ir ../queries/securityhub/securityhub_enabled.sql

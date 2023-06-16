@@ -11,6 +11,6 @@ spec:
   write_mode: "append" # file only supports 'append' mode
 
   spec:
-    directory: "./cq_csv_output"
+    path: "path/to/files/{{TABLE}}/{{UUID}}.{{FORMAT}}"
     format: "csv" # supported values are 'csv', 'json' and 'parquet'
 ```

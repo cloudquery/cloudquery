@@ -15,13 +15,13 @@ The following tables depend on tf_data:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|backend_type|String|
-|backend_name|String|
-|version|Int|
-|terraform_version|String|
-|serial|Int|
-|lineage|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|backend_type|`utf8`|
+|backend_name|`utf8`|
+|version|`int64`|
+|terraform_version|`utf8`|
+|serial|`int64`|
+|lineage|`utf8`|

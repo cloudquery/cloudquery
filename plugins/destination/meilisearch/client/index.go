@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/meilisearch/meilisearch-go"
 	"golang.org/x/exp/slices"
 )
@@ -44,7 +44,7 @@ func (c *Client) tableIndexSchema(table *schema.Table) *indexSchema {
 
 func (c *Client) tablesIndexSchemas(tables schema.Tables) map[string]*indexSchema {
 	res := make(map[string]*indexSchema)
-	for _, table := range tables.FlattenTables() {
+	for _, table := range tables {
 		s := c.tableIndexSchema(table)
 		res[s.UID] = s
 	}

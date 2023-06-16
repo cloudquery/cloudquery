@@ -8,8 +8,8 @@ import (
 	"sync/atomic"
 
 	"github.com/Shopify/sarama"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func (c *Client) createTopics(_ context.Context, tables schema.Tables) error {
@@ -19,7 +19,7 @@ func (c *Client) createTopics(_ context.Context, tables schema.Tables) error {
 		return err
 	}
 	defer admin.Close()
-	for _, table := range tables.FlattenTables() {
+	for _, table := range tables {
 		err := admin.CreateTopic(table.Name, &sarama.TopicDetail{
 			NumPartitions:     1,
 			ReplicationFactor: 1,
@@ -34,22 +34,27 @@ func (c *Client) createTopics(_ context.Context, tables schema.Tables) error {
 	return nil
 }
 
-func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *destination.ClientResource) error {
+func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan arrow.Record) error {
 	if err := c.createTopics(ctx, tables); err != nil {
 		return err
 	}
 
 	messages := make([]*sarama.ProducerMessage, 0, c.spec.BatchSize)
 	for r := range res {
+		table, err := schema.NewTableFromArrowSchema(r.Schema())
+		if err != nil {
+			return err
+		}
+
 		var b bytes.Buffer
 		w := bufio.NewWriter(&b)
-		table := tables.Get(r.TableName)
-		if err := c.Client.WriteTableBatchFile(w, table, [][]any{r.Data}); err != nil {
+
+		if err := c.Client.WriteTableBatchFile(w, table, []arrow.Record{r}); err != nil {
 			return err
 		}
 		w.Flush()
 		messages = append(messages, &sarama.ProducerMessage{
-			Topic: r.TableName,
+			Topic: table.Name,
 			Key:   nil,
 			Value: sarama.ByteEncoder(b.Bytes()),
 		})

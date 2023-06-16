@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source string, syncTime time.Time) error {
-	for _, table := range tables.FlattenTables() {
+	for _, table := range tables {
 		query := fmt.Sprintf(`delete from %s where %s = ? and %s < ?`, identifier(table.Name), identifier(schema.CqSourceNameColumn.Name), identifier(schema.CqSyncTimeColumn.Name))
 		if _, err := c.db.ExecContext(ctx, query, source, syncTime); err != nil {
 			return err

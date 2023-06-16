@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/batch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -27,14 +27,14 @@ func buildBatchJobsMock(t *testing.T, m *mocks.MockBatchClient) client.Services 
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListJobs(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListJobs(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&batch.ListJobsOutput{
 			JobSummaryList: []types.JobSummary{a},
 		}, nil).Times(len(allJobStatuses))
 
 	m.EXPECT().DescribeJobs(gomock.Any(), &batch.DescribeJobsInput{
 		Jobs: []string{*a.JobId},
-	}).Return(
+	}, gomock.Any()).Return(
 		&batch.DescribeJobsOutput{
 			Jobs: []types.JobDetail{d},
 		}, nil).Times(len(allJobStatuses))

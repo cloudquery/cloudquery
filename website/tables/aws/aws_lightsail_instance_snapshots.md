@@ -10,25 +10,25 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|created_at|Timestamp|
-|from_attached_disks|JSON|
-|from_blueprint_id|String|
-|from_bundle_id|String|
-|from_instance_arn|String|
-|from_instance_name|String|
-|is_from_auto_snapshot|Bool|
-|location|JSON|
-|name|String|
-|progress|String|
-|resource_type|String|
-|size_in_gb|Int|
-|state|String|
-|support_code|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|created_at|`timestamp[us, tz=UTC]`|
+|from_attached_disks|`json`|
+|from_blueprint_id|`utf8`|
+|from_bundle_id|`utf8`|
+|from_instance_arn|`utf8`|
+|from_instance_name|`utf8`|
+|is_from_auto_snapshot|`bool`|
+|location|`json`|
+|name|`utf8`|
+|progress|`utf8`|
+|resource_type|`utf8`|
+|size_in_gb|`int64`|
+|state|`utf8`|
+|support_code|`utf8`|

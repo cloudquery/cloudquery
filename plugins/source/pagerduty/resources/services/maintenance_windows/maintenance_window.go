@@ -2,8 +2,9 @@ package maintenance_windows
 
 import (
 	"github.com/PagerDuty/go-pagerduty"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func MaintenanceWindows() *schema.Table {
@@ -14,26 +15,24 @@ func MaintenanceWindows() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&pagerduty.MaintenanceWindow{}, transformers.WithUnwrapAllEmbeddedStructs(), transformers.WithSkipFields("HTMLURL")),
 		Columns: []schema.Column{
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ID"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "html_url",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("HTMLURL"),
 			},
 			{
 				Name:     "start_time",
-				Type:     schema.TypeTimestamp,
+				Type:     arrow.FixedWidthTypes.Timestamp_us,
 				Resolver: schema.PathResolver("StartTime"),
 			},
 			{
 				Name:     "end_time",
-				Type:     schema.TypeTimestamp,
+				Type:     arrow.FixedWidthTypes.Timestamp_us,
 				Resolver: schema.PathResolver("EndTime"),
 			},
 		},

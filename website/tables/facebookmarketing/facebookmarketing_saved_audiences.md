@@ -10,23 +10,23 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|JSON|
-|approximate_count_lower_bound|Int|
-|approximate_count_upper_bound|Int|
-|delete_time|Int|
-|description|String|
-|extra_info|String|
-|id (PK)|String|
-|name|String|
-|operation_status|JSON|
-|owner_business|JSON|
-|page_deletion_marked_delete_time|Int|
-|permission_for_actions|JSON|
-|run_status|String|
-|targeting|JSON|
-|time_created|Timestamp|
-|time_updated|Timestamp|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`json`|
+|approximate_count_lower_bound|`int64`|
+|approximate_count_upper_bound|`int64`|
+|delete_time|`int64`|
+|description|`utf8`|
+|extra_info|`utf8`|
+|id (PK)|`utf8`|
+|name|`utf8`|
+|operation_status|`json`|
+|owner_business|`json`|
+|page_deletion_marked_delete_time|`int64`|
+|permission_for_actions|`json`|
+|run_status|`utf8`|
+|targeting|`json`|
+|time_created|`timestamp[us, tz=UTC]`|
+|time_updated|`timestamp[us, tz=UTC]`|

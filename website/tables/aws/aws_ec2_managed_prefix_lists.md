@@ -11,20 +11,20 @@ The composite primary key for this table is (**request_account_id**, **request_r
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|request_account_id (PK)|String|
-|request_region (PK)|String|
-|arn (PK)|String|
-|tags|JSON|
-|address_family|String|
-|max_entries|Int|
-|owner_id|String|
-|prefix_list_arn|String|
-|prefix_list_id|String|
-|prefix_list_name|String|
-|state|String|
-|state_message|String|
-|version|Int|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|request_account_id (PK)|`utf8`|
+|request_region (PK)|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|address_family|`utf8`|
+|max_entries|`int64`|
+|owner_id|`utf8`|
+|prefix_list_arn|`utf8`|
+|prefix_list_id|`utf8`|
+|prefix_list_name|`utf8`|
+|state|`utf8`|
+|state_message|`utf8`|
+|version|`int64`|

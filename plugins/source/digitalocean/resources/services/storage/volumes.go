@@ -1,24 +1,24 @@
 package storage
 
 import (
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/digitalocean/godo"
 )
 
 func Volumes() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_storage_volumes",
-		Resolver:  fetchStorageVolumes,
-		Transform: transformers.TransformWithStruct(&godo.Volume{}),
+		Name:        "digitalocean_storage_volumes",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#tag/Block-Storage",
+		Resolver:    fetchStorageVolumes,
+		Transform:   transformers.TransformWithStruct(&godo.Volume{}),
 		Columns: []schema.Column{
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ID"),
+				PrimaryKey: true,
 			},
 		},
 	}

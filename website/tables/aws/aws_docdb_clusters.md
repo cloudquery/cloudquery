@@ -16,43 +16,43 @@ The following tables depend on aws_docdb_clusters:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|tags|JSON|
-|arn (PK)|String|
-|associated_roles|JSON|
-|availability_zones|StringArray|
-|backup_retention_period|Int|
-|clone_group_id|String|
-|cluster_create_time|Timestamp|
-|db_cluster_arn|String|
-|db_cluster_identifier|String|
-|db_cluster_members|JSON|
-|db_cluster_parameter_group|String|
-|db_subnet_group|String|
-|db_cluster_resource_id|String|
-|deletion_protection|Bool|
-|earliest_restorable_time|Timestamp|
-|enabled_cloudwatch_logs_exports|StringArray|
-|endpoint|String|
-|engine|String|
-|engine_version|String|
-|hosted_zone_id|String|
-|kms_key_id|String|
-|latest_restorable_time|Timestamp|
-|master_username|String|
-|multi_az|Bool|
-|percent_progress|String|
-|port|Int|
-|preferred_backup_window|String|
-|preferred_maintenance_window|String|
-|read_replica_identifiers|StringArray|
-|reader_endpoint|String|
-|replication_source_identifier|String|
-|status|String|
-|storage_encrypted|Bool|
-|vpc_security_groups|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|tags|`json`|
+|arn (PK)|`utf8`|
+|associated_roles|`json`|
+|availability_zones|`list<item: utf8, nullable>`|
+|backup_retention_period|`int64`|
+|clone_group_id|`utf8`|
+|cluster_create_time|`timestamp[us, tz=UTC]`|
+|db_cluster_arn|`utf8`|
+|db_cluster_identifier|`utf8`|
+|db_cluster_members|`json`|
+|db_cluster_parameter_group|`utf8`|
+|db_subnet_group|`utf8`|
+|db_cluster_resource_id|`utf8`|
+|deletion_protection|`bool`|
+|earliest_restorable_time|`timestamp[us, tz=UTC]`|
+|enabled_cloudwatch_logs_exports|`list<item: utf8, nullable>`|
+|endpoint|`utf8`|
+|engine|`utf8`|
+|engine_version|`utf8`|
+|hosted_zone_id|`utf8`|
+|kms_key_id|`utf8`|
+|latest_restorable_time|`timestamp[us, tz=UTC]`|
+|master_username|`utf8`|
+|multi_az|`bool`|
+|percent_progress|`utf8`|
+|port|`int64`|
+|preferred_backup_window|`utf8`|
+|preferred_maintenance_window|`utf8`|
+|read_replica_identifiers|`list<item: utf8, nullable>`|
+|reader_endpoint|`utf8`|
+|replication_source_identifier|`utf8`|
+|status|`utf8`|
+|storage_encrypted|`bool`|
+|vpc_security_groups|`json`|

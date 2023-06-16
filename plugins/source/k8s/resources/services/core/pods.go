@@ -3,9 +3,11 @@ package core
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -23,17 +25,17 @@ func Pods() *schema.Table {
 			client.ContextColumn,
 			{
 				Name:     "status_host_ip",
-				Type:     schema.TypeInet,
+				Type:     types.ExtensionTypes.Inet,
 				Resolver: client.StringToInetPathResolver("Status.HostIP"),
 			},
 			{
 				Name:     "status_pod_ip",
-				Type:     schema.TypeInet,
+				Type:     types.ExtensionTypes.Inet,
 				Resolver: client.StringToInetPathResolver("Status.PodIP"),
 			},
 			{
 				Name:     "status_pod_ips",
-				Type:     schema.TypeInetArray,
+				Type:     arrow.ListOf(types.ExtensionTypes.Inet),
 				Resolver: resolveCorePodPodIPs,
 			},
 		},

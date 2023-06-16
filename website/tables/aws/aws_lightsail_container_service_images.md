@@ -14,13 +14,13 @@ This table depends on [aws_lightsail_container_services](aws_lightsail_container
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|container_service_arn|String|
-|created_at|Timestamp|
-|digest|String|
-|image|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|container_service_arn|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|digest|`utf8`|
+|image|`utf8`|

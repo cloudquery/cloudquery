@@ -14,17 +14,17 @@ This table depends on [gcp_clouddeploy_rollouts](gcp_clouddeploy_rollouts).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|uid|String|
-|phase_id|String|
-|job_id|String|
-|create_time|Timestamp|
-|start_time|Timestamp|
-|end_time|Timestamp|
-|state|String|
-|etag|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|uid|`utf8`|
+|phase_id|`utf8`|
+|job_id|`utf8`|
+|create_time|`timestamp[us, tz=UTC]`|
+|start_time|`timestamp[us, tz=UTC]`|
+|end_time|`timestamp[us, tz=UTC]`|
+|state|`utf8`|
+|etag|`utf8`|

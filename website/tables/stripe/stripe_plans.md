@@ -11,28 +11,28 @@ It supports incremental syncs based on the **created** column.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|created (Incremental Key)|Timestamp|
-|active|Bool|
-|aggregate_usage|String|
-|amount|Int|
-|amount_decimal|Float|
-|billing_scheme|String|
-|currency|String|
-|deleted|Bool|
-|interval|String|
-|interval_count|Int|
-|livemode|Bool|
-|metadata|JSON|
-|nickname|String|
-|object|String|
-|product|JSON|
-|tiers|JSON|
-|tiers_mode|String|
-|transform_usage|JSON|
-|trial_period_days|Int|
-|usage_type|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|created (Incremental Key)|`timestamp[us, tz=UTC]`|
+|active|`bool`|
+|aggregate_usage|`utf8`|
+|amount|`int64`|
+|amount_decimal|`float64`|
+|billing_scheme|`utf8`|
+|currency|`utf8`|
+|deleted|`bool`|
+|interval|`utf8`|
+|interval_count|`int64`|
+|livemode|`bool`|
+|metadata|`json`|
+|nickname|`utf8`|
+|object|`utf8`|
+|product|`json`|
+|tiers|`json`|
+|tiers_mode|`utf8`|
+|transform_usage|`json`|
+|trial_period_days|`int64`|
+|usage_type|`utf8`|

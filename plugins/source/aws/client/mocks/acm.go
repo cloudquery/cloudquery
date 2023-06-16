@@ -37,6 +37,16 @@ func (m *MockAcmClient) EXPECT() *MockAcmClientMockRecorder {
 
 // DescribeCertificate mocks base method.
 func (m *MockAcmClient) DescribeCertificate(arg0 context.Context, arg1 *acm.DescribeCertificateInput, arg2 ...func(*acm.Options)) (*acm.DescribeCertificateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &acm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCertificate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockAcmClientMockRecorder) DescribeCertificate(arg0, arg1 interface{},
 
 // GetAccountConfiguration mocks base method.
 func (m *MockAcmClient) GetAccountConfiguration(arg0 context.Context, arg1 *acm.GetAccountConfigurationInput, arg2 ...func(*acm.Options)) (*acm.GetAccountConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &acm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAccountConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockAcmClientMockRecorder) GetAccountConfiguration(arg0, arg1 interfac
 
 // GetCertificate mocks base method.
 func (m *MockAcmClient) GetCertificate(arg0 context.Context, arg1 *acm.GetCertificateInput, arg2 ...func(*acm.Options)) (*acm.GetCertificateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &acm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCertificate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockAcmClientMockRecorder) GetCertificate(arg0, arg1 interface{}, arg2
 
 // ListCertificates mocks base method.
 func (m *MockAcmClient) ListCertificates(arg0 context.Context, arg1 *acm.ListCertificatesInput, arg2 ...func(*acm.Options)) (*acm.ListCertificatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &acm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCertificates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockAcmClientMockRecorder) ListCertificates(arg0, arg1 interface{}, ar
 
 // ListTagsForCertificate mocks base method.
 func (m *MockAcmClient) ListTagsForCertificate(arg0 context.Context, arg1 *acm.ListTagsForCertificateInput, arg2 ...func(*acm.Options)) (*acm.ListTagsForCertificateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &acm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForCertificate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
