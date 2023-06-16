@@ -90,6 +90,10 @@ func New(ctx context.Context, logger zerolog.Logger, spec any) (plugin.Client, e
 	return c, nil
 }
 
+func (c *Client) GetSpec() any {
+	return &Spec{}
+}
+
 func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, res <-chan plugin.Message) error {
 	return c.writer.Write(ctx, options, res)
 }
