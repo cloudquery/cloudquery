@@ -37,6 +37,8 @@ The primary key for this table is **arn**.
 |schedulers|`int64`|
 |service_role_arn|`utf8`|
 |source_bucket_arn|`utf8`|
+|startup_script_s3_object_version|`utf8`|
+|startup_script_s3_path|`utf8`|
 |status|`utf8`|
 |tags|`json`|
 |webserver_access_mode|`utf8`|

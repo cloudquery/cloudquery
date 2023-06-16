@@ -28,6 +28,7 @@ The following tables depend on aws_dynamodb_tables:
 |attribute_definitions|`json`|
 |billing_mode_summary|`json`|
 |creation_date_time|`timestamp[us, tz=UTC]`|
+|deletion_protection_enabled|`bool`|
 |global_secondary_indexes|`json`|
 |global_table_version|`utf8`|
 |item_count|`int64`|

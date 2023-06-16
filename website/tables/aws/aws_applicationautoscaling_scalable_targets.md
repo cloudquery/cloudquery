@@ -23,4 +23,5 @@ The composite primary key for this table is (**account_id**, **region**, **resou
 |role_arn|`utf8`|
 |scalable_dimension|`utf8`|
 |service_namespace|`utf8`|
+|scalable_target_arn|`utf8`|
 |suspended_state|`json`|

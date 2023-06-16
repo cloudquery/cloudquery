@@ -66,6 +66,7 @@ The following tables depend on aws_rds_clusters:
 |hosted_zone_id|`utf8`|
 |http_endpoint_enabled|`bool`|
 |iam_database_authentication_enabled|`bool`|
+|io_optimized_next_allowed_modification_time|`timestamp[us, tz=UTC]`|
 |iops|`int64`|
 |kms_key_id|`utf8`|
 |latest_restorable_time|`timestamp[us, tz=UTC]`|

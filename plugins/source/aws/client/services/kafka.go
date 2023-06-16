@@ -13,8 +13,11 @@ type KafkaClient interface {
 	DescribeClusterV2(context.Context, *kafka.DescribeClusterV2Input, ...func(*kafka.Options)) (*kafka.DescribeClusterV2Output, error)
 	DescribeConfiguration(context.Context, *kafka.DescribeConfigurationInput, ...func(*kafka.Options)) (*kafka.DescribeConfigurationOutput, error)
 	DescribeConfigurationRevision(context.Context, *kafka.DescribeConfigurationRevisionInput, ...func(*kafka.Options)) (*kafka.DescribeConfigurationRevisionOutput, error)
+	DescribeVpcConnection(context.Context, *kafka.DescribeVpcConnectionInput, ...func(*kafka.Options)) (*kafka.DescribeVpcConnectionOutput, error)
 	GetBootstrapBrokers(context.Context, *kafka.GetBootstrapBrokersInput, ...func(*kafka.Options)) (*kafka.GetBootstrapBrokersOutput, error)
+	GetClusterPolicy(context.Context, *kafka.GetClusterPolicyInput, ...func(*kafka.Options)) (*kafka.GetClusterPolicyOutput, error)
 	GetCompatibleKafkaVersions(context.Context, *kafka.GetCompatibleKafkaVersionsInput, ...func(*kafka.Options)) (*kafka.GetCompatibleKafkaVersionsOutput, error)
+	ListClientVpcConnections(context.Context, *kafka.ListClientVpcConnectionsInput, ...func(*kafka.Options)) (*kafka.ListClientVpcConnectionsOutput, error)
 	ListClusterOperations(context.Context, *kafka.ListClusterOperationsInput, ...func(*kafka.Options)) (*kafka.ListClusterOperationsOutput, error)
 	ListClusters(context.Context, *kafka.ListClustersInput, ...func(*kafka.Options)) (*kafka.ListClustersOutput, error)
 	ListClustersV2(context.Context, *kafka.ListClustersV2Input, ...func(*kafka.Options)) (*kafka.ListClustersV2Output, error)
@@ -24,4 +27,5 @@ type KafkaClient interface {
 	ListNodes(context.Context, *kafka.ListNodesInput, ...func(*kafka.Options)) (*kafka.ListNodesOutput, error)
 	ListScramSecrets(context.Context, *kafka.ListScramSecretsInput, ...func(*kafka.Options)) (*kafka.ListScramSecretsOutput, error)
 	ListTagsForResource(context.Context, *kafka.ListTagsForResourceInput, ...func(*kafka.Options)) (*kafka.ListTagsForResourceOutput, error)
+	ListVpcConnections(context.Context, *kafka.ListVpcConnectionsInput, ...func(*kafka.Options)) (*kafka.ListVpcConnectionsOutput, error)
 }

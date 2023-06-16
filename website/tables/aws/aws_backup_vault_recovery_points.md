@@ -40,6 +40,7 @@ This table depends on [aws_backup_vaults](aws_backup_vaults).
 |parent_recovery_point_arn|`utf8`|
 |recovery_point_arn|`utf8`|
 |resource_arn|`utf8`|
+|resource_name|`utf8`|
 |resource_type|`utf8`|
 |source_backup_vault_arn|`utf8`|
 |status|`utf8`|
