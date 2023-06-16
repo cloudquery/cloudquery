@@ -3,10 +3,10 @@ package plugin
 import (
 	"strings"
 
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/caser"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v4/caser"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 var (
@@ -100,12 +100,11 @@ func titleTransformer(table *schema.Table) string {
 	return strings.Trim(strings.ReplaceAll(t, "  ", " "), " ")
 }
 
-func AWS() *source.Plugin {
-	return source.NewPlugin(
+func AWS() *plugin.Plugin {
+	return plugin.NewPlugin(
 		"aws",
 		Version,
-		tables(),
-		client.Configure,
-		source.WithTitleTransformer(titleTransformer),
+		New,
+		// plugin.WithTitleTransformer(titleTransformer),
 	)
 }

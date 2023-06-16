@@ -20,8 +20,8 @@ import (
 	securityhubtypes "github.com/aws/aws-sdk-go-v2/service/securityhub/types"
 	"github.com/stretchr/testify/require"
 
-	"github.com/cloudquery/plugin-sdk/v3/caser"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/caser"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 )
