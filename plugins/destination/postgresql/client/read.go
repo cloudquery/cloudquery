@@ -9,15 +9,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/v4/plugin"
-	"github.com/goccy/go-json"
-	"golang.org/x/exp/slices"
-
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/apache/arrow/go/v13/arrow/memory"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
+	"github.com/goccy/go-json"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
@@ -27,44 +24,30 @@ const (
 	readSQL = "SELECT %s FROM %s"
 )
 
-// Sync reads all records from the table and sends them to the channel
-func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- plugin.Message) error {
-	tables, err := c.listTables(ctx, options.Tables, options.SkipTables)
+func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
+	colNames := make([]string, 0, len(table.Columns))
+	for _, col := range table.Columns {
+		colNames = append(colNames, pgx.Identifier{col.Name}.Sanitize())
+	}
+	cols := strings.Join(colNames, ",")
+	tableName := table.Name
+	sql := fmt.Sprintf(readSQL, cols, pgx.Identifier{tableName}.Sanitize())
+	rows, err := c.conn.Query(ctx, sql)
 	if err != nil {
-		return fmt.Errorf("failed to list tables: %w", err)
+		return err
 	}
-	for _, table := range tables {
-		if !slices.Contains(options.Tables, table.Name) {
-			// TODO(v4): handle wildcards and skip tables
-			continue
-		}
-		colNames := make([]string, 0, len(table.Columns))
-		for _, col := range table.Columns {
-			colNames = append(colNames, pgx.Identifier{col.Name}.Sanitize())
-		}
-		cols := strings.Join(colNames, ",")
-		tableName := table.Name
-		sql := fmt.Sprintf(readSQL, cols, pgx.Identifier{tableName}.Sanitize())
-		rows, err := c.conn.Query(ctx, sql)
+	for rows.Next() {
+		values, err := rows.Values()
 		if err != nil {
-			return fmt.Errorf("failed to execute SQL read query: %w", err)
+			return err
 		}
-		for rows.Next() {
-			values, err := rows.Values()
-			if err != nil {
-				return err
-			}
-			rec, err := c.reverseTransformer(table, values)
-			if err != nil {
-				return err
-			}
-			res <- &plugin.MessageInsert{
-				Record: rec,
-				Upsert: false,
-			}
+		rec, err := c.reverseTransformer(table, values)
+		if err != nil {
+			return err
 		}
-		rows.Close()
+		res <- rec
 	}
+	rows.Close()
 	return nil
 }
 

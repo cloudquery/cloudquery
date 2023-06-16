@@ -25,7 +25,7 @@ func (c *Client) CreateTableBatch(ctx context.Context, messages []*plugin.Messag
 	if err != nil {
 		return fmt.Errorf("failed listing postgres tables: %w", err)
 	}
-	tables = c.normalizeTables(tables, pgTables, options.EnablePrimaryKeys)
+	tables = c.normalizeTables(tables, pgTables)
 	if !options.MigrateForce {
 		nonAutoMigrableTables, changes := c.nonAutoMigrableTables(tables, pgTables)
 		if len(nonAutoMigrableTables) > 0 {
@@ -43,7 +43,7 @@ func (c *Client) CreateTableBatch(ctx context.Context, messages []*plugin.Messag
 		pgTable := pgTables.Get(tableName)
 		if pgTable == nil {
 			c.logger.Debug().Str("table", tableName).Msg("Table doesn't exist, creating")
-			if err := c.createTableIfNotExist(ctx, table, options.EnablePrimaryKeys); err != nil {
+			if err := c.createTableIfNotExist(ctx, table); err != nil {
 				return err
 			}
 		} else {
@@ -58,7 +58,7 @@ func (c *Client) CreateTableBatch(ctx context.Context, messages []*plugin.Messag
 				if err := c.dropTable(ctx, tableName); err != nil {
 					return err
 				}
-				if err := c.createTableIfNotExist(ctx, table, options.EnablePrimaryKeys); err != nil {
+				if err := c.createTableIfNotExist(ctx, table); err != nil {
 					return err
 				}
 			}
@@ -75,15 +75,13 @@ func (c *Client) CreateTableBatch(ctx context.Context, messages []*plugin.Messag
 	return nil
 }
 
-func (c *Client) normalizeTable(table *schema.Table, pgTable *schema.Table, enablePrimaryKeys bool) *schema.Table {
+func (c *Client) normalizeTable(table *schema.Table, pgTable *schema.Table) *schema.Table {
 	normalizedTable := schema.Table{
 		Name: table.Name,
 	}
 	for _, col := range table.Columns {
-		if enablePrimaryKeys && col.PrimaryKey {
+		if col.PrimaryKey {
 			col.NotNull = true
-		} else {
-			col.PrimaryKey = false
 		}
 		col.Type = c.PgToSchemaType(c.SchemaTypeToPg(col.Type))
 		normalizedTable.Columns = append(normalizedTable.Columns, col)
@@ -134,14 +132,14 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 }
 
 // normalize the requested schema to be compatible with what Postgres supports
-func (c *Client) normalizeTables(tables schema.Tables, pgTables schema.Tables, enablePrimaryKeys bool) schema.Tables {
+func (c *Client) normalizeTables(tables schema.Tables, pgTables schema.Tables) schema.Tables {
 	var result schema.Tables
 	for _, table := range tables {
 		pgTable := pgTables.Get(table.Name)
 		if pgTable == nil {
 			result = append(result, table)
 		} else {
-			result = append(result, c.normalizeTable(table, pgTable, enablePrimaryKeys))
+			result = append(result, c.normalizeTable(table, pgTable))
 		}
 	}
 	return result
@@ -184,7 +182,7 @@ func (c *Client) addColumn(ctx context.Context, tableName string, column schema.
 	return nil
 }
 
-func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table, enablePrimaryKeys bool) error {
+func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table) error {
 	var sb strings.Builder
 	tName := table.Name
 	tableName := pgx.Identifier{tName}.Sanitize()
@@ -208,7 +206,7 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table,
 		if i != totalColumns-1 {
 			sb.WriteString(",")
 		}
-		if enablePrimaryKeys && col.PrimaryKey {
+		if col.PrimaryKey {
 			primaryKeys = append(primaryKeys, pgx.Identifier{col.Name}.Sanitize())
 		}
 	}

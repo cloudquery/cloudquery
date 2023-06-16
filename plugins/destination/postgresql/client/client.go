@@ -25,7 +25,7 @@ type Client struct {
 	batchSize           int
 	writer              *writers.MixedBatchWriter
 
-	plugin.UnimplementedSync
+	plugin.UnimplementedSource
 }
 
 // Assert that Client implements plugin.Client interface.

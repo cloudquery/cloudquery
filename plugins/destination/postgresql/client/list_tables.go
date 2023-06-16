@@ -3,8 +3,8 @@ package client
 import (
 	"context"
 	"fmt"
+	"strings"
 
-	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
@@ -48,13 +48,15 @@ WHERE
 	pg_attribute.attnum > 0
 	AND NOT pg_attribute.attisdropped
 	AND pg_catalog.pg_namespace.nspname = '%s'
+	%s 
 ORDER BY
 	table_name ASC, ordinal_position ASC;
 `
 
 func (c *Client) listTables(ctx context.Context, include, exclude []string) (schema.Tables, error) {
 	var tables schema.Tables
-	rows, err := c.conn.Query(ctx, fmt.Sprintf(selectTables, c.currentSchemaName))
+	q := fmt.Sprintf(selectTables, c.currentSchemaName, c.whereClause(include, exclude))
+	rows, err := c.conn.Query(ctx, q)
 	if err != nil {
 		return nil, err
 	}
@@ -65,9 +67,6 @@ func (c *Client) listTables(ctx context.Context, include, exclude []string) (sch
 		var isPrimaryKey, notNull bool
 		if err := rows.Scan(&ordinalPosition, &tableName, &columnName, &columnType, &isPrimaryKey, &notNull, &pkName); err != nil {
 			return nil, err
-		}
-		if !plugin.IsTable(tableName, include, exclude) {
-			continue
 		}
 		if ordinalPosition == 1 {
 			tables = append(tables, &schema.Table{
@@ -87,4 +86,32 @@ func (c *Client) listTables(ctx context.Context, include, exclude []string) (sch
 		})
 	}
 	return tables, nil
+}
+
+func (c *Client) whereClause(include, exclude []string) string {
+	if len(include) == 0 && len(exclude) == 0 {
+		return ""
+	}
+	var where string
+	if len(include) > 0 {
+		where = fmt.Sprintf("AND pg_class.relname IN (%s)", c.inClause(include))
+	}
+	if len(exclude) > 0 {
+		where = fmt.Sprintf("AND pg_class.relname NOT IN (%s)", c.inClause(exclude))
+	}
+	return where
+}
+
+func (c *Client) inClause(values []string) string {
+	var inClause string
+	for i, value := range values {
+		value = strings.ReplaceAll(value, "'", "")  // strip single quotes
+		value = strings.ReplaceAll(value, "*", "%") // replace * with %
+		if i == 0 {
+			inClause = fmt.Sprintf("'%s'", value)
+			continue
+		}
+		inClause += fmt.Sprintf(", '%s'", value)
+	}
+	return inClause
 }

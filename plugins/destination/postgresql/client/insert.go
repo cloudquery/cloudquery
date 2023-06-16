@@ -29,11 +29,11 @@ func (c *Client) InsertBatch(ctx context.Context, messages []*plugin.MessageInse
 	if err != nil {
 		return err
 	}
-	tables = c.normalizeTables(tables, pgTables, options.EnablePrimaryKeys)
+	tables = c.normalizeTables(tables, pgTables)
 	if err != nil {
 		return err
 	}
-	
+
 	var sql string
 	batch := &pgx.Batch{}
 	for _, msg := range messages {
