@@ -4,15 +4,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/homebrew/client"
 	"github.com/cloudquery/cloudquery/plugins/source/homebrew/internal/homebrew"
 	"github.com/cloudquery/cloudquery/plugins/source/homebrew/resources/services/analytics"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 var (
 	Version = "development"
 )
 
-func Plugin() *source.Plugin {
+func Plugin() *plugin.Plugin {
 	tables := []*schema.Table{
 		analytics.Installs(homebrew.Days30),
 		analytics.Installs(homebrew.Days90),
@@ -24,10 +24,9 @@ func Plugin() *source.Plugin {
 		analytics.BuildErrors(homebrew.Days90),
 		analytics.BuildErrors(homebrew.Days365),
 	}
-	return source.NewPlugin(
+	return plugin.NewPlugin(
 		"homebrew",
 		Version,
-		tables,
 		client.Configure,
 	)
 }

@@ -7,9 +7,8 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/homebrew/internal/homebrew"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
 )
 
@@ -22,26 +21,23 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T) 
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
+	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec any) (plugin.Client, error) {
 		return &Client{
 			logger:   l,
 			Homebrew: builder(t),
-			Spec:     Spec{},
 		}, nil
 	}
-	p := source.NewPlugin(
+	p := plugin.NewPlugin(
 		table.Name,
 		version,
-		[]*schema.Table{
-			table,
-		},
-		newTestExecutionClient)
+		newTestExecutionClient,
+	)
 	p.SetLogger(l)
-	source.TestPluginSync(t, p, specs.Source{
-		Name:         "dev",
-		Path:         "cloudquery/dev",
-		Version:      version,
-		Tables:       []string{table.Name},
-		Destinations: []string{"mock-destination"},
+	plugin.TestPluginSync(t, p, &Spec{}, plugin.SyncOptions{
+		Tables:            []string{table.Name},
+		SkipTables:        nil,
+		Concurrency:       0,
+		DeterministicCQID: false,
+		StateBackend:      nil,
 	})
 }
