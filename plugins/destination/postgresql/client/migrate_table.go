@@ -10,8 +10,8 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-// CreateTableBatch migrates a table. It forms part of the writer.MixedBatchWriter interface.
-func (c *Client) CreateTableBatch(ctx context.Context, messages []*plugin.MessageCreateTable, options plugin.WriteOptions) error {
+// MigrateTableBatch migrates a table. It forms part of the writer.MixedBatchWriter interface.
+func (c *Client) MigrateTableBatch(ctx context.Context, messages []*plugin.MessageMigrateTable, options plugin.WriteOptions) error {
 	tables, err := tablesFromMessages(messages)
 	if err != nil {
 		return err
