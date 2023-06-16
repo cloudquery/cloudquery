@@ -1,10 +1,3 @@
--- SELECT project_id, gci."name", gci.self_link AS link
--- FROM gcp_compute_instances gci
--- WHERE shielded_instance_config_enable_integrity_monitoring = FALSE
---     OR shielded_instance_config_enable_vtpm = FALSE;
---     OR shielded_instance_config_enable_secure_boot = FALSE;
-
-
 INSERT INTO gcp_policy_results (resource_id, execution_time, framework, check_id, title, project_id, status)
 SELECT "name"                                                                       AS resource_id,
        :'execution_time'::timestamp                                                 AS execution_time,

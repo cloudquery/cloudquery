@@ -13,6 +13,7 @@ tables:
   - azure_appservice_web_app_auth_settings
   - azure_appservice_web_app_configurations
   - azure_appservice_web_apps
+  - azure_authorization_role_definitions
   - azure_compute_disks
   - azure_compute_virtual_machines
   - azure_containerservice_managed_clusters
@@ -51,6 +52,7 @@ tables:
 ### Queries
 
 Azure CIS v1.3.0 performs the following checks:
+  - Ensure That No Custom Subscription Administrator Roles Exist
   - Ensure that Azure Defender is set to On for Servers (Automatic)
   - Ensure that Azure Defender is set to On for App Service (Automatic)
   - Ensure that Azure Defender is set to On for Azure SQL database servers (Automatic)

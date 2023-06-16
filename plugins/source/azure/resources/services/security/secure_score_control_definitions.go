@@ -11,12 +11,13 @@ import (
 
 func SecureScoreControlDefinitions() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_security_secure_score_control_definitions",
-		Resolver:    fetchSecureScoreControlDefinitions,
-		Description: "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/secure-score-control-definitions/list?tabs=HTTP#securescorecontroldefinitionitem",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_security_secure_score_control_definitions", client.Namespacemicrosoft_security),
-		Transform:   transformers.TransformWithStruct(&armsecurity.SecureScoreControlDefinitionItem{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionIDPK},
+		Name:                 "azure_security_secure_score_control_definitions",
+		Resolver:             fetchSecureScoreControlDefinitions,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/secure-score-control-definitions/list?tabs=HTTP#securescorecontroldefinitionitem",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_security_secure_score_control_definitions", client.Namespacemicrosoft_security),
+		Transform:            transformers.TransformWithStruct(&armsecurity.SecureScoreControlDefinitionItem{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionIDPK},
 	}
 }
 

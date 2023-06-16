@@ -138,6 +138,9 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 				TestSubscription: {&billingPeriod},
 			},
 			storageAccountKeys: &sync.Map{},
+			pluginSpec: &Spec{
+				NormalizeIDs: true,
+			},
 		}
 
 		return c, nil

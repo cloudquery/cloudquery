@@ -40,13 +40,13 @@ func Projects() *schema.Table {
 }
 
 func fetchCodebuildProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Codebuild
+	cl := meta.(*client.Client)
+	svc := cl.Services().Codebuild
 	config := codebuild.ListProjectsInput{}
 	paginator := codebuild.NewListProjectsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *codebuild.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -55,7 +55,7 @@ func fetchCodebuildProjects(ctx context.Context, meta schema.ClientMeta, parent 
 			continue
 		}
 		projectsOutput, err := svc.BatchGetProjects(ctx, &codebuild.BatchGetProjectsInput{Names: page.Projects}, func(options *codebuild.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

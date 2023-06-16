@@ -22,6 +22,7 @@ import (
 	"github.com/rs/zerolog"
 	"golang.org/x/sync/errgroup"
 	crmv1 "google.golang.org/api/cloudresourcemanager/v1"
+	"google.golang.org/api/impersonate"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 
@@ -167,6 +168,22 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 			return nil, fmt.Errorf("invalid json at service_account_key_json: %w", err)
 		}
 		c.ClientOptions = append(c.ClientOptions, option.WithCredentialsJSON(serviceAccountKeyJSON))
+	}
+
+	if gcpSpec.ServiceAccountImpersonation != nil && gcpSpec.ServiceAccountImpersonation.TargetPrincipal != "" {
+		// Base credentials sourced from ADC or provided client options.
+		ts, err := impersonate.CredentialsTokenSource(ctx, impersonate.CredentialsConfig{
+			TargetPrincipal: gcpSpec.ServiceAccountImpersonation.TargetPrincipal,
+			Scopes:          gcpSpec.ServiceAccountImpersonation.Scopes,
+			// Optionally supply delegates.
+			Delegates: gcpSpec.ServiceAccountImpersonation.Delegates,
+			// Specify user to impersonate
+			Subject: gcpSpec.ServiceAccountImpersonation.Subject,
+		})
+		if err != nil {
+			return nil, fmt.Errorf("failed to generate token source: %w", err)
+		}
+		c.ClientOptions = append(c.ClientOptions, option.WithTokenSource(ts))
 	}
 
 	if !gcpSpec.HierarchyDiscovery.isNull() {

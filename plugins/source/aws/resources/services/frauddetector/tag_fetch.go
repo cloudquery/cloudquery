@@ -10,8 +10,8 @@ import (
 )
 
 func resolveResourceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Frauddetector
+	cl := meta.(*client.Client)
+	svc := cl.Services().Frauddetector
 
 	paginator := frauddetector.NewListTagsForResourcePaginator(svc,
 		&frauddetector.ListTagsForResourceInput{
@@ -21,7 +21,7 @@ func resolveResourceTags(ctx context.Context, meta schema.ClientMeta, resource *
 	tags := make(map[string]string)
 	for paginator.HasMorePages() {
 		data, err := paginator.NextPage(ctx, func(options *frauddetector.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

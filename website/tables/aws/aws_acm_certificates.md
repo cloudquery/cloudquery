@@ -43,3 +43,61 @@ The primary key for this table is **arn**.
 |subject|`utf8`|
 |subject_alternative_names|`list<item: utf8, nullable>`|
 |type|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Certificate has less than 30 days to be renewed
+
+```sql
+SELECT
+  'certificate has less than 30 days to be renewed' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN not_after < timezone('UTC', now()) + '30'::INTERVAL DAY THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_acm_certificates;
+```
+
+### Unused ACM certificate
+
+```sql
+SELECT
+  'Unused ACM certificate' AS title,
+  account_id,
+  arn AS resource_id,
+  'fail' AS status
+FROM
+  aws_acm_certificates
+WHERE
+  array_length(in_use_by, 1) = 0;
+```
+
+### Classic Load Balancers with SSL/HTTPS listeners should use a certificate provided by AWS Certificate Manager
+
+```sql
+SELECT
+  'Classic Load Balancers with SSL/HTTPS listeners should use a certificate provided by AWS Certificate Manager'
+    AS title,
+  lb.account_id,
+  lb.arn AS resource_id,
+  CASE
+  WHEN li->'Listener'->>'Protocol' = 'HTTPS'
+  AND aws_acm_certificates.arn IS NULL
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_elbv1_load_balancers AS lb,
+  jsonb_array_elements(lb.listener_descriptions) AS li
+  LEFT JOIN aws_acm_certificates ON
+      aws_acm_certificates.arn = li->'Listener'->>'SSLCertificateId';
+```
+
+

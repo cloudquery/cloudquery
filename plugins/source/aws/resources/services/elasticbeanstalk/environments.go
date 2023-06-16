@@ -57,12 +57,12 @@ func Environments() *schema.Table {
 
 func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config elasticbeanstalk.DescribeEnvironmentsInput
-	c := meta.(*client.Client)
-	svc := c.Services().Elasticbeanstalk
+	cl := meta.(*client.Client)
+	svc := cl.Services().Elasticbeanstalk
 	// No paginator available
 	for {
 		response, err := svc.DescribeEnvironments(ctx, &config, func(options *elasticbeanstalk.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

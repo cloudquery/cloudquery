@@ -61,15 +61,15 @@ func fetchEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, parent
 }
 
 func getTaskDefinition(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Ecs
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ecs
 	taskArn := resource.Item.(string)
 
 	describeTaskDefinitionOutput, err := svc.DescribeTaskDefinition(ctx, &ecs.DescribeTaskDefinitionInput{
 		TaskDefinition: aws.String(taskArn),
 		Include:        []types.TaskDefinitionField{types.TaskDefinitionFieldTags},
 	}, func(options *ecs.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

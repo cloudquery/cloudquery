@@ -9,11 +9,12 @@ import (
 
 func Deployments() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_nginx_deployments",
-		Resolver:    fetchDeployments,
-		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v2@v2.0.0#Deployment",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_nginx_deployments", client.Namespacenginx_nginxplus),
-		Transform:   transformers.TransformWithStruct(&armnginx.Deployment{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_nginx_deployments",
+		Resolver:             fetchDeployments,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v2@v2.0.0#Deployment",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_nginx_deployments", client.Namespacenginx_nginxplus),
+		Transform:            transformers.TransformWithStruct(&armnginx.Deployment{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }

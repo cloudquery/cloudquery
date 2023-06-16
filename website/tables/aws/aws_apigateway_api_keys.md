@@ -27,3 +27,23 @@ The primary key for this table is **arn**.
 |stage_keys|`list<item: utf8, nullable>`|
 |tags|`json`|
 |value|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Unused API Gateway API key
+
+```sql
+SELECT
+  'Unused API Gateway API key' AS title,
+  account_id,
+  arn AS resource_id,
+  'fail' AS status
+FROM
+  aws_apigateway_api_keys
+WHERE
+  enabled = false;
+```
+
+

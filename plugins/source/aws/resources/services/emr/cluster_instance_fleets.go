@@ -41,12 +41,12 @@ func fetchClusterInstanceFleets(ctx context.Context, meta schema.ClientMeta, par
 	config := emr.ListInstanceFleetsInput{
 		ClusterId: cluster.Id,
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Emr
+	cl := meta.(*client.Client)
+	svc := cl.Services().Emr
 	paginator := emr.NewListInstanceFleetsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *emr.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

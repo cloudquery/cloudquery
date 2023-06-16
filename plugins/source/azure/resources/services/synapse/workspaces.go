@@ -11,12 +11,13 @@ import (
 
 func Workspaces() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_synapse_workspaces",
-		Resolver:    fetchWorkspaces,
-		Description: "https://learn.microsoft.com/en-us/rest/api/synapse/workspaces/list?tabs=HTTP#workspace",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_synapse_workspaces", client.Namespacemicrosoft_synapse),
-		Transform:   transformers.TransformWithStruct(&armsynapse.Workspace{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_synapse_workspaces",
+		Resolver:             fetchWorkspaces,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/synapse/workspaces/list?tabs=HTTP#workspace",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_synapse_workspaces", client.Namespacemicrosoft_synapse),
+		Transform:            transformers.TransformWithStruct(&armsynapse.Workspace{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

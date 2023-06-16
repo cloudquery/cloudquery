@@ -11,12 +11,13 @@ import (
 
 func virtualNetworkRules() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_sql_server_virtual_network_rules",
-		Resolver:    fetchVirtualNetworkRules,
-		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/virtual-network-rules/list-by-server?tabs=HTTP#virtualnetworkrule",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_sql_virtual_network_rules", client.Namespacemicrosoft_sql),
-		Transform:   transformers.TransformWithStruct(&armsql.VirtualNetworkRule{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_sql_server_virtual_network_rules",
+		Resolver:             fetchVirtualNetworkRules,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/virtual-network-rules/list-by-server?tabs=HTTP#virtualnetworkrule",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_sql_virtual_network_rules", client.Namespacemicrosoft_sql),
+		Transform:            transformers.TransformWithStruct(&armsql.VirtualNetworkRule{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

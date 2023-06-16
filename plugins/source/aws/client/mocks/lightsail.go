@@ -605,6 +605,36 @@ func (mr *MockLightsailClientMockRecorder) GetContainerServices(arg0, arg1 inter
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetContainerServices", reflect.TypeOf((*MockLightsailClient)(nil).GetContainerServices), varargs...)
 }
 
+// GetCostEstimate mocks base method.
+func (m *MockLightsailClient) GetCostEstimate(arg0 context.Context, arg1 *lightsail.GetCostEstimateInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetCostEstimateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &lightsail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCostEstimate")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetCostEstimate", varargs...)
+	ret0, _ := ret[0].(*lightsail.GetCostEstimateOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetCostEstimate indicates an expected call of GetCostEstimate.
+func (mr *MockLightsailClientMockRecorder) GetCostEstimate(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCostEstimate", reflect.TypeOf((*MockLightsailClient)(nil).GetCostEstimate), varargs...)
+}
+
 // GetDisk mocks base method.
 func (m *MockLightsailClient) GetDisk(arg0 context.Context, arg1 *lightsail.GetDiskInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetDiskOutput, error) {
 

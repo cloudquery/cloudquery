@@ -36,3 +36,25 @@ The primary key for this table is **arn**.
 |status|`utf8`|
 |subnet_group|`utf8`|
 |total_nodes|`int64`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### DynamoDB Accelerator (DAX) clusters should be encrypted at rest
+
+```sql
+SELECT
+  'DynamoDB Accelerator (DAX) clusters should be encrypted at rest' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN sse_description->>'Status' IS DISTINCT FROM 'ENABLED' THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_dax_clusters;
+```
+
+

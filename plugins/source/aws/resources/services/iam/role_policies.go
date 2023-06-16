@@ -41,18 +41,18 @@ func rolePolicies() *schema.Table {
 }
 
 func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Iam
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iam
 	role := parent.Item.(*types.Role)
 	paginator := iam.NewListRolePoliciesPaginator(svc, &iam.ListRolePoliciesInput{
 		RoleName: role.RoleName,
 	})
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *iam.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
-			if c.IsNotFoundError(err) {
+			if cl.IsNotFoundError(err) {
 				return nil
 			}
 			return err
@@ -63,13 +63,13 @@ func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 }
 
 func getRolePolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Iam
+	cl := meta.(*client.Client)
+	svc := cl.Services().Iam
 	p := resource.Item.(string)
 	role := resource.Parent.Item.(*types.Role)
 
 	policyResult, err := svc.GetRolePolicy(ctx, &iam.GetRolePolicyInput{PolicyName: &p, RoleName: role.RoleName}, func(options *iam.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

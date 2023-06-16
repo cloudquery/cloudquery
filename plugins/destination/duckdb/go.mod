@@ -5,16 +5,16 @@ go 1.19
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230601164043-3299d12efc91
 	github.com/cenkalti/backoff/v4 v4.2.1
-	github.com/cloudquery/plugin-pb-go v1.0.8
-	github.com/cloudquery/plugin-sdk/v3 v3.10.3
+	github.com/cloudquery/plugin-pb-go v1.0.9
+	github.com/cloudquery/plugin-sdk/v3 v3.10.6
 	github.com/google/uuid v1.3.0
-	github.com/marcboeker/go-duckdb v1.3.0
+	github.com/marcboeker/go-duckdb v1.4.0
 	github.com/rs/zerolog v1.29.0
 	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230602155531-6d34568d4501
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230616001249-1e68c514895b
 
 require (
 	github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c // indirect
@@ -27,7 +27,7 @@ require (
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
-	github.com/google/flatbuffers v2.0.8+incompatible // indirect
+	github.com/google/flatbuffers v23.1.21+incompatible // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
@@ -45,7 +45,7 @@ require (
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/testify v1.8.2 // indirect
+	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	golang.org/x/mod v0.9.0 // indirect

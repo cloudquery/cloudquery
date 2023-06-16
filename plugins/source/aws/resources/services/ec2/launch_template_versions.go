@@ -42,12 +42,12 @@ func fetchEc2LaunchTemplateVersions(ctx context.Context, meta schema.ClientMeta,
 	config := ec2.DescribeLaunchTemplateVersionsInput{
 		LaunchTemplateId: parent.Item.(types.LaunchTemplate).LaunchTemplateId,
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Ec2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ec2
 	paginator := ec2.NewDescribeLaunchTemplateVersionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *ec2.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

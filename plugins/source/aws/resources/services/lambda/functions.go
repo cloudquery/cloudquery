@@ -92,17 +92,17 @@ func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *s
 }
 
 func getFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Lambda
+	cl := meta.(*client.Client)
+	svc := cl.Services().Lambda
 	f := resource.Item.(types.FunctionConfiguration)
 
 	funcResponse, err := svc.GetFunction(ctx, &lambda.GetFunctionInput{
 		FunctionName: f.FunctionName,
 	}, func(options *lambda.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
+		if cl.IsNotFoundError(err) {
 			resource.Item = &lambda.GetFunctionOutput{
 				Configuration: &f,
 			}
@@ -114,7 +114,7 @@ func getFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 			resource.Item = &lambda.GetFunctionOutput{
 				Configuration: &f,
 			}
-			c.Logger().Warn().Err(err).Msg("configuration data retrieved from ListFunctions will still be persisted")
+			cl.Logger().Warn().Err(err).Msg("configuration data retrieved from ListFunctions will still be persisted")
 			return nil
 		}
 
@@ -130,8 +130,8 @@ func resolveCodeSigningConfig(ctx context.Context, meta schema.ClientMeta, resou
 	if r.Configuration == nil {
 		return nil
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Lambda
+	cl := meta.(*client.Client)
+	svc := cl.Services().Lambda
 
 	// skip getting CodeSigningConfig since containerized lambda functions does not support this feature
 	// value can be nil if the caller doesn't have GetFunctionConfiguration permission and only has List*
@@ -143,7 +143,7 @@ func resolveCodeSigningConfig(ctx context.Context, meta schema.ClientMeta, resou
 	functionSigning, err := svc.GetFunctionCodeSigningConfig(ctx, &lambda.GetFunctionCodeSigningConfigInput{
 		FunctionName: r.Configuration.FunctionName,
 	}, func(options *lambda.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -155,10 +155,10 @@ func resolveCodeSigningConfig(ctx context.Context, meta schema.ClientMeta, resou
 	signing, err := svc.GetCodeSigningConfig(ctx, &lambda.GetCodeSigningConfigInput{
 		CodeSigningConfigArn: functionSigning.CodeSigningConfigArn,
 	}, func(options *lambda.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
+		if cl.IsNotFoundError(err) {
 			return nil
 		}
 		return err
@@ -176,13 +176,13 @@ func resolveResourcePolicy(ctx context.Context, meta schema.ClientMeta, resource
 		return nil
 	}
 
-	c := meta.(*client.Client)
-	svc := c.Services().Lambda
+	cl := meta.(*client.Client)
+	svc := cl.Services().Lambda
 
 	response, err := svc.GetPolicy(ctx, &lambda.GetPolicyInput{
 		FunctionName: r.Configuration.FunctionName,
 	}, func(options *lambda.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		if client.IsAWSError(err, "ResourceNotFoundException") {
@@ -210,17 +210,17 @@ func resolveRuntimeManagementConfig(ctx context.Context, meta schema.ClientMeta,
 	if r.Configuration == nil {
 		return nil
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Lambda
+	cl := meta.(*client.Client)
+	svc := cl.Services().Lambda
 
 	runtimeManagementConfig, err := svc.GetRuntimeManagementConfig(ctx, &lambda.GetRuntimeManagementConfigInput{
 		FunctionName: r.Configuration.FunctionName,
 	}, func(options *lambda.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 
 	if err != nil {
-		if c.IsNotFoundError(err) {
+		if cl.IsNotFoundError(err) {
 			return nil
 		}
 		return err

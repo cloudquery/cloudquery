@@ -40,10 +40,10 @@ func fetchLightsailDatabaseLogEvents(ctx context.Context, meta schema.ClientMeta
 	input := lightsail.GetRelationalDatabaseLogStreamsInput{
 		RelationalDatabaseName: r.Name,
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Lightsail
+	cl := meta.(*client.Client)
+	svc := cl.Services().Lightsail
 	streams, err := svc.GetRelationalDatabaseLogStreams(ctx, &input, func(options *lightsail.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -55,7 +55,7 @@ func fetchLightsailDatabaseLogEvents(ctx context.Context, meta schema.ClientMeta
 	for _, s := range streams.LogStreams {
 		func(database, stream string, startTime, endTime time.Time) {
 			errs.Go(func() error {
-				return fetchLogEvents(ctx, res, c, database, stream, startTime, endTime)
+				return fetchLogEvents(ctx, res, cl, database, stream, startTime, endTime)
 			})
 		}(*r.Name, s, startTime, endTime)
 	}
@@ -66,8 +66,8 @@ func fetchLightsailDatabaseLogEvents(ctx context.Context, meta schema.ClientMeta
 	return nil
 }
 
-func fetchLogEvents(ctx context.Context, res chan<- any, c *client.Client, database, stream string, startTime, endTime time.Time) error {
-	svc := c.Services().Lightsail
+func fetchLogEvents(ctx context.Context, res chan<- any, cl *client.Client, database, stream string, startTime, endTime time.Time) error {
+	svc := cl.Services().Lightsail
 	input := lightsail.GetRelationalDatabaseLogEventsInput{
 		RelationalDatabaseName: &database,
 		LogStreamName:          &stream,
@@ -77,7 +77,7 @@ func fetchLogEvents(ctx context.Context, res chan<- any, c *client.Client, datab
 	// No paginator available
 	for {
 		response, err := svc.GetRelationalDatabaseLogEvents(ctx, &input, func(options *lightsail.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

@@ -143,13 +143,20 @@ func resolveWafv2webACLResourcesForWebACL(ctx context.Context, meta schema.Clien
 			params.Marker = output.DistributionList.NextMarker
 		}
 	} else {
-		output, err := service.ListResourcesForWebACL(ctx, &wafv2.ListResourcesForWebACLInput{WebACLArn: webACL.ARN}, func(o *wafv2.Options) {
-			o.Region = cl.Region
-		})
-		if err != nil {
-			return err
+		var resourceType types.ResourceType
+		for _, resType := range resourceType.Values() {
+			output, err := service.ListResourcesForWebACL(ctx,
+				&wafv2.ListResourcesForWebACLInput{
+					WebACLArn:    webACL.ARN,
+					ResourceType: resType,
+				}, func(o *wafv2.Options) {
+					o.Region = cl.Region
+				})
+			if err != nil {
+				return err
+			}
+			resourceArns = append(resourceArns, output.ResourceArns...)
 		}
-		resourceArns = output.ResourceArns
 	}
 	return resource.Set(c.Name, resourceArns)
 }

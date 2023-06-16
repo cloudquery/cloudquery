@@ -11,12 +11,13 @@ import (
 
 func HostPools() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_desktopvirtualization_host_pools",
-		Resolver:    fetchHostPools,
-		Description: "https://learn.microsoft.com/en-us/rest/api/desktopvirtualization/host-pools/list?tabs=HTTP#hostpool",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_desktopvirtualization_host_pools", client.Namespacemicrosoft_desktopvirtualization),
-		Transform:   transformers.TransformWithStruct(&armdesktopvirtualization.HostPool{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_desktopvirtualization_host_pools",
+		Resolver:             fetchHostPools,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/desktopvirtualization/host-pools/list?tabs=HTTP#hostpool",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_desktopvirtualization_host_pools", client.Namespacemicrosoft_desktopvirtualization),
+		Transform:            transformers.TransformWithStruct(&armdesktopvirtualization.HostPool{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

@@ -46,8 +46,8 @@ func Clusters() *schema.Table {
 }
 
 func fetchDocdbClusters(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Docdb
+	cl := meta.(*client.Client)
+	svc := cl.Services().Docdb
 
 	input := docdb.DescribeDBClustersInput{
 		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"docdb"}}},
@@ -56,7 +56,7 @@ func fetchDocdbClusters(ctx context.Context, meta schema.ClientMeta, _ *schema.R
 	p := docdb.NewDescribeDBClustersPaginator(svc, &input)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *docdb.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

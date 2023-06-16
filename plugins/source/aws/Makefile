@@ -30,6 +30,7 @@ gen-docs:
 
 	rm -rf ../../../website/tables/aws
 	go run main.go doc ../../../website/tables/aws
+	go run scripts/example_queries/main.go policies/queries ../../../website/tables/aws
 	sed 's_(\(.*\))_(../../../../../website/tables/aws/\1)_' ../../../website/tables/aws/README.md > ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/aws/README.md
 	mv ../../../website/tables/aws/README.md ../../../website/pages/docs/plugins/sources/aws/tables.md

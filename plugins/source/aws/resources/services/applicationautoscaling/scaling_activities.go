@@ -26,16 +26,16 @@ func ScalingActivities() *schema.Table {
 }
 
 func fetchScalingActivities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Applicationautoscaling
+	cl := meta.(*client.Client)
+	svc := cl.Services().Applicationautoscaling
 
 	config := applicationautoscaling.DescribeScalingActivitiesInput{
-		ServiceNamespace: types.ServiceNamespace(c.AutoscalingNamespace),
+		ServiceNamespace: types.ServiceNamespace(cl.AutoscalingNamespace),
 	}
 	paginator := applicationautoscaling.NewDescribeScalingActivitiesPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *applicationautoscaling.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

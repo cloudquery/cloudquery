@@ -42,3 +42,30 @@ The primary key for this table is **arn**.
 |task_definition_arn|`utf8`|
 |task_role_arn|`utf8`|
 |volumes|`json`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Amazon ECS task definitions should have secure networking modes and user definitions
+
+```sql
+SELECT
+  'Amazon ECS task definitions should have secure networking modes and user definitions'
+    AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN network_mode = 'host'
+  AND (c->>'Privileged')::BOOL IS NOT true
+  AND (c->>'User' = 'root' OR (c->>'User') IS NULL)
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_ecs_task_definitions,
+  jsonb_array_elements(aws_ecs_task_definitions.container_definitions) AS c;
+```
+
+

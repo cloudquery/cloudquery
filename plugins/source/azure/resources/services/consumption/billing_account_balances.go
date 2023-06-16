@@ -13,11 +13,12 @@ import (
 
 func BillingAccountBalances() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_consumption_billing_account_balances",
-		Resolver:    fetchBillingAccountBalances,
-		Description: "https://learn.microsoft.com/en-us/rest/api/consumption/balances/get-by-billing-account?tabs=HTTP#balance",
-		Multiplex:   client.BillingAccountMultiplex,
-		Transform:   transformers.TransformWithStruct(&armconsumption.Balance{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_consumption_billing_account_balances",
+		Resolver:             fetchBillingAccountBalances,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/consumption/balances/get-by-billing-account?tabs=HTTP#balance",
+		Multiplex:            client.BillingAccountMultiplex,
+		Transform:            transformers.TransformWithStruct(&armconsumption.Balance{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

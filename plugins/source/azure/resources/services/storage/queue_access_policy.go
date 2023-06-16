@@ -16,10 +16,11 @@ import (
 
 func queueAccessPolicy() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_storage_queue_acl",
-		Resolver:    fetchQueueACL,
-		Description: "https://learn.microsoft.com/en-us/rest/api/storageservices/get-queue-acl#response-body",
-		Transform:   transformers.TransformWithStruct(&azqueue.GetAccessPolicyResponse{}, transformers.WithSkipFields("Date", "RequestID")),
+		Name:                 "azure_storage_queue_acl",
+		Resolver:             fetchQueueACL,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/storageservices/get-queue-acl#response-body",
+		Transform:            transformers.TransformWithStruct(&azqueue.GetAccessPolicyResponse{}, transformers.WithSkipFields("Date", "RequestID")),
 		Columns: schema.ColumnList{
 			client.SubscriptionID,
 			schema.Column{

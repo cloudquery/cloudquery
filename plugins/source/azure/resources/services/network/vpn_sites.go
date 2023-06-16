@@ -11,12 +11,13 @@ import (
 
 func VpnSites() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_vpn_sites",
-		Resolver:    fetchVpnSites,
-		Description: "https://learn.microsoft.com/en-us/rest/api/virtualwan/vpn-sites/list?tabs=HTTP#vpnsite",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_vpn_sites", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.VPNSite{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_vpn_sites",
+		Resolver:             fetchVpnSites,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/virtualwan/vpn-sites/list?tabs=HTTP#vpnsite",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_network_vpn_sites", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armnetwork.VPNSite{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

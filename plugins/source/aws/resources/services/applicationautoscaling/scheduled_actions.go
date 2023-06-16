@@ -33,16 +33,16 @@ func ScheduledActions() *schema.Table {
 }
 
 func fetchScheduledActions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Applicationautoscaling
+	cl := meta.(*client.Client)
+	svc := cl.Services().Applicationautoscaling
 
 	config := applicationautoscaling.DescribeScheduledActionsInput{
-		ServiceNamespace: types.ServiceNamespace(c.AutoscalingNamespace),
+		ServiceNamespace: types.ServiceNamespace(cl.AutoscalingNamespace),
 	}
 	paginator := applicationautoscaling.NewDescribeScheduledActionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *applicationautoscaling.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

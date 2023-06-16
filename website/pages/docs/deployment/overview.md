@@ -1,3 +1,8 @@
+---
+title: Deployment Overview
+description: This page contains guides on how to deploy CloudQuery on different platforms.
+---
+
 # Overview
 
 CloudQuery can run locally, but if you want to deploy in a remote non-ephemeral environment to sync periodically and store the data in a managed PostgreSQL, the recommended way is to deploy on Kubernetes (EKS or GKE) with our [helm-charts](https://github.com/cloudquery/helm-charts).
@@ -12,4 +17,6 @@ Apart from these options, we have also written some guides to help you get start
  - [Amazon ECS](/docs/deployment/ecs)
  - [Docker](/docs/deployment/docker)
  - [GitHub Actions](/docs/deployment/github-actions)
+ - [Google Cloud Run](/docs/deployment/cloud-run)
+ - [Google Cloud Virtual Machine (VM)](/docs/deployment/google-cloud-vm) 🎥
  - [Kestra](/docs/deployment/kestra)

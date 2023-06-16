@@ -11,12 +11,13 @@ import (
 
 func ManagedRuleSets() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_frontdoor_managed_rule_sets",
-		Resolver:    fetchManagedRuleSets,
-		Description: "https://learn.microsoft.com/en-us/rest/api/frontdoor/webapplicationfirewall/managed-rule-sets/list#managedrulesetdefinition",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_frontdoor_managed_rule_sets", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armfrontdoor.ManagedRuleSetDefinition{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionIDPK},
+		Name:                 "azure_frontdoor_managed_rule_sets",
+		Resolver:             fetchManagedRuleSets,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/frontdoor/webapplicationfirewall/managed-rule-sets/list#managedrulesetdefinition",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_frontdoor_managed_rule_sets", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armfrontdoor.ManagedRuleSetDefinition{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionIDPK},
 	}
 }
 

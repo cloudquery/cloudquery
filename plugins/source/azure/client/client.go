@@ -16,8 +16,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
@@ -31,7 +31,7 @@ type Client struct {
 	subscriptions []string
 
 	// SubscriptionsObjects is to cache full objects returned from ListSubscriptions on initialisation
-	SubscriptionsObjects []*armsubscription.Subscription
+	SubscriptionsObjects []*armsubscriptions.Subscription
 
 	// ResourceGroups is to cache full objects returned from ListResourceGroups on initialisation,
 	// as a map from subscription ID to list of resource groups.
@@ -58,7 +58,7 @@ type Client struct {
 
 func (c *Client) discoverSubscriptions(ctx context.Context) error {
 	c.subscriptions = make([]string, 0)
-	subscriptionClient, err := armsubscription.NewSubscriptionsClient(c.Creds, c.Options)
+	subscriptionClient, err := armsubscriptions.NewClient(c.Creds, c.Options)
 	if err != nil {
 		return err
 	}
@@ -71,7 +71,7 @@ func (c *Client) discoverSubscriptions(ctx context.Context) error {
 		// we record all returned values, even disabled
 		c.SubscriptionsObjects = append(c.SubscriptionsObjects, page.Value...)
 		for _, sub := range page.Value {
-			if *sub.State == armsubscription.SubscriptionStateEnabled {
+			if *sub.State == armsubscriptions.SubscriptionStateEnabled {
 				c.subscriptions = append(c.subscriptions, strings.TrimPrefix(*sub.ID, "/subscriptions/"))
 			}
 		}

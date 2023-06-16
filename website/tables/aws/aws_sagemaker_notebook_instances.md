@@ -41,3 +41,26 @@ The primary key for this table is **arn**.
 |url|`utf8`|
 |volume_size_in_gb|`int64`|
 |result_metadata|`json`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Amazon SageMaker notebook instances should not have direct internet access
+
+```sql
+SELECT
+  'Amazon SageMaker notebook instances should not have direct internet access'
+    AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN direct_internet_access = 'Enabled' THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_sagemaker_notebook_instances;
+```
+
+

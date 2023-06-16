@@ -60,3 +60,32 @@ This table depends on [gcp_bigquery_datasets](gcp_bigquery_datasets).
 |time_partitioning|`json`|
 |type|`utf8`|
 |view|`json`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Ensure that a Default Customer-managed encryption key (CMEK) is specified for all BigQuery Data Sets (Automated)
+
+```sql
+SELECT
+  DISTINCT
+  d.id AS resource_id,
+  'Ensure that a Default Customer-managed encryption key (CMEK) is specified for all BigQuery Data Sets (Automated)'
+    AS title,
+  d.project_id AS project_id,
+  CASE
+  WHEN t.encryption_configuration->>'kmsKeyName' = ''
+  OR (d.default_encryption_configuration->>'kmsKeyName') IS NULL
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  gcp_bigquery_datasets AS d
+  JOIN gcp_bigquery_tables AS t ON
+      d.dataset_reference->>'datasetId' = t.table_reference->>'datasetId'
+      AND d.dataset_reference->>'projectId' = t.table_reference->>'projectId';
+```
+
+

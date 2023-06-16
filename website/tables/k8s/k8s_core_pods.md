@@ -76,3 +76,239 @@ The primary key for this table is **uid**.
 |status_container_statuses|`json`|
 |status_qos_class|`utf8`|
 |status_ephemeral_container_statuses|`json`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Pod container privileged access disabled
+
+```sql
+WITH
+  pod_containers
+    AS (
+      SELECT
+        uid, value AS container
+      FROM
+        k8s_core_pods CROSS JOIN jsonb_array_elements(spec_containers) AS value
+    )
+SELECT
+  uid AS resource_id,
+  'Pod container privileged access disabled' AS title,
+  context AS context,
+  namespace AS namespace,
+  name AS resource_name,
+  CASE
+  WHEN (
+    SELECT
+      count(*)
+    FROM
+      pod_containers
+    WHERE
+      pod_containers.uid = k8s_core_pods.uid
+      AND pod_containers.container->'securityContext'->>'privileged' = 'true'
+  )
+  > 0
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  k8s_core_pods;
+```
+
+### Pod container privilege escalation disabled
+
+```sql
+WITH
+  pod_containers
+    AS (
+      SELECT
+        uid, value AS container
+      FROM
+        k8s_core_pods CROSS JOIN jsonb_array_elements(spec_containers) AS value
+    )
+SELECT
+  uid AS resource_id,
+  'Pod container privilege escalation disabled' AS title,
+  context AS context,
+  namespace AS namespace,
+  name AS resource_name,
+  CASE
+  WHEN (
+    SELECT
+      count(*)
+    FROM
+      pod_containers
+    WHERE
+      pod_containers.uid = k8s_core_pods.uid
+      AND pod_containers.container->'securityContext'->>'allowPrivilegeEscalation'
+        = 'true'
+  )
+  > 0
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  k8s_core_pods;
+```
+
+### Pods container hostNetwork disabled
+
+```sql
+SELECT
+  uid AS resource_id,
+  'Pods container hostNetwork disabled' AS title,
+  context AS context,
+  namespace AS namespace,
+  name AS resource_name,
+  CASE WHEN spec_host_network THEN 'fail' ELSE 'pass' END AS status
+FROM
+  k8s_core_pods;
+```
+
+### Pod containers HostPID and HostIPC sharing disabled
+
+```sql
+SELECT
+  uid AS resource_id,
+  'Pod containers HostPID and HostIPC sharing disabled' AS title,
+  context AS context,
+  namespace AS namespace,
+  name AS resource_name,
+  CASE WHEN spec_host_pid OR spec_host_ipc THEN 'fail' ELSE 'pass' END AS status
+FROM
+  k8s_core_pods;
+```
+
+### Pod container filesystem is read-ony
+
+```sql
+WITH
+  pod_containers
+    AS (
+      SELECT
+        uid, value AS container
+      FROM
+        k8s_core_pods CROSS JOIN jsonb_array_elements(spec_containers) AS value
+    )
+SELECT
+  uid AS resource_id,
+  'Pod container filesystem is read-ony' AS title,
+  context AS context,
+  namespace AS namespace,
+  name AS resource_name,
+  CASE
+  WHEN (
+    SELECT
+      count(*)
+    FROM
+      pod_containers
+    WHERE
+      pod_containers.uid = k8s_core_pods.uid
+      AND pod_containers.container->'securityContext'->>'readOnlyRootFilesystem'
+        IS DISTINCT FROM 'true'
+  )
+  > 0
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  k8s_core_pods;
+```
+
+### Pod container runs as non-root
+
+```sql
+WITH
+  pod_containers
+    AS (
+      SELECT
+        uid, value AS container
+      FROM
+        k8s_core_pods CROSS JOIN jsonb_array_elements(spec_containers) AS value
+    )
+SELECT
+  uid AS resource_id,
+  'Pod container runs as non-root' AS title,
+  context AS context,
+  namespace AS namespace,
+  name AS resource_name,
+  CASE
+  WHEN (
+    SELECT
+      count(*)
+    FROM
+      pod_containers
+    WHERE
+      pod_containers.uid = k8s_core_pods.uid
+      AND pod_containers.container->'securityContext'->>'runAsNonRoot'
+        IS DISTINCT FROM 'true'
+  )
+  > 0
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  k8s_core_pods;
+```
+
+### Pod service account tokens disabled
+
+```sql
+SELECT
+  DISTINCT
+  uid AS resource_id,
+  'Pod service account tokens disabled' AS title,
+  context AS context,
+  namespace AS namespace,
+  name AS resource_name,
+  CASE
+  WHEN spec_automount_service_account_token THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  k8s_core_pods;
+```
+
+### Pod volume don''t have a hostPath
+
+```sql
+WITH
+  pod_volumes
+    AS (
+      SELECT
+        uid, value AS volumes
+      FROM
+        k8s_core_pods CROSS JOIN jsonb_array_elements(spec_volumes) AS value
+    )
+SELECT
+  uid AS resource_id,
+  e'Pod volume don\'t have a hostPath' AS title,
+  context AS context,
+  namespace AS namespace,
+  name AS resource_name,
+  CASE
+  WHEN (
+    SELECT
+      count(*)
+    FROM
+      pod_volumes
+    WHERE
+      pod_volumes.uid = k8s_core_pods.uid
+      AND (pod_volumes.volumes->>'hostPath') IS NOT NULL
+  )
+  > 0
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  k8s_core_pods;
+```
+
+

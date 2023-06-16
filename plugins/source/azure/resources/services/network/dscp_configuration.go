@@ -11,12 +11,13 @@ import (
 
 func DscpConfiguration() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_dscp_configuration",
-		Resolver:    fetchDscpConfiguration,
-		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/dscp-configuration/list?tabs=HTTP#dscpconfiguration",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_dscp_configuration", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.DscpConfiguration{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_dscp_configuration",
+		Resolver:             fetchDscpConfiguration,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/dscp-configuration/list?tabs=HTTP#dscpconfiguration",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_network_dscp_configuration", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armnetwork.DscpConfiguration{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

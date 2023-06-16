@@ -22,6 +22,7 @@ The primary key for this table is **arn**.
 |description|`utf8`|
 |entity_types|`list<item: utf8, nullable>`|
 |event_ingestion|`utf8`|
+|event_orchestration|`json`|
 |event_variables|`list<item: utf8, nullable>`|
 |ingested_event_statistics|`json`|
 |labels|`list<item: utf8, nullable>`|

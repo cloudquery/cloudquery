@@ -32,3 +32,4 @@ This table depends on [aws_kafka_clusters](aws_kafka_clusters).
 |operation_type|`utf8`|
 |source_cluster_info|`json`|
 |target_cluster_info|`json`|
+|vpc_connection_info|`json`|

@@ -40,3 +40,23 @@ The following tables depend on aws_lightsail_load_balancers:
 |support_code|`utf8`|
 |tls_certificate_summaries|`json`|
 |tls_policy_name|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Unused Lightsail load balancers
+
+```sql
+SELECT
+  'Unused Lightsail load balancers' AS title,
+  account_id,
+  arn AS resource_id,
+  'fail' AS status
+FROM
+  aws_lightsail_load_balancers
+WHERE
+  COALESCE(jsonb_array_length(instance_health_summary), 0) = 0;
+```
+
+

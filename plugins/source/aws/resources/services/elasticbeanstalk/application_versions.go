@@ -35,12 +35,12 @@ func ApplicationVersions() *schema.Table {
 
 func fetchElasticbeanstalkApplicationVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config elasticbeanstalk.DescribeApplicationVersionsInput
-	c := meta.(*client.Client)
-	svc := c.Services().Elasticbeanstalk
+	cl := meta.(*client.Client)
+	svc := cl.Services().Elasticbeanstalk
 	// No paginator available
 	for {
 		output, err := svc.DescribeApplicationVersions(ctx, &config, func(options *elasticbeanstalk.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
