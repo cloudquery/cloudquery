@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/destination/mongodb/client"
-	"github.com/cloudquery/cloudquery/plugins/destination/mongodb/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/v3/serve"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/mongodb/resources/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/serve"
 )
 
 const (
@@ -12,6 +12,6 @@ const (
 )
 
 func main() {
-	p := destination.NewPlugin("mongodb", plugin.Version, client.New, destination.WithManagedWriter())
-	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
+	p := plugin.NewPlugin("mongodb", internalPlugin.Version, client.New)
+	serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN))
 }

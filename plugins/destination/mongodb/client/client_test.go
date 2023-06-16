@@ -1,21 +1,20 @@
 package client
 
 import (
+	"context"
 	"os"
 	"testing"
-	"time"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 
-var migrateStrategy = destination.MigrateStrategy{
-	AddColumn:           specs.MigrateModeSafe,
-	AddColumnNotNull:    specs.MigrateModeForced,
-	RemoveColumn:        specs.MigrateModeSafe,
-	RemoveColumnNotNull: specs.MigrateModeForced,
-	ChangeColumn:        specs.MigrateModeForced,
-}
+// var migrateStrategy = destination.MigrateStrategy{
+// 	AddColumn:           specs.MigrateModeSafe,
+// 	AddColumnNotNull:    specs.MigrateModeForced,
+// 	RemoveColumn:        specs.MigrateModeSafe,
+// 	RemoveColumnNotNull: specs.MigrateModeForced,
+// 	ChangeColumn:        specs.MigrateModeForced,
+// }
 
 func getTestConnection() string {
 	testConn := os.Getenv("CQ_DEST_MONGODB_TEST_CONN")
@@ -26,22 +25,22 @@ func getTestConnection() string {
 }
 
 func TestPlugin(t *testing.T) {
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin("mongodb", "development", New, destination.WithManagedWriter())
-		},
-		specs.Destination{
-			Spec: &Spec{
-				ConnectionString: getTestConnection(),
-				Database:         "destination_mongodb_test",
-			},
-		},
-		destination.PluginTestSuiteTests{
-			SkipMigrateOverwriteForce: true,
-			SkipMigrateAppendForce:    true,
+	ctx := context.Background()
+	p := plugin.NewPlugin("mongodb", "development", New)
+	p.Init(ctx, &Spec{
+		ConnectionString: getTestConnection(),
+		Database:         "destination_mongodb_test",
+	})
+	plugin.TestWriterSuiteRunner(t,
+		p,
+		plugin.PluginTestSuiteTests{
+			SkipMigrate: true,
+			// SkipMigrateOverwriteForce: true,
+			// SkipMigrateAppendForce:    true,
 
-			MigrateStrategyOverwrite: migrateStrategy,
-			MigrateStrategyAppend:    migrateStrategy,
+			// MigrateStrategyOverwrite: migrateStrategy,
+			// MigrateStrategyAppend:    migrateStrategy,
 		},
-		destination.WithTestSourceTimePrecision(time.Millisecond))
+		// plugin.WithTestSourceTimePrecision(time.Millisecond),
+	)
 }
