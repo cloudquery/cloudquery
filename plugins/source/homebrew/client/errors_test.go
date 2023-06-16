@@ -16,9 +16,9 @@ func TestRetryOnRateLimitError(t *testing.T) {
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	c := Client{
-		logger:     logger,
-		maxRetries: 1,
-		backoff:    1 * time.Microsecond,
+		Logger:     logger,
+		MaxRetries: 1,
+		Backoff:    1 * time.Microsecond,
 	}
 	ctx := context.Background()
 	t.Run("no_error", func(t *testing.T) {
