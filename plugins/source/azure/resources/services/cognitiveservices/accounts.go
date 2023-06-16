@@ -18,6 +18,14 @@ func Accounts() *schema.Table {
 		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_cognitiveservices_accounts", client.Namespacemicrosoft_cognitiveservices),
 		Transform:            transformers.TransformWithStruct(&armcognitiveservices.Account{}, transformers.WithPrimaryKeys("ID")),
 		Columns:              schema.ColumnList{client.SubscriptionID},
+		Relations: schema.Tables{
+			accountSKUs(),
+			accountUsages(),
+			accountModels(),
+			accountDeployments(),
+			accountPrivateEndpointConnections(),
+			accountPrivateLinkResources(),
+		},
 	}
 }
 
