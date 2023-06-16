@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/destination/mongodb/client"
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/mongodb/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
@@ -13,5 +15,5 @@ const (
 
 func main() {
 	p := plugin.NewPlugin("mongodb", internalPlugin.Version, client.New)
-	serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN))
+	serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN), serve.WithDestinationV0V1Server()).Serve(context.Background())
 }

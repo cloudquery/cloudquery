@@ -2,31 +2,32 @@ package client
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers"
+	"github.com/goccy/go-json"
 	"github.com/rs/zerolog"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type Client struct {
-	plugin.UnimplementedSync
+	plugin.UnimplementedSource
 	logger     zerolog.Logger
 	spec *Spec
 	client     *mongo.Client
 	writer     *writers.BatchWriter
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec any) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
 	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "mongo-dest").Logger(),
 	}
-	c.spec = spec.(*Spec)
-	// if err := json.Unmarshal(spec, &c.spec); err != nil {
-	// 	return nil, fmt.Errorf("failed to unmarshal MongoDB spec: %w", err)
-	// }
+	if err := json.Unmarshal(spec, &c.spec); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal MongoDB spec: %w", err)
+	}
 	if err := c.spec.Validate(); err != nil {
 		return nil, err
 	}

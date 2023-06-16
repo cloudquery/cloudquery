@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"os"
 	"testing"
 
@@ -27,10 +28,17 @@ func getTestConnection() string {
 func TestPlugin(t *testing.T) {
 	ctx := context.Background()
 	p := plugin.NewPlugin("mongodb", "development", New)
-	p.Init(ctx, &Spec{
+	s := &Spec{
 		ConnectionString: getTestConnection(),
 		Database:         "destination_mongodb_test",
-	})
+	}
+	b, err := json.Marshal(s)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := p.Init(ctx, b); err != nil {
+		t.Fatal(err)
+	}
 	plugin.TestWriterSuiteRunner(t,
 		p,
 		plugin.PluginTestSuiteTests{

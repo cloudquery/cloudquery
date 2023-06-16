@@ -3,7 +3,7 @@ package client
 import (
 	"context"
 
-	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/message"
 )
 
 // func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
@@ -16,7 +16,7 @@ import (
 // 	return nil
 // }
 
-func (c *Client) CreateTables(context.Context, []*plugin.MessageCreateTable) error {
+func (c *Client) MigrateTables(context.Context, []*message.MigrateTable) error {
 	return nil
 }
 

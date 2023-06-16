@@ -3,12 +3,12 @@ package client
 import (
 	"context"
 
-	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func (c *Client) DeleteStale(ctx context.Context, msgs []*plugin.MessageDeleteStale) error {
+func (c *Client) DeleteStale(ctx context.Context, msgs []*message.DeleteStale) error {
 	for _, msg := range msgs {
 		tableName := msg.Table.Name
 		// delete all records that are not in the source and are older than syncTime
