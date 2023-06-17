@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
-	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/golang/mock/gomock"
 	"github.com/rs/zerolog"
 )
@@ -35,43 +35,23 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 	services.Regions = []string{"us-east-1"}
 	c.ServicesManager.InitServicesForPartitionAccount("aws", "testAccount", services)
 	c.Partition = "aws"
+	tables := schema.Tables{table}
 
-	ch := make(chan message.Message, 1000)
-	if err := scheduler.NewScheduler(schema.Tables{table}, &c, scheduler.WithLogger(l)).Sync(context.Background(), ch); err != nil {
+	if err := transformers.TransformTables(tables); err != nil {
 		t.Fatal(err)
 	}
-	// TODO: add tests
-}
-func extractTables(tables schema.Tables) schema.Tables {
-	result := make(schema.Tables, 0)
-	for _, table := range tables {
-		result = append(result, table)
-		result = append(result, extractTables(table.Relations)...)
-	}
-	return result
-}
 
-// func validateTagStructure(t *testing.T, plugin *source.Plugin, resources []*schema.Resource) {
-// 	for _, table := range extractTables(plugin.Tables()) {
-// 		t.Run(table.Name, func(t *testing.T) {
-// 			for _, column := range table.Columns {
-// 				if column.Name != "tags" {
-// 					continue
-// 				}
-// 				if !arrow.TypeEqual(column.Type, types.ExtensionTypes.JSON) {
-// 					t.Fatalf("tags column in %s should be of type JSON", table.Name)
-// 				}
-// 				for _, resource := range resources {
-// 					if resource.Table.Name != table.Name {
-// 						continue
-// 					}
-// 					value := resource.Get(column.Name)
-// 					var tags map[string]any
-// 					if err := json.Unmarshal(value.(*scalar.JSON).Value, &tags); err != nil {
-// 						t.Fatalf("failed to unmarshal tags column %s: %v", value.(*scalar.JSON).Value, err)
-// 					}
-// 				}
-// 			}
-// 		})
-// 	}
-// }
+	sc := scheduler.NewScheduler(&c, scheduler.WithLogger(l))
+	messages, err := sc.SyncAll(context.Background(), tables)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	inserts := messages.InsertMessage()
+	records := inserts.GetRecordsForTable(table)
+	emptyColumns := schema.FindEmptyColumns(table, records)
+	if len(emptyColumns) > 0 {
+		t.Fatalf("empty columns: %v", emptyColumns)
+	}
+
+}

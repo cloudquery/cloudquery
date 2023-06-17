@@ -34,7 +34,6 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte) (plugin.C
 	}
 
 	c.scheduler = scheduler.NewScheduler(
-		tables(),
 		c.client,
 		scheduler.WithConcurrency(spec.Concurrency),
 		scheduler.WithLogger(logger),
@@ -52,5 +51,5 @@ func (c *Client) Tables(ctx context.Context) (schema.Tables, error) {
 	return tables(), nil
 }
 func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.Message) error {
-	return c.scheduler.Sync(ctx, res)
+	return c.scheduler.Sync(ctx, tables(), res)
 }
