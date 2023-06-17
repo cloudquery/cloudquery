@@ -26,6 +26,7 @@ The following tables depend on aws_lightsail_disks:
 |add_ons|`json`|
 |attached_to|`utf8`|
 |attachment_state|`utf8`|
+|auto_mount_status|`utf8`|
 |created_at|`timestamp[us, tz=UTC]`|
 |gb_in_use|`int64`|
 |iops|`int64`|

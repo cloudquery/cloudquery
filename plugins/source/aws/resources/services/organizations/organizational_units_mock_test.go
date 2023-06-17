@@ -27,7 +27,6 @@ func buildOrganizationalUnits(t *testing.T, ctrl *gomock.Controller) client.Serv
 	if err := faker.FakeObject(&c); err != nil {
 		t.Fatal(err)
 	}
-
 	m.EXPECT().ListChildren(gomock.Any(), gomock.Any(), gomock.Any()).MinTimes(1).Return(
 		&organizations.ListChildrenOutput{
 			Children: []types.Child{c},
@@ -40,6 +39,15 @@ func buildOrganizationalUnits(t *testing.T, ctrl *gomock.Controller) client.Serv
 	m.EXPECT().DescribeOrganizationalUnit(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&organizations.DescribeOrganizationalUnitOutput{
 			OrganizationalUnit: &ou,
+		}, nil)
+
+	p := types.Parent{}
+	if err := faker.FakeObject(&p); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListParents(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&organizations.ListParentsOutput{
+			Parents: []types.Parent{p},
 		}, nil)
 
 	return client.Services{

@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-mysql-v1.2.1...plugins-source-mysql-v1.2.2) (2023-06-15)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 4d76231 ([#11532](https://github.com/cloudquery/cloudquery/issues/11532)) ([6f04233](https://github.com/cloudquery/cloudquery/commit/6f042333acbd2506f7800ccb89a8c5cbfb7ad8d4))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to d864719 ([#11611](https://github.com/cloudquery/cloudquery/issues/11611)) ([557a290](https://github.com/cloudquery/cloudquery/commit/557a2903af272b8e2e4c9eebb36e39cd8a41a805))
+* **source-mysql:** Add schema name condition to list columns query ([#11623](https://github.com/cloudquery/cloudquery/issues/11623)) ([f0f8638](https://github.com/cloudquery/cloudquery/commit/f0f8638f0a46294a8ca84dca0804d73fb4d9db9a))
+
 ## [1.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-mysql-v1.2.0...plugins-source-mysql-v1.2.1) (2023-06-13)
 
 

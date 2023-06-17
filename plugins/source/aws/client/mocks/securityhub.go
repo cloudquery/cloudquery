@@ -35,6 +35,96 @@ func (m *MockSecurityhubClient) EXPECT() *MockSecurityhubClientMockRecorder {
 	return m.recorder
 }
 
+// BatchGetAutomationRules mocks base method.
+func (m *MockSecurityhubClient) BatchGetAutomationRules(arg0 context.Context, arg1 *securityhub.BatchGetAutomationRulesInput, arg2 ...func(*securityhub.Options)) (*securityhub.BatchGetAutomationRulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetAutomationRules")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetAutomationRules", varargs...)
+	ret0, _ := ret[0].(*securityhub.BatchGetAutomationRulesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetAutomationRules indicates an expected call of BatchGetAutomationRules.
+func (mr *MockSecurityhubClientMockRecorder) BatchGetAutomationRules(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetAutomationRules", reflect.TypeOf((*MockSecurityhubClient)(nil).BatchGetAutomationRules), varargs...)
+}
+
+// BatchGetSecurityControls mocks base method.
+func (m *MockSecurityhubClient) BatchGetSecurityControls(arg0 context.Context, arg1 *securityhub.BatchGetSecurityControlsInput, arg2 ...func(*securityhub.Options)) (*securityhub.BatchGetSecurityControlsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetSecurityControls")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetSecurityControls", varargs...)
+	ret0, _ := ret[0].(*securityhub.BatchGetSecurityControlsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetSecurityControls indicates an expected call of BatchGetSecurityControls.
+func (mr *MockSecurityhubClientMockRecorder) BatchGetSecurityControls(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetSecurityControls", reflect.TypeOf((*MockSecurityhubClient)(nil).BatchGetSecurityControls), varargs...)
+}
+
+// BatchGetStandardsControlAssociations mocks base method.
+func (m *MockSecurityhubClient) BatchGetStandardsControlAssociations(arg0 context.Context, arg1 *securityhub.BatchGetStandardsControlAssociationsInput, arg2 ...func(*securityhub.Options)) (*securityhub.BatchGetStandardsControlAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetStandardsControlAssociations")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetStandardsControlAssociations", varargs...)
+	ret0, _ := ret[0].(*securityhub.BatchGetStandardsControlAssociationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetStandardsControlAssociations indicates an expected call of BatchGetStandardsControlAssociations.
+func (mr *MockSecurityhubClientMockRecorder) BatchGetStandardsControlAssociations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetStandardsControlAssociations", reflect.TypeOf((*MockSecurityhubClient)(nil).BatchGetStandardsControlAssociations), varargs...)
+}
+
 // DescribeActionTargets mocks base method.
 func (m *MockSecurityhubClient) DescribeActionTargets(arg0 context.Context, arg1 *securityhub.DescribeActionTargetsInput, arg2 ...func(*securityhub.Options)) (*securityhub.DescribeActionTargetsOutput, error) {
 
@@ -305,6 +395,36 @@ func (mr *MockSecurityhubClientMockRecorder) GetFindingAggregator(arg0, arg1 int
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetFindingAggregator", reflect.TypeOf((*MockSecurityhubClient)(nil).GetFindingAggregator), varargs...)
 }
 
+// GetFindingHistory mocks base method.
+func (m *MockSecurityhubClient) GetFindingHistory(arg0 context.Context, arg1 *securityhub.GetFindingHistoryInput, arg2 ...func(*securityhub.Options)) (*securityhub.GetFindingHistoryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetFindingHistory")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetFindingHistory", varargs...)
+	ret0, _ := ret[0].(*securityhub.GetFindingHistoryOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetFindingHistory indicates an expected call of GetFindingHistory.
+func (mr *MockSecurityhubClientMockRecorder) GetFindingHistory(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetFindingHistory", reflect.TypeOf((*MockSecurityhubClient)(nil).GetFindingHistory), varargs...)
+}
+
 // GetFindings mocks base method.
 func (m *MockSecurityhubClient) GetFindings(arg0 context.Context, arg1 *securityhub.GetFindingsInput, arg2 ...func(*securityhub.Options)) (*securityhub.GetFindingsOutput, error) {
 
@@ -485,6 +605,36 @@ func (mr *MockSecurityhubClientMockRecorder) GetMembers(arg0, arg1 interface{}, 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMembers", reflect.TypeOf((*MockSecurityhubClient)(nil).GetMembers), varargs...)
 }
 
+// ListAutomationRules mocks base method.
+func (m *MockSecurityhubClient) ListAutomationRules(arg0 context.Context, arg1 *securityhub.ListAutomationRulesInput, arg2 ...func(*securityhub.Options)) (*securityhub.ListAutomationRulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAutomationRules")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListAutomationRules", varargs...)
+	ret0, _ := ret[0].(*securityhub.ListAutomationRulesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListAutomationRules indicates an expected call of ListAutomationRules.
+func (mr *MockSecurityhubClientMockRecorder) ListAutomationRules(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAutomationRules", reflect.TypeOf((*MockSecurityhubClient)(nil).ListAutomationRules), varargs...)
+}
+
 // ListEnabledProductsForImport mocks base method.
 func (m *MockSecurityhubClient) ListEnabledProductsForImport(arg0 context.Context, arg1 *securityhub.ListEnabledProductsForImportInput, arg2 ...func(*securityhub.Options)) (*securityhub.ListEnabledProductsForImportOutput, error) {
 
@@ -633,6 +783,66 @@ func (mr *MockSecurityhubClientMockRecorder) ListOrganizationAdminAccounts(arg0,
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListOrganizationAdminAccounts", reflect.TypeOf((*MockSecurityhubClient)(nil).ListOrganizationAdminAccounts), varargs...)
+}
+
+// ListSecurityControlDefinitions mocks base method.
+func (m *MockSecurityhubClient) ListSecurityControlDefinitions(arg0 context.Context, arg1 *securityhub.ListSecurityControlDefinitionsInput, arg2 ...func(*securityhub.Options)) (*securityhub.ListSecurityControlDefinitionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListSecurityControlDefinitions")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListSecurityControlDefinitions", varargs...)
+	ret0, _ := ret[0].(*securityhub.ListSecurityControlDefinitionsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListSecurityControlDefinitions indicates an expected call of ListSecurityControlDefinitions.
+func (mr *MockSecurityhubClientMockRecorder) ListSecurityControlDefinitions(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSecurityControlDefinitions", reflect.TypeOf((*MockSecurityhubClient)(nil).ListSecurityControlDefinitions), varargs...)
+}
+
+// ListStandardsControlAssociations mocks base method.
+func (m *MockSecurityhubClient) ListStandardsControlAssociations(arg0 context.Context, arg1 *securityhub.ListStandardsControlAssociationsInput, arg2 ...func(*securityhub.Options)) (*securityhub.ListStandardsControlAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListStandardsControlAssociations")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListStandardsControlAssociations", varargs...)
+	ret0, _ := ret[0].(*securityhub.ListStandardsControlAssociationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListStandardsControlAssociations indicates an expected call of ListStandardsControlAssociations.
+func (mr *MockSecurityhubClientMockRecorder) ListStandardsControlAssociations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListStandardsControlAssociations", reflect.TypeOf((*MockSecurityhubClient)(nil).ListStandardsControlAssociations), varargs...)
 }
 
 // ListTagsForResource mocks base method.

@@ -10,9 +10,11 @@ import (
 type Inspector2Client interface {
 	BatchGetAccountStatus(context.Context, *inspector2.BatchGetAccountStatusInput, ...func(*inspector2.Options)) (*inspector2.BatchGetAccountStatusOutput, error)
 	BatchGetFreeTrialInfo(context.Context, *inspector2.BatchGetFreeTrialInfoInput, ...func(*inspector2.Options)) (*inspector2.BatchGetFreeTrialInfoOutput, error)
+	BatchGetMemberEc2DeepInspectionStatus(context.Context, *inspector2.BatchGetMemberEc2DeepInspectionStatusInput, ...func(*inspector2.Options)) (*inspector2.BatchGetMemberEc2DeepInspectionStatusOutput, error)
 	DescribeOrganizationConfiguration(context.Context, *inspector2.DescribeOrganizationConfigurationInput, ...func(*inspector2.Options)) (*inspector2.DescribeOrganizationConfigurationOutput, error)
 	GetConfiguration(context.Context, *inspector2.GetConfigurationInput, ...func(*inspector2.Options)) (*inspector2.GetConfigurationOutput, error)
 	GetDelegatedAdminAccount(context.Context, *inspector2.GetDelegatedAdminAccountInput, ...func(*inspector2.Options)) (*inspector2.GetDelegatedAdminAccountOutput, error)
+	GetEc2DeepInspectionConfiguration(context.Context, *inspector2.GetEc2DeepInspectionConfigurationInput, ...func(*inspector2.Options)) (*inspector2.GetEc2DeepInspectionConfigurationOutput, error)
 	GetFindingsReportStatus(context.Context, *inspector2.GetFindingsReportStatusInput, ...func(*inspector2.Options)) (*inspector2.GetFindingsReportStatusOutput, error)
 	GetMember(context.Context, *inspector2.GetMemberInput, ...func(*inspector2.Options)) (*inspector2.GetMemberOutput, error)
 	ListAccountPermissions(context.Context, *inspector2.ListAccountPermissionsInput, ...func(*inspector2.Options)) (*inspector2.ListAccountPermissionsOutput, error)
@@ -25,4 +27,5 @@ type Inspector2Client interface {
 	ListMembers(context.Context, *inspector2.ListMembersInput, ...func(*inspector2.Options)) (*inspector2.ListMembersOutput, error)
 	ListTagsForResource(context.Context, *inspector2.ListTagsForResourceInput, ...func(*inspector2.Options)) (*inspector2.ListTagsForResourceOutput, error)
 	ListUsageTotals(context.Context, *inspector2.ListUsageTotalsInput, ...func(*inspector2.Options)) (*inspector2.ListUsageTotalsOutput, error)
+	SearchVulnerabilities(context.Context, *inspector2.SearchVulnerabilitiesInput, ...func(*inspector2.Options)) (*inspector2.SearchVulnerabilitiesOutput, error)
 }

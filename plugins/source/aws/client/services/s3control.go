@@ -20,6 +20,7 @@ type S3controlClient interface {
 	GetBucket(context.Context, *s3control.GetBucketInput, ...func(*s3control.Options)) (*s3control.GetBucketOutput, error)
 	GetBucketLifecycleConfiguration(context.Context, *s3control.GetBucketLifecycleConfigurationInput, ...func(*s3control.Options)) (*s3control.GetBucketLifecycleConfigurationOutput, error)
 	GetBucketPolicy(context.Context, *s3control.GetBucketPolicyInput, ...func(*s3control.Options)) (*s3control.GetBucketPolicyOutput, error)
+	GetBucketReplication(context.Context, *s3control.GetBucketReplicationInput, ...func(*s3control.Options)) (*s3control.GetBucketReplicationOutput, error)
 	GetBucketTagging(context.Context, *s3control.GetBucketTaggingInput, ...func(*s3control.Options)) (*s3control.GetBucketTaggingOutput, error)
 	GetBucketVersioning(context.Context, *s3control.GetBucketVersioningInput, ...func(*s3control.Options)) (*s3control.GetBucketVersioningOutput, error)
 	GetJobTagging(context.Context, *s3control.GetJobTaggingInput, ...func(*s3control.Options)) (*s3control.GetJobTaggingOutput, error)

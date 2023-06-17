@@ -13,7 +13,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 )
 
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230615001300-d86471932763
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230616001249-1e68c514895b
 
 require (
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
