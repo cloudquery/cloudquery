@@ -1,0 +1,4 @@
+{
+  "key": "foo",
+  "secret": "bar<baz>"
+}

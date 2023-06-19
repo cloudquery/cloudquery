@@ -2,11 +2,14 @@ package specs
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"math/rand"
 	"os"
 	"path/filepath"
+	"reflect"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/ghodss/yaml"
@@ -24,6 +27,33 @@ type SpecReader struct {
 var fileRegex = regexp.MustCompile(`\$\{file:([^}]+)\}`)
 var envRegex = regexp.MustCompile(`\$\{([^}]+)\}`)
 
+// escapeExternalContent escapes the given content if it contains newlines or is a JSON object or array, to satisfy YAML requirements
+// It will suppress any JSON unmarshalling errors and may return the original content.
+func escapeExternalContent(content []byte) ([]byte, error) {
+	var isJSON any
+	if err := json.Unmarshal(content, &isJSON); err != nil {
+		if bytes.ContainsAny(content, "\n\r") {
+			return []byte(strconv.Quote(string(content))), nil
+		}
+		return content, nil
+	}
+
+	k := reflect.TypeOf(isJSON).Kind()
+	switch k {
+	case reflect.Map, reflect.Slice:
+		buffer := &bytes.Buffer{}
+		encoder := json.NewEncoder(buffer)
+		encoder.SetEscapeHTML(false)
+		if err := encoder.Encode(string(content)); err != nil {
+			return content, err
+		}
+
+		return bytes.TrimSuffix(buffer.Bytes(), []byte{'\n'}), nil
+	}
+
+	return content, nil
+}
+
 func expandFileConfig(cfg []byte) ([]byte, error) {
 	var expandErr error
 	cfg = fileRegex.ReplaceAllFunc(cfg, func(match []byte) []byte {
@@ -32,6 +62,10 @@ func expandFileConfig(cfg []byte) ([]byte, error) {
 		if err != nil {
 			expandErr = err
 			return nil
+		}
+		content, err = escapeExternalContent(content)
+		if expandErr == nil {
+			expandErr = err
 		}
 		return content
 	})
@@ -48,7 +82,11 @@ func expandEnv(cfg []byte) ([]byte, error) {
 			expandErr = fmt.Errorf("env variable %s not found", envVar)
 			return nil
 		}
-		return []byte(content)
+		newcontent, err := escapeExternalContent([]byte(content))
+		if expandErr == nil {
+			expandErr = err
+		}
+		return newcontent
 	})
 
 	return cfg, expandErr

@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -287,6 +288,39 @@ spec:
 	}
 }
 
+func TestExpandFileJSON(t *testing.T) {
+	cfg := []byte(`
+kind: source
+spec:
+  name: gcp
+  path: cloudquery/gcp
+  version: v1.0.0
+  table_concurrency: 10
+  registry: local
+  destinations: [postgresql]
+  service_account_key_json: ${file:./testdata/creds2.json}
+	`)
+	expectedCfg := []byte(`
+kind: source
+spec:
+  name: gcp
+  path: cloudquery/gcp
+  version: v1.0.0
+  table_concurrency: 10
+  registry: local
+  destinations: [postgresql]
+  service_account_key_json: "{\n  \"key\": \"foo\",\n  \"secret\": \"bar<baz>\"\n}\n"
+	`)
+	expandedCfg, err := expandFileConfig(cfg)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if runtime.GOOS == "windows" {
+		expectedCfg = bytes.ReplaceAll(expectedCfg, []byte(`\n`), []byte(`\r\n`))
+	}
+	assert.Equal(t, string(expectedCfg), string(expandedCfg))
+}
+
 func TestExpandEnv(t *testing.T) {
 	os.Setenv("TEST_ENV_CREDS", "mytestcreds")
 	os.Setenv("TEST_ENV_CREDS2", "anothercredtest")
@@ -331,4 +365,93 @@ spec:
 	if err == nil {
 		t.Fatal("expected error, got nil")
 	}
+}
+
+func TestExpandEnvJSONNewlines(t *testing.T) {
+	expectedCreds := `{
+   "type": "service_account",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIItest\n\n-----END PRIVATE KEY-----\n",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/test%40test.iam.gserviceaccount.com"
+}
+`
+	os.Setenv("TEST_ENV_CREDS3", expectedCreds)
+	cfg := []byte(`
+kind: source
+spec:
+  name: test
+  registry: local
+  path: /path/to/source
+  version: v1.0.0
+  tables: [ "some_table" ]
+  destinations: [ "test2" ]
+  spec:
+    credentials: ${TEST_ENV_CREDS3}
+    otherstuff: 2
+---
+kind: destination
+spec:
+  name: test2
+  registry: local
+  path: /path/to/dest
+`)
+
+	f, err := os.CreateTemp("", "testcase*.yaml")
+	assert.NoError(t, err)
+	defer os.Remove(f.Name())
+	assert.NoError(t, os.WriteFile(f.Name(), cfg, 0644))
+
+	s, err := NewSpecReader([]string{f.Name()})
+	assert.NoError(t, err)
+	if t.Failed() {
+		return
+	}
+
+	assert.Equal(t, 1, len(s.Sources))
+	sp := s.Sources[0].Spec.(map[string]any)
+	assert.Equal(t, expectedCreds, sp["credentials"])
+}
+
+func TestExpandEnvNewlines(t *testing.T) {
+	expectedCreds := `-----BEGIN PRIVATE KEY-----
+MIItest
+	tabbledline
+\backslashes\here
+-----END PRIVATE KEY-----
+`
+
+	os.Setenv("TEST_ENV_CREDS3", expectedCreds)
+	cfg := []byte(`
+kind: source
+spec:
+  name: test
+  registry: local
+  path: /path/to/source
+  version: v1.0.0
+  tables: [ "some_table" ]
+  destinations: [ "test2" ]
+  spec:
+    credentials: ${TEST_ENV_CREDS3}
+    otherstuff: 2
+---
+kind: destination
+spec:
+  name: test2
+  registry: local
+  path: /path/to/dest
+`)
+
+	f, err := os.CreateTemp("", "testcase*.yaml")
+	assert.NoError(t, err)
+	defer os.Remove(f.Name())
+	assert.NoError(t, os.WriteFile(f.Name(), cfg, 0644))
+
+	s, err := NewSpecReader([]string{f.Name()})
+	assert.NoError(t, err)
+	if t.Failed() {
+		return
+	}
+
+	assert.Equal(t, 1, len(s.Sources))
+	sp := s.Sources[0].Spec.(map[string]any)
+	assert.Equal(t, expectedCreds, sp["credentials"])
 }
