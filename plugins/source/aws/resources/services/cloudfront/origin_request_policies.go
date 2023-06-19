@@ -23,9 +23,9 @@ func OriginRequestPolicies() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:     "id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.PathResolver("OriginRequestPolicy.Id"),
+				Name:       "id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("OriginRequestPolicy.Id"),
 				PrimaryKey: true,
 			},
 		},

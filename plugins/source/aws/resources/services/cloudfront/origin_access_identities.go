@@ -20,7 +20,6 @@ func OriginAccessIdentities() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.CloudFrontOriginAccessIdentitySummary{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
-			
 		},
 	}
 }
