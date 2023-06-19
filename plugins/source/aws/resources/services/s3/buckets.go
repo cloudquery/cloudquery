@@ -180,10 +180,9 @@ func resolveBucketPolicyStatus(ctx context.Context, meta schema.ClientMeta, reso
 		}
 		return err
 	}
-	if policyStatusOutput == nil {
-		return nil
+	if policyStatusOutput != nil {
+		resource.PolicyStatus = policyStatusOutput.PolicyStatus
 	}
-	resource.PolicyStatus = policyStatusOutput.PolicyStatus
 	return nil
 }
 
