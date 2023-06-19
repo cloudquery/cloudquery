@@ -2,7 +2,7 @@
 
 This table shows data for Amazon Elastic Compute Cloud (EC2) Capacity Reservations.
 
-https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ReservedInstances.html
+https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeCapacityReservations.html
 
 The primary key for this table is **arn**.
 

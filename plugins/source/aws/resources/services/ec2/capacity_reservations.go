@@ -17,7 +17,7 @@ func CapacityReservations() *schema.Table {
 	tableName := "aws_ec2_capacity_reservations"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ReservedInstances.html`,
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeCapacityReservations.html`,
 		Resolver:    fetchEc2CapacityReservations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.CapacityReservation{}),
