@@ -16,7 +16,7 @@ func Functions() *schema.Table {
 	tableName := "aws_cloudfront_functions"
 	return &schema.Table{
 		Name:                tableName,
-		Description:         `https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_CachePolicySummary.html`,
+		Description:         `https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_DescribeFunction.html`,
 		Resolver:            fetchFunctions,
 		PreResourceResolver: getFunction,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "cloudfront"),

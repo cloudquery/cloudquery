@@ -2,7 +2,7 @@
 
 This table shows data for Cloudfront Functions.
 
-https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_CachePolicySummary.html
+https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_DescribeFunction.html
 
 The composite primary key for this table is (**stage**, **arn**).
 
