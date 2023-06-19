@@ -108,6 +108,7 @@
 - [aws_cloudhsmv2_backups](../../../../../website/tables/aws/aws_cloudhsmv2_backups.md)
 - [aws_cloudhsmv2_clusters](../../../../../website/tables/aws/aws_cloudhsmv2_clusters.md)
 - [aws_cloudtrail_events](../../../../../website/tables/aws/aws_cloudtrail_events.md) (Incremental)
+- [aws_cloudtrail_imports](../../../../../website/tables/aws/aws_cloudtrail_imports.md)
 - [aws_cloudtrail_trails](../../../../../website/tables/aws/aws_cloudtrail_trails.md)
   - [aws_cloudtrail_trail_event_selectors](../../../../../website/tables/aws/aws_cloudtrail_trail_event_selectors.md)
 - [aws_cloudwatch_alarms](../../../../../website/tables/aws/aws_cloudwatch_alarms.md)
