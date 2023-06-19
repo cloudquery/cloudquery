@@ -180,10 +180,10 @@ func resolveBucketPolicyStatus(ctx context.Context, meta schema.ClientMeta, reso
 		}
 		return err
 	}
-	if policyStatusOutput == nil || policyStatusOutput.PolicyStatus == nil {
+	if policyStatusOutput == nil {
 		return nil
 	}
-	resource.IsPublicByPolicy = policyStatusOutput.PolicyStatus.IsPublic
+	resource.PolicyStatus = policyStatusOutput.PolicyStatus
 	return nil
 }
 

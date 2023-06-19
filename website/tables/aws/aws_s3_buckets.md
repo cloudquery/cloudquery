@@ -31,7 +31,7 @@ The following tables depend on aws_s3_buckets:
 |logging_target_bucket|`utf8`|
 |logging_target_prefix|`utf8`|
 |policy|`json`|
-|is_public_by_policy|`bool`|
+|policy_status|`json`|
 |versioning_status|`utf8`|
 |versioning_mfa_delete|`utf8`|
 |block_public_acls|`bool`|

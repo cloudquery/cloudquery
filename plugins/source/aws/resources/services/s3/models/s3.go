@@ -29,7 +29,7 @@ type WrappedBucket struct {
 	LoggingTargetBucket   *string
 	LoggingTargetPrefix   *string
 	Policy                map[string]any
-	IsPublicByPolicy      bool
+	PolicyStatus          *types.PolicyStatus
 	VersioningStatus      types.BucketVersioningStatus
 	VersioningMfaDelete   types.MFADeleteStatus
 	BlockPublicAcls       bool
