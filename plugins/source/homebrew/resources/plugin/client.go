@@ -21,6 +21,18 @@ const (
 	defaultBackoff    = 10 * time.Second
 )
 
+var tables = []*schema.Table{
+	analytics.Installs(homebrew.Days30),
+	analytics.Installs(homebrew.Days90),
+	analytics.Installs(homebrew.Days365),
+	analytics.CaskInstalls(homebrew.Days30),
+	analytics.CaskInstalls(homebrew.Days90),
+	analytics.CaskInstalls(homebrew.Days365),
+	analytics.BuildErrors(homebrew.Days30),
+	analytics.BuildErrors(homebrew.Days90),
+	analytics.BuildErrors(homebrew.Days365),
+}
+
 type Client struct {
 	SchedulerClient *client.Client
 	logger          zerolog.Logger
@@ -37,13 +49,12 @@ func (c *Client) Logger() *zerolog.Logger {
 }
 
 func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.Message) error {
-	tables, _ := tables(ctx)
-	scheduler := scheduler.NewScheduler(tables, c.SchedulerClient, scheduler.WithSchedulerStrategy(scheduler.StrategyDFS))
-	return scheduler.Sync(ctx, res)
+	scheduler := scheduler.NewScheduler(c.SchedulerClient, scheduler.WithSchedulerStrategy(scheduler.StrategyDFS))
+	return scheduler.Sync(ctx, tables, res)
 }
 
 func (c *Client) Tables(ctx context.Context) (schema.Tables, error) {
-	return tables(ctx)
+	return tables, nil
 }
 
 func (c *Client) Close(ctx context.Context) error {
@@ -51,7 +62,6 @@ func (c *Client) Close(ctx context.Context) error {
 }
 
 func Configure(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
-
 	config := &client.Spec{}
 	if err := json.Unmarshal(spec, config); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
@@ -62,13 +72,13 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.
 		return nil, fmt.Errorf("failed to validate spec: %w", err)
 	}
 
-	homberClient := homebrew.NewClient()
+	homebrewClient := homebrew.NewClient()
 	if err != nil {
 		return nil, fmt.Errorf("failed to create homebrew client: %w", err)
 	}
 
 	schedulerClient := &client.Client{
-		Homebrew:   homberClient,
+		Homebrew:   homebrewClient,
 		Logger:     logger,
 		Spec:       config,
 		MaxRetries: defaultMaxRetries,
@@ -78,19 +88,5 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.
 	return &Client{
 		logger:          logger,
 		SchedulerClient: schedulerClient,
-	}, nil
-}
-
-func tables(ctx context.Context) (schema.Tables, error) {
-	return []*schema.Table{
-		analytics.Installs(homebrew.Days30),
-		analytics.Installs(homebrew.Days90),
-		analytics.Installs(homebrew.Days365),
-		analytics.CaskInstalls(homebrew.Days30),
-		analytics.CaskInstalls(homebrew.Days90),
-		analytics.CaskInstalls(homebrew.Days365),
-		analytics.BuildErrors(homebrew.Days30),
-		analytics.BuildErrors(homebrew.Days90),
-		analytics.BuildErrors(homebrew.Days365),
 	}, nil
 }
