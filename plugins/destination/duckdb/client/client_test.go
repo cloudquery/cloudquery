@@ -29,6 +29,7 @@ func TestPlugin(t *testing.T) {
 			Spec: &Spec{
 				ConnectionString: "?threads=1",
 			},
+			Version: "development",
 		},
 		destination.PluginTestSuiteTests{
 			MigrateStrategyOverwrite: migrateStrategy,

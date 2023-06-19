@@ -11,7 +11,7 @@ require (
 	golang.org/x/time v0.3.0
 )
 
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230616001249-1e68c514895b
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230619001325-b0832beeeade
 
 require (
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
