@@ -5,8 +5,8 @@ go 1.19
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230601070034-e07e22c5580a
 	github.com/aws/aws-sdk-go-v2 v1.18.1
-	github.com/aws/aws-sdk-go-v2/config v1.18.26
-	github.com/aws/aws-sdk-go-v2/credentials v1.13.25
+	github.com/aws/aws-sdk-go-v2/config v1.18.27
+	github.com/aws/aws-sdk-go-v2/credentials v1.13.26
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.13
 	github.com/aws/aws-sdk-go-v2/service/account v1.10.7
 	github.com/aws/aws-sdk-go-v2/service/acm v1.17.12
@@ -105,7 +105,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.36.5
 	github.com/aws/aws-sdk-go-v2/service/ssoadmin v1.16.11
-	github.com/aws/aws-sdk-go-v2/service/sts v1.19.1
+	github.com/aws/aws-sdk-go-v2/service/sts v1.19.2
 	github.com/aws/aws-sdk-go-v2/service/support v1.15.1
 	github.com/aws/aws-sdk-go-v2/service/timestreamwrite v1.17.1
 	github.com/aws/aws-sdk-go-v2/service/transfer v1.29.2
@@ -149,8 +149,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.28 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.28 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.14.3 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sso v1.12.11 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.11 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sso v1.12.12 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.12 // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
 	github.com/cloudquery/plugin-sdk v1.45.0
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
