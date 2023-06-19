@@ -175,6 +175,7 @@
 - [aws_dynamodbstreams_streams](tables/aws_dynamodbstreams_streams)
 - [aws_ec2_account_attributes](tables/aws_ec2_account_attributes)
 - [aws_ec2_byoip_cidrs](tables/aws_ec2_byoip_cidrs)
+- [aws_ec2_capacity_reservations](tables/aws_ec2_capacity_reservations)
 - [aws_ec2_customer_gateways](tables/aws_ec2_customer_gateways)
 - [aws_ec2_dhcp_options](tables/aws_ec2_dhcp_options)
 - [aws_ec2_ebs_snapshots](tables/aws_ec2_ebs_snapshots)
