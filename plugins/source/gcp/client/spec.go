@@ -112,7 +112,7 @@ func (rd ResourceDiscovery) isIncludeNull() bool {
 }
 
 func (rd ResourceDiscovery) isExcludeNull() bool {
-	return len(rd.ExcludeListId) <= 0
+	return len(rd.ExcludeListId) == 0
 }
 
 func (rd ResourceDiscovery) isNull() bool {
