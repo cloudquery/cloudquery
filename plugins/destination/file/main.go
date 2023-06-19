@@ -1,10 +1,12 @@
 package main
 
 import (
+	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/destination/file/client"
-	"github.com/cloudquery/cloudquery/plugins/destination/file/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/v3/serve"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/file/resources/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/serve"
 )
 
 const (
@@ -12,6 +14,6 @@ const (
 )
 
 func main() {
-	p := destination.NewPlugin("file", plugin.Version, client.New, destination.WithManagedWriter())
-	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
+	p := plugin.NewPlugin("file", internalPlugin.Version, client.New)
+	serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN), serve.WithDestinationV0V1Server()).Serve(context.Background())
 }

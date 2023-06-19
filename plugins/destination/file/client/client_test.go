@@ -1,25 +1,28 @@
 package client
 
 import (
+	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 
-	"github.com/cloudquery/filetypes/v3"
-	"github.com/cloudquery/filetypes/v3/csv"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/filetypes/v4"
+	"github.com/cloudquery/filetypes/v4/csv"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/stretchr/testify/assert"
 )
 
-var migrateStrategy = destination.MigrateStrategy{
-	AddColumn:           specs.MigrateModeForced,
-	AddColumnNotNull:    specs.MigrateModeForced,
-	RemoveColumn:        specs.MigrateModeForced,
-	RemoveColumnNotNull: specs.MigrateModeForced,
-	ChangeColumn:        specs.MigrateModeForced,
-}
+//var migrateStrategy = destination.MigrateStrategy{
+//	AddColumn:           specs.MigrateModeForced,
+//	AddColumnNotNull:    specs.MigrateModeForced,
+//	RemoveColumn:        specs.MigrateModeForced,
+//	RemoveColumnNotNull: specs.MigrateModeForced,
+//	ChangeColumn:        specs.MigrateModeForced,
+//}
 
 func testFormats() []filetypes.FileSpec {
 	return []filetypes.FileSpec{
@@ -140,23 +143,26 @@ func TestPlugin(t *testing.T) {
 }
 
 func testPlugin(t *testing.T, spec *Spec) {
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin("file", "development", New, destination.WithManagedWriter())
+	ctx := context.Background()
+	p := plugin.NewPlugin("file", "development", New)
+	b, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := p.Init(ctx, b); err != nil {
+		t.Fatal(err)
+	}
+	plugin.TestWriterSuiteRunner(t,
+		p,
+		plugin.PluginTestSuiteTests{
+			SkipUpsert:      true,
+			SkipMigrate:     true,
+			SkipDeleteStale: true,
+			// MigrateStrategyOverwrite: migrateStrategy,
+			// MigrateStrategyAppend:    migrateStrategy,
 		},
-		specs.Destination{
-			Spec: spec,
-		},
-		destination.PluginTestSuiteTests{
-			SkipOverwrite:             true,
-			SkipSecondAppend:          true,
-			SkipDeleteStale:           true,
-			SkipMigrateOverwrite:      true,
-			SkipMigrateOverwriteForce: true,
-			SkipMigrateAppendForce:    true,
-
-			MigrateStrategyOverwrite: migrateStrategy,
-			MigrateStrategyAppend:    migrateStrategy,
-		},
+		plugin.WithTestDataOptions(schema.TestSourceOptions{
+			TimePrecision: time.Millisecond,
+		}),
 	)
 }
