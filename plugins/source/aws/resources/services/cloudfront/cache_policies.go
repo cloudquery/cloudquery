@@ -21,16 +21,11 @@ func CachePolicies() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "cloudfront"),
 		Transform:   transformers.TransformWithStruct(&types.CachePolicySummary{}),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.DefaultAccountIDColumn(true),
 			{
-				Name:     "id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.PathResolver("CachePolicy.Id"),
-			},
-			{
-				Name:       "arn",
+				Name:       "id",
 				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveCachePolicyARN(),
+				Resolver:   schema.PathResolver("CachePolicy.Id"),
 				PrimaryKey: true,
 			},
 		},
@@ -43,7 +38,7 @@ func fetchCloudfrontCachePolicies(ctx context.Context, meta schema.ClientMeta, p
 	s := cl.Services()
 	svc := s.Cloudfront
 	for {
-		response, err := svc.ListCachePolicies(ctx, nil, func(options *cloudfront.Options) {
+		response, err := svc.ListCachePolicies(ctx, &config, func(options *cloudfront.Options) {
 			options.Region = cl.Region
 		})
 		if err != nil {
@@ -60,10 +55,4 @@ func fetchCloudfrontCachePolicies(ctx context.Context, meta schema.ClientMeta, p
 		config.Marker = response.CachePolicyList.NextMarker
 	}
 	return nil
-}
-
-func resolveCachePolicyARN() schema.ColumnResolver {
-	return client.ResolveARNWithAccount(client.CloudfrontService, func(resource *schema.Resource) ([]string, error) {
-		return []string{"cache-policy", *resource.Item.(types.CachePolicySummary).CachePolicy.Id}, nil
-	})
 }
