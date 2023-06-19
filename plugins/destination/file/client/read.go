@@ -13,13 +13,11 @@ import (
 )
 
 func (c *Client) Read(_ context.Context, table *schema.Table, res chan<- arrow.Record) error {
-	sourceName := "unknown"
-
 	if !c.spec.NoRotate {
-		return fmt.Errorf("reading is not supported when `no_rotate` is false. Table: %q; Source: %q", table.Name, sourceName)
+		return fmt.Errorf("reading is not supported when `no_rotate` is false. Table: %q", table.Name)
 	}
 	if strings.Contains(c.spec.Path, PathVarUUID) {
-		return fmt.Errorf("reading is not supported when `path` contains UUID variable. Table: %q; Source: %q", table.Name, sourceName)
+		return fmt.Errorf("reading is not supported when `path` contains UUID variable. Table: %q", table.Name)
 	}
 	name := replacePathVariables(c.spec.Path, table.Name, c.spec.Format, uuid.NewString(), time.Time{})
 	f, err := os.Open(name)
@@ -28,5 +26,5 @@ func (c *Client) Read(_ context.Context, table *schema.Table, res chan<- arrow.R
 	}
 	defer f.Close()
 
-	return c.Client.Read(f, table, sourceName, res)
+	return c.Client.Read(f, table, res)
 }

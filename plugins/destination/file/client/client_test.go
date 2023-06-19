@@ -130,8 +130,7 @@ func TestPlugin(t *testing.T) {
 				if !d.IsDir() {
 					fileCount++
 				}
-				assert.NotContainsf(t, path, "{", "path %s still contains template", path)
-				if t.Failed() {
+				if !assert.NotContainsf(t, path, "{", "path %s still contains template", path) {
 					return fmt.Errorf("test failed")
 				}
 				return nil
