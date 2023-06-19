@@ -123,7 +123,7 @@ func migrate(cmd *cobra.Command, args []string) error {
 		case 1:
 			return migrateConnectionV1(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec)
 		case 0:
-			return fmt.Errorf("please upgrade your source or use an older v3.0.1 < CLI version < v3.5.3")
+			return fmt.Errorf("please upgrade your source or use a CLI version between v3.0.1 and v3.5.3")
 		default:
 			return fmt.Errorf("unknown version %d", maxVersion)
 		}
