@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"os"
 	"testing"
 
@@ -28,10 +29,15 @@ var safeMigrations = plugin.SafeMigrations{
 func TestPgPlugin(t *testing.T) {
 	ctx := context.Background()
 	p := plugin.NewPlugin("postgresql", "development", New)
-	p.Init(ctx, &Spec{
+	s := &Spec{
 		ConnectionString: getTestConnection(),
 		PgxLogLevel:      LogLevelTrace,
-	})
+	}
+	b, err := json.Marshal(s)
+	if err != nil {
+		t.Fatal(err)
+	}
+	p.Init(ctx, b)
 	testOpts := schema.TestSourceOptions{
 		SkipMaps: true,
 	}

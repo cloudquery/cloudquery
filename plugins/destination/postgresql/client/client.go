@@ -2,10 +2,12 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
 
 	"github.com/cloudquery/plugin-pb-go/specs/v1"
+	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers"
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
@@ -39,20 +41,25 @@ const (
 	pgTypeCockroachDB
 )
 
-func New(ctx context.Context, logger zerolog.Logger, spec any) (plugin.Client, error) {
+// NewClientFunc func(context.Context, zerolog.Logger, []byte) (Client, error)
+func New(ctx context.Context, logger zerolog.Logger, specBytes []byte) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "pg-dest").Logger(),
 	}
-	specPostgreSql := spec.(*Spec)
-	specPostgreSql.SetDefaults()
-	// TODO(v4): batch size handling
-	// c.batchSize = specPostgreSql.BatchSize
-	logLevel, err := tracelog.LogLevelFromString(specPostgreSql.PgxLogLevel.String())
+	var spec Spec
+	err := json.Unmarshal(specBytes, &spec)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse pgx log level %s: %w", specPostgreSql.PgxLogLevel, err)
+		return nil, err
 	}
-	c.logger.Info().Str("pgx_log_level", specPostgreSql.PgxLogLevel.String()).Msg("Initializing postgresql destination")
-	pgxConfig, err := pgxpool.ParseConfig(specPostgreSql.ConnectionString)
+	spec.SetDefaults()
+	// TODO(v4): batch size handling
+	// c.batchSize = spec.BatchSize
+	logLevel, err := tracelog.LogLevelFromString(spec.PgxLogLevel.String())
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse pgx log level %s: %w", spec.PgxLogLevel, err)
+	}
+	c.logger.Info().Str("pgx_log_level", spec.PgxLogLevel.String()).Msg("Initializing postgresql destination")
+	pgxConfig, err := pgxpool.ParseConfig(spec.ConnectionString)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse connection string %w", err)
 	}
@@ -94,7 +101,7 @@ func (c *Client) GetSpec() any {
 	return &Spec{}
 }
 
-func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, res <-chan plugin.Message) error {
+func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, res <-chan message.Message) error {
 	return c.writer.Write(ctx, options, res)
 }
 

@@ -5,13 +5,14 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
 )
 
 // MigrateTableBatch migrates a table. It forms part of the writer.MixedBatchWriter interface.
-func (c *Client) MigrateTableBatch(ctx context.Context, messages []*plugin.MessageMigrateTable, options plugin.WriteOptions) error {
+func (c *Client) MigrateTableBatch(ctx context.Context, messages []*message.MigrateTable, options plugin.WriteOptions) error {
 	tables, err := tablesFromMessages(messages)
 	if err != nil {
 		return err

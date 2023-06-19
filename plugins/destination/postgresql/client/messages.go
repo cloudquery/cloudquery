@@ -1,11 +1,11 @@
 package client
 
 import (
-	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func tablesFromMessages[T plugin.Message](messages []T) (schema.Tables, error) {
+func tablesFromMessages[T message.Message](messages []T) (schema.Tables, error) {
 	tableMap := make(map[string]*schema.Table)
 	for _, msg := range messages {
 		table := msg.GetTable()

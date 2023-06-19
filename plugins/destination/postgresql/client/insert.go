@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
@@ -14,8 +15,8 @@ import (
 )
 
 // InsertBatch inserts records into the destination table. It forms part of the writer.MixedBatchWriter interface.
-func (c *Client) InsertBatch(ctx context.Context, messages []*plugin.MessageInsert, options plugin.WriteOptions) error {
-	tables, err := tablesFromMessages[*plugin.MessageInsert](messages)
+func (c *Client) InsertBatch(ctx context.Context, messages []*message.Insert, options plugin.WriteOptions) error {
+	tables, err := tablesFromMessages[*message.Insert](messages)
 	if err != nil {
 		return err
 	}
