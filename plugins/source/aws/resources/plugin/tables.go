@@ -162,6 +162,7 @@ func tables() []*schema.Table {
 		cloudfront.Distributions(),
 		cloudhsmv2.Backups(),
 		cloudhsmv2.Clusters(),
+		cloudtrail.Channels(),
 		cloudtrail.Events(),
 		cloudtrail.Trails(),
 		cloudwatch.Alarms(),
