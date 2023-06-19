@@ -160,6 +160,7 @@ func tables() []*schema.Table {
 		cloudformation.StackSets(),
 		cloudfront.CachePolicies(),
 		cloudfront.Distributions(),
+		cloudfront.Functions(),
 		cloudhsmv2.Backups(),
 		cloudhsmv2.Clusters(),
 		cloudtrail.Events(),
