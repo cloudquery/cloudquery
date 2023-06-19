@@ -96,7 +96,7 @@ func TestSyncCqDir(t *testing.T) {
 	require.NoError(t, err)
 
 	// check that destination plugin was downloaded to the cache using --cq-dir
-	p := path.Join(cqDir, "plugins", "cloudquery")
+	p := path.Join(cqDir, "plugins")
 	files, err := os.ReadDir(p)
 	if err != nil {
 		t.Fatalf("failed to read cache directory %v: %v", p, err)
