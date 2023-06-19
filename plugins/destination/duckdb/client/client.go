@@ -73,6 +73,14 @@ func (c *Client) Metrics() destination.Metrics {
 }
 
 func (c *Client) exec(ctx context.Context, query string, args ...any) error {
-	_, err := c.db.ExecContext(ctx, query, args...)
+	r, err := c.db.ExecContext(ctx, query, args...)
+	if c.spec.Version == "development" {
+		rowsAffected, rowsErr := r.RowsAffected()
+		if rowsErr == nil {
+			c.logger.Debug().Str("query", query).Any("values", args).Int64("rowsAffected", rowsAffected).Msg("exec query")
+		} else {
+			c.logger.Debug().Str("query", query).Any("values", args).Err(rowsErr).Msg("exec query")
+		}
+	}
 	return err
 }
