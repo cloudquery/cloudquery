@@ -30,17 +30,7 @@ func (c *Client) resolveProjects(ctx context.Context, project ResourceDiscovery)
 			}
 		}
 	}
-	for _, excludeFilter := range project.ExcludeFilter {
-		projects, err := listProjectsFilter(ctx, service, excludeFilter)
-		if err != nil {
-			return fmt.Errorf("failed to list projects with filter (%s): %w", excludeFilter, err)
-		}
-		for _, project := range projects {
-			if !addProject(c.graph, project, &boolFalse) {
-				c.logger.Warn().Msgf("project %s is excluded but could not be added to the dependency graph", project.Name)
-			}
-		}
-	}
+
 	for _, includeId := range project.IncludeListId {
 		project, err := service.Projects.Get(includeId).Context(ctx).Do()
 		if err != nil {

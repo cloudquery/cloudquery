@@ -57,19 +57,6 @@ func (c *Client) resolveFolders(ctx context.Context, folder ResourceDiscovery) e
 		}
 	}
 
-	// Resolve folder from gcpSpec.Projects.Folders.id_exclude_filter and add to graph
-	for _, excludeFilter := range folder.ExcludeFilter {
-		folders, err := searchFolders(ctx, foldersClient, excludeFilter)
-		if err != nil {
-			return fmt.Errorf("failed to get organizations with filter: %w", err)
-		}
-		for _, folder := range folders {
-			if !updateFolder(c.graph, folder, &boolFalse) {
-				c.logger.Warn().Msgf("folder %s is included but could not be added to the dependency graph", folder.Name)
-			}
-		}
-	}
-
 	// Resolve folder from gcpSpec.Projects.Folders.id_exclude_list and add to graph
 	for _, folderId := range folder.ExcludeListId {
 		folder, err := getFolderFromId(ctx, foldersClient, folderId)

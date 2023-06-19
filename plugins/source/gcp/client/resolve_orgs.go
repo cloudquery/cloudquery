@@ -35,17 +35,6 @@ func (c *Client) resolveOrgs(ctx context.Context, organization ResourceDiscovery
 			}
 		}
 	}
-	for _, excludeFilter := range organization.ExcludeFilter {
-		orgs, err := getOrganizationsFilter(ctx, service, excludeFilter)
-		if err != nil {
-			return fmt.Errorf("failed to get organizations with filter: %w", err)
-		}
-		for _, org := range orgs {
-			if !addOrg(c.graph, org, &boolFalse) {
-				c.logger.Warn().Msgf("organization %s is excluded but could not be added to the dependency graph", org.Name)
-			}
-		}
-	}
 
 	for _, orgId := range organization.IncludeListId {
 		org, err := getOrganizationFromId(ctx, service, orgId)

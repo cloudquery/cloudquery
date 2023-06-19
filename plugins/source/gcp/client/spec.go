@@ -6,7 +6,6 @@ type ResourceDiscovery struct {
 	IncludeListId []string `json:"include_list_id"`
 	ExcludeListId []string `json:"exclude_list_id"`
 	IncludeFilter []string `json:"include_filter"`
-	ExcludeFilter []string `json:"exclude_filter"`
 }
 
 // If entire object is nil then all projects will be included in the sync
@@ -113,13 +112,7 @@ func (rd ResourceDiscovery) isIncludeNull() bool {
 }
 
 func (rd ResourceDiscovery) isExcludeNull() bool {
-	if len(rd.ExcludeFilter) > 0 {
-		return false
-	}
-	if len(rd.ExcludeListId) > 0 {
-		return false
-	}
-	return true
+	return len(rd.ExcludeListId) <= 0
 }
 
 func (rd ResourceDiscovery) isNull() bool {
