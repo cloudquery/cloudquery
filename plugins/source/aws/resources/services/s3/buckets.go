@@ -98,6 +98,7 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *
 	resolvers := []func(context.Context, schema.ClientMeta, *models.WrappedBucket) error{
 		resolveBucketLogging,
 		resolveBucketPolicy,
+		resolveBucketPolicyStatus,
 		resolveBucketVersioning,
 		resolveBucketPublicAccessBlock,
 		resolveBucketReplication,
@@ -163,6 +164,26 @@ func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *
 		return fmt.Errorf("failed to unmarshal JSON policy: %v", err)
 	}
 	resource.Policy = p
+	return nil
+}
+
+func resolveBucketPolicyStatus(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().S3
+	policyStatusOutput, err := svc.GetBucketPolicyStatus(ctx, &s3.GetBucketPolicyStatusInput{Bucket: resource.Name}, func(o *s3.Options) {
+		o.Region = resource.Region
+	})
+	// check if we got an error but its access denied we can continue
+	if err != nil {
+		if client.IgnoreAccessDeniedServiceDisabled(err) {
+			return nil
+		}
+		return err
+	}
+	if policyStatusOutput == nil || policyStatusOutput.PolicyStatus == nil {
+		return nil
+	}
+	resource.IsPublicByPolicy = policyStatusOutput.PolicyStatus.IsPublic
 	return nil
 }
 
