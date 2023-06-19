@@ -610,6 +610,7 @@
 - [aws_wafv2_regex_pattern_sets](tables/aws_wafv2_regex_pattern_sets)
 - [aws_wafv2_rule_groups](tables/aws_wafv2_rule_groups)
 - [aws_wafv2_web_acls](tables/aws_wafv2_web_acls)
+- [aws_wellarchitected_lenses](tables/aws_wellarchitected_lenses)
 - [aws_workspaces_directories](tables/aws_workspaces_directories)
 - [aws_workspaces_workspaces](tables/aws_workspaces_workspaces)
 - [aws_xray_encryption_configs](tables/aws_xray_encryption_configs)
