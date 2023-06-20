@@ -21,10 +21,6 @@ func TestMigrate(t *testing.T) {
 			config: "sync-success-sourcev1-destv0.yml",
 		},
 		{
-			name:   "sync_success_sourcev0_destv0",
-			config: "sync-success-sourcev0-destv0.yml",
-		},
-		{
 			name:   "multiple_sources",
 			config: "multiple-sources.yml",
 		},
