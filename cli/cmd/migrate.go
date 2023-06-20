@@ -70,7 +70,7 @@ func migrate(cmd *cobra.Command, args []string) error {
 		})
 	}
 
-	managedSourceClients, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, sourcePluginConfigs, opts...)
+	managedSourceClients, err := managedplugin.NewClients(ctx, sourcePluginConfigs, opts...)
 	if err != nil {
 		return err
 	}
@@ -79,7 +79,7 @@ func migrate(cmd *cobra.Command, args []string) error {
 			fmt.Println(err)
 		}
 	}()
-	destinationPluginClients, err := managedplugin.NewClients(ctx, managedplugin.PluginDestination, destinationPluginConfigs, opts...)
+	destinationPluginClients, err := managedplugin.NewClients(ctx, destinationPluginConfigs, opts...)
 	if err != nil {
 		return err
 	}

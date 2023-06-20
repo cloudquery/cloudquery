@@ -19,6 +19,8 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 )
 
+replace github.com/cloudquery/plugin-pb-go => ../../plugin-pb-go
+
 require (
 	github.com/avast/retry-go/v4 v4.3.4 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
