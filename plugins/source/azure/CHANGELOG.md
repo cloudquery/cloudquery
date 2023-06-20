@@ -8,6 +8,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [8.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v8.2.0...plugins-source-azure-v8.3.0) (2023-06-20)
 
 
+### This Release has the Following Changes to Tables
+- Table `azure_cognitiveservices_account_deployments` was added
+- Table `azure_cognitiveservices_account_models` was added
+- Table `azure_cognitiveservices_account_private_endpoint_connections` was added
+- Table `azure_cognitiveservices_account_private_link_resources` was added
+- Table `azure_cognitiveservices_account_skus` was added
+- Table `azure_cognitiveservices_account_usages` was added
+- Table `azure_cognitiveservices_commitment_plans` was added
+- Table `azure_cognitiveservices_resource_skus` was added
+- Table `azure_subscription_subscription_locations`: column added with name `metadata` and type `json`
+- Table `azure_subscription_subscription_locations`: column added with name `regional_display_name` and type `utf8`
+- Table `azure_subscription_subscription_locations`: column added with name `type` and type `utf8`
+- Table `azure_subscription_subscriptions`: column added with name `managed_by_tenants` and type `json`
+- Table `azure_subscription_subscriptions`: column added with name `tags` and type `json`
+- Table `azure_subscription_subscriptions`: column added with name `tenant_id` and type `utf8`
+- Table `azure_subscription_tenants`: column added with name `country_code` and type `utf8`
+- Table `azure_subscription_tenants`: column added with name `country` and type `utf8`
+- Table `azure_subscription_tenants`: column added with name `default_domain` and type `utf8`
+- Table `azure_subscription_tenants`: column added with name `display_name` and type `utf8`
+- Table `azure_subscription_tenants`: column added with name `domains` and type `list<item: utf8, nullable>`
+- Table `azure_subscription_tenants`: column added with name `tenant_branding_logo_url` and type `utf8`
+- Table `azure_subscription_tenants`: column added with name `tenant_category` and type `utf8`
+- Table `azure_subscription_tenants`: column added with name `tenant_type` and type `utf8`
+
 ### Features
 
 * **azure-resources:** Add missing Cognitive Services resources ([#11645](https://github.com/cloudquery/cloudquery/issues/11645)) ([74b64e4](https://github.com/cloudquery/cloudquery/commit/74b64e403b367af3730999689115e1eab2bf4d4a))
