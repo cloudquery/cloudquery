@@ -95,10 +95,7 @@ func migrate(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			return fmt.Errorf("failed to get source versions: %w", err)
 		}
-		maxVersion := findMaxSupportedVersion(versions, maxSupportedProtocolVersion)
-		if maxVersion > maxSupportedProtocolVersion {
-			return fmt.Errorf("please upgrade CLI to latest version to sync source %s", cl.Name())
-		}
+		maxVersion := findMaxCommonVersion(versions, []int{2, 1, 0})
 
 		var destinationClientsForSource []*managedplugin.Client
 		var destinationForSourceSpec []specs.Destination
@@ -124,8 +121,10 @@ func migrate(cmd *cobra.Command, args []string) error {
 			return migrateConnectionV1(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec)
 		case 0:
 			return fmt.Errorf("please upgrade your source or use a CLI version between v3.0.1 and v3.5.3")
-		default:
-			return fmt.Errorf("unknown version %d", maxVersion)
+		case -1:
+			return fmt.Errorf("please upgrade CLI to sync source %v@%v", source.Name, source.Version)
+		case -2:
+			return fmt.Errorf("please downgrade CLI or upgrade source to sync %v", source.Name)
 		}
 	}
 	return nil

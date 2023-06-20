@@ -104,21 +104,22 @@ func TestSyncCqDir(t *testing.T) {
 	require.NotEmpty(t, files, "destination plugin not downloaded to cache")
 }
 
-func TestFindMaxSupportedVersion(t *testing.T) {
+func TestFindMaxCommonVersion(t *testing.T) {
 	cases := []struct {
-		name          string
-		giveVersions  []int
-		giveSupported int
-		want          int
+		name       string
+		givePlugin []int
+		giveCLI    []int
+		want       int
 	}{
-		{name: "support_less", giveVersions: []int{1, 2, 3}, giveSupported: 2, want: 2},
-		{name: "support_same", giveVersions: []int{1, 2, 3}, giveSupported: 3, want: 3},
-		{name: "support_more", giveVersions: []int{1, 2, 3}, giveSupported: 4, want: 3},
-		{name: "support_none", giveVersions: []int{3, 4, 5}, giveSupported: 2, want: -1},
+		{name: "support_less", givePlugin: []int{1, 2, 3}, giveCLI: []int{1, 2}, want: 2},
+		{name: "support_same", givePlugin: []int{1, 2, 3}, giveCLI: []int{1, 2, 3}, want: 3},
+		{name: "support_more", givePlugin: []int{1, 2, 3}, giveCLI: []int{2, 3, 4}, want: 3},
+		{name: "support_only_lower", givePlugin: []int{3, 4, 5}, giveCLI: []int{6, 7}, want: -1},
+		{name: "support_only_higher", givePlugin: []int{3, 4, 5}, giveCLI: []int{1, 2}, want: -2},
 	}
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
-			got := findMaxSupportedVersion(tc.giveVersions, tc.giveSupported)
+			got := findMaxCommonVersion(tc.givePlugin, tc.giveCLI)
 			assert.Equal(t, tc.want, got)
 		})
 	}
