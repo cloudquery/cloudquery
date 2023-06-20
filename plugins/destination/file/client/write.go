@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -18,8 +19,18 @@ import (
 )
 
 type filestream struct {
-	f *os.File
-	h types.Handle
+	wc *writeCloser
+	h  types.Handle
+}
+
+type writeCloser struct {
+	io.WriteCloser
+	closed bool
+}
+
+func (w *writeCloser) Close() error {
+	w.closed = true
+	return w.WriteCloser.Close()
 }
 
 func (c *Client) OpenTable(ctx context.Context, sourceName string, table *schema.Table, syncTime time.Time) (any, error) {
@@ -34,33 +45,39 @@ func (c *Client) OpenTable(ctx context.Context, sourceName string, table *schema
 		return nil, err
 	}
 
-	h, err := c.Client.WriteHeader(f, table)
+	wc := &writeCloser{WriteCloser: f}
+	h, err := c.Client.WriteHeader(wc, table)
 	if err != nil {
 		_ = f.Close()
 		return nil, fmt.Errorf("failed to write header: %w", err)
 	}
 
 	return &filestream{
-		f: f,
-		h: h,
+		wc: wc,
+		h:  h,
 	}, nil
 }
 
-func (c *Client) CloseTable(ctx context.Context, handle any) error {
+func (*Client) CloseTable(ctx context.Context, handle any) error {
 	fs := handle.(*filestream)
 	if err := fs.h.WriteFooter(); err != nil {
-		_ = fs.f.Close()
+		if !fs.wc.closed {
+			_ = fs.wc.Close()
+		}
 		return fmt.Errorf("failed to write footer: %w", err)
 	}
 
-	if err := fs.f.Close(); err != nil {
-		return err
+	// ParquetWriter likes to close the underlying writer, so we need to check if it's already closed
+	if !fs.wc.closed {
+		if err := fs.wc.Close(); err != nil {
+			return err
+		}
 	}
 
 	return nil
 }
 
-func (c *Client) WriteTableStream(ctx context.Context, handle any, upsert bool, msgs []*message.Insert) error {
+func (*Client) WriteTableStream(ctx context.Context, handle any, upsert bool, msgs []*message.Insert) error {
 	if len(msgs) == 0 {
 		return nil
 	}
@@ -77,10 +94,7 @@ func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, msgs <-
 	if err := c.writer.Write(ctx, msgs); err != nil {
 		return err
 	}
-	if err := c.writer.Flush(ctx); err != nil {
-		return err
-	}
-	return nil
+	return c.writer.Flush(ctx)
 }
 
 func replacePathVariables(specPath, table string, format filetypes.FormatType, fileIdentifier string, t time.Time) string {

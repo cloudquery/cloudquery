@@ -58,6 +58,6 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 	return c, nil
 }
 
-func (*Client) Close(ctx context.Context) error {
-	return nil
+func (c *Client) Close(ctx context.Context) error {
+	return c.writer.Close(ctx)
 }

@@ -25,7 +25,6 @@ type StreamingBatchWriterClient interface {
 	MigrateTables(context.Context, []*message.MigrateTable) error
 	DeleteStale(context.Context, []*message.DeleteStale) error
 
-	//writers.BatchWriterClient
 	OpenTable(ctx context.Context, sourceName string, table *schema.Table, syncTime time.Time) (any, error)
 	WriteTableStream(ctx context.Context, handle any, upsert bool, msgs []*message.Insert) error
 	CloseTable(ctx context.Context, handle any) error
@@ -75,10 +74,9 @@ func WithBatchSizeBytes(size int) Option {
 }
 
 type worker struct {
-	count     int
-	ch        chan *message.Insert
-	flush     chan chan bool
-	tableName string
+	count int
+	ch    chan *message.Insert
+	flush chan chan bool
 }
 
 func NewStreamingBatchWriter(client StreamingBatchWriterClient, opts ...Option) (*StreamingBatchWriter, error) {
@@ -110,12 +108,15 @@ func (w *StreamingBatchWriter) Flush(ctx context.Context) error {
 		<-done
 	}
 	w.workersLock.RUnlock()
-	w.flushMigrateTables(ctx)
-	w.flushDeleteStaleTables(ctx)
-	return nil
+
+	if err := w.flushMigrateTables(ctx); err != nil {
+		return err
+	}
+
+	return w.flushDeleteStaleTables(ctx)
 }
 
-func (w *StreamingBatchWriter) Close(ctx context.Context) error {
+func (w *StreamingBatchWriter) Close(_ context.Context) error {
 	w.workersLock.Lock()
 	defer w.workersLock.Unlock()
 	for _, w := range w.workers {
@@ -284,7 +285,7 @@ func (w *StreamingBatchWriter) flushDeleteStaleTables(ctx context.Context) error
 	return nil
 }
 
-func (w *StreamingBatchWriter) flushInsert(ctx context.Context, partitionKey string) {
+func (w *StreamingBatchWriter) flushInsert(_ context.Context, partitionKey string) {
 	w.workersLock.RLock()
 	worker, ok := w.workers[partitionKey]
 	if !ok {
@@ -312,15 +313,6 @@ func (w *StreamingBatchWriter) flushInsertByTableName(ctx context.Context, table
 	for _, k := range keys {
 		w.flushInsert(ctx, k)
 	}
-}
-
-func (w *StreamingBatchWriter) writeAll(ctx context.Context, msgs []message.Message) error {
-	ch := make(chan message.Message, len(msgs))
-	for _, msg := range msgs {
-		ch <- msg
-	}
-	close(ch)
-	return w.Write(ctx, ch)
 }
 
 func (w *StreamingBatchWriter) Write(ctx context.Context, msgs <-chan message.Message) error {
@@ -391,10 +383,9 @@ func (w *StreamingBatchWriter) startWorker(ctx context.Context, msg *message.Ins
 	ch := make(chan *message.Insert)
 	flush := make(chan chan bool)
 	wr = &worker{
-		count:     1,
-		ch:        ch,
-		flush:     flush,
-		tableName: tableName,
+		count: 1,
+		ch:    ch,
+		flush: flush,
 	}
 	w.workers[partitionKey] = wr
 	w.workersLock.Unlock()

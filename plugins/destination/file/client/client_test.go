@@ -9,10 +9,15 @@ import (
 	"testing"
 	"time"
 
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v13/arrow/array"
+	"github.com/apache/arrow/go/v13/arrow/memory"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/filetypes/v4/csv"
+	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -28,9 +33,9 @@ func testFormats() []filetypes.FileSpec {
 		{
 			Format: filetypes.FormatTypeJSON,
 		},
-		//{
-		//	Format: filetypes.FormatTypeParquet,
-		//},
+		{
+			Format: filetypes.FormatTypeParquet,
+		},
 	}
 }
 
@@ -106,7 +111,11 @@ func TestPlugin(t *testing.T) {
 	for _, ts := range testSpecs(t) {
 		ts := ts
 		t.Run(ts.testName, func(t *testing.T) {
-			testPlugin(t, &ts.Spec)
+			if ts.Spec.Format == filetypes.FormatTypeParquet {
+				testPluginCustom(t, &ts.Spec)
+			} else {
+				testPlugin(t, &ts.Spec)
+			}
 
 			fi, err := os.Stat(ts.baseDir)
 			assert.NoError(t, err)
@@ -154,4 +163,80 @@ func testPlugin(t *testing.T, spec *Spec) {
 			TimePrecision: time.Millisecond,
 		}),
 	)
+}
+
+func testPluginCustom(t *testing.T, spec *Spec) {
+	ctx := context.Background()
+
+	var client plugin.Client
+
+	p := plugin.NewPlugin("file", "development", func(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
+		var err error
+		client, err = New(ctx, logger, spec)
+		return client, err
+	})
+	b, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := p.Init(ctx, b); err != nil {
+		t.Fatal(err)
+	}
+
+	tableName := fmt.Sprintf("cq_test_custom_insert_%d", time.Now().UnixNano())
+	table := &schema.Table{
+		Name: tableName,
+		Columns: []schema.Column{
+			{Name: "name", Type: arrow.BinaryTypes.String},
+		},
+	}
+	if err := p.WriteAll(ctx, plugin.WriteOptions{}, []message.Message{
+		&message.MigrateTable{
+			Table: table,
+		},
+	}); err != nil {
+		t.Fatal(fmt.Errorf("failed to create table: %w", err))
+	}
+
+	bldr := array.NewRecordBuilder(memory.DefaultAllocator, table.ToArrowSchema())
+	bldr.Field(0).(*array.StringBuilder).Append("foo")
+	record := bldr.NewRecord()
+
+	for i := 0; i < 2; i++ {
+		if err := p.WriteAll(ctx, plugin.WriteOptions{}, []message.Message{
+			&message.Insert{
+				Record: record,
+				Upsert: false,
+			},
+		}); err != nil {
+			t.Fatal(fmt.Errorf("failed to insert record: %w", err))
+		}
+	}
+
+	if err := client.Close(ctx); err != nil {
+		t.Fatal(fmt.Errorf("failed to close client: %w", err))
+	}
+
+	readRecords, err := readAll(ctx, client, table)
+	if err != nil {
+		t.Fatal(fmt.Errorf("failed to sync: %w", err))
+	}
+
+	totalItems := plugin.TotalRows(readRecords)
+	assert.Equalf(t, int64(2), totalItems, "expected 2 items, got %d", totalItems)
+}
+
+func readAll(ctx context.Context, client plugin.Client, table *schema.Table) ([]arrow.Record, error) {
+	var err error
+	ch := make(chan arrow.Record)
+	go func() {
+		defer close(ch)
+		err = client.Read(ctx, table, ch)
+	}()
+	// nolint:prealloc
+	var records []arrow.Record
+	for record := range ch {
+		records = append(records, record)
+	}
+	return records, err
 }
