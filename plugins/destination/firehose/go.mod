@@ -7,9 +7,9 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.18.1
 	github.com/aws/aws-sdk-go-v2/config v1.18.27
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.16.12
-	github.com/cloudquery/plugin-pb-go v1.0.9
+	github.com/cloudquery/plugin-pb-go v1.1.0
 	github.com/cloudquery/plugin-sdk/v3 v3.10.6
-	github.com/rs/zerolog v1.29.0
+	github.com/rs/zerolog v1.29.1
 )
 
 // TODO: remove once all updates are merged
