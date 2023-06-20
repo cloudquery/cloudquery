@@ -8,8 +8,8 @@ import (
 	"io"
 	"time"
 
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/manageddestination"
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/managedsource"
+	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
+	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/metrics"
 	"github.com/cloudquery/plugin-pb-go/pb/destination/v1"
 	"github.com/cloudquery/plugin-pb-go/pb/source/v2"
@@ -19,22 +19,21 @@ import (
 )
 
 // nolint:dupl
-func syncConnectionV2(ctx context.Context, sourceClient *managedsource.Client, destinationsClients manageddestination.Clients, uid string, noMigrate bool) error {
+func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, destinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination, uid string, noMigrate bool) error {
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
 	defer func() {
 		if analyticsClient != nil {
 			log.Info().Msg("Sending sync summary to " + analyticsClient.Host())
-			if err := analyticsClient.SendSyncMetrics(context.Background(), sourceClient.Spec, destinationsClients.Specs(), uid, &mt, exitReason); err != nil {
+			if err := analyticsClient.SendSyncMetrics(context.Background(), sourceSpec, destinationSpecs, uid, &mt, exitReason); err != nil {
 				log.Warn().Err(err).Msg("Failed to send sync summary")
 			}
 		}
 	}()
 	syncTime := time.Now().UTC()
-	sourceSpec := sourceClient.Spec
 	destinationStrings := make([]string, len(destinationsClients))
 	for i := range destinationsClients {
-		destinationStrings[i] = destinationsClients[i].Spec.VersionString()
+		destinationStrings[i] = destinationSpecs[i].VersionString()
 	}
 	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("Start sync")
 	defer log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("End sync")
@@ -44,7 +43,8 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedsource.Client, d
 	for i := range destinationsClients {
 		destinationsPbClients[i] = destination.NewDestinationClient(destinationsClients[i].Conn)
 	}
-	specBytes, err := json.Marshal(sourceClient.Spec)
+
+	specBytes, err := json.Marshal(CLISourceSpecToPbSpec(sourceSpec))
 	if err != nil {
 		return err
 	}
@@ -58,7 +58,7 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedsource.Client, d
 		return err
 	}
 	for i := range destinationsClients {
-		destSpecBytes, err := json.Marshal(destinationsClients[i].Spec)
+		destSpecBytes, err := json.Marshal(CLIDestinationSpecToPbSpec(destinationSpecs[i]))
 		if err != nil {
 			return err
 		}
@@ -104,7 +104,7 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedsource.Client, d
 			return err
 		}
 		if err := writeClients[i].Send(&destination.Write_Request{
-			Source:    sourceClient.Spec.Name,
+			Source:    sourceSpec.Name,
 			Tables:    tablesRes.Tables,
 			Timestamp: timestamppb.New(syncTime),
 		}); err != nil {
