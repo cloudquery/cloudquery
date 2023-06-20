@@ -15,7 +15,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 		return err
 	}
 
-	if err := values.BatchAddRecords(ctx, batch, table, records); err != nil {
+	if err := values.BatchAddRecords(ctx, batch, table.ToArrowSchema(), records); err != nil {
 		_ = batch.Abort()
 		return err
 	}
