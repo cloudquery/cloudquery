@@ -6,27 +6,25 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/manageddestination"
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/managedsource"
+	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
+	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	pbBase "github.com/cloudquery/plugin-pb-go/pb/base/v0"
 	pbdestination "github.com/cloudquery/plugin-pb-go/pb/destination/v0"
 	pbSource "github.com/cloudquery/plugin-pb-go/pb/source/v1"
 	"github.com/rs/zerolog/log"
 )
 
-func migrateConnectionV1(ctx context.Context, sourceClient *managedsource.Client, managedDestinationsClients manageddestination.Clients) error {
-	sourceSpec := sourceClient.Spec
-	destinationStrings := managedDestinationsClients.Names()
+func migrateConnectionV1(ctx context.Context, sourceClient *managedplugin.Client, managedDestinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination) error {
 	migrateStart := time.Now().UTC()
-	log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationStrings).Time("migrate_time", migrateStart).Msg("Start migration")
-	defer log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationStrings).Time("migrate_time", migrateStart).Msg("End migration")
+	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Time("migrate_time", migrateStart).Msg("Start migration")
+	defer log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Time("migrate_time", migrateStart).Msg("End migration")
 
 	sourcePbClient := pbSource.NewSourceClient(sourceClient.Conn)
 	destinationsPbClients := make([]pbdestination.DestinationClient, len(managedDestinationsClients))
 	for i := range managedDestinationsClients {
 		destinationsPbClients[i] = pbdestination.NewDestinationClient(managedDestinationsClients[i].Conn)
 	}
-	specBytes, err := json.Marshal(sourceClient.Spec)
+	specBytes, err := json.Marshal(CLISourceSpecToPbSpec(sourceSpec))
 	if err != nil {
 		return err
 	}
@@ -40,9 +38,9 @@ func migrateConnectionV1(ctx context.Context, sourceClient *managedsource.Client
 		return fmt.Errorf("failed to GetDynamicTables: %w", err)
 	}
 
-	fmt.Printf("Starting migration with for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
+	fmt.Printf("Starting migration with for: %s -> %s\n", sourceSpec.VersionString(), sourceSpec.Destinations)
 	for i := range managedDestinationsClients {
-		destSpecBytes, err := json.Marshal(managedDestinationsClients[i].Spec)
+		destSpecBytes, err := json.Marshal(CLIDestinationSpecToPbSpec(destinationSpecs[i]))
 		if err != nil {
 			return err
 		}

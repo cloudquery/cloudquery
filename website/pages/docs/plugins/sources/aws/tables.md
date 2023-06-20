@@ -105,6 +105,7 @@
   - [aws_cloudformation_template_summaries](tables/aws_cloudformation_template_summaries)
 - [aws_cloudfront_cache_policies](tables/aws_cloudfront_cache_policies)
 - [aws_cloudfront_distributions](tables/aws_cloudfront_distributions)
+- [aws_cloudfront_functions](tables/aws_cloudfront_functions)
 - [aws_cloudhsmv2_backups](tables/aws_cloudhsmv2_backups)
 - [aws_cloudhsmv2_clusters](tables/aws_cloudhsmv2_clusters)
 - [aws_cloudtrail_events](tables/aws_cloudtrail_events) (Incremental)
