@@ -108,6 +108,7 @@
 - [aws_cloudfront_functions](../../../../../website/tables/aws/aws_cloudfront_functions.md)
 - [aws_cloudhsmv2_backups](../../../../../website/tables/aws/aws_cloudhsmv2_backups.md)
 - [aws_cloudhsmv2_clusters](../../../../../website/tables/aws/aws_cloudhsmv2_clusters.md)
+- [aws_cloudtrail_channels](../../../../../website/tables/aws/aws_cloudtrail_channels.md)
 - [aws_cloudtrail_events](../../../../../website/tables/aws/aws_cloudtrail_events.md) (Incremental)
 - [aws_cloudtrail_trails](../../../../../website/tables/aws/aws_cloudtrail_trails.md)
   - [aws_cloudtrail_trail_event_selectors](../../../../../website/tables/aws/aws_cloudtrail_trail_event_selectors.md)
