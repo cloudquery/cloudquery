@@ -9,6 +9,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [19.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v18.4.0...plugins-source-aws-v19.0.0) (2023-06-20)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_cloudfront_functions` was added
+- Table `aws_cloudfront_origin_access_identities` was added
+- Table `aws_cloudfront_origin_request_policies` was added
+- Table `aws_cloudfront_response_headers_policies` was added
+- Table `aws_cloudtrail_channels` was added
+- Table `aws_cloudtrail_imports` was added
+- Table `aws_ec2_capacity_reservations` was added
+- Table `aws_elbv2_load_balancer_web_acls` was added
+- Table `aws_elbv2_load_balancers`: column `web_acl_arn` removed from table (:warning: breaking)
+- Table `aws_organizations_account_parents` was added
+- Table `aws_organizations_organizational_unit_parents` was added
+- Table `aws_organizations_organizational_units`: column `account_id` removed from table (:warning: breaking)
+- Table `aws_organizations_organizational_units`: column added with name `request_account_id (PK)` and type `utf8` (:warning: breaking)
+- Table `aws_s3_buckets`: column added with name `policy_status` and type `json`
+- Table `aws_ssoadmin_account_assignments` was removed (:warning: breaking)
+- Table `aws_ssoadmin_instances`: primary key constraint added to column `instance_arn` (:warning: breaking)
+- Table `aws_ssoadmin_instances`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_ssoadmin_permission_set_account_assignments` was added
+- Table `aws_ssoadmin_permission_set_customer_managed_policies` was added
+- Table `aws_ssoadmin_permission_set_inline_policies` was added
+- Table `aws_ssoadmin_permission_set_managed_policies` was added
+- Table `aws_ssoadmin_permission_set_permissions_boundaries` was added
+- Table `aws_ssoadmin_permission_sets`: column `inline_policy` removed from table (:warning: breaking)
+- Table `aws_ssoadmin_permission_sets`: column added with name `instance_arn (PK)` and type `utf8` (:warning: breaking)
+- Table `aws_ssoadmin_permission_sets`: primary key constraint added to column `permission_set_arn` (:warning: breaking)
+- Table `aws_ssoadmin_permission_sets`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+
 ### ⚠ BREAKING CHANGES
 
 * **aws:** Move `web_acl_arn` to its own table ([#11421](https://github.com/cloudquery/cloudquery/issues/11421))
