@@ -64,7 +64,7 @@ func TestSync(t *testing.T) {
 			require.NotEmpty(t, logContent, "cloudquery.log empty; expected some logs")
 		})
 
-		t.Run(tc.name+"no_migrate", func(t *testing.T) {
+		t.Run(tc.name+"_no_migrate", func(t *testing.T) {
 			defer CloseLogFile()
 			testConfig := path.Join(currentDir, "testdata", tc.config)
 			logFileName := path.Join(cqDir, "cloudquery.log")
