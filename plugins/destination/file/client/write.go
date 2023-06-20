@@ -10,40 +10,67 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/filetypes/v4"
+	"github.com/cloudquery/filetypes/v4/types"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/google/uuid"
 )
 
-func (c *Client) WriteTableBatch(_ context.Context, tableName string, upsert bool, msgs []*message.Insert) error {
-	if len(msgs) == 0 {
-		return nil
-	}
-	table, err := schema.NewTableFromArrowSchema(msgs[0].Record.Schema())
-	if err != nil {
-		return err
-	}
+type filestream struct {
+	f *os.File
+	h types.Handle
+}
 
-	timeNow := time.Now().UTC()
-	p := replacePathVariables(c.spec.Path, tableName, c.spec.Format, uuid.NewString(), timeNow)
+func (c *Client) OpenTable(ctx context.Context, sourceName string, table *schema.Table, syncTime time.Time) (any, error) {
+	p := replacePathVariables(c.spec.Path, table.Name, c.spec.Format, uuid.NewString(), syncTime)
 
 	if err := os.MkdirAll(filepath.Dir(p), 0755); err != nil {
-		return fmt.Errorf("failed to create directory: %w", err)
+		return nil, fmt.Errorf("failed to create directory: %w", err)
 	}
 
 	f, err := os.OpenFile(p, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
+		return nil, err
+	}
+
+	h, err := c.Client.WriteHeader(f, table)
+	if err != nil {
+		_ = f.Close()
+		return nil, fmt.Errorf("failed to write header: %w", err)
+	}
+
+	return &filestream{
+		f: f,
+		h: h,
+	}, nil
+}
+
+func (c *Client) CloseTable(ctx context.Context, handle any) error {
+	fs := handle.(*filestream)
+	if err := fs.h.WriteFooter(); err != nil {
+		_ = fs.f.Close()
+		return fmt.Errorf("failed to write footer: %w", err)
+	}
+
+	if err := fs.f.Close(); err != nil {
 		return err
 	}
-	defer f.Close()
+
+	return nil
+}
+
+func (c *Client) WriteTableStream(ctx context.Context, handle any, upsert bool, msgs []*message.Insert) error {
+	if len(msgs) == 0 {
+		return nil
+	}
 
 	records := make([]arrow.Record, len(msgs))
 	for i, msg := range msgs {
 		records[i] = msg.Record
 	}
 
-	return c.Client.WriteTableBatchFile(f, table, records)
+	return handle.(*filestream).h.WriteContent(records)
 }
 
 func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, msgs <-chan message.Message) error {

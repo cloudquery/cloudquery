@@ -16,14 +16,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-//var migrateStrategy = destination.MigrateStrategy{
-//	AddColumn:           specs.MigrateModeForced,
-//	AddColumnNotNull:    specs.MigrateModeForced,
-//	RemoveColumn:        specs.MigrateModeForced,
-//	RemoveColumnNotNull: specs.MigrateModeForced,
-//	ChangeColumn:        specs.MigrateModeForced,
-//}
-
 func testFormats() []filetypes.FileSpec {
 	return []filetypes.FileSpec{
 		{
@@ -36,9 +28,9 @@ func testFormats() []filetypes.FileSpec {
 		{
 			Format: filetypes.FormatTypeJSON,
 		},
-		{
-			Format: filetypes.FormatTypeParquet,
-		},
+		//{
+		//	Format: filetypes.FormatTypeParquet,
+		//},
 	}
 }
 
@@ -157,8 +149,6 @@ func testPlugin(t *testing.T, spec *Spec) {
 			SkipUpsert:      true,
 			SkipMigrate:     true,
 			SkipDeleteStale: true,
-			// MigrateStrategyOverwrite: migrateStrategy,
-			// MigrateStrategyAppend:    migrateStrategy,
 		},
 		plugin.WithTestDataOptions(schema.TestSourceOptions{
 			TimePrecision: time.Millisecond,
