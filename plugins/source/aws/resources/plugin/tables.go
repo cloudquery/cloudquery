@@ -216,6 +216,7 @@ func tables() []*schema.Table {
 		ec2.AccountAttributes(),
 		ec2.AvailabilityZones(),
 		ec2.ByoipCidrs(),
+		ec2.CapacityReservations(),
 		ec2.CustomerGateways(),
 		ec2.DHCPOptions(),
 		ec2.EbsSnapshots(),
