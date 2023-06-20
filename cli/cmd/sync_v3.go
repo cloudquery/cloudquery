@@ -56,7 +56,8 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		return err
 	}
 	for i := range destinationsClients {
-		destSpecBytes, err := json.Marshal(CLIDestinationSpecToPbSpec(destinationSpecs[i]))
+		// TODO: for backwards-compatibility check for old fields like `batch_size` and move them into the spec, log a warning
+		destSpecBytes, err := json.Marshal(destinationSpecs[i].Spec)
 		if err != nil {
 			return err
 		}
