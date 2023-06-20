@@ -28,9 +28,9 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 		return nil, fmt.Errorf("failed to unmarshal file spec: %w", err)
 	}
 
-	//if c.spec.WriteMode != specs.WriteModeAppend {
+	// if c.spec.WriteMode != specs.WriteModeAppend {
 	//	return nil, fmt.Errorf("file destination only supports append mode")
-	//}
+	// }
 
 	if err := c.spec.Validate(); err != nil {
 		return nil, err

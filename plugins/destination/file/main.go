@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"os"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/file/client"
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/file/resources/plugin"
@@ -15,5 +17,12 @@ const (
 
 func main() {
 	p := plugin.NewPlugin("file", internalPlugin.Version, client.New)
-	serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN), serve.WithDestinationV0V1Server()).Serve(context.Background())
+	serveHelper(serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN), serve.WithDestinationV0V1Server()).Serve)
+}
+
+func serveHelper(f func(context.Context) error) {
+	if err := f(context.Background()); err != nil {
+		_, _ = fmt.Fprintln(os.Stderr, err.Error())
+		os.Exit(1)
+	}
 }
