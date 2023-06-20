@@ -7,9 +7,8 @@ import (
 	"github.com/google/uuid"
 	"golang.org/x/exp/slices"
 
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/manageddestination"
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/managedsource"
-	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
+	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
@@ -37,6 +36,19 @@ func NewCmdSync() *cobra.Command {
 	return cmd
 }
 
+func findMaxVersion(versions []int) int {
+	max := -1
+	if len(versions) == 0 {
+		return max
+	}
+	for _, v := range versions {
+		if v > max {
+			max = v
+		}
+	}
+	return max
+}
+
 func sync(cmd *cobra.Command, args []string) error {
 	cqDir, err := cmd.Flags().GetString("cq-dir")
 	if err != nil {
@@ -62,50 +74,73 @@ func sync(cmd *cobra.Command, args []string) error {
 	}
 	sources := specReader.Sources
 	destinations := specReader.Destinations
-	sourceOpts := []managedsource.Option{
-		managedsource.WithLogger(log.Logger),
-	}
-	destinationOpts := []manageddestination.Option{
-		manageddestination.WithLogger(log.Logger),
+	opts := []managedplugin.Option{
+		managedplugin.WithLogger(log.Logger),
 	}
 	if cqDir != "" {
-		sourceOpts = append(sourceOpts, managedsource.WithDirectory(cqDir))
-		destinationOpts = append(destinationOpts, manageddestination.WithDirectory(cqDir))
+		opts = append(opts, managedplugin.WithDirectory(cqDir))
 	}
 	if disableSentry {
-		sourceOpts = append(sourceOpts, managedsource.WithNoSentry())
-		destinationOpts = append(destinationOpts, manageddestination.WithNoSentry())
+		opts = append(opts, managedplugin.WithNoSentry())
+	}
+	sourcePluginConfigs := make([]managedplugin.Config, 0, len(sources))
+	for _, source := range sources {
+		sourcePluginConfigs = append(sourcePluginConfigs, managedplugin.Config{
+			Name:     source.Name,
+			Registry: SpecRegistryToPlugin(source.Registry),
+			Version:  source.Version,
+			Path:     source.Path,
+		})
 	}
 
-	sourcesClients, err := managedsource.NewClients(ctx, sources, sourceOpts...)
+	destinationPluginConfigs := make([]managedplugin.Config, 0, len(destinations))
+	for _, destination := range destinations {
+		destinationPluginConfigs = append(destinationPluginConfigs, managedplugin.Config{
+			Name:     destination.Name,
+			Registry: SpecRegistryToPlugin(destination.Registry),
+			Version:  destination.Version,
+			Path:     destination.Path,
+		})
+	}
+
+	sourcePluginClients, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, sourcePluginConfigs, opts...)
 	if err != nil {
 		return err
 	}
 	defer func() {
-		if err := sourcesClients.Terminate(); err != nil {
-			fmt.Println(err)
-		}
-	}()
-	destinationsClients, err := manageddestination.NewClients(ctx, destinations, destinationOpts...)
-	if err != nil {
-		return err
-	}
-	defer func() {
-		if err := destinationsClients.Terminate(); err != nil {
+		if err := sourcePluginClients.Terminate(); err != nil {
 			fmt.Println(err)
 		}
 	}()
 
-	for _, cl := range sourcesClients {
-		maxVersion, err := cl.MaxVersion(ctx)
-		var destinationClientsForSource []*manageddestination.Client
-		for _, destination := range destinationsClients {
-			if slices.Contains(cl.Spec.Destinations, destination.Spec.Name) {
-				destinationClientsForSource = append(destinationClientsForSource, destination)
-			}
+	destinationPluginClients, err := managedplugin.NewClients(ctx, managedplugin.PluginDestination, destinationPluginConfigs, opts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err := destinationPluginClients.Terminate(); err != nil {
+			fmt.Println(err)
 		}
+	}()
+
+	for _, source := range sources {
+		cl := sourcePluginClients.ClientByName(source.Name)
+		versions, err := cl.Versions(ctx)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to get source versions: %w", err)
+		}
+		maxVersion := findMaxVersion(versions)
+		if maxVersion >= 3 {
+			return fmt.Errorf("please upgrade CLI to latest version to sync source %s", cl.Name())
+		}
+
+		var destinationClientsForSource []*managedplugin.Client
+		var destinationForSourceSpec []specs.Destination
+		for _, destination := range destinations {
+			if slices.Contains(source.Destinations, destination.Name) {
+				destinationClientsForSource = append(destinationClientsForSource, destinationPluginClients.ClientByName(destination.Name))
+				destinationForSourceSpec = append(destinationForSourceSpec, *destination)
+			}
 		}
 		switch maxVersion {
 		case 2:
@@ -115,20 +150,18 @@ func sync(cmd *cobra.Command, args []string) error {
 					return fmt.Errorf("failed to get destination versions: %w", err)
 				}
 				if !slices.Contains(versions, 1) {
-					return fmt.Errorf("destination %[1]s does not support CloudQuery SDK version 1. Please upgrade to newer version of %[1]s", destination.Spec.Name)
+					return fmt.Errorf("destination %[1]s does not support CloudQuery SDK version 1. Please upgrade to newer version of %[1]s", destination.Name())
 				}
 			}
-			if err := syncConnectionV2(ctx, cl, destinationClientsForSource, invocationUUID.String(), noMigrate); err != nil {
-				return fmt.Errorf("failed to sync v2 source %s: %w", cl.Spec.Name, err)
+			if err := syncConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, invocationUUID.String(), noMigrate); err != nil {
+				return fmt.Errorf("failed to sync v2 source %s: %w", cl.Name(), err)
 			}
 		case 1:
-			if err := syncConnectionV1(ctx, cl, destinationClientsForSource, invocationUUID.String(), noMigrate); err != nil {
-				return fmt.Errorf("failed to sync v1 source %s: %w", cl.Spec.Name, err)
+			if err := syncConnectionV1(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, invocationUUID.String(), noMigrate); err != nil {
+				return fmt.Errorf("failed to sync v1 source %s: %w", cl.Name(), err)
 			}
 		case 0:
-			if err := syncConnectionV0_2(ctx, cl, destinationClientsForSource, invocationUUID.String(), noMigrate); err != nil {
-				return fmt.Errorf("failed to sync v1 source %s: %w", cl.Spec.Name, err)
-			}
+			return fmt.Errorf("please upgrade your source or use an older v3.0.1 < CLI version < v3.5.3")
 		case -1:
 			return fmt.Errorf("please upgrade your source or use an older CLI version < v3.0.1")
 		default:
