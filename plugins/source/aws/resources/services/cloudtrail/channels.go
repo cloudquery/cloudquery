@@ -21,7 +21,6 @@ func Channels() *schema.Table {
 		PreResourceResolver: getChannel,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "cloudtrail"),
 		Transform:           transformers.TransformWithStruct(&cloudtrail.GetChannelOutput{}, transformers.WithSkipFields("ResponseMetadata")),
-		IsIncremental:       true,
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
