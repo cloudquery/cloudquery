@@ -105,6 +105,7 @@
   - [aws_cloudformation_template_summaries](tables/aws_cloudformation_template_summaries)
 - [aws_cloudfront_cache_policies](tables/aws_cloudfront_cache_policies)
 - [aws_cloudfront_distributions](tables/aws_cloudfront_distributions)
+- [aws_cloudfront_functions](tables/aws_cloudfront_functions)
 - [aws_cloudfront_origin_access_identities](tables/aws_cloudfront_origin_access_identities)
 - [aws_cloudfront_origin_request_policies](tables/aws_cloudfront_origin_request_policies)
 - [aws_cloudfront_response_headers_policies](tables/aws_cloudfront_response_headers_policies)

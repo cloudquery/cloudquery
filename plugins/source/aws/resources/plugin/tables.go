@@ -160,6 +160,7 @@ func tables() []*schema.Table {
 		cloudformation.StackSets(),
 		cloudfront.CachePolicies(),
 		cloudfront.Distributions(),
+		cloudfront.Functions(),
 		cloudfront.OriginAccessIdentities(),
 		cloudfront.OriginRequestPolicies(),
 		cloudfront.ResponseHeaderPolicies(),
