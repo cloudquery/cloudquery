@@ -3,12 +3,12 @@ module github.com/cloudquery/cloudquery/cli
 go 1.19
 
 require (
-	github.com/avast/retry-go/v4 v4.3.4
-	github.com/cloudquery/plugin-pb-go v1.1.0
+	github.com/avast/retry-go/v4 v4.3.3
+	github.com/cloudquery/plugin-pb-go v1.0.9
 	github.com/getsentry/sentry-go v0.20.0
 	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.0
-	github.com/rs/zerolog v1.29.1
+	github.com/rs/zerolog v1.29.0
 	github.com/schollz/progressbar/v3 v3.13.1
 	github.com/spf13/cobra v1.6.1
 	github.com/stretchr/testify v1.8.4
