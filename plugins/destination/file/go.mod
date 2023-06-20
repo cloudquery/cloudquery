@@ -20,7 +20,7 @@ replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/
 
 //replace github.com/cloudquery/filetypes/v4 => ../../../../filetypes
 
-replace github.com/cloudquery/filetypes/v4 => github.com/cloudquery/filetypes/v4 v4.0.0-20230619132536-8685218ab3f4
+replace github.com/cloudquery/filetypes/v4 => github.com/cloudquery/filetypes/v4 v4.0.0-20230620104124-481690d18bb0
 
 replace github.com/cloudquery/plugin-pb-go => github.com/cloudquery/plugin-pb-go v1.0.9-0.20230618130018-e3ac97072fcd
 
