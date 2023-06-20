@@ -6,6 +6,39 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [19.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v18.4.0...plugins-source-aws-v19.0.0) (2023-06-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* **aws:** Move `web_acl_arn` to its own table ([#11421](https://github.com/cloudquery/cloudquery/issues/11421))
+* **aws:** Add support For fully describing the organizational hierarchy ([#11633](https://github.com/cloudquery/cloudquery/issues/11633))
+* **aws:** Support all policy types in Identity Center ([#10985](https://github.com/cloudquery/cloudquery/issues/10985))
+
+### Features
+
+* **aws-services:** Support newly added regions ([#11673](https://github.com/cloudquery/cloudquery/issues/11673)) ([8c0ab9d](https://github.com/cloudquery/cloudquery/commit/8c0ab9d7fc83a874e9df0ac089a14156f740c2a2))
+* **aws:** Add PolicyStatus to WrappedBucket ([#11657](https://github.com/cloudquery/cloudquery/issues/11657)) ([55d966a](https://github.com/cloudquery/cloudquery/commit/55d966ab28152945ca76dc73f8c3761cca90e1d9))
+* **aws:** Add support for Cloudfront Functions ([#11669](https://github.com/cloudquery/cloudquery/issues/11669)) ([102067a](https://github.com/cloudquery/cloudquery/commit/102067ac11d02ef9f37dcde8aed7f5357ace777f))
+* **aws:** Add Support for Cloudtrail Channels ([#11670](https://github.com/cloudquery/cloudquery/issues/11670)) ([0dc13de](https://github.com/cloudquery/cloudquery/commit/0dc13de97deb8c62f53b880eb866c80244e0f1ab))
+* **aws:** Add Support for Cloudtrail Imports ([#11671](https://github.com/cloudquery/cloudquery/issues/11671)) ([c908289](https://github.com/cloudquery/cloudquery/commit/c90828998dee1742240ea3a354760f5a7e15b2c9))
+* **aws:** Add support for EC2 Capacity Reservations ([#11666](https://github.com/cloudquery/cloudquery/issues/11666)) ([70d6052](https://github.com/cloudquery/cloudquery/commit/70d6052c8305463b802ac25151e12c03136afd24))
+* **aws:** Add support For fully describing the organizational hierarchy ([#11633](https://github.com/cloudquery/cloudquery/issues/11633)) ([f66995b](https://github.com/cloudquery/cloudquery/commit/f66995baa71a8bc0b4f2c917bffa29ff174a88b5))
+* **aws:** Add Support for more Cloudfront Resources ([#11668](https://github.com/cloudquery/cloudquery/issues/11668)) ([52e6ad9](https://github.com/cloudquery/cloudquery/commit/52e6ad978389f4eb3ab84f554bb2e692385a935c))
+* **aws:** Support all policy types in Identity Center ([#10985](https://github.com/cloudquery/cloudquery/issues/10985)) ([a8ab255](https://github.com/cloudquery/cloudquery/commit/a8ab255d369a2b88778da005b82fd7e59a085e00))
+
+
+### Bug Fixes
+
+* **aws:** Move `web_acl_arn` to its own table ([#11421](https://github.com/cloudquery/cloudquery/issues/11421)) ([cdda682](https://github.com/cloudquery/cloudquery/commit/cdda682263381d0e4a2262e5d32cb8d13ab25d05))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 1e68c51 ([#11637](https://github.com/cloudquery/cloudquery/issues/11637)) ([46043bc](https://github.com/cloudquery/cloudquery/commit/46043bce410f86ba42390a6b190f9232fc2a1ded))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 43638cb ([#11672](https://github.com/cloudquery/cloudquery/issues/11672)) ([3c60bbb](https://github.com/cloudquery/cloudquery/commit/3c60bbbb0233b17f934583766938780745145864))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to b0832be ([#11651](https://github.com/cloudquery/cloudquery/issues/11651)) ([71e8c29](https://github.com/cloudquery/cloudquery/commit/71e8c29624494a3e1cd104e46266a610ce57c83c))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2 to v1.18.1 ([#11652](https://github.com/cloudquery/cloudquery/issues/11652)) ([4230b52](https://github.com/cloudquery/cloudquery/commit/4230b52a19e91b84fc38348291c371c6c8a735af))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.27 ([#11653](https://github.com/cloudquery/cloudquery/issues/11653)) ([4b45408](https://github.com/cloudquery/cloudquery/commit/4b454088055dcbd265e6cbb09420f7dae66865b5))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.1.0 ([#11665](https://github.com/cloudquery/cloudquery/issues/11665)) ([d8947c9](https://github.com/cloudquery/cloudquery/commit/d8947c9efa6ab8bf3952ad9d929e8ed81f2dea55))
+* Use ServiceAccountRegion multiplexer for aws_availability_zones ([#11686](https://github.com/cloudquery/cloudquery/issues/11686)) ([7f4788f](https://github.com/cloudquery/cloudquery/commit/7f4788fd9eae914b918bc17c80bee350f16408e5))
+
 ## [18.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v18.3.0...plugins-source-aws-v18.4.0) (2023-06-15)
 
 
