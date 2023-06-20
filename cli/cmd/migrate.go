@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/manageddestination"
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/managedsource"
-	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
+	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"golang.org/x/exp/slices"
@@ -48,14 +47,30 @@ func migrate(cmd *cobra.Command, args []string) error {
 	}
 	sources := specReader.Sources
 	destinations := specReader.Destinations
-	var sourceOpts []managedsource.Option
-	var destinationOpts []manageddestination.Option
+	var opts []managedplugin.Option
 	if cqDir != "" {
-		sourceOpts = append(sourceOpts, managedsource.WithDirectory(cqDir))
-		destinationOpts = append(destinationOpts, manageddestination.WithDirectory(cqDir))
+		opts = append(opts, managedplugin.WithDirectory(cqDir))
+	}
+	sourcePluginConfigs := make([]managedplugin.Config, 0, len(sources))
+	for _, source := range sources {
+		sourcePluginConfigs = append(sourcePluginConfigs, managedplugin.Config{
+			Name:     source.Name,
+			Version:  source.Version,
+			Path:     source.Path,
+			Registry: SpecRegistryToPlugin(source.Registry),
+		})
+	}
+	destinationPluginConfigs := make([]managedplugin.Config, 0, len(destinations))
+	for _, destination := range destinations {
+		destinationPluginConfigs = append(destinationPluginConfigs, managedplugin.Config{
+			Name:     destination.Name,
+			Version:  destination.Version,
+			Path:     destination.Path,
+			Registry: SpecRegistryToPlugin(destination.Registry),
+		})
 	}
 
-	managedSourceClients, err := managedsource.NewClients(ctx, sources, sourceOpts...)
+	managedSourceClients, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, sourcePluginConfigs, opts...)
 	if err != nil {
 		return err
 	}
@@ -64,39 +79,51 @@ func migrate(cmd *cobra.Command, args []string) error {
 			fmt.Println(err)
 		}
 	}()
-	managedDestinationsClients, err := manageddestination.NewClients(ctx, destinations, destinationOpts...)
+	destinationPluginClients, err := managedplugin.NewClients(ctx, managedplugin.PluginDestination, destinationPluginConfigs, opts...)
 	if err != nil {
 		return err
 	}
 	defer func() {
-		if err := managedDestinationsClients.Terminate(); err != nil {
+		if err := destinationPluginClients.Terminate(); err != nil {
 			fmt.Println(err)
 		}
 	}()
 
-	for _, cl := range managedSourceClients {
-		maxVersion, err := cl.MaxVersion(ctx)
+	for _, source := range sources {
+		cl := managedSourceClients.ClientByName(source.Name)
+		versions, err := cl.Versions(ctx)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to get source versions: %w", err)
 		}
-		destinationsForSource := specReader.GetDestinationNamesForSource(cl.Spec.Name)
-		destinationsClientsForSource := managedDestinationsClients.ClientsByNames(destinationsForSource)
+		maxVersion := findMaxVersion(versions)
+		if maxVersion >= 3 {
+			return fmt.Errorf("please upgrade CLI to latest version to sync source %s", cl.Name())
+		}
+
+		var destinationClientsForSource []*managedplugin.Client
+		var destinationForSourceSpec []specs.Destination
+		for _, destination := range destinations {
+			if slices.Contains(source.Destinations, destination.Name) {
+				destinationClientsForSource = append(destinationClientsForSource, destinationPluginClients.ClientByName(destination.Name))
+				destinationForSourceSpec = append(destinationForSourceSpec, *destination)
+			}
+		}
 		switch maxVersion {
 		case 2:
-			for _, destination := range destinationsClientsForSource {
+			for _, destination := range destinationClientsForSource {
 				versions, err := destination.Versions(ctx)
 				if err != nil {
 					return fmt.Errorf("failed to get destination versions: %w", err)
 				}
 				if !slices.Contains(versions, 1) {
-					return fmt.Errorf("destination %[1]s does not support CloudQuery SDK version 1. Please upgrade to newer version of %[1]s", destination.Spec.Name)
+					return fmt.Errorf("destination %[1]s does not support CloudQuery SDK version 1. Please upgrade to newer version of %[1]s", destination.Name())
 				}
 			}
-			return migrateConnectionV2(ctx, cl, destinationsClientsForSource)
+			return migrateConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec)
 		case 1:
-			return migrateConnectionV1(ctx, cl, destinationsClientsForSource)
+			return migrateConnectionV1(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec)
 		case 0:
-			return migrateConnectionV0(ctx, cl, destinationsClientsForSource)
+			return fmt.Errorf("please upgrade your source or use a CLI version between v3.0.1 and v3.5.3")
 		default:
 			return fmt.Errorf("unknown version %d", maxVersion)
 		}
