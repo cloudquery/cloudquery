@@ -186,7 +186,7 @@ func sync(cmd *cobra.Command, args []string) error {
 		case -1:
 			return fmt.Errorf("please upgrade source %v or use an older CLI version, < v3.0.1", source.Name)
 		case -2:
-			return fmt.Errorf("please downgrade CLI or upgrade source to sync %v", source.Name)
+			return fmt.Errorf("please upgrade CLI or downgrade source to sync %v", source.Name)
 		default:
 			return fmt.Errorf("unknown source version %d", maxVersion)
 		}
