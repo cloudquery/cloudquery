@@ -110,6 +110,7 @@
 - [aws_cloudhsmv2_clusters](tables/aws_cloudhsmv2_clusters)
 - [aws_cloudtrail_channels](tables/aws_cloudtrail_channels)
 - [aws_cloudtrail_events](tables/aws_cloudtrail_events) (Incremental)
+- [aws_cloudtrail_imports](tables/aws_cloudtrail_imports)
 - [aws_cloudtrail_trails](tables/aws_cloudtrail_trails)
   - [aws_cloudtrail_trail_event_selectors](tables/aws_cloudtrail_trail_event_selectors)
 - [aws_cloudwatch_alarms](tables/aws_cloudwatch_alarms)
