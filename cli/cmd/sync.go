@@ -20,7 +20,7 @@ cloudquery sync ./directory
 # Sync resources from directories and files
 cloudquery sync ./directory ./aws.yml ./pg.yml
 `
-	unknownFieldErrorPrefix = "code = InvalidArgument desc = failed to decode spec: json: unknown field "
+	maxSupportedProtocolVersion = 2
 )
 
 func NewCmdSync() *cobra.Command {
@@ -36,13 +36,13 @@ func NewCmdSync() *cobra.Command {
 	return cmd
 }
 
-func findMaxVersion(versions []int) int {
+func findMaxSupportedVersion(versions []int, supported int) int {
 	max := -1
 	if len(versions) == 0 {
 		return max
 	}
 	for _, v := range versions {
-		if v > max {
+		if v > max && v <= supported {
 			max = v
 		}
 	}
@@ -129,8 +129,8 @@ func sync(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			return fmt.Errorf("failed to get source versions: %w", err)
 		}
-		maxVersion := findMaxVersion(versions)
-		if maxVersion >= 3 {
+		maxVersion := findMaxSupportedVersion(versions, maxSupportedProtocolVersion)
+		if maxVersion > maxSupportedProtocolVersion {
 			return fmt.Errorf("please upgrade CLI to latest version to sync source %s", cl.Name())
 		}
 

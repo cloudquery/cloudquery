@@ -103,3 +103,23 @@ func TestSyncCqDir(t *testing.T) {
 	}
 	require.NotEmpty(t, files, "destination plugin not downloaded to cache")
 }
+
+func TestFindMaxSupportedVersion(t *testing.T) {
+	cases := []struct {
+		name          string
+		giveVersions  []int
+		giveSupported int
+		want          int
+	}{
+		{name: "support_less", giveVersions: []int{1, 2, 3}, giveSupported: 2, want: 2},
+		{name: "support_same", giveVersions: []int{1, 2, 3}, giveSupported: 3, want: 3},
+		{name: "support_more", giveVersions: []int{1, 2, 3}, giveSupported: 4, want: 3},
+		{name: "support_none", giveVersions: []int{3, 4, 5}, giveSupported: 2, want: -1},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			got := findMaxSupportedVersion(tc.giveVersions, tc.giveSupported)
+			assert.Equal(t, tc.want, got)
+		})
+	}
+}

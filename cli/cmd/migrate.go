@@ -95,8 +95,8 @@ func migrate(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			return fmt.Errorf("failed to get source versions: %w", err)
 		}
-		maxVersion := findMaxVersion(versions)
-		if maxVersion >= 3 {
+		maxVersion := findMaxSupportedVersion(versions, maxSupportedProtocolVersion)
+		if maxVersion > maxSupportedProtocolVersion {
 			return fmt.Errorf("please upgrade CLI to latest version to sync source %s", cl.Name())
 		}
 
