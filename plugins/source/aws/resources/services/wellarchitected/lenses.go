@@ -29,7 +29,7 @@ func Lenses() *schema.Table {
 			transformers.WithUnwrapAllEmbeddedStructs(),
 			transformers.WithNameTransformer(client.CreateTrimPrefixTransformer("lens_")),
 		),
-		Multiplex:           client.ServiceAccountRegionScopeMultiplexer(name, "wellarchitected"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(name, "wellarchitected"),
 		Resolver:            fetchLenses,
 		PreResourceResolver: getLens,
 		Columns:             schema.ColumnList{client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true)},
@@ -69,7 +69,6 @@ func getLens(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 	summary := resource.Item.(types.LensSummary)
 	l := &lens{LensSummary: &summary}
 
-	// we do fetch for all 3 types
 	out, err := service.GetLens(ctx,
 		&wellarchitected.GetLensInput{LensAlias: l.LensAlias, LensVersion: l.LensVersion},
 		func(o *wellarchitected.Options) { o.Region = cl.Region },

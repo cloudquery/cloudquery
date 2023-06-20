@@ -1,7 +1,6 @@
 package wellarchitected
 
 import (
-	"context"
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
@@ -15,30 +14,29 @@ import (
 
 func buildLensesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockWellarchitectedClient(ctrl)
+	for _, lensType := range types.LensType("").Values() {
+		var summary types.LensSummary
+		require.NoError(t, faker.FakeObject(&summary))
+		summary.LensType = lensType
 
-	m.EXPECT().ListLenses(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
-		func(_ context.Context,
-			input *wellarchitected.ListLensesInput,
-			_ ...func(options *wellarchitected.Options),
-		) (*wellarchitected.ListLensesOutput, error) {
-			var summary types.LensSummary
-			require.NoError(t, faker.FakeObject(&summary))
-			summary.LensType = input.LensType
-			return &wellarchitected.ListLensesOutput{LensSummaries: []types.LensSummary{summary}}, nil
-		}).MinTimes(len(types.LensType("").Values()))
+		m.EXPECT().ListLenses(gomock.Any(),
+			&wellarchitected.ListLensesInput{
+				LensStatus: types.LensStatusTypeAll,
+				LensType:   lensType,
+			}, gomock.Any()).
+			Return(&wellarchitected.ListLensesOutput{LensSummaries: []types.LensSummary{summary}}, nil)
 
-	m.EXPECT().GetLens(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(
-		func(_ context.Context,
-			input *wellarchitected.GetLensInput,
-			_ ...func(options *wellarchitected.Options),
-		) (*wellarchitected.GetLensOutput, error) {
-			var lens types.Lens
-			require.NoError(t, faker.FakeObject(&lens))
-			lens.LensArn = input.LensAlias
-			lens.LensVersion = input.LensVersion
-			return &wellarchitected.GetLensOutput{Lens: &lens}, nil
-		}).MinTimes(len(types.LensType("").Values()))
+		var lens types.Lens
+		require.NoError(t, faker.FakeObject(&lens))
+		lens.LensArn = summary.LensAlias
+		lens.LensVersion = summary.LensVersion
 
+		m.EXPECT().GetLens(gomock.Any(), &wellarchitected.GetLensInput{
+			LensAlias:   summary.LensAlias,
+			LensVersion: summary.LensName,
+		}, gomock.Any()).
+			Return(&wellarchitected.GetLensOutput{Lens: &lens}, nil)
+	}
 	return client.Services{Wellarchitected: m}
 }
 
