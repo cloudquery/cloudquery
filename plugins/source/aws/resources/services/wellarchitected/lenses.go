@@ -43,7 +43,12 @@ func fetchLenses(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 
 	// we do fetch for all 3 types
 	for _, lensType := range types.LensType("").Values() {
-		p := wellarchitected.NewListLensesPaginator(service, &wellarchitected.ListLensesInput{LensType: lensType})
+		p := wellarchitected.NewListLensesPaginator(service,
+			&wellarchitected.ListLensesInput{
+				LensStatus: types.LensStatusTypeAll,
+				LensType:   lensType,
+			},
+		)
 		for p.HasMorePages() {
 			output, err := p.NextPage(ctx, func(o *wellarchitected.Options) {
 				o.Region = cl.Region
