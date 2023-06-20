@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230601214540-018e7d3f9c4b
-	github.com/cloudquery/plugin-pb-go v1.0.9
+	github.com/cloudquery/plugin-pb-go v1.1.0
 	github.com/cloudquery/plugin-sdk/v4 v4.0.0
 	github.com/goccy/go-json v0.10.0
 	github.com/google/uuid v1.3.0
@@ -15,9 +15,10 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230613001316-d8eacf81a163
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230620001150-43638cb1b099
 
 replace github.com/cloudquery/plugin-pb-go => ../../../../plugin-pb-go
+
 replace github.com/cloudquery/plugin-sdk/v4 => ../../../../plugin-sdk
 
 require (

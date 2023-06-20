@@ -1,9 +1,9 @@
 {
-  "cli": "3.5.2",
+  "cli": "3.5.4",
   "cli+FILLER": "0.0.0",
-  "plugins/source/aws": "18.3.0",
+  "plugins/source/aws": "18.4.0",
   "plugins/source/aws+FILLER": "0.0.0",
-  "plugins/source/azure": "8.2.0",
+  "plugins/source/azure": "8.3.0",
   "plugins/source/azure+FILLER": "0.0.0",
   "plugins/source/cloudflare": "4.0.2",
   "plugins/source/cloudflare+FILLER": "0.0.0",
@@ -111,7 +111,7 @@
   "plugins/source/facebookmarketing+FILLER": "0.0.0",
   "plugins/source/googleanalytics": "2.0.2",
   "plugins/source/googleanalytics+FILLER": "0.0.0",
-  "plugins/source/mysql": "1.2.1",
+  "plugins/source/mysql": "1.2.2",
   "plugins/source/mysql+FILLER": "0.0.0",
   "plugins/destination/gremlin": "2.1.2",
   "plugins/destination/gremlin+FILLER": "0.0.0",
@@ -121,6 +121,6 @@
   "plugins/destination/meilisearch+FILLER": "1.0.0",
   "plugins/source/firestore": "2.0.1",
   "plugins/source/firestore+FILLER": "0.0.0",
-  "plugins/source/oracledb": "1.2.3",
+  "plugins/source/oracledb": "2.0.0",
   "plugins/source/oracledb+FILLER": "0.0.0"
 }

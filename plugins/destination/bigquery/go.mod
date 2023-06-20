@@ -5,10 +5,10 @@ go 1.19
 require (
 	cloud.google.com/go/bigquery v1.50.0
 	github.com/apache/arrow/go/v13 v13.0.0-20230601070034-e07e22c5580a
-	github.com/cloudquery/plugin-pb-go v1.0.9
-	github.com/cloudquery/plugin-sdk/v3 v3.10.4
+	github.com/cloudquery/plugin-pb-go v1.1.0
+	github.com/cloudquery/plugin-sdk/v3 v3.10.6
 	github.com/goccy/go-json v0.10.0
-	github.com/rs/zerolog v1.29.0
+	github.com/rs/zerolog v1.29.1
 	golang.org/x/sync v0.1.0
 	google.golang.org/api v0.114.0
 )
@@ -39,7 +39,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230613001316-d8eacf81a163
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230620001150-43638cb1b099
 
 require (
 	cloud.google.com/go v0.110.0

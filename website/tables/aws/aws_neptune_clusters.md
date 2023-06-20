@@ -42,12 +42,14 @@ The primary key for this table is **arn**.
 |endpoint|`utf8`|
 |engine|`utf8`|
 |engine_version|`utf8`|
+|global_cluster_identifier|`utf8`|
 |hosted_zone_id|`utf8`|
 |iam_database_authentication_enabled|`bool`|
 |kms_key_id|`utf8`|
 |latest_restorable_time|`timestamp[us, tz=UTC]`|
 |master_username|`utf8`|
 |multi_az|`bool`|
+|pending_modified_values|`json`|
 |percent_progress|`utf8`|
 |port|`int64`|
 |preferred_backup_window|`utf8`|

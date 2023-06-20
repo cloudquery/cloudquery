@@ -3,18 +3,18 @@ module github.com/cloudquery/cloudquery/plugins/source/postgresql
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-pb-go v1.0.9
+	github.com/cloudquery/plugin-pb-go v1.1.0
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0
 	github.com/google/uuid v1.3.0
 	github.com/jackc/pglogrepl v0.0.0-20230428004623-0c5b98f52784
 	github.com/jackc/pgx-zerolog v0.0.0-20230315001418-f978528409eb
 	github.com/jackc/pgx/v5 v5.3.1
-	github.com/rs/zerolog v1.29.0
+	github.com/rs/zerolog v1.29.1
 	golang.org/x/sync v0.1.0
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230613001316-d8eacf81a163
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230620001150-43638cb1b099
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230601070034-e07e22c5580a // indirect

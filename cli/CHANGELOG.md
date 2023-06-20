@@ -5,6 +5,20 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.5.4](https://github.com/cloudquery/cloudquery/compare/cli-v3.5.3...cli-v3.5.4) (2023-06-20)
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/cloudquery/plugin-pb-go` to `v1.1.0` ([333e122](https://github.com/cloudquery/cloudquery/commit/333e12233ad2bc84ef83f434ee7b14515951448f))
+
+## [3.5.3](https://github.com/cloudquery/cloudquery/compare/cli-v3.5.2...cli-v3.5.3) (2023-06-15)
+
+
+### Bug Fixes
+
+* Fix syncing multiple sources to multiple non-overlapping destinations ([#11612](https://github.com/cloudquery/cloudquery/issues/11612)) ([c9a5c42](https://github.com/cloudquery/cloudquery/commit/c9a5c42fdc03eb28c5ffa54fc17ec4093af0ad27))
+
 ## [3.5.2](https://github.com/cloudquery/cloudquery/compare/cli-v3.5.1...cli-v3.5.2) (2023-06-13)
 
 

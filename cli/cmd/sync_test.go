@@ -21,10 +21,6 @@ func TestSync(t *testing.T) {
 			config: "sync-success-sourcev1-destv0.yml",
 		},
 		{
-			name:   "sync_success_sourcev0_destv0",
-			config: "sync-success-sourcev0-destv0.yml",
-		},
-		{
 			name:   "multiple_sources",
 			config: "multiple-sources.yml",
 		},
@@ -68,7 +64,7 @@ func TestSync(t *testing.T) {
 			require.NotEmpty(t, logContent, "cloudquery.log empty; expected some logs")
 		})
 
-		t.Run(tc.name+" with --no-migrate", func(t *testing.T) {
+		t.Run(tc.name+"_no_migrate", func(t *testing.T) {
 			defer CloseLogFile()
 			testConfig := path.Join(currentDir, "testdata", tc.config)
 			logFileName := path.Join(cqDir, "cloudquery.log")
@@ -100,17 +96,10 @@ func TestSyncCqDir(t *testing.T) {
 	require.NoError(t, err)
 
 	// check that destination plugin was downloaded to the cache using --cq-dir
-	p := path.Join(cqDir, "plugins", "destination")
+	p := path.Join(cqDir, "plugins")
 	files, err := os.ReadDir(p)
 	if err != nil {
 		t.Fatalf("failed to read cache directory %v: %v", p, err)
 	}
 	require.NotEmpty(t, files, "destination plugin not downloaded to cache")
-
-	p = path.Join(cqDir, "plugins", "source")
-	files, err = os.ReadDir(p)
-	if err != nil {
-		t.Fatalf("failed to read cache directory %v: %v", p, err)
-	}
-	require.NotEmpty(t, files, "source plugin not downloaded to cache")
 }

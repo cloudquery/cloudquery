@@ -4,19 +4,19 @@ go 1.19
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230601070034-e07e22c5580a
-	github.com/cloudquery/plugin-pb-go v1.0.9
-	github.com/cloudquery/plugin-sdk/v3 v3.10.4
+	github.com/cloudquery/plugin-pb-go v1.1.0
+	github.com/cloudquery/plugin-sdk/v3 v3.10.6
 	github.com/google/uuid v1.3.0
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/pavel-snyk/snyk-sdk-go v0.4.1
-	github.com/rs/zerolog v1.29.0
+	github.com/rs/zerolog v1.29.1
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/sync v0.1.0
 )
 
 replace (
 	// TODO: remove once the changes are merged to upstream
-	github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230613001316-d8eacf81a163
+	github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230620001150-43638cb1b099
 	github.com/pavel-snyk/snyk-sdk-go => github.com/cloudquery/snyk-sdk-go v0.5.0
 )
 
