@@ -5,7 +5,6 @@ This table shows data for AWS CloudTrail Channels.
 https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_GetChannel.html
 
 The primary key for this table is **arn**.
-It supports incremental syncs.
 
 ## Columns
 
