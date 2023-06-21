@@ -30,8 +30,8 @@ func Lenses() *schema.Table {
 		Resolver:            fetchLenses,
 		PreResourceResolver: getLens,
 		Columns: schema.ColumnList{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 			{
 				Name:       "arn",
 				Type:       arrow.BinaryTypes.String,

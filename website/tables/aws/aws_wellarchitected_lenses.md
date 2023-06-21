@@ -4,7 +4,7 @@ This table shows data for AWS Well-Architected Lenses.
 
 https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_Lens.html
 
-The primary key for this table is **arn**.
+The composite primary key for this table is (**account_id**, **region**, **arn**).
 
 ## Columns
 
@@ -14,8 +14,8 @@ The primary key for this table is **arn**.
 |_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id|`utf8`|
-|region|`utf8`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
 |arn (PK)|`utf8`|
 |created_at|`timestamp[us, tz=UTC]`|
 |description|`utf8`|
