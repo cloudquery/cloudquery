@@ -556,6 +556,7 @@
 - [aws_servicecatalog_portfolios](tables/aws_servicecatalog_portfolios)
 - [aws_servicecatalog_products](tables/aws_servicecatalog_products)
 - [aws_servicecatalog_provisioned_products](tables/aws_servicecatalog_provisioned_products)
+- [aws_servicediscovery_namespaces](tables/aws_servicediscovery_namespaces)
 - [aws_servicequotas_services](tables/aws_servicequotas_services)
   - [aws_servicequotas_quotas](tables/aws_servicequotas_quotas)
 - [aws_ses_active_receipt_rule_sets](tables/aws_ses_active_receipt_rule_sets)

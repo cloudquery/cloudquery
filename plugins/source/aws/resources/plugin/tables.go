@@ -88,6 +88,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/securityhub"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicecatalog"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicequotas"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicediscovery"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ses"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/shield"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sns"
@@ -469,6 +470,7 @@ func tables() []*schema.Table {
 		servicecatalog.Portfolios(),
 		servicecatalog.Products(),
 		servicecatalog.ProvisionedProducts(),
+		servicediscovery.Namespaces(),
 		servicequotas.Services(),
 		ses.ActiveReceiptRuleSets(),
 		ses.ConfigurationSets(),
