@@ -1,10 +1,149 @@
 package client
 
 import (
+	"reflect"
+	"time"
+
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/types"
+	"github.com/google/uuid"
 )
+
+func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
+	val = reflect.ValueOf(val).Elem().Interface()
+	if val == nil {
+		bldr.AppendNull()
+		return nil
+	}
+
+	switch b := bldr.(type) {
+	case *array.BooleanBuilder:
+		ptr := val.(*bool)
+		if ptr == nil {
+			b.AppendNull()
+			return nil
+		}
+		b.Append(*ptr)
+	case *array.Int8Builder:
+		ptr := val.(*int8)
+		if ptr == nil {
+			b.AppendNull()
+			return nil
+		}
+		b.Append(*ptr)
+	case *array.Int16Builder:
+		ptr := val.(*int16)
+		if ptr == nil {
+			b.AppendNull()
+			return nil
+		}
+		b.Append(*ptr)
+	case *array.Int32Builder:
+		ptr := val.(*int32)
+		if ptr == nil {
+			b.AppendNull()
+			return nil
+		}
+		b.Append(*ptr)
+	case *array.Int64Builder:
+		ptr := val.(*int64)
+		if ptr == nil {
+			b.AppendNull()
+			return nil
+		}
+		b.Append(*ptr)
+	case *array.Uint8Builder:
+		ptr := val.(*uint8)
+		if ptr == nil {
+			b.AppendNull()
+			return nil
+		}
+		b.Append(*ptr)
+	case *array.Uint16Builder:
+		ptr := val.(*uint16)
+		if ptr == nil {
+			b.AppendNull()
+			return nil
+		}
+		b.Append(*ptr)
+	case *array.Uint32Builder:
+		ptr := val.(*uint32)
+		if ptr == nil {
+			b.AppendNull()
+			return nil
+		}
+		b.Append(*ptr)
+	case *array.Uint64Builder:
+		ptr := val.(*uint64)
+		if ptr == nil {
+			b.AppendNull()
+			return nil
+		}
+		b.Append(*ptr)
+	case *array.Float32Builder:
+		ptr := val.(*float32)
+		if ptr == nil {
+			b.AppendNull()
+			return nil
+		}
+		b.Append(*ptr)
+	case *array.Float64Builder:
+		ptr := val.(*float64)
+		if ptr == nil {
+			b.AppendNull()
+			return nil
+		}
+		b.Append(*ptr)
+	case *array.BinaryBuilder:
+		ptr := val.(*[]byte)
+		if ptr == nil {
+			b.AppendNull()
+			return nil
+		}
+		b.Append(*ptr)
+	case *array.TimestampBuilder:
+		ptr := val.(*time.Time)
+		if ptr == nil {
+			b.AppendNull()
+			return nil
+		}
+		timeUnit := f.Type.(*arrow.TimestampType).Unit
+		timestamp, err := arrow.TimestampFromTime(*ptr, timeUnit)
+		if err != nil {
+			return err
+		}
+		b.Append(timestamp)
+	case *types.UUIDBuilder:
+		ptr := val.(*[]byte)
+		if ptr == nil {
+			b.AppendNull()
+			return nil
+		}
+		u, err := uuid.FromBytes(*ptr)
+		if err != nil {
+			return err
+		}
+		b.Append(u)
+	case *array.Decimal128Builder, *array.Decimal256Builder:
+		ptr := val.(*string)
+		if ptr == nil {
+			b.AppendNull()
+			return nil
+		}
+		b.AppendValueFromString(*ptr)
+	default:
+		ptr := val.(*string)
+		if ptr == nil {
+			bldr.AppendNull()
+			return nil
+		}
+		if err := bldr.AppendValueFromString(*ptr); err != nil {
+			return err
+		}
+	}
+	return nil
+}
 
 func GetValue(arr arrow.Array, i int) (any, error) {
 	if arr.IsNull(i) {
