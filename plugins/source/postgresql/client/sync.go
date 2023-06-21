@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
@@ -42,12 +41,10 @@ func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *
 		}
 	}
 
-	syncTime := time.Now()
-
 	if c.pluginSpec.CDC && snapshotName == "" {
 		c.logger.Info().Msg("cdc is enabled but replication slot already exists, skipping initial sync")
 	} else {
-		if err := c.syncTables(ctx, snapshotName, res, syncTime); err != nil {
+		if err := c.syncTables(ctx, snapshotName, res); err != nil {
 			return err
 		}
 	}
@@ -62,7 +59,7 @@ func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *
 	return nil
 }
 
-func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<- *schema.Resource, syncTime time.Time) error {
+func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<- *schema.Resource) error {
 	tx, err := c.Conn.BeginTx(ctx, pgx.TxOptions{
 		// this transaction is needed for us to take a snapshot and we need to close it only at the end of the initial sync
 		// https://www.postgresql.org/docs/current/transaction-iso.html
@@ -89,7 +86,7 @@ func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<-
 	}
 
 	for _, table := range c.Tables {
-		if err := c.syncTable(ctx, tx, table, res, syncTime); err != nil {
+		if err := c.syncTable(ctx, tx, table, res); err != nil {
 			return err
 		}
 	}
@@ -99,7 +96,7 @@ func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<-
 	return nil
 }
 
-func (c *Client) syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- *schema.Resource, syncTime time.Time) error {
+func (c *Client) syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- *schema.Resource) error {
 	colNames := make([]string, 0, len(table.Columns)-2)
 	for _, col := range table.Columns {
 		colNames = append(colNames, pgx.Identifier{col.Name}.Sanitize())

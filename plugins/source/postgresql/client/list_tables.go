@@ -60,7 +60,6 @@ ORDER BY
 func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 	var tables schema.Tables
 	q := fmt.Sprintf(selectTables, c.currentSchemaName)
-	fmt.Println(q)
 	rows, err := c.Conn.Query(ctx, q)
 	if err != nil {
 		return nil, err
