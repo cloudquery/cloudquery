@@ -75,7 +75,7 @@ func getLens(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 	)
 	if err != nil {
 		// at the very least we want the summary data to be filled in
-		cl.Logger().Err(err).Str("table", "aws_wellarchitected_lenses").Msg("Failed to get lens")
+		cl.Logger().Err(err).Str("table", resource.Table.Name).Msg("Failed to get")
 	}
 
 	// for err != nil basically
