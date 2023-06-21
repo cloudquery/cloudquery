@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
-	pbSpecs "github.com/cloudquery/plugin-pb-go/specs/v0"
+	pbSpecs "github.com/cloudquery/plugin-pb-go/specs"
 )
 
 func CLIBackendToPbBackend(backend specs.Backend) pbSpecs.Backend {

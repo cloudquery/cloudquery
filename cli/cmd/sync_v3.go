@@ -42,17 +42,13 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		destinationsPbClients[i] = plugin.NewPluginClient(destinationsClients[i].Conn)
 	}
 
-	specBytes, err := json.Marshal(CLISourceSpecToPbSpec(sourceSpec))
+	specBytes, err := json.Marshal(sourceSpec.Spec)
 	if err != nil {
 		return err
 	}
 	if _, err := sourcePbClient.Init(ctx, &plugin.Init_Request{
 		Spec: specBytes,
 	}); err != nil {
-		return err
-	}
-	tablesRes, err := sourcePbClient.GetTables(ctx, &plugin.GetTables_Request{})
-	if err != nil {
 		return err
 	}
 	for i := range destinationsClients {
@@ -75,40 +71,15 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 			return err
 		}
 		// TODO(v4): necessary?
-		//if err := writeClients[i].Send(&destination.Write_Request{
-		//	Source:    sourceSpec.Name,
-		//	Tables:    tablesRes.Tables,
-		//	Timestamp: timestamppb.New(syncTime),
-		//}); err != nil {
-		//	return err
-		//}
-	}
-
-	if !noMigrate {
-		migrateStart := time.Now().UTC()
-		fmt.Printf("Starting migration for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
-		for i, wc := range writeClients {
-			for _, table := range tablesRes.Tables {
-				err := wc.Send(&plugin.Write_Request{
-					Message: &plugin.Write_Request_MigrateTable{
-						MigrateTable: &plugin.MessageMigrateTable{
-							Table:        table,
-							MigrateForce: destinationSpecs[i].MigrateMode == specs.MigrateModeForced,
-						},
-					},
-				})
-				if err != nil {
-					return fmt.Errorf("error sending write request for migration: %w", err)
-				}
-			}
+		if err := writeClients[i].Send(&plugin.Write_Request{
+			Message: &plugin.Write_Request_Options{
+				Options: &plugin.WriteOptions{
+					MigrateForce: destinationSpecs[i].MigrateMode == specs.MigrateModeForced,
+				},
+			},
+		}); err != nil {
+			return err
 		}
-		migrateTimeTook := time.Since(migrateStart)
-		fmt.Printf("Migration completed successfully.\n")
-		log.Info().
-			Str("source", sourceSpec.VersionString()).
-			Strs("destinations", destinationStrings).
-			Float64("time_took", migrateTimeTook.Seconds()).
-			Msg("End migration")
 	}
 
 	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Msg("Start fetching resources")
