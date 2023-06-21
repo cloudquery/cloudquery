@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
 )
 
 func Domains() *schema.Table {
@@ -33,6 +34,11 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 				Type:       arrow.BinaryTypes.String,
 				Resolver:   client.ResolveAWSRegion,
 				PrimaryKey: true,
+			},
+			{
+				Name:     "tags",
+				Type:     sdkTypes.ExtensionTypes.JSON,
+				Resolver: resolveCodeartifactTags("Arn"),
 			},
 		},
 		Relations: []*schema.Table{},

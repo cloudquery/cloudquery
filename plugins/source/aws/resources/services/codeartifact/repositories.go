@@ -3,6 +3,8 @@ package codeartifact
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/codeartifact"
 	"github.com/aws/aws-sdk-go-v2/service/codeartifact/types"
@@ -34,14 +36,17 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 				Resolver:   client.ResolveAWSRegion,
 				PrimaryKey: true,
 			},
+			{
+				Name:     "tags",
+				Type:     sdkTypes.ExtensionTypes.JSON,
+				Resolver: resolveCodeartifactTags("Arn"),
+			},
 		},
 		Relations: []*schema.Table{},
 	}
 }
 
 func fetchRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	// domain := parent.Item.(types.DomainDescription)
-
 	cl := meta.(*client.Client)
 	svc := cl.Services().Codeartifact
 	paginator := codeartifact.NewListRepositoriesPaginator(svc, nil)

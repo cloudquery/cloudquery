@@ -1,6 +1,6 @@
 # Table: aws_codeartifact_repositories
 
-This table shows data for Codeartifact Repositories.
+This table shows data for AWS CodeArtifact Repositories.
 
 https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_RepositoryDescription.html
 The 'request_account_id' and 'request_region' columns are added to show the account and region of where the request was made from.
@@ -17,6 +17,7 @@ The composite primary key for this table is (**request_account_id**, **request_r
 |_cq_parent_id|`uuid`|
 |request_account_id (PK)|`utf8`|
 |request_region (PK)|`utf8`|
+|tags|`json`|
 |administrator_account|`utf8`|
 |arn (PK)|`utf8`|
 |created_time|`timestamp[us, tz=UTC]`|

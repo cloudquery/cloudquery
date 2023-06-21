@@ -45,6 +45,21 @@ func buildRepositories(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
+	tag := types.Tag{}
+	if err := faker.FakeObject(&tag); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListTagsForResource(
+		gomock.Any(),
+		gomock.Any(),
+		gomock.Any(),
+	).Return(
+		&codeartifact.ListTagsForResourceOutput{
+			Tags: []types.Tag{tag},
+		},
+		nil,
+	)
+
 	return client.Services{Codeartifact: m}
 }
 
