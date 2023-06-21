@@ -7,10 +7,10 @@ description: >-
 author: hermanschaaf
 ---
 
-import { BlogHeader } from "../../components/BlogHeader"
+import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 import { Callout } from 'nextra-theme-docs';
 
-<BlogHeader/>
+<HowToGuideHeader/>
 
 MotherDuck is a serverless analytics service powered by DuckDB. If you have data in a Postgres database that you'd like to analyze using MotherDuck, this tutorial will show you how to do this using CloudQuery, an open source ELT framework. We will cover:
  
@@ -113,9 +113,9 @@ In production, you should use environment variable expansion to reference the co
 
 ## Step 3. Set Up Authentication
 
-To authenticate with MotherDuck, we need to export our service token as an environment variable. As documented in the [MotherDuck documentation](https://motherduck.notion.site/Authentication-in-MotherDuck-bcd0ac1911d54623bd3ab8995877d63d), you can find the token by navigating to `https://app.motherduck.com/` and clicking the cog in the top right-hand corner:
+To authenticate with MotherDuck, we need to export our service token as an environment variable. As documented in the [MotherDuck documentation](https://motherduck.com/docs), you can find the token by navigating to `https://app.motherduck.com/` and clicking the cog in the top right-hand corner:
 
-![Where to find your token on the MotherDuck app page](/images/blog/moving-data-from-postgres-to-motherduck/motherduck-token.png)
+![Where to find your token on the MotherDuck app page](/images/how-to-guides/moving-data-from-postgres-to-motherduck/motherduck-token.png)
 
 Copy the token to your clipboard and then export it as an environment variable called `motherduck_token`:
 
@@ -124,6 +124,19 @@ export motherduck_token=<INSERT YOUR TOKEN HERE>
 ```
 
 You may also choose to place the token in your `.bashrc` or `.zshrc` file so that it is automatically loaded when you open a new terminal window. If you do this, remember to run `source ~/.bashrc` or `source ~/.zshrc` to reload your shell before continuing.
+
+
+<Callout type="info">
+
+It is also possible to use environment variable substitution in the config for the token. For example:
+
+```yaml
+  spec:
+    connection_string: "md:my_db?motherduck_token=${MOTHERDUCK_TOKEN}"
+```
+
+</Callout>
+
 
 ## Step 4. Run a Sync
 
