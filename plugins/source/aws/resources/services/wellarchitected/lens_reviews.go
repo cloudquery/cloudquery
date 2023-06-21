@@ -18,7 +18,6 @@ func lensReviews() *schema.Table {
 		Description: `https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_LensReview.html`,
 		Transform: transformers.TransformWithStruct(new(types.LensReview),
 			transformers.WithPrimaryKeys("LensAlias"),
-			transformers.WithUnwrapAllEmbeddedStructs(),
 		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(name, "wellarchitected"),
 		Resolver:  fetchLensReviews,
@@ -26,15 +25,20 @@ func lensReviews() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:       "workload_id",
+				Name:       "workload_arn",
 				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("workload_id"),
+				Resolver:   schema.ParentColumnResolver("workload_arn"),
 				PrimaryKey: true,
+			},
+			{
+				Name:     "workload_id",
+				Type:     arrow.BinaryTypes.String,
+				Resolver: schema.ParentColumnResolver("workload_id"),
 			},
 			{
 				Name:       "milestone_number",
 				Type:       arrow.PrimitiveTypes.Int64,
-				Resolver:   schema.ParentColumnResolver("number"),
+				Resolver:   schema.ParentColumnResolver("milestone_number"),
 				PrimaryKey: true,
 			},
 		},
@@ -45,7 +49,7 @@ func lensReviews() *schema.Table {
 func fetchLensReviews(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	service := cl.Services().Wellarchitected
-	milestoneNumber := int32(parent.Get("number").Get().(int64))
+	milestoneNumber := int32(parent.Get("milestone_number").Get().(int64))
 	workloadID := parent.Get("workload_id").String()
 
 	p := wellarchitected.NewListLensReviewsPaginator(service,

@@ -4,7 +4,7 @@ This table shows data for AWS Well-Architected Workload Shares.
 
 https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_WorkloadShareSummary.html
 
-The composite primary key for this table is (**account_id**, **region**, **workload_id**, **id**).
+The composite primary key for this table is (**account_id**, **region**, **workload_arn**, **share_id**).
 
 ## Relations
 
@@ -20,9 +20,9 @@ This table depends on [aws_wellarchitected_workloads](aws_wellarchitected_worklo
 |_cq_parent_id|`uuid`|
 |account_id (PK)|`utf8`|
 |region (PK)|`utf8`|
-|workload_id (PK)|`utf8`|
+|workload_arn (PK)|`utf8`|
 |permission_type|`utf8`|
-|id (PK)|`utf8`|
+|share_id (PK)|`utf8`|
 |shared_with|`utf8`|
 |status|`utf8`|
 |status_message|`utf8`|

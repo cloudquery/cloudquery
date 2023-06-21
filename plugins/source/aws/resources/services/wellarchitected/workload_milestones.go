@@ -20,18 +20,22 @@ func workloadMilestones() *schema.Table {
 			transformers.WithPrimaryKeys("MilestoneName"),
 			transformers.WithUnwrapAllEmbeddedStructs(),
 			transformers.WithSkipFields("WorkloadSummary"),
-			transformers.WithNameTransformer(client.CreateTrimPrefixTransformer("milestone_")),
 		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(name, "wellarchitected"),
 		Resolver:  fetchWorkloadMilestones,
 		Columns: schema.ColumnList{
-			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(true),
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
-				Name:       "workload_id",
+				Name:       "workload_arn",
 				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("id"),
+				Resolver:   schema.ParentColumnResolver("arn"),
 				PrimaryKey: true,
+			},
+			{
+				Name:     "workload_id",
+				Type:     arrow.BinaryTypes.String,
+				Resolver: schema.ParentColumnResolver("workload_id"),
 			},
 		},
 		Relations: schema.Tables{lensReviews()},
@@ -41,7 +45,7 @@ func workloadMilestones() *schema.Table {
 func fetchWorkloadMilestones(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	service := cl.Services().Wellarchitected
-	workloadID := parent.Get("id").String()
+	workloadID := parent.Get("workload_id").String()
 
 	p := wellarchitected.NewListMilestonesPaginator(service,
 		&wellarchitected.ListMilestonesInput{

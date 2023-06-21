@@ -4,7 +4,7 @@ This table shows data for AWS Well-Architected Share Invitations.
 
 https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_Workload.html
 
-The composite primary key for this table is (**account_id**, **region**, **id**).
+The composite primary key for this table is (**account_id**, **region**, **share_invitation_id**).
 
 ## Columns
 
@@ -21,7 +21,7 @@ The composite primary key for this table is (**account_id**, **region**, **id**)
 |permission_type|`utf8`|
 |profile_arn|`utf8`|
 |profile_name|`utf8`|
-|id (PK)|`utf8`|
+|share_invitation_id (PK)|`utf8`|
 |share_resource_type|`utf8`|
 |shared_by|`utf8`|
 |shared_with|`utf8`|

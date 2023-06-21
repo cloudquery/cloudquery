@@ -18,8 +18,6 @@ func workloadShares() *schema.Table {
 		Description: `https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_WorkloadShareSummary.html`,
 		Transform: transformers.TransformWithStruct(new(types.WorkloadShareSummary),
 			transformers.WithPrimaryKeys("ShareId"),
-			transformers.WithUnwrapAllEmbeddedStructs(),
-			transformers.WithNameTransformer(client.CreateTrimPrefixTransformer("share_")),
 		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(name, "wellarchitected"),
 		Resolver:  fetchWorkloadShares,
@@ -27,9 +25,9 @@ func workloadShares() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:       "workload_id",
+				Name:       "workload_arn",
 				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("id"),
+				Resolver:   schema.ParentColumnResolver("arn"),
 				PrimaryKey: true,
 			},
 		},
@@ -40,7 +38,7 @@ func workloadShares() *schema.Table {
 func fetchWorkloadShares(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	service := cl.Services().Wellarchitected
-	workloadID := parent.Get("id").String()
+	workloadID := parent.Get("workload_id").String()
 
 	p := wellarchitected.NewListWorkloadSharesPaginator(service,
 		&wellarchitected.ListWorkloadSharesInput{

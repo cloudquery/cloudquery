@@ -4,7 +4,7 @@ This table shows data for AWS Well-Architected Workloads.
 
 https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_Workload.html
 
-The composite primary key for this table is (**account_id**, **region**, **arn**).
+The primary key for this table is **arn**.
 
 ## Relations
 
@@ -20,8 +20,9 @@ The following tables depend on aws_wellarchitected_workloads:
 |_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|region (PK)|`utf8`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
 |account_ids|`list<item: utf8, nullable>`|
 |applications|`list<item: utf8, nullable>`|
 |architectural_design|`utf8`|
@@ -46,6 +47,6 @@ The following tables depend on aws_wellarchitected_workloads:
 |share_invitation_id|`utf8`|
 |tags|`json`|
 |updated_at|`timestamp[us, tz=UTC]`|
-|arn (PK)|`utf8`|
-|id|`utf8`|
-|name|`utf8`|
+|workload_arn|`utf8`|
+|workload_id|`utf8`|
+|workload_name|`utf8`|

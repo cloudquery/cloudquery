@@ -3,6 +3,7 @@ package wellarchitected
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -22,17 +23,22 @@ type lens struct {
 func Lenses() *schema.Table {
 	name := "aws_wellarchitected_lenses"
 	return &schema.Table{
-		Name:        name,
-		Description: `https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_Lens.html`,
-		Transform: transformers.TransformWithStruct(new(lens),
-			transformers.WithPrimaryKeys("LensAlias"),
-			transformers.WithUnwrapAllEmbeddedStructs(),
-			transformers.WithNameTransformer(client.CreateTrimPrefixTransformer("lens_")),
-		),
+		Name:                name,
+		Description:         `https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_Lens.html`,
+		Transform:           transformers.TransformWithStruct(new(lens), transformers.WithUnwrapAllEmbeddedStructs()),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(name, "wellarchitected"),
 		Resolver:            fetchLenses,
 		PreResourceResolver: getLens,
-		Columns:             schema.ColumnList{client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true)},
+		Columns: schema.ColumnList{
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
+			{
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("LensArn"),
+				PrimaryKey: true,
+			},
+		},
 	}
 }
 

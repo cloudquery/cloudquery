@@ -18,18 +18,22 @@ func lensReviewImprovements() *schema.Table {
 		Description: `https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_ImprovementSummary.html`,
 		Transform: transformers.TransformWithStruct(new(types.ImprovementSummary),
 			transformers.WithPrimaryKeys("PillarId", "QuestionId"),
-			transformers.WithUnwrapAllEmbeddedStructs(),
 		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(name, "wellarchitected"),
 		Resolver:  fetchLensReviewImprovements,
 		Columns: schema.ColumnList{
-			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(true),
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
-				Name:       "workload_id",
+				Name:       "workload_arn",
 				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("workload_id"),
+				Resolver:   schema.ParentColumnResolver("workload_arn"),
 				PrimaryKey: true,
+			},
+			{
+				Name:     "workload_id",
+				Type:     arrow.BinaryTypes.String,
+				Resolver: schema.ParentColumnResolver("workload_id"),
 			},
 			{
 				Name:       "milestone_number",
