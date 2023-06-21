@@ -283,9 +283,6 @@ func (c *Client) resourceFromCDCValues(tableName string, values map[string]any, 
 	table := c.Tables.Get(tableName)
 	resource := schema.NewResourceData(table, nil, values)
 	for _, col := range table.Columns {
-		if col.Name == schema.CqSourceNameColumn.Name || col.Name == schema.CqSyncTimeColumn.Name {
-			continue
-		}
 		v, err := prepareValueForResourceSet(col, values[col.Name])
 		if err != nil {
 			return nil, err
@@ -293,14 +290,6 @@ func (c *Client) resourceFromCDCValues(tableName string, values map[string]any, 
 		if err := resource.Set(col.Name, v); err != nil {
 			return nil, err
 		}
-	}
-	err := resource.Set(schema.CqSourceNameColumn.Name, c.spec.Name)
-	if err != nil {
-		return nil, err
-	}
-	err = resource.Set(schema.CqSyncTimeColumn.Name, syncTime)
-	if err != nil {
-		return nil, err
 	}
 	return resource, nil
 }

@@ -102,9 +102,6 @@ func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<-
 func (c *Client) syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- *schema.Resource, syncTime time.Time) error {
 	colNames := make([]string, 0, len(table.Columns)-2)
 	for _, col := range table.Columns {
-		if col.Name == schema.CqSourceNameColumn.Name || col.Name == schema.CqSyncTimeColumn.Name {
-			continue
-		}
 		colNames = append(colNames, pgx.Identifier{col.Name}.Sanitize())
 	}
 	query := "SELECT " + strings.Join(colNames, ",") + " FROM " + pgx.Identifier{table.Name}.Sanitize()
@@ -125,14 +122,6 @@ func (c *Client) syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, 
 			c.metrics.TableClient[table.Name][c.ID()].Errors++
 			return err
 		}
-		err = resource.Set(schema.CqSourceNameColumn.Name, c.spec.Name)
-		if err != nil {
-			return fmt.Errorf("failed to set CQ source name column: %w", err)
-		}
-		err = resource.Set(schema.CqSyncTimeColumn.Name, syncTime)
-		if err != nil {
-			return fmt.Errorf("failed to set CQ sync time column: %w", err)
-		}
 
 		c.metrics.TableClient[table.Name][c.ID()].Resources++
 
@@ -146,9 +135,6 @@ func (c *Client) resourceFromValues(tableName string, values []any) (*schema.Res
 	resource := schema.NewResourceData(table, nil, values)
 	var i int
 	for _, col := range table.Columns {
-		if col.Name == schema.CqSourceNameColumn.Name || col.Name == schema.CqSyncTimeColumn.Name {
-			continue
-		}
 		v, err := prepareValueForResourceSet(col, values[i])
 		if err != nil {
 			return nil, err
