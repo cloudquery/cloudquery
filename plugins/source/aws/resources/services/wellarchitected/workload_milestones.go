@@ -28,7 +28,7 @@ func workloadMilestones() *schema.Table {
 			client.DefaultRegionColumn(true),
 			workloadIDCol,
 		},
-		Relations: nil,
+		Relations: schema.Tables{lensReviews()},
 	}
 }
 

@@ -1,0 +1,36 @@
+# Table: aws_wellarchitected_lens_reviews
+
+This table shows data for Wellarchitected Lens Reviews.
+
+https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/wellarchitected/types#Lens
+
+The composite primary key for this table is (**account_id**, **region**, **lens_alias**).
+
+## Relations
+
+This table depends on [aws_wellarchitected_workload_milestones](aws_wellarchitected_workload_milestones).
+
+## Columns
+
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
+|workload_id|`utf8`|
+|milestone_number|`int64`|
+|lens_alias (PK)|`utf8`|
+|lens_arn|`utf8`|
+|lens_name|`utf8`|
+|lens_status|`utf8`|
+|lens_version|`utf8`|
+|next_token|`utf8`|
+|notes|`utf8`|
+|pillar_review_summaries|`json`|
+|prioritized_risk_counts|`json`|
+|profiles|`json`|
+|risk_counts|`json`|
+|updated_at|`timestamp[us, tz=UTC]`|

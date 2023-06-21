@@ -27,4 +27,6 @@ func buildWorkloadMilestones(t *testing.T, m *mocks.MockWellarchitectedClient, w
 			},
 			nil,
 		)
+
+	buildLensReviews(t, m, workload, &summary)
 }

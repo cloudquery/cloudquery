@@ -61,14 +61,13 @@ func getWorkload(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 	)
 
 	if err != nil {
-		// at the very least we want the summary data to be filled in
 		cl.Logger().Err(err).Str("table", resource.Table.Name).Msg("Failed to perform get, ignoring...")
+		// At the very least we want the summary data to be filled in
+		// so don't update the item (leave summary in place)
+		return nil
 	}
 
-	// for err != nil basically
-	if out != nil && out.Workload != nil {
-		resource.SetItem(out.Workload)
-	}
+	resource.SetItem(out.Workload)
 	return nil
 }
 

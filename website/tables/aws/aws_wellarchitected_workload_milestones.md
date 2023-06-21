@@ -10,6 +10,9 @@ The composite primary key for this table is (**account_id**, **region**, **workl
 
 This table depends on [aws_wellarchitected_workloads](aws_wellarchitected_workloads).
 
+The following tables depend on aws_wellarchitected_workload_milestones:
+  - [aws_wellarchitected_lens_reviews](aws_wellarchitected_lens_reviews)
+
 ## Columns
 
 | Name          | Type          |

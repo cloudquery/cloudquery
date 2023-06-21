@@ -614,6 +614,7 @@
 - [aws_wellarchitected_share_invitations](../../../../../website/tables/aws/aws_wellarchitected_share_invitations.md)
 - [aws_wellarchitected_workloads](../../../../../website/tables/aws/aws_wellarchitected_workloads.md)
   - [aws_wellarchitected_workload_milestones](../../../../../website/tables/aws/aws_wellarchitected_workload_milestones.md)
+    - [aws_wellarchitected_lens_reviews](../../../../../website/tables/aws/aws_wellarchitected_lens_reviews.md)
   - [aws_wellarchitected_workload_shares](../../../../../website/tables/aws/aws_wellarchitected_workload_shares.md)
 - [aws_workspaces_directories](../../../../../website/tables/aws/aws_workspaces_directories.md)
 - [aws_workspaces_workspaces](../../../../../website/tables/aws/aws_workspaces_workspaces.md)
