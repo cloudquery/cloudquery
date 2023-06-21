@@ -50,9 +50,7 @@ func NewRecordTransformer(opts ...RecordTransformerOption) *RecordTransformer {
 	return t
 }
 
-
-func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
-	sc := record.Schema()
+func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 	fields := make([]arrow.Field, 0, len(sc.Fields()) + t.internalColumns)
 	if t.withSyncTime {
 		fields = append(fields, arrow.Field{Name: "_cq_sync_time", Type: arrow.FixedWidthTypes.Timestamp_us})
@@ -60,7 +58,6 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 	if t.withSourceName {
 		fields = append(fields, arrow.Field{Name: "_cq_source_name", Type: arrow.BinaryTypes.String})
 	}
-
 	for _, field := range sc.Fields() {
 		mdMap := field.Metadata.ToMap()
 		if _, ok:= mdMap["cq:extension:primary_key"]; ok && t.removePks {
@@ -76,7 +73,12 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 		})
 	}
 	scMd := sc.Metadata()
-	newSchema := arrow.NewSchema(fields, &scMd)
+	return arrow.NewSchema(fields, &scMd)
+}
+
+func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
+	sc := record.Schema()
+	newSchema := t.TransformSchema(sc)
 	nRows := int(record.NumRows())
 	cols := make([]arrow.Array, 0, len(sc.Fields()) + t.internalColumns)
 	if t.withSyncTime {

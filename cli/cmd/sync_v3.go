@@ -134,7 +134,6 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		}
 	}()
 
-	totalResources := 0
 	// Read from the sync stream and write to all destinations.
 	totalResources := 0
 	for {
