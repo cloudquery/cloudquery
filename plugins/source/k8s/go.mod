@@ -20,7 +20,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230619001325-b0832beeeade
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230621001250-f0dffc612853
 
 require (
 	github.com/biogo/store v0.0.0-20201120204734-aad293a2328f // indirect

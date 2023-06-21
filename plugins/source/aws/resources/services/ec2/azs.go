@@ -18,7 +18,7 @@ func AvailabilityZones() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Region.html`,
 		Resolver:    fetchAvailabilityZones,
-		Multiplex:   client.AccountMultiplex(tableName),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.AvailabilityZone{}, transformers.WithPrimaryKeys("RegionName", "ZoneId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
