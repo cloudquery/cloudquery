@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
+func reverseTransform(bldr array.Builder, val any) error {
 	val = reflect.ValueOf(val).Elem().Interface()
 	if val == nil {
 		bldr.AppendNull()
@@ -108,12 +108,7 @@ func reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
 			b.AppendNull()
 			return nil
 		}
-		timeUnit := f.Type.(*arrow.TimestampType).Unit
-		timestamp, err := arrow.TimestampFromTime(*ptr, timeUnit)
-		if err != nil {
-			return err
-		}
-		b.Append(timestamp)
+		b.AppendTime(*ptr)
 	case *types.UUIDBuilder:
 		ptr := val.(*[]byte)
 		if ptr == nil {

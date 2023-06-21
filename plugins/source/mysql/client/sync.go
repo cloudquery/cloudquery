@@ -104,7 +104,7 @@ func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- 
 		arrowSchema := table.ToArrowSchema()
 		rb := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
 		for i := range values {
-			err := reverseTransform(arrowSchema.Field(i), rb.Field(i), values[i])
+			err := reverseTransform(rb.Field(i), values[i])
 			if err != nil {
 				return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
 			}
