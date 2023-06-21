@@ -125,6 +125,7 @@
 - [aws_codeartifact_domains](tables/aws_codeartifact_domains)
 - [aws_codeartifact_repositories](tables/aws_codeartifact_repositories)
 - [aws_codebuild_projects](tables/aws_codebuild_projects)
+  - [aws_codebuild_builds](tables/aws_codebuild_builds)
 - [aws_codepipeline_pipelines](tables/aws_codepipeline_pipelines)
 - [aws_codepipeline_webhooks](tables/aws_codepipeline_webhooks)
 - [aws_cognito_identity_pools](tables/aws_cognito_identity_pools)
