@@ -265,6 +265,8 @@ github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.19.1 h1:t43gZz5YeTt+jug65
 github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.19.1/go.mod h1:JGibLbsF3X/BLowocvufpmxtB8Kgw4zW1+AVNU9Yync=
 github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.17.5 h1:f7WV9oR7sqNEjfJiCxf/60/xRz1hU6h2wNEJHgHs2rc=
 github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.17.5/go.mod h1:hZgN977Yj12XO19pq8pjZ+T39sndfqpU4zEPArxS+Nc=
+github.com/aws/aws-sdk-go-v2/service/servicediscovery v1.21.6 h1:1SjN5e7PTycgBLHTi0ufQeRpH5IStX5naLHRvzPxdGk=
+github.com/aws/aws-sdk-go-v2/service/servicediscovery v1.21.6/go.mod h1:chOX1KME1Qw+pQVnfPUy+s3Urqy8CsdFeSWsWn/79GA=
 github.com/aws/aws-sdk-go-v2/service/servicequotas v1.14.13 h1:Yt/B/gy0vVXGugi0q0onCypXBtXY47eEzOTw7P3b2vg=
 github.com/aws/aws-sdk-go-v2/service/servicequotas v1.14.13/go.mod h1:XC0bYWjGX7oEpv/U1ujeFMrGvTOQVBzqU+vr22p7LDQ=
 github.com/aws/aws-sdk-go-v2/service/ses v1.15.10 h1:jHoeJEA60DGk1DycoH2BLlqhSpYfigJtgH2iKB2r6KE=
@@ -711,6 +713,7 @@ github.com/spf13/pflag v1.0.5/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An
 github.com/spf13/viper v1.3.2/go.mod h1:ZiWeW+zYFKm7srdB9IoDzzZXaJaI5eL9QjNiN/DMA2s=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.4.0/go.mod h1:YvHI0jy2hoMjB+UWwv71VJQ9isScKT/TqJzVSSt89Yw=
+github.com/stretchr/objx v0.5.0/go.mod h1:Yh+to48EsGEfYuaHDzXPcE3xhTkx73EhmCGUpEOglKo=
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
