@@ -6,8 +6,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 )
 
 func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *schema.Resource) error {
@@ -25,24 +27,49 @@ func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *
 func (*Client) createResultsArray(table *schema.Table) []any {
 	results := make([]any, 0, len(table.Columns))
 	for _, col := range table.Columns {
-		switch col.Type {
-		case schema.TypeUUID, schema.TypeByteArray:
+		// We only support types that we create based on the schema, see SchemaType function
+		switch col.Type.(type) {
+		case *types.UUIDType, *arrow.BinaryType:
 			var r *[]byte
 			results = append(results, &r)
-		case schema.TypeBool:
+		case *arrow.BooleanType:
 			var r *bool
 			results = append(results, &r)
-		case schema.TypeInt:
-			var r *int
+		case *arrow.Int8Type:
+			var r *int8
 			results = append(results, &r)
-		case schema.TypeFloat:
+		case *arrow.Int16Type:
+			var r *int16
+			results = append(results, &r)
+		case *arrow.Int32Type:
+			var r *int32
+			results = append(results, &r)
+		case *arrow.Int64Type:
+			var r *int64
+			results = append(results, &r)
+		case *arrow.Uint8Type:
+			var r *uint8
+			results = append(results, &r)
+		case *arrow.Uint16Type:
+			var r *uint16
+			results = append(results, &r)
+		case *arrow.Uint32Type:
+			var r *uint32
+			results = append(results, &r)
+		case *arrow.Uint64Type:
+			var r *uint64
+			results = append(results, &r)
+		case *arrow.Decimal128Type:
+			var r *string
+			results = append(results, &r)
+		case *arrow.Float32Type:
+			var r *float32
+			results = append(results, &r)
+		case *arrow.Float64Type:
 			var r *float64
 			results = append(results, &r)
-		case schema.TypeTimestamp:
+		case *arrow.TimestampType:
 			var r *time.Time
-			results = append(results, &r)
-		case schema.TypeJSON:
-			var r string
 			results = append(results, &r)
 		default:
 			var r *string
@@ -97,10 +124,6 @@ func (c *Client) resourceFromValues(tableName string, values []any) (*schema.Res
 	table := c.Tables.Get(tableName)
 	resource := schema.NewResourceData(table, nil, values)
 	for i, col := range table.Columns {
-		// If the value points to an empty byte array array we set it to nil
-		if v, ok := values[i].(**[]byte); ok && *v == nil {
-			values[i] = nil
-		}
 		if err := resource.Set(col.Name, values[i]); err != nil {
 			return nil, err
 		}
