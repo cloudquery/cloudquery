@@ -4,7 +4,7 @@ This table shows data for Wellarchitected Lenses.
 
 https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/wellarchitected/types#Lens
 
-The composite primary key for this table is (**account_id**, **region**, **arn**).
+The composite primary key for this table is (**account_id**, **region**, **alias**).
 
 ## Columns
 
@@ -18,8 +18,8 @@ The composite primary key for this table is (**account_id**, **region**, **arn**
 |region (PK)|`utf8`|
 |created_at|`timestamp[us, tz=UTC]`|
 |description|`utf8`|
-|alias|`utf8`|
-|arn (PK)|`utf8`|
+|alias (PK)|`utf8`|
+|arn|`utf8`|
 |name|`utf8`|
 |status|`utf8`|
 |type|`utf8`|

@@ -25,7 +25,7 @@ func Lenses() *schema.Table {
 		Name:        name,
 		Description: `https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/wellarchitected/types#Lens`,
 		Transform: transformers.TransformWithStruct(new(lens),
-			transformers.WithPrimaryKeys("LensArn"),
+			transformers.WithPrimaryKeys("LensAlias"),
 			transformers.WithUnwrapAllEmbeddedStructs(),
 			transformers.WithNameTransformer(client.CreateTrimPrefixTransformer("lens_")),
 		),
