@@ -48,22 +48,21 @@ func lensReviewImprovements() *schema.Table {
 }
 
 func fetchLensReviewImprovements(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
-	service := cl.Services().Wellarchitected
-	milestoneNumber := int32(parent.Get("milestone_number").Get().(int64))
-	workloadID := parent.Get("workload_id").String()
-	lensAlias := parent.Get("lens_alias").String()
-
 	review, ok := parent.Item.(*types.LensReview)
 	if !ok {
 		// we need the full resource to get the pillars
 		return nil
 	}
 
+	cl := meta.(*client.Client)
+	service := cl.Services().Wellarchitected
+	milestoneNumber := int32(parent.Get("milestone_number").Get().(int64))
+	workloadID := parent.Get("workload_id").String()
+
 	for _, pillar := range review.PillarReviewSummaries {
 		p := wellarchitected.NewListLensReviewImprovementsPaginator(service,
 			&wellarchitected.ListLensReviewImprovementsInput{
-				LensAlias:       &lensAlias,
+				LensAlias:       review.LensAlias,
 				WorkloadId:      &workloadID,
 				MilestoneNumber: milestoneNumber,
 				MaxResults:      50,
