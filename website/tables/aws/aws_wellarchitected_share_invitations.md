@@ -1,6 +1,6 @@
 # Table: aws_wellarchitected_share_invitations
 
-This table shows data for Wellarchitected Share Invitations.
+This table shows data for AWS Well-Architected Share Invitations.
 
 https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_Workload.html
 

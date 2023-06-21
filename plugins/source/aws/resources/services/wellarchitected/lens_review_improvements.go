@@ -15,7 +15,7 @@ func lensReviewImprovements() *schema.Table {
 	name := "aws_wellarchitected_lens_review_improvements"
 	return &schema.Table{
 		Name:        name,
-		Description: `https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/wellarchitected/types#Lens`,
+		Description: `https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_ImprovementSummary.html`,
 		Transform: transformers.TransformWithStruct(new(types.ImprovementSummary),
 			transformers.WithPrimaryKeys("PillarId", "QuestionId"),
 			transformers.WithUnwrapAllEmbeddedStructs(),

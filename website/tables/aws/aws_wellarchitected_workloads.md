@@ -1,6 +1,6 @@
 # Table: aws_wellarchitected_workloads
 
-This table shows data for Wellarchitected Workloads.
+This table shows data for AWS Well-Architected Workloads.
 
 https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_Workload.html
 

@@ -1,6 +1,6 @@
 # Table: aws_wellarchitected_lens_reviews
 
-This table shows data for Wellarchitected Lens Reviews.
+This table shows data for AWS Well-Architected Lens Reviews.
 
 https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_LensReview.html
 

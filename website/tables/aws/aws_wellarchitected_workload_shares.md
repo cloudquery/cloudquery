@@ -1,6 +1,6 @@
 # Table: aws_wellarchitected_workload_shares
 
-This table shows data for Wellarchitected Workload Shares.
+This table shows data for AWS Well-Architected Workload Shares.
 
 https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_WorkloadShareSummary.html
 

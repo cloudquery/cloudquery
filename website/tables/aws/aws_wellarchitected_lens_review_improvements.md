@@ -1,8 +1,8 @@
 # Table: aws_wellarchitected_lens_review_improvements
 
-This table shows data for Wellarchitected Lens Review Improvements.
+This table shows data for AWS Well-Architected Lens Review Improvements.
 
-https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/wellarchitected/types#Lens
+https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_ImprovementSummary.html
 
 The composite primary key for this table is (**account_id**, **region**, **workload_id**, **milestone_number**, **lens_alias**, **pillar_id**, **question_id**).
 

@@ -1,6 +1,6 @@
 # Table: aws_wellarchitected_workload_milestones
 
-This table shows data for Wellarchitected Workload Milestones.
+This table shows data for AWS Well-Architected Workload Milestones.
 
 https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_MilestoneSummary.html
 

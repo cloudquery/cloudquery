@@ -1,6 +1,6 @@
 # Table: aws_wellarchitected_lenses
 
-This table shows data for Wellarchitected Lenses.
+This table shows data for AWS Well-Architected Lenses.
 
 https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_Lens.html
 
