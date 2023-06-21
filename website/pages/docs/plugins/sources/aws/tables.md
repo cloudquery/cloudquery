@@ -122,6 +122,8 @@
   - [aws_cloudwatchlogs_log_group_subscription_filters](tables/aws_cloudwatchlogs_log_group_subscription_filters)
 - [aws_cloudwatchlogs_metric_filters](tables/aws_cloudwatchlogs_metric_filters)
 - [aws_cloudwatchlogs_resource_policies](tables/aws_cloudwatchlogs_resource_policies)
+- [aws_codeartifact_domains](tables/aws_codeartifact_domains)
+- [aws_codeartifact_repositories](tables/aws_codeartifact_repositories)
 - [aws_codebuild_projects](tables/aws_codebuild_projects)
 - [aws_codepipeline_pipelines](tables/aws_codepipeline_pipelines)
 - [aws_codepipeline_webhooks](tables/aws_codepipeline_webhooks)
