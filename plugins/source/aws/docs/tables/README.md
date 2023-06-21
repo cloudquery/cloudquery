@@ -122,6 +122,8 @@
   - [aws_cloudwatchlogs_log_group_subscription_filters](../../../../../website/tables/aws/aws_cloudwatchlogs_log_group_subscription_filters.md)
 - [aws_cloudwatchlogs_metric_filters](../../../../../website/tables/aws/aws_cloudwatchlogs_metric_filters.md)
 - [aws_cloudwatchlogs_resource_policies](../../../../../website/tables/aws/aws_cloudwatchlogs_resource_policies.md)
+- [aws_codeartifact_domains](../../../../../website/tables/aws/aws_codeartifact_domains.md)
+- [aws_codeartifact_repositories](../../../../../website/tables/aws/aws_codeartifact_repositories.md)
 - [aws_codebuild_projects](../../../../../website/tables/aws/aws_codebuild_projects.md)
 - [aws_codepipeline_pipelines](../../../../../website/tables/aws/aws_codepipeline_pipelines.md)
 - [aws_codepipeline_webhooks](../../../../../website/tables/aws/aws_codepipeline_webhooks.md)

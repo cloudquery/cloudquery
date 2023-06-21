@@ -24,6 +24,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudtrail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudwatch"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudwatchlogs"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codeartifact"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codebuild"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codepipeline"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cognito"
@@ -175,6 +176,8 @@ func tables() []*schema.Table {
 		cloudwatchlogs.LogGroups(),
 		cloudwatchlogs.MetricFilters(),
 		cloudwatchlogs.ResourcePolicies(),
+		codeartifact.Domains(),
+		codeartifact.Repositories(),
 		codebuild.Projects(),
 		codepipeline.Pipelines(),
 		codepipeline.Webhooks(),
