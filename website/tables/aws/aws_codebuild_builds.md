@@ -1,6 +1,6 @@
 # Table: aws_codebuild_builds
 
-This table shows data for Codebuild Builds.
+This table shows data for AWS CodeBuild Builds.
 
 https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_ServiceQuota.html
 
@@ -8,7 +8,7 @@ The primary key for this table is **arn**.
 
 ## Relations
 
-This table depends on [aws_codebuild_projects](aws_codebuild_projects).
+This table depends on [aws_codebuild_source_credentials](aws_codebuild_source_credentials).
 
 ## Columns
 

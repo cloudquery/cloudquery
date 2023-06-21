@@ -179,6 +179,7 @@ func tables() []*schema.Table {
 		codeartifact.Domains(),
 		codeartifact.Repositories(),
 		codebuild.Projects(),
+		codebuild.SourceCredentials(),
 		codepipeline.Pipelines(),
 		codepipeline.Webhooks(),
 		cognito.IdentityPools(),
