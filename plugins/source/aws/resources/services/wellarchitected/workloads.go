@@ -3,7 +3,6 @@ package wellarchitected
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -70,12 +69,3 @@ func getWorkload(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 	resource.SetItem(out.Workload)
 	return nil
 }
-
-var (
-	workloadIDCol = schema.Column{
-		Name:       "workload_id",
-		Type:       arrow.BinaryTypes.String,
-		Resolver:   schema.ParentColumnResolver("id"),
-		PrimaryKey: true,
-	}
-)

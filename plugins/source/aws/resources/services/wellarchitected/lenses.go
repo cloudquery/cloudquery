@@ -33,7 +33,6 @@ func Lenses() *schema.Table {
 		Resolver:            fetchLenses,
 		PreResourceResolver: getLens,
 		Columns:             schema.ColumnList{client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true)},
-		Relations:           nil,
 	}
 }
 

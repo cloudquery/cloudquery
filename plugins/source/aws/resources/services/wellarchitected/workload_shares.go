@@ -3,6 +3,7 @@ package wellarchitected
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -25,7 +26,12 @@ func workloadShares() *schema.Table {
 		Columns: schema.ColumnList{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
-			workloadIDCol,
+			{
+				Name:       "workload_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("id"),
+				PrimaryKey: true,
+			},
 		},
 		Relations: nil,
 	}
