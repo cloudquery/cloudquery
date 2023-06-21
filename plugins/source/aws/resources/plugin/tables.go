@@ -506,6 +506,7 @@ func tables() []*schema.Table {
 		wafv2.RuleGroups(),
 		wafv2.WebAcls(),
 		wellarchitected.Lenses(),
+		wellarchitected.ShareInvitations(),
 		wellarchitected.Workloads(),
 		workspaces.Directories(),
 		workspaces.Workspaces(),

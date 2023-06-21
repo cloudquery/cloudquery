@@ -611,6 +611,7 @@
 - [aws_wafv2_rule_groups](../../../../../website/tables/aws/aws_wafv2_rule_groups.md)
 - [aws_wafv2_web_acls](../../../../../website/tables/aws/aws_wafv2_web_acls.md)
 - [aws_wellarchitected_lenses](../../../../../website/tables/aws/aws_wellarchitected_lenses.md)
+- [aws_wellarchitected_share_invitations](../../../../../website/tables/aws/aws_wellarchitected_share_invitations.md)
 - [aws_wellarchitected_workloads](../../../../../website/tables/aws/aws_wellarchitected_workloads.md)
   - [aws_wellarchitected_workload_milestones](../../../../../website/tables/aws/aws_wellarchitected_workload_milestones.md)
   - [aws_wellarchitected_workload_shares](../../../../../website/tables/aws/aws_wellarchitected_workload_shares.md)

@@ -611,6 +611,7 @@
 - [aws_wafv2_rule_groups](tables/aws_wafv2_rule_groups)
 - [aws_wafv2_web_acls](tables/aws_wafv2_web_acls)
 - [aws_wellarchitected_lenses](tables/aws_wellarchitected_lenses)
+- [aws_wellarchitected_share_invitations](tables/aws_wellarchitected_share_invitations)
 - [aws_wellarchitected_workloads](tables/aws_wellarchitected_workloads)
   - [aws_wellarchitected_workload_milestones](tables/aws_wellarchitected_workload_milestones)
   - [aws_wellarchitected_workload_shares](tables/aws_wellarchitected_workload_shares)
