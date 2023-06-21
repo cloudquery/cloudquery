@@ -68,7 +68,7 @@ func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- 
 
 			arrowSchema := table.ToArrowSchema()
 			rb := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
-			idField := rb.Field(0).(*array.BinaryBuilder)
+			idField := rb.Field(0).(*array.StringBuilder)
 			idField.AppendString(docSnap.Ref.ID)
 
 			createdAtField := rb.Field(1).(*array.TimestampBuilder)
