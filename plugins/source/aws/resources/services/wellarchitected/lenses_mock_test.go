@@ -18,7 +18,6 @@ func buildLensesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		var summary types.LensSummary
 		require.NoError(t, faker.FakeObject(&summary))
 		summary.LensType = lensType
-
 		m.EXPECT().ListLenses(gomock.Any(),
 			&wellarchitected.ListLensesInput{
 				LensStatus: types.LensStatusTypeAll,
@@ -32,10 +31,15 @@ func buildLensesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		lens.LensArn = summary.LensAlias
 		lens.LensVersion = summary.LensVersion
 
-		m.EXPECT().GetLens(gomock.Any(), &wellarchitected.GetLensInput{
+		getInput := &wellarchitected.GetLensInput{
 			LensAlias:   summary.LensAlias,
 			LensVersion: summary.LensName,
-		}, gomock.Any()).
+		}
+		if lensType == types.LensTypeAwsOfficial {
+			getInput.LensVersion = nil
+		}
+
+		m.EXPECT().GetLens(gomock.Any(), getInput, gomock.Any()).
 			Return(&wellarchitected.GetLensOutput{Lens: &lens}, nil)
 	}
 	return client.Services{Wellarchitected: m}

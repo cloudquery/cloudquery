@@ -69,10 +69,11 @@ func getLens(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 	summary := resource.Item.(types.LensSummary)
 	l := &lens{LensSummary: &summary}
 
-	out, err := service.GetLens(ctx,
-		&wellarchitected.GetLensInput{LensAlias: l.LensAlias, LensVersion: l.LensVersion},
-		func(o *wellarchitected.Options) { o.Region = cl.Region },
-	)
+	input := &wellarchitected.GetLensInput{LensAlias: l.LensAlias, LensVersion: summary.LensVersion}
+	if summary.LensType == types.LensTypeAwsOfficial {
+		input.LensVersion = nil // official lenses don't support versions
+	}
+	out, err := service.GetLens(ctx, input, func(o *wellarchitected.Options) { o.Region = cl.Region })
 	if err != nil {
 		cl.Logger().Err(err).Str("table", resource.Table.Name).Msg("Failed to perform get, ignoring...")
 		// At the very least we want the summary data to be filled in
