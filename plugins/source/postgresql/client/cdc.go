@@ -78,7 +78,6 @@ func getReplicationName(specName string) string {
 }
 
 func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) error {
-	syncTime := time.Now().UTC()
 	connPool, err := c.Conn.Acquire(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to acquire connection: %w", err)
@@ -187,7 +186,7 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 						values[colName] = val
 					}
 				}
-				resource, err := c.resourceFromCDCValues(rel.RelationName, values, syncTime)
+				resource, err := c.resourceFromCDCValues(rel.RelationName, values)
 				if err != nil {
 					return err
 				}
@@ -214,7 +213,7 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 						values[colName] = val
 					}
 				}
-				resource, err := c.resourceFromCDCValues(rel.RelationName, values, syncTime)
+				resource, err := c.resourceFromCDCValues(rel.RelationName, values)
 				if err != nil {
 					return err
 				}
@@ -240,7 +239,7 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- *schema.Resource) err
 						values[colName] = val
 					}
 				}
-				resource, err := c.resourceFromCDCValues(rel.RelationName, values, syncTime)
+				resource, err := c.resourceFromCDCValues(rel.RelationName, values)
 				if err != nil {
 					return err
 				}
@@ -279,7 +278,7 @@ func decodeTextColumnData(mi *pgtype.Map, data []byte, dataType uint32) (any, er
 	return string(data), nil
 }
 
-func (c *Client) resourceFromCDCValues(tableName string, values map[string]any, syncTime time.Time) (*schema.Resource, error) {
+func (c *Client) resourceFromCDCValues(tableName string, values map[string]any) (*schema.Resource, error) {
 	table := c.Tables.Get(tableName)
 	resource := schema.NewResourceData(table, nil, values)
 	for _, col := range table.Columns {
