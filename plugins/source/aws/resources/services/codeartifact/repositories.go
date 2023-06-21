@@ -11,16 +11,16 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
-func Domains() *schema.Table {
-	tableName := "aws_codeartifact_domains"
+func Repositories() *schema.Table {
+	tableName := "aws_codeartifact_repositories"
 	return &schema.Table{
 		Name: tableName,
-		Description: `https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_DomainDescription.html
+		Description: `https://docs.aws.amazon.com/codeartifact/latest/APIReference/API_RepositoryDescription.html
 The 'request_account_id' and 'request_region' columns are added to show the account and region of where the request was made from.`,
-		Resolver:            fetchDomains,
-		PreResourceResolver: getDomain,
+		Resolver:            fetchRepositories,
+		PreResourceResolver: getRepository,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "codeartifact"),
-		Transform:           transformers.TransformWithStruct(&types.DomainDescription{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:           transformers.TransformWithStruct(&types.RepositoryDescription{}, transformers.WithPrimaryKeys("Arn")),
 		Columns: []schema.Column{
 			{
 				Name:       "request_account_id",
@@ -39,10 +39,12 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 	}
 }
 
-func fetchDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	// domain := parent.Item.(types.DomainDescription)
+
 	cl := meta.(*client.Client)
 	svc := cl.Services().Codeartifact
-	paginator := codeartifact.NewListDomainsPaginator(svc, nil)
+	paginator := codeartifact.NewListRepositoriesPaginator(svc, nil)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *codeartifact.Options) {
 			options.Region = cl.Region
@@ -50,21 +52,25 @@ func fetchDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 		if err != nil {
 			return err
 		}
-		res <- page.Domains
+		res <- page.Repositories
 	}
 	return nil
 }
 
-func getDomain(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	domain := resource.Item.(types.DomainSummary)
+func getRepository(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	repository := resource.Item.(types.RepositorySummary)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Codeartifact
-	domainOutput, err := svc.DescribeDomain(ctx, &codeartifact.DescribeDomainInput{Domain: domain.Name}, func(options *codeartifact.Options) {
+	repoOut, err := svc.DescribeRepository(ctx, &codeartifact.DescribeRepositoryInput{
+		Repository:  repository.Name,
+		Domain:      repository.DomainName,
+		DomainOwner: repository.DomainOwner,
+	}, func(options *codeartifact.Options) {
 		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
 	}
-	resource.Item = domainOutput.Domain
+	resource.Item = repoOut.Repository
 	return nil
 }
