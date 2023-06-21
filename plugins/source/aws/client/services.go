@@ -92,6 +92,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
+	"github.com/aws/aws-sdk-go-v2/service/servicediscovery"
 	"github.com/aws/aws-sdk-go-v2/service/servicequotas"
 	"github.com/aws/aws-sdk-go-v2/service/ses"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
@@ -206,6 +207,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Securityhub:               securityhub.NewFromConfig(awsCfg),
 		Servicecatalog:            servicecatalog.NewFromConfig(awsCfg),
 		Servicecatalogappregistry: servicecatalogappregistry.NewFromConfig(awsCfg),
+		Servicediscovery:          servicediscovery.NewFromConfig(awsCfg),
 		Servicequotas:             servicequotas.NewFromConfig(awsCfg),
 		Ses:                       ses.NewFromConfig(awsCfg),
 		Sesv2:                     sesv2.NewFromConfig(awsCfg),
@@ -318,6 +320,7 @@ type Services struct {
 	Securityhub               services.SecurityhubClient
 	Servicecatalog            services.ServicecatalogClient
 	Servicecatalogappregistry services.ServicecatalogappregistryClient
+	Servicediscovery          services.ServicediscoveryClient
 	Servicequotas             services.ServicequotasClient
 	Ses                       services.SesClient
 	Sesv2                     services.Sesv2Client
