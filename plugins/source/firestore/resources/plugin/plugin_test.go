@@ -2,13 +2,15 @@ package plugin_test
 
 import (
 	"context"
+	"encoding/json"
+	"math/rand"
 	"os"
 	"testing"
 	"time"
 
+	"cloud.google.com/go/firestore"
 	"github.com/cloudquery/cloudquery/plugins/source/firestore/client"
 	"github.com/cloudquery/cloudquery/plugins/source/firestore/resources/plugin"
-	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 )
@@ -23,17 +25,14 @@ func TestPlugin(t *testing.T) {
 
 	tableSetup(ctx, t, "test_firestore_source")
 
-	spec := specs.Source{
-		Name:         "test_firestore_source",
-		Path:         "cloudquery/firestore",
-		Version:      "vDevelopment",
-		Destinations: []string{"test"},
-		Tables:       []string{"test_firestore_source"},
-		Spec: client.Spec{
-			ProjectID: "cqtest-project",
-		},
+	spec := client.Spec{
+		ProjectID: "cqtest-project",
 	}
-	require.NoError(t, p.Init(ctx, spec))
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	require.NoError(t, p.Init(ctx, specBytes))
 }
 
 func TestPlugin_OrderBy(t *testing.T) {
@@ -46,17 +45,43 @@ func TestPlugin_OrderBy(t *testing.T) {
 
 	tableSetup(ctx, t, "test_firestore_source")
 
-	spec := specs.Source{
-		Name:         "test_firestore_source",
-		Path:         "cloudquery/firestore",
-		Version:      "vDevelopment",
-		Destinations: []string{"test"},
-		Tables:       []string{"test_firestore_source"},
-		Spec: client.Spec{
-			ProjectID:      "cqtest-project",
-			OrderBy:        "test",
-			OrderDirection: "DESC",
-		},
+	spec := client.Spec{
+		ProjectID: "cqtest-project",
 	}
-	require.NoError(t, p.Init(ctx, spec))
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	require.NoError(t, p.Init(ctx, specBytes))
+}
+
+func tableSetup(ctx context.Context, t *testing.T, tableName string) {
+	// insert test data
+	store, err := firestore.NewClient(ctx, "cqtest-project")
+	require.NoError(t, err)
+	col := store.Collection(tableName)
+
+	// delete all collection data
+	docs, err := col.Documents(ctx).GetAll()
+	require.NoError(t, err)
+	for _, d := range docs {
+		_, err := d.Ref.Delete(ctx)
+		require.NoError(t, err)
+	}
+	// insert new data
+	for _, d := range testData() {
+		_, _, err := col.Add(ctx, d)
+		require.NoError(t, err)
+	}
+}
+
+func testData() []map[string]any {
+	randData := make([]map[string]any, 0)
+	for i := 0; i < 100; i++ {
+		randData = append(randData, map[string]any{
+			"key1": i,
+			"key":  rand.Int(),
+		})
+	}
+	return randData
 }
