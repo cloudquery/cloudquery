@@ -13,37 +13,37 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildNamespaces(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildServices(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockServicediscoveryClient(ctrl)
 
-	var ns types.NamespaceSummary
-	require.NoError(t, faker.FakeObject(&ns))
-	m.EXPECT().ListNamespaces(
+	var ss types.ServiceSummary
+	require.NoError(t, faker.FakeObject(&ss))
+	m.EXPECT().ListServices(
 		gomock.Any(),
-		&servicediscovery.ListNamespacesInput{MaxResults: aws.Int32(100)},
+		&servicediscovery.ListServicesInput{MaxResults: aws.Int32(100)},
 		gomock.Any(),
 	).Return(
-		&servicediscovery.ListNamespacesOutput{Namespaces: []types.NamespaceSummary{ns}},
+		&servicediscovery.ListServicesOutput{Services: []types.ServiceSummary{ss}},
 		nil,
 	)
 
-	var namespace types.Namespace
-	require.NoError(t, faker.FakeObject(&namespace))
-	namespace.Arn = ns.Arn
-	namespace.Id = ns.Id
+	var service types.Service
+	require.NoError(t, faker.FakeObject(&service))
+	service.Arn = ss.Arn
+	service.Id = ss.Id
 
-	m.EXPECT().GetNamespace(
+	m.EXPECT().GetService(
 		gomock.Any(),
-		&servicediscovery.GetNamespaceInput{Id: ns.Id},
+		&servicediscovery.GetServiceInput{Id: ss.Id},
 		gomock.Any(),
 	).Return(
-		&servicediscovery.GetNamespaceOutput{Namespace: &namespace},
+		&servicediscovery.GetServiceOutput{Service: &service},
 		nil,
 	)
 
 	m.EXPECT().ListTagsForResource(
 		gomock.Any(),
-		&servicediscovery.ListTagsForResourceInput{ResourceARN: namespace.Arn},
+		&servicediscovery.ListTagsForResourceInput{ResourceARN: service.Arn},
 		gomock.Any(),
 	).Return(
 		&servicediscovery.ListTagsForResourceOutput{Tags: []types.Tag{{Key: aws.String("key"), Value: aws.String("value")}}},
@@ -55,6 +55,6 @@ func buildNamespaces(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}
 }
 
-func TestNamespaces(t *testing.T) {
-	client.AwsMockTestHelper(t, Namespaces(), buildNamespaces, client.TestOptions{})
+func TestServices(t *testing.T) {
+	client.AwsMockTestHelper(t, Services(), buildServices, client.TestOptions{})
 }

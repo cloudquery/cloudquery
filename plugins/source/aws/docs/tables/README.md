@@ -557,6 +557,7 @@
 - [aws_servicecatalog_products](../../../../../website/tables/aws/aws_servicecatalog_products.md)
 - [aws_servicecatalog_provisioned_products](../../../../../website/tables/aws/aws_servicecatalog_provisioned_products.md)
 - [aws_servicediscovery_namespaces](../../../../../website/tables/aws/aws_servicediscovery_namespaces.md)
+- [aws_servicediscovery_services](../../../../../website/tables/aws/aws_servicediscovery_services.md)
 - [aws_servicequotas_services](../../../../../website/tables/aws/aws_servicequotas_services.md)
   - [aws_servicequotas_quotas](../../../../../website/tables/aws/aws_servicequotas_quotas.md)
 - [aws_ses_active_receipt_rule_sets](../../../../../website/tables/aws/aws_ses_active_receipt_rule_sets.md)

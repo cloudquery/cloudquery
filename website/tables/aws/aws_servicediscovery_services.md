@@ -1,8 +1,8 @@
-# Table: aws_servicediscovery_namespaces
+# Table: aws_servicediscovery_services
 
-This table shows data for AWS Cloud Map Namespaces.
+This table shows data for AWS Cloud Map Services.
 
-https://docs.aws.amazon.com/cloud-map/latest/api/API_Namespace.html
+https://docs.aws.amazon.com/cloud-map/latest/api/API_Service.html
 
 The primary key for this table is **arn**.
 
@@ -21,8 +21,11 @@ The primary key for this table is **arn**.
 |create_date|`timestamp[us, tz=UTC]`|
 |creator_request_id|`utf8`|
 |description|`utf8`|
+|dns_config|`json`|
+|health_check_config|`json`|
+|health_check_custom_config|`json`|
 |id|`utf8`|
+|instance_count|`int64`|
 |name|`utf8`|
-|properties|`json`|
-|service_count|`int64`|
+|namespace_id|`utf8`|
 |type|`utf8`|

@@ -13,14 +13,14 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
-func Namespaces() *schema.Table {
-	tableName := "aws_servicediscovery_namespaces"
+func Services() *schema.Table {
+	tableName := "aws_servicediscovery_services"
 	return &schema.Table{
 		Name:                tableName,
-		Description:         `https://docs.aws.amazon.com/cloud-map/latest/api/API_Namespace.html`,
-		Resolver:            fetchNamespaces,
-		PreResourceResolver: getNamespace,
-		Transform:           transformers.TransformWithStruct(&types.Namespace{}, transformers.WithPrimaryKeys("Arn")),
+		Description:         `https://docs.aws.amazon.com/cloud-map/latest/api/API_Service.html`,
+		Resolver:            fetchServices,
+		PreResourceResolver: getService,
+		Transform:           transformers.TransformWithStruct(&types.Service{}, transformers.WithPrimaryKeys("Arn")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "servicediscovery"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
@@ -33,11 +33,11 @@ func Namespaces() *schema.Table {
 		},
 	}
 }
-func fetchNamespaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Servicediscovery
-	input := servicediscovery.ListNamespacesInput{MaxResults: aws.Int32(100)}
-	paginator := servicediscovery.NewListNamespacesPaginator(svc, &input)
+	input := servicediscovery.ListServicesInput{MaxResults: aws.Int32(100)}
+	paginator := servicediscovery.NewListServicesPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(o *servicediscovery.Options) {
 			o.Region = cl.Region
@@ -45,22 +45,22 @@ func fetchNamespaces(ctx context.Context, meta schema.ClientMeta, parent *schema
 		if err != nil {
 			return err
 		}
-		res <- page.Namespaces
+		res <- page.Services
 	}
 	return nil
 }
 
-func getNamespace(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+func getService(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Servicediscovery
-	namespace := resource.Item.(types.NamespaceSummary)
+	namespace := resource.Item.(types.ServiceSummary)
 
-	desc, err := svc.GetNamespace(ctx, &servicediscovery.GetNamespaceInput{Id: namespace.Id}, func(o *servicediscovery.Options) {
+	desc, err := svc.GetService(ctx, &servicediscovery.GetServiceInput{Id: namespace.Id}, func(o *servicediscovery.Options) {
 		o.Region = cl.Region
 	})
 	if err != nil {
 		return err
 	}
-	resource.Item = desc.Namespace
+	resource.Item = desc.Service
 	return nil
 }
