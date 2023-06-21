@@ -4,7 +4,7 @@ This table shows data for AWS Well-Architected Lens Reviews.
 
 https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_LensReview.html
 
-The composite primary key for this table is (**account_id**, **region**, **workload_arn**, **milestone_number**, **lens_alias**).
+The composite primary key for this table is (**workload_arn**, **milestone_number**, **lens_alias**).
 
 ## Relations
 
@@ -21,8 +21,8 @@ The following tables depend on aws_wellarchitected_lens_reviews:
 |_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|region (PK)|`utf8`|
+|account_id|`utf8`|
+|region|`utf8`|
 |workload_arn (PK)|`utf8`|
 |workload_id|`utf8`|
 |milestone_number (PK)|`int64`|

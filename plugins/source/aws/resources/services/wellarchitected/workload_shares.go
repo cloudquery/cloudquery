@@ -22,8 +22,8 @@ func workloadShares() *schema.Table {
 		Multiplex: client.ServiceAccountRegionMultiplexer(name, "wellarchitected"),
 		Resolver:  fetchWorkloadShares,
 		Columns: schema.ColumnList{
-			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(true),
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:       "workload_arn",
 				Type:       arrow.BinaryTypes.String,
