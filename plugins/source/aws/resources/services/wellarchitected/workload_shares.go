@@ -10,19 +10,18 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
-func workloadMilestones() *schema.Table {
-	name := "aws_wellarchitected_workload_milestones"
+func workloadShares() *schema.Table {
+	name := "aws_wellarchitected_workload_shares"
 	return &schema.Table{
 		Name:        name,
-		Description: `https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_MilestoneSummary.html`,
-		Transform: transformers.TransformWithStruct(new(types.MilestoneSummary),
-			transformers.WithPrimaryKeys("MilestoneName"),
+		Description: `https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_WorkloadShareSummary.html`,
+		Transform: transformers.TransformWithStruct(new(types.WorkloadShareSummary),
+			transformers.WithPrimaryKeys("ShareId"),
 			transformers.WithUnwrapAllEmbeddedStructs(),
-			transformers.WithSkipFields("WorkloadSummary"),
-			transformers.WithNameTransformer(client.CreateTrimPrefixTransformer("milestone_")),
+			transformers.WithNameTransformer(client.CreateTrimPrefixTransformer("share_")),
 		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(name, "wellarchitected"),
-		Resolver:  fetchWorkloadMilestones,
+		Resolver:  fetchWorkloadShares,
 		Columns: schema.ColumnList{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
@@ -32,13 +31,13 @@ func workloadMilestones() *schema.Table {
 	}
 }
 
-func fetchWorkloadMilestones(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchWorkloadShares(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	service := cl.Services().Wellarchitected
 	workloadID := parent.Get("id").String()
 
-	p := wellarchitected.NewListMilestonesPaginator(service,
-		&wellarchitected.ListMilestonesInput{
+	p := wellarchitected.NewListWorkloadSharesPaginator(service,
+		&wellarchitected.ListWorkloadSharesInput{
 			WorkloadId: &workloadID,
 			MaxResults: 50,
 		},
@@ -50,7 +49,7 @@ func fetchWorkloadMilestones(ctx context.Context, meta schema.ClientMeta, parent
 		if err != nil {
 			return err
 		}
-		res <- output.MilestoneSummaries
+		res <- output.WorkloadShareSummaries
 	}
 
 	return nil

@@ -2,7 +2,7 @@
 
 This table shows data for Wellarchitected Workload Milestones.
 
-https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_Workload.html
+https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_MilestoneSummary.html
 
 The composite primary key for this table is (**account_id**, **region**, **workload_id**, **name**).
 

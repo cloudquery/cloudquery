@@ -30,6 +30,7 @@ func buildWorkloadsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		Return(&wellarchitected.GetWorkloadOutput{Workload: &workload}, nil)
 
 	buildWorkloadMilestones(t, m, &workload)
+	buildWorkloadShares(t, m, &workload)
 
 	return client.Services{Wellarchitected: m}
 }

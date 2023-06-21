@@ -10,6 +10,7 @@ The composite primary key for this table is (**account_id**, **region**, **arn**
 
 The following tables depend on aws_wellarchitected_workloads:
   - [aws_wellarchitected_workload_milestones](aws_wellarchitected_workload_milestones)
+  - [aws_wellarchitected_workload_shares](aws_wellarchitected_workload_shares)
 
 ## Columns
 

@@ -25,7 +25,10 @@ func Workloads() *schema.Table {
 		Resolver:            fetchWorkloads,
 		PreResourceResolver: getWorkload,
 		Columns:             schema.ColumnList{client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true)},
-		Relations:           schema.Tables{workloadMilestones()},
+		Relations: schema.Tables{
+			workloadMilestones(),
+			workloadShares(),
+		},
 	}
 }
 

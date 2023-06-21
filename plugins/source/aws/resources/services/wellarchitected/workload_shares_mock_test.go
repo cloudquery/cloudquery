@@ -11,19 +11,19 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildWorkloadMilestones(t *testing.T, m *mocks.MockWellarchitectedClient, workload *types.Workload) {
-	var summary types.MilestoneSummary
+func buildWorkloadShares(t *testing.T, m *mocks.MockWellarchitectedClient, workload *types.Workload) {
+	var summary types.WorkloadShareSummary
 	require.NoError(t, faker.FakeObject(&summary))
 
-	m.EXPECT().ListMilestones(gomock.Any(),
-		&wellarchitected.ListMilestonesInput{
+	m.EXPECT().ListWorkloadShares(gomock.Any(),
+		&wellarchitected.ListWorkloadSharesInput{
 			WorkloadId: workload.WorkloadId,
 			MaxResults: 50,
 		},
 		gomock.Any()).
 		Return(
-			&wellarchitected.ListMilestonesOutput{
-				MilestoneSummaries: []types.MilestoneSummary{summary},
+			&wellarchitected.ListWorkloadSharesOutput{
+				WorkloadShareSummaries: []types.WorkloadShareSummary{summary},
 			},
 			nil,
 		)
