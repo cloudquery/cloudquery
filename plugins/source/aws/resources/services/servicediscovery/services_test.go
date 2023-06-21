@@ -50,6 +50,30 @@ func buildServices(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
+	is := types.InstanceSummary{}
+	require.NoError(t, faker.FakeObject(&is))
+
+	m.EXPECT().ListInstances(
+		gomock.Any(),
+		&servicediscovery.ListInstancesInput{MaxResults: aws.Int32(100), ServiceId: ss.Id},
+		gomock.Any(),
+	).Return(
+		&servicediscovery.ListInstancesOutput{Instances: []types.InstanceSummary{is}},
+		nil,
+	)
+
+	instance := types.Instance{}
+	require.NoError(t, faker.FakeObject(&instance))
+
+	m.EXPECT().GetInstance(
+		gomock.Any(),
+		&servicediscovery.GetInstanceInput{InstanceId: is.Id, ServiceId: ss.Id},
+		gomock.Any(),
+	).Return(
+		&servicediscovery.GetInstanceOutput{Instance: &instance},
+		nil,
+	)
+
 	return client.Services{
 		Servicediscovery: m,
 	}

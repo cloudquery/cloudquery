@@ -31,6 +31,9 @@ func Services() *schema.Table {
 				Resolver: resolveServicediscoveryTags("Arn"),
 			},
 		},
+		Relations: []*schema.Table{
+			instances(),
+		},
 	}
 }
 func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {

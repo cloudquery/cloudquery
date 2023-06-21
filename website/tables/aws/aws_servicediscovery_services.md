@@ -6,6 +6,11 @@ https://docs.aws.amazon.com/cloud-map/latest/api/API_Service.html
 
 The primary key for this table is **arn**.
 
+## Relations
+
+The following tables depend on aws_servicediscovery_services:
+  - [aws_servicediscovery_instances](aws_servicediscovery_instances)
+
 ## Columns
 
 | Name          | Type          |
