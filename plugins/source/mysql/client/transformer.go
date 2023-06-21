@@ -10,7 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
+func reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
 	val = reflect.ValueOf(val).Elem().Interface()
 	if val == nil {
 		bldr.AppendNull()
@@ -131,7 +131,10 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 			b.AppendNull()
 			return nil
 		}
-		b.AppendValueFromString(*ptr)
+		err := b.AppendValueFromString(*ptr)
+		if err != nil {
+			return err
+		}
 	default:
 		ptr := val.(*string)
 		if ptr == nil {
