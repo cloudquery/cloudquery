@@ -1,8 +1,8 @@
 package client
 
 import (
-	"bytes"
 	"context"
+	"fmt"
 	"io"
 	"path"
 	"reflect"
@@ -15,9 +15,12 @@ import (
 	"github.com/apache/arrow/go/v13/arrow/memory"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/cloudquery/filetypes/v3"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/filetypes/v4"
+	ftypes "github.com/cloudquery/filetypes/v4/types"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/google/uuid"
 )
 
@@ -34,37 +37,96 @@ const (
 
 var reInvalidJSONKey = regexp.MustCompile(`\W`)
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data []arrow.Record) error {
-	if len(data) == 0 {
-		return nil
+type stream struct {
+	h    ftypes.Handle
+	wc   *writeCloser
+	done chan error
+}
+
+type writeCloser struct {
+	*io.PipeWriter
+	closed bool
+}
+
+func (w *writeCloser) Close() error {
+	w.closed = true
+	return w.PipeWriter.Close()
+}
+
+func (c *Client) OpenTable(ctx context.Context, sourceName string, table *schema.Table, syncTime time.Time) (any, error) {
+	objKey := replacePathVariables(c.spec.Path, table.Name, uuid.NewString(), c.spec.Format, syncTime)
+
+	pr, pw := io.Pipe()
+	doneCh := make(chan error)
+
+	go func() {
+		_, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
+			Bucket: aws.String(c.spec.Bucket),
+			Key:    aws.String(objKey),
+			Body:   pr,
+		})
+		_ = pr.CloseWithError(err)
+
+		doneCh <- err
+		close(doneCh)
+	}()
+
+	wc := &writeCloser{PipeWriter: pw}
+	h, err := c.Client.WriteHeader(wc, table)
+	if err != nil {
+		_ = pw.CloseWithError(err)
+		<-doneCh
+		return nil, err
 	}
 
-	if c.pluginSpec.Athena {
-		for i, record := range data {
-			data[i] = sanitizeRecordJSONKeys(record)
+	return &stream{
+		h:    h,
+		wc:   wc,
+		done: doneCh,
+	}, nil
+}
+
+func (*Client) CloseTable(ctx context.Context, handle any) error {
+	s := handle.(*stream)
+	if err := s.h.WriteFooter(); err != nil {
+		if !s.wc.closed {
+			_ = s.wc.CloseWithError(err)
+		}
+		return fmt.Errorf("failed to write footer: %w", <-s.done)
+	}
+
+	// ParquetWriter likes to close the underlying writer, so we need to check if it's already closed
+	if !s.wc.closed {
+		if err := s.wc.Close(); err != nil {
+			return err
 		}
 	}
 
-	var b bytes.Buffer
-	w := io.Writer(&b)
+	return <-s.done
+}
 
-	timeNow := time.Now().UTC()
-
-	if err := c.Client.WriteTableBatchFile(w, table, data); err != nil {
-		return err
-	}
-	// we don't upload in parallel here because AWS sdk moves the burden to the developer, and
-	// we don't want to deal with that yet. in the future maybe we can run some benchmarks and see if adding parallelization helps.
-	r := io.Reader(&b)
-	if _, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
-		Bucket: aws.String(c.pluginSpec.Bucket),
-		Key:    aws.String(replacePathVariables(c.pluginSpec.Path, table.Name, uuid.NewString(), c.pluginSpec.Format, timeNow)),
-		Body:   r,
-	}); err != nil {
-		return err
+func (c *Client) WriteTableStream(ctx context.Context, handle any, upsert bool, msgs []*message.Insert) error {
+	if len(msgs) == 0 {
+		return nil
 	}
 
-	return nil
+	records := make([]arrow.Record, len(msgs))
+	for i, msg := range msgs {
+		if c.spec.Athena {
+			records[i] = sanitizeRecordJSONKeys(msg.Record)
+		} else {
+			records[i] = msg.Record
+		}
+	}
+
+	return handle.(*stream).h.WriteContent(records)
+}
+
+func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, msgs <-chan message.Message) error {
+	if err := c.writer.Write(ctx, msgs); err != nil {
+		return err
+	}
+	return c.writer.Flush(ctx)
 }
 
 // sanitizeRecordJSONKeys replaces all invalid characters in JSON keys with underscores. This is required
