@@ -23,6 +23,7 @@ func buildLensesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 			&wellarchitected.ListLensesInput{
 				LensStatus: types.LensStatusTypeAll,
 				LensType:   lensType,
+				MaxResults: 50,
 			}, gomock.Any()).
 			Return(&wellarchitected.ListLensesOutput{LensSummaries: []types.LensSummary{summary}}, nil)
 

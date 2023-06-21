@@ -47,6 +47,7 @@ func fetchLenses(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 			&wellarchitected.ListLensesInput{
 				LensStatus: types.LensStatusTypeAll,
 				LensType:   lensType,
+				MaxResults: 50,
 			},
 		)
 		for p.HasMorePages() {
@@ -75,7 +76,7 @@ func getLens(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 	)
 	if err != nil {
 		// at the very least we want the summary data to be filled in
-		cl.Logger().Err(err).Str("table", resource.Table.Name).Msg("Failed to get")
+		cl.Logger().Err(err).Str("table", resource.Table.Name).Msg("Failed to perform get, ignoring...")
 	}
 
 	// for err != nil basically

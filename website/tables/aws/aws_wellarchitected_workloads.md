@@ -6,6 +6,11 @@ https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_Workload.htm
 
 The composite primary key for this table is (**account_id**, **region**, **arn**).
 
+## Relations
+
+The following tables depend on aws_wellarchitected_workloads:
+  - [aws_wellarchitected_workload_milestones](aws_wellarchitected_workload_milestones)
+
 ## Columns
 
 | Name          | Type          |

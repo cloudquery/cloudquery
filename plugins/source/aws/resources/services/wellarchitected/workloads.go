@@ -3,6 +3,7 @@ package wellarchitected
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -24,7 +25,7 @@ func Workloads() *schema.Table {
 		Resolver:            fetchWorkloads,
 		PreResourceResolver: getWorkload,
 		Columns:             schema.ColumnList{client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true)},
-		Relations:           nil,
+		Relations:           schema.Tables{workloadMilestones()},
 	}
 }
 
@@ -32,7 +33,7 @@ func fetchWorkloads(ctx context.Context, meta schema.ClientMeta, _ *schema.Resou
 	cl := meta.(*client.Client)
 	service := cl.Services().Wellarchitected
 
-	p := wellarchitected.NewListWorkloadsPaginator(service, new(wellarchitected.ListWorkloadsInput))
+	p := wellarchitected.NewListWorkloadsPaginator(service, &wellarchitected.ListWorkloadsInput{MaxResults: 50})
 	for p.HasMorePages() {
 		output, err := p.NextPage(ctx, func(o *wellarchitected.Options) {
 			o.Region = cl.Region
@@ -58,7 +59,7 @@ func getWorkload(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 
 	if err != nil {
 		// at the very least we want the summary data to be filled in
-		cl.Logger().Err(err).Str("table", resource.Table.Name).Msg("Failed to get")
+		cl.Logger().Err(err).Str("table", resource.Table.Name).Msg("Failed to perform get, ignoring...")
 	}
 
 	// for err != nil basically
@@ -67,3 +68,12 @@ func getWorkload(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 	}
 	return nil
 }
+
+var (
+	workloadIDCol = schema.Column{
+		Name:       "workload_id",
+		Type:       arrow.BinaryTypes.String,
+		Resolver:   schema.ParentColumnResolver("id"),
+		PrimaryKey: true,
+	}
+)

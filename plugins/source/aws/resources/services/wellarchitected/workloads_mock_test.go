@@ -18,14 +18,18 @@ func buildWorkloadsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	var summary types.WorkloadSummary
 	require.NoError(t, faker.FakeObject(&summary))
 
-	m.EXPECT().ListWorkloads(gomock.Any(), gomock.Any(), gomock.Any()).
+	m.EXPECT().ListWorkloads(gomock.Any(),
+		&wellarchitected.ListWorkloadsInput{MaxResults: 50},
+		gomock.Any()).
 		Return(&wellarchitected.ListWorkloadsOutput{WorkloadSummaries: []types.WorkloadSummary{summary}}, nil)
 
 	var workload types.Workload
 	require.NoError(t, faker.FakeObject(&workload))
 
-	m.EXPECT().GetWorkload(gomock.Any(), gomock.Any(), gomock.Any()).
+	m.EXPECT().GetWorkload(gomock.Any(), &wellarchitected.GetWorkloadInput{WorkloadId: summary.WorkloadId}, gomock.Any()).
 		Return(&wellarchitected.GetWorkloadOutput{Workload: &workload}, nil)
+
+	buildWorkloadMilestones(t, m, &workload)
 
 	return client.Services{Wellarchitected: m}
 }
