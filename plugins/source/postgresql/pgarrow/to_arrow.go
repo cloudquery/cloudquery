@@ -78,9 +78,7 @@ func normalize(t string) string {
 
 func parseTimestamp(t string) (arrow.DataType, bool) {
 	timestamptzPrefix := "timestamptz using"
-	if strings.HasPrefix(t, timestamptzPrefix) {
-		t = strings.TrimPrefix(t, timestamptzPrefix)
-	}
+	t = strings.TrimPrefix(t, timestamptzPrefix)
 	if t == "timestamptz" {
 		return arrow.FixedWidthTypes.Timestamp_us, true
 	}
