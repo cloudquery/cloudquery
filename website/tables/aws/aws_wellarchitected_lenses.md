@@ -2,7 +2,7 @@
 
 This table shows data for Wellarchitected Lenses.
 
-https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/wellarchitected/types#Lens
+https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_Lens.html
 
 The composite primary key for this table is (**account_id**, **region**, **alias**).
 

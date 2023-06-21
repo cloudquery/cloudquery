@@ -2,13 +2,16 @@
 
 This table shows data for Wellarchitected Lens Reviews.
 
-https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/wellarchitected/types#Lens
+https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_LensReview.html
 
 The composite primary key for this table is (**account_id**, **region**, **lens_alias**).
 
 ## Relations
 
 This table depends on [aws_wellarchitected_workload_milestones](aws_wellarchitected_workload_milestones).
+
+The following tables depend on aws_wellarchitected_lens_reviews:
+  - [aws_wellarchitected_lens_review_improvements](aws_wellarchitected_lens_review_improvements)
 
 ## Columns
 

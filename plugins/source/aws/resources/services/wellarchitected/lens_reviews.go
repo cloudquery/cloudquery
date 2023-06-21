@@ -15,7 +15,7 @@ func lensReviews() *schema.Table {
 	name := "aws_wellarchitected_lens_reviews"
 	return &schema.Table{
 		Name:        name,
-		Description: `https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/wellarchitected/types#Lens`,
+		Description: `https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_LensReview.html`,
 		Transform: transformers.TransformWithStruct(new(types.LensReview),
 			transformers.WithPrimaryKeys("LensAlias"),
 			transformers.WithUnwrapAllEmbeddedStructs(),
@@ -36,7 +36,7 @@ func lensReviews() *schema.Table {
 				Resolver: schema.ParentColumnResolver("number"),
 			},
 		},
-		Relations: nil,
+		Relations: schema.Tables{lensReviewImprovements()},
 	}
 }
 

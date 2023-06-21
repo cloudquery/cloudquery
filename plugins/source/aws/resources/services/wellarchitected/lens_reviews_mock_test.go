@@ -50,4 +50,6 @@ func buildLensReviews(t *testing.T, m *mocks.MockWellarchitectedClient,
 			},
 			nil,
 		)
+
+	buildLensReviewImprovements(t, m, workload, milestone, &review)
 }

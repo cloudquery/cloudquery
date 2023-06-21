@@ -23,7 +23,7 @@ func Lenses() *schema.Table {
 	name := "aws_wellarchitected_lenses"
 	return &schema.Table{
 		Name:        name,
-		Description: `https://pkg.go.dev/github.com/aws/aws-sdk-go-v2/service/wellarchitected/types#Lens`,
+		Description: `https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_Lens.html`,
 		Transform: transformers.TransformWithStruct(new(lens),
 			transformers.WithPrimaryKeys("LensAlias"),
 			transformers.WithUnwrapAllEmbeddedStructs(),
