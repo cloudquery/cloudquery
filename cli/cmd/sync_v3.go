@@ -170,13 +170,33 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 				}
 			}
 		case *plugin.Sync_Response_MigrateTable:
-			// TODO: add schema transformation here
-			wr.Message = &plugin.Write_Request_MigrateTable{
-				MigrateTable: m.MigrateTable,
+			sc, err := plugin.NewSchemaFromBytes(m.MigrateTable.Table)
+			if err != nil {
+				return err
+			}
+			for i := range destinationsPbClients {
+				transformedSchema := destinationTransformers[i].TransformSchema(sc)
+				transformedSchemaBytes, err := plugin.SchemaToBytes(transformedSchema)
+				if err != nil {
+					return err
+				}
+				wr.Message = &plugin.Write_Request_MigrateTable{
+					MigrateTable: &plugin.MessageMigrateTable{
+						Table: transformedSchemaBytes,
+					},
+				}
+				if err := writeClients[i].Send(wr); err != nil {
+					return err
+				}
 			}
 		case *plugin.Sync_Response_Delete:
 			wr.Message = &plugin.Write_Request_Delete{
 				Delete: m.Delete,
+			}
+			for i := range destinationsPbClients {
+				if err := writeClients[i].Send(wr); err != nil {
+					return err
+				}
 			}
 		default:
 			return fmt.Errorf("unknown message type: %T", m)
