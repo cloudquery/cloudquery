@@ -113,13 +113,14 @@ func (w *StreamingBatchWriter) Flush(ctx context.Context) error {
 	return w.flushDeleteStaleTables(ctx)
 }
 
-func (w *StreamingBatchWriter) Close(_ context.Context) error {
+func (w *StreamingBatchWriter) stopWorkers() error {
 	w.workersLock.Lock()
 	defer w.workersLock.Unlock()
 	for _, w := range w.workers {
 		close(w.ch)
 	}
 	w.workersWaitGroup.Wait()
+	w.workers = make(map[string]*worker)
 
 	return nil
 }
@@ -313,6 +314,7 @@ func (w *StreamingBatchWriter) flushInsertByTableName(ctx context.Context, table
 }
 
 func (w *StreamingBatchWriter) Write(ctx context.Context, msgs <-chan message.Message) error {
+	hasWorkers := false
 	for msg := range msgs {
 		switch m := msg.(type) {
 		case *message.DeleteStale:
@@ -336,6 +338,7 @@ func (w *StreamingBatchWriter) Write(ctx context.Context, msgs <-chan message.Me
 			if err := w.flushDeleteStaleTables(ctx); err != nil {
 				return err
 			}
+			hasWorkers = true
 			if err := w.startWorker(ctx, m); err != nil {
 				return err
 			}
@@ -355,6 +358,15 @@ func (w *StreamingBatchWriter) Write(ctx context.Context, msgs <-chan message.Me
 			}
 		}
 	}
+
+	if err := w.Flush(ctx); err != nil {
+		return err
+	}
+
+	if hasWorkers {
+		return w.stopWorkers()
+	}
+
 	return nil
 }
 

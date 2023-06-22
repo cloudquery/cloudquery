@@ -53,14 +53,14 @@ func (w *writeCloser) Close() error {
 	return w.PipeWriter.Close()
 }
 
-func (c *Client) OpenTable(_ context.Context, sourceName string, table *schema.Table, syncTime time.Time) (any, error) {
+func (c *Client) OpenTable(ctx context.Context, sourceName string, table *schema.Table, syncTime time.Time) (any, error) {
 	objKey := replacePathVariables(c.spec.Path, table.Name, uuid.NewString(), c.spec.Format, syncTime)
 
 	pr, pw := io.Pipe()
 	doneCh := make(chan error)
 
 	go func() {
-		_, err := c.uploader.Upload(c.uploadCtx, &s3.PutObjectInput{
+		_, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
 			Bucket: aws.String(c.spec.Bucket),
 			Key:    aws.String(objKey),
 			Body:   pr,
@@ -123,10 +123,7 @@ func (c *Client) WriteTableStream(_ context.Context, handle any, upsert bool, ms
 }
 
 func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, msgs <-chan message.Message) error {
-	if err := c.writer.Write(ctx, msgs); err != nil {
-		return err
-	}
-	return c.writer.Flush(ctx)
+	return c.writer.Write(ctx, msgs)
 }
 
 // sanitizeRecordJSONKeys replaces all invalid characters in JSON keys with underscores. This is required
