@@ -21,22 +21,10 @@ const (
 	defaultBackoff    = 10 * time.Second
 )
 
-var tables = []*schema.Table{
-	analytics.Installs(homebrew.Days30),
-	analytics.Installs(homebrew.Days90),
-	analytics.Installs(homebrew.Days365),
-	analytics.CaskInstalls(homebrew.Days30),
-	analytics.CaskInstalls(homebrew.Days90),
-	analytics.CaskInstalls(homebrew.Days365),
-	analytics.BuildErrors(homebrew.Days30),
-	analytics.BuildErrors(homebrew.Days90),
-	analytics.BuildErrors(homebrew.Days365),
-}
-
 type Client struct {
 	SchedulerClient *client.Client
 	logger          zerolog.Logger
-
+	tables          []*schema.Table
 	plugin.UnimplementedDestination
 }
 
@@ -50,15 +38,37 @@ func (c *Client) Logger() *zerolog.Logger {
 
 func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.Message) error {
 	scheduler := scheduler.NewScheduler(c.SchedulerClient, scheduler.WithSchedulerStrategy(scheduler.StrategyDFS))
-	return scheduler.Sync(ctx, tables, res)
+	return scheduler.Sync(ctx, c.tables, res)
 }
 
 func (c *Client) Tables(ctx context.Context) (schema.Tables, error) {
-	return tables, nil
+	return c.tables, nil
 }
 
 func (c *Client) Close(ctx context.Context) error {
 	return nil
+}
+
+func getTables() []*schema.Table {
+	tables := []*schema.Table{
+		analytics.Installs(homebrew.Days30),
+		analytics.Installs(homebrew.Days90),
+		analytics.Installs(homebrew.Days365),
+		analytics.CaskInstalls(homebrew.Days30),
+		analytics.CaskInstalls(homebrew.Days90),
+		analytics.CaskInstalls(homebrew.Days365),
+		analytics.BuildErrors(homebrew.Days30),
+		analytics.BuildErrors(homebrew.Days90),
+		analytics.BuildErrors(homebrew.Days365),
+	}
+
+	for i := range tables {
+		err := tables[i].Transform(tables[i])
+		if err != nil {
+			panic(err)
+		}
+	}
+	return tables
 }
 
 func Configure(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
@@ -88,5 +98,6 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.
 	return &Client{
 		logger:          logger,
 		SchedulerClient: schedulerClient,
+		tables:          getTables(),
 	}, nil
 }

@@ -15,7 +15,7 @@ replace github.com/cloudquery/plugin-pb-go => ../../../../plugin-pb-go
 replace github.com/cloudquery/plugin-sdk/v4 => ../../../../plugin-sdk
 
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230601214540-018e7d3f9c4b // indirect
+	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe // indirect
 	github.com/avast/retry-go/v4 v4.3.4 // indirect
 	github.com/cloudquery/plugin-pb-go v1.0.9 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
@@ -40,7 +40,6 @@ require (
 	github.com/schollz/progressbar/v3 v3.13.1 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1 // indirect

@@ -37,7 +37,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T) 
 	if err != nil {
 		t.Fatal(err)
 	}
-	inserts := messages.GetInserts()
+	inserts := messages.InsertMessage()
 	records := inserts.GetRecordsForTable(table)
 	emptyColumns := schema.FindEmptyColumns(table, records)
 	if len(emptyColumns) > 0 {
