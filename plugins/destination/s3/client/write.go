@@ -53,14 +53,14 @@ func (w *writeCloser) Close() error {
 	return w.PipeWriter.Close()
 }
 
-func (c *Client) OpenTable(ctx context.Context, sourceName string, table *schema.Table, syncTime time.Time) (any, error) {
+func (c *Client) OpenTable(_ context.Context, sourceName string, table *schema.Table, syncTime time.Time) (any, error) {
 	objKey := replacePathVariables(c.spec.Path, table.Name, uuid.NewString(), c.spec.Format, syncTime)
 
 	pr, pw := io.Pipe()
 	doneCh := make(chan error)
 
 	go func() {
-		_, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
+		_, err := c.uploader.Upload(c.uploadCtx, &s3.PutObjectInput{
 			Bucket: aws.String(c.spec.Bucket),
 			Key:    aws.String(objKey),
 			Body:   pr,
@@ -86,7 +86,7 @@ func (c *Client) OpenTable(ctx context.Context, sourceName string, table *schema
 	}, nil
 }
 
-func (*Client) CloseTable(ctx context.Context, handle any) error {
+func (*Client) CloseTable(_ context.Context, handle any) error {
 	s := handle.(*stream)
 	if err := s.h.WriteFooter(); err != nil {
 		if !s.wc.closed {
@@ -105,7 +105,7 @@ func (*Client) CloseTable(ctx context.Context, handle any) error {
 	return <-s.done
 }
 
-func (c *Client) WriteTableStream(ctx context.Context, handle any, upsert bool, msgs []*message.Insert) error {
+func (c *Client) WriteTableStream(_ context.Context, handle any, upsert bool, msgs []*message.Insert) error {
 	if len(msgs) == 0 {
 		return nil
 	}

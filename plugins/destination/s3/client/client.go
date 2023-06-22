@@ -28,6 +28,9 @@ type Client struct {
 	s3Client   *s3.Client
 	uploader   *manager.Uploader
 	downloader *manager.Downloader
+
+	uploadCtx    context.Context
+	uploadCancel context.CancelFunc
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
@@ -64,6 +67,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 	c.s3Client = s3.NewFromConfig(cfg)
 	c.uploader = manager.NewUploader(c.s3Client)
 	c.downloader = manager.NewDownloader(c.s3Client)
+	c.uploadCtx, c.uploadCancel = context.WithCancel(context.Background())
 
 	if *c.spec.TestWrite {
 		// we want to run this test because we want it to fail early if the bucket is not accessible
@@ -86,6 +90,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 }
 
 func (c *Client) Close(ctx context.Context) error {
+	defer c.uploadCancel()
 	return c.writer.Close(ctx)
 }
 
