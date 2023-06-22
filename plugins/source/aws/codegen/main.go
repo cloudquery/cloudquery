@@ -28,6 +28,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
+	"github.com/aws/aws-sdk-go-v2/service/codeartifact"
 	"github.com/aws/aws-sdk-go-v2/service/codebuild"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
@@ -109,6 +110,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
+	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/workspaces"
 	"github.com/aws/aws-sdk-go-v2/service/xray"
 	"github.com/cloudquery/codegen/interfaces"
@@ -140,6 +142,7 @@ var clients = []any{
 	&cloudtrail.Client{},
 	&cloudwatch.Client{},
 	&cloudwatchlogs.Client{},
+	&codeartifact.Client{},
 	&codebuild.Client{},
 	&codepipeline.Client{},
 	&cognitoidentity.Client{},
@@ -220,6 +223,7 @@ var clients = []any{
 	&waf.Client{},
 	&wafregional.Client{},
 	&wafv2.Client{},
+	&wellarchitected.Client{},
 	&workspaces.Client{},
 	&xray.Client{},
 }

@@ -3,7 +3,7 @@ package client
 import (
 	"context"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func Identifier(name string) string {
@@ -31,13 +31,12 @@ func (c *Client) getTableColumns(ctx context.Context, table *schema.Table) (sche
 			return nil, err
 		}
 
-		schemaType, err := SchemaType(table.Name, name, dataType, columnType)
-		if err != nil {
-			return nil, err
-		}
+		schemaType := SchemaType(dataType, columnType)
 		column := schema.Column{
-			Name: name, Type: schemaType,
-			CreationOptions: schema.ColumnCreationOptions{NotNull: nullable == "NO", PrimaryKey: key == "PRI"},
+			Name:       name,
+			Type:       schemaType,
+			NotNull:    nullable == "NO",
+			PrimaryKey: key == "PRI",
 		}
 		tc = append(tc, column)
 	}

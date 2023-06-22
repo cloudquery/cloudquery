@@ -30,6 +30,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.27.0
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.26.1
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.21.1
+	github.com/aws/aws-sdk-go-v2/service/codeartifact v1.18.6
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.14
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.15.1
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.12
@@ -112,6 +113,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/waf v1.12.11
 	github.com/aws/aws-sdk-go-v2/service/wafregional v1.13.14
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.35.0
+	github.com/aws/aws-sdk-go-v2/service/wellarchitected v1.21.1
 	github.com/aws/aws-sdk-go-v2/service/workspaces v1.28.14
 	github.com/aws/aws-sdk-go-v2/service/xray v1.16.12
 	github.com/aws/smithy-go v1.13.5
@@ -135,7 +137,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230621001250-f0dffc612853
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230622001328-95d31999d687
 
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect
