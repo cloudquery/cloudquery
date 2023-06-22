@@ -149,14 +149,14 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		wr := &plugin.Write_Request{}
 		switch m := syncResponseMsg.(type) {
 		case *plugin.Sync_Response_Insert:
-			record, err := NewRecordFromBytes(m.Insert.Record)
+			record, err := plugin.NewRecordFromBytes(m.Insert.Record)
 			if err != nil {
 				return err
 			}
 			totalResources += int(record.NumRows())
 			for i := range destinationsPbClients {
 				transformedRecord := destinationTransformers[i].Transform(record)
-				transformedRecordBytes, err := RecordToBytes(transformedRecord)
+				transformedRecordBytes, err := plugin.RecordToBytes(transformedRecord)
 				if err != nil {
 					return err
 				}
