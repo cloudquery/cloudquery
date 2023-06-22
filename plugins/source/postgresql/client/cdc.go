@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/jackc/pglogrepl"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
@@ -282,7 +282,11 @@ func (c *Client) resourceFromCDCValues(tableName string, values map[string]any) 
 	table := c.Tables.Get(tableName)
 	resource := schema.NewResourceData(table, nil, values)
 	for _, col := range table.Columns {
-		if err := resource.Set(col.Name, values[col.Name]); err != nil {
+		v, err := prepareValueForResourceSet(col, values[col.Name])
+		if err != nil {
+			return nil, err
+		}
+		if err := resource.Set(col.Name, v); err != nil {
 			return nil, err
 		}
 	}
