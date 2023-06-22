@@ -102,6 +102,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/waf"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wafregional"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wafv2"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wellarchitected"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/workspaces"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/xray"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
@@ -517,6 +518,9 @@ func tables() []*schema.Table {
 		wafv2.RegexPatternSets(),
 		wafv2.RuleGroups(),
 		wafv2.WebAcls(),
+		wellarchitected.Lenses(),
+		wellarchitected.ShareInvitations(),
+		wellarchitected.Workloads(),
 		workspaces.Directories(),
 		workspaces.Workspaces(),
 		xray.EncryptionConfigs(),

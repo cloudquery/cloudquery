@@ -108,6 +108,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
+	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/workspaces"
 	"github.com/aws/aws-sdk-go-v2/service/xray"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
@@ -223,6 +224,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Waf:                       waf.NewFromConfig(awsCfg),
 		Wafregional:               wafregional.NewFromConfig(awsCfg),
 		Wafv2:                     wafv2.NewFromConfig(awsCfg),
+		Wellarchitected:           wellarchitected.NewFromConfig(awsCfg),
 		Workspaces:                workspaces.NewFromConfig(awsCfg),
 		Xray:                      xray.NewFromConfig(awsCfg),
 	}
@@ -336,6 +338,7 @@ type Services struct {
 	Waf                       services.WafClient
 	Wafregional               services.WafregionalClient
 	Wafv2                     services.Wafv2Client
+	Wellarchitected           services.WellarchitectedClient
 	Workspaces                services.WorkspacesClient
 	Xray                      services.XrayClient
 }
