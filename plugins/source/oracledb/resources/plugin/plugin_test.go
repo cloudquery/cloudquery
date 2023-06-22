@@ -313,7 +313,7 @@ func TestPerformance(t *testing.T) {
 	g.Go(func() error {
 		defer close(res)
 		opts := plugin.SyncOptions{
-			Tables:            []string{"*"},
+			Tables:            []string{"test_oracledb_source_performance_*"},
 			DeterministicCQID: false,
 			StateBackend:      nil,
 		}
