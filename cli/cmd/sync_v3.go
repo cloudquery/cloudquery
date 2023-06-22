@@ -170,6 +170,7 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 				}
 			}
 		case *plugin.Sync_Response_MigrateTable:
+			// TODO: add schema transformation here
 			wr.Message = &plugin.Write_Request_MigrateTable{
 				MigrateTable: m.MigrateTable,
 			}

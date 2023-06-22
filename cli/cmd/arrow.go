@@ -7,6 +7,14 @@ import (
 	"github.com/apache/arrow/go/v13/arrow/ipc"
 )
 
+func NewSchemaFromBytes(b []byte) (*arrow.Schema, error) {
+	rdr, err := ipc.NewReader(bytes.NewReader(b))
+	if err != nil {
+		return nil, err
+	}
+	return rdr.Schema(), nil
+}
+
 
 func RecordToBytes(record arrow.Record) ([]byte, error) {
 	var buf bytes.Buffer
