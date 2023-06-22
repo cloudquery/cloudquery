@@ -3,6 +3,7 @@ package plugin
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -13,8 +14,9 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/oracledb/client"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/sync/errgroup"
@@ -131,63 +133,11 @@ func isNotExistsError(err error) bool {
 	return false
 }
 
-func getActualStringsForResource(t *testing.T, resource *schema.Resource) []string {
-	actualData := resource.GetValues()
-	actualStrings := make([]string, len(actualData))
-	for i, v := range actualData {
-		// Oracle treats empty strings as null, so we need to convert them for comparison
-		// See https://stackoverflow.com/questions/203493/why-does-oracle-9i-treat-an-empty-string-as-null
-		// Please note this means we can't distinguish between null and empty string
-		if !v.IsValid() && arrow.TypeEqual(v.DataType(), arrow.BinaryTypes.String) {
-			if err := v.Set(""); err != nil {
-				t.Fatal(err)
-			}
-		}
-		actualStrings[i] = v.String()
-	}
-	return actualStrings
-}
-
-func getActualStrings(t *testing.T, resources []*schema.Resource) [][]string {
-	actualStrings := make([][]string, len(resources))
-	for i, resource := range resources {
-		actualStrings[i] = getActualStringsForResource(t, resource)
-	}
-	return actualStrings
-}
-
-func getExpectedStringsForRecord(t *testing.T, table *schema.Table, record arrow.Record) []string {
-	cloned := table.Copy(nil)
-	for i := range cloned.Columns {
-		// Normalize column types to the ones supported by OracleDB
-		cloned.Columns[i].Type = client.SchemaType(client.SQLType(cloned.Columns[i].Type))
-	}
-
-	transformedRecord, _ := client.TransformRecord(record)
-	values := transformedRecord[0]
-	resource := schema.NewResourceData(cloned, nil, values)
-	for i, col := range cloned.Columns {
-		if err := resource.Set(col.Name, values[i]); err != nil {
-			t.Fatal(err)
-		}
-	}
-
-	return getActualStringsForResource(t, resource)
-}
-
-func getExpectedStrings(t *testing.T, table *schema.Table, records []arrow.Record) [][]string {
-	expectedStrings := make([][]string, len(records))
-	for i, record := range records {
-		expectedStrings[i] = getExpectedStringsForRecord(t, table, record)
-	}
-	return expectedStrings
-}
-
-func sortResults(table *schema.Table, records [][]string) {
+func sortResults(table *schema.Table, records []arrow.Record) {
 	cqIDIndex := table.Columns.Index(schema.CqIDColumn.Name)
 	sort.Slice(records, func(i, j int) bool {
-		firstUUID := records[i][cqIDIndex]
-		secondUUID := records[j][cqIDIndex]
+		firstUUID := records[i].Column(cqIDIndex).ValueStr(0)
+		secondUUID := records[j].Column(cqIDIndex).ValueStr(0)
 		return strings.Compare(firstUUID, secondUUID) < 0
 	})
 }
@@ -207,15 +157,12 @@ func TestPlugin(t *testing.T) {
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	p.SetLogger(l)
-	spec := specs.Source{
-		Name:         "test_oracledb_source",
-		Path:         "cloudquery/oracledb",
-		Version:      "vDevelopment",
-		Destinations: []string{"test"},
-		Tables:       []string{"test_oracledb_source"},
-		Spec: client.Spec{
-			ConnectionString: getTestConnectionString(),
-		},
+	spec := client.Spec{
+		ConnectionString: getTestConnectionString(),
+	}
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
 	}
 	db, err := getTestDB(ctx)
 	if err != nil {
@@ -234,8 +181,8 @@ func TestPlugin(t *testing.T) {
 	if err := createTable(ctx, db, testTable); err != nil {
 		t.Fatal(err)
 	}
-	data := schema.GenTestData(testTable, schema.GenTestDataOptions{MaxRows: 2})
-	if err := insertTable(ctx, db, testTable, data); err != nil {
+	expectedRecords := schema.GenTestData(testTable, schema.GenTestDataOptions{MaxRows: 2})
+	if err := insertTable(ctx, db, testTable, expectedRecords); err != nil {
 		t.Fatal(err)
 	}
 
@@ -253,33 +200,64 @@ func TestPlugin(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if err := p.Init(ctx, spec); err != nil {
+	if err := p.Init(ctx, specBytes); err != nil {
 		t.Fatal(err)
 	}
-	res := make(chan *schema.Resource, 1)
+	res := make(chan message.Message, 1)
 	g := errgroup.Group{}
-	syncTime := time.Now()
+
 	g.Go(func() error {
 		defer close(res)
-		return p.Sync(ctx, syncTime, res)
+		opts := plugin.SyncOptions{
+			Tables:            []string{testTable.Name},
+			SkipTables:        []string{otherTable.Name},
+			DeterministicCQID: false,
+			StateBackend:      nil,
+		}
+		return p.Sync(ctx, opts, res)
 	})
-	resources := make([]*schema.Resource, 0)
+	actualRecords := make([]arrow.Record, 0)
 	for r := range res {
-		resources = append(resources, r)
+		insert := r.(*message.Insert).Record
+		actualRecords = append(actualRecords, insert)
 	}
 	err = g.Wait()
 	if err != nil {
 		t.Fatal("got unexpected error:", err)
 	}
-	if len(resources) != 2 {
-		t.Fatalf("expected 2 resource, got %d", len(resources))
+	if len(actualRecords) != 2 {
+		t.Fatalf("expected 2 resource, got %d", len(actualRecords))
 	}
 
-	expectedStrings := getExpectedStrings(t, testTable, data)
-	actualStrings := getActualStrings(t, resources)
-	sortResults(testTable, actualStrings)
+	sortResults(testTable, actualRecords)
 
-	require.Equal(t, expectedStrings, actualStrings)
+	for recordIndex, expectedRecord := range expectedRecords {
+		actualRecord := actualRecords[recordIndex]
+		if expectedRecord.NumCols() != actualRecord.NumCols() {
+			t.Fatalf("expected record %d to have %d columns, got %d", recordIndex, expectedRecord.NumCols(), actualRecord.NumCols())
+		}
+		for columnIndex, expectedCol := range expectedRecord.Columns() {
+			actualColumn := actualRecord.Column(columnIndex)
+			columnName := expectedRecord.ColumnName(columnIndex)
+			if expectedCol.Len() != actualColumn.Len() {
+				t.Fatalf("expected record %d column %d (%s) to have length %d, got %d", recordIndex, columnIndex, columnName, expectedCol.Len(), actualColumn.Len())
+			}
+			for arrayIndex := 0; arrayIndex < expectedCol.Len(); arrayIndex++ {
+				expectedValue := expectedCol.ValueStr(arrayIndex)
+				actualValue := actualColumn.ValueStr(arrayIndex)
+				// Oracle treats empty strings as null, so we need to convert them for comparison
+				// See https://stackoverflow.com/questions/203493/why-does-oracle-9i-treat-an-empty-string-as-null
+				// Please note this means we can't distinguish between null and empty string
+				if expectedValue == "" && actualColumn.IsNull(arrayIndex) && arrow.TypeEqual(expectedCol.DataType(), arrow.BinaryTypes.String) {
+					actualValue = ""
+				}
+
+				if expectedValue != actualValue {
+					t.Fatalf("expected record %d column %d (%s) array index %d to have value %s, got %s", recordIndex, columnIndex, columnName, arrayIndex, expectedValue, actualValue)
+				}
+			}
+		}
+	}
 }
 
 func TestPerformance(t *testing.T) {
@@ -289,15 +267,12 @@ func TestPerformance(t *testing.T) {
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	p.SetLogger(l)
-	spec := specs.Source{
-		Name:         "test_oracledb_source",
-		Path:         "cloudquery/oracledb",
-		Version:      "vDevelopment",
-		Destinations: []string{"test"},
-		Tables:       []string{"test_oracledb_source_performance_*"},
-		Spec: client.Spec{
-			ConnectionString: getTestConnectionString(),
-		},
+	spec := client.Spec{
+		ConnectionString: getTestConnectionString(),
+	}
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
 	}
 	db, err := getTestDB(ctx)
 	if err != nil {
@@ -329,16 +304,20 @@ func TestPerformance(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if err := p.Init(ctx, spec); err != nil {
+	if err := p.Init(ctx, specBytes); err != nil {
 		t.Fatal(err)
 	}
 
-	res := make(chan *schema.Resource, 1)
+	res := make(chan message.Message, 1)
 	g := errgroup.Group{}
-	syncTime := time.Now()
 	g.Go(func() error {
 		defer close(res)
-		return p.Sync(ctx, syncTime, res)
+		opts := plugin.SyncOptions{
+			Tables:            []string{"*"},
+			DeterministicCQID: false,
+			StateBackend:      nil,
+		}
+		return p.Sync(ctx, opts, res)
 	})
 	totalResources := 0
 	for range res {

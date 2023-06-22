@@ -7,22 +7,24 @@ import (
 	"time"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/apache/arrow/go/v13/arrow/array"
+	"github.com/apache/arrow/go/v13/arrow/memory"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	"golang.org/x/sync/errgroup"
 )
 
-func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *schema.Resource) error {
-	c.metrics = metrics
-	for _, table := range c.Tables {
-		if c.metrics.TableClient[table.Name] == nil {
-			c.metrics.TableClient[table.Name] = make(map[string]*source.TableClientMetrics)
-			c.metrics.TableClient[table.Name][c.ID()] = &source.TableClientMetrics{}
+func (c Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.Message) error {
+	filtered := schema.Tables{}
+	for _, table := range c.tables {
+		if !plugin.MatchesTable(table.Name, options.Tables, options.SkipTables) {
+			continue
 		}
+		filtered = append(filtered, table)
 	}
-
-	return c.syncTables(ctx, res)
+	return c.syncTables(ctx, filtered, res)
 }
 
 func (*Client) createResultsArray(table *schema.Table) []any {
@@ -53,7 +55,7 @@ func (*Client) createResultsArray(table *schema.Table) []any {
 	return results
 }
 
-func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- *schema.Resource) error {
+func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- message.Message) error {
 	colNames := make([]string, len(table.Columns))
 	for i, col := range table.Columns {
 		colNames[i] = Identifier(col.Name)
@@ -61,7 +63,6 @@ func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- 
 	query := "SELECT " + strings.Join(colNames, ",") + " FROM " + Identifier(table.Name)
 	rows, err := c.db.QueryContext(ctx, query)
 	if err != nil {
-		c.metrics.TableClient[table.Name][c.ID()].Errors++
 		return err
 	}
 	defer rows.Close()
@@ -71,38 +72,27 @@ func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- 
 			return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
 		}
 		if err != nil {
-			c.metrics.TableClient[table.Name][c.ID()].Errors++
 			return err
 		}
-		resource, err := c.resourceFromValues(table.Name, values)
-		if err != nil {
-			c.metrics.TableClient[table.Name][c.ID()].Errors++
-			return err
+		arrowSchema := table.ToArrowSchema()
+		rb := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
+		for i := range values {
+			err := reverseTransform(rb.Field(i), values[i])
+			if err != nil {
+				return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
+			}
 		}
-		c.metrics.TableClient[table.Name][c.ID()].Resources++
-		res <- resource
+		res <- &message.Insert{Record: rb.NewRecord()}
 	}
 	return nil
 }
 
-func (c *Client) syncTables(ctx context.Context, res chan<- *schema.Resource) error {
+func (c *Client) syncTables(ctx context.Context, tables schema.Tables, res chan<- message.Message) error {
 	group, gctx := errgroup.WithContext(ctx)
-	group.SetLimit(int(c.Concurrency))
-	for _, table := range c.Tables {
+	for _, table := range tables {
 		if err := c.syncTable(gctx, table, res); err != nil {
 			return err
 		}
 	}
 	return group.Wait()
-}
-
-func (c *Client) resourceFromValues(tableName string, values []any) (*schema.Resource, error) {
-	table := c.Tables.Get(tableName)
-	resource := schema.NewResourceData(table, nil, values)
-	for i, col := range table.Columns {
-		if err := resource.Set(col.Name, values[i]); err != nil {
-			return nil, err
-		}
-	}
-	return resource, nil
 }
