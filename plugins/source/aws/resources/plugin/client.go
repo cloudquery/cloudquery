@@ -25,6 +25,7 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte) (plugin.C
 	if err := json.Unmarshal(specBytes, &spec); err != nil {
 		return nil, err
 	}
+	spec.SetDefaults()
 	if err := spec.Validate(); err != nil {
 		return nil, err
 	}

@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/aws
 go 1.19
 
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230601214540-018e7d3f9c4b
+	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe
 	github.com/aws/aws-sdk-go-v2 v1.18.1
 	github.com/aws/aws-sdk-go-v2/config v1.18.27
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.26
@@ -124,7 +124,6 @@ require (
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/codegen v0.2.1
-	github.com/cloudquery/plugin-pb-go v1.0.9
 	github.com/cloudquery/plugin-sdk/v4 v4.0.0
 	github.com/cockroachdb/cockroachdb-parser v0.0.0-20221207165326-ea0ac1a4778b
 	github.com/gocarina/gocsv v0.0.0-20230513223533-9ddd7fd60602
@@ -191,7 +190,7 @@ replace github.com/cloudquery/plugin-pb-go => ../../../../plugin-pb-go
 require (
 	github.com/avast/retry-go/v4 v4.3.4 // indirect
 	github.com/biogo/store v0.0.0-20201120204734-aad293a2328f // indirect
-	github.com/blevesearch/snowballstem v0.9.0 // indirect
+	github.com/cloudquery/plugin-pb-go v1.0.9 // indirect
 	github.com/cockroachdb/apd/v3 v3.1.0 // indirect
 	github.com/cockroachdb/errors v1.9.0 // indirect
 	github.com/cockroachdb/logtags v0.0.0-20230118201751-21c54148d20b // indirect
