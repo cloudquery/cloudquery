@@ -25,6 +25,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
+	"github.com/aws/aws-sdk-go-v2/service/codeartifact"
 	"github.com/aws/aws-sdk-go-v2/service/codebuild"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
@@ -139,6 +140,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Cloudtrail:                cloudtrail.NewFromConfig(awsCfg),
 		Cloudwatch:                cloudwatch.NewFromConfig(awsCfg),
 		Cloudwatchlogs:            cloudwatchlogs.NewFromConfig(awsCfg),
+		Codeartifact:              codeartifact.NewFromConfig(awsCfg),
 		Codebuild:                 codebuild.NewFromConfig(awsCfg),
 		Codepipeline:              codepipeline.NewFromConfig(awsCfg),
 		Cognitoidentity:           cognitoidentity.NewFromConfig(awsCfg),
@@ -251,6 +253,7 @@ type Services struct {
 	Cloudtrail                services.CloudtrailClient
 	Cloudwatch                services.CloudwatchClient
 	Cloudwatchlogs            services.CloudwatchlogsClient
+	Codeartifact              services.CodeartifactClient
 	Codebuild                 services.CodebuildClient
 	Codepipeline              services.CodepipelineClient
 	Cognitoidentity           services.CognitoidentityClient

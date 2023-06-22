@@ -6,8 +6,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -26,24 +28,22 @@ func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *
 func (*Client) createResultsArray(table *schema.Table) []any {
 	results := make([]any, 0, len(table.Columns))
 	for _, col := range table.Columns {
-		switch col.Type {
-		case schema.TypeUUID, schema.TypeByteArray:
+		// We only support types that we create based on the schema, see SchemaType function
+		switch col.Type.(type) {
+		case *types.UUIDType, *arrow.BinaryType:
 			var r *[]byte
 			results = append(results, &r)
-		case schema.TypeBool:
+		case *arrow.BooleanType:
 			var r *bool
 			results = append(results, &r)
-		case schema.TypeInt:
-			var r *int
+		case *arrow.Decimal128Type:
+			var r *string
 			results = append(results, &r)
-		case schema.TypeFloat:
+		case *arrow.Float64Type:
 			var r *float64
 			results = append(results, &r)
-		case schema.TypeTimestamp:
+		case *arrow.TimestampType:
 			var r *time.Time
-			results = append(results, &r)
-		case schema.TypeJSON:
-			var r string
 			results = append(results, &r)
 		default:
 			var r *string
