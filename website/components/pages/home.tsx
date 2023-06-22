@@ -46,7 +46,6 @@ export default function Home() {
         name="og:description"
         content="CloudQuery is an open source high performance data integration platform built for developers."
       />
-      <script type="text/javascript" src="/scripts/index.js"></script>
     </Head>
 
     <div className="flex flex-col md:flex-row justify-between px-4 pt-16 pb-8 mx-auto sm:pt-24 lg:px-8 w-auto lg:max-w-7xl">
