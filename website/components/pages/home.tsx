@@ -46,6 +46,7 @@ export default function Home() {
         name="og:description"
         content="CloudQuery is an open source high performance data integration platform built for developers."
       />
+      <script type="text/javascript" src="/scripts/index.js"></script>
     </Head>
 
     <div className="flex flex-col md:flex-row justify-between px-4 pt-16 pb-8 mx-auto sm:pt-24 lg:px-8 w-auto lg:max-w-7xl">
@@ -77,7 +78,7 @@ export default function Home() {
               
             </Link>
           </div>
-          <div className="relative rounded-md fix-width-auto xl:w-auto">
+          <div className="relative rounded-md fix-width-auto xl:w-auto brew-install-command">
             <button
               onClick={() => onClick('brew install cloudquery/tap/cloudquery')}
               className="flex items-center justify-center w-full px-8 py-3 font-mono text-sm font-medium text-gray-600 bg-black border border-transparent border-gray-200 rounded-md bg-opacity-5 dark:bg-white dark:text-gray-300 dark:border-gray-700 dark:bg-opacity-5 betterhover:hover:bg-gray-50 betterhover:dark:hover:bg-gray-900 md:py-3 md:text-base md:leading-6 md:px-10"
