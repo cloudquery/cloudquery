@@ -110,6 +110,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
+	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/workspaces"
 	"github.com/aws/aws-sdk-go-v2/service/xray"
 	"github.com/cloudquery/codegen/interfaces"
@@ -222,6 +223,7 @@ var clients = []any{
 	&waf.Client{},
 	&wafregional.Client{},
 	&wafv2.Client{},
+	&wellarchitected.Client{},
 	&workspaces.Client{},
 	&xray.Client{},
 }
