@@ -156,6 +156,9 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, d
 		if _, err := writeClients[i].CloseAndRecv(); err != nil {
 			return err
 		}
+		if _, err := destinationsPbClients[i].Close(ctx, &destination.Close_Request{}); err != nil {
+			return err
+		}
 	}
 
 	getMetricsRes, err := sourcePbClient.GetMetrics(ctx, &source.GetMetrics_Request{})

@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
+	"github.com/cloudquery/cloudquery/cli/internal/transformer"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/metrics"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
@@ -29,6 +30,7 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		}
 	}()
 	syncTime := time.Now().UTC()
+	sourceName := sourceSpec.Name
 	destinationStrings := make([]string, len(destinationsClients))
 	for i := range destinationsClients {
 		destinationStrings[i] = destinationSpecs[i].VersionString()
@@ -38,8 +40,17 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 
 	sourcePbClient := plugin.NewPluginClient(sourceClient.Conn)
 	destinationsPbClients := make([]plugin.PluginClient, len(destinationsClients))
+	destinationTransformers := make([]*transformer.RecordTransformer, len(destinationsClients))
 	for i := range destinationsClients {
 		destinationsPbClients[i] = plugin.NewPluginClient(destinationsClients[i].Conn)
+		opts := []transformer.RecordTransformerOption{
+			transformer.WithSourceNameColumn(sourceName),
+			transformer.WithSyncTimeColumn(syncTime),
+		}
+		if destinationSpecs[i].WriteMode == specs.WriteModeAppend {
+			opts = append(opts, transformer.WithRemovePKs())
+		}
+		destinationTransformers[i] = transformer.NewRecordTransformer(opts...)
 	}
 
 	specBytes, err := json.Marshal(sourceSpec.Spec)
@@ -70,7 +81,6 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		if err != nil {
 			return err
 		}
-		// TODO(v4): necessary?
 		if err := writeClients[i].Send(&plugin.Write_Request{
 			Message: &plugin.Write_Request_Options{
 				Options: &plugin.WriteOptions{
@@ -135,36 +145,68 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 			return err
 		}
 		_ = bar.Add(1)
-		m := r.GetMessage()
+		syncResponseMsg := r.GetMessage()
 		wr := &plugin.Write_Request{}
-		switch m.(type) {
-		case *plugin.Sync_Response_MigrateTable:
-			if noMigrate {
-				continue
-			}
-			wr.Message = &plugin.Write_Request_MigrateTable{
-				MigrateTable: m.(*plugin.Sync_Response_MigrateTable).MigrateTable,
-			}
+		switch m := syncResponseMsg.(type) {
 		case *plugin.Sync_Response_Insert:
-			wr.Message = &plugin.Write_Request_Insert{
-				Insert: m.(*plugin.Sync_Response_Insert).Insert,
+			record, err := plugin.NewRecordFromBytes(m.Insert.Record)
+			if err != nil {
+				return err
 			}
-			totalResources++
+			totalResources += int(record.NumRows())
+			for i := range destinationsPbClients {
+				transformedRecord := destinationTransformers[i].Transform(record)
+				transformedRecordBytes, err := plugin.RecordToBytes(transformedRecord)
+				if err != nil {
+					return err
+				}
+				wr.Message = &plugin.Write_Request_Insert{
+					Insert: &plugin.MessageInsert{
+						Record: transformedRecordBytes,
+					},
+				}
+				if err := writeClients[i].Send(wr); err != nil {
+					return err
+				}
+			}
+		case *plugin.Sync_Response_MigrateTable:
+			sc, err := plugin.NewSchemaFromBytes(m.MigrateTable.Table)
+			if err != nil {
+				return err
+			}
+			for i := range destinationsPbClients {
+				transformedSchema := destinationTransformers[i].TransformSchema(sc)
+				transformedSchemaBytes, err := plugin.SchemaToBytes(transformedSchema)
+				if err != nil {
+					return err
+				}
+				wr.Message = &plugin.Write_Request_MigrateTable{
+					MigrateTable: &plugin.MessageMigrateTable{
+						Table: transformedSchemaBytes,
+					},
+				}
+				if err := writeClients[i].Send(wr); err != nil {
+					return err
+				}
+			}
 		case *plugin.Sync_Response_Delete:
 			wr.Message = &plugin.Write_Request_Delete{
-				Delete: m.(*plugin.Sync_Response_Delete).Delete,
+				Delete: m.Delete,
+			}
+			for i := range destinationsPbClients {
+				if err := writeClients[i].Send(wr); err != nil {
+					return err
+				}
 			}
 		default:
 			return fmt.Errorf("unknown message type: %T", m)
 		}
-		for i := range destinationsPbClients {
-			if err := writeClients[i].Send(wr); err != nil {
-				return err
-			}
-		}
 	}
 	for i := range destinationsClients {
 		if _, err := writeClients[i].CloseAndRecv(); err != nil {
+			return err
+		}
+		if _, err := destinationsPbClients[i].Close(ctx, &plugin.Close_Request{}); err != nil {
 			return err
 		}
 	}
