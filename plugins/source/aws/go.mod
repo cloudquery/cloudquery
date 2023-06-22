@@ -97,6 +97,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/securityhub v1.33.0
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.19.1
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.17.5
+	github.com/aws/aws-sdk-go-v2/service/servicediscovery v1.21.6
 	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.14.13
 	github.com/aws/aws-sdk-go-v2/service/ses v1.15.10
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.18.1
