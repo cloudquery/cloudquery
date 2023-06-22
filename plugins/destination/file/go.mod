@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/file
 go 1.19
 
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230601214540-018e7d3f9c4b
+	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe
 	github.com/cloudquery/filetypes/v4 v4.0.0
 	github.com/cloudquery/plugin-sdk/v4 v4.0.0
 	github.com/google/uuid v1.3.0
@@ -12,9 +12,9 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230620001150-43638cb1b099
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230621001250-f0dffc612853
 
-replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/v4 v4.0.0-20230620191735-fd2a07633e9d
+replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/v4 v4.0.0-20230622195407-5823d970ad6d
 
 //replace github.com/cloudquery/plugin-sdk/v4 => ../../../../plugin-sdk
 
@@ -22,7 +22,9 @@ replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/
 
 replace github.com/cloudquery/filetypes/v4 => github.com/cloudquery/filetypes/v4 v4.0.0-20230620104124-481690d18bb0
 
-replace github.com/cloudquery/plugin-pb-go => github.com/cloudquery/plugin-pb-go v1.0.9-0.20230618130018-e3ac97072fcd
+//replace github.com/cloudquery/plugin-pb-go => ../../../../plugin-pb-go
+
+replace github.com/cloudquery/plugin-pb-go => github.com/cloudquery/plugin-pb-go v1.1.1-0.20230622154700-9ea3273322f2
 
 require (
 	github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c // indirect

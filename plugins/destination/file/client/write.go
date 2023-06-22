@@ -33,7 +33,7 @@ func (w *writeCloser) Close() error {
 	return w.WriteCloser.Close()
 }
 
-func (c *Client) OpenTable(ctx context.Context, sourceName string, table *schema.Table, syncTime time.Time) (any, error) {
+func (c *Client) OpenTable(_ context.Context, sourceName string, table *schema.Table, syncTime time.Time) (any, error) {
 	p := replacePathVariables(c.spec.Path, table.Name, c.spec.Format, uuid.NewString(), syncTime)
 
 	if err := os.MkdirAll(filepath.Dir(p), 0755); err != nil {
@@ -58,7 +58,7 @@ func (c *Client) OpenTable(ctx context.Context, sourceName string, table *schema
 	}, nil
 }
 
-func (*Client) CloseTable(ctx context.Context, handle any) error {
+func (*Client) CloseTable(_ context.Context, handle any) error {
 	fs := handle.(*filestream)
 	if err := fs.h.WriteFooter(); err != nil {
 		if !fs.wc.closed {
@@ -77,7 +77,7 @@ func (*Client) CloseTable(ctx context.Context, handle any) error {
 	return nil
 }
 
-func (*Client) WriteTableStream(ctx context.Context, handle any, upsert bool, msgs []*message.Insert) error {
+func (*Client) WriteTableStream(_ context.Context, handle any, upsert bool, msgs []*message.Insert) error {
 	if len(msgs) == 0 {
 		return nil
 	}
@@ -91,10 +91,7 @@ func (*Client) WriteTableStream(ctx context.Context, handle any, upsert bool, ms
 }
 
 func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, msgs <-chan message.Message) error {
-	if err := c.writer.Write(ctx, msgs); err != nil {
-		return err
-	}
-	return c.writer.Flush(ctx)
+	return c.writer.Write(ctx, msgs)
 }
 
 func replacePathVariables(specPath, table string, format filetypes.FormatType, fileIdentifier string, t time.Time) string {

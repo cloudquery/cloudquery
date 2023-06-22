@@ -1,3 +1,4 @@
+// streamingbatch.go copied from file plugin
 package client
 
 import (
@@ -33,12 +34,12 @@ type StreamingBatchWriterClient interface {
 type StreamingBatchWriter struct {
 	client           StreamingBatchWriterClient
 	workers          map[string]*worker
-	workersLock      *sync.RWMutex
-	workersWaitGroup *sync.WaitGroup
+	workersLock      sync.RWMutex
+	workersWaitGroup sync.WaitGroup
 
-	migrateTableLock     *sync.Mutex
+	migrateTableLock     sync.Mutex
 	migrateTableMessages []*message.MigrateTable
-	deleteStaleLock      *sync.Mutex
+	deleteStaleLock      sync.Mutex
 	deleteStaleMessages  []*message.DeleteStale
 
 	logger         zerolog.Logger
@@ -81,16 +82,12 @@ type worker struct {
 
 func NewStreamingBatchWriter(client StreamingBatchWriterClient, opts ...Option) (*StreamingBatchWriter, error) {
 	c := &StreamingBatchWriter{
-		client:           client,
-		workers:          make(map[string]*worker),
-		workersLock:      &sync.RWMutex{},
-		workersWaitGroup: &sync.WaitGroup{},
-		migrateTableLock: &sync.Mutex{},
-		deleteStaleLock:  &sync.Mutex{},
-		logger:           zerolog.Nop(),
-		batchTimeout:     defaultBatchTimeoutSeconds * time.Second,
-		batchSize:        defaultBatchSize,
-		batchSizeBytes:   defaultBatchSizeBytes,
+		client:         client,
+		workers:        make(map[string]*worker),
+		logger:         zerolog.Nop(),
+		batchTimeout:   defaultBatchTimeoutSeconds * time.Second,
+		batchSize:      defaultBatchSize,
+		batchSizeBytes: defaultBatchSizeBytes,
 	}
 	for _, opt := range opts {
 		opt(c)
@@ -116,13 +113,14 @@ func (w *StreamingBatchWriter) Flush(ctx context.Context) error {
 	return w.flushDeleteStaleTables(ctx)
 }
 
-func (w *StreamingBatchWriter) Close(_ context.Context) error {
+func (w *StreamingBatchWriter) stopWorkers() error {
 	w.workersLock.Lock()
 	defer w.workersLock.Unlock()
 	for _, w := range w.workers {
 		close(w.ch)
 	}
 	w.workersWaitGroup.Wait()
+	w.workers = make(map[string]*worker)
 
 	return nil
 }
@@ -316,6 +314,7 @@ func (w *StreamingBatchWriter) flushInsertByTableName(ctx context.Context, table
 }
 
 func (w *StreamingBatchWriter) Write(ctx context.Context, msgs <-chan message.Message) error {
+	hasWorkers := false
 	for msg := range msgs {
 		switch m := msg.(type) {
 		case *message.DeleteStale:
@@ -339,6 +338,7 @@ func (w *StreamingBatchWriter) Write(ctx context.Context, msgs <-chan message.Me
 			if err := w.flushDeleteStaleTables(ctx); err != nil {
 				return err
 			}
+			hasWorkers = true
 			if err := w.startWorker(ctx, m); err != nil {
 				return err
 			}
@@ -358,6 +358,15 @@ func (w *StreamingBatchWriter) Write(ctx context.Context, msgs <-chan message.Me
 			}
 		}
 	}
+
+	if err := w.Flush(ctx); err != nil {
+		return err
+	}
+
+	if hasWorkers {
+		return w.stopWorkers()
+	}
+
 	return nil
 }
 

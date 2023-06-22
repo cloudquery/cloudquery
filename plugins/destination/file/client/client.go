@@ -20,7 +20,7 @@ type Client struct {
 	writer *StreamingBatchWriter
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
+func New(_ context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "file").Logger(),
 	}
@@ -58,6 +58,6 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 	return c, nil
 }
 
-func (c *Client) Close(ctx context.Context) error {
-	return c.writer.Close(ctx)
+func (*Client) Close(_ context.Context) error {
+	return nil
 }
