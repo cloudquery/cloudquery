@@ -127,7 +127,7 @@ func sync(cmd *cobra.Command, args []string) error {
 		})
 	}
 
-	sourcePluginClients, err := managedplugin.NewClients(ctx, sourcePluginConfigs, opts...)
+	sourcePluginClients, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, sourcePluginConfigs, opts...)
 	if err != nil {
 		return err
 	}
@@ -137,7 +137,7 @@ func sync(cmd *cobra.Command, args []string) error {
 		}
 	}()
 
-	destinationPluginClients, err := managedplugin.NewClients(ctx, destinationPluginConfigs, opts...)
+	destinationPluginClients, err := managedplugin.NewClients(ctx, managedplugin.PluginDestination, destinationPluginConfigs, opts...)
 	if err != nil {
 		return err
 	}
