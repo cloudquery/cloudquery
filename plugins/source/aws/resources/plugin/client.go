@@ -51,5 +51,10 @@ func (c *Client) Tables(ctx context.Context) (schema.Tables, error) {
 	return tables(), nil
 }
 func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.Message) error {
-	return c.scheduler.Sync(ctx, tables(), res)
+	tables := tables()
+	tt, err := tables.FilterDfs(options.Tables, options.SkipTables, false)
+	if err != nil {
+		return err
+	}
+	return c.scheduler.Sync(ctx, tt, res)
 }
