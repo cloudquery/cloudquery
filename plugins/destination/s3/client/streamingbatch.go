@@ -34,12 +34,12 @@ type StreamingBatchWriterClient interface {
 type StreamingBatchWriter struct {
 	client           StreamingBatchWriterClient
 	workers          map[string]*worker
-	workersLock      *sync.RWMutex
-	workersWaitGroup *sync.WaitGroup
+	workersLock      sync.RWMutex
+	workersWaitGroup sync.WaitGroup
 
-	migrateTableLock     *sync.Mutex
+	migrateTableLock     sync.Mutex
 	migrateTableMessages []*message.MigrateTable
-	deleteStaleLock      *sync.Mutex
+	deleteStaleLock      sync.Mutex
 	deleteStaleMessages  []*message.DeleteStale
 
 	logger         zerolog.Logger
@@ -82,16 +82,12 @@ type worker struct {
 
 func NewStreamingBatchWriter(client StreamingBatchWriterClient, opts ...Option) (*StreamingBatchWriter, error) {
 	c := &StreamingBatchWriter{
-		client:           client,
-		workers:          make(map[string]*worker),
-		workersLock:      &sync.RWMutex{},
-		workersWaitGroup: &sync.WaitGroup{},
-		migrateTableLock: &sync.Mutex{},
-		deleteStaleLock:  &sync.Mutex{},
-		logger:           zerolog.Nop(),
-		batchTimeout:     defaultBatchTimeoutSeconds * time.Second,
-		batchSize:        defaultBatchSize,
-		batchSizeBytes:   defaultBatchSizeBytes,
+		client:         client,
+		workers:        make(map[string]*worker),
+		logger:         zerolog.Nop(),
+		batchTimeout:   defaultBatchTimeoutSeconds * time.Second,
+		batchSize:      defaultBatchSize,
+		batchSizeBytes: defaultBatchSizeBytes,
 	}
 	for _, opt := range opts {
 		opt(c)
