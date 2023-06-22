@@ -14,7 +14,7 @@ import { Callout } from 'nextra-theme-docs';
 
 MotherDuck is a serverless analytics service powered by DuckDB. If you have data in a Postgres database that you'd like to analyze using MotherDuck, this tutorial will show you how to do this using CloudQuery, an open source ELT framework. We will cover:
  
- 1. How to copy a Postgres database into MotherDuck as one-off batch operation, and
+ 1. How to copy a Postgres database into MotherDuck as a one-off batch operation, and
  2. How to continuously stream Postgres data from Postgres to MotherDuck using Postgres Change Data Capture (CDC).
 
 Which option you choose is up to you. Either way, by the end of this tutorial you will be able to analyze data from your Postgres database using MotherDuck.
@@ -69,7 +69,7 @@ Once CloudQuery is installed, you should be able to invoke it from the command l
 
 ```shell
 $ cloudquery --version
-cloudquery version 3.5.0
+cloudquery version VERSION_CLI
 ```
 
 ## Step 2. Create the Configuration File
