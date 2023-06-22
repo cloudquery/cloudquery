@@ -63,6 +63,7 @@ func getTables() []*schema.Table {
 	}
 
 	for i := range tables {
+		tables[i].Columns = append([]schema.Column{schema.CqIDColumn, schema.CqParentIDColumn}, tables[i].Columns...)
 		err := tables[i].Transform(tables[i])
 		if err != nil {
 			panic(err)
