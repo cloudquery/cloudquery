@@ -11,12 +11,13 @@ import (
 
 func CloudServices() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_compute_cloud_services",
-		Resolver:    fetchCloudServices,
-		Description: "https://learn.microsoft.com/en-us/rest/api/compute/cloud-services/list?tabs=HTTP#cloudservice",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_cloud_services", client.Namespacemicrosoft_compute),
-		Transform:   transformers.TransformWithStruct(&armcompute.CloudService{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_compute_cloud_services",
+		Resolver:             fetchCloudServices,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/compute/cloud-services/list?tabs=HTTP#cloudservice",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_compute_cloud_services", client.Namespacemicrosoft_compute),
+		Transform:            transformers.TransformWithStruct(&armcompute.CloudService{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

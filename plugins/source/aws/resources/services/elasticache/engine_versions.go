@@ -52,7 +52,9 @@ func EngineVersions() *schema.Table {
 
 func fetchElasticacheEngineVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	paginator := elasticache.NewDescribeCacheEngineVersionsPaginator(meta.(*client.Client).Services().Elasticache, nil)
+	svc := cl.Services().Elasticache
+
+	paginator := elasticache.NewDescribeCacheEngineVersionsPaginator(svc, nil)
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx, func(options *elasticache.Options) {
 			options.Region = cl.Region

@@ -11,12 +11,13 @@ import (
 
 func Workspaces() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_operationalinsights_workspaces",
-		Resolver:    fetchWorkspaces,
-		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights@v1.0.0#Workspace",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_operationalinsights_workspaces", client.Namespacemicrosoft_operationalinsights),
-		Transform:   transformers.TransformWithStruct(&armoperationalinsights.Workspace{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_operationalinsights_workspaces",
+		Resolver:             fetchWorkspaces,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights@v1.0.0#Workspace",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_operationalinsights_workspaces", client.Namespacemicrosoft_operationalinsights),
+		Transform:            transformers.TransformWithStruct(&armoperationalinsights.Workspace{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

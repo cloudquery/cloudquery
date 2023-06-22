@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v2.0.0...plugins-destination-elasticsearch-v2.0.1) (2023-06-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.9 ([#11240](https://github.com/cloudquery/cloudquery/issues/11240)) ([f92cd4b](https://github.com/cloudquery/cloudquery/commit/f92cd4bfe3c3d0088964d52ab9cd01ca4cf622e1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v3 to v3.10.4 ([#11244](https://github.com/cloudquery/cloudquery/issues/11244)) ([8fceef6](https://github.com/cloudquery/cloudquery/commit/8fceef6f9041e173923555d8ff221cfe83b424c2))
+
 ## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v1.1.6...plugins-destination-elasticsearch-v2.0.0) (2023-06-01)
 
 

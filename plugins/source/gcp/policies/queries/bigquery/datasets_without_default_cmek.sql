@@ -1,9 +1,3 @@
--- SELECT project_id, id, friendly_name, self_link AS link
--- FROM gcp_bigquery_datasets
--- WHERE default_encryption_configuration_kms_key_name = ''
---     OR default_encryption_configuration_kms_key_name IS NULL;
-
-
 INSERT INTO gcp_policy_results (resource_id, execution_time, framework, check_id, title, project_id, status)
 SELECT d.id                                                                                                      AS resource_id,
        :'execution_time'::timestamp                                                                            AS execution_time,

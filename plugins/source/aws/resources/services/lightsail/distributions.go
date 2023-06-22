@@ -44,8 +44,8 @@ func Distributions() *schema.Table {
 
 func fetchLightsailDistributions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lightsail.GetDistributionsInput
-	c := meta.(*client.Client)
-	svc := c.Services().Lightsail
+	cl := meta.(*client.Client)
+	svc := cl.Services().Lightsail
 	// No paginator available
 	for {
 		// Validate the region for this in client/data.json
@@ -63,7 +63,7 @@ func fetchLightsailDistributions(ctx context.Context, meta schema.ClientMeta, pa
 		for _, d := range response.Distributions {
 			func(d types.LightsailDistribution) {
 				errs.Go(func() error {
-					return fetchCacheReset(ctx, res, c, d)
+					return fetchCacheReset(ctx, res, cl, d)
 				})
 			}(d)
 		}
@@ -79,8 +79,8 @@ func fetchLightsailDistributions(ctx context.Context, meta schema.ClientMeta, pa
 	return nil
 }
 
-func fetchCacheReset(ctx context.Context, res chan<- any, c *client.Client, d types.LightsailDistribution) error {
-	svc := c.Services().Lightsail
+func fetchCacheReset(ctx context.Context, res chan<- any, cl *client.Client, d types.LightsailDistribution) error {
+	svc := cl.Services().Lightsail
 	resetInput := lightsail.GetDistributionLatestCacheResetInput{
 		DistributionName: d.Name,
 	}
@@ -88,7 +88,7 @@ func fetchCacheReset(ctx context.Context, res chan<- any, c *client.Client, d ty
 		// Set region to default global region
 		options.Region = "us-east-1"
 	})
-	if err != nil && !c.IsNotFoundError(err) {
+	if err != nil && !cl.IsNotFoundError(err) {
 		return err
 	}
 	res <- models.DistributionWrapper{LightsailDistribution: &d, LatestCacheReset: resetResp}

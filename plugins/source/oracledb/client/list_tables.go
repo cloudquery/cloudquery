@@ -2,11 +2,12 @@ package client
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"sort"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 type column struct {
@@ -44,9 +45,9 @@ func (c *Client) updateTableConstraints(ctx context.Context, table *schema.Table
 			for _, constraintType := range constraintTypes {
 				switch constraintType {
 				case "P":
-					table.Columns[i].CreationOptions.PrimaryKey = true
+					table.Columns[i].PrimaryKey = true
 				case "U":
-					table.Columns[i].CreationOptions.Unique = true
+					table.Columns[i].Unique = true
 				}
 			}
 		}
@@ -57,10 +58,13 @@ func (c *Client) updateTableConstraints(ctx context.Context, table *schema.Table
 
 func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 	// Please note we don't use ORDER BY here because it's slower than sorting in memory via Go sort.SliceStable
+	// See more about the default namespaces we exclude in https://www.oracletutorial.com/oracle-administration/oracle-tablespace/
+	// Also invisible columns have COLUMN_ID = NULL so we exclude them as well. See https://forums.oracle.com/ords/apexds/post/oracle-12c-invisible-columns-0462
 	query := `
-	SELECT ALL_TAB_COLS.TABLE_NAME, COLUMN_ID, COLUMN_NAME, DATA_TYPE, DATA_LENGTH, NULLABLE FROM ALL_TABLES
+	SELECT ALL_TAB_COLS.TABLE_NAME, COLUMN_ID, COLUMN_NAME, DATA_TYPE, DATA_LENGTH, NULLABLE, DATA_PRECISION, DATA_SCALE FROM ALL_TABLES
 	LEFT JOIN ALL_TAB_COLS ON ALL_TABLES.TABLE_NAME = ALL_TAB_COLS.TABLE_NAME
-	WHERE ALL_TABLES.TABLESPACE_NAME = 'USERS'
+	WHERE ALL_TABLES.TABLESPACE_NAME NOT IN ('SYSAUX', 'SYSTEM', 'TEMP', 'UNDOTBS1')
+	AND ALL_TAB_COLS.COLUMN_ID IS NOT NULL
 	`
 	rows, err := c.db.QueryContext(ctx, query)
 	if err != nil {
@@ -75,13 +79,22 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 		var dataType string
 		var dataLength int
 		var nullable string
+		var precision sql.NullInt64
+		var scale sql.NullInt64
 
-		if err := rows.Scan(&tableName, &columnId, &columnName, &dataType, &dataLength, &nullable); err != nil {
+		if err := rows.Scan(&tableName, &columnId, &columnName, &dataType, &dataLength, &nullable, &precision, &scale); err != nil {
 			return nil, err
 		}
 		dataType = strings.ToLower(dataType)
 		if dataType == "char" || dataType == "raw" {
 			dataType = fmt.Sprintf("%s(%d)", dataType, dataLength)
+		}
+		if dataType == "number" {
+			if precision.Valid && scale.Valid {
+				dataType = fmt.Sprintf("number(%d,%d)", precision.Int64, scale.Int64)
+			} else if precision.Valid {
+				dataType = fmt.Sprintf("number(%d)", precision.Int64)
+			}
 		}
 		schemaTables[tableName] = append(schemaTables[tableName], column{
 			id:       columnId,
@@ -101,9 +114,9 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 		})
 		for _, column := range columns {
 			table.Columns = append(table.Columns, schema.Column{
-				Name:            column.name,
-				Type:            SchemaType(tableName, column.name, column.dataType),
-				CreationOptions: schema.ColumnCreationOptions{NotNull: column.notNull},
+				Name:    column.name,
+				Type:    SchemaType(column.dataType),
+				NotNull: column.notNull,
 			})
 		}
 		err := c.updateTableConstraints(ctx, &table)

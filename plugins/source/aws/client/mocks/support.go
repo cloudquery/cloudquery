@@ -125,6 +125,36 @@ func (mr *MockSupportClientMockRecorder) DescribeCommunications(arg0, arg1 inter
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeCommunications", reflect.TypeOf((*MockSupportClient)(nil).DescribeCommunications), varargs...)
 }
 
+// DescribeCreateCaseOptions mocks base method.
+func (m *MockSupportClient) DescribeCreateCaseOptions(arg0 context.Context, arg1 *support.DescribeCreateCaseOptionsInput, arg2 ...func(*support.Options)) (*support.DescribeCreateCaseOptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &support.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCreateCaseOptions")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeCreateCaseOptions", varargs...)
+	ret0, _ := ret[0].(*support.DescribeCreateCaseOptionsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeCreateCaseOptions indicates an expected call of DescribeCreateCaseOptions.
+func (mr *MockSupportClientMockRecorder) DescribeCreateCaseOptions(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeCreateCaseOptions", reflect.TypeOf((*MockSupportClient)(nil).DescribeCreateCaseOptions), varargs...)
+}
+
 // DescribeServices mocks base method.
 func (m *MockSupportClient) DescribeServices(arg0 context.Context, arg1 *support.DescribeServicesInput, arg2 ...func(*support.Options)) (*support.DescribeServicesOutput, error) {
 
@@ -183,6 +213,36 @@ func (mr *MockSupportClientMockRecorder) DescribeSeverityLevels(arg0, arg1 inter
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeSeverityLevels", reflect.TypeOf((*MockSupportClient)(nil).DescribeSeverityLevels), varargs...)
+}
+
+// DescribeSupportedLanguages mocks base method.
+func (m *MockSupportClient) DescribeSupportedLanguages(arg0 context.Context, arg1 *support.DescribeSupportedLanguagesInput, arg2 ...func(*support.Options)) (*support.DescribeSupportedLanguagesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &support.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSupportedLanguages")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeSupportedLanguages", varargs...)
+	ret0, _ := ret[0].(*support.DescribeSupportedLanguagesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeSupportedLanguages indicates an expected call of DescribeSupportedLanguages.
+func (mr *MockSupportClientMockRecorder) DescribeSupportedLanguages(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeSupportedLanguages", reflect.TypeOf((*MockSupportClient)(nil).DescribeSupportedLanguages), varargs...)
 }
 
 // DescribeTrustedAdvisorCheckRefreshStatuses mocks base method.

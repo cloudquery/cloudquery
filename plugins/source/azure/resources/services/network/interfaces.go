@@ -11,12 +11,13 @@ import (
 
 func Interfaces() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_interfaces",
-		Resolver:    fetchInterfaces,
-		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/network-interfaces/list?tabs=HTTP#networkinterface",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_interfaces", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.Interface{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_interfaces",
+		Resolver:             fetchInterfaces,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/network-interfaces/list?tabs=HTTP#networkinterface",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_network_interfaces", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armnetwork.Interface{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 		Relations: []*schema.Table{
 			interfaceIPConfigurations(),
 		},

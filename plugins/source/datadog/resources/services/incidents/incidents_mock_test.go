@@ -16,12 +16,12 @@ func buildIncidentsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogSer
 		IncidentsAPI: m,
 	}
 
-	var i datadogV2.IncidentsResponse
+	var i datadogV2.IncidentResponseData
 	err := faker.FakeObject(&i)
 	if err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListIncidents(gomock.Any()).Return(i, nil, nil)
+	m.EXPECT().ListIncidentsWithPagination(gomock.Any()).Return(client.MockPaginatedResponse(i))
 
 	var ar datadogV2.IncidentAttachmentsResponse
 	err = faker.FakeObject(&ar)

@@ -11,13 +11,14 @@ import (
 
 func Resources() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_monitor_resources",
-		Resolver:    fetchResources,
-		Description: "https://learn.microsoft.com/en-us/rest/api/resources/resources/list#genericresourceexpanded",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_monitor_diagnostic_settings", client.Namespacemicrosoft_insights),
-		Transform:   transformers.TransformWithStruct(&armresources.GenericResourceExpanded{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
-		Relations:   []*schema.Table{diagnosticSettings()},
+		Name:                 "azure_monitor_resources",
+		Resolver:             fetchResources,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/resources/resources/list#genericresourceexpanded",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_monitor_diagnostic_settings", client.Namespacemicrosoft_insights),
+		Transform:            transformers.TransformWithStruct(&armresources.GenericResourceExpanded{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
+		Relations:            []*schema.Table{diagnosticSettings()},
 	}
 }
 

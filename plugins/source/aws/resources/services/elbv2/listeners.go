@@ -49,15 +49,15 @@ func fetchElbv2Listeners(ctx context.Context, meta schema.ClientMeta, parent *sc
 	config := elbv2.DescribeListenersInput{
 		LoadBalancerArn: lb.LoadBalancerArn,
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Elasticloadbalancingv2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Elasticloadbalancingv2
 	paginator := elbv2.NewDescribeListenersPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *elbv2.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
-			if c.IsNotFoundError(err) {
+			if cl.IsNotFoundError(err) {
 				return nil
 			}
 			return err

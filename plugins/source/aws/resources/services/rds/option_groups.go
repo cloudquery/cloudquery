@@ -33,13 +33,13 @@ func OptionGroups() *schema.Table {
 }
 
 func fetchOptionGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Rds
+	cl := meta.(*client.Client)
+	svc := cl.Services().Rds
 	config := rds.DescribeOptionGroupsInput{}
 	p := rds.NewDescribeOptionGroupsPaginator(svc, &config)
 	for p.HasMorePages() {
 		page, err := p.NextPage(ctx, func(options *rds.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

@@ -11,12 +11,13 @@ import (
 
 func Monitors() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_workloads_monitors",
-		Resolver:    fetchMonitors,
-		Description: "https://learn.microsoft.com/en-us/rest/api/workloads/sap-monitor/list?tabs=HTTP#monitor",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_workloads_monitors", client.Namespacemicrosoft_workloads),
-		Transform:   transformers.TransformWithStruct(&armworkloads.Monitor{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_workloads_monitors",
+		Resolver:             fetchMonitors,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/workloads/sap-monitor/list?tabs=HTTP#monitor",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_workloads_monitors", client.Namespacemicrosoft_workloads),
+		Transform:            transformers.TransformWithStruct(&armworkloads.Monitor{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

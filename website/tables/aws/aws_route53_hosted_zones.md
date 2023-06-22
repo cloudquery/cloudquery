@@ -32,3 +32,23 @@ The following tables depend on aws_route53_hosted_zones:
 |tags|`json`|
 |delegation_set_id|`utf8`|
 |vpcs|`json`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Unused Route 53 hosted zones
+
+```sql
+SELECT
+  'Unused Route 53 hosted zones' AS title,
+  account_id,
+  arn AS resource_id,
+  'fail' AS status
+FROM
+  aws_route53_hosted_zones
+WHERE
+  resource_record_set_count = 0;
+```
+
+

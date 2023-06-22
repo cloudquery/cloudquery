@@ -18,4 +18,5 @@ var clients = []any{
 	&datadogV1.ServiceLevelObjectiveCorrectionsApi{},
 	&datadogV1.SyntheticsApi{},
 	&datadogV2.UsersApi{},
+	&datadogV2.RUMApi{},
 }

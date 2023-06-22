@@ -12,4 +12,5 @@ type ApplicationautoscalingClient interface {
 	DescribeScalingActivities(context.Context, *applicationautoscaling.DescribeScalingActivitiesInput, ...func(*applicationautoscaling.Options)) (*applicationautoscaling.DescribeScalingActivitiesOutput, error)
 	DescribeScalingPolicies(context.Context, *applicationautoscaling.DescribeScalingPoliciesInput, ...func(*applicationautoscaling.Options)) (*applicationautoscaling.DescribeScalingPoliciesOutput, error)
 	DescribeScheduledActions(context.Context, *applicationautoscaling.DescribeScheduledActionsInput, ...func(*applicationautoscaling.Options)) (*applicationautoscaling.DescribeScheduledActionsOutput, error)
+	ListTagsForResource(context.Context, *applicationautoscaling.ListTagsForResourceInput, ...func(*applicationautoscaling.Options)) (*applicationautoscaling.ListTagsForResourceOutput, error)
 }

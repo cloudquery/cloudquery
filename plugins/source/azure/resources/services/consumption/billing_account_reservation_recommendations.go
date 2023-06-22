@@ -13,11 +13,12 @@ import (
 
 func BillingAccountReservationRecommendations() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_consumption_billing_account_reservation_recommendations",
-		Resolver:    fetchBillingAccountReservationRecommendations,
-		Description: "https://learn.microsoft.com/en-us/rest/api/consumption/reservation-recommendations/list?tabs=HTTP#legacyreservationrecommendation",
-		Multiplex:   client.LegacyBillingAccountMultiplex,
-		Transform:   transformers.TransformWithStruct(&armconsumption.LegacyReservationRecommendation{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_consumption_billing_account_reservation_recommendations",
+		Resolver:             fetchBillingAccountReservationRecommendations,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/consumption/reservation-recommendations/list?tabs=HTTP#legacyreservationrecommendation",
+		Multiplex:            client.LegacyBillingAccountMultiplex,
+		Transform:            transformers.TransformWithStruct(&armconsumption.LegacyReservationRecommendation{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

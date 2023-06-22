@@ -11,10 +11,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/mixpanel/internal/mixpanel"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/google/uuid"
 	"github.com/pkg/errors"
 )
 
-const key = "mixpanel_export_events"
+const (
+	key        = "mixpanel_export_events"
+	distinctID = "distinct_id"
+	insertID   = "$insert_id"
+)
 
 func ExportEvents() *schema.Table {
 	return &schema.Table{
@@ -90,7 +95,7 @@ func postExportEvents(ctx context.Context, meta schema.ClientMeta, resource *sch
 	return nil
 }
 
-func resolveExportTime(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+func resolveExportTime(_ context.Context, _ schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 	e := r.Item.(mixpanel.ExportEvent)
 	ts, ok := e.Properties["time"]
 	if !ok {
@@ -103,11 +108,18 @@ func resolveExportTime(_ context.Context, meta schema.ClientMeta, r *schema.Reso
 	return r.Set(c.Name, time.Unix(int64(tf), 0))
 }
 
-func resolveDistinctID(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+// resolveDistinctID will try "distinct_id" & "$insert_id" properties first, generating some random ID if unsuccessful.
+func resolveDistinctID(_ context.Context, _ schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 	e := r.Item.(mixpanel.ExportEvent)
-	val, ok := e.Properties["distinct_id"]
-	if !ok {
-		return errors.New("event does not have a distinct_id property")
+
+	var val any
+	if v, ok := e.Properties[distinctID]; ok {
+		val = v
+	} else if v, ok = e.Properties[insertID]; ok {
+		val = v
+	} else {
+		val = "cq-generated:" + uuid.NewString()
 	}
+
 	return r.Set(c.Name, val)
 }

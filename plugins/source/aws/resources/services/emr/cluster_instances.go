@@ -43,13 +43,13 @@ func clusterInstances() *schema.Table {
 }
 
 func fetchClusterInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	p := parent.Item.(*types.Cluster)
-	svc := c.Services().Emr
+	svc := cl.Services().Emr
 	paginator := emr.NewListInstancesPaginator(svc, &emr.ListInstancesInput{ClusterId: p.Id})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *emr.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

@@ -32,15 +32,15 @@ func appVersionResourceMappings() *schema.Table {
 }
 
 func fetchAppVersionResourceMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Resiliencehub
+	cl := meta.(*client.Client)
+	svc := cl.Services().Resiliencehub
 	p := resiliencehub.NewListAppVersionResourceMappingsPaginator(svc, &resiliencehub.ListAppVersionResourceMappingsInput{
 		AppArn:     parent.Parent.Item.(*types.App).AppArn,
 		AppVersion: parent.Item.(types.AppVersionSummary).AppVersion,
 	})
 	for p.HasMorePages() {
 		out, err := p.NextPage(ctx, func(options *resiliencehub.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

@@ -18,7 +18,7 @@ func AvailabilityZones() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Region.html`,
 		Resolver:    fetchAvailabilityZones,
-		Multiplex:   client.AccountMultiplex(tableName),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.AvailabilityZone{}, transformers.WithPrimaryKeys("RegionName", "ZoneId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
@@ -42,9 +42,10 @@ func AvailabilityZones() *schema.Table {
 }
 
 func fetchAvailabilityZones(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	output, err := c.Services().Ec2.DescribeAvailabilityZones(ctx, &ec2.DescribeAvailabilityZonesInput{AllAvailabilityZones: aws.Bool(true)}, func(options *ec2.Options) {
-		options.Region = c.Region
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ec2
+	output, err := svc.DescribeAvailabilityZones(ctx, &ec2.DescribeAvailabilityZonesInput{AllAvailabilityZones: aws.Bool(true)}, func(options *ec2.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

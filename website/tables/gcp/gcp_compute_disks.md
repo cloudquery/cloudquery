@@ -53,3 +53,30 @@ The primary key for this table is **self_link**.
 |type|`utf8`|
 |users|`list<item: utf8, nullable>`|
 |zone|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Ensure VM disks for critical VMs are encrypted with Customer-Supplied Encryption Keys (CSEK) (Automated)
+
+```sql
+SELECT
+  name AS resource_id,
+  'Ensure VM disks for critical VMs are encrypted with Customer-Supplied Encryption Keys (CSEK) (Automated)'
+    AS title,
+  project_id AS project_id,
+  CASE
+  WHEN (disk_encryption_key->>'sha256') IS NULL
+  OR disk_encryption_key->>'sha256' = ''
+  OR (source_image_encryption_key->>'kms_key_name') IS NULL
+  OR source_image_encryption_key->>'kms_key_name' = ''
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  gcp_compute_disks;
+```
+
+

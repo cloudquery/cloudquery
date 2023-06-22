@@ -44,12 +44,12 @@ func TargetGroups() *schema.Table {
 }
 
 func fetchTargetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Elasticloadbalancingv2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Elasticloadbalancingv2
 	paginator := elbv2.NewDescribeTargetGroupsPaginator(svc, &elbv2.DescribeTargetGroupsInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *elbv2.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

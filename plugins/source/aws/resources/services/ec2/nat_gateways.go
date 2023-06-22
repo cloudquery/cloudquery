@@ -42,12 +42,12 @@ func NatGateways() *schema.Table {
 }
 
 func fetchEc2NatGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Ec2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ec2
 	paginator := ec2.NewDescribeNatGatewaysPaginator(svc, &ec2.DescribeNatGatewaysInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *ec2.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

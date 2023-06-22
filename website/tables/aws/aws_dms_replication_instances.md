@@ -43,3 +43,22 @@ The primary key for this table is **arn**.
 |secondary_availability_zone|`utf8`|
 |vpc_security_groups|`json`|
 |tags|`json`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### AWS Database Migration Service replication instances should not be public
+
+```sql
+SELECT
+  'AWS Database Migration Service replication instances should not be public'
+    AS title,
+  account_id,
+  arn AS resource_id,
+  CASE WHEN publicly_accessible IS true THEN 'fail' ELSE 'pass' END AS status
+FROM
+  aws_dms_replication_instances;
+```
+
+

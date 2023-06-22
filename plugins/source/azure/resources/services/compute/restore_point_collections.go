@@ -11,12 +11,13 @@ import (
 
 func RestorePointCollections() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_compute_restore_point_collections",
-		Resolver:    fetchRestorePointCollections,
-		Description: "https://learn.microsoft.com/en-us/rest/api/compute/restore-point-collections/list?tabs=HTTP#restorepointcollection",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_restore_point_collections", client.Namespacemicrosoft_compute),
-		Transform:   transformers.TransformWithStruct(&armcompute.RestorePointCollection{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_compute_restore_point_collections",
+		Resolver:             fetchRestorePointCollections,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/compute/restore-point-collections/list?tabs=HTTP#restorepointcollection",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_compute_restore_point_collections", client.Namespacemicrosoft_compute),
+		Transform:            transformers.TransformWithStruct(&armcompute.RestorePointCollection{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

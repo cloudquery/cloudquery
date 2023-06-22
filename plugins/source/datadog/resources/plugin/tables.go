@@ -1,7 +1,6 @@
 package plugin
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/dashboard_lists"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/dashboards"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/downtimes"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/hosts"
@@ -9,6 +8,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/monitors"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/notebooks"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/roles"
+	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/rum"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/slos"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/synthetics"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/users"
@@ -17,8 +17,8 @@ import (
 
 func Tables() []*schema.Table {
 	return []*schema.Table{
-		dashboard_lists.DashboardLists(),
 		dashboards.Dashboards(),
+		dashboards.Lists(),
 		downtimes.Downtimes(),
 		hosts.Hosts(),
 		incidents.Incidents(),
@@ -26,8 +26,9 @@ func Tables() []*schema.Table {
 		notebooks.Notebooks(),
 		roles.Roles(),
 		roles.Permissions(),
+		rum.Events(),
 		slos.Objectives(),
-		slos.ObjectiveCorrections(),
+		slos.Corrections(),
 		synthetics.GlobalVariables(),
 		synthetics.Synthetics(),
 		users.Users(),

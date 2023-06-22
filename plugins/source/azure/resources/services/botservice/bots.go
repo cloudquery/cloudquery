@@ -11,12 +11,13 @@ import (
 
 func Bots() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_botservice_bots",
-		Resolver:    fetchBots,
-		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice@v0.5.0#Bot",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_botservice_bots", client.Namespacemicrosoft_botservice),
-		Transform:   transformers.TransformWithStruct(&armbotservice.Bot{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_botservice_bots",
+		Resolver:             fetchBots,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice@v0.5.0#Bot",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_botservice_bots", client.Namespacemicrosoft_botservice),
+		Transform:            transformers.TransformWithStruct(&armbotservice.Bot{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

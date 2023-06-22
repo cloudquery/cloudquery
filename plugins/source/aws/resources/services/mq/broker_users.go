@@ -32,15 +32,15 @@ func brokerUsers() *schema.Table {
 
 func fetchMqBrokerUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	broker := parent.Item.(*mq.DescribeBrokerOutput)
-	c := meta.(*client.Client)
-	svc := c.Services().Mq
+	cl := meta.(*client.Client)
+	svc := cl.Services().Mq
 	for _, us := range broker.Users {
 		input := mq.DescribeUserInput{
 			BrokerId: broker.BrokerId,
 			Username: us.Username,
 		}
 		output, err := svc.DescribeUser(ctx, &input, func(options *mq.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

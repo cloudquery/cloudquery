@@ -15,13 +15,8 @@ func Users() *schema.Table {
 		Resolver:  fetchUsers,
 		Multiplex: client.AccountMultiplex,
 		Transform: client.TransformWithStruct(&datadogV2.User{}, transformers.WithPrimaryKeys("Id")),
-		Columns: []schema.Column{
-			client.AccountNameColumn,
-		},
-
-		Relations: []*schema.Table{
-			UserPermissions(),
-		},
+		Columns:   schema.ColumnList{client.AccountNameColumn},
+		Relations: schema.Tables{permissions()},
 	}
 }
 

@@ -1,0 +1,23 @@
+kind: source
+spec:
+  name: "${ACCOUNT_ID}"
+  version: v1
+  destinations: ["0987654321"]
+  path: cloudquery/aws
+  tables: [test]
+---
+kind: source
+spec:
+  name: "${file:./testdata/number.txt}"
+  version: v1
+  destinations: ["0987654321"]
+  path: cloudquery/aws
+  tables: [test]
+---
+kind: destination
+spec:
+  name: "0987654321"
+  path: cloudquery/postgresql
+  version: v1
+  spec:
+    connection_string: postgresql://localhost:5432/cloudquery?sslmode=disable

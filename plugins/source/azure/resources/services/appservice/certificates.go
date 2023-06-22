@@ -11,12 +11,13 @@ import (
 
 func Certificates() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_appservice_certificates",
-		Resolver:    fetchCertificates,
-		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/certificates/list?tabs=HTTP#certificate",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_certificates", client.Namespacemicrosoft_web),
-		Transform:   transformers.TransformWithStruct(&armappservice.AppCertificate{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_appservice_certificates",
+		Resolver:             fetchCertificates,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/appservice/certificates/list?tabs=HTTP#certificate",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_certificates", client.Namespacemicrosoft_web),
+		Transform:            transformers.TransformWithStruct(&armappservice.AppCertificate{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

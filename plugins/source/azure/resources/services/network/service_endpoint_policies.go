@@ -11,12 +11,13 @@ import (
 
 func ServiceEndpointPolicies() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_service_endpoint_policies",
-		Resolver:    fetchServiceEndpointPolicies,
-		Description: "https://learn.microsoft.com/en-us/rest/api/expressroute/service-endpoint-policies/list?tabs=HTTP#serviceendpointpolicy",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_service_endpoint_policies", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.ServiceEndpointPolicy{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_service_endpoint_policies",
+		Resolver:             fetchServiceEndpointPolicies,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/expressroute/service-endpoint-policies/list?tabs=HTTP#serviceendpointpolicy",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_network_service_endpoint_policies", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armnetwork.ServiceEndpointPolicy{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

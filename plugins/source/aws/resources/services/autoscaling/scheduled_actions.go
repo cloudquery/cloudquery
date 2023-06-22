@@ -34,15 +34,15 @@ func ScheduledActions() *schema.Table {
 }
 
 func fetchAutoscalingScheduledActions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Autoscaling
+	cl := meta.(*client.Client)
+	svc := cl.Services().Autoscaling
 	params := &autoscaling.DescribeScheduledActionsInput{
 		MaxRecords: aws.Int32(100),
 	}
 	paginator := autoscaling.NewDescribeScheduledActionsPaginator(svc, params)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *autoscaling.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

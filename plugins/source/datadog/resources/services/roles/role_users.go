@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
-func RoleUsers() *schema.Table {
+func roleUsers() *schema.Table {
 	return &schema.Table{
 		Name:      "datadog_role_users",
 		Resolver:  fetchRoleUsers,

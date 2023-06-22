@@ -47,3 +47,26 @@ The following tables depend on aws_elasticbeanstalk_environments:
 |template_name|`utf8`|
 |tier|`json`|
 |version_label|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Elastic Beanstalk environments should have enhanced health reporting enabled
+
+```sql
+SELECT
+  'Elastic Beanstalk environments should have enhanced health reporting enabled'
+    AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN health_status IS NULL OR health IS NULL THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_elasticbeanstalk_environments;
+```
+
+

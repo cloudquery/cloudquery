@@ -5,6 +5,92 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [8.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v8.2.0...plugins-source-azure-v8.3.0) (2023-06-20)
+
+
+### This Release has the Following Changes to Tables
+- Table `azure_cognitiveservices_account_deployments` was added
+- Table `azure_cognitiveservices_account_models` was added
+- Table `azure_cognitiveservices_account_private_endpoint_connections` was added
+- Table `azure_cognitiveservices_account_private_link_resources` was added
+- Table `azure_cognitiveservices_account_skus` was added
+- Table `azure_cognitiveservices_account_usages` was added
+- Table `azure_cognitiveservices_commitment_plans` was added
+- Table `azure_cognitiveservices_resource_skus` was added
+- Table `azure_subscription_subscription_locations`: column added with name `metadata` and type `json`
+- Table `azure_subscription_subscription_locations`: column added with name `regional_display_name` and type `utf8`
+- Table `azure_subscription_subscription_locations`: column added with name `type` and type `utf8`
+- Table `azure_subscription_subscriptions`: column added with name `managed_by_tenants` and type `json`
+- Table `azure_subscription_subscriptions`: column added with name `tags` and type `json`
+- Table `azure_subscription_subscriptions`: column added with name `tenant_id` and type `utf8`
+- Table `azure_subscription_tenants`: column added with name `country_code` and type `utf8`
+- Table `azure_subscription_tenants`: column added with name `country` and type `utf8`
+- Table `azure_subscription_tenants`: column added with name `default_domain` and type `utf8`
+- Table `azure_subscription_tenants`: column added with name `display_name` and type `utf8`
+- Table `azure_subscription_tenants`: column added with name `domains` and type `list<item: utf8, nullable>`
+- Table `azure_subscription_tenants`: column added with name `tenant_branding_logo_url` and type `utf8`
+- Table `azure_subscription_tenants`: column added with name `tenant_category` and type `utf8`
+- Table `azure_subscription_tenants`: column added with name `tenant_type` and type `utf8`
+
+### Features
+
+* **azure-resources:** Add missing Cognitive Services resources ([#11645](https://github.com/cloudquery/cloudquery/issues/11645)) ([74b64e4](https://github.com/cloudquery/cloudquery/commit/74b64e403b367af3730999689115e1eab2bf4d4a))
+* **resources:** Use `resourcemanager/resources/armsubscriptions` for subscription resources ([#10369](https://github.com/cloudquery/cloudquery/issues/10369)) ([0a76536](https://github.com/cloudquery/cloudquery/commit/0a765362b095345c47435180c2279b4d34bd5b25)), closes [#9854](https://github.com/cloudquery/cloudquery/issues/9854)
+
+
+### Bug Fixes
+
+* **azure-policies:** Fix Syntax for policies ([#10184](https://github.com/cloudquery/cloudquery/issues/10184)) ([7795b37](https://github.com/cloudquery/cloudquery/commit/7795b37659b91f0ba9bb0c164c386fda13bfc28b))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 1e68c51 ([#11637](https://github.com/cloudquery/cloudquery/issues/11637)) ([46043bc](https://github.com/cloudquery/cloudquery/commit/46043bce410f86ba42390a6b190f9232fc2a1ded))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 4d76231 ([#11532](https://github.com/cloudquery/cloudquery/issues/11532)) ([6f04233](https://github.com/cloudquery/cloudquery/commit/6f042333acbd2506f7800ccb89a8c5cbfb7ad8d4))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to b0832be ([#11651](https://github.com/cloudquery/cloudquery/issues/11651)) ([71e8c29](https://github.com/cloudquery/cloudquery/commit/71e8c29624494a3e1cd104e46266a610ce57c83c))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to d864719 ([#11611](https://github.com/cloudquery/cloudquery/issues/11611)) ([557a290](https://github.com/cloudquery/cloudquery/commit/557a2903af272b8e2e4c9eebb36e39cd8a41a805))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v3 to v3.10.6 ([#11473](https://github.com/cloudquery/cloudquery/issues/11473)) ([7272133](https://github.com/cloudquery/cloudquery/commit/72721336632e127dd37de4541f2f503bf4f73fb6))
+
+## [8.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v8.1.0...plugins-source-azure-v8.2.0) (2023-06-13)
+
+
+### Features
+
+* **azure:** Add option to normalize ID values to be all lowercase ([#11388](https://github.com/cloudquery/cloudquery/issues/11388)) ([82134ee](https://github.com/cloudquery/cloudquery/commit/82134ee634e488342e9c44ad9f1246362e1f9615)), closes [#10779](https://github.com/cloudquery/cloudquery/issues/10779)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 0f7bd3b ([#11412](https://github.com/cloudquery/cloudquery/issues/11412)) ([dd1e2e8](https://github.com/cloudquery/cloudquery/commit/dd1e2e892d95515fd7332339262abaefd2a256c5))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 7f6aaff ([#11432](https://github.com/cloudquery/cloudquery/issues/11432)) ([55dfebc](https://github.com/cloudquery/cloudquery/commit/55dfebc064608fb47caaf3b8e68c8002de8a7dc3))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 8f72077 ([#11395](https://github.com/cloudquery/cloudquery/issues/11395)) ([d91fc5c](https://github.com/cloudquery/cloudquery/commit/d91fc5ce24f64c29fff6988b19ec2c2775cc379b))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 90670b8 ([#11279](https://github.com/cloudquery/cloudquery/issues/11279)) ([a6cdc91](https://github.com/cloudquery/cloudquery/commit/a6cdc912e4b38a3faf798c5147a986ffe2539643))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to b359e74 ([#11405](https://github.com/cloudquery/cloudquery/issues/11405)) ([5d92765](https://github.com/cloudquery/cloudquery/commit/5d927659bd4f7c445a0e312487f1655ffb9a60f6))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to d8eacf8 ([#11449](https://github.com/cloudquery/cloudquery/issues/11449)) ([742dafd](https://github.com/cloudquery/cloudquery/commit/742dafd5bf5cdc8facb94fda5de1d84c88897cbd))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to e258cfb ([#11391](https://github.com/cloudquery/cloudquery/issues/11391)) ([eacbe9a](https://github.com/cloudquery/cloudquery/commit/eacbe9ad3ea16d88f27c4593fa2774574ac8fe4e))
+
+## [8.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v8.0.0...plugins-source-azure-v8.1.0) (2023-06-06)
+
+
+### Features
+
+* **azure-resources:** Add DNS Record Sets ([#10918](https://github.com/cloudquery/cloudquery/issues/10918)) ([7c56926](https://github.com/cloudquery/cloudquery/commit/7c56926835275ec55adb011e7b57bf21a7248ceb))
+* **azure:** Add CIS 1.21, 6.3, 6.4, 8.5 policies ([#11194](https://github.com/cloudquery/cloudquery/issues/11194)) ([a3cda9b](https://github.com/cloudquery/cloudquery/commit/a3cda9b83537467bffd8156ee62eda2e42d41c87))
+* **azure:** Implement missing CIS policies ([#10928](https://github.com/cloudquery/cloudquery/issues/10928)) ([3ae3df3](https://github.com/cloudquery/cloudquery/commit/3ae3df3a6ab7dfb82e0c29208ed766eecbdebab9))
+
+
+### Bug Fixes
+
+* **azure:** Consumption legacy usage details ([#11242](https://github.com/cloudquery/cloudquery/issues/11242)) ([8da78c6](https://github.com/cloudquery/cloudquery/commit/8da78c6198eba46b85c3c7d32323b04e47caee31))
+* **azure:** Fix some CIS Azure policies ([#11228](https://github.com/cloudquery/cloudquery/issues/11228)) ([b95a4df](https://github.com/cloudquery/cloudquery/commit/b95a4df0dcca15812dfe28d2222094efff84f9ef))
+* **deps:** Update github.com/apache/arrow/go/v13 digest to e07e22c ([#11151](https://github.com/cloudquery/cloudquery/issues/11151)) ([5083cf7](https://github.com/cloudquery/cloudquery/commit/5083cf720f0ae98e07448ba2ae1116048e2d3a90))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 20b0de9 ([#11199](https://github.com/cloudquery/cloudquery/issues/11199)) ([dc3565d](https://github.com/cloudquery/cloudquery/commit/dc3565d3fd6a640d9d10b4fd3a7fe6009a9d02a5))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 88d5dc2 ([#11226](https://github.com/cloudquery/cloudquery/issues/11226)) ([9f306bc](https://github.com/cloudquery/cloudquery/commit/9f306bcaf3833b4611f0df5c50277be43aa19cbb))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to a7aad4c ([#11184](https://github.com/cloudquery/cloudquery/issues/11184)) ([8a0822e](https://github.com/cloudquery/cloudquery/commit/8a0822e31fc0eef99de2cdd2bd6d7e4c8b4131bf))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to c67fb39 ([#11169](https://github.com/cloudquery/cloudquery/issues/11169)) ([dcb0f92](https://github.com/cloudquery/cloudquery/commit/dcb0f9296a770a5cc2eb6bffd6b1ee30fbccb5dc))
+* **deps:** Update golang.org/x/exp digest to 2e198f4 ([#11155](https://github.com/cloudquery/cloudquery/issues/11155)) ([c46c62b](https://github.com/cloudquery/cloudquery/commit/c46c62b68692f527485d7f4b84265abc5dc1142c))
+* **deps:** Update google.golang.org/genproto digest to e85fd2c ([#11156](https://github.com/cloudquery/cloudquery/issues/11156)) ([dbe7e92](https://github.com/cloudquery/cloudquery/commit/dbe7e9293d693a6821570e0e0b80202a936b6d3c))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.0.9 ([#11240](https://github.com/cloudquery/cloudquery/issues/11240)) ([f92cd4b](https://github.com/cloudquery/cloudquery/commit/f92cd4bfe3c3d0088964d52ab9cd01ca4cf622e1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v3 to v3.10.3 ([#11150](https://github.com/cloudquery/cloudquery/issues/11150)) ([dc00994](https://github.com/cloudquery/cloudquery/commit/dc00994e32936af7e9893c93561d0f9df225a929))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v3 to v3.10.4 ([#11244](https://github.com/cloudquery/cloudquery/issues/11244)) ([8fceef6](https://github.com/cloudquery/cloudquery/commit/8fceef6f9041e173923555d8ff221cfe83b424c2))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v3 to v3.7.0 ([#11113](https://github.com/cloudquery/cloudquery/issues/11113)) ([487bf87](https://github.com/cloudquery/cloudquery/commit/487bf871afe360cb8d9d592dfea48837d6e7cf27))
+
 ## [8.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v7.5.0...plugins-source-azure-v8.0.0) (2023-05-29)
 
 

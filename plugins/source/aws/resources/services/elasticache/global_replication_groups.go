@@ -34,10 +34,10 @@ func GlobalReplicationGroups() *schema.Table {
 
 func fetchElasticacheGlobalReplicationGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	paginator := elasticache.NewDescribeGlobalReplicationGroupsPaginator(meta.(*client.Client).Services().Elasticache, nil)
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx, func(options *elasticache.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

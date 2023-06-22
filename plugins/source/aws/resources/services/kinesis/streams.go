@@ -42,13 +42,13 @@ func Streams() *schema.Table {
 }
 
 func fetchKinesisStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Kinesis
+	cl := meta.(*client.Client)
+	svc := cl.Services().Kinesis
 	input := kinesis.ListStreamsInput{}
 	paginator := kinesis.NewListStreamsPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *kinesis.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -59,13 +59,13 @@ func fetchKinesisStreams(ctx context.Context, meta schema.ClientMeta, parent *sc
 }
 
 func getStream(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	streamName := resource.Item.(string)
-	svc := c.Services().Kinesis
+	svc := cl.Services().Kinesis
 	streamSummary, err := svc.DescribeStreamSummary(ctx, &kinesis.DescribeStreamSummaryInput{
 		StreamName: aws.String(streamName),
 	}, func(options *kinesis.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
