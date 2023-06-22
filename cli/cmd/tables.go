@@ -71,7 +71,7 @@ func tables(cmd *cobra.Command, args []string) error {
 		})
 	}
 
-	sourceClients, err := managedplugin.NewClients(ctx, pluginConfigs, opts...)
+	sourceClients, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, pluginConfigs, opts...)
 	if err != nil {
 		return err
 	}
