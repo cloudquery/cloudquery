@@ -19,13 +19,13 @@ require (
 // TODO: remove once all updates are merged
 replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230621001250-f0dffc612853
 
-replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/v4 v4.0.0-20230622195407-5823d970ad6d
+replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/v4 v4.0.0-20230623101720-d4b06c321647
 
 //replace github.com/cloudquery/plugin-sdk/v4 => ../../../../plugin-sdk
 
 //replace github.com/cloudquery/filetypes/v4 => ../../../../filetypes
 
-replace github.com/cloudquery/filetypes/v4 => github.com/cloudquery/filetypes/v4 v4.0.0-20230623094658-9f08f9ebb6de
+replace github.com/cloudquery/filetypes/v4 => github.com/cloudquery/filetypes/v4 v4.0.0-20230623103348-2d509d123f1e
 
 require (
 	github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c // indirect
@@ -47,7 +47,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.12 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.19.2 // indirect
 	github.com/aws/smithy-go v1.13.5 // indirect
-	github.com/cloudquery/plugin-pb-go v1.2.0 // indirect
+	github.com/cloudquery/plugin-pb-go v1.2.1 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
