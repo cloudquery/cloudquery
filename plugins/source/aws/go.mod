@@ -97,6 +97,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/securityhub v1.33.0
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.19.1
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.17.5
+	github.com/aws/aws-sdk-go-v2/service/servicediscovery v1.21.6
 	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.14.13
 	github.com/aws/aws-sdk-go-v2/service/ses v1.15.10
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.18.1
@@ -113,6 +114,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/waf v1.12.11
 	github.com/aws/aws-sdk-go-v2/service/wafregional v1.13.14
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.35.0
+	github.com/aws/aws-sdk-go-v2/service/wellarchitected v1.21.1
 	github.com/aws/aws-sdk-go-v2/service/workspaces v1.28.14
 	github.com/aws/aws-sdk-go-v2/service/xray v1.16.12
 	github.com/aws/smithy-go v1.13.5
@@ -136,7 +138,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230621001250-f0dffc612853
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230623001532-8366a2241e66
 
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect

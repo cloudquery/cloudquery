@@ -35,8 +35,8 @@ var awsExceptions = map[string]string{
 	"cloudtrail":             "AWS CloudTrail",
 	"codebuild":              "AWS CodeBuild",
 	"codeartifact":           "AWS CodeArtifact",
-	"costexplorer":           "AWS Cost Explorer",
 	"computeoptimizer":       "Compute Optimizer",
+	"costexplorer":           "AWS Cost Explorer",
 	"directconnect":          "AWS Direct Connect",
 	"docdb":                  "Amazon DocumentDB",
 	"dynamodb":               "Amazon DynamoDB",
@@ -72,8 +72,10 @@ var awsExceptions = map[string]string{
 	"secretsmanager":         "AWS Secrets Manager",
 	"securityhub":            "AWS Security Hub",
 	"servicecatalog":         "AWS Service Catalog",
+	"servicediscovery":       "AWS Cloud Map",
 	"ses":                    "Amazon Simple Email Service (SES)",
 	"ssm":                    "AWS Systems Manager (SSM)",
+	"wellarchitected":        "AWS Well-Architected",
 	"xray":                   "AWS X-Ray",
 }
 

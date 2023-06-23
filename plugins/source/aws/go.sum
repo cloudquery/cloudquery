@@ -265,6 +265,8 @@ github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.19.1 h1:t43gZz5YeTt+jug65
 github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.19.1/go.mod h1:JGibLbsF3X/BLowocvufpmxtB8Kgw4zW1+AVNU9Yync=
 github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.17.5 h1:f7WV9oR7sqNEjfJiCxf/60/xRz1hU6h2wNEJHgHs2rc=
 github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.17.5/go.mod h1:hZgN977Yj12XO19pq8pjZ+T39sndfqpU4zEPArxS+Nc=
+github.com/aws/aws-sdk-go-v2/service/servicediscovery v1.21.6 h1:1SjN5e7PTycgBLHTi0ufQeRpH5IStX5naLHRvzPxdGk=
+github.com/aws/aws-sdk-go-v2/service/servicediscovery v1.21.6/go.mod h1:chOX1KME1Qw+pQVnfPUy+s3Urqy8CsdFeSWsWn/79GA=
 github.com/aws/aws-sdk-go-v2/service/servicequotas v1.14.13 h1:Yt/B/gy0vVXGugi0q0onCypXBtXY47eEzOTw7P3b2vg=
 github.com/aws/aws-sdk-go-v2/service/servicequotas v1.14.13/go.mod h1:XC0bYWjGX7oEpv/U1ujeFMrGvTOQVBzqU+vr22p7LDQ=
 github.com/aws/aws-sdk-go-v2/service/ses v1.15.10 h1:jHoeJEA60DGk1DycoH2BLlqhSpYfigJtgH2iKB2r6KE=
@@ -301,6 +303,8 @@ github.com/aws/aws-sdk-go-v2/service/wafregional v1.13.14 h1:MVQzL4otx+D8c0cPzux
 github.com/aws/aws-sdk-go-v2/service/wafregional v1.13.14/go.mod h1:dYcQ4AosNI0chNoHWnWfZne7RQI6r8EIgzIJmsYMWKc=
 github.com/aws/aws-sdk-go-v2/service/wafv2 v1.35.0 h1:zYYw3wS9W08ugD5J8bUgkUjNR533fUCgtp38oFwhNGE=
 github.com/aws/aws-sdk-go-v2/service/wafv2 v1.35.0/go.mod h1:RBpb9oTsEgAUfyaTAT2hFC83DxtLxj+SQpcbhaXiHnU=
+github.com/aws/aws-sdk-go-v2/service/wellarchitected v1.21.1 h1:rq/7YFXf+gbVCDuXFPliaR1JfrNQjPmoS5nWqSPjsNg=
+github.com/aws/aws-sdk-go-v2/service/wellarchitected v1.21.1/go.mod h1:8HTMqFYH4gE43kOtoxRqF4JZydHa4I5OumNnPj6Hv1I=
 github.com/aws/aws-sdk-go-v2/service/workspaces v1.28.14 h1:4qyeBZ4GaX95oK2I7FVjonFHS48xCfUI+TIResmRf84=
 github.com/aws/aws-sdk-go-v2/service/workspaces v1.28.14/go.mod h1:WT1eObgrrk0qD76J5ddKsS6lm+25zhcibLlsFosaHe0=
 github.com/aws/aws-sdk-go-v2/service/xray v1.16.12 h1:julKTpkL/qAF5v++QZGQJXi3ak+ogB9s5vweGkAPHjE=
@@ -325,8 +329,8 @@ github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5P
 github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMnBNeIyt5eFwwo7qiLfzFZmjNmxjkiQlU=
 github.com/cilium/ebpf v0.7.0/go.mod h1:/oI2+1shJiTGAMgl6/RgJr36Eo1jzrRcAWbcXO2usCA=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/arrow/go/v13 v13.0.0-20230621001250-f0dffc612853 h1:MeXRH104spmnswFe4dQoYsWRD0fS9HzhQ69GkSkF7a8=
-github.com/cloudquery/arrow/go/v13 v13.0.0-20230621001250-f0dffc612853/go.mod h1:W69eByFNO0ZR30q1/7Sr9d83zcVZmF2MiP3fFYAWJOc=
+github.com/cloudquery/arrow/go/v13 v13.0.0-20230623001532-8366a2241e66 h1:8eQrRKCk6OwCiIW43+Y10p2nkTdTATu5kqXEA7iBlg8=
+github.com/cloudquery/arrow/go/v13 v13.0.0-20230623001532-8366a2241e66/go.mod h1:W69eByFNO0ZR30q1/7Sr9d83zcVZmF2MiP3fFYAWJOc=
 github.com/cloudquery/codegen v0.2.1 h1:AWpGNKIFUyzI7vulYADXi/3SoksUaNXgTgIMuSrTHZk=
 github.com/cloudquery/codegen v0.2.1/go.mod h1:oJxzUuOC79fP36vBPU1BJ7n+jgQemS33y/mbgNq6vfM=
 github.com/cloudquery/plugin-pb-go v1.1.0 h1:F1r/x4aF5aO1hmgBk8rqAp2oejeYMMughTPaYosQLDk=
