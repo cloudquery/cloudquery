@@ -66,7 +66,7 @@ func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services
 	}
 	m.EXPECT().ListResourcesForWebACL(gomock.Any(), gomock.Any(), gomock.Any()).Return(&wafv2.ListResourcesForWebACLOutput{
 		ResourceArns: tempResourceArns,
-	}, nil)
+	}, nil).MinTimes(1)
 
 	distributionList := cftypes.DistributionList{}
 	if err := faker.FakeObject(&distributionList); err != nil {

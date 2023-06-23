@@ -10,6 +10,7 @@ The composite primary key for this table is (**request_account_id**, **arn**).
 ## Relations
 
 The following tables depend on aws_organizations_accounts:
+  - [aws_organizations_account_parents](aws_organizations_account_parents)
   - [aws_organizations_delegated_services](aws_organizations_delegated_services)
 
 ## Columns

@@ -24,6 +24,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudtrail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudwatch"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudwatchlogs"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codeartifact"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codebuild"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codepipeline"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cognito"
@@ -86,6 +87,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/secretsmanager"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/securityhub"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicecatalog"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicediscovery"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicequotas"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ses"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/shield"
@@ -100,6 +102,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/waf"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wafregional"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wafv2"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wellarchitected"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/workspaces"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/xray"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
@@ -151,6 +154,7 @@ func tables() []*schema.Table {
 		autoscalingplans.Plans(),
 		backup.GlobalSettings(),
 		backup.Plans(),
+		backup.ProtectedResources(),
 		backup.RegionSettings(),
 		backup.Vaults(),
 		batch.JobQueues(),
@@ -159,15 +163,25 @@ func tables() []*schema.Table {
 		cloudformation.StackSets(),
 		cloudfront.CachePolicies(),
 		cloudfront.Distributions(),
+		cloudfront.Functions(),
+		cloudfront.OriginAccessIdentities(),
+		cloudfront.OriginRequestPolicies(),
+		cloudfront.ResponseHeaderPolicies(),
 		cloudhsmv2.Backups(),
 		cloudhsmv2.Clusters(),
+		cloudtrail.Channels(),
 		cloudtrail.Events(),
+		cloudtrail.Imports(),
 		cloudtrail.Trails(),
 		cloudwatch.Alarms(),
+		cloudwatch.Metrics(),
 		cloudwatchlogs.LogGroups(),
 		cloudwatchlogs.MetricFilters(),
 		cloudwatchlogs.ResourcePolicies(),
+		codeartifact.Domains(),
+		codeartifact.Repositories(),
 		codebuild.Projects(),
+		codebuild.SourceCredentials(),
 		codepipeline.Pipelines(),
 		codepipeline.Webhooks(),
 		cognito.IdentityPools(),
@@ -186,6 +200,7 @@ func tables() []*schema.Table {
 		config.RetentionConfigurations(),
 		costexplorer.ThirtyDayCost(),
 		costexplorer.ThirtyDayCostForecast(),
+		costexplorer.CustomCost(),
 		dax.Clusters(),
 		directconnect.Connections(),
 		directconnect.Gateways(),
@@ -212,6 +227,7 @@ func tables() []*schema.Table {
 		ec2.AccountAttributes(),
 		ec2.AvailabilityZones(),
 		ec2.ByoipCidrs(),
+		ec2.CapacityReservations(),
 		ec2.CustomerGateways(),
 		ec2.DHCPOptions(),
 		ec2.EbsSnapshots(),
@@ -222,6 +238,7 @@ func tables() []*schema.Table {
 		ec2.FlowLogs(),
 		ec2.Hosts(),
 		ec2.Images(),
+		ec2.InstanceConnectEndpoints(),
 		ec2.Instances(),
 		ec2.InstanceStatuses(),
 		ec2.InstanceTypes(),
@@ -455,6 +472,8 @@ func tables() []*schema.Table {
 		servicecatalog.Portfolios(),
 		servicecatalog.Products(),
 		servicecatalog.ProvisionedProducts(),
+		servicediscovery.Namespaces(),
+		servicediscovery.Services(),
 		servicequotas.Services(),
 		ses.ActiveReceiptRuleSets(),
 		ses.ConfigurationSets(),
@@ -500,6 +519,9 @@ func tables() []*schema.Table {
 		wafv2.RegexPatternSets(),
 		wafv2.RuleGroups(),
 		wafv2.WebAcls(),
+		wellarchitected.Lenses(),
+		wellarchitected.ShareInvitations(),
+		wellarchitected.Workloads(),
 		workspaces.Directories(),
 		workspaces.Workspaces(),
 		xray.EncryptionConfigs(),

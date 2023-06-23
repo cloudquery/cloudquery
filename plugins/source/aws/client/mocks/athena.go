@@ -215,6 +215,66 @@ func (mr *MockAthenaClientMockRecorder) GetCalculationExecutionStatus(arg0, arg1
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCalculationExecutionStatus", reflect.TypeOf((*MockAthenaClient)(nil).GetCalculationExecutionStatus), varargs...)
 }
 
+// GetCapacityAssignmentConfiguration mocks base method.
+func (m *MockAthenaClient) GetCapacityAssignmentConfiguration(arg0 context.Context, arg1 *athena.GetCapacityAssignmentConfigurationInput, arg2 ...func(*athena.Options)) (*athena.GetCapacityAssignmentConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCapacityAssignmentConfiguration")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetCapacityAssignmentConfiguration", varargs...)
+	ret0, _ := ret[0].(*athena.GetCapacityAssignmentConfigurationOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetCapacityAssignmentConfiguration indicates an expected call of GetCapacityAssignmentConfiguration.
+func (mr *MockAthenaClientMockRecorder) GetCapacityAssignmentConfiguration(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCapacityAssignmentConfiguration", reflect.TypeOf((*MockAthenaClient)(nil).GetCapacityAssignmentConfiguration), varargs...)
+}
+
+// GetCapacityReservation mocks base method.
+func (m *MockAthenaClient) GetCapacityReservation(arg0 context.Context, arg1 *athena.GetCapacityReservationInput, arg2 ...func(*athena.Options)) (*athena.GetCapacityReservationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCapacityReservation")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetCapacityReservation", varargs...)
+	ret0, _ := ret[0].(*athena.GetCapacityReservationOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetCapacityReservation indicates an expected call of GetCapacityReservation.
+func (mr *MockAthenaClientMockRecorder) GetCapacityReservation(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCapacityReservation", reflect.TypeOf((*MockAthenaClient)(nil).GetCapacityReservation), varargs...)
+}
+
 // GetDataCatalog mocks base method.
 func (m *MockAthenaClient) GetDataCatalog(arg0 context.Context, arg1 *athena.GetDataCatalogInput, arg2 ...func(*athena.Options)) (*athena.GetDataCatalogOutput, error) {
 
@@ -633,6 +693,36 @@ func (mr *MockAthenaClientMockRecorder) ListCalculationExecutions(arg0, arg1 int
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListCalculationExecutions", reflect.TypeOf((*MockAthenaClient)(nil).ListCalculationExecutions), varargs...)
+}
+
+// ListCapacityReservations mocks base method.
+func (m *MockAthenaClient) ListCapacityReservations(arg0 context.Context, arg1 *athena.ListCapacityReservationsInput, arg2 ...func(*athena.Options)) (*athena.ListCapacityReservationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &athena.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCapacityReservations")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListCapacityReservations", varargs...)
+	ret0, _ := ret[0].(*athena.ListCapacityReservationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListCapacityReservations indicates an expected call of ListCapacityReservations.
+func (mr *MockAthenaClientMockRecorder) ListCapacityReservations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListCapacityReservations", reflect.TypeOf((*MockAthenaClient)(nil).ListCapacityReservations), varargs...)
 }
 
 // ListDataCatalogs mocks base method.

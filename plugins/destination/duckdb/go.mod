@@ -3,18 +3,18 @@ module github.com/cloudquery/cloudquery/plugins/destination/duckdb
 go 1.19
 
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230601164043-3299d12efc91
+	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe
 	github.com/cenkalti/backoff/v4 v4.2.1
-	github.com/cloudquery/plugin-pb-go v1.0.9
-	github.com/cloudquery/plugin-sdk/v3 v3.10.4
+	github.com/cloudquery/plugin-pb-go v1.2.1
+	github.com/cloudquery/plugin-sdk/v3 v3.10.6
 	github.com/google/uuid v1.3.0
-	github.com/marcboeker/go-duckdb v1.3.0
-	github.com/rs/zerolog v1.29.0
+	github.com/marcboeker/go-duckdb v1.4.1
+	github.com/rs/zerolog v1.29.1
 	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230609001322-b359e7498fd2
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230623001532-8366a2241e66
 
 require (
 	github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c // indirect

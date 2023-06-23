@@ -8,9 +8,9 @@ import (
 	"path"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/metrics"
 	"github.com/cloudquery/plugin-pb-go/pb/analytics/v0"
-	"github.com/cloudquery/plugin-pb-go/specs"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"

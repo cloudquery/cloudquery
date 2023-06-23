@@ -10,10 +10,15 @@ author: roneliahu
 ---
 
 import { BlogHeader } from "../../components/BlogHeader"
+import { Callout } from 'nextra-theme-docs';
 
 <BlogHeader/>
 
-As of the writing of this blog, CloudQuery supports over 155 resources across 61 services in AWS! and many more in GCP, Azure, etc. Although this gives users the capabilities to answer many of their questions regarding your security, visibility and infrastructure, it would be great to have a single view of all your AWS resources, right?
+<Callout type="info">
+**Update (June 2023)**: You can find the latest documentation for the [AWS resources view in the CloudQuery AWS source plugin documentation](/docs/plugins/sources/aws/views). There are also similar views for [GCP](/docs/plugins/sources/gcp/views) and [Azure](/docs/plugins/sources/azure/views).
+</Callout>
+
+As of the writing of this blog, CloudQuery supports over 155 resources across 61 services in AWS (!) and many more in GCP, Azure, etc. Although this gives users the capabilities to answer many of their questions regarding your security, visibility and infrastructure, it would be great to have a single view of all your AWS resources, right?
 
 So here at CloudQuery we built a simple `aws_resources` view, to demonstrate the power of using a SQL database to create a single pane for all your fetched AWS resources. The `aws_resources` view allows us to ask questions on all our resources allowing us to filter by service, region, account and more!
 

@@ -1,0 +1,19 @@
+kind: source
+spec:
+  name: gcp
+  path: cloudquery/gcp
+  version: v1.0.0
+  table_concurrency: 10
+  registry: local
+  destinations: [postgresqlv2]
+  tables: [test]
+---
+kind: destination
+spec:
+  name: postgresqlv2
+  path: cloudquery/postgresql
+  version: v1.0.0
+  registry: grpc
+  write_mode: overwrite
+  spec:
+    credentials: ${file:./testdata/creds.txt}

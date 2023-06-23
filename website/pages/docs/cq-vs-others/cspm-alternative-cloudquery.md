@@ -1,5 +1,6 @@
 ---
 title: Open Source CSPM Alternative | CloudQuery
+description: CloudQuery is an open-source CSPM tool that allows you to monitor, detect and respond to threats and misconfigurations in the cloud.
 ---
 
 # CloudQuery vs CSPMs (Cloud Security Posture Management)

@@ -515,6 +515,66 @@ func (mr *MockFrauddetectorClientMockRecorder) GetLabels(arg0, arg1 interface{},
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLabels", reflect.TypeOf((*MockFrauddetectorClient)(nil).GetLabels), varargs...)
 }
 
+// GetListElements mocks base method.
+func (m *MockFrauddetectorClient) GetListElements(arg0 context.Context, arg1 *frauddetector.GetListElementsInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.GetListElementsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetListElements")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetListElements", varargs...)
+	ret0, _ := ret[0].(*frauddetector.GetListElementsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetListElements indicates an expected call of GetListElements.
+func (mr *MockFrauddetectorClientMockRecorder) GetListElements(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetListElements", reflect.TypeOf((*MockFrauddetectorClient)(nil).GetListElements), varargs...)
+}
+
+// GetListsMetadata mocks base method.
+func (m *MockFrauddetectorClient) GetListsMetadata(arg0 context.Context, arg1 *frauddetector.GetListsMetadataInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.GetListsMetadataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &frauddetector.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetListsMetadata")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetListsMetadata", varargs...)
+	ret0, _ := ret[0].(*frauddetector.GetListsMetadataOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetListsMetadata indicates an expected call of GetListsMetadata.
+func (mr *MockFrauddetectorClientMockRecorder) GetListsMetadata(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetListsMetadata", reflect.TypeOf((*MockFrauddetectorClient)(nil).GetListsMetadata), varargs...)
+}
+
 // GetModelVersion mocks base method.
 func (m *MockFrauddetectorClient) GetModelVersion(arg0 context.Context, arg1 *frauddetector.GetModelVersionInput, arg2 ...func(*frauddetector.Options)) (*frauddetector.GetModelVersionOutput, error) {
 

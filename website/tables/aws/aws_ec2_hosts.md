@@ -26,6 +26,7 @@ The primary key for this table is **arn**.
 |available_capacity|`json`|
 |client_token|`utf8`|
 |host_id|`utf8`|
+|host_maintenance|`utf8`|
 |host_properties|`json`|
 |host_recovery|`utf8`|
 |host_reservation_id|`utf8`|
