@@ -4,8 +4,7 @@ go 1.20
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe
-	github.com/cloudquery/plugin-sdk/v4 v4.0.0-20230623101720-d4b06c321647
-	github.com/google/uuid v1.3.0
+	github.com/cloudquery/plugin-sdk/v4 v4.0.0-20230623112949-b556091f6215
 	github.com/rs/zerolog v1.29.1
 	github.com/sijms/go-ora/v2 v2.7.6
 	github.com/stretchr/testify v1.8.4
@@ -25,6 +24,7 @@ require (
 	github.com/goccy/go-json v0.10.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/flatbuffers v23.1.21+incompatible // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
