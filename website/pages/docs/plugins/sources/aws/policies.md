@@ -196,6 +196,7 @@ AWS Foundational Security Best Practices requires the following tables to be syn
 
 ```yaml
 tables:
+  - aws_account_alternate_contacts
   - aws_acm_certificates
   - aws_apigateway_rest_api_stages
   - aws_apigateway_rest_apis
@@ -281,6 +282,7 @@ tables:
 ### Queries
 
 AWS Foundational Security Best Practices performs the following checks:
+  - Security contact information should be provided for an AWS account
   - certificate has less than 30 days to be renewed
   - API Gateway REST and WebSocket API logging should be enabled
   - API Gateway REST API stages should be configured to use SSL certificates for backend authentication
