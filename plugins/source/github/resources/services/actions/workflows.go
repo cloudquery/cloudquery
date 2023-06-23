@@ -40,10 +40,11 @@ func fetchWorkflows(ctx context.Context, meta schema.ClientMeta, _ *schema.Resou
 			return err
 		}
 		res <- workflows.Workflows
-		actionOpts.Page = resp.NextPage
-		if actionOpts.Page == resp.LastPage {
+
+		if resp.NextPage == 0 {
 			break
 		}
+		actionOpts.Page = resp.NextPage
 	}
 	return nil
 }
