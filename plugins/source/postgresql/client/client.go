@@ -2,12 +2,12 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -16,15 +16,15 @@ import (
 )
 
 type Client struct {
+	plugin.UnimplementedDestination
 	Conn                *pgxpool.Pool
 	logger              zerolog.Logger
-	spec                specs.Source
-	metrics             *source.Metrics
 	pluginSpec          Spec
 	currentDatabaseName string
 	currentSchemaName   string
 	pgType              pgType
-	Tables              schema.Tables
+	tables              schema.Tables
+	cdcId               string
 }
 
 type pgType int
@@ -35,19 +35,16 @@ const (
 	pgTypeCockroachDB
 )
 
-var _ schema.ClientMeta = (*Client)(nil)
-
 func (*Client) ID() string {
 	return "source-pg"
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "pg-source").Logger(),
 	}
 	var pluginSpec Spec
-	c.spec = spec
-	if err := spec.UnmarshalSpec(&pluginSpec); err != nil {
+	if err := json.Unmarshal(spec, &pluginSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
 	}
 	pluginSpec.SetDefaults()
@@ -96,19 +93,12 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	if err != nil {
 		return nil, fmt.Errorf("failed to get database type: %w", err)
 	}
-	c.Tables, err = c.listTables(ctx)
+	c.tables, err = c.listTables(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list tables: %w", err)
 	}
-	c.Tables, err = c.Tables.FilterDfs(spec.Tables, spec.SkipTables, spec.SkipDependentTables)
-	if err != nil {
-		return nil, fmt.Errorf("failed to apply config to tables: %w", err)
-	}
 
 	if c.pluginSpec.CDC {
-		if len(c.tablesWithPks()) == 0 {
-			return nil, fmt.Errorf("cdc is enabled but no tables with primary keys were found")
-		}
 		walLevel, err := c.walLevel(ctx)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get wal_level: %w", err)
@@ -117,6 +107,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 			return nil, fmt.Errorf("cdc is enabled but wal_level is not logical")
 		}
 	}
+	c.cdcId = pluginSpec.CDCId
 
 	return c, nil
 }
@@ -171,4 +162,13 @@ func (c *Client) currentSchema(ctx context.Context) (string, error) {
 	}
 
 	return schemaName, nil
+}
+
+func (c Client) Tables(ctx context.Context) (schema.Tables, error) {
+	return c.tables, nil
+}
+
+func (c Client) Close(_ context.Context) error {
+	c.Conn.Close()
+	return nil
 }
