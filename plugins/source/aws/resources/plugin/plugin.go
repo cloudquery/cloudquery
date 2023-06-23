@@ -33,6 +33,7 @@ var awsExceptions = map[string]string{
 	"cloudhsm":               "AWS CloudHSM",
 	"cloudhsmv2":             "AWS CloudHSM v2",
 	"cloudtrail":             "AWS CloudTrail",
+	"codebuild":              "AWS CodeBuild",
 	"codeartifact":           "AWS CodeArtifact",
 	"computeoptimizer":       "Compute Optimizer",
 	"costexplorer":           "AWS Cost Explorer",

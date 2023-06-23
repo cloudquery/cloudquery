@@ -10,7 +10,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildCodebuildProjects(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSourceCredentials(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockCodebuildClient(ctrl)
 
 	projectsList := codebuild.ListProjectsOutput{}
@@ -71,6 +71,6 @@ func buildCodebuildProjects(t *testing.T, ctrl *gomock.Controller) client.Servic
 	return client.Services{Codebuild: m}
 }
 
-func TestCodebuildProjects(t *testing.T) {
-	client.AwsMockTestHelper(t, Projects(), buildCodebuildProjects, client.TestOptions{})
+func TestSourceCredentials(t *testing.T) {
+	client.AwsMockTestHelper(t, Projects(), buildSourceCredentials, client.TestOptions{})
 }
