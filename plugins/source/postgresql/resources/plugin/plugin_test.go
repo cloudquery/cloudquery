@@ -64,7 +64,7 @@ type testCase struct {
 	expect   scalar.Scalar
 }
 
-func getTestCases(serialValue int64) []testCase {
+func getTestCases(_ int64) []testCase {
 	cidr := scalar.Inet{}
 	err := cidr.Set("10.1.2.3/32")
 	if err != nil {

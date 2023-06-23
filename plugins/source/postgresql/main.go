@@ -9,5 +9,4 @@ const sentryDSN = "https://995c68a7e67541338e22dd8120e81c42@o1396617.ingest.sent
 
 func main() {
 	serve.Plugin(plugin.Plugin(), serve.WithPluginSentryDSN(sentryDSN))
-
 }

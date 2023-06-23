@@ -91,7 +91,7 @@ func (c *Client) syncTables(ctx context.Context, snapshotName string, filteredTa
 	}
 
 	for _, table := range filteredTables {
-		if err := c.syncTable(ctx, tx, table, res); err != nil {
+		if err := syncTable(ctx, tx, table, res); err != nil {
 			return err
 		}
 	}
@@ -101,7 +101,7 @@ func (c *Client) syncTables(ctx context.Context, snapshotName string, filteredTa
 	return nil
 }
 
-func (c *Client) syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- message.Message) error {
+func syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- message.Message) error {
 	colNames := make([]string, 0, len(table.Columns)-2)
 	for _, col := range table.Columns {
 		colNames = append(colNames, pgx.Identifier{col.Name}.Sanitize())
