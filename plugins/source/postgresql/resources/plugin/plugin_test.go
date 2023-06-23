@@ -64,7 +64,7 @@ type testCase struct {
 	expect   scalar.Scalar
 }
 
-func getTestCases(_ int64) []testCase {
+func getTestCases(serialValue int64) []testCase {
 	cidr := scalar.Inet{}
 	err := cidr.Set("10.1.2.3/32")
 	if err != nil {
@@ -85,23 +85,23 @@ func getTestCases(_ int64) []testCase {
 	if err != nil {
 		panic(err)
 	}
-	// timeMicrosecond := scalar.Time{
-	// 	Unit: arrow.Microsecond,
-	// }
-	// err = timeMicrosecond.Set("04:05:06.789000")
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// timeMillisecond := scalar.Time{
-	// 	Int: scalar.Int{
-	// 		BitWidth: 32,
-	// 	},
-	// 	Unit: arrow.Millisecond,
-	// }
-	// err = timeMillisecond.Set("04:05:06.789")
-	// if err != nil {
-	// 	panic(err)
-	// }
+	timeMicrosecond := scalar.Time{
+		Unit: arrow.Microsecond,
+	}
+	err = timeMicrosecond.Set("04:05:06.789000")
+	if err != nil {
+		panic(err)
+	}
+	timeMillisecond := scalar.Time{
+		Int: scalar.Int{
+			BitWidth: 32,
+		},
+		Unit: arrow.Millisecond,
+	}
+	err = timeMillisecond.Set("04:05:06.789")
+	if err != nil {
+		panic(err)
+	}
 	timestamp := scalar.Timestamp{}
 	err = timestamp.Set("1999-01-08 04:05:06.789")
 	if err != nil {
@@ -123,9 +123,9 @@ func getTestCases(_ int64) []testCase {
 		panic(err)
 	}
 	return []testCase{
-		// {"int", 1, &scalar.Int{Value: 1, Valid: true, BitWidth: 32}},
-		// {"bigint", 1, &scalar.Int{Value: 1, Valid: true, BitWidth: 64}},
-		// {"bigserial", nil, &scalar.Int{Value: serialValue, Valid: true, BitWidth: 64}},
+		{"int", 1, &scalar.Int{Value: 1, Valid: true, BitWidth: 32}},
+		{"bigint", 1, &scalar.Int{Value: 1, Valid: true, BitWidth: 64}},
+		{"bigserial", nil, &scalar.Int{Value: serialValue, Valid: true, BitWidth: 64}},
 		{"bit", "1", &scalar.String{Value: "1", Valid: true}},
 		{"bit(5)", "11111", &scalar.String{Value: "11111", Valid: true}},
 		{"bit varying", "1", &scalar.String{Value: "1", Valid: true}},
@@ -139,10 +139,10 @@ func getTestCases(_ int64) []testCase {
 		{"character varying(5)", "aaaaa", &scalar.String{Value: "aaaaa", Valid: true}},
 		{"cidr", "10.1.2.3/32", &cidr},
 		{"circle", "<(1,2),3>", &scalar.String{Value: "<(1,2),3>", Valid: true}},
-		// {"date", "1999-01-08", &scalar.Date32{Value: 10599, Valid: true}},
-		// {"double precision", 1.1, &scalar.Float{Value: 1.1, Valid: true, BitWidth: 64}},
+		{"date", "1999-01-08", &scalar.Date32{Value: 10599, Valid: true}},
+		{"double precision", 1.1, &scalar.Float{Value: 1.1, Valid: true, BitWidth: 64}},
 		{"inet", "192.168.0.0/24", &inet},
-		// {"integer", 1, &scalar.Int{Value: 1, Valid: true, BitWidth: 32}},
+		{"integer", 1, &scalar.Int{Value: 1, Valid: true, BitWidth: 32}},
 		{"interval", "1-2", &scalar.String{Value: "14 mon 00:00:00.000000", Valid: true}},
 		{"json", `{"a":1}`, &scalar.JSON{Value: []byte(`{"a":1}`), Valid: true}},
 		{"jsonb", `{"a":1}`, &scalar.JSON{Value: []byte(`{"a":1}`), Valid: true}},
@@ -154,14 +154,14 @@ func getTestCases(_ int64) []testCase {
 		{"path", `[(1,2),(3,4)]`, &scalar.String{Value: "[(1,2),(3,4)]", Valid: true}},
 		{"point", "(1,2)", &scalar.String{Value: "(1,2)", Valid: true}},
 		{"polygon", `((1,2),(3,4))`, &scalar.String{Value: "((1,2),(3,4))", Valid: true}},
-		// {"real", 1.1, &scalar.Float{Value: 1.100000023841858, Valid: true, BitWidth: 32}},
-		// {"smallint", 1, &scalar.Int{Value: 1, Valid: true, BitWidth: 16}},
-		// {"smallserial", nil, &scalar.Int{Value: serialValue, Valid: true, BitWidth: 16}},
-		// {"serial", nil, &scalar.Int{Value: serialValue, Valid: true, BitWidth: 32}},
+		{"real", 1.1, &scalar.Float{Value: 1.100000023841858, Valid: true, BitWidth: 32}},
+		{"smallint", 1, &scalar.Int{Value: 1, Valid: true, BitWidth: 16}},
+		{"smallserial", nil, &scalar.Int{Value: serialValue, Valid: true, BitWidth: 16}},
+		{"serial", nil, &scalar.Int{Value: serialValue, Valid: true, BitWidth: 32}},
 		{"text", "test", &scalar.String{Value: "test", Valid: true}},
-		// {"time without time zone", "04:05:06.789", &timeMicrosecond},
-		// {"time(3)", "04:05:06.789", &timeMillisecond},
-		// {"time(3) without time zone", "04:05:06.789", &timeMillisecond},
+		{"time without time zone", "04:05:06.789", &timeMicrosecond},
+		{"time(3)", "04:05:06.789", &timeMillisecond},
+		{"time(3) without time zone", "04:05:06.789", &timeMillisecond},
 		{"timestamp", "1999-01-08 04:05:06.789", &timestamp},
 		{"timestamp without time zone", "1999-01-08 04:05:06.789", &timestamp},
 		// {"timestamp(3)", "1999-01-08 04:05:06.789", &timestampMillisecond},
