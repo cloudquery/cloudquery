@@ -12,7 +12,7 @@ require (
 	github.com/thoas/go-funk v0.9.3
 )
 
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230622001328-95d31999d687
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230623001532-8366a2241e66
 
 require (
 	github.com/cenkalti/backoff/v4 v4.1.3 // indirect
