@@ -17,7 +17,7 @@ replace github.com/cloudquery/plugin-sdk/v4 => ../../../../plugin-sdk
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe // indirect
 	github.com/avast/retry-go/v4 v4.3.4 // indirect
-	github.com/cloudquery/plugin-pb-go v1.0.9 // indirect
+	github.com/cloudquery/plugin-pb-go v1.2.1 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
