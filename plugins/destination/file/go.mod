@@ -14,13 +14,13 @@ require (
 // TODO: remove once all updates are merged
 replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230621001250-f0dffc612853
 
-replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/v4 v4.0.0-20230623101720-d4b06c321647
+replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/v4 v4.0.0-20230623105555-75af24931824
 
 //replace github.com/cloudquery/plugin-sdk/v4 => ../../../../plugin-sdk
 
 //replace github.com/cloudquery/filetypes/v4 => ../../../../filetypes
 
-replace github.com/cloudquery/filetypes/v4 => github.com/cloudquery/filetypes/v4 v4.0.0-20230623103348-2d509d123f1e
+replace github.com/cloudquery/filetypes/v4 => github.com/cloudquery/filetypes/v4 v4.0.0-20230623111058-532d83310a1f
 
 require (
 	github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c // indirect
