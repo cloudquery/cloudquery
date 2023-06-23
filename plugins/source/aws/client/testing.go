@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
+	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
@@ -47,11 +48,20 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 		t.Fatal(err)
 	}
 
-	inserts := messages.InsertMessage()
-	records := inserts.GetRecordsForTable(table)
+	records := filterInserts(messages).GetRecordsForTable(table)
 	emptyColumns := schema.FindEmptyColumns(table, records)
 	if len(emptyColumns) > 0 {
 		t.Fatalf("empty columns: %v", emptyColumns)
 	}
 
+}
+
+func filterInserts(msgs message.Messages) message.Inserts {
+	inserts := []*message.Insert{}
+	for _, msg := range msgs {
+		if m, ok := msg.(*message.Insert); ok {
+			inserts = append(inserts, m)
+		}
+	}
+	return inserts
 }

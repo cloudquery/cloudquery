@@ -190,7 +190,7 @@ replace github.com/cloudquery/plugin-pb-go => ../../../../plugin-pb-go
 require (
 	github.com/avast/retry-go/v4 v4.3.4 // indirect
 	github.com/biogo/store v0.0.0-20201120204734-aad293a2328f // indirect
-	github.com/cloudquery/plugin-pb-go v1.0.9 // indirect
+	github.com/cloudquery/plugin-pb-go v1.3.2 // indirect
 	github.com/cockroachdb/apd/v3 v3.1.0 // indirect
 	github.com/cockroachdb/errors v1.9.0 // indirect
 	github.com/cockroachdb/logtags v0.0.0-20230118201751-21c54148d20b // indirect
