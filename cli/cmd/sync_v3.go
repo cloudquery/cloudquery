@@ -132,7 +132,7 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		progressbar.OptionClearOnFinish(),
 	)
 
-	// Add a ticker to update the progress bar every second.
+	// Add a ticker to update the progress bar every 100ms
 	t := time.NewTicker(100 * time.Millisecond)
 	newResources := int64(0)
 	defer t.Stop()
@@ -140,6 +140,8 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		for {
 			select {
 			case <-ctx.Done():
+				change := atomic.SwapInt64(&newResources, 0)
+				_ = bar.Add(int(change))
 				return
 			case <-t.C:
 				change := atomic.SwapInt64(&newResources, 0)
@@ -165,7 +167,7 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 			if err != nil {
 				return fmt.Errorf("failed to get record from bytes: %w", err)
 			}
-			atomic.AddInt64(&newResources, 1)
+			atomic.AddInt64(&newResources, record.NumRows())
 			totalResources += int(record.NumRows())
 			for i := range destinationsPbClients {
 				transformedRecord := destinationTransformers[i].Transform(record)
