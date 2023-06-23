@@ -113,7 +113,7 @@ func (w *StreamingBatchWriter) Flush(ctx context.Context) error {
 	return w.flushDeleteStaleTables(ctx)
 }
 
-func (w *StreamingBatchWriter) stopWorkers() error {
+func (w *StreamingBatchWriter) stopWorkers() {
 	w.workersLock.Lock()
 	defer w.workersLock.Unlock()
 	for _, w := range w.workers {
@@ -121,11 +121,9 @@ func (w *StreamingBatchWriter) stopWorkers() error {
 	}
 	w.workersWaitGroup.Wait()
 	w.workers = make(map[string]*worker)
-
-	return nil
 }
 
-func (w *StreamingBatchWriter) worker(ctx context.Context, sourceName, tableName string, ch <-chan *message.Insert, flush <-chan chan bool) {
+func (w *StreamingBatchWriter) worker(ctx context.Context, sourceName, tableName string, ch <-chan *message.Insert, errCh chan<- error, flush <-chan chan bool) {
 	sizeBytes := int64(0)
 	resources := make([]*message.Insert, 0)
 	upsertBatch := false
@@ -133,12 +131,7 @@ func (w *StreamingBatchWriter) worker(ctx context.Context, sourceName, tableName
 	initDone := false
 	var handle any
 
-	doInit := func(r arrow.Record) {
-		if initDone {
-			return
-		}
-		initDone = true
-
+	doInit := func(r arrow.Record) bool {
 		syncTime := w.getSyncTime(r)
 		if syncTime.IsZero() {
 			syncTime = time.Now()
@@ -146,13 +139,17 @@ func (w *StreamingBatchWriter) worker(ctx context.Context, sourceName, tableName
 
 		table, err := schema.NewTableFromArrowSchema(r.Schema())
 		if err != nil {
-			panic(err)
+			errCh <- fmt.Errorf("NewTableFromArrowSchema failed on %s: %w", tableName, err)
+			return false
 		}
 
 		handle, err = w.client.OpenTable(ctx, sourceName, table, syncTime)
 		if err != nil {
-			panic(err)
+			errCh <- fmt.Errorf("OpenTable failed on %s: %w", tableName, err)
+			return false
 		}
+
+		return true
 	}
 
 	for {
@@ -165,13 +162,15 @@ func (w *StreamingBatchWriter) worker(ctx context.Context, sourceName, tableName
 
 				if initDone {
 					if err := w.client.CloseTable(ctx, handle); err != nil {
-						panic(err)
+						errCh <- fmt.Errorf("CloseTable failed on %s: %w", tableName, err)
 					}
 				}
 				return
 			}
 
-			doInit(r.Record)
+			if !initDone {
+				initDone = doInit(r.Record)
+			}
 			if upsertBatch != r.Upsert {
 				w.flush(ctx, handle, tableName, upsertBatch, resources)
 				resources, upsertBatch = resources[:0], r.Upsert
@@ -314,6 +313,14 @@ func (w *StreamingBatchWriter) flushInsertByTableName(ctx context.Context, table
 }
 
 func (w *StreamingBatchWriter) Write(ctx context.Context, msgs <-chan message.Message) error {
+	errCh := make(chan error)
+
+	go func() {
+		for err := range errCh {
+			w.logger.Err(err).Msg("error from StreamingBatchWriter")
+		}
+	}()
+
 	hasWorkers := false
 	for msg := range msgs {
 		switch m := msg.(type) {
@@ -339,7 +346,7 @@ func (w *StreamingBatchWriter) Write(ctx context.Context, msgs <-chan message.Me
 				return err
 			}
 			hasWorkers = true
-			if err := w.startWorker(ctx, m); err != nil {
+			if err := w.startWorker(ctx, errCh, m); err != nil {
 				return err
 			}
 		case *message.MigrateTable:
@@ -364,13 +371,13 @@ func (w *StreamingBatchWriter) Write(ctx context.Context, msgs <-chan message.Me
 	}
 
 	if hasWorkers {
-		return w.stopWorkers()
+		w.stopWorkers()
 	}
-
+	close(errCh)
 	return nil
 }
 
-func (w *StreamingBatchWriter) startWorker(ctx context.Context, msg *message.Insert) error {
+func (w *StreamingBatchWriter) startWorker(ctx context.Context, errCh chan<- error, msg *message.Insert) error {
 	w.workersLock.RLock()
 	md := msg.Record.Schema().Metadata()
 	tableName, ok := md.GetValue(schema.MetadataTableName)
@@ -401,7 +408,7 @@ func (w *StreamingBatchWriter) startWorker(ctx context.Context, msg *message.Ins
 	w.workersWaitGroup.Add(1)
 	go func() {
 		defer w.workersWaitGroup.Done()
-		w.worker(ctx, sourceName, tableName, ch, flush)
+		w.worker(ctx, sourceName, tableName, ch, errCh, flush)
 	}()
 	ch <- msg
 	return nil
