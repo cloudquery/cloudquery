@@ -1,4 +1,3 @@
-// streamingbatch.go copied from file plugin
 package client
 
 import (
