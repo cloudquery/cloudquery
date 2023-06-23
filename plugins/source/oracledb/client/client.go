@@ -16,10 +16,9 @@ import (
 
 type Client struct {
 	plugin.UnimplementedDestination
-	logger      zerolog.Logger
-	tables      schema.Tables
-	db          *sql.DB
-	Concurrency uint64
+	logger zerolog.Logger
+	tables schema.Tables
+	db     *sql.DB
 }
 
 var _ schema.ClientMeta = (*Client)(nil)
