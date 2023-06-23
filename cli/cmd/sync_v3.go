@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"sync/atomic"
 	"time"
 
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
@@ -64,10 +65,21 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 	}
 	for i := range destinationsClients {
 		// TODO: for backwards-compatibility check for old fields like `batch_size` and move them into the spec, log a warning
+		// 	Name           string      `json:"name,omitempty"`
+		//	Version        string      `json:"version,omitempty"`
+		//	Path           string      `json:"path,omitempty"`
+		//	Registry       Registry    `json:"registry,omitempty"`
+		//	WriteMode      WriteMode   `json:"write_mode,omitempty"`
+		//	MigrateMode    MigrateMode `json:"migrate_mode,omitempty"`
+		//	BatchSize      int         `json:"batch_size,omitempty"`
+		//	BatchSizeBytes int         `json:"batch_size_bytes,omitempty"`
+		//	Spec           any         `json:"spec,omitempty"`
+		//	PKMode         PKMode      `json:"pk_mode,omitempty"`
 		destSpecBytes, err := json.Marshal(destinationSpecs[i].Spec)
 		if err != nil {
 			return err
 		}
+
 		if _, err := destinationsPbClients[i].Init(ctx, &plugin.Init_Request{
 			Spec: destSpecBytes,
 		}); err != nil {
@@ -121,7 +133,8 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 	)
 
 	// Add a ticker to update the progress bar every second.
-	t := time.NewTicker(1 * time.Second)
+	t := time.NewTicker(100 * time.Millisecond)
+	newResources := int64(0)
 	defer t.Stop()
 	go func() {
 		for {
@@ -129,7 +142,8 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 			case <-ctx.Done():
 				return
 			case <-t.C:
-				_ = bar.Add(0)
+				change := atomic.SwapInt64(&newResources, 0)
+				_ = bar.Add(int(change))
 			}
 		}
 	}()
@@ -142,31 +156,31 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 			if errors.Is(err, io.EOF) {
 				break
 			}
-			return err
+			return fmt.Errorf("unexpected error from sync client receive: %w", err)
 		}
-		_ = bar.Add(1)
 		syncResponseMsg := r.GetMessage()
-		wr := &plugin.Write_Request{}
 		switch m := syncResponseMsg.(type) {
 		case *plugin.Sync_Response_Insert:
 			record, err := plugin.NewRecordFromBytes(m.Insert.Record)
 			if err != nil {
-				return err
+				return fmt.Errorf("failed to get record from bytes: %w", err)
 			}
+			atomic.AddInt64(&newResources, 1)
 			totalResources += int(record.NumRows())
 			for i := range destinationsPbClients {
 				transformedRecord := destinationTransformers[i].Transform(record)
 				transformedRecordBytes, err := plugin.RecordToBytes(transformedRecord)
 				if err != nil {
-					return err
+					return fmt.Errorf("failed to transform record bytes: %w", err)
 				}
+				wr := &plugin.Write_Request{}
 				wr.Message = &plugin.Write_Request_Insert{
 					Insert: &plugin.MessageInsert{
 						Record: transformedRecordBytes,
 					},
 				}
 				if err := writeClients[i].Send(wr); err != nil {
-					return err
+					return fmt.Errorf("failed to send write request (insert): %w", err)
 				}
 			}
 		case *plugin.Sync_Response_MigrateTable:
@@ -180,28 +194,35 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 				if err != nil {
 					return err
 				}
+				wr := &plugin.Write_Request{}
 				wr.Message = &plugin.Write_Request_MigrateTable{
 					MigrateTable: &plugin.MessageMigrateTable{
 						Table: transformedSchemaBytes,
 					},
 				}
 				if err := writeClients[i].Send(wr); err != nil {
-					return err
+					return fmt.Errorf("failed to send write request (migrate): %w", err)
 				}
 			}
 		case *plugin.Sync_Response_Delete:
-			wr.Message = &plugin.Write_Request_Delete{
-				Delete: m.Delete,
-			}
 			for i := range destinationsPbClients {
+				wr := &plugin.Write_Request{}
+				wr.Message = &plugin.Write_Request_Delete{
+					Delete: m.Delete,
+				}
 				if err := writeClients[i].Send(wr); err != nil {
-					return err
+					return fmt.Errorf("failed to send write request (delete): %w", err)
 				}
 			}
 		default:
 			return fmt.Errorf("unknown message type: %T", m)
 		}
 	}
+	err = syncClient.CloseSend()
+	if err != nil {
+		return err
+	}
+
 	for i := range destinationsClients {
 		if _, err := writeClients[i].CloseAndRecv(); err != nil {
 			return err
