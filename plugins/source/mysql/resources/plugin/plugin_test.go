@@ -16,8 +16,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/go-sql-driver/mysql"
 	"github.com/rs/zerolog"
+	"github.com/stretchr/testify/require"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -209,11 +211,19 @@ func TestPlugin(t *testing.T) {
 				t.Fatalf("expected record %d column %d (%s) to have length %d, got %d", recordIndex, columnIndex, columnName, col.Len(), actualColumn.Len())
 			}
 			for arrayIndex := 0; arrayIndex < col.Len(); arrayIndex++ {
-				expectedValue := col.ValueStr(arrayIndex)
-				actualValue := actualColumn.ValueStr(arrayIndex)
-				if expectedValue != actualValue {
-					t.Fatalf("expected record %d column %d (%s) array index %d to have value %s, got %s", recordIndex, columnIndex, columnName, arrayIndex, expectedValue, actualValue)
+				var expectedValue, actualValue any
+				switch c := col.(type) {
+				case *types.JSONArray:
+					// TODO: Remove this when https://bugs.mysql.com/bug.php?id=98135 is fixed
+					// We can't do string comparison for JSON columns as MySQL saves them with extra spaces
+					expectedValue = c.Value(arrayIndex)
+					actualValue = actualColumn.(*types.JSONArray).Value(arrayIndex)
+				default:
+					expectedValue = col.ValueStr(arrayIndex)
+					actualValue = actualColumn.ValueStr(arrayIndex)
 				}
+
+				require.Equal(t, expectedValue, actualValue, "expected record %d column %d (%s) array index %d to have value %s, got %s", recordIndex, columnIndex, columnName, arrayIndex, expectedValue, actualValue)
 			}
 		}
 	}

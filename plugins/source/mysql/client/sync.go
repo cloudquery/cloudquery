@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"fmt"
+	"reflect"
 	"strings"
 	"time"
 
@@ -11,6 +12,7 @@ import (
 	"github.com/apache/arrow/go/v13/arrow/memory"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/scalar"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
@@ -104,10 +106,13 @@ func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- 
 		arrowSchema := table.ToArrowSchema()
 		rb := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
 		for i := range values {
-			err := reverseTransform(rb.Field(i), values[i])
-			if err != nil {
-				return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
+			// Gets the underlying value of the pointer
+			val := reflect.ValueOf(values[i]).Elem().Interface()
+			s := scalar.NewScalar(arrowSchema.Field(i).Type)
+			if err := s.Set(val); err != nil {
+				return err
 			}
+			scalar.AppendToBuilder(rb.Field(i), s)
 		}
 		res <- &message.Insert{Record: rb.NewRecord()}
 	}
