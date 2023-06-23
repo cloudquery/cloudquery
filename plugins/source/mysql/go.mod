@@ -3,8 +3,8 @@ module github.com/cloudquery/cloudquery/plugins/source/mysql
 go 1.20
 
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230601214540-018e7d3f9c4b
-	github.com/cloudquery/plugin-sdk/v4 v4.0.0-20230620191735-fd2a07633e9d
+	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe
+	github.com/cloudquery/plugin-sdk/v4 v4.0.0-20230623101720-d4b06c321647
 	github.com/go-sql-driver/mysql v1.7.0
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.1
@@ -14,11 +14,9 @@ require (
 // TODO: remove once all updates are merged
 replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230623001532-8366a2241e66
 
-replace github.com/cloudquery/plugin-pb-go => github.com/cloudquery/plugin-pb-go v1.0.9-0.20230618130018-e3ac97072fcd
-
 require (
 	github.com/avast/retry-go/v4 v4.3.4 // indirect
-	github.com/cloudquery/plugin-pb-go v1.1.0 // indirect
+	github.com/cloudquery/plugin-pb-go v1.2.1 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
@@ -40,7 +38,6 @@ require (
 	github.com/schollz/progressbar/v3 v3.13.1 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df // indirect
