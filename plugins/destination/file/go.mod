@@ -20,18 +20,14 @@ replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/
 
 //replace github.com/cloudquery/filetypes/v4 => ../../../../filetypes
 
-replace github.com/cloudquery/filetypes/v4 => github.com/cloudquery/filetypes/v4 v4.0.0-20230620104124-481690d18bb0
-
-//replace github.com/cloudquery/plugin-pb-go => ../../../../plugin-pb-go
-
-replace github.com/cloudquery/plugin-pb-go => github.com/cloudquery/plugin-pb-go v1.1.1-0.20230622154700-9ea3273322f2
+replace github.com/cloudquery/filetypes/v4 => github.com/cloudquery/filetypes/v4 v4.0.0-20230623094658-9f08f9ebb6de
 
 require (
 	github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/apache/thrift v0.18.1 // indirect
 	github.com/avast/retry-go/v4 v4.3.4 // indirect
-	github.com/cloudquery/plugin-pb-go v1.1.0 // indirect
+	github.com/cloudquery/plugin-pb-go v1.2.0 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
