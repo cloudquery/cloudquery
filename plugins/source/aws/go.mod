@@ -7,7 +7,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.18.1
 	github.com/aws/aws-sdk-go-v2/config v1.18.27
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.26
-	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.13
+	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.14
 	github.com/aws/aws-sdk-go-v2/service/account v1.10.7
 	github.com/aws/aws-sdk-go-v2/service/acm v1.17.12
 	github.com/aws/aws-sdk-go-v2/service/acmpca v1.21.14
@@ -138,7 +138,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230623001532-8366a2241e66
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230624001442-f06019270fad
 
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect
