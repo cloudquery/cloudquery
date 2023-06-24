@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe
 	github.com/cenkalti/backoff/v4 v4.2.0
-	github.com/cloudquery/plugin-pb-go v1.2.1
+	github.com/cloudquery/plugin-pb-go v1.3.3
 	github.com/cloudquery/plugin-sdk/v3 v3.10.6
 	github.com/elastic/go-elasticsearch/v8 v8.6.0
 	github.com/goccy/go-json v0.10.0
