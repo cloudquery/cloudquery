@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.26
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.14
 	github.com/aws/aws-sdk-go-v2/service/account v1.10.8
-	github.com/aws/aws-sdk-go-v2/service/acm v1.17.12
+	github.com/aws/aws-sdk-go-v2/service/acm v1.17.13
 	github.com/aws/aws-sdk-go-v2/service/acmpca v1.21.14
 	github.com/aws/aws-sdk-go-v2/service/amp v1.16.12
 	github.com/aws/aws-sdk-go-v2/service/amplify v1.13.11
