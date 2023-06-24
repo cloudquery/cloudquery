@@ -28,10 +28,11 @@ func fetchGroups(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 			return err
 		}
 		res <- groups.Groups
-		opts.Page = resp.NextPage
-		if opts.Page == resp.LastPage {
+
+		if resp.NextPage == 0 {
 			break
 		}
+		opts.Page = resp.NextPage
 	}
 	return nil
 }
