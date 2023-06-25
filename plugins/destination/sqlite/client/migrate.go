@@ -6,8 +6,7 @@ import (
 	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 const (
@@ -131,14 +130,14 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 }
 
 // This is the responsibility of the CLI of the client to lock before running migration
-func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
+func (c *Client) migrate(_ context.Context, force bool, tables schema.Tables) error {
 	normalizedTables := c.normalizeTables(tables)
 	sqliteTables, err := c.sqliteTables(normalizedTables)
 	if err != nil {
 		return err
 	}
 
-	if c.spec.MigrateMode != specs.MigrateModeForced {
+	if !force {
 		nonAutoMigratableTables, changes := c.nonAutoMigratableTables(normalizedTables, sqliteTables)
 		if len(nonAutoMigratableTables) > 0 {
 			return fmt.Errorf("tables %s with changes %v require force migration. use 'migrate_mode: forced'", strings.Join(nonAutoMigratableTables, ","), changes)
@@ -216,8 +215,7 @@ func (c *Client) createTableIfNotExist(table *schema.Table) error {
 		if i != totalColumns-1 {
 			sb.WriteString(",")
 		}
-
-		if c.enabledPks() && col.PrimaryKey {
+		if col.PrimaryKey {
 			primaryKeys = append(primaryKeys, identifier(col.Name))
 		}
 	}
@@ -268,8 +266,4 @@ func (c *Client) getTableInfo(tableName string) (*tableInfo, error) {
 		return nil, nil
 	}
 	return &info, nil
-}
-
-func (c *Client) enabledPks() bool {
-	return c.spec.WriteMode == specs.WriteModeOverwrite || c.spec.WriteMode == specs.WriteModeOverwriteDeleteStale
 }
