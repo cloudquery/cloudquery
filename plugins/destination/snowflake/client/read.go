@@ -10,11 +10,11 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/apache/arrow/go/v13/arrow/memory"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 const (
-	readSQL = "SELECT %s FROM %s WHERE \"_cq_source_name\" = ?"
+	readSQL = "SELECT %s FROM %s"
 )
 
 func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
@@ -178,7 +178,8 @@ func (c *Client) reverseTransformer(table *schema.Table, values []any) (arrow.Re
 	return rec, nil
 }
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
+// Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error
+func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
 	tableName := table.Name
 	colNames := make([]string, 0, len(table.Columns))
 	for _, col := range table.Columns {
@@ -186,7 +187,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	}
 	cols := strings.Join(colNames, ", ")
 	stmt := fmt.Sprintf(readSQL, cols, tableName)
-	rows, err := c.db.QueryContext(ctx, stmt, sourceName)
+	rows, err := c.db.QueryContext(ctx, stmt)
 	if err != nil {
 		return err
 	}

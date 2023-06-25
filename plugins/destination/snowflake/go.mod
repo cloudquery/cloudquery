@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe
 	github.com/cloudquery/plugin-pb-go v1.3.4
-	github.com/cloudquery/plugin-sdk/v3 v3.10.6
+	github.com/cloudquery/plugin-sdk/v4 v4.0.0
 	github.com/goccy/go-json v0.10.0
 	github.com/rs/zerolog v1.29.1
 	github.com/snowflakedb/gosnowflake v1.6.19
@@ -14,6 +14,8 @@ require (
 
 // TODO: remove once all updates are merged
 replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230626001500-065602842c3a
+
+replace github.com/cloudquery/plugin-sdk/v4 => ../../../../plugin-sdk
 
 require (
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
