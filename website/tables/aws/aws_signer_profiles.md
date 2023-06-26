@@ -1,6 +1,6 @@
 # Table: aws_signer_profiles
 
-This table shows data for Signer Profiles.
+This table shows data for AWS Signer Profiles.
 
 https://docs.aws.amazon.com/signer/latest/api/API_GetSigningProfile.html
 

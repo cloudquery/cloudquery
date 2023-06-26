@@ -74,6 +74,7 @@ var awsExceptions = map[string]string{
 	"servicecatalog":         "AWS Service Catalog",
 	"servicediscovery":       "AWS Cloud Map",
 	"ses":                    "Amazon Simple Email Service (SES)",
+	"signer":                 "AWS Signer",
 	"ssm":                    "AWS Systems Manager (SSM)",
 	"wellarchitected":        "AWS Well-Architected",
 	"xray":                   "AWS X-Ray",
