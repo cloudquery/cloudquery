@@ -155,6 +155,7 @@
 - [aws_dax_clusters](tables/aws_dax_clusters)
 - [aws_db_proxies](tables/aws_db_proxies)
 - [aws_detective_graphs](tables/aws_detective_graphs)
+  - [aws_detective_graph_members](tables/aws_detective_graph_members)
 - [aws_directconnect_connections](tables/aws_directconnect_connections)
 - [aws_directconnect_gateways](tables/aws_directconnect_gateways)
   - [aws_directconnect_gateway_associations](tables/aws_directconnect_gateway_associations)

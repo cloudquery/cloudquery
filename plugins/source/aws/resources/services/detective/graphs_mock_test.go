@@ -31,13 +31,21 @@ func buildGraphs(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	tags := &detective.ListTagsForResourceOutput{}
-	if err := faker.FakeObject(&tags); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tags))
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		tags,
 		nil,
 	)
+
+	memberDetails := types.MemberDetail{}
+	require.NoError(t, faker.FakeObject(&memberDetails))
+	m.EXPECT().ListMembers(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&detective.ListMembersOutput{
+			MemberDetails: []types.MemberDetail{memberDetails},
+		},
+		nil,
+	)
+
 	return services
 }
 

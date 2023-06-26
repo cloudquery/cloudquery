@@ -29,6 +29,9 @@ func Graphs() *schema.Table {
 				Resolver: resolveGraphTags,
 			},
 		},
+		Relations: schema.Tables{
+			members(),
+		},
 	}
 }
 

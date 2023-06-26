@@ -1,10 +1,15 @@
 # Table: aws_detective_graphs
 
-This table shows data for Detective Graphs.
+This table shows data for Amazon Detective Graphs.
 
 https://docs.aws.amazon.com/detective/latest/APIReference/API_ListGraphs.html
 
 The primary key for this table is **arn**.
+
+## Relations
+
+The following tables depend on aws_detective_graphs:
+  - [aws_detective_graph_members](aws_detective_graph_members)
 
 ## Columns
 
