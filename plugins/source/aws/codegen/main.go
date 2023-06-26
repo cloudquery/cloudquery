@@ -38,6 +38,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/costexplorer"
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/aws/aws-sdk-go-v2/service/dax"
+	"github.com/aws/aws-sdk-go-v2/service/detective"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
@@ -101,6 +102,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/sfn"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
+	"github.com/aws/aws-sdk-go-v2/service/signer"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
@@ -153,6 +155,7 @@ var clients = []any{
 	&databasemigrationservice.Client{},
 	&dax.Client{},
 	&directconnect.Client{},
+	&detective.Client{},
 	&docdb.Client{},
 	&dynamodb.Client{},
 	&dynamodbstreams.Client{},
@@ -215,6 +218,7 @@ var clients = []any{
 	&sesv2.Client{},
 	&sfn.Client{},
 	&shield.Client{},
+	&signer.Client{},
 	&sns.Client{},
 	&sqs.Client{},
 	&ssm.Client{},
