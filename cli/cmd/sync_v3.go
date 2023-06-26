@@ -109,8 +109,10 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 
 	// TODO(v4): figure out backends
 	syncClient, err := sourcePbClient.Sync(ctx, &plugin.Sync_Request{
-		Tables:     sourceSpec.Tables,
-		SkipTables: sourceSpec.SkipTables,
+		Tables:              sourceSpec.Tables,
+		SkipTables:          sourceSpec.SkipTables,
+		SkipDependentTables: sourceSpec.SkipDependentTables,
+		DeterministicCqId:   sourceSpec.DeterministicCQID,
 		// StateBackend: &plugin.StateBackendSpec{
 		//	Name:     sourceSpec.Backend,
 		//	Path:     "",
