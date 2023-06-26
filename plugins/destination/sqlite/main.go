@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"os"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/sqlite/client"
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/sqlite/resources/plugin"
@@ -15,5 +17,8 @@ const (
 
 func main() {
 	p := plugin.NewPlugin("sqlite", internalPlugin.Version, client.New)
-	serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN), serve.WithDestinationV0V1Server()).Serve(context.Background())
+	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN), serve.WithDestinationV0V1Server()).Serve(context.Background()); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }
