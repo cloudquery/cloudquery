@@ -2,7 +2,7 @@
 
 This table shows data for Amazon Elastic Kubernetes Service (EKS) Cluster Oidc Identity Provider Configs.
 
-https://docs.aws.amazon.com/eks/latest/APIReference/API_Nodegroup.html
+https://docs.aws.amazon.com/eks/latest/APIReference/API_OidcIdentityProviderConfig.html
 
 The composite primary key for this table is (**arn**, **cluster_arn**).
 
