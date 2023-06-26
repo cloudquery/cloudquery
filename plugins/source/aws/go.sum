@@ -141,6 +141,8 @@ github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.25.6 h1:qlIVwEX
 github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.25.6/go.mod h1:M5iOc1fW9dCs6E7EEW9AXPvIf/1cVMFohawlTW9z9MU=
 github.com/aws/aws-sdk-go-v2/service/dax v1.12.11 h1:yXNhNecIIrg9i109zvgCOV2DWeKxiOdk967sWWNrwyU=
 github.com/aws/aws-sdk-go-v2/service/dax v1.12.11/go.mod h1:0Gg3gRv1ri2CDMkKKauOtT3YfCR8qSM+veDGEsF6ET0=
+github.com/aws/aws-sdk-go-v2/service/detective v1.19.2 h1:OTL+3aa2MGpHVEfrphGwYFXwN03Q7oOQY3TmrMvyXy0=
+github.com/aws/aws-sdk-go-v2/service/detective v1.19.2/go.mod h1:UKt6jMn2GFKo9rLkQNNXgHFC5z0gGfPOqfnvKaGpk5s=
 github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.16 h1:wjSutq054xa70dPrXiJmwwGWoS5hqCH/2V2+nK6G/uk=
 github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.16/go.mod h1:JoFjZ+bYDnsAnr+Dfw7D33P+59XPLdnC0YX84RmHGu8=
 github.com/aws/aws-sdk-go-v2/service/docdb v1.21.4 h1:p0QzD5HVJc5j31DWQ243YXexQG7NPAuNy6Op9doW1Lo=
@@ -279,6 +281,8 @@ github.com/aws/aws-sdk-go-v2/service/sfn v1.17.12 h1:l6TTN8O14oIpN3U99qNfmyVuwwB
 github.com/aws/aws-sdk-go-v2/service/sfn v1.17.12/go.mod h1:41VgIwo6R/QE8DnFZ4RrP+f2w9xTzB77h3NRu/BzXyE=
 github.com/aws/aws-sdk-go-v2/service/shield v1.18.11 h1:Xu6JC0NaWOxKbtxbReQauehe85HrirpHRYnXIW+Reps=
 github.com/aws/aws-sdk-go-v2/service/shield v1.18.11/go.mod h1:nE8wrh0UlW7aQsO6paSvpLwskeHwgcMmFx6YToctTsg=
+github.com/aws/aws-sdk-go-v2/service/signer v1.15.2 h1:tccV77m2B5Yo9PMHY9DiVTrrcekqhzCFFi2mhtO5BNQ=
+github.com/aws/aws-sdk-go-v2/service/signer v1.15.2/go.mod h1:BBv2ykihGs23or8dC8O6EW+maCJk5gO4vXExyIh4cAA=
 github.com/aws/aws-sdk-go-v2/service/sns v1.20.12 h1:XTZ3mu3eMjavPbZA1hKIIuIHjWS4pBuypG3voUMVdjs=
 github.com/aws/aws-sdk-go-v2/service/sns v1.20.12/go.mod h1:rWrvp9i8y/lX94lS7Kn/0iu9RY6vXzeKRqS/knVX8/c=
 github.com/aws/aws-sdk-go-v2/service/sqs v1.23.1 h1:t3HXFq8xPebyBtlv/aSamFz66RtfdryX8Zouio0CPl8=
