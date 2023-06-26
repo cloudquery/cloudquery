@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"math"
 	"strings"
 
 	"github.com/google/uuid"
@@ -20,7 +21,6 @@ cloudquery sync ./directory
 # Sync resources from directories and files
 cloudquery sync ./directory ./aws.yml ./pg.yml
 `
-	unknownFieldErrorPrefix = "code = InvalidArgument desc = failed to decode spec: json: unknown field "
 )
 
 func NewCmdSync() *cobra.Command {
@@ -36,17 +36,41 @@ func NewCmdSync() *cobra.Command {
 	return cmd
 }
 
-func findMaxVersion(versions []int) int {
-	max := -1
-	if len(versions) == 0 {
-		return max
+// findMaxCommonVersion finds the max common version between protocol versions supported by a plugin and those supported by the CLI.
+// If all plugin versions are lower than min CLI supported version, it returns -1.
+// If all plugin versions are higher than max CLI supported version, it returns -2.
+// In this way it is possible tell whether the source or the CLI needs to be updated:
+// if -1, the source needs to be updated or the CLI downgraded;
+// if -2, the CLI needs to be updated or the source downgraded.
+func findMaxCommonVersion(pluginSupported []int, cliSupported []int) int {
+	if len(pluginSupported) == 0 {
+		return -1
 	}
-	for _, v := range versions {
-		if v > max {
-			max = v
+
+	minCLISupported, maxCLISupported := math.MaxInt32, -1
+	for _, v := range cliSupported {
+		if v < minCLISupported {
+			minCLISupported = v
+		}
+		if v > maxCLISupported {
+			maxCLISupported = v
 		}
 	}
-	return max
+
+	minVersion := math.MaxInt32
+	maxCommon := -1
+	for _, v := range pluginSupported {
+		if v < minVersion {
+			minVersion = v
+		}
+		if v > maxCommon && slices.Contains(cliSupported, v) {
+			maxCommon = v
+		}
+	}
+	if maxCommon == -1 && minVersion > maxCLISupported {
+		return -2
+	}
+	return maxCommon
 }
 
 func sync(cmd *cobra.Command, args []string) error {
@@ -129,10 +153,7 @@ func sync(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			return fmt.Errorf("failed to get source versions: %w", err)
 		}
-		maxVersion := findMaxVersion(versions)
-		if maxVersion >= 3 {
-			return fmt.Errorf("please upgrade CLI to latest version to sync source %s", cl.Name())
-		}
+		maxVersion := findMaxCommonVersion(versions, []int{0, 1, 2, 3})
 
 		var destinationClientsForSource []*managedplugin.Client
 		var destinationForSourceSpec []specs.Destination
@@ -143,6 +164,19 @@ func sync(cmd *cobra.Command, args []string) error {
 			}
 		}
 		switch maxVersion {
+		case 3:
+			for _, destination := range destinationClientsForSource {
+				versions, err := destination.Versions(ctx)
+				if err != nil {
+					return fmt.Errorf("failed to get destination versions: %w", err)
+				}
+				if !slices.Contains(versions, 3) {
+					return fmt.Errorf("destination %[1]s does not support CloudQuery protocol version 3, required by %[2]s. Please upgrade to newer version of %[1]s", destination.Name(), source.Name)
+				}
+			}
+			if err := syncConnectionV3(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, invocationUUID.String(), noMigrate); err != nil {
+				return fmt.Errorf("failed to sync v3 source %s: %w", cl.Name(), err)
+			}
 		case 2:
 			for _, destination := range destinationClientsForSource {
 				versions, err := destination.Versions(ctx)
@@ -161,9 +195,11 @@ func sync(cmd *cobra.Command, args []string) error {
 				return fmt.Errorf("failed to sync v1 source %s: %w", cl.Name(), err)
 			}
 		case 0:
-			return fmt.Errorf("please upgrade your source or use an older v3.0.1 < CLI version < v3.5.3")
+			return fmt.Errorf("please upgrade source %v or use an older CLI version, between v3.0.1 and v3.5.3", source.Name)
 		case -1:
-			return fmt.Errorf("please upgrade your source or use an older CLI version < v3.0.1")
+			return fmt.Errorf("please upgrade source %v or use an older CLI version, < v3.0.1", source.Name)
+		case -2:
+			return fmt.Errorf("please upgrade CLI or downgrade source to sync %v", source.Name)
 		default:
 			return fmt.Errorf("unknown source version %d", maxVersion)
 		}
