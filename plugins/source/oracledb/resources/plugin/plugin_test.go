@@ -208,12 +208,7 @@ func TestPlugin(t *testing.T) {
 
 	g.Go(func() error {
 		defer close(res)
-		opts := plugin.SyncOptions{
-			Tables:            []string{testTable.Name},
-			SkipTables:        []string{otherTable.Name},
-			DeterministicCQID: false,
-			StateBackend:      nil,
-		}
+		opts := plugin.SyncOptions{Tables: []string{testTable.Name}, SkipTables: []string{otherTable.Name}}
 		return p.Sync(ctx, opts, res)
 	})
 	actualRecords := make([]arrow.Record, 0)
@@ -312,11 +307,7 @@ func TestPerformance(t *testing.T) {
 	g := errgroup.Group{}
 	g.Go(func() error {
 		defer close(res)
-		opts := plugin.SyncOptions{
-			Tables:            []string{"test_oracledb_source_performance_*"},
-			DeterministicCQID: false,
-			StateBackend:      nil,
-		}
+		opts := plugin.SyncOptions{Tables: []string{"test_oracledb_source_performance_*"}}
 		return p.Sync(ctx, opts, res)
 	})
 	totalResources := 0
