@@ -3,11 +3,10 @@ package client
 import (
 	"context"
 	"fmt"
-	"time"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
 )
 
-func (*Client) DeleteStale(context.Context, schema.Tables, string, time.Time) error {
+func (*Client) DeleteStale(context.Context, []*message.DeleteStale) error {
 	return fmt.Errorf("destination plugin doesn't support overwrite-delete-stale mode. please use append mode")
 }
