@@ -362,11 +362,7 @@ func TestPlugin(t *testing.T) {
 	g := errgroup.Group{}
 	g.Go(func() error {
 		defer close(res)
-		opts := plugin.SyncOptions{
-			Tables:            []string{testTable},
-			DeterministicCQID: false,
-			StateBackend:      nil,
-		}
+		opts := plugin.SyncOptions{Tables: []string{testTable}}
 		return p.Sync(ctx, opts, res)
 	})
 	var actualRecord arrow.Record
@@ -444,9 +440,7 @@ func TestPluginCDC(t *testing.T) {
 		defer wg.Done()
 		defer close(res)
 		opts := plugin.SyncOptions{
-			Tables:            []string{testTable},
-			DeterministicCQID: false,
-			StateBackend:      nil,
+			Tables: []string{testTable},
 		}
 		syncErr = p.Sync(syncCtx, opts, res)
 	}()
