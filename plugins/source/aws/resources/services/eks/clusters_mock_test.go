@@ -52,6 +52,22 @@ func buildEksClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&eks.DescribeNodegroupOutput{
 			Nodegroup: &ng,
 		}, nil)
+
+	ao := types.Addon{}
+	err = faker.FakeObject(&ao)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	m.EXPECT().ListAddons(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&eks.ListAddonsOutput{
+			Addons: []string{"test-nodegroup"},
+		}, nil)
+	m.EXPECT().DescribeAddon(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&eks.DescribeAddonOutput{
+			Addon: &ao,
+		}, nil)
+
 	return client.Services{
 		Eks: m,
 	}
