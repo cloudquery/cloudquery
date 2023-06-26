@@ -38,7 +38,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 	if err := c.client.Connect(context.Background()); err != nil {
 		return nil, err
 	}
-	c.writer, err = writers.NewBatchWriter(c)
+	c.writer, err = writers.NewBatchWriter(c, writers.WithBatchSize(c.spec.BatchSize), writers.WithBatchSizeBytes(c.spec.BatchSizeBytes))
 	if err != nil {
 		return nil, err
 	}
