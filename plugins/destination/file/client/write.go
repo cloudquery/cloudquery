@@ -11,29 +11,13 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/filetypes/v4"
-	"github.com/cloudquery/filetypes/v4/types"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/google/uuid"
 )
 
-type filestream struct {
-	wc *writeCloser
-	h  types.Handle
-}
-
-type writeCloser struct {
-	io.WriteCloser
-	closed bool
-}
-
-func (w *writeCloser) Close() error {
-	w.closed = true
-	return w.WriteCloser.Close()
-}
-
-func (c *Client) OpenTable(_ context.Context, sourceName string, table *schema.Table, syncTime time.Time) (any, error) {
+func (c *Client) OpenTable(ctx context.Context, sourceName string, table *schema.Table, syncTime time.Time) (any, error) {
 	p := replacePathVariables(c.spec.Path, table.Name, c.spec.Format, uuid.NewString(), syncTime)
 
 	if err := os.MkdirAll(filepath.Dir(p), 0755); err != nil {
@@ -45,36 +29,14 @@ func (c *Client) OpenTable(_ context.Context, sourceName string, table *schema.T
 		return nil, err
 	}
 
-	wc := &writeCloser{WriteCloser: f}
-	h, err := c.Client.WriteHeader(wc, table)
-	if err != nil {
-		_ = f.Close()
-		return nil, fmt.Errorf("failed to write header: %w", err)
-	}
-
-	return &filestream{
-		wc: wc,
-		h:  h,
-	}, nil
+	return c.Client.StartStream(table, func(r io.Reader) error {
+		_, err := io.Copy(f, r)
+		return err
+	})
 }
 
 func (*Client) CloseTable(_ context.Context, handle any) error {
-	fs := handle.(*filestream)
-	if err := fs.h.WriteFooter(); err != nil {
-		if !fs.wc.closed {
-			_ = fs.wc.Close()
-		}
-		return fmt.Errorf("failed to write footer: %w", err)
-	}
-
-	// ParquetWriter likes to close the underlying writer, so we need to check if it's already closed
-	if !fs.wc.closed {
-		if err := fs.wc.Close(); err != nil {
-			return err
-		}
-	}
-
-	return nil
+	return handle.(*filetypes.Stream).Finish()
 }
 
 func (*Client) WriteTableStream(_ context.Context, handle any, msgs []*message.Insert) error {
@@ -87,7 +49,7 @@ func (*Client) WriteTableStream(_ context.Context, handle any, msgs []*message.I
 		records[i] = msg.Record
 	}
 
-	return handle.(*filestream).h.WriteContent(records)
+	return handle.(*filetypes.Stream).Write(records)
 }
 
 func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, msgs <-chan message.Message) error {
