@@ -28,7 +28,7 @@ func buildEksClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 	fp := types.FargateProfile{}
 	require.NoError(t, faker.FakeObject(&fp))
 
-  m.EXPECT().ListFargateProfiles(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListFargateProfiles(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&eks.ListFargateProfilesOutput{
 			FargateProfileNames: []string{"test-profile"},
 		}, nil)
