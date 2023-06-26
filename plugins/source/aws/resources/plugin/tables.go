@@ -91,6 +91,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicequotas"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ses"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/shield"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/signer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sns"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sqs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ssm"
@@ -485,6 +486,7 @@ func tables() []*schema.Table {
 		shield.ProtectionGroups(),
 		shield.Protections(),
 		shield.Subscriptions(),
+		signer.Profiles(),
 		sns.Subscriptions(),
 		sns.Topics(),
 		sqs.Queues(),

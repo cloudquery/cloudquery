@@ -575,6 +575,7 @@
 - [aws_shield_protection_groups](../../../../../website/tables/aws/aws_shield_protection_groups.md)
 - [aws_shield_protections](../../../../../website/tables/aws/aws_shield_protections.md)
 - [aws_shield_subscriptions](../../../../../website/tables/aws/aws_shield_subscriptions.md)
+- [aws_signer_profiles](../../../../../website/tables/aws/aws_signer_profiles.md)
 - [aws_sns_subscriptions](../../../../../website/tables/aws/aws_sns_subscriptions.md)
 - [aws_sns_topics](../../../../../website/tables/aws/aws_sns_topics.md)
 - [aws_sqs_queues](../../../../../website/tables/aws/aws_sqs_queues.md)
