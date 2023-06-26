@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildEventCategoriesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -16,9 +17,8 @@ func buildEventCategoriesMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		Docdb: m,
 	}
 	var ec docdb.DescribeEventCategoriesOutput
-	if err := faker.FakeObject(&ec); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ec))
+
 	m.EXPECT().DescribeEventCategories(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ec,
 		nil,

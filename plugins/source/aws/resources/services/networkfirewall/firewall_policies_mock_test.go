@@ -9,15 +9,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildFirewallPoliciesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockNetworkfirewallClient(ctrl)
 	fpm := types.FirewallPolicyMetadata{}
-	err := faker.FakeObject(&fpm)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&fpm))
 
 	m.EXPECT().ListFirewallPolicies(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&networkfirewall.ListFirewallPoliciesOutput{
@@ -25,9 +23,7 @@ func buildFirewallPoliciesMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 		}, nil)
 
 	fp := networkfirewall.DescribeFirewallPolicyOutput{}
-	if err := faker.FakeObject(&fp); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&fp))
 
 	m.EXPECT().DescribeFirewallPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(&fp, nil)
 

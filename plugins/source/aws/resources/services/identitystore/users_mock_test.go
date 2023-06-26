@@ -11,21 +11,16 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mIdentity := mocks.NewMockIdentitystoreClient(ctrl)
 	mSSOAdmin := mocks.NewMockSsoadminClient(ctrl)
 	im := types.InstanceMetadata{}
-	err := faker.FakeObject(&im)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&im))
 	users := iTypes.User{}
-	err = faker.FakeObject(&users)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&users))
 
 	mSSOAdmin.EXPECT().ListInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ssoadmin.ListInstancesOutput{

@@ -9,13 +9,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildRemediationConfigurations(t *testing.T, m *mocks.MockConfigserviceClient) client.Services {
 	l := types.RemediationConfiguration{}
-	if err := faker.FakeObject(&l); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&l))
+
 	m.EXPECT().DescribeRemediationConfigurations(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&configservice.DescribeRemediationConfigurationsOutput{
 			RemediationConfigurations: []types.RemediationConfiguration{l},

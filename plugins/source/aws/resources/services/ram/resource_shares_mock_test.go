@@ -10,30 +10,23 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildRamResourceSharesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockRamClient(ctrl)
 	object := types.ResourceShare{}
-	err := faker.FakeObject(&object)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&object))
 
 	m.EXPECT().GetResourceShares(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ram.GetResourceSharesOutput{ResourceShares: []types.ResourceShare{object}}, nil).MinTimes(1)
 
 	summary := types.ResourceSharePermissionSummary{}
-	err = faker.FakeObject(&summary)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&summary))
 
 	var version int32
-	err = faker.FakeObject(&version)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&version))
+
 	verStr := fmt.Sprint(version)
 	summary.Version = &verStr
 

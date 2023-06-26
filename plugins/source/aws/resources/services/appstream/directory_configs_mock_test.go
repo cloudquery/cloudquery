@@ -9,15 +9,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildAppstreamDirectoryConfigsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockAppstreamClient(ctrl)
 	object := types.DirectoryConfig{}
-	err := faker.FakeObject(&object)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&object))
 
 	m.EXPECT().DescribeDirectoryConfigs(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&appstream.DescribeDirectoryConfigsOutput{
@@ -25,10 +23,7 @@ func buildAppstreamDirectoryConfigsMock(t *testing.T, ctrl *gomock.Controller) c
 		}, nil)
 
 	tagsOutput := appstream.ListTagsForResourceOutput{}
-	err = faker.FakeObject(&tagsOutput)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tagsOutput))
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
 
 	return client.Services{

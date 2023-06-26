@@ -8,15 +8,14 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildEc2EbsVolumeStatuses(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	statusOutput := ec2.DescribeVolumeStatusOutput{}
-	err := faker.FakeObject(&statusOutput)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&statusOutput))
+
 	statusOutput.NextToken = nil
 	m.EXPECT().DescribeVolumeStatus(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&statusOutput, nil)
