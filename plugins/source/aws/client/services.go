@@ -99,6 +99,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/sfn"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
+	"github.com/aws/aws-sdk-go-v2/service/signer"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
@@ -216,6 +217,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Sesv2:                     sesv2.NewFromConfig(awsCfg),
 		Sfn:                       sfn.NewFromConfig(awsCfg),
 		Shield:                    shield.NewFromConfig(awsCfg),
+		Signer:                    signer.NewFromConfig(awsCfg),
 		Sns:                       sns.NewFromConfig(awsCfg),
 		Sqs:                       sqs.NewFromConfig(awsCfg),
 		Ssm:                       ssm.NewFromConfig(awsCfg),
@@ -331,6 +333,7 @@ type Services struct {
 	Sesv2                     services.Sesv2Client
 	Sfn                       services.SfnClient
 	Shield                    services.ShieldClient
+	Signer                    services.SignerClient
 	Sns                       services.SnsClient
 	Sqs                       services.SqsClient
 	Ssm                       services.SsmClient

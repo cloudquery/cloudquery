@@ -102,6 +102,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/sfn"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
+	"github.com/aws/aws-sdk-go-v2/service/signer"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
@@ -217,6 +218,7 @@ var clients = []any{
 	&sesv2.Client{},
 	&sfn.Client{},
 	&shield.Client{},
+	&signer.Client{},
 	&sns.Client{},
 	&sqs.Client{},
 	&ssm.Client{},

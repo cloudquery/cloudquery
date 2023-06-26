@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 const (
@@ -29,6 +30,30 @@ func (i *tableInfo) getColumn(name string) *columnInfo {
 	for _, col := range i.columns {
 		if col.name == name {
 			return &col
+		}
+	}
+	return nil
+}
+
+func (c *Client) MigrateTables(ctx context.Context, msgs []*message.MigrateTable) error {
+	for _, msg := range msgs {
+		table := msg.Table
+		tableName := table.Name
+		c.logger.Debug().Str("table", tableName).Msg("Migrating table")
+		tableExist, err := c.isTableExistSQL(ctx, tableName)
+		if err != nil {
+			return fmt.Errorf("failed to check if table %s exists: %w", tableName, err)
+		}
+		if tableExist {
+			c.logger.Debug().Str("table", tableName).Msg("Table exists, auto-migrating")
+			if err := c.autoMigrateTable(ctx, table); err != nil {
+				return err
+			}
+		} else {
+			c.logger.Debug().Str("table", tableName).Msg("Table doesn't exist, creating")
+			if err := c.createTableIfNotExist(ctx, table); err != nil {
+				return err
+			}
 		}
 	}
 	return nil
