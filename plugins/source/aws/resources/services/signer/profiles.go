@@ -11,7 +11,7 @@ import (
 )
 
 func Profiles() *schema.Table {
-	tableName := "aws_signer_profiles"
+	tableName := "aws_signer_signing_profiles"
 	return &schema.Table{
 		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/signer/latest/api/API_GetSigningProfile.html`,
