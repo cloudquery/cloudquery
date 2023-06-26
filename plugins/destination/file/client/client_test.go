@@ -154,14 +154,11 @@ func testPlugin(t *testing.T, spec *Spec) {
 	}
 	plugin.TestWriterSuiteRunner(t,
 		p,
-		plugin.PluginTestSuiteTests{
+		plugin.WriterTestSuiteTests{
 			SkipUpsert:      true,
 			SkipMigrate:     true,
 			SkipDeleteStale: true,
 		},
-		plugin.WithTestDataOptions(schema.TestSourceOptions{
-			TimePrecision: time.Millisecond,
-		}),
 	)
 }
 
@@ -202,15 +199,15 @@ func testPluginCustom(t *testing.T, spec *Spec) {
 	bldr.Field(0).(*array.StringBuilder).Append("foo")
 	record := bldr.NewRecord()
 
-	for i := 0; i < 2; i++ {
-		if err := p.WriteAll(ctx, plugin.WriteOptions{}, []message.Message{
-			&message.Insert{
-				Record: record,
-				Upsert: false,
-			},
-		}); err != nil {
-			t.Fatal(fmt.Errorf("failed to insert record: %w", err))
-		}
+	if err := p.WriteAll(ctx, plugin.WriteOptions{}, []message.Message{
+		&message.Insert{
+			Record: record,
+		},
+		&message.Insert{
+			Record: record,
+		},
+	}); err != nil {
+		t.Fatal(fmt.Errorf("failed to insert records: %w", err))
 	}
 
 	if err := client.Close(ctx); err != nil {
