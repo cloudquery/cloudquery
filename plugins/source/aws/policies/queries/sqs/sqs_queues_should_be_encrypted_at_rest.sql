@@ -3,7 +3,7 @@ select
     :'execution_time' as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
-    'SQS queues should be encrypted at rest using AWS KMS' as title,
+    'SQS queues should be encrypted at rest' as title,
     account_id,
     arn as resource_id,
     case when
