@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe
 	github.com/cloudquery/plugin-sdk/v4 v4.0.1-rc1
 	github.com/rs/zerolog v1.29.1
-	github.com/sijms/go-ora/v2 v2.7.6
+	github.com/sijms/go-ora/v2 v2.6.16
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/sync v0.1.0
 )
