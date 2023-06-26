@@ -577,6 +577,7 @@
 - [aws_shield_protection_groups](tables/aws_shield_protection_groups)
 - [aws_shield_protections](tables/aws_shield_protections)
 - [aws_shield_subscriptions](tables/aws_shield_subscriptions)
+- [aws_signer_signing_profiles](tables/aws_signer_signing_profiles)
 - [aws_sns_subscriptions](tables/aws_sns_subscriptions)
 - [aws_sns_topics](tables/aws_sns_topics)
 - [aws_sqs_queues](tables/aws_sqs_queues)
