@@ -9,18 +9,17 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildConfigConfigurationRecorders(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockConfigserviceClient(ctrl)
 	l := types.ConfigurationRecorder{}
-	if err := faker.FakeObject(&l); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&l))
+
 	sl := types.ConfigurationRecorderStatus{}
-	if err := faker.FakeObject(&sl); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&sl))
+
 	sl.Name = l.Name
 	m.EXPECT().DescribeConfigurationRecorderStatus(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&configservice.DescribeConfigurationRecorderStatusOutput{

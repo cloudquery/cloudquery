@@ -9,15 +9,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildPipelines(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockCodepipelineClient(ctrl)
 
 	var pipeSummary types.PipelineSummary
-	if err := faker.FakeObject(&pipeSummary); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&pipeSummary))
+
 	mock.EXPECT().ListPipelines(
 		gomock.Any(),
 		&codepipeline.ListPipelinesInput{},
@@ -28,9 +28,8 @@ func buildPipelines(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var resource codepipeline.GetPipelineOutput
-	if err := faker.FakeObject(&resource); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&resource))
+
 	mock.EXPECT().GetPipeline(
 		gomock.Any(),
 		&codepipeline.GetPipelineInput{Name: pipeSummary.Name},
@@ -41,9 +40,8 @@ func buildPipelines(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	tags := &codepipeline.ListTagsForResourceOutput{}
-	if err := faker.FakeObject(&tags); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tags))
+
 	tags.NextToken = nil
 	mock.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		tags,

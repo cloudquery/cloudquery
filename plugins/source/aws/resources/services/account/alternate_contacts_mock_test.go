@@ -9,15 +9,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildAlternateContacts(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockAccountClient(ctrl)
 
 	var ac types.AlternateContact
-	if err := faker.FakeObject(&ac); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ac))
+
 	mock.EXPECT().GetAlternateContact(
 		gomock.Any(),
 		gomock.Any(),

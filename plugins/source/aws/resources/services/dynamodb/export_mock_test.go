@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildDynamodbExportsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -17,9 +18,8 @@ func buildDynamodbExportsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		Dynamodb: m,
 	}
 	var es types.ExportSummary
-	if err := faker.FakeObject(&es); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&es))
+
 	listOutput := &dynamodb.ListExportsOutput{
 		ExportSummaries: []types.ExportSummary{es},
 	}
@@ -29,9 +29,7 @@ func buildDynamodbExportsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 	)
 
 	var ed types.ExportDescription
-	if err := faker.FakeObject(&ed); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ed))
 
 	m.EXPECT().DescribeExport(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&dynamodb.DescribeExportOutput{

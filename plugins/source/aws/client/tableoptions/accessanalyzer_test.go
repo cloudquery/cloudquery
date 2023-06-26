@@ -4,15 +4,14 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/cloudquery/plugin-sdk/faker"
 )
 
 func TestAAListFindings(t *testing.T) {
 	u := CustomAccessAnalyzerListFindingsInput{}
-	if err := faker.FakeObject(&u); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&u))
 
 	api := AccessanalyzerFindings{
 		ListFindingOpts: []CustomAccessAnalyzerListFindingsInput{u},

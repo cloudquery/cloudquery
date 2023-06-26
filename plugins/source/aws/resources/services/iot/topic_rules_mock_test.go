@@ -9,15 +9,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildIotTopicRules(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIotClient(ctrl)
 
 	lp := iot.ListTopicRulesOutput{}
-	if err := faker.FakeObject(&lp); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&lp))
+
 	lp.NextToken = nil
 	m.EXPECT().ListTopicRules(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&lp, nil)
@@ -30,9 +30,8 @@ func buildIotTopicRules(t *testing.T, ctrl *gomock.Controller) client.Services {
 		p, nil)
 
 	tags := iot.ListTagsForResourceOutput{}
-	if err := faker.FakeObject(&tags); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tags))
+
 	tags.NextToken = nil
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&tags, nil)
