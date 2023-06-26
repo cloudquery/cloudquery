@@ -53,7 +53,7 @@ SELECT
   account_id,
   arn AS resource_id,
   CASE
-  WHEN kms_master_key_id IS NULL OR kms_master_key_id = '' THEN 'fail'
+  WHEN (kms_master_key_id is null or kms_master_key_id = '') and sqs_managed_sse_enabled = false
   ELSE 'pass'
   END
     AS status
