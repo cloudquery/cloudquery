@@ -264,6 +264,7 @@ func tables() []*schema.Table {
 		ec2.VpcPeeringConnections(),
 		ec2.Vpcs(),
 		ec2.VpnGateways(),
+		ecr.PullThroughCacheRules(),
 		ecr.Registries(),
 		ecr.RegistryPolicies(),
 		ecr.Repositories(),
