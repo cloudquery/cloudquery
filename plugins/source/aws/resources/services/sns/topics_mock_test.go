@@ -15,12 +15,10 @@ import (
 func buildSnsTopics(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockSnsClient(ctrl)
 	topic := types.Topic{}
-	tag := types.Tag{}
 	require.NoError(t, faker.FakeObject(&topic))
-	tagerr := faker.FakeObject(&tag)
-	if tagerr != nil {
-		t.Fatal(tagerr)
-	}
+
+	tag := types.Tag{}
+	require.NoError(t, faker.FakeObject(&tag))
 
 	m.EXPECT().ListTopics(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&sns.ListTopicsOutput{

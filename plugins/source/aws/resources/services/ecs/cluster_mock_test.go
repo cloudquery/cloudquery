@@ -24,7 +24,7 @@ func buildEcsClusterMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 	}
 	m.EXPECT().DescribeClusters(gomock.Any(), gomock.Any(), gomock.Any()).Return(ecsOutput, nil)
 	ecsListOutput := &ecs.ListClustersOutput{
-		ClusterArns: []string{"randomClusteArn"},
+		ClusterArns: []string{"randomClusterArn"},
 	}
 	m.EXPECT().ListClusters(gomock.Any(), gomock.Any(), gomock.Any()).Return(ecsListOutput, nil)
 

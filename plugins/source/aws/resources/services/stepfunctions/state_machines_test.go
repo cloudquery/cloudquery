@@ -28,10 +28,7 @@ func buildStateMachines(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().DescribeStateMachine(gomock.Any(), gomock.Any(), gomock.Any()).Return(out, nil)
 
 	tag := types.Tag{}
-	tagerr := faker.FakeObject(&tag)
-	if tagerr != nil {
-		t.Fatal(tagerr)
-	}
+	require.NoError(t, faker.FakeObject(&tag))
 
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&sfn.ListTagsForResourceOutput{
