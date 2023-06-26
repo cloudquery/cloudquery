@@ -98,10 +98,10 @@ func (c *Client) nonAutoMigratableTables(tables schema.Tables, sqliteTables sche
 	return result, tableChanges
 }
 
-func (c *Client) autoMigrateTable(table *schema.Table, changes []schema.TableColumnChange) error {
+func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, changes []schema.TableColumnChange) error {
 	for _, change := range changes {
 		if change.Type == schema.TableColumnChangeTypeAdd {
-			if err := c.addColumn(table.Name, change.Current.Name, c.arrowTypeToSqliteStr(change.Current.Type)); err != nil {
+			if err := c.addColumn(ctx, table.Name, change.Current.Name, c.arrowTypeToSqliteStr(change.Current.Type)); err != nil {
 				return err
 			}
 		}
@@ -130,7 +130,7 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 }
 
 // This is the responsibility of the CLI of the client to lock before running migration
-func (c *Client) migrate(_ context.Context, force bool, tables schema.Tables) error {
+func (c *Client) migrate(ctx context.Context, force bool, tables schema.Tables) error {
 	normalizedTables := c.normalizeTables(tables)
 	sqliteTables, err := c.sqliteTables(normalizedTables)
 	if err != nil {
@@ -161,12 +161,12 @@ func (c *Client) migrate(_ context.Context, force bool, tables schema.Tables) er
 			changes := table.GetChanges(sqlite)
 			if c.canAutoMigrate(changes) {
 				c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
-				if err := c.autoMigrateTable(table, changes); err != nil {
+				if err := c.autoMigrateTable(ctx, table, changes); err != nil {
 					return err
 				}
 			} else {
 				c.logger.Info().Str("table", table.Name).Msg("Table exists, force migration required")
-				if err := c.recreateTable(table); err != nil {
+				if err := c.recreateTable(ctx, table); err != nil {
 					return err
 				}
 			}
@@ -176,17 +176,17 @@ func (c *Client) migrate(_ context.Context, force bool, tables schema.Tables) er
 	return nil
 }
 
-func (c *Client) recreateTable(table *schema.Table) error {
+func (c *Client) recreateTable(ctx context.Context, table *schema.Table) error {
 	sql := "drop table if exists " + identifier(table.Name)
-	if _, err := c.db.Exec(sql); err != nil {
+	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to drop table %s: %w", table.Name, err)
 	}
 	return c.createTableIfNotExist(table)
 }
 
-func (c *Client) addColumn(tableName string, columnName string, columnType string) error {
+func (c *Client) addColumn(ctx context.Context, tableName string, columnName string, columnType string) error {
 	sql := "alter table " + identifier(tableName) + " add column " + identifier(columnName) + " " + identifier(columnType)
-	if _, err := c.db.Exec(sql); err != nil {
+	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to add column %s on table %s: %w", columnName, tableName, err)
 	}
 	return nil

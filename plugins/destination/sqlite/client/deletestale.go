@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func (c *Client) deleteStale(_ context.Context, table *schema.Table, source string, syncTime time.Time) error {
+func (c *Client) deleteStale(ctx context.Context, table *schema.Table, source string, syncTime time.Time) error {
 	var sb strings.Builder
 	sb.WriteString("delete from ")
 	sb.WriteString(`"` + table.Name + `"`)
@@ -18,7 +18,7 @@ func (c *Client) deleteStale(_ context.Context, table *schema.Table, source stri
 	sb.WriteString(schema.CqSyncTimeColumn.Name)
 	sb.WriteString(") < datetime($2)")
 	sql := sb.String()
-	if _, err := c.db.Exec(sql, source, syncTime); err != nil {
+	if _, err := c.db.ExecContext(ctx, sql, source, syncTime); err != nil {
 		return err
 	}
 	return nil

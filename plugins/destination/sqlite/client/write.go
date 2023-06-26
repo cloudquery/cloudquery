@@ -23,7 +23,7 @@ func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, res <-c
 				return fmt.Errorf("failed to process DeleteStale message: %w", err)
 			}
 		case *message.Insert:
-			if err := c.insertMessage(m); err != nil {
+			if err := c.insertMessage(ctx, m); err != nil {
 				return fmt.Errorf("failed to process Insert message: %w", err)
 			}
 		default:
@@ -34,7 +34,7 @@ func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, res <-c
 	return nil
 }
 
-func (c *Client) insertMessage(m *message.Insert) error {
+func (c *Client) insertMessage(ctx context.Context, m *message.Insert) error {
 	table := m.GetTable()
 	sc := m.Record.Schema()
 	var sql string
@@ -45,7 +45,7 @@ func (c *Client) insertMessage(m *message.Insert) error {
 	}
 	vals := transformRecord(m.Record)
 	for _, v := range vals {
-		if _, err := c.db.Exec(sql, v...); err != nil {
+		if _, err := c.db.ExecContext(ctx, sql, v...); err != nil {
 			return fmt.Errorf("failed to execute '%s': %w", sql, err)
 		}
 	}

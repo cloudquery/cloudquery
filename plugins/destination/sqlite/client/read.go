@@ -148,7 +148,6 @@ func reverseTransform(sc *arrow.Schema, values []any) (arrow.Record, error) {
 	return rec, nil
 }
 
-// Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error
 func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
 	colNames := make([]string, len(table.Columns))
 	for i, col := range table.Columns {
