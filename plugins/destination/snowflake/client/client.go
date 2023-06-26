@@ -3,40 +3,41 @@ package client
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/writers"
 	"github.com/rs/zerolog"
 
 	"github.com/snowflakedb/gosnowflake"
 )
 
 type Client struct {
-	destination.UnimplementedUnmanagedWriter
-	db      *sql.DB
-	logger  zerolog.Logger
-	spec    specs.Destination
-	metrics destination.Metrics
+	plugin.UnimplementedSource
+	db     *sql.DB
+	logger zerolog.Logger
+	spec   Spec
+	writer *writers.BatchWriter
 }
 
-func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination) (destination.Client, error) {
-	if destSpec.WriteMode != specs.WriteModeAppend {
-		return nil, fmt.Errorf("snowflake destination only supports append mode")
-	}
+func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
+	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "sf-dest").Logger(),
 	}
-	var spec Spec
-	c.spec = destSpec
-	if err := destSpec.UnmarshalSpec(&spec); err != nil {
+	if err := json.Unmarshal(spec, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal snowflake spec: %w", err)
 	}
-	spec.SetDefaults()
-	if err := spec.Validate(); err != nil {
+	c.spec.SetDefaults()
+	if err := c.spec.Validate(); err != nil {
 		return nil, err
 	}
-	cfg, err := gosnowflake.ParseDSN(spec.ConnectionString)
+	c.writer, err = writers.NewBatchWriter(c, writers.WithLogger(logger), writers.WithBatchSize(c.spec.BatchSize), writers.WithBatchSizeBytes(c.spec.BatchSizeBytes))
+	if err != nil {
+		return nil, err
+	}
+	cfg, err := gosnowflake.ParseDSN(c.spec.ConnectionString)
 	if err != nil {
 		return nil, err
 	}
