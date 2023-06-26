@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"fmt"
 	"io"
 	"path"
 	"reflect"
@@ -56,53 +55,18 @@ func (w *writeCloser) Close() error {
 func (c *Client) OpenTable(ctx context.Context, sourceName string, table *schema.Table, syncTime time.Time) (any, error) {
 	objKey := replacePathVariables(c.spec.Path, table.Name, uuid.NewString(), c.spec.Format, syncTime)
 
-	pr, pw := io.Pipe()
-	doneCh := make(chan error)
-
-	go func() {
+	return c.Client.StartStream(table, func(r io.Reader) error {
 		_, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
 			Bucket: aws.String(c.spec.Bucket),
 			Key:    aws.String(objKey),
-			Body:   pr,
+			Body:   r,
 		})
-		_ = pr.CloseWithError(err)
-
-		doneCh <- err
-		close(doneCh)
-	}()
-
-	wc := &writeCloser{PipeWriter: pw}
-	h, err := c.Client.WriteHeader(wc, table)
-	if err != nil {
-		_ = pw.CloseWithError(err)
-		<-doneCh
-		return nil, err
-	}
-
-	return &stream{
-		h:    h,
-		wc:   wc,
-		done: doneCh,
-	}, nil
+		return err
+	})
 }
 
 func (*Client) CloseTable(_ context.Context, handle any) error {
-	s := handle.(*stream)
-	if err := s.h.WriteFooter(); err != nil {
-		if !s.wc.closed {
-			_ = s.wc.CloseWithError(err)
-		}
-		return fmt.Errorf("failed to write footer: %w", <-s.done)
-	}
-
-	// ParquetWriter likes to close the underlying writer, so we need to check if it's already closed
-	if !s.wc.closed {
-		if err := s.wc.Close(); err != nil {
-			return err
-		}
-	}
-
-	return <-s.done
+	return handle.(*filetypes.Stream).Finish()
 }
 
 func (c *Client) WriteTableStream(_ context.Context, handle any, msgs []*message.Insert) error {
@@ -119,7 +83,7 @@ func (c *Client) WriteTableStream(_ context.Context, handle any, msgs []*message
 		}
 	}
 
-	return handle.(*stream).h.WriteContent(records)
+	return handle.(*filetypes.Stream).Write(records)
 }
 
 func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, msgs <-chan message.Message) error {
