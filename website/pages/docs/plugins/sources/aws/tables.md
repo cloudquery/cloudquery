@@ -232,6 +232,7 @@
 - [aws_ec2_vpc_endpoints](tables/aws_ec2_vpc_endpoints)
 - [aws_ec2_vpc_peering_connections](tables/aws_ec2_vpc_peering_connections)
 - [aws_ec2_vpcs](tables/aws_ec2_vpcs)
+- [aws_ec2_vpn_connections](tables/aws_ec2_vpn_connections)
 - [aws_ec2_vpn_gateways](tables/aws_ec2_vpn_gateways)
 - [aws_ecr_registries](tables/aws_ecr_registries)
 - [aws_ecr_registry_policies](tables/aws_ecr_registry_policies)
