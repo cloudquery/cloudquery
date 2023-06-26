@@ -9,14 +9,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 
-// var migrateStrategy = destination.MigrateStrategy{
-// 	AddColumn:           specs.MigrateModeSafe,
-// 	AddColumnNotNull:    specs.MigrateModeForced,
-// 	RemoveColumn:        specs.MigrateModeSafe,
-// 	RemoveColumnNotNull: specs.MigrateModeForced,
-// 	ChangeColumn:        specs.MigrateModeForced,
-// }
-
 func getConnectionString() string {
 	if testConn := os.Getenv("CQ_DEST_MYSQL_TEST_CONNECTION_STRING"); len(testConn) > 0 {
 		return testConn

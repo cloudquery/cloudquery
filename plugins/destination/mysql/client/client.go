@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers"
 	"github.com/rs/zerolog"
@@ -62,8 +61,4 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 
 func (c *Client) Close(ctx context.Context) error {
 	return c.db.Close()
-}
-
-func (c *Client) pkEnabled() bool {
-	return c.spec.WriteMode == specs.WriteModeOverwrite || c.spec.WriteMode == specs.WriteModeOverwriteDeleteStale
 }

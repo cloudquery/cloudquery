@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -28,9 +27,10 @@ func getInsertQueryBuild(table *schema.Table) *strings.Builder {
 	return &builder
 }
 
-func (c *Client) writeResources(ctx context.Context, query string, resources []arrow.Record) error {
-	for _, data := range resources {
-		transformedRecords, err := transformRecord(data)
+func (c *Client) writeResources(ctx context.Context, query string, msgs []*message.Insert) error {
+	for _, msg := range msgs {
+		rec := msg.Record
+		transformedRecords, err := transformRecord(rec)
 		if err != nil {
 			return err
 		}
@@ -44,13 +44,13 @@ func (c *Client) writeResources(ctx context.Context, query string, resources []a
 	return nil
 }
 
-func (c *Client) appendTableBatch(ctx context.Context, table *schema.Table, resources []arrow.Record) error {
+func (c *Client) appendTableBatch(ctx context.Context, table *schema.Table, resources []*message.Insert) error {
 	builder := getInsertQueryBuild(table)
 	builder.WriteString(";")
 	return c.writeResources(ctx, builder.String(), resources)
 }
 
-func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, resources []arrow.Record) error {
+func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, msgs []*message.Insert) error {
 	builder := getInsertQueryBuild(table)
 	builder.WriteString(" ON DUPLICATE KEY UPDATE ")
 	for i, col := range table.Columns {
@@ -59,7 +59,7 @@ func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, r
 			builder.WriteString(", ")
 		}
 	}
-	return c.writeResources(ctx, builder.String(), resources)
+	return c.writeResources(ctx, builder.String(), msgs)
 }
 
 func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, res <-chan message.Message) error {
@@ -76,8 +76,8 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs []*messa
 	table := msgs[0].GetTable()
 	hasPks := len(table.PrimaryKeys()) > 0
 	if hasPks {
-		return c.overwriteTableBatch(ctx, table, resources)
+		return c.overwriteTableBatch(ctx, table, msgs)
 	} else {
-		return c.appendTableBatch(ctx, table, resources)
+		return c.appendTableBatch(ctx, table, msgs)
 	}
 }
