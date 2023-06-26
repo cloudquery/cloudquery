@@ -19,9 +19,7 @@ func buildGraphs(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}
 	c := types.Graph{}
 	require.NoError(t, faker.FakeObject(&c))
-	if err := faker.FakeObject(&c); err != nil {
-		t.Fatal(err)
-	}
+
 	listGraphOutput := &detective.ListGraphsOutput{
 		GraphList: []types.Graph{c},
 	}
