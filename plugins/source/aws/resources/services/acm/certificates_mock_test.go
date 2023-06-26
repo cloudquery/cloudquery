@@ -21,7 +21,14 @@ func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) client.Services
 	}
 	mock.EXPECT().ListCertificates(
 		gomock.Any(),
-		&acm.ListCertificatesInput{},
+		&acm.ListCertificatesInput{
+			CertificateStatuses: types.CertificateStatus("").Values(),
+			Includes: &types.Filters{
+				ExtendedKeyUsage: []types.ExtendedKeyUsageName{types.ExtendedKeyUsageNameAny},
+				KeyTypes:         types.KeyAlgorithm("").Values(),
+				KeyUsage:         []types.KeyUsageName{types.KeyUsageNameAny},
+			},
+		},
 		gomock.Any(),
 	).Return(
 		&acm.ListCertificatesOutput{CertificateSummaryList: []types.CertificateSummary{cs}},
