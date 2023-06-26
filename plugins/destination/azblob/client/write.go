@@ -30,7 +30,7 @@ func (*Client) CloseTable(_ context.Context, handle any) error {
 	return handle.(*filetypes.Stream).Finish()
 }
 
-func (c *Client) WriteTableStream(_ context.Context, handle any, msgs []*message.Insert) error {
+func (*Client) WriteTableStream(_ context.Context, handle any, msgs []*message.Insert) error {
 	if len(msgs) == 0 {
 		return nil
 	}
