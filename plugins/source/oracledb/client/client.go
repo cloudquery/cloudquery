@@ -16,9 +16,10 @@ import (
 
 type Client struct {
 	plugin.UnimplementedDestination
-	logger zerolog.Logger
-	tables schema.Tables
-	db     *sql.DB
+	logger      zerolog.Logger
+	tables      schema.Tables
+	db          *sql.DB
+	concurrency int
 }
 
 var _ schema.ClientMeta = (*Client)(nil)
@@ -51,7 +52,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.
 	}
 	defer conn.Close()
 
-	c := &Client{logger: logger.With().Str("module", "oracledb-source").Logger(), db: db}
+	c := &Client{logger: logger.With().Str("module", "oracledb-source").Logger(), db: db, concurrency: oracleDBSpec.Concurrency}
 	c.tables, err = c.listTables(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list tables: %w", err)

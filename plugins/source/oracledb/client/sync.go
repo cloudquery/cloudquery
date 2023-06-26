@@ -91,10 +91,12 @@ func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- 
 
 func (c *Client) syncTables(ctx context.Context, tables schema.Tables, res chan<- message.Message) error {
 	group, gctx := errgroup.WithContext(ctx)
+	group.SetLimit(c.concurrency)
 	for _, table := range tables {
-		if err := c.syncTable(gctx, table, res); err != nil {
-			return err
-		}
+		t := table
+		group.Go(func() error {
+			return c.syncTable(gctx, t, res)
+		})
 	}
 	return group.Wait()
 }
