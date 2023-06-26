@@ -41,7 +41,7 @@ func TestPlugin(t *testing.T) {
 	}
 	plugin.TestWriterSuiteRunner(t,
 		p,
-		plugin.PluginTestSuiteTests{
+		plugin.WriterTestSuiteTests{
 			SkipMigrate: true,
 			// SkipMigrateOverwriteForce: true,
 			// SkipMigrateAppendForce:    true,

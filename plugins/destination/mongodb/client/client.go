@@ -14,10 +14,10 @@ import (
 
 type Client struct {
 	plugin.UnimplementedSource
-	logger     zerolog.Logger
-	spec *Spec
-	client     *mongo.Client
-	writer     *writers.BatchWriter
+	logger zerolog.Logger
+	spec   *Spec
+	client *mongo.Client
+	writer *writers.BatchWriter
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {

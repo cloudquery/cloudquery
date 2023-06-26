@@ -16,7 +16,7 @@ import (
 // 	return nil
 // }
 
-func (c *Client) MigrateTables(context.Context, []*message.MigrateTable) error {
+func (*Client) MigrateTables(context.Context, []*message.MigrateTable) error {
 	return nil
 }
 

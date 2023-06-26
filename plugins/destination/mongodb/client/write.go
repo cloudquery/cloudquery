@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/goccy/go-json"
 
@@ -141,7 +142,7 @@ func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, d
 	return nil
 }
 
-func (c *Client) WriteTableBatch(ctx context.Context, tableName string, upsert bool, msgs []*message.Insert) error {
+func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs []*message.Insert) error {
 	if len(msgs) == 0 {
 		return nil
 	}
@@ -154,21 +155,18 @@ func (c *Client) WriteTableBatch(ctx context.Context, tableName string, upsert b
 		records[i] = msg.Record
 	}
 	documents := c.transformRecords(table, records)
-	if upsert {
+	if len(table.PrimaryKeys()) > 0 {
 		return c.overwriteTableBatch(ctx, table, documents)
-	} else {
-		return c.appendTableBatch(ctx, table, documents)
 	}
+	return c.appendTableBatch(ctx, table, documents)
 }
-
 
 func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, msgs <-chan message.Message) error {
 	if err := c.writer.Write(ctx, msgs); err != nil {
 		return err
 	}
 	if err := c.writer.Flush(ctx); err != nil {
-		return err
+		return fmt.Errorf("failed to flush: %w", err)
 	}
 	return nil
 }
-
