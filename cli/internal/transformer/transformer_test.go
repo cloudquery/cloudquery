@@ -11,11 +11,11 @@ import (
 )
 
 var transformTestCases = []struct {
-	name string
-	transformer func() *RecordTransformer
-	originalSchema *arrow.Schema
+	name               string
+	transformer        func() *RecordTransformer
+	originalSchema     *arrow.Schema
 	originalJSONRecord []byte
-	expectedSchema *arrow.Schema
+	expectedSchema     *arrow.Schema
 	expectedJSONRecord []byte
 }{
 	{

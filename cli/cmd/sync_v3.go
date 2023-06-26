@@ -19,7 +19,7 @@ import (
 )
 
 // nolint:dupl
-func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, destinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination, uid string, noMigrate bool) error {
+func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, destinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination, uid string, _ bool) error {
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
 	defer func() {
@@ -111,13 +111,13 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 	syncClient, err := sourcePbClient.Sync(ctx, &plugin.Sync_Request{
 		Tables:     sourceSpec.Tables,
 		SkipTables: sourceSpec.SkipTables,
-		//StateBackend: &plugin.StateBackendSpec{
+		// StateBackend: &plugin.StateBackendSpec{
 		//	Name:     sourceSpec.Backend,
 		//	Path:     "",
 		//	Version:  "",
 		//	Registry: 0,
 		//	Spec:     sourceSpec.BackendSpec,
-		//},
+		// },
 	})
 	if err != nil {
 		return err

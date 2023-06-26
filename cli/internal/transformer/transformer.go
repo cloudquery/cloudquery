@@ -8,14 +8,13 @@ import (
 	"github.com/apache/arrow/go/v13/arrow/memory"
 )
 
-
 type RecordTransformer struct {
-	sourceName string
-	withSourceName bool
-	syncTime   time.Time
-	withSyncTime bool
+	sourceName      string
+	withSourceName  bool
+	syncTime        time.Time
+	withSyncTime    bool
 	internalColumns int
-	removePks bool
+	removePks       bool
 }
 
 type RecordTransformerOption func(*RecordTransformer)
@@ -51,7 +50,7 @@ func NewRecordTransformer(opts ...RecordTransformerOption) *RecordTransformer {
 }
 
 func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
-	fields := make([]arrow.Field, 0, len(sc.Fields()) + t.internalColumns)
+	fields := make([]arrow.Field, 0, len(sc.Fields())+t.internalColumns)
 	if t.withSyncTime {
 		fields = append(fields, arrow.Field{Name: "_cq_sync_time", Type: arrow.FixedWidthTypes.Timestamp_us})
 	}
@@ -60,14 +59,14 @@ func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 	}
 	for _, field := range sc.Fields() {
 		mdMap := field.Metadata.ToMap()
-		if _, ok:= mdMap["cq:extension:primary_key"]; ok && t.removePks {
+		if _, ok := mdMap["cq:extension:primary_key"]; ok && t.removePks {
 			mdMap["cq:extension:primary_key"] = "false"
 		}
 		newMd := arrow.MetadataFrom(mdMap)
 
 		fields = append(fields, arrow.Field{
-			Name: field.Name,
-			Type: field.Type,
+			Name:     field.Name,
+			Type:     field.Type,
 			Nullable: field.Nullable,
 			Metadata: newMd,
 		})
@@ -80,7 +79,7 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 	sc := record.Schema()
 	newSchema := t.TransformSchema(sc)
 	nRows := int(record.NumRows())
-	cols := make([]arrow.Array, 0, len(sc.Fields()) + t.internalColumns)
+	cols := make([]arrow.Array, 0, len(sc.Fields())+t.internalColumns)
 	if t.withSyncTime {
 		syncTimeBldr := array.NewTimestampBuilder(memory.DefaultAllocator, &arrow.TimestampType{Unit: arrow.Microsecond, TimeZone: "UTC"})
 		for i := 0; i < nRows; i++ {
