@@ -26,10 +26,13 @@ type Source struct {
 	// For the gRPC registry the path will be the address of the gRPC server: host:port
 	Path string `json:"path,omitempty"`
 	// Registry can be github,local,grpc.
-	Registry            Registry `json:"registry,omitempty"`
-	Concurrency         uint64   `json:"concurrency,omitempty"`
-	TableConcurrency    uint64   `json:"table_concurrency,omitempty"`    // deprecated: use Concurrency instead
-	ResourceConcurrency uint64   `json:"resource_concurrency,omitempty"` // deprecated: use Concurrency instead
+	Registry Registry `json:"registry,omitempty"`
+	// deprecated: Concurrency is the number of concurrent workers to use when syncing data. Should now use plugin-specific field instead.
+	Concurrency uint64 `json:"concurrency,omitempty"`
+	// deprecated: use plugin-level Concurrency instead
+	TableConcurrency uint64 `json:"table_concurrency,omitempty"`
+	// deprecated: use plugin-level Concurrency instead
+	ResourceConcurrency uint64 `json:"resource_concurrency,omitempty"`
 	// Tables to sync from the source plugin
 	Tables []string `json:"tables,omitempty"`
 	// SkipTables defines tables to skip when syncing data. Useful if a glob pattern is used in Tables
@@ -39,22 +42,47 @@ type Source struct {
 	// Destinations are the names of destination plugins to send sync data to
 	Destinations []string `json:"destinations,omitempty"`
 
-	// Backend is the name of the state backend to use
+	// deprecated: Backend is the name of the state backend to use. Should now use plugin-specific field instead.
 	Backend Backend `json:"backend,omitempty"`
-	// BackendSpec contains any backend-specific configuration
+	// deprecated: BackendSpec contains any backend-specific configuration. Should now use plugin-specific field instead.
 	BackendSpec any `json:"backend_spec,omitempty"`
-	// Scheduler defines the scheduling algorithm that should be used to sync data
+	// deprecated: Scheduler defines the scheduling algorithm that should be used to sync data. Should now use plugin-specific field instead.
 	Scheduler Scheduler `json:"scheduler,omitempty"`
 	// Spec defines plugin specific configuration
 	// This is different in every source plugin.
-	Spec any `json:"spec,omitempty"`
+	Spec map[string]any `json:"spec,omitempty"`
 
 	// DeterministicCQID is a flag that indicates whether the source plugin should generate a random UUID as the value of _cq_id
 	// or whether it should calculate a UUID that is a hash of the primary keys (if they exist) or the entire resource.
 	DeterministicCQID bool `json:"deterministic_cq_id,omitempty"`
 }
 
+// GetWarnings returns a list of deprecated options that were used in the source config. This should be
+// called before SetDefaults.
+func (s *Source) GetWarnings() Warnings {
+	warnings := make(map[string]string)
+	if s.Backend.String() != "" {
+		warnings["backend"] = "the top-level `backend` option is deprecated. Please use the plugin-level backend option instead"
+	}
+	if s.Scheduler.String() != "" {
+		warnings["scheduler"] = "the top-level `scheduler` option is deprecated. Please use the plugin-level scheduler option instead"
+	}
+	if s.Concurrency != 0 {
+		warnings["concurrency"] = "the top-level `concurrency` option is deprecated. Please use the plugin-level concurrency option instead"
+	}
+	if s.TableConcurrency != 0 {
+		warnings["table_concurrency"] = "the `table_concurrency` option is deprecated. Please use the plugin-level concurrency option instead"
+	}
+	if s.ResourceConcurrency != 0 {
+		warnings["resource_concurrency"] = "the `resource_concurrency` option is deprecated. Please use the plugin-level concurrency option instead"
+	}
+	return warnings
+}
+
 func (s *Source) SetDefaults() {
+	if s.Spec == nil {
+		s.Spec = make(map[string]any)
+	}
 	if s.Registry.String() == "" {
 		s.Registry = RegistryGithub
 	}

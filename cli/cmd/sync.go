@@ -165,6 +165,10 @@ func sync(cmd *cobra.Command, args []string) error {
 		}
 		switch maxVersion {
 		case 3:
+			warnings := specReader.GetSourceWarningsByName(source.Name)
+			for field, msg := range warnings {
+				log.Warn().Str("source", source.Name).Str("field", field).Msg(msg)
+			}
 			for _, destination := range destinationClientsForSource {
 				versions, err := destination.Versions(ctx)
 				if err != nil {
@@ -172,6 +176,10 @@ func sync(cmd *cobra.Command, args []string) error {
 				}
 				if !slices.Contains(versions, 3) {
 					return fmt.Errorf("destination %[1]s does not support CloudQuery protocol version 3, required by %[2]s. Please upgrade to newer version of %[1]s", destination.Name(), source.Name)
+				}
+				destWarnings := specReader.GetDestinationWarningsByName(source.Name)
+				for field, msg := range destWarnings {
+					log.Warn().Str("destination", destination.Name()).Str("field", field).Msg(msg)
 				}
 			}
 			if err := syncConnectionV3(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, invocationUUID.String(), noMigrate); err != nil {

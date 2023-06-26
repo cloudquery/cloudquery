@@ -15,6 +15,7 @@ type RecordTransformer struct {
 	withSyncTime    bool
 	internalColumns int
 	removePks       bool
+	cqIDPrimaryKey  bool
 }
 
 type RecordTransformerOption func(*RecordTransformer)
@@ -41,6 +42,12 @@ func WithRemovePKs() RecordTransformerOption {
 	}
 }
 
+func WithCQIDPrimaryKey() RecordTransformerOption {
+	return func(transformer *RecordTransformer) {
+		transformer.cqIDPrimaryKey = true
+	}
+}
+
 func NewRecordTransformer(opts ...RecordTransformerOption) *RecordTransformer {
 	t := &RecordTransformer{}
 	for _, opt := range opts {
@@ -61,6 +68,9 @@ func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 		mdMap := field.Metadata.ToMap()
 		if _, ok := mdMap["cq:extension:primary_key"]; ok && t.removePks {
 			mdMap["cq:extension:primary_key"] = "false"
+		}
+		if field.Name == "_cq_id" && t.cqIDPrimaryKey {
+			mdMap["cq:extension:primary_key"] = "true"
 		}
 		newMd := arrow.MetadataFrom(mdMap)
 
