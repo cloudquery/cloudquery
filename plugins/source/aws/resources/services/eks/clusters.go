@@ -34,6 +34,7 @@ func Clusters() *schema.Table {
 			nodeGroups(),
 			fargateProfiles(),
 			addOns(),
+			identityProviderConfigs(),
 		},
 	}
 }
