@@ -40,6 +40,34 @@ func buildCodebuildProjects(t *testing.T, ctrl *gomock.Controller) client.Servic
 		nil,
 	)
 
+	buildID := ""
+	if err := faker.FakeObject(&buildID); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListBuildsForProject(
+		gomock.Any(),
+		gomock.Any(),
+		gomock.Any(),
+	).Return(
+		&codebuild.ListBuildsForProjectOutput{
+			Ids: []string{buildID},
+		},
+		nil,
+	).MinTimes(1)
+
+	build := codebuild.BatchGetBuildsOutput{}
+	if err := faker.FakeObject(&build); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().BatchGetBuilds(
+		gomock.Any(),
+		gomock.Any(),
+		gomock.Any(),
+	).Return(
+		&build,
+		nil,
+	).MinTimes(1)
+
 	return client.Services{Codebuild: m}
 }
 

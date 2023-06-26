@@ -25,6 +25,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
+	"github.com/aws/aws-sdk-go-v2/service/codeartifact"
 	"github.com/aws/aws-sdk-go-v2/service/codebuild"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
@@ -91,6 +92,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
+	"github.com/aws/aws-sdk-go-v2/service/servicediscovery"
 	"github.com/aws/aws-sdk-go-v2/service/servicequotas"
 	"github.com/aws/aws-sdk-go-v2/service/ses"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
@@ -106,6 +108,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
+	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/workspaces"
 	"github.com/aws/aws-sdk-go-v2/service/xray"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
@@ -138,6 +141,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Cloudtrail:                cloudtrail.NewFromConfig(awsCfg),
 		Cloudwatch:                cloudwatch.NewFromConfig(awsCfg),
 		Cloudwatchlogs:            cloudwatchlogs.NewFromConfig(awsCfg),
+		Codeartifact:              codeartifact.NewFromConfig(awsCfg),
 		Codebuild:                 codebuild.NewFromConfig(awsCfg),
 		Codepipeline:              codepipeline.NewFromConfig(awsCfg),
 		Cognitoidentity:           cognitoidentity.NewFromConfig(awsCfg),
@@ -204,6 +208,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Securityhub:               securityhub.NewFromConfig(awsCfg),
 		Servicecatalog:            servicecatalog.NewFromConfig(awsCfg),
 		Servicecatalogappregistry: servicecatalogappregistry.NewFromConfig(awsCfg),
+		Servicediscovery:          servicediscovery.NewFromConfig(awsCfg),
 		Servicequotas:             servicequotas.NewFromConfig(awsCfg),
 		Ses:                       ses.NewFromConfig(awsCfg),
 		Sesv2:                     sesv2.NewFromConfig(awsCfg),
@@ -219,6 +224,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Waf:                       waf.NewFromConfig(awsCfg),
 		Wafregional:               wafregional.NewFromConfig(awsCfg),
 		Wafv2:                     wafv2.NewFromConfig(awsCfg),
+		Wellarchitected:           wellarchitected.NewFromConfig(awsCfg),
 		Workspaces:                workspaces.NewFromConfig(awsCfg),
 		Xray:                      xray.NewFromConfig(awsCfg),
 	}
@@ -249,6 +255,7 @@ type Services struct {
 	Cloudtrail                services.CloudtrailClient
 	Cloudwatch                services.CloudwatchClient
 	Cloudwatchlogs            services.CloudwatchlogsClient
+	Codeartifact              services.CodeartifactClient
 	Codebuild                 services.CodebuildClient
 	Codepipeline              services.CodepipelineClient
 	Cognitoidentity           services.CognitoidentityClient
@@ -315,6 +322,7 @@ type Services struct {
 	Securityhub               services.SecurityhubClient
 	Servicecatalog            services.ServicecatalogClient
 	Servicecatalogappregistry services.ServicecatalogappregistryClient
+	Servicediscovery          services.ServicediscoveryClient
 	Servicequotas             services.ServicequotasClient
 	Ses                       services.SesClient
 	Sesv2                     services.Sesv2Client
@@ -330,6 +338,7 @@ type Services struct {
 	Waf                       services.WafClient
 	Wafregional               services.WafregionalClient
 	Wafv2                     services.Wafv2Client
+	Wellarchitected           services.WellarchitectedClient
 	Workspaces                services.WorkspacesClient
 	Xray                      services.XrayClient
 }

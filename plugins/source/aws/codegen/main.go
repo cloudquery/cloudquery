@@ -28,6 +28,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
+	"github.com/aws/aws-sdk-go-v2/service/codeartifact"
 	"github.com/aws/aws-sdk-go-v2/service/codebuild"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
@@ -94,6 +95,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
+	"github.com/aws/aws-sdk-go-v2/service/servicediscovery"
 	"github.com/aws/aws-sdk-go-v2/service/servicequotas"
 	"github.com/aws/aws-sdk-go-v2/service/ses"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
@@ -109,6 +111,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
+	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/workspaces"
 	"github.com/aws/aws-sdk-go-v2/service/xray"
 	"github.com/cloudquery/codegen/interfaces"
@@ -124,14 +127,13 @@ var clients = []any{
 	&amplify.Client{},
 	&apigateway.Client{},
 	&apigatewayv2.Client{},
-	&computeoptimizer.Client{},
 	&applicationautoscaling.Client{},
-	&autoscalingplans.Client{},
 	&apprunner.Client{},
 	&appstream.Client{},
 	&appsync.Client{},
 	&athena.Client{},
 	&autoscaling.Client{},
+	&autoscalingplans.Client{},
 	&backup.Client{},
 	&batch.Client{},
 	&cloudformation.Client{},
@@ -140,11 +142,14 @@ var clients = []any{
 	&cloudtrail.Client{},
 	&cloudwatch.Client{},
 	&cloudwatchlogs.Client{},
+	&codeartifact.Client{},
 	&codebuild.Client{},
 	&codepipeline.Client{},
 	&cognitoidentity.Client{},
 	&cognitoidentityprovider.Client{},
+	&computeoptimizer.Client{},
 	&configservice.Client{},
+	&costexplorer.Client{},
 	&databasemigrationservice.Client{},
 	&dax.Client{},
 	&directconnect.Client{},
@@ -174,7 +179,6 @@ var clients = []any{
 	&iam.Client{},
 	&identitystore.Client{},
 	&inspector.Client{},
-	&costexplorer.Client{},
 	&inspector2.Client{},
 	&iot.Client{},
 	&kafka.Client{},
@@ -192,8 +196,8 @@ var clients = []any{
 	&ram.Client{},
 	&rds.Client{},
 	&redshift.Client{},
-	&resourcegroups.Client{},
 	&resiliencehub.Client{},
+	&resourcegroups.Client{},
 	&route53.Client{},
 	&route53domains.Client{},
 	&s3.Client{},
@@ -205,6 +209,7 @@ var clients = []any{
 	&securityhub.Client{},
 	&servicecatalog.Client{},
 	&servicecatalogappregistry.Client{},
+	&servicediscovery.Client{},
 	&servicequotas.Client{},
 	&ses.Client{},
 	&sesv2.Client{},
@@ -220,6 +225,7 @@ var clients = []any{
 	&waf.Client{},
 	&wafregional.Client{},
 	&wafv2.Client{},
+	&wellarchitected.Client{},
 	&workspaces.Client{},
 	&xray.Client{},
 }
