@@ -1,11 +1,18 @@
 package client
 
+import "github.com/cloudquery/plugin-sdk/v4/scheduler"
+
 type Spec struct {
+	Scheduler string `json:"scheduler"`
 }
 
-func (*Spec) SetDefaults() {
+func (s *Spec) SetDefaults() {
+	if s.Scheduler == "" {
+		s.Scheduler = scheduler.StrategyDFS.String()
+	}
 }
 
-func (*Spec) Validate() error {
-	return nil
+func (s *Spec) Validate() error {
+	_, err := scheduler.StrategyForName(s.Scheduler)
+	return err
 }

@@ -22,9 +22,9 @@ const (
 )
 
 type Client struct {
-	SchedulerClient *client.Client
-	logger          zerolog.Logger
-	tables          []*schema.Table
+	logger    zerolog.Logger
+	tables    schema.Tables
+	scheduler *scheduler.Scheduler
 	plugin.UnimplementedDestination
 }
 
@@ -37,8 +37,11 @@ func (c *Client) Logger() *zerolog.Logger {
 }
 
 func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.Message) error {
-	scheduler := scheduler.NewScheduler(c.SchedulerClient, scheduler.WithSchedulerStrategy(scheduler.StrategyDFS))
-	return scheduler.Sync(ctx, c.tables, res)
+	tt, err := c.tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
+	if err != nil {
+		return err
+	}
+	return c.scheduler.Sync(ctx, tt, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
 }
 
 func (c *Client) Tables(ctx context.Context) (schema.Tables, error) {
@@ -95,10 +98,13 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.
 		MaxRetries: defaultMaxRetries,
 		Backoff:    defaultBackoff,
 	}
-
+	strategy, _ := scheduler.StrategyForName(config.Scheduler) // error checked in Validate()
+	scheduler := scheduler.NewScheduler(schedulerClient,
+		scheduler.WithSchedulerStrategy(strategy),
+	)
 	return &Client{
-		logger:          logger,
-		SchedulerClient: schedulerClient,
-		tables:          getTables(),
+		logger:    logger,
+		scheduler: scheduler,
+		tables:    getTables(),
 	}, nil
 }
