@@ -13,3 +13,8 @@ type RuleGroupWrapper struct {
 	*types.RuleGroup
 	*types.RuleGroupResponse
 }
+
+type FirewallWrapper struct {
+	*types.FirewallStatus
+	*types.Firewall
+}

@@ -78,7 +78,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/mq v1.14.12
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.16.1
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.20.6
-	github.com/aws/aws-sdk-go-v2/service/networkfirewall v1.28.1
+	github.com/aws/aws-sdk-go-v2/service/networkfirewall v1.28.2
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.19.7
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.15.12
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.37.1
