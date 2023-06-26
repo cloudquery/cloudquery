@@ -24,6 +24,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudtrail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudwatch"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudwatchlogs"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codeartifact"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codebuild"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codepipeline"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cognito"
@@ -86,6 +87,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/secretsmanager"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/securityhub"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicecatalog"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicediscovery"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicequotas"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ses"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/shield"
@@ -100,6 +102,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/waf"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wafregional"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wafv2"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wellarchitected"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/workspaces"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/xray"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
@@ -175,7 +178,10 @@ func tables() []*schema.Table {
 		cloudwatchlogs.LogGroups(),
 		cloudwatchlogs.MetricFilters(),
 		cloudwatchlogs.ResourcePolicies(),
+		codeartifact.Domains(),
+		codeartifact.Repositories(),
 		codebuild.Projects(),
+		codebuild.SourceCredentials(),
 		codepipeline.Pipelines(),
 		codepipeline.Webhooks(),
 		cognito.IdentityPools(),
@@ -466,6 +472,8 @@ func tables() []*schema.Table {
 		servicecatalog.Portfolios(),
 		servicecatalog.Products(),
 		servicecatalog.ProvisionedProducts(),
+		servicediscovery.Namespaces(),
+		servicediscovery.Services(),
 		servicequotas.Services(),
 		ses.ActiveReceiptRuleSets(),
 		ses.ConfigurationSets(),
@@ -511,6 +519,9 @@ func tables() []*schema.Table {
 		wafv2.RegexPatternSets(),
 		wafv2.RuleGroups(),
 		wafv2.WebAcls(),
+		wellarchitected.Lenses(),
+		wellarchitected.ShareInvitations(),
+		wellarchitected.Workloads(),
 		workspaces.Directories(),
 		workspaces.Workspaces(),
 		xray.EncryptionConfigs(),

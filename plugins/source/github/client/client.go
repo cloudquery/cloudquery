@@ -155,10 +155,11 @@ func (c *Client) discoverRepositories(ctx context.Context, orgs []string, repos 
 				return nil, err
 			}
 			orgRepos[org] = append(orgRepos[org], repos...)
-			opts.Page = resp.NextPage
-			if opts.Page == resp.LastPage {
+
+			if resp.NextPage == 0 {
 				break
 			}
+			opts.Page = resp.NextPage
 		}
 	}
 	seenOrgs := make(map[string]struct{})

@@ -3,16 +3,16 @@ module github.com/cloudquery/cloudquery/plugins/source/homebrew
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-pb-go v1.1.0
+	github.com/cloudquery/plugin-pb-go v1.3.3
 	github.com/cloudquery/plugin-sdk/v3 v3.10.6
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.29.1
 )
 
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230620001150-43638cb1b099
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230626001500-065602842c3a
 
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230601070034-e07e22c5580a // indirect
+	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect

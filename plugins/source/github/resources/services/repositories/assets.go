@@ -29,10 +29,11 @@ func fetchAssets(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 			return err
 		}
 		res <- releases
-		opts.Page = resp.NextPage
-		if opts.Page == resp.LastPage {
+
+		if resp.NextPage == 0 {
 			break
 		}
+		opts.Page = resp.NextPage
 	}
 	return nil
 }
