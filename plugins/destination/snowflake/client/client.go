@@ -15,10 +15,10 @@ import (
 
 type Client struct {
 	plugin.UnimplementedSource
-	db      *sql.DB
-	logger  zerolog.Logger
-	spec    Spec
-	writer  *writers.BatchWriter
+	db     *sql.DB
+	logger zerolog.Logger
+	spec   Spec
+	writer *writers.BatchWriter
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
@@ -29,13 +29,12 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 	if err := json.Unmarshal(spec, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal snowflake spec: %w", err)
 	}
-	c.writer, err = writers.NewBatchWriter(c, writers.WithLogger(logger))
-	if err != nil {
-		return nil, err
-	}
-
 	c.spec.SetDefaults()
 	if err := c.spec.Validate(); err != nil {
+		return nil, err
+	}
+	c.writer, err = writers.NewBatchWriter(c, writers.WithLogger(logger), writers.WithBatchSize(c.spec.BatchSize), writers.WithBatchSizeBytes(c.spec.BatchSizeBytes))
+	if err != nil {
 		return nil, err
 	}
 	cfg, err := gosnowflake.ParseDSN(c.spec.ConnectionString)

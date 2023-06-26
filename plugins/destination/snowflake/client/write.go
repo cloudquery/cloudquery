@@ -24,7 +24,7 @@ func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, msgs <-
 		return err
 	}
 	if err := c.writer.Flush(ctx); err != nil {
-		return err
+		return fmt.Errorf("failed to flush writer: %w", err)
 	}
 	return nil
 }

@@ -26,7 +26,7 @@ func TestPlugin(t *testing.T) {
 	plugin.TestWriterSuiteRunner(t,
 		p,
 		plugin.WriterTestSuiteTests{
-			SkipUpsert: true,
+			SkipUpsert:  true,
 			SkipMigrate: true,
 		},
 		plugin.WithTestDataOptions(schema.TestSourceOptions{

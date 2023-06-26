@@ -37,7 +37,7 @@ func (i *tableInfo) getColumn(name string) *columnInfo {
 
 func (c *Client) MigrateTables(ctx context.Context, msgs []*message.MigrateTable) error {
 	for _, msg := range msgs {
-		table := msg.Table 
+		table := msg.Table
 		tableName := table.Name
 		c.logger.Debug().Str("table", tableName).Msg("Migrating table")
 		tableExist, err := c.isTableExistSQL(ctx, tableName)

@@ -1,6 +1,10 @@
 package main
 
 import (
+	"context"
+	"fmt"
+	"os"
+
 	"github.com/cloudquery/cloudquery/plugins/destination/snowflake/client"
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/snowflake/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
@@ -13,5 +17,8 @@ const (
 
 func main() {
 	p := plugin.NewPlugin("snowflake", internalPlugin.Version, client.New)
-	serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN))
+	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN)).Serve(context.Background()); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }
