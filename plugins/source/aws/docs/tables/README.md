@@ -234,6 +234,7 @@
 - [aws_ec2_vpc_endpoints](../../../../../website/tables/aws/aws_ec2_vpc_endpoints.md)
 - [aws_ec2_vpc_peering_connections](../../../../../website/tables/aws/aws_ec2_vpc_peering_connections.md)
 - [aws_ec2_vpcs](../../../../../website/tables/aws/aws_ec2_vpcs.md)
+- [aws_ec2_vpn_connections](../../../../../website/tables/aws/aws_ec2_vpn_connections.md)
 - [aws_ec2_vpn_gateways](../../../../../website/tables/aws/aws_ec2_vpn_gateways.md)
 - [aws_ecr_registries](../../../../../website/tables/aws/aws_ecr_registries.md)
 - [aws_ecr_registry_policies](../../../../../website/tables/aws/aws_ecr_registry_policies.md)
