@@ -9,16 +9,14 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildSnsTopics(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockSnsClient(ctrl)
 	topic := types.Topic{}
 	tag := types.Tag{}
-	err := faker.FakeObject(&topic)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&topic))
 	tagerr := faker.FakeObject(&tag)
 	if tagerr != nil {
 		t.Fatal(tagerr)

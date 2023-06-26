@@ -9,78 +9,43 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockS3Client(ctrl)
 	b := s3Types.Bucket{}
-	err := faker.FakeObject(&b)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&b))
 	bloc := s3.GetBucketLocationOutput{}
-	err = faker.FakeObject(&bloc)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&bloc))
 	blog := s3.GetBucketLoggingOutput{}
-	err = faker.FakeObject(&blog)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&blog))
 	bpol := s3.GetBucketPolicyOutput{}
-	err = faker.FakeObject(&bpol)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&bpol))
 	bpols := s3.GetBucketPolicyStatusOutput{}
-	err = faker.FakeObject(&bpols)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&bpols))
 	jsonDoc := `{"stuff": 3}`
 	bpol.Policy = &jsonDoc
 	bver := s3.GetBucketVersioningOutput{}
-	err = faker.FakeObject(&bver)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&bver))
 	bgrant := s3Types.Grant{}
-	err = faker.FakeObject(&bgrant)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&bgrant))
 	// set up properly
 	bgrant.Grantee.EmailAddress = nil
 	bgrant.Grantee.ID = nil
 	bgrant.Grantee.Type = s3Types.TypeGroup
 
 	bcors := s3Types.CORSRule{}
-	err = faker.FakeObject(&bcors)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&bcors))
 	bencryption := s3.GetBucketEncryptionOutput{}
-	err = faker.FakeObject(&bencryption)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&bencryption))
 
 	bpba := s3.GetPublicAccessBlockOutput{}
-	err = faker.FakeObject(&bpba)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&bpba))
 	btag := s3.GetBucketTaggingOutput{}
-	err = faker.FakeObject(&btag)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&btag))
 	bownershipcontrols := s3.GetBucketOwnershipControlsOutput{}
-	err = faker.FakeObject(&bownershipcontrols)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&bownershipcontrols))
 
 	m.EXPECT().ListBuckets(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&s3.ListBucketsOutput{

@@ -9,15 +9,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildEksClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEksClient(ctrl)
 	l := eks.DescribeClusterOutput{}
-	err := faker.FakeObject(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&l))
 
 	m.EXPECT().ListClusters(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&eks.ListClustersOutput{
@@ -27,10 +25,7 @@ func buildEksClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&l, nil)
 
 	fp := types.FargateProfile{}
-	err = faker.FakeObject(&fp)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&fp))
 	m.EXPECT().ListFargateProfiles(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&eks.ListFargateProfilesOutput{
 			FargateProfileNames: []string{"test-profile"},
@@ -39,10 +34,7 @@ func buildEksClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&eks.DescribeFargateProfileOutput{FargateProfile: &fp}, nil)
 
 	ng := types.Nodegroup{}
-	err = faker.FakeObject(&ng)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ng))
 
 	m.EXPECT().ListNodegroups(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&eks.ListNodegroupsOutput{

@@ -11,16 +11,14 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildLoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockElasticloadbalancingv2Client(ctrl)
 	w := mocks.NewMockWafv2Client(ctrl)
 	l := elbv2Types.LoadBalancer{}
-	err := faker.FakeObject(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&l))
 	l.Type = elbv2Types.LoadBalancerTypeEnumApplication
 
 	m.EXPECT().DescribeLoadBalancers(gomock.Any(), gomock.Any(), gomock.Any()).Return(
@@ -35,19 +33,13 @@ func buildLoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	).Return(fakeLoadBalancerAttributes(), nil)
 
 	webAcl := types.WebACL{}
-	err = faker.FakeObject(&webAcl)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&webAcl))
 
 	w.EXPECT().GetWebACLForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&wafv2.GetWebACLForResourceOutput{WebACL: &webAcl}, nil).AnyTimes()
 
 	tags := elasticloadbalancingv2.DescribeTagsOutput{}
-	err = faker.FakeObject(&tags)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tags))
 	m.EXPECT().DescribeTags(gomock.Any(), gomock.Any(), gomock.Any()).Times(2).Return(&tags, nil)
 
 	lis := elbv2Types.Listener{}

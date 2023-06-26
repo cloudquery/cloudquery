@@ -9,15 +9,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildStateMachines(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockSfnClient(ctrl)
 	im := types.StateMachineListItem{}
-	err := faker.FakeObject(&im)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&im))
 
 	m.EXPECT().ListStateMachines(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&sfn.ListStateMachinesOutput{
@@ -25,10 +23,8 @@ func buildStateMachines(t *testing.T, ctrl *gomock.Controller) client.Services {
 		}, nil)
 
 	out := &sfn.DescribeStateMachineOutput{}
-	err = faker.FakeObject(&out)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&out))
+
 	m.EXPECT().DescribeStateMachine(gomock.Any(), gomock.Any(), gomock.Any()).Return(out, nil)
 
 	tag := types.Tag{}
@@ -60,9 +56,7 @@ func buildStateMachines(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().DescribeExecution(gomock.Any(), gomock.Any(), gomock.Any()).MinTimes(1).Return(&execOut, nil)
 
 	mrli := types.MapRunListItem{}
-	if err = faker.FakeObject(&mrli); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&mrli))
 	m.EXPECT().ListMapRuns(gomock.Any(), gomock.Any(), gomock.Any()).MinTimes(1).Return(
 		&sfn.ListMapRunsOutput{
 			MapRuns: []types.MapRunListItem{mrli},

@@ -9,15 +9,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildOrganizationsAccounts(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockOrganizationsClient(ctrl)
 	g := organizationsTypes.Account{}
-	err := faker.FakeObject(&g)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&g))
 
 	m.EXPECT().ListAccounts(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&organizations.ListAccountsOutput{
@@ -35,10 +33,7 @@ func buildOrganizationsAccounts(t *testing.T, ctrl *gomock.Controller) client.Se
 		}, nil)
 
 	ds := organizationsTypes.DelegatedService{}
-	err = faker.FakeObject(&ds)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ds))
 
 	m.EXPECT().ListDelegatedServicesForAccount(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&organizations.ListDelegatedServicesForAccountOutput{

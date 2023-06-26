@@ -8,14 +8,12 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildRdsClusterBacktracks(t *testing.T, mockRds *mocks.MockRdsClient) {
 	var d types.DBClusterBacktrack
-	err := faker.FakeObject(&d)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&d))
 
 	mockRds.EXPECT().DescribeDBClusterBacktracks(gomock.Any(), gomock.Any(), gomock.Any()).Return(&rds.DescribeDBClusterBacktracksOutput{
 		DBClusterBacktracks: []types.DBClusterBacktrack{d},
