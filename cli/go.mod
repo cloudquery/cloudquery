@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe
-	github.com/cloudquery/plugin-pb-go v1.1.0
+	github.com/cloudquery/plugin-pb-go v1.3.4
 	github.com/getsentry/sentry-go v0.20.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/google/go-cmp v0.5.9
@@ -20,10 +20,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 )
 
-replace github.com/cloudquery/plugin-pb-go => ../../plugin-pb-go
-
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe // indirect
 	github.com/avast/retry-go/v4 v4.3.4 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
