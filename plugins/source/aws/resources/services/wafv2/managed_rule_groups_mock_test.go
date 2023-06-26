@@ -15,9 +15,8 @@ import (
 func buildWAFV2ManagedRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockWafv2Client(ctrl)
 	var tempDescribeManagedRuleGroup wafv2.DescribeManagedRuleGroupOutput
-	if err := faker.FakeObject(&tempDescribeManagedRuleGroup); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tempDescribeManagedRuleGroup))
+
 	for _, scope := range []types.Scope{types.ScopeCloudfront, types.ScopeRegional} {
 		tempManagedRuleGroupSum := types.ManagedRuleGroupSummary{}
 		require.NoError(t, faker.FakeObject(&tempManagedRuleGroupSum))

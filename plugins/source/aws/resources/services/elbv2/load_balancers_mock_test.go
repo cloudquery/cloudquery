@@ -43,9 +43,7 @@ func buildLoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().DescribeTags(gomock.Any(), gomock.Any(), gomock.Any()).Times(2).Return(&tags, nil)
 
 	lis := elbv2Types.Listener{}
-	if err := faker.FakeObject(&lis); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&lis))
 
 	m.EXPECT().DescribeListeners(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticloadbalancingv2.DescribeListenersOutput{
@@ -53,9 +51,8 @@ func buildLoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
 		}, nil)
 
 	c := elbv2Types.Certificate{}
-	if err := faker.FakeObject(&c); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&c))
+
 	m.EXPECT().DescribeListenerCertificates(
 		gomock.Any(),
 		&elasticloadbalancingv2.DescribeListenerCertificatesInput{ListenerArn: lis.ListenerArn},
@@ -65,9 +62,8 @@ func buildLoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}, nil)
 
 	r := elbv2Types.Rule{}
-	if err := faker.FakeObject(&r); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&r))
+
 	m.EXPECT().DescribeRules(
 		gomock.Any(),
 		&elasticloadbalancingv2.DescribeRulesInput{ListenerArn: lis.ListenerArn},

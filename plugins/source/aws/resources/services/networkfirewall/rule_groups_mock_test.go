@@ -23,9 +23,7 @@ func buildRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 		}, nil)
 
 	rg := networkfirewall.DescribeRuleGroupOutput{}
-	if err := faker.FakeObject(&rg); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&rg))
 
 	m.EXPECT().DescribeRuleGroup(gomock.Any(), gomock.Any(), gomock.Any()).Return(&rg, nil)
 

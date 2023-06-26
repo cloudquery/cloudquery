@@ -23,9 +23,7 @@ func buildOrganizationsAccounts(t *testing.T, ctrl *gomock.Controller) client.Se
 		}, nil)
 
 	tt := make([]organizationsTypes.Tag, 3)
-	if err := faker.FakeObject(&tt); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tt))
 
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&organizations.ListTagsForResourceOutput{
@@ -40,9 +38,8 @@ func buildOrganizationsAccounts(t *testing.T, ctrl *gomock.Controller) client.Se
 			DelegatedServices: []organizationsTypes.DelegatedService{ds},
 		}, nil)
 	p := organizationsTypes.Parent{}
-	if err := faker.FakeObject(&p); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&p))
+
 	m.EXPECT().ListParents(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&organizations.ListParentsOutput{
 			Parents: []organizationsTypes.Parent{p},

@@ -39,9 +39,7 @@ func buildStateMachines(t *testing.T, ctrl *gomock.Controller) client.Services {
 		}, nil)
 
 	eli := types.ExecutionListItem{}
-	if err := faker.FakeObject(&eli); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&eli))
 
 	m.EXPECT().ListExecutions(gomock.Any(), gomock.Any(), gomock.Any()).MinTimes(1).Return(
 		&sfn.ListExecutionsOutput{
@@ -49,9 +47,7 @@ func buildStateMachines(t *testing.T, ctrl *gomock.Controller) client.Services {
 		}, nil)
 
 	execOut := sfn.DescribeExecutionOutput{}
-	if err := faker.FakeObject(&execOut); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&execOut))
 
 	m.EXPECT().DescribeExecution(gomock.Any(), gomock.Any(), gomock.Any()).MinTimes(1).Return(&execOut, nil)
 
@@ -63,9 +59,7 @@ func buildStateMachines(t *testing.T, ctrl *gomock.Controller) client.Services {
 		}, nil)
 
 	mapRunOut := sfn.DescribeMapRunOutput{}
-	if err := faker.FakeObject(&mapRunOut); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&mapRunOut))
 
 	m.EXPECT().DescribeMapRun(gomock.Any(), gomock.Any(), gomock.Any()).Return(&mapRunOut, nil)
 	return client.Services{

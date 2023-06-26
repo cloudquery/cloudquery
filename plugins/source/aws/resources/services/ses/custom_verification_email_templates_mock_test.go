@@ -9,20 +9,18 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildCustomVerificationEmailTemplates(t *testing.T, ctrl *gomock.Controller) client.Services {
 	sesClient := mocks.NewMockSesv2Client(ctrl)
 
 	metadata := types.CustomVerificationEmailTemplateMetadata{}
-	if err := faker.FakeObject(&metadata); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&metadata))
 
 	get := new(sesv2.GetCustomVerificationEmailTemplateOutput)
-	if err := faker.FakeObject(get); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(get))
+
 	metadata.TemplateName = get.TemplateName
 
 	sesClient.EXPECT().ListCustomVerificationEmailTemplates(gomock.Any(), gomock.Any(), gomock.Any()).Return(

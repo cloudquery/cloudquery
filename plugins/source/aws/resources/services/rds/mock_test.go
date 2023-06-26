@@ -73,9 +73,7 @@ func buildRdsDBSubnetGroups(t *testing.T, ctrl *gomock.Controller) client.Servic
 func buildRdsDBReservedInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockRdsClient(ctrl)
 	ri := rdsTypes.ReservedDBInstance{}
-	if err := faker.FakeObject(&ri); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ri))
 
 	m.EXPECT().DescribeReservedDBInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&rds.DescribeReservedDBInstancesOutput{
@@ -83,9 +81,7 @@ func buildRdsDBReservedInstances(t *testing.T, ctrl *gomock.Controller) client.S
 		}, nil)
 
 	tagOutput := rds.ListTagsForResourceOutput{}
-	if err := faker.FakeObject(&tagOutput); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tagOutput))
 
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagOutput, nil)
 

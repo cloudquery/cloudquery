@@ -10,14 +10,14 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildEMRClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockEmrClient(ctrl)
 	var summary1 types.ClusterSummary
-	if err := faker.FakeObject(&summary1); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&summary1))
+
 	summary2 := summary1
 	summary1.Id = aws.String("cluster1")
 	summary2.Id = aws.String("cluster2")
@@ -32,17 +32,15 @@ func buildEMRClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var cluster1 types.Cluster
-	if err := faker.FakeObject(&cluster1); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&cluster1))
+
 	cluster1.Id = summary1.Id
 	cluster1.InstanceCollectionType = types.InstanceCollectionTypeInstanceFleet
 	cluster1.RepoUpgradeOnBoot = types.RepoUpgradeOnBootNone
 	cluster1.ScaleDownBehavior = types.ScaleDownBehaviorTerminateAtInstanceHour
 	var config types.Configuration
-	if err := faker.FakeObject(&config); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&config))
+
 	config.Configurations = []types.Configuration{}
 	cluster1.Configurations = []types.Configuration{config}
 
@@ -62,27 +60,23 @@ func buildEMRClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var instanceFleet types.InstanceFleet
-	if err := faker.FakeObject(&instanceFleet); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&instanceFleet))
+
 	mock.EXPECT().ListInstanceFleets(gomock.Any(), &emr.ListInstanceFleetsInput{ClusterId: summary1.Id}, gomock.Any()).Return(
 		&emr.ListInstanceFleetsOutput{InstanceFleets: []types.InstanceFleet{instanceFleet}},
 		nil,
 	)
 
 	var instanceGroup types.InstanceGroup
-	if err := faker.FakeObject(&instanceGroup); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&instanceGroup))
+
 	mock.EXPECT().ListInstanceGroups(gomock.Any(), &emr.ListInstanceGroupsInput{ClusterId: summary2.Id}, gomock.Any()).Return(
 		&emr.ListInstanceGroupsOutput{InstanceGroups: []types.InstanceGroup{instanceGroup}},
 		nil,
 	)
 
 	var instance types.Instance
-	if err := faker.FakeObject(&instance); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&instance))
 
 	mock.EXPECT().ListInstances(gomock.Any(), &emr.ListInstancesInput{ClusterId: summary1.Id}, gomock.Any()).Return(
 		&emr.ListInstancesOutput{Instances: []types.Instance{instance}},

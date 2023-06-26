@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildCloudfrontCachePoliciesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -17,9 +18,7 @@ func buildCloudfrontCachePoliciesMock(t *testing.T, ctrl *gomock.Controller) cli
 		Cloudfront: m,
 	}
 	cp := cloudfrontTypes.CachePolicySummary{}
-	if err := faker.FakeObject(&cp); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&cp))
 
 	cloudfrontOutput := &cloudfront.ListCachePoliciesOutput{
 		CachePolicyList: &cloudfrontTypes.CachePolicyList{

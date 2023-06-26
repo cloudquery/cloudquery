@@ -23,9 +23,7 @@ func buildOrganizationsRoots(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	tt := make([]types.Tag, 3)
-	if err := faker.FakeObject(&tt); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tt))
 
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&organizations.ListTagsForResourceOutput{

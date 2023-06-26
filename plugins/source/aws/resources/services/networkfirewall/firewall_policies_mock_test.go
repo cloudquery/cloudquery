@@ -23,9 +23,7 @@ func buildFirewallPoliciesMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 		}, nil)
 
 	fp := networkfirewall.DescribeFirewallPolicyOutput{}
-	if err := faker.FakeObject(&fp); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&fp))
 
 	m.EXPECT().DescribeFirewallPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(&fp, nil)
 

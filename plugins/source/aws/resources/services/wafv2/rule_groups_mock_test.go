@@ -16,46 +16,37 @@ import (
 func buildWAFV2RuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockWafv2Client(ctrl)
 	visibilityConfig := types.VisibilityConfig{}
-	if err := faker.FakeObject(&visibilityConfig); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&visibilityConfig))
+
 	customRespBody := map[string]types.CustomResponseBody{}
-	if err := faker.FakeObject(&customRespBody); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&customRespBody))
+
 	var labelSummaries []types.LabelSummary
-	if err := faker.FakeObject(&labelSummaries); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&labelSummaries))
+
 	overrideAction := types.OverrideAction{}
-	if err := faker.FakeObject(&overrideAction); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&overrideAction))
+
 	action := types.RuleAction{}
-	if err := faker.FakeObject(&action); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&action))
+
 	var labels []types.Label
-	if err := faker.FakeObject(&labelSummaries); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&labelSummaries))
+
 	rule := types.Rule{}
-	if err := faker.FakeObject(&rule); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&rule))
+
 	rule.VisibilityConfig = &visibilityConfig
 	rule.Action = &action
 	rule.OverrideAction = &overrideAction
 	rule.RuleLabels = labels
 	var tempPolicyOutput wafv2.GetPermissionPolicyOutput
-	if err := faker.FakeObject(&tempPolicyOutput); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tempPolicyOutput))
+
 	tempPolicyOutput.Policy = aws.String(`{"test": 1}`)
 	var tempTags []types.Tag
-	if err := faker.FakeObject(&tempTags); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tempTags))
+
 	for _, scope := range []types.Scope{types.ScopeCloudfront, types.ScopeRegional} {
 		tempRuleGroupSum := types.RuleGroupSummary{}
 		require.NoError(t, faker.FakeObject(&tempRuleGroupSum))

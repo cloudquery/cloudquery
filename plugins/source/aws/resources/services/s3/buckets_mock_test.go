@@ -75,29 +75,22 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetBucketOwnershipControls(gomock.Any(), gomock.Any(), gomock.Any()).Return(&bownershipcontrols, nil)
 
 	ro := s3.GetBucketReplicationOutput{}
-	if err := faker.FakeObject(&ro); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ro))
 
 	m.EXPECT().GetBucketReplication(gomock.Any(), gomock.Any(), gomock.Any()).Return(&ro, nil)
 	m.EXPECT().GetBucketTagging(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&btag, nil)
 	tt := s3Types.Transition{}
-	if err := faker.FakeObject(&tt); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tt))
+
 	glco := s3.GetBucketLifecycleConfigurationOutput{}
-	if err := faker.FakeObject(&glco); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&glco))
 
 	m.EXPECT().GetBucketLifecycleConfiguration(gomock.Any(), gomock.Any(), gomock.Any()).Return(&glco, nil)
 	m.EXPECT().GetBucketLocation(gomock.Any(), gomock.Any(), gomock.Any()).Return(&bloc, nil)
 
 	websiteOutput := s3.GetBucketWebsiteOutput{}
-	if err := faker.FakeObject(&websiteOutput); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&websiteOutput))
 
 	m.EXPECT().GetBucketWebsite(gomock.Any(), gomock.Any(), gomock.Any()).Return(&websiteOutput, nil)
 

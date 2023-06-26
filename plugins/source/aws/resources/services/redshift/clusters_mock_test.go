@@ -34,9 +34,8 @@ func buildClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&logging, nil)
 
 	var snap types.Snapshot
-	if err := faker.FakeObject(&snap); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&snap))
+
 	snap.ClusterIdentifier = g.ClusterIdentifier
 	snap.ClusterCreateTime = g.ClusterCreateTime
 	m.EXPECT().DescribeClusterSnapshots(
@@ -53,9 +52,8 @@ func buildClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var eacc types.EndpointAccess
-	if err := faker.FakeObject(&eacc); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&eacc))
+
 	eacc.ClusterIdentifier = g.ClusterIdentifier
 
 	m.EXPECT().DescribeEndpointAccess(
@@ -71,9 +69,8 @@ func buildClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var eauth types.EndpointAuthorization
-	if err := faker.FakeObject(&eauth); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&eauth))
+
 	eauth.ClusterIdentifier = g.ClusterIdentifier
 
 	m.EXPECT().DescribeEndpointAuthorization(

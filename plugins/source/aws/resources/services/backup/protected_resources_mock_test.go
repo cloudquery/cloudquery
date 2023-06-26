@@ -9,15 +9,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildProtectedResourcesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockBackupClient(ctrl)
 
 	var pr types.ProtectedResource
-	if err := faker.FakeObject(&pr); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&pr))
+
 	m.EXPECT().ListProtectedResources(
 		gomock.Any(),
 		gomock.Any(),
