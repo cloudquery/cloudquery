@@ -27,7 +27,7 @@ type StreamingBatchWriterClient interface {
 	DeleteStale(context.Context, []*message.DeleteStale) error
 
 	OpenTable(ctx context.Context, sourceName string, table *schema.Table, syncTime time.Time) (any, error)
-	WriteTableStream(ctx context.Context, handle any, upsert bool, msgs []*message.Insert) error
+	WriteTableStream(ctx context.Context, handle any, msgs []*message.Insert) error
 	CloseTable(ctx context.Context, handle any) error
 }
 
@@ -126,7 +126,6 @@ func (w *StreamingBatchWriter) stopWorkers() {
 func (w *StreamingBatchWriter) worker(ctx context.Context, sourceName, tableName string, ch <-chan *message.Insert, errCh chan<- error, flush <-chan chan bool) {
 	sizeBytes := int64(0)
 	resources := make([]*message.Insert, 0)
-	upsertBatch := false
 
 	initDone := false
 	var handle any
@@ -157,7 +156,7 @@ func (w *StreamingBatchWriter) worker(ctx context.Context, sourceName, tableName
 		case r, ok := <-ch:
 			if !ok {
 				if len(resources) > 0 {
-					w.flush(ctx, handle, tableName, upsertBatch, resources)
+					w.flush(ctx, handle, tableName, resources)
 				}
 
 				if initDone {
@@ -171,27 +170,22 @@ func (w *StreamingBatchWriter) worker(ctx context.Context, sourceName, tableName
 			if !initDone {
 				initDone = doInit(r.Record)
 			}
-			if upsertBatch != r.Upsert {
-				w.flush(ctx, handle, tableName, upsertBatch, resources)
-				resources, upsertBatch = resources[:0], r.Upsert
-				resources = append(resources, r)
-				sizeBytes = util.TotalRecordSize(r.Record)
-			} else {
-				resources = append(resources, r)
-				sizeBytes += util.TotalRecordSize(r.Record)
-			}
+
 			if len(resources) >= w.batchSize || sizeBytes+util.TotalRecordSize(r.Record) >= int64(w.batchSizeBytes) {
-				w.flush(ctx, handle, tableName, upsertBatch, resources)
+				w.flush(ctx, handle, tableName, resources)
 				resources, sizeBytes = resources[:0], 0
 			}
+
+			resources = append(resources, r)
+			sizeBytes += util.TotalRecordSize(r.Record)
 		case <-time.After(w.batchTimeout):
 			if len(resources) > 0 {
-				w.flush(ctx, handle, tableName, upsertBatch, resources)
+				w.flush(ctx, handle, tableName, resources)
 				resources, sizeBytes = resources[:0], 0
 			}
 		case done := <-flush:
 			if len(resources) > 0 {
-				w.flush(ctx, handle, tableName, upsertBatch, resources)
+				w.flush(ctx, handle, tableName, resources)
 				resources, sizeBytes = resources[:0], 0
 			}
 			done <- true
@@ -199,11 +193,11 @@ func (w *StreamingBatchWriter) worker(ctx context.Context, sourceName, tableName
 	}
 }
 
-func (w *StreamingBatchWriter) flush(ctx context.Context, handle any, tableName string, upsertBatch bool, resources []*message.Insert) {
+func (w *StreamingBatchWriter) flush(ctx context.Context, handle any, tableName string, resources []*message.Insert) {
 	// resources = w.removeDuplicatesByPK(table, resources)
 	start := time.Now()
 	batchSize := len(resources)
-	if err := w.client.WriteTableStream(ctx, handle, upsertBatch, resources); err != nil {
+	if err := w.client.WriteTableStream(ctx, handle, resources); err != nil {
 		w.logger.Err(err).Str("table", tableName).Int("len", batchSize).Dur("duration", time.Since(start)).Msg("failed to write batch")
 	} else {
 		w.logger.Info().Str("table", tableName).Int("len", batchSize).Dur("duration", time.Since(start)).Msg("batch written successfully")

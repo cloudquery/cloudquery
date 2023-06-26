@@ -105,7 +105,7 @@ func (*Client) CloseTable(_ context.Context, handle any) error {
 	return <-s.done
 }
 
-func (c *Client) WriteTableStream(_ context.Context, handle any, upsert bool, msgs []*message.Insert) error {
+func (c *Client) WriteTableStream(_ context.Context, handle any, msgs []*message.Insert) error {
 	if len(msgs) == 0 {
 		return nil
 	}
