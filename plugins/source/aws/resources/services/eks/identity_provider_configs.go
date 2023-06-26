@@ -16,7 +16,7 @@ func identityProviderConfigs() *schema.Table {
 	tableName := "aws_eks_cluster_oidc_identity_provider_configs"
 	return &schema.Table{
 		Name:                tableName,
-		Description:         `https://docs.aws.amazon.com/eks/latest/APIReference/API_Nodegroup.html`,
+		Description:         `https://docs.aws.amazon.com/eks/latest/APIReference/API_OidcIdentityProviderConfig.html`,
 		Resolver:            fetchIdentityProviderConfigs,
 		PreResourceResolver: getIdentityProviderConfigs,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "eks"),
