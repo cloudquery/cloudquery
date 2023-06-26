@@ -30,6 +30,12 @@ func identityProviderConfigs() *schema.Table {
 				Resolver:   schema.PathResolver("IdentityProviderConfigArn"),
 				PrimaryKey: true,
 			},
+			{
+				Name:       "cluster_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
+			},
 		},
 	}
 }

@@ -19,10 +19,16 @@ func addOns() *schema.Table {
 		Resolver:            fetchAddOns,
 		PreResourceResolver: getAddOn,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "eks"),
-		Transform:           transformers.TransformWithStruct(&types.Addon{}, transformers.WithPrimaryKeys("AddonArn")),
+		Transform:           transformers.TransformWithStruct(&types.Addon{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
+			{
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("AddonArn"),
+				PrimaryKey: true,
+			},
 			{
 				Name:       "cluster_arn",
 				Type:       arrow.BinaryTypes.String,
