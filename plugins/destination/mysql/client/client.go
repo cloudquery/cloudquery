@@ -3,39 +3,44 @@ package client
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"time"
 
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/writers"
 	"github.com/rs/zerolog"
 
 	mysql "github.com/go-sql-driver/mysql"
 )
 
 type Client struct {
-	destination.UnimplementedUnmanagedWriter
+	plugin.UnimplementedSource
 	logger zerolog.Logger
-
-	spec      specs.Destination
-	mySQLSpec Spec
-
+	spec Spec
 	db *sql.DB
+	writer *writers.BatchWriter
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
-	var mySQLSpec Spec
-	err := spec.UnmarshalSpec(&mySQLSpec)
-	if err != nil {
+func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
+	c :=  &Client{logger: logger.With().Str("module", "mysql").Logger()}
+	var err error
+	
+	if err := json.Unmarshal(spec, &c.spec) ; err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
 
-	mySQLSpec.SetDefaults()
-	if err := mySQLSpec.Validate(); err != nil {
+	c.spec.SetDefaults()
+	if err := c.spec.Validate(); err != nil {
 		return nil, err
 	}
+	c.writer, err = writers.NewBatchWriter(c, writers.WithLogger(logger), writers.WithBatchSize(c.spec.BatchSize), writers.WithBatchSizeBytes(c.spec.BatchSizeBytes))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create batch writer: %w", err)
+	}
 
-	dsn, err := mysql.ParseDSN(mySQLSpec.ConnectionString)
+	dsn, err := mysql.ParseDSN(c.spec.ConnectionString)
 	if err != nil {
 		return nil, fmt.Errorf("invalid MySQL connection string: %w", err)
 	}
@@ -52,7 +57,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	db.SetMaxOpenConns(10)
 	db.SetMaxIdleConns(10)
 
-	return &Client{logger: logger.With().Str("module", "mysql").Logger(), db: db, spec: spec, mySQLSpec: mySQLSpec}, nil
+	return c, nil
 }
 
 func (c *Client) Close(ctx context.Context) error {

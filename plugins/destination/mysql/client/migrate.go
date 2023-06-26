@@ -7,7 +7,8 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func (c *Client) normalizeTables(tables schema.Tables) schema.Tables {
@@ -89,7 +90,8 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 }
 
 // Migrate relies on the CLI/client to lock before running migration.
-func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
+
+func (c *Client) MigrateTables(ctx context.Context, msgs []*message.MigrateTable) error {
 	mysqlTables, err := c.schemaTables(ctx, tables)
 	if err != nil {
 		return err

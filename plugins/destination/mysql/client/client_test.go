@@ -1,21 +1,21 @@
 package client
 
 import (
+	"context"
+	"encoding/json"
 	"os"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/mysql/resources/plugin"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 
-var migrateStrategy = destination.MigrateStrategy{
-	AddColumn:           specs.MigrateModeSafe,
-	AddColumnNotNull:    specs.MigrateModeForced,
-	RemoveColumn:        specs.MigrateModeSafe,
-	RemoveColumnNotNull: specs.MigrateModeForced,
-	ChangeColumn:        specs.MigrateModeForced,
-}
+// var migrateStrategy = destination.MigrateStrategy{
+// 	AddColumn:           specs.MigrateModeSafe,
+// 	AddColumnNotNull:    specs.MigrateModeForced,
+// 	RemoveColumn:        specs.MigrateModeSafe,
+// 	RemoveColumnNotNull: specs.MigrateModeForced,
+// 	ChangeColumn:        specs.MigrateModeForced,
+// }
 
 func getConnectionString() string {
 	if testConn := os.Getenv("CQ_DEST_MYSQL_TEST_CONNECTION_STRING"); len(testConn) > 0 {
@@ -26,18 +26,25 @@ func getConnectionString() string {
 }
 
 func TestPlugin(t *testing.T) {
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin("mysql", plugin.Version, New, destination.WithManagedWriter())
-		},
-		specs.Destination{
-			Spec: &Spec{
-				ConnectionString: getConnectionString(),
+	ctx := context.Background()
+	p := plugin.NewPlugin("mysql", "development", New)
+	s := &Spec{
+		ConnectionString: getConnectionString(),
+	}
+	specBytes, err := json.Marshal(s)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := p.Init(ctx, specBytes); err != nil {
+		t.Fatal(err)
+	}
+	plugin.TestWriterSuiteRunner(t,
+		p,
+		plugin.WriterTestSuiteTests{
+			SafeMigrations: plugin.SafeMigrations{
+				AddColumn: true,
+				RemoveColumn: true,
 			},
-		},
-		destination.PluginTestSuiteTests{
-			MigrateStrategyOverwrite: migrateStrategy,
-			MigrateStrategyAppend:    migrateStrategy,
 		},
 	)
 }

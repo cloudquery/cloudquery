@@ -6,8 +6,9 @@ import (
 	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func getInsertQueryBuild(table *schema.Table) *strings.Builder {
@@ -61,13 +62,22 @@ func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, r
 	return c.writeResources(ctx, builder.String(), resources)
 }
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources []arrow.Record) error {
-	switch c.spec.WriteMode {
-	case specs.WriteModeAppend:
-		return c.appendTableBatch(ctx, table, resources)
-	case specs.WriteModeOverwrite, specs.WriteModeOverwriteDeleteStale:
+func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, res <-chan message.Message) error {
+	if err := c.writer.Write(ctx, res); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs []*message.Insert) error {
+	if len(msgs) == 0 {
+		return nil
+	}
+	table := msgs[0].GetTable()
+	hasPks := len(table.PrimaryKeys()) > 0
+	if hasPks {
 		return c.overwriteTableBatch(ctx, table, resources)
-	default:
-		return fmt.Errorf("unsupported write mode %s", c.spec.WriteMode.String())
+	} else {
+		return c.appendTableBatch(ctx, table, resources)
 	}
 }
