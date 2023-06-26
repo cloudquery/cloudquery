@@ -32,6 +32,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/config"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/costexplorer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dax"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/detective"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/directconnect"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dms"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/docdb"
@@ -199,10 +200,11 @@ func tables() []*schema.Table {
 		config.ConformancePacks(),
 		config.DeliveryChannels(),
 		config.RetentionConfigurations(),
+		costexplorer.CustomCost(),
 		costexplorer.ThirtyDayCost(),
 		costexplorer.ThirtyDayCostForecast(),
-		costexplorer.CustomCost(),
 		dax.Clusters(),
+		detective.Graphs(),
 		directconnect.Connections(),
 		directconnect.Gateways(),
 		directconnect.Lags(),

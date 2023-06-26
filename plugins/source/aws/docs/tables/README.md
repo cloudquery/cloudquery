@@ -154,6 +154,8 @@
 - [aws_costexplorer_cost_forecast_30d](../../../../../website/tables/aws/aws_costexplorer_cost_forecast_30d.md)
 - [aws_dax_clusters](../../../../../website/tables/aws/aws_dax_clusters.md)
 - [aws_db_proxies](../../../../../website/tables/aws/aws_db_proxies.md)
+- [aws_detective_graphs](../../../../../website/tables/aws/aws_detective_graphs.md)
+  - [aws_detective_graph_members](../../../../../website/tables/aws/aws_detective_graph_members.md)
 - [aws_directconnect_connections](../../../../../website/tables/aws/aws_directconnect_connections.md)
 - [aws_directconnect_gateways](../../../../../website/tables/aws/aws_directconnect_gateways.md)
   - [aws_directconnect_gateway_associations](../../../../../website/tables/aws/aws_directconnect_gateway_associations.md)

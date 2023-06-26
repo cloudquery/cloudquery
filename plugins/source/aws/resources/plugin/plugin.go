@@ -37,6 +37,7 @@ var awsExceptions = map[string]string{
 	"codeartifact":           "AWS CodeArtifact",
 	"computeoptimizer":       "Compute Optimizer",
 	"costexplorer":           "AWS Cost Explorer",
+	"detective":              "Amazon Detective",
 	"directconnect":          "AWS Direct Connect",
 	"docdb":                  "Amazon DocumentDB",
 	"dynamodb":               "Amazon DynamoDB",
