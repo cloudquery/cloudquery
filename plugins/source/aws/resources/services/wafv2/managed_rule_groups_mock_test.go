@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildWAFV2ManagedRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -19,9 +20,7 @@ func buildWAFV2ManagedRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) clie
 	}
 	for _, scope := range []types.Scope{types.ScopeCloudfront, types.ScopeRegional} {
 		tempManagedRuleGroupSum := types.ManagedRuleGroupSummary{}
-		if err := faker.FakeObject(&tempManagedRuleGroupSum); err != nil {
-			t.Fatal(err)
-		}
+		require.NoError(t, faker.FakeObject(&tempManagedRuleGroupSum))
 		m.EXPECT().ListAvailableManagedRuleGroups(gomock.Any(), &wafv2.ListAvailableManagedRuleGroupsInput{
 			Scope: scope,
 		}, gomock.Any()).Return(&wafv2.ListAvailableManagedRuleGroupsOutput{

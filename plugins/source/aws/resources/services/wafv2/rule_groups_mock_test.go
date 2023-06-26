@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildWAFV2RuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -57,17 +58,13 @@ func buildWAFV2RuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 	}
 	for _, scope := range []types.Scope{types.ScopeCloudfront, types.ScopeRegional} {
 		tempRuleGroupSum := types.RuleGroupSummary{}
-		if err := faker.FakeObject(&tempRuleGroupSum); err != nil {
-			t.Fatal(err)
-		}
+		require.NoError(t, faker.FakeObject(&tempRuleGroupSum))
 		m.EXPECT().ListRuleGroups(gomock.Any(), &wafv2.ListRuleGroupsInput{Scope: scope}, gomock.Any()).Return(&wafv2.ListRuleGroupsOutput{
 			RuleGroups: []types.RuleGroupSummary{tempRuleGroupSum},
 		}, nil)
 
 		tempRuleGroup := types.RuleGroup{}
-		if err := faker.FakeObject(&tempRuleGroup); err != nil {
-			t.Fatal(err)
-		}
+		require.NoError(t, faker.FakeObject(&tempRuleGroup))
 		m.EXPECT().GetRuleGroup(gomock.Any(), gomock.Any(), gomock.Any()).Return(&wafv2.GetRuleGroupOutput{
 			RuleGroup: &tempRuleGroup,
 		}, nil)

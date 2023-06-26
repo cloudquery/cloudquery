@@ -12,6 +12,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -41,9 +42,7 @@ func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services
 
 	for _, scope := range []types.Scope{types.ScopeCloudfront, types.ScopeRegional} {
 		tempWebACL := types.WebACL{}
-		if err := faker.FakeObject(&tempWebACL); err != nil {
-			t.Fatal(err)
-		}
+		require.NoError(t, faker.FakeObject(&tempWebACL))
 		m.EXPECT().ListWebACLs(gomock.Any(), &wafv2.ListWebACLsInput{
 			Scope: scope,
 			Limit: aws.Int32(100),
