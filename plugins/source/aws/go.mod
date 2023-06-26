@@ -40,6 +40,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/costexplorer v1.25.11
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.25.6
 	github.com/aws/aws-sdk-go-v2/service/dax v1.12.11
+	github.com/aws/aws-sdk-go-v2/service/detective v1.19.2
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.16
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.21.4
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.19.9
