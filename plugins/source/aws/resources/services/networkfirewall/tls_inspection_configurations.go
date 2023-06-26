@@ -13,16 +13,16 @@ import (
 	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
 )
 
-func Firewalls() *schema.Table {
-	tableName := "aws_networkfirewall_firewalls"
+func TLSInspectionConfigurations() *schema.Table {
+	tableName := "aws_networkfirewall_tls_inspection_configurations"
 	return &schema.Table{
 		Name:                tableName,
-		Description:         `https://docs.aws.amazon.com/network-firewall/latest/APIReference/API_DescribeFirewall.html`,
-		Resolver:            fetchFirewalls,
-		PreResourceResolver: getFirewall,
+		Description:         `https://docs.aws.amazon.com/network-firewall/latest/APIReference/API_RuleGroup.html`,
+		Resolver:            fetchTLSInspectionConfigurations,
+		PreResourceResolver: getTLSInspectionConfigurations,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "network-firewall"),
 		Transform: transformers.TransformWithStruct(
-			&models.FirewallWrapper{},
+			&models.TLSInspectionConfigurationWrapper{},
 			transformers.WithUnwrapAllEmbeddedStructs(),
 		),
 		Columns: []schema.Column{
@@ -31,7 +31,7 @@ func Firewalls() *schema.Table {
 			{
 				Name:       "arn",
 				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("FirewallArn"),
+				Resolver:   schema.PathResolver("TLSInspectionConfigurationArn"),
 				PrimaryKey: true,
 			},
 			{
@@ -43,11 +43,11 @@ func Firewalls() *schema.Table {
 	}
 }
 
-func fetchFirewalls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	var input networkfirewall.ListFirewallsInput
+func fetchTLSInspectionConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	var input networkfirewall.ListTLSInspectionConfigurationsInput
 	cl := meta.(*client.Client)
 	svc := cl.Services().Networkfirewall
-	p := networkfirewall.NewListFirewallsPaginator(svc, &input)
+	p := networkfirewall.NewListTLSInspectionConfigurationsPaginator(svc, &input)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *networkfirewall.Options) {
 			options.Region = cl.Region
@@ -56,18 +56,18 @@ func fetchFirewalls(ctx context.Context, meta schema.ClientMeta, parent *schema.
 			return err
 		}
 
-		res <- response.Firewalls
+		res <- response.TLSInspectionConfigurations
 	}
 	return nil
 }
 
-func getFirewall(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+func getTLSInspectionConfigurations(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Networkfirewall
-	metadata := resource.Item.(types.FirewallMetadata)
+	metadata := resource.Item.(types.TLSInspectionConfigurationMetadata)
 
-	firewallDetails, err := svc.DescribeFirewall(ctx, &networkfirewall.DescribeFirewallInput{
-		FirewallArn: metadata.FirewallArn,
+	tlsInspectionConfigurationDetails, err := svc.DescribeTLSInspectionConfiguration(ctx, &networkfirewall.DescribeTLSInspectionConfigurationInput{
+		TLSInspectionConfigurationArn: metadata.Arn,
 	}, func(options *networkfirewall.Options) {
 		options.Region = cl.Region
 	})
@@ -75,9 +75,9 @@ func getFirewall(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 		return err
 	}
 
-	resource.Item = &models.FirewallWrapper{
-		FirewallStatus: firewallDetails.FirewallStatus,
-		Firewall:       firewallDetails.Firewall,
+	resource.Item = &models.TLSInspectionConfigurationWrapper{
+		TLSInspectionConfiguration:         tlsInspectionConfigurationDetails.TLSInspectionConfiguration,
+		TLSInspectionConfigurationResponse: tlsInspectionConfigurationDetails.TLSInspectionConfigurationResponse,
 	}
 	return nil
 }
