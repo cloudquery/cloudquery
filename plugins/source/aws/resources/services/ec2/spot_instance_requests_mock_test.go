@@ -9,14 +9,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildSpotInstanceRequests(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	item := types.SpotInstanceRequest{}
-	if err := faker.FakeObject(&item); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&item))
 
 	m.EXPECT().DescribeSpotInstanceRequests(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ec2.DescribeSpotInstanceRequestsOutput{

@@ -5,10 +5,12 @@ go 1.19
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe
 	github.com/cloudquery/plugin-sdk/v4 v4.0.0
+	github.com/cloudquery/plugin-pb-go v1.3.4
+	github.com/cloudquery/plugin-sdk/v3 v3.10.6
 	github.com/rs/zerolog v1.29.1
 )
 
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230621001250-f0dffc612853
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230626001500-065602842c3a
 
 replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/v4 v4.0.0-20230623110151-338e57ae0d9d
 

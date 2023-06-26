@@ -3,13 +3,13 @@ module github.com/cloudquery/cloudquery/plugins/source/aws
 go 1.19
 
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230601070034-e07e22c5580a
+	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe
 	github.com/aws/aws-sdk-go-v2 v1.18.1
 	github.com/aws/aws-sdk-go-v2/config v1.18.27
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.26
-	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.13
-	github.com/aws/aws-sdk-go-v2/service/account v1.10.7
-	github.com/aws/aws-sdk-go-v2/service/acm v1.17.12
+	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.14
+	github.com/aws/aws-sdk-go-v2/service/account v1.10.8
+	github.com/aws/aws-sdk-go-v2/service/acm v1.17.13
 	github.com/aws/aws-sdk-go-v2/service/acmpca v1.21.14
 	github.com/aws/aws-sdk-go-v2/service/amp v1.16.12
 	github.com/aws/aws-sdk-go-v2/service/amplify v1.13.11
@@ -40,6 +40,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/costexplorer v1.25.11
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.25.6
 	github.com/aws/aws-sdk-go-v2/service/dax v1.12.11
+	github.com/aws/aws-sdk-go-v2/service/detective v1.19.2
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.16
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.21.4
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.19.9
@@ -97,11 +98,13 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/securityhub v1.33.0
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.19.1
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.17.5
+	github.com/aws/aws-sdk-go-v2/service/servicediscovery v1.21.6
 	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.14.13
 	github.com/aws/aws-sdk-go-v2/service/ses v1.15.10
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/sfn v1.17.12
 	github.com/aws/aws-sdk-go-v2/service/shield v1.18.11
+	github.com/aws/aws-sdk-go-v2/service/signer v1.15.2
 	github.com/aws/aws-sdk-go-v2/service/sns v1.20.12
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.36.5
@@ -113,12 +116,13 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/waf v1.12.11
 	github.com/aws/aws-sdk-go-v2/service/wafregional v1.13.14
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.35.0
+	github.com/aws/aws-sdk-go-v2/service/wellarchitected v1.21.1
 	github.com/aws/aws-sdk-go-v2/service/workspaces v1.28.14
 	github.com/aws/aws-sdk-go-v2/service/xray v1.16.12
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/codegen v0.2.1
-	github.com/cloudquery/plugin-pb-go v1.1.0
+	github.com/cloudquery/plugin-pb-go v1.3.4
 	github.com/cloudquery/plugin-sdk/v3 v3.10.6
 	github.com/cockroachdb/cockroachdb-parser v0.0.0-20221207165326-ea0ac1a4778b
 	github.com/gocarina/gocsv v0.0.0-20230513223533-9ddd7fd60602
@@ -136,7 +140,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230621001250-f0dffc612853
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230626001500-065602842c3a
 
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect

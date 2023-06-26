@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildOriginRequestPoliciesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -17,9 +18,7 @@ func buildOriginRequestPoliciesMock(t *testing.T, ctrl *gomock.Controller) clien
 		Cloudfront: m,
 	}
 	cp := cloudfrontTypes.OriginRequestPolicySummary{}
-	if err := faker.FakeObject(&cp); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&cp))
 
 	cloudfrontOutput := &cloudfront.ListOriginRequestPoliciesOutput{
 		OriginRequestPolicyList: &cloudfrontTypes.OriginRequestPolicyList{

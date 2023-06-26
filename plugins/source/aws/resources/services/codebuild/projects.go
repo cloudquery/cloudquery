@@ -36,6 +36,9 @@ func Projects() *schema.Table {
 				Resolver: client.ResolveTags,
 			},
 		},
+		Relations: schema.Tables{
+			builds(),
+		},
 	}
 }
 

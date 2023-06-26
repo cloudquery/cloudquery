@@ -8,15 +8,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildLoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockLightsailClient(ctrl)
 
 	var lb lightsail.GetLoadBalancersOutput
-	if err := faker.FakeObject(&lb); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&lb))
+
 	lb.NextPageToken = nil
 
 	mock.EXPECT().GetLoadBalancers(
@@ -26,9 +26,7 @@ func buildLoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	).Return(&lb, nil)
 
 	var lbc lightsail.GetLoadBalancerTlsCertificatesOutput
-	if err := faker.FakeObject(&lbc); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&lbc))
 
 	mock.EXPECT().GetLoadBalancerTlsCertificates(
 		gomock.Any(),

@@ -3,15 +3,15 @@ module github.com/cloudquery/cloudquery/plugins/source/oracle
 go 1.19
 
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230601070034-e07e22c5580a
-	github.com/cloudquery/plugin-pb-go v1.1.0
+	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe
+	github.com/cloudquery/plugin-pb-go v1.3.4
 	github.com/cloudquery/plugin-sdk/v3 v3.10.6
 	github.com/oracle/oci-go-sdk/v65 v65.28.3
 	github.com/rs/zerolog v1.29.1
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230621001250-f0dffc612853
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230626001500-065602842c3a
 
 require (
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
