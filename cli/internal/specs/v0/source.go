@@ -61,10 +61,10 @@ type Source struct {
 // called before SetDefaults.
 func (s *Source) GetWarnings() Warnings {
 	warnings := make(map[string]string)
-	if s.Backend.String() != "" {
+	if s.Backend.String() != BackendNone.String() {
 		warnings["backend"] = "the top-level `backend` option is deprecated. Please use the plugin-level backend option instead"
 	}
-	if s.Scheduler.String() != "" {
+	if s.Scheduler.String() != SchedulerDFS.String() {
 		warnings["scheduler"] = "the top-level `scheduler` option is deprecated. Please use the plugin-level scheduler option instead"
 	}
 	if s.Concurrency != 0 {
@@ -156,8 +156,8 @@ func (s *Source) Validate() error {
 	if len(s.Destinations) == 0 {
 		return fmt.Errorf("at least one destination is required")
 	}
-	if !funk.Contains(AllSchedulers, s.Scheduler) {
-		return fmt.Errorf("unknown scheduler %v. Must be one of: %v", s.Scheduler, AllSchedulers.String())
+	if !funk.Contains(AllStrategies, s.Scheduler) {
+		return fmt.Errorf("unknown scheduler %v. Must be one of: %v", s.Scheduler, AllStrategies.String())
 	}
 	return nil
 }

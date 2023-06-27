@@ -57,12 +57,6 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		destinationTransformers[i] = transformer.NewRecordTransformer(opts...)
 	}
 
-	if sourceSpec.Scheduler.String() != "" {
-		sourceSpec.Spec["scheduler"] = sourceSpec.Scheduler.String()
-	}
-	if sourceSpec.Concurrency != 0 {
-		sourceSpec.Spec["concurrency"] = sourceSpec.Concurrency
-	}
 	specBytes, err := json.Marshal(sourceSpec.Spec)
 	if err != nil {
 		return err
@@ -73,14 +67,7 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		return err
 	}
 	for i := range destinationsClients {
-		// for backwards-compatibility, check for old fields like `batch_size` and move them into the spec, log a warning
 		destSpec := destinationSpecs[i]
-		if destSpec.BatchSize != 0 {
-			destSpec.Spec["batch_size"] = destSpec.BatchSize
-		}
-		if destSpec.BatchSizeBytes != 0 {
-			destSpec.Spec["batch_size_bytes"] = destSpec.BatchSizeBytes
-		}
 		destSpecBytes, err := json.Marshal(destSpec.Spec)
 		if err != nil {
 			return err
