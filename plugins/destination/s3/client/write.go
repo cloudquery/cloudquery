@@ -15,7 +15,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/cloudquery/filetypes/v4"
-	ftypes "github.com/cloudquery/filetypes/v4/types"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -35,22 +34,6 @@ const (
 )
 
 var reInvalidJSONKey = regexp.MustCompile(`\W`)
-
-type stream struct {
-	h    ftypes.Handle
-	wc   *writeCloser
-	done chan error
-}
-
-type writeCloser struct {
-	*io.PipeWriter
-	closed bool
-}
-
-func (w *writeCloser) Close() error {
-	w.closed = true
-	return w.PipeWriter.Close()
-}
 
 func (c *Client) OpenTable(ctx context.Context, sourceName string, table *schema.Table, syncTime time.Time) (any, error) {
 	objKey := replacePathVariables(c.spec.Path, table.Name, uuid.NewString(), c.spec.Format, syncTime)

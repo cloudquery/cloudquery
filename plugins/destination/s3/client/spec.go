@@ -17,6 +17,9 @@ type Spec struct {
 	Athena    bool   `json:"athena,omitempty"`
 	TestWrite *bool  `json:"test_write,omitempty"`
 	Endpoint  string `json:"endpoint,omitempty"`
+
+	BatchSize      int `json:"batch_size"`
+	BatchSizeBytes int `json:"batch_size_bytes"`
 }
 
 func (s *Spec) SetDefaults() {
