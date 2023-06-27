@@ -9,6 +9,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [19.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v19.0.0...plugins-source-aws-v19.1.0) (2023-06-27)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_codeartifact_domains` was added
+- Table `aws_codeartifact_repositories` was added
+- Table `aws_codebuild_builds` was added
+- Table `aws_codebuild_source_credentials` was added
+- Table `aws_detective_graph_members` was added
+- Table `aws_detective_graphs` was added
+- Table `aws_ec2_hosts`: column added with name `asset_id` and type `utf8`
+- Table `aws_ec2_vpn_connections` was added
+- Table `aws_ecr_pull_through_cache_rules` was added
+- Table `aws_eks_cluster_addons` was added
+- Table `aws_eks_cluster_oidc_identity_provider_configs` was added
+- Table `aws_inspector2_findings`: column added with name `code_vulnerability_details` and type `json`
+- Table `aws_inspector2_findings`: column added with name `epss` and type `json`
+- Table `aws_mq_broker_users`: column added with name `replication_user` and type `bool`
+- Table `aws_mq_brokers`: column added with name `data_replication_metadata` and type `json`
+- Table `aws_mq_brokers`: column added with name `data_replication_mode` and type `utf8`
+- Table `aws_mq_brokers`: column added with name `pending_data_replication_metadata` and type `json`
+- Table `aws_mq_brokers`: column added with name `pending_data_replication_mode` and type `utf8`
+- Table `aws_networkfirewall_firewalls` was added
+- Table `aws_networkfirewall_tls_inspection_configurations` was added
+- Table `aws_redshift_clusters`: column added with name `custom_domain_certificate_arn` and type `utf8`
+- Table `aws_redshift_clusters`: column added with name `custom_domain_certificate_expiry_date` and type `timestamp[us, tz=UTC]`
+- Table `aws_redshift_clusters`: column added with name `custom_domain_name` and type `utf8`
+- Table `aws_servicediscovery_instances` was added
+- Table `aws_servicediscovery_namespaces` was added
+- Table `aws_servicediscovery_services` was added
+- Table `aws_signer_signing_profiles` was added
+- Table `aws_stepfunctions_executions`: column added with name `state_machine_alias_arn` and type `utf8`
+- Table `aws_stepfunctions_executions`: column added with name `state_machine_version_arn` and type `utf8`
+- Table `aws_stepfunctions_map_run_executions`: column added with name `state_machine_alias_arn` and type `utf8`
+- Table `aws_stepfunctions_map_run_executions`: column added with name `state_machine_version_arn` and type `utf8`
+- Table `aws_stepfunctions_state_machines`: column added with name `description` and type `utf8`
+- Table `aws_stepfunctions_state_machines`: column added with name `revision_id` and type `utf8`
+- Table `aws_transfer_servers`: column added with name `structured_log_destinations` and type `list<item: utf8, nullable>`
+- Table `aws_wellarchitected_lens_review_improvements` was added
+- Table `aws_wellarchitected_lens_reviews` was added
+- Table `aws_wellarchitected_lenses` was added
+- Table `aws_wellarchitected_share_invitations` was added
+- Table `aws_wellarchitected_workload_milestones` was added
+- Table `aws_wellarchitected_workload_shares` was added
+- Table `aws_wellarchitected_workloads` was added
+
 ### Features
 
 * Add AWS Well-Architected resources ([#11697](https://github.com/cloudquery/cloudquery/issues/11697)) ([83174fe](https://github.com/cloudquery/cloudquery/commit/83174fef5f43b39aa99129c2bf7213aea7e280be)), closes [#11664](https://github.com/cloudquery/cloudquery/issues/11664)
