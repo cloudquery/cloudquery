@@ -45,7 +45,6 @@ func TestPlugin(t *testing.T) {
 	plugin.TestWriterSuiteRunner(t,
 		p,
 		plugin.WriterTestSuiteTests{
-			SkipInsert:  true, // no PKs and no _cq_id in testing
 			SkipMigrate: true,
 			SafeMigrations: plugin.SafeMigrations{
 				AddColumn:    true,

@@ -28,24 +28,27 @@ func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs []*
 	for i := range msgs {
 		rows = append(rows, transformValues(msgs[i].Record)...)
 	}
+
 	var sb strings.Builder
-	sb.WriteString("UNWIND $rows AS row MERGE (t:")
-	sb.WriteString(tableName)
-	sb.WriteString(" {")
 	pks := table.PrimaryKeys()
 	if len(pks) == 0 {
-		// If no primary keys are defined, use _cq_id
-		pks = []string{schema.CqIDColumn.Name}
-	}
-	for i, column := range pks {
-		if i != 0 {
-			sb.WriteString(", ")
+		sb.WriteString("UNWIND $rows AS row CREATE (t:")
+		sb.WriteString(tableName)
+		sb.WriteString(") SET t = row")
+	} else {
+		sb.WriteString("UNWIND $rows AS row MERGE (t:")
+		sb.WriteString(tableName)
+		sb.WriteString(" {")
+		for i, column := range pks {
+			if i != 0 {
+				sb.WriteString(", ")
+			}
+			sb.WriteString(column)
+			sb.WriteString(": row.")
+			sb.WriteString(column)
 		}
-		sb.WriteString(column)
-		sb.WriteString(": row.")
-		sb.WriteString(column)
+		sb.WriteString("}) SET t = row")
 	}
-	sb.WriteString("}) SET t = row")
 	stmt := sb.String()
 	c.logger.Debug().Str("stmt", stmt).Any("rows", rows).Msg("Executing statement")
 	if _, err := session.ExecuteWrite(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
