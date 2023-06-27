@@ -18,8 +18,8 @@ type Spec struct {
 	TestWrite *bool  `json:"test_write,omitempty"`
 	Endpoint  string `json:"endpoint,omitempty"`
 
-	BatchSize      int `json:"batch_size"`
-	BatchSizeBytes int `json:"batch_size_bytes"`
+	BatchSize      *int64 `json:"batch_size"`
+	BatchSizeBytes *int64 `json:"batch_size_bytes"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -34,6 +34,14 @@ func (s *Spec) SetDefaults() {
 	if s.TestWrite == nil {
 		b := true
 		s.TestWrite = &b
+	}
+	if s.BatchSize == nil {
+		i := int64(10000)
+		s.BatchSize = &i
+	}
+	if s.BatchSizeBytes == nil {
+		i := int64(50 * 1024 * 1024) // 50 MiB
+		s.BatchSizeBytes = &i
 	}
 }
 

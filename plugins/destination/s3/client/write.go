@@ -17,7 +17,6 @@ import (
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
-	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/google/uuid"
 )
@@ -35,38 +34,39 @@ const (
 
 var reInvalidJSONKey = regexp.MustCompile(`\W`)
 
-func (c *Client) OpenTable(ctx context.Context, sourceName string, table *schema.Table, syncTime time.Time) (any, error) {
-	objKey := replacePathVariables(c.spec.Path, table.Name, uuid.NewString(), c.spec.Format, syncTime)
+func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.Insert) error {
+	var s *filetypes.Stream
 
-	return c.Client.StartStream(table, func(r io.Reader) error {
-		_, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
-			Bucket: aws.String(c.spec.Bucket),
-			Key:    aws.String(objKey),
-			Body:   r,
-		})
-		return err
-	})
-}
+	for msg := range msgs {
+		if s == nil {
+			table := msg.GetTable()
 
-func (*Client) CloseTable(_ context.Context, handle any) error {
-	return handle.(*filetypes.Stream).Finish()
-}
+			objKey := replacePathVariables(c.spec.Path, table.Name, uuid.NewString(), c.spec.Format, time.Now().UTC())
 
-func (c *Client) WriteTableStream(_ context.Context, handle any, msgs []*message.Insert) error {
-	if len(msgs) == 0 {
-		return nil
-	}
+			var err error
+			s, err = c.Client.StartStream(table, func(r io.Reader) error {
+				_, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
+					Bucket: aws.String(c.spec.Bucket),
+					Key:    aws.String(objKey),
+					Body:   r,
+				})
+				return err
+			})
+			if err != nil {
+				return err
+			}
+		}
 
-	records := make([]arrow.Record, len(msgs))
-	for i, msg := range msgs {
 		if c.spec.Athena {
-			records[i] = sanitizeRecordJSONKeys(msg.Record)
-		} else {
-			records[i] = msg.Record
+			msg.Record = sanitizeRecordJSONKeys(msg.Record)
+		}
+
+		if err := s.Write([]arrow.Record{msg.Record}); err != nil {
+			return err
 		}
 	}
 
-	return handle.(*filetypes.Stream).Write(records)
+	return s.Finish()
 }
 
 func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, msgs <-chan message.Message) error {
