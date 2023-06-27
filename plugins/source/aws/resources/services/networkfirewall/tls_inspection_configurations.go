@@ -22,9 +22,8 @@ func TLSInspectionConfigurations() *schema.Table {
 		PreResourceResolver: getTLSInspectionConfigurations,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "network-firewall"),
 		Transform: transformers.TransformWithStruct(
-			&networkfirewall.DescribeTLSInspectionConfigurationOutput{},
+			&models.TLSInspectionConfigurationWrapper{},
 			transformers.WithUnwrapAllEmbeddedStructs(),
-			transformers.WithSkipFields("ResultMetadata", "UpdateToken"),
 		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
