@@ -2,24 +2,35 @@ package client
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, records []arrow.Record) error {
+func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs []*message.Insert) error {
+	if len(msgs) == 0 {
+		return nil
+	}
+
+	table, err := schema.NewTableFromArrowSchema(msgs[0].Record.Schema())
+	if err != nil {
+		return err
+	}
+
 	session := c.LoggedSession(ctx, neo4j.SessionConfig{})
 	defer session.Close(ctx)
 
-	rows := make([]map[string]any, 0)
-	for _, record := range records {
-		rows = append(rows, transformValues(record)...)
+	rows := make([]map[string]any, 0, len(msgs))
+	for i := range msgs {
+		rows = append(rows, transformValues(msgs[i].Record)...)
 	}
 	var sb strings.Builder
 	sb.WriteString("UNWIND $rows AS row MERGE (t:")
-	sb.WriteString(table.Name)
+	sb.WriteString(tableName)
 	sb.WriteString(" {")
 	pks := table.PrimaryKeys()
 	if len(pks) == 0 {
@@ -45,4 +56,14 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 	}
 
 	return session.Close(ctx)
+}
+
+func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, msgs <-chan message.Message) error {
+	if err := c.writer.Write(ctx, msgs); err != nil {
+		return err
+	}
+	if err := c.writer.Flush(ctx); err != nil {
+		return fmt.Errorf("failed to flush: %w", err)
+	}
+	return nil
 }

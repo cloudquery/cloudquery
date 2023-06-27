@@ -2,45 +2,48 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/writers"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 	"github.com/rs/zerolog"
 )
 
 type Client struct {
-	destination.UnimplementedUnmanagedWriter
-	logger     zerolog.Logger
-	spec       specs.Destination
-	pluginSpec Spec
-	client     neo4j.DriverWithContext
+	plugin.UnimplementedSource
+	logger zerolog.Logger
+	spec   *Spec
+	client neo4j.DriverWithContext
+	writer *writers.BatchWriter
 }
 
-func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination) (destination.Client, error) {
-	var err error
+func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "neo4j").Logger(),
-		spec:   destSpec,
 	}
-	var spec Spec
-	if err := destSpec.UnmarshalSpec(&spec); err != nil {
+	if err := json.Unmarshal(spec, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal neo4j spec: %w", err)
 	}
-	spec.SetDefaults()
-	if err := spec.Validate(); err != nil {
+	if err := c.spec.Validate(); err != nil {
 		return nil, err
 	}
+	c.spec.SetDefaults()
 
-	c.pluginSpec = spec
-	c.client, err = neo4j.NewDriverWithContext(c.pluginSpec.ConnectionString, neo4j.BasicAuth(c.pluginSpec.Username, c.pluginSpec.Password, ""), func(c *neo4j.Config) {
+	var err error
+	c.client, err = neo4j.NewDriverWithContext(c.spec.ConnectionString, neo4j.BasicAuth(c.spec.Username, c.spec.Password, ""), func(c *neo4j.Config) {
 		c.Log = &Logger{Base: logger}
 	})
 	if err != nil {
 		return nil, err
 	}
 	if err := c.client.VerifyConnectivity(ctx); err != nil {
+		return nil, err
+	}
+
+	c.writer, err = writers.NewBatchWriter(c, writers.WithBatchSize(c.spec.BatchSize), writers.WithBatchSizeBytes(c.spec.BatchSizeBytes))
+	if err != nil {
 		return nil, err
 	}
 
