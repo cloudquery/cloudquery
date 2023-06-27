@@ -8,6 +8,12 @@ import (
 	"github.com/apache/arrow/go/v13/arrow/memory"
 )
 
+const (
+	cqSyncTime     = "_cq_sync_time"
+	cqSourceName   = "_cq_source_name"
+	cqIDColumnName = "_cq_id"
+)
+
 type RecordTransformer struct {
 	sourceName      string
 	withSourceName  bool
@@ -59,17 +65,17 @@ func NewRecordTransformer(opts ...RecordTransformerOption) *RecordTransformer {
 func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 	fields := make([]arrow.Field, 0, len(sc.Fields())+t.internalColumns)
 	if t.withSyncTime {
-		fields = append(fields, arrow.Field{Name: "_cq_sync_time", Type: arrow.FixedWidthTypes.Timestamp_us})
+		fields = append(fields, arrow.Field{Name: cqSyncTime, Type: arrow.FixedWidthTypes.Timestamp_us})
 	}
 	if t.withSourceName {
-		fields = append(fields, arrow.Field{Name: "_cq_source_name", Type: arrow.BinaryTypes.String})
+		fields = append(fields, arrow.Field{Name: cqSourceName, Type: arrow.BinaryTypes.String})
 	}
 	for _, field := range sc.Fields() {
 		mdMap := field.Metadata.ToMap()
 		if _, ok := mdMap["cq:extension:primary_key"]; ok && t.removePks {
-			mdMap["cq:extension:primary_key"] = "false"
+			delete(mdMap, "cq:extension:primary_key")
 		}
-		if field.Name == "_cq_id" && t.cqIDPrimaryKey {
+		if field.Name == cqIDColumnName && t.cqIDPrimaryKey {
 			mdMap["cq:extension:primary_key"] = "true"
 		}
 		newMd := arrow.MetadataFrom(mdMap)

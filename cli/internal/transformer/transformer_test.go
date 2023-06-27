@@ -97,7 +97,7 @@ var transformTestCases = []struct {
 		}, nil),
 		originalJSONRecord: []byte(`{"id": 1, "_cq_id": 2}`),
 		expectedSchema: arrow.NewSchema([]arrow.Field{
-			{Name: "id", Type: arrow.PrimitiveTypes.Int64, Metadata: arrow.MetadataFrom(map[string]string{"cq:extension:primary_key": "false"})},
+			{Name: "id", Type: arrow.PrimitiveTypes.Int64, Metadata: arrow.MetadataFrom(map[string]string{})},
 			{Name: "_cq_id", Type: arrow.PrimitiveTypes.Int64, Metadata: arrow.MetadataFrom(map[string]string{"cq:extension:primary_key": "true"})},
 		}, nil),
 		expectedJSONRecord: []byte(`{"id": 1, "_cq_id": 2}`),
