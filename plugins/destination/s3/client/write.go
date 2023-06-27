@@ -62,6 +62,7 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.Insert) er
 		}
 
 		if err := s.Write([]arrow.Record{msg.Record}); err != nil {
+			_ = s.FinishWithError(err)
 			return err
 		}
 	}
