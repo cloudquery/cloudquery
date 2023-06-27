@@ -2,7 +2,7 @@
 
 This table shows data for Networkfirewall TLS Inspection Configurations.
 
-https://docs.aws.amazon.com/network-firewall/latest/APIReference/API_RuleGroup.html
+https://docs.aws.amazon.com/network-firewall/latest/APIReference/API_DescribeTLSInspectionConfiguration.html
 
 The primary key for this table is **arn**.
 
