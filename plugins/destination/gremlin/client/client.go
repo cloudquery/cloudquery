@@ -31,7 +31,6 @@ type Client struct {
 var AnonT = gremlingo.T__
 
 func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
-	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "gremlin").Logger(),
 	}
