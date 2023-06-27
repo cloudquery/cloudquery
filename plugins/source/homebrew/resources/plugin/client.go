@@ -98,9 +98,9 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.
 		MaxRetries: defaultMaxRetries,
 		Backoff:    defaultBackoff,
 	}
-	strategy, _ := scheduler.StrategyForName(config.Scheduler) // error checked in Validate()
 	scheduler := scheduler.NewScheduler(schedulerClient,
-		scheduler.WithSchedulerStrategy(strategy),
+		scheduler.WithLogger(logger),
+		scheduler.WithConcurrency(uint64(config.Concurrency)),
 	)
 	return &Client{
 		logger:    logger,

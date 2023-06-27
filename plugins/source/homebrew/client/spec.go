@@ -1,18 +1,20 @@
 package client
 
-import "github.com/cloudquery/plugin-sdk/v4/scheduler"
+import (
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
+)
 
 type Spec struct {
-	Scheduler string `json:"scheduler"`
+	Concurrency int `json:"concurrency"`
 }
 
 func (s *Spec) SetDefaults() {
-	if s.Scheduler == "" {
-		s.Scheduler = scheduler.StrategyDFS.String()
+	if s.Concurrency <= 0 {
+		// use default concurrency recommended by plugin-SDK
+		s.Concurrency = scheduler.DefaultConcurrency
 	}
 }
 
 func (s *Spec) Validate() error {
-	_, err := scheduler.StrategyForName(s.Scheduler)
-	return err
+	return nil
 }
