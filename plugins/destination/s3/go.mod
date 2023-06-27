@@ -21,7 +21,7 @@ replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13
 
 //replace github.com/cloudquery/plugin-sdk/v4 => ../../../../plugin-sdk
 
-replace github.com/cloudquery/plugin-sdk/v4 => github.com/disq/plugin-sdk/v4 v4.0.0-20230627201733-d5c2aec273b8
+replace github.com/cloudquery/plugin-sdk/v4 => github.com/disq/plugin-sdk/v4 v4.0.0-20230627222059-4fb1530d0e64
 
 //replace github.com/cloudquery/filetypes/v4 => ../../../../filetypes
 
