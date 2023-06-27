@@ -231,6 +231,8 @@ github.com/aws/aws-sdk-go-v2/service/neptune v1.20.6 h1:eyYQUuuPdyE3J0HwuJjJw19y
 github.com/aws/aws-sdk-go-v2/service/neptune v1.20.6/go.mod h1:N1cuDqSpLRxxf3RUIKUvG7MFORReZmLFyskIXMeUCLY=
 github.com/aws/aws-sdk-go-v2/service/networkfirewall v1.28.1 h1:ojGoq9yPEiklJE+UD+5O00vvESzV5LGOnwGagPl3Gzs=
 github.com/aws/aws-sdk-go-v2/service/networkfirewall v1.28.1/go.mod h1:Tu0EpGIMGYf2M/lwZGOBJmuLni5LosLVyW/mA2P8KkY=
+github.com/aws/aws-sdk-go-v2/service/networkfirewall v1.28.2 h1:B9zVx2RDRKO4EFylxIm+1Suypm7u5xBUyQjUJyjRpL4=
+github.com/aws/aws-sdk-go-v2/service/networkfirewall v1.28.2/go.mod h1:Tu0EpGIMGYf2M/lwZGOBJmuLni5LosLVyW/mA2P8KkY=
 github.com/aws/aws-sdk-go-v2/service/organizations v1.19.7 h1:RDCF4fMr/6RH2K+7OGWqUJobB0j4FFb8bBr4niWCNhc=
 github.com/aws/aws-sdk-go-v2/service/organizations v1.19.7/go.mod h1:lCaHkTl2YLeyJhgEz0Lg9iLI1D20SajjC7Jr/rWn1Sg=
 github.com/aws/aws-sdk-go-v2/service/qldb v1.15.12 h1:LHeq4dAH8gi3PvsjLP4UEO1IeFk+ZXODJefY/R9z8f0=

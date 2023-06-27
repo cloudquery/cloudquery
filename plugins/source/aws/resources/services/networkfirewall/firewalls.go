@@ -3,8 +3,6 @@ package networkfirewall
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/networkfirewall"
 	"github.com/aws/aws-sdk-go-v2/service/networkfirewall/types"
@@ -12,18 +10,19 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/networkfirewall/models"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
 )
 
-func RuleGroups() *schema.Table {
-	tableName := "aws_networkfirewall_rule_groups"
+func Firewalls() *schema.Table {
+	tableName := "aws_networkfirewall_firewalls"
 	return &schema.Table{
 		Name:                tableName,
-		Description:         `https://docs.aws.amazon.com/network-firewall/latest/APIReference/API_RuleGroup.html`,
-		Resolver:            fetchRuleGroups,
-		PreResourceResolver: getRuleGroup,
+		Description:         `https://docs.aws.amazon.com/network-firewall/latest/APIReference/API_DescribeFirewall.html`,
+		Resolver:            fetchFirewalls,
+		PreResourceResolver: getFirewall,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "network-firewall"),
 		Transform: transformers.TransformWithStruct(
-			&models.RuleGroupWrapper{},
+			&models.FirewallWrapper{},
 			transformers.WithUnwrapAllEmbeddedStructs(),
 		),
 		Columns: []schema.Column{
@@ -32,7 +31,7 @@ func RuleGroups() *schema.Table {
 			{
 				Name:       "arn",
 				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("RuleGroupArn"),
+				Resolver:   schema.PathResolver("FirewallArn"),
 				PrimaryKey: true,
 			},
 			{
@@ -44,11 +43,11 @@ func RuleGroups() *schema.Table {
 	}
 }
 
-func fetchRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	var input networkfirewall.ListRuleGroupsInput
+func fetchFirewalls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	var input networkfirewall.ListFirewallsInput
 	cl := meta.(*client.Client)
 	svc := cl.Services().Networkfirewall
-	p := networkfirewall.NewListRuleGroupsPaginator(svc, &input)
+	p := networkfirewall.NewListFirewallsPaginator(svc, &input)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *networkfirewall.Options) {
 			options.Region = cl.Region
@@ -57,18 +56,18 @@ func fetchRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema
 			return err
 		}
 
-		res <- response.RuleGroups
+		res <- response.Firewalls
 	}
 	return nil
 }
 
-func getRuleGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+func getFirewall(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Networkfirewall
-	metadata := resource.Item.(types.RuleGroupMetadata)
+	metadata := resource.Item.(types.FirewallMetadata)
 
-	ruleGroup, err := svc.DescribeRuleGroup(ctx, &networkfirewall.DescribeRuleGroupInput{
-		RuleGroupArn: metadata.Arn,
+	firewallDetails, err := svc.DescribeFirewall(ctx, &networkfirewall.DescribeFirewallInput{
+		FirewallArn: metadata.FirewallArn,
 	}, func(options *networkfirewall.Options) {
 		options.Region = cl.Region
 	})
@@ -76,9 +75,9 @@ func getRuleGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.
 		return err
 	}
 
-	resource.Item = &models.RuleGroupWrapper{
-		RuleGroup:         ruleGroup.RuleGroup,
-		RuleGroupResponse: ruleGroup.RuleGroupResponse,
+	resource.Item = &models.FirewallWrapper{
+		FirewallStatus: firewallDetails.FirewallStatus,
+		Firewall:       firewallDetails.Firewall,
 	}
 	return nil
 }
