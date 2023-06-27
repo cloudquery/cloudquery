@@ -4,7 +4,7 @@ This table shows data for Amazon Elastic Compute Cloud (EC2) Eips.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Address.html
 
-The primary key for this table is **allocation_id**.
+The composite primary key for this table is (**account_id**, **region**, **allocation_id**).
 
 ## Columns
 
@@ -12,8 +12,8 @@ The primary key for this table is **allocation_id**.
 | ------------- | ------------- |
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id|`utf8`|
-|region|`utf8`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
 |tags|`json`|
 |allocation_id (PK)|`utf8`|
 |association_id|`utf8`|
