@@ -259,7 +259,6 @@ spec:
   path: cloudquery/aws
   version: "VERSION_SOURCE_AWS"
   tables: ["*"]
-  concurrency: 10000
   skip_tables:
     - aws_ec2_vpc_endpoint_services 
     - aws_cloudtrail_events
@@ -281,6 +280,7 @@ spec:
     - aws_rds_engine_versions
     - aws_servicequotas_services
   destinations: ["postgresql"]
+  concurrency: 10000
   spec: 
     # AWS Spec section described below
 ```
