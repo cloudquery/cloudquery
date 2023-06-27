@@ -25,8 +25,8 @@ type Spec struct {
 	NoRotate  bool   `json:"no_rotate,omitempty"`
 	Path      string `json:"path,omitempty"`
 
-	BatchSize      int `json:"batch_size"`
-	BatchSizeBytes int `json:"batch_size_bytes"`
+	BatchSize      *int64 `json:"batch_size"`
+	BatchSizeBytes *int64 `json:"batch_size_bytes"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -38,6 +38,14 @@ func (s *Spec) SetDefaults() {
 	}
 	if !strings.Contains(s.Path, PathVarTable) {
 		s.Path = path.Join(s.Path, fmt.Sprintf("%s.%s", PathVarTable, s.Format))
+	}
+	if s.BatchSize == nil {
+		i := int64(10000)
+		s.BatchSize = &i
+	}
+	if s.BatchSizeBytes == nil {
+		i := int64(50 * 1024 * 1024) // 50 MiB
+		s.BatchSizeBytes = &i
 	}
 }
 

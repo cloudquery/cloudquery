@@ -3,7 +3,6 @@ package client
 import (
 	"context"
 	"fmt"
-	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -11,45 +10,48 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/filetypes/v4"
+	"github.com/cloudquery/filetypes/v4/types"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
-	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/google/uuid"
 )
 
-func (c *Client) OpenTable(ctx context.Context, sourceName string, table *schema.Table, syncTime time.Time) (any, error) {
-	p := replacePathVariables(c.spec.Path, table.Name, c.spec.Format, uuid.NewString(), syncTime)
+func (c *Client) WriteTable(_ context.Context, msgs <-chan *message.Insert) error {
+	var (
+		f *os.File
+		h types.Handle
+	)
+	for msg := range msgs {
+		if f == nil {
+			table := msg.GetTable()
 
-	if err := os.MkdirAll(filepath.Dir(p), 0755); err != nil {
-		return nil, fmt.Errorf("failed to create directory: %w", err)
+			p := replacePathVariables(c.spec.Path, table.Name, c.spec.Format, uuid.NewString(), time.Now().UTC())
+
+			if err := os.MkdirAll(filepath.Dir(p), 0755); err != nil {
+				return fmt.Errorf("failed to create directory: %w", err)
+			}
+
+			var err error
+			f, err = os.OpenFile(p, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+			if err != nil {
+				return err
+			}
+
+			h, err = c.Client.WriteHeader(f, table)
+			if err != nil {
+				return err
+			}
+		}
+
+		if err := h.WriteContent([]arrow.Record{msg.Record}); err != nil {
+			return err
+		}
 	}
 
-	f, err := os.OpenFile(p, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		return nil, err
-	}
-
-	return c.Client.StartStream(table, func(r io.Reader) error {
-		_, err := io.Copy(f, r)
+	if err := h.WriteFooter(); err != nil {
 		return err
-	})
-}
-
-func (*Client) CloseTable(_ context.Context, handle any) error {
-	return handle.(*filetypes.Stream).Finish()
-}
-
-func (*Client) WriteTableStream(_ context.Context, handle any, msgs []*message.Insert) error {
-	if len(msgs) == 0 {
-		return nil
 	}
-
-	records := make([]arrow.Record, len(msgs))
-	for i, msg := range msgs {
-		records[i] = msg.Record
-	}
-
-	return handle.(*filetypes.Stream).Write(records)
+	return f.Close()
 }
 
 func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, msgs <-chan message.Message) error {
