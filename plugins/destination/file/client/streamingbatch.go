@@ -17,8 +17,6 @@ import (
 
 const (
 	defaultBatchTimeoutSeconds = 20
-	defaultBatchSize           = 10000
-	defaultBatchSizeBytes      = 5 * 1024 * 1024 // 5 MiB
 )
 
 type StreamingBatchWriterClient interface {
@@ -49,25 +47,25 @@ type StreamingBatchWriter struct {
 
 type Option func(*StreamingBatchWriter)
 
-func WithLogger(logger zerolog.Logger) Option {
+func WithStreamingBatchWriterLogger(logger zerolog.Logger) Option {
 	return func(p *StreamingBatchWriter) {
 		p.logger = logger
 	}
 }
 
-func WithBatchTimeout(timeout time.Duration) Option {
+func WithStreamingBatchWriterBatchTimeout(timeout time.Duration) Option {
 	return func(p *StreamingBatchWriter) {
 		p.batchTimeout = timeout
 	}
 }
 
-func WithBatchSize(size int) Option {
+func WithStreamingBatchWriterBatchSize(size int) Option {
 	return func(p *StreamingBatchWriter) {
 		p.batchSize = size
 	}
 }
 
-func WithBatchSizeBytes(size int) Option {
+func WithStreamingBatchWriterBatchSizeBytes(size int) Option {
 	return func(p *StreamingBatchWriter) {
 		p.batchSizeBytes = size
 	}
@@ -81,12 +79,10 @@ type worker struct {
 
 func NewStreamingBatchWriter(client StreamingBatchWriterClient, opts ...Option) (*StreamingBatchWriter, error) {
 	c := &StreamingBatchWriter{
-		client:         client,
-		workers:        make(map[string]*worker),
-		logger:         zerolog.Nop(),
-		batchTimeout:   defaultBatchTimeoutSeconds * time.Second,
-		batchSize:      defaultBatchSize,
-		batchSizeBytes: defaultBatchSizeBytes,
+		client:       client,
+		workers:      make(map[string]*worker),
+		logger:       zerolog.Nop(),
+		batchTimeout: defaultBatchTimeoutSeconds * time.Second,
 	}
 	for _, opt := range opts {
 		opt(c)
@@ -170,7 +166,7 @@ func (w *StreamingBatchWriter) worker(ctx context.Context, sourceName, tableName
 				initDone = doInit(r.Record)
 			}
 
-			if len(resources) >= w.batchSize || sizeBytes+util.TotalRecordSize(r.Record) >= int64(w.batchSizeBytes) {
+			if (w.batchSize > 0 && len(resources) >= w.batchSize) || (w.batchSizeBytes > 0 && sizeBytes+util.TotalRecordSize(r.Record) >= int64(w.batchSizeBytes)) {
 				w.flush(ctx, handle, tableName, resources)
 				resources, sizeBytes = resources[:0], 0
 			}
@@ -326,7 +322,7 @@ func (w *StreamingBatchWriter) Write(ctx context.Context, msgs <-chan message.Me
 			w.deleteStaleMessages = append(w.deleteStaleMessages, m)
 			l := len(w.deleteStaleMessages)
 			w.deleteStaleLock.Unlock()
-			if l > w.batchSize {
+			if w.batchSize > 0 && l > w.batchSize {
 				if err := w.flushDeleteStaleTables(ctx); err != nil {
 					return err
 				}
@@ -351,7 +347,7 @@ func (w *StreamingBatchWriter) Write(ctx context.Context, msgs <-chan message.Me
 			w.migrateTableMessages = append(w.migrateTableMessages, m)
 			l := len(w.migrateTableMessages)
 			w.migrateTableLock.Unlock()
-			if l > w.batchSize {
+			if w.batchSize > 0 && l > w.batchSize {
 				if err := w.flushMigrateTables(ctx); err != nil {
 					return err
 				}

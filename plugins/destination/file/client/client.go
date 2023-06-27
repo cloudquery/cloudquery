@@ -50,7 +50,7 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, 
 		return nil, fmt.Errorf("failed to create filetype client: %w", err)
 	}
 
-	c.writer, err = NewStreamingBatchWriter(c)
+	c.writer, err = NewStreamingBatchWriter(c, WithStreamingBatchWriterBatchSize(c.spec.BatchSize), WithStreamingBatchWriterBatchSizeBytes(c.spec.BatchSizeBytes))
 	if err != nil {
 		return nil, err
 	}

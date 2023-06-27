@@ -24,6 +24,9 @@ type Spec struct {
 	Directory string `json:"directory,omitempty"`
 	NoRotate  bool   `json:"no_rotate,omitempty"`
 	Path      string `json:"path,omitempty"`
+
+	BatchSize      int `json:"batch_size"`
+	BatchSizeBytes int `json:"batch_size_bytes"`
 }
 
 func (s *Spec) SetDefaults() {
