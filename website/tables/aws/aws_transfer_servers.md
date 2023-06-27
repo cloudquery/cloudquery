@@ -33,5 +33,6 @@ The primary key for this table is **arn**.
 |security_policy_name|`utf8`|
 |server_id|`utf8`|
 |state|`utf8`|
+|structured_log_destinations|`list<item: utf8, nullable>`|
 |user_count|`int64`|
 |workflow_details|`json`|
