@@ -9,15 +9,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildWebACLsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockWafregionalClient(ctrl)
 
 	var acl types.WebACL
-	if err := faker.FakeObject(&acl); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&acl))
+
 	m.EXPECT().ListWebACLs(
 		gomock.Any(),
 		&wafregional.ListWebACLsInput{},

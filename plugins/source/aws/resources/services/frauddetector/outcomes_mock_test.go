@@ -9,16 +9,14 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildOutcomes(t *testing.T, ctrl *gomock.Controller) client.Services {
 	fdClient := mocks.NewMockFrauddetectorClient(ctrl)
 
 	data := types.Outcome{}
-	err := faker.FakeObject(&data)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&data))
 
 	fdClient.EXPECT().GetOutcomes(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&frauddetector.GetOutcomesOutput{Outcomes: []types.Outcome{data}}, nil,

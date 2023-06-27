@@ -1,5 +1,4 @@
 {
-  "docker": "Docker",
   "environment-variable-substitution": "Environment and File Variable Substitution",
   "migrations": "Migrations",
   "performance-tuning": "Performance Tuning",
