@@ -10,23 +10,18 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildCases(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockSupportClient(ctrl)
 	details := []types.CaseDetails{}
-	err := faker.FakeObject(&details)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&details))
 
 	input := support.DescribeCasesInput{MaxResults: aws.Int32(100), IncludeResolvedCases: true}
 	m.EXPECT().DescribeCases(gomock.Any(), &input, gomock.Any()).Return(&support.DescribeCasesOutput{Cases: details}, nil)
 
-	err = mockCommunications(details[0], m)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, mockCommunications(details[0], m))
 
 	return client.Services{
 		Support: m,

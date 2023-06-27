@@ -40,11 +40,12 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/costexplorer v1.25.11
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.25.6
 	github.com/aws/aws-sdk-go-v2/service/dax v1.12.11
+	github.com/aws/aws-sdk-go-v2/service/detective v1.19.2
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.16
 	github.com/aws/aws-sdk-go-v2/service/docdb v1.21.4
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.19.9
 	github.com/aws/aws-sdk-go-v2/service/dynamodbstreams v1.14.13
-	github.com/aws/aws-sdk-go-v2/service/ec2 v1.100.0
+	github.com/aws/aws-sdk-go-v2/service/ec2 v1.102.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.18.12
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.16.3
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.27.2
@@ -103,6 +104,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/sfn v1.17.12
 	github.com/aws/aws-sdk-go-v2/service/shield v1.18.11
+	github.com/aws/aws-sdk-go-v2/service/signer v1.15.2
 	github.com/aws/aws-sdk-go-v2/service/sns v1.20.12
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.36.5

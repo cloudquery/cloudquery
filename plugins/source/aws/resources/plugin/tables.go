@@ -32,6 +32,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/config"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/costexplorer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dax"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/detective"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/directconnect"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dms"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/docdb"
@@ -91,6 +92,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicequotas"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ses"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/shield"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/signer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sns"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sqs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ssm"
@@ -198,10 +200,11 @@ func tables() []*schema.Table {
 		config.ConformancePacks(),
 		config.DeliveryChannels(),
 		config.RetentionConfigurations(),
+		costexplorer.CustomCost(),
 		costexplorer.ThirtyDayCost(),
 		costexplorer.ThirtyDayCostForecast(),
-		costexplorer.CustomCost(),
 		dax.Clusters(),
+		detective.Graphs(),
 		directconnect.Connections(),
 		directconnect.Gateways(),
 		directconnect.Lags(),
@@ -263,6 +266,7 @@ func tables() []*schema.Table {
 		ec2.VpcEndpointServices(),
 		ec2.VpcPeeringConnections(),
 		ec2.Vpcs(),
+		ec2.VpnConnections(),
 		ec2.VpnGateways(),
 		ecr.PullThroughCacheRules(),
 		ecr.Registries(),
@@ -486,6 +490,7 @@ func tables() []*schema.Table {
 		shield.ProtectionGroups(),
 		shield.Protections(),
 		shield.Subscriptions(),
+		signer.Profiles(),
 		sns.Subscriptions(),
 		sns.Topics(),
 		sqs.Queues(),

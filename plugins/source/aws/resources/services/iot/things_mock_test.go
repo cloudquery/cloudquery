@@ -9,24 +9,19 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildIotThingsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIotClient(ctrl)
 
 	thing := types.ThingAttribute{}
-	err := faker.FakeObject(&thing)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&thing))
 	m.EXPECT().ListThings(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iot.ListThingsOutput{Things: []types.ThingAttribute{thing}}, nil)
 
 	lp := iot.ListThingPrincipalsOutput{}
-	err = faker.FakeObject(&lp)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&lp))
 	lp.NextToken = nil
 	m.EXPECT().ListThingPrincipals(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&lp, nil)

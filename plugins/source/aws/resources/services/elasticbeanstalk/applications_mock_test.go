@@ -9,22 +9,17 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildElasticbeanstalkApplications(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockElasticbeanstalkClient(ctrl)
 
 	la := elasticbeanstalkTypes.ApplicationDescription{}
-	err := faker.FakeObject(&la)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&la))
 
 	tag := elasticbeanstalkTypes.Tag{}
-	err = faker.FakeObject(&tag)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tag))
 
 	m.EXPECT().DescribeApplications(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticbeanstalk.DescribeApplicationsOutput{

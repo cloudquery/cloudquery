@@ -9,15 +9,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildElasticacheUpdateActions(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mockElasticache := mocks.NewMockElasticacheClient(ctrl)
 	action := types.UpdateAction{}
-	err := faker.FakeObject(&action)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&action))
 
 	mockElasticache.EXPECT().DescribeUpdateActions(gomock.Any(), gomock.Any(), gomock.Any()).Return(&elasticache.DescribeUpdateActionsOutput{UpdateActions: []types.UpdateAction{action}}, nil)
 

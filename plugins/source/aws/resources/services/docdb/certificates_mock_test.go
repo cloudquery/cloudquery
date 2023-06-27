@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildCertificatesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -16,9 +17,8 @@ func buildCertificatesMock(t *testing.T, ctrl *gomock.Controller) client.Service
 		Docdb: m,
 	}
 	var parameterGroups docdb.DescribeCertificatesOutput
-	if err := faker.FakeObject(&parameterGroups); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&parameterGroups))
+
 	parameterGroups.Marker = nil
 	m.EXPECT().DescribeCertificates(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&parameterGroups,

@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildCloudfronFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -17,9 +18,8 @@ func buildCloudfronFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.S
 		Cloudfront: m,
 	}
 	fs := cloudfrontTypes.FunctionSummary{}
-	if err := faker.FakeObject(&fs); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&fs))
+
 	cloudfrontOutput := &cloudfront.ListFunctionsOutput{
 		FunctionList: &cloudfrontTypes.FunctionList{
 			Items: []cloudfrontTypes.FunctionSummary{fs},
@@ -31,9 +31,8 @@ func buildCloudfronFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.S
 	)
 
 	function := &cloudfront.DescribeFunctionOutput{}
-	if err := faker.FakeObject(&function); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&function))
+
 	m.EXPECT().DescribeFunction(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		function,
 		nil,

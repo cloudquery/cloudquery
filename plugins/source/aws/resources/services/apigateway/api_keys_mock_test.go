@@ -9,16 +9,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildApiKeysMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockApigatewayClient(ctrl)
 
 	a := types.ApiKey{}
-	err := faker.FakeObject(&a)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&a))
+
 	m.EXPECT().GetApiKeys(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&apigateway.GetApiKeysOutput{
 			Items: []types.ApiKey{a},
