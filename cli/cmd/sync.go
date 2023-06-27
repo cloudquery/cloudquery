@@ -171,12 +171,10 @@ func sync(cmd *cobra.Command, args []string) error {
 				log.Warn().Str("source", source.Name).Str("field", field).Msg(msg)
 			}
 			if _, found := warnings["scheduler"]; found {
-				// nolint:staticcheck use of deprecated field
-				source.Spec["scheduler"] = source.Scheduler.String()
+				source.Spec["scheduler"] = source.Scheduler.String() // nolint:staticcheck // use of deprecated field
 			}
 			if _, found := warnings["concurrency"]; found {
-				// nolint:staticcheck use of deprecated field
-				source.Spec["concurrency"] = source.Concurrency
+				source.Spec["concurrency"] = source.Concurrency // nolint:staticcheck // use of deprecated field
 			}
 			for i, destination := range destinationClientsForSource {
 				versions, err := destination.Versions(ctx)
@@ -191,12 +189,10 @@ func sync(cmd *cobra.Command, args []string) error {
 					log.Warn().Str("destination", destination.Name()).Str("field", field).Msg(msg)
 				}
 				if _, found := destWarnings["batch_size"]; found {
-					// nolint:staticcheck use of deprecated field
-					destinationForSourceSpec[i].Spec["batch_size"] = destinationForSourceSpec[i].BatchSize
+					destinationForSourceSpec[i].Spec["batch_size"] = destinationForSourceSpec[i].BatchSize // nolint:staticcheck // use of deprecated field
 				}
 				if _, found := destWarnings["batch_size_bytes"]; found {
-					// nolint:staticcheck use of deprecated field
-					destinationForSourceSpec[i].Spec["batch_size_bytes"] = destinationForSourceSpec[i].BatchSizeBytes
+					destinationForSourceSpec[i].Spec["batch_size_bytes"] = destinationForSourceSpec[i].BatchSizeBytes // nolint:staticcheck // use of deprecated field
 				}
 			}
 			if err := syncConnectionV3(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, invocationUUID.String(), noMigrate); err != nil {

@@ -27,11 +27,11 @@ type Source struct {
 	Path string `json:"path,omitempty"`
 	// Registry can be github,local,grpc.
 	Registry Registry `json:"registry,omitempty"`
-	// deprecated: Concurrency is the number of concurrent workers to use when syncing data. Should now use plugin-specific field instead.
+	// Deprecated: Concurrency is the number of concurrent workers to use when syncing data. Should now use plugin-specific field instead.
 	Concurrency uint64 `json:"concurrency,omitempty"`
-	// deprecated: use plugin-level Concurrency instead
+	// Deprecated: use plugin-level Concurrency instead
 	TableConcurrency uint64 `json:"table_concurrency,omitempty"`
-	// deprecated: use plugin-level Concurrency instead
+	// Deprecated: use plugin-level Concurrency instead
 	ResourceConcurrency uint64 `json:"resource_concurrency,omitempty"`
 	// Tables to sync from the source plugin
 	Tables []string `json:"tables,omitempty"`
@@ -42,11 +42,11 @@ type Source struct {
 	// Destinations are the names of destination plugins to send sync data to
 	Destinations []string `json:"destinations,omitempty"`
 
-	// deprecated: Backend is the name of the state backend to use. Should now use plugin-specific field instead.
+	// Deprecated: Backend is the name of the state backend to use. Should now use plugin-specific field instead.
 	Backend Backend `json:"backend,omitempty"`
-	// deprecated: BackendSpec contains any backend-specific configuration. Should now use plugin-specific field instead.
+	// Deprecated: BackendSpec contains any backend-specific configuration. Should now use plugin-specific field instead.
 	BackendSpec any `json:"backend_spec,omitempty"`
-	// deprecated: Scheduler defines the scheduling algorithm that should be used to sync data. Should now use plugin-specific field instead.
+	// Deprecated: Scheduler defines the scheduling algorithm that should be used to sync data. Should now use plugin-specific field instead.
 	Scheduler Scheduler `json:"scheduler,omitempty"`
 	// Spec defines plugin specific configuration
 	// This is different in every source plugin.

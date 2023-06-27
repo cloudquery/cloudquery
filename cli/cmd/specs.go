@@ -48,16 +48,16 @@ func CLISourceSpecToPbSpec(spec specs.Source) pbSpecs.Source {
 		Version:             spec.Version,
 		Path:                spec.Path,
 		Registry:            CLIRegistryToPbRegistry(spec.Registry),
-		Concurrency:         spec.Concurrency,
-		TableConcurrency:    spec.TableConcurrency,
-		ResourceConcurrency: spec.ResourceConcurrency,
+		Concurrency:         spec.Concurrency,         // nolint:staticcheck // allow use of deprecated options here for backwards-compatibility
+		TableConcurrency:    spec.TableConcurrency,    // nolint:staticcheck // allow use of deprecated options here for backwards-compatibility
+		ResourceConcurrency: spec.ResourceConcurrency, // nolint:staticcheck // allow use of deprecated options here for backwards-compatibility
 		Tables:              spec.Tables,
 		SkipTables:          spec.SkipTables,
 		SkipDependentTables: spec.SkipDependentTables,
 		Destinations:        spec.Destinations,
-		Backend:             CLIBackendToPbBackend(spec.Backend),
-		BackendSpec:         spec.BackendSpec,
-		Scheduler:           CLISchedulerToPbScheduler(spec.Scheduler),
+		Backend:             CLIBackendToPbBackend(spec.Backend),       // nolint:staticcheck // allow use of deprecated options here for backwards-compatibility
+		BackendSpec:         spec.BackendSpec,                          // nolint:staticcheck // allow use of deprecated options here for backwards-compatibility
+		Scheduler:           CLISchedulerToPbScheduler(spec.Scheduler), // nolint:staticcheck // allow use of deprecated options here for backwards-compatibility
 		Spec:                spec.Spec,
 		DeterministicCQID:   spec.DeterministicCQID,
 	}
@@ -100,14 +100,15 @@ func CLIPkModeToPbPKMode(pkMode specs.PKMode) pbSpecs.PKMode {
 
 func CLIDestinationSpecToPbSpec(spec specs.Destination) pbSpecs.Destination {
 	return pbSpecs.Destination{
-		Name:           spec.Name,
-		Version:        spec.Version,
-		Path:           spec.Path,
-		Registry:       CLIRegistryToPbRegistry(spec.Registry),
-		WriteMode:      CLIWriteModeToPbWriteMode(spec.WriteMode),
-		MigrateMode:    CLIMigrateModeToPbMigrateMode(spec.MigrateMode),
-		BatchSize:      spec.BatchSize,
-		BatchSizeBytes: spec.BatchSizeBytes,
+		Name:        spec.Name,
+		Version:     spec.Version,
+		Path:        spec.Path,
+		Registry:    CLIRegistryToPbRegistry(spec.Registry),
+		WriteMode:   CLIWriteModeToPbWriteMode(spec.WriteMode),
+		MigrateMode: CLIMigrateModeToPbMigrateMode(spec.MigrateMode),
+
+		BatchSize:      spec.BatchSize,      // nolint:staticcheck // allow use of deprecated options here for backwards-compatibility
+		BatchSizeBytes: spec.BatchSizeBytes, // nolint:staticcheck // allow use of deprecated options here for backwards-compatibility
 		Spec:           spec.Spec,
 		PKMode:         CLIPkModeToPbPKMode(spec.PKMode),
 	}
