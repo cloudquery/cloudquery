@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe
-	github.com/cloudquery/plugin-pb-go v1.1.0
+	github.com/cloudquery/plugin-pb-go v1.3.4
 	github.com/cloudquery/plugin-sdk/v4 v4.0.0
 	github.com/goccy/go-json v0.10.0
 	github.com/google/uuid v1.3.0
@@ -22,7 +22,6 @@ replace github.com/cloudquery/plugin-pb-go => ../../../../plugin-pb-go
 replace github.com/cloudquery/plugin-sdk/v4 => ../../../../plugin-sdk
 
 require (
-	github.com/avast/retry-go/v4 v4.3.4 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
@@ -38,11 +37,7 @@ require (
 	github.com/klauspost/cpuid/v2 v2.2.3 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.18 // indirect
-	github.com/mattn/go-runewidth v0.0.14 // indirect
-	github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db // indirect
 	github.com/pierrec/lz4/v4 v4.1.17 // indirect
-	github.com/rivo/uniseg v0.2.0 // indirect
-	github.com/schollz/progressbar/v3 v3.13.1 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
@@ -52,7 +47,6 @@ require (
 	golang.org/x/net v0.9.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.7.0 // indirect
-	golang.org/x/term v0.7.0 // indirect
 	golang.org/x/text v0.9.0 // indirect
 	golang.org/x/tools v0.6.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect

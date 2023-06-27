@@ -48,14 +48,10 @@ func (c *Client) InsertBatch(ctx context.Context, messages []*message.Insert, op
 		if table == nil {
 			return fmt.Errorf("table %s not found", tableName)
 		}
-		if !msg.Upsert {
-			sql = c.insert(table)
+		if len(table.PrimaryKeysIndexes()) > 0 {
+			sql = c.upsert(table)
 		} else {
-			if len(table.PrimaryKeysIndexes()) > 0 {
-				sql = c.upsert(table)
-			} else {
-				sql = c.insert(table)
-			}
+			sql = c.insert(table)
 		}
 		rows := transformValues(r)
 		for _, rowVals := range rows {

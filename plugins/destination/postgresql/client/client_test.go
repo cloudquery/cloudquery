@@ -43,7 +43,7 @@ func TestPgPlugin(t *testing.T) {
 	}
 	plugin.TestWriterSuiteRunner(t,
 		p,
-		plugin.PluginTestSuiteTests{
+		plugin.WriterTestSuiteTests{
 			SafeMigrations: safeMigrations,
 		},
 		plugin.WithTestDataOptions(testOpts),

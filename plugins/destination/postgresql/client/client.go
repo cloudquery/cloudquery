@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v4/message"
@@ -90,7 +91,12 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte) (plugin.C
 	if err != nil {
 		return nil, fmt.Errorf("failed to get database type: %w", err)
 	}
-	c.writer, err = writers.NewMixedBatchWriter(c)
+	c.writer, err = writers.NewMixedBatchWriter(c,
+		writers.WithMixedBatchWriterLogger(c.logger),
+		writers.WithMixedBatchWriterBatchSize(spec.BatchSize),
+		writers.WithMixedBatchWriterBatchSizeBytes(spec.BatchSizeBytes),
+		writers.WithMixedBatchWriterBatchTimeout(time.Duration(spec.BatchTimeoutMs)*time.Millisecond),
+	)
 	if err != nil {
 		return nil, err
 	}
