@@ -17,7 +17,7 @@ func TLSInspectionConfigurations() *schema.Table {
 	tableName := "aws_networkfirewall_tls_inspection_configurations"
 	return &schema.Table{
 		Name:                tableName,
-		Description:         `https://docs.aws.amazon.com/network-firewall/latest/APIReference/API_RuleGroup.html`,
+		Description:         `https://docs.aws.amazon.com/network-firewall/latest/APIReference/API_DescribeTLSInspectionConfiguration.html`,
 		Resolver:            fetchTLSInspectionConfigurations,
 		PreResourceResolver: getTLSInspectionConfigurations,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "network-firewall"),
