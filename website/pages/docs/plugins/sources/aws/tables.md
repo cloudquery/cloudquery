@@ -236,6 +236,7 @@
 - [aws_ec2_vpcs](tables/aws_ec2_vpcs)
 - [aws_ec2_vpn_connections](tables/aws_ec2_vpn_connections)
 - [aws_ec2_vpn_gateways](tables/aws_ec2_vpn_gateways)
+- [aws_ecr_pull_through_cache_rules](tables/aws_ecr_pull_through_cache_rules)
 - [aws_ecr_registries](tables/aws_ecr_registries)
 - [aws_ecr_registry_policies](tables/aws_ecr_registry_policies)
 - [aws_ecr_repositories](tables/aws_ecr_repositories)
