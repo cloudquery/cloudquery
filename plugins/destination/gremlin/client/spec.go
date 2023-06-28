@@ -27,6 +27,9 @@ type Spec struct {
 
 	// Whether to use all Gremlin types or just a basic subset
 	CompleteTypes bool `json:"complete_types"`
+
+	BatchSize      int `json:"batch_size"`
+	BatchSizeBytes int `json:"batch_size_bytes"`
 }
 
 type authMode string
@@ -64,6 +67,13 @@ func (s *Spec) SetDefaults() {
 
 	if s.MaxConcurrentConnections < 1 {
 		s.MaxConcurrentConnections = runtime.NumCPU()
+	}
+
+	if s.BatchSize == 0 {
+		s.BatchSize = 200
+	}
+	if s.BatchSizeBytes == 0 {
+		s.BatchSizeBytes = 1024 * 1024 * 4
 	}
 }
 

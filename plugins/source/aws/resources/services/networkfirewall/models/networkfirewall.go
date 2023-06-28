@@ -13,3 +13,12 @@ type RuleGroupWrapper struct {
 	*types.RuleGroup
 	*types.RuleGroupResponse
 }
+
+type FirewallWrapper struct {
+	*types.FirewallStatus
+	*types.Firewall
+}
+type TLSInspectionConfigurationWrapper struct {
+	*types.TLSInspectionConfiguration
+	*types.TLSInspectionConfigurationResponse
+}

@@ -76,7 +76,7 @@ func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schem
 
 // TODO: in the future this could theoretically be done in a single query and then the tables could be filtered in memory
 func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema.Tables, error) {
-	query := `SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE';`
+	query := `SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND (DATABASE() IS NULL OR table_SCHEMA = DATABASE());`
 	rows, err := c.db.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err
