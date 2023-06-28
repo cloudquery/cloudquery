@@ -35,7 +35,8 @@ type Client struct {
 	Backend              backend.Backend
 	specificRegions      bool
 	Spec                 *Spec
-	AWSConfig            *aws.Config
+	// Do not rely on this field, it will be removed once https://github.com/aws/aws-sdk-go-v2/issues/2163 is resolved
+	AWSConfig *aws.Config
 }
 
 type AwsLogger struct {
