@@ -187,8 +187,8 @@ func testPluginCustom(t *testing.T, spec *Spec) {
 			{Name: "name", Type: arrow.BinaryTypes.String},
 		},
 	}
-	if err := p.WriteAll(ctx, plugin.WriteOptions{}, []message.Message{
-		&message.MigrateTable{
+	if err := p.WriteAll(ctx, []message.WriteMessage{
+		&message.WriteMigrateTable{
 			Table: table,
 		},
 	}); err != nil {
@@ -199,11 +199,11 @@ func testPluginCustom(t *testing.T, spec *Spec) {
 	bldr.Field(0).(*array.StringBuilder).Append("foo")
 	record := bldr.NewRecord()
 
-	if err := p.WriteAll(ctx, plugin.WriteOptions{}, []message.Message{
-		&message.Insert{
+	if err := p.WriteAll(ctx, []message.WriteMessage{
+		&message.WriteInsert{
 			Record: record,
 		},
-		&message.Insert{
+		&message.WriteInsert{
 			Record: record,
 		},
 	}); err != nil {

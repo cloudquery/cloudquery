@@ -12,11 +12,10 @@ import (
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/filetypes/v4/types"
 	"github.com/cloudquery/plugin-sdk/v4/message"
-	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/google/uuid"
 )
 
-func (c *Client) WriteTable(_ context.Context, msgs <-chan *message.Insert) error {
+func (c *Client) WriteTable(_ context.Context, msgs <-chan *message.WriteInsert) error {
 	var (
 		f *os.File
 		h types.Handle
@@ -54,7 +53,7 @@ func (c *Client) WriteTable(_ context.Context, msgs <-chan *message.Insert) erro
 	return f.Close()
 }
 
-func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, msgs <-chan message.Message) error {
+func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
 	return c.writer.Write(ctx, msgs)
 }
 

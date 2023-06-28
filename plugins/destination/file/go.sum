@@ -49,8 +49,8 @@ github.com/cloudquery/arrow/go/v13 v13.0.0-20230621001250-f0dffc612853 h1:MeXRH1
 github.com/cloudquery/arrow/go/v13 v13.0.0-20230621001250-f0dffc612853/go.mod h1:W69eByFNO0ZR30q1/7Sr9d83zcVZmF2MiP3fFYAWJOc=
 github.com/cloudquery/filetypes/v4 v4.0.0-20230626103052-4948ce1e42a8 h1:eMQsIrCI4bKHRwQRnhEECnmHUYwT25tMQX/3LHa3zRQ=
 github.com/cloudquery/filetypes/v4 v4.0.0-20230626103052-4948ce1e42a8/go.mod h1:Ubyl/AHw66K4/7PdQZuEk+6aw9DtCHeL+2pazxNjXnk=
-github.com/cloudquery/plugin-pb-go v1.3.4 h1:GKNVo9gpmvctyD11QaPVnSLYzE9lw1g1kzt4TSmP+2s=
-github.com/cloudquery/plugin-pb-go v1.3.4/go.mod h1:NbWAtT2BzJQ9+XUWwh3IKBg3MOeV9ZEpHoHNAQ/YDV8=
+github.com/cloudquery/plugin-pb-go v1.4.0 h1:sfy0oWSFac2JCJQJuKoR+8flZGKkEoUVORwZDNM3aiI=
+github.com/cloudquery/plugin-pb-go v1.4.0/go.mod h1:NbWAtT2BzJQ9+XUWwh3IKBg3MOeV9ZEpHoHNAQ/YDV8=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0/go.mod h1:pAX6ojIW99b/Vg4CkhnsGkRIzNaVEceYMR+Bdit73ug=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
@@ -62,8 +62,8 @@ github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ3
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/disq/plugin-sdk/v4 v4.0.0-20230627222059-4fb1530d0e64 h1:42pzxIbMiGUdZvcvVg/x375isEVyYxcz3o3IlBvuMDI=
-github.com/disq/plugin-sdk/v4 v4.0.0-20230627222059-4fb1530d0e64/go.mod h1:Yru9tbR9e2TtHrHkQ1eOAfnot5GCwTFrrNyngfZzk8U=
+github.com/disq/plugin-sdk/v4 v4.0.0-20230628074547-ff3a55e03d99 h1:/LQZ9hAJjKzjsoYo4GA9SEmHJMHUSTOQJbfubwQTN7o=
+github.com/disq/plugin-sdk/v4 v4.0.0-20230628074547-ff3a55e03d99/go.mod h1:gn2ANihFC5SUMPCcYnVD+Gt3Cgn8OeXJW2/0lRUoB68=
 github.com/envoyproxy/go-control-plane v0.9.0/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/go-control-plane v0.9.1-0.20191026205805-5f8ba28d4473/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/go-control-plane v0.9.4/go.mod h1:6rpuAdCZL397s3pYoYcLgu1mIlRU8Am5FuJP05cCM98=
