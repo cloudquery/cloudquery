@@ -5,7 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"golang.org/x/exp/slices"
 )
 

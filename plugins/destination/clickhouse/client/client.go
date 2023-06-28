@@ -4,13 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"time"
 
 	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/ClickHouse/clickhouse-go/v2/lib/proto"
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/writers"
 	"github.com/rs/zerolog"
 )
 
@@ -20,13 +20,14 @@ type Client struct {
 	spec     *Spec
 
 	logger zerolog.Logger
-	mode   specs.MigrateMode
-	destination.UnimplementedUnmanagedWriter
+	writer *writers.BatchWriter
+	plugin.UnimplementedDestination
 }
 
-var _ destination.Client = (*Client)(nil)
+var _ plugin.Client = (*Client)(nil)
+var _ writers.BatchWriterClient = (*Client)(nil)
 
-func (*Client) DeleteStale(context.Context, schema.Tables, string, time.Time) error {
+func (*Client) DeleteStale(context.Context, []*message.WriteDeleteStale) error {
 	return errors.New("DeleteStale is not implemented")
 }
 
@@ -34,7 +35,7 @@ func (c *Client) Close(context.Context) error {
 	return c.conn.Close()
 }
 
-func New(_ context.Context, logger zerolog.Logger, dstSpec specs.Destination) (destination.Client, error) {
+func New(_ context.Context, logger zerolog.Logger, dstSpec specs.Destination) (plugin.Client, error) {
 	if dstSpec.WriteMode != specs.WriteModeAppend {
 		return nil, fmt.Errorf("clickhouse destination only supports append mode")
 	}

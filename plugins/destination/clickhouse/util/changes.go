@@ -3,7 +3,7 @@ package util
 import (
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func prettifyChanges(tableName string, changes []schema.TableColumnChange, builder *strings.Builder) {
@@ -12,6 +12,12 @@ func prettifyChanges(tableName string, changes []schema.TableColumnChange, build
 		builder.WriteString("\n  ")
 		builder.WriteString(c.String())
 	}
+}
+
+func ChangesPrettified(tableName string, changes []schema.TableColumnChange) string {
+	builder := new(strings.Builder)
+	prettifyChanges(tableName, changes, builder)
+	return builder.String()
 }
 
 func SchemasChangesPrettified(changes map[string][]schema.TableColumnChange) string {
