@@ -16,7 +16,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/message"
-	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/google/uuid"
 )
@@ -34,7 +33,7 @@ const (
 
 var reInvalidJSONKey = regexp.MustCompile(`\W`)
 
-func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.Insert) error {
+func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInsert) error {
 	var s *filetypes.Stream
 
 	for msg := range msgs {
@@ -70,7 +69,7 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.Insert) er
 	return s.Finish()
 }
 
-func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, msgs <-chan message.Message) error {
+func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
 	return c.writer.Write(ctx, msgs)
 }
 

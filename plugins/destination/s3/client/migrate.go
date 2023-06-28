@@ -7,8 +7,8 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/writers"
 )
 
-func (*Client) MigrateTable(_ context.Context, ch <-chan *message.MigrateTable) error {
+func (*Client) MigrateTable(_ context.Context, ch <-chan *message.WriteMigrateTable) error {
 	// migrate is not needed in append mode
-	writers.DummyHandler[*message.MigrateTable](ch)
+	writers.DummyHandler[*message.WriteMigrateTable](ch)
 	return nil
 }
