@@ -18,7 +18,7 @@ func TestPlugin(t *testing.T) {
 
 	p := plugin.NewPlugin("duckdb", "development", New)
 	spec := Spec{
-		ConnectionString: "/tmp/duckdb.db?threads=1",
+		ConnectionString: "?threads=1",
 		Development:      true,
 	}
 	specBytes, err := json.Marshal(spec)
@@ -32,14 +32,14 @@ func TestPlugin(t *testing.T) {
 		p,
 		plugin.WriterTestSuiteTests{
 			SafeMigrations: plugin.SafeMigrations{
-				AddColumn: 				 true,
-				RemoveColumn: 		 true,
+				AddColumn:    true,
+				RemoveColumn: true,
 			},
 		},
 		plugin.WithTestDataOptions(schema.TestSourceOptions{
 			// not supported in Parquet Writer
-			SkipDurations:  true,
-			SkipIntervals:  true,
+			SkipDurations: true,
+			SkipIntervals: true,
 			// not supported in duckDB for now
 			SkipTimes:      true,
 			SkipDates:      true,

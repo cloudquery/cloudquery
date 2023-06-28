@@ -88,7 +88,7 @@ func (c *Client) upsert(ctx context.Context, tmpTableName string, table *schema.
 	// as the upsert for tables with PKs is transformed into delete + insert internally
 	// return backoff.Retry(
 	// 	func() error {
-			
+
 	// 	},
 	// 	backoff.WithContext(backoff.WithMaxRetries(backoff.NewConstantBackOff(50*time.Millisecond), 3), ctx),
 	// )
