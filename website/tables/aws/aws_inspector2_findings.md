@@ -28,6 +28,8 @@ The composite primary key for this table is (**request_account_id**, **request_r
 |severity|`utf8`|
 |status|`utf8`|
 |type|`utf8`|
+|code_vulnerability_details|`json`|
+|epss|`json`|
 |exploit_available|`utf8`|
 |exploitability_details|`json`|
 |fix_available|`utf8`|

@@ -8,15 +8,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildDistributions(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockLightsailClient(ctrl)
 
 	var d lightsail.GetDistributionsOutput
-	if err := faker.FakeObject(&d); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&d))
+
 	d.NextPageToken = nil
 	mock.EXPECT().GetDistributions(
 		gomock.Any(),
@@ -25,9 +25,8 @@ func buildDistributions(t *testing.T, ctrl *gomock.Controller) client.Services {
 	).Return(&d, nil)
 
 	var r lightsail.GetDistributionLatestCacheResetOutput
-	if err := faker.FakeObject(&r); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&r))
+
 	mock.EXPECT().GetDistributionLatestCacheReset(
 		gomock.Any(),
 		gomock.Any(),

@@ -9,15 +9,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildKafkaConfigurationsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockKafkaClient(ctrl)
 	object := types.Configuration{}
-	err := faker.FakeObject(&object)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&object))
 
 	m.EXPECT().ListConfigurations(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&kafka.ListConfigurationsOutput{
@@ -25,10 +23,7 @@ func buildKafkaConfigurationsMock(t *testing.T, ctrl *gomock.Controller) client.
 		}, nil)
 
 	tagsOutput := kafka.ListTagsForResourceOutput{}
-	err = faker.FakeObject(&tagsOutput)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tagsOutput))
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
 	return client.Services{
 		Kafka: m,

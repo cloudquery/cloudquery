@@ -8,16 +8,14 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildResourcePolicy(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockOrganizationsClient(ctrl)
 
 	o := organizations.DescribeResourcePolicyOutput{}
-	err := faker.FakeObject(&o)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&o))
 
 	m.EXPECT().DescribeResourcePolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(&o, nil)
 

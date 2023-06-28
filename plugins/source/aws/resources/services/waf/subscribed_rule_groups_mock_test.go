@@ -9,14 +9,14 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildWAFSubscribedRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockWafClient(ctrl)
 	tempSubscrRuleGroupSum := types.SubscribedRuleGroupSummary{}
-	if err := faker.FakeObject(&tempSubscrRuleGroupSum); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tempSubscrRuleGroupSum))
+
 	m.EXPECT().ListSubscribedRuleGroups(gomock.Any(), gomock.Any(), gomock.Any()).Return(&waf.ListSubscribedRuleGroupsOutput{
 		RuleGroups: []types.SubscribedRuleGroupSummary{tempSubscrRuleGroupSum},
 	}, nil)
