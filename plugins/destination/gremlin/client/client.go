@@ -14,7 +14,7 @@ import (
 	v4 "github.com/aws/aws-sdk-go-v2/aws/signer/v4"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
-	"github.com/cloudquery/plugin-sdk/v4/writers"
+	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/rs/zerolog"
 )
 
@@ -25,7 +25,7 @@ type Client struct {
 
 	mu     sync.Mutex // protects client during session creation
 	client *gremlingo.DriverRemoteConnection
-	writer *writers.BatchWriter
+	writer *batchwriter.BatchWriter
 }
 
 var AnonT = gremlingo.T__
@@ -68,7 +68,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 		return nil, err
 	}
 
-	c.writer, err = writers.NewBatchWriter(c, writers.WithBatchSize(c.spec.BatchSize), writers.WithBatchSizeBytes(c.spec.BatchSizeBytes))
+	c.writer, err = batchwriter.New(c, batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))
 	if err != nil {
 		return nil, err
 	}

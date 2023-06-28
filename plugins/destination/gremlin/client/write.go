@@ -9,11 +9,10 @@ import (
 	gremlingo "github.com/apache/tinkerpop/gremlin-go/v3/driver"
 	"github.com/cenkalti/backoff/v4"
 	"github.com/cloudquery/plugin-sdk/v4/message"
-	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs []*message.Insert) error {
+func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs []*message.WriteInsert) error {
 	if len(msgs) == 0 {
 		return nil
 	}
@@ -109,7 +108,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs []*
 	return fmt.Errorf("Max retries (%d) reached. Iterate: %w", c.spec.MaxRetries, err)
 }
 
-func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, msgs <-chan message.Message) error {
+func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
 	if err := c.writer.Write(ctx, msgs); err != nil {
 		return err
 	}

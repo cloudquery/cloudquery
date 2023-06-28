@@ -7,6 +7,6 @@ import (
 )
 
 // Migrate tables. Like neo4j, gremlin does not have a schema, so this is a no-op.
-func (*Client) MigrateTables(context.Context, []*message.MigrateTable) error {
+func (*Client) MigrateTables(context.Context, []*message.WriteMigrateTable) error {
 	return nil
 }
