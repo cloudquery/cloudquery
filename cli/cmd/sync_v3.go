@@ -50,6 +50,9 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		}
 		if destinationSpecs[i].WriteMode == specs.WriteModeAppend {
 			opts = append(opts, transformer.WithRemovePKs())
+		} else if destinationSpecs[i].PKMode == specs.PKModeCQID {
+			opts = append(opts, transformer.WithRemovePKs())
+			opts = append(opts, transformer.WithCQIDPrimaryKey())
 		}
 		destinationTransformers[i] = transformer.NewRecordTransformer(opts...)
 	}
@@ -64,22 +67,11 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		return err
 	}
 	for i := range destinationsClients {
-		// TODO: for backwards-compatibility check for old fields like `batch_size` and move them into the spec, log a warning
-		// 	Name           string      `json:"name,omitempty"`
-		//	Version        string      `json:"version,omitempty"`
-		//	Path           string      `json:"path,omitempty"`
-		//	Registry       Registry    `json:"registry,omitempty"`
-		//	WriteMode      WriteMode   `json:"write_mode,omitempty"`
-		//	MigrateMode    MigrateMode `json:"migrate_mode,omitempty"`
-		//	BatchSize      int         `json:"batch_size,omitempty"`
-		//	BatchSizeBytes int         `json:"batch_size_bytes,omitempty"`
-		//	Spec           any         `json:"spec,omitempty"`
-		//	PKMode         PKMode      `json:"pk_mode,omitempty"`
-		destSpecBytes, err := json.Marshal(destinationSpecs[i].Spec)
+		destSpec := destinationSpecs[i]
+		destSpecBytes, err := json.Marshal(destSpec.Spec)
 		if err != nil {
 			return err
 		}
-
 		if _, err := destinationsPbClients[i].Init(ctx, &plugin.Init_Request{
 			Spec: destSpecBytes,
 		}); err != nil {
