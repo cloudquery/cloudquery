@@ -10,7 +10,6 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v4/message"
-	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"google.golang.org/api/googleapi"
 )
@@ -28,7 +27,7 @@ func (i *item) Save() (map[string]bigquery.Value, string, error) {
 	return i.cols, bigquery.NoDedupeID, nil
 }
 
-func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, res <-chan message.Message) error {
+func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) error {
 	if err := c.writer.Write(ctx, res); err != nil {
 		return fmt.Errorf("failed to write: %w", err)
 	}
@@ -39,7 +38,7 @@ func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, res <-c
 }
 
 // WriteTableBatch(ctx context.Context, name string, msgs []*message.Insert) error
-func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs []*message.Insert) error {
+func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs []*message.WriteInsert) error {
 	inserter := c.client.Dataset(c.spec.DatasetID).Table(name).Inserter()
 	inserter.IgnoreUnknownValues = true
 	inserter.SkipInvalidRows = false

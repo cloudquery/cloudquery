@@ -8,6 +8,6 @@ import (
 )
 
 // DeleteStale is not currently implemented for BigQuery, as it only supports "append" write mode.
-func (*Client) DeleteStale(context.Context, []*message.DeleteStale) error {
+func (*Client) DeleteStale(context.Context, []*message.WriteDeleteStale) error {
 	return errors.New("DeleteStale not implemented")
 }
