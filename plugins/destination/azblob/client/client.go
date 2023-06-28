@@ -10,6 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/writers"
 	"github.com/rs/zerolog"
 )
 
@@ -19,7 +20,7 @@ type Client struct {
 	logger zerolog.Logger
 	spec   *Spec
 	*filetypes.Client
-	writer *StreamingBatchWriter
+	writer *writers.StreamingBatchWriter
 
 	storageClient *azblob.Client
 }
@@ -60,7 +61,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 		return nil, fmt.Errorf("failed to write test file to Azure: %w", err)
 	}
 
-	c.writer, err = NewStreamingBatchWriter(c, WithStreamingBatchWriterBatchSize(c.spec.BatchSize), WithStreamingBatchWriterBatchSizeBytes(c.spec.BatchSizeBytes))
+	c.writer, err = writers.NewStreamingBatchWriter(c, writers.WithStreamingBatchWriterBatchSizeRows(*c.spec.BatchSize), writers.WithStreamingBatchWriterBatchSizeBytes(*c.spec.BatchSizeBytes))
 	if err != nil {
 		return nil, err
 	}

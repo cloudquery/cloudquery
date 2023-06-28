@@ -13,11 +13,20 @@ type Spec struct {
 	NoRotate       bool   `json:"no_rotate,omitempty"`
 	*filetypes.FileSpec
 
-	BatchSize      int `json:"batch_size"`
-	BatchSizeBytes int `json:"batch_size_bytes"`
+	BatchSize      *int64 `json:"batch_size"`
+	BatchSizeBytes *int64 `json:"batch_size_bytes"`
 }
 
-func (*Spec) SetDefaults() {}
+func (s *Spec) SetDefaults() {
+	if s.BatchSize == nil {
+		i := int64(10000)
+		s.BatchSize = &i
+	}
+	if s.BatchSizeBytes == nil {
+		i := int64(50 * 1024 * 1024) // 50 MiB
+		s.BatchSizeBytes = &i
+	}
+}
 
 func (s *Spec) Validate() error {
 	if s.StorageAccount == "" {
