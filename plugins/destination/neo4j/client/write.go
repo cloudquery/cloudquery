@@ -6,12 +6,11 @@ import (
 	"strings"
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
-	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs []*message.Insert) error {
+func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs []*message.WriteInsert) error {
 	if len(msgs) == 0 {
 		return nil
 	}
@@ -61,7 +60,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs []*
 	return session.Close(ctx)
 }
 
-func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, msgs <-chan message.Message) error {
+func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
 	if err := c.writer.Write(ctx, msgs); err != nil {
 		return err
 	}
