@@ -13,6 +13,7 @@ spec:
   version: "VERSION_SOURCE_AWS"
   tables: ['aws_s3_buckets']
   destinations: ["postgresql"]
+  concurrency: 10000
   spec:
     aws_debug: false
     org:

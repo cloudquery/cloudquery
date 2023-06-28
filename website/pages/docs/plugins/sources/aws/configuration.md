@@ -15,6 +15,7 @@ spec:
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_s3_buckets"]
   destinations: ["DESTINATION_NAME"]
+  concurrency: 10000
   spec: 
     # AWS Spec section described below
     regions: 
@@ -38,6 +39,7 @@ spec:
   version: "VERSION_SOURCE_AWS"
   tables: ['aws_s3_buckets']
   destinations: ["DESTINATION_NAME"]
+  concurrency: 10000
   spec:
     aws_debug: false
     org:
@@ -278,6 +280,7 @@ spec:
     - aws_rds_engine_versions
     - aws_servicequotas_services
   destinations: ["postgresql"]
+  concurrency: 10000
   spec: 
     # AWS Spec section described below
 ```
