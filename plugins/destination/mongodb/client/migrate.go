@@ -69,7 +69,7 @@ func (c *Client) migrateTableOnConflict(ctx context.Context, force bool, table *
 	return nil
 }
 
-func (c *Client) getIndexTemplates(table *schema.Table) []mongo.IndexModel {
+func (*Client) getIndexTemplates(table *schema.Table) []mongo.IndexModel {
 	var indexes []mongo.IndexModel
 
 	pks := table.PrimaryKeys()
