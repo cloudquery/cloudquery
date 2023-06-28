@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+
 	"github.com/cloudquery/cloudquery/plugins/destination/duckdb/client"
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/duckdb/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
