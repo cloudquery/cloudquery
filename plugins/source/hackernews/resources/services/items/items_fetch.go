@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/hermanschaaf/hackernews"
 	"golang.org/x/sync/errgroup"
 )
@@ -31,7 +31,7 @@ import (
 func fetchItems(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	tableName := Items().Name
-	value, err := c.Backend.Get(ctx, tableName, c.ID())
+	value, err := c.Backend.GetKey(ctx, c.ID())
 	if err != nil {
 		return fmt.Errorf("failed to retrieve state from backend: %w", err)
 	}
@@ -90,7 +90,7 @@ func fetchItems(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 		}
 		// save the new cursor position after a batch has been successfully fetched
 		cursor = endID
-		err = c.Backend.Set(ctx, tableName, c.ID(), strconv.Itoa(cursor))
+		err = c.Backend.SetKey(ctx, tableName, strconv.Itoa(cursor))
 		if err != nil {
 			return fmt.Errorf("failed to save state to backend: %w", err)
 		}
