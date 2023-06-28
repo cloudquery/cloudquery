@@ -7,6 +7,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/aws/smithy-go/logging"
@@ -34,6 +35,7 @@ type Client struct {
 	Backend              backend.Backend
 	specificRegions      bool
 	Spec                 *Spec
+	AWSConfig            *aws.Config
 }
 
 type AwsLogger struct {
@@ -130,6 +132,7 @@ func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region st
 		WAFScope:             c.WAFScope,
 		Backend:              c.Backend,
 		Spec:                 c.Spec,
+		AWSConfig:            c.AWSConfig,
 	}
 }
 

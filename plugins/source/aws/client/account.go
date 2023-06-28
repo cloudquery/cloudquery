@@ -83,6 +83,7 @@ func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, aws
 		accountId: *output.Account,
 		svcs:      initServices(awsCfg, account.Regions),
 	}
+	c.AWSConfig = &awsCfg
 
 	return &svcsDetails, nil
 }
