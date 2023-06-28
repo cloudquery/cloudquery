@@ -11,7 +11,8 @@ import (
 	"github.com/apache/arrow/go/v13/parquet"
 	"github.com/apache/arrow/go/v13/parquet/pqarrow"
 	"github.com/cenkalti/backoff/v4"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/google/uuid"
 	"golang.org/x/exp/slices"
 )
@@ -57,6 +58,12 @@ func (c *Client) upsert(ctx context.Context, tmpTableName string, table *schema.
 	sb.WriteString(" FROM ")
 	sb.WriteString(tmpTableName)
 	sb.WriteString(" ON CONFLICT (" + strings.Join(table.PrimaryKeys(), ", ") + ")")
+	indices := nonPkIndices(table)
+	if len(indices) == 0 {
+		sb.WriteString(" DO NOTHING")
+		return c.exec(ctx, sb.String())
+	}
+
 	sb.WriteString(" DO UPDATE SET ")
 
 	written := 0
@@ -76,14 +83,15 @@ func (c *Client) upsert(ctx context.Context, tmpTableName string, table *schema.
 	}
 	query := sb.String()
 
+	return c.exec(ctx, query)
 	// per https://duckdb.org/docs/sql/indexes#over-eager-unique-constraint-checking we might need some retries
 	// as the upsert for tables with PKs is transformed into delete + insert internally
-	return backoff.Retry(
-		func() error {
-			return c.exec(ctx, query)
-		},
-		backoff.WithContext(backoff.WithMaxRetries(backoff.NewConstantBackOff(50*time.Millisecond), 3), ctx),
-	)
+	// return backoff.Retry(
+	// 	func() error {
+			
+	// 	},
+	// 	backoff.WithContext(backoff.WithMaxRetries(backoff.NewConstantBackOff(50*time.Millisecond), 3), ctx),
+	// )
 }
 
 func (c *Client) deleteByPK(ctx context.Context, tmpTableName string, table *schema.Table) error {
@@ -107,18 +115,32 @@ func (c *Client) copyFromFile(ctx context.Context, tableName string, fileName st
 		") from '"+fileName+"' (FORMAT PARQUET)")
 }
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, records []arrow.Record) (err error) {
-	tmpFile, err := writeTMPFile(table, records)
+func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
+	if err := c.writer.Write(ctx, msgs); err != nil {
+		return fmt.Errorf("failed to write messages: %w", err)
+	}
+	if err := c.writer.Flush(ctx); err != nil {
+		return fmt.Errorf("failed to flush messages: %w", err)
+	}
+	return nil
+}
+
+func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs []*message.WriteInsert) error {
+	if len(msgs) == 0 {
+		return nil
+	}
+	table := msgs[0].GetTable()
+	tmpFile, err := writeTMPFile(table, msgs)
 	if err != nil {
 		return err
 	}
 	defer os.Remove(tmpFile)
 
-	if !c.enabledPks() || len(table.PrimaryKeys()) == 0 {
-		return c.copyFromFile(ctx, table.Name, tmpFile, table)
+	if len(table.PrimaryKeys()) == 0 {
+		return c.copyFromFile(ctx, name, tmpFile, table)
 	}
 
-	tmpTableName := table.Name + strings.ReplaceAll(uuid.New().String(), "-", "_")
+	tmpTableName := name + strings.ReplaceAll(uuid.New().String(), "-", "_")
 	if err := c.createTableIfNotExist(ctx, tmpTableName, table); err != nil {
 		return fmt.Errorf("failed to create table %s: %w", tmpTableName, err)
 	}
@@ -144,7 +166,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 	return c.upsert(ctx, tmpTableName, table)
 }
 
-func writeTMPFile(table *schema.Table, records []arrow.Record) (fileName string, err error) {
+func writeTMPFile(table *schema.Table, msgs []*message.WriteInsert) (fileName string, err error) {
 	sc := transformSchemaForWriting(table.ToArrowSchema())
 
 	// create temp file
@@ -169,8 +191,8 @@ func writeTMPFile(table *schema.Table, records []arrow.Record) (fileName string,
 	defer fw.Close() // we don't care here either as the happy path will check the error
 
 	// write records
-	for _, r := range records {
-		if err = fw.WriteBuffered(transformRecord(sc, r)); err != nil {
+	for _, msg := range msgs {
+		if err = fw.WriteBuffered(transformRecord(sc, msg.Record)); err != nil {
 			return "", err
 		}
 	}

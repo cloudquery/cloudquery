@@ -4,10 +4,11 @@ import (
 	"context"
 	"database/sql"
 	"database/sql/driver"
+	"encoding/json"
 	"fmt"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/writers"
 	"github.com/rs/zerolog"
 
 	// import duckdb driver
@@ -15,29 +16,30 @@ import (
 )
 
 type Client struct {
-	destination.UnimplementedUnmanagedWriter
+	plugin.UnimplementedSource
 	db        *sql.DB
 	connector driver.Connector
 	logger    zerolog.Logger
-	spec      specs.Destination
-	metrics   destination.Metrics
+	spec      Spec
+	writer    *writers.BatchWriter
 }
 
-var _ destination.Client = (*Client)(nil)
+var _ plugin.Client = (*Client)(nil)
 
-func New(ctx context.Context, logger zerolog.Logger, dstSpec specs.Destination) (destination.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
 	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "duckdb-dest").Logger(),
-		spec:   dstSpec,
 	}
-
-	var spec Spec
-	if err := dstSpec.UnmarshalSpec(&spec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal duckdb spec: %w", err)
+	if err := json.Unmarshal(spec, &c.spec); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
-
-	c.connector, err = duckdb.NewConnector(spec.ConnectionString, nil)
+	c.spec.SetDefaults()
+	c.writer, err = writers.NewBatchWriter(c, writers.WithBatchSize(c.spec.BatchSize), writers.WithBatchSizeBytes(c.spec.BatchSizeBytes))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create batch writer: %w", err)
+	}
+	c.connector, err = duckdb.NewConnector(c.spec.ConnectionString, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -68,13 +70,12 @@ func (c *Client) Close(_ context.Context) error {
 	return err
 }
 
-func (c *Client) Metrics() destination.Metrics {
-	return c.metrics
-}
-
 func (c *Client) exec(ctx context.Context, query string, args ...any) error {
 	r, err := c.db.ExecContext(ctx, query, args...)
-	if c.spec.Version == "development" {
+	if err != nil {
+		return err
+	}
+	if c.spec.Development {
 		rowsAffected, rowsErr := r.RowsAffected()
 		if rowsErr == nil {
 			c.logger.Debug().Str("query", query).Any("values", args).Int64("rowsAffected", rowsAffected).Msg("exec query")
@@ -82,5 +83,5 @@ func (c *Client) exec(ctx context.Context, query string, args ...any) error {
 			c.logger.Debug().Str("query", query).Any("values", args).Err(rowsErr).Msg("exec query")
 		}
 	}
-	return err
+	return nil
 }
