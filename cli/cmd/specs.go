@@ -54,7 +54,7 @@ func CLISourceSpecToPbSpec(spec specs.Source) pbSpecs.Source {
 		Destinations:        spec.Destinations,
 		Spec:                spec.Spec,
 		DeterministicCQID:   spec.DeterministicCQID,
-		
+
 		// allow use of deprecated options here for backwards-compatibility
 		Concurrency:         spec.Concurrency,                          // nolint:staticcheck
 		TableConcurrency:    spec.TableConcurrency,                     // nolint:staticcheck
