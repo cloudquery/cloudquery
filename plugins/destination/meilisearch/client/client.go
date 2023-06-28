@@ -2,36 +2,39 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
-	"time"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/meilisearch/meilisearch-go"
 	"github.com/rs/zerolog"
 )
 
 type Client struct {
+	plugin.UnimplementedSource
 	Meilisearch *meilisearch.Client
 
 	logger   zerolog.Logger
-	dstSpec  specs.Destination
+	spec     Spec
 	pkColumn string
-
-	destination.UnimplementedUnmanagedWriter
+	writer   *batchwriter.BatchWriter
 }
 
-var _ destination.Client = (*Client)(nil)
+var _ plugin.Client = (*Client)(nil)
 
-func (c *Client) Close(context.Context) error {
+func (c *Client) Close(ctx context.Context) error {
+	if err := c.writer.Close(ctx); err != nil {
+		return fmt.Errorf("failed to close writer: %w", err)
+	}
 	c.Meilisearch = nil
 	return nil
 }
 
-func (*Client) DeleteStale(context.Context, schema.Tables, string, time.Time) error {
+func (*Client) DeleteStale(context.Context, []*message.WriteDeleteStale) error {
 	return fmt.Errorf("DeleteStale not supported")
 }
 
@@ -68,19 +71,11 @@ func (c *Client) verifyVersion() error {
 	return fmt.Errorf("unsupported Meilisearch version %s (must be >= 1.1)", version.PkgVersion)
 }
 
-func New(_ context.Context, logger zerolog.Logger, dstSpec specs.Destination) (destination.Client, error) {
+func New(_ context.Context, logger zerolog.Logger, specBytes []byte) (plugin.Client, error) {
 	var pkColumn string
-	switch dstSpec.WriteMode {
-	case specs.WriteModeAppend:
-		pkColumn = schema.CqIDColumn.Name
-	case specs.WriteModeOverwrite:
-		pkColumn = hashColumnName
-	default:
-		return nil, fmt.Errorf("%q write_mode is not supported", dstSpec.WriteMode)
-	}
 
-	spec := new(Spec)
-	if err := dstSpec.UnmarshalSpec(spec); err != nil {
+	spec := Spec{}
+	if err := json.Unmarshal(specBytes, &spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
 
@@ -97,9 +92,14 @@ func New(_ context.Context, logger zerolog.Logger, dstSpec specs.Destination) (d
 	client := &Client{
 		Meilisearch: mClient,
 		logger:      logger.With().Str("module", "dest-meilisearch").Str("host", spec.Host).Logger(),
-		dstSpec:     dstSpec,
 		pkColumn:    pkColumn,
+		spec:        spec,
 	}
+	writer, err := batchwriter.New(client, batchwriter.WithBatchSize(spec.BatchSize), batchwriter.WithBatchSizeBytes(spec.BatchSizeBytes))
+	if err != nil {
+		return nil, err
+	}
+	client.writer = writer
 
 	return client, client.verifyVersion()
 }

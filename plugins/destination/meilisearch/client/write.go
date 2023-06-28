@@ -5,24 +5,41 @@ import (
 	"fmt"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, records []arrow.Record) error {
+func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) error {
+	if err := c.writer.Write(ctx, res); err != nil {
+		return fmt.Errorf("write error: %w", err)
+	}
+	if err := c.writer.Flush(ctx); err != nil {
+		return fmt.Errorf("write flush error: %w", err)
+	}
+	return nil
+}
+
+func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs []*message.WriteInsert) error {
+	if len(msgs) == 0 {
+		return nil
+	}
+	table := msgs[0].GetTable()
+
 	index, err := c.Meilisearch.GetIndex(table.Name)
 	if err != nil {
 		return err
 	}
-
+	appendMode := len(table.PrimaryKeys()) == 0
 	var transformer rowTransformer
-	switch c.dstSpec.WriteMode {
-	case specs.WriteModeAppend:
+	if appendMode {
 		transformer = toMap(table)
-	case specs.WriteModeOverwrite, specs.WriteModeOverwriteDeleteStale:
+	} else {
 		transformer = toMapWithHash(table)
-	default:
-		return fmt.Errorf("unsupported write mode %q", c.dstSpec.WriteMode.String())
+	}
+
+	records := make([]arrow.Record, 0, len(msgs))
+	for _, msg := range msgs {
+		records = append(records, msg.Record)
 	}
 
 	docs := make([]map[string]any, 0, len(records)) // at least 1 row in record

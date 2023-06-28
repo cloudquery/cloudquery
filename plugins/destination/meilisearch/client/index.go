@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/meilisearch/meilisearch-go"
 	"golang.org/x/exp/slices"
 )
@@ -13,6 +13,7 @@ type indexSchema struct {
 	UID        string
 	PrimaryKey string
 	Attributes []string
+	Index      int
 }
 
 func (i *indexSchema) init(index *meilisearch.Index) (*indexSchema, error) {
@@ -44,8 +45,9 @@ func (c *Client) tableIndexSchema(table *schema.Table) *indexSchema {
 
 func (c *Client) tablesIndexSchemas(tables schema.Tables) map[string]*indexSchema {
 	res := make(map[string]*indexSchema)
-	for _, table := range tables {
+	for i, table := range tables {
 		s := c.tableIndexSchema(table)
+		s.Index = i
 		res[s.UID] = s
 	}
 	return res
