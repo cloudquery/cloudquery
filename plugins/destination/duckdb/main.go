@@ -13,5 +13,7 @@ const (
 
 func main() {
 	p := plugin.NewPlugin("duckdb", internalPlugin.Version, client.New)
-	serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN))
+	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN)); err != nil {
+		log.Fatalf("failed to serve plugin: %v", err)
+	}
 }
