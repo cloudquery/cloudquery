@@ -107,9 +107,9 @@ func (c *Client) transformRecords(table *schema.Table, records []arrow.Record) [
 	return documents
 }
 
-func (c *Client) appendTableBatch(ctx context.Context, table *schema.Table, docuemnts []any) error {
+func (c *Client) appendTableBatch(ctx context.Context, table *schema.Table, documents []any) error {
 	tableName := table.Name
-	if _, err := c.client.Database(c.spec.Database).Collection(tableName).InsertMany(ctx, docuemnts); err != nil {
+	if _, err := c.client.Database(c.spec.Database).Collection(tableName).InsertMany(ctx, documents); err != nil {
 		return err
 	}
 	return nil
