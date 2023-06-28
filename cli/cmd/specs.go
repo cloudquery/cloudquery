@@ -48,18 +48,20 @@ func CLISourceSpecToPbSpec(spec specs.Source) pbSpecs.Source {
 		Version:             spec.Version,
 		Path:                spec.Path,
 		Registry:            CLIRegistryToPbRegistry(spec.Registry),
-		Concurrency:         spec.Concurrency,         // nolint:staticcheck // allow use of deprecated options here for backwards-compatibility
-		TableConcurrency:    spec.TableConcurrency,    // nolint:staticcheck // allow use of deprecated options here for backwards-compatibility
-		ResourceConcurrency: spec.ResourceConcurrency, // nolint:staticcheck // allow use of deprecated options here for backwards-compatibility
 		Tables:              spec.Tables,
 		SkipTables:          spec.SkipTables,
 		SkipDependentTables: spec.SkipDependentTables,
 		Destinations:        spec.Destinations,
-		Backend:             CLIBackendToPbBackend(spec.Backend),       // nolint:staticcheck // allow use of deprecated options here for backwards-compatibility
-		BackendSpec:         spec.BackendSpec,                          // nolint:staticcheck // allow use of deprecated options here for backwards-compatibility
-		Scheduler:           CLISchedulerToPbScheduler(spec.Scheduler), // nolint:staticcheck // allow use of deprecated options here for backwards-compatibility
 		Spec:                spec.Spec,
 		DeterministicCQID:   spec.DeterministicCQID,
+		
+		// allow use of deprecated options here for backwards-compatibility
+		Concurrency:         spec.Concurrency,                          // nolint:staticcheck
+		TableConcurrency:    spec.TableConcurrency,                     // nolint:staticcheck
+		ResourceConcurrency: spec.ResourceConcurrency,                  // nolint:staticcheck
+		Backend:             CLIBackendToPbBackend(spec.Backend),       // nolint:staticcheck
+		BackendSpec:         spec.BackendSpec,                          // nolint:staticcheck
+		Scheduler:           CLISchedulerToPbScheduler(spec.Scheduler), // nolint:staticcheck
 	}
 }
 
