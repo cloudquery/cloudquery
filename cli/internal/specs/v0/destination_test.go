@@ -133,6 +133,7 @@ spec:
 			Path:           "localhost:9999",
 			BatchSize:      10000,
 			BatchSizeBytes: 10000000,
+			Spec:           map[string]any{},
 		},
 	},
 	{
@@ -150,6 +151,7 @@ spec:
 			Path:           "/home/user/some_executable",
 			BatchSize:      10000,
 			BatchSizeBytes: 10000000,
+			Spec:           map[string]any{},
 		},
 	},
 	{
@@ -168,6 +170,7 @@ spec:
 			Version:        "v1.1.0",
 			BatchSize:      10000,
 			BatchSizeBytes: 10000000,
+			Spec:           map[string]any{},
 		},
 	},
 }
