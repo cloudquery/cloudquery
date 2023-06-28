@@ -7,7 +7,7 @@ import (
 
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
-	"github.com/cloudquery/plugin-sdk/v4/writers"
+	"github.com/cloudquery/plugin-sdk/v4/writers/streamingbatchwriter"
 	"github.com/rs/zerolog"
 )
 
@@ -18,7 +18,7 @@ type Client struct {
 	spec   *Spec
 
 	*filetypes.Client
-	writer *writers.StreamingBatchWriter
+	writer *streamingbatchwriter.StreamingBatchWriter
 }
 
 func New(_ context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
@@ -51,7 +51,7 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, 
 		return nil, fmt.Errorf("failed to create filetype client: %w", err)
 	}
 
-	c.writer, err = writers.NewStreamingBatchWriter(c, writers.WithStreamingBatchWriterBatchSizeRows(*c.spec.BatchSize), writers.WithStreamingBatchWriterBatchSizeBytes(*c.spec.BatchSizeBytes))
+	c.writer, err = streamingbatchwriter.New(c, streamingbatchwriter.WithBatchSizeRows(*c.spec.BatchSize), streamingbatchwriter.WithBatchSizeBytes(*c.spec.BatchSizeBytes))
 	if err != nil {
 		return nil, err
 	}
