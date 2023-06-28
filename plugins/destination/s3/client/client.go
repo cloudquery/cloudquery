@@ -12,7 +12,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
-	"github.com/cloudquery/plugin-sdk/v4/writers"
+	"github.com/cloudquery/plugin-sdk/v4/writers/streamingbatchwriter"
 
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/rs/zerolog"
@@ -24,7 +24,7 @@ type Client struct {
 	logger zerolog.Logger
 	spec   *Spec
 	*filetypes.Client
-	writer *writers.StreamingBatchWriter
+	writer *streamingbatchwriter.StreamingBatchWriter
 
 	s3Client   *s3.Client
 	uploader   *manager.Uploader
@@ -78,7 +78,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 		}
 	}
 
-	c.writer, err = writers.NewStreamingBatchWriter(c, writers.WithStreamingBatchWriterBatchSizeRows(*c.spec.BatchSize), writers.WithStreamingBatchWriterBatchSizeBytes(*c.spec.BatchSizeBytes))
+	c.writer, err = streamingbatchwriter.New(c, streamingbatchwriter.WithBatchSizeRows(*c.spec.BatchSize), streamingbatchwriter.WithBatchSizeBytes(*c.spec.BatchSizeBytes))
 	if err != nil {
 		return nil, err
 	}
