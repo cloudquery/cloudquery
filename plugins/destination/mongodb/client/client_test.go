@@ -9,14 +9,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 
-// var migrateStrategy = destination.MigrateStrategy{
-// 	AddColumn:           specs.MigrateModeSafe,
-// 	AddColumnNotNull:    specs.MigrateModeForced,
-// 	RemoveColumn:        specs.MigrateModeSafe,
-// 	RemoveColumnNotNull: specs.MigrateModeForced,
-// 	ChangeColumn:        specs.MigrateModeForced,
-// }
-
 func getTestConnection() string {
 	testConn := os.Getenv("CQ_DEST_MONGODB_TEST_CONN")
 	if testConn == "" {
@@ -43,11 +35,6 @@ func TestPlugin(t *testing.T) {
 		p,
 		plugin.WriterTestSuiteTests{
 			SkipMigrate: true,
-			// SkipMigrateOverwriteForce: true,
-			// SkipMigrateAppendForce:    true,
-
-			// MigrateStrategyOverwrite: migrateStrategy,
-			// MigrateStrategyAppend:    migrateStrategy,
 		},
 		// plugin.WithTestSourceTimePrecision(time.Millisecond),
 	)

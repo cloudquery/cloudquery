@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func (c *Client) DeleteStale(ctx context.Context, msgs []*message.DeleteStale) error {
+func (c *Client) DeleteStale(ctx context.Context, msgs []*message.WriteDeleteStale) error {
 	for _, msg := range msgs {
 		tableName := msg.Table.Name
 		// delete all records that are not in the source and are older than syncTime

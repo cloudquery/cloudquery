@@ -9,7 +9,6 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v4/message"
-	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"go.mongodb.org/mongo-driver/bson"
@@ -142,7 +141,7 @@ func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, d
 	return nil
 }
 
-func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs []*message.Insert) error {
+func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs []*message.WriteInsert) error {
 	if len(msgs) == 0 {
 		return nil
 	}
@@ -161,7 +160,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs []*
 	return c.appendTableBatch(ctx, table, documents)
 }
 
-func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, msgs <-chan message.Message) error {
+func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
 	if err := c.writer.Write(ctx, msgs); err != nil {
 		return err
 	}
