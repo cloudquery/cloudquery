@@ -6,11 +6,6 @@ https://docs.aws.amazon.com/codebuild/latest/APIReference/API_SourceCredentialsI
 
 The primary key for this table is **arn**.
 
-## Relations
-
-The following tables depend on aws_codebuild_source_credentials:
-  - [aws_codebuild_builds](aws_codebuild_builds)
-
 ## Columns
 
 | Name          | Type          |
