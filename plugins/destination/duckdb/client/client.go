@@ -8,7 +8,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
-	"github.com/cloudquery/plugin-sdk/v4/writers"
+	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/rs/zerolog"
 
 	// import duckdb driver
@@ -21,7 +21,7 @@ type Client struct {
 	connector driver.Connector
 	logger    zerolog.Logger
 	spec      Spec
-	writer    *writers.BatchWriter
+	writer    *batchwriter.BatchWriter
 }
 
 var _ plugin.Client = (*Client)(nil)
@@ -35,7 +35,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
 	c.spec.SetDefaults()
-	c.writer, err = writers.NewBatchWriter(c, writers.WithBatchSize(c.spec.BatchSize), writers.WithBatchSizeBytes(c.spec.BatchSizeBytes))
+	c.writer, err = batchwriter.New(c, batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create batch writer: %w", err)
 	}
