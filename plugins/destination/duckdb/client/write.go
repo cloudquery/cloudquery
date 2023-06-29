@@ -83,15 +83,15 @@ func (c *Client) upsert(ctx context.Context, tmpTableName string, table *schema.
 	}
 	query := sb.String()
 
-	return c.exec(ctx, query)
+	// return c.exec(ctx, query)
 	// per https://duckdb.org/docs/sql/indexes#over-eager-unique-constraint-checking we might need some retries
 	// as the upsert for tables with PKs is transformed into delete + insert internally
-	// return backoff.Retry(
-	// 	func() error {
-
-	// 	},
-	// 	backoff.WithContext(backoff.WithMaxRetries(backoff.NewConstantBackOff(50*time.Millisecond), 3), ctx),
-	// )
+	return backoff.Retry(
+		func() error {
+			return c.exec(ctx, query)
+		},
+		backoff.WithContext(backoff.WithMaxRetries(backoff.NewConstantBackOff(50*time.Millisecond), 3), ctx),
+	)
 }
 
 func (c *Client) deleteByPK(ctx context.Context, tmpTableName string, table *schema.Table) error {

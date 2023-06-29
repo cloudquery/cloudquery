@@ -19,7 +19,7 @@ func TestPlugin(t *testing.T) {
 	p := plugin.NewPlugin("duckdb", "development", New)
 	spec := Spec{
 		ConnectionString: "?threads=1",
-		Development:      true,
+		Debug:            true,
 	}
 	specBytes, err := json.Marshal(spec)
 	if err != nil {

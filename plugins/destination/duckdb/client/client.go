@@ -75,7 +75,7 @@ func (c *Client) exec(ctx context.Context, query string, args ...any) error {
 	if err != nil {
 		return err
 	}
-	if c.spec.Development {
+	if c.spec.Debug {
 		rowsAffected, rowsErr := r.RowsAffected()
 		if rowsErr == nil {
 			c.logger.Debug().Str("query", query).Any("values", args).Int64("rowsAffected", rowsAffected).Msg("exec query")

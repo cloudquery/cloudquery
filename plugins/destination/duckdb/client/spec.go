@@ -9,7 +9,7 @@ type Spec struct {
 	ConnectionString string `json:"connection_string,omitempty"`
 	BatchSize        int    `json:"batch_size,omitempty"`
 	BatchSizeBytes   int    `json:"batch_size_bytes,omitempty"`
-	Development      bool   `json:"development,omitempty"`
+	Debug            bool   `json:"debug,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -19,5 +19,4 @@ func (s *Spec) SetDefaults() {
 	if s.BatchSizeBytes == 0 {
 		s.BatchSizeBytes = defaultBatchSizeBytes
 	}
-	// stub for any future defaults
 }
