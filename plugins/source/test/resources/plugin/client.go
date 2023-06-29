@@ -28,8 +28,8 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.Message) error {
-	s := scheduler.NewScheduler(c.SchedulerClient, scheduler.WithSchedulerStrategy(scheduler.StrategyDFS))
+func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.SyncMessage) error {
+	s := scheduler.NewScheduler(c.SchedulerClient, scheduler.WithStrategy(scheduler.StrategyDFS))
 	return s.Sync(ctx, tables, res)
 }
 
