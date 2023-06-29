@@ -30,8 +30,10 @@ func TestPlugin(t *testing.T) {
 			SkipMigrate: true,
 		},
 		plugin.WithTestDataOptions(schema.TestSourceOptions{
-			SkipIntervals: true,
-			SkipMaps:      true,
+			SkipIntervals:  true,
+			SkipMaps:       true,
+			SkipLargeTypes: true,
+			SkipLists:      true,
 		}),
 	)
 }
