@@ -11,7 +11,7 @@ import (
 	"github.com/meilisearch/meilisearch-go"
 )
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
+func (c *Client) Read(_ context.Context, table *schema.Table, res chan<- arrow.Record) error {
 	sc := table.ToArrowSchema()
 	index, err := c.Meilisearch.GetIndex(table.Name)
 	if err != nil {
