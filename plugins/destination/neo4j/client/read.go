@@ -12,7 +12,7 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
-const readCypher = "MATCH (t:%s) RETURN t ORDER BY t._cq_sync_time ASC"
+const readCypher = "MATCH (t:%s) RETURN t"
 
 func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
 	if val == nil {
