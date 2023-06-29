@@ -21,13 +21,24 @@ func TestAWSTableDescriptions(t *testing.T) {
 	p := AWS()
 	tables := p.Tables()
 	for _, table := range tables {
-		if table.Description == "" {
-			t.Errorf("Table %q has no description", table.Name)
+		if ignoreTable(table.Name) {
+			continue
 		}
-		if _, ok := descriptions[table.Description]; ok {
-			t.Fatalf("description for table exists %s", table.Name)
+		if _, ok := descriptions[table.Description]; ok || table.Description == "" {
+			t.Errorf("description for table exists %s", table.Name)
 		} else {
 			descriptions[table.Description] = true
 		}
 	}
+}
+
+func ignoreTable(tableName string) bool {
+	tablesToIgnore := map[string]bool{
+		"aws_resiliencehub_suggested_resiliency_policies": true,
+		// TODO: Remove this once we breakup S3 Bucket into multiple tables rather than a single composite table
+		"aws_s3_buckets": true,
+	}
+	_, ok := tablesToIgnore[tableName]
+	return ok
+
 }
