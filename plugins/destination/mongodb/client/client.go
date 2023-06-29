@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
-	"github.com/cloudquery/plugin-sdk/v4/writers"
+	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/goccy/go-json"
 	"github.com/rs/zerolog"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -17,7 +17,7 @@ type Client struct {
 	logger zerolog.Logger
 	spec   *Spec
 	client *mongo.Client
-	writer *writers.BatchWriter
+	writer *batchwriter.BatchWriter
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
@@ -38,7 +38,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 	if err := c.client.Connect(context.Background()); err != nil {
 		return nil, err
 	}
-	c.writer, err = writers.NewBatchWriter(c, writers.WithBatchSize(c.spec.BatchSize), writers.WithBatchSizeBytes(c.spec.BatchSizeBytes))
+	c.writer, err = batchwriter.New(c, batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))
 	if err != nil {
 		return nil, err
 	}

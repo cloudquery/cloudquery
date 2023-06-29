@@ -11,16 +11,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
-// 	for _, t := range tables {
-// 		if err := c.migrateTable(ctx, t); err != nil {
-// 			return err
-// 		}
-// 	}
-
-// 	return nil
-// }
-
 func (c *Client) MigrateTables(ctx context.Context, msgs []*message.WriteMigrateTable) error {
 	for _, msg := range msgs {
 		if err := c.migrateTable(ctx, msg.MigrateForce, msg.Table); err != nil {
