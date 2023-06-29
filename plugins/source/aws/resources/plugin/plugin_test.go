@@ -14,3 +14,20 @@ func TestAWS(t *testing.T) {
 		t.Errorf("Name() = %q, want %q", name, "aws")
 	}
 }
+
+// This test ensures that all tables have a unique description.
+func TestAWSTableDescriptions(t *testing.T) {
+	descriptions := make(map[string]bool)
+	p := AWS()
+	tables := p.Tables()
+	for _, table := range tables {
+		if table.Description == "" {
+			t.Errorf("Table %q has no description", table.Name)
+		}
+		if _, ok := descriptions[table.Description]; ok {
+			t.Fatalf("description for table exists %s", table.Name)
+		} else {
+			descriptions[table.Description] = true
+		}
+	}
+}
