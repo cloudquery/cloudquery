@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildEventSubscriptionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -16,9 +17,8 @@ func buildEventSubscriptionsMock(t *testing.T, ctrl *gomock.Controller) client.S
 		Docdb: m,
 	}
 	var ec docdb.DescribeEventSubscriptionsOutput
-	if err := faker.FakeObject(&ec); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ec))
+
 	ec.Marker = nil
 	m.EXPECT().DescribeEventSubscriptions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ec,

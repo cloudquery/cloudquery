@@ -9,15 +9,14 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildWorkspaces(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockWorkspacesClient(ctrl)
 
 	var workspace types.Workspace
-	if err := faker.FakeObject(&workspace); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&workspace))
 
 	mock.EXPECT().DescribeWorkspaces(
 		gomock.Any(),

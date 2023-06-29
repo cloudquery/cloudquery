@@ -9,25 +9,21 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildApprunnerVpcConnectorsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockApprunnerClient(ctrl)
 	vc := types.VpcConnector{}
-	err := faker.FakeObject(&vc)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&vc))
 
 	m.EXPECT().ListVpcConnectors(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&apprunner.ListVpcConnectorsOutput{
 			VpcConnectors: []types.VpcConnector{vc},
 		}, nil)
 	tags := types.Tag{}
-	err = faker.FakeObject(&tags)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tags))
+
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&apprunner.ListTagsForResourceOutput{Tags: []types.Tag{tags}}, nil)
 

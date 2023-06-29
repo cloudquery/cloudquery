@@ -9,23 +9,19 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildElasticacheReplicationGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mockElasticache := mocks.NewMockElasticacheClient(ctrl)
 	output := elasticache.DescribeReplicationGroupsOutput{}
-	err := faker.FakeObject(&output)
+	require.NoError(t, faker.FakeObject(&output))
 	output.Marker = nil
-	if err != nil {
-		t.Fatal(err)
-	}
 
 	mockElasticache.EXPECT().DescribeReplicationGroups(gomock.Any(), gomock.Any(), gomock.Any()).Return(&output, nil)
 
 	var ta types.Tag
-	if err = faker.FakeObject(&ta); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ta))
 
 	mockElasticache.EXPECT().ListTagsForResource(gomock.Any(), &elasticache.ListTagsForResourceInput{ResourceName: output.ReplicationGroups[0].ARN}, gomock.Any()).Return(&elasticache.ListTagsForResourceOutput{TagList: []types.Tag{ta}}, nil)
 

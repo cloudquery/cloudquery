@@ -65,6 +65,36 @@ func (mr *MockInspector2ClientMockRecorder) BatchGetAccountStatus(arg0, arg1 int
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetAccountStatus", reflect.TypeOf((*MockInspector2Client)(nil).BatchGetAccountStatus), varargs...)
 }
 
+// BatchGetCodeSnippet mocks base method.
+func (m *MockInspector2Client) BatchGetCodeSnippet(arg0 context.Context, arg1 *inspector2.BatchGetCodeSnippetInput, arg2 ...func(*inspector2.Options)) (*inspector2.BatchGetCodeSnippetOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetCodeSnippet")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetCodeSnippet", varargs...)
+	ret0, _ := ret[0].(*inspector2.BatchGetCodeSnippetOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetCodeSnippet indicates an expected call of BatchGetCodeSnippet.
+func (mr *MockInspector2ClientMockRecorder) BatchGetCodeSnippet(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetCodeSnippet", reflect.TypeOf((*MockInspector2Client)(nil).BatchGetCodeSnippet), varargs...)
+}
+
 // BatchGetFreeTrialInfo mocks base method.
 func (m *MockInspector2Client) BatchGetFreeTrialInfo(arg0 context.Context, arg1 *inspector2.BatchGetFreeTrialInfoInput, arg2 ...func(*inspector2.Options)) (*inspector2.BatchGetFreeTrialInfoOutput, error) {
 
@@ -245,6 +275,36 @@ func (mr *MockInspector2ClientMockRecorder) GetEc2DeepInspectionConfiguration(ar
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEc2DeepInspectionConfiguration", reflect.TypeOf((*MockInspector2Client)(nil).GetEc2DeepInspectionConfiguration), varargs...)
 }
 
+// GetEncryptionKey mocks base method.
+func (m *MockInspector2Client) GetEncryptionKey(arg0 context.Context, arg1 *inspector2.GetEncryptionKeyInput, arg2 ...func(*inspector2.Options)) (*inspector2.GetEncryptionKeyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEncryptionKey")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetEncryptionKey", varargs...)
+	ret0, _ := ret[0].(*inspector2.GetEncryptionKeyOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetEncryptionKey indicates an expected call of GetEncryptionKey.
+func (mr *MockInspector2ClientMockRecorder) GetEncryptionKey(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEncryptionKey", reflect.TypeOf((*MockInspector2Client)(nil).GetEncryptionKey), varargs...)
+}
+
 // GetFindingsReportStatus mocks base method.
 func (m *MockInspector2Client) GetFindingsReportStatus(arg0 context.Context, arg1 *inspector2.GetFindingsReportStatusInput, arg2 ...func(*inspector2.Options)) (*inspector2.GetFindingsReportStatusOutput, error) {
 
@@ -303,6 +363,36 @@ func (mr *MockInspector2ClientMockRecorder) GetMember(arg0, arg1 interface{}, ar
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMember", reflect.TypeOf((*MockInspector2Client)(nil).GetMember), varargs...)
+}
+
+// GetSbomExport mocks base method.
+func (m *MockInspector2Client) GetSbomExport(arg0 context.Context, arg1 *inspector2.GetSbomExportInput, arg2 ...func(*inspector2.Options)) (*inspector2.GetSbomExportOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSbomExport")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetSbomExport", varargs...)
+	ret0, _ := ret[0].(*inspector2.GetSbomExportOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetSbomExport indicates an expected call of GetSbomExport.
+func (mr *MockInspector2ClientMockRecorder) GetSbomExport(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSbomExport", reflect.TypeOf((*MockInspector2Client)(nil).GetSbomExport), varargs...)
 }
 
 // ListAccountPermissions mocks base method.

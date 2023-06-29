@@ -9,19 +9,16 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildSpotFleetRequests(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	item := types.SpotFleetRequestConfig{}
-	if err := faker.FakeObject(&item); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&item))
 
 	ins := types.ActiveInstance{}
-	if err := faker.FakeObject(&ins); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ins))
 
 	m.EXPECT().DescribeSpotFleetRequests(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ec2.DescribeSpotFleetRequestsOutput{

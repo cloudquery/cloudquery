@@ -9,14 +9,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildDelegatedAdministrators(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockOrganizationsClient(ctrl)
 	da := types.DelegatedAdministrator{}
-	if err := faker.FakeObject(&da); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&da))
 
 	m.EXPECT().ListDelegatedAdministrators(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&organizations.ListDelegatedAdministratorsOutput{

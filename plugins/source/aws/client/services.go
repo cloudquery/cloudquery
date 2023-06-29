@@ -35,6 +35,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/costexplorer"
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/aws/aws-sdk-go-v2/service/dax"
+	"github.com/aws/aws-sdk-go-v2/service/detective"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
@@ -98,6 +99,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/sfn"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
+	"github.com/aws/aws-sdk-go-v2/service/signer"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
@@ -152,6 +154,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Databasemigrationservice:  databasemigrationservice.NewFromConfig(awsCfg),
 		Dax:                       dax.NewFromConfig(awsCfg),
 		Directconnect:             directconnect.NewFromConfig(awsCfg),
+		Detective:                 detective.NewFromConfig(awsCfg),
 		Docdb:                     docdb.NewFromConfig(awsCfg),
 		Dynamodb:                  dynamodb.NewFromConfig(awsCfg),
 		Dynamodbstreams:           dynamodbstreams.NewFromConfig(awsCfg),
@@ -214,6 +217,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Sesv2:                     sesv2.NewFromConfig(awsCfg),
 		Sfn:                       sfn.NewFromConfig(awsCfg),
 		Shield:                    shield.NewFromConfig(awsCfg),
+		Signer:                    signer.NewFromConfig(awsCfg),
 		Sns:                       sns.NewFromConfig(awsCfg),
 		Sqs:                       sqs.NewFromConfig(awsCfg),
 		Ssm:                       ssm.NewFromConfig(awsCfg),
@@ -265,6 +269,7 @@ type Services struct {
 	Costexplorer              services.CostexplorerClient
 	Databasemigrationservice  services.DatabasemigrationserviceClient
 	Dax                       services.DaxClient
+	Detective                 services.DetectiveClient
 	Directconnect             services.DirectconnectClient
 	Docdb                     services.DocdbClient
 	Dynamodb                  services.DynamodbClient
@@ -328,6 +333,7 @@ type Services struct {
 	Sesv2                     services.Sesv2Client
 	Sfn                       services.SfnClient
 	Shield                    services.ShieldClient
+	Signer                    services.SignerClient
 	Sns                       services.SnsClient
 	Sqs                       services.SqsClient
 	Ssm                       services.SsmClient

@@ -4,8 +4,7 @@ go 1.19
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe
-	github.com/cloudquery/plugin-pb-go v1.3.3
-	github.com/cloudquery/plugin-sdk/v3 v3.10.6
+	github.com/cloudquery/plugin-sdk/v4 v4.2.2-rc1
 	github.com/goccy/go-json v0.10.0
 	github.com/rs/zerolog v1.29.1
 	github.com/snowflakedb/gosnowflake v1.6.19
@@ -37,6 +36,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.14.3 // indirect
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.35.0 // indirect
 	github.com/aws/smithy-go v1.13.5 // indirect
+	github.com/cloudquery/plugin-pb-go v1.4.0 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/danieljoos/wincred v1.1.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -67,7 +67,6 @@ require (
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
-	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect

@@ -4,43 +4,44 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
+	"github.com/goccy/go-json"
 	"github.com/rs/zerolog"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type Client struct {
-	destination.UnimplementedUnmanagedWriter
-	logger     zerolog.Logger
-	spec       specs.Destination
-	pluginSpec Spec
-	client     *mongo.Client
+	plugin.UnimplementedSource
+	logger zerolog.Logger
+	spec   *Spec
+	client *mongo.Client
+	writer *batchwriter.BatchWriter
 }
 
-func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination) (destination.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
 	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "mongo-dest").Logger(),
-		spec:   destSpec,
 	}
-
-	var spec Spec
-	if err := destSpec.UnmarshalSpec(&spec); err != nil {
+	if err := json.Unmarshal(spec, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal MongoDB spec: %w", err)
 	}
-	if err := spec.Validate(); err != nil {
+	if err := c.spec.Validate(); err != nil {
 		return nil, err
 	}
-	c.client, err = mongo.NewClient(options.Client().ApplyURI(spec.ConnectionString).SetRegistry(getRegistry()))
+	c.client, err = mongo.NewClient(options.Client().ApplyURI(c.spec.ConnectionString).SetRegistry(getRegistry()))
 	if err != nil {
 		return nil, err
 	}
 	if err := c.client.Connect(context.Background()); err != nil {
 		return nil, err
 	}
-	c.pluginSpec = spec
+	c.writer, err = batchwriter.New(c, batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))
+	if err != nil {
+		return nil, err
+	}
 
 	return c, nil
 }

@@ -88,17 +88,13 @@ func migrate(cmd *cobra.Command, args []string) error {
 			fmt.Println(err)
 		}
 	}()
-
 	for _, source := range sources {
 		cl := managedSourceClients.ClientByName(source.Name)
 		versions, err := cl.Versions(ctx)
 		if err != nil {
 			return fmt.Errorf("failed to get source versions: %w", err)
 		}
-		maxVersion := findMaxVersion(versions)
-		if maxVersion >= 3 {
-			return fmt.Errorf("please upgrade CLI to latest version to sync source %s", cl.Name())
-		}
+		maxVersion := findMaxCommonVersion(versions, []int{2, 1, 0})
 
 		var destinationClientsForSource []*managedplugin.Client
 		var destinationForSourceSpec []specs.Destination
@@ -119,13 +115,19 @@ func migrate(cmd *cobra.Command, args []string) error {
 					return fmt.Errorf("destination %[1]s does not support CloudQuery SDK version 1. Please upgrade to newer version of %[1]s", destination.Name())
 				}
 			}
-			return migrateConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec)
+			if err := migrateConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec); err != nil {
+				return fmt.Errorf("failed to migrate source %v@%v: %w", source.Name, source.Version, err)
+			}
 		case 1:
-			return migrateConnectionV1(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec)
+			if err := migrateConnectionV1(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec); err != nil {
+				return fmt.Errorf("failed to migrate source %v@%v: %w", source.Name, source.Version, err)
+			}
 		case 0:
 			return fmt.Errorf("please upgrade your source or use a CLI version between v3.0.1 and v3.5.3")
-		default:
-			return fmt.Errorf("unknown version %d", maxVersion)
+		case -1:
+			return fmt.Errorf("please upgrade CLI to sync source %v@%v", source.Name, source.Version)
+		case -2:
+			return fmt.Errorf("please downgrade CLI or upgrade source to sync %v", source.Name)
 		}
 	}
 	return nil
