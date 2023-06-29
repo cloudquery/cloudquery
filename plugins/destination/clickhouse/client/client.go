@@ -2,15 +2,14 @@ package client
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/ClickHouse/clickhouse-go/v2/lib/proto"
-	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers"
+	"github.com/goccy/go-json"
 	"github.com/rs/zerolog"
 )
 
@@ -21,30 +20,25 @@ type Client struct {
 
 	logger zerolog.Logger
 	writer *writers.BatchWriter
-	plugin.UnimplementedDestination
+	plugin.UnimplementedSource
 }
 
 var _ plugin.Client = (*Client)(nil)
 var _ writers.BatchWriterClient = (*Client)(nil)
 
 func (*Client) DeleteStale(context.Context, []*message.WriteDeleteStale) error {
-	return errors.New("DeleteStale is not implemented")
+	return plugin.ErrNotImplemented
 }
 
 func (c *Client) Close(context.Context) error {
 	return c.conn.Close()
 }
 
-func New(_ context.Context, logger zerolog.Logger, dstSpec specs.Destination) (plugin.Client, error) {
-	if dstSpec.WriteMode != specs.WriteModeAppend {
-		return nil, fmt.Errorf("clickhouse destination only supports append mode")
-	}
-
+func New(_ context.Context, logger zerolog.Logger, specBytes []byte) (plugin.Client, error) {
 	var spec Spec
-	if err := dstSpec.UnmarshalSpec(&spec); err != nil {
+	if err := json.Unmarshal(specBytes, &spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
-
 	spec.SetDefaults()
 	if err := spec.Validate(); err != nil {
 		return nil, err
@@ -78,11 +72,20 @@ func New(_ context.Context, logger zerolog.Logger, dstSpec specs.Destination) (p
 		return nil, fmt.Errorf("server version is %s, minimum version supported is %s", ver.Version, minVer)
 	}
 
-	return &Client{
+	c := &Client{
 		conn:     conn,
 		database: options.Auth.Database,
 		spec:     &spec,
 		logger:   l,
-		mode:     dstSpec.MigrateMode,
-	}, nil
+	}
+	c.writer, err = writers.NewBatchWriter(c,
+		writers.WithLogger(l),
+		writers.WithBatchSize(spec.BatchSize),
+		writers.WithBatchSizeBytes(spec.BatchSizeBytes),
+		writers.WithBatchTimeout(spec.BatchTimeout),
+	)
+	if err != nil {
+		return nil, err
+	}
+	return c, nil
 }

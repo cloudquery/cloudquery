@@ -14,9 +14,9 @@ func GetTablesSchema(database string) (query string, params []any) {
 }
 
 // ScanTableSchemas doesn't close rows, so that's on caller.
-func ScanTableSchemas(rows driver.Rows, messages []*message.MigrateTable) (schema.Tables, error) {
+func ScanTableSchemas(rows driver.Rows, messages []*message.WriteMigrateTable) (schema.Tables, error) {
 	defs := make(map[string]schema.ColumnList, len(messages))
-	need := message.MigrateTables(messages)
+	need := message.WriteMigrateTables(messages)
 
 	var table, name, typ string
 	for rows.Next() {

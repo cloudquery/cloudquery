@@ -9,7 +9,14 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/message"
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, name string, messages []*message.Insert) error {
+func (c *Client) Write(ctx context.Context, messages <-chan message.WriteMessage) error {
+	if err := c.writer.Write(ctx, messages); err != nil {
+		return err
+	}
+	return c.writer.Flush(ctx)
+}
+
+func (c *Client) WriteTableBatch(ctx context.Context, _ string, messages []*message.WriteInsert) error {
 	if len(messages) == 0 {
 		return nil
 	}
