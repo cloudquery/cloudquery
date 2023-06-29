@@ -8,7 +8,6 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v4/message"
-	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/goccy/go-json"
 )
 
@@ -19,7 +18,7 @@ const (
 	copyIntoTable             = `copy into %s from @cq_plugin_stage/%s file_format = (format_name = cq_plugin_json_format) match_by_column_name = case_insensitive`
 )
 
-func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, msgs <-chan message.Message) error {
+func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
 	if err := c.writer.Write(ctx, msgs); err != nil {
 		return err
 	}
@@ -29,7 +28,7 @@ func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, msgs <-
 	return nil
 }
 
-func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs []*message.Insert) error {
+func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs []*message.WriteInsert) error {
 	tableName := name
 	f, err := os.CreateTemp(os.TempDir(), tableName+".json.*")
 	if err != nil {
