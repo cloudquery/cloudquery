@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func CanonizedTables(messages []*message.MigrateTable) (schema.Tables, error) {
+func CanonizedTables(messages []*message.WriteMigrateTable) (schema.Tables, error) {
 	canonized := make(schema.Tables, len(messages))
 	var err error
 	for i, msg := range messages {

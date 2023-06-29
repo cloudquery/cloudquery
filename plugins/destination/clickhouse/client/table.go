@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func (c *Client) getTableDefinitions(ctx context.Context, messages []*message.MigrateTable) (schema.Tables, error) {
+func (c *Client) getTableDefinitions(ctx context.Context, messages []*message.WriteMigrateTable) (schema.Tables, error) {
 	// need proper description without flattened columns
 	const flattenNested0 = "SET flatten_nested = 0"
 	if err := c.conn.Exec(ctx, flattenNested0); err != nil {

@@ -8,7 +8,6 @@ import (
 )
 
 func Read(table *schema.Table) string {
-	return "SELECT " + strings.Join(util.Sanitized(table.Columns.Names()...), ", ") + `
-FROM ` + util.SanitizeID(table.Name) + `
-ORDER BY ` + util.SanitizeID(schema.CqSyncTimeColumn.Name)
+	return "SELECT " + strings.Join(util.Sanitized(table.Columns.Names()...), ", ") +
+		` FROM ` + util.SanitizeID(table.Name)
 }

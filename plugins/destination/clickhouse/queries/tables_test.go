@@ -41,7 +41,7 @@ func TestCreateTableNoOrderBy(t *testing.T) {
 		},
 	}, "", DefaultEngine())
 	require.NoError(t, err)
-	ensureContents(t, query, "create_table_no_order_by.sql")
+	ensureContents(t, query, "create_table_empty_order_by.sql")
 }
 
 func TestCreateTableOnCluster(t *testing.T) {

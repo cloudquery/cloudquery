@@ -5,15 +5,13 @@ go 1.19
 require (
 	github.com/ClickHouse/clickhouse-go/v2 v2.10.0
 	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe
-	github.com/cloudquery/plugin-pb-go v1.4.0
+	github.com/cloudquery/plugin-pb-go v1.4.0 // indirect
 	github.com/cloudquery/plugin-sdk/v4 v4.1.0-rc1
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.1
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/sync v0.2.0
 )
-
-require github.com/cloudquery/plugin-sdk v1.45.0
 
 // TODO: remove once all updates are merged
 replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230626001500-065602842c3a
@@ -39,7 +37,7 @@ require (
 	github.com/mattn/go-isatty v0.0.18 // indirect
 	github.com/paulmach/orb v0.9.2 // indirect
 	github.com/pierrec/lz4/v4 v4.1.17 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
+	github.com/pkg/errors v0.9.1
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/segmentio/asm v1.2.0 // indirect
 	github.com/shopspring/decimal v1.3.1
