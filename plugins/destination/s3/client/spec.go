@@ -47,30 +47,30 @@ func (s *Spec) SetDefaults() {
 
 func (s *Spec) Validate() error {
 	if s.Bucket == "" {
-		return fmt.Errorf("bucket is required")
+		return fmt.Errorf("`bucket` is required")
 	}
 	if s.Path == "" {
-		return fmt.Errorf("path is required")
+		return fmt.Errorf("`path` is required")
 	}
 	if s.Region == "" {
-		return fmt.Errorf("region is required")
+		return fmt.Errorf("`region` is required")
 	}
 	if s.NoRotate && strings.Contains(s.Path, PathVarUUID) {
-		return fmt.Errorf("path should not contain %s when no_rotate = true", PathVarUUID)
+		return fmt.Errorf("`path` should not contain %s when `no_rotate` = true", PathVarUUID)
 	}
 	if !strings.Contains(s.Path, PathVarUUID) && ((s.BatchSize == nil || *s.BatchSize > 0) || (s.BatchSizeBytes == nil || *s.BatchSizeBytes > 0)) {
-		return fmt.Errorf("path should contain %s when using a non zero batch size", PathVarUUID)
+		return fmt.Errorf("`path` should contain %s when using a non zero batch size", PathVarUUID)
 	}
 	if path.IsAbs(s.Path) {
-		return fmt.Errorf(`path should not start with a "/"`)
+		return fmt.Errorf("`path` should not start with a \"/\"")
 	}
 
 	if s.Path != path.Clean(s.Path) {
-		return fmt.Errorf("path should not contain relative paths or duplicate slashes")
+		return fmt.Errorf("`path` should not contain relative paths or duplicate slashes")
 	}
 
 	if s.Format == "" {
-		return fmt.Errorf("format is required")
+		return fmt.Errorf("`format` is required")
 	}
 
 	return nil
