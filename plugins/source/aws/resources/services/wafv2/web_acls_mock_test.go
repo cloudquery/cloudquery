@@ -12,6 +12,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -19,31 +20,23 @@ func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services
 	cfm := mocks.NewMockCloudfrontClient(ctrl)
 
 	tempWebACLSum := types.WebACLSummary{}
-	if err := faker.FakeObject(&tempWebACLSum); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tempWebACLSum))
+
 	var tempResourceArns []string
-	if err := faker.FakeObject(&tempResourceArns); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tempResourceArns))
+
 	var tempTags []types.Tag
-	if err := faker.FakeObject(&tempTags); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tempTags))
+
 	var loggingConfiguration types.LoggingConfiguration
-	if err := faker.FakeObject(&loggingConfiguration); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&loggingConfiguration))
+
 	rule := types.Rule{}
-	if err := faker.FakeObject(&rule); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&rule))
 
 	for _, scope := range []types.Scope{types.ScopeCloudfront, types.ScopeRegional} {
 		tempWebACL := types.WebACL{}
-		if err := faker.FakeObject(&tempWebACL); err != nil {
-			t.Fatal(err)
-		}
+		require.NoError(t, faker.FakeObject(&tempWebACL))
 		m.EXPECT().ListWebACLs(gomock.Any(), &wafv2.ListWebACLsInput{
 			Scope: scope,
 			Limit: aws.Int32(100),
@@ -69,9 +62,8 @@ func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services
 	}, nil).MinTimes(1)
 
 	distributionList := cftypes.DistributionList{}
-	if err := faker.FakeObject(&distributionList); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&distributionList))
+
 	distributionList.NextMarker = nil
 	cfm.EXPECT().ListDistributionsByWebACLId(gomock.Any(), gomock.Any(), gomock.Any()).Return(&cloudfront.ListDistributionsByWebACLIdOutput{
 		DistributionList: &distributionList,

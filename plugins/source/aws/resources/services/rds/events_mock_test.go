@@ -9,14 +9,14 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildRDSEvents(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockRdsClient(ctrl)
 	var events []types.Event
-	if err := faker.FakeObject(&events); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&events))
+
 	mock.EXPECT().DescribeEvents(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&rds.DescribeEventsOutput{Events: events},
 		nil,

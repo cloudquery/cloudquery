@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildOriginAccessIdentitiesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -17,9 +18,7 @@ func buildOriginAccessIdentitiesMock(t *testing.T, ctrl *gomock.Controller) clie
 		Cloudfront: m,
 	}
 	coai := cloudfrontTypes.CloudFrontOriginAccessIdentitySummary{}
-	if err := faker.FakeObject(&coai); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&coai))
 
 	m.EXPECT().ListCloudFrontOriginAccessIdentities(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&cloudfront.ListCloudFrontOriginAccessIdentitiesOutput{

@@ -9,21 +9,16 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildRdsDbProxiesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockRdsClient(ctrl)
 	proxy := types.DBProxy{}
-	err := faker.FakeObject(&proxy)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&proxy))
 
 	tags := rds.ListTagsForResourceOutput{}
-	err = faker.FakeObject(&tags)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tags))
 
 	m.EXPECT().DescribeDBProxies(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&rds.DescribeDBProxiesOutput{

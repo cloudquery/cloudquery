@@ -9,15 +9,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildS3AccessPoints(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockS3controlClient(ctrl)
 	ap := types.AccessPoint{}
-	err := faker.FakeObject(&ap)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ap))
 
 	m.EXPECT().ListAccessPoints(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&s3control.ListAccessPointsOutput{

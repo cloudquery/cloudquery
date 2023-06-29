@@ -10,16 +10,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildEc2NetworkAcls(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 
 	l := types.NetworkAcl{}
-	err := faker.FakeObject(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&l))
+
 	l.IsDefault = aws.Bool(false)
 	m.EXPECT().DescribeNetworkAcls(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ec2.DescribeNetworkAclsOutput{
