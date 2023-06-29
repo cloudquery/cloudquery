@@ -47,8 +47,9 @@ type testSpec struct {
 
 func testSpecsWithoutFormat(t *testing.T) []testSpec {
 	var (
-		ret []testSpec
-		bd  string // temp variable to hold tempdir/basedir dir for each test case
+		ret  []testSpec
+		bd   string // temp variable to hold tempdir/basedir dir for each test case
+		zero int64
 	)
 
 	bd = t.TempDir()
@@ -56,7 +57,9 @@ func testSpecsWithoutFormat(t *testing.T) []testSpec {
 		testName: "Directory",
 		baseDir:  bd,
 		Spec: Spec{
-			Directory: bd,
+			Directory:      bd,
+			BatchSize:      &zero,
+			BatchSizeBytes: &zero,
 		},
 	})
 
@@ -65,7 +68,9 @@ func testSpecsWithoutFormat(t *testing.T) []testSpec {
 		testName: "DirectoryWithTable",
 		baseDir:  bd,
 		Spec: Spec{
-			Directory: filepath.Join(bd, "{{TABLE}}", "data.{{FORMAT}}"),
+			Directory:      filepath.Join(bd, "{{TABLE}}", "data.{{FORMAT}}"),
+			BatchSize:      &zero,
+			BatchSizeBytes: &zero,
 		},
 	})
 
@@ -74,7 +79,9 @@ func testSpecsWithoutFormat(t *testing.T) []testSpec {
 		testName: "Path",
 		baseDir:  bd,
 		Spec: Spec{
-			Path: filepath.Join(bd, "{{TABLE}}.{{FORMAT}}"),
+			Path:           filepath.Join(bd, "{{TABLE}}.{{FORMAT}}"),
+			BatchSize:      &zero,
+			BatchSizeBytes: &zero,
 		},
 	})
 
@@ -83,7 +90,9 @@ func testSpecsWithoutFormat(t *testing.T) []testSpec {
 		testName: "PathWithTable",
 		baseDir:  bd,
 		Spec: Spec{
-			Path: filepath.Join(bd, "{{TABLE}}", "data.{{FORMAT}}"),
+			Path:           filepath.Join(bd, "{{TABLE}}", "data.{{FORMAT}}"),
+			BatchSize:      &zero,
+			BatchSizeBytes: &zero,
 		},
 	})
 

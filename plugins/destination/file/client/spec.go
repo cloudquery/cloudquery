@@ -56,6 +56,12 @@ func (s *Spec) Validate() error {
 	if s.Directory != "" && s.Path != "" {
 		return fmt.Errorf("only one of `directory` or `path` is allowed")
 	}
+	if s.NoRotate && strings.Contains(s.Path, PathVarUUID) {
+		return fmt.Errorf("`path` should not contain %s when `no_rotate` = true", PathVarUUID)
+	}
+	if !strings.Contains(s.Path, PathVarUUID) && ((s.BatchSize == nil || *s.BatchSize > 0) || (s.BatchSizeBytes == nil || *s.BatchSizeBytes > 0)) {
+		return fmt.Errorf("`path` should contain %s when using a non zero batch size", PathVarUUID)
+	}
 	if s.Format == "" {
 		return fmt.Errorf("`format` is required")
 	}
