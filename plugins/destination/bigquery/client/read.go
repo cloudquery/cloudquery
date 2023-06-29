@@ -21,7 +21,7 @@ import (
 )
 
 const (
-	readSQL = "SELECT %s FROM `%s.%s.%s` WHERE `_cq_source_name` = @cq_source_name order by _cq_sync_time asc"
+	readSQL = "SELECT %s FROM `%s.%s.%s"
 )
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
