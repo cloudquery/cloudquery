@@ -24,6 +24,10 @@ func TestSpec_SetDefaults(t *testing.T) {
 			Give: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: &filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ","}}, TestWrite: boolPtr(false)},
 			Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: &filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ","}}, TestWrite: boolPtr(false), BatchSize: int64Ptr(10000), BatchSizeBytes: int64Ptr(50 * 1024 * 1024)},
 		},
+		{
+			Give: Spec{Path: "test/path", FileSpec: &filetypes.FileSpec{Format: "json"}, NoRotate: true},
+			Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: &filetypes.FileSpec{Format: "json"}, TestWrite: boolPtr(true), NoRotate: true, BatchSize: int64Ptr(0), BatchSizeBytes: int64Ptr(0)},
+		},
 	}
 	for _, tc := range cases {
 		got := tc.Give
