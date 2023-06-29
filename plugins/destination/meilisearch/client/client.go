@@ -93,7 +93,11 @@ func New(_ context.Context, logger zerolog.Logger, specBytes []byte) (plugin.Cli
 		logger:      logger.With().Str("module", "dest-meilisearch").Str("host", spec.Host).Logger(),
 		spec:        spec,
 	}
-	client.writer, err = batchwriter.New(client, batchwriter.WithBatchSize(spec.BatchSize), batchwriter.WithBatchSizeBytes(spec.BatchSizeBytes))
+	client.writer, err = batchwriter.New(client,
+		batchwriter.WithBatchSize(spec.BatchSize),
+		batchwriter.WithBatchSizeBytes(spec.BatchSizeBytes),
+		batchwriter.WithBatchTimeout(spec.Timeout),
+	)
 	if err != nil {
 		return nil, err
 	}
