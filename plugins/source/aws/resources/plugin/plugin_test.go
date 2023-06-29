@@ -19,7 +19,7 @@ func TestAWS(t *testing.T) {
 func TestAWSTableDescriptions(t *testing.T) {
 	descriptions := make(map[string]string)
 	p := AWS()
-	tables := p.Tables()
+	tables := p.Tables().FlattenTables()
 	for _, table := range tables {
 		if ignoreTable(table.Name) {
 			continue
@@ -37,8 +37,23 @@ func ignoreTable(tableName string) bool {
 		"aws_resiliencehub_suggested_resiliency_policies": true,
 		// TODO: Remove this once we breakup S3 Bucket into multiple tables rather than a single composite table
 		"aws_s3_buckets": true,
+		"aws_rds_cluster_parameter_group_parameters":            true,
+		"aws_rds_db_parameter_group_db_parameters":              true,
+		"aws_rds_cluster_parameters":                            true,
+		"aws_iam_group_attached_policies":                       true,
+		"aws_iam_role_attached_policies":                        true,
+		"aws_iam_group_last_accessed_details":                   true,
+		"aws_iam_role_last_accessed_details":                    true,
+		"aws_iam_policy_last_accessed_details":                  true,
+		"aws_ssoadmin_permission_set_customer_managed_policies": true,
+		"aws_ssoadmin_permission_set_managed_policies":          true,
+		"aws_organizations_account_parents":                     true,
+		"aws_organizations_organizational_unit_parents":         true,
+		"aws_stepfunctions_executions":                          true,
+		"aws_stepfunctions_map_run_executions":                  true,
+		"aws_iam_user_groups":                                   true,
+		"aws_iam_groups":                                        true,
 	}
 	_, ok := tablesToIgnore[tableName]
 	return ok
-
 }
