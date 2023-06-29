@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
-func Endpoints() *schema.Table {
+func ResolverEndpoints() *schema.Table {
 	tableName := "aws_route53resolver_resolver_endpoints"
 	return &schema.Table{
 		Name:        tableName,

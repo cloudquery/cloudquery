@@ -10,13 +10,13 @@ import (
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
-func ResolverQueryLogConfigAssociations() *schema.Table {
-	tableName := "aws_route53resolver_resolver_query_log_config_associations"
+func ResolverRuleAssociations() *schema.Table {
+	tableName := "aws_route53resolver_resolver_rule_associations"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_ResolverQueryLogConfigAssociation.html`,
-		Resolver:    fetchQueryLogConfigAssociations,
-		Transform:   transformers.TransformWithStruct(&types.ResolverQueryLogConfigAssociation{}, transformers.WithPrimaryKeys("Id")),
+		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_ResolverRuleAssociation.html`,
+		Resolver:    fetchResolverRuleAssociations,
+		Transform:   transformers.TransformWithStruct(&types.ResolverRuleAssociation{}, transformers.WithPrimaryKeys("Id")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "route53resolver"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
@@ -25,11 +25,11 @@ func ResolverQueryLogConfigAssociations() *schema.Table {
 	}
 }
 
-func fetchQueryLogConfigAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchResolverRuleAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Route53resolver
-	var input route53resolver.ListResolverQueryLogConfigAssociationsInput
-	paginator := route53resolver.NewListResolverQueryLogConfigAssociationsPaginator(svc, &input)
+	var input route53resolver.ListResolverRuleAssociationsInput
+	paginator := route53resolver.NewListResolverRuleAssociationsPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *route53resolver.Options) {
 			options.Region = cl.Region
@@ -37,7 +37,7 @@ func fetchQueryLogConfigAssociations(ctx context.Context, meta schema.ClientMeta
 		if err != nil {
 			return err
 		}
-		res <- page.ResolverQueryLogConfigAssociations
+		res <- page.ResolverRuleAssociations
 	}
 	return nil
 }

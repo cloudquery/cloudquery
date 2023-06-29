@@ -27,5 +27,5 @@ func buildEndpointsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}
 }
 func TestEndpoints(t *testing.T) {
-	client.AwsMockTestHelper(t, Endpoints(), buildEndpointsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, ResolverEndpoints(), buildEndpointsMock, client.TestOptions{})
 }
