@@ -64,6 +64,10 @@ This is the (nested) spec used by the file destination Plugin.
 
   Number of bytes (as Arrow buffer size) to write before starting a new file.
 
+- `batch_timeout_ms` (integer, optional. default: 30000 (30 seconds))
+
+  Inactivity time in milliseconds before starting a new file.
+
 ### format_spec
 
 - `delimiter` (string) (optional) (default: `,`)
