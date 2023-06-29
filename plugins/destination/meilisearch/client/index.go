@@ -38,7 +38,7 @@ func (i *indexSchema) canMigrate(o *indexSchema) bool {
 func (c *Client) tableIndexSchema(table *schema.Table) *indexSchema {
 	return &indexSchema{
 		UID:        table.Name,
-		PrimaryKey: c.pkColumn,
+		PrimaryKey: hashColumnName,
 		Attributes: table.Columns.Names(),
 	}
 }

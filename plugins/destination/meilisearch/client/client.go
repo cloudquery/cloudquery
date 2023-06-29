@@ -17,10 +17,9 @@ import (
 type Client struct {
 	Meilisearch *meilisearch.Client
 
-	logger   zerolog.Logger
-	spec     Spec
-	pkColumn string
-	writer   *batchwriter.BatchWriter
+	logger zerolog.Logger
+	spec   Spec
+	writer *batchwriter.BatchWriter
 
 	plugin.UnimplementedSource
 }
@@ -74,8 +73,6 @@ func (c *Client) verifyVersion() error {
 }
 
 func New(_ context.Context, logger zerolog.Logger, specBytes []byte) (plugin.Client, error) {
-	var pkColumn string
-
 	spec := Spec{}
 	if err := json.Unmarshal(specBytes, &spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
@@ -94,7 +91,6 @@ func New(_ context.Context, logger zerolog.Logger, specBytes []byte) (plugin.Cli
 	client := &Client{
 		Meilisearch: mClient,
 		logger:      logger.With().Str("module", "dest-meilisearch").Str("host", spec.Host).Logger(),
-		pkColumn:    pkColumn,
 		spec:        spec,
 	}
 	client.writer, err = batchwriter.New(client, batchwriter.WithBatchSize(spec.BatchSize), batchwriter.WithBatchSizeBytes(spec.BatchSizeBytes))

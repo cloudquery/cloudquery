@@ -22,17 +22,12 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, messages mess
 	}
 	table := messages[0].GetTable()
 
-	index, err := c.Meilisearch.GetIndex(table.Name)
+	index, err := c.Meilisearch.GetIndex(name)
 	if err != nil {
 		return err
 	}
-	appendMode := len(table.PrimaryKeys()) == 0
-	var transformer rowTransformer
-	if appendMode {
-		transformer = toMap(table)
-	} else {
-		transformer = toMapWithHash(table)
-	}
+
+	transformer := transform(table)
 
 	records := make([]arrow.Record, 0, len(messages))
 	for _, msg := range messages {
@@ -48,7 +43,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, messages mess
 		docs = append(docs, rows...)
 	}
 
-	taskInfo, err := index.AddDocuments(&docs, c.pkColumn)
+	taskInfo, err := index.AddDocuments(&docs, index.PrimaryKey)
 	if err != nil {
 		return err
 	}
@@ -73,9 +68,10 @@ func toMap(table *schema.Table) rowTransformer {
 	}
 }
 
-func toMapWithHash(table *schema.Table) rowTransformer {
+func transform(table *schema.Table) rowTransformer {
 	m := toMap(table)
 	h := hashUUID(table)
+	// we always use the hashUUID func
 	return func(record arrow.Record) ([]map[string]any, error) {
 		rows, err := m(record)
 		if err != nil {
