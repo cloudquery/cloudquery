@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
@@ -16,6 +17,7 @@ import (
 
 type Client struct {
 	plugin.UnimplementedSource
+	streamingbatchwriter.UnimplementedMigrateTable
 
 	logger zerolog.Logger
 	spec   *Spec
@@ -61,7 +63,11 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 		return nil, fmt.Errorf("failed to write test file to Azure: %w", err)
 	}
 
-	c.writer, err = streamingbatchwriter.New(c, streamingbatchwriter.WithBatchSizeRows(*c.spec.BatchSize), streamingbatchwriter.WithBatchSizeBytes(*c.spec.BatchSizeBytes))
+	c.writer, err = streamingbatchwriter.New(c,
+		streamingbatchwriter.WithBatchSizeRows(*c.spec.BatchSize),
+		streamingbatchwriter.WithBatchSizeBytes(*c.spec.BatchSizeBytes),
+		streamingbatchwriter.WithBatchTimeout(time.Duration(*c.spec.BatchTimeoutMs)*time.Millisecond),
+	)
 	if err != nil {
 		return nil, err
 	}
