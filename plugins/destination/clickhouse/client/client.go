@@ -30,7 +30,11 @@ func (*Client) DeleteStale(context.Context, []*message.WriteDeleteStale) error {
 	return plugin.ErrNotImplemented
 }
 
-func (c *Client) Close(context.Context) error {
+func (c *Client) Close(ctx context.Context) error {
+	if err := c.writer.Close(ctx); err != nil {
+		_ = c.conn.Close()
+		return err
+	}
 	return c.conn.Close()
 }
 
