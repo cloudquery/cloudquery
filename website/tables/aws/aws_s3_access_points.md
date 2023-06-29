@@ -2,6 +2,8 @@
 
 This table shows data for S3 Access Points.
 
+https://docs.aws.amazon.com/AmazonS3/latest/API/API_control_AccessPoint.html
+
 The primary key for this table is **arn**.
 
 ## Columns

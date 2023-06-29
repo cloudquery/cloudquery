@@ -18,7 +18,7 @@ func apiStages() *schema.Table {
 	tableName := "aws_apigatewayv2_api_stages"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Stage.html`,
+		Description: `https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/apis-apiid-stages.html`,
 		Resolver:    fetchApigatewayv2ApiStages,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.Stage{}),
