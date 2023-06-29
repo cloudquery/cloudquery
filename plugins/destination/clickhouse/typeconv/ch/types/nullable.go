@@ -4,7 +4,7 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 )
 
-// CanBeNullable is used to check if data type can be wrapper in `Nullable`
+// CanBeNullable is used to check if data type can be wrapped in `Nullable`
 // https://clickhouse.com/docs/en/sql-reference/data-types/nullable
 // Array, Map & Tuple can't be Nullable
 func CanBeNullable(dataType arrow.DataType) bool {
