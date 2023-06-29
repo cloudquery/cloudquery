@@ -35,10 +35,6 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 		return nil, fmt.Errorf("failed to unmarshal azblob spec: %w", err)
 	}
 
-	// if spec.WriteMode != specs.WriteModeAppend {
-	//	return nil, fmt.Errorf("destination only supports append mode")
-	// }
-
 	if err := c.spec.Validate(); err != nil {
 		return nil, err
 	}
