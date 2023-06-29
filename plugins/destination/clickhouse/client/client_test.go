@@ -6,6 +6,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/goccy/go-json"
 	"github.com/stretchr/testify/require"
@@ -41,6 +42,6 @@ func TestPlugin(t *testing.T) {
 				RemoveColumn: true,
 			},
 		},
-		// destination.WithTestSourceAllowNull(typeconv.CanBeNullable),
+		plugin.WithTestSourceAllowNull(types.CanBeNullable),
 	)
 }

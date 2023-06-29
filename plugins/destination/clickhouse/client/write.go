@@ -16,7 +16,7 @@ func (c *Client) Write(ctx context.Context, messages <-chan message.WriteMessage
 	return c.writer.Flush(ctx)
 }
 
-func (c *Client) WriteTableBatch(ctx context.Context, _ string, messages []*message.WriteInsert) error {
+func (c *Client) WriteTableBatch(ctx context.Context, _ string, messages message.WriteInserts) error {
 	if len(messages) == 0 {
 		return nil
 	}

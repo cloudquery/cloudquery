@@ -6,7 +6,7 @@ require (
 	github.com/ClickHouse/clickhouse-go/v2 v2.10.1
 	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe
 	github.com/cloudquery/plugin-pb-go v1.4.0 // indirect
-	github.com/cloudquery/plugin-sdk/v4 v4.2.0-rc1
+	github.com/cloudquery/plugin-sdk/v4 v4.3.1-rc1
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.1
 	github.com/stretchr/testify v1.8.4

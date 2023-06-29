@@ -15,7 +15,7 @@ import (
 )
 
 // MigrateTables relies on the CLI/client to lock before running migration.
-func (c *Client) MigrateTables(ctx context.Context, messages []*message.WriteMigrateTable) error {
+func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrateTables) error {
 	have, err := c.getTableDefinitions(ctx, messages)
 	if err != nil {
 		return err
@@ -58,25 +58,28 @@ func (c *Client) MigrateTables(ctx context.Context, messages []*message.WriteMig
 	return eg.Wait()
 }
 
-func (c *Client) checkForced(have, want schema.Tables, messages []*message.WriteMigrateTable) error {
+func (c *Client) checkForced(have, want schema.Tables, messages message.WriteMigrateTables) error {
 	forcedErr := false
 	for _, m := range messages {
-		if !m.MigrateForce {
-			// check that this migration can go through
-			have := have.Get(m.Table.Name)
-			if have == nil {
-				continue // create new is always OK
-			}
-			want := want.Get(m.Table.Name) // and it should never be nil
-			if unsafe := unsafeChanges(want.GetChanges(have)); len(unsafe) > 0 {
-				c.logger.Error().
-					Str("table", m.Table.Name).
-					Str("changes", util.ChangesPrettified(m.Table.Name, unsafe)).
-					Msg("'migrate_mode: forced' is required")
-				forcedErr = true
-			}
+		if m.MigrateForce {
+			continue
+		}
+
+		// check that this migration can go through
+		have := have.Get(m.Table.Name)
+		if have == nil {
+			continue // create new is always OK
+		}
+		want := want.Get(m.Table.Name) // and it should never be nil
+		if unsafe := unsafeChanges(want.GetChanges(have)); len(unsafe) > 0 {
+			c.logger.Error().
+				Str("table", m.Table.Name).
+				Str("changes", util.ChangesPrettified(m.Table.Name, unsafe)).
+				Msg("'migrate_mode: forced' is required")
+			forcedErr = true
 		}
 	}
+
 	if forcedErr {
 		return errors.New("'migrate_mode: forced' is required for the migration")
 	}

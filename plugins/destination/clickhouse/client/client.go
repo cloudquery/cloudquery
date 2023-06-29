@@ -26,7 +26,7 @@ type Client struct {
 var _ plugin.Client = (*Client)(nil)
 var _ batchwriter.Client = (*Client)(nil)
 
-func (*Client) DeleteStale(context.Context, []*message.WriteDeleteStale) error {
+func (*Client) DeleteStale(context.Context, message.WriteDeleteStales) error {
 	return plugin.ErrNotImplemented
 }
 
