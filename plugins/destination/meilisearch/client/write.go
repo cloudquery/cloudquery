@@ -13,10 +13,7 @@ func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) err
 	if err := c.writer.Write(ctx, res); err != nil {
 		return fmt.Errorf("write error: %w", err)
 	}
-	if err := c.writer.Flush(ctx); err != nil {
-		return fmt.Errorf("write flush error: %w", err)
-	}
-	return nil
+	return c.writer.Flush(ctx)
 }
 
 func (c *Client) WriteTableBatch(ctx context.Context, name string, messages message.WriteInserts) error {
