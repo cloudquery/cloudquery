@@ -8,7 +8,7 @@ import (
 	"github.com/ClickHouse/clickhouse-go/v2/lib/proto"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
-	"github.com/cloudquery/plugin-sdk/v4/writers"
+	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/goccy/go-json"
 	"github.com/rs/zerolog"
 )
@@ -19,12 +19,12 @@ type Client struct {
 	spec     *Spec
 
 	logger zerolog.Logger
-	writer *writers.BatchWriter
+	writer *batchwriter.BatchWriter
 	plugin.UnimplementedSource
 }
 
 var _ plugin.Client = (*Client)(nil)
-var _ writers.BatchWriterClient = (*Client)(nil)
+var _ batchwriter.Client = (*Client)(nil)
 
 func (*Client) DeleteStale(context.Context, []*message.WriteDeleteStale) error {
 	return plugin.ErrNotImplemented
@@ -78,11 +78,11 @@ func New(_ context.Context, logger zerolog.Logger, specBytes []byte) (plugin.Cli
 		spec:     &spec,
 		logger:   l,
 	}
-	c.writer, err = writers.NewBatchWriter(c,
-		writers.WithLogger(l),
-		writers.WithBatchSize(spec.BatchSize),
-		writers.WithBatchSizeBytes(spec.BatchSizeBytes),
-		writers.WithBatchTimeout(spec.BatchTimeout),
+	c.writer, err = batchwriter.New(c,
+		batchwriter.WithLogger(l),
+		batchwriter.WithBatchSize(spec.BatchSize),
+		batchwriter.WithBatchSizeBytes(spec.BatchSizeBytes),
+		batchwriter.WithBatchTimeout(spec.BatchTimeout),
 	)
 	if err != nil {
 		return nil, err

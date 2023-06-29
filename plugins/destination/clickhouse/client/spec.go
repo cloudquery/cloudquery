@@ -7,6 +7,7 @@ import (
 
 	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
+	"github.com/cloudquery/plugin-sdk/v4/writers"
 )
 
 type Spec struct {
@@ -54,18 +55,15 @@ func (s *Spec) SetDefaults() {
 	}
 
 	if s.BatchSize == 0 {
-		const defaultBatchSize = 10_000 // 10K
-		s.BatchSize = defaultBatchSize
+		s.BatchSize = writers.DefaultBatchSize
 	}
 
 	if s.BatchSizeBytes == 0 {
-		const defaultBatchSizeBytes = 50 << 20 // 50 MiB
-		s.BatchSizeBytes = defaultBatchSizeBytes
+		s.BatchSizeBytes = writers.DefaultBatchSizeBytes
 	}
 
 	if s.BatchTimeout == 0 {
-		const defaultBatchTimeout = 20 * time.Second // 20s
-		s.BatchTimeout = defaultBatchTimeout
+		s.BatchTimeout = writers.DefaultBatchTimeoutSeconds * time.Second
 	}
 }
 
