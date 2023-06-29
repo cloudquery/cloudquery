@@ -20,7 +20,7 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 		tables[i] = msg.Table
 	}
 
-	want := c.tablesIndexSchemas(tables)
+	want := tablesIndexSchemas(tables)
 
 	var recreate, create, update []*indexSchema
 	for uid, need := range want {

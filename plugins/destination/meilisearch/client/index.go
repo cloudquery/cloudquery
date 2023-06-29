@@ -35,7 +35,7 @@ func (i *indexSchema) canMigrate(o *indexSchema) bool {
 	return i.UID == o.UID && i.PrimaryKey == o.PrimaryKey
 }
 
-func (c *Client) tableIndexSchema(table *schema.Table) *indexSchema {
+func tableIndexSchema(table *schema.Table) *indexSchema {
 	return &indexSchema{
 		UID:        table.Name,
 		PrimaryKey: hashColumnName,
@@ -43,10 +43,10 @@ func (c *Client) tableIndexSchema(table *schema.Table) *indexSchema {
 	}
 }
 
-func (c *Client) tablesIndexSchemas(tables schema.Tables) map[string]*indexSchema {
+func tablesIndexSchemas(tables schema.Tables) map[string]*indexSchema {
 	res := make(map[string]*indexSchema)
 	for i, table := range tables {
-		s := c.tableIndexSchema(table)
+		s := tableIndexSchema(table)
 		s.Index = i
 		res[s.UID] = s
 	}
