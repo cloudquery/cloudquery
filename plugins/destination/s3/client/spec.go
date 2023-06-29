@@ -58,6 +58,9 @@ func (s *Spec) Validate() error {
 	if s.NoRotate && strings.Contains(s.Path, PathVarUUID) {
 		return fmt.Errorf("path should not contain %s when no_rotate = true", PathVarUUID)
 	}
+	if !strings.Contains(s.Path, PathVarUUID) && ((s.BatchSize == nil || *s.BatchSize > 0) || (s.BatchSizeBytes == nil || *s.BatchSizeBytes > 0)) {
+		return fmt.Errorf("path should contain %s when using a non zero batch size", PathVarUUID)
+	}
 	if path.IsAbs(s.Path) {
 		return fmt.Errorf(`path should not start with a "/"`)
 	}

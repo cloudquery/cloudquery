@@ -24,16 +24,19 @@ const (
 )
 
 func TestPlugin(t *testing.T) {
+	zero := int64(0)
 	for _, ft := range []filetypes.FormatType{
 		filetypes.FormatTypeCSV,
 		filetypes.FormatTypeJSON,
 		filetypes.FormatTypeParquet,
 	} {
 		spec := Spec{
-			Bucket:   bucket,
-			Region:   region,
-			Path:     t.TempDir()[1:],
-			NoRotate: true,
+			Bucket:         bucket,
+			Region:         region,
+			Path:           t.TempDir()[1:],
+			NoRotate:       true,
+			BatchSizeBytes: &zero,
+			BatchSize:      &zero,
 			FileSpec: &filetypes.FileSpec{
 				Format: ft,
 			},

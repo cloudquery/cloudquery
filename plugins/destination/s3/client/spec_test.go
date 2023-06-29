@@ -1,6 +1,7 @@
 package client
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/cloudquery/filetypes/v4"
@@ -34,25 +35,30 @@ func TestSpec_SetDefaults(t *testing.T) {
 }
 
 func TestSpec_Validate(t *testing.T) {
+	zero, one := int64(0), int64(1)
 	cases := []struct {
 		Give    Spec
 		WantErr bool
 	}{
-		{Give: Spec{Path: "test/path", FileSpec: &filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region}, WantErr: false},
-		{Give: Spec{Path: "test/path", FileSpec: &filetypes.FileSpec{Format: "json"}, Region: "region"}, WantErr: true}, // no bucket
-		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: &filetypes.FileSpec{Format: "json"}, NoRotate: false, Bucket: "mybucket", Region: region}, WantErr: false},
-		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: &filetypes.FileSpec{Format: "json"}, NoRotate: true, Bucket: "mybucket", Region: region}, WantErr: true},   // can't have no_rotate and {{UUID}}
-		{Give: Spec{Path: "/test/path/{{TABLE}}.{{UUID}}", FileSpec: &filetypes.FileSpec{Format: "json"}, NoRotate: true, Bucket: "mybucket", Region: region}, WantErr: true},  // begins with a slash
-		{Give: Spec{Path: "//test/path/{{TABLE}}.{{UUID}}", FileSpec: &filetypes.FileSpec{Format: "json"}, NoRotate: true, Bucket: "mybucket", Region: region}, WantErr: true}, // duplicate slashes
-		{Give: Spec{Path: "test//path", FileSpec: &filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region}, WantErr: true},                                     // duplicate slashes
+		{Give: Spec{Path: "test/path", FileSpec: &filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero}, WantErr: false},
+		{Give: Spec{Path: "test/path", FileSpec: &filetypes.FileSpec{Format: "json"}, Region: "region", BatchSize: &zero, BatchSizeBytes: &zero}, WantErr: true}, // no bucket
+		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: &filetypes.FileSpec{Format: "json"}, NoRotate: false, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero}, WantErr: false},
+		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: &filetypes.FileSpec{Format: "json"}, NoRotate: true, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero}, WantErr: true},   // can't have no_rotate and {{UUID}}
+		{Give: Spec{Path: "test/path/{{TABLE}}", FileSpec: &filetypes.FileSpec{Format: "json"}, NoRotate: false, Bucket: "mybucket", Region: region, BatchSize: &one, BatchSizeBytes: &zero}, WantErr: true},            // can't have nonzero batch size and no {{UUID}}
+		{Give: Spec{Path: "/test/path/{{TABLE}}.{{UUID}}", FileSpec: &filetypes.FileSpec{Format: "json"}, NoRotate: true, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero}, WantErr: true},  // begins with a slash
+		{Give: Spec{Path: "//test/path/{{TABLE}}.{{UUID}}", FileSpec: &filetypes.FileSpec{Format: "json"}, NoRotate: true, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero}, WantErr: true}, // duplicate slashes
+		{Give: Spec{Path: "test//path", FileSpec: &filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero}, WantErr: true},                                     // duplicate slashes
 	}
-	for _, tc := range cases {
-		err := tc.Give.Validate()
-		if tc.WantErr {
-			require.Error(t, err)
-		} else {
-			require.NoError(t, err)
-		}
+	for i, tc := range cases {
+		tc := tc
+		t.Run(fmt.Sprintf("Case %d", i+1), func(t *testing.T) {
+			err := tc.Give.Validate()
+			if tc.WantErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+			}
+		})
 	}
 }
 
