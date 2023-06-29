@@ -8,7 +8,7 @@ The primary key for this table is **arn**.
 
 ## Relations
 
-This table depends on [aws_codebuild_source_credentials](aws_codebuild_source_credentials).
+This table depends on [aws_codebuild_projects](aws_codebuild_projects).
 
 ## Columns
 
