@@ -35,7 +35,7 @@ func (i *tableInfo) getColumn(name string) *columnInfo {
 	return nil
 }
 
-func (c *Client) MigrateTables(ctx context.Context, msgs []*message.MigrateTable) error {
+func (c *Client) MigrateTables(ctx context.Context, msgs []*message.WriteMigrateTable) error {
 	for _, msg := range msgs {
 		table := msg.Table
 		tableName := table.Name

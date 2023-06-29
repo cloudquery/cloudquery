@@ -7,7 +7,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
-	"github.com/cloudquery/plugin-sdk/v4/writers"
+	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/rs/zerolog"
 
 	"github.com/snowflakedb/gosnowflake"
@@ -18,7 +18,7 @@ type Client struct {
 	db     *sql.DB
 	logger zerolog.Logger
 	spec   Spec
-	writer *writers.BatchWriter
+	writer *batchwriter.BatchWriter
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
@@ -33,7 +33,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 	if err := c.spec.Validate(); err != nil {
 		return nil, err
 	}
-	c.writer, err = writers.NewBatchWriter(c, writers.WithLogger(logger), writers.WithBatchSize(c.spec.BatchSize), writers.WithBatchSizeBytes(c.spec.BatchSizeBytes))
+	c.writer, err = batchwriter.New(c, batchwriter.WithLogger(logger), batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))
 	if err != nil {
 		return nil, err
 	}
