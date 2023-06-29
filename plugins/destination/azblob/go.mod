@@ -8,6 +8,7 @@ require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe
 	github.com/cloudquery/filetypes/v4 v4.0.0
 	github.com/cloudquery/plugin-sdk/v4 v4.2.0-rc1
+	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.1
 	github.com/stretchr/testify v1.8.4
@@ -19,8 +20,6 @@ replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13
 //replace github.com/cloudquery/plugin-sdk/v4 => ../../../../plugin-sdk
 
 //replace github.com/cloudquery/filetypes/v4 => ../../../../filetypes
-
-replace github.com/cloudquery/filetypes/v4 => github.com/cloudquery/filetypes/v4 v4.0.0-20230628184906-d62fca069956
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.4.0 // indirect
