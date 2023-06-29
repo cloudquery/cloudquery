@@ -83,21 +83,6 @@ func (c *Client) checkForced(have, want schema.Tables, messages []*message.Write
 	return nil
 }
 
-func unsafeSchemaChanges(have, want schema.Tables) map[string][]schema.TableColumnChange {
-	result := make(map[string][]schema.TableColumnChange)
-	for _, w := range want {
-		current := have.Get(w.Name)
-		if current == nil {
-			continue
-		}
-		unsafe := unsafeChanges(w.GetChanges(current))
-		if len(unsafe) > 0 {
-			result[w.Name] = unsafe
-		}
-	}
-	return result
-}
-
 func unsafeChanges(changes []schema.TableColumnChange) []schema.TableColumnChange {
 	unsafe := make([]schema.TableColumnChange, 0, len(changes))
 	for _, c := range changes {
