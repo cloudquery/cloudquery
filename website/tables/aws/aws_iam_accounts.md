@@ -2,6 +2,8 @@
 
 This table shows data for IAM Accounts.
 
+https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetAccountSummary.html
+
 The primary key for this table is **account_id**.
 
 ## Columns

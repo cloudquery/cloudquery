@@ -2,6 +2,8 @@
 
 This table shows data for AWS Lambda Runtimes.
 
+https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html
+
 The primary key for this table is **name**.
 
 ## Columns

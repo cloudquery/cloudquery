@@ -60,24 +60,6 @@ func fetchRdsClusterParameterGroups(ctx context.Context, meta schema.ClientMeta,
 	return nil
 }
 
-func fetchRdsClusterParameterGroupParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services().Rds
-	g := parent.Item.(types.DBClusterParameterGroup)
-	input := rds.DescribeDBClusterParametersInput{DBClusterParameterGroupName: g.DBClusterParameterGroupName}
-	paginator := rds.NewDescribeDBClusterParametersPaginator(svc, &input)
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx, func(options *rds.Options) {
-			options.Region = cl.Region
-		})
-		if err != nil {
-			return err
-		}
-		res <- page.Parameters
-	}
-	return nil
-}
-
 func resolveRdsClusterParameterGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	g := resource.Item.(types.DBClusterParameterGroup)
 	cl := meta.(*client.Client)
