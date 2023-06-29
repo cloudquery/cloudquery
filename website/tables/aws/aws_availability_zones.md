@@ -2,7 +2,7 @@
 
 This table shows data for Availability Zones.
 
-https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Region.html
+https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_AvailabilityZone.html
 
 The composite primary key for this table is (**account_id**, **region_name**, **zone_id**).
 
