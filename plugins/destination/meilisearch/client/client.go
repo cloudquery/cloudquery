@@ -15,16 +15,18 @@ import (
 )
 
 type Client struct {
-	plugin.UnimplementedSource
 	Meilisearch *meilisearch.Client
 
 	logger   zerolog.Logger
 	spec     Spec
 	pkColumn string
 	writer   *batchwriter.BatchWriter
+
+	plugin.UnimplementedSource
 }
 
 var _ plugin.Client = (*Client)(nil)
+var _ batchwriter.Client = (*Client)(nil)
 
 func (c *Client) Close(ctx context.Context) error {
 	if err := c.writer.Close(ctx); err != nil {
@@ -34,7 +36,7 @@ func (c *Client) Close(ctx context.Context) error {
 	return nil
 }
 
-func (*Client) DeleteStale(context.Context, []*message.WriteDeleteStale) error {
+func (*Client) DeleteStale(context.Context, message.WriteDeleteStales) error {
 	return fmt.Errorf("DeleteStale not supported")
 }
 
@@ -95,11 +97,10 @@ func New(_ context.Context, logger zerolog.Logger, specBytes []byte) (plugin.Cli
 		pkColumn:    pkColumn,
 		spec:        spec,
 	}
-	writer, err := batchwriter.New(client, batchwriter.WithBatchSize(spec.BatchSize), batchwriter.WithBatchSizeBytes(spec.BatchSizeBytes))
+	client.writer, err = batchwriter.New(client, batchwriter.WithBatchSize(spec.BatchSize), batchwriter.WithBatchSizeBytes(spec.BatchSizeBytes))
 	if err != nil {
 		return nil, err
 	}
-	client.writer = writer
 
 	return client, client.verifyVersion()
 }

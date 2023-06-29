@@ -19,11 +19,11 @@ func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) err
 	return nil
 }
 
-func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs []*message.WriteInsert) error {
-	if len(msgs) == 0 {
+func (c *Client) WriteTableBatch(ctx context.Context, name string, messages message.WriteInserts) error {
+	if len(messages) == 0 {
 		return nil
 	}
-	table := msgs[0].GetTable()
+	table := messages[0].GetTable()
 
 	index, err := c.Meilisearch.GetIndex(table.Name)
 	if err != nil {
@@ -37,8 +37,8 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs []*messa
 		transformer = toMapWithHash(table)
 	}
 
-	records := make([]arrow.Record, 0, len(msgs))
-	for _, msg := range msgs {
+	records := make([]arrow.Record, 0, len(messages))
+	for _, msg := range messages {
 		records = append(records, msg.Record)
 	}
 

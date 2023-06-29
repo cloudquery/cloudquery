@@ -8,15 +8,15 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func (c *Client) MigrateTables(ctx context.Context, msgs []*message.WriteMigrateTable) error {
+func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrateTables) error {
 	c.logger.Info().Msg("Migrate")
 
 	have, err := c.indexes()
 	if err != nil {
 		return err
 	}
-	tables := make(schema.Tables, len(msgs))
-	for i, msg := range msgs {
+	tables := make(schema.Tables, len(messages))
+	for i, msg := range messages {
 		tables[i] = msg.Table
 	}
 
@@ -32,7 +32,7 @@ func (c *Client) MigrateTables(ctx context.Context, msgs []*message.WriteMigrate
 			update = append(update, need)
 		default:
 			recreate = append(recreate, need)
-			if !msgs[need.Index].MigrateForce {
+			if !messages[need.Index].MigrateForce {
 				return fmt.Errorf("index %s requires force migration. use 'migrate_mode: forced'", uid)
 			}
 		}
