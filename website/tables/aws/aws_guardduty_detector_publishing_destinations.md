@@ -2,7 +2,7 @@
 
 This table shows data for Amazon GuardDuty Detector Publishing Destinations.
 
-https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Member.html
+https://docs.aws.amazon.com/guardduty/latest/APIReference/API_DescribePublishingDestination.html
 
 The composite primary key for this table is (**detector_arn**, **destination_id**).
 
