@@ -12,14 +12,10 @@ import (
 	"github.com/rs/zerolog"
 )
 
-var tables = []*schema.Table{
-	services.TestSomeTable(),
-	services.TestDataTable(),
-}
-
 type Client struct {
-	SchedulerClient *client.TestClient
-	logger          zerolog.Logger
+	logger    zerolog.Logger
+	tables    schema.Tables
+	scheduler *scheduler.Scheduler
 
 	plugin.UnimplementedDestination
 }
@@ -29,12 +25,15 @@ func (c *Client) Logger() *zerolog.Logger {
 }
 
 func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.SyncMessage) error {
-	s := scheduler.NewScheduler(c.SchedulerClient, scheduler.WithStrategy(scheduler.StrategyDFS))
-	return s.Sync(ctx, tables, res)
+	tt, err := c.tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
+	if err != nil {
+		return err
+	}
+	return c.scheduler.Sync(ctx, tt, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
 }
 
-func (*Client) Tables(_ context.Context) (schema.Tables, error) {
-	return tables, nil
+func (c *Client) Tables(context.Context) (schema.Tables, error) {
+	return c.tables, nil
 }
 
 func (*Client) Close(_ context.Context) error {
@@ -47,7 +46,26 @@ func Configure(_ context.Context, logger zerolog.Logger, spec []byte) (plugin.Cl
 	}
 
 	return &Client{
-		logger:          logger,
-		SchedulerClient: schedulerClient,
+		logger: logger,
+		scheduler: scheduler.NewScheduler(schedulerClient,
+			scheduler.WithLogger(logger),
+		),
+		tables: getTables(),
 	}, nil
+}
+
+func getTables() schema.Tables {
+	tables := schema.Tables{
+		services.TestSomeTable(),
+		services.TestDataTable(),
+	}
+	for i := range tables {
+		tables[i].Columns = append([]schema.Column{schema.CqIDColumn, schema.CqParentIDColumn}, tables[i].Columns...)
+		if tables[i].Transform != nil {
+			if err := tables[i].Transform(tables[i]); err != nil {
+				panic(err)
+			}
+		}
+	}
+	return tables
 }
