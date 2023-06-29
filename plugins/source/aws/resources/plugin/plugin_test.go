@@ -17,17 +17,17 @@ func TestAWS(t *testing.T) {
 
 // This test ensures that all tables have a unique description.
 func TestAWSTableDescriptions(t *testing.T) {
-	descriptions := make(map[string]bool)
+	descriptions := make(map[string]string)
 	p := AWS()
 	tables := p.Tables()
 	for _, table := range tables {
 		if ignoreTable(table.Name) {
 			continue
 		}
-		if _, ok := descriptions[table.Description]; ok || table.Description == "" {
-			t.Errorf("description for table exists %s", table.Name)
+		if val, ok := descriptions[table.Description]; ok || table.Description == "" {
+			t.Errorf("duplicate description for %s and %s", val, table.Name)
 		} else {
-			descriptions[table.Description] = true
+			descriptions[table.Description] = table.Name
 		}
 	}
 }
