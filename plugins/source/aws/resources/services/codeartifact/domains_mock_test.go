@@ -9,19 +9,18 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildDomains(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockCodeartifactClient(ctrl)
 
 	domainSummary := types.DomainSummary{}
-	if err := faker.FakeObject(&domainSummary); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&domainSummary))
+
 	domain := types.DomainDescription{}
-	if err := faker.FakeObject(&domain); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&domain))
+
 	m.EXPECT().ListDomains(
 		gomock.Any(),
 		gomock.Any(),
@@ -45,9 +44,8 @@ func buildDomains(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 	tag := types.Tag{}
-	if err := faker.FakeObject(&tag); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tag))
+
 	m.EXPECT().ListTagsForResource(
 		gomock.Any(),
 		gomock.Any(),

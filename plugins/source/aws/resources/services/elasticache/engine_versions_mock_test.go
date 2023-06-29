@@ -8,16 +8,14 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildElasticacheEngineVersions(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mockElasticache := mocks.NewMockElasticacheClient(ctrl)
 	output := elasticache.DescribeCacheEngineVersionsOutput{}
-	err := faker.FakeObject(&output)
+	require.NoError(t, faker.FakeObject(&output))
 	output.Marker = nil
-	if err != nil {
-		t.Fatal(err)
-	}
 
 	mockElasticache.EXPECT().DescribeCacheEngineVersions(gomock.Any(), gomock.Any(), gomock.Any()).Return(&output, nil)
 

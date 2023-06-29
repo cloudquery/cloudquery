@@ -10,11 +10,10 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/apache/arrow/go/v13/arrow/memory"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
@@ -107,12 +106,11 @@ func (c *Client) reverseTransformer(table *schema.Table, values primitive.M) (ar
 	return rec, nil
 }
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
+func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
 	tableName := table.Name
-	cur, err := c.client.Database(c.pluginSpec.Database).Collection(tableName).Find(
+	cur, err := c.client.Database(c.spec.Database).Collection(tableName).Find(
 		ctx,
-		bson.M{"_cq_source_name": sourceName},
-		options.Find().SetSort(bson.M{"_cq_sync_time": 1}))
+		bson.D{})
 	if err != nil {
 		return fmt.Errorf("failed to read table %s: %w", tableName, err)
 	}

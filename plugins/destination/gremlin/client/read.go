@@ -6,10 +6,10 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	gremlingo "github.com/apache/tinkerpop/gremlin-go/v3/driver"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func (c *Client) Read(_ context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
+func (c *Client) Read(_ context.Context, table *schema.Table, res chan<- arrow.Record) error {
 	session, closer, err := c.newSession()
 	if err != nil {
 		return err
@@ -19,7 +19,6 @@ func (c *Client) Read(_ context.Context, table *schema.Table, sourceName string,
 	g := gremlingo.Traversal_().WithRemote(session).
 		V().
 		HasLabel(table.Name).
-		Has(schema.CqSourceNameColumn.Name, sourceName).
 		Group().By(gremlingo.T.Id).
 		By(AnonT.ValueMap())
 

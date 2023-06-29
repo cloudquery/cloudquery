@@ -9,15 +9,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildRamPrincipalsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockRamClient(ctrl)
 	object := types.Principal{}
-	err := faker.FakeObject(&object)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&object))
 
 	m.EXPECT().ListPrincipals(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ram.ListPrincipalsOutput{

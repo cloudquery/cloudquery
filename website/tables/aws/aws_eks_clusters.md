@@ -9,7 +9,9 @@ The primary key for this table is **arn**.
 ## Relations
 
 The following tables depend on aws_eks_clusters:
+  - [aws_eks_cluster_addons](aws_eks_cluster_addons)
   - [aws_eks_cluster_node_groups](aws_eks_cluster_node_groups)
+  - [aws_eks_cluster_oidc_identity_provider_configs](aws_eks_cluster_oidc_identity_provider_configs)
   - [aws_eks_fargate_profiles](aws_eks_fargate_profiles)
 
 ## Columns

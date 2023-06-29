@@ -9,19 +9,17 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildConfigDeliveryChannels(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockConfigserviceClient(ctrl)
 
 	var dc types.DeliveryChannel
-	if err := faker.FakeObject(&dc); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&dc))
+
 	var dcs types.DeliveryChannelStatus
-	if err := faker.FakeObject(&dcs); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&dcs))
 
 	m.EXPECT().DescribeDeliveryChannels(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&configservice.DescribeDeliveryChannelsOutput{

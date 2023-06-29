@@ -9,15 +9,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildCloutrailImports(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockCloudtrailClient(ctrl)
 
 	var desc types.ImportsListItem
-	if err := faker.FakeObject(&desc); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&desc))
+
 	m.EXPECT().ListImports(
 		gomock.Any(),
 		gomock.Any(),
@@ -30,9 +30,7 @@ func buildCloutrailImports(t *testing.T, ctrl *gomock.Controller) client.Service
 	)
 
 	out := &cloudtrail.GetImportOutput{}
-	if err := faker.FakeObject(out); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(out))
 
 	m.EXPECT().GetImport(
 		gomock.Any(),
