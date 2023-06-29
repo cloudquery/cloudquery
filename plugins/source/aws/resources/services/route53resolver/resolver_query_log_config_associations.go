@@ -15,8 +15,8 @@ func ResolverQueryLogConfigAssociations() *schema.Table {
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_ResolverQueryLogConfigAssociation.html`,
-		Resolver:    fetchQueryLogConfigs,
-		Transform:   transformers.TransformWithStruct(&types.ResolverQueryLogConfig{}, transformers.WithPrimaryKeys("Arn")),
+		Resolver:    fetchQueryLogConfigAssociations,
+		Transform:   transformers.TransformWithStruct(&types.ResolverQueryLogConfigAssociation{}, transformers.WithPrimaryKeys("Id")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "route53resolver"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
@@ -25,11 +25,11 @@ func ResolverQueryLogConfigAssociations() *schema.Table {
 	}
 }
 
-func fetchQueryLogConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchQueryLogConfigAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Route53resolver
-	var input route53resolver.ListResolverQueryLogConfigsInput
-	paginator := route53resolver.NewListResolverQueryLogConfigsPaginator(svc, &input)
+	var input route53resolver.ListResolverQueryLogConfigAssociationsInput
+	paginator := route53resolver.NewListResolverQueryLogConfigAssociationsPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *route53resolver.Options) {
 			options.Region = cl.Region
@@ -37,7 +37,7 @@ func fetchQueryLogConfigs(ctx context.Context, meta schema.ClientMeta, parent *s
 		if err != nil {
 			return err
 		}
-		res <- page.ResolverQueryLogConfigs
+		res <- page.ResolverQueryLogConfigAssociations
 	}
 	return nil
 }
