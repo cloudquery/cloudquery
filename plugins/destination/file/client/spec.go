@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"path"
 	"strings"
+	"time"
 
 	"github.com/cloudquery/filetypes/v4"
 )
@@ -27,6 +28,7 @@ type Spec struct {
 
 	BatchSize      *int64 `json:"batch_size"`
 	BatchSizeBytes *int64 `json:"batch_size_bytes"`
+	BatchTimeoutMs *int64 `json:"batch_timeout_ms"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -53,6 +55,13 @@ func (s *Spec) SetDefaults() {
 			s.BatchSizeBytes = int64ptr(50 * 1024 * 1024) // 50 MiB
 		}
 	}
+	if s.BatchTimeoutMs == nil {
+		if s.NoRotate {
+			s.BatchTimeoutMs = int64ptr(0)
+		} else {
+			s.BatchTimeoutMs = int64ptr(int64(30 * time.Second / time.Millisecond)) // 30 seconds
+		}
+	}
 }
 
 func (s *Spec) Validate() error {
@@ -66,13 +75,13 @@ func (s *Spec) Validate() error {
 		return fmt.Errorf("`path` should not contain %s when `no_rotate` = true", PathVarUUID)
 	}
 	if !strings.Contains(s.Path, PathVarUUID) && s.batchingEnabled() {
-		return fmt.Errorf("`path` should contain %s when using a non zero `batch_size` or `batch_size_bytes`", PathVarUUID)
+		return fmt.Errorf("`path` should contain %s when using a non zero `batch_size`, `batch_size_bytes` or `batch_timeout_ms`", PathVarUUID)
 	}
 	if s.Format == "" {
 		return fmt.Errorf("`format` is required")
 	}
-	if s.NoRotate && ((s.BatchSize != nil && *s.BatchSize > 0) || (s.BatchSizeBytes != nil && *s.BatchSizeBytes > 0)) {
-		return fmt.Errorf("`no_rotate` cannot be used with non zero `batch_size` or `batch_size_bytes`")
+	if s.NoRotate && ((s.BatchSize != nil && *s.BatchSize > 0) || (s.BatchSizeBytes != nil && *s.BatchSizeBytes > 0) || (s.BatchTimeoutMs != nil && *s.BatchTimeoutMs > 0)) {
+		return fmt.Errorf("`no_rotate` cannot be used with non zero `batch_size`, `batch_size_bytes` or `batch_timeout_ms`")
 	}
 
 	return nil
@@ -82,8 +91,10 @@ func (s *Spec) batchingEnabled() bool {
 	switch {
 	case (s.BatchSize != nil && *s.BatchSize > 0) ||
 		(s.BatchSizeBytes != nil && *s.BatchSizeBytes > 0) ||
+		(s.BatchTimeoutMs != nil && *s.BatchTimeoutMs > 0) ||
 		(!s.NoRotate && s.BatchSize == nil) ||
-		(!s.NoRotate && s.BatchSizeBytes == nil):
+		(!s.NoRotate && s.BatchSizeBytes == nil) ||
+		(!s.NoRotate && s.BatchTimeoutMs == nil):
 		return true
 	default:
 		return false
