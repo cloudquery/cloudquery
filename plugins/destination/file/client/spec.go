@@ -40,12 +40,18 @@ func (s *Spec) SetDefaults() {
 		s.Path = path.Join(s.Path, fmt.Sprintf("%s.%s", PathVarTable, s.Format))
 	}
 	if s.BatchSize == nil {
-		i := int64(10000)
-		s.BatchSize = &i
+		if s.NoRotate {
+			s.BatchSize = int64ptr(0)
+		} else {
+			s.BatchSize = int64ptr(10000)
+		}
 	}
 	if s.BatchSizeBytes == nil {
-		i := int64(50 * 1024 * 1024) // 50 MiB
-		s.BatchSizeBytes = &i
+		if s.NoRotate {
+			s.BatchSizeBytes = int64ptr(0)
+		} else {
+			s.BatchSizeBytes = int64ptr(50 * 1024 * 1024) // 50 MiB
+		}
 	}
 }
 
@@ -59,11 +65,22 @@ func (s *Spec) Validate() error {
 	if s.NoRotate && strings.Contains(s.Path, PathVarUUID) {
 		return fmt.Errorf("`path` should not contain %s when `no_rotate` = true", PathVarUUID)
 	}
-	if !strings.Contains(s.Path, PathVarUUID) && ((s.BatchSize == nil || *s.BatchSize > 0) || (s.BatchSizeBytes == nil || *s.BatchSizeBytes > 0)) {
+	if !s.NoRotate && !strings.Contains(s.Path, PathVarUUID) && ((s.BatchSize == nil || *s.BatchSize > 0) || (s.BatchSizeBytes == nil || *s.BatchSizeBytes > 0)) {
+		return fmt.Errorf("`path` should contain %s when using a non zero batch size", PathVarUUID)
+	}
+	if s.NoRotate && !strings.Contains(s.Path, PathVarUUID) && ((s.BatchSize != nil && *s.BatchSize > 0) || (s.BatchSizeBytes != nil && *s.BatchSizeBytes > 0)) {
 		return fmt.Errorf("`path` should contain %s when using a non zero batch size", PathVarUUID)
 	}
 	if s.Format == "" {
 		return fmt.Errorf("`format` is required")
 	}
+	if s.NoRotate && ((s.BatchSize != nil && *s.BatchSize > 0) || (s.BatchSizeBytes != nil && *s.BatchSizeBytes > 0)) {
+		return fmt.Errorf("`no_rotate` cannot be used with non zero `batch_size` or `batch_size_bytes`")
+	}
+
 	return nil
+}
+
+func int64ptr(i int64) *int64 {
+	return &i
 }
