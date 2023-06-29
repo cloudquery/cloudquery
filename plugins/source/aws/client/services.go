@@ -84,6 +84,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroups"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
+	"github.com/aws/aws-sdk-go-v2/service/route53resolver"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
@@ -202,6 +203,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Resourcegroups:            resourcegroups.NewFromConfig(awsCfg),
 		Route53:                   route53.NewFromConfig(awsCfg),
 		Route53domains:            route53domains.NewFromConfig(awsCfg),
+		Route53resolver:           route53resolver.NewFromConfig(awsCfg),
 		S3:                        s3.NewFromConfig(awsCfg),
 		S3control:                 s3control.NewFromConfig(awsCfg),
 		Sagemaker:                 sagemaker.NewFromConfig(awsCfg),
@@ -318,6 +320,7 @@ type Services struct {
 	Resiliencehub             services.ResiliencehubClient
 	Route53                   services.Route53Client
 	Route53domains            services.Route53domainsClient
+	Route53resolver           services.Route53resolverClient
 	S3                        services.S3Client
 	S3control                 services.S3controlClient
 	Sagemaker                 services.SagemakerClient

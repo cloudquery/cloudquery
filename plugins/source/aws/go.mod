@@ -89,6 +89,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.14.13
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.28.3
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.15.0
+	github.com/aws/aws-sdk-go-v2/service/route53resolver v1.17.13
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.35.0
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.31.7
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.86.0
