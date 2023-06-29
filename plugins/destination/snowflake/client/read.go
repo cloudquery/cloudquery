@@ -110,7 +110,6 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	case *array.LargeStringBuilder:
 		b.Append(val.(string))
 	case *array.BinaryBuilder:
-		fmt.Println(f.Name)
 		b.Append(val.([]uint8))
 	case *array.TimestampBuilder:
 		var timeVal time.Time
