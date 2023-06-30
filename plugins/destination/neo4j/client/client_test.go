@@ -54,8 +54,6 @@ func TestPlugin(t *testing.T) {
 		plugin.WithTestIgnoreNullsInLists(),
 		plugin.WithTestDataOptions(schema.TestSourceOptions{
 			TimePrecision: time.Microsecond,
-			SkipMaps:      true,
-			SkipStructs:   true,
 			SkipLists:     true,
 		}),
 	)
