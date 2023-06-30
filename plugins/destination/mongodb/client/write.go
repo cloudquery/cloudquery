@@ -141,7 +141,7 @@ func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, d
 	return nil
 }
 
-func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs []*message.WriteInsert) error {
+func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs message.WriteInserts) error {
 	if len(msgs) == 0 {
 		return nil
 	}
