@@ -44,17 +44,17 @@ func Test_listValue(t *testing.T) {
 	data, err := listValue(builder.NewListArray())
 	require.NoError(t, err)
 
-	uidSlices := data.([]*[]*uuid.UUID)
+	uidSlices := data.([][]*uuid.UUID)
 
 	require.Equal(t, amount, len(uidSlices))
 	for i, row := range uidSlices {
 		require.NotNil(t, row)
 		if i%2 == 0 {
-			require.Empty(t, *row)
+			require.Empty(t, row)
 			continue
 		}
-		require.Equal(t, width, len(*row))
-		for j, uid := range *row {
+		require.Equal(t, width, len(row))
+		for j, uid := range row {
 			require.NotNil(t, uid)
 			require.Exactly(t, values[i][j], *uid)
 		}
@@ -95,17 +95,17 @@ func Test_largeListValue(t *testing.T) {
 	data, err := listValue(builder.NewLargeListArray())
 	require.NoError(t, err)
 
-	uidSlices := data.([]*[]*uuid.UUID)
+	uidSlices := data.([][]*uuid.UUID)
 
 	require.Equal(t, amount, len(uidSlices))
 	for i, row := range uidSlices {
 		require.NotNil(t, row)
 		if i%2 == 0 {
-			require.Empty(t, *row)
+			require.Empty(t, row)
 			continue
 		}
-		require.Equal(t, width, len(*row))
-		for j, uid := range *row {
+		require.Equal(t, width, len(row))
+		for j, uid := range row {
 			require.NotNil(t, uid)
 			require.Exactly(t, values[i][j], *uid)
 		}
@@ -146,13 +146,13 @@ func Test_fixedSizeListValue(t *testing.T) {
 	data, err := listValue(builder.NewListArray())
 	require.NoError(t, err)
 
-	uidSlices := data.([]*[]*uuid.UUID)
+	uidSlices := data.([][]*uuid.UUID)
 
 	require.Equal(t, amount, len(uidSlices))
 	for i, row := range uidSlices {
 		require.NotNil(t, row)
-		require.Equal(t, width, len(*row))
-		for j, uid := range *row {
+		require.Equal(t, width, len(row))
+		for j, uid := range row {
 			require.NotNil(t, uid)
 			require.Exactly(t, values[i][j], *uid)
 		}

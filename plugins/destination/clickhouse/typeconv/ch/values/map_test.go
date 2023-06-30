@@ -99,75 +99,74 @@ func Test_mapValue(t *testing.T) {
 	data, err := mapValue(builder.NewMapArray())
 	require.NoError(t, err)
 
-	elems := data.([]*map[string]map[string]any)
+	elems := data.([]map[string]map[string]any)
 	require.Equal(t, 4, len(elems))
 
 	// single proper value
 	elem := elems[0]
 	require.NotNil(t, elem)
-	val, ok := (*elem)["proper"]
+	val, ok := elem["proper"]
 	require.True(t, ok)
 	require.NotNil(t, val)
 	require.EqualValues(t, map[string]any{
 		"bool":             ptr(true),
 		"bool_n":           ptr(false),
-		"list":             ptr([]*uuid.UUID{&uuid.NameSpaceDNS}),
-		"map":              ptr(map[int32]*float64{123: ptr(float64(123.456))}),
-		"map_n":            ptr(map[int32]*float64{321: ptr(float64(654.321))}),
-		"map_uuid":         ptr(map[uuid.UUID]*uuid.UUID{uuid.NameSpaceURL: ptr(uuid.NameSpaceURL)}),
+		"list":             []*uuid.UUID{&uuid.NameSpaceDNS},
+		"map":              map[int32]*float64{123: ptr(float64(123.456))},
+		"map_n":            map[int32]*float64{321: ptr(float64(654.321))},
+		"map_uuid":         map[uuid.UUID]*uuid.UUID{uuid.NameSpaceURL: ptr(uuid.NameSpaceURL)},
 		"mapped_to_string": ptr(`[{"key":1010.543,"value":"some string"}]`),
 	}, val)
 
 	// single empty value
 	elem = elems[1]
 	require.NotNil(t, elem)
-	val, ok = (*elem)["empty"]
+	val, ok = elem["empty"]
 	require.True(t, ok)
 	// tuples are non-nullable in CH
 	require.NotNil(t, val)
 	require.EqualValues(t, map[string]any{
 		"bool":             ptr(false),
 		"bool_n":           ptr(false),
-		"list":             ptr([]*uuid.UUID{}),
-		"map":              ptr(map[int32]*float64{}),
-		"map_n":            ptr(map[int32]*float64{}),
-		"map_uuid":         ptr(map[uuid.UUID]*uuid.UUID{}),
+		"list":             []*uuid.UUID{},
+		"map":              map[int32]*float64{},
+		"map_n":            map[int32]*float64{},
+		"map_uuid":         map[uuid.UUID]*uuid.UUID{},
 		"mapped_to_string": ptr("[]"),
 	}, val)
 
 	// 2 values: proper & null
 	elem = elems[2]
 	require.NotNil(t, elem)
-	val, ok = (*elem)["proper"]
+	val, ok = elem["proper"]
 	require.True(t, ok)
 	require.NotNil(t, val)
 	require.EqualValues(t, map[string]any{
 		"bool":             ptr(true),
 		"bool_n":           ptr(false),
-		"list":             ptr([]*uuid.UUID{&uuid.NameSpaceDNS}),
-		"map":              ptr(map[int32]*float64{123: ptr(float64(123.456))}),
-		"map_n":            ptr(map[int32]*float64{}),
-		"map_uuid":         ptr(map[uuid.UUID]*uuid.UUID{uuid.NameSpaceURL: (*uuid.UUID)(nil)}),
+		"list":             []*uuid.UUID{&uuid.NameSpaceDNS},
+		"map":              map[int32]*float64{123: ptr(float64(123.456))},
+		"map_n":            map[int32]*float64{},
+		"map_uuid":         map[uuid.UUID]*uuid.UUID{uuid.NameSpaceURL: (*uuid.UUID)(nil)},
 		"mapped_to_string": ptr(`[{"key":1010.543,"value":null}]`),
 	}, val)
-	val, ok = (*elem)["empty"]
+	val, ok = elem["empty"]
 	require.True(t, ok)
 	// tuples are non-nullable in CH
 	require.NotNil(t, val)
 	require.EqualValues(t, map[string]any{
 		"bool":             ptr(false),
 		"bool_n":           ptr(false),
-		"list":             ptr([]*uuid.UUID{}),
-		"map":              ptr(map[int32]*float64{}),
-		"map_n":            ptr(map[int32]*float64{}),
-		"map_uuid":         ptr(map[uuid.UUID]*uuid.UUID{}),
+		"list":             []*uuid.UUID{},
+		"map":              map[int32]*float64{},
+		"map_n":            map[int32]*float64{},
+		"map_uuid":         map[uuid.UUID]*uuid.UUID{},
 		"mapped_to_string": ptr("[]"),
 	}, val)
 
 	// null
 	elem = elems[3]
-	require.NotNil(t, elem)
 	// maps are non-nullable in CH
-	require.NotNil(t, *elem)
-	require.Empty(t, *elem)
+	require.NotNil(t, elem)
+	require.Empty(t, elem)
 }
