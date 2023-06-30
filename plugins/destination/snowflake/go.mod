@@ -37,7 +37,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.35.0 // indirect
 	github.com/aws/smithy-go v1.13.5 // indirect
 	github.com/cloudquery/plugin-pb-go v1.4.0 // indirect
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
+	github.com/cloudquery/plugin-sdk/v3 v3.10.6 // indirect
 	github.com/danieljoos/wincred v1.1.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dvsekhvalnov/jose2go v1.5.0 // indirect

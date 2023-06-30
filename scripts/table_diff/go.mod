@@ -5,7 +5,6 @@ go 1.19
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230601070034-e07e22c5580a
 	github.com/bluekeyes/go-gitdiff v0.7.1
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0
 	github.com/cloudquery/plugin-sdk/v3 v3.10.6
 	github.com/google/go-cmp v0.5.9
 	github.com/stretchr/testify v1.8.4
@@ -25,6 +24,7 @@ require (
 	github.com/kr/text v0.2.0 // indirect
 	github.com/minio/asm2plan9s v0.0.0-20200509001527-cdd76441f9d8 // indirect
 	github.com/minio/c2goasm v0.0.0-20190812172519-36a3d3bbc4f3 // indirect
+	github.com/pierrec/lz4/v4 v4.1.17 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect

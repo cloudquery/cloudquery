@@ -13,13 +13,14 @@ require (
 	golang.org/x/sync v0.2.0
 )
 
+require github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
+
 // TODO: remove once all updates are merged
 replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230626001500-065602842c3a
 
 require (
 	github.com/ClickHouse/ch-go v0.56.0 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.21.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
