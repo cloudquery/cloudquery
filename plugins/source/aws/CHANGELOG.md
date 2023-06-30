@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [19.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v19.1.0...plugins-source-aws-v19.2.0) (2023-06-30)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_codecommit_repositories` was added
+- Table `aws_route53resolver_firewall_configs` was added
+- Table `aws_route53resolver_firewall_domain_lists` was added
+- Table `aws_route53resolver_firewall_rule_group_associations` was added
+- Table `aws_route53resolver_firewall_rule_groups` was added
+- Table `aws_route53resolver_resolver_endpoints` was added
+- Table `aws_route53resolver_resolver_query_log_config_associations` was added
+- Table `aws_route53resolver_resolver_query_log_configs` was added
+- Table `aws_route53resolver_resolver_rule_associations` was added
+- Table `aws_route53resolver_resolver_rules` was added
+
 ### Features
 
 * **aws:** Add AWS CodeCommit Repositories ([#11827](https://github.com/cloudquery/cloudquery/issues/11827)) ([a198fd8](https://github.com/cloudquery/cloudquery/commit/a198fd8e5890d289a464c580497a72f139717e5c)), closes [#11819](https://github.com/cloudquery/cloudquery/issues/11819)
