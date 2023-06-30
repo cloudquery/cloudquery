@@ -8,9 +8,9 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func (c *Client) DeleteStale(ctx context.Context, msgs []*message.WriteDeleteStale) error {
+func (c *Client) DeleteStale(ctx context.Context, msgs message.WriteDeleteStales) error {
 	for _, msg := range msgs {
-		tableName := msg.Table.Name
+		tableName := msg.TableName
 		var sb strings.Builder
 		sb.WriteString("delete from ")
 		sb.WriteString(tableName)
