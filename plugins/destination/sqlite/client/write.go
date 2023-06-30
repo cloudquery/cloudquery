@@ -7,22 +7,21 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/message"
-	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, res <-chan message.Message) error {
+func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) error {
 	for r := range res {
 		switch m := r.(type) {
-		case *message.MigrateTable:
-			if err := c.migrate(ctx, options.MigrateForce, schema.Tables{m.Table}); err != nil {
+		case *message.WriteMigrateTable:
+			if err := c.migrate(ctx, m.MigrateForce, schema.Tables{m.Table}); err != nil {
 				return fmt.Errorf("failed to process MigrateTable message: %w", err)
 			}
-		case *message.DeleteStale:
-			if err := c.deleteStale(ctx, m.Table, m.SourceName, m.SyncTime); err != nil {
+		case *message.WriteDeleteStale:
+			if err := c.deleteStale(ctx, m.TableName, m.SourceName, m.SyncTime); err != nil {
 				return fmt.Errorf("failed to process DeleteStale message: %w", err)
 			}
-		case *message.Insert:
+		case *message.WriteInsert:
 			if err := c.insertMessage(ctx, m); err != nil {
 				return fmt.Errorf("failed to process Insert message: %w", err)
 			}
@@ -30,11 +29,10 @@ func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, res <-c
 			return fmt.Errorf("unsupported message type: %T", m)
 		}
 	}
-
 	return nil
 }
 
-func (c *Client) insertMessage(ctx context.Context, m *message.Insert) error {
+func (c *Client) insertMessage(ctx context.Context, m *message.WriteInsert) error {
 	table := m.GetTable()
 	sc := m.Record.Schema()
 	var sql string

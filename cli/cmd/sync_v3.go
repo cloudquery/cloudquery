@@ -9,6 +9,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/cloudquery/cli/internal/transformer"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -16,12 +17,14 @@ import (
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // nolint:dupl
 func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, destinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination, uid string, _ bool) error {
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
+	tables := make(map[string]bool, 0)
 	defer func() {
 		if analyticsClient != nil {
 			log.Info().Msg("Sending sync summary to " + analyticsClient.Host())
@@ -50,6 +53,9 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		}
 		if destinationSpecs[i].WriteMode == specs.WriteModeAppend {
 			opts = append(opts, transformer.WithRemovePKs())
+		} else if destinationSpecs[i].PKMode == specs.PKModeCQID {
+			opts = append(opts, transformer.WithRemovePKs())
+			opts = append(opts, transformer.WithCQIDPrimaryKey())
 		}
 		destinationTransformers[i] = transformer.NewRecordTransformer(opts...)
 	}
@@ -64,22 +70,11 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		return err
 	}
 	for i := range destinationsClients {
-		// TODO: for backwards-compatibility check for old fields like `batch_size` and move them into the spec, log a warning
-		// 	Name           string      `json:"name,omitempty"`
-		//	Version        string      `json:"version,omitempty"`
-		//	Path           string      `json:"path,omitempty"`
-		//	Registry       Registry    `json:"registry,omitempty"`
-		//	WriteMode      WriteMode   `json:"write_mode,omitempty"`
-		//	MigrateMode    MigrateMode `json:"migrate_mode,omitempty"`
-		//	BatchSize      int         `json:"batch_size,omitempty"`
-		//	BatchSizeBytes int         `json:"batch_size_bytes,omitempty"`
-		//	Spec           any         `json:"spec,omitempty"`
-		//	PKMode         PKMode      `json:"pk_mode,omitempty"`
-		destSpecBytes, err := json.Marshal(destinationSpecs[i].Spec)
+		destSpec := destinationSpecs[i]
+		destSpecBytes, err := json.Marshal(destSpec.Spec)
 		if err != nil {
 			return err
 		}
-
 		if _, err := destinationsPbClients[i].Init(ctx, &plugin.Init_Request{
 			Spec: destSpecBytes,
 		}); err != nil {
@@ -91,15 +86,6 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 	for i := range destinationsPbClients {
 		writeClients[i], err = destinationsPbClients[i].Write(ctx)
 		if err != nil {
-			return err
-		}
-		if err := writeClients[i].Send(&plugin.Write_Request{
-			Message: &plugin.Write_Request_Options{
-				Options: &plugin.WriteOptions{
-					MigrateForce: destinationSpecs[i].MigrateMode == specs.MigrateModeForced,
-				},
-			},
-		}); err != nil {
 			return err
 		}
 	}
@@ -169,6 +155,7 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 			if err != nil {
 				return fmt.Errorf("failed to get record from bytes: %w", err)
 			}
+
 			atomic.AddInt64(&newResources, record.NumRows())
 			totalResources += int(record.NumRows())
 			for i := range destinationsPbClients {
@@ -179,7 +166,7 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 				}
 				wr := &plugin.Write_Request{}
 				wr.Message = &plugin.Write_Request_Insert{
-					Insert: &plugin.MessageInsert{
+					Insert: &plugin.Write_MessageInsert{
 						Record: transformedRecordBytes,
 					},
 				}
@@ -192,6 +179,8 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 			if err != nil {
 				return err
 			}
+			tableName := tableNameFromSchema(sc)
+			tables[tableName] = true
 			for i := range destinationsPbClients {
 				transformedSchema := destinationTransformers[i].TransformSchema(sc)
 				transformedSchemaBytes, err := plugin.SchemaToBytes(transformedSchema)
@@ -200,22 +189,13 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 				}
 				wr := &plugin.Write_Request{}
 				wr.Message = &plugin.Write_Request_MigrateTable{
-					MigrateTable: &plugin.MessageMigrateTable{
-						Table: transformedSchemaBytes,
+					MigrateTable: &plugin.Write_MessageMigrateTable{
+						MigrateForce: destinationSpecs[i].MigrateMode == specs.MigrateModeForced,
+						Table:        transformedSchemaBytes,
 					},
 				}
 				if err := writeClients[i].Send(wr); err != nil {
 					return fmt.Errorf("failed to send write request (migrate): %w", err)
-				}
-			}
-		case *plugin.Sync_Response_Delete:
-			for i := range destinationsPbClients {
-				wr := &plugin.Write_Request{}
-				wr.Message = &plugin.Write_Request_Delete{
-					Delete: m.Delete,
-				}
-				if err := writeClients[i].Send(wr); err != nil {
-					return fmt.Errorf("failed to send write request (delete): %w", err)
 				}
 			}
 		default:
@@ -228,6 +208,11 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 	}
 
 	for i := range destinationsClients {
+		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
+			if err := deleteStale(writeClients[i], tables, sourceName, syncTime); err != nil {
+				return err
+			}
+		}
 		if _, err := writeClients[i].CloseAndRecv(); err != nil {
 			return err
 		}
@@ -255,5 +240,28 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		msg = "Sync completed with errors, see logs for details"
 	}
 	fmt.Printf("%s. Resources: %d, Errors: %d, Warnings: %d, Time: %s\n", msg, totalResources, totals.Errors, totals.Warnings, syncTimeTook.Truncate(time.Second).String())
+	return nil
+}
+
+func tableNameFromSchema(sc *arrow.Schema) string {
+	tableName, _ := sc.Metadata().GetValue("cq:table_name")
+	return tableName
+}
+
+func deleteStale(client plugin.Plugin_WriteClient, tables map[string]bool, sourceName string, syncTime time.Time) error {
+	for tableName := range tables {
+		if err := client.Send(&plugin.Write_Request{
+			Message: &plugin.Write_Request_Delete{
+				Delete: &plugin.Write_MessageDeleteStale{
+					SourceName: sourceName,
+					SyncTime:   timestamppb.New(syncTime),
+					TableName:  tableName,
+				},
+			},
+		}); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }

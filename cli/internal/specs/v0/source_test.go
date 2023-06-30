@@ -154,6 +154,7 @@ spec:
 			Destinations: []string{"test"},
 			Scheduler:    SchedulerRoundRobin,
 			Tables:       []string{"test"},
+			Spec:         map[string]any{},
 		},
 	},
 	{
@@ -176,6 +177,7 @@ spec:
 			Destinations: []string{"test"},
 			Scheduler:    SchedulerDFS,
 			Tables:       []string{"test"},
+			Spec:         map[string]any{},
 		},
 	},
 }

@@ -14,60 +14,20 @@ import (
 func buildSourceCredentials(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockCodebuildClient(ctrl)
 
-	projectsList := codebuild.ListProjectsOutput{}
-	require.NoError(t, faker.FakeObject(&projectsList))
+	sourceCredentials := codebuild.ListSourceCredentialsOutput{}
+	require.NoError(t, faker.FakeObject(&sourceCredentials))
 
-	projectsList.NextToken = nil
-	m.EXPECT().ListProjects(
+	m.EXPECT().ListSourceCredentials(
 		gomock.Any(),
 		gomock.Any(),
 		gomock.Any(),
 	).Return(
-		&projectsList,
+		&sourceCredentials,
 		nil,
 	)
-
-	projects := codebuild.BatchGetProjectsOutput{}
-	require.NoError(t, faker.FakeObject(&projects))
-
-	m.EXPECT().BatchGetProjects(
-		gomock.Any(),
-		gomock.Any(),
-		gomock.Any(),
-	).Return(
-		&projects,
-		nil,
-	)
-
-	buildID := ""
-	require.NoError(t, faker.FakeObject(&buildID))
-
-	m.EXPECT().ListBuildsForProject(
-		gomock.Any(),
-		gomock.Any(),
-		gomock.Any(),
-	).Return(
-		&codebuild.ListBuildsForProjectOutput{
-			Ids: []string{buildID},
-		},
-		nil,
-	).MinTimes(1)
-
-	build := codebuild.BatchGetBuildsOutput{}
-	require.NoError(t, faker.FakeObject(&build))
-
-	m.EXPECT().BatchGetBuilds(
-		gomock.Any(),
-		gomock.Any(),
-		gomock.Any(),
-	).Return(
-		&build,
-		nil,
-	).MinTimes(1)
-
 	return client.Services{Codebuild: m}
 }
 
 func TestSourceCredentials(t *testing.T) {
-	client.AwsMockTestHelper(t, Projects(), buildSourceCredentials, client.TestOptions{})
+	client.AwsMockTestHelper(t, SourceCredentials(), buildSourceCredentials, client.TestOptions{})
 }

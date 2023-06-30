@@ -88,7 +88,6 @@ func migrate(cmd *cobra.Command, args []string) error {
 			fmt.Println(err)
 		}
 	}()
-
 	for _, source := range sources {
 		cl := managedSourceClients.ClientByName(source.Name)
 		versions, err := cl.Versions(ctx)
@@ -116,9 +115,13 @@ func migrate(cmd *cobra.Command, args []string) error {
 					return fmt.Errorf("destination %[1]s does not support CloudQuery SDK version 1. Please upgrade to newer version of %[1]s", destination.Name())
 				}
 			}
-			return migrateConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec)
+			if err := migrateConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec); err != nil {
+				return fmt.Errorf("failed to migrate source %v@%v: %w", source.Name, source.Version, err)
+			}
 		case 1:
-			return migrateConnectionV1(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec)
+			if err := migrateConnectionV1(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec); err != nil {
+				return fmt.Errorf("failed to migrate source %v@%v: %w", source.Name, source.Version, err)
+			}
 		case 0:
 			return fmt.Errorf("please upgrade your source or use a CLI version between v3.0.1 and v3.5.3")
 		case -1:
