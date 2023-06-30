@@ -29,7 +29,6 @@ func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) err
 			return fmt.Errorf("unsupported message type: %T", m)
 		}
 	}
-
 	return nil
 }
 
