@@ -38,8 +38,8 @@ func TestPlugin(t *testing.T) {
 	plugin.TestWriterSuiteRunner(t,
 		p,
 		plugin.WriterTestSuiteTests{
-			SkipUpsert:  true,
-			SkipMigrate: true,
+			SkipUpsert:      true,
+			SkipMigrate:     true,
 			SkipDeleteStale: true,
 		},
 		plugin.WithTestDataOptions(schema.TestSourceOptions{
