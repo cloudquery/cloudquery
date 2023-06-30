@@ -250,14 +250,12 @@ func tableNameFromSchema(sc *arrow.Schema) string {
 
 func deleteStale(client plugin.Plugin_WriteClient, tables map[string]bool, sourceName string, syncTime time.Time) error {
 	for tableName := range tables {
-		// TODO remove this print
-		fmt.Println("Deleting stale records from table", tableName)
 		if err := client.Send(&plugin.Write_Request{
 			Message: &plugin.Write_Request_Delete{
 				Delete: &plugin.Write_MessageDeleteStale{
 					SourceName: sourceName,
 					SyncTime:   timestamppb.New(syncTime),
-					// TODO change table
+					TableName: tableName,
 				},
 			},
 		}); err != nil {
