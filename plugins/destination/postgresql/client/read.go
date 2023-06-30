@@ -11,7 +11,9 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
+	"github.com/apache/arrow/go/v13/arrow/decimal128"
 	"github.com/apache/arrow/go/v13/arrow/memory"
+	"github.com/cloudquery/plugin-sdk/v4/scalar"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/goccy/go-json"
@@ -41,11 +43,21 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 		if err != nil {
 			return err
 		}
-		rec, err := c.reverseTransformer(table, values)
-		if err != nil {
-			return err
+
+		arrowSchema := table.ToArrowSchema()
+		rb := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
+		for i := range values {
+			val, err := prepareValueForResourceSet(arrowSchema.Field(i).Type, values[i])
+			if err != nil {
+				return err
+			}
+			s := scalar.NewScalar(arrowSchema.Field(i).Type)
+			if err := s.Set(val); err != nil {
+				return err
+			}
+			scalar.AppendToBuilder(rb.Field(i), s)
 		}
-		res <- rec
+		res <- rb.NewRecord()
 	}
 	rows.Close()
 	return nil
@@ -83,6 +95,9 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 		b.Append(val.(float32))
 	case *array.Float64Builder:
 		b.Append(val.(float64))
+	case *array.Decimal128Builder:
+		v := val.(pgtype.Numeric)
+		b.Append(decimal128.FromBigInt(v.Int))
 	case *array.StringBuilder:
 		va, ok := val.(string)
 		if !ok {

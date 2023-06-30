@@ -6,13 +6,12 @@ import (
 	"strings"
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
-	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
 )
 
 // MigrateTableBatch migrates a table. It forms part of the writer.MixedBatchWriter interface.
-func (c *Client) MigrateTableBatch(ctx context.Context, messages []*message.MigrateTable, options plugin.WriteOptions) error {
+func (c *Client) MigrateTableBatch(ctx context.Context, messages []*message.WriteMigrateTable) error {
 	tables, err := tablesFromMessages(messages)
 	if err != nil {
 		return err
@@ -27,11 +26,16 @@ func (c *Client) MigrateTableBatch(ctx context.Context, messages []*message.Migr
 		return fmt.Errorf("failed listing postgres tables: %w", err)
 	}
 	tables = c.normalizeTables(tables, pgTables)
-	if !options.MigrateForce {
-		nonAutoMigrableTables, changes := c.nonAutoMigrableTables(tables, pgTables)
-		if len(nonAutoMigrableTables) > 0 {
-			return fmt.Errorf("tables %s with changes %v require migration. Migrate manually or consider using 'migrate_mode: forced'", strings.Join(nonAutoMigrableTables, ","), changes)
-		}
+
+	safeTables := map[string]bool{}
+	for _, msg := range messages {
+		// last message takes precedence; we don't actually expect the same table to be
+		// in the same batch twice.
+		safeTables[msg.Table.Name] = !msg.MigrateForce
+	}
+	nonAutoMigrateableTables, changes := c.nonAutoMigrateableTables(tables, pgTables, safeTables)
+	if len(nonAutoMigrateableTables) > 0 {
+		return fmt.Errorf("tables %s with changes %v require migration. Migrate manually or consider using 'migrate_mode: forced'", strings.Join(nonAutoMigrateableTables, ","), changes)
 	}
 
 	for _, table := range tables {
@@ -146,7 +150,7 @@ func (c *Client) normalizeTables(tables schema.Tables, pgTables schema.Tables) s
 	return result
 }
 
-func (c *Client) nonAutoMigrableTables(tables schema.Tables, pgTables schema.Tables) ([]string, [][]schema.TableColumnChange) {
+func (c *Client) nonAutoMigrateableTables(tables schema.Tables, pgTables schema.Tables, safeTables map[string]bool) ([]string, [][]schema.TableColumnChange) {
 	var result []string
 	var tableChanges [][]schema.TableColumnChange
 	for _, t := range tables {
@@ -155,7 +159,7 @@ func (c *Client) nonAutoMigrableTables(tables schema.Tables, pgTables schema.Tab
 			continue
 		}
 		changes := t.GetChanges(pgTable)
-		if !c.canAutoMigrate(changes) {
+		if safeTables[t.Name] && !c.canAutoMigrate(changes) {
 			result = append(result, t.Name)
 			tableChanges = append(tableChanges, changes)
 		}

@@ -8,15 +8,14 @@ import (
 	"strings"
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
-	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
 // InsertBatch inserts records into the destination table. It forms part of the writer.MixedBatchWriter interface.
-func (c *Client) InsertBatch(ctx context.Context, messages []*message.Insert, options plugin.WriteOptions) error {
-	tables, err := tablesFromMessages[*message.Insert](messages)
+func (c *Client) InsertBatch(ctx context.Context, messages []*message.WriteInsert) error {
+	tables, err := tablesFromMessages[*message.WriteInsert](messages)
 	if err != nil {
 		return err
 	}
@@ -68,8 +67,6 @@ func (c *Client) InsertBatch(ctx context.Context, messages []*message.Insert, op
 				}
 				return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
 			}
-			// TODO(v4): metrics
-			// atomic.AddUint64(&c.metrics.Writes, uint64(batchSize))
 			batch = &pgx.Batch{}
 		}
 	}
@@ -85,8 +82,6 @@ func (c *Client) InsertBatch(ctx context.Context, messages []*message.Insert, op
 			}
 			return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
 		}
-		// TODO: metrics
-		// atomic.AddUint64(&c.metrics.Writes, uint64(batchSize))
 	}
 	return nil
 }

@@ -5,7 +5,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func tablesFromMessages[T message.Message](messages []T) (schema.Tables, error) {
+func tablesFromMessages[T message.WriteMessage](messages []T) (schema.Tables, error) {
 	tableMap := make(map[string]*schema.Table)
 	for _, msg := range messages {
 		table := msg.GetTable()

@@ -6,13 +6,12 @@ import (
 	"strings"
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
-	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
 )
 
 // DeleteStaleBatch deletes stale records from the destination table. It forms part of the writer.MixedBatchWriter interface.
-func (c *Client) DeleteStaleBatch(ctx context.Context, messages []*message.DeleteStale, options plugin.WriteOptions) error {
+func (c *Client) DeleteStaleBatch(ctx context.Context, messages []*message.WriteDeleteStale) error {
 	batch := &pgx.Batch{}
 	for _, msg := range messages {
 		var sb strings.Builder

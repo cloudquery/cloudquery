@@ -5,12 +5,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
-	"github.com/cloudquery/plugin-sdk/v4/writers"
+	"github.com/cloudquery/plugin-sdk/v4/writers/mixedbatchwriter"
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -26,7 +25,7 @@ type Client struct {
 	currentSchemaName   string
 	pgType              pgType
 	batchSize           int
-	writer              *writers.MixedBatchWriter
+	writer              *mixedbatchwriter.MixedBatchWriter
 
 	plugin.UnimplementedSource
 }
@@ -42,7 +41,6 @@ const (
 	pgTypeCockroachDB
 )
 
-// NewClientFunc func(context.Context, zerolog.Logger, []byte) (Client, error)
 func New(ctx context.Context, logger zerolog.Logger, specBytes []byte) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "pg-dest").Logger(),
@@ -53,8 +51,7 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte) (plugin.C
 		return nil, err
 	}
 	spec.SetDefaults()
-	// TODO(v4): batch size handling
-	// c.batchSize = spec.BatchSize
+	c.batchSize = spec.BatchSize
 	logLevel, err := tracelog.LogLevelFromString(spec.PgxLogLevel.String())
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse pgx log level %s: %w", spec.PgxLogLevel, err)
@@ -91,11 +88,11 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte) (plugin.C
 	if err != nil {
 		return nil, fmt.Errorf("failed to get database type: %w", err)
 	}
-	c.writer, err = writers.NewMixedBatchWriter(c,
-		writers.WithMixedBatchWriterLogger(c.logger),
-		writers.WithMixedBatchWriterBatchSize(spec.BatchSize),
-		writers.WithMixedBatchWriterBatchSizeBytes(spec.BatchSizeBytes),
-		writers.WithMixedBatchWriterBatchTimeout(time.Duration(spec.BatchTimeoutMs)*time.Millisecond),
+	c.writer, err = mixedbatchwriter.New(c,
+		mixedbatchwriter.WithLogger(c.logger),
+		mixedbatchwriter.WithBatchSize(spec.BatchSize),
+		mixedbatchwriter.WithBatchSizeBytes(spec.BatchSizeBytes),
+		mixedbatchwriter.WithBatchTimeout(spec.BatchTimeout),
 	)
 	if err != nil {
 		return nil, err
@@ -107,8 +104,8 @@ func (c *Client) GetSpec() any {
 	return &Spec{}
 }
 
-func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, res <-chan message.Message) error {
-	return c.writer.Write(ctx, options, res)
+func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) error {
+	return c.writer.Write(ctx, res)
 }
 
 func (c *Client) Close(ctx context.Context) error {

@@ -37,7 +37,10 @@ func TestPgPlugin(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	p.Init(ctx, b)
+	err = p.Init(ctx, b)
+	if err != nil {
+		t.Fatal(err)
+	}
 	testOpts := schema.TestSourceOptions{
 		SkipMaps: true,
 	}
