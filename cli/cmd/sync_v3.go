@@ -255,7 +255,7 @@ func deleteStale(client plugin.Plugin_WriteClient, tables map[string]bool, sourc
 				Delete: &plugin.Write_MessageDeleteStale{
 					SourceName: sourceName,
 					SyncTime:   timestamppb.New(syncTime),
-					TableName: tableName,
+					TableName:  tableName,
 				},
 			},
 		}); err != nil {
