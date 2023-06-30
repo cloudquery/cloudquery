@@ -1,22 +1,15 @@
 package client
 
 import (
+	"context"
+	"encoding/json"
 	"os"
 	"testing"
 	"time"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/meilisearch/resources/plugin"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/meilisearch/resources/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
-
-var migrateStrategy = destination.MigrateStrategy{
-	AddColumn:           specs.MigrateModeSafe,
-	AddColumnNotNull:    specs.MigrateModeSafe,
-	RemoveColumn:        specs.MigrateModeSafe,
-	RemoveColumnNotNull: specs.MigrateModeSafe,
-	ChangeColumn:        specs.MigrateModeForced,
-}
 
 func getTestSpec() *Spec {
 	apiKey := os.Getenv("CQ_DEST_MEILI_TEST_API_KEY")
@@ -32,17 +25,28 @@ func getTestSpec() *Spec {
 }
 
 func TestPlugin(t *testing.T) {
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin("meilisearch", plugin.Version, New, destination.WithManagedWriter())
-		},
-		specs.Destination{Spec: getTestSpec()},
-		destination.PluginTestSuiteTests{
-			SkipDeleteStale:           true,
-			SkipMigrateAppendForce:    true, // as Meilisearch doesn't actually store the schema
-			SkipMigrateOverwriteForce: true, // as Meilisearch doesn't actually store the schema
-			MigrateStrategyOverwrite:  migrateStrategy,
-			MigrateStrategyAppend:     migrateStrategy,
+	ctx := context.Background()
+	p := plugin.NewPlugin("meilisearch", internalPlugin.Version, New)
+	spec := getTestSpec()
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := p.Init(ctx, specBytes); err != nil {
+		t.Fatal(err)
+	}
+
+	plugin.TestWriterSuiteRunner(t,
+		p,
+		plugin.WriterTestSuiteTests{
+			SkipDeleteStale: true,
+			SkipMigrate:     true,
+			SafeMigrations: plugin.SafeMigrations{
+				AddColumn:           true,
+				AddColumnNotNull:    true,
+				RemoveColumn:        true,
+				RemoveColumnNotNull: true,
+			},
 		},
 	)
 }

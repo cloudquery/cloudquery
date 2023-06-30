@@ -125,7 +125,7 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 }
 
 // Migrate migrates to the latest schema
-func (c *Client) MigrateTables(ctx context.Context, msgs []*message.WriteMigrateTable) error {
+func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
 	tables := make(schema.Tables, len(msgs))
 	for i, msg := range msgs {
 		tables[i] = msg.Table
