@@ -32,6 +32,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.21.2
 	github.com/aws/aws-sdk-go-v2/service/codeartifact v1.18.6
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.15
+	github.com/aws/aws-sdk-go-v2/service/codecommit v1.14.14
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.15.2
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.13
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.12
@@ -184,7 +185,6 @@ require (
 )
 
 require (
-	github.com/aws/aws-sdk-go-v2/service/codecommit v1.14.14 // indirect
 	github.com/biogo/store v0.0.0-20201120204734-aad293a2328f // indirect
 	github.com/cockroachdb/apd/v3 v3.1.0 // indirect
 	github.com/cockroachdb/errors v1.9.0 // indirect
