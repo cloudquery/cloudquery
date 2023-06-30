@@ -26,6 +26,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudwatchlogs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codeartifact"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codebuild"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codecommit"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codepipeline"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cognito"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/computeoptimizer"
@@ -184,6 +185,7 @@ func tables() []*schema.Table {
 		codeartifact.Repositories(),
 		codebuild.Projects(),
 		codebuild.SourceCredentials(),
+		codecommit.Repositories(),
 		codepipeline.Pipelines(),
 		codepipeline.Webhooks(),
 		cognito.IdentityPools(),
