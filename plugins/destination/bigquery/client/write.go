@@ -38,7 +38,7 @@ func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) err
 }
 
 // WriteTableBatch(ctx context.Context, name string, msgs []*message.Insert) error
-func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs []*message.WriteInsert) error {
+func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
 	inserter := c.client.Dataset(c.spec.DatasetID).Table(name).Inserter()
 	inserter.IgnoreUnknownValues = true
 	inserter.SkipInvalidRows = false

@@ -19,7 +19,7 @@ const (
 	maxTableChecks       = 20
 )
 
-func (c *Client) MigrateTables(ctx context.Context, msgs []*message.WriteMigrateTable) error {
+func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
 	eg, gctx := errgroup.WithContext(ctx)
 	eg.SetLimit(concurrentMigrations)
 	for _, msg := range msgs {
