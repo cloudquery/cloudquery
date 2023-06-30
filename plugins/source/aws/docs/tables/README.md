@@ -127,7 +127,7 @@
 - [aws_codebuild_projects](../../../../../website/tables/aws/aws_codebuild_projects.md)
   - [aws_codebuild_builds](../../../../../website/tables/aws/aws_codebuild_builds.md)
 - [aws_codebuild_source_credentials](../../../../../website/tables/aws/aws_codebuild_source_credentials.md)
-  - [aws_codebuild_builds](../../../../../website/tables/aws/aws_codebuild_builds.md)
+- [aws_codecommit_repositories](../../../../../website/tables/aws/aws_codecommit_repositories.md)
 - [aws_codepipeline_pipelines](../../../../../website/tables/aws/aws_codepipeline_pipelines.md)
 - [aws_codepipeline_webhooks](../../../../../website/tables/aws/aws_codepipeline_webhooks.md)
 - [aws_cognito_identity_pools](../../../../../website/tables/aws/aws_cognito_identity_pools.md)

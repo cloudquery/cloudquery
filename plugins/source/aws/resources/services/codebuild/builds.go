@@ -13,7 +13,7 @@ import (
 func builds() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_codebuild_builds",
-		Description: `https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_ServiceQuota.html`,
+		Description: `https://docs.aws.amazon.com/codebuild/latest/APIReference/API_Build.html`,
 		Resolver:    fetchBuildsForProject,
 		Transform:   transformers.TransformWithStruct(&types.Build{}, transformers.WithPrimaryKeys("Arn")),
 		Columns: []schema.Column{
