@@ -184,6 +184,7 @@ require (
 )
 
 require (
+	github.com/aws/aws-sdk-go-v2/service/codecommit v1.14.14 // indirect
 	github.com/biogo/store v0.0.0-20201120204734-aad293a2328f // indirect
 	github.com/cockroachdb/apd/v3 v3.1.0 // indirect
 	github.com/cockroachdb/errors v1.9.0 // indirect

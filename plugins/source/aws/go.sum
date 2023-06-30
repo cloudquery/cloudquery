@@ -125,6 +125,8 @@ github.com/aws/aws-sdk-go-v2/service/codeartifact v1.18.6 h1:oqWq4T4XPiqUeLCmPxr
 github.com/aws/aws-sdk-go-v2/service/codeartifact v1.18.6/go.mod h1:/qDXO9g18aOz0lbLgzZHmBK+FKGe2adqFiZvecoh6W0=
 github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.15 h1:vpfnDF42m9a8FJsqiM/NKjJWRJJx0lFskGIWsDFfjfQ=
 github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.15/go.mod h1:Qu9uscAKepQB3ZP+kR2uLUShacWJ2r4g3Klte0x/wDk=
+github.com/aws/aws-sdk-go-v2/service/codecommit v1.14.14 h1:48T8caaP0AR+PLXjJ9reR0X6hIvlgALVcWY28ECP0D8=
+github.com/aws/aws-sdk-go-v2/service/codecommit v1.14.14/go.mod h1:tjXYb7JhmVJ6g8Gff8NEgekSpP9rlj+0U6qztpb3bE0=
 github.com/aws/aws-sdk-go-v2/service/codepipeline v1.15.2 h1:S1e1mfi5FbfgVn1Yv79YqDSmJX4VFejkGw9oUM+Vwz4=
 github.com/aws/aws-sdk-go-v2/service/codepipeline v1.15.2/go.mod h1:Is5bXlJ8kPq1ff273cBpSynkCu4e2wmJcuLvurKO1DY=
 github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.13 h1:rMea2eUnnuDpwGeWTiYxZjCNOvKResVnW0KTYF1n2hI=
@@ -719,6 +721,7 @@ github.com/spf13/pflag v1.0.5/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An
 github.com/spf13/viper v1.3.2/go.mod h1:ZiWeW+zYFKm7srdB9IoDzzZXaJaI5eL9QjNiN/DMA2s=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.4.0/go.mod h1:YvHI0jy2hoMjB+UWwv71VJQ9isScKT/TqJzVSSt89Yw=
+github.com/stretchr/objx v0.5.0/go.mod h1:Yh+to48EsGEfYuaHDzXPcE3xhTkx73EhmCGUpEOglKo=
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
