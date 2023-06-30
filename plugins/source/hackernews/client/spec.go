@@ -3,8 +3,6 @@ package client
 import (
 	"fmt"
 	"time"
-
-	"github.com/cloudquery/plugin-pb-go/managedplugin"
 )
 
 type Spec struct {
@@ -14,12 +12,8 @@ type Spec struct {
 }
 
 type Backend struct {
-	Name     string                 `json:"name"`
-	Path     string                 `json:"path"`
-	Registry managedplugin.Registry `json:"registry"`
-	Version  string                 `json:"version"`
-	Table    string                 `json:"table"`
-	Spec     map[string]interface{} `json:"spec"`
+	Table      string `json:"table"`
+	Connection string `json:"connection"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -28,7 +22,9 @@ func (s *Spec) SetDefaults() {
 		s.ItemConcurrency = 100
 	}
 	if s.Backend != nil {
-		s.Backend.SetDefaults()
+		if s.Backend.Table == "" {
+			s.Backend.Table = "cloudquery_hackernews_state"
+		}
 	}
 }
 
@@ -40,21 +36,12 @@ func (s *Spec) Validate() error {
 		}
 	}
 	if s.Backend != nil {
-		if s.Backend.Name == "" {
-			return fmt.Errorf("backend name is required")
+		if s.Backend.Connection == "" {
+			return fmt.Errorf("backend connection is required")
 		}
-		if s.Backend.Version == "" {
-			return fmt.Errorf("backend version is required")
-		}
-		if s.Backend.Path == "" {
-			return fmt.Errorf("backend path is required")
+		if s.Backend.Table == "" {
+			return fmt.Errorf("backend table is required")
 		}
 	}
 	return nil
-}
-
-func (b *Backend) SetDefaults() {
-	if b.Name == "" {
-		b.Name = "cq_state"
-	}
 }

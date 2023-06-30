@@ -60,15 +60,7 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		destinationTransformers[i] = transformer.NewRecordTransformer(opts...)
 	}
 
-	specBytes, err := json.Marshal(sourceSpec.Spec)
-	if err != nil {
-		return err
-	}
-	if _, err := sourcePbClient.Init(ctx, &plugin.Init_Request{
-		Spec: specBytes,
-	}); err != nil {
-		return err
-	}
+	// initialize destinations first, so that their connections may be used as backends by the source
 	for i := range destinationsClients {
 		destSpec := destinationSpecs[i]
 		destSpecBytes, err := json.Marshal(destSpec.Spec)
@@ -80,6 +72,29 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		}); err != nil {
 			return err
 		}
+	}
+	// replace @destination.connection with the actual GRPC connection string from the client
+	// NOTE: if this becomes a stable feature, it can move out of sync_v3 and into sync.go
+	replacementValues := make([]specs.ReplacementValue, len(destinationSpecs))
+	for i := range destinationSpecs {
+		replacementValues[i] = specs.ReplacementValue{
+			PluginName: destinationSpecs[i].Name,
+			Connection: destinationsClients[i].Conn.Target(),
+		}
+	}
+	err := specs.ReplacePlaceholders(sourceSpec.Spec, replacementValues)
+	if err != nil {
+		return err
+	}
+
+	specBytes, err := json.Marshal(sourceSpec.Spec)
+	if err != nil {
+		return err
+	}
+	if _, err := sourcePbClient.Init(ctx, &plugin.Init_Request{
+		Spec: specBytes,
+	}); err != nil {
+		return err
 	}
 
 	writeClients := make([]plugin.Plugin_WriteClient, len(destinationsPbClients))
@@ -93,19 +108,11 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Msg("Start fetching resources")
 	fmt.Printf("Starting sync for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
 
-	// TODO(v4): figure out backends
 	syncClient, err := sourcePbClient.Sync(ctx, &plugin.Sync_Request{
 		Tables:              sourceSpec.Tables,
 		SkipTables:          sourceSpec.SkipTables,
 		SkipDependentTables: sourceSpec.SkipDependentTables,
 		DeterministicCqId:   sourceSpec.DeterministicCQID,
-		// StateBackend: &plugin.StateBackendSpec{
-		//	Name:     sourceSpec.Backend,
-		//	Path:     "",
-		//	Version:  "",
-		//	Registry: 0,
-		//	Spec:     sourceSpec.BackendSpec,
-		// },
 	})
 	if err != nil {
 		return err
