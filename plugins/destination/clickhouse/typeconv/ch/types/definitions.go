@@ -11,7 +11,7 @@ func FieldType(field arrow.Field) (string, error) {
 		return "", err
 	}
 
-	if canBeNullable(field.Type) && field.Nullable {
+	if CanBeNullable(field.Type) && field.Nullable {
 		return "Nullable(" + dt + ")", nil
 	}
 
