@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v2.3.0...plugins-destination-snowflake-v2.3.1) (2023-06-30)
+
+
+### Bug Fixes
+
+* **snowflake:** Update to SDK v4.4.0-rc1 ([#11826](https://github.com/cloudquery/cloudquery/issues/11826)) ([c64c29a](https://github.com/cloudquery/cloudquery/commit/c64c29ac00e71c0917f71e0ab20d7a0acaf90ce5))
+
 ## [2.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v2.2.4...plugins-destination-snowflake-v2.3.0) (2023-06-29)
 
 
