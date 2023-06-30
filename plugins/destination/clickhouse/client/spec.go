@@ -3,6 +3,7 @@ package client
 import (
 	"crypto/x509"
 	"fmt"
+	"time"
 
 	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
@@ -14,6 +15,10 @@ type Spec struct {
 	CACert           string `json:"ca_cert,omitempty"`
 
 	Engine *queries.Engine `json:"engine,omitempty"`
+
+	BatchSize      int           `json:"batch_size,omitempty"`
+	BatchSizeBytes int           `json:"batch_size_bytes,omitempty"`
+	BatchTimeout   time.Duration `json:"batch_timeout,omitempty"`
 }
 
 func (s *Spec) Options() (*clickhouse.Options, error) {
@@ -46,6 +51,21 @@ func (s *Spec) Options() (*clickhouse.Options, error) {
 func (s *Spec) SetDefaults() {
 	if s.Engine == nil {
 		s.Engine = queries.DefaultEngine()
+	}
+
+	if s.BatchSize == 0 {
+		const defaultBatchSize = 10_000 // 10K
+		s.BatchSize = defaultBatchSize
+	}
+
+	if s.BatchSizeBytes == 0 {
+		const defaultBatchSizeBytes = 5 << 20 // 50 MiB
+		s.BatchSizeBytes = defaultBatchSizeBytes
+	}
+
+	if s.BatchTimeout == 0 {
+		const defaultBatchTimeout = 20 * time.Second // 20s
+		s.BatchTimeout = defaultBatchTimeout
 	}
 }
 
