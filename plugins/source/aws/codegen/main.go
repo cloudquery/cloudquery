@@ -30,6 +30,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go-v2/service/codeartifact"
 	"github.com/aws/aws-sdk-go-v2/service/codebuild"
+	"github.com/aws/aws-sdk-go-v2/service/codecommit"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
@@ -147,6 +148,7 @@ var clients = []any{
 	&cloudwatchlogs.Client{},
 	&codeartifact.Client{},
 	&codebuild.Client{},
+	&codecommit.Client{},
 	&codepipeline.Client{},
 	&cognitoidentity.Client{},
 	&cognitoidentityprovider.Client{},

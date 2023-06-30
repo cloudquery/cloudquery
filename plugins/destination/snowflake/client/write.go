@@ -28,7 +28,7 @@ func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) er
 	return nil
 }
 
-func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs []*message.WriteInsert) error {
+func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
 	tableName := name
 	f, err := os.CreateTemp(os.TempDir(), tableName+".json.*")
 	if err != nil {
