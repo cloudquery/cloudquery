@@ -68,6 +68,8 @@ var awsExceptions = map[string]string{
 	"qldb":                   "Quantum Ledger Database (QLDB)",
 	"quicksight":             "QuickSight",
 	"rds":                    "Amazon Relational Database Service (RDS)",
+	"route53":                "Amazon Route 53",
+	"route53resolver":        "Amazon Route 53 Resolver",
 	"resiliencehub":          "AWS Resilience Hub",
 	"sagemaker":              "Amazon SageMaker",
 	"secretsmanager":         "AWS Secrets Manager",

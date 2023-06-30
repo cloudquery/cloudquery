@@ -1,6 +1,6 @@
 # Table: aws_route53resolver_firewall_rule_group_associations
 
-This table shows data for Route53resolver Firewall Rule Group Associations.
+This table shows data for Amazon Route 53 Resolver Firewall Rule Group Associations.
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_FirewallRuleGroupAssociation.html
 

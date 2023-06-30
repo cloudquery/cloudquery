@@ -1,6 +1,6 @@
 # Table: aws_route53resolver_resolver_query_log_configs
 
-This table shows data for Route53resolver Resolver Query Log Configs.
+This table shows data for Amazon Route 53 Resolver Resolver Query Log Configs.
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_ResolverQueryLogConfig.html
 

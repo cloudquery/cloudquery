@@ -1,6 +1,6 @@
 # Table: aws_route53resolver_firewall_domain_lists
 
-This table shows data for Route53resolver Firewall Domain Lists.
+This table shows data for Amazon Route 53 Resolver Firewall Domain Lists.
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_FirewallDomainList.html
 

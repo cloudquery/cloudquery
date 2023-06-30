@@ -1,6 +1,6 @@
 # Table: aws_route53resolver_firewall_configs
 
-This table shows data for Route53resolver Firewall Configs.
+This table shows data for Amazon Route 53 Resolver Firewall Configs.
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_FirewallConfig.html
 

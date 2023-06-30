@@ -1,6 +1,6 @@
 # Table: aws_route53resolver_resolver_rule_associations
 
-This table shows data for Route53resolver Resolver Rule Associations.
+This table shows data for Amazon Route 53 Resolver Resolver Rule Associations.
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_ResolverRuleAssociation.html
 

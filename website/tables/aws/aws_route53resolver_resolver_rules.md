@@ -1,6 +1,6 @@
 # Table: aws_route53resolver_resolver_rules
 
-This table shows data for Route53resolver Resolver Rules.
+This table shows data for Amazon Route 53 Resolver Resolver Rules.
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_ResolverRule.html
 
