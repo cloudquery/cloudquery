@@ -21,7 +21,7 @@ import (
 )
 
 const (
-	readSQL = "SELECT %s FROM `%s.%s.%s"
+	readSQL = "SELECT %s FROM `%s.%s.%s`"
 )
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
