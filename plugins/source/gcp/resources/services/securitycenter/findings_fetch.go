@@ -18,7 +18,7 @@ import (
 const pageSize = 1000
 
 func getRequest(ctx context.Context, c *client.Client, table string, parent string) (*pb.ListFindingsRequest, error) {
-	filter, err := c.Backend.GetKey(ctx, table + c.ID())
+	filter, err := c.Backend.GetKey(ctx, table+c.ID())
 	if err != nil {
 		return nil, fmt.Errorf("failed to get filter state %w for table %q", err, table)
 	}
@@ -34,7 +34,7 @@ func getRequest(ctx context.Context, c *client.Client, table string, parent stri
 }
 
 func setBackendState(ctx context.Context, c *client.Client, table string, lastEventTime *timestamppb.Timestamp) error {
-	err := c.Backend.SetKey(ctx, table + c.ID(), fmt.Sprintf(`event_time >= "%s"`, lastEventTime.AsTime().Format(time.RFC3339)))
+	err := c.Backend.SetKey(ctx, table+c.ID(), fmt.Sprintf(`event_time >= "%s"`, lastEventTime.AsTime().Format(time.RFC3339)))
 	if err != nil {
 		return fmt.Errorf("failed to set filter state %w for table %q", err, table)
 	}

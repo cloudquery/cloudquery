@@ -59,7 +59,6 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 		// Backend:       opts.Backend,
 	}
 
-
 	sched := scheduler.NewScheduler(c, scheduler.WithLogger(l))
 	messages, err := sched.SyncAll(context.Background(), schema.Tables{table})
 	if err != nil {
@@ -77,10 +76,10 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 	}
 }
 
-func filterInserts(msgs message.Messages) message.Inserts {
-	inserts := []*message.Insert{}
+func filterInserts(msgs message.SyncMessages) message.SyncInserts {
+	inserts := []*message.SyncInsert{}
 	for _, msg := range msgs {
-		if m, ok := msg.(*message.Insert); ok {
+		if m, ok := msg.(*message.SyncInsert); ok {
 			inserts = append(inserts, m)
 		}
 	}
