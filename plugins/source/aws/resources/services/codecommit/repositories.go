@@ -37,7 +37,7 @@ func fetchRepositories(ctx context.Context, meta schema.ClientMeta, parent *sche
 	cl := meta.(*client.Client)
 	svc := cl.Services().Codecommit
 	// Note: this API doesn't support limiting the number of results in a single call and the nested BatchRepositories doesn't have a listed limit
-	// So we are assuming that the number of repositories is not too large and we can fetch all of them in a single call
+	// So we are assuming that the number of repositories is not too large and we can fetch (`BatchGet`) all of their details in a single call
 	config := codecommit.ListRepositoriesInput{}
 	paginator := codecommit.NewListRepositoriesPaginator(svc, &config)
 	for paginator.HasMorePages() {
