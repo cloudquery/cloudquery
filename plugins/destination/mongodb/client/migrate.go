@@ -11,7 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func (c *Client) MigrateTables(ctx context.Context, msgs []*message.WriteMigrateTable) error {
+func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
 	for _, msg := range msgs {
 		if err := c.migrateTable(ctx, msg.MigrateForce, msg.Table); err != nil {
 			return err
