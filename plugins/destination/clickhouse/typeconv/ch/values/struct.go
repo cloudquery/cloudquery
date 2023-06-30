@@ -25,13 +25,13 @@ func structValue(arr *array.Struct) (any, error) {
 		}
 	}
 
-	rows := make([]*map[string]any, arr.Len())
+	rows := make([]map[string]any, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
 		row := make(map[string]any, len(fields))
 		for _, field := range fields {
 			row[field.Name] = columns[field.Name][i]
 		}
-		rows[i] = &row
+		rows[i] = row
 	}
 
 	return rows, nil
