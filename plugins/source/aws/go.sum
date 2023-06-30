@@ -125,6 +125,8 @@ github.com/aws/aws-sdk-go-v2/service/codeartifact v1.18.6 h1:oqWq4T4XPiqUeLCmPxr
 github.com/aws/aws-sdk-go-v2/service/codeartifact v1.18.6/go.mod h1:/qDXO9g18aOz0lbLgzZHmBK+FKGe2adqFiZvecoh6W0=
 github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.15 h1:vpfnDF42m9a8FJsqiM/NKjJWRJJx0lFskGIWsDFfjfQ=
 github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.15/go.mod h1:Qu9uscAKepQB3ZP+kR2uLUShacWJ2r4g3Klte0x/wDk=
+github.com/aws/aws-sdk-go-v2/service/codecommit v1.14.14 h1:48T8caaP0AR+PLXjJ9reR0X6hIvlgALVcWY28ECP0D8=
+github.com/aws/aws-sdk-go-v2/service/codecommit v1.14.14/go.mod h1:tjXYb7JhmVJ6g8Gff8NEgekSpP9rlj+0U6qztpb3bE0=
 github.com/aws/aws-sdk-go-v2/service/codepipeline v1.15.2 h1:S1e1mfi5FbfgVn1Yv79YqDSmJX4VFejkGw9oUM+Vwz4=
 github.com/aws/aws-sdk-go-v2/service/codepipeline v1.15.2/go.mod h1:Is5bXlJ8kPq1ff273cBpSynkCu4e2wmJcuLvurKO1DY=
 github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.13 h1:rMea2eUnnuDpwGeWTiYxZjCNOvKResVnW0KTYF1n2hI=
@@ -249,6 +251,8 @@ github.com/aws/aws-sdk-go-v2/service/route53 v1.28.3 h1:nJbE4+tHd8xpM1RB1ZF0/xTJ
 github.com/aws/aws-sdk-go-v2/service/route53 v1.28.3/go.mod h1:Cd4MnFoV+6fELBrgWXJ4Y09FrSkn/VjNPkOr1Yr1muU=
 github.com/aws/aws-sdk-go-v2/service/route53domains v1.15.0 h1:H7c53dt/1Wsp3fWbu5v5+XVNsThWzmxzYdyYLltWtec=
 github.com/aws/aws-sdk-go-v2/service/route53domains v1.15.0/go.mod h1:k75fR3BhOo/0umex9ICEJ+CKTA55qxvFWAlyVHTS6Qg=
+github.com/aws/aws-sdk-go-v2/service/route53resolver v1.17.13 h1:Oa55ObrMEJV/ARzZbmsUaY4u7hCWO2LWOsn8KVr37J4=
+github.com/aws/aws-sdk-go-v2/service/route53resolver v1.17.13/go.mod h1:AEl0z7i/yOgN832f4yiVj6HudTkLOau55/Ckc8zxutA=
 github.com/aws/aws-sdk-go-v2/service/s3 v1.35.0 h1:ya7fmrN2fE7s1P2gaPbNg5MTkERVWfsH8ToP1YC4Z9o=
 github.com/aws/aws-sdk-go-v2/service/s3 v1.35.0/go.mod h1:aVbf0sko/TsLWHx30c/uVu7c62+0EAJ3vbxaJga0xCw=
 github.com/aws/aws-sdk-go-v2/service/s3control v1.31.7 h1:dTPOxNtrOt1NU/3DstjpNOAT7qjnMcZ08ah4A3zuu2w=
@@ -337,8 +341,8 @@ github.com/cloudquery/arrow/go/v13 v13.0.0-20230626001500-065602842c3a h1:O/FNq1
 github.com/cloudquery/arrow/go/v13 v13.0.0-20230626001500-065602842c3a/go.mod h1:W69eByFNO0ZR30q1/7Sr9d83zcVZmF2MiP3fFYAWJOc=
 github.com/cloudquery/codegen v0.2.1 h1:AWpGNKIFUyzI7vulYADXi/3SoksUaNXgTgIMuSrTHZk=
 github.com/cloudquery/codegen v0.2.1/go.mod h1:oJxzUuOC79fP36vBPU1BJ7n+jgQemS33y/mbgNq6vfM=
-github.com/cloudquery/plugin-pb-go v1.3.4 h1:GKNVo9gpmvctyD11QaPVnSLYzE9lw1g1kzt4TSmP+2s=
-github.com/cloudquery/plugin-pb-go v1.3.4/go.mod h1:NbWAtT2BzJQ9+XUWwh3IKBg3MOeV9ZEpHoHNAQ/YDV8=
+github.com/cloudquery/plugin-pb-go v1.5.0 h1:A/RE1U1l34W5T+JlXJzrHz0IMzfpdUK4VSg+J1Hw0gw=
+github.com/cloudquery/plugin-pb-go v1.5.0/go.mod h1:NbWAtT2BzJQ9+XUWwh3IKBg3MOeV9ZEpHoHNAQ/YDV8=
 github.com/cloudquery/plugin-sdk v1.45.0 h1:5vrfQZtaO1dp6ebKt8ouXDmPC7eeLuOB3JMd+FTRSYk=
 github.com/cloudquery/plugin-sdk v1.45.0/go.mod h1:9KGuuTGjTCKgh9amKwS+7Zrrqq7/M6lormteOyqoKwg=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=

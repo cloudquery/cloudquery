@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func (c *Client) DeleteStale(_ context.Context, msgs []*message.WriteDeleteStale) error {
+func (c *Client) DeleteStale(_ context.Context, msgs message.WriteDeleteStales) error {
 	session, closer, err := c.newSession()
 	if err != nil {
 		return err

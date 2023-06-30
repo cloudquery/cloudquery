@@ -6,6 +6,34 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [19.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v19.1.0...plugins-source-aws-v19.2.0) (2023-06-30)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_codecommit_repositories` was added
+- Table `aws_route53resolver_firewall_configs` was added
+- Table `aws_route53resolver_firewall_domain_lists` was added
+- Table `aws_route53resolver_firewall_rule_group_associations` was added
+- Table `aws_route53resolver_firewall_rule_groups` was added
+- Table `aws_route53resolver_resolver_endpoints` was added
+- Table `aws_route53resolver_resolver_query_log_config_associations` was added
+- Table `aws_route53resolver_resolver_query_log_configs` was added
+- Table `aws_route53resolver_resolver_rule_associations` was added
+- Table `aws_route53resolver_resolver_rules` was added
+
+### Features
+
+* **aws:** Add AWS CodeCommit Repositories ([#11827](https://github.com/cloudquery/cloudquery/issues/11827)) ([a198fd8](https://github.com/cloudquery/cloudquery/commit/a198fd8e5890d289a464c580497a72f139717e5c)), closes [#11819](https://github.com/cloudquery/cloudquery/issues/11819)
+* **aws:** Add support for Route53resolver service ([#11818](https://github.com/cloudquery/cloudquery/issues/11818)) ([9bbd610](https://github.com/cloudquery/cloudquery/commit/9bbd610d3585feab47332e318988bd7dcee14fce))
+
+
+### Bug Fixes
+
+* **aws:** Add test to ensure documentation is unique for each table ([#11816](https://github.com/cloudquery/cloudquery/issues/11816)) ([107f98b](https://github.com/cloudquery/cloudquery/commit/107f98beaf5ee5bb9e757018492fe9d7e20d6324))
+* **aws:** Codebuild builds ([#11805](https://github.com/cloudquery/cloudquery/issues/11805)) ([8c560f0](https://github.com/cloudquery/cloudquery/commit/8c560f0626410b0802b28ff037b4cca0c90beeaa))
+* **aws:** Fix CodeBuild SourceCredentials Mock Test ([#11808](https://github.com/cloudquery/cloudquery/issues/11808)) ([cce4376](https://github.com/cloudquery/cloudquery/commit/cce437606797c1c49626adaf13c12e169d019185))
+* **aws:** Fix Timestream Regional issue ([#11795](https://github.com/cloudquery/cloudquery/issues/11795)) ([c53399a](https://github.com/cloudquery/cloudquery/commit/c53399a119aee33d9e314e32030c4b8740966ad2))
+
 ## [19.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v19.0.0...plugins-source-aws-v19.1.0) (2023-06-27)
 
 

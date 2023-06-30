@@ -32,6 +32,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.21.2
 	github.com/aws/aws-sdk-go-v2/service/codeartifact v1.18.6
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.15
+	github.com/aws/aws-sdk-go-v2/service/codecommit v1.14.14
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.15.2
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.13
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.22.12
@@ -89,6 +90,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.14.13
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.28.3
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.15.0
+	github.com/aws/aws-sdk-go-v2/service/route53resolver v1.17.13
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.35.0
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.31.7
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.86.0
@@ -122,7 +124,7 @@ require (
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/codegen v0.2.1
-	github.com/cloudquery/plugin-pb-go v1.3.4
+	github.com/cloudquery/plugin-pb-go v1.5.0
 	github.com/cloudquery/plugin-sdk/v3 v3.10.6
 	github.com/cockroachdb/cockroachdb-parser v0.0.0-20221207165326-ea0ac1a4778b
 	github.com/gocarina/gocsv v0.0.0-20230513223533-9ddd7fd60602
