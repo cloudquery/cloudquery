@@ -18,7 +18,7 @@ func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) err
 				return fmt.Errorf("failed to process MigrateTable message: %w", err)
 			}
 		case *message.WriteDeleteStale:
-			if err := c.deleteStale(ctx, m.Table, m.SourceName, m.SyncTime); err != nil {
+			if err := c.deleteStale(ctx, m.TableName, m.SourceName, m.SyncTime); err != nil {
 				return fmt.Errorf("failed to process DeleteStale message: %w", err)
 			}
 		case *message.WriteInsert:
