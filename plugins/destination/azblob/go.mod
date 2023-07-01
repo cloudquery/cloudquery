@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.2.2
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.0.0
-	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe
+	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
 	github.com/cloudquery/filetypes/v3 v3.2.0
 	github.com/cloudquery/plugin-pb-go v1.5.0
 	github.com/cloudquery/plugin-sdk/v3 v3.10.6

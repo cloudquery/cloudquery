@@ -11,7 +11,7 @@ require (
 replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230626001500-065602842c3a
 
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe // indirect
+	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect

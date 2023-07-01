@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/github
 go 1.19
 
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe
+	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
 	github.com/beatlabs/github-auth v0.0.0-20230511110449-0a8b9e608b75
 	github.com/cloudquery/plugin-pb-go v1.5.0
 	github.com/cloudquery/plugin-sdk/v3 v3.10.6
