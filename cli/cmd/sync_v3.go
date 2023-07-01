@@ -11,6 +11,7 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
+	"github.com/cloudquery/cloudquery/cli/internal/template"
 	"github.com/cloudquery/cloudquery/cli/internal/transformer"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/metrics"
@@ -19,6 +20,14 @@ import (
 	"github.com/schollz/progressbar/v3"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
+
+type PluginVariables struct {
+	Connection string
+}
+
+type ConfigVariables struct {
+	Plugins map[string]PluginVariables
+}
 
 // nolint:dupl
 func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, destinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination, uid string, _ bool) error {
@@ -75,24 +84,25 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 	}
 	// replace @destination.connection with the actual GRPC connection string from the client
 	// NOTE: if this becomes a stable feature, it can move out of sync_v3 and into sync.go
-	replacementValues := make([]specs.ReplacementValue, len(destinationSpecs))
+	configVariables := ConfigVariables{
+		Plugins: make(map[string]PluginVariables),
+	}
 	for i := range destinationSpecs {
-		replacementValues[i] = specs.ReplacementValue{
-			PluginName: destinationSpecs[i].Name,
+		configVariables.Plugins[destinationSpecs[i].Name] = PluginVariables{
 			Connection: destinationsClients[i].Conn.Target(),
 		}
-	}
-	err := specs.ReplacePlaceholders(sourceSpec.Spec, replacementValues)
-	if err != nil {
-		return err
 	}
 
 	specBytes, err := json.Marshal(sourceSpec.Spec)
 	if err != nil {
 		return err
 	}
+	expandedSpecBytes, err := template.ReplaceVariables(specBytes, configVariables)
+	if err != nil {
+		return err
+	}
 	if _, err := sourcePbClient.Init(ctx, &plugin.Init_Request{
-		Spec: specBytes,
+		Spec: expandedSpecBytes,
 	}); err != nil {
 		return err
 	}
