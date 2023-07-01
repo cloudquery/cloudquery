@@ -43,7 +43,7 @@ require (
 	cloud.google.com/go/vpcaccess v1.6.0
 	cloud.google.com/go/websecurityscanner v1.5.0
 	cloud.google.com/go/workflows v1.10.0
-	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe
+	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
 	github.com/cloudquery/plugin-pb-go v1.5.0
 	github.com/cloudquery/plugin-sdk/v3 v3.10.6
 	github.com/cockroachdb/cockroachdb-parser v0.0.0-20230515042840-c9c144eab71a

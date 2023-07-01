@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/aliyun/alibaba-cloud-sdk-go v1.62.266
 	github.com/aliyun/aliyun-oss-go-sdk v2.2.7+incompatible
-	github.com/apache/arrow/go/v13 v13.0.0-20230622042343-ec413b7763fe
+	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
 	github.com/cloudquery/codegen v0.2.1
 	github.com/cloudquery/plugin-pb-go v1.5.0
 	github.com/cloudquery/plugin-sdk/v3 v3.10.6
