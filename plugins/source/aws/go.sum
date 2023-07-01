@@ -326,6 +326,8 @@ github.com/biogo/store v0.0.0-20201120204734-aad293a2328f h1:+6okTAeUsUrdQr/qN7f
 github.com/biogo/store v0.0.0-20201120204734-aad293a2328f/go.mod h1:z52shMwD6SGwRg2iYFjjDwX5Ene4ENTw6HfXraUy/08=
 github.com/bitly/go-simplejson v0.5.0 h1:6IH+V8/tVMab511d5bn4M7EwGXZf9Hj6i2xSwkNEM+Y=
 github.com/bitly/go-simplejson v0.5.0/go.mod h1:cXHtHw4XUPsvGaxgjIAn8PhEWG9NfngEKAMDJEczWVA=
+github.com/blevesearch/snowballstem v0.9.0 h1:lMQ189YspGP6sXvZQ4WZ+MLawfV8wOmPoD/iWeNXm8s=
+github.com/blevesearch/snowballstem v0.9.0/go.mod h1:PivSj3JMc8WuaFkTSRDW2SlrulNWPl4ABg1tC/hlgLs=
 github.com/bradleyjkemp/cupaloy/v2 v2.8.0 h1:any4BmKE+jGIaMpnU8YgH/I2LPiLBufr6oMMlVBbn9M=
 github.com/broady/gogeohash v0.0.0-20120525094510-7b2c40d64042 h1:iEdmkrNMLXbM7ecffOAtZJQOQUTE4iMonxrb5opUgE4=
 github.com/broady/gogeohash v0.0.0-20120525094510-7b2c40d64042/go.mod h1:f1L9YvXvlt9JTa+A17trQjSMM6bV40f+tHjB+Pi+Fqk=
@@ -353,8 +355,8 @@ github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGX
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/cockroachdb/apd/v3 v3.1.0 h1:MK3Ow7LH0W8zkd5GMKA1PvS9qG3bWFI95WaVNfyZJ/w=
 github.com/cockroachdb/apd/v3 v3.1.0/go.mod h1:6qgPBMXjATAdD/VefbRP9NoSLKjbB4LCoA7gN4LpHs4=
-github.com/cockroachdb/cockroachdb-parser v0.0.0-20221207165326-ea0ac1a4778b h1:o4bq379Y+BxcGWyof56Wc2jMnqrUavvG17QVhITERBY=
-github.com/cockroachdb/cockroachdb-parser v0.0.0-20221207165326-ea0ac1a4778b/go.mod h1:xfSU5qFpqIxEicpm/yRZc6Xz50/OrBEnrkPhU2vhNi8=
+github.com/cockroachdb/cockroachdb-parser v0.0.0-20230515042840-c9c144eab71a h1:jAOeU5RYWK00TadJpQXQ9Hc2pvgCiGyf8eS8odnAEWI=
+github.com/cockroachdb/cockroachdb-parser v0.0.0-20230515042840-c9c144eab71a/go.mod h1:IxbJEsBq3MoLl2+cTeEug8RO6nV+RlEKFYmHYAnqVu0=
 github.com/cockroachdb/datadriven v1.0.1-0.20211007161720-b558070c3be0/go.mod h1:5Ib8Meh+jk1RlHIXej6Pzevx/NLlNvQB9pmSBZErGA4=
 github.com/cockroachdb/datadriven v1.0.1-0.20220214170620-9913f5bc19b7/go.mod h1:hi0MtSY3AYDQNDi83kDkMH5/yqM/CsIrsOITkSoH7KI=
 github.com/cockroachdb/errors v1.6.1/go.mod h1:tm6FTP5G81vwJ5lC0SizQo374JNCOPrHyXGitRJoDqM=
@@ -382,6 +384,9 @@ github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46t
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/creack/pty v1.1.11/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/cyphar/filepath-securejoin v0.2.3/go.mod h1:aPGpWjXOXUn2NCNjFvBE6aRxGGx79pTxQpKOJNYHHl4=
+github.com/dave/dst v0.27.2 h1:4Y5VFTkhGLC1oddtNwuxxe36pnyLxMFXT51FOzH8Ekc=
+github.com/dave/dst v0.27.2/go.mod h1:jHh6EOibnHgcUW3WjKHisiooEkYwqpHLBSX1iOBhEyc=
+github.com/dave/jennifer v1.5.0 h1:HmgPN93bVDpkQyYbqhCHj5QlgvUkvEOzMyEvKLgCRrg=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -703,6 +708,7 @@ github.com/seccomp/libseccomp-golang v0.9.2-0.20210429002308-3879420cc921/go.mod
 github.com/seccomp/libseccomp-golang v0.9.2-0.20220502022130-f33da4d89646/go.mod h1:JA8cRccbGaA1s33RQf7Y1+q9gHmZX1yB/z9WDN1C6fg=
 github.com/sergi/go-diff v1.0.0/go.mod h1:0CfEIISq7TuYL3j771MWULgwwjU+GofnZX9QAmXWZgo=
 github.com/sergi/go-diff v1.1.0/go.mod h1:STckp+ISIX8hZLjrqAeVduY0gWCT9IjLuqbuNXdaHfM=
+github.com/sergi/go-diff v1.2.0 h1:XU+rvMAioB0UC3q1MFrIQy4Vo5/4VsRDQQXHsEya6xQ=
 github.com/shurcooL/sanitized_anchor_name v1.0.0/go.mod h1:1NzhyTcUVG4SuEtjjoZeVRXNmyL/1OwPU0+IJeTBvfc=
 github.com/sirupsen/logrus v1.7.0/go.mod h1:yWOB1SBYBC5VeMP7gHvWumXLIWorT60ONWic61uBYv0=
 github.com/sirupsen/logrus v1.8.1/go.mod h1:yWOB1SBYBC5VeMP7gHvWumXLIWorT60ONWic61uBYv0=
