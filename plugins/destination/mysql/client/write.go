@@ -79,7 +79,6 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	hasPks := len(table.PrimaryKeys()) > 0
 	if hasPks {
 		return c.overwriteTableBatch(ctx, table, msgs)
-	} else {
-		return c.appendTableBatch(ctx, table, msgs)
 	}
+	return c.appendTableBatch(ctx, table, msgs)
 }
