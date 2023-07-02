@@ -49,9 +49,6 @@ func (c *Client) writeRecord(ctx context.Context, table *schema.Table, record ar
 	pks := pkIndexes(table) // do some work up front to avoid doing it for every resource
 	// get the sync time from the first resource in the batch (here we assume that all resources in the batch
 	// have the same sync time. At the moment this assumption holds.)
-	// cqSyncName := table.Columns.Index(schema.CqSyncTimeColumn.Name)
-	// cqSyncUnit := schema.CqSyncTimeColumn.Type.(*arrow.TimestampType).Unit
-	// syncTime := record.Column(cqSyncName).(*array.Timestamp).Value(0).ToTime(cqSyncUnit)
 	syncTime := time.Now()
 	for r := 0; r < int(record.NumRows()); r++ {
 		doc := map[string]any{}
