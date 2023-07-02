@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/mysql/client"
@@ -22,7 +23,7 @@ func main() {
 		),
 		serve.WithDestinationV0V1Server(),
 		serve.WithPluginSentryDSN(sentryDSN),
-	); err != nil {
+	).Serve(context.Background()); err != nil {
 		log.Fatal(err)
 	}
 }
