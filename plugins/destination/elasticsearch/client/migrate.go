@@ -7,14 +7,16 @@ import (
 	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	cqtypes "github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/elastic/go-elasticsearch/v8/typedapi/types"
 )
 
 // Migrate creates or updates index templates.
-func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
-	for _, table := range tables {
+func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
+	for _, msg := range msgs {
+		table := msg.Table
 		tmpl, err := c.getIndexTemplate(table)
 		if err != nil {
 			return fmt.Errorf("failed to generate index template: %w", err)
@@ -39,7 +41,7 @@ func (c *Client) getIndexTemplate(table *schema.Table) (string, error) {
 		AllowAutoCreate: nil,
 		ComposedOf:      []string{},
 		DataStream:      nil,
-		IndexPatterns:   []string{c.getIndexNamePattern(table.Name)},
+		IndexPatterns:   []string{c.getIndexNamePattern(table)},
 		Meta_:           nil,
 		Priority:        nil,
 		Template: &types.IndexTemplateSummary{
