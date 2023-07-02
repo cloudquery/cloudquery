@@ -10,14 +10,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-// var migrateStrategy = destination.MigrateStrategy{
-// 	AddColumn:           specs.MigrateModeSafe,
-// 	AddColumnNotNull:    specs.MigrateModeForced,
-// 	RemoveColumn:        specs.MigrateModeSafe,
-// 	RemoveColumnNotNull: specs.MigrateModeForced,
-// 	ChangeColumn:        specs.MigrateModeForced,
-// }
-
 func TestPlugin(t *testing.T) {
 	ctx := context.Background()
 
