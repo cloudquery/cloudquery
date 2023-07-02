@@ -34,7 +34,7 @@ func ReplaceVariables(src string, variables Variables) (string, error) {
 	}
 	result := reVariables.ReplaceAllStringFunc(src, func(s string) string {
 		variablePath := s[2:]
-		res := funk.Get(variablesMap, string(variablePath))
+		res := funk.Get(variablesMap, variablePath)
 		if res == nil {
 			lastErr = fmt.Errorf("variable %s not found", variablePath)
 			return s
