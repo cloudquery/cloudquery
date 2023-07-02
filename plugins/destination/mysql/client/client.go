@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
-	"github.com/cloudquery/plugin-sdk/v4/writers"
+	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/rs/zerolog"
 
 	mysql "github.com/go-sql-driver/mysql"
@@ -17,16 +17,16 @@ import (
 type Client struct {
 	plugin.UnimplementedSource
 	logger zerolog.Logger
-	spec Spec
-	db *sql.DB
-	writer *writers.BatchWriter
+	spec   Spec
+	db     *sql.DB
+	writer *batchwriter.BatchWriter
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
-	c :=  &Client{logger: logger.With().Str("module", "mysql").Logger()}
+	c := &Client{logger: logger.With().Str("module", "mysql").Logger()}
 	var err error
-	
-	if err := json.Unmarshal(spec, &c.spec) ; err != nil {
+
+	if err := json.Unmarshal(spec, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
 
@@ -34,7 +34,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 	if err := c.spec.Validate(); err != nil {
 		return nil, err
 	}
-	c.writer, err = writers.NewBatchWriter(c, writers.WithLogger(logger), writers.WithBatchSize(c.spec.BatchSize), writers.WithBatchSizeBytes(c.spec.BatchSizeBytes))
+	c.writer, err = batchwriter.New(c, batchwriter.WithLogger(logger), batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create batch writer: %w", err)
 	}
@@ -55,6 +55,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 	db.SetConnMaxLifetime(time.Minute * 3)
 	db.SetMaxOpenConns(10)
 	db.SetMaxIdleConns(10)
+	c.db = db
 
 	return c, nil
 }

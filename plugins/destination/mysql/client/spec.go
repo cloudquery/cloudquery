@@ -3,15 +3,14 @@ package client
 import "fmt"
 
 const (
-	batchSize = 1000
+	batchSize      = 1000
 	batchSizeBytes = 4 * 1024 * 1024
 )
 
 type Spec struct {
-	BatchSize int `json:"batch_size,omitempty"`
-	BatchSizeBytes int `json:"batch_size_bytes,omitempty"`
+	BatchSize        int    `json:"batch_size,omitempty"`
+	BatchSizeBytes   int    `json:"batch_size_bytes,omitempty"`
 	ConnectionString string `json:"connection_string,omitempty"`
-	MigrateForce bool `json:"migrate_force,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {

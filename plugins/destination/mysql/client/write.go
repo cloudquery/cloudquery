@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
-	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
@@ -27,7 +26,7 @@ func getInsertQueryBuild(table *schema.Table) *strings.Builder {
 	return &builder
 }
 
-func (c *Client) writeResources(ctx context.Context, query string, msgs []*message.Insert) error {
+func (c *Client) writeResources(ctx context.Context, query string, msgs message.WriteInserts) error {
 	for _, msg := range msgs {
 		rec := msg.Record
 		transformedRecords, err := transformRecord(rec)
@@ -44,13 +43,13 @@ func (c *Client) writeResources(ctx context.Context, query string, msgs []*messa
 	return nil
 }
 
-func (c *Client) appendTableBatch(ctx context.Context, table *schema.Table, resources []*message.Insert) error {
+func (c *Client) appendTableBatch(ctx context.Context, table *schema.Table, resources message.WriteInserts) error {
 	builder := getInsertQueryBuild(table)
 	builder.WriteString(";")
 	return c.writeResources(ctx, builder.String(), resources)
 }
 
-func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, msgs []*message.Insert) error {
+func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, msgs message.WriteInserts) error {
 	builder := getInsertQueryBuild(table)
 	builder.WriteString(" ON DUPLICATE KEY UPDATE ")
 	for i, col := range table.Columns {
@@ -62,14 +61,17 @@ func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, m
 	return c.writeResources(ctx, builder.String(), msgs)
 }
 
-func (c *Client) Write(ctx context.Context, options plugin.WriteOptions, res <-chan message.Message) error {
+func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) error {
 	if err := c.writer.Write(ctx, res); err != nil {
-		return err
+		return fmt.Errorf("failed to write: %w", err)
+	}
+	if err := c.writer.Flush(ctx); err != nil {
+		return fmt.Errorf("failed to flush: %w", err)
 	}
 	return nil
 }
 
-func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs []*message.Insert) error {
+func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
 	if len(msgs) == 0 {
 		return nil
 	}
