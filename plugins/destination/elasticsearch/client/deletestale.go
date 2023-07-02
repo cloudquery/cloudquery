@@ -28,7 +28,6 @@ const maxConcurrentDeletes = 10
 
 // DeleteStale removes entries from previous syncs
 func (c *Client) DeleteStale(ctx context.Context, msgs message.WriteDeleteStales) error {
-
 	g, gctx := errgroup.WithContext(ctx)
 	g.SetLimit(maxConcurrentDeletes)
 	for _, msg := range msgs {
@@ -59,13 +58,13 @@ func (c *Client) DeleteStale(ctx context.Context, msgs message.WriteDeleteStales
 			}
 			req := deletebyquery.NewRequest()
 			req.Query = &q
-			return c.deleteStaleTable(gctx, msg.TableName, req, syncTime)
+			return c.deleteStaleTable(gctx, msg.TableName, req)
 		})
 	}
 	return g.Wait()
 }
 
-func (c *Client) deleteStaleTable(ctx context.Context, tableName string, req *deletebyquery.Request, syncTime time.Time) error {
+func (c *Client) deleteStaleTable(ctx context.Context, tableName string, req *deletebyquery.Request) error {
 	index := tableName
 	resp, err := c.typedClient.DeleteByQuery(index).Request(req).Do(ctx)
 	if err != nil {

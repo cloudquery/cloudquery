@@ -24,10 +24,10 @@ type bulkResponse struct {
 
 func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
 	if err := c.writer.Write(ctx, msgs); err != nil {
-		return err
+		return fmt.Errorf("failed to write messages: %w", err)
 	}
 	if err := c.writer.Flush(ctx); err != nil {
-		return err
+		return fmt.Errorf("failed to flush writer: %w", err)
 	}
 	return nil
 }

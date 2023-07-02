@@ -94,20 +94,18 @@ func (*Client) Close(_ context.Context) error {
 	return nil
 }
 
-func (c *Client) getIndexNamePattern(table *schema.Table) string {
+func (*Client) getIndexNamePattern(table *schema.Table) string {
 	hasPrimaryKeys := len(table.PrimaryKeys()) > 0
 	if hasPrimaryKeys {
 		return table.Name
-	} else {
-		return table.Name + "-*"
 	}
+	return table.Name + "-*"
 }
 
-func (c *Client) getIndexName(table *schema.Table, t time.Time) string {
+func (*Client) getIndexName(table *schema.Table, t time.Time) string {
 	hasPrimaryKeys := len(table.PrimaryKeys()) > 0
 	if hasPrimaryKeys {
 		return table.Name
-	} else {
-		return table.Name + "-" + t.Format("2006-01-02")
 	}
+	return table.Name + "-" + t.Format("2006-01-02")
 }
