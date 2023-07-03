@@ -59,7 +59,7 @@ func (s *Spec) SetDefaults() {
 	}
 
 	if s.BatchSizeBytes == 0 {
-		const defaultBatchSizeBytes = 5 << 20 // 50 MiB
+		const defaultBatchSizeBytes = 5 << 20 // 5 MiB
 		s.BatchSizeBytes = defaultBatchSizeBytes
 	}
 
