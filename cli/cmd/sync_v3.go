@@ -107,12 +107,19 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Msg("Start fetching resources")
 	fmt.Printf("Starting sync for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
 
-	syncClient, err := sourcePbClient.Sync(ctx, &plugin.Sync_Request{
+	syncReq := &plugin.Sync_Request{
 		Tables:              sourceSpec.Tables,
 		SkipTables:          sourceSpec.SkipTables,
 		SkipDependentTables: sourceSpec.SkipDependentTables,
 		DeterministicCqId:   sourceSpec.DeterministicCQID,
-	})
+	}
+	if sourceSpec.BackendOptions != nil {
+		syncReq.Backend = &plugin.Sync_BackendOptions{
+			TableName:  sourceSpec.BackendOptions.TableName,
+			Connection: sourceSpec.BackendOptions.Connection,
+		}
+	}
+	syncClient, err := sourcePbClient.Sync(ctx, syncReq)
 	if err != nil {
 		return err
 	}
