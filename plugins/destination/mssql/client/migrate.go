@@ -8,7 +8,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 // Migrate relies on the CLI/client to lock before running migration.
@@ -68,7 +68,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, have, want *schema.Table)
 	statements := make([]string, 0, len(changes))
 	for _, change := range changes {
 		if change.Type == schema.TableColumnChangeTypeAdd {
-			statements = append(statements, queries.AddColumn(c.schemaName, want, &change.Current))
+			statements = append(statements, queries.AddColumn(c.spec.Schema, want, &change.Current))
 		}
 	}
 

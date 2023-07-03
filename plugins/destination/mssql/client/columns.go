@@ -15,7 +15,7 @@ func (c *Client) pkEnabled() bool {
 }
 
 func (c *Client) getTableColumns(ctx context.Context, tableName string, pks []string) (schema.ColumnList, error) {
-	query, params := queries.GetTableSchema(c.schemaName, tableName)
+	query, params := queries.GetTableSchema(c.spec.Schema, tableName)
 
 	rows, err := c.db.QueryContext(ctx, query, params...)
 	if err != nil {
@@ -60,7 +60,7 @@ func (c *Client) getTableColumns(ctx context.Context, tableName string, pks []st
 }
 
 func (c *Client) getTablePK(ctx context.Context, tableName string) ([]string, error) {
-	query, params := queries.GetTablePK(c.schemaName, tableName)
+	query, params := queries.GetTablePK(c.spec.Schema, tableName)
 
 	rows, err := c.db.QueryContext(ctx, query, params...)
 	if err != nil {

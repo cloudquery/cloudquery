@@ -6,12 +6,12 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
 	sc := table.ToArrowSchema()
-	query, params := queries.Read(c.schemaName, sourceName, table)
+	query, params := queries.Read(c.spec.Schema, sourceName, table)
 	l := len(sc.Fields())
 
 	return c.doInTx(ctx, func(tx *sql.Tx) error {

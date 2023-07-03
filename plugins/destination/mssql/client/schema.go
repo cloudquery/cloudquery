@@ -9,7 +9,7 @@ import (
 )
 
 func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema.Tables, error) {
-	query, params := queries.AllTables(c.schemaName)
+	query, params := queries.AllTables(c.spec.Schema)
 	rows, err := c.db.QueryContext(ctx, query, params...)
 	if err != nil {
 		c.logErr(err)

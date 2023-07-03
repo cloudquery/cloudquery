@@ -13,7 +13,7 @@ import (
 
 func (c *Client) bulkInsert(ctx context.Context, tx *sql.Tx, table *schema.Table, records []arrow.Record) error {
 	stmt, err := tx.PrepareContext(ctx,
-		mssql.CopyIn(queries.SanitizedTableName(c.schemaName, table),
+		mssql.CopyIn(queries.SanitizedTableName(c.spec.Schema, table),
 			mssql.BulkOptions{
 				KeepNulls:         true,
 				KilobytesPerBatch: c.spec.BatchSizeBytes >> 10,
