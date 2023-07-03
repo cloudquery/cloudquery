@@ -3,21 +3,28 @@ package queries
 import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	mssql "github.com/microsoft/go-mssqldb"
-	"golang.org/x/exp/slices"
 )
 
-func GetRows(reader array.RecordReader) ([][]any, error) {
-	var rows [][]any
-	for reader.Next() {
-		r, err := getRecordRows(reader.Record())
-		if err != nil {
-			return nil, err
+func GetRows(table arrow.Table) ([][]any, error) {
+	rows := prealloc(table.NumRows(), table.NumCols())
+	var err error
+
+	for n := 0; n < int(table.NumCols()); n++ {
+		col := table.Column(n)
+		row := 0
+		for _, chunk := range col.Data().Chunks() {
+			for i := 0; i < chunk.Len(); i++ {
+				rows[row][n], err = getColValue(chunk, row)
+				if err != nil {
+					return nil, err
+				}
+				row++
+			}
 		}
-		rows = append(rows, r...)
 	}
-	return slices.Clip(rows), nil
+	return rows, nil
 }
 
 func prealloc(rows, cols int64) [][]any {
@@ -26,22 +33,6 @@ func prealloc(rows, cols int64) [][]any {
 		result[i] = make([]any, cols)
 	}
 	return result
-}
-
-func getRecordRows(record arrow.Record) ([][]any, error) {
-	rows := prealloc(record.NumRows(), record.NumCols())
-	var err error
-
-	for row := range rows {
-		for idx, col := range record.Columns() {
-			rows[row][idx], err = getColValue(col, row)
-			if err != nil {
-				return nil, err
-			}
-		}
-	}
-
-	return rows, nil
 }
 
 func getColValue(arr arrow.Array, idx int) (any, error) {
