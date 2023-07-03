@@ -4,7 +4,7 @@ This table shows data for GCP Compute Router Nat Mapping Infos.
 
 https://cloud.google.com/compute/docs/reference/rest/v1/routers/getNatMappingInfo#response-body
 
-The composite primary key for this table is ().
+The primary key for this table is **_cq_id**.
 
 ## Relations
 
@@ -14,7 +14,7 @@ This table depends on [gcp_compute_routers](gcp_compute_routers).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |project_id|`utf8`|
 |instance_name|`utf8`|

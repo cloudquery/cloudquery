@@ -4,13 +4,13 @@ This table shows data for GCP Appengine Firewall Ingress Rules.
 
 https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.firewall.ingressRules#FirewallRule
 
-The composite primary key for this table is ().
+The primary key for this table is **_cq_id**.
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |project_id|`utf8`|
 |priority|`int64`|

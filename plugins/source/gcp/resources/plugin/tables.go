@@ -52,9 +52,14 @@ import (
 )
 
 func addCqIDs(table *schema.Table) {
+	havePks := len(table.PrimaryKeys()) > 0
+	cqIdColumn := schema.CqIDColumn
+	if !havePks {
+		cqIdColumn.PrimaryKey = true
+	}
 	table.Columns = append(
 		schema.ColumnList{
-			schema.CqIDColumn,
+			cqIdColumn,
 			schema.CqParentIDColumn,
 		},
 		table.Columns...,
