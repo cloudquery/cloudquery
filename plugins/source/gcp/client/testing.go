@@ -12,6 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/state"
 	"github.com/julienschmidt/httprouter"
 	"github.com/rs/zerolog"
 	"golang.org/x/sync/errgroup"
@@ -56,11 +57,11 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 		projects:      []string{"testProject"},
 		orgs:          []*crmv1.Organization{{Name: "organizations/testOrg"}},
 		folderIds:     []string{"testFolder"},
-		// Backend:       opts.Backend,
+		Backend: &state.NoOpClient{},
 	}
 
-	sched := scheduler.NewScheduler(c, scheduler.WithLogger(l))
-	messages, err := sched.SyncAll(context.Background(), schema.Tables{table})
+	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
+	messages, err := sched.SyncAll(context.Background(), c, schema.Tables{table})
 	if err != nil {
 		t.Fatalf("failed to sync: %v", err)
 	}
@@ -115,10 +116,11 @@ func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*h
 		ClientOptions: clientOptions,
 		projects:      []string{"testProject"},
 		orgs:          []*crmv1.Organization{{Name: "organizations/testOrg"}},
+		Backend: &state.NoOpClient{},
 	}
 
-	sched := scheduler.NewScheduler(c, scheduler.WithLogger(l))
-	messages, err := sched.SyncAll(context.Background(), schema.Tables{table})
+	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
+	messages, err := sched.SyncAll(context.Background(), c, schema.Tables{table})
 	if err != nil {
 		t.Fatalf("failed to sync: %v", err)
 	}

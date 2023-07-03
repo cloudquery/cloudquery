@@ -55,6 +55,12 @@ type Client struct {
 	Backend state.Client
 }
 
+func (c *Client) WithBackend(backend state.Client) *Client {
+	newClient := *c
+	newClient.Backend = backend
+	return &newClient
+}
+
 //revive:disable:modifies-value-receiver
 
 // withProject allows multiplexer to create a new client with given projectId
@@ -116,12 +122,11 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec *Spec) (schema.ClientMeta, error) {
 	var err error
 	c := Client{
 		logger:          logger,
 		EnabledServices: map[string]map[string]any{},
-		// Backend:         opts.Backend,
 	}
 
 	projects := spec.ProjectIDs
