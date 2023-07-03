@@ -56,7 +56,7 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	if err != nil {
 		return err
 	}
-	syncClient := c.syncClient
+	syncClient := c.syncClient.WithBackend(&state.NoOpClient{})
 	if options.BackendOptions != nil {
 		conn, err := grpc.DialContext(ctx, options.BackendOptions.Connection,
 			grpc.WithTransportCredentials(insecure.NewCredentials()),
