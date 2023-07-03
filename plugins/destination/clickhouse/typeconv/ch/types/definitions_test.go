@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -61,7 +61,7 @@ func ensureDefinition(t *testing.T, tc testCase) {
 		require.NoError(t, err)
 		require.Equal(t, tc.expected, typeDef)
 
-		if !canBeNullable(col.Type) {
+		if !CanBeNullable(col.Type) {
 			return
 		}
 

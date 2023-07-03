@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func identifier(name string) string {
@@ -60,7 +60,7 @@ func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schem
 
 		schemaType := mySQLTypeToArrowType(typ)
 		var primaryKey bool
-		if constraintType != nil && c.pkEnabled() {
+		if constraintType != nil {
 			primaryKey = strings.Contains(*constraintType, "PRIMARY KEY")
 		}
 		columns = append(columns, schema.Column{
@@ -140,7 +140,7 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
 		builder.WriteString(" ")
 		builder.WriteString(arrowTypeToMySqlStr(column.Type))
 
-		if c.pkEnabled() && column.PrimaryKey {
+		if column.PrimaryKey {
 			primaryKeysIndices = append(primaryKeysIndices, i)
 		} else {
 			// Primary keys are implicitly not null and unique, so we only need to add these constraints if the column is not a primary key

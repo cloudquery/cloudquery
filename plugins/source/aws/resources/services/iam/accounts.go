@@ -14,10 +14,11 @@ import (
 func Accounts() *schema.Table {
 	tableName := "aws_iam_accounts"
 	return &schema.Table{
-		Name:      tableName,
-		Resolver:  fetchIamAccounts,
-		Transform: transformers.TransformWithStruct(&models.Account{}),
-		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "iam"),
+		Name:        tableName,
+		Description: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetAccountSummary.html",
+		Resolver:    fetchIamAccounts,
+		Transform:   transformers.TransformWithStruct(&models.Account{}),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 		},

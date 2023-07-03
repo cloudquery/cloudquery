@@ -2,7 +2,7 @@
 
 This table shows data for AWS CodeBuild Builds.
 
-https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_ServiceQuota.html
+https://docs.aws.amazon.com/codebuild/latest/APIReference/API_Build.html
 
 The primary key for this table is **arn**.
 

@@ -2,7 +2,7 @@
 
 This table shows data for Amazon API Gateway v2 API Integration Responses.
 
-https://docs.aws.amazon.com/apigateway/latest/api/API_IntegrationResponse.html
+https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/apis-apiid-integrations-integrationid-integrationresponses-integrationresponseid.html
 
 The composite primary key for this table is (**account_id**, **arn**).
 

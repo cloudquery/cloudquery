@@ -11,8 +11,9 @@ import (
 
 func Runtimes() *schema.Table {
 	return &schema.Table{
-		Name:     "aws_lambda_runtimes",
-		Resolver: fetchLambdaRuntimes,
+		Name:        "aws_lambda_runtimes",
+		Description: "https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html",
+		Resolver:    fetchLambdaRuntimes,
 		Transform: transformers.TransformWithStruct(&models.RuntimeWrapper{},
 			transformers.WithPrimaryKeys("Name"),
 		),

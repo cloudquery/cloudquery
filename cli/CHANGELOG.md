@@ -5,6 +5,27 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.7.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.6.1...cli-v3.7.0) (2023-07-03)
+
+
+### Features
+
+* Support state backend in proto v3 ([#11896](https://github.com/cloudquery/cloudquery/issues/11896)) ([8674314](https://github.com/cloudquery/cloudquery/commit/867431438761242ccbc763fbce96c04a49c2ade7))
+
+
+### Bug Fixes
+
+* **cli:** Add variable support ([#11870](https://github.com/cloudquery/cloudquery/issues/11870)) ([68973c4](https://github.com/cloudquery/cloudquery/commit/68973c4f269744e988df5722693e29656b8f9939))
+* **deps:** Update github.com/apache/arrow/go/v13 digest to 5a06b2e ([#11857](https://github.com/cloudquery/cloudquery/issues/11857)) ([43c2f5f](https://github.com/cloudquery/cloudquery/commit/43c2f5f3a893e5286f67c4943a9d1bc2736e2aeb))
+* Make sure variables start with @[@plugins](https://github.com/plugins). ([#11888](https://github.com/cloudquery/cloudquery/issues/11888)) ([6e1ece9](https://github.com/cloudquery/cloudquery/commit/6e1ece9d1053df63eeebe18dcd21eedbe7092a7d))
+
+## [3.6.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.6.0...cli-v3.6.1) (2023-06-30)
+
+
+### Bug Fixes
+
+* **cli:** Fix sync in protov3 ([#11822](https://github.com/cloudquery/cloudquery/issues/11822)) ([9a9c202](https://github.com/cloudquery/cloudquery/commit/9a9c20207c8ca777b9f4bafa9c960406e8f25a17))
+
 ## [3.6.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.5.4...cli-v3.6.0) (2023-06-28)
 
 

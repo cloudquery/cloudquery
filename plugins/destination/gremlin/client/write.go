@@ -12,7 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs []*message.WriteInsert) error {
+func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs message.WriteInserts) error {
 	if len(msgs) == 0 {
 		return nil
 	}

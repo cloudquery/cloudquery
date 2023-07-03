@@ -2,7 +2,7 @@
 
 This table shows data for Amazon API Gateway v2 API Deployments.
 
-https://docs.aws.amazon.com/apigateway/latest/api/API_Deployment.html
+https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/apis-apiid-deployments.html
 
 The composite primary key for this table is (**account_id**, **arn**).
 
