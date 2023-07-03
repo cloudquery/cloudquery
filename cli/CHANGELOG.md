@@ -5,6 +5,19 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.8.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.7.0...cli-v3.8.0) (2023-07-03)
+
+
+### Features
+
+* Handle State backends in CLI for v3 protocol ([#11899](https://github.com/cloudquery/cloudquery/issues/11899)) ([91b1b75](https://github.com/cloudquery/cloudquery/commit/91b1b75ef15ab31cd7b552ad72ec40ca52d7f59f))
+* Handle State backends in CLI for v3 protocol ([#11899](https://github.com/cloudquery/cloudquery/issues/11899)) ([ce0dd7e](https://github.com/cloudquery/cloudquery/commit/ce0dd7ead2abc802de8a70083e81c557758737f6))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to df3b664 ([#11882](https://github.com/cloudquery/cloudquery/issues/11882)) ([9635b22](https://github.com/cloudquery/cloudquery/commit/9635b22b10a2cd9ca0f91819cffb7f4ba75dc2d9))
+
 ## [3.7.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.6.1...cli-v3.7.0) (2023-07-03)
 
 
