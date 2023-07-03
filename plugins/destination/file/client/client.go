@@ -14,7 +14,8 @@ import (
 
 type Client struct {
 	plugin.UnimplementedSource
-	streamingbatchwriter.UnimplementedMigrateTable
+	streamingbatchwriter.IgnoreMigrateTable
+	streamingbatchwriter.UnimplementedDeleteStale
 
 	logger zerolog.Logger
 	spec   *Spec
@@ -61,6 +62,6 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, 
 	return c, nil
 }
 
-func (*Client) Close(_ context.Context) error {
-	return nil
+func (c *Client) Close(ctx context.Context) error {
+	return c.writer.Close(ctx)
 }
