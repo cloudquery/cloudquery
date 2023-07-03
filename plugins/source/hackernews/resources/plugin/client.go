@@ -79,8 +79,12 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	return c.scheduler.Sync(ctx, schedulerClient, tt, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
 }
 
-func (c *Client) Tables(ctx context.Context) (schema.Tables, error) {
-	return c.tables, nil
+func (c *Client) Tables(ctx context.Context, options plugin.TableOptions) (schema.Tables, error) {
+	tt, err := c.tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
+	if err != nil {
+		return nil, err
+	}
+	return tt, nil
 }
 
 func (c *Client) Close(ctx context.Context) error {
@@ -102,7 +106,13 @@ func getTables() []*schema.Table {
 	return tables
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, specBytes []byte) (plugin.Client, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
+	if opts.NoConnection {
+		return &Client{
+			logger: logger,
+			tables: getTables(),
+		}, nil
+	}
 	config := client.Spec{}
 	if err := json.Unmarshal(specBytes, &config); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
