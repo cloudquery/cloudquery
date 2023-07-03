@@ -13,7 +13,7 @@ type (
 	}
 )
 
-func CreateTable(schemaName string, table *schema.Table, pkEnabled bool) string {
+func CreateTable(schemaName string, table *schema.Table) string {
 	builder := &createTableQueryBuilder{
 		Schema:  schemaName,
 		Table:   table.Name,

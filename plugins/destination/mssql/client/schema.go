@@ -71,9 +71,7 @@ func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 		// we need to normalize them to avoid false positives when detecting schema changes.
 		// This should never return an error
 		col.Type = queries.SchemaType(queries.SQLType(col.Type))
-		if c.pkEnabled() && col.PrimaryKey {
-			col.NotNull = true
-		}
+		col.NotNull = col.NotNull || col.PrimaryKey
 		columns[i] = col
 	}
 

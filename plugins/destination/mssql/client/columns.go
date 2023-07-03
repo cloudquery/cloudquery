@@ -5,14 +5,9 @@ import (
 	"database/sql"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
-	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"golang.org/x/exp/slices"
 )
-
-func (c *Client) pkEnabled() bool {
-	return c.spec.WriteMode == specs.WriteModeOverwrite || c.spec.WriteMode == specs.WriteModeOverwriteDeleteStale
-}
 
 func (c *Client) getTableColumns(ctx context.Context, tableName string, pks []string) (schema.ColumnList, error) {
 	query, params := queries.GetTableSchema(c.spec.Schema, tableName)

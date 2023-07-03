@@ -9,20 +9,19 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
+func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
+	query := queries.Read(c.spec.Schema, table)
 	sc := table.ToArrowSchema()
-	query, params := queries.Read(c.spec.Schema, sourceName, table)
-	l := len(sc.Fields())
 
 	return c.doInTx(ctx, func(tx *sql.Tx) error {
-		rows, err := tx.QueryContext(ctx, query, params...)
+		rows, err := tx.QueryContext(ctx, query)
 		if err != nil {
 			return err
 		}
 
 		return processRows(rows, func(row *sql.Rows) error {
 			// We consider only the current schema from table
-			resource := make([]any, l)
+			resource := make([]any, len(sc.Fields()))
 			if err := row.Scan(wrap(resource)...); err != nil {
 				return err
 			}

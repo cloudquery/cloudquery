@@ -11,7 +11,7 @@ import (
 )
 
 func (c *Client) useTVP(table *schema.Table) bool {
-	return c.pkEnabled() && len(table.PrimaryKeys()) > 0
+	return len(table.PrimaryKeys()) > 0
 }
 
 func (c *Client) ensureTVP(ctx context.Context, table *schema.Table) (err error) {

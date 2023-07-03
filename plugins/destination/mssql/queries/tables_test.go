@@ -34,7 +34,6 @@ func TestCreateTable(t *testing.T) {
 				schema.Column{Name: "extra_col", Type: arrow.PrimitiveTypes.Float64, PrimaryKey: true, NotNull: true},
 			},
 		},
-		true,
 	)
 
 	require.Equal(t, expected, query)
@@ -63,7 +62,6 @@ func TestCreateTableNoPK(t *testing.T) {
 				schema.Column{Name: "extra_col", Type: arrow.PrimitiveTypes.Float64, NotNull: true},
 			},
 		},
-		true,
 	)
 
 	require.Equal(t, expected, query)
@@ -97,7 +95,6 @@ func TestCreateTableCustomPKConstraintName(t *testing.T) {
 				schema.Column{Name: "extra_col", Type: arrow.PrimitiveTypes.Float64, PrimaryKey: true},
 			},
 		},
-		true,
 	)
 
 	require.Equal(t, expected, query)

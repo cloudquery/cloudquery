@@ -14,11 +14,11 @@ type deleteStaleQueryBuilder struct {
 	SyncTimeColumn   string
 }
 
-func DeleteStale(schemaName string, table *schema.Table, sourceName string, syncTime time.Time) (query string, params []any) {
+func DeleteStale(schemaName string, tableName, sourceName string, syncTime time.Time) (query string, params []any) {
 	return execTemplate("delete_stale.sql.tpl",
 			&deleteStaleQueryBuilder{
 				Schema:           schemaName,
-				Table:            table.Name,
+				Table:            tableName,
 				SourceNameColumn: sanitizeID(schema.CqSourceNameColumn.Name),
 				SyncTimeColumn:   sanitizeID(schema.CqSyncTimeColumn.Name),
 			},
