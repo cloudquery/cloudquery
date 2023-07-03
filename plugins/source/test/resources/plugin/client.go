@@ -73,6 +73,7 @@ func Configure(_ context.Context, logger zerolog.Logger, spec []byte, opts plugi
 
 	return &Client{
 		logger: logger,
+		config: *config,
 		scheduler: scheduler.NewScheduler(
 			scheduler.WithLogger(logger),
 		),
