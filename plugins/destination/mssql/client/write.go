@@ -26,7 +26,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, _ string, messages message
 		records[i] = m.Record
 	}
 
-	if c.useTVP(table) {
+	if useTVP(table) {
 		return c.insertTVP(ctx, table, records)
 	}
 

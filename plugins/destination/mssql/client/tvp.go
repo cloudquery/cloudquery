@@ -10,12 +10,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func (c *Client) useTVP(table *schema.Table) bool {
+func useTVP(table *schema.Table) bool {
 	return len(table.PrimaryKeys()) > 0
 }
 
 func (c *Client) ensureTVP(ctx context.Context, table *schema.Table) (err error) {
-	if !c.useTVP(table) {
+	if useTVP(table) {
 		return nil
 	}
 

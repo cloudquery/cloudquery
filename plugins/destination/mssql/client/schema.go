@@ -55,15 +55,15 @@ func (c *Client) schemaTables(ctx context.Context, messages message.WriteMigrate
 	return result, nil
 }
 
-func (c *Client) normalizedTables(messages message.WriteMigrateTables) schema.Tables {
+func normalizedTables(messages message.WriteMigrateTables) schema.Tables {
 	normalized := make(schema.Tables, len(messages))
 	for i, m := range messages {
-		normalized[i] = c.normalizeTable(m.Table)
+		normalized[i] = normalizeTable(m.Table)
 	}
 	return normalized
 }
 
-func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
+func normalizeTable(table *schema.Table) *schema.Table {
 	columns := make(schema.ColumnList, len(table.Columns))
 
 	for i, col := range table.Columns {

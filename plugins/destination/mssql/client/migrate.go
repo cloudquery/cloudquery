@@ -18,7 +18,7 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 		return err
 	}
 
-	want := c.normalizedTables(messages)
+	want := normalizedTables(messages)
 
 	if err := c.checkForced(have, want, messages); err != nil {
 		return err
