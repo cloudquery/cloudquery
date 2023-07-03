@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"cloud.google.com/go/kms/apiv1/kmspb"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	locationpb "google.golang.org/genproto/googleapis/cloud/location"
 	"google.golang.org/grpc"

@@ -10,6 +10,11 @@ type Spec struct {
 	StartTime       string `json:"start_time"`
 }
 
+type Backend struct {
+	Table      string `json:"table"`
+	Connection string `json:"connection"`
+}
+
 func (s *Spec) SetDefaults() {
 	if s.ItemConcurrency <= 0 {
 		// Default to loading 100 concurrent items

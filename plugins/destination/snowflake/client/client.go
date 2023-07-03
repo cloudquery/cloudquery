@@ -21,7 +21,7 @@ type Client struct {
 	writer *batchwriter.BatchWriter
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "sf-dest").Logger(),

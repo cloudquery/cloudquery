@@ -15,10 +15,13 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 
 
-## Step 1: Create AWS IAM Role
+## Step 1: Create AWS Infrastructure for CloudQuery on EKS 
 
-In our example we run CloudQuery on AWS EKS with the official [CloudQuery Helm Charts](https://github.com/cloudquery/helm-charts). We must create an [Amazon EKS cluster IAM role](https://docs.aws.amazon.com/eks/latest/userguide/service_IAM_role.html) or an [Amazon EKS node IAM role](https://docs.aws.amazon.com/eks/latest/userguide/create-node-role.html). How to do so can be looked up in the AWS documentation depending on which service role is preferred.
+In this guide, we run CloudQuery on AWS EKS with the official [CloudQuery Helm Charts](https://github.com/cloudquery/helm-charts). 
 
+### IAM Roles for CloudQuery on EKS
+
+For EKS, IAM setup may require an [Amazon EKS cluster IAM role](https://docs.aws.amazon.com/eks/latest/userguide/service_IAM_role.html) and an [Amazon EKS node IAM role](https://docs.aws.amazon.com/eks/latest/userguide/create-node-role.html).  Refer to AWS documentation for more information on IAM setup and best practices for securing IAM for EKS Clusters.
 
 ## Step 2: Enable Additional GCP Services
 
@@ -40,7 +43,7 @@ gcloud iam service-accounts create cq-fetcher \
     --display-name="cq-fetcher"
 ```
 
-We need to ensure that the new Service Account has the appropriate permissions to View the desired projects in GCP.
+We need to ensure that the new Service Account has the appropriate permissions to view the desired projects in GCP.
 
 
 ## Step 4: Create GCP Workload Identity Pool
@@ -50,7 +53,7 @@ Next, we need to create the GCP Workload Identity Pool.
 ```bash copy
 gcloud iam workload-identity-pools create cq-aws-pool \
     --description="Workload Identity Pool for CloudQuery on AWS." \
-    --display-name="CloudQuery GCP AWS Workload Identity Pool" \
+    --display-name="CloudQuery AWS Pool" \
     --location="global"
 ```
 
@@ -66,7 +69,7 @@ gcloud iam workload-identity-pools \
     providers create-aws cq-aws-provider  \
     --account-id=123456789012 \
     --description="Workload Identity Provider for CloudQuery on AWS." \
-    --display-name="CloudQuery GCP AWS Workload Identity Provider" \
+    --display-name="CloudQuery AWS Provider" \
     --location="global" \
     --workload-identity-pool="cq-aws-pool"
 ```
@@ -76,7 +79,9 @@ gcloud iam workload-identity-pools \
 
 ## Step 6: Bind GCP Service Account Impersonation
 
-Now we allow any AWS role from this pool to impersonate the GCP Service Account we created earlier by binding the IAM role `roles/iam.workloadIdentityUser` to the GCP service account. The number in the `-member` flag needs to be the GCP Project number. Please consider adjusting the `-member` flag as well for additional security. More information can be found in the [Service account impersonation](https://cloud.google.com/iam/docs/workload-identity-federation#impersonation) section of Google Cloud Docs.
+Now, we will create an IAM policy binding.
+
+The below command allows all identities from our pool to impersonate the GCP Service Account we created earlier by binding the IAM role `roles/iam.workloadIdentityUser` to the GCP service account.  Replace the number in the `-member` flag with the GCP project number. 
 
 ```bash copy
 gcloud iam service-accounts add-iam-policy-binding \
@@ -85,6 +90,16 @@ gcloud iam service-accounts add-iam-policy-binding \
     --role "roles/iam.workloadIdentityUser"
 ```
 
+Please consider adjusting the `-member` flag for additional security with GCP service account impersonation. More granular options include options such as a single identity, all identities in a group, or all identities with a specific attribute value.  More information can be found in the [Service account impersonation](https://cloud.google.com/iam/docs/workload-identity-federation#impersonation) section of Google Cloud Docs.  We recommend using granular scoping for service account impersonation.
+
+An example of using a single identity in the pool could look like the following command.  Additional configuration may be required for attribute mapping and conditions.  Information on defining attribute mapping can be found [here](https://cloud.google.com/iam/docs/workload-identity-federation-with-other-clouds#aws).
+
+```bash copy
+gcloud iam service-accounts add-iam-policy-binding \
+    cq-fetcher@example-project.iam.gserviceaccount.com \
+    --member "principalSet://iam.googleapis.com/projects/123456789012/locations/global/workloadIdentityPools/cq-aws-pool/attribute.aws_role/CQ_AWS_Role" \
+    --role "roles/iam.workloadIdentityUser"
+```
 
 ## Step 7: Download Client library config
 

@@ -24,7 +24,7 @@ type Client struct {
 	writer      *batchwriter.BatchWriter
 }
 
-func New(ctx context.Context, logger zerolog.Logger, specBytes []byte) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "elasticsearch-dest").Logger(),
