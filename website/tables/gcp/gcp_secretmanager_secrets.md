@@ -1,6 +1,6 @@
 # Table: gcp_secretmanager_secrets
 
-This table shows data for GCP Secret Manager Secrets.
+This table shows data for GCP Secretmanager Secrets.
 
 https://cloud.google.com/secret-manager/docs/reference/rest/v1/projects.secrets#Secret
 
@@ -10,8 +10,6 @@ The primary key for this table is **name**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |project_id|`utf8`|

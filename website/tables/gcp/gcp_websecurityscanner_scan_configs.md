@@ -1,6 +1,6 @@
 # Table: gcp_websecurityscanner_scan_configs
 
-This table shows data for GCP Web Security Scanner Scan Configs.
+This table shows data for GCP Websecurityscanner Scan Configs.
 
 https://cloud.google.com/security-command-center/docs/reference/web-security-scanner/rest/v1/projects.scanConfigs#resource:-scanconfig
 
@@ -15,8 +15,6 @@ The following tables depend on gcp_websecurityscanner_scan_configs:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|

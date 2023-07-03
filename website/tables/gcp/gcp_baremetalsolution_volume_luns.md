@@ -1,6 +1,6 @@
 # Table: gcp_baremetalsolution_volume_luns
 
-This table shows data for GCP Bare Metal Solution Volume Luns.
+This table shows data for GCP Baremetalsolution Volume Luns.
 
 https://cloud.google.com/bare-metal/docs/reference/rest/v2/projects.locations.volumes.luns#Lun
 
@@ -14,10 +14,6 @@ This table depends on [gcp_baremetalsolution_volumes](gcp_baremetalsolution_volu
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
-|_cq_id|`uuid`|
-|_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |name (PK)|`utf8`|
 |id|`utf8`|

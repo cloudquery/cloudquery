@@ -1,6 +1,6 @@
 # Table: gcp_kms_crypto_key_versions
 
-This table shows data for GCP Cloud Key Management Service (KMS) Crypto Key Versions.
+This table shows data for GCP Kms Crypto Key Versions.
 
 https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys.cryptoKeyVersions#CryptoKeyVersion
 
@@ -14,10 +14,6 @@ This table depends on [gcp_kms_crypto_keys](gcp_kms_crypto_keys).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
-|_cq_id|`uuid`|
-|_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |name (PK)|`utf8`|
 |state|`utf8`|

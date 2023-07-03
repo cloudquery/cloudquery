@@ -1,6 +1,6 @@
 # Table: gcp_appengine_services
 
-This table shows data for GCP App Engine Services.
+This table shows data for GCP Appengine Services.
 
 https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services#Service
 
@@ -15,8 +15,6 @@ The following tables depend on gcp_appengine_services:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|

@@ -1,6 +1,6 @@
 # Table: gcp_artifactregistry_tags
 
-This table shows data for GCP Artifact Registry Tags.
+This table shows data for GCP Artifactregistry Tags.
 
 https://cloud.google.com/artifact-registry/docs/reference/rest/v1/projects.locations.repositories.packages.tags#Tag
 
@@ -14,10 +14,6 @@ This table depends on [gcp_artifactregistry_packages](gcp_artifactregistry_packa
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
-|_cq_id|`uuid`|
-|_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |name (PK)|`utf8`|
 |version|`utf8`|

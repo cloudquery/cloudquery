@@ -1,6 +1,6 @@
 # Table: gcp_cloudiot_device_states
 
-This table shows data for GCP Cloud IoT Device States.
+This table shows data for GCP Cloudiot Device States.
 
 https://cloud.google.com/iot/docs/reference/cloudiot/rest/v1/projects.locations.registries.devices.states#DeviceState
 
@@ -14,10 +14,6 @@ This table depends on [gcp_cloudiot_devices](gcp_cloudiot_devices).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
-|_cq_id|`uuid`|
-|_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |device_name (PK)|`utf8`|
 |update_time (PK)|`timestamp[us, tz=UTC]`|

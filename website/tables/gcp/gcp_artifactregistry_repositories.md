@@ -1,6 +1,6 @@
 # Table: gcp_artifactregistry_repositories
 
-This table shows data for GCP Artifact Registry Repositories.
+This table shows data for GCP Artifactregistry Repositories.
 
 https://cloud.google.com/artifact-registry/docs/reference/rest/v1/projects.locations.repositories#Repository
 
@@ -19,10 +19,6 @@ The following tables depend on gcp_artifactregistry_repositories:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
-|_cq_id|`uuid`|
-|_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |name (PK)|`utf8`|
 |format|`utf8`|

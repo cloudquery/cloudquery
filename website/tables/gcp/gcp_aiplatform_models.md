@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_models
 
-This table shows data for GCP AI Platform Models.
+This table shows data for GCP Aiplatform Models.
 
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.models#Model
 
@@ -14,10 +14,6 @@ This table depends on [gcp_aiplatform_model_locations](gcp_aiplatform_model_loca
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
-|_cq_id|`uuid`|
-|_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |name (PK)|`utf8`|
 |version_id|`utf8`|

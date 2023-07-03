@@ -1,6 +1,6 @@
 # Table: gcp_cloudiot_device_registries
 
-This table shows data for GCP Cloud IoT Device Registries.
+This table shows data for GCP Cloudiot Device Registries.
 
 https://cloud.google.com/iot/docs/reference/cloudiot/rest/v1/projects.locations.registries#DeviceRegistry
 
@@ -15,8 +15,6 @@ The following tables depend on gcp_cloudiot_device_registries:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|

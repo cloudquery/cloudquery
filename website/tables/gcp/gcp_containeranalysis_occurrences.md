@@ -1,6 +1,6 @@
 # Table: gcp_containeranalysis_occurrences
 
-This table shows data for GCP Container Analysis Occurrences.
+This table shows data for GCP Containeranalysis Occurrences.
 
 https://cloud.google.com/container-analysis/docs/reference/rest/v1beta1/projects.occurrences#Occurrence
 
@@ -10,8 +10,6 @@ The primary key for this table is **name**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |project_id|`utf8`|

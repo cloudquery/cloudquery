@@ -1,6 +1,6 @@
 # Table: gcp_videotranscoder_jobs
 
-This table shows data for GCP Video Transcoder Jobs.
+This table shows data for GCP Videotranscoder Jobs.
 
 https://cloud.google.com/transcoder/docs/reference/rest/v1/projects.locations.jobs
 
@@ -10,8 +10,6 @@ The composite primary key for this table is (**project_id**, **name**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|

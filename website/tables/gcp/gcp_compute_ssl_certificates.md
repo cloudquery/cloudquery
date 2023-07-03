@@ -1,6 +1,6 @@
 # Table: gcp_compute_ssl_certificates
 
-This table shows data for GCP Compute SSL Certificates.
+This table shows data for GCP Compute Ssl Certificates.
 
 https://cloud.google.com/compute/docs/reference/rest/v1/sslCertificates#SslCertificate
 
@@ -10,8 +10,6 @@ The primary key for this table is **self_link**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |project_id|`utf8`|

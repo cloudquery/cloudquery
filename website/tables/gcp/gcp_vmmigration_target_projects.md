@@ -1,6 +1,6 @@
 # Table: gcp_vmmigration_target_projects
 
-This table shows data for GCP VM Migration Target Projects.
+This table shows data for GCP Vmmigration Target Projects.
 
 https://cloud.google.com/migrate/virtual-machines/docs/5.0/reference/rest/v1/projects.locations.targetProjects
 
@@ -10,8 +10,6 @@ The composite primary key for this table is (**project_id**, **name**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|

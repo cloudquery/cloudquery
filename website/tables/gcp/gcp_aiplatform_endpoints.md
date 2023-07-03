@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_endpoints
 
-This table shows data for GCP AI Platform Endpoints.
+This table shows data for GCP Aiplatform Endpoints.
 
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.endpoints#Endpoint
 
@@ -14,10 +14,6 @@ This table depends on [gcp_aiplatform_endpoint_locations](gcp_aiplatform_endpoin
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
-|_cq_id|`uuid`|
-|_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |name (PK)|`utf8`|
 |display_name|`utf8`|

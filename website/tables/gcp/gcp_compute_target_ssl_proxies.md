@@ -1,6 +1,6 @@
 # Table: gcp_compute_target_ssl_proxies
 
-This table shows data for GCP Compute Target SSL Proxies.
+This table shows data for GCP Compute Target Ssl Proxies.
 
 The primary key for this table is **self_link**.
 
@@ -8,8 +8,6 @@ The primary key for this table is **self_link**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |project_id|`utf8`|

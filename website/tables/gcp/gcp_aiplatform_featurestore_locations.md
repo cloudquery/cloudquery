@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_featurestore_locations
 
-This table shows data for GCP AI Platform Feature Store Locations.
+This table shows data for GCP Aiplatform Featurestore Locations.
 
 https://cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations#Location
 
@@ -15,8 +15,6 @@ The following tables depend on gcp_aiplatform_featurestore_locations:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|

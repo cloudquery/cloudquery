@@ -1,6 +1,6 @@
 # Table: gcp_vpcaccess_connectors
 
-This table shows data for GCP VPC Access Connectors.
+This table shows data for GCP Vpcaccess Connectors.
 
 https://cloud.google.com/vpc/docs/reference/vpcaccess/rest/v1/projects.locations.connectors
 
@@ -14,10 +14,6 @@ This table depends on [gcp_vpcaccess_locations](gcp_vpcaccess_locations).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
-|_cq_id|`uuid`|
-|_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |name (PK)|`utf8`|
 |network|`utf8`|

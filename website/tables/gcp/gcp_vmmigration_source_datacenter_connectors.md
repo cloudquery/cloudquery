@@ -1,6 +1,6 @@
 # Table: gcp_vmmigration_source_datacenter_connectors
 
-This table shows data for GCP VM Migration Source Datacenter Connectors.
+This table shows data for GCP Vmmigration Source Datacenter Connectors.
 
 https://cloud.google.com/migrate/virtual-machines/docs/5.0/reference/rest/v1/projects.locations.sources.datacenterConnectors
 
@@ -14,10 +14,6 @@ This table depends on [gcp_vmmigration_sources](gcp_vmmigration_sources).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
-|_cq_id|`uuid`|
-|_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |create_time|`timestamp[us, tz=UTC]`|
 |update_time|`timestamp[us, tz=UTC]`|

@@ -4,7 +4,7 @@ This table shows data for GCP Clouderrorreporting Error Events.
 
 https://cloud.google.com/error-reporting/reference/rest/v1beta1/ErrorEvent
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is ().
 
 ## Relations
 
@@ -14,10 +14,6 @@ This table depends on [gcp_clouderrorreporting_error_group_stats](gcp_clouderror
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
-|_cq_id (PK)|`uuid`|
-|_cq_parent_id|`uuid`|
 |project_id|`utf8`|
 |event_time|`timestamp[us, tz=UTC]`|
 |service_context|`json`|

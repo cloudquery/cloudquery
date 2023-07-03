@@ -1,6 +1,6 @@
 # Table: gcp_bigquery_tables
 
-This table shows data for GCP BigQuery Tables.
+This table shows data for GCP Bigquery Tables.
 
 https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#Table
 
@@ -14,10 +14,6 @@ This table depends on [gcp_bigquery_datasets](gcp_bigquery_datasets).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
-|_cq_id|`uuid`|
-|_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |clone_definition|`json`|
 |clustering|`json`|
