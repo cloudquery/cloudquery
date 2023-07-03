@@ -56,7 +56,7 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	var stateClient state.Client
 	if options.BackendOptions == nil {
 		c.logger.Info().Msg("No backend options provided, using no state backend")
-		stateClient = state.NoOpClient{}
+		stateClient = &state.NoOpClient{}
 	} else {
 		conn, err := grpc.DialContext(ctx, options.BackendOptions.Connection,
 			grpc.WithTransportCredentials(insecure.NewCredentials()),
