@@ -5,7 +5,7 @@ import (
 
 	iamadmin "cloud.google.com/go/iam/admin/apiv1"
 	iampb "cloud.google.com/go/iam/admin/apiv1/adminpb"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 

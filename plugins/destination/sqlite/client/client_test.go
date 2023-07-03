@@ -18,7 +18,7 @@ func TestPlugin(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := p.Init(ctx, specBytes); err != nil {
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
 		t.Fatal(err)
 	}
 	plugin.TestWriterSuiteRunner(t,

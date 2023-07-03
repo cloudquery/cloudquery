@@ -44,7 +44,7 @@ func TestPlugin(t *testing.T) {
 	b, err := json.Marshal(s)
 	require.NoError(t, err)
 
-	err = p.Init(ctx, b)
+	err = p.Init(ctx, b, plugin.NewClientOptions{})
 	require.NoError(t, err)
 
 	plugin.TestWriterSuiteRunner(t,
