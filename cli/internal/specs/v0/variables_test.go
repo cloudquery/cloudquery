@@ -28,11 +28,24 @@ func TestReplaceVariables(t *testing.T) {
 		t.Fatal("expected error")
 	}
 
+	_, err = ReplaceVariables("@@plugins.aws.test", variables)
+	if err == nil {
+		t.Fatal("expected error")
+	}
+
 	res, err = ReplaceVariables("@@plugins.aws.connection", variables)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if res != "test" {
-		t.Fatalf("expected test, got %s", res)
+		t.Fatalf("expected %q, got %q", "test", res)
+	}
+
+	res, err = ReplaceVariables("inside @@plugins.aws.connection string", variables)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if res != "inside test string" {
+		t.Fatalf("expected %q, got %q", "inside test string", res)
 	}
 }
