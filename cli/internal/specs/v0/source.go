@@ -13,6 +13,11 @@ const (
 	defaultConcurrency = 500000
 )
 
+type BackendOptions struct {
+	TableName string `json:"table_name,omitempty"`
+	Connection string `json:"connection,omitempty"`
+}
+
 // Source is the spec for a source plugin
 type Source struct {
 	// Name of the source plugin to use
@@ -41,6 +46,9 @@ type Source struct {
 	SkipDependentTables bool `json:"skip_dependent_tables,omitempty"`
 	// Destinations are the names of destination plugins to send sync data to
 	Destinations []string `json:"destinations,omitempty"`
+
+	// Optional Backend options for sync operation
+	BackendOptions *BackendOptions `json:"backend_options,omitempty"`
 
 	// Deprecated: Backend is the name of the state backend to use. Should now use plugin-specific field instead.
 	Backend Backend `json:"backend,omitempty"`
