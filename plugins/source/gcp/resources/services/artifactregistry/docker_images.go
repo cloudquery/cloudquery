@@ -7,8 +7,8 @@ import (
 
 	pb "cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
 
 	artifactregistry "cloud.google.com/go/artifactregistry/apiv1"

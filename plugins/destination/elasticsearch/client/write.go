@@ -7,12 +7,13 @@ import (
 	"fmt"
 	"io"
 	"strings"
+	"time"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	cqtypes "github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/segmentio/fasthash/fnv1a"
 )
 
@@ -21,8 +22,20 @@ type bulkResponse struct {
 	Errors bool  `json:"errors"`
 }
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, records []arrow.Record) error {
-	for _, record := range records {
+func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
+	if err := c.writer.Write(ctx, msgs); err != nil {
+		return fmt.Errorf("failed to write messages: %w", err)
+	}
+	if err := c.writer.Flush(ctx); err != nil {
+		return fmt.Errorf("failed to flush writer: %w", err)
+	}
+	return nil
+}
+
+func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
+	for _, msg := range msgs {
+		table := msg.GetTable()
+		record := msg.Record
 		err := c.writeRecord(ctx, table, record)
 		if err != nil {
 			return err
@@ -36,9 +49,7 @@ func (c *Client) writeRecord(ctx context.Context, table *schema.Table, record ar
 	pks := pkIndexes(table) // do some work up front to avoid doing it for every resource
 	// get the sync time from the first resource in the batch (here we assume that all resources in the batch
 	// have the same sync time. At the moment this assumption holds.)
-	cqSyncName := table.Columns.Index(schema.CqSyncTimeColumn.Name)
-	cqSyncUnit := schema.CqSyncTimeColumn.Type.(*arrow.TimestampType).Unit
-	syncTime := record.Column(cqSyncName).(*array.Timestamp).Value(0).ToTime(cqSyncUnit)
+	syncTime := time.Now()
 	for r := 0; r < int(record.NumRows()); r++ {
 		doc := map[string]any{}
 		for i, col := range record.Columns() {
@@ -50,7 +61,9 @@ func (c *Client) writeRecord(ctx context.Context, table *schema.Table, record ar
 		}
 
 		var meta []byte
-		if c.spec.WriteMode == specs.WriteModeOverwrite || c.spec.WriteMode == specs.WriteModeOverwriteDeleteStale {
+		hasPrimaryKeys := len(table.PrimaryKeys()) > 0
+
+		if hasPrimaryKeys {
 			docID := fmt.Sprint(resourceID(record, r, pks))
 			meta = []byte(fmt.Sprintf(`{"index":{"_id":"%s"}}%s`, docID, "\n"))
 		} else {
@@ -61,7 +74,7 @@ func (c *Client) writeRecord(ctx context.Context, table *schema.Table, record ar
 		buf.Write(meta)
 		buf.Write(data)
 	}
-	index := c.getIndexName(table.Name, syncTime)
+	index := c.getIndexName(table, syncTime)
 	resp, err := c.client.Bulk(bytes.NewReader(buf.Bytes()),
 		c.client.Bulk.WithContext(ctx),
 		c.client.Bulk.WithIndex(index),

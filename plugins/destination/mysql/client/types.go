@@ -133,6 +133,7 @@ func arrowTypeToMySqlStr(t arrow.DataType) string {
 		return "text"
 	case *arrow.BinaryType, *arrow.LargeBinaryType:
 		return "blob"
+	// nolint:typecheck
 	case *types.UUIDType:
 		return "binary(16)"
 	case *arrow.TimestampType:

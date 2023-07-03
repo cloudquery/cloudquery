@@ -42,6 +42,9 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("Start sync")
 	defer log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("End sync")
 
+	variables := specs.Variables{
+		Plugins: make(map[string]specs.PluginVariables),
+	}
 	sourcePbClient := plugin.NewPluginClient(sourceClient.Conn)
 	destinationsPbClients := make([]plugin.PluginClient, len(destinationsClients))
 	destinationTransformers := make([]*transformer.RecordTransformer, len(destinationsClients))
@@ -58,17 +61,13 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 			opts = append(opts, transformer.WithCQIDPrimaryKey())
 		}
 		destinationTransformers[i] = transformer.NewRecordTransformer(opts...)
+		connection := destinationsClients[i].ConnectionString()
+		variables.Plugins[destinationSpecs[i].Name] = specs.PluginVariables{
+			Connection: connection,
+		}
 	}
 
-	specBytes, err := json.Marshal(sourceSpec.Spec)
-	if err != nil {
-		return err
-	}
-	if _, err := sourcePbClient.Init(ctx, &plugin.Init_Request{
-		Spec: specBytes,
-	}); err != nil {
-		return err
-	}
+	// initialize destinations first, so that their connections may be used as backends by the source
 	for i := range destinationsClients {
 		destSpec := destinationSpecs[i]
 		destSpecBytes, err := json.Marshal(destSpec.Spec)
@@ -82,6 +81,30 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		}
 	}
 
+	// replace @@plugins.name.connection with the actual GRPC connection string from the client
+	// NOTE: if this becomes a stable feature, it can move out of sync_v3 and into sync.go
+	specBytes, err := json.Marshal(sourceSpec)
+	if err != nil {
+		return err
+	}
+	specBytesExpanded, err := specs.ReplaceVariables(string(specBytes), variables)
+	if err != nil {
+		return err
+	}
+	if err := json.Unmarshal([]byte(specBytesExpanded), &sourceSpec); err != nil {
+		return err
+	}
+
+	sourceSpecBytes, err := json.Marshal(sourceSpec.Spec)
+	if err != nil {
+		return err
+	}
+	if _, err := sourcePbClient.Init(ctx, &plugin.Init_Request{
+		Spec: sourceSpecBytes,
+	}); err != nil {
+		return err
+	}
+
 	writeClients := make([]plugin.Plugin_WriteClient, len(destinationsPbClients))
 	for i := range destinationsPbClients {
 		writeClients[i], err = destinationsPbClients[i].Write(ctx)
@@ -93,20 +116,19 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Msg("Start fetching resources")
 	fmt.Printf("Starting sync for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
 
-	// TODO(v4): figure out backends
-	syncClient, err := sourcePbClient.Sync(ctx, &plugin.Sync_Request{
+	syncReq := &plugin.Sync_Request{
 		Tables:              sourceSpec.Tables,
 		SkipTables:          sourceSpec.SkipTables,
 		SkipDependentTables: sourceSpec.SkipDependentTables,
 		DeterministicCqId:   sourceSpec.DeterministicCQID,
-		// StateBackend: &plugin.StateBackendSpec{
-		//	Name:     sourceSpec.Backend,
-		//	Path:     "",
-		//	Version:  "",
-		//	Registry: 0,
-		//	Spec:     sourceSpec.BackendSpec,
-		// },
-	})
+	}
+	if sourceSpec.BackendOptions != nil {
+		syncReq.Backend = &plugin.Sync_BackendOptions{
+			TableName:  sourceSpec.BackendOptions.TableName,
+			Connection: sourceSpec.BackendOptions.Connection,
+		}
+	}
+	syncClient, err := sourcePbClient.Sync(ctx, syncReq)
 	if err != nil {
 		return err
 	}

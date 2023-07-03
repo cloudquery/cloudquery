@@ -26,7 +26,7 @@ type Client struct {
 
 var _ plugin.Client = (*Client)(nil)
 
-func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "duckdb-dest").Logger(),
@@ -58,11 +58,17 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 	return c, nil
 }
 
-func (c *Client) Close(_ context.Context) error {
+func (c *Client) Close(ctx context.Context) error {
 	var err error
 
 	if c.db == nil {
 		return fmt.Errorf("client already closed or not initialized")
+	}
+
+	if err := c.writer.Close(ctx); err != nil {
+		_ = c.db.Close()
+		c.db = nil
+		return fmt.Errorf("failed to close writer: %w", err)
 	}
 
 	err = c.db.Close()

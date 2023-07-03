@@ -21,7 +21,7 @@ type Client struct {
 	writer *batchwriter.BatchWriter
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "sf-dest").Logger(),
@@ -62,12 +62,18 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 	return c, nil
 }
 
-func (c *Client) Close(context.Context) error {
-	var err error
+func (c *Client) Close(ctx context.Context) error {
 	if c.db == nil {
 		return fmt.Errorf("client already closed or not initialized")
 	}
-	err = c.db.Close()
+
+	if err := c.writer.Close(ctx); err != nil {
+		_ = c.db.Close()
+		c.db = nil
+		return fmt.Errorf("failed to close writer: %w", err)
+	}
+
+	err := c.db.Close()
 	c.db = nil
 	return err
 }

@@ -1,15 +1,11 @@
 package client
 
 import (
-	"context"
-	"fmt"
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client/services"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/backend"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/state"
 	"github.com/hermanschaaf/hackernews"
 	"github.com/rs/zerolog"
 )
@@ -21,10 +17,9 @@ const (
 
 type Client struct {
 	logger     zerolog.Logger
-	sourceSpec specs.Source
-	HackerNews services.HackernewsClient
 	Spec       Spec
-	Backend    backend.Backend
+	HackerNews services.HackernewsClient
+	Backend    state.Client
 	maxRetries int
 	backoff    time.Duration // backoff duration between retries (jitter will be added)
 }
@@ -37,34 +32,13 @@ func (*Client) ID() string {
 	return "hackernews"
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Source, opts source.Options) (schema.ClientMeta, error) {
-	var config Spec
-	err := sourceSpec.UnmarshalSpec(&config)
-	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
-	}
-	config.SetDefaults()
-	err = config.Validate()
-	if err != nil {
-		return nil, fmt.Errorf("failed to validate spec: %w", err)
-	}
-
-	client := hackernews.NewClient()
-	if err != nil {
-		return nil, fmt.Errorf("failed to create hackernews client: %w", err)
-	}
-
-	be := opts.Backend
-	if be == nil {
-		be = &NopBackend{}
-	}
+func New(logger zerolog.Logger, spec Spec, hnClient *hackernews.Client, backend state.Client) (schema.ClientMeta, error) {
 	return &Client{
 		logger:     logger,
-		sourceSpec: sourceSpec,
-		Spec:       config,
-		HackerNews: client,
+		Spec:       spec,
+		HackerNews: hnClient,
+		Backend:    backend,
 		maxRetries: defaultMaxRetries,
 		backoff:    defaultBackoff,
-		Backend:    be,
 	}, nil
 }
