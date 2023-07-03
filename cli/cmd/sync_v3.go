@@ -61,24 +61,13 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 			opts = append(opts, transformer.WithCQIDPrimaryKey())
 		}
 		destinationTransformers[i] = transformer.NewRecordTransformer(opts...)
+		connection := destinationsClients[i].ConnectionString()
 		variables.Plugins[destinationSpecs[i].Name] = specs.PluginVariables{
-			Connection: destinationsClients[i].Conn.Target(),
+			Connection: connection,
 		}
 	}
 
-	specBytes, err := json.Marshal(sourceSpec.Spec)
-	if err != nil {
-		return err
-	}
-	specBytesExpanded, err := specs.ReplaceVariables(string(specBytes), variables)
-	if err != nil {
-		return err
-	}
-	if _, err := sourcePbClient.Init(ctx, &plugin.Init_Request{
-		Spec: []byte(specBytesExpanded),
-	}); err != nil {
-		return err
-	}
+	// initialize destinations first, so that their connections may be used as backends by the source
 	for i := range destinationsClients {
 		destSpec := destinationSpecs[i]
 		destSpecBytes, err := json.Marshal(destSpec.Spec)
@@ -90,6 +79,30 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		}); err != nil {
 			return err
 		}
+	}
+
+	// replace @@plugins.name.connection with the actual GRPC connection string from the client
+	// NOTE: if this becomes a stable feature, it can move out of sync_v3 and into sync.go
+	specBytes, err := json.Marshal(sourceSpec)
+	if err != nil {
+		return err
+	}
+	specBytesExpanded, err := specs.ReplaceVariables(string(specBytes), variables)
+	if err != nil {
+		return err
+	}
+	if err := json.Unmarshal([]byte(specBytesExpanded), &sourceSpec); err != nil {
+		return err
+	}
+
+	sourceSpecBytes, err := json.Marshal(sourceSpec.Spec)
+	if err != nil {
+		return err
+	}
+	if _, err := sourcePbClient.Init(ctx, &plugin.Init_Request{
+		Spec: sourceSpecBytes,
+	}); err != nil {
+		return err
 	}
 
 	writeClients := make([]plugin.Plugin_WriteClient, len(destinationsPbClients))

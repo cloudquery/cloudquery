@@ -1,5 +1,9 @@
 package client
 
+const (
+	defaultConcurrency = 50000
+)
+
 // Spec defines GCP source plugin Spec
 type Spec struct {
 	ProjectIDs                  []string           `json:"project_ids"`
@@ -14,6 +18,7 @@ type Spec struct {
 	OrganizationIDs             []string           `json:"organization_ids"`
 	OrganizationFilter          string             `json:"organization_filter"`
 	ServiceAccountImpersonation *CredentialsConfig `json:"service_account_impersonation"`
+	Concurrency                 int                `json:"concurrency"`
 }
 
 type CredentialsConfig struct {
@@ -32,7 +37,7 @@ type CredentialsConfig struct {
 	Subject string `json:"subject"`
 }
 
-func (spec *Spec) setDefaults() {
+func (spec *Spec) SetDefaults() {
 	var defaultRecursionDepth = 100
 	if spec.FolderRecursionDepth == nil {
 		spec.FolderRecursionDepth = &defaultRecursionDepth
@@ -46,5 +51,8 @@ func (spec *Spec) setDefaults() {
 		if len(spec.ServiceAccountImpersonation.Scopes) == 0 {
 			spec.ServiceAccountImpersonation.Scopes = []string{"https://www.googleapis.com/auth/cloud-platform"}
 		}
+	}
+	if spec.Concurrency == 0 {
+		spec.Concurrency = defaultConcurrency
 	}
 }
