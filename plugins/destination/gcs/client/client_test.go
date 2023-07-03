@@ -1,69 +1,143 @@
 package client
 
 import (
+	"context"
+	"encoding/json"
+	"fmt"
 	"testing"
+	"time"
 
-	"github.com/cloudquery/filetypes/v3"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v13/arrow/array"
+	"github.com/apache/arrow/go/v13/arrow/memory"
+	"github.com/cloudquery/filetypes/v4"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/rs/zerolog"
+	"github.com/stretchr/testify/assert"
 )
 
 const bucket = "cq-dest-gcs"
 
-func TestPluginCSV(t *testing.T) {
-	spec := Spec{
-		Bucket:   bucket,
-		Path:     t.TempDir(),
-		NoRotate: true,
-		FileSpec: &filetypes.FileSpec{
-			Format: filetypes.FormatTypeCSV,
-		},
+func TestPlugin(t *testing.T) {
+	for _, ft := range []filetypes.FormatType{
+		filetypes.FormatTypeCSV,
+		filetypes.FormatTypeJSON,
+		filetypes.FormatTypeParquet,
+	} {
+		spec := Spec{
+			Bucket:   bucket,
+			Path:     t.TempDir(),
+			NoRotate: true,
+			FileSpec: &filetypes.FileSpec{
+				Format: ft,
+			},
+		}
+
+		t.Run("generic/"+string(ft), func(t *testing.T) {
+			testPlugin(t, &spec)
+		})
+
+		t.Run("write/"+string(ft), func(t *testing.T) {
+			testPluginCustom(t, &spec)
+		})
 	}
-	spec.SetDefaults()
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin("gcs", "development", New, destination.WithManagedWriter())
-		},
-		specs.Destination{
-			Spec: &spec,
-		},
-		destination.PluginTestSuiteTests{
-			SkipOverwrite:             true,
-			SkipDeleteStale:           true,
-			SkipSecondAppend:          true,
-			SkipMigrateAppend:         true,
-			SkipMigrateOverwrite:      true,
-			SkipMigrateOverwriteForce: true,
-			SkipMigrateAppendForce:    true,
+}
+
+func testPlugin(t *testing.T, spec *Spec) {
+	ctx := context.Background()
+	p := plugin.NewPlugin("gcs", "development", New)
+	b, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := p.Init(ctx, b, plugin.NewClientOptions{}); err != nil {
+		t.Fatal(err)
+	}
+	plugin.TestWriterSuiteRunner(t,
+		p,
+		plugin.WriterTestSuiteTests{
+			SkipInsert:      true,
+			SkipUpsert:      true,
+			SkipMigrate:     true,
+			SkipDeleteStale: true,
 		},
 	)
 }
 
-func TestPluginJSON(t *testing.T) {
-	spec := Spec{
-		Bucket:   bucket,
-		Path:     t.TempDir(),
-		NoRotate: true,
-		FileSpec: &filetypes.FileSpec{
-			Format: filetypes.FormatTypeJSON,
+func testPluginCustom(t *testing.T, spec *Spec) {
+	ctx := context.Background()
+
+	var client plugin.Client
+
+	p := plugin.NewPlugin("gcs", "development", func(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
+		var err error
+		client, err = New(ctx, logger, spec, opts)
+		return client, err
+	})
+	b, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := p.Init(ctx, b, plugin.NewClientOptions{}); err != nil {
+		t.Fatal(err)
+	}
+
+	tableName := fmt.Sprintf("cq_test_custom_insert_%d", time.Now().UnixNano())
+	table := &schema.Table{
+		Name: tableName,
+		Columns: []schema.Column{
+			{Name: "name", Type: arrow.BinaryTypes.String},
 		},
 	}
-	spec.SetDefaults()
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin("gcs", "development", New, destination.WithManagedWriter())
+	if err := p.WriteAll(ctx, []message.WriteMessage{
+		&message.WriteMigrateTable{
+			Table: table,
 		},
-		specs.Destination{
-			Spec: &spec,
+	}); err != nil {
+		t.Fatal(fmt.Errorf("failed to create table: %w", err))
+	}
+
+	bldr := array.NewRecordBuilder(memory.DefaultAllocator, table.ToArrowSchema())
+	bldr.Field(0).(*array.StringBuilder).Append("foo")
+	record := bldr.NewRecord()
+
+	if err := p.WriteAll(ctx, []message.WriteMessage{
+		&message.WriteInsert{
+			Record: record,
 		},
-		destination.PluginTestSuiteTests{
-			SkipOverwrite:             true,
-			SkipDeleteStale:           true,
-			SkipSecondAppend:          true,
-			SkipMigrateAppend:         true,
-			SkipMigrateOverwrite:      true,
-			SkipMigrateOverwriteForce: true,
-			SkipMigrateAppendForce:    true,
+		&message.WriteInsert{
+			Record: record,
 		},
-	)
+	}); err != nil {
+		t.Fatal(fmt.Errorf("failed to insert record: %w", err))
+	}
+
+	if err := client.Close(ctx); err != nil {
+		t.Fatal(fmt.Errorf("failed to close client: %w", err))
+	}
+
+	readRecords, err := readAll(ctx, client, table)
+	if err != nil {
+		t.Fatal(fmt.Errorf("failed to sync: %w", err))
+	}
+
+	totalItems := plugin.TotalRows(readRecords)
+	assert.Equalf(t, int64(2), totalItems, "expected 2 items, got %d", totalItems)
+}
+
+func readAll(ctx context.Context, client plugin.Client, table *schema.Table) ([]arrow.Record, error) {
+	var err error
+	ch := make(chan arrow.Record)
+	go func() {
+		defer close(ch)
+		err = client.Read(ctx, table, ch)
+	}()
+	// nolint:prealloc
+	var records []arrow.Record
+	for record := range ch {
+		records = append(records, record)
+	}
+	return records, err
 }
