@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client"
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client/mocks"
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client/services"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/hermanschaaf/hackernews"
 )
@@ -31,9 +31,10 @@ func buildItemsMockNoCursor(t *testing.T, ctrl *gomock.Controller) services.Hack
 // We then expect one item to be fetched, and the cursor should be set to "5".
 func TestItems_NoCursor(t *testing.T) {
 	ctrl := gomock.NewController(t)
-	mbe := mocks.NewMockBackend(ctrl)
-	mbe.EXPECT().Get(gomock.Any(), gomock.Any(), gomock.Any()).Return("", nil)
-	mbe.EXPECT().Set(gomock.Any(), "hackernews_items", "hackernews", "5").Times(1).Return(nil)
+	mbe := mocks.NewMockBackendClient(ctrl)
+	mbe.EXPECT().GetKey(gomock.Any(), "hackernews_items").Return("", nil)
+	mbe.EXPECT().SetKey(gomock.Any(), "hackernews_items", "5").Times(1).Return(nil)
+	mbe.EXPECT().Flush(gomock.Any()).MinTimes(1).Return(nil)
 	client.MockTestHelper(t, Items(), buildItemsMockNoCursor, client.TestOptions{
 		Backend: mbe,
 	})
@@ -56,9 +57,10 @@ func buildItemsMockWithCursor(t *testing.T, ctrl *gomock.Controller) services.Ha
 // We then expect that one item will be fetched, and the cursor will be set to "10".
 func TestItems_WithCursor(t *testing.T) {
 	ctrl := gomock.NewController(t)
-	mbe := mocks.NewMockBackend(ctrl)
-	mbe.EXPECT().Get(gomock.Any(), gomock.Any(), gomock.Any()).Return("5", nil)
-	mbe.EXPECT().Set(gomock.Any(), "hackernews_items", "hackernews", "10").Times(1).Return(nil)
+	mbe := mocks.NewMockBackendClient(ctrl)
+	mbe.EXPECT().GetKey(gomock.Any(), gomock.Any()).Return("5", nil)
+	mbe.EXPECT().SetKey(gomock.Any(), "hackernews_items", "10").Times(1).Return(nil)
+	mbe.EXPECT().Flush(gomock.Any()).MinTimes(1).Return(nil)
 	client.MockTestHelper(t, Items(), buildItemsMockWithCursor, client.TestOptions{
 		Backend: mbe,
 	})
@@ -93,9 +95,10 @@ func buildItemsMockWithStartTime(t *testing.T, ctrl *gomock.Controller) services
 // In this test, we request a certain start time and expect that the sync will start from the first post after that start time.
 func TestItems_WithStartTime(t *testing.T) {
 	ctrl := gomock.NewController(t)
-	mbe := mocks.NewMockBackend(ctrl)
-	mbe.EXPECT().Get(gomock.Any(), gomock.Any(), gomock.Any()).Return("", nil)
-	mbe.EXPECT().Set(gomock.Any(), "hackernews_items", "hackernews", "5").Return(nil)
+	mbe := mocks.NewMockBackendClient(ctrl)
+	mbe.EXPECT().GetKey(gomock.Any(), gomock.Any()).Return("", nil)
+	mbe.EXPECT().SetKey(gomock.Any(), "hackernews_items", "5").Return(nil)
+	mbe.EXPECT().Flush(gomock.Any()).MinTimes(1).Return(nil)
 	client.MockTestHelper(t, Items(), buildItemsMockWithStartTime, client.TestOptions{
 		Backend:   mbe,
 		StartTime: time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC),

@@ -3,7 +3,7 @@ package bigtableadmin
 import (
 	"context"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 
 	"cloud.google.com/go/bigtable"

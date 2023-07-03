@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.4.1...plugins-destination-sqlite-v2.4.2) (2023-07-03)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to df3b664 ([#11882](https://github.com/cloudquery/cloudquery/issues/11882)) ([9635b22](https://github.com/cloudquery/cloudquery/commit/9635b22b10a2cd9ca0f91819cffb7f4ba75dc2d9))
+
 ## [2.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.4.0...plugins-destination-sqlite-v2.4.1) (2023-07-02)
 
 
