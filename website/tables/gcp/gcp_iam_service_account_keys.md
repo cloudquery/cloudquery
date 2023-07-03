@@ -14,6 +14,8 @@ This table depends on [gcp_iam_service_accounts](gcp_iam_service_accounts).
 
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |service_account_unique_id|`utf8`|
 |name (PK)|`utf8`|

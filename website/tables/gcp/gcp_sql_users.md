@@ -14,6 +14,8 @@ This table depends on [gcp_sql_instances](gcp_sql_instances).
 
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |dual_password_type|`utf8`|
 |etag|`utf8`|

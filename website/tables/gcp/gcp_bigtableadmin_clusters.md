@@ -17,6 +17,8 @@ The following tables depend on gcp_bigtableadmin_clusters:
 
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |name (PK)|`utf8`|
 |zone|`utf8`|

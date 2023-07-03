@@ -14,6 +14,8 @@ This table depends on [gcp_dns_managed_zones](gcp_dns_managed_zones).
 
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |managed_zone_name (PK)|`utf8`|
 |kind|`utf8`|

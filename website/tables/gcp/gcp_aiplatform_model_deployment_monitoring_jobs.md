@@ -14,6 +14,8 @@ This table depends on [gcp_aiplatform_job_locations](gcp_aiplatform_job_location
 
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |name (PK)|`utf8`|
 |display_name|`utf8`|

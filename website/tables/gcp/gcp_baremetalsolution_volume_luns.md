@@ -14,6 +14,8 @@ This table depends on [gcp_baremetalsolution_volumes](gcp_baremetalsolution_volu
 
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |name (PK)|`utf8`|
 |id|`utf8`|

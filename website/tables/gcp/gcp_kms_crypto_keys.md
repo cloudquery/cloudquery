@@ -17,6 +17,8 @@ The following tables depend on gcp_kms_crypto_keys:
 
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |rotation_period|`int64`|
 |name (PK)|`utf8`|

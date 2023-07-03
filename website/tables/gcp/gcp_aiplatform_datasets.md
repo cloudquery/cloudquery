@@ -14,6 +14,8 @@ This table depends on [gcp_aiplatform_dataset_locations](gcp_aiplatform_dataset_
 
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |name (PK)|`utf8`|
 |display_name|`utf8`|

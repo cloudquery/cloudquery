@@ -14,6 +14,8 @@ This table depends on [gcp_clouderrorreporting_error_group_stats](gcp_clouderror
 
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
 |project_id|`utf8`|
 |event_time|`timestamp[us, tz=UTC]`|
 |service_context|`json`|

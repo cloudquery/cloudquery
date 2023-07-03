@@ -14,6 +14,8 @@ This table depends on [gcp_bigquery_datasets](gcp_bigquery_datasets).
 
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |clone_definition|`json`|
 |clustering|`json`|

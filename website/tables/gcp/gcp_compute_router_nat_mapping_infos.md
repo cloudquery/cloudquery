@@ -14,6 +14,8 @@ This table depends on [gcp_compute_routers](gcp_compute_routers).
 
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
 |project_id|`utf8`|
 |instance_name|`utf8`|
 |interface_nat_mappings|`json`|

@@ -14,6 +14,8 @@ This table depends on [gcp_websecurityscanner_scan_config_scan_runs](gcp_websecu
 
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |name (PK)|`utf8`|
 |finding_type|`utf8`|

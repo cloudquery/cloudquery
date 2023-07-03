@@ -14,6 +14,8 @@ This table depends on [gcp_storage_buckets](gcp_storage_buckets).
 
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
 |project_id|`utf8`|
 |bucket_name|`utf8`|
 |bindings|`json`|

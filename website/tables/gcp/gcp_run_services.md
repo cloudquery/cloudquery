@@ -14,6 +14,8 @@ This table depends on [gcp_run_locations](gcp_run_locations).
 
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |name (PK)|`utf8`|
 |description|`utf8`|
