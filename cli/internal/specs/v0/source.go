@@ -50,9 +50,9 @@ type Source struct {
 	// Optional Backend options for sync operation
 	BackendOptions *BackendOptions `json:"backend_options,omitempty"`
 
-	// Deprecated: Backend is the name of the state backend to use. Should now use plugin-specific field instead.
+	// Deprecated: Backend is the name of the state backend to use. Should now use `backend_options` instead.
 	Backend Backend `json:"backend,omitempty"`
-	// Deprecated: BackendSpec contains any backend-specific configuration. Should now use plugin-specific field instead.
+	// Deprecated: BackendSpec contains any backend-specific configuration. Should now use `backend_options` instead.
 	BackendSpec any `json:"backend_spec,omitempty"`
 	// Deprecated: Scheduler defines the scheduling algorithm that should be used to sync data. Should now use plugin-specific field instead.
 	Scheduler Scheduler `json:"scheduler,omitempty"`
