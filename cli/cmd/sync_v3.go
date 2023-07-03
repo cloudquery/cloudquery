@@ -111,7 +111,7 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 	}
 	if sourceSpec.BackendOptions != nil {
 		syncReq.Backend = &plugin.Sync_BackendOptions{
-			TableName: sourceSpec.BackendOptions.TableName,
+			TableName:  sourceSpec.BackendOptions.TableName,
 			Connection: sourceSpec.BackendOptions.Connection,
 		}
 	}

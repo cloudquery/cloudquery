@@ -14,7 +14,7 @@ const (
 )
 
 type BackendOptions struct {
-	TableName string `json:"table_name,omitempty"`
+	TableName  string `json:"table_name,omitempty"`
 	Connection string `json:"connection,omitempty"`
 }
 
