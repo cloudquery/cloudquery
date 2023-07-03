@@ -90,7 +90,10 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte) (plugin.C
 	return c, nil
 }
 
-func (*Client) Close(_ context.Context) error {
+func (c *Client) Close(ctx context.Context) error {
+	if err := c.writer.Close(ctx); err != nil {
+		return fmt.Errorf("failed to close batch writer: %w", err)
+	}
 	return nil
 }
 
