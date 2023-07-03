@@ -15,10 +15,13 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 
 
-## Step 1: Create AWS IAM Role
+## Step 1: Create AWS Infrastructure for CloudQuery on EKS 
 
-In our example we run CloudQuery on AWS EKS with the official [CloudQuery Helm Charts](https://github.com/cloudquery/helm-charts). We must create an [Amazon EKS cluster IAM role](https://docs.aws.amazon.com/eks/latest/userguide/service_IAM_role.html) or an [Amazon EKS node IAM role](https://docs.aws.amazon.com/eks/latest/userguide/create-node-role.html). How to do so can be looked up in the AWS documentation depending on which service role is preferred.
+In this guide, we run CloudQuery on AWS EKS with the official [CloudQuery Helm Charts](https://github.com/cloudquery/helm-charts). 
 
+### IAM Roles for CloudQuery on EKS
+
+For EKS, IAM setup may require an [Amazon EKS cluster IAM role](https://docs.aws.amazon.com/eks/latest/userguide/service_IAM_role.html) and an [Amazon EKS node IAM role](https://docs.aws.amazon.com/eks/latest/userguide/create-node-role.html).  Refer to AWS documentation for more information on IAM setup and best practices for securing IAM for EKS Clusters.
 
 ## Step 2: Enable Additional GCP Services
 
