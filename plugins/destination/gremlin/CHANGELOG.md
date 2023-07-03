@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.2.0...plugins-destination-gremlin-v2.2.1) (2023-07-03)
+
+
+### Bug Fixes
+
+* Close writers ([#11887](https://github.com/cloudquery/cloudquery/issues/11887)) ([26fad6c](https://github.com/cloudquery/cloudquery/commit/26fad6c7cf041abecdd82ebf4d8894e8b1ef13b4))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to df3b664 ([#11882](https://github.com/cloudquery/cloudquery/issues/11882)) ([9635b22](https://github.com/cloudquery/cloudquery/commit/9635b22b10a2cd9ca0f91819cffb7f4ba75dc2d9))
+
 ## [2.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.1.2...plugins-destination-gremlin-v2.2.0) (2023-07-02)
 
 
