@@ -32,8 +32,6 @@ func TestPlugin(t *testing.T) {
 	plugin.TestWriterSuiteRunner(t,
 		p,
 		plugin.WriterTestSuiteTests{
-			SkipUpsert:      true,
-			SkipDeleteStale: true,
 			SafeMigrations: plugin.SafeMigrations{
 				AddColumn:    true,
 				RemoveColumn: true,

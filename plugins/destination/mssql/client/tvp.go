@@ -15,7 +15,7 @@ func useTVP(table *schema.Table) bool {
 }
 
 func (c *Client) ensureTVP(ctx context.Context, table *schema.Table) (err error) {
-	if useTVP(table) {
+	if !useTVP(table) {
 		return nil
 	}
 
