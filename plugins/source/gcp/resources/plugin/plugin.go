@@ -8,6 +8,7 @@ var (
 	Version = "development"
 )
 
+// nolint:unused
 var gcpExceptions = map[string]string{
 	"aiplatform":           "AI Platform",
 	"apigateway":           "API Gateway",
