@@ -11,13 +11,13 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/apache/arrow/go/v13/arrow/memory"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/elastic/go-elasticsearch/v8/typedapi/core/search"
 	"github.com/elastic/go-elasticsearch/v8/typedapi/types"
 )
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
-	index := c.getIndexNamePattern(table.Name)
+func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
+	index := c.getIndexNamePattern(table)
 
 	// refresh index before read, to ensure all written data is available
 	resp, err := c.typedClient.Indices.Refresh().Index(index).Do(ctx)
@@ -30,11 +30,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	// do the read
 	resp, err = c.typedClient.Search().Index(index).Request(&search.Request{
 		Query: &types.Query{
-			MatchPhrase: map[string]types.MatchPhraseQuery{
-				schema.CqSourceNameColumn.Name: {
-					Query: sourceName,
-				},
-			},
+			MatchAll: &types.MatchAllQuery{},
 		},
 	}).Do(ctx)
 	if err != nil {

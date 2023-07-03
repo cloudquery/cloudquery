@@ -47,5 +47,9 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 }
 
 func (c *Client) Close(ctx context.Context) error {
+	if err := c.writer.Close(ctx); err != nil {
+		_ = c.client.Disconnect(ctx)
+		return fmt.Errorf("failed to close writer: %w", err)
+	}
 	return c.client.Disconnect(ctx)
 }
