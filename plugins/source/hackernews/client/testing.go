@@ -37,8 +37,8 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T) 
 	if err := transformers.TransformTables(tables); err != nil {
 		t.Fatal(err)
 	}
-	sc := scheduler.NewScheduler(schedulerClient, scheduler.WithLogger(l))
-	messages, err := sc.SyncAll(context.Background(), tables)
+	sc := scheduler.NewScheduler(scheduler.WithLogger(l))
+	messages, err := sc.SyncAll(context.Background(), schedulerClient, tables)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -48,31 +48,4 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T) 
 	if len(emptyColumns) > 0 {
 		t.Fatalf("empty columns: %v", emptyColumns)
 	}
-	//newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
-	//	startTime := ""
-	//	if !opts.StartTime.IsZero() {
-	//		startTime = opts.StartTime.Format(time.RFC3339)
-	//	}
-	//	return &Client{
-	//		logger:     l,
-	//		Backend:    opts.Backend,
-	//		HackerNews: builder(t, ctrl),
-	//		Spec:       Spec{ItemConcurrency: 10, StartTime: startTime},
-	//	}, nil
-	//}
-	//p := source.NewPlugin(
-	//	table.Name,
-	//	version,
-	//	[]*schema.Table{
-	//		table,
-	//	},
-	//	newTestExecutionClient)
-	//p.SetLogger(l)
-	//source.TestPluginSync(t, p, specs.Source{
-	//	Name:         "dev",
-	//	Path:         "cloudquery/dev",
-	//	Version:      version,
-	//	Tables:       []string{table.Name},
-	//	Destinations: []string{"mock-destination"},
-	//})
 }

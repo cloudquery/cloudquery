@@ -31,7 +31,7 @@ import (
 func fetchItems(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	tableName := Items().Name
-	value, err := c.Backend.GetKey(ctx, c.ID())
+	value, err := c.Backend.GetKey(ctx, tableName)
 	if err != nil {
 		return fmt.Errorf("failed to retrieve state from backend: %w", err)
 	}
@@ -73,6 +73,8 @@ func fetchItems(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 		}
 	}
 
+	c.Logger().Info().Int("cursor", cursor).Msg("Fetching items")
+
 	// Fetch items in batches of (max) 1000.
 	// This is not necessarily the most efficient way of doing it, but this code
 	// is meant to be for instructional purposes as an example of updating cursors,
@@ -94,8 +96,12 @@ func fetchItems(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 		if err != nil {
 			return fmt.Errorf("failed to save state to backend: %w", err)
 		}
+		err = c.Backend.Flush(ctx)
+		if err != nil {
+			return fmt.Errorf("failed to flush state backend: %w", err)
+		}
 	}
-	return nil
+	return c.Backend.Flush(ctx)
 }
 
 // fetchBatch fetches the items in the inclusive range [startID, endID] and sends them to the res channel. It blocks

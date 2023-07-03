@@ -35,6 +35,7 @@ func (*Client) ID() string {
 func New(logger zerolog.Logger, spec Spec, hnClient *hackernews.Client, backend state.Client) (schema.ClientMeta, error) {
 	return &Client{
 		logger:     logger,
+		Spec:       spec,
 		HackerNews: hnClient,
 		Backend:    backend,
 		maxRetries: defaultMaxRetries,

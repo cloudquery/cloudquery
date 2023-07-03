@@ -61,8 +61,9 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 			opts = append(opts, transformer.WithCQIDPrimaryKey())
 		}
 		destinationTransformers[i] = transformer.NewRecordTransformer(opts...)
+		connection := destinationsClients[i].ConnectionString()
 		variables.Plugins[destinationSpecs[i].Name] = specs.PluginVariables{
-			Connection: destinationsClients[i].Conn.Target(),
+			Connection: connection,
 		}
 	}
 
@@ -82,7 +83,7 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 
 	// replace @@plugins.name.connection with the actual GRPC connection string from the client
 	// NOTE: if this becomes a stable feature, it can move out of sync_v3 and into sync.go
-	specBytes, err := json.Marshal(sourceSpec.Spec)
+	specBytes, err := json.Marshal(sourceSpec)
 	if err != nil {
 		return err
 	}
@@ -90,8 +91,16 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 	if err != nil {
 		return err
 	}
+	if err := json.Unmarshal([]byte(specBytesExpanded), &sourceSpec); err != nil {
+		return err
+	}
+
+	sourceSpecBytes, err := json.Marshal(sourceSpec.Spec)
+	if err != nil {
+		return err
+	}
 	if _, err := sourcePbClient.Init(ctx, &plugin.Init_Request{
-		Spec: []byte(specBytesExpanded),
+		Spec: sourceSpecBytes,
 	}); err != nil {
 		return err
 	}

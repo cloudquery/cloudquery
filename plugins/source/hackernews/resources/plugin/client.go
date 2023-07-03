@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"net"
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client"
@@ -14,10 +13,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/state"
+	"github.com/hermanschaaf/hackernews"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	"github.com/hermanschaaf/hackernews"
 	"github.com/rs/zerolog"
 )
 
@@ -29,6 +28,7 @@ const (
 
 type Client struct {
 	logger      zerolog.Logger
+	config      client.Spec
 	tables      schema.Tables
 	scheduler   *scheduler.Scheduler
 	backendConn *grpc.ClientConn
@@ -48,7 +48,44 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	if err != nil {
 		return err
 	}
-	return c.scheduler.Sync(ctx, tt, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
+	hnClient := hackernews.NewClient()
+	if err != nil {
+		return fmt.Errorf("failed to create hackernews client: %w", err)
+	}
+
+	var stateClient state.Client
+	if options.BackendOptions == nil {
+		c.logger.Info().Msg("No backend options provided, using no state backend")
+		stateClient = state.NoOpClient{}
+	} else {
+		//dialer := func(ctx context.Context, addr string) (net.Conn, error) {
+		//	d := &net.Dialer{}
+		//	return d.DialContext(ctx, "unix", addr)
+		//}
+		conn, err := grpc.DialContext(ctx, options.BackendOptions.Connection,
+			//grpc.WithContextDialer(dialer),
+			grpc.WithTransportCredentials(insecure.NewCredentials()),
+			grpc.WithDefaultCallOptions(
+				grpc.MaxCallRecvMsgSize(maxMsgSize),
+				grpc.MaxCallSendMsgSize(maxMsgSize),
+			),
+		)
+		if err != nil {
+			return fmt.Errorf("failed to dial grpc source plugin at %s: %w", options.BackendOptions.Connection, err)
+		}
+		stateClient, err = state.NewClient(ctx, conn, options.BackendOptions.TableName)
+		if err != nil {
+			return fmt.Errorf("failed to create state client: %w", err)
+		}
+		c.logger.Info().Str("table_name", options.BackendOptions.TableName).Msg("Connected to state backend")
+	}
+
+	schedulerClient, err := client.New(c.logger, c.config, hnClient, stateClient)
+	if err != nil {
+		return fmt.Errorf("failed to create scheduler client: %w", err)
+	}
+
+	return c.scheduler.Sync(ctx, schedulerClient, tt, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
 }
 
 func (c *Client) Tables(ctx context.Context) (schema.Tables, error) {
@@ -85,41 +122,13 @@ func Configure(ctx context.Context, logger zerolog.Logger, specBytes []byte) (pl
 		return nil, fmt.Errorf("failed to validate spec: %w", err)
 	}
 
-	hnClient := hackernews.NewClient()
-	if err != nil {
-		return nil, fmt.Errorf("failed to create homebrew client: %w", err)
-	}
-
-	dialer := func(ctx context.Context, addr string) (net.Conn, error) {
-		d := &net.Dialer{}
-		return d.DialContext(ctx, "unix", addr)
-	}
-	conn, err := grpc.DialContext(ctx, config.Backend.Connection,
-		grpc.WithContextDialer(dialer),
-		grpc.WithTransportCredentials(insecure.NewCredentials()),
-		grpc.WithDefaultCallOptions(
-			grpc.MaxCallRecvMsgSize(maxMsgSize),
-			grpc.MaxCallSendMsgSize(maxMsgSize),
-		),
-	)
-	if err != nil {
-		return nil, fmt.Errorf("failed to dial grpc source plugin at %s: %w", config.Backend.Connection, err)
-	}
-	stateClient, err := state.NewClient(ctx, conn, config.Backend.Table)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create state client: %w", err)
-	}
-	schedulerClient, err := client.New(logger, config, hnClient, stateClient)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create scheduler client: %w", err)
-	}
-	scheduler := scheduler.NewScheduler(schedulerClient,
+	scheduler := scheduler.NewScheduler(
 		scheduler.WithLogger(logger),
 	)
 	return &Client{
-		backendConn: conn,
-		logger:      logger,
-		scheduler:   scheduler,
-		tables:      getTables(),
+		config:    config,
+		logger:    logger,
+		scheduler: scheduler,
+		tables:    getTables(),
 	}, nil
 }
