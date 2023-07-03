@@ -38,7 +38,7 @@ func (c *Client) Close(ctx context.Context) error {
 	return c.conn.Close()
 }
 
-func New(_ context.Context, logger zerolog.Logger, specBytes []byte) (plugin.Client, error) {
+func New(_ context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	var spec Spec
 	if err := json.Unmarshal(specBytes, &spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
