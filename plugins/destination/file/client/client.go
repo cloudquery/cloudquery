@@ -24,14 +24,17 @@ type Client struct {
 	writer *streamingbatchwriter.StreamingBatchWriter
 }
 
-func New(_ context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
+func New(_ context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "file").Logger(),
 	}
+	if opts.NoConnection {
+		return c, nil
+	}
+
 	if err := json.Unmarshal(spec, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal file spec: %w", err)
 	}
-
 	if err := c.spec.Validate(); err != nil {
 		return nil, err
 	}

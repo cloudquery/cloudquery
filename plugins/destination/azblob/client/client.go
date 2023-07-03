@@ -28,14 +28,17 @@ type Client struct {
 	storageClient *azblob.Client
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "azb").Logger(),
 	}
+	if opts.NoConnection {
+		return c, nil
+	}
+
 	if err := json.Unmarshal(spec, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal azblob spec: %w", err)
 	}
-
 	if err := c.spec.Validate(); err != nil {
 		return nil, err
 	}

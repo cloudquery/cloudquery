@@ -59,7 +59,7 @@ func testPlugin(t *testing.T, spec *Spec) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := p.Init(ctx, b); err != nil {
+	if err := p.Init(ctx, b, plugin.NewClientOptions{}); err != nil {
 		t.Fatal(err)
 	}
 	plugin.TestWriterSuiteRunner(t,
@@ -78,16 +78,16 @@ func testPluginCustom(t *testing.T, spec *Spec) {
 
 	var client plugin.Client
 
-	p := plugin.NewPlugin("s3", "development", func(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
+	p := plugin.NewPlugin("s3", "development", func(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 		var err error
-		client, err = New(ctx, logger, spec)
+		client, err = New(ctx, logger, spec, opts)
 		return client, err
 	})
 	b, err := json.Marshal(spec)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := p.Init(ctx, b); err != nil {
+	if err := p.Init(ctx, b, plugin.NewClientOptions{}); err != nil {
 		t.Fatal(err)
 	}
 
