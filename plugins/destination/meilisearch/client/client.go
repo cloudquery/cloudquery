@@ -72,7 +72,7 @@ func (c *Client) verifyVersion() error {
 	return fmt.Errorf("unsupported Meilisearch version %s (must be >= 1.1)", version.PkgVersion)
 }
 
-func New(_ context.Context, logger zerolog.Logger, specBytes []byte) (plugin.Client, error) {
+func New(_ context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	spec := Spec{}
 	if err := json.Unmarshal(specBytes, &spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)

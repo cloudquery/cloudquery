@@ -41,7 +41,7 @@ module.exports = async ({github, context}) => {
     // We test the CLI on multiple OSes, so we need to wait for all of them
     if (actions.includes("cli")) {
         actions = actions.filter(action => action !== "cli")
-        actions = ["cli (ubuntu-latest)", "cli (windows-latest)", "cli (macos-latest)", ...actions]
+        actions = ["cli (ubuntu-cli-large-runner)", "cli (windows-cli-large-runner)", "cli (macos-latest)", ...actions]
     }
 
     // Enforce policy tests for AWS,GCP and K8s plugins

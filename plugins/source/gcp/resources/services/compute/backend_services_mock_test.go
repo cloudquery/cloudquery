@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	pb "cloud.google.com/go/compute/apiv1/computepb"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 )

@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	pb "google.golang.org/genproto/googleapis/cloud/location"
 	"google.golang.org/grpc"
