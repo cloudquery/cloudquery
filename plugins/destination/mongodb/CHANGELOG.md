@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.2.1...plugins-destination-mongodb-v2.2.2) (2023-07-02)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v13 digest to 5a06b2e ([#11857](https://github.com/cloudquery/cloudquery/issues/11857)) ([43c2f5f](https://github.com/cloudquery/cloudquery/commit/43c2f5f3a893e5286f67c4943a9d1bc2736e2aeb))
+* Update destinations to v4.4.2-rc1 ([#11872](https://github.com/cloudquery/cloudquery/issues/11872)) ([bef90db](https://github.com/cloudquery/cloudquery/commit/bef90db73d0d808ae8013cf5c926e91b63c3cd5f))
+
+## [2.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.2.0...plugins-destination-mongodb-v2.2.1) (2023-06-30)
+
+
+### Bug Fixes
+
+* **mongodb:** Update SDK to v4.4.0-rc1 ([#11828](https://github.com/cloudquery/cloudquery/issues/11828)) ([5b60d5a](https://github.com/cloudquery/cloudquery/commit/5b60d5a2993eb9404966a2d35604d321bcdcc40d))
+
 ## [2.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.1.2...plugins-destination-mongodb-v2.2.0) (2023-06-29)
 
 

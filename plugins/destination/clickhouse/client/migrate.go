@@ -7,28 +7,27 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/pkg/errors"
 	"golang.org/x/exp/slices"
 	"golang.org/x/sync/errgroup"
 )
 
-// Migrate relies on the CLI/client to lock before running migration.
-func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
-	have, err := c.getTableDefinitions(ctx, tables)
+// MigrateTables relies on the CLI/client to lock before running migration.
+func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrateTables) error {
+	have, err := c.getTableDefinitions(ctx, messages)
 	if err != nil {
 		return err
 	}
 
-	want, err := typeconv.CanonizedTables(tables)
+	want, err := typeconv.CanonizedTables(messages)
 	if err != nil {
 		return err
 	}
-	if c.mode != specs.MigrateModeForced {
-		unsafe := unsafeSchemaChanges(have, want)
-		if len(unsafe) > 0 {
-			return fmt.Errorf("'migrate_mode: forced' is required for the following changes: \n%s", util.SchemasChangesPrettified(unsafe))
-		}
+
+	if err := c.checkForced(have, want, messages); err != nil {
+		return err
 	}
 
 	const maxConcurrentMigrate = 10
@@ -59,19 +58,32 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	return eg.Wait()
 }
 
-func unsafeSchemaChanges(have, want schema.Tables) map[string][]schema.TableColumnChange {
-	result := make(map[string][]schema.TableColumnChange)
-	for _, w := range want {
-		current := have.Get(w.Name)
-		if current == nil {
+func (c *Client) checkForced(have, want schema.Tables, messages message.WriteMigrateTables) error {
+	forcedErr := false
+	for _, m := range messages {
+		if m.MigrateForce {
 			continue
 		}
-		unsafe := unsafeChanges(w.GetChanges(current))
-		if len(unsafe) > 0 {
-			result[w.Name] = unsafe
+
+		// check that this migration can go through
+		have := have.Get(m.Table.Name)
+		if have == nil {
+			continue // create new is always OK
+		}
+		want := want.Get(m.Table.Name) // and it should never be nil
+		if unsafe := unsafeChanges(want.GetChanges(have)); len(unsafe) > 0 {
+			c.logger.Error().
+				Str("table", m.Table.Name).
+				Str("changes", util.ChangesPrettified(m.Table.Name, unsafe)).
+				Msg("'migrate_mode: forced' is required")
+			forcedErr = true
 		}
 	}
-	return result
+
+	if forcedErr {
+		return errors.New("'migrate_mode: forced' is required for the migration")
+	}
+	return nil
 }
 
 func unsafeChanges(changes []schema.TableColumnChange) []schema.TableColumnChange {

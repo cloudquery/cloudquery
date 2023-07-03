@@ -2,6 +2,8 @@
 
 This table shows data for S3 Accounts.
 
+https://docs.aws.amazon.com/AmazonS3/latest/API/API_control_PublicAccessBlockConfiguration.html
+
 The primary key for this table is **account_id**.
 
 ## Columns

@@ -15,7 +15,7 @@ func detectorIPSets() *schema.Table {
 	tableName := "aws_guardduty_detector_ip_sets"
 	return &schema.Table{
 		Name:                tableName,
-		Description:         `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetFilter.html`,
+		Description:         `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetIPSet.html`,
 		Resolver:            fetchDetectorIPSets,
 		PreResourceResolver: getDetectorIPSet,
 		Transform:           transformers.TransformWithStruct(&guardduty.GetIPSetOutput{}, transformers.WithPrimaryKeys("Name"), transformers.WithSkipFields("ResultMetadata")),
