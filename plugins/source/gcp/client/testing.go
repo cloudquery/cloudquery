@@ -93,6 +93,7 @@ func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*h
 	table.IgnoreInTests = false
 	mux := httprouter.New()
 	ts := httptest.NewUnstartedServer(mux)
+	tsURL := "http://" + ts.Listener.Addr().String()
 	defer ts.Close()
 	if err := createService(mux); err != nil {
 		t.Fatal(err)
@@ -103,10 +104,10 @@ func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*h
 		defer wg.Done()
 		ts.Start()
 	}()
-	time.Sleep(1 * time.Second)
 	clientOptions := []option.ClientOption{
-		option.WithEndpoint(ts.URL),
+		option.WithEndpoint(tsURL),
 		option.WithoutAuthentication(),
+		option.WithGRPCDialOption(grpc.WithBlock()),
 	}
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
@@ -131,4 +132,5 @@ func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*h
 		t.Fatalf("empty columns: %v", emptyColumns)
 	}
 	ts.Close()
+	wg.Wait()
 }
