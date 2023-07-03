@@ -14,7 +14,7 @@ import (
 )
 
 // InsertBatch inserts records into the destination table. It forms part of the writer.MixedBatchWriter interface.
-func (c *Client) InsertBatch(ctx context.Context, messages []*message.WriteInsert) error {
+func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts) error {
 	tables, err := tablesFromMessages[*message.WriteInsert](messages)
 	if err != nil {
 		return err

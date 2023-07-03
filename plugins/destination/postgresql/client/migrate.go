@@ -11,7 +11,7 @@ import (
 )
 
 // MigrateTableBatch migrates a table. It forms part of the writer.MixedBatchWriter interface.
-func (c *Client) MigrateTableBatch(ctx context.Context, messages []*message.WriteMigrateTable) error {
+func (c *Client) MigrateTableBatch(ctx context.Context, messages message.WriteMigrateTables) error {
 	tables, err := tablesFromMessages(messages)
 	if err != nil {
 		return err
