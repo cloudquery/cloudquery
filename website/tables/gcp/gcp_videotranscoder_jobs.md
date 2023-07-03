@@ -1,6 +1,6 @@
 # Table: gcp_videotranscoder_jobs
 
-This table shows data for GCP Videotranscoder Jobs.
+This table shows data for GCP Video Transcoder Jobs.
 
 https://cloud.google.com/transcoder/docs/reference/rest/v1/projects.locations.jobs
 

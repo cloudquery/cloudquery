@@ -1,6 +1,6 @@
 # Table: gcp_kms_import_jobs
 
-This table shows data for GCP Kms Import Jobs.
+This table shows data for GCP Cloud Key Management Service (KMS) Import Jobs.
 
 https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.importJobs#ImportJob
 

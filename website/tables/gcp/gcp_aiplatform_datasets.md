@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_datasets
 
-This table shows data for GCP Aiplatform Datasets.
+This table shows data for GCP AI Platform Datasets.
 
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.datasets#Dataset
 

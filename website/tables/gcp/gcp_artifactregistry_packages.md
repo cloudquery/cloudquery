@@ -1,6 +1,6 @@
 # Table: gcp_artifactregistry_packages
 
-This table shows data for GCP Artifactregistry Packages.
+This table shows data for GCP Artifact Registry Packages.
 
 https://cloud.google.com/artifact-registry/docs/reference/rest/v1/projects.locations.repositories.packages#Package
 

@@ -1,6 +1,6 @@
 # Table: gcp_baremetalsolution_networks
 
-This table shows data for GCP Baremetalsolution Networks.
+This table shows data for GCP Bare Metal Solution Networks.
 
 https://cloud.google.com/bare-metal/docs/reference/rest/v2/projects.locations.networks#Network
 

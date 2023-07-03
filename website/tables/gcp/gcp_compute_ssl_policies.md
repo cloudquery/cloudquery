@@ -1,6 +1,6 @@
 # Table: gcp_compute_ssl_policies
 
-This table shows data for GCP Compute Ssl Policies.
+This table shows data for GCP Compute SSL Policies.
 
 The primary key for this table is **self_link**.
 

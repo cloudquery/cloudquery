@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_operations
 
-This table shows data for GCP Aiplatform Operations.
+This table shows data for GCP AI Platform Operations.
 
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.operations#Operation
 

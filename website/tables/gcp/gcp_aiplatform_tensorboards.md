@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_tensorboards
 
-This table shows data for GCP Aiplatform Tensorboards.
+This table shows data for GCP AI Platform Tensorboards.
 
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.tensorboards#Tensorboard
 

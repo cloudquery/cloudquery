@@ -1,6 +1,6 @@
 # Table: gcp_baremetalsolution_volumes
 
-This table shows data for GCP Baremetalsolution Volumes.
+This table shows data for GCP Bare Metal Solution Volumes.
 
 https://cloud.google.com/bare-metal/docs/reference/rest/v2/projects.locations.volumes#Volume
 

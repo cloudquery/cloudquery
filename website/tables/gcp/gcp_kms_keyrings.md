@@ -1,6 +1,6 @@
 # Table: gcp_kms_keyrings
 
-This table shows data for GCP Kms Keyrings.
+This table shows data for GCP Cloud Key Management Service (KMS) Keyrings.
 
 https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings#KeyRing
 

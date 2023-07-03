@@ -1,6 +1,6 @@
 # Table: gcp_vmmigration_sources
 
-This table shows data for GCP Vmmigration Sources.
+This table shows data for GCP VM Migration Sources.
 
 https://cloud.google.com/migrate/virtual-machines/docs/5.0/reference/rest/v1/projects.locations.sources
 

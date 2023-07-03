@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_featurestores
 
-This table shows data for GCP Aiplatform Featurestores.
+This table shows data for GCP AI Platform featurestores.
 
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.featurestores#Featurestore
 

@@ -1,6 +1,6 @@
 # Table: gcp_secretmanager_secrets
 
-This table shows data for GCP Secretmanager Secrets.
+This table shows data for GCP Secret Manager Secrets.
 
 https://cloud.google.com/secret-manager/docs/reference/rest/v1/projects.secrets#Secret
 

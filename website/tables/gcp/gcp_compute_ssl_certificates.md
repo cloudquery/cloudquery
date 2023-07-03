@@ -1,6 +1,6 @@
 # Table: gcp_compute_ssl_certificates
 
-This table shows data for GCP Compute Ssl Certificates.
+This table shows data for GCP Compute SSL Certificates.
 
 https://cloud.google.com/compute/docs/reference/rest/v1/sslCertificates#SslCertificate
 

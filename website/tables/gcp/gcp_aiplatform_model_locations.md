@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_model_locations
 
-This table shows data for GCP Aiplatform Model Locations.
+This table shows data for GCP AI Platform Model Locations.
 
 https://cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations#Location
 

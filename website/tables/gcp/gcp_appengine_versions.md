@@ -1,6 +1,6 @@
 # Table: gcp_appengine_versions
 
-This table shows data for GCP Appengine Versions.
+This table shows data for GCP App Engine Versions.
 
 https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#Version
 

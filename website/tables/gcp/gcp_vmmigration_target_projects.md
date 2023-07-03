@@ -1,6 +1,6 @@
 # Table: gcp_vmmigration_target_projects
 
-This table shows data for GCP Vmmigration Target Projects.
+This table shows data for GCP VM Migration Target Projects.
 
 https://cloud.google.com/migrate/virtual-machines/docs/5.0/reference/rest/v1/projects.locations.targetProjects
 

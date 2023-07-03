@@ -1,6 +1,6 @@
 # Table: gcp_baremetalsolution_instances
 
-This table shows data for GCP Baremetalsolution Instances.
+This table shows data for GCP Bare Metal Solution Instances.
 
 https://cloud.google.com/bare-metal/docs/reference/rest/v2/projects.locations.instances#Instance
 

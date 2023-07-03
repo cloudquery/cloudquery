@@ -1,6 +1,6 @@
 # Table: gcp_websecurityscanner_scan_config_scan_runs
 
-This table shows data for GCP Websecurityscanner Scan Config Scan Runs.
+This table shows data for GCP Web Security Scanner Scan Config Scan Runs.
 
 https://cloud.google.com/security-command-center/docs/reference/web-security-scanner/rest/v1/projects.scanConfigs.scanRuns
 

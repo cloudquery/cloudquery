@@ -1,6 +1,6 @@
 # Table: gcp_cloudiot_device_states
 
-This table shows data for GCP Cloudiot Device States.
+This table shows data for GCP Cloud IoT Device States.
 
 https://cloud.google.com/iot/docs/reference/cloudiot/rest/v1/projects.locations.registries.devices.states#DeviceState
 

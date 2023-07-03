@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_custom_jobs
 
-This table shows data for GCP Aiplatform Custom Jobs.
+This table shows data for GCP AI Platform Custom Jobs.
 
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.customJobs#CustomJob
 

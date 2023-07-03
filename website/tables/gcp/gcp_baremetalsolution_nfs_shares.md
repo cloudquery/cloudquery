@@ -1,6 +1,6 @@
 # Table: gcp_baremetalsolution_nfs_shares
 
-This table shows data for GCP Baremetalsolution Nfs Shares.
+This table shows data for GCP Bare Metal Solution NFS Shares.
 
 https://cloud.google.com/bare-metal/docs/reference/rest/v2/projects.locations.nfsShares#NfsShare
 

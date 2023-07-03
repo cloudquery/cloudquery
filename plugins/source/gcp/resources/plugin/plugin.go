@@ -1,14 +1,18 @@
 package plugin
 
 import (
+	"strings"
+
+	"github.com/cloudquery/plugin-sdk/v4/caser"
+	"github.com/cloudquery/plugin-sdk/v4/docs"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 var (
 	Version = "development"
 )
 
-// nolint:unused
 var gcpExceptions = map[string]string{
 	"aiplatform":           "AI Platform",
 	"apigateway":           "API Gateway",
@@ -76,21 +80,24 @@ var gcpExceptions = map[string]string{
 	"websecurityscanner":   "Web Security Scanner",
 }
 
-// func titleTransformer(table *schema.Table) string {
-// 	if table.Title != "" {
-// 		return table.Title
-// 	}
-// 	exceptions := make(map[string]string)
-// 	for k, v := range plugin.DefaultTitleExceptions {
-// 		exceptions[k] = v
-// 	}
-// 	for k, v := range gcpExceptions {
-// 		exceptions[k] = v
-// 	}
-// 	csr := caser.New(caser.WithCustomExceptions(exceptions))
-// 	t := csr.ToTitle(table.Name)
-// 	return strings.Trim(strings.ReplaceAll(t, "  ", " "), " ")
-// }
+func titleTransformer(table *schema.Table) {
+	if table.Title != "" {
+		return
+	}
+	exceptions := make(map[string]string)
+	for k, v := range docs.DefaultTitleExceptions {
+		exceptions[k] = v
+	}
+	for k, v := range gcpExceptions {
+		exceptions[k] = v
+	}
+	csr := caser.New(caser.WithCustomExceptions(exceptions))
+	t := csr.ToTitle(table.Name)
+	table.Title =  strings.Trim(strings.ReplaceAll(t, "  ", " "), " ")
+	for _, rel := range table.Relations {
+		titleTransformer(rel)
+	}
+}
 
 func Plugin() *plugin.Plugin {
 	// here you can append custom non-generated tables

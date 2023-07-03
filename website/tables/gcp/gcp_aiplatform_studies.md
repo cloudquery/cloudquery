@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_studies
 
-This table shows data for GCP Aiplatform Studies.
+This table shows data for GCP AI Platform Studies.
 
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.studies#Study
 

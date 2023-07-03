@@ -1,6 +1,6 @@
 # Table: gcp_cloudscheduler_jobs
 
-This table shows data for GCP Cloudscheduler Jobs.
+This table shows data for GCP Cloud Scheduler Jobs.
 
 https://cloud.google.com/scheduler/docs/reference/rest/v1/projects.locations.jobs#Job
 

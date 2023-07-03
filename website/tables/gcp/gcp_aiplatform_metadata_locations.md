@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_metadata_locations
 
-This table shows data for GCP Aiplatform Metadata Locations.
+This table shows data for GCP AI Platform Metadata Locations.
 
 https://cloud.google.com/api-gateway/docs/reference/rest/v1/projects.locations#Location
 

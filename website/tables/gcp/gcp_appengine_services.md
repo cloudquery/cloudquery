@@ -1,6 +1,6 @@
 # Table: gcp_appengine_services
 
-This table shows data for GCP Appengine Services.
+This table shows data for GCP App Engine Services.
 
 https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services#Service
 

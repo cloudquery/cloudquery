@@ -1,6 +1,6 @@
 # Table: gcp_aiplatform_specialist_pools
 
-This table shows data for GCP Aiplatform Specialist Pools.
+This table shows data for GCP AI Platform Specialist Pools.
 
 https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.specialistPools#SpecialistPool
 

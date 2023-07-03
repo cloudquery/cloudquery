@@ -1,6 +1,6 @@
 # Table: gcp_bigquery_tables
 
-This table shows data for GCP Bigquery Tables.
+This table shows data for GCP BigQuery Tables.
 
 https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#Table
 
