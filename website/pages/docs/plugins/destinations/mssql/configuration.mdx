@@ -37,6 +37,18 @@ This is the (nested) spec used by the Microsoft SQL Server destination plugin.
   [default](https://learn.microsoft.com/en-us/sql/relational-databases/security/authentication-access/ownership-and-user-schema-separation?view=sql-server-ver16#the-dbo-schema)
   schema named `dbo`.
 
+- `batch_size` (`int`, optional. Default: `1000`)
+
+  This parameter controls the maximum amount of items may be grouped together to be written as a single write.
+
+- `batch_size_bytes` (`int`, optional. Default: `5242880` (= 5 MiB))
+
+  This parameter controls the maximum size of items that may be grouped together to be written as a single write.
+
+- `batch_timeout` (`duration`, optional. Default: `20s`)
+
+  This parameter controls the timeout for writing a single batch.
+
 <Callout type="info">
   Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
 </Callout>

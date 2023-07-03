@@ -5,11 +5,12 @@ import (
 	"database/sql"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema.Tables, error) {
-	query, params := queries.AllTables(c.schemaName)
+func (c *Client) schemaTables(ctx context.Context, messages message.WriteMigrateTables) (schema.Tables, error) {
+	query, params := queries.AllTables(c.spec.Schema)
 	rows, err := c.db.QueryContext(ctx, query, params...)
 	if err != nil {
 		c.logErr(err)
@@ -26,7 +27,7 @@ func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema
 		if err := row.Scan(&tableCatalog, &tableType, &tableName, &schemaType); err != nil {
 			return err
 		}
-		if tables.Get(tableName) == nil {
+		if !messages.Exists(tableName) {
 			return nil
 		}
 		names = append(names, tableName)
@@ -54,15 +55,15 @@ func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema
 	return result, nil
 }
 
-func (c *Client) normalizedTables(tables schema.Tables) schema.Tables {
-	normalized := make(schema.Tables, len(tables))
-	for i, table := range tables {
-		normalized[i] = c.normalizeTable(table)
+func normalizedTables(messages message.WriteMigrateTables) schema.Tables {
+	normalized := make(schema.Tables, len(messages))
+	for i, m := range messages {
+		normalized[i] = normalizeTable(m.Table)
 	}
 	return normalized
 }
 
-func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
+func normalizeTable(table *schema.Table) *schema.Table {
 	columns := make(schema.ColumnList, len(table.Columns))
 
 	for i, col := range table.Columns {
@@ -70,9 +71,7 @@ func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 		// we need to normalize them to avoid false positives when detecting schema changes.
 		// This should never return an error
 		col.Type = queries.SchemaType(queries.SQLType(col.Type))
-		if c.pkEnabled() && col.PrimaryKey {
-			col.NotNull = true
-		}
+		col.NotNull = col.NotNull || col.PrimaryKey
 		columns[i] = col
 	}
 

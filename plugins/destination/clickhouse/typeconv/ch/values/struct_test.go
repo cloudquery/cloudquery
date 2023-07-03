@@ -32,7 +32,7 @@ func Test_structValue(t *testing.T) {
 	data, err := structValue(builder.NewStructArray())
 	require.NoError(t, err)
 
-	elems := data.([]*map[string]any)
+	elems := data.([]map[string]any)
 	require.Equal(t, 3, len(elems))
 
 	// both filled in
@@ -41,7 +41,7 @@ func Test_structValue(t *testing.T) {
 	require.Equal(t, map[string]any{
 		"nullable_bool":     ptr(true),
 		"non_nullable_bool": ptr(true),
-	}, *elem)
+	}, elem)
 
 	// 1 filled in, the other is nil
 	elem = elems[1]
@@ -49,12 +49,12 @@ func Test_structValue(t *testing.T) {
 	require.Equal(t, map[string]any{
 		"nullable_bool":     ptr(false),
 		"non_nullable_bool": ptr(true),
-	}, *elem)
+	}, elem)
 
 	// nil, but for CH we have a map for every key with nil value
 	elem = elems[2]
 	require.Equal(t, map[string]any{
 		"nullable_bool":     ptr(false),
 		"non_nullable_bool": ptr(false),
-	}, *elem)
+	}, elem)
 }

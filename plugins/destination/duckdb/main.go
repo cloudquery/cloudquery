@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/duckdb/client"
@@ -15,7 +16,7 @@ const (
 
 func main() {
 	p := plugin.NewPlugin("duckdb", internalPlugin.Version, client.New)
-	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN)); err != nil {
+	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN)).Serve(context.Background()); err != nil {
 		log.Fatalf("failed to serve plugin: %v", err)
 	}
 }

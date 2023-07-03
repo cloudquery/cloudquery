@@ -3,7 +3,7 @@ package types
 import (
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Test_extensionType(t *testing.T) {
