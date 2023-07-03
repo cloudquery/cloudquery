@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/client"
@@ -15,7 +16,7 @@ const (
 
 func main() {
 	p := plugin.NewPlugin("elasticsearch", internalPlugin.Version, client.New)
-	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN), serve.WithDestinationV0V1Server()); err != nil {
+	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN), serve.WithDestinationV0V1Server()).Serve(context.Background()); err != nil {
 		log.Fatal(err)
 	}
 }

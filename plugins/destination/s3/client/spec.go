@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"path"
 	"strings"
+	"time"
 
-	"github.com/cloudquery/filetypes/v3"
+	"github.com/cloudquery/filetypes/v4"
 )
 
 type Spec struct {
@@ -17,6 +18,10 @@ type Spec struct {
 	Athena    bool   `json:"athena,omitempty"`
 	TestWrite *bool  `json:"test_write,omitempty"`
 	Endpoint  string `json:"endpoint,omitempty"`
+
+	BatchSize      *int64 `json:"batch_size"`
+	BatchSizeBytes *int64 `json:"batch_size_bytes"`
+	BatchTimeoutMs *int64 `json:"batch_timeout_ms"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -32,32 +37,75 @@ func (s *Spec) SetDefaults() {
 		b := true
 		s.TestWrite = &b
 	}
+	if s.BatchSize == nil {
+		if s.NoRotate {
+			s.BatchSize = int64ptr(0)
+		} else {
+			s.BatchSize = int64ptr(10000)
+		}
+	}
+	if s.BatchSizeBytes == nil {
+		if s.NoRotate {
+			s.BatchSizeBytes = int64ptr(0)
+		} else {
+			s.BatchSizeBytes = int64ptr(50 * 1024 * 1024) // 50 MiB
+		}
+	}
+	if s.BatchTimeoutMs == nil {
+		if s.NoRotate {
+			s.BatchTimeoutMs = int64ptr(0)
+		} else {
+			s.BatchTimeoutMs = int64ptr(int64(30 * time.Second / time.Millisecond)) // 30 seconds
+		}
+	}
 }
 
 func (s *Spec) Validate() error {
 	if s.Bucket == "" {
-		return fmt.Errorf("bucket is required")
+		return fmt.Errorf("`bucket` is required")
 	}
 	if s.Path == "" {
-		return fmt.Errorf("path is required")
+		return fmt.Errorf("`path` is required")
 	}
 	if s.Region == "" {
-		return fmt.Errorf("region is required")
+		return fmt.Errorf("`region` is required")
 	}
 	if s.NoRotate && strings.Contains(s.Path, PathVarUUID) {
-		return fmt.Errorf("path should not contain %s when no_rotate = true", PathVarUUID)
+		return fmt.Errorf("`path` should not contain %s when `no_rotate` = true", PathVarUUID)
+	}
+	if !strings.Contains(s.Path, PathVarUUID) && s.batchingEnabled() {
+		return fmt.Errorf("`path` should contain %s when using a non-zero `batch_size`, `batch_size_bytes` or `batch_timeout_ms`", PathVarUUID)
 	}
 	if path.IsAbs(s.Path) {
-		return fmt.Errorf(`path should not start with a "/"`)
+		return fmt.Errorf("`path` should not start with a \"/\"")
 	}
-
 	if s.Path != path.Clean(s.Path) {
-		return fmt.Errorf("path should not contain relative paths or duplicate slashes")
+		return fmt.Errorf("`path` should not contain relative paths or duplicate slashes")
 	}
-
 	if s.Format == "" {
-		return fmt.Errorf("format is required")
+		return fmt.Errorf("`format` is required")
+	}
+	if s.NoRotate && ((s.BatchSize != nil && *s.BatchSize > 0) || (s.BatchSizeBytes != nil && *s.BatchSizeBytes > 0) || (s.BatchTimeoutMs != nil && *s.BatchTimeoutMs > 0)) {
+		return fmt.Errorf("`no_rotate` cannot be used with non-zero `batch_size`, `batch_size_bytes` or `batch_timeout_ms`")
 	}
 
 	return nil
+}
+
+func (s *Spec) batchingEnabled() bool {
+	switch {
+	case (s.BatchSize != nil && *s.BatchSize > 0) ||
+		(s.BatchSizeBytes != nil && *s.BatchSizeBytes > 0) ||
+		(s.BatchTimeoutMs != nil && *s.BatchTimeoutMs > 0) ||
+		(!s.NoRotate && s.BatchSize == nil) ||
+		(!s.NoRotate && s.BatchSizeBytes == nil) ||
+		(!s.NoRotate && s.BatchTimeoutMs == nil):
+		return true
+	default:
+		return false
+	}
+}
+
+func int64ptr(i int64) *int64 {
+	return &i
 }
