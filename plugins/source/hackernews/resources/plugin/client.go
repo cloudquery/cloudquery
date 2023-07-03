@@ -35,10 +35,6 @@ type Client struct {
 	plugin.UnimplementedDestination
 }
 
-func (c *Client) GetSpec() any {
-	return &client.Spec{}
-}
-
 func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
@@ -117,13 +113,12 @@ func Configure(ctx context.Context, logger zerolog.Logger, specBytes []byte) (pl
 		return nil, fmt.Errorf("failed to validate spec: %w", err)
 	}
 
-	scheduler := scheduler.NewScheduler(
-		scheduler.WithLogger(logger),
-	)
 	return &Client{
-		config:    config,
-		logger:    logger,
-		scheduler: scheduler,
-		tables:    getTables(),
+		config: config,
+		logger: logger,
+		scheduler: scheduler.NewScheduler(
+			scheduler.WithLogger(logger),
+		),
+		tables: getTables(),
 	}, nil
 }
