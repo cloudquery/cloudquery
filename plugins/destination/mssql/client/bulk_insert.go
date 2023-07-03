@@ -27,12 +27,7 @@ func (c *Client) bulkInsert(ctx context.Context, tx *sql.Tx, table *schema.Table
 		return err
 	}
 
-	reader, err := array.NewRecordReader(table.ToArrowSchema(), records)
-	if err != nil {
-		return err
-	}
-
-	rows, err := queries.GetRows(reader)
+	rows, err := queries.GetRows(array.NewTableFromRecords(table.ToArrowSchema(), records))
 	if err != nil {
 		return err
 	}

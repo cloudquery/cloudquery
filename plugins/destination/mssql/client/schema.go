@@ -5,10 +5,11 @@ import (
 	"database/sql"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
+	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema.Tables, error) {
+func (c *Client) schemaTables(ctx context.Context, messages message.WriteMigrateTables) (schema.Tables, error) {
 	query, params := queries.AllTables(c.spec.Schema)
 	rows, err := c.db.QueryContext(ctx, query, params...)
 	if err != nil {
@@ -26,7 +27,7 @@ func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema
 		if err := row.Scan(&tableCatalog, &tableType, &tableName, &schemaType); err != nil {
 			return err
 		}
-		if tables.Get(tableName) == nil {
+		if !messages.Exists(tableName) {
 			return nil
 		}
 		names = append(names, tableName)
@@ -54,10 +55,10 @@ func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema
 	return result, nil
 }
 
-func (c *Client) normalizedTables(tables schema.Tables) schema.Tables {
-	normalized := make(schema.Tables, len(tables))
-	for i, table := range tables {
-		normalized[i] = c.normalizeTable(table)
+func (c *Client) normalizedTables(messages message.WriteMigrateTables) schema.Tables {
+	normalized := make(schema.Tables, len(messages))
+	for i, m := range messages {
+		normalized[i] = c.normalizeTable(m.Table)
 	}
 	return normalized
 }

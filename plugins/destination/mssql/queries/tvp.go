@@ -69,12 +69,7 @@ func TVPAddType(schemaName string, table *schema.Table) string {
 }
 
 func TVPQuery(schemaName string, table *schema.Table, records []arrow.Record) (query string, params []any, err error) {
-	reader, err := array.NewRecordReader(table.ToArrowSchema(), records)
-	if err != nil {
-		return "", nil, err
-	}
-
-	rows, err := GetRows(reader)
+	rows, err := GetRows(array.NewTableFromRecords(table.ToArrowSchema(), records))
 	if err != nil {
 		return "", nil, err
 	}
