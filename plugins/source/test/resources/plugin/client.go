@@ -2,6 +2,8 @@ package plugin
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 
 	"github.com/cloudquery/cloudquery/plugins/source/test/client"
 	"github.com/cloudquery/cloudquery/plugins/source/test/resources/services"
@@ -41,8 +43,18 @@ func (*Client) Close(_ context.Context) error {
 }
 
 func Configure(_ context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
+	config := &client.Spec{}
+	if err := json.Unmarshal(spec, config); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
+	}
+	config.SetDefaults()
+	if err := config.Validate(); err != nil {
+		return nil, fmt.Errorf("failed to validate spec: %w", err)
+	}
+
 	schedulerClient := &client.TestClient{
 		Logger: logger,
+		Spec:   *config,
 	}
 
 	return &Client{

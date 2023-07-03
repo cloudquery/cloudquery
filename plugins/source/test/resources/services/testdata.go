@@ -4,6 +4,8 @@ import (
 	"context"
 	"strings"
 
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/cloudquery/plugins/source/test/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
@@ -21,6 +23,13 @@ func TestDataTable() *schema.Table {
 		table.Columns[i].Resolver = schema.PathResolver(table.Columns[i].Name)
 	}
 
+	table.Columns = append(table.Columns, schema.Column{
+		Name:        "client_id",
+		Description: "ID of client",
+		Type:        arrow.PrimitiveTypes.Int64,
+		Resolver:    client.ResolveClientID,
+	})
+
 	data := schema.GenTestData(table, schema.GenTestDataOptions{
 		MaxRows: 1,
 	})
@@ -35,6 +44,7 @@ func TestDataTable() *schema.Table {
 
 	table.Description = "Testdata table"
 	table.Resolver = fetchTestData(dataAsMap)
+	table.Multiplex = client.MultiplexBySpec
 	return table
 }
 
