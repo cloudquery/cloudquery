@@ -16,7 +16,7 @@ type Variables struct {
 	Plugins map[string]PluginVariables `json:"plugins"`
 }
 
-var reVariables = regexp.MustCompile(`@@([a-zA-Z0-9_\.-]+)`)
+var reVariables = regexp.MustCompile(`@@(plugins\.[a-zA-Z0-9_\.-]+)`)
 
 // ReplaceVariables replaces variables starting with @@ in the src string
 // with the values from the values from variables by dot notation.
