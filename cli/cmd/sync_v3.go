@@ -42,6 +42,9 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("Start sync")
 	defer log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("End sync")
 
+	variables := specs.Variables{
+		Plugins: make(map[string]specs.PluginVariables),
+	}
 	sourcePbClient := plugin.NewPluginClient(sourceClient.Conn)
 	destinationsPbClients := make([]plugin.PluginClient, len(destinationsClients))
 	destinationTransformers := make([]*transformer.RecordTransformer, len(destinationsClients))
@@ -58,6 +61,9 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 			opts = append(opts, transformer.WithCQIDPrimaryKey())
 		}
 		destinationTransformers[i] = transformer.NewRecordTransformer(opts...)
+		variables.Plugins[destinationSpecs[i].Name] = specs.PluginVariables{
+			Connection: destinationsClients[i].Conn.Target(),
+		}
 	}
 
 	// initialize destinations first, so that their connections may be used as backends by the source
@@ -73,26 +79,19 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 			return err
 		}
 	}
-	// replace @destination.connection with the actual GRPC connection string from the client
-	// NOTE: if this becomes a stable feature, it can move out of sync_v3 and into sync.go
-	replacementValues := make([]specs.ReplacementValue, len(destinationSpecs))
-	for i := range destinationSpecs {
-		replacementValues[i] = specs.ReplacementValue{
-			PluginName: destinationSpecs[i].Name,
-			Connection: destinationsClients[i].Conn.Target(),
-		}
-	}
-	err := specs.ReplacePlaceholders(sourceSpec.Spec, replacementValues)
-	if err != nil {
-		return err
-	}
 
+	// replace @@plugins.name.connection with the actual GRPC connection string from the client
+	// NOTE: if this becomes a stable feature, it can move out of sync_v3 and into sync.go
 	specBytes, err := json.Marshal(sourceSpec.Spec)
 	if err != nil {
 		return err
 	}
+	specBytesExpanded, err := specs.ReplaceVariables(string(specBytes), variables)
+	if err != nil {
+		return err
+	}
 	if _, err := sourcePbClient.Init(ctx, &plugin.Init_Request{
-		Spec: specBytes,
+		Spec: []byte(specBytesExpanded),
 	}); err != nil {
 		return err
 	}

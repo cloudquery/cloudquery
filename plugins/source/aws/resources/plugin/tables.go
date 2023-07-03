@@ -82,6 +82,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resiliencehub"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resourcegroups"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53resolver"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sagemaker"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/savingsplans"
@@ -463,6 +464,15 @@ func tables() []*schema.Table {
 		route53.HostedZones(),
 		route53.Operations(),
 		route53.TrafficPolicies(),
+		route53resolver.FirewallConfigs(),
+		route53resolver.FirewallDomainLists(),
+		route53resolver.FirewallRuleGroupAssociations(),
+		route53resolver.FirewallRuleGroups(),
+		route53resolver.ResolverEndpoints(),
+		route53resolver.ResolverQueryLogConfigAssociations(),
+		route53resolver.ResolverQueryLogConfigs(),
+		route53resolver.ResolverRuleAssociations(),
+		route53resolver.ResolverRules(),
 		s3.AccessPoints(),
 		s3.Accounts(),
 		s3.Buckets(),
