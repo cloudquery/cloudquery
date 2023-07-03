@@ -8,7 +8,7 @@ import (
 	"google.golang.org/api/iterator"
 
 	pb "cloud.google.com/go/securitycenter/apiv1/securitycenterpb"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
@@ -18,7 +18,7 @@ import (
 const pageSize = 1000
 
 func getRequest(ctx context.Context, c *client.Client, table string, parent string) (*pb.ListFindingsRequest, error) {
-	filter, err := c.Backend.Get(ctx, table, c.ID())
+	filter, err := c.Backend.GetKey(ctx, table+c.ID())
 	if err != nil {
 		return nil, fmt.Errorf("failed to get filter state %w for table %q", err, table)
 	}
@@ -34,7 +34,7 @@ func getRequest(ctx context.Context, c *client.Client, table string, parent stri
 }
 
 func setBackendState(ctx context.Context, c *client.Client, table string, lastEventTime *timestamppb.Timestamp) error {
-	err := c.Backend.Set(ctx, table, c.ID(), fmt.Sprintf(`event_time >= "%s"`, lastEventTime.AsTime().Format(time.RFC3339)))
+	err := c.Backend.SetKey(ctx, table+c.ID(), fmt.Sprintf(`event_time >= "%s"`, lastEventTime.AsTime().Format(time.RFC3339)))
 	if err != nil {
 		return fmt.Errorf("failed to set filter state %w for table %q", err, table)
 	}

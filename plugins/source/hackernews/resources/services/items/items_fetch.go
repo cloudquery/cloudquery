@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/hermanschaaf/hackernews"
 	"golang.org/x/sync/errgroup"
 )
@@ -31,7 +31,7 @@ import (
 func fetchItems(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	tableName := Items().Name
-	value, err := c.Backend.Get(ctx, tableName, c.ID())
+	value, err := c.Backend.GetKey(ctx, tableName)
 	if err != nil {
 		return fmt.Errorf("failed to retrieve state from backend: %w", err)
 	}
@@ -57,7 +57,10 @@ func fetchItems(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 
 	// we allow the user to specify a start time for posts, so we need to find the first post after that time
 	if c.Spec.StartTime != "" {
-		startTime, _ := time.Parse(time.RFC3339, c.Spec.StartTime)
+		startTime, err := time.Parse(time.RFC3339, c.Spec.StartTime)
+		if err != nil {
+			return fmt.Errorf("failed to parse start time: %w", err)
+		}
 		c.Logger().Info().Time("start_time", startTime).Msg("Finding first post after start_time")
 		startItemID, err := findFirstPostAfter(ctx, c, startTime, maxID)
 		if err != nil {
@@ -72,6 +75,8 @@ func fetchItems(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 			cursor = startItemID
 		}
 	}
+
+	c.Logger().Info().Int("cursor", cursor).Msg("Fetching items")
 
 	// Fetch items in batches of (max) 1000.
 	// This is not necessarily the most efficient way of doing it, but this code
@@ -90,12 +95,16 @@ func fetchItems(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 		}
 		// save the new cursor position after a batch has been successfully fetched
 		cursor = endID
-		err = c.Backend.Set(ctx, tableName, c.ID(), strconv.Itoa(cursor))
+		err = c.Backend.SetKey(ctx, tableName, strconv.Itoa(cursor))
 		if err != nil {
 			return fmt.Errorf("failed to save state to backend: %w", err)
 		}
+		err = c.Backend.Flush(ctx)
+		if err != nil {
+			return fmt.Errorf("failed to flush state backend: %w", err)
+		}
 	}
-	return nil
+	return c.Backend.Flush(ctx)
 }
 
 // fetchBatch fetches the items in the inclusive range [startID, endID] and sends them to the res channel. It blocks
