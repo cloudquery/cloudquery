@@ -3,7 +3,7 @@ package queries
 import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	mssql "github.com/microsoft/go-mssqldb"
 	"golang.org/x/exp/slices"
 )
