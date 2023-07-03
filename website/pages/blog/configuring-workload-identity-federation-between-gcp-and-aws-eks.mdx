@@ -43,7 +43,7 @@ gcloud iam service-accounts create cq-fetcher \
     --display-name="cq-fetcher"
 ```
 
-We need to ensure that the new Service Account has the appropriate permissions to View the desired projects in GCP.
+We need to ensure that the new Service Account has the appropriate permissions to view the desired projects in GCP.
 
 
 ## Step 4: Create GCP Workload Identity Pool
@@ -81,7 +81,7 @@ gcloud iam workload-identity-pools \
 
 Now, we will create an IAM policy binding.
 
-The below command allows all identities from our pool to impersonate the GCP Service Account we created earlier by binding the IAM role `roles/iam.workloadIdentityUser` to the GCP service account.  Replace the number in the `-member` flag with the GCP Project number. 
+The below command allows all identities from our pool to impersonate the GCP Service Account we created earlier by binding the IAM role `roles/iam.workloadIdentityUser` to the GCP service account.  Replace the number in the `-member` flag with the GCP project number. 
 
 ```bash copy
 gcloud iam service-accounts add-iam-policy-binding \
@@ -92,7 +92,7 @@ gcloud iam service-accounts add-iam-policy-binding \
 
 Please consider adjusting the `-member` flag for additional security with GCP service account impersonation. More granular options include options such as a single identity, all identities in a group, or all identities with a specific attribute value.  More information can be found in the [Service account impersonation](https://cloud.google.com/iam/docs/workload-identity-federation#impersonation) section of Google Cloud Docs.  We recommend using granular scoping for service account impersonation.
 
-An example of using a single identity in the pool could look like the following command.  Additional configuration may be required for attribute mapping and conditions.  Information on defining attribute mapping can be found [here](https://cloud.google.com/iam/docs/workload-identity-federation-with-other-clouds#aws)
+An example of using a single identity in the pool could look like the following command.  Additional configuration may be required for attribute mapping and conditions.  Information on defining attribute mapping can be found [here](https://cloud.google.com/iam/docs/workload-identity-federation-with-other-clouds#aws).
 
 ```bash copy
 gcloud iam service-accounts add-iam-policy-binding \
