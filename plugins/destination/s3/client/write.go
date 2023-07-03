@@ -1,7 +1,6 @@
 package client
 
 import (
-	"bytes"
 	"context"
 	"io"
 	"path"
@@ -15,9 +14,9 @@ import (
 	"github.com/apache/arrow/go/v13/arrow/memory"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/cloudquery/filetypes/v3"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/filetypes/v4"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/google/uuid"
 )
 
@@ -34,37 +33,44 @@ const (
 
 var reInvalidJSONKey = regexp.MustCompile(`\W`)
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data []arrow.Record) error {
-	if len(data) == 0 {
-		return nil
-	}
+func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInsert) error {
+	var s *filetypes.Stream
 
-	if c.pluginSpec.Athena {
-		for i, record := range data {
-			data[i] = sanitizeRecordJSONKeys(record)
+	for msg := range msgs {
+		if s == nil {
+			table := msg.GetTable()
+
+			objKey := replacePathVariables(c.spec.Path, table.Name, uuid.NewString(), c.spec.Format, time.Now().UTC())
+
+			var err error
+			s, err = c.Client.StartStream(table, func(r io.Reader) error {
+				_, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
+					Bucket: aws.String(c.spec.Bucket),
+					Key:    aws.String(objKey),
+					Body:   r,
+				})
+				return err
+			})
+			if err != nil {
+				return err
+			}
+		}
+
+		if c.spec.Athena {
+			msg.Record = sanitizeRecordJSONKeys(msg.Record)
+		}
+
+		if err := s.Write([]arrow.Record{msg.Record}); err != nil {
+			_ = s.FinishWithError(err)
+			return err
 		}
 	}
 
-	var b bytes.Buffer
-	w := io.Writer(&b)
+	return s.Finish()
+}
 
-	timeNow := time.Now().UTC()
-
-	if err := c.Client.WriteTableBatchFile(w, table, data); err != nil {
-		return err
-	}
-	// we don't upload in parallel here because AWS sdk moves the burden to the developer, and
-	// we don't want to deal with that yet. in the future maybe we can run some benchmarks and see if adding parallelization helps.
-	r := io.Reader(&b)
-	if _, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
-		Bucket: aws.String(c.pluginSpec.Bucket),
-		Key:    aws.String(replacePathVariables(c.pluginSpec.Path, table.Name, uuid.NewString(), c.pluginSpec.Format, timeNow)),
-		Body:   r,
-	}); err != nil {
-		return err
-	}
-
-	return nil
+func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
+	return c.writer.Write(ctx, msgs)
 }
 
 // sanitizeRecordJSONKeys replaces all invalid characters in JSON keys with underscores. This is required
