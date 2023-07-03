@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v2.2.2...plugins-destination-mysql-v2.3.0) (2023-07-03)
+
+
+### Features
+
+* **mysql:** Update to SDK V4 ([#11775](https://github.com/cloudquery/cloudquery/issues/11775)) ([1e5da72](https://github.com/cloudquery/cloudquery/commit/1e5da7254a3269d0d8632dd0413184d5b404c288))
+
+
+### Bug Fixes
+
+* Close writers ([#11887](https://github.com/cloudquery/cloudquery/issues/11887)) ([26fad6c](https://github.com/cloudquery/cloudquery/commit/26fad6c7cf041abecdd82ebf4d8894e8b1ef13b4))
+* **deps:** Update github.com/apache/arrow/go/v13 digest to 5a06b2e ([#11857](https://github.com/cloudquery/cloudquery/issues/11857)) ([43c2f5f](https://github.com/cloudquery/cloudquery/commit/43c2f5f3a893e5286f67c4943a9d1bc2736e2aeb))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to df3b664 ([#11882](https://github.com/cloudquery/cloudquery/issues/11882)) ([9635b22](https://github.com/cloudquery/cloudquery/commit/9635b22b10a2cd9ca0f91819cffb7f4ba75dc2d9))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.5.0 ([#11850](https://github.com/cloudquery/cloudquery/issues/11850)) ([3255857](https://github.com/cloudquery/cloudquery/commit/3255857938bf16862d52491f5c2a8a0fa53faef0))
+* **mysql:** Fix main serve function ([#11873](https://github.com/cloudquery/cloudquery/issues/11873)) ([181c467](https://github.com/cloudquery/cloudquery/commit/181c46722ac485e689d541483a791868feeb19fc))
+
 ## [2.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v2.2.1...plugins-destination-mysql-v2.2.2) (2023-06-28)
 
 
