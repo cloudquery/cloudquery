@@ -2,7 +2,7 @@
 
 This table shows data for Amazon API Gateway v2 API Models.
 
-https://docs.aws.amazon.com/apigateway/latest/api/API_Model.html
+https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/apis-apiid-models.html
 
 The composite primary key for this table is (**account_id**, **arn**).
 

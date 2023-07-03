@@ -8,14 +8,11 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/apache/arrow/go/v13/arrow/memory"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
-const (
-	readSQL    = "SELECT * FROM `%s.%s.%s` WHERE `_cq_source_name` = @cq_source_name order by _cq_sync_time asc"
-	readCypher = "MATCH (t:%s {_cq_source_name: $cq_source_name}) RETURN t ORDER BY t._cq_sync_time ASC"
-)
+const readCypher = "MATCH (t:%s) RETURN t"
 
 func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
 	if val == nil {
@@ -100,13 +97,13 @@ func (c *Client) reverseTransformer(table *schema.Table, node *neo4j.Node) (arro
 	return rec, nil
 }
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
+func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
 	stmt := fmt.Sprintf(readCypher, table.Name)
 
 	session := c.LoggedSession(ctx, neo4j.SessionConfig{})
 	defer session.Close(ctx)
 	_, err := session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
-		r, err := tx.Run(ctx, stmt, map[string]any{"cq_source_name": sourceName})
+		r, err := tx.Run(ctx, stmt, map[string]any{})
 		if err != nil {
 			return nil, err
 		}

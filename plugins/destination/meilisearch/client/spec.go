@@ -10,10 +10,17 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
+const (
+	defaultBatchSize      = 1000
+	defaultBatchSizeBytes = 4 * 1024 * 1024
+)
+
 type Spec struct {
 	// required
-	Host   string `json:"host,omitempty"`
-	APIKey string `json:"api_key,omitempty"`
+	Host           string `json:"host,omitempty"`
+	APIKey         string `json:"api_key,omitempty"`
+	BatchSize      int    `json:"batch_size,omitempty"`
+	BatchSizeBytes int    `json:"batch_size_bytes,omitempty"`
 
 	// optional
 	Timeout time.Duration `json:"timeout,omitempty"`
@@ -34,6 +41,12 @@ func (s *Spec) validate() error {
 func (s *Spec) setDefaults() {
 	if s.Timeout == 0 {
 		s.Timeout = 5 * time.Minute
+	}
+	if s.BatchSize == 0 {
+		s.BatchSize = defaultBatchSize
+	}
+	if s.BatchSizeBytes == 0 {
+		s.BatchSizeBytes = defaultBatchSizeBytes
 	}
 }
 

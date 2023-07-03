@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildBatchJobQueuesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -20,10 +21,7 @@ func buildBatchJobQueuesMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 		Batch: m,
 	}
 	a := types.JobQueueDetail{}
-	err := faker.FakeObject(&a)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&a))
 
 	m.EXPECT().DescribeJobQueues(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&batch.DescribeJobQueuesOutput{
@@ -31,10 +29,7 @@ func buildBatchJobQueuesMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	tagResponse := batch.ListTagsForResourceOutput{}
-	err = faker.FakeObject(&tagResponse)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tagResponse))
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagResponse, nil)
 
 	return services

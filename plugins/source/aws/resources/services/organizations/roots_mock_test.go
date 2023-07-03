@@ -9,15 +9,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildOrganizationsRoots(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockOrganizationsClient(ctrl)
 	g := types.Root{}
-	err := faker.FakeObject(&g)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&g))
 
 	m.EXPECT().ListRoots(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&organizations.ListRootsOutput{
@@ -25,9 +23,7 @@ func buildOrganizationsRoots(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	tt := make([]types.Tag, 3)
-	if err := faker.FakeObject(&tt); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tt))
 
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&organizations.ListTagsForResourceOutput{

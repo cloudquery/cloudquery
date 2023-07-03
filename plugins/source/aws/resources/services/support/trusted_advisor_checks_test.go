@@ -10,22 +10,20 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildTrustedAdvisorChecks(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockSupportClient(ctrl)
 	checks := []types.TrustedAdvisorCheckDescription{}
-	err := faker.FakeObject(&checks)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&checks))
 
 	for _, languageCode := range checksSupportedLanguageCodes {
 		m.EXPECT().DescribeTrustedAdvisorChecks(gomock.Any(), &support.DescribeTrustedAdvisorChecksInput{Language: aws.String(languageCode)}, gomock.Any()).
 			Return(&support.DescribeTrustedAdvisorChecksOutput{Checks: checks}, nil)
 	}
 
-	err = mockCheckSummaries(checks[0], m)
+	err := mockCheckSummaries(checks[0], m)
 	if err != nil {
 		t.Fatal(err)
 	}

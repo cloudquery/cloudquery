@@ -13,7 +13,7 @@ const (
 	SchedulerRoundRobin
 )
 
-var AllSchedulers = Schedulers{SchedulerDFS, SchedulerRoundRobin}
+var AllStrategies = Schedulers{SchedulerDFS, SchedulerRoundRobin}
 var AllSchedulerNames = [...]string{
 	SchedulerDFS:        "dfs",
 	SchedulerRoundRobin: "round-robin",

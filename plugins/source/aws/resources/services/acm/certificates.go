@@ -43,7 +43,14 @@ func Certificates() *schema.Table {
 func fetchAcmCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Acm
-	var input acm.ListCertificatesInput
+	input := acm.ListCertificatesInput{
+		CertificateStatuses: types.CertificateStatus("").Values(),
+		Includes: &types.Filters{
+			ExtendedKeyUsage: []types.ExtendedKeyUsageName{types.ExtendedKeyUsageNameAny},
+			KeyTypes:         types.KeyAlgorithm("").Values(),
+			KeyUsage:         []types.KeyUsageName{types.KeyUsageNameAny},
+		},
+	}
 	paginator := acm.NewListCertificatesPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(o *acm.Options) {

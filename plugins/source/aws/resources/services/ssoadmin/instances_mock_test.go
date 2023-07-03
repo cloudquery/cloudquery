@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -20,30 +21,18 @@ func buildInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 	cmpr := types.CustomerManagedPolicyReference{}
 	amp := types.AttachedManagedPolicy{}
 	ip := `{"key": "value"}`
-	err := faker.FakeObject(&ps)
-	if err != nil {
-		t.Fatal(err)
-	}
-	err = faker.FakeObject(&as)
-	if err != nil {
-		t.Fatal(err)
-	}
-	err = faker.FakeObject(&im)
-	if err != nil {
-		t.Fatal(err)
-	}
-	err = faker.FakeObject(&pb)
-	if err != nil {
-		t.Fatal(err)
-	}
-	err = faker.FakeObject(&cmpr)
-	if err != nil {
-		t.Fatal(err)
-	}
-	err = faker.FakeObject(&amp)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ps))
+
+	require.NoError(t, faker.FakeObject(&as))
+
+	require.NoError(t, faker.FakeObject(&im))
+
+	require.NoError(t, faker.FakeObject(&pb))
+
+	require.NoError(t, faker.FakeObject(&cmpr))
+
+	require.NoError(t, faker.FakeObject(&amp))
+
 	mSSOAdmin.EXPECT().ListInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ssoadmin.ListInstancesOutput{
 			Instances: []types.InstanceMetadata{im},

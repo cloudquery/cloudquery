@@ -9,14 +9,14 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildDataSharesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockRedshiftClient(ctrl)
 	ds := types.DataShare{}
-	if err := faker.FakeObject(&ds); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ds))
+
 	m.EXPECT().DescribeDataShares(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&redshift.DescribeDataSharesOutput{
 			DataShares: []types.DataShare{ds},

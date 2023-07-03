@@ -15,10 +15,11 @@ import (
 func AccessPoints() *schema.Table {
 	tableName := "aws_s3_access_points"
 	return &schema.Table{
-		Name:      tableName,
-		Resolver:  fetchAccessPoints,
-		Transform: transformers.TransformWithStruct(&types.AccessPoint{}),
-		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "s3-control"),
+		Name:        tableName,
+		Description: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_control_AccessPoint.html",
+		Resolver:    fetchAccessPoints,
+		Transform:   transformers.TransformWithStruct(&types.AccessPoint{}),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "s3-control"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

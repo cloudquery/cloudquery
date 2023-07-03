@@ -7,11 +7,11 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/apache/arrow/go/v13/arrow/memory"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/meilisearch/meilisearch-go"
 )
 
-func (c *Client) Read(_ context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
+func (c *Client) Read(_ context.Context, table *schema.Table, res chan<- arrow.Record) error {
 	sc := table.ToArrowSchema()
 	index, err := c.Meilisearch.GetIndex(table.Name)
 	if err != nil {
@@ -19,8 +19,6 @@ func (c *Client) Read(_ context.Context, table *schema.Table, sourceName string,
 	}
 
 	req := &meilisearch.SearchRequest{
-		Filter:      schema.CqSourceNameColumn.Name + " = '" + sourceName + "'",
-		Sort:        []string{schema.CqSyncTimeColumn.Name + ":asc"},
 		HitsPerPage: 100, // default = 1, we want more
 		Page:        1,   // starting from 1
 	}

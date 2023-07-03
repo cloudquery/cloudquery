@@ -4,16 +4,16 @@ go 1.19
 
 require (
 	cloud.google.com/go/storage v1.28.1
-	github.com/apache/arrow/go/v13 v13.0.0-20230601070034-e07e22c5580a
+	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
 	github.com/cloudquery/filetypes/v3 v3.2.0
-	github.com/cloudquery/plugin-pb-go v1.1.0
+	github.com/cloudquery/plugin-pb-go v1.5.0
 	github.com/cloudquery/plugin-sdk/v3 v3.10.6
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.1
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230620001150-43638cb1b099
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230703001435-df3b664a289d
 
 require (
 	cloud.google.com/go v0.110.0 // indirect

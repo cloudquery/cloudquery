@@ -2,7 +2,7 @@
 
 This table shows data for Amazon Relational Database Service (RDS) Engine Versions.
 
-https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBEngineVersion.html
+https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBEngineVersion.html
 
 The composite primary key for this table is (**account_id**, **region**, **_engine_version_hash**).
 

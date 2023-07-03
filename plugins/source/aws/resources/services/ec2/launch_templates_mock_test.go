@@ -9,20 +9,16 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildEc2LaunchTemplates(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	lt := types.LaunchTemplate{}
 	ltv := types.LaunchTemplateVersion{}
-	err := faker.FakeObject(&lt)
-	if err != nil {
-		t.Fatal(err)
-	}
-	err = faker.FakeObject(&ltv)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&lt))
+
+	require.NoError(t, faker.FakeObject(&ltv))
 
 	m.EXPECT().DescribeLaunchTemplates(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ec2.DescribeLaunchTemplatesOutput{
