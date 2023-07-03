@@ -57,7 +57,7 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 		projects:      []string{"testProject"},
 		orgs:          []*crmv1.Organization{{Name: "organizations/testOrg"}},
 		folderIds:     []string{"testFolder"},
-		Backend: &state.NoOpClient{},
+		Backend:       &state.NoOpClient{},
 	}
 
 	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
@@ -116,7 +116,7 @@ func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*h
 		ClientOptions: clientOptions,
 		projects:      []string{"testProject"},
 		orgs:          []*crmv1.Organization{{Name: "organizations/testOrg"}},
-		Backend: &state.NoOpClient{},
+		Backend:       &state.NoOpClient{},
 	}
 
 	sched := scheduler.NewScheduler(scheduler.WithLogger(l))

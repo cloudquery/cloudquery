@@ -17,11 +17,11 @@ import (
 	"github.com/rs/zerolog"
 )
 
-const maxMsgSize        = 100 * 1024 * 1024 // 100 MiB
+const maxMsgSize = 100 * 1024 * 1024 // 100 MiB
 
 type Client struct {
 	plugin.UnimplementedDestination
-	schduler *scheduler.Scheduler
+	schduler   *scheduler.Scheduler
 	syncClient *client.Client
 }
 

@@ -1,7 +1,7 @@
 package client
 
 const (
-	defaultConcurrency = 50000 
+	defaultConcurrency = 50000
 )
 
 // Spec defines GCP source plugin Spec
