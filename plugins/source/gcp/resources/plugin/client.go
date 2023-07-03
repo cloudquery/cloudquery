@@ -23,7 +23,7 @@ type Client struct {
 	plugin.UnimplementedDestination
 	schduler   *scheduler.Scheduler
 	syncClient *client.Client
-	options plugin.NewClientOptions
+	options    plugin.NewClientOptions
 }
 
 func NewClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, options plugin.NewClientOptions) (plugin.Client, error) {
