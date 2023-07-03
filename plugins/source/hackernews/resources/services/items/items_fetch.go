@@ -57,7 +57,10 @@ func fetchItems(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 
 	// we allow the user to specify a start time for posts, so we need to find the first post after that time
 	if c.Spec.StartTime != "" {
-		startTime, _ := time.Parse(time.RFC3339, c.Spec.StartTime)
+		startTime, err := time.Parse(time.RFC3339, c.Spec.StartTime)
+		if err != nil {
+			return fmt.Errorf("failed to parse start time: %w", err)
+		}
 		c.Logger().Info().Time("start_time", startTime).Msg("Finding first post after start_time")
 		startItemID, err := findFirstPostAfter(ctx, c, startTime, maxID)
 		if err != nil {
