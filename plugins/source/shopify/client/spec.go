@@ -16,9 +16,10 @@ type Spec struct {
 	ShopURL string `json:"shop_url"`
 
 	// Optional
-	Timeout    int64 `json:"timeout_secs,omitempty"`
-	MaxRetries int64 `json:"max_retries,omitempty"`
-	PageSize   int64 `json:"page_size,omitempty"`
+	Timeout     int64 `json:"timeout_secs,omitempty"`
+	MaxRetries  int64 `json:"max_retries,omitempty"`
+	PageSize    int64 `json:"page_size,omitempty"`
+	Concurrency int   `json:"concurrency,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -30,6 +31,9 @@ func (s *Spec) SetDefaults() {
 	}
 	if s.PageSize < 1 {
 		s.PageSize = 50
+	}
+	if s.Concurrency < 1 {
+		s.Concurrency = 1000
 	}
 }
 
