@@ -32,8 +32,8 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T) 
 	if err := transformers.TransformTables(tables); err != nil {
 		t.Fatal(err)
 	}
-	sc := scheduler.NewScheduler(schedulerClient, scheduler.WithLogger(l))
-	messages, err := sc.SyncAll(context.Background(), tables)
+	sc := scheduler.NewScheduler(scheduler.WithLogger(l))
+	messages, err := sc.SyncAll(context.Background(), schedulerClient, tables)
 	if err != nil {
 		t.Fatal(err)
 	}

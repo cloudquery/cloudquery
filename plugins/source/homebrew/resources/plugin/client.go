@@ -23,32 +23,43 @@ const (
 
 type Client struct {
 	logger    zerolog.Logger
+	config    *client.Spec
 	tables    schema.Tables
 	scheduler *scheduler.Scheduler
 	plugin.UnimplementedDestination
-}
-
-func (c *Client) GetSpec() any {
-	return &client.Spec{}
 }
 
 func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.Message) error {
+func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.SyncMessage) error {
 	tt, err := c.tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
 	if err != nil {
 		return err
 	}
-	return c.scheduler.Sync(ctx, tt, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
+
+	homebrewClient := homebrew.NewClient()
+	if err != nil {
+		return fmt.Errorf("failed to create homebrew client: %w", err)
+	}
+
+	schedulerClient := &client.Client{
+		Homebrew:   homebrewClient,
+		Logger:     c.logger,
+		Spec:       c.config,
+		MaxRetries: defaultMaxRetries,
+		Backoff:    defaultBackoff,
+	}
+
+	return c.scheduler.Sync(ctx, schedulerClient, tt, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
 }
 
-func (c *Client) Tables(ctx context.Context) (schema.Tables, error) {
-	return c.tables, nil
+func (c *Client) Tables(ctx context.Context, options plugin.TableOptions) (schema.Tables, error) {
+	return c.tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
 }
 
-func (c *Client) Close(ctx context.Context) error {
+func (*Client) Close(ctx context.Context) error {
 	return nil
 }
 
@@ -75,7 +86,14 @@ func getTables() []*schema.Table {
 	return tables
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, spec []byte, options plugin.NewClientOptions) (plugin.Client, error) {
+	if options.NoConnection {
+		return &Client{
+			logger: logger,
+			tables: getTables(),
+		}, nil
+	}
+
 	config := &client.Spec{}
 	if err := json.Unmarshal(spec, config); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
@@ -85,26 +103,14 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.
 	if err != nil {
 		return nil, fmt.Errorf("failed to validate spec: %w", err)
 	}
-
-	homebrewClient := homebrew.NewClient()
-	if err != nil {
-		return nil, fmt.Errorf("failed to create homebrew client: %w", err)
-	}
-
-	schedulerClient := &client.Client{
-		Homebrew:   homebrewClient,
-		Logger:     logger,
-		Spec:       config,
-		MaxRetries: defaultMaxRetries,
-		Backoff:    defaultBackoff,
-	}
-	scheduler := scheduler.NewScheduler(schedulerClient,
+	sc := scheduler.NewScheduler(
 		scheduler.WithLogger(logger),
 		scheduler.WithConcurrency(uint64(config.Concurrency)),
 	)
 	return &Client{
 		logger:    logger,
-		scheduler: scheduler,
+		config:    config,
+		scheduler: sc,
 		tables:    getTables(),
 	}, nil
 }
