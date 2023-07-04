@@ -10,20 +10,20 @@ The composite primary key for this table is (**account_id**, **region**, **arn**
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|arn (PK)|String|
-|receiver_combined (PK)|String|
-|invitation_timestamp|Timestamp|
-|receiver_account_id|String|
-|receiver_arn|String|
-|resource_share_arn|String|
-|resource_share_associations|JSON|
-|resource_share_invitation_arn|String|
-|resource_share_name|String|
-|sender_account_id|String|
-|status|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
+|arn (PK)|`utf8`|
+|receiver_combined (PK)|`utf8`|
+|invitation_timestamp|`timestamp[us, tz=UTC]`|
+|receiver_account_id|`utf8`|
+|receiver_arn|`utf8`|
+|resource_share_arn|`utf8`|
+|resource_share_associations|`json`|
+|resource_share_invitation_arn|`utf8`|
+|resource_share_name|`utf8`|
+|sender_account_id|`utf8`|
+|status|`utf8`|

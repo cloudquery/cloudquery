@@ -8,39 +8,39 @@ The composite primary key for this table is (**org**, **repository_id**, **id**)
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|org (PK)|String|
-|repository_id (PK)|Int|
-|id (PK)|Int|
-|number|Int|
-|state|String|
-|state_reason|String|
-|locked|Bool|
-|title|String|
-|body|String|
-|author_association|String|
-|user|JSON|
-|labels|JSON|
-|assignee|JSON|
-|comments|Int|
-|closed_at|Timestamp|
-|created_at|Timestamp|
-|updated_at|Timestamp|
-|closed_by|JSON|
-|url|String|
-|html_url|String|
-|comments_url|String|
-|events_url|String|
-|labels_url|String|
-|repository_url|String|
-|milestone|JSON|
-|pull_request|JSON|
-|repository|JSON|
-|reactions|JSON|
-|assignees|JSON|
-|node_id|String|
-|text_matches|JSON|
-|active_lock_reason|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|org (PK)|`utf8`|
+|repository_id (PK)|`int64`|
+|id (PK)|`int64`|
+|number|`int64`|
+|state|`utf8`|
+|state_reason|`utf8`|
+|locked|`bool`|
+|title|`utf8`|
+|body|`utf8`|
+|author_association|`utf8`|
+|user|`json`|
+|labels|`json`|
+|assignee|`json`|
+|comments|`int64`|
+|closed_at|`timestamp[us, tz=UTC]`|
+|created_at|`timestamp[us, tz=UTC]`|
+|updated_at|`timestamp[us, tz=UTC]`|
+|closed_by|`json`|
+|url|`utf8`|
+|html_url|`utf8`|
+|comments_url|`utf8`|
+|events_url|`utf8`|
+|labels_url|`utf8`|
+|repository_url|`utf8`|
+|milestone|`json`|
+|pull_request|`json`|
+|repository|`json`|
+|reactions|`json`|
+|assignees|`json`|
+|node_id|`utf8`|
+|text_matches|`json`|
+|active_lock_reason|`utf8`|

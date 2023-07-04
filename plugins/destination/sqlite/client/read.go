@@ -9,11 +9,11 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/apache/arrow/go/v13/arrow/memory"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 const (
-	readSQL = `SELECT %s FROM "%s" WHERE _cq_source_name = $1 order by _cq_sync_time asc`
+	readSQL = `SELECT %s FROM %s`
 )
 
 func (*Client) createResultsArray(table *arrow.Schema) []any {
@@ -148,13 +148,13 @@ func reverseTransform(sc *arrow.Schema, values []any) (arrow.Record, error) {
 	return rec, nil
 }
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
+func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
 	colNames := make([]string, len(table.Columns))
 	for i, col := range table.Columns {
-		colNames[i] = `"` + col.Name + `"`
+		colNames[i] = identifier(col.Name)
 	}
 	cols := strings.Join(colNames, ", ")
-	rows, err := c.db.Query(fmt.Sprintf(readSQL, cols, table.Name), sourceName)
+	rows, err := c.db.Query(fmt.Sprintf(readSQL, cols, identifier(table.Name)))
 	if err != nil {
 		return err
 	}

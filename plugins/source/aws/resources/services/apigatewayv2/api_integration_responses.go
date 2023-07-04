@@ -4,20 +4,21 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func apiIntegrationResponses() *schema.Table {
 	tableName := "aws_apigatewayv2_api_integration_responses"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_IntegrationResponse.html`,
+		Description: `https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/apis-apiid-integrations-integrationid-integrationresponses-integrationresponseid.html`,
 		Resolver:    fetchApigatewayv2ApiIntegrationResponses,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.IntegrationResponse{}),
@@ -26,21 +27,19 @@ func apiIntegrationResponses() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "api_integration_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "integration_id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("integration_id"),
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveApiIntegrationResponseArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveApiIntegrationResponseArn,
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -53,12 +52,12 @@ func fetchApigatewayv2ApiIntegrationResponses(ctx context.Context, meta schema.C
 		ApiId:         p.ApiId,
 		IntegrationId: r.IntegrationId,
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Apigatewayv2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Apigatewayv2
 	// No paginator available
 	for {
 		response, err := svc.GetIntegrationResponses(ctx, &config, func(options *apigatewayv2.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 
 		if err != nil {

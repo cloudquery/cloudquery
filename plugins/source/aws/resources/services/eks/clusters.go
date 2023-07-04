@@ -3,11 +3,12 @@ package eks
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/eks"
 	"github.com/aws/aws-sdk-go-v2/service/eks/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Clusters() *schema.Table {
@@ -23,28 +24,28 @@ func Clusters() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Arn"),
+				PrimaryKey: true,
 			},
 		},
 		Relations: []*schema.Table{
 			nodeGroups(),
 			fargateProfiles(),
+			addOns(),
+			identityProviderConfigs(),
 		},
 	}
 }
 
 func fetchEksClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Eks
+	cl := meta.(*client.Client)
+	svc := cl.Services().Eks
 	paginator := eks.NewListClustersPaginator(svc, &eks.ListClustersInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *eks.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -55,12 +56,12 @@ func fetchEksClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 }
 
 func getEksCluster(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Eks
+	cl := meta.(*client.Client)
+	svc := cl.Services().Eks
 	name := resource.Item.(string)
 	output, err := svc.DescribeCluster(
 		ctx, &eks.DescribeClusterInput{Name: &name}, func(options *eks.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 	if err != nil {
 		return err

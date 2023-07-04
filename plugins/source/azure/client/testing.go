@@ -19,9 +19,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/rs/zerolog"
 )
 
@@ -138,6 +138,9 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 				TestSubscription: {&billingPeriod},
 			},
 			storageAccountKeys: &sync.Map{},
+			pluginSpec: &Spec{
+				NormalizeIDs: true,
+			},
 		}
 
 		return c, nil

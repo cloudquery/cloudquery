@@ -3,11 +3,14 @@ package cloudfront
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Distributions() *schema.Table {
@@ -23,16 +26,14 @@ func Distributions() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveCloudfrontDistributionTags,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ARN"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ARN"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -40,12 +41,12 @@ func Distributions() *schema.Table {
 
 func fetchCloudfrontDistributions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config cloudfront.ListDistributionsInput
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudfront
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudfront
 	paginator := cloudfront.NewListDistributionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cloudfront.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -56,15 +57,15 @@ func fetchCloudfrontDistributions(ctx context.Context, meta schema.ClientMeta, p
 }
 
 func getDistribution(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudfront
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudfront
 
 	d := resource.Item.(types.DistributionSummary)
 
 	distribution, err := svc.GetDistribution(ctx, &cloudfront.GetDistributionInput{
 		Id: d.Id,
 	}, func(options *cloudfront.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

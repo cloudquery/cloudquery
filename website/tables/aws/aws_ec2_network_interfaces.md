@@ -10,36 +10,36 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|association|JSON|
-|attachment|JSON|
-|availability_zone|String|
-|deny_all_igw_traffic|Bool|
-|description|String|
-|groups|JSON|
-|interface_type|String|
-|ipv4_prefixes|JSON|
-|ipv6_address|String|
-|ipv6_addresses|JSON|
-|ipv6_native|Bool|
-|ipv6_prefixes|JSON|
-|mac_address|String|
-|network_interface_id|String|
-|outpost_arn|String|
-|owner_id|String|
-|private_dns_name|String|
-|private_ip_address|String|
-|private_ip_addresses|JSON|
-|requester_id|String|
-|requester_managed|Bool|
-|source_dest_check|Bool|
-|status|String|
-|subnet_id|String|
-|vpc_id|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|association|`json`|
+|attachment|`json`|
+|availability_zone|`utf8`|
+|deny_all_igw_traffic|`bool`|
+|description|`utf8`|
+|groups|`json`|
+|interface_type|`utf8`|
+|ipv4_prefixes|`json`|
+|ipv6_address|`utf8`|
+|ipv6_addresses|`json`|
+|ipv6_native|`bool`|
+|ipv6_prefixes|`json`|
+|mac_address|`utf8`|
+|network_interface_id|`utf8`|
+|outpost_arn|`utf8`|
+|owner_id|`utf8`|
+|private_dns_name|`utf8`|
+|private_ip_address|`utf8`|
+|private_ip_addresses|`json`|
+|requester_id|`utf8`|
+|requester_managed|`bool`|
+|source_dest_check|`bool`|
+|status|`utf8`|
+|subnet_id|`utf8`|
+|vpc_id|`utf8`|

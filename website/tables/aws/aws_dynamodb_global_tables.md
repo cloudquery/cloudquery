@@ -11,16 +11,16 @@ The composite primary key for this table is (**region**, **arn**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region (PK)|String|
-|arn (PK)|String|
-|tags|JSON|
-|creation_date_time|Timestamp|
-|global_table_arn|String|
-|global_table_name|String|
-|global_table_status|String|
-|replication_group|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region (PK)|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|creation_date_time|`timestamp[us, tz=UTC]`|
+|global_table_arn|`utf8`|
+|global_table_name|`utf8`|
+|global_table_status|`utf8`|
+|replication_group|`json`|

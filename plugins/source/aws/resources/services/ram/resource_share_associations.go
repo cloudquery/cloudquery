@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ram"
 	"github.com/aws/aws-sdk-go-v2/service/ram/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func ResourceShareAssociations() *schema.Table {
@@ -46,11 +46,11 @@ func fetchRamResourceShareAssociations(ctx context.Context, meta schema.ClientMe
 }
 
 func fetchRamResourceShareAssociationsByType(ctx context.Context, meta schema.ClientMeta, resourceShareInput *ram.GetResourceShareAssociationsInput, res chan<- any) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	paginator := ram.NewGetResourceShareAssociationsPaginator(meta.(*client.Client).Services().Ram, resourceShareInput)
 	for paginator.HasMorePages() {
 		response, err := paginator.NextPage(ctx, func(options *ram.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

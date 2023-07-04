@@ -10,15 +10,15 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|arn (PK)|String|
-|tags|JSON|
-|created_time|Timestamp|
-|product_arn|String|
-|product_view_summary|JSON|
-|source_connection|JSON|
-|status|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|created_time|`timestamp[us, tz=UTC]`|
+|product_arn|`utf8`|
+|product_view_summary|`json`|
+|source_connection|`json`|
+|status|`utf8`|

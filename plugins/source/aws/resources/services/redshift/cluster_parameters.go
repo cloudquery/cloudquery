@@ -3,11 +3,12 @@ package redshift
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func clusterParameters() *schema.Table {
@@ -23,20 +24,16 @@ func clusterParameters() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:        "cluster_arn",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 				Resolver:    schema.ParentColumnResolver("cluster_arn"),
 				Description: `The Amazon Resource Name (ARN) for the resource.`,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey:  true,
 			},
 			{
-				Name:     "parameter_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ParameterName"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "parameter_name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ParameterName"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -44,8 +41,8 @@ func clusterParameters() *schema.Table {
 
 func fetchClusterParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	group := parent.Item.(types.ClusterParameterGroupStatus)
-	c := meta.(*client.Client)
-	svc := c.Services().Redshift
+	cl := meta.(*client.Client)
+	svc := cl.Services().Redshift
 
 	config := redshift.DescribeClusterParametersInput{
 		ParameterGroupName: group.ParameterGroupName,
@@ -53,7 +50,7 @@ func fetchClusterParameters(ctx context.Context, meta schema.ClientMeta, parent 
 	paginator := redshift.NewDescribeClusterParametersPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *redshift.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

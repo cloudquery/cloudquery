@@ -3,12 +3,15 @@ package ecr
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/aws/aws-sdk-go-v2/service/ecr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Repositories() *schema.Table {
@@ -23,21 +26,19 @@ func Repositories() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("RepositoryArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("RepositoryArn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveRepositoryTags,
 			},
 			{
 				Name:     "policy_text",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveRepositoryPolicy,
 			},
 		},
@@ -67,7 +68,9 @@ func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, parent *s
 }
 
 func resolveRepositoryTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	output, err := meta.(*client.Client).Services().Ecr.ListTagsForResource(ctx, &ecr.ListTagsForResourceInput{
+	cl := meta.(*client.Client)
+	svc := cl.Services().Ecr
+	output, err := svc.ListTagsForResource(ctx, &ecr.ListTagsForResourceInput{
 		ResourceArn: resource.Item.(types.Repository).RepositoryArn,
 	}, func(options *ecr.Options) {
 		options.Region = meta.(*client.Client).Region

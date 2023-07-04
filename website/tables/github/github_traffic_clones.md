@@ -10,12 +10,12 @@ The composite primary key for this table is (**org**, **repository_id**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|org (PK)|String|
-|repository_id (PK)|Int|
-|clones|JSON|
-|count|Int|
-|uniques|Int|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|org (PK)|`utf8`|
+|repository_id (PK)|`int64`|
+|clones|`json`|
+|count|`int64`|
+|uniques|`int64`|

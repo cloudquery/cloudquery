@@ -1,10 +1,11 @@
 package services
 
 import (
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/facebookmarketing/client"
 	"github.com/cloudquery/cloudquery/plugins/source/facebookmarketing/rest"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func ConnectedInstagramAccounts() *schema.Table {
@@ -14,12 +15,10 @@ func ConnectedInstagramAccounts() *schema.Table {
 		Transform: client.TransformWithStruct(&rest.ConnnectedInstagramAccount{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Resolver: client.ResolveAccountId,
-				Type:     schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "account_id",
+				Resolver:   client.ResolveAccountId,
+				Type:       arrow.BinaryTypes.String,
+				PrimaryKey: true,
 			},
 		},
 	}

@@ -3,8 +3,9 @@ package ips
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudflare/cloudflare-go"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 type IpWrapper struct {
@@ -20,12 +21,12 @@ func IPs() *schema.Table {
 			{
 				Name:        "ip",
 				Description: "Cloudflare ip cidr address.",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 			},
 			{
 				Name:        "type",
 				Description: "Ip type, ipv4, ipv6, ipv4_china, ipv6_china.",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 			},
 		},
 	}

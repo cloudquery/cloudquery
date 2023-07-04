@@ -3,11 +3,12 @@ package lightsail
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func containerServiceImages() *schema.Table {
@@ -23,7 +24,7 @@ func containerServiceImages() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "container_service_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 		},
@@ -35,10 +36,10 @@ func fetchLightsailContainerServiceImages(ctx context.Context, meta schema.Clien
 	input := lightsail.GetContainerImagesInput{
 		ServiceName: r.ContainerServiceName,
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Lightsail
+	cl := meta.(*client.Client)
+	svc := cl.Services().Lightsail
 	deployments, err := svc.GetContainerImages(ctx, &input, func(options *lightsail.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

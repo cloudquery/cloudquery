@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func ServerGroups() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_postgresqlhsc_server_groups",
-		Resolver:    fetchServerGroups,
-		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc@v0.5.0#ServerGroup",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_postgresqlhsc_server_groups", client.Namespacemicrosoft_dbforpostgresql),
-		Transform:   transformers.TransformWithStruct(&armpostgresqlhsc.ServerGroup{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_postgresqlhsc_server_groups",
+		Resolver:             fetchServerGroups,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc@v0.5.0#ServerGroup",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_postgresqlhsc_server_groups", client.Namespacemicrosoft_dbforpostgresql),
+		Transform:            transformers.TransformWithStruct(&armpostgresqlhsc.ServerGroup{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

@@ -7,8 +7,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildPortfolios(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -16,9 +17,8 @@ func buildPortfolios(t *testing.T, ctrl *gomock.Controller) client.Services {
 	ma := mocks.NewMockServicecatalogappregistryClient(ctrl)
 
 	o := servicecatalog.ListPortfoliosOutput{}
-	if err := faker.FakeObject(&o); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&o))
+
 	o.NextPageToken = nil
 
 	mk.EXPECT().ListPortfolios(gomock.Any(), gomock.Any(), gomock.Any()).Return(
@@ -27,9 +27,7 @@ func buildPortfolios(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	to := servicecatalogappregistry.ListTagsForResourceOutput{}
-	if err := faker.FakeObject(&to); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&to))
 
 	ma.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&to,

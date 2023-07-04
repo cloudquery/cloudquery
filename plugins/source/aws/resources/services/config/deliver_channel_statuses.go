@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func deliveryChannelStatuses() *schema.Table {
@@ -28,15 +28,15 @@ func deliveryChannelStatuses() *schema.Table {
 
 func fetchDeliveryChannelStatuses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	ruleDetail := parent.Item.(types.DeliveryChannel)
-	c := meta.(*client.Client)
-	svc := c.Services().Configservice
+	cl := meta.(*client.Client)
+	svc := cl.Services().Configservice
 
 	input := &configservice.DescribeDeliveryChannelStatusInput{
 		DeliveryChannelNames: []string{aws.ToString(ruleDetail.Name)},
 	}
 
 	response, err := svc.DescribeDeliveryChannelStatus(ctx, input, func(options *configservice.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

@@ -10,30 +10,30 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|tags|JSON|
-|arn (PK)|String|
-|created_at|Timestamp|
-|domain_name|String|
-|domain_validation_records|JSON|
-|eligible_to_renew|String|
-|in_use_resource_count|Int|
-|issued_at|Timestamp|
-|issuer_ca|String|
-|key_algorithm|String|
-|name|String|
-|not_after|Timestamp|
-|not_before|Timestamp|
-|renewal_summary|JSON|
-|request_failure_reason|String|
-|revocation_reason|String|
-|revoked_at|Timestamp|
-|serial_number|String|
-|status|String|
-|subject_alternative_names|StringArray|
-|support_code|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|tags|`json`|
+|arn (PK)|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|domain_name|`utf8`|
+|domain_validation_records|`json`|
+|eligible_to_renew|`utf8`|
+|in_use_resource_count|`int64`|
+|issued_at|`timestamp[us, tz=UTC]`|
+|issuer_ca|`utf8`|
+|key_algorithm|`utf8`|
+|name|`utf8`|
+|not_after|`timestamp[us, tz=UTC]`|
+|not_before|`timestamp[us, tz=UTC]`|
+|renewal_summary|`json`|
+|request_failure_reason|`utf8`|
+|revocation_reason|`utf8`|
+|revoked_at|`timestamp[us, tz=UTC]`|
+|serial_number|`utf8`|
+|status|`utf8`|
+|subject_alternative_names|`list<item: utf8, nullable>`|
+|support_code|`utf8`|

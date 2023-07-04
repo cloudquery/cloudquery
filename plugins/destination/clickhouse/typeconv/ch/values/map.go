@@ -27,30 +27,25 @@ func mapValue(arr *array.Map) (any, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	valueType := col.ScanType()
 	if valueType.Kind() != reflect.Map {
 		return nil, fmt.Errorf("unexpected reflect type for map: %q", valueType.String())
 	}
 
-	return makeMapSlice(valueType, arr)
+	return makeMapSlice(valueType, sanitizeNested(arr).(*array.Map))
 }
 
 func makeMapSlice(mapType reflect.Type, arr *array.Map) (any, error) {
-	res := reflect.MakeSlice(reflect.SliceOf(reflect.PointerTo(mapType)), arr.Len(), arr.Len()) // we do []*(type) for nullable assignment
+	res := reflect.MakeSlice(reflect.SliceOf(mapType), arr.Len(), arr.Len()) // maps aren't nullable in ClickHouse
 	for i := 0; i < arr.Len(); i++ {
-		val := reflect.New(mapType)
-		if arr.IsNull(i) {
-			// we need to fill in for the in-depth recursive parsing by ClickHouse SDK
-			res.Index(i).Set(val)
-			continue
-		}
 		start, end := arr.ValueOffsets(i)
 		mapVal, err := makeMap(mapType, array.NewSlice(arr.ListValues(), start, end))
 		if err != nil {
 			return nil, err
 		}
-		val.Elem().Set(*mapVal)
-		res.Index(i).Set(val)
+
+		res.Index(i).Set(*mapVal)
 	}
 	return res.Interface(), nil
 }
@@ -60,8 +55,8 @@ func makeMap(mapType reflect.Type, arr arrow.Array) (*reflect.Value, error) {
 	if err != nil {
 		return nil, err
 	}
-	// we do know that this is []*map[string]any (map is implemented as list of structs(key, item))
-	actualData := data.([]*map[string]any)
+	// we do know that this is []map[string]any (map is implemented as list of structs(key, item))
+	actualData := data.([]map[string]any)
 
 	const (
 		keyField  = "key"
@@ -71,7 +66,7 @@ func makeMap(mapType reflect.Type, arr arrow.Array) (*reflect.Value, error) {
 	value := reflect.MakeMapWithSize(mapType, len(actualData))
 	for _, elem := range actualData {
 		// elem should NEVER be nil (at least key has to be filled in)
-		value.SetMapIndex(reflect.ValueOf((*elem)[keyField]).Elem(), mapItemValue(reflect.ValueOf((*elem)[itemField])))
+		value.SetMapIndex(reflect.ValueOf(elem[keyField]).Elem(), mapItemValue(reflect.ValueOf(elem[itemField])))
 	}
 	return &value, nil
 }

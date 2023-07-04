@@ -1,10 +1,12 @@
 package route53
 
 import (
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
 )
 
 func trafficPolicyVersions() *schema.Table {
@@ -18,32 +20,26 @@ func trafficPolicyVersions() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:     "traffic_policy_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "traffic_policy_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Id"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "version",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Version"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "version",
+				Type:       arrow.PrimitiveTypes.Int64,
+				Resolver:   schema.PathResolver("Version"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "document",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: schema.PathResolver("Document"),
 			},
 		},

@@ -3,18 +3,21 @@ package networkfirewall
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/networkfirewall"
 	"github.com/aws/aws-sdk-go-v2/service/networkfirewall/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/networkfirewall/models"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func RuleGroups() *schema.Table {
 	tableName := "aws_networkfirewall_rule_groups"
 	return &schema.Table{
-		Name:                "aws_networkfirewall_rule_groups",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/network-firewall/latest/APIReference/API_RuleGroup.html`,
 		Resolver:            fetchRuleGroups,
 		PreResourceResolver: getRuleGroup,
@@ -27,16 +30,14 @@ func RuleGroups() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("RuleGroupArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("RuleGroupArn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: client.ResolveTags,
 			},
 		},
@@ -45,12 +46,12 @@ func RuleGroups() *schema.Table {
 
 func fetchRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input networkfirewall.ListRuleGroupsInput
-	c := meta.(*client.Client)
-	svc := c.Services().Networkfirewall
+	cl := meta.(*client.Client)
+	svc := cl.Services().Networkfirewall
 	p := networkfirewall.NewListRuleGroupsPaginator(svc, &input)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *networkfirewall.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -62,16 +63,16 @@ func fetchRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema
 }
 
 func getRuleGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Networkfirewall
+	cl := meta.(*client.Client)
+	svc := cl.Services().Networkfirewall
 	metadata := resource.Item.(types.RuleGroupMetadata)
 
 	ruleGroup, err := svc.DescribeRuleGroup(ctx, &networkfirewall.DescribeRuleGroupInput{
 		RuleGroupArn: metadata.Arn,
 	}, func(options *networkfirewall.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
-	if err != nil && !c.IsNotFoundError(err) {
+	if err != nil && !cl.IsNotFoundError(err) {
 		return err
 	}
 

@@ -4,13 +4,16 @@ import (
 	"context"
 	"fmt"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Triggers() *schema.Table {
@@ -26,16 +29,14 @@ func Triggers() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveGlueTriggerArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveGlueTriggerArn,
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveGlueTriggerTags,
 			},
 		},
@@ -43,13 +44,13 @@ func Triggers() *schema.Table {
 }
 
 func fetchGlueTriggers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Glue
+	cl := meta.(*client.Client)
+	svc := cl.Services().Glue
 	input := glue.ListTriggersInput{MaxResults: aws.Int32(200)}
 	paginator := glue.NewListTriggersPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *glue.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -60,13 +61,13 @@ func fetchGlueTriggers(ctx context.Context, meta schema.ClientMeta, parent *sche
 }
 
 func getTrigger(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	name := resource.Item.(string)
-	svc := c.Services().Glue
+	svc := cl.Services().Glue
 	dc, err := svc.GetTrigger(ctx, &glue.GetTriggerInput{
 		Name: &name,
 	}, func(options *glue.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

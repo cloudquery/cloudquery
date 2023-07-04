@@ -10,16 +10,38 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id|String|
-|alternative_name_server_config|JSON|
-|description|String|
-|enable_inbound_forwarding|Bool|
-|enable_logging|Bool|
-|id (PK)|Int|
-|kind|String|
-|name|String|
-|networks|JSON|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id|`utf8`|
+|alternative_name_server_config|`json`|
+|description|`utf8`|
+|enable_inbound_forwarding|`bool`|
+|enable_logging|`bool`|
+|id (PK)|`int64`|
+|kind|`utf8`|
+|name|`utf8`|
+|networks|`json`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Ensure that Cloud DNS logging is enabled for all VPC networks (Automated)
+
+```sql
+SELECT
+  DISTINCT
+  gcn.name AS resource_id,
+  'Ensure that Cloud DNS logging is enabled for all VPC networks (Automated)'
+    AS title,
+  gcn.project_id AS project_id,
+  CASE WHEN gdp.enable_logging = false THEN 'fail' ELSE 'pass' END AS status
+FROM
+  gcp_dns_policies AS gdp,
+  jsonb_array_elements(gdp.networks) AS gdpn
+  JOIN gcp_compute_networks AS gcn ON
+      gcn.self_link
+      = replace(gdpn->>'networkUrl', 'compute.googleapis', 'www.googleapis');
+```
+
+

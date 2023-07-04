@@ -3,11 +3,12 @@ package iam
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func sshPublicKeys() *schema.Table {
@@ -20,25 +21,21 @@ func sshPublicKeys() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:     "user_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "user_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "user_id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("user_id"),
 			},
 			{
-				Name:     "ssh_public_key_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SSHPublicKeyId"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "ssh_public_key_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("SSHPublicKeyId"),
+				PrimaryKey: true,
 			},
 		},
 	}

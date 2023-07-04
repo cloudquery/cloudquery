@@ -2,14 +2,14 @@ package cmd
 
 import (
 	"fmt"
+	"math"
 	"strings"
 
 	"github.com/google/uuid"
 	"golang.org/x/exp/slices"
 
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/manageddestination"
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/managedsource"
-	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
+	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
@@ -21,7 +21,6 @@ cloudquery sync ./directory
 # Sync resources from directories and files
 cloudquery sync ./directory ./aws.yml ./pg.yml
 `
-	unknownFieldErrorPrefix = "code = InvalidArgument desc = failed to decode spec: json: unknown field "
 )
 
 func NewCmdSync() *cobra.Command {
@@ -35,6 +34,43 @@ func NewCmdSync() *cobra.Command {
 	}
 	cmd.Flags().Bool("no-migrate", false, "Disable auto-migration before sync. By default, sync runs a migration before syncing resources.")
 	return cmd
+}
+
+// findMaxCommonVersion finds the max common version between protocol versions supported by a plugin and those supported by the CLI.
+// If all plugin versions are lower than min CLI supported version, it returns -1.
+// If all plugin versions are higher than max CLI supported version, it returns -2.
+// In this way it is possible tell whether the source or the CLI needs to be updated:
+// if -1, the source needs to be updated or the CLI downgraded;
+// if -2, the CLI needs to be updated or the source downgraded.
+func findMaxCommonVersion(pluginSupported []int, cliSupported []int) int {
+	if len(pluginSupported) == 0 {
+		return -1
+	}
+
+	minCLISupported, maxCLISupported := math.MaxInt32, -1
+	for _, v := range cliSupported {
+		if v < minCLISupported {
+			minCLISupported = v
+		}
+		if v > maxCLISupported {
+			maxCLISupported = v
+		}
+	}
+
+	minVersion := math.MaxInt32
+	maxCommon := -1
+	for _, v := range pluginSupported {
+		if v < minVersion {
+			minVersion = v
+		}
+		if v > maxCommon && slices.Contains(cliSupported, v) {
+			maxCommon = v
+		}
+	}
+	if maxCommon == -1 && minVersion > maxCLISupported {
+		return -2
+	}
+	return maxCommon
 }
 
 func sync(cmd *cobra.Command, args []string) error {
@@ -62,69 +98,129 @@ func sync(cmd *cobra.Command, args []string) error {
 	}
 	sources := specReader.Sources
 	destinations := specReader.Destinations
-	sourceOpts := []managedsource.Option{
-		managedsource.WithLogger(log.Logger),
-	}
-	destinationOpts := []manageddestination.Option{
-		manageddestination.WithLogger(log.Logger),
+	opts := []managedplugin.Option{
+		managedplugin.WithLogger(log.Logger),
 	}
 	if cqDir != "" {
-		sourceOpts = append(sourceOpts, managedsource.WithDirectory(cqDir))
-		destinationOpts = append(destinationOpts, manageddestination.WithDirectory(cqDir))
+		opts = append(opts, managedplugin.WithDirectory(cqDir))
 	}
 	if disableSentry {
-		sourceOpts = append(sourceOpts, managedsource.WithNoSentry())
-		destinationOpts = append(destinationOpts, manageddestination.WithNoSentry())
+		opts = append(opts, managedplugin.WithNoSentry())
+	}
+	sourcePluginConfigs := make([]managedplugin.Config, 0, len(sources))
+	for _, source := range sources {
+		sourcePluginConfigs = append(sourcePluginConfigs, managedplugin.Config{
+			Name:     source.Name,
+			Registry: SpecRegistryToPlugin(source.Registry),
+			Version:  source.Version,
+			Path:     source.Path,
+		})
 	}
 
-	sourcesClients, err := managedsource.NewClients(ctx, sources, sourceOpts...)
+	destinationPluginConfigs := make([]managedplugin.Config, 0, len(destinations))
+	for _, destination := range destinations {
+		destinationPluginConfigs = append(destinationPluginConfigs, managedplugin.Config{
+			Name:     destination.Name,
+			Registry: SpecRegistryToPlugin(destination.Registry),
+			Version:  destination.Version,
+			Path:     destination.Path,
+		})
+	}
+
+	sourcePluginClients, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, sourcePluginConfigs, opts...)
 	if err != nil {
 		return err
 	}
 	defer func() {
-		if err := sourcesClients.Terminate(); err != nil {
-			fmt.Println(err)
-		}
-	}()
-	destinationsClients, err := manageddestination.NewClients(ctx, destinations, destinationOpts...)
-	if err != nil {
-		return err
-	}
-	defer func() {
-		if err := destinationsClients.Terminate(); err != nil {
+		if err := sourcePluginClients.Terminate(); err != nil {
 			fmt.Println(err)
 		}
 	}()
 
-	for _, cl := range sourcesClients {
-		maxVersion, err := cl.MaxVersion(ctx)
+	destinationPluginClients, err := managedplugin.NewClients(ctx, managedplugin.PluginDestination, destinationPluginConfigs, opts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err := destinationPluginClients.Terminate(); err != nil {
+			fmt.Println(err)
+		}
+	}()
+
+	for _, source := range sources {
+		cl := sourcePluginClients.ClientByName(source.Name)
+		versions, err := cl.Versions(ctx)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to get source versions: %w", err)
+		}
+		maxVersion := findMaxCommonVersion(versions, []int{0, 1, 2, 3})
+
+		var destinationClientsForSource []*managedplugin.Client
+		var destinationForSourceSpec []specs.Destination
+		for _, destination := range destinations {
+			if slices.Contains(source.Destinations, destination.Name) {
+				destinationClientsForSource = append(destinationClientsForSource, destinationPluginClients.ClientByName(destination.Name))
+				destinationForSourceSpec = append(destinationForSourceSpec, *destination)
+			}
 		}
 		switch maxVersion {
+		case 3:
+			// for backwards-compatibility, check for old fields and move them into the spec, log a warning
+			warnings := specReader.GetSourceWarningsByName(source.Name)
+			for field, msg := range warnings {
+				log.Warn().Str("source", source.Name).Str("field", field).Msg(msg)
+			}
+			if _, found := warnings["scheduler"]; found {
+				source.Spec["scheduler"] = source.Scheduler.String() // nolint:staticcheck // use of deprecated field
+			}
+			if _, found := warnings["concurrency"]; found {
+				source.Spec["concurrency"] = source.Concurrency // nolint:staticcheck // use of deprecated field
+			}
+			for i, destination := range destinationClientsForSource {
+				versions, err := destination.Versions(ctx)
+				if err != nil {
+					return fmt.Errorf("failed to get destination versions: %w", err)
+				}
+				if !slices.Contains(versions, 3) {
+					return fmt.Errorf("destination %[1]s does not support CloudQuery protocol version 3, required by %[2]s. Please upgrade to newer version of %[1]s", destination.Name(), source.Name)
+				}
+				destWarnings := specReader.GetDestinationWarningsByName(source.Name)
+				for field, msg := range destWarnings {
+					log.Warn().Str("destination", destination.Name()).Str("field", field).Msg(msg)
+				}
+				if _, found := destWarnings["batch_size"]; found {
+					destinationForSourceSpec[i].Spec["batch_size"] = destinationForSourceSpec[i].BatchSize // nolint:staticcheck // use of deprecated field
+				}
+				if _, found := destWarnings["batch_size_bytes"]; found {
+					destinationForSourceSpec[i].Spec["batch_size_bytes"] = destinationForSourceSpec[i].BatchSizeBytes // nolint:staticcheck // use of deprecated field
+				}
+			}
+			if err := syncConnectionV3(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, invocationUUID.String(), noMigrate); err != nil {
+				return fmt.Errorf("failed to sync v3 source %s: %w", cl.Name(), err)
+			}
 		case 2:
-			for _, destination := range destinationsClients {
+			for _, destination := range destinationClientsForSource {
 				versions, err := destination.Versions(ctx)
 				if err != nil {
 					return fmt.Errorf("failed to get destination versions: %w", err)
 				}
 				if !slices.Contains(versions, 1) {
-					return fmt.Errorf("destination %[1]s does not support CloudQuery SDK version 1. Please upgrade to newer version of %[1]s", destination.Spec.Name)
+					return fmt.Errorf("destination %[1]s does not support CloudQuery SDK version 1. Please upgrade to newer version of %[1]s", destination.Name())
 				}
 			}
-			if err := syncConnectionV2(ctx, cl, destinationsClients, invocationUUID.String(), noMigrate); err != nil {
-				return fmt.Errorf("failed to sync v2 source %s: %w", cl.Spec.Name, err)
+			if err := syncConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, invocationUUID.String(), noMigrate); err != nil {
+				return fmt.Errorf("failed to sync v2 source %s: %w", cl.Name(), err)
 			}
 		case 1:
-			if err := syncConnectionV1(ctx, cl, destinationsClients, invocationUUID.String(), noMigrate); err != nil {
-				return fmt.Errorf("failed to sync v1 source %s: %w", cl.Spec.Name, err)
+			if err := syncConnectionV1(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, invocationUUID.String(), noMigrate); err != nil {
+				return fmt.Errorf("failed to sync v1 source %s: %w", cl.Name(), err)
 			}
 		case 0:
-			if err := syncConnectionV0_2(ctx, cl, destinationsClients, invocationUUID.String(), noMigrate); err != nil {
-				return fmt.Errorf("failed to sync v1 source %s: %w", cl.Spec.Name, err)
-			}
+			return fmt.Errorf("please upgrade source %v or use an older CLI version, between v3.0.1 and v3.5.3", source.Name)
 		case -1:
-			return fmt.Errorf("please upgrade your source or use an older CLI version < v3.0.1")
+			return fmt.Errorf("please upgrade source %v or use an older CLI version, < v3.0.1", source.Name)
+		case -2:
+			return fmt.Errorf("please upgrade CLI or downgrade source to sync %v", source.Name)
 		default:
 			return fmt.Errorf("unknown source version %d", maxVersion)
 		}

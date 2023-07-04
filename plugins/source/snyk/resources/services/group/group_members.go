@@ -3,9 +3,10 @@ package group
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 )
 
@@ -20,12 +21,10 @@ func groupMembers() *schema.Table {
 		),
 		Columns: []schema.Column{
 			{
-				Name: "group_id",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-				Resolver: schema.ParentColumnResolver("id"),
+				Name:       "group_id",
+				Type:       arrow.BinaryTypes.String,
+				PrimaryKey: true,
+				Resolver:   schema.ParentColumnResolver("id"),
 			},
 		},
 	}

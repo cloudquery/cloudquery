@@ -10,22 +10,22 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|enhanced_monitoring|JSON|
-|open_shard_count|Int|
-|retention_period_hours|Int|
-|stream_arn|String|
-|stream_creation_timestamp|Timestamp|
-|stream_name|String|
-|stream_status|String|
-|consumer_count|Int|
-|encryption_type|String|
-|key_id|String|
-|stream_mode_details|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|enhanced_monitoring|`json`|
+|open_shard_count|`int64`|
+|retention_period_hours|`int64`|
+|stream_arn|`utf8`|
+|stream_creation_timestamp|`timestamp[us, tz=UTC]`|
+|stream_name|`utf8`|
+|stream_status|`utf8`|
+|consumer_count|`int64`|
+|encryption_type|`utf8`|
+|key_id|`utf8`|
+|stream_mode_details|`json`|

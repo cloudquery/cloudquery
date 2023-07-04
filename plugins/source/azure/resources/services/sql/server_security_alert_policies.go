@@ -7,19 +7,20 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/gorilla/mux"
 )
 
 func serverSecurityAlertPolicies() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_sql_server_security_alert_policies",
-		Resolver:    fetchServerSecurityAlertPolicies,
-		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/server-security-alert-policies/list-by-server?tabs=HTTP#serversecurityalertpolicy",
-		Transform:   transformers.TransformWithStruct(&armsql.ServerSecurityAlertPolicy{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_sql_server_security_alert_policies",
+		Resolver:             fetchServerSecurityAlertPolicies,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/server-security-alert-policies/list-by-server?tabs=HTTP#serversecurityalertpolicy",
+		Transform:            transformers.TransformWithStruct(&armsql.ServerSecurityAlertPolicy{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

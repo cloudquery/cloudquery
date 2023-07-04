@@ -15,25 +15,25 @@ The following tables depend on aws_lightsail_buckets:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|able_to_update_bundle|Bool|
-|tags|JSON|
-|access_log_config|JSON|
-|access_rules|JSON|
-|arn (PK)|String|
-|bundle_id|String|
-|created_at|Timestamp|
-|location|JSON|
-|name|String|
-|object_versioning|String|
-|readonly_access_accounts|StringArray|
-|resource_type|String|
-|resources_receiving_access|JSON|
-|state|JSON|
-|support_code|String|
-|url|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|able_to_update_bundle|`bool`|
+|tags|`json`|
+|access_log_config|`json`|
+|access_rules|`json`|
+|arn (PK)|`utf8`|
+|bundle_id|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|location|`json`|
+|name|`utf8`|
+|object_versioning|`utf8`|
+|readonly_access_accounts|`list<item: utf8, nullable>`|
+|resource_type|`utf8`|
+|resources_receiving_access|`json`|
+|state|`json`|
+|support_code|`utf8`|
+|url|`utf8`|

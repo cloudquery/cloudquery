@@ -14,17 +14,17 @@ This table depends on [aws_ssm_instances](aws_ssm_instances).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|instance_arn (PK)|String|
-|kb_id (PK)|String|
-|classification|String|
-|installed_time|Timestamp|
-|severity|String|
-|state|String|
-|title|String|
-|cve_ids|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|instance_arn (PK)|`utf8`|
+|kb_id (PK)|`utf8`|
+|classification|`utf8`|
+|installed_time|`timestamp[us, tz=UTC]`|
+|severity|`utf8`|
+|state|`utf8`|
+|title|`utf8`|
+|cve_ids|`utf8`|

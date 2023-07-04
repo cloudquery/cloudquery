@@ -10,40 +10,40 @@ The composite primary key for this table is (**account_id**, **id**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|automatic_matching_fields|StringArray|
-|business|JSON|
-|can_proxy|Bool|
-|config|String|
-|creation_time|Timestamp|
-|creator|JSON|
-|data_use_setting|String|
-|description|String|
-|duplicate_entries|Int|
-|enable_auto_assign_to_accounts|Bool|
-|enable_automatic_matching|Bool|
-|event_stats|String|
-|event_time_max|Int|
-|event_time_min|Int|
-|first_party_cookie_status|String|
-|id (PK)|String|
-|is_consolidated_container|Bool|
-|is_created_by_business|Bool|
-|is_crm|Bool|
-|is_mta_use|Bool|
-|is_restricted_use|Bool|
-|is_unavailable|Bool|
-|last_fired_time|Timestamp|
-|last_upload_app|String|
-|last_upload_app_changed_time|Int|
-|match_rate_approx|Int|
-|matched_entries|Int|
-|name|String|
-|owner_ad_account|JSON|
-|owner_business|JSON|
-|usage|JSON|
-|valid_entries|Int|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|automatic_matching_fields|`list<item: utf8, nullable>`|
+|business|`json`|
+|can_proxy|`bool`|
+|config|`utf8`|
+|creation_time|`timestamp[us, tz=UTC]`|
+|creator|`json`|
+|data_use_setting|`utf8`|
+|description|`utf8`|
+|duplicate_entries|`int64`|
+|enable_auto_assign_to_accounts|`bool`|
+|enable_automatic_matching|`bool`|
+|event_stats|`utf8`|
+|event_time_max|`int64`|
+|event_time_min|`int64`|
+|first_party_cookie_status|`utf8`|
+|id (PK)|`utf8`|
+|is_consolidated_container|`bool`|
+|is_created_by_business|`bool`|
+|is_crm|`bool`|
+|is_mta_use|`bool`|
+|is_restricted_use|`bool`|
+|is_unavailable|`bool`|
+|last_fired_time|`timestamp[us, tz=UTC]`|
+|last_upload_app|`utf8`|
+|last_upload_app_changed_time|`int64`|
+|match_rate_approx|`int64`|
+|matched_entries|`int64`|
+|name|`utf8`|
+|owner_ad_account|`json`|
+|owner_business|`json`|
+|usage|`json`|
+|valid_entries|`int64`|

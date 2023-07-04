@@ -3,13 +3,14 @@ package ecr
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/aws/aws-sdk-go-v2/service/ecr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func repositoryImages() *schema.Table {
@@ -22,12 +23,10 @@ func repositoryImages() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveImageArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveImageArn,
+				PrimaryKey: true,
 			},
 		},
 
@@ -38,11 +37,12 @@ func repositoryImages() *schema.Table {
 }
 func fetchEcrRepositoryImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
+	svc := cl.Services().Ecr
 	config := ecr.DescribeImagesInput{
 		RepositoryName: parent.Item.(types.Repository).RepositoryName,
 		MaxResults:     aws.Int32(1000),
 	}
-	paginator := ecr.NewDescribeImagesPaginator(meta.(*client.Client).Services().Ecr, &config)
+	paginator := ecr.NewDescribeImagesPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *ecr.Options) {
 			options.Region = cl.Region

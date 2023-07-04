@@ -5,13 +5,16 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/apache/arrow/go/v13/arrow"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/mitchellh/hashstructure/v2"
+
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
-	"github.com/mitchellh/hashstructure/v2"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 const tableName = "aws_cloudtrail_events"
@@ -29,16 +32,14 @@ func Events() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "cloud_trail_event",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: schema.PathResolver("CloudTrailEvent"),
 			},
 			{
-				Name:     "event_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("EventTime"),
-				CreationOptions: schema.ColumnCreationOptions{
-					IncrementalKey: true,
-				},
+				Name:           "event_time",
+				Type:           arrow.FixedWidthTypes.Timestamp_us,
+				Resolver:       schema.PathResolver("EventTime"),
+				IncrementalKey: true,
 			},
 		},
 	}

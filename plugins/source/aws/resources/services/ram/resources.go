@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ram"
 	"github.com/aws/aws-sdk-go-v2/service/ram/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Resources() *schema.Table {
@@ -39,7 +39,7 @@ func fetchRamResources(ctx context.Context, meta schema.ClientMeta, _ *schema.Re
 }
 
 func fetchRamResourcesByOwner(ctx context.Context, meta schema.ClientMeta, shareType types.ResourceOwner, res chan<- any) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	input := &ram.ListResourcesInput{
 		MaxResults:    aws.Int32(500),
 		ResourceOwner: shareType,
@@ -47,7 +47,7 @@ func fetchRamResourcesByOwner(ctx context.Context, meta schema.ClientMeta, share
 	paginator := ram.NewListResourcesPaginator(meta.(*client.Client).Services().Ram, input)
 	for paginator.HasMorePages() {
 		response, err := paginator.NextPage(ctx, func(options *ram.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

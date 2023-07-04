@@ -5,8 +5,8 @@ import (
 
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV2"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Users() *schema.Table {
@@ -14,29 +14,9 @@ func Users() *schema.Table {
 		Name:      "datadog_users",
 		Resolver:  fetchUsers,
 		Multiplex: client.AccountMultiplex,
-		Transform: transformers.TransformWithStruct(&datadogV2.User{}),
-		Columns: []schema.Column{
-			{
-				Name:     "account_name",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAccountName,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
-
-		Relations: []*schema.Table{
-			UserPermissions(),
-		},
+		Transform: client.TransformWithStruct(&datadogV2.User{}, transformers.WithPrimaryKeys("Id")),
+		Columns:   schema.ColumnList{client.AccountNameColumn},
+		Relations: schema.Tables{permissions()},
 	}
 }
 

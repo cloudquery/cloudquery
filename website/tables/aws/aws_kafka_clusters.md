@@ -16,20 +16,20 @@ The following tables depend on aws_kafka_clusters:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|arn (PK)|String|
-|active_operation_arn|String|
-|cluster_arn|String|
-|cluster_name|String|
-|cluster_type|String|
-|creation_time|Timestamp|
-|current_version|String|
-|provisioned|JSON|
-|serverless|JSON|
-|state|String|
-|state_info|JSON|
-|tags|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|arn (PK)|`utf8`|
+|active_operation_arn|`utf8`|
+|cluster_arn|`utf8`|
+|cluster_name|`utf8`|
+|cluster_type|`utf8`|
+|creation_time|`timestamp[us, tz=UTC]`|
+|current_version|`utf8`|
+|provisioned|`json`|
+|serverless|`json`|
+|state|`utf8`|
+|state_info|`json`|
+|tags|`json`|

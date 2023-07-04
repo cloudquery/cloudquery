@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/organizations/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func ResourcePolicies() *schema.Table {
@@ -25,9 +25,10 @@ func ResourcePolicies() *schema.Table {
 }
 
 func fetchOrganizationsResourcePolicies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	o, err := c.Services().Organizations.DescribeResourcePolicy(ctx, &organizations.DescribeResourcePolicyInput{}, func(options *organizations.Options) {
-		options.Region = c.Region
+	cl := meta.(*client.Client)
+	svc := cl.Services().Organizations
+	o, err := svc.DescribeResourcePolicy(ctx, &organizations.DescribeResourcePolicyInput{}, func(options *organizations.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

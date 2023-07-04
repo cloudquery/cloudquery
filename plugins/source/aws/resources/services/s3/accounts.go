@@ -8,18 +8,19 @@ import (
 	s3controlTypes "github.com/aws/aws-sdk-go-v2/service/s3control/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3/models"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/pkg/errors"
 )
 
 func Accounts() *schema.Table {
 	tableName := "aws_s3_accounts"
 	return &schema.Table{
-		Name:      tableName,
-		Resolver:  fetchS3Accounts,
-		Transform: transformers.TransformWithStruct(&models.PublicAccessBlockConfigurationWrapper{}, transformers.WithUnwrapStructFields("PublicAccessBlockConfiguration")),
-		Multiplex: client.AccountMultiplex(tableName),
+		Name:        tableName,
+		Description: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_control_PublicAccessBlockConfiguration.html",
+		Resolver:    fetchS3Accounts,
+		Transform:   transformers.TransformWithStruct(&models.PublicAccessBlockConfigurationWrapper{}, transformers.WithUnwrapStructFields("PublicAccessBlockConfiguration")),
+		Multiplex:   client.AccountMultiplex(tableName),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 		},

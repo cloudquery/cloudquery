@@ -3,12 +3,13 @@ package directconnect
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func gatewayAttachments() *schema.Table {
@@ -24,12 +25,12 @@ func gatewayAttachments() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "gateway_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "gateway_id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("id"),
 			},
 		},
@@ -38,13 +39,13 @@ func gatewayAttachments() *schema.Table {
 
 func fetchDirectconnectGatewayAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	gateway := parent.Item.(types.DirectConnectGateway)
-	c := meta.(*client.Client)
-	svc := c.Services().Directconnect
+	cl := meta.(*client.Client)
+	svc := cl.Services().Directconnect
 	config := directconnect.DescribeDirectConnectGatewayAttachmentsInput{DirectConnectGatewayId: gateway.DirectConnectGatewayId}
 	// No paginator available
 	for {
 		output, err := svc.DescribeDirectConnectGatewayAttachments(ctx, &config, func(options *directconnect.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

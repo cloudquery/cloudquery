@@ -2,14 +2,13 @@ package client
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"os"
 	"path"
 
-	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/goccy/go-json"
 )
 
 const (
@@ -19,8 +18,18 @@ const (
 	copyIntoTable             = `copy into %s from @cq_plugin_stage/%s file_format = (format_name = cq_plugin_json_format) match_by_column_name = case_insensitive`
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources []arrow.Record) error {
-	tableName := table.Name
+func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
+	if err := c.writer.Write(ctx, msgs); err != nil {
+		return err
+	}
+	if err := c.writer.Flush(ctx); err != nil {
+		return fmt.Errorf("failed to flush writer: %w", err)
+	}
+	return nil
+}
+
+func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
+	tableName := name
 	f, err := os.CreateTemp(os.TempDir(), tableName+".json.*")
 	if err != nil {
 		return err
@@ -30,8 +39,8 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resou
 		os.Remove(f.Name())
 	}()
 
-	for _, r := range resources {
-		arr := array.RecordToStructArray(r)
+	for _, r := range msgs {
+		arr := array.RecordToStructArray(r.Record)
 		enc := json.NewEncoder(f)
 		enc.SetEscapeHTML(false)
 		for i := 0; i < arr.Len(); i++ {

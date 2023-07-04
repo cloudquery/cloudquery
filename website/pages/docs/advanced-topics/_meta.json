@@ -1,5 +1,4 @@
 {
-  "docker": "Docker",
   "environment-variable-substitution": "Environment and File Variable Substitution",
   "migrations": "Migrations",
   "performance-tuning": "Performance Tuning",
@@ -7,5 +6,6 @@
   "rate-limiting": "Rate Limiting",
   "running-cloudquery-in-parallel": "Running CloudQuery in Parallel",
   "security": "Security",
-  "managing-incremental-tables": "Managing Incremental Tables"
+  "managing-incremental-tables": "Managing Incremental Tables",
+  "arrow-string-representation": "Arrow String Representation"
 }

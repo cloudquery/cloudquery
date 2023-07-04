@@ -3,12 +3,14 @@ package computeoptimizer
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/computeoptimizer"
 	"github.com/aws/aws-sdk-go-v2/service/computeoptimizer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func EbsVolumeRecommendations() *schema.Table {
@@ -21,14 +23,19 @@ func EbsVolumeRecommendations() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.VolumeRecommendation{}, transformers.WithPrimaryKeys("VolumeArn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
+			{
+				Name:     "tags",
+				Type:     sdkTypes.ExtensionTypes.JSON,
+				Resolver: client.ResolveTags,
+			},
 		},
 	}
 }
 
 func fetchEbsVolumeRecommendations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	s := c.Services()
-	svc := s.Computeoptimizer
+	cl := meta.(*client.Client)
+
+	svc := cl.Services().Computeoptimizer
 
 	input := computeoptimizer.GetEBSVolumeRecommendationsInput{
 		MaxResults: aws.Int32(1000),
@@ -36,14 +43,14 @@ func fetchEbsVolumeRecommendations(ctx context.Context, meta schema.ClientMeta, 
 	// No paginator available
 	for {
 		response, err := svc.GetEBSVolumeRecommendations(ctx, &input, func(options *computeoptimizer.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
 		}
 
 		if len(response.Errors) > 0 {
-			c.Logger().Error().Str("table", "aws_computeoptimizer_ebs_volume_recommendations").Msgf("Errors in response: %v", response.Errors)
+			cl.Logger().Error().Str("table", "aws_computeoptimizer_ebs_volume_recommendations").Msgf("Errors in response: %v", response.Errors)
 		}
 
 		if response.VolumeRecommendations != nil {

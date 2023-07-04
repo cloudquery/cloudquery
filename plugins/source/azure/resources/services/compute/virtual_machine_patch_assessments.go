@@ -7,15 +7,16 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func virtualMachinePatchAssessments() *schema.Table {
 	tableName := `azure_compute_virtual_machine_patch_assessments`
 	return &schema.Table{
-		Name:     tableName,
-		Resolver: fetchVirtualMachinePatchAssessments,
+		Name:                 tableName,
+		Resolver:             fetchVirtualMachinePatchAssessments,
+		PostResourceResolver: client.LowercaseIDResolver,
 		Description: `https://learn.microsoft.com/en-us/rest/api/compute/virtual-machines/assess-patches?tabs=HTTP#virtualmachineassesspatchesresult.
 
 This will begin patch assessments on available virtual machines and can take long to complete.

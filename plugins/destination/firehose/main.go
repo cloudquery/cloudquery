@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/cloudquery/cloudquery/plugins/destination/firehose/client"
 	"github.com/cloudquery/cloudquery/plugins/destination/firehose/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/v2/serve"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v3/serve"
 )
 
 const (

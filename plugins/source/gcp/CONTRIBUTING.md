@@ -5,7 +5,7 @@ Thanks for contributing to CloudQuery! You are awesome. This document serves as 
 There are two main steps to adding a new GCP resource:
 
 1. [Add a code generation recipe](#1-add-a-code-generation-recipe)
-2. [Writing the resolver function to fetch the resource using the AWS SDK](#2-setting-up-the-resource)
+2. [Writing the resolver function to fetch the resource using the GCP SDK](#2-setting-up-the-resource)
 
 ## 1. Add a Code Generation Recipe
 

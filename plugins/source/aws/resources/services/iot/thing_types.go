@@ -3,12 +3,15 @@ package iot
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func ThingTypes() *schema.Table {
@@ -24,16 +27,14 @@ func ThingTypes() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: ResolveIotThingTypeTags,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ThingTypeArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ThingTypeArn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -43,13 +44,13 @@ func fetchIotThingTypes(ctx context.Context, meta schema.ClientMeta, parent *sch
 	input := iot.ListThingTypesInput{
 		MaxResults: aws.Int32(250),
 	}
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 
-	svc := c.Services().Iot
+	svc := cl.Services().Iot
 	paginator := iot.NewListThingTypesPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

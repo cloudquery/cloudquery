@@ -8,20 +8,20 @@ The composite primary key for this table is (**account_id**, **id**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|category_description|String|
-|id (PK)|String|
-|name|String|
-|parent_category|String|
-|path|StringArray|
-|size_lower_bound|Int|
-|size_upper_bound|Int|
-|source|String|
-|type|Int|
-|type_name|String|
-|untranslated_name|String|
-|untranslated_parent_name|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|category_description|`utf8`|
+|id (PK)|`utf8`|
+|name|`utf8`|
+|parent_category|`utf8`|
+|path|`list<item: utf8, nullable>`|
+|size_lower_bound|`int64`|
+|size_upper_bound|`int64`|
+|source|`utf8`|
+|type|`int64`|
+|type_name|`utf8`|
+|untranslated_name|`utf8`|
+|untranslated_parent_name|`utf8`|

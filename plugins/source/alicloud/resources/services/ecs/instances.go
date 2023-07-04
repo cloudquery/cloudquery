@@ -2,9 +2,10 @@ package ecs
 
 import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/alicloud/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 
 	"reflect"
 	"strings"
@@ -22,11 +23,11 @@ func Instances() *schema.Table {
 			transformers.WithPrimaryKeys(
 				"RegionId", "InstanceId",
 			),
-			transformers.WithTypeTransformer(func(f reflect.StructField) (schema.ValueType, error) {
+			transformers.WithTypeTransformer(func(f reflect.StructField) (arrow.DataType, error) {
 				if strings.HasSuffix(f.Name, "Time") {
-					return schema.TypeTimestamp, nil
+					return arrow.FixedWidthTypes.Timestamp_us, nil
 				}
-				return transformers.DefaultTypeTransformer(f)
+				return nil, nil
 			}),
 			transformers.WithResolverTransformer(func(f reflect.StructField, path string) schema.ColumnResolver {
 				if strings.HasSuffix(f.Name, "Time") {
@@ -37,12 +38,10 @@ func Instances() *schema.Table {
 		),
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAccount,
+				PrimaryKey: true,
 			},
 		},
 	}

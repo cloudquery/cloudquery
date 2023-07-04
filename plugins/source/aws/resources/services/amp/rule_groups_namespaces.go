@@ -3,12 +3,13 @@ package amp
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/amp"
 	"github.com/aws/aws-sdk-go-v2/service/amp/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func ruleGroupsNamespaces() *schema.Table {
@@ -23,24 +24,22 @@ func ruleGroupsNamespaces() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "workspace_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
 }
 
 func fetchAmpRuleGroupsNamespaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := meta.(*client.Client).Services().Amp
+	cl := meta.(*client.Client)
+	svc := cl.Services().Amp
 
 	p := amp.NewListRuleGroupsNamespacesPaginator(svc,
 		&amp.ListRuleGroupsNamespacesInput{
@@ -51,7 +50,7 @@ func fetchAmpRuleGroupsNamespaces(ctx context.Context, meta schema.ClientMeta, p
 	for p.HasMorePages() {
 		out, err := p.NextPage(ctx,
 			func(options *amp.Options) {
-				options.Region = c.Region
+				options.Region = cl.Region
 			})
 		if err != nil {
 			return err
@@ -64,13 +63,13 @@ func fetchAmpRuleGroupsNamespaces(ctx context.Context, meta schema.ClientMeta, p
 }
 
 func describeRuleGroupsNamespace(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := meta.(*client.Client).Services().Amp
+	cl := meta.(*client.Client)
+	svc := cl.Services().Amp
 
 	out, err := svc.DescribeRuleGroupsNamespace(ctx,
 		&amp.DescribeRuleGroupsNamespaceInput{WorkspaceId: resource.Parent.Item.(*types.WorkspaceDescription).WorkspaceId},
 		func(options *amp.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		},
 	)
 	if err != nil {

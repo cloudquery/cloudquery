@@ -19,6 +19,7 @@ type RedshiftClient interface {
 	DescribeClusterTracks(context.Context, *redshift.DescribeClusterTracksInput, ...func(*redshift.Options)) (*redshift.DescribeClusterTracksOutput, error)
 	DescribeClusterVersions(context.Context, *redshift.DescribeClusterVersionsInput, ...func(*redshift.Options)) (*redshift.DescribeClusterVersionsOutput, error)
 	DescribeClusters(context.Context, *redshift.DescribeClustersInput, ...func(*redshift.Options)) (*redshift.DescribeClustersOutput, error)
+	DescribeCustomDomainAssociations(context.Context, *redshift.DescribeCustomDomainAssociationsInput, ...func(*redshift.Options)) (*redshift.DescribeCustomDomainAssociationsOutput, error)
 	DescribeDataShares(context.Context, *redshift.DescribeDataSharesInput, ...func(*redshift.Options)) (*redshift.DescribeDataSharesOutput, error)
 	DescribeDataSharesForConsumer(context.Context, *redshift.DescribeDataSharesForConsumerInput, ...func(*redshift.Options)) (*redshift.DescribeDataSharesForConsumerOutput, error)
 	DescribeDataSharesForProducer(context.Context, *redshift.DescribeDataSharesForProducerInput, ...func(*redshift.Options)) (*redshift.DescribeDataSharesForProducerOutput, error)

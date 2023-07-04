@@ -14,19 +14,19 @@ This table depends on [aws_glue_registry_schemas](aws_glue_registry_schemas).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|registry_schema_arn|String|
-|metadata|JSON|
-|created_time|String|
-|data_format|String|
-|schema_arn|String|
-|schema_definition|String|
-|schema_version_id|String|
-|status|String|
-|version_number|Int|
-|result_metadata|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|registry_schema_arn|`utf8`|
+|metadata|`json`|
+|created_time|`utf8`|
+|data_format|`utf8`|
+|schema_arn|`utf8`|
+|schema_definition|`utf8`|
+|schema_version_id|`utf8`|
+|status|`utf8`|
+|version_number|`int64`|
+|result_metadata|`json`|

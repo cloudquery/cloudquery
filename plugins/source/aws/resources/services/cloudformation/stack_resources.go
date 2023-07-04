@@ -3,11 +3,12 @@ package cloudformation
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func stackResources() *schema.Table {
@@ -23,7 +24,7 @@ func stackResources() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "stack_id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("id"),
 			},
 		},
@@ -35,12 +36,12 @@ func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMe
 	config := cloudformation.ListStackResourcesInput{
 		StackName: stack.StackName,
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudformation
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudformation
 	paginator := cloudformation.NewListStackResourcesPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cloudformation.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

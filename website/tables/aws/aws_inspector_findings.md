@@ -10,27 +10,27 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|attributes|JSON|
-|user_attributes|JSON|
-|created_at|Timestamp|
-|updated_at|Timestamp|
-|asset_attributes|JSON|
-|asset_type|String|
-|confidence|Int|
-|description|String|
-|id|String|
-|indicator_of_compromise|Bool|
-|numeric_severity|Float|
-|recommendation|String|
-|schema_version|Int|
-|service|String|
-|service_attributes|JSON|
-|severity|String|
-|title|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|attributes|`json`|
+|user_attributes|`json`|
+|created_at|`timestamp[us, tz=UTC]`|
+|updated_at|`timestamp[us, tz=UTC]`|
+|asset_attributes|`json`|
+|asset_type|`utf8`|
+|confidence|`int64`|
+|description|`utf8`|
+|id|`utf8`|
+|indicator_of_compromise|`bool`|
+|numeric_severity|`float64`|
+|recommendation|`utf8`|
+|schema_version|`int64`|
+|service|`utf8`|
+|service_attributes|`json`|
+|severity|`utf8`|
+|title|`utf8`|

@@ -6,8 +6,7 @@ import (
 	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 const (
@@ -25,6 +24,10 @@ type columnInfo struct {
 
 type tableInfo struct {
 	columns []columnInfo
+}
+
+func identifier(str string) string {
+	return `"` + str + `"`
 }
 
 func (c *Client) sqliteTables(tables schema.Tables) (schema.Tables, error) {
@@ -95,10 +98,10 @@ func (c *Client) nonAutoMigratableTables(tables schema.Tables, sqliteTables sche
 	return result, tableChanges
 }
 
-func (c *Client) autoMigrateTable(table *schema.Table, changes []schema.TableColumnChange) error {
+func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, changes []schema.TableColumnChange) error {
 	for _, change := range changes {
 		if change.Type == schema.TableColumnChangeTypeAdd {
-			if err := c.addColumn(table.Name, change.Current.Name, c.arrowTypeToSqliteStr(change.Current.Type)); err != nil {
+			if err := c.addColumn(ctx, table.Name, change.Current.Name, c.arrowTypeToSqliteStr(change.Current.Type)); err != nil {
 				return err
 			}
 		}
@@ -127,14 +130,14 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 }
 
 // This is the responsibility of the CLI of the client to lock before running migration
-func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
+func (c *Client) migrate(ctx context.Context, force bool, tables schema.Tables) error {
 	normalizedTables := c.normalizeTables(tables)
 	sqliteTables, err := c.sqliteTables(normalizedTables)
 	if err != nil {
 		return err
 	}
 
-	if c.spec.MigrateMode != specs.MigrateModeForced {
+	if !force {
 		nonAutoMigratableTables, changes := c.nonAutoMigratableTables(normalizedTables, sqliteTables)
 		if len(nonAutoMigratableTables) > 0 {
 			return fmt.Errorf("tables %s with changes %v require force migration. use 'migrate_mode: forced'", strings.Join(nonAutoMigratableTables, ","), changes)
@@ -158,12 +161,12 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 			changes := table.GetChanges(sqlite)
 			if c.canAutoMigrate(changes) {
 				c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
-				if err := c.autoMigrateTable(table, changes); err != nil {
+				if err := c.autoMigrateTable(ctx, table, changes); err != nil {
 					return err
 				}
 			} else {
 				c.logger.Info().Str("table", table.Name).Msg("Table exists, force migration required")
-				if err := c.recreateTable(table); err != nil {
+				if err := c.recreateTable(ctx, table); err != nil {
 					return err
 				}
 			}
@@ -173,17 +176,17 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	return nil
 }
 
-func (c *Client) recreateTable(table *schema.Table) error {
-	sql := "drop table if exists \"" + table.Name + "\""
-	if _, err := c.db.Exec(sql); err != nil {
+func (c *Client) recreateTable(ctx context.Context, table *schema.Table) error {
+	sql := "drop table if exists " + identifier(table.Name)
+	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to drop table %s: %w", table.Name, err)
 	}
 	return c.createTableIfNotExist(table)
 }
 
-func (c *Client) addColumn(tableName string, columnName string, columnType string) error {
-	sql := "alter table \"" + tableName + "\" add column \"" + columnName + "\" \"" + columnType + `"`
-	if _, err := c.db.Exec(sql); err != nil {
+func (c *Client) addColumn(ctx context.Context, tableName string, columnName string, columnType string) error {
+	sql := "alter table " + identifier(tableName) + " add column " + identifier(columnName) + " " + identifier(columnType)
+	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to add column %s on table %s: %w", columnName, tableName, err)
 	}
 	return nil
@@ -192,9 +195,8 @@ func (c *Client) addColumn(tableName string, columnName string, columnType strin
 func (c *Client) createTableIfNotExist(table *schema.Table) error {
 	var sb strings.Builder
 
-	// TODO sanitize table.Name
 	sb.WriteString("CREATE TABLE IF NOT EXISTS ")
-	sb.WriteString(`"` + table.Name + `"`)
+	sb.WriteString(identifier(table.Name))
 	sb.WriteString(" (")
 	totalColumns := len(table.Columns)
 
@@ -205,8 +207,7 @@ func (c *Client) createTableIfNotExist(table *schema.Table) error {
 			c.logger.Warn().Str("table", table.Name).Str("column", col.Name).Msg("Column type is not supported, skipping")
 			continue
 		}
-		// TODO: sanitize column name
-		fieldDef := `"` + col.Name + `" ` + sqlType
+		fieldDef := identifier(col.Name) + ` ` + sqlType
 		if col.NotNull {
 			fieldDef += " NOT NULL"
 		}
@@ -214,17 +215,16 @@ func (c *Client) createTableIfNotExist(table *schema.Table) error {
 		if i != totalColumns-1 {
 			sb.WriteString(",")
 		}
-
-		if c.enabledPks() && col.PrimaryKey {
-			primaryKeys = append(primaryKeys, `"`+col.Name+`"`)
+		if col.PrimaryKey {
+			primaryKeys = append(primaryKeys, identifier(col.Name))
 		}
 	}
 
 	if len(primaryKeys) > 0 {
 		// add composite PK constraint on primary key columns
 		sb.WriteString(", CONSTRAINT ")
-		sb.WriteString(table.Name)
-		sb.WriteString("_cqpk PRIMARY KEY (")
+		sb.WriteString(identifier(table.Name + "_cqpk"))
+		sb.WriteString(" PRIMARY KEY (")
 		sb.WriteString(strings.Join(primaryKeys, ","))
 		sb.WriteString(")")
 	}
@@ -266,8 +266,4 @@ func (c *Client) getTableInfo(tableName string) (*tableInfo, error) {
 		return nil, nil
 	}
 	return &info, nil
-}
-
-func (c *Client) enabledPks() bool {
-	return c.spec.WriteMode == specs.WriteModeOverwrite || c.spec.WriteMode == specs.WriteModeOverwriteDeleteStale
 }

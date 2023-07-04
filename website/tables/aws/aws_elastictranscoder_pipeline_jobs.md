@@ -14,21 +14,21 @@ This table depends on [aws_elastictranscoder_pipelines](aws_elastictranscoder_pi
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|id|String|
-|input|JSON|
-|inputs|JSON|
-|output|JSON|
-|output_key_prefix|String|
-|outputs|JSON|
-|pipeline_id|String|
-|playlists|JSON|
-|status|String|
-|timing|JSON|
-|user_metadata|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|id|`utf8`|
+|input|`json`|
+|inputs|`json`|
+|output|`json`|
+|output_key_prefix|`utf8`|
+|outputs|`json`|
+|pipeline_id|`utf8`|
+|playlists|`json`|
+|status|`utf8`|
+|timing|`json`|
+|user_metadata|`json`|

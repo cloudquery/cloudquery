@@ -10,8 +10,8 @@ import (
 	"github.com/beatlabs/github-auth/app/inst"
 	"github.com/beatlabs/github-auth/key"
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/gofri/go-github-ratelimit/github_ratelimit"
 	"github.com/google/go-github/v49/github"
 	"github.com/rs/zerolog"
@@ -155,10 +155,11 @@ func (c *Client) discoverRepositories(ctx context.Context, orgs []string, repos 
 				return nil, err
 			}
 			orgRepos[org] = append(orgRepos[org], repos...)
-			opts.Page = resp.NextPage
-			if opts.Page == resp.LastPage {
+
+			if resp.NextPage == 0 {
 				break
 			}
+			opts.Page = resp.NextPage
 		}
 	}
 	seenOrgs := make(map[string]struct{})

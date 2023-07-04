@@ -4,13 +4,14 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func restApiResourceMethods() *schema.Table {
@@ -26,21 +27,19 @@ func restApiResourceMethods() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "rest_api_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("rest_api_arn"),
 			},
 			{
 				Name:     "resource_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveApigatewayRestAPIResourceMethodArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveApigatewayRestAPIResourceMethodArn,
+				PrimaryKey: true,
 			},
 		},
 		Relations: []*schema.Table{
@@ -52,12 +51,12 @@ func restApiResourceMethods() *schema.Table {
 func fetchApigatewayRestApiResourceMethods(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	api := parent.Parent.Item.(types.RestApi)
 	resource := parent.Item.(types.Resource)
-	c := meta.(*client.Client)
-	svc := c.Services().Apigateway
+	cl := meta.(*client.Client)
+	svc := cl.Services().Apigateway
 	for method := range resource.ResourceMethods {
 		config := apigateway.GetMethodInput{RestApiId: api.Id, ResourceId: resource.Id, HttpMethod: aws.String(method)}
 		resp, err := svc.GetMethod(ctx, &config, func(options *apigateway.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

@@ -2,14 +2,15 @@ package client
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/goccy/go-json"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -38,7 +39,9 @@ func transformArr(arr arrow.Array) []any {
 		case *array.Uint32:
 			dbArr[i] = a.Value(i)
 		case *array.Uint64:
-			dbArr[i] = a.Value(i)
+			val := a.Value(i)
+			var custom = CustomUnit64(val)
+			dbArr[i] = custom
 		case *array.Float32:
 			dbArr[i] = a.Value(i)
 		case *array.Float64:
@@ -104,9 +107,9 @@ func (c *Client) transformRecords(table *schema.Table, records []arrow.Record) [
 	return documents
 }
 
-func (c *Client) appendTableBatch(ctx context.Context, table *schema.Table, docuemnts []any) error {
+func (c *Client) appendTableBatch(ctx context.Context, table *schema.Table, documents []any) error {
 	tableName := table.Name
-	if _, err := c.client.Database(c.pluginSpec.Database).Collection(tableName).InsertMany(ctx, docuemnts); err != nil {
+	if _, err := c.client.Database(c.spec.Database).Collection(tableName).InsertMany(ctx, documents); err != nil {
 		return err
 	}
 	return nil
@@ -131,25 +134,38 @@ func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, d
 		operation.SetUpdate(bson.M{"$set": update})
 		operations[i] = operation
 	}
-	if _, err := c.client.Database(c.pluginSpec.Database).Collection(tableName).BulkWrite(ctx, operations); err != nil {
+	if _, err := c.client.Database(c.spec.Database).Collection(tableName).BulkWrite(ctx, operations); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, resources []arrow.Record) error {
-	documents := c.transformRecords(table, resources)
-
-	if len(table.PrimaryKeys()) == 0 {
-		return c.appendTableBatch(ctx, table, documents)
+func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs message.WriteInserts) error {
+	if len(msgs) == 0 {
+		return nil
 	}
-	switch c.spec.WriteMode {
-	case specs.WriteModeAppend:
-		return c.appendTableBatch(ctx, table, documents)
-	case specs.WriteModeOverwrite, specs.WriteModeOverwriteDeleteStale:
+	table, err := schema.NewTableFromArrowSchema(msgs[0].Record.Schema())
+	if err != nil {
+		return err
+	}
+	records := make([]arrow.Record, len(msgs))
+	for i, msg := range msgs {
+		records[i] = msg.Record
+	}
+	documents := c.transformRecords(table, records)
+	if len(table.PrimaryKeys()) > 0 {
 		return c.overwriteTableBatch(ctx, table, documents)
-	default:
-		panic("unsupported write mode " + c.spec.WriteMode.String())
 	}
+	return c.appendTableBatch(ctx, table, documents)
+}
+
+func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
+	if err := c.writer.Write(ctx, msgs); err != nil {
+		return err
+	}
+	if err := c.writer.Flush(ctx); err != nil {
+		return fmt.Errorf("failed to flush: %w", err)
+	}
+	return nil
 }

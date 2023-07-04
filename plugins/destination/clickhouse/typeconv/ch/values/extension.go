@@ -2,7 +2,7 @@ package values
 
 import (
 	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/google/uuid"
 )
 
@@ -13,7 +13,7 @@ func extensionValue(arr array.ExtensionArray) any {
 	case *types.InetArray, *types.MACArray, *types.JSONArray:
 		return valueStrData(arr)
 	default:
-		// we fallback here to string representation
+		// we fall back here to string representation
 		return valueStrData(arr)
 	}
 }

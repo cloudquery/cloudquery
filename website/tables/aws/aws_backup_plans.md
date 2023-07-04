@@ -15,21 +15,21 @@ The following tables depend on aws_backup_plans:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|advanced_backup_settings|JSON|
-|backup_plan|JSON|
-|backup_plan_arn|String|
-|backup_plan_id|String|
-|creation_date|Timestamp|
-|creator_request_id|String|
-|deletion_date|Timestamp|
-|last_execution_date|Timestamp|
-|version_id|String|
-|result_metadata|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|advanced_backup_settings|`json`|
+|backup_plan|`json`|
+|backup_plan_arn|`utf8`|
+|backup_plan_id|`utf8`|
+|creation_date|`timestamp[us, tz=UTC]`|
+|creator_request_id|`utf8`|
+|deletion_date|`timestamp[us, tz=UTC]`|
+|last_execution_date|`timestamp[us, tz=UTC]`|
+|version_id|`utf8`|
+|result_metadata|`json`|

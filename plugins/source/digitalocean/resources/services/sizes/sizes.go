@@ -1,8 +1,9 @@
 package sizes
 
 import (
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 	"github.com/digitalocean/godo"
 )
 
@@ -14,12 +15,10 @@ func Sizes() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&godo.Size{}),
 		Columns: []schema.Column{
 			{
-				Name:     "slug",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Slug"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "slug",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Slug"),
+				PrimaryKey: true,
 			},
 		},
 	}

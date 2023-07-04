@@ -1,5 +1,7 @@
 ---
 name: Neo4j
+title: Neo4j Destination Plugin
+description: CloudQuery Neo4j destination plugin documentation
 ---
 # Neo4j Destination Plugin
 
@@ -50,3 +52,11 @@ This is the (nested) spec used by the Neo4j destination Plugin.
 - `password` (string, required)
 
   Password to connect to the database.
+
+- `batch_size` (integer, optional. default: 1000)
+
+  Number of records to batch together before sending to the database.
+
+- `batch_size_bytes` (integer, optional. default: 4194304 (4MiB))
+
+  Number of bytes (as Arrow buffer size) to batch together before sending to the database.

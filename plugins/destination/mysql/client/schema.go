@@ -5,8 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func identifier(name string) string {
@@ -59,12 +58,9 @@ func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schem
 			return nil, err
 		}
 
-		schemaType, err := mySQLTypeToArrowType(tableName, name, typ)
-		if err != nil {
-			return nil, err
-		}
+		schemaType := mySQLTypeToArrowType(typ)
 		var primaryKey bool
-		if constraintType != nil && c.pkEnabled() {
+		if constraintType != nil {
 			primaryKey = strings.Contains(*constraintType, "PRIMARY KEY")
 		}
 		columns = append(columns, schema.Column{
@@ -80,7 +76,7 @@ func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schem
 
 // TODO: in the future this could theoretically be done in a single query and then the tables could be filtered in memory
 func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema.Tables, error) {
-	query := `SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE';`
+	query := `SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND (DATABASE() IS NULL OR table_SCHEMA = DATABASE());`
 	rows, err := c.db.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err
@@ -143,18 +139,21 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
 		builder.WriteString(identifier(column.Name))
 		builder.WriteString(" ")
 		builder.WriteString(arrowTypeToMySqlStr(column.Type))
-		if column.Unique {
-			builder.WriteString(" UNIQUE")
-		}
-		if column.NotNull {
-			builder.WriteString(" NOT NULL")
-		}
-		if i < totalColumns-1 {
-			builder.WriteString(",\n  ")
+
+		if column.PrimaryKey {
+			primaryKeysIndices = append(primaryKeysIndices, i)
+		} else {
+			// Primary keys are implicitly not null and unique, so we only need to add these constraints if the column is not a primary key
+			if column.Unique {
+				builder.WriteString(" UNIQUE")
+			}
+			if column.NotNull {
+				builder.WriteString(" NOT NULL")
+			}
 		}
 
-		if c.pkEnabled() && column.PrimaryKey {
-			primaryKeysIndices = append(primaryKeysIndices, i)
+		if i < totalColumns-1 {
+			builder.WriteString(",\n  ")
 		}
 	}
 	if len(primaryKeysIndices) > 0 {
@@ -163,8 +162,9 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
 		for i, pk := range primaryKeysIndices {
 			column := table.Columns[pk]
 			builder.WriteString(identifier(column.Name))
-			if column.Type == arrow.BinaryTypes.LargeString {
-				// Since we use `text` for strings we need to specify the prefix length to use for the primary key
+			sqlType := arrowTypeToMySqlStr(column.Type)
+			if sqlType == "blob" || sqlType == "text" {
+				// `blob/text` SQL types require specifying prefix length to use for the primary key
 				builder.WriteString("(64)")
 			}
 			if i < len(primaryKeysIndices)-1 {

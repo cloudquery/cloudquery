@@ -3,11 +3,12 @@ package mq
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/mq"
 	"github.com/aws/aws-sdk-go-v2/service/mq/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Brokers() *schema.Table {
@@ -23,12 +24,10 @@ func Brokers() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("BrokerArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("BrokerArn"),
+				PrimaryKey: true,
 			},
 		},
 
@@ -41,12 +40,12 @@ func Brokers() *schema.Table {
 
 func fetchMqBrokers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config mq.ListBrokersInput
-	c := meta.(*client.Client)
-	svc := c.Services().Mq
+	cl := meta.(*client.Client)
+	svc := cl.Services().Mq
 	paginator := mq.NewListBrokersPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *mq.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -57,12 +56,12 @@ func fetchMqBrokers(ctx context.Context, meta schema.ClientMeta, parent *schema.
 }
 
 func getMqBroker(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Mq
+	cl := meta.(*client.Client)
+	svc := cl.Services().Mq
 	bs := resource.Item.(types.BrokerSummary)
 
 	output, err := svc.DescribeBroker(ctx, &mq.DescribeBrokerInput{BrokerId: bs.BrokerId}, func(options *mq.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

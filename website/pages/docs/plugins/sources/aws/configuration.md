@@ -15,6 +15,7 @@ spec:
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_s3_buckets"]
   destinations: ["DESTINATION_NAME"]
+  concurrency: 10000
   spec: 
     # AWS Spec section described below
     regions: 
@@ -38,6 +39,7 @@ spec:
   version: "VERSION_SOURCE_AWS"
   tables: ['aws_s3_buckets']
   destinations: ["DESTINATION_NAME"]
+  concurrency: 10000
   spec:
     aws_debug: false
     org:
@@ -101,7 +103,7 @@ This is the (nested) spec used by the AWS source plugin.
 
 - `use_paid_apis` (boolean) (default: false)
 
-  When set to `true` plugin will sync data from APIs that incur a fee. Currently only `aws_costexplorer*` tables require this flag to be set to `true`.
+  When set to `true` plugin will sync data from APIs that incur a fee. Currently only `aws_costexplorer*` and `aws_alpha_cloudwatch_metric*` tables require this flag to be set to `true`.
 
 - **experimental** `table_options` (map) (default: not used)
 
@@ -137,12 +139,18 @@ This is the (nested) spec used by the AWS source plugin.
                 attribute_value: StopInstances
   ```
 
-  The naming for all of the fields is the same as the AWS API but in snake case. For example `EndTime` is represented as `end_time`. As of `v17.3.0` the following tables and APIs are supported:
+  The naming for all of the fields is the same as the AWS API but in snake case. For example `EndTime` is represented as `end_time`. As of `v18.4.0` the following tables and APIs are supported:
   ```yaml
   table_options:
     aws_accessanalyzer_analyzer_findings:
       list_findings:
         - <[ListFindings](https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_ListFindings.html)>
+    aws_alpha_cloudwatch_metrics:
+      - list_metrics:
+          <[ListMetrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_ListMetrics.html)>
+        get_metric_statistics:
+          # Namespace, MetricName and Dimensions fields cannot be set here and are derived from the result of the respective ListMetrics call 
+          - <[GetMetricStatistics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html)>
     aws_cloudtrail_events:
       lookup_events:
         - <[LookupEvents](https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_LookupEvents.html)>
@@ -272,6 +280,7 @@ spec:
     - aws_rds_engine_versions
     - aws_servicequotas_services
   destinations: ["postgresql"]
+  concurrency: 10000
   spec: 
     # AWS Spec section described below
 ```

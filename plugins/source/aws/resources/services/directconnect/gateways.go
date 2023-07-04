@@ -4,13 +4,14 @@ import (
 	"context"
 	"strings"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Gateways() *schema.Table {
@@ -25,16 +26,14 @@ func Gateways() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveGatewayARN,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveGatewayARN,
+				PrimaryKey: true,
 			},
 			{
 				Name:     "id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("DirectConnectGatewayId"),
 			},
 		},
@@ -47,12 +46,12 @@ func Gateways() *schema.Table {
 
 func fetchDirectconnectGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config directconnect.DescribeDirectConnectGatewaysInput
-	c := meta.(*client.Client)
-	svc := c.Services().Directconnect
+	cl := meta.(*client.Client)
+	svc := cl.Services().Directconnect
 	// No paginator available
 	for {
 		output, err := svc.DescribeDirectConnectGateways(ctx, &config, func(options *directconnect.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

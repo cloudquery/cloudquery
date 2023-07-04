@@ -1,9 +1,10 @@
 package price_rule
 
 import (
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/internal/shopify"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func PriceRules() *schema.Table {
@@ -13,20 +14,16 @@ func PriceRules() *schema.Table {
 		Transform: transformers.TransformWithStruct(&shopify.PriceRule{}),
 		Columns: []schema.Column{
 			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.PrimitiveTypes.Int64,
+				Resolver:   schema.PathResolver("ID"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "updated_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("UpdatedAt"),
-				CreationOptions: schema.ColumnCreationOptions{
-					IncrementalKey: true,
-				},
+				Name:           "updated_at",
+				Type:           arrow.FixedWidthTypes.Timestamp_us,
+				Resolver:       schema.PathResolver("UpdatedAt"),
+				IncrementalKey: true,
 			},
 		},
 		IsIncremental: true,

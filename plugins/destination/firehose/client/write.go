@@ -14,14 +14,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
 	"github.com/aws/aws-sdk-go-v2/service/firehose/types"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
-const MaxRecordSizeBytes = 1024000
-const MaxBatchRecords = 500
-const MaxBatchSizeBytes = 4194000
+const (
+	MaxRecordSizeBytes = 1024000
+	MaxBatchRecords    = 500
+	MaxBatchSizeBytes  = 4194000
+)
 
-func (c *Client) Write(ctx context.Context, tables schema.Schemas, record <-chan arrow.Record) error {
+func (c *Client) Write(ctx context.Context, tables schema.Tables, record <-chan arrow.Record) error {
 	parsedARN, err := arn.Parse(c.pluginSpec.StreamARN)
 	if err != nil {
 		c.logger.Error().Err(err).Msg("invalid firehose stream ARN")
@@ -38,10 +40,14 @@ func (c *Client) Write(ctx context.Context, tables schema.Schemas, record <-chan
 	batchSize := 0
 
 	for rec := range record {
-		tableName := schema.TableName(rec.Schema())
-		table := tables.SchemaByName(tableName)
+		tableName, ok := rec.Schema().Metadata().GetValue(schema.MetadataTableName)
+		if !ok {
+			return fmt.Errorf("%q metadata key not found", schema.MetadataTableName)
+		}
+
+		table := tables.Get(tableName)
 		if table == nil {
-			panic(fmt.Errorf("table %s not found", tableName))
+			return fmt.Errorf("table %s not found", tableName)
 		}
 
 		for row := int64(0); row < rec.NumRows(); row++ {

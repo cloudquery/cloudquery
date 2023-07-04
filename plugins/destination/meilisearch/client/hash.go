@@ -4,12 +4,13 @@ import (
 	"crypto/sha256"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/google/uuid"
 )
 
 const hashColumnName = "_cq_pk_hash_uuid"
 
+// hashUUID will either calc a proper PK hash or gen a random one
 func hashUUID(table *schema.Table) func(map[string]any) string {
 	pk := table.PrimaryKeys()
 	if len(pk) == 0 {

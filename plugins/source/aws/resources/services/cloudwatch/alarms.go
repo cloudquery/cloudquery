@@ -3,11 +3,14 @@ package cloudwatch
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Alarms() *schema.Table {
@@ -16,27 +19,25 @@ func Alarms() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_MetricAlarm.html`,
 		Resolver:    fetchCloudwatchAlarms,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "logs"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "monitoring"),
 		Transform:   transformers.TransformWithStruct(&types.MetricAlarm{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveCloudwatchAlarmTags,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AlarmArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("AlarmArn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "dimensions",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveCloudwatchAlarmDimensions,
 			},
 		},
@@ -45,12 +46,12 @@ func Alarms() *schema.Table {
 
 func fetchCloudwatchAlarms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config cloudwatch.DescribeAlarmsInput
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudwatch
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudwatch
 	paginator := cloudwatch.NewDescribeAlarmsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cloudwatch.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

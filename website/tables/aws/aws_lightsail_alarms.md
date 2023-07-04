@@ -10,29 +10,29 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|comparison_operator|String|
-|contact_protocols|StringArray|
-|created_at|Timestamp|
-|datapoints_to_alarm|Int|
-|evaluation_periods|Int|
-|location|JSON|
-|metric_name|String|
-|monitored_resource_info|JSON|
-|name|String|
-|notification_enabled|Bool|
-|notification_triggers|StringArray|
-|period|Int|
-|resource_type|String|
-|state|String|
-|statistic|String|
-|support_code|String|
-|threshold|Float|
-|treat_missing_data|String|
-|unit|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|comparison_operator|`utf8`|
+|contact_protocols|`list<item: utf8, nullable>`|
+|created_at|`timestamp[us, tz=UTC]`|
+|datapoints_to_alarm|`int64`|
+|evaluation_periods|`int64`|
+|location|`json`|
+|metric_name|`utf8`|
+|monitored_resource_info|`json`|
+|name|`utf8`|
+|notification_enabled|`bool`|
+|notification_triggers|`list<item: utf8, nullable>`|
+|period|`int64`|
+|resource_type|`utf8`|
+|state|`utf8`|
+|statistic|`utf8`|
+|support_code|`utf8`|
+|threshold|`float64`|
+|treat_missing_data|`utf8`|
+|unit|`utf8`|

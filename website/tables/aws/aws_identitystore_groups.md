@@ -15,12 +15,12 @@ The following tables depend on aws_identitystore_groups:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|group_id|String|
-|identity_store_id|String|
-|description|String|
-|display_name|String|
-|external_ids|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|group_id|`utf8`|
+|identity_store_id|`utf8`|
+|description|`utf8`|
+|display_name|`utf8`|
+|external_ids|`json`|

@@ -3,12 +3,13 @@ package amplify
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/amplify"
 	"github.com/aws/aws-sdk-go-v2/service/amplify/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Apps() *schema.Table {
@@ -23,20 +24,18 @@ func Apps() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AppArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("AppArn"),
+				PrimaryKey: true,
 			},
 		},
 	}
 }
 
 func fetchApps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := meta.(*client.Client).Services().Amplify
+	cl := meta.(*client.Client)
+	svc := cl.Services().Amplify
 
 	config := amplify.ListAppsInput{
 		MaxResults: int32(100),
@@ -44,7 +43,7 @@ func fetchApps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 	// No paginator available
 	for {
 		output, err := svc.ListApps(ctx, &config, func(options *amplify.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

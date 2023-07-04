@@ -3,31 +3,31 @@ package s3
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
 	"github.com/aws/aws-sdk-go-v2/service/s3control/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func AccessPoints() *schema.Table {
 	tableName := "aws_s3_access_points"
 	return &schema.Table{
-		Name:      tableName,
-		Resolver:  fetchAccessPoints,
-		Transform: transformers.TransformWithStruct(&types.AccessPoint{}),
-		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "s3-control"),
+		Name:        tableName,
+		Description: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_control_AccessPoint.html",
+		Resolver:    fetchAccessPoints,
+		Transform:   transformers.TransformWithStruct(&types.AccessPoint{}),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "s3-control"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AccessPointArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("AccessPointArn"),
+				PrimaryKey: true,
 			},
 		},
 	}

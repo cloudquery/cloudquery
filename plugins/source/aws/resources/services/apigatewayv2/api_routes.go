@@ -4,20 +4,21 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func apiRoutes() *schema.Table {
 	tableName := "aws_apigatewayv2_api_routes"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Route.html`,
+		Description: `https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/apis-apiid-routes.html`,
 		Resolver:    fetchApigatewayv2ApiRoutes,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.Route{}),
@@ -26,21 +27,19 @@ func apiRoutes() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "api_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "api_id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveApiRouteArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveApiRouteArn,
+				PrimaryKey: true,
 			},
 		},
 		Relations: []*schema.Table{
@@ -54,12 +53,12 @@ func fetchApigatewayv2ApiRoutes(ctx context.Context, meta schema.ClientMeta, par
 	config := apigatewayv2.GetRoutesInput{
 		ApiId: r.ApiId,
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Apigatewayv2
+	cl := meta.(*client.Client)
+	svc := cl.Services().Apigatewayv2
 	// No paginator available
 	for {
 		response, err := svc.GetRoutes(ctx, &config, func(options *apigatewayv2.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 
 		if err != nil {

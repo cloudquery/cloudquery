@@ -14,21 +14,21 @@ This table depends on [aws_directconnect_gateways](aws_directconnect_gateways).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|gateway_arn|String|
-|gateway_id|String|
-|allowed_prefixes_to_direct_connect_gateway|JSON|
-|associated_gateway|JSON|
-|association_id|String|
-|association_state|String|
-|direct_connect_gateway_id|String|
-|direct_connect_gateway_owner_account|String|
-|state_change_error|String|
-|virtual_gateway_id|String|
-|virtual_gateway_owner_account|String|
-|virtual_gateway_region|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|gateway_arn|`utf8`|
+|gateway_id|`utf8`|
+|allowed_prefixes_to_direct_connect_gateway|`json`|
+|associated_gateway|`json`|
+|association_id|`utf8`|
+|association_state|`utf8`|
+|direct_connect_gateway_id|`utf8`|
+|direct_connect_gateway_owner_account|`utf8`|
+|state_change_error|`utf8`|
+|virtual_gateway_id|`utf8`|
+|virtual_gateway_owner_account|`utf8`|
+|virtual_gateway_region|`utf8`|

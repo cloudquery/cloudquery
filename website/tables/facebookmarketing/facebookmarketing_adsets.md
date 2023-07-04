@@ -10,57 +10,57 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|adlabels|JSON|
-|adset_schedule|JSON|
-|asset_feed_id|String|
-|attribution_spec|JSON|
-|bid_adjustments|JSON|
-|bid_amount|Int|
-|bid_constraints|JSON|
-|bid_info|JSON|
-|bid_strategy|String|
-|billing_event|String|
-|budget_remaining|String|
-|campaign|JSON|
-|campaign_attribution|String|
-|campaign_id|String|
-|configured_status|String|
-|created_time|Timestamp|
-|creative_sequence|StringArray|
-|daily_budget|String|
-|daily_min_spend_target|String|
-|daily_spend_cap|String|
-|destination_type|String|
-|effective_status|String|
-|end_time|Timestamp|
-|frequency_control_specs|JSON|
-|id (PK)|String|
-|is_dynamic_creative|Bool|
-|issues_info|JSON|
-|learning_stage_info|JSON|
-|lifetime_budget|String|
-|lifetime_imps|Int|
-|lifetime_min_spend_target|String|
-|lifetime_spend_cap|String|
-|multi_optimization_goal_weight|String|
-|name|String|
-|optimization_sub_event|String|
-|pacing_type|StringArray|
-|promoted_object|JSON|
-|recommendations|JSON|
-|recurring_budget_semantics|Bool|
-|review_feedback|String|
-|rf_prediction_id|String|
-|source_adset_id|String|
-|start_time|Timestamp|
-|status|String|
-|targeting|JSON|
-|time_based_ad_rotation_id_blocks|JSON|
-|time_based_ad_rotation_intervals|IntArray|
-|updated_time|Timestamp|
-|use_new_app_click|Bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|adlabels|`json`|
+|adset_schedule|`json`|
+|asset_feed_id|`utf8`|
+|attribution_spec|`json`|
+|bid_adjustments|`json`|
+|bid_amount|`int64`|
+|bid_constraints|`json`|
+|bid_info|`json`|
+|bid_strategy|`utf8`|
+|billing_event|`utf8`|
+|budget_remaining|`utf8`|
+|campaign|`json`|
+|campaign_attribution|`utf8`|
+|campaign_id|`utf8`|
+|configured_status|`utf8`|
+|created_time|`timestamp[us, tz=UTC]`|
+|creative_sequence|`list<item: utf8, nullable>`|
+|daily_budget|`utf8`|
+|daily_min_spend_target|`utf8`|
+|daily_spend_cap|`utf8`|
+|destination_type|`utf8`|
+|effective_status|`utf8`|
+|end_time|`timestamp[us, tz=UTC]`|
+|frequency_control_specs|`json`|
+|id (PK)|`utf8`|
+|is_dynamic_creative|`bool`|
+|issues_info|`json`|
+|learning_stage_info|`json`|
+|lifetime_budget|`utf8`|
+|lifetime_imps|`int64`|
+|lifetime_min_spend_target|`utf8`|
+|lifetime_spend_cap|`utf8`|
+|multi_optimization_goal_weight|`utf8`|
+|name|`utf8`|
+|optimization_sub_event|`utf8`|
+|pacing_type|`list<item: utf8, nullable>`|
+|promoted_object|`json`|
+|recommendations|`json`|
+|recurring_budget_semantics|`bool`|
+|review_feedback|`utf8`|
+|rf_prediction_id|`utf8`|
+|source_adset_id|`utf8`|
+|start_time|`timestamp[us, tz=UTC]`|
+|status|`utf8`|
+|targeting|`json`|
+|time_based_ad_rotation_id_blocks|`json`|
+|time_based_ad_rotation_intervals|`list<item: int64, nullable>`|
+|updated_time|`timestamp[us, tz=UTC]`|
+|use_new_app_click|`bool`|

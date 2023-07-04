@@ -7,13 +7,14 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/aws/smithy-go/logging"
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/backend"
-	"github.com/cloudquery/plugin-sdk/v2/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/backend"
+	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/rs/zerolog"
 	"github.com/thoas/go-funk"
 	"golang.org/x/sync/errgroup"
@@ -34,6 +35,8 @@ type Client struct {
 	Backend              backend.Backend
 	specificRegions      bool
 	Spec                 *Spec
+	// Do not rely on this field, it will be removed once https://github.com/aws/aws-sdk-go-v2/issues/2163 is resolved
+	AWSConfig *aws.Config
 }
 
 type AwsLogger struct {
@@ -63,6 +66,8 @@ var errUnknownRegion = func(region string) error {
 	return fmt.Errorf("unknown region: %q", region)
 }
 var errRetrievingCredentials = errors.New("error retrieving AWS credentials (see logs for details). Please verify your credentials and try again")
+
+var ErrPaidAPIsNotEnabled = errors.New("not fetching resource because `use_paid_apis` is set to false")
 
 func (s *ServicesManager) ServicesByPartitionAccount(partition, accountId string) *Services {
 	return s.services[partition][accountId]
@@ -128,6 +133,7 @@ func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region st
 		WAFScope:             c.WAFScope,
 		Backend:              c.Backend,
 		Spec:                 c.Spec,
+		AWSConfig:            c.AWSConfig,
 	}
 }
 

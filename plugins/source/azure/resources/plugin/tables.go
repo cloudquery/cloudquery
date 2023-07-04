@@ -92,11 +92,11 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/synapse"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/windowsiot"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/workloads"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 func tables() []*schema.Table {
-	return []*schema.Table{
+	list := []*schema.Table{
 		advisor.RecommendationMetadata(),
 		advisor.Recommendations(),
 		advisor.Suppressions(),
@@ -135,6 +135,8 @@ func tables() []*schema.Table {
 		cdn.Profiles(),
 		cognitiveservices.Accounts(),
 		cognitiveservices.DeletedAccounts(),
+		cognitiveservices.CommitmentPlans(),
+		cognitiveservices.ResourceSKUs(),
 		compute.AvailabilitySets(),
 		compute.CapacityReservationGroups(),
 		compute.CloudServices(),
@@ -351,4 +353,10 @@ func tables() []*schema.Table {
 		windowsiot.Services(),
 		workloads.Monitors(),
 	}
+	for i := range list {
+		if list[i].PostResourceResolver == nil {
+			panic("no PostResourceResolver in " + list[i].Name)
+		}
+	}
+	return list
 }

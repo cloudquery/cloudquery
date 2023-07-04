@@ -1,5 +1,7 @@
 ---
 name: Snowflake
+title: Snowflake Destination Plugin
+description: CloudQuery Snowflake destination plugin documentation
 ---
 # Snowflake Destination Plugin
 
@@ -47,6 +49,14 @@ This is the top level spec used by the Snowflake destination plugin.
 
   `account` - Name assigned to your Snowflake account. If you are not on us-west-2 or AWS deployment, append the region and platform to the end, e.g., `<account>.<region> or <account>.<region>.<platform>`.
 
+
+- `batch_size` (integer, optional. default: 1000)
+
+  Number of records to batch together before sending to the database.
+
+- `batch_size_bytes` (integer, optional. default: 4194304 (4MiB))
+
+  Number of bytes (as Arrow buffer size) to batch together before sending to the database.
 
 ## Underlying library
 

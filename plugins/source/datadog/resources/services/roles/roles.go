@@ -5,8 +5,8 @@ import (
 
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV2"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Roles() *schema.Table {
@@ -14,34 +14,13 @@ func Roles() *schema.Table {
 		Name:      "datadog_roles",
 		Resolver:  fetchRoles,
 		Multiplex: client.AccountMultiplex,
-		Transform: transformers.TransformWithStruct(&datadogV2.Role{}),
-		Columns: []schema.Column{
-			{
-				Name:     "account_name",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAccountName,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
-
-		Relations: []*schema.Table{
-			RolePermissions(),
-			RoleUsers(),
-		},
+		Transform: client.TransformWithStruct(&datadogV2.Role{}, transformers.WithPrimaryKeys("Id")),
+		Columns:   schema.ColumnList{client.AccountNameColumn},
+		Relations: schema.Tables{rolePermissions(), roleUsers()},
 	}
 }
 
-func fetchRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchRoles(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	ctx = c.BuildContextV2(ctx)
 	resp, _, err := c.DDServices.RolesAPI.ListRoles(ctx)

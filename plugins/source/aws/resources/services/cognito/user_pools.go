@@ -3,11 +3,12 @@ package cognito
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func UserPools() *schema.Table {
@@ -23,12 +24,10 @@ func UserPools() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Id"),
+				PrimaryKey: true,
 			},
 		},
 
@@ -39,8 +38,8 @@ func UserPools() *schema.Table {
 }
 
 func fetchCognitoUserPools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Cognitoidentityprovider
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cognitoidentityprovider
 	params := cognitoidentityprovider.ListUserPoolsInput{
 		// we want max results to reduce List calls as much as possible, services limited to less than or equal to 60"
 		MaxResults: 60,
@@ -48,7 +47,7 @@ func fetchCognitoUserPools(ctx context.Context, meta schema.ClientMeta, parent *
 	paginator := cognitoidentityprovider.NewListUserPoolsPaginator(svc, &params)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cognitoidentityprovider.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -59,12 +58,12 @@ func fetchCognitoUserPools(ctx context.Context, meta schema.ClientMeta, parent *
 }
 
 func getUserPool(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Cognitoidentityprovider
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cognitoidentityprovider
 	item := resource.Item.(types.UserPoolDescriptionType)
 
 	upo, err := svc.DescribeUserPool(ctx, &cognitoidentityprovider.DescribeUserPoolInput{UserPoolId: item.Id}, func(options *cognitoidentityprovider.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

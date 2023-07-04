@@ -11,18 +11,18 @@ It supports incremental syncs based on the **created** column.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|created (Incremental Key)|Timestamp|
-|expires_at|Int|
-|filename|String|
-|links|JSON|
-|object|String|
-|purpose|String|
-|size|Int|
-|title|String|
-|type|String|
-|url|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|created (Incremental Key)|`timestamp[us, tz=UTC]`|
+|expires_at|`int64`|
+|filename|`utf8`|
+|links|`json`|
+|object|`utf8`|
+|purpose|`utf8`|
+|size|`int64`|
+|title|`utf8`|
+|type|`utf8`|
+|url|`utf8`|

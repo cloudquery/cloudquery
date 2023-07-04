@@ -3,12 +3,13 @@ package route53
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func TrafficPolicies() *schema.Table {
@@ -22,12 +23,10 @@ func TrafficPolicies() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveTrafficPolicyArn(),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveTrafficPolicyArn(),
+				PrimaryKey: true,
 			},
 		},
 
@@ -39,12 +38,12 @@ func TrafficPolicies() *schema.Table {
 
 func fetchRoute53TrafficPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config route53.ListTrafficPoliciesInput
-	c := meta.(*client.Client)
-	svc := c.Services().Route53
+	cl := meta.(*client.Client)
+	svc := cl.Services().Route53
 
 	for {
 		response, err := svc.ListTrafficPolicies(ctx, &config, func(options *route53.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

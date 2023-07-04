@@ -4,11 +4,15 @@ import (
 	"context"
 	"encoding/json"
 
+	"github.com/cloudquery/plugin-sdk/v3/scalar"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Functions() *schema.Table {
@@ -24,41 +28,39 @@ func Functions() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Configuration.FunctionArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Configuration.FunctionArn"),
+				PrimaryKey: true,
 			},
 			{
 				Name: "policy_revision_id",
-				Type: schema.TypeString,
+				Type: arrow.BinaryTypes.String,
 				// resolved in resolveResourcePolicy
 			},
 			{
 				Name:     "policy_document",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveResourcePolicy,
 			},
 			{
 				Name:     "code_signing_config",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveCodeSigningConfig,
 			},
 			{
 				Name:     "code_repository_type",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("Code.RepositoryType"),
 			},
 			{
 				Name: "update_runtime_on",
-				Type: schema.TypeString,
+				Type: arrow.BinaryTypes.String,
 				// resolved in resolveRuntimeManagementConfig
 			},
 			{
 				Name:     "runtime_version_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: resolveRuntimeManagementConfig,
 			},
 		},
@@ -90,17 +92,17 @@ func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *s
 }
 
 func getFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Lambda
+	cl := meta.(*client.Client)
+	svc := cl.Services().Lambda
 	f := resource.Item.(types.FunctionConfiguration)
 
 	funcResponse, err := svc.GetFunction(ctx, &lambda.GetFunctionInput{
 		FunctionName: f.FunctionName,
 	}, func(options *lambda.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
+		if cl.IsNotFoundError(err) {
 			resource.Item = &lambda.GetFunctionOutput{
 				Configuration: &f,
 			}
@@ -112,7 +114,7 @@ func getFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 			resource.Item = &lambda.GetFunctionOutput{
 				Configuration: &f,
 			}
-			c.Logger().Warn().Err(err).Msg("configuration data retrieved from ListFunctions will still be persisted")
+			cl.Logger().Warn().Err(err).Msg("configuration data retrieved from ListFunctions will still be persisted")
 			return nil
 		}
 
@@ -128,20 +130,20 @@ func resolveCodeSigningConfig(ctx context.Context, meta schema.ClientMeta, resou
 	if r.Configuration == nil {
 		return nil
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Lambda
+	cl := meta.(*client.Client)
+	svc := cl.Services().Lambda
 
 	// skip getting CodeSigningConfig since containerized lambda functions does not support this feature
 	// value can be nil if the caller doesn't have GetFunctionConfiguration permission and only has List*
-	lambdaType := resource.Get("code_repository_type").(*schema.Text)
-	if lambdaType != nil && lambdaType.Str == "ECR" {
+	lambdaType := resource.Get("code_repository_type").(*scalar.String)
+	if lambdaType != nil && lambdaType.Value == "ECR" {
 		return nil
 	}
 
 	functionSigning, err := svc.GetFunctionCodeSigningConfig(ctx, &lambda.GetFunctionCodeSigningConfigInput{
 		FunctionName: r.Configuration.FunctionName,
 	}, func(options *lambda.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -153,10 +155,10 @@ func resolveCodeSigningConfig(ctx context.Context, meta schema.ClientMeta, resou
 	signing, err := svc.GetCodeSigningConfig(ctx, &lambda.GetCodeSigningConfigInput{
 		CodeSigningConfigArn: functionSigning.CodeSigningConfigArn,
 	}, func(options *lambda.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
+		if cl.IsNotFoundError(err) {
 			return nil
 		}
 		return err
@@ -174,13 +176,13 @@ func resolveResourcePolicy(ctx context.Context, meta schema.ClientMeta, resource
 		return nil
 	}
 
-	c := meta.(*client.Client)
-	svc := c.Services().Lambda
+	cl := meta.(*client.Client)
+	svc := cl.Services().Lambda
 
 	response, err := svc.GetPolicy(ctx, &lambda.GetPolicyInput{
 		FunctionName: r.Configuration.FunctionName,
 	}, func(options *lambda.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		if client.IsAWSError(err, "ResourceNotFoundException") {
@@ -208,17 +210,17 @@ func resolveRuntimeManagementConfig(ctx context.Context, meta schema.ClientMeta,
 	if r.Configuration == nil {
 		return nil
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Lambda
+	cl := meta.(*client.Client)
+	svc := cl.Services().Lambda
 
 	runtimeManagementConfig, err := svc.GetRuntimeManagementConfig(ctx, &lambda.GetRuntimeManagementConfigInput{
 		FunctionName: r.Configuration.FunctionName,
 	}, func(options *lambda.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 
 	if err != nil {
-		if c.IsNotFoundError(err) {
+		if cl.IsNotFoundError(err) {
 			return nil
 		}
 		return err

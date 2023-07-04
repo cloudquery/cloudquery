@@ -59,8 +59,6 @@ jobs:
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
           skip-build-cache: true
-      - name: Get dependencies
-        run: go get -t -d ./...
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -144,7 +142,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: 'v2.5.3'
+          version: 'v3.5.0'
       - name: Migrate DB
         run: cloudquery migrate test/policy_cq_config.yml
         env:

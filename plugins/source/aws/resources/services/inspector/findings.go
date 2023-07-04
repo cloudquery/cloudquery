@@ -3,12 +3,15 @@ package inspector
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/inspector"
 	"github.com/aws/aws-sdk-go-v2/service/inspector/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func Findings() *schema.Table {
@@ -23,20 +26,18 @@ func Findings() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name: "arn",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				PrimaryKey: true,
 			},
 			{
 				Name:     "attributes",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: client.ResolveTagField("Attributes"),
 			},
 			{
 				Name:     "user_attributes",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: client.ResolveTagField("UserAttributes"),
 			},
 		},
@@ -44,13 +45,13 @@ func Findings() *schema.Table {
 }
 
 func fetchInspectorFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Inspector
+	cl := meta.(*client.Client)
+	svc := cl.Services().Inspector
 	input := inspector.ListFindingsInput{MaxResults: aws.Int32(50)}
 	paginator := inspector.NewListFindingsPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *inspector.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -66,10 +67,10 @@ func fetchInspectorFindings(ctx context.Context, meta schema.ClientMeta, parent 
 				j = len(page.FindingArns) - 1
 			}
 			out, err := svc.DescribeFindings(ctx, &inspector.DescribeFindingsInput{FindingArns: page.FindingArns[i:j]}, func(options *inspector.Options) {
-				options.Region = c.Region
+				options.Region = cl.Region
 			})
 			if err != nil {
-				if c.IsNotFoundError(err) {
+				if cl.IsNotFoundError(err) {
 					continue
 				}
 				return err

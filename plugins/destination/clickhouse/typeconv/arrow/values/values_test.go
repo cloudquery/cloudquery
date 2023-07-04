@@ -7,7 +7,7 @@ import (
 	"github.com/apache/arrow/go/v13/arrow/decimal128"
 	"github.com/apache/arrow/go/v13/arrow/decimal256"
 	"github.com/apache/arrow/go/v13/arrow/float16"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 )

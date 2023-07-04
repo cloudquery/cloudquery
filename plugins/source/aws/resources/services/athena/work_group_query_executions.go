@@ -3,12 +3,13 @@ package athena
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func workGroupQueryExecutions() *schema.Table {
@@ -25,7 +26,7 @@ func workGroupQueryExecutions() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "work_group_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 		},
@@ -50,14 +51,14 @@ func fetchAthenaWorkGroupQueryExecutions(ctx context.Context, meta schema.Client
 }
 
 func getWorkGroupQueryExecution(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Athena
+	cl := meta.(*client.Client)
+	svc := cl.Services().Athena
 
 	d := resource.Item.(string)
 	dc, err := svc.GetQueryExecution(ctx, &athena.GetQueryExecutionInput{
 		QueryExecutionId: aws.String(d),
 	}, func(options *athena.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

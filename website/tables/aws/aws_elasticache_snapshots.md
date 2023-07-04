@@ -10,37 +10,37 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|auto_minor_version_upgrade|Bool|
-|automatic_failover|String|
-|cache_cluster_create_time|Timestamp|
-|cache_cluster_id|String|
-|cache_node_type|String|
-|cache_parameter_group_name|String|
-|cache_subnet_group_name|String|
-|data_tiering|String|
-|engine|String|
-|engine_version|String|
-|kms_key_id|String|
-|node_snapshots|JSON|
-|num_cache_nodes|Int|
-|num_node_groups|Int|
-|port|Int|
-|preferred_availability_zone|String|
-|preferred_maintenance_window|String|
-|preferred_outpost_arn|String|
-|replication_group_description|String|
-|replication_group_id|String|
-|snapshot_name|String|
-|snapshot_retention_limit|Int|
-|snapshot_source|String|
-|snapshot_status|String|
-|snapshot_window|String|
-|topic_arn|String|
-|vpc_id|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|auto_minor_version_upgrade|`bool`|
+|automatic_failover|`utf8`|
+|cache_cluster_create_time|`timestamp[us, tz=UTC]`|
+|cache_cluster_id|`utf8`|
+|cache_node_type|`utf8`|
+|cache_parameter_group_name|`utf8`|
+|cache_subnet_group_name|`utf8`|
+|data_tiering|`utf8`|
+|engine|`utf8`|
+|engine_version|`utf8`|
+|kms_key_id|`utf8`|
+|node_snapshots|`json`|
+|num_cache_nodes|`int64`|
+|num_node_groups|`int64`|
+|port|`int64`|
+|preferred_availability_zone|`utf8`|
+|preferred_maintenance_window|`utf8`|
+|preferred_outpost_arn|`utf8`|
+|replication_group_description|`utf8`|
+|replication_group_id|`utf8`|
+|snapshot_name|`utf8`|
+|snapshot_retention_limit|`int64`|
+|snapshot_source|`utf8`|
+|snapshot_status|`utf8`|
+|snapshot_window|`utf8`|
+|topic_arn|`utf8`|
+|vpc_id|`utf8`|

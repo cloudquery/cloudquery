@@ -3,9 +3,11 @@ package core
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/types"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -23,12 +25,12 @@ func Nodes() *schema.Table {
 			client.ContextColumn,
 			{
 				Name:     "spec_pod_cidr",
-				Type:     schema.TypeCIDR,
+				Type:     types.ExtensionTypes.Inet,
 				Resolver: client.StringToCidrPathResolver("Spec.PodCIDR"),
 			},
 			{
 				Name:     "spec_pod_cidrs",
-				Type:     schema.TypeCIDRArray,
+				Type:     arrow.ListOf(types.ExtensionTypes.Inet),
 				Resolver: client.StringToCidrArrayPathResolver("Spec.PodCIDRs"),
 			},
 		},

@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/julienschmidt/httprouter"
 	"github.com/xanzy/go-gitlab"
 )
@@ -29,8 +29,7 @@ func buildGroups(mux *httprouter.Router) error {
 
 	mux.GET("/api/v4/groups", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		fmt.Fprint(w, string(groupResp))
-	},
-	)
+	})
 
 	var groupMember *gitlab.GroupMember
 	if err := faker.FakeObject(&groupMember, faker.WithMaxDepth(12)); err != nil {
@@ -43,10 +42,25 @@ func buildGroups(mux *httprouter.Router) error {
 		return err
 	}
 
-	mux.GET("/api/v4/groups/:group/members",
-		func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-			fmt.Fprint(w, string(groupMembers))
-		})
+	mux.GET("/api/v4/groups/:group/members", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		fmt.Fprint(w, string(groupMembers))
+	})
+
+	var billableGroupMember *gitlab.BillableGroupMember
+	if err := faker.FakeObject(&billableGroupMember, faker.WithMaxDepth(12)); err != nil {
+		return err
+	}
+
+	billableGroupMember.LastActivityOn = &isoTime
+	billableGroupMembers, err := json.Marshal([]*gitlab.BillableGroupMember{billableGroupMember})
+	if err != nil {
+		return err
+	}
+
+	mux.GET("/api/v4/groups/:group/billable_members", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		fmt.Fprint(w, string(billableGroupMembers))
+	})
+
 	return nil
 }
 

@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/resiliencehub"
 	"github.com/aws/aws-sdk-go-v2/service/resiliencehub/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func appAssesments() *schema.Table {
@@ -48,12 +48,12 @@ func describeAppAssessments(ctx context.Context, meta schema.ClientMeta, resourc
 }
 
 func fetchAppAssessments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Resiliencehub
+	cl := meta.(*client.Client)
+	svc := cl.Services().Resiliencehub
 	p := resiliencehub.NewListAppAssessmentsPaginator(svc, &resiliencehub.ListAppAssessmentsInput{AppArn: parent.Item.(*types.App).AppArn})
 	for p.HasMorePages() {
 		out, err := p.NextPage(ctx, func(options *resiliencehub.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

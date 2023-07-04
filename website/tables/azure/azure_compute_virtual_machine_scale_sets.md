@@ -16,19 +16,19 @@ The following tables depend on azure_compute_virtual_machine_scale_sets:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|subscription_id|String|
-|location|String|
-|extended_location|JSON|
-|identity|JSON|
-|plan|JSON|
-|properties|JSON|
-|sku|JSON|
-|tags|JSON|
-|zones|StringArray|
-|id (PK)|String|
-|name|String|
-|type|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|subscription_id|`utf8`|
+|location|`utf8`|
+|extended_location|`json`|
+|identity|`json`|
+|plan|`json`|
+|properties|`json`|
+|sku|`json`|
+|tags|`json`|
+|zones|`list<item: utf8, nullable>`|
+|id (PK)|`utf8`|
+|name|`utf8`|
+|type|`utf8`|

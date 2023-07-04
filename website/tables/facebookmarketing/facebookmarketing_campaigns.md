@@ -10,46 +10,46 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|ad_strategy_group_id|String|
-|ad_strategy_id|String|
-|adlabels|JSON|
-|bid_strategy|String|
-|boosted_object_id|String|
-|brand_lift_studies|JSON|
-|budget_rebalance_flag|Bool|
-|budget_remaining|String|
-|buying_type|String|
-|can_create_brand_lift_study|Bool|
-|can_use_spend_cap|Bool|
-|configured_status|String|
-|created_time|Timestamp|
-|daily_budget|String|
-|effective_status|String|
-|has_secondary_skadnetwork_reporting|Bool|
-|id (PK)|String|
-|is_skadnetwork_attribution|Bool|
-|issues_info|JSON|
-|last_budget_toggling_time|Timestamp|
-|lifetime_budget|String|
-|name|String|
-|objective|String|
-|pacing_type|StringArray|
-|primary_attribution|String|
-|promoted_object|JSON|
-|recommendations|JSON|
-|smart_promotion_type|String|
-|source_campaign_id|String|
-|special_ad_categories|StringArray|
-|special_ad_category|String|
-|special_ad_category_country|StringArray|
-|spend_cap|String|
-|start_time|Timestamp|
-|status|String|
-|stop_time|Timestamp|
-|topline_id|String|
-|updated_time|Timestamp|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|ad_strategy_group_id|`utf8`|
+|ad_strategy_id|`utf8`|
+|adlabels|`json`|
+|bid_strategy|`utf8`|
+|boosted_object_id|`utf8`|
+|brand_lift_studies|`json`|
+|budget_rebalance_flag|`bool`|
+|budget_remaining|`utf8`|
+|buying_type|`utf8`|
+|can_create_brand_lift_study|`bool`|
+|can_use_spend_cap|`bool`|
+|configured_status|`utf8`|
+|created_time|`timestamp[us, tz=UTC]`|
+|daily_budget|`utf8`|
+|effective_status|`utf8`|
+|has_secondary_skadnetwork_reporting|`bool`|
+|id (PK)|`utf8`|
+|is_skadnetwork_attribution|`bool`|
+|issues_info|`json`|
+|last_budget_toggling_time|`timestamp[us, tz=UTC]`|
+|lifetime_budget|`utf8`|
+|name|`utf8`|
+|objective|`utf8`|
+|pacing_type|`list<item: utf8, nullable>`|
+|primary_attribution|`utf8`|
+|promoted_object|`json`|
+|recommendations|`json`|
+|smart_promotion_type|`utf8`|
+|source_campaign_id|`utf8`|
+|special_ad_categories|`list<item: utf8, nullable>`|
+|special_ad_category|`utf8`|
+|special_ad_category_country|`list<item: utf8, nullable>`|
+|spend_cap|`utf8`|
+|start_time|`timestamp[us, tz=UTC]`|
+|status|`utf8`|
+|stop_time|`timestamp[us, tz=UTC]`|
+|topline_id|`utf8`|
+|updated_time|`timestamp[us, tz=UTC]`|

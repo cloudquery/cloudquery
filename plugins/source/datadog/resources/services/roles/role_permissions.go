@@ -4,26 +4,24 @@ import (
 	"context"
 
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV2"
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
-func RolePermissions() *schema.Table {
+func rolePermissions() *schema.Table {
 	return &schema.Table{
 		Name:      "datadog_role_permissions",
 		Resolver:  fetchRolePermissions,
-		Transform: transformers.TransformWithStruct(&datadogV2.Permission{}),
+		Transform: client.TransformWithStruct(&datadogV2.Permission{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
+			client.AccountNameColumn,
 			{
-				Name:     "account_name",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAccountName,
-			},
-			{
-				Name:     "attributes",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Attributes"),
+				Name:       "role_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("id"),
+				PrimaryKey: true,
 			},
 		},
 	}

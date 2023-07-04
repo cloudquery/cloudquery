@@ -1,10 +1,3 @@
--- SELECT project_id, "role", "member"
--- FROM gcp_project_policy_members
--- WHERE ("role" IN ( 'roles/editor', 'roles/owner')
---     OR "role" LIKE ANY(ARRAY['%Admin', '%admin']))
---     AND "member" LIKE 'serviceAccount:%.iam.gserviceaccount.com';
-
-
 INSERT INTO gcp_policy_results (resource_id, execution_time, framework, check_id, title, project_id, status)
 SELECT member                                                            AS resource_id,
        :'execution_time'::timestamp                                      AS execution_time,

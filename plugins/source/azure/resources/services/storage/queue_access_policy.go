@@ -8,24 +8,26 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue"
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func queueAccessPolicy() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_storage_queue_acl",
-		Resolver:    fetchQueueACL,
-		Description: "https://learn.microsoft.com/en-us/rest/api/storageservices/get-queue-acl#response-body",
-		Transform:   transformers.TransformWithStruct(&azqueue.GetAccessPolicyResponse{}, transformers.WithSkipFields("Date", "RequestID")),
+		Name:                 "azure_storage_queue_acl",
+		Resolver:             fetchQueueACL,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/storageservices/get-queue-acl#response-body",
+		Transform:            transformers.TransformWithStruct(&azqueue.GetAccessPolicyResponse{}, transformers.WithSkipFields("Date", "RequestID")),
 		Columns: schema.ColumnList{
 			client.SubscriptionID,
 			schema.Column{
-				Name:            "queue_id",
-				Type:            schema.TypeString,
-				Resolver:        schema.ParentColumnResolver("id"),
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+				Name:       "queue_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("id"),
+				PrimaryKey: true,
 			},
 		},
 	}

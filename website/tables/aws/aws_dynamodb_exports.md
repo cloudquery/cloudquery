@@ -10,29 +10,29 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|billed_size_bytes|Int|
-|client_token|String|
-|end_time|Timestamp|
-|export_arn|String|
-|export_format|String|
-|export_manifest|String|
-|export_status|String|
-|export_time|Timestamp|
-|failure_code|String|
-|failure_message|String|
-|item_count|Int|
-|s3_bucket|String|
-|s3_bucket_owner|String|
-|s3_prefix|String|
-|s3_sse_algorithm|String|
-|s3_sse_kms_key_id|String|
-|start_time|Timestamp|
-|table_arn|String|
-|table_id|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|billed_size_bytes|`int64`|
+|client_token|`utf8`|
+|end_time|`timestamp[us, tz=UTC]`|
+|export_arn|`utf8`|
+|export_format|`utf8`|
+|export_manifest|`utf8`|
+|export_status|`utf8`|
+|export_time|`timestamp[us, tz=UTC]`|
+|failure_code|`utf8`|
+|failure_message|`utf8`|
+|item_count|`int64`|
+|s3_bucket|`utf8`|
+|s3_bucket_owner|`utf8`|
+|s3_prefix|`utf8`|
+|s3_sse_algorithm|`utf8`|
+|s3_sse_kms_key_id|`utf8`|
+|start_time|`timestamp[us, tz=UTC]`|
+|table_arn|`utf8`|
+|table_id|`utf8`|

@@ -3,11 +3,12 @@ package cloudwatchlogs
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func dataProtectionPolicy() *schema.Table {
@@ -24,11 +25,9 @@ func dataProtectionPolicy() *schema.Table {
 			{
 				Name:        "log_group_arn",
 				Description: "The Amazon Resource Name (ARN) of the log group.",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 				Resolver:    schema.ParentColumnResolver("arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey:  true,
 			},
 		},
 	}
@@ -42,10 +41,10 @@ func fetchDataProtectionPolicy(ctx context.Context, meta schema.ClientMeta, pare
 	config := cloudwatchlogs.GetDataProtectionPolicyInput{
 		LogGroupIdentifier: lg.LogGroupName,
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudwatchlogs
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudwatchlogs
 	resp, err := svc.GetDataProtectionPolicy(ctx, &config, func(options *cloudwatchlogs.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 
 	if err != nil {

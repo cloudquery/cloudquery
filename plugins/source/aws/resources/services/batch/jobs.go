@@ -3,12 +3,15 @@ package batch
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/batch"
 	"github.com/aws/aws-sdk-go-v2/service/batch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 var allJobStatuses = []types.JobStatus{
@@ -34,16 +37,14 @@ func jobs() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveBatchJobTags,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("JobArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("JobArn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -56,12 +57,12 @@ func fetchBatchJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.
 			JobQueue:   parent.Item.(types.JobQueueDetail).JobQueueArn,
 			JobStatus:  status,
 		}
-		c := meta.(*client.Client)
-		svc := c.Services().Batch
+		cl := meta.(*client.Client)
+		svc := cl.Services().Batch
 		p := batch.NewListJobsPaginator(svc, &config)
 		for p.HasMorePages() {
 			response, err := p.NextPage(ctx, func(options *batch.Options) {
-				options.Region = c.Region
+				options.Region = cl.Region
 			})
 			if err != nil {
 				return err
@@ -78,7 +79,7 @@ func fetchBatchJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.
 			details, err := svc.DescribeJobs(ctx, &batch.DescribeJobsInput{
 				Jobs: ids,
 			}, func(options *batch.Options) {
-				options.Region = c.Region
+				options.Region = cl.Region
 			})
 			if err != nil {
 				return err

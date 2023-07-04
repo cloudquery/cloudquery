@@ -5,9 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 const (
@@ -29,104 +28,78 @@ type tableInfo struct {
 	columns []columnInfo
 }
 
-func (c *Client) duckdbTables(tables schema.Schemas) (schema.Schemas, error) {
-	var schemaTables schema.Schemas
+func (c *Client) duckDBTables(ctx context.Context, tables schema.Tables) (schema.Tables, error) {
+	var schemaTables schema.Tables
 	for _, table := range tables {
-		tableName := schema.TableName(table)
-		info, err := c.getTableInfo(tableName)
+		info, err := c.getTableInfo(ctx, table.Name)
 		if err != nil {
 			return nil, err
 		}
 		if info == nil {
 			continue
 		}
-		fields := make([]arrow.Field, len(info.columns))
+		columns := make(schema.ColumnList, len(info.columns))
 		for i, col := range info.columns {
-			md := make(map[string]string)
-			if col.pk {
-				md[schema.MetadataPrimaryKey] = schema.MetadataTrue
-			} else {
-				md[schema.MetadataPrimaryKey] = schema.MetadataFalse
-			}
-			if col.unique {
-				md[schema.MetadataUnique] = schema.MetadataTrue
-			} else {
-				md[schema.MetadataUnique] = schema.MetadataFalse
-			}
-			fields[i] = arrow.Field{
-				Name:     col.name,
-				Type:     c.duckdbTypeToSchema(col.typ),
-				Nullable: !col.notNull,
-				Metadata: arrow.MetadataFrom(md),
+			columns[i] = schema.Column{
+				Name:       col.name,
+				Type:       duckDBToArrow(col.typ),
+				NotNull:    col.notNull,
+				PrimaryKey: col.pk,
+				Unique:     col.unique,
 			}
 		}
-		md := arrow.MetadataFrom(map[string]string{
-			schema.MetadataTableName: tableName,
+		schemaTables = append(schemaTables, &schema.Table{
+			Name:    table.Name,
+			Columns: columns,
 		})
-		schemaTables = append(schemaTables, arrow.NewSchema(fields, &md))
 	}
 
 	return schemaTables, nil
 }
 
-func (c *Client) normalizeColumns(tables schema.Schemas) schema.Schemas {
-	var normalized schema.Schemas
+func (*Client) normalizeColumns(tables schema.Tables) schema.Tables {
+	var normalized schema.Tables
 	for _, table := range tables {
-		fields := table.Fields()
-		for i := range fields {
+		normalizedTable := *table
+		normalizedTable.Columns = make(schema.ColumnList, len(table.Columns))
+		for i := range table.Columns {
 			// In DuckDB, a PK column must be NOT NULL, so we need to make sure that the schema we're comparing to has the same
 			// constraint.
-			metadata := fields[i].Metadata.ToMap()
-
-			if !c.enabledPks() {
-				metadata[schema.MetadataPrimaryKey] = schema.MetadataFalse
-				metadata[schema.MetadataUnique] = schema.MetadataFalse
-			} else {
-				if schema.IsPk(fields[i]) {
-					fields[i].Nullable = false
-				} else {
-					metadata[schema.MetadataPrimaryKey] = schema.MetadataFalse
-				}
-				if !schema.IsUnique(fields[i]) {
-					metadata[schema.MetadataUnique] = schema.MetadataFalse
-				}
+			normalizedColumn := table.Columns[i]
+			if normalizedColumn.PrimaryKey {
+				normalizedColumn.NotNull = true
 			}
-
-			fields[i].Metadata = arrow.MetadataFrom(metadata)
 			// Since multiple schema types can map to the same duckdb type we need to normalize them to avoid false positives when detecting schema changes
-			fields[i].Type = c.duckdbTypeToSchema(c.SchemaTypeToDuckDB(fields[i].Type))
+			normalizedColumn.Type = duckDBToArrow(arrowToDuckDB(normalizedColumn.Type))
+			normalizedTable.Columns[i] = normalizedColumn
 		}
-		md := table.Metadata()
-
-		normalized = append(normalized, arrow.NewSchema(fields, &md))
+		normalized = append(normalized, &normalizedTable)
 	}
 
 	return normalized
 }
 
-func (c *Client) nonAutoMigrableTables(tables schema.Schemas, duckdbTables schema.Schemas) ([]string, [][]schema.FieldChange) {
+func (c *Client) nonAutoMigratableTables(tables schema.Tables, duckdbTables schema.Tables) ([]string, [][]schema.TableColumnChange) {
 	var result []string
-	var tableChanges [][]schema.FieldChange
+	var tableChanges [][]schema.TableColumnChange
 	for _, t := range tables {
-		tName := schema.TableName(t)
-		duckdbTable := duckdbTables.SchemaByName(tName)
+		duckdbTable := duckdbTables.Get(t.Name)
 		if duckdbTable == nil {
 			continue
 		}
-		changes := schema.GetSchemaChanges(t, duckdbTable)
+		changes := t.GetChanges(duckdbTable)
 		if !c.canAutoMigrate(changes) {
-			result = append(result, tName)
+			result = append(result, t.Name)
 			tableChanges = append(tableChanges, changes)
 		}
 	}
 	return result, tableChanges
 }
 
-func (c *Client) autoMigrateTable(table *arrow.Schema, changes []schema.FieldChange) error {
-	tableName := schema.TableName(table)
+func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, changes []schema.TableColumnChange) error {
 	for _, change := range changes {
 		if change.Type == schema.TableColumnChangeTypeAdd {
-			if err := c.addColumn(tableName, change.Current.Name, c.SchemaTypeToDuckDB(change.Current.Type)); err != nil {
+			if err := c.addColumn(ctx, table.Name, change.Current.Name, arrowToDuckDB(change.Current.Type)); err != nil {
 				return err
 			}
 		}
@@ -134,13 +107,13 @@ func (c *Client) autoMigrateTable(table *arrow.Schema, changes []schema.FieldCha
 	return nil
 }
 
-func (*Client) canAutoMigrate(changes []schema.FieldChange) bool {
+func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 	for _, change := range changes {
-		if change.Type == schema.TableColumnChangeTypeAdd && (schema.IsPk(change.Current) || !change.Current.Nullable) {
+		if change.Type == schema.TableColumnChangeTypeAdd && (change.Current.PrimaryKey || change.Current.NotNull) {
 			return false
 		}
 
-		if change.Type == schema.TableColumnChangeTypeRemove && (schema.IsPk(change.Previous) || !change.Previous.Nullable) {
+		if change.Type == schema.TableColumnChangeTypeRemove && (change.Previous.PrimaryKey || change.Previous.NotNull) {
 			return false
 		}
 
@@ -152,45 +125,49 @@ func (*Client) canAutoMigrate(changes []schema.FieldChange) bool {
 }
 
 // Migrate migrates to the latest schema
-func (c *Client) Migrate(ctx context.Context, tables schema.Schemas) error {
-	duckdbTables, err := c.duckdbTables(tables)
+func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
+	tables := make(schema.Tables, len(msgs))
+	for i, msg := range msgs {
+		tables[i] = msg.Table
+	}
+
+	duckdbTables, err := c.duckDBTables(ctx, tables)
 	if err != nil {
 		return err
 	}
 
 	normalizedTables := c.normalizeColumns(tables)
-	if c.spec.MigrateMode != specs.MigrateModeForced {
-		nonAutoMigrableTables, changes := c.nonAutoMigrableTables(normalizedTables, duckdbTables)
-		if len(nonAutoMigrableTables) > 0 {
-			return fmt.Errorf("tables %s with changes %s require force migration. use 'migrate_mode: forced'", strings.Join(nonAutoMigrableTables, ","), changes)
+	nonAutoMigratableTables, changes := c.nonAutoMigratableTables(normalizedTables, duckdbTables)
+	for i, nonAutoMigratableTable := range nonAutoMigratableTables {
+		if !msgs[i].MigrateForce {
+			return fmt.Errorf("tables %s with changes %s require force migration. use 'migrate_mode: forced'", nonAutoMigratableTable, changes)
 		}
 	}
 
 	for _, table := range normalizedTables {
-		tableName := schema.TableName(table)
-		c.logger.Info().Str("table", tableName).Msg("Migrating table")
-		if len(table.Fields()) == 0 {
-			c.logger.Info().Str("table", tableName).Msg("Table with no columns, skipping")
+		c.logger.Info().Str("table", table.Name).Msg("Migrating table")
+		if len(table.Columns) == 0 {
+			c.logger.Info().Str("table", table.Name).Msg("Table with no columns, skipping")
 			continue
 		}
-		duckdb := duckdbTables.SchemaByName(tableName)
+		duckdb := duckdbTables.Get(table.Name)
 		if duckdb == nil {
-			c.logger.Debug().Str("table", tableName).Msg("Table doesn't exist, creating")
-			if err := c.createTableIfNotExist(tableName, table); err != nil {
+			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
+			if err := c.createTableIfNotExist(ctx, table.Name, table); err != nil {
 				return err
 			}
 			continue
 		}
 
-		changes := schema.GetSchemaChanges(table, duckdb)
+		changes := table.GetChanges(duckdb)
 		if c.canAutoMigrate(changes) {
-			c.logger.Info().Str("table", tableName).Msg("Table exists, auto-migrating")
-			if err := c.autoMigrateTable(table, changes); err != nil {
+			c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
+			if err := c.autoMigrateTable(ctx, table, changes); err != nil {
 				return err
 			}
 		} else {
-			c.logger.Info().Str("table", tableName).Msg("Table exists, force migration required")
-			if err := c.recreateTable(table); err != nil {
+			c.logger.Info().Str("table", table.Name).Msg("Table exists, force migration required")
+			if err := c.recreateTable(ctx, table); err != nil {
 				return err
 			}
 		}
@@ -199,42 +176,37 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Schemas) error {
 	return nil
 }
 
-func (c *Client) recreateTable(table *arrow.Schema) error {
-	tableName := schema.TableName(table)
-	sql := "drop table if exists \"" + tableName + "\""
-	if _, err := c.db.Exec(sql); err != nil {
-		return fmt.Errorf("failed to drop table %s: %w", tableName, err)
+func (c *Client) recreateTable(ctx context.Context, table *schema.Table) error {
+	sql := "drop table if exists " + sanitizeID(table.Name)
+	if err := c.exec(ctx, sql); err != nil {
+		return err
 	}
-	return c.createTableIfNotExist(tableName, table)
+	return c.createTableIfNotExist(ctx, table.Name, table)
 }
 
-func (c *Client) addColumn(tableName string, columnName string, columnType string) error {
-	sql := "alter table \"" + tableName + "\" add column \"" + columnName + "\" \"" + columnType + `"`
-	if _, err := c.db.Exec(sql); err != nil {
-		return fmt.Errorf("failed to add column %s on table %s: %w", columnName, tableName, err)
-	}
-	return nil
+func (c *Client) addColumn(ctx context.Context, tableName string, columnName string, columnType string) error {
+	sql := "alter table " + sanitizeID(tableName) + " add column " + sanitizeID(columnName) + " " + columnType
+	return c.exec(ctx, sql)
 }
 
-func (c *Client) createTableIfNotExist(tableName string, table *arrow.Schema) error {
+func (c *Client) createTableIfNotExist(ctx context.Context, tableName string, table *schema.Table) error {
 	var sb strings.Builder
 	sb.WriteString("CREATE TABLE IF NOT EXISTS ")
-	sb.WriteString(`"` + tableName + `"`)
+	sb.WriteString(sanitizeID(tableName))
 	sb.WriteString(" (")
-	totalColumns := len(table.Fields())
+	totalColumns := len(table.Columns)
 
 	var pks []string
-	for i, col := range table.Fields() {
-		sqlType := c.SchemaTypeToDuckDB(col.Type)
-		// TODO: sanitize column name
-		fieldDef := `"` + col.Name + `" ` + sqlType
-		if schema.IsPk(col) {
+	for i, col := range table.Columns {
+		sqlType := arrowToDuckDB(col.Type)
+		fieldDef := sanitizeID(col.Name) + ` ` + sqlType
+		if col.PrimaryKey {
 			pks = append(pks, col.Name)
 		}
-		if schema.IsUnique(col) && c.enabledPks() {
+		if col.Unique {
 			fieldDef += " UNIQUE"
 		}
-		if !col.Nullable {
+		if col.NotNull {
 			fieldDef += " NOT NULL"
 		}
 		sb.WriteString(fieldDef)
@@ -242,10 +214,10 @@ func (c *Client) createTableIfNotExist(tableName string, table *arrow.Schema) er
 			sb.WriteString(",")
 		}
 	}
-	if len(pks) > 0 && c.enabledPks() {
+	if len(pks) > 0 {
 		sb.WriteString(", PRIMARY KEY (")
 		for i, pk := range pks {
-			sb.WriteString(`"` + pk + `"`)
+			sb.WriteString(sanitizeID(pk))
 			if i != len(pks)-1 {
 				sb.WriteString(",")
 			}
@@ -253,15 +225,11 @@ func (c *Client) createTableIfNotExist(tableName string, table *arrow.Schema) er
 		sb.WriteString(")")
 	}
 	sb.WriteString(")")
-	_, err := c.db.Exec(sb.String())
-	if err != nil {
-		return fmt.Errorf("failed to create table with '%s': %w", sb.String(), err)
-	}
-	return nil
+	return c.exec(ctx, sb.String())
 }
 
-func (c *Client) isColumnUnique(tableName string, columName string) (bool, error) {
-	rows, err := c.db.Query(isColumnUniqueSQL, tableName, columName)
+func (c *Client) isColumnUnique(ctx context.Context, tableName string, columName string) (bool, error) {
+	rows, err := c.db.QueryContext(ctx, isColumnUniqueSQL, tableName, columName)
 	if err != nil {
 		return false, err
 	}
@@ -282,9 +250,9 @@ func (c *Client) isColumnUnique(tableName string, columName string) (bool, error
 	return false, nil
 }
 
-func (c *Client) getTableInfo(tableName string) (*tableInfo, error) {
+func (c *Client) getTableInfo(ctx context.Context, tableName string) (*tableInfo, error) {
 	info := tableInfo{}
-	rows, err := c.db.Query(fmt.Sprintf(sqlTableInfo, tableName))
+	rows, err := c.db.QueryContext(ctx, fmt.Sprintf(sqlTableInfo, tableName))
 	if err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("Table with name %s does not exist!", tableName)) {
 			// Table doesn't exist
@@ -305,7 +273,7 @@ func (c *Client) getTableInfo(tableName string) (*tableInfo, error) {
 			return nil, err
 		}
 		colInfo.typ = strings.ToLower(colInfo.typ)
-		colInfo.unique, err = c.isColumnUnique(tableName, colInfo.name)
+		colInfo.unique, err = c.isColumnUnique(ctx, tableName, colInfo.name)
 		if err != nil {
 			return nil, err
 		}
@@ -320,8 +288,4 @@ func (c *Client) getTableInfo(tableName string) (*tableInfo, error) {
 		return nil, nil
 	}
 	return &info, nil
-}
-
-func (c *Client) enabledPks() bool {
-	return c.spec.WriteMode == specs.WriteModeOverwrite || c.spec.WriteMode == specs.WriteModeOverwriteDeleteStale
 }

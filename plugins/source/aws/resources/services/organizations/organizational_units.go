@@ -3,20 +3,22 @@ package organizations
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/organizations/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func OrganizationalUnits() *schema.Table {
 	tableName := "aws_organizations_organizational_units"
 	return &schema.Table{
-		Name:                tableName,
-		Description:         `https://docs.aws.amazon.com/organizations/latest/APIReference/API_OrganizationalUnit.html`,
+		Name: tableName,
+		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_OrganizationalUnit.html
+The 'request_account_id' column is added to show from where the request was made.`,
 		Resolver:            fetchOUs,
 		PreResourceResolver: getOU,
 		Transform: transformers.TransformWithStruct(
@@ -24,19 +26,29 @@ func OrganizationalUnits() *schema.Table {
 			transformers.WithPrimaryKeys("Arn"),
 		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "organizations"),
-		Columns:   []schema.Column{client.DefaultAccountIDColumn(true)},
+		Columns: []schema.Column{
+			{
+				Name:       "request_account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSAccount,
+				PrimaryKey: true,
+			},
+		},
+		Relations: []*schema.Table{
+			organizationalUnitParents(),
+		},
 	}
 }
 
 func fetchOUs(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Organizations
+	cl := meta.(*client.Client)
+	svc := cl.Services().Organizations
 	var input organizations.ListRootsInput
 	paginator := organizations.NewListRootsPaginator(svc, &input)
 	var roots []types.Root
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *organizations.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
@@ -87,13 +99,13 @@ func getOUs(ctx context.Context, meta schema.ClientMeta, accountsApi services.Or
 }
 
 func getOU(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	child := resource.Item.(types.Child)
-	svc := c.Services().Organizations
+	svc := cl.Services().Organizations
 	ou, err := svc.DescribeOrganizationalUnit(ctx, &organizations.DescribeOrganizationalUnitInput{
 		OrganizationalUnitId: child.Id,
 	}, func(options *organizations.Options) {
-		options.Region = c.Region
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

@@ -8,20 +8,27 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/acm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v2/faker"
+	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockAcmClient(ctrl)
 
 	var cs types.CertificateSummary
-	if err := faker.FakeObject(&cs); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&cs))
+
 	mock.EXPECT().ListCertificates(
 		gomock.Any(),
-		&acm.ListCertificatesInput{},
+		&acm.ListCertificatesInput{
+			CertificateStatuses: types.CertificateStatus("").Values(),
+			Includes: &types.Filters{
+				ExtendedKeyUsage: []types.ExtendedKeyUsageName{types.ExtendedKeyUsageNameAny},
+				KeyTypes:         types.KeyAlgorithm("").Values(),
+				KeyUsage:         []types.KeyUsageName{types.KeyUsageNameAny},
+			},
+		},
 		gomock.Any(),
 	).Return(
 		&acm.ListCertificatesOutput{CertificateSummaryList: []types.CertificateSummary{cs}},
@@ -29,9 +36,8 @@ func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) client.Services
 	)
 
 	var cert types.CertificateDetail
-	if err := faker.FakeObject(&cert); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&cert))
+
 	cert.CertificateArn = cs.CertificateArn
 	mock.EXPECT().DescribeCertificate(
 		gomock.Any(),

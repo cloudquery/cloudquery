@@ -1,10 +1,13 @@
 package main
 
 import (
+	"context"
+	"log"
+
 	"github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/client"
-	"github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/serve"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/resources/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/serve"
 )
 
 const (
@@ -12,8 +15,8 @@ const (
 )
 
 func main() {
-	p := destination.NewPlugin("elasticsearch", plugin.Version, client.New,
-		destination.WithManagedWriter(),
-	)
-	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
+	p := plugin.NewPlugin("elasticsearch", internalPlugin.Version, client.New)
+	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN), serve.WithDestinationV0V1Server()).Serve(context.Background()); err != nil {
+		log.Fatal(err)
+	}
 }

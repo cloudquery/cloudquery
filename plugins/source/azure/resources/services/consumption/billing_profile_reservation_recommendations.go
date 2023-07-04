@@ -7,17 +7,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/consumption/armconsumption"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func BillingProfileReservationRecommendations() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_consumption_billing_profile_reservation_recommendations",
-		Resolver:    fetchBillingProfileReservationRecommendations,
-		Description: "https://learn.microsoft.com/en-us/rest/api/consumption/reservation-recommendations/list?tabs=HTTP#modernreservationrecommendation",
-		Multiplex:   client.BillingAccountProfileMultiplex,
-		Transform:   transformers.TransformWithStruct(&armconsumption.ModernReservationRecommendation{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_consumption_billing_profile_reservation_recommendations",
+		Resolver:             fetchBillingProfileReservationRecommendations,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/consumption/reservation-recommendations/list?tabs=HTTP#modernreservationrecommendation",
+		Multiplex:            client.BillingAccountProfileMultiplex,
+		Transform:            transformers.TransformWithStruct(&armconsumption.ModernReservationRecommendation{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

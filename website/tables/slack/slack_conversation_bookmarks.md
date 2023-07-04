@@ -14,23 +14,23 @@ This table depends on [slack_conversations](slack_conversations).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|team_id (PK)|String|
-|id (PK)|String|
-|channel_id (PK)|String|
-|date_created|Timestamp|
-|date_updated|Timestamp|
-|title|String|
-|link|String|
-|emoji|String|
-|icon_url|String|
-|type|String|
-|rank|String|
-|last_updated_by_user_id|String|
-|last_updated_by_team_id|String|
-|shortcut_id|String|
-|entity_id|String|
-|app_id|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|team_id (PK)|`utf8`|
+|id (PK)|`utf8`|
+|channel_id (PK)|`utf8`|
+|date_created|`timestamp[us, tz=UTC]`|
+|date_updated|`timestamp[us, tz=UTC]`|
+|title|`utf8`|
+|link|`utf8`|
+|emoji|`utf8`|
+|icon_url|`utf8`|
+|type|`utf8`|
+|rank|`utf8`|
+|last_updated_by_user_id|`utf8`|
+|last_updated_by_team_id|`utf8`|
+|shortcut_id|`utf8`|
+|entity_id|`utf8`|
+|app_id|`utf8`|

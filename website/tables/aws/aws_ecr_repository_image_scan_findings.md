@@ -14,15 +14,15 @@ This table depends on [aws_ecr_repository_images](aws_ecr_repository_images).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|image_tag|String|
-|image_digest|String|
-|image_scan_findings|JSON|
-|image_scan_status|JSON|
-|registry_id|String|
-|repository_name|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|image_tag|`utf8`|
+|image_digest|`utf8`|
+|image_scan_findings|`json`|
+|image_scan_status|`json`|
+|registry_id|`utf8`|
+|repository_name|`utf8`|

@@ -3,11 +3,14 @@ package docdb
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/docdb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func clusterSnapshots() *schema.Table {
@@ -23,30 +26,28 @@ func clusterSnapshots() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveDBClusterSnapshotTags,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DBClusterSnapshotArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("DBClusterSnapshotArn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "attributes",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveDocdbClusterSnapshotAttributes,
 			},
 			{
 				Name:     "db_cluster_identifier",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("DBClusterIdentifier"),
 			},
 			{
 				Name:     "db_cluster_snapshot_identifier",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("DBClusterSnapshotIdentifier"),
 			},
 		},
@@ -55,8 +56,8 @@ func clusterSnapshots() *schema.Table {
 
 func fetchDocdbClusterSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	item := parent.Item.(types.DBCluster)
-	c := meta.(*client.Client)
-	svc := c.Services().Docdb
+	cl := meta.(*client.Client)
+	svc := cl.Services().Docdb
 
 	input := &docdb.DescribeDBClusterSnapshotsInput{
 		DBClusterIdentifier: item.DBClusterIdentifier,
@@ -64,7 +65,7 @@ func fetchDocdbClusterSnapshots(ctx context.Context, meta schema.ClientMeta, par
 	p := docdb.NewDescribeDBClusterSnapshotsPaginator(svc, input)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *docdb.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err

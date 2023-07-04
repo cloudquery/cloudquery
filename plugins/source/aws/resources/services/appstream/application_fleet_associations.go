@@ -3,12 +3,13 @@ package appstream
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appstream/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
 
 func applicationFleetAssociations() *schema.Table {
@@ -23,20 +24,16 @@ func applicationFleetAssociations() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "application_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ApplicationArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "application_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ApplicationArn"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "fleet_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FleetName"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "fleet_name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("FleetName"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -48,12 +45,12 @@ func fetchAppstreamApplicationFleetAssociations(ctx context.Context, meta schema
 	var input appstream.DescribeApplicationFleetAssociationsInput
 	input.ApplicationArn = parentApplication.Arn
 
-	c := meta.(*client.Client)
-	svc := c.Services().Appstream
+	cl := meta.(*client.Client)
+	svc := cl.Services().Appstream
 	// No paginator available
 	for {
 		response, err := svc.DescribeApplicationFleetAssociations(ctx, &input, func(options *appstream.Options) {
-			options.Region = c.Region
+			options.Region = cl.Region
 		})
 		if err != nil {
 			return err
