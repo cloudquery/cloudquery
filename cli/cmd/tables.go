@@ -1,15 +1,12 @@
 package cmd
 
 import (
-	"bytes"
 	"fmt"
-	"os/exec"
 	"path"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/cli/internal/plugin/managedsource"
-	"github.com/cloudquery/plugin-pb-go/pb/source/v1"
-	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
+	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
@@ -60,11 +57,21 @@ func tables(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
-	opts := []managedsource.Option{
-		managedsource.WithLogger(log.Logger),
-		managedsource.WithDirectory(cqDir),
+	opts := []managedplugin.Option{
+		managedplugin.WithLogger(log.Logger),
+		managedplugin.WithDirectory(cqDir),
 	}
-	sourceClients, err := managedsource.NewClients(ctx, specReader.Sources, opts...)
+	pluginConfigs := make([]managedplugin.Config, 0, len(specReader.Sources))
+	for _, sourceSpec := range specReader.Sources {
+		pluginConfigs = append(pluginConfigs, managedplugin.Config{
+			Name:     sourceSpec.Name,
+			Path:     sourceSpec.Path,
+			Version:  sourceSpec.Version,
+			Registry: SpecRegistryToPlugin(sourceSpec.Registry),
+		})
+	}
+
+	sourceClients, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, pluginConfigs, opts...)
 	if err != nil {
 		return err
 	}
@@ -73,26 +80,21 @@ func tables(cmd *cobra.Command, args []string) error {
 			fmt.Println(err)
 		}
 	}()
-	for _, sourceClient := range sourceClients {
-		outputPath := path.Join(outputDir, sourceClient.Spec.Name)
-		pbSourceClient := source.NewSourceClient(sourceClient.Conn)
-		if _, err := pbSourceClient.GenDocs(ctx, &source.GenDocs_Request{
-			Format: source.GenDocs_FORMAT(source.GenDocs_FORMAT_value[format]),
-			Path:   outputPath,
-		}); err == nil {
-			continue
+	for _, source := range specReader.Sources {
+		cl := sourceClients.ClientByName(source.Name)
+		outputPath := path.Join(outputDir, source.Name)
+		versions, err := cl.Versions(ctx)
+		if err != nil {
+			return fmt.Errorf("failed to get versions for %s. Error: %w", source.Name, err)
 		}
-		// If we have a local path, we can fallback to running the docs command
-		if err != nil && sourceClient.LocalPath == "" {
-			return fmt.Errorf("failed to call GenDocs: %w", err)
-		}
-		args := []string{"doc", "--format", format, outputPath}
-		cmd := exec.CommandContext(ctx, sourceClient.LocalPath, args...)
-		var outb, errb bytes.Buffer
-		cmd.Stdout = &outb
-		cmd.Stderr = &errb
-		if err := cmd.Run(); err != nil {
-			return fmt.Errorf("failed to run source plugin %s: %w. Output: %s. Error: %s", sourceClient.LocalPath, err, outb.String(), errb.String())
+		maxVersion := findMaxCommonVersion(versions, []int{2})
+		switch maxVersion {
+		case 2:
+			if err := tablesV2(ctx, cl, outputPath, format); err != nil {
+				return err
+			}
+		default:
+			return fmt.Errorf("unsupported version %d for %s", maxVersion, source.Name)
 		}
 	}
 

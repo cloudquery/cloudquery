@@ -19,4 +19,5 @@ The primary key for this table is **arn**.
 |arn (PK)|`utf8`|
 |last_backup_time|`timestamp[us, tz=UTC]`|
 |resource_arn|`utf8`|
+|resource_name|`utf8`|
 |resource_type|`utf8`|

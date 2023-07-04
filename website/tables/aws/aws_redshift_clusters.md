@@ -44,6 +44,9 @@ The following tables depend on aws_redshift_clusters:
 |cluster_status|`utf8`|
 |cluster_subnet_group_name|`utf8`|
 |cluster_version|`utf8`|
+|custom_domain_certificate_arn|`utf8`|
+|custom_domain_certificate_expiry_date|`timestamp[us, tz=UTC]`|
+|custom_domain_name|`utf8`|
 |db_name|`utf8`|
 |data_transfer_progress|`json`|
 |default_iam_role_arn|`utf8`|

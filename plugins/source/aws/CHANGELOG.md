@@ -6,6 +6,251 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [19.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v19.1.0...plugins-source-aws-v19.2.0) (2023-06-30)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_codecommit_repositories` was added
+- Table `aws_route53resolver_firewall_configs` was added
+- Table `aws_route53resolver_firewall_domain_lists` was added
+- Table `aws_route53resolver_firewall_rule_group_associations` was added
+- Table `aws_route53resolver_firewall_rule_groups` was added
+- Table `aws_route53resolver_resolver_endpoints` was added
+- Table `aws_route53resolver_resolver_query_log_config_associations` was added
+- Table `aws_route53resolver_resolver_query_log_configs` was added
+- Table `aws_route53resolver_resolver_rule_associations` was added
+- Table `aws_route53resolver_resolver_rules` was added
+
+### Features
+
+* **aws:** Add AWS CodeCommit Repositories ([#11827](https://github.com/cloudquery/cloudquery/issues/11827)) ([a198fd8](https://github.com/cloudquery/cloudquery/commit/a198fd8e5890d289a464c580497a72f139717e5c)), closes [#11819](https://github.com/cloudquery/cloudquery/issues/11819)
+* **aws:** Add support for Route53resolver service ([#11818](https://github.com/cloudquery/cloudquery/issues/11818)) ([9bbd610](https://github.com/cloudquery/cloudquery/commit/9bbd610d3585feab47332e318988bd7dcee14fce))
+
+
+### Bug Fixes
+
+* **aws:** Add test to ensure documentation is unique for each table ([#11816](https://github.com/cloudquery/cloudquery/issues/11816)) ([107f98b](https://github.com/cloudquery/cloudquery/commit/107f98beaf5ee5bb9e757018492fe9d7e20d6324))
+* **aws:** Codebuild builds ([#11805](https://github.com/cloudquery/cloudquery/issues/11805)) ([8c560f0](https://github.com/cloudquery/cloudquery/commit/8c560f0626410b0802b28ff037b4cca0c90beeaa))
+* **aws:** Fix CodeBuild SourceCredentials Mock Test ([#11808](https://github.com/cloudquery/cloudquery/issues/11808)) ([cce4376](https://github.com/cloudquery/cloudquery/commit/cce437606797c1c49626adaf13c12e169d019185))
+* **aws:** Fix Timestream Regional issue ([#11795](https://github.com/cloudquery/cloudquery/issues/11795)) ([c53399a](https://github.com/cloudquery/cloudquery/commit/c53399a119aee33d9e314e32030c4b8740966ad2))
+
+## [19.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v19.0.0...plugins-source-aws-v19.1.0) (2023-06-27)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_codeartifact_domains` was added
+- Table `aws_codeartifact_repositories` was added
+- Table `aws_codebuild_builds` was added
+- Table `aws_codebuild_source_credentials` was added
+- Table `aws_detective_graph_members` was added
+- Table `aws_detective_graphs` was added
+- Table `aws_ec2_hosts`: column added with name `asset_id` and type `utf8`
+- Table `aws_ec2_vpn_connections` was added
+- Table `aws_ecr_pull_through_cache_rules` was added
+- Table `aws_eks_cluster_addons` was added
+- Table `aws_eks_cluster_oidc_identity_provider_configs` was added
+- Table `aws_inspector2_findings`: column added with name `code_vulnerability_details` and type `json`
+- Table `aws_inspector2_findings`: column added with name `epss` and type `json`
+- Table `aws_mq_broker_users`: column added with name `replication_user` and type `bool`
+- Table `aws_mq_brokers`: column added with name `data_replication_metadata` and type `json`
+- Table `aws_mq_brokers`: column added with name `data_replication_mode` and type `utf8`
+- Table `aws_mq_brokers`: column added with name `pending_data_replication_metadata` and type `json`
+- Table `aws_mq_brokers`: column added with name `pending_data_replication_mode` and type `utf8`
+- Table `aws_networkfirewall_firewalls` was added
+- Table `aws_networkfirewall_tls_inspection_configurations` was added
+- Table `aws_redshift_clusters`: column added with name `custom_domain_certificate_arn` and type `utf8`
+- Table `aws_redshift_clusters`: column added with name `custom_domain_certificate_expiry_date` and type `timestamp[us, tz=UTC]`
+- Table `aws_redshift_clusters`: column added with name `custom_domain_name` and type `utf8`
+- Table `aws_servicediscovery_instances` was added
+- Table `aws_servicediscovery_namespaces` was added
+- Table `aws_servicediscovery_services` was added
+- Table `aws_signer_signing_profiles` was added
+- Table `aws_stepfunctions_executions`: column added with name `state_machine_alias_arn` and type `utf8`
+- Table `aws_stepfunctions_executions`: column added with name `state_machine_version_arn` and type `utf8`
+- Table `aws_stepfunctions_map_run_executions`: column added with name `state_machine_alias_arn` and type `utf8`
+- Table `aws_stepfunctions_map_run_executions`: column added with name `state_machine_version_arn` and type `utf8`
+- Table `aws_stepfunctions_state_machines`: column added with name `description` and type `utf8`
+- Table `aws_stepfunctions_state_machines`: column added with name `revision_id` and type `utf8`
+- Table `aws_transfer_servers`: column added with name `structured_log_destinations` and type `list<item: utf8, nullable>`
+- Table `aws_wellarchitected_lens_review_improvements` was added
+- Table `aws_wellarchitected_lens_reviews` was added
+- Table `aws_wellarchitected_lenses` was added
+- Table `aws_wellarchitected_share_invitations` was added
+- Table `aws_wellarchitected_workload_milestones` was added
+- Table `aws_wellarchitected_workload_shares` was added
+- Table `aws_wellarchitected_workloads` was added
+
+### Features
+
+* Add AWS Well-Architected resources ([#11697](https://github.com/cloudquery/cloudquery/issues/11697)) ([83174fe](https://github.com/cloudquery/cloudquery/commit/83174fef5f43b39aa99129c2bf7213aea7e280be)), closes [#11664](https://github.com/cloudquery/cloudquery/issues/11664)
+* **aws-services:** Support newly added regions ([#11778](https://github.com/cloudquery/cloudquery/issues/11778)) ([afbf0ec](https://github.com/cloudquery/cloudquery/commit/afbf0ecc7c24f5917207845602a24af7942e9c67))
+* **aws:** Add Support for `builds` and `source credentials` for AWS CodeBuild  ([#11705](https://github.com/cloudquery/cloudquery/issues/11705)) ([4eed4dc](https://github.com/cloudquery/cloudquery/commit/4eed4dc1816ddb5c4b5e0cda50489ef912bd0f94))
+* **aws:** Add Support for AWS CodeArtifact Domains and Repositories ([#11698](https://github.com/cloudquery/cloudquery/issues/11698)) ([1838151](https://github.com/cloudquery/cloudquery/commit/18381512bb1d738521601b9f514da220aad2f366))
+* **aws:** Add Support for AWS Detective `Graphs` and `GraphMembers` ([#11767](https://github.com/cloudquery/cloudquery/issues/11767)) ([b40d97d](https://github.com/cloudquery/cloudquery/commit/b40d97d384650d69ec60dce8b4c2e8564d065e24))
+* **aws:** Add support for AWS Signer Profiles ([#11765](https://github.com/cloudquery/cloudquery/issues/11765)) ([e03b797](https://github.com/cloudquery/cloudquery/commit/e03b797bcdd3a477f849f2b166eb8fbced248f00))
+* **aws:** Add Support for Cloud Map (servicediscovery) resources ([#11702](https://github.com/cloudquery/cloudquery/issues/11702)) ([0cefa8c](https://github.com/cloudquery/cloudquery/commit/0cefa8cb16999470fa4d3ad26c5617724346d265))
+* **aws:** Add support for EC2 VPN Connections ([#11769](https://github.com/cloudquery/cloudquery/issues/11769)) ([0f0c340](https://github.com/cloudquery/cloudquery/commit/0f0c340cdb6fa772f3b3a92580430a0041e67546))
+* **aws:** Add Support for ECR `PullThroughCacheRules` ([#11770](https://github.com/cloudquery/cloudquery/issues/11770)) ([9d72446](https://github.com/cloudquery/cloudquery/commit/9d72446e1346fca7f7eef22844248700716d8259))
+* **aws:** Add support for EKS `AddOns` and `IdentityProviderConfigs` ([#11764](https://github.com/cloudquery/cloudquery/issues/11764)) ([24c348d](https://github.com/cloudquery/cloudquery/commit/24c348d10806c4c238db2c3508f793193c201fe8))
+* **aws:** Add Support for Network firewall resources `Firewalls` and `TLSInspectionConfigurations` ([#11776](https://github.com/cloudquery/cloudquery/issues/11776)) ([6e7ae44](https://github.com/cloudquery/cloudquery/commit/6e7ae4479d48acbd65b3e65a4b1f9d819925093f))
+* **aws:** Update all AWS dependencies ([#11783](https://github.com/cloudquery/cloudquery/issues/11783)) ([18d9fa7](https://github.com/cloudquery/cloudquery/commit/18d9fa705e34661e3099073cdacd0088a7ef82d0))
+
+
+### Bug Fixes
+
+* **aws:** AppRunner Tag errors ([#11786](https://github.com/cloudquery/cloudquery/issues/11786)) ([d2d333d](https://github.com/cloudquery/cloudquery/commit/d2d333d50dbff848779edffc16dde8b632c595fe))
+* **aws:** Ensure that all certificates are synced ([#11761](https://github.com/cloudquery/cloudquery/issues/11761)) ([7e5b201](https://github.com/cloudquery/cloudquery/commit/7e5b2014ad44fb045cb82fad94519ba6ab0f63b2))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 0656028 ([#11739](https://github.com/cloudquery/cloudquery/issues/11739)) ([7a6ad49](https://github.com/cloudquery/cloudquery/commit/7a6ad49e8402d51e914d6fdc444956c89db91ad3))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 8366a22 ([#11717](https://github.com/cloudquery/cloudquery/issues/11717)) ([8eeff5b](https://github.com/cloudquery/cloudquery/commit/8eeff5b17486d72845f830b99983f950fee7f5a0))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 95d3199 ([#11708](https://github.com/cloudquery/cloudquery/issues/11708)) ([03f214f](https://github.com/cloudquery/cloudquery/commit/03f214f3dfd719b74ce9eb698ba255a8cf7528c7))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to f060192 ([#11730](https://github.com/cloudquery/cloudquery/issues/11730)) ([c7019c2](https://github.com/cloudquery/cloudquery/commit/c7019c26c311f29b66c90fc5d461a0daf71d191c))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to f0dffc6 ([#11689](https://github.com/cloudquery/cloudquery/issues/11689)) ([18ac0e9](https://github.com/cloudquery/cloudquery/commit/18ac0e9dbef31d06701f1f13d263ad840ac60c5e))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/accessanalyzer to v1.19.14 ([#11733](https://github.com/cloudquery/cloudquery/issues/11733)) ([ab8242f](https://github.com/cloudquery/cloudquery/commit/ab8242f8f94894f94d1dddbacdcfd2e6fcc7c174))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/account to v1.10.8 ([#11734](https://github.com/cloudquery/cloudquery/issues/11734)) ([94e285b](https://github.com/cloudquery/cloudquery/commit/94e285b3ed5b3ba485d1d7b36109659506d85610))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/acm to v1.17.13 ([#11735](https://github.com/cloudquery/cloudquery/issues/11735)) ([c763315](https://github.com/cloudquery/cloudquery/commit/c76331514e13bc2771b475bc911c0e6620880c50))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.2.0 ([#11720](https://github.com/cloudquery/cloudquery/issues/11720)) ([7ef521d](https://github.com/cloudquery/cloudquery/commit/7ef521db1423c6f0de197b08c73adf22c896f999))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.2.1 ([#11722](https://github.com/cloudquery/cloudquery/issues/11722)) ([309be72](https://github.com/cloudquery/cloudquery/commit/309be7276d7de157013c281b6fb3934513898b3f))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.3.3 ([#11726](https://github.com/cloudquery/cloudquery/issues/11726)) ([f0ca611](https://github.com/cloudquery/cloudquery/commit/f0ca61195014bde707761a15efa27a92955b59db))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.3.4 ([#11753](https://github.com/cloudquery/cloudquery/issues/11753)) ([cd4fe1c](https://github.com/cloudquery/cloudquery/commit/cd4fe1c54f85f8511252bebd5671361618ddb0d3))
+
+## [19.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v18.4.0...plugins-source-aws-v19.0.0) (2023-06-20)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_cloudfront_functions` was added
+- Table `aws_cloudfront_origin_access_identities` was added
+- Table `aws_cloudfront_origin_request_policies` was added
+- Table `aws_cloudfront_response_headers_policies` was added
+- Table `aws_cloudtrail_channels` was added
+- Table `aws_cloudtrail_imports` was added
+- Table `aws_ec2_capacity_reservations` was added
+- Table `aws_elbv2_load_balancer_web_acls` was added
+- Table `aws_elbv2_load_balancers`: column `web_acl_arn` removed from table (:warning: breaking)
+- Table `aws_organizations_account_parents` was added
+- Table `aws_organizations_organizational_unit_parents` was added
+- Table `aws_organizations_organizational_units`: column `account_id` removed from table (:warning: breaking)
+- Table `aws_organizations_organizational_units`: column added with name `request_account_id (PK)` and type `utf8` (:warning: breaking)
+- Table `aws_s3_buckets`: column added with name `policy_status` and type `json`
+- Table `aws_ssoadmin_account_assignments` was removed (:warning: breaking)
+- Table `aws_ssoadmin_instances`: primary key constraint added to column `instance_arn` (:warning: breaking)
+- Table `aws_ssoadmin_instances`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_ssoadmin_permission_set_account_assignments` was added
+- Table `aws_ssoadmin_permission_set_customer_managed_policies` was added
+- Table `aws_ssoadmin_permission_set_inline_policies` was added
+- Table `aws_ssoadmin_permission_set_managed_policies` was added
+- Table `aws_ssoadmin_permission_set_permissions_boundaries` was added
+- Table `aws_ssoadmin_permission_sets`: column `inline_policy` removed from table (:warning: breaking)
+- Table `aws_ssoadmin_permission_sets`: column added with name `instance_arn (PK)` and type `utf8` (:warning: breaking)
+- Table `aws_ssoadmin_permission_sets`: primary key constraint added to column `permission_set_arn` (:warning: breaking)
+- Table `aws_ssoadmin_permission_sets`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+
+### ⚠ BREAKING CHANGES
+
+* **aws:** Move `web_acl_arn` to its own table ([#11421](https://github.com/cloudquery/cloudquery/issues/11421))
+* **aws:** Add support For fully describing the organizational hierarchy ([#11633](https://github.com/cloudquery/cloudquery/issues/11633))
+* **aws:** Support all policy types in Identity Center ([#10985](https://github.com/cloudquery/cloudquery/issues/10985))
+
+### Features
+
+* **aws-services:** Support newly added regions ([#11673](https://github.com/cloudquery/cloudquery/issues/11673)) ([8c0ab9d](https://github.com/cloudquery/cloudquery/commit/8c0ab9d7fc83a874e9df0ac089a14156f740c2a2))
+* **aws:** Add PolicyStatus to WrappedBucket ([#11657](https://github.com/cloudquery/cloudquery/issues/11657)) ([55d966a](https://github.com/cloudquery/cloudquery/commit/55d966ab28152945ca76dc73f8c3761cca90e1d9))
+* **aws:** Add support for Cloudfront Functions ([#11669](https://github.com/cloudquery/cloudquery/issues/11669)) ([102067a](https://github.com/cloudquery/cloudquery/commit/102067ac11d02ef9f37dcde8aed7f5357ace777f))
+* **aws:** Add Support for Cloudtrail Channels ([#11670](https://github.com/cloudquery/cloudquery/issues/11670)) ([0dc13de](https://github.com/cloudquery/cloudquery/commit/0dc13de97deb8c62f53b880eb866c80244e0f1ab))
+* **aws:** Add Support for Cloudtrail Imports ([#11671](https://github.com/cloudquery/cloudquery/issues/11671)) ([c908289](https://github.com/cloudquery/cloudquery/commit/c90828998dee1742240ea3a354760f5a7e15b2c9))
+* **aws:** Add support for EC2 Capacity Reservations ([#11666](https://github.com/cloudquery/cloudquery/issues/11666)) ([70d6052](https://github.com/cloudquery/cloudquery/commit/70d6052c8305463b802ac25151e12c03136afd24))
+* **aws:** Add support For fully describing the organizational hierarchy ([#11633](https://github.com/cloudquery/cloudquery/issues/11633)) ([f66995b](https://github.com/cloudquery/cloudquery/commit/f66995baa71a8bc0b4f2c917bffa29ff174a88b5))
+* **aws:** Add Support for more Cloudfront Resources ([#11668](https://github.com/cloudquery/cloudquery/issues/11668)) ([52e6ad9](https://github.com/cloudquery/cloudquery/commit/52e6ad978389f4eb3ab84f554bb2e692385a935c))
+* **aws:** Support all policy types in Identity Center ([#10985](https://github.com/cloudquery/cloudquery/issues/10985)) ([a8ab255](https://github.com/cloudquery/cloudquery/commit/a8ab255d369a2b88778da005b82fd7e59a085e00))
+
+
+### Bug Fixes
+
+* **aws:** Move `web_acl_arn` to its own table ([#11421](https://github.com/cloudquery/cloudquery/issues/11421)) ([cdda682](https://github.com/cloudquery/cloudquery/commit/cdda682263381d0e4a2262e5d32cb8d13ab25d05))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 1e68c51 ([#11637](https://github.com/cloudquery/cloudquery/issues/11637)) ([46043bc](https://github.com/cloudquery/cloudquery/commit/46043bce410f86ba42390a6b190f9232fc2a1ded))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 43638cb ([#11672](https://github.com/cloudquery/cloudquery/issues/11672)) ([3c60bbb](https://github.com/cloudquery/cloudquery/commit/3c60bbbb0233b17f934583766938780745145864))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to b0832be ([#11651](https://github.com/cloudquery/cloudquery/issues/11651)) ([71e8c29](https://github.com/cloudquery/cloudquery/commit/71e8c29624494a3e1cd104e46266a610ce57c83c))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2 to v1.18.1 ([#11652](https://github.com/cloudquery/cloudquery/issues/11652)) ([4230b52](https://github.com/cloudquery/cloudquery/commit/4230b52a19e91b84fc38348291c371c6c8a735af))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.18.27 ([#11653](https://github.com/cloudquery/cloudquery/issues/11653)) ([4b45408](https://github.com/cloudquery/cloudquery/commit/4b454088055dcbd265e6cbb09420f7dae66865b5))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.1.0 ([#11665](https://github.com/cloudquery/cloudquery/issues/11665)) ([d8947c9](https://github.com/cloudquery/cloudquery/commit/d8947c9efa6ab8bf3952ad9d929e8ed81f2dea55))
+* Use ServiceAccountRegion multiplexer for aws_availability_zones ([#11686](https://github.com/cloudquery/cloudquery/issues/11686)) ([7f4788f](https://github.com/cloudquery/cloudquery/commit/7f4788fd9eae914b918bc17c80bee350f16408e5))
+
+## [18.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v18.3.0...plugins-source-aws-v18.4.0) (2023-06-15)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_alpha_cloudwatch_metric_statistics` was added
+- Table `aws_alpha_cloudwatch_metrics` was added
+- Table `aws_alpha_costexplorer_cost_custom` was added
+- Table `aws_applicationautoscaling_scalable_targets`: column added with name `scalable_target_arn` and type `utf8`
+- Table `aws_appsync_graphql_apis`: column added with name `api_type` and type `utf8`
+- Table `aws_appsync_graphql_apis`: column added with name `dns` and type `json`
+- Table `aws_appsync_graphql_apis`: column added with name `merged_api_execution_role_arn` and type `utf8`
+- Table `aws_appsync_graphql_apis`: column added with name `owner_contact` and type `utf8`
+- Table `aws_appsync_graphql_apis`: column added with name `owner` and type `utf8`
+- Table `aws_appsync_graphql_apis`: column added with name `visibility` and type `utf8`
+- Table `aws_athena_work_group_query_executions`: column added with name `substatement_type` and type `utf8`
+- Table `aws_backup_protected_resources` was added
+- Table `aws_backup_vault_recovery_points`: column added with name `resource_name` and type `utf8`
+- Table `aws_cloudformation_stack_sets`: column added with name `regions` and type `list<item: utf8, nullable>`
+- Table `aws_cloudwatchlogs_log_groups`: column added with name `inherited_properties` and type `list<item: utf8, nullable>`
+- Table `aws_computeoptimizer_ebs_volume_recommendations`: column added with name `tags` and type `json`
+- Table `aws_computeoptimizer_ec2_instance_recommendations`: column added with name `external_metric_status` and type `json`
+- Table `aws_computeoptimizer_ec2_instance_recommendations`: column added with name `instance_state` and type `utf8`
+- Table `aws_computeoptimizer_ec2_instance_recommendations`: column added with name `tags` and type `json`
+- Table `aws_computeoptimizer_ecs_service_recommendations`: column added with name `tags` and type `json`
+- Table `aws_computeoptimizer_lambda_function_recommendations`: column added with name `tags` and type `json`
+- Table `aws_dynamodb_tables`: column added with name `deletion_protection_enabled` and type `bool`
+- Table `aws_ec2_hosts`: column added with name `host_maintenance` and type `utf8`
+- Table `aws_ec2_instance_connect_endpoints` was added
+- Table `aws_ec2_instances`: column added with name `current_instance_boot_mode` and type `utf8`
+- Table `aws_elasticache_replication_groups`: column added with name `cluster_mode` and type `utf8`
+- Table `aws_emr_cluster_instance_fleets`: column added with name `resize_specifications` and type `json`
+- Table `aws_frauddetector_event_types`: column added with name `event_orchestration` and type `json`
+- Table `aws_glue_database_tables`: column added with name `federated_table` and type `json`
+- Table `aws_glue_databases`: column added with name `federated_database` and type `json`
+- Table `aws_guardduty_detectors`: column added with name `features` and type `json`
+- Table `aws_iot_jobs`: column added with name `destination_package_versions` and type `list<item: utf8, nullable>`
+- Table `aws_iot_jobs`: column added with name `scheduled_job_rollouts` and type `json`
+- Table `aws_kafka_cluster_operations`: column added with name `vpc_connection_info` and type `json`
+- Table `aws_lambda_function_event_source_mappings`: column added with name `document_db_event_source_config` and type `json`
+- Table `aws_lightsail_disks`: column added with name `auto_mount_status` and type `utf8`
+- Table `aws_mwaa_environments`: column added with name `startup_script_s3_object_version` and type `utf8`
+- Table `aws_mwaa_environments`: column added with name `startup_script_s3_path` and type `utf8`
+- Table `aws_neptune_clusters`: column added with name `global_cluster_identifier` and type `utf8`
+- Table `aws_neptune_clusters`: column added with name `pending_modified_values` and type `json`
+- Table `aws_networkfirewall_firewall_policies`: column added with name `policy_variables` and type `json`
+- Table `aws_ram_resource_share_permissions`: column added with name `feature_set` and type `utf8`
+- Table `aws_ram_resource_share_permissions`: column added with name `permission_type` and type `utf8`
+- Table `aws_ram_resource_share_permissions`: column added with name `tags` and type `json`
+- Table `aws_rds_cluster_snapshots`: column added with name `storage_type` and type `utf8`
+- Table `aws_rds_clusters`: column added with name `io_optimized_next_allowed_modification_time` and type `timestamp[us, tz=UTC]`
+- Table `aws_rds_instances`: column added with name `read_replica_source_db_cluster_identifier` and type `utf8`
+- Table `aws_resiliencehub_app_version_resource_mappings`: column added with name `eks_source_name` and type `utf8`
+- Table `aws_resiliencehub_app_version_resources`: column added with name `additional_info` and type `json`
+- Table `aws_resiliencehub_app_version_resources`: column added with name `excluded` and type `bool`
+- Table `aws_resiliencehub_app_version_resources`: column added with name `parent_resource_name` and type `utf8`
+- Table `aws_resiliencehub_app_version_resources`: column added with name `source_type` and type `utf8`
+- Table `aws_sagemaker_models`: column added with name `deployment_recommendation` and type `json`
+- Table `aws_securityhub_hubs`: column added with name `control_finding_generator` and type `utf8`
+- Table `aws_timestream_tables`: column added with name `schema` and type `json`
+- Table `aws_wafv2_web_acls`: column added with name `association_config` and type `json`
+
+### Features
+
+* **aws:** Add `aws_alpha_cloudwatch_metric*` tables to fetch Cloudwatch Metrics and statistics ([#11402](https://github.com/cloudquery/cloudquery/issues/11402)) ([07b76d2](https://github.com/cloudquery/cloudquery/commit/07b76d218664595692d05bc1d0b6aa1a9b288766))
+* **aws:** Add Support for EC2 Instance Connect Endpoints ([#11531](https://github.com/cloudquery/cloudquery/issues/11531)) ([73ae77b](https://github.com/cloudquery/cloudquery/commit/73ae77b755b37de21687937e5b7f75917355a3d3))
+* **aws:** Add Support for fully customizable Cost Explorer Data syncing ([#11185](https://github.com/cloudquery/cloudquery/issues/11185)) ([04fd769](https://github.com/cloudquery/cloudquery/commit/04fd769b5b194b0020c0cf36f39f41c62216bd88)), closes [#10805](https://github.com/cloudquery/cloudquery/issues/10805)
+* **aws:** Add support for Protected Resources in AWS Backup ([#11522](https://github.com/cloudquery/cloudquery/issues/11522)) ([12a1bc0](https://github.com/cloudquery/cloudquery/commit/12a1bc09605aa019a6e4196ae94bcc11abfcbc5b))
+* **aws:** Table Options Validation ([#11548](https://github.com/cloudquery/cloudquery/issues/11548)) ([ea858fc](https://github.com/cloudquery/cloudquery/commit/ea858fc26f13c564bcae3a409d36c2c6ebb8f009))
+
+
+### Bug Fixes
+
+* **aws:** Upgrade all AWS SDK to latest version ([#11626](https://github.com/cloudquery/cloudquery/issues/11626)) ([71f787f](https://github.com/cloudquery/cloudquery/commit/71f787f81c800cfd171a924d1158fe3100479c35))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 4d76231 ([#11532](https://github.com/cloudquery/cloudquery/issues/11532)) ([6f04233](https://github.com/cloudquery/cloudquery/commit/6f042333acbd2506f7800ccb89a8c5cbfb7ad8d4))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to d864719 ([#11611](https://github.com/cloudquery/cloudquery/issues/11611)) ([557a290](https://github.com/cloudquery/cloudquery/commit/557a2903af272b8e2e4c9eebb36e39cd8a41a805))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v3 to v3.10.6 ([#11473](https://github.com/cloudquery/cloudquery/issues/11473)) ([7272133](https://github.com/cloudquery/cloudquery/commit/72721336632e127dd37de4541f2f503bf4f73fb6))
+
 ## [18.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v18.2.0...plugins-source-aws-v18.3.0) (2023-06-13)
 
 

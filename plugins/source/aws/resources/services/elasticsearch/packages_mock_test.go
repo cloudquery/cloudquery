@@ -9,15 +9,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildElasticSearchPackages(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockElasticsearchserviceClient(ctrl)
 
 	var pkg types.PackageDetails
-	if err := faker.FakeObject(&pkg); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&pkg))
+
 	m.EXPECT().DescribePackages(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticsearchservice.DescribePackagesOutput{
 			PackageDetailsList: []types.PackageDetails{pkg},

@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func Insert(table *schema.Table) string {

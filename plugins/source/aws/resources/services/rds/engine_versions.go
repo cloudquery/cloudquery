@@ -17,7 +17,7 @@ func EngineVersions() *schema.Table {
 	tableName := "aws_rds_engine_versions"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBEngineVersion.html`,
+		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBEngineVersion.html`,
 		Resolver:    fetchRdsEngineVersions,
 		Transform:   transformers.TransformWithStruct(&types.DBEngineVersion{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "rds"),

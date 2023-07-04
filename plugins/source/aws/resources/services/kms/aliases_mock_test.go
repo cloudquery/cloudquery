@@ -8,16 +8,14 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildKmsAliases(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockKmsClient(ctrl)
 
 	aliases := kms.ListAliasesOutput{}
-	err := faker.FakeObject(&aliases)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&aliases))
 	aliases.NextMarker = nil
 	m.EXPECT().ListAliases(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&aliases, nil)

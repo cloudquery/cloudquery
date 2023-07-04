@@ -20,6 +20,7 @@ The primary key for this table is **arn**.
 |tags|`json`|
 |stateless_default_actions|`list<item: utf8, nullable>`|
 |stateless_fragment_default_actions|`list<item: utf8, nullable>`|
+|policy_variables|`json`|
 |stateful_default_actions|`list<item: utf8, nullable>`|
 |stateful_engine_options|`json`|
 |stateful_rule_group_references|`json`|

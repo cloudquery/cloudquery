@@ -7,13 +7,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildSopAlarmRecommendations(t *testing.T, mock *mocks.MockResiliencehubClient) {
 	var l resiliencehub.ListSopRecommendationsOutput
-	if err := faker.FakeObject(&l); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&l))
+
 	l.NextToken = nil
 	mock.EXPECT().ListSopRecommendations(
 		gomock.Any(),

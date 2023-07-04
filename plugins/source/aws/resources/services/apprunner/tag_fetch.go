@@ -2,7 +2,9 @@ package apprunner
 
 import (
 	"context"
+	"strings"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/apprunner"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
@@ -12,6 +14,13 @@ import (
 func resolveApprunnerTags(path string) schema.ColumnResolver {
 	return func(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 		arn := funk.Get(r.Item, path, funk.WithAllowZero()).(*string)
+		// AWS automatically generates untaggable resources with the following ARNs.
+		//  - arn:aws:apprunner:<region>:01234567890:observabilityconfiguration/DefaultConfiguration/1/00000000000000000000000000000001
+		//  - arn:aws:apprunner:<region>:01234567890:autoscalingconfiguration/DefaultConfiguration/1/00000000000000000000000000000001
+		// So because they are untaggable we should just not even make the API call and end early
+		if strings.Contains(aws.ToString(arn), "DefaultConfiguration/1/00000000000000000000000000000001") {
+			return nil
+		}
 		cl := meta.(*client.Client)
 		svc := cl.Services().Apprunner
 		params := apprunner.ListTagsForResourceInput{ResourceArn: arn}

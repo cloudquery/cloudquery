@@ -15,6 +15,7 @@ The primary key for this table is **function_arn**.
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
+|tags|`json`|
 |current_memory_size|`int64`|
 |current_performance_risk|`utf8`|
 |finding|`utf8`|

@@ -11,8 +11,11 @@ import (
 	cloudtrailtypes "github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	cloudwatchtypes "github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
+	"github.com/aws/aws-sdk-go-v2/service/costexplorer"
+	costexplorertypes "github.com/aws/aws-sdk-go-v2/service/costexplorer/types"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	inspector2types "github.com/aws/aws-sdk-go-v2/service/inspector2/types"
+	"github.com/stretchr/testify/require"
 
 	"github.com/cloudquery/plugin-sdk/v3/caser"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
@@ -58,10 +61,7 @@ func TestTableOptionsValidate(t *testing.T) {
 // snake_case keys.
 func TestTableOptionsUnmarshal(t *testing.T) {
 	tableOpts := TableOptions{}
-	err := faker.FakeObject(&tableOpts)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tableOpts))
 	b, err := json.Marshal(tableOpts)
 	if err != nil {
 		t.Fatal(err)
@@ -101,6 +101,13 @@ func TestTableOptionsUnmarshal(t *testing.T) {
 		inspector2types.PackageFilter{},
 		inspector2types.FilterCriteria{},
 		inspector2types.SortCriteria{},
+		costexplorertypes.DateInterval{},
+		costexplorertypes.Expression{},
+		costexplorertypes.CostCategoryValues{},
+		costexplorertypes.DimensionValues{},
+		costexplorertypes.TagValues{},
+		costexplorertypes.GroupDefinition{},
+		costexplorer.GetCostAndUsageInput{},
 	)); diff != "" {
 		t.Fatalf("mismatch between objects after loading from snake case json: %v", diff)
 	}

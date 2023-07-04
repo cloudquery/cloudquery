@@ -9,15 +9,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildMwaaEnvironments(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockMwaaClient(ctrl)
 	g := types.Environment{}
-	err := faker.FakeObject(&g)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&g))
 
 	m.EXPECT().ListEnvironments(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&mwaa.ListEnvironmentsOutput{

@@ -5,13 +5,13 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestLookupEvents(t *testing.T) {
 	u := CustomLookupEventsOpts{}
-	if err := faker.FakeObject(&u); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&u))
+
 	api := CloudtrailAPIs{
 		LookupEventsOpts: []CustomLookupEventsOpts{u},
 	}

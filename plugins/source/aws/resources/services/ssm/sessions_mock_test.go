@@ -9,15 +9,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildSessions(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockSsmClient(ctrl)
 
 	var s types.Session
-	if err := faker.FakeObject(&s); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&s))
+
 	mock.EXPECT().DescribeSessions(
 		gomock.Any(),
 		gomock.Any(),

@@ -16,6 +16,7 @@ func fetchOrders(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	const key = "orders"
 
 	p := url.Values{}
+	p.Set("status", "any")
 	min := time.Time{}
 
 	if cl.Backend != nil {

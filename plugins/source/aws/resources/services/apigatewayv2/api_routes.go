@@ -18,7 +18,7 @@ func apiRoutes() *schema.Table {
 	tableName := "aws_apigatewayv2_api_routes"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Route.html`,
+		Description: `https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/apis-apiid-routes.html`,
 		Resolver:    fetchApigatewayv2ApiRoutes,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.Route{}),

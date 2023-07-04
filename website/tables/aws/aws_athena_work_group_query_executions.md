@@ -31,4 +31,5 @@ This table depends on [aws_athena_work_groups](aws_athena_work_groups).
 |statement_type|`utf8`|
 |statistics|`json`|
 |status|`json`|
+|substatement_type|`utf8`|
 |work_group|`utf8`|

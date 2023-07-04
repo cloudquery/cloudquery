@@ -12,10 +12,8 @@ import (
 	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	serviceusage "cloud.google.com/go/serviceusage/apiv1"
 	pb "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/backend"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/state"
 	"github.com/googleapis/gax-go/v2"
 	grpczerolog "github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2"
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
@@ -54,7 +52,13 @@ type Client struct {
 	// Logger
 	logger zerolog.Logger
 
-	Backend backend.Backend
+	Backend state.Client
+}
+
+func (c *Client) WithBackend(backend state.Client) *Client {
+	newClient := *c
+	newClient.Backend = backend
+	return &newClient
 }
 
 //revive:disable:modifies-value-receiver
@@ -118,28 +122,22 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source.Options) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec *Spec) (schema.ClientMeta, error) {
 	var err error
 	c := Client{
 		logger:          logger,
 		EnabledServices: map[string]map[string]any{},
-		Backend:         opts.Backend,
-	}
-	var gcpSpec Spec
-	if err := s.UnmarshalSpec(&gcpSpec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal gcp spec: %w", err)
 	}
 
-	gcpSpec.setDefaults()
-	projects := gcpSpec.ProjectIDs
+	projects := spec.ProjectIDs
 	organizations := make([]*crmv1.Organization, 0)
-	if gcpSpec.BackoffRetries > 0 {
+	if spec.BackoffRetries > 0 {
 		c.CallOptions = append(c.CallOptions, gax.WithRetry(func() gax.Retryer {
 			return &Retrier{
 				backoff: gax.Backoff{
-					Max: time.Duration(gcpSpec.BackoffDelay) * time.Second,
+					Max: time.Duration(spec.BackoffDelay) * time.Second,
 				},
-				maxRetries: gcpSpec.BackoffRetries,
+				maxRetries: spec.BackoffRetries,
 				codes:      []codes.Code{codes.ResourceExhausted},
 			}
 		}))
@@ -147,7 +145,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	unaryInterceptor := grpc.WithUnaryInterceptor(logging.UnaryClientInterceptor(grpczerolog.InterceptorLogger(logger)))
 	streamInterceptor := grpc.WithStreamInterceptor(logging.StreamClientInterceptor(grpczerolog.InterceptorLogger(logger)))
 
-	serviceAccountKeyJSON := []byte(gcpSpec.ServiceAccountKeyJSON)
+	serviceAccountKeyJSON := []byte(spec.ServiceAccountKeyJSON)
 	// Add a fake request reason because it is not possible to pass nil options
 	c.ClientOptions = append(c.ClientOptions,
 		option.WithRequestReason("cloudquery resource fetch"),
@@ -165,22 +163,22 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		}
 		c.ClientOptions = append(c.ClientOptions, option.WithCredentialsJSON(serviceAccountKeyJSON))
 	}
-	if gcpSpec.ServiceAccountImpersonation != nil && gcpSpec.ServiceAccountImpersonation.TargetPrincipal != "" {
+	if spec.ServiceAccountImpersonation != nil && spec.ServiceAccountImpersonation.TargetPrincipal != "" {
 		// Base credentials sourced from ADC or provided client options.
 		ts, err := impersonate.CredentialsTokenSource(ctx, impersonate.CredentialsConfig{
-			TargetPrincipal: gcpSpec.ServiceAccountImpersonation.TargetPrincipal,
-			Scopes:          gcpSpec.ServiceAccountImpersonation.Scopes,
+			TargetPrincipal: spec.ServiceAccountImpersonation.TargetPrincipal,
+			Scopes:          spec.ServiceAccountImpersonation.Scopes,
 			// Optionally supply delegates.
-			Delegates: gcpSpec.ServiceAccountImpersonation.Delegates,
+			Delegates: spec.ServiceAccountImpersonation.Delegates,
 			// Specify user to impersonate
-			Subject: gcpSpec.ServiceAccountImpersonation.Subject,
+			Subject: spec.ServiceAccountImpersonation.Subject,
 		})
 		if err != nil {
 			return nil, fmt.Errorf("failed to generate token source: %w", err)
 		}
 		c.ClientOptions = append(c.ClientOptions, option.WithTokenSource(ts))
 	}
-	if len(gcpSpec.ProjectFilter) > 0 && len(gcpSpec.FolderIDs) > 0 {
+	if len(spec.ProjectFilter) > 0 && len(spec.FolderIDs) > 0 {
 		return nil, fmt.Errorf("project_filter and folder_ids are mutually exclusive")
 	}
 
@@ -194,19 +192,19 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	}
 
 	switch {
-	case len(projects) == 0 && len(gcpSpec.FolderIDs) == 0 && len(gcpSpec.ProjectFilter) == 0:
+	case len(projects) == 0 && len(spec.FolderIDs) == 0 && len(spec.ProjectFilter) == 0:
 		c.logger.Info().Msg("No project_ids, folder_ids, or project_filter specified - assuming all active projects")
 		projects, err = getProjectsV1(ctx, c.ClientOptions...)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get projects: %w", err)
 		}
 
-	case len(gcpSpec.FolderIDs) > 0:
+	case len(spec.FolderIDs) > 0:
 		var folderIds []string
 
-		for _, parentFolder := range gcpSpec.FolderIDs {
+		for _, parentFolder := range spec.FolderIDs {
 			c.logger.Info().Msg("Listing folders...")
-			childFolders, err := listFolders(ctx, foldersClient, parentFolder, *gcpSpec.FolderRecursionDepth)
+			childFolders, err := listFolders(ctx, foldersClient, parentFolder, *spec.FolderRecursionDepth)
 			if err != nil {
 				return nil, fmt.Errorf("failed to list folders: %w", err)
 			}
@@ -222,9 +220,9 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 			return nil, fmt.Errorf("failed to list projects: %w", err)
 		}
 
-	case len(gcpSpec.ProjectFilter) > 0:
+	case len(spec.ProjectFilter) > 0:
 		c.logger.Info().Msg("Listing projects with filter...")
-		projectsWithFilter, err := getProjectsV1WithFilter(ctx, gcpSpec.ProjectFilter, c.ClientOptions...)
+		projectsWithFilter, err := getProjectsV1WithFilter(ctx, spec.ProjectFilter, c.ClientOptions...)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get projects with filter: %w", err)
 		}
@@ -232,7 +230,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		projects = setUnion(projects, projectsWithFilter)
 	}
 
-	if len(gcpSpec.OrganizationIDs) == 0 && len(gcpSpec.OrganizationFilter) == 0 {
+	if len(spec.OrganizationIDs) == 0 && len(spec.OrganizationFilter) == 0 {
 		c.logger.Info().Msg("No organization_ids or organization_filter specified - assuming all organizations")
 		c.logger.Info().Msg("Listing organizations...")
 
@@ -241,8 +239,8 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 			c.logger.Err(err).Msg("failed to get organizations")
 		}
 	} else {
-		if len(gcpSpec.OrganizationIDs) > 0 {
-			for _, orgID := range gcpSpec.OrganizationIDs {
+		if len(spec.OrganizationIDs) > 0 {
+			for _, orgID := range spec.OrganizationIDs {
 				c.logger.Info().Msgf("Getting spec organization %q...", orgID)
 				org, err := getOrganization(ctx, orgID, c.ClientOptions...)
 				if err != nil {
@@ -251,9 +249,9 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 				organizations = append(organizations, org)
 			}
 		}
-		if len(gcpSpec.OrganizationFilter) > 0 {
+		if len(spec.OrganizationFilter) > 0 {
 			c.logger.Info().Msg("Listing organizations with filter...")
-			organizationsWithFilter, err := getOrganizations(ctx, gcpSpec.OrganizationFilter, c.ClientOptions...)
+			organizationsWithFilter, err := getOrganizations(ctx, spec.OrganizationFilter, c.ClientOptions...)
 			if err != nil {
 				return nil, fmt.Errorf("failed to get organizations with filter: %w", err)
 			}
@@ -280,7 +278,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	}
 
 	c.projects = projects
-	c.folderIds = gcpSpec.FolderIDs
+	c.folderIds = spec.FolderIDs
 	c.orgs = organizations
 	if err != nil {
 		c.logger.Err(err).Msg("failed to get organizations")
@@ -290,8 +288,8 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	if len(projects) == 1 {
 		c.ProjectId = projects[0]
 	}
-	if gcpSpec.EnabledServicesOnly {
-		if err := c.configureEnabledServices(ctx, *gcpSpec.DiscoveryConcurrency); err != nil {
+	if spec.EnabledServicesOnly {
+		if err := c.configureEnabledServices(ctx, *spec.DiscoveryConcurrency); err != nil {
 			return nil, err
 		}
 	}

@@ -26,5 +26,6 @@ This table depends on [aws_timestream_databases](aws_timestream_databases).
 |last_updated_time|`timestamp[us, tz=UTC]`|
 |magnetic_store_write_properties|`json`|
 |retention_properties|`json`|
+|schema|`json`|
 |table_name|`utf8`|
 |table_status|`utf8`|

@@ -27,6 +27,7 @@ The primary key for this table is **arn**.
 |capacity_reservation_specification|`json`|
 |client_token|`utf8`|
 |cpu_options|`json`|
+|current_instance_boot_mode|`utf8`|
 |ebs_optimized|`bool`|
 |elastic_gpu_associations|`json`|
 |elastic_inference_accelerator_associations|`json`|

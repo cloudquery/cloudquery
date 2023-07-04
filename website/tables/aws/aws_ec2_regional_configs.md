@@ -2,6 +2,9 @@
 
 This table shows data for Amazon Elastic Compute Cloud (EC2) Regional Configs.
 
+https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_GetEbsDefaultKmsKeyId.html
+https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_GetEbsEncryptionByDefault.html
+
 The composite primary key for this table is (**account_id**, **region**).
 
 ## Columns

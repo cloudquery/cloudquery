@@ -73,18 +73,9 @@ export default function Home() {
               href="/docs/quickstart"
               className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white no-underline bg-black border border-transparent rounded-md dark:bg-white dark:text-black betterhover:dark:hover:bg-gray-300 betterhover:hover:bg-gray-700 md:py-3 md:text-lg md:px-10 md:leading-6">
               
-                Get Started →
+                Download Now →
               
             </Link>
-          </div>
-          <div className="relative rounded-md fix-width-auto xl:w-auto">
-            <button
-              onClick={() => onClick('brew install cloudquery/tap/cloudquery')}
-              className="flex items-center justify-center w-full px-8 py-3 font-mono text-sm font-medium text-gray-600 bg-black border border-transparent border-gray-200 rounded-md bg-opacity-5 dark:bg-white dark:text-gray-300 dark:border-gray-700 dark:bg-opacity-5 betterhover:hover:bg-gray-50 betterhover:dark:hover:bg-gray-900 md:py-3 md:text-base md:leading-6 md:px-10"
-            >
-              brew install cloudquery/tap/cloudquery
-              <DocumentDuplicateIcon className="w-6 h-6 ml-2 -mr-3 text-gray-400" />
-            </button>
           </div>
         </div>
       </div>

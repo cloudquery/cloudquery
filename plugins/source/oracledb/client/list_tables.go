@@ -7,7 +7,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v3/schema"
 )
 
 type column struct {
@@ -45,9 +45,9 @@ func (c *Client) updateTableConstraints(ctx context.Context, table *schema.Table
 			for _, constraintType := range constraintTypes {
 				switch constraintType {
 				case "P":
-					table.Columns[i].CreationOptions.PrimaryKey = true
+					table.Columns[i].PrimaryKey = true
 				case "U":
-					table.Columns[i].CreationOptions.Unique = true
+					table.Columns[i].Unique = true
 				}
 			}
 		}
@@ -114,9 +114,9 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 		})
 		for _, column := range columns {
 			table.Columns = append(table.Columns, schema.Column{
-				Name:            column.name,
-				Type:            SchemaType(tableName, column.name, column.dataType),
-				CreationOptions: schema.ColumnCreationOptions{NotNull: column.notNull},
+				Name:    column.name,
+				Type:    SchemaType(column.dataType),
+				NotNull: column.notNull,
 			})
 		}
 		err := c.updateTableConstraints(ctx, &table)

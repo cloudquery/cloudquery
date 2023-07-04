@@ -4,10 +4,11 @@ import (
 	"context"
 	"database/sql"
 	"database/sql/driver"
+	"encoding/json"
 	"fmt"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/rs/zerolog"
 
 	// import duckdb driver
@@ -15,29 +16,30 @@ import (
 )
 
 type Client struct {
-	destination.UnimplementedUnmanagedWriter
+	plugin.UnimplementedSource
 	db        *sql.DB
 	connector driver.Connector
 	logger    zerolog.Logger
-	spec      specs.Destination
-	metrics   destination.Metrics
+	spec      Spec
+	writer    *batchwriter.BatchWriter
 }
 
-var _ destination.Client = (*Client)(nil)
+var _ plugin.Client = (*Client)(nil)
 
-func New(ctx context.Context, logger zerolog.Logger, dstSpec specs.Destination) (destination.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "duckdb-dest").Logger(),
-		spec:   dstSpec,
 	}
-
-	var spec Spec
-	if err := dstSpec.UnmarshalSpec(&spec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal duckdb spec: %w", err)
+	if err := json.Unmarshal(spec, &c.spec); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
-
-	c.connector, err = duckdb.NewConnector(spec.ConnectionString, nil)
+	c.spec.SetDefaults()
+	c.writer, err = batchwriter.New(c, batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create batch writer: %w", err)
+	}
+	c.connector, err = duckdb.NewConnector(c.spec.ConnectionString, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -56,11 +58,17 @@ func New(ctx context.Context, logger zerolog.Logger, dstSpec specs.Destination) 
 	return c, nil
 }
 
-func (c *Client) Close(_ context.Context) error {
+func (c *Client) Close(ctx context.Context) error {
 	var err error
 
 	if c.db == nil {
 		return fmt.Errorf("client already closed or not initialized")
+	}
+
+	if err := c.writer.Close(ctx); err != nil {
+		_ = c.db.Close()
+		c.db = nil
+		return fmt.Errorf("failed to close writer: %w", err)
 	}
 
 	err = c.db.Close()
@@ -68,11 +76,18 @@ func (c *Client) Close(_ context.Context) error {
 	return err
 }
 
-func (c *Client) Metrics() destination.Metrics {
-	return c.metrics
-}
-
 func (c *Client) exec(ctx context.Context, query string, args ...any) error {
-	_, err := c.db.ExecContext(ctx, query, args...)
-	return err
+	r, err := c.db.ExecContext(ctx, query, args...)
+	if err != nil {
+		return err
+	}
+	if c.spec.Debug {
+		rowsAffected, rowsErr := r.RowsAffected()
+		if rowsErr == nil {
+			c.logger.Debug().Str("query", query).Any("values", args).Int64("rowsAffected", rowsAffected).Msg("exec query")
+		} else {
+			c.logger.Debug().Str("query", query).Any("values", args).Err(rowsErr).Msg("exec query")
+		}
+	}
+	return nil
 }

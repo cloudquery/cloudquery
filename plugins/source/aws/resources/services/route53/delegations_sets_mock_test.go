@@ -9,14 +9,14 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildRoute53DelegationSetsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockRoute53Client(ctrl)
 	ds := route53Types.DelegationSet{}
-	if err := faker.FakeObject(&ds); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ds))
+
 	m.EXPECT().ListReusableDelegationSets(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&route53.ListReusableDelegationSetsOutput{
 			DelegationSets: []route53Types.DelegationSet{ds},

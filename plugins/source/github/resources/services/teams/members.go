@@ -43,10 +43,11 @@ func fetchMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 			return err
 		}
 		res <- members
-		opts.Page = resp.NextPage
-		if opts.Page == resp.LastPage {
+
+		if resp.NextPage == 0 {
 			break
 		}
+		opts.Page = resp.NextPage
 	}
 	return nil
 }

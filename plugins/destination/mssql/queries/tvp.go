@@ -6,7 +6,7 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	mssql "github.com/microsoft/go-mssqldb"
 )
 
@@ -69,12 +69,7 @@ func TVPAddType(schemaName string, table *schema.Table) string {
 }
 
 func TVPQuery(schemaName string, table *schema.Table, records []arrow.Record) (query string, params []any, err error) {
-	reader, err := array.NewRecordReader(table.ToArrowSchema(), records)
-	if err != nil {
-		return "", nil, err
-	}
-
-	rows, err := GetRows(reader)
+	rows, err := GetRows(array.NewTableFromRecords(table.ToArrowSchema(), records))
 	if err != nil {
 		return "", nil, err
 	}

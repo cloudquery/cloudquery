@@ -20,12 +20,14 @@ The primary key for this table is **arn**.
 |tags|`json`|
 |allocation_time|`timestamp[us, tz=UTC]`|
 |allows_multiple_instance_types|`utf8`|
+|asset_id|`utf8`|
 |auto_placement|`utf8`|
 |availability_zone|`utf8`|
 |availability_zone_id|`utf8`|
 |available_capacity|`json`|
 |client_token|`utf8`|
 |host_id|`utf8`|
+|host_maintenance|`utf8`|
 |host_properties|`json`|
 |host_recovery|`utf8`|
 |host_reservation_id|`utf8`|
