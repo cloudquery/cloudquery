@@ -93,7 +93,7 @@ func titleTransformer(table *schema.Table) {
 	}
 	csr := caser.New(caser.WithCustomExceptions(exceptions))
 	t := csr.ToTitle(table.Name)
-	table.Title =  strings.Trim(strings.ReplaceAll(t, "  ", " "), " ")
+	table.Title = strings.Trim(strings.ReplaceAll(t, "  ", " "), " ")
 	for _, rel := range table.Relations {
 		titleTransformer(rel)
 	}
