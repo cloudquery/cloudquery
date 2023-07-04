@@ -36,6 +36,7 @@ spec:
     path: "path/to/files"
 #    batch_size: 10000 # optional
 #    batch_size_bytes: 52428800 # optional
+#    batch_timeout: 30s # optional
     format: "csv"
     format_spec:
       delimiter: ","
@@ -75,9 +76,9 @@ This is the (nested) spec used by the Azure blob destination Plugin.
 
   Number of bytes (as Arrow buffer size) to write before starting a new object.
 
-- `batch_timeout_ms` (integer, optional. default: 30000 (30 seconds))
+- `batch_timeout` (duration, optional. default: 30s (30 seconds))
 
-  Inactivity time in milliseconds before starting a new object.
+  Inactivity time before starting a new object.
 
 ## format_spec
 
