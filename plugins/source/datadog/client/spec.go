@@ -1,7 +1,8 @@
 package client
 
 type Spec struct {
-	Accounts []Account `json:"accounts"`
+	Accounts    []Account `json:"accounts"`
+	Concurrency int       `json:"concurrency"`
 }
 
 type Account struct {
