@@ -2,7 +2,7 @@
 
 This table shows data for Cloudflare WAF Rules.
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is ().
 
 ## Relations
 
@@ -12,16 +12,4 @@ This table depends on [cloudflare_waf_packages](cloudflare_waf_packages).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
-|_cq_id (PK)|`uuid`|
-|_cq_parent_id|`uuid`|
 |waf_package_id|`utf8`|
-|id|`utf8`|
-|description|`utf8`|
-|priority|`utf8`|
-|package_id|`utf8`|
-|group|`json`|
-|mode|`utf8`|
-|default_mode|`utf8`|
-|allowed_modes|`list<item: utf8, nullable>`|
