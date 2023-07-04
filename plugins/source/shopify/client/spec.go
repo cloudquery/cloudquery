@@ -1,5 +1,10 @@
 package client
 
+import (
+	"errors"
+	"strings"
+)
+
 type Spec struct {
 	// Either
 	AccessToken string `json:"access_token,omitempty"`
@@ -14,4 +19,30 @@ type Spec struct {
 	Timeout    int64 `json:"timeout_secs,omitempty"`
 	MaxRetries int64 `json:"max_retries,omitempty"`
 	PageSize   int64 `json:"page_size,omitempty"`
+}
+
+func (s *Spec) SetDefaults() {
+	if s.Timeout < 1 {
+		s.Timeout = 10
+	}
+	if s.MaxRetries < 1 {
+		s.MaxRetries = 30
+	}
+	if s.PageSize < 1 {
+		s.PageSize = 50
+	}
+}
+
+func (s Spec) Validate() error {
+	if s.AccessToken == "" && (s.APIKey == "" || s.APISecret == "") {
+		return errors.New("no credentials provided")
+	}
+	if s.ShopURL == "" {
+		return errors.New("no shop url provided")
+	}
+	if !strings.HasSuffix(s.ShopURL, ".myshopify.com") {
+		return errors.New("shop url should end with .myshopify.com, as in https://shop_name.myshopify.com")
+	}
+
+	return nil
 }
