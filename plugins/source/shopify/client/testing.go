@@ -100,7 +100,6 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 	if err != nil {
 		t.Fatalf("failed to sync: %v", err)
 	}
-	messages.InsertMessage()
 	records := filterInserts(messages).GetRecordsForTable(table)
 	emptyColumns := schema.FindEmptyColumns(table, records)
 	if len(emptyColumns) > 0 {
