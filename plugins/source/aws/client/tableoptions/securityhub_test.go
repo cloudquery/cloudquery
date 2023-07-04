@@ -17,7 +17,7 @@ func TestGetFindings(t *testing.T) {
 	}
 	// Ensure that the validation works as expected
 	err := api.Validate()
-	assert.EqualError(t, err, "invalid input: cannot set NextToken in LookupEvents")
+	assert.EqualError(t, err, "invalid input: cannot set NextToken in GetFindings")
 
 	// Ensure that as soon as the validation passes that there are no unexpected empty or nil fields
 	api.GetFindingsOpts[0].NextToken = nil
