@@ -7,7 +7,7 @@ import (
 
 	pb "cloud.google.com/go/billing/apiv1/billingpb"
 	"cloud.google.com/go/billing/budgets/apiv1/budgetspb"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 
 	budgets "cloud.google.com/go/billing/budgets/apiv1"

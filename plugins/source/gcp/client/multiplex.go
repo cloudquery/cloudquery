@@ -1,7 +1,7 @@
 package client
 
 import (
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func ProjectMultiplex(meta schema.ClientMeta) []schema.ClientMeta {

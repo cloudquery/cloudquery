@@ -33,14 +33,17 @@ type Client struct {
 	downloader *manager.Downloader
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "s3").Logger(),
 	}
+	if opts.NoConnection {
+		return c, nil
+	}
+
 	if err := json.Unmarshal(spec, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal s3 spec: %w", err)
 	}
-
 	if err := c.spec.Validate(); err != nil {
 		return nil, err
 	}
@@ -79,7 +82,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 	c.writer, err = streamingbatchwriter.New(c,
 		streamingbatchwriter.WithBatchSizeRows(*c.spec.BatchSize),
 		streamingbatchwriter.WithBatchSizeBytes(*c.spec.BatchSizeBytes),
-		streamingbatchwriter.WithBatchTimeout(time.Duration(*c.spec.BatchTimeoutMs)*time.Millisecond),
+		streamingbatchwriter.WithBatchTimeout(c.spec.BatchTimeout.Duration()),
 	)
 	if err != nil {
 		return nil, err

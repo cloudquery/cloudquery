@@ -4,6 +4,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cloudquery/plugin-sdk/v4/configtype"
 	mssql "github.com/microsoft/go-mssqldb"
 	"github.com/microsoft/go-mssqldb/azuread"
 )
@@ -20,9 +21,9 @@ type Spec struct {
 	AuthMode         AuthMode `json:"auth_mode,omitempty"`
 	Schema           string   `json:"schema,omitempty"`
 
-	BatchSize      int           `json:"batch_size,omitempty"`
-	BatchSizeBytes int           `json:"batch_size_bytes,omitempty"`
-	BatchTimeout   time.Duration `json:"batch_timeout,omitempty"`
+	BatchSize      int                  `json:"batch_size,omitempty"`
+	BatchSizeBytes int                  `json:"batch_size_bytes,omitempty"`
+	BatchTimeout   *configtype.Duration `json:"batch_timeout,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -36,18 +37,16 @@ func (s *Spec) SetDefaults() {
 	}
 
 	if s.BatchSize == 0 {
-		const defaultBatchSize = 1000 // 1K
-		s.BatchSize = defaultBatchSize
+		s.BatchSize = 1000 // 1K
 	}
 
 	if s.BatchSizeBytes == 0 {
-		const defaultBatchSizeBytes = 5 << 20 // 5 MiB
-		s.BatchSizeBytes = defaultBatchSizeBytes
+		s.BatchSizeBytes = 5 << 20 // 5 MiB
 	}
 
-	if s.BatchTimeout == 0 {
-		const defaultBatchTimeout = 20 * time.Second // 20s
-		s.BatchTimeout = defaultBatchTimeout
+	if s.BatchTimeout == nil {
+		d := configtype.NewDuration(20 * time.Second) // 20s
+		s.BatchTimeout = &d
 	}
 }
 

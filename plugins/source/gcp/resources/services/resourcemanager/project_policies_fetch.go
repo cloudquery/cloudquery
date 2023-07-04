@@ -3,7 +3,7 @@ package resourcemanager
 import (
 	"context"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	pb "google.golang.org/api/cloudresourcemanager/v3"
 )

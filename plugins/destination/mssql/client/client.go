@@ -32,7 +32,7 @@ func (c *Client) Close(ctx context.Context) error {
 	return c.db.Close()
 }
 
-func New(_ context.Context, logger zerolog.Logger, specBytes []byte) (plugin.Client, error) {
+func New(_ context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	var spec Spec
 	if err := json.Unmarshal(specBytes, &spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
@@ -56,7 +56,7 @@ func New(_ context.Context, logger zerolog.Logger, specBytes []byte) (plugin.Cli
 		batchwriter.WithLogger(c.logger),
 		batchwriter.WithBatchSize(spec.BatchSize),
 		batchwriter.WithBatchSizeBytes(spec.BatchSizeBytes),
-		batchwriter.WithBatchTimeout(spec.BatchTimeout),
+		batchwriter.WithBatchTimeout(spec.BatchTimeout.Duration()),
 	)
 	if err != nil {
 		return nil, err
