@@ -102,10 +102,7 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 		return nil, fmt.Errorf("failed to validate spec: %w", err)
 	}
 
-	services, err := getServiceClient(logger, config)
-	if err != nil {
-		return nil, err
-	}
+	services := getServiceClient(logger, config)
 
 	if err := validateAccess(services); err != nil {
 		return nil, err
@@ -140,7 +137,7 @@ func getTables() schema.Tables {
 	return tables
 }
 
-func getServiceClient(logger zerolog.Logger, spec client.Spec) (*sclient.API, error) {
+func getServiceClient(logger zerolog.Logger, spec client.Spec) *sclient.API {
 	if !spec.StripeDebug {
 		logger = logger.Level(zerolog.WarnLevel)
 	}
@@ -165,7 +162,7 @@ func getServiceClient(logger zerolog.Logger, spec client.Spec) (*sclient.API, er
 		Connect: stripe.GetBackendWithConfig(stripe.ConnectBackend, sCfg),
 		Uploads: stripe.GetBackendWithConfig(stripe.UploadsBackend, sCfg),
 	})
-	return c, nil
+	return c
 }
 
 func validateAccess(svc *sclient.API) error {

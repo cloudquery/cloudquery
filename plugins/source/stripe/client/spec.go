@@ -8,11 +8,11 @@ import (
 type Spec struct {
 	APIKey string `json:"api_key"`
 
-	MaxRetries  int64 `json:"max_retries"`
-	RateLimit   int64 `json:"rate_limit"`
-	StripeDebug bool  `json:"stripe_debug"`
+	MaxRetries  int64 `json:"max_retries,omitempty"`
+	RateLimit   int64 `json:"rate_limit,omitempty"`
+	StripeDebug bool  `json:"stripe_debug,omitempty"`
 
-	Concurrency int `json:"concurrency"`
+	Concurrency int `json:"concurrency,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {

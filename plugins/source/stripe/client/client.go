@@ -27,6 +27,6 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-func (c Client) ID() string {
+func (Client) ID() string {
 	return "stripe"
 }
