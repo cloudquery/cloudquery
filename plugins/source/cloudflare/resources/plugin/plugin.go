@@ -21,6 +21,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/rs/zerolog"
 )
 
@@ -102,6 +103,12 @@ func getTables() schema.Tables {
 		worker_meta_data.WorkerMetaData(),
 		worker_routes.WorkerRoutes(),
 		zones.Zones(),
+	}
+	if err := transformers.TransformTables(tables); err != nil {
+		panic(err)
+	}
+	for _, table := range tables {
+		schema.AddCqIDs(table)
 	}
 	return tables
 }
