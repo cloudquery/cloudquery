@@ -76,7 +76,7 @@ func (c *Client) Write(ctx context.Context, messages <-chan message.WriteMessage
 			}
 
 			// If adding this record would exceed the batch size, send the batch
-			if len(dst.Bytes())+batchSize > min(c.spec.BatchSizeBytes, MaxBatchSizeBytes) {
+			if len(dst.Bytes())+batchSize > MaxBatchSizeBytes {
 				err := c.sendBatch(ctx, recordsBatchInput, 0)
 				if err != nil {
 					return err
@@ -92,7 +92,7 @@ func (c *Client) Write(ctx context.Context, messages <-chan message.WriteMessage
 			batchSize += len(dst.Bytes())
 
 			// Send the batch if it is full
-			if len(recordsBatchInput.Records) == min(c.spec.BatchSize, MaxBatchRecords) {
+			if len(recordsBatchInput.Records) == MaxBatchRecords {
 				err := c.sendBatch(ctx, recordsBatchInput, 0)
 				if err != nil {
 					return err
