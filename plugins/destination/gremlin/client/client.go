@@ -30,7 +30,7 @@ type Client struct {
 
 var AnonT = gremlingo.T__
 
-func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "gremlin").Logger(),
 	}
@@ -75,8 +75,11 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 	return c, nil
 }
 
-func (c *Client) Close(_ context.Context) error {
-	c.client.Close()
+func (c *Client) Close(ctx context.Context) error {
+	defer c.client.Close()
+	if err := c.writer.Close(ctx); err != nil {
+		return fmt.Errorf("failed to close writer: %w", err)
+	}
 	return nil
 }
 
