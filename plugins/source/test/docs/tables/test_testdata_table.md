@@ -4,13 +4,13 @@ This table shows data for Test Testdata Table.
 
 Testdata table
 
-The composite primary key for this table is ().
+The primary key for this table is **_cq_id**.
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |int8|`int8`|
 |int16|`int16`|

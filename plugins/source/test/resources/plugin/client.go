@@ -87,7 +87,12 @@ func getTables() schema.Tables {
 		services.TestDataTable(),
 	}
 	for i := range tables {
-		tables[i].Columns = append([]schema.Column{schema.CqIDColumn, schema.CqParentIDColumn}, tables[i].Columns...)
+		cqIDCol := schema.CqIDColumn
+		if len(tables[i].PrimaryKeysIndexes()) == 0 {
+			cqIDCol.PrimaryKey = true
+		}
+		tables[i].Columns = append([]schema.Column{cqIDCol, schema.CqParentIDColumn}, tables[i].Columns...)
+
 		if tables[i].Transform != nil {
 			if err := tables[i].Transform(tables[i]); err != nil {
 				panic(err)
