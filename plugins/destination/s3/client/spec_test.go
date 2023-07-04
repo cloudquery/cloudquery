@@ -36,9 +36,10 @@ func TestSpec_SetDefaults(t *testing.T) {
 	for _, tc := range cases {
 		got := tc.Give
 		got.SetDefaults()
-		if diff := cmp.Diff(tc.Want, got, cmpopts.IgnoreUnexported(filetypes.FileSpec{})); diff != "" {
+		if diff := cmp.Diff(tc.Want, got, cmpopts.IgnoreUnexported(filetypes.FileSpec{}, configtype.Duration{})); diff != "" {
 			t.Errorf("SetDefaults() mismatch (-want +got):\n%s", diff)
 		}
+		require.Equal(t, tc.Want.BatchTimeout, got.BatchTimeout)
 	}
 }
 
