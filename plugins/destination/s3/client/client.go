@@ -82,7 +82,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.Ne
 	c.writer, err = streamingbatchwriter.New(c,
 		streamingbatchwriter.WithBatchSizeRows(*c.spec.BatchSize),
 		streamingbatchwriter.WithBatchSizeBytes(*c.spec.BatchSizeBytes),
-		streamingbatchwriter.WithBatchTimeout(time.Duration(*c.spec.BatchTimeoutMs)*time.Millisecond),
+		streamingbatchwriter.WithBatchTimeout(c.spec.BatchTimeout.Duration()),
 	)
 	if err != nil {
 		return nil, err
