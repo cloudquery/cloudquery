@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
 	github.com/cloudquery/plugin-pb-go v1.6.0
-	github.com/cloudquery/plugin-sdk/v4 v4.6.1-rc1
+	github.com/cloudquery/plugin-sdk/v4 v4.7.0-rc1
 	github.com/goccy/go-json v0.10.2
 	github.com/google/uuid v1.3.0
 	github.com/jackc/pgx-zerolog v0.0.0-20230315001418-f978528409eb

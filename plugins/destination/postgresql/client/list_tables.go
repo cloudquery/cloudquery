@@ -102,7 +102,7 @@ func (c *Client) whereClause(include, exclude []string) string {
 	return where
 }
 
-func (c *Client) inClause(values []string) string {
+func (*Client) inClause(values []string) string {
 	var inClause string
 	for i, value := range values {
 		value = strings.ReplaceAll(value, "'", "")  // strip single quotes

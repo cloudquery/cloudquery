@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/mixedbatchwriter"
@@ -20,7 +19,6 @@ import (
 type Client struct {
 	conn                *pgxpool.Pool
 	logger              zerolog.Logger
-	spec                specs.Spec
 	currentDatabaseName string
 	currentSchemaName   string
 	pgType              pgType
@@ -96,16 +94,12 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 		mixedbatchwriter.WithLogger(c.logger),
 		mixedbatchwriter.WithBatchSize(spec.BatchSize),
 		mixedbatchwriter.WithBatchSizeBytes(spec.BatchSizeBytes),
-		// mixedbatchwriter.WithBatchTimeout(spec.BatchTimeout),
+		mixedbatchwriter.WithBatchTimeout(spec.BatchTimeout.Duration()),
 	)
 	if err != nil {
 		return nil, err
 	}
 	return c, nil
-}
-
-func (c *Client) GetSpec() any {
-	return &Spec{}
 }
 
 func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) error {

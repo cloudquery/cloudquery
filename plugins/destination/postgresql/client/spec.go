@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/cloudquery/plugin-sdk/v4/configtype"
 )
 
 const (
@@ -13,12 +14,12 @@ const (
 )
 
 type Spec struct {
-	ConnectionString string        `json:"connection_string,omitempty"`
-	PgxLogLevel      LogLevel      `json:"pgx_log_level,omitempty"`
-	MigrateMode      string        `json:"migrate_mode,omitempty"`
-	BatchSize        int           `json:"batch_size,omitempty"`
-	BatchSizeBytes   int           `json:"batch_size_bytes,omitempty"`
-	BatchTimeout     time.Duration `json:"batch_timeout,omitempty"`
+	ConnectionString string              `json:"connection_string,omitempty"`
+	PgxLogLevel      LogLevel            `json:"pgx_log_level,omitempty"`
+	MigrateMode      string              `json:"migrate_mode,omitempty"`
+	BatchSize        int                 `json:"batch_size,omitempty"`
+	BatchSizeBytes   int                 `json:"batch_size_bytes,omitempty"`
+	BatchTimeout     configtype.Duration `json:"batch_timeout,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -31,7 +32,7 @@ func (s *Spec) SetDefaults() {
 	if s.BatchSizeBytes <= 0 {
 		s.BatchSizeBytes = defaultBatchSizeBytes
 	}
-	if s.BatchTimeout <= 0 {
-		s.BatchTimeout = defaultBatchTimeout
+	if s.BatchTimeout.Duration() <= 0 {
+		s.BatchTimeout = configtype.NewDuration(defaultBatchTimeout)
 	}
 }
