@@ -3,7 +3,7 @@ package client
 import "errors"
 
 type Spec struct {
-	AccessToken string   `json:"access_token,omitempty"`
+	AccessToken string   `json:"access_token"`
 	TeamIDs     []string `json:"team_ids,omitempty"`
 
 	EndpointURL string `json:"endpoint_url,omitempty"`
@@ -11,6 +11,8 @@ type Spec struct {
 	PageSize    int64  `json:"page_size,omitempty"`
 	MaxRetries  int64  `json:"max_retries,omitempty"`
 	MaxWait     int64  `json:"max_wait_secs,omitempty"`
+
+	Concurrency int `json:"concurrency,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -28,6 +30,9 @@ func (s *Spec) SetDefaults() {
 	}
 	if s.MaxWait < 1 {
 		s.MaxWait = 300
+	}
+	if s.Concurrency < 1 {
+		s.Concurrency = 10000
 	}
 }
 

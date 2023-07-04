@@ -104,11 +104,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, specBytes []byte, opt
 		return nil, fmt.Errorf("failed to validate spec: %w", err)
 	}
 
-	services, err := getServiceClient(logger.With().Str("source", "vercel-client").Logger(), config, "")
-	if err != nil {
-		return nil, err
-	}
+	services := getServiceClient(logger.With().Str("source", "vercel-client").Logger(), config, "")
+
 	if len(config.TeamIDs) == 0 {
+		var err error
 		config.TeamIDs, err = getTeamIDs(ctx, services)
 		if err != nil {
 			return nil, fmt.Errorf("failed to discover team ids: %w", err)
@@ -120,6 +119,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, specBytes []byte, opt
 		logger: logger,
 		scheduler: scheduler.NewScheduler(
 			scheduler.WithLogger(logger),
+			scheduler.WithConcurrency(uint64(config.Concurrency)),
 		),
 		services: services,
 		tables:   getTables(),
@@ -148,7 +148,7 @@ func getTables() schema.Tables {
 	return tables
 }
 
-func getServiceClient(logger zerolog.Logger, spec client.Spec, teamID string) (*vercel.Client, error) {
+func getServiceClient(logger zerolog.Logger, spec client.Spec, teamID string) *vercel.Client {
 	return vercel.New(
 		logger,
 		&http.Client{
@@ -160,7 +160,7 @@ func getServiceClient(logger zerolog.Logger, spec client.Spec, teamID string) (*
 		spec.MaxRetries,
 		spec.MaxWait,
 		spec.PageSize,
-	), nil
+	)
 }
 
 func getTeamIDs(ctx context.Context, svc *vercel.Client) ([]string, error) {
