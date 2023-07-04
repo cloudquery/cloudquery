@@ -44,7 +44,7 @@ module.exports = async ({github, context}) => {
         actions = ["cli (ubuntu-cli-large-runner)", "cli (windows-cli-large-runner)", "cli (macos-latest)", ...actions]
     }
 
-    // Enforce policy tests for AWS,GCP and K8s plugins
+    // Enforce policy tests for AWS,Azure and K8s plugins
     const pluginsWithPolicyTests = ["plugins/source/aws", "plugins/source/azure", "plugins/source/k8s"]
     for (const plugin of pluginsWithPolicyTests) {
         if (actions.includes(plugin)) {
