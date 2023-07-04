@@ -7,6 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/cloudquery/plugin-sdk/v3/transformers"
 )
@@ -44,19 +46,44 @@ This is useful when multi region and account aggregation is enabled.`,
 
 func fetchFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Securityhub
-	config := securityhub.GetFindingsInput{
-		MaxResults: 100,
+	allConfigs := []tableoptions.CustomGetFindingsOpts{{}}
+	noTableConfig := true
+	if cl.Spec.TableOptions.SecurityHubFindings.GetFindingsOpts != nil {
+		allConfigs = cl.Spec.TableOptions.SecurityHubFindings.GetFindingsOpts
+		noTableConfig = false
 	}
-	p := securityhub.NewGetFindingsPaginator(svc, &config)
-	for p.HasMorePages() {
-		response, err := p.NextPage(ctx, func(o *securityhub.Options) {
-			o.Region = cl.Region
-		})
-		if err != nil {
-			return err
+
+	svc := cl.Services().Securityhub
+	var config securityhub.GetFindingsInput
+	config.MaxResults = 100
+
+	getFindings := func(svc services.SecurityhubClient, config securityhub.GetFindingsInput) error {
+		p := securityhub.NewGetFindingsPaginator(svc, &config)
+		for p.HasMorePages() {
+			response, err := p.NextPage(ctx, func(o *securityhub.Options) {
+				o.Region = cl.Region
+			})
+			if err != nil {
+				return err
+			}
+			res <- response.Findings
 		}
-		res <- response.Findings
+		return nil
+	}
+
+	if !noTableConfig {
+		for _, w := range allConfigs {
+			config = w.GetFindingsInput
+			if config.MaxResults == 0 {
+				config.MaxResults = 100
+			}
+			err := getFindings(svc, config)
+			if err != nil {
+				return err
+			}
+		}
+	} else {
+		getFindings(svc, config)
 	}
 	return nil
 }
