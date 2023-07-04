@@ -17,7 +17,7 @@ The following examples are some of the most common examples of reasons for a maj
 3. Changing the permissions required to sync a resource
 
 
-All releases contain a release log that indicates all of the changes (and highlights the breaking changes), all changelogs are available [here](<TODO: include a link>). If you are ever unsure about a change that is included feel free to reach out to the CloudQuery team on Discord to find out more
+All releases contain a release log that indicates all of the changes (and highlights the breaking changes), all changelogs are available [here](https://github.com/cloudquery/cloudquery/releases?q=plugins-source-aws-). If you are ever unsure about a change that is included feel free to reach out to the CloudQuery team on Discord to find out more
 
 ### Preview features
 
@@ -29,7 +29,7 @@ Sometimes features or tables will be released and marked as `alpha` this indicat
 
 The following features are currently in `Preview`
 
-- the `table_options` parameter in the plugin spec <TODO: include a link>
+- the `table_options` parameter in the [aws plugin spec](/docs/plugins/sources/aws/configuration#aws-spec)
 - All tables that are prefixed with `aws_alpha_` including:
     - [aws_alpha_cloudwatch_metrics](tables/aws_alpha_cloudwatch_metrics)
         - [aws_alpha_cloudwatch_metric_statistics](tables/aws_alpha_cloudwatch_metric_statistics)
