@@ -8,14 +8,14 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
 	"github.com/tailscale/tailscale-client-go/tailscale"
 )
 
 type Client struct {
+	plugin.UnimplementedDestination
 	TailscaleClient *tailscale.Client
 	pluginSpec      *Spec
 	Logger          zerolog.Logger
@@ -33,21 +33,13 @@ type oauthResponse struct {
 	ExpiredIn   int    `json:"expired_in"`
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
-	pluginSpec := new(Spec)
-	if err := spec.UnmarshalSpec(pluginSpec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
-	}
-	if err := pluginSpec.Validate(); err != nil {
-		return nil, fmt.Errorf("failed to validate spec: %w", err)
-	}
-
+func Configure(ctx context.Context, logger zerolog.Logger, spec *Spec) (schema.ClientMeta, error) {
 	// using the new oauth mechanism
-	if pluginSpec.APIKey == "" {
+	if spec.APIKey == "" {
 		oatuhURL := "https://api.tailscale.com/api/v2/oauth/token"
 		resp, err := http.DefaultClient.PostForm("https://api.tailscale.com/api/v2/oauth/token", url.Values{
-			"client_id":     {pluginSpec.ClientID},
-			"client_secret": {pluginSpec.ClientSecret},
+			"client_id":     {spec.ClientID},
+			"client_secret": {spec.ClientSecret},
 		})
 		if err != nil {
 			return nil, fmt.Errorf("error getting keys from %s: %w", oatuhURL, err)
@@ -64,22 +56,22 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 			return nil, fmt.Errorf("error unmarshalling response body from %s: %w", oatuhURL, err)
 		}
 
-		pluginSpec.APIKey = res.AccessToken
+		spec.APIKey = res.AccessToken
 	}
 
 	var options []tailscale.ClientOption
-	if len(pluginSpec.EndpointURL) > 0 {
-		options = append(options, tailscale.WithBaseURL(pluginSpec.EndpointURL))
+	if len(spec.EndpointURL) > 0 {
+		options = append(options, tailscale.WithBaseURL(spec.EndpointURL))
 	}
 
-	tailscaleClient, err := tailscale.NewClient(pluginSpec.APIKey, pluginSpec.Tailnet, options...)
+	tailscaleClient, err := tailscale.NewClient(spec.APIKey, spec.Tailnet, options...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create tailscale client: %w", err)
 	}
 
 	return &Client{
 		TailscaleClient: tailscaleClient,
-		pluginSpec:      pluginSpec,
+		pluginSpec:      spec,
 		Logger:          logger,
 	}, nil
 }

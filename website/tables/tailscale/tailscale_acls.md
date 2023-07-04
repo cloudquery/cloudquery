@@ -1,6 +1,6 @@
 # Table: tailscale_acls
 
-This table shows data for Tailscale Access Control Lists (ACLs).
+This table shows data for Tailscale ACLs.
 
 https://github.com/tailscale/tailscale/blob/main/api.md#acl
 
@@ -10,8 +10,6 @@ The primary key for this table is **tailnet**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |tailnet (PK)|`utf8`|
