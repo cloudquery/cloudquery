@@ -82,7 +82,10 @@ func fetchFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		}
 	} else {
 		config.MaxResults = 100
-		getFindings(svc, config)
+		err := getFindings(svc, config)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
