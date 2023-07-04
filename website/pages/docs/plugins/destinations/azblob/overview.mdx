@@ -20,7 +20,7 @@ This destination plugin lets you sync data from a CloudQuery source to remote Az
 
 ## Example
 
-This example configures an Azure blob storage destination, to create CSV files in `https://cqdestinationazblob.blob.core.windows.net/test/path/to/files`. Note that the Azure blob storage plugin only supports `append` write-mode.
+This example configures an Azure blob storage destination, to create CSV files in `https://cqdestinationazblob.blob.core.windows.net/test/path/to/files`.
 
 The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
@@ -30,7 +30,6 @@ spec:
   name: "azblob"
   path: "cloudquery/azblob"
   version: "VERSION_DESTINATION_AZBLOB"
-  write_mode: "append" # this plugin only supports 'append' mode
   spec:
     storage_account: "cqdestinationazblob"
     container: "test"
@@ -42,7 +41,7 @@ spec:
       delimiter: ","
 ```
 
-The Azure blob destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes). 
+The Azure Blob destination utilizes batching, and supports `batch_size`, `batch_size_bytes` and `batch_timeout_ms` options (see below).
 
 ## Azure Blob Spec
 
