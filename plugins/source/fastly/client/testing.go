@@ -30,7 +30,6 @@ func filterInserts(msgs message.SyncMessages) message.SyncInserts {
 	return inserts
 }
 
-
 func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) services.FastlyClient, opts TestOptions) {
 	table.IgnoreInTests = false
 	t.Helper()
@@ -39,10 +38,10 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	c := &Client{
-				logger:   l,
-				Fastly:   builder(t, ctrl),
-				services: []*fastly.Service{opts.Service},
-				regions:  []string{opts.Region},
+		logger:   l,
+		Fastly:   builder(t, ctrl),
+		services: []*fastly.Service{opts.Service},
+		regions:  []string{opts.Region},
 	}
 	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
 	messages, err := sched.SyncAll(context.Background(), c, schema.Tables{table})

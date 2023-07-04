@@ -36,7 +36,7 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-func (c *Client) ID() string {
+func (*Client) ID() string {
 	return "fastly"
 }
 
@@ -75,7 +75,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.Cl
 		backoff:    defaultBackoff,
 		services:   fastlyServices,
 		regions:    regions,
-		Spec: 		 spec,
+		Spec:       spec,
 	}, nil
 }
 
