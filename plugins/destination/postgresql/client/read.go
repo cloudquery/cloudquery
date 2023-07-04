@@ -5,7 +5,6 @@ import (
 	"database/sql/driver"
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
@@ -137,12 +136,6 @@ func prepareValueForResourceSet(dataType arrow.DataType, v any) (any, error) {
 			} else {
 				v = vt.Int.Uint64()
 			}
-		}
-		return v, nil
-	case *arrow.TimestampType:
-		t, ok := v.(time.Time)
-		if ok {
-			v = t.Format(time.RFC3339Nano)
 		}
 		return v, nil
 	}

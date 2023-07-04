@@ -5,9 +5,7 @@ go 1.19
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
 	github.com/cloudquery/plugin-pb-go v1.6.0
-	github.com/cloudquery/plugin-sdk/v4 v4.7.0-rc1
-	github.com/goccy/go-json v0.10.2
-	github.com/google/uuid v1.3.0
+	github.com/cloudquery/plugin-sdk/v4 v4.7.1-rc1
 	github.com/jackc/pgx-zerolog v0.0.0-20230315001418-f978528409eb
 	github.com/jackc/pgx/v5 v5.3.1
 	github.com/rs/zerolog v1.29.1
@@ -22,8 +20,10 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
+	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/flatbuffers v23.1.21+incompatible // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
