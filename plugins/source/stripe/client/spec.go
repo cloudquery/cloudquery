@@ -11,6 +11,8 @@ type Spec struct {
 	MaxRetries  int64 `json:"max_retries"`
 	RateLimit   int64 `json:"rate_limit"`
 	StripeDebug bool  `json:"stripe_debug"`
+
+	Concurrency int `json:"concurrency"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -21,6 +23,10 @@ func (s *Spec) SetDefaults() {
 		} else {
 			s.RateLimit = 20
 		}
+	}
+
+	if s.Concurrency < 1 {
+		s.Concurrency = 10000
 	}
 }
 

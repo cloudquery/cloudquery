@@ -116,6 +116,7 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 		logger: logger,
 		scheduler: scheduler.NewScheduler(
 			scheduler.WithLogger(logger),
+			scheduler.WithConcurrency(uint64(config.Concurrency)),
 		),
 		services: services,
 		tables:   getTables(),
