@@ -36,6 +36,9 @@ func (s *SecurityHubAPIs) validateGetFindingEvent() error {
 		if aws.ToString(opt.NextToken) != "" {
 			return errors.New("invalid input: cannot set NextToken in GetFindings")
 		}
+		if opt.MaxResults < 1 && opt.MaxResults > 100 {
+			return errors.New("invalid range: MaxResults must be within range [1-100]")
+		}
 	}
 	return nil
 }
