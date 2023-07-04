@@ -7,6 +7,7 @@ import (
 
 	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
+	"github.com/cloudquery/plugin-sdk/v4/configtype"
 )
 
 type Spec struct {
@@ -16,9 +17,9 @@ type Spec struct {
 
 	Engine *queries.Engine `json:"engine,omitempty"`
 
-	BatchSize      int           `json:"batch_size,omitempty"`
-	BatchSizeBytes int           `json:"batch_size_bytes,omitempty"`
-	BatchTimeout   time.Duration `json:"batch_timeout,omitempty"`
+	BatchSize      int                  `json:"batch_size,omitempty"`
+	BatchSizeBytes int                  `json:"batch_size_bytes,omitempty"`
+	BatchTimeout   *configtype.Duration `json:"batch_timeout,omitempty"`
 }
 
 func (s *Spec) Options() (*clickhouse.Options, error) {
@@ -54,18 +55,16 @@ func (s *Spec) SetDefaults() {
 	}
 
 	if s.BatchSize == 0 {
-		const defaultBatchSize = 10_000 // 10K
-		s.BatchSize = defaultBatchSize
+		s.BatchSize = 10_000 // 10K
 	}
 
 	if s.BatchSizeBytes == 0 {
-		const defaultBatchSizeBytes = 5 << 20 // 5 MiB
-		s.BatchSizeBytes = defaultBatchSizeBytes
+		s.BatchSizeBytes = 5 << 20 // 5 MiB
 	}
 
-	if s.BatchTimeout == 0 {
-		const defaultBatchTimeout = 20 * time.Second // 20s
-		s.BatchTimeout = defaultBatchTimeout
+	if s.BatchTimeout == nil {
+		d := configtype.NewDuration(20 * time.Second) // 20s
+		s.BatchTimeout = &d
 	}
 }
 
