@@ -55,8 +55,6 @@ func fetchFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 
 	svc := cl.Services().Securityhub
 	var config securityhub.GetFindingsInput
-	config.MaxResults = 100
-
 	getFindings := func(svc services.SecurityhubClient, config securityhub.GetFindingsInput) error {
 		p := securityhub.NewGetFindingsPaginator(svc, &config)
 		for p.HasMorePages() {
@@ -83,6 +81,7 @@ func fetchFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 			}
 		}
 	} else {
+		config.MaxResults = 100
 		getFindings(svc, config)
 	}
 	return nil
