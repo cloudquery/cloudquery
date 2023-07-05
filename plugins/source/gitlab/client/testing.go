@@ -8,7 +8,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/julienschmidt/httprouter"
@@ -17,16 +16,6 @@ import (
 )
 
 type TestOptions struct{}
-
-func filterInserts(msgs message.SyncMessages) message.SyncInserts {
-	inserts := []*message.SyncInsert{}
-	for _, msg := range msgs {
-		if m, ok := msg.(*message.SyncInsert); ok {
-			inserts = append(inserts, m)
-		}
-	}
-	return inserts
-}
 
 func GitlabMockTestHelper(t *testing.T, table *schema.Table, createService func(*httprouter.Router) error, options TestOptions) {
 	t.Helper()
