@@ -26,11 +26,11 @@ func getTestConnection() string {
 
 func TestPlugin(t *testing.T) {
 	ctx := context.Background()
-	p := plugin.NewPlugin("neo4j", "development", New)
+	p := plugin.NewPlugin("clickhouse", "development", New)
 	s := &Spec{ConnectionString: getTestConnection()}
 	b, err := json.Marshal(s)
 	require.NoError(t, err)
-	require.NoError(t, p.Init(ctx, b))
+	require.NoError(t, p.Init(ctx, b, plugin.NewClientOptions{}))
 
 	plugin.TestWriterSuiteRunner(t,
 		p,

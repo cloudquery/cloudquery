@@ -13,18 +13,18 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/vercel/internal/vercel"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/backend"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog"
+	"google.golang.org/grpc/balancer/grpclb/state"
 )
 
 const testToken = "SomeToken"
 
 type TestOptions struct {
-	Backend backend.Backend
+	Backend state.State
 }
 
 type MockHttpClient struct {
@@ -57,9 +57,7 @@ func (c *MockHttpClient) Do(req *http.Request) (*http.Response, error) {
 	return c.client.Do(req)
 }
 
-func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.Router) error, opts TestOptions) {
-	version := "vDev"
-
+func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.Router) error, _ TestOptions) {
 	t.Helper()
 	table.IgnoreInTests = false
 
@@ -73,41 +71,46 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 	defer h.Close()
 	mockClient := NewMockHttpClient(h.Client(), h.URL)
 
-	logger := zerolog.New(zerolog.NewTestWriter(t)).Output(
+	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
 
-	newTestExecutionClient := func(ctx context.Context, _ zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
-		var veSpec Spec
-		if err := spec.UnmarshalSpec(&veSpec); err != nil {
-			return nil, fmt.Errorf("failed to unmarshal vercel spec: %w", err)
-		}
-		veSpec.TeamIDs = []string{"test-team-id"}
+	spec := &Spec{
+		AccessToken: testToken,
+		TeamIDs:     []string{"test-team-id"},
+	}
+	if err := spec.Validate(); err != nil {
+		t.Fatalf("failed to validate spec: %v", err)
+	}
+	spec.SetDefaults()
 
-		if err := createServices(router); err != nil {
-			return nil, err
-		}
-
-		services := vercel.New(logger.With().Str("source", "stripe-client").Logger(), mockClient, h.URL, testToken, veSpec.TeamIDs[0], 5, 10, 100)
-
-		c := New(logger, spec, veSpec, services, veSpec.TeamIDs, opts.Backend)
-		return &c, nil
+	if err := createServices(router); err != nil {
+		t.Fatalf("failed to create services: %v", err)
 	}
 
-	p := source.NewPlugin(
-		table.Name,
-		version,
-		[]*schema.Table{
-			table,
-		},
-		newTestExecutionClient,
-	)
-	p.SetLogger(logger)
-	source.TestPluginSync(t, p, specs.Source{
-		Name:         "dev",
-		Path:         "cloudquery/dev",
-		Version:      version,
-		Tables:       []string{table.Name},
-		Destinations: []string{"mock-destination"},
-	})
+	services := vercel.New(l, mockClient, h.URL, spec.AccessToken, spec.TeamIDs[0], 5, 10, 100)
+
+	c := New(l, *spec, services, spec.TeamIDs, nil)
+
+	messages, err := sched.SyncAll(context.Background(), c, schema.Tables{table})
+	if err != nil {
+		t.Fatalf("failed to sync: %v", err)
+	}
+	messages.InsertMessage()
+	records := filterInserts(messages).GetRecordsForTable(table)
+	emptyColumns := schema.FindEmptyColumns(table, records)
+	if len(emptyColumns) > 0 {
+		t.Fatalf("empty columns: %v", emptyColumns)
+	}
+}
+
+func filterInserts(msgs message.SyncMessages) message.SyncInserts {
+	inserts := []*message.SyncInsert{}
+	for _, msg := range msgs {
+		if m, ok := msg.(*message.SyncInsert); ok {
+			inserts = append(inserts, m)
+		}
+	}
+	return inserts
 }

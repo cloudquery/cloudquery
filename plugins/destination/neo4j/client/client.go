@@ -19,7 +19,7 @@ type Client struct {
 	writer *batchwriter.BatchWriter
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "neo4j").Logger(),
 	}
@@ -51,6 +51,10 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 }
 
 func (c *Client) Close(ctx context.Context) error {
+	if err := c.writer.Close(ctx); err != nil {
+		_ = c.client.Close(ctx)
+		return fmt.Errorf("failed to close writer: %w", err)
+	}
 	return c.client.Close(ctx)
 }
 

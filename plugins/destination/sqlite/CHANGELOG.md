@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.4.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.4.1...plugins-destination-sqlite-v2.4.2) (2023-07-03)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to df3b664 ([#11882](https://github.com/cloudquery/cloudquery/issues/11882)) ([9635b22](https://github.com/cloudquery/cloudquery/commit/9635b22b10a2cd9ca0f91819cffb7f4ba75dc2d9))
+
+## [2.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.4.0...plugins-destination-sqlite-v2.4.1) (2023-07-02)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v13 digest to 5a06b2e ([#11857](https://github.com/cloudquery/cloudquery/issues/11857)) ([43c2f5f](https://github.com/cloudquery/cloudquery/commit/43c2f5f3a893e5286f67c4943a9d1bc2736e2aeb))
+* Update destinations to v4.4.2-rc1 ([#11872](https://github.com/cloudquery/cloudquery/issues/11872)) ([bef90db](https://github.com/cloudquery/cloudquery/commit/bef90db73d0d808ae8013cf5c926e91b63c3cd5f))
+
 ## [2.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.3.0...plugins-destination-sqlite-v2.4.0) (2023-06-30)
 
 
