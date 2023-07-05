@@ -45,7 +45,7 @@ The primary key for this table is **arn**.
 
 These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
 
-### SQS queues should be encrypted at rest using AWS KMS
+### Amazon SQS queues should be encrypted at rest
 
 ```sql
 SELECT
@@ -53,7 +53,9 @@ SELECT
   account_id,
   arn AS resource_id,
   CASE
-  WHEN (kms_master_key_id is null or kms_master_key_id = '') and sqs_managed_sse_enabled = false
+  WHEN (kms_master_key_id IS NULL OR kms_master_key_id = '')
+  AND sqs_managed_sse_enabled = false
+  THEN 'fail'
   ELSE 'pass'
   END
     AS status
