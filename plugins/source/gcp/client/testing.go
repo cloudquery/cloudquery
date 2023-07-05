@@ -9,7 +9,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/state"
@@ -66,7 +65,7 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 		t.Fatalf("failed to sync: %v", err)
 	}
 
-	records := filterInserts(messages).GetRecordsForTable(table)
+	records := messages.GetInserts().GetRecordsForTable(table)
 	emptyColumns := schema.FindEmptyColumns(table, records)
 	if len(emptyColumns) > 0 {
 		t.Fatalf("empty columns: %v", emptyColumns)
@@ -75,16 +74,6 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 	if err := eg.Wait(); err != nil {
 		t.Fatalf("failed to serve: %v", err)
 	}
-}
-
-func filterInserts(msgs message.SyncMessages) message.SyncInserts {
-	inserts := []*message.SyncInsert{}
-	for _, msg := range msgs {
-		if m, ok := msg.(*message.SyncInsert); ok {
-			inserts = append(inserts, m)
-		}
-	}
-	return inserts
 }
 
 func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*httprouter.Router) error, options TestOptions) {
@@ -126,7 +115,7 @@ func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*h
 		t.Fatalf("failed to sync: %v", err)
 	}
 
-	records := filterInserts(messages).GetRecordsForTable(table)
+	records := messages.GetInserts().GetRecordsForTable(table)
 	emptyColumns := schema.FindEmptyColumns(table, records)
 	if len(emptyColumns) > 0 {
 		t.Fatalf("empty columns: %v", emptyColumns)
