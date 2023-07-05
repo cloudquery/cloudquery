@@ -14,7 +14,7 @@ func ShareInvitations() *schema.Table {
 	name := "aws_wellarchitected_share_invitations"
 	return &schema.Table{
 		Name:        name,
-		Description: `https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_Workload.html`,
+		Description: `https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_ShareInvitation.html`,
 		Transform: transformers.TransformWithStruct(new(types.ShareInvitationSummary),
 			transformers.WithPrimaryKeys("ShareInvitationId"),
 		),

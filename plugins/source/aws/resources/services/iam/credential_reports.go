@@ -19,8 +19,9 @@ import (
 func CredentialReports() *schema.Table {
 	tableName := "aws_iam_credential_reports"
 	return &schema.Table{
-		Name:     tableName,
-		Resolver: fetchIamCredentialReports,
+		Name:        tableName,
+		Description: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_getting-report.html#id_credentials_understanding_the_report_format",
+		Resolver:    fetchIamCredentialReports,
 		Transform: transformers.TransformWithStruct(
 			&models.CredentialReportEntry{},
 			transformers.WithSkipFields(

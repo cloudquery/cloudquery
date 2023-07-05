@@ -5,14 +5,14 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"golang.org/x/exp/slices"
 )
 
 func sortKeys(table *schema.Table) []string {
 	keys := make([]string, 0, len(table.Columns))
 	for _, col := range table.Columns {
-		if col.NotNull {
+		if col.NotNull || col.PrimaryKey {
 			keys = append(keys, col.Name)
 		}
 	}
@@ -44,10 +44,13 @@ func CreateTable(table *schema.Table, cluster string, engine *Engine) (string, e
 	}
 	builder.WriteString("\n) ENGINE = ")
 	builder.WriteString(engine.String())
+	builder.WriteString(" ORDER BY ")
 	if orderBy := sortKeys(table); len(orderBy) > 0 {
-		builder.WriteString(" ORDER BY (")
+		builder.WriteString("(")
 		builder.WriteString(strings.Join(util.Sanitized(orderBy...), ", "))
 		builder.WriteString(")")
+	} else {
+		builder.WriteString("tuple()")
 	}
 	builder.WriteString(" SETTINGS allow_nullable_key=1") // allows nullable keys
 

@@ -22,9 +22,6 @@ func SourceCredentials() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 		},
-		Relations: schema.Tables{
-			builds(),
-		},
 	}
 }
 

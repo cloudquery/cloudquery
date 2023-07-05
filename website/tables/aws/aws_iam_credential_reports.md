@@ -2,6 +2,8 @@
 
 This table shows data for IAM Credential Reports.
 
+https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_getting-report.html#id_credentials_understanding_the_report_format
+
 The composite primary key for this table is (**arn**, **user_creation_time**).
 
 ## Columns

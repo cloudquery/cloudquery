@@ -17,7 +17,7 @@ import (
 func RuleGroups() *schema.Table {
 	tableName := "aws_networkfirewall_rule_groups"
 	return &schema.Table{
-		Name:                "aws_networkfirewall_rule_groups",
+		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/network-firewall/latest/APIReference/API_RuleGroup.html`,
 		Resolver:            fetchRuleGroups,
 		PreResourceResolver: getRuleGroup,

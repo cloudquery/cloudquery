@@ -26,6 +26,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudwatchlogs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codeartifact"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codebuild"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codecommit"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codepipeline"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cognito"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/computeoptimizer"
@@ -81,6 +82,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resiliencehub"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resourcegroups"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53resolver"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sagemaker"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/savingsplans"
@@ -184,6 +186,7 @@ func tables() []*schema.Table {
 		codeartifact.Repositories(),
 		codebuild.Projects(),
 		codebuild.SourceCredentials(),
+		codecommit.Repositories(),
 		codepipeline.Pipelines(),
 		codepipeline.Webhooks(),
 		cognito.IdentityPools(),
@@ -268,6 +271,7 @@ func tables() []*schema.Table {
 		ec2.Vpcs(),
 		ec2.VpnConnections(),
 		ec2.VpnGateways(),
+		ecr.PullThroughCacheRules(),
 		ecr.Registries(),
 		ecr.RegistryPolicies(),
 		ecr.Repositories(),
@@ -405,7 +409,9 @@ func tables() []*schema.Table {
 		neptune.Instances(),
 		neptune.SubnetGroups(),
 		networkfirewall.FirewallPolicies(),
+		networkfirewall.Firewalls(),
 		networkfirewall.RuleGroups(),
+		networkfirewall.TLSInspectionConfigurations(),
 		organizations.Accounts(),
 		organizations.DelegatedAdministrators(),
 		organizations.OrganizationalUnits(),
@@ -458,6 +464,15 @@ func tables() []*schema.Table {
 		route53.HostedZones(),
 		route53.Operations(),
 		route53.TrafficPolicies(),
+		route53resolver.FirewallConfigs(),
+		route53resolver.FirewallDomainLists(),
+		route53resolver.FirewallRuleGroupAssociations(),
+		route53resolver.FirewallRuleGroups(),
+		route53resolver.ResolverEndpoints(),
+		route53resolver.ResolverQueryLogConfigAssociations(),
+		route53resolver.ResolverQueryLogConfigs(),
+		route53resolver.ResolverRuleAssociations(),
+		route53resolver.ResolverRules(),
 		s3.AccessPoints(),
 		s3.Accounts(),
 		s3.Buckets(),

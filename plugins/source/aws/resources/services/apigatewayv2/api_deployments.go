@@ -18,7 +18,7 @@ func apiDeployments() *schema.Table {
 	tableName := "aws_apigatewayv2_api_deployments"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Deployment.html`,
+		Description: `https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/apis-apiid-deployments.html`,
 		Resolver:    fetchApigatewayv2ApiDeployments,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.Deployment{}),

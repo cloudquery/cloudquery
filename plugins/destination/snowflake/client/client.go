@@ -7,7 +7,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
-	"github.com/cloudquery/plugin-sdk/v4/writers"
+	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/rs/zerolog"
 
 	"github.com/snowflakedb/gosnowflake"
@@ -18,10 +18,10 @@ type Client struct {
 	db     *sql.DB
 	logger zerolog.Logger
 	spec   Spec
-	writer *writers.BatchWriter
+	writer *batchwriter.BatchWriter
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "sf-dest").Logger(),
@@ -33,7 +33,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 	if err := c.spec.Validate(); err != nil {
 		return nil, err
 	}
-	c.writer, err = writers.NewBatchWriter(c, writers.WithLogger(logger), writers.WithBatchSize(c.spec.BatchSize), writers.WithBatchSizeBytes(c.spec.BatchSizeBytes))
+	c.writer, err = batchwriter.New(c, batchwriter.WithLogger(logger), batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))
 	if err != nil {
 		return nil, err
 	}
@@ -62,12 +62,18 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client
 	return c, nil
 }
 
-func (c *Client) Close(context.Context) error {
-	var err error
+func (c *Client) Close(ctx context.Context) error {
 	if c.db == nil {
 		return fmt.Errorf("client already closed or not initialized")
 	}
-	err = c.db.Close()
+
+	if err := c.writer.Close(ctx); err != nil {
+		_ = c.db.Close()
+		c.db = nil
+		return fmt.Errorf("failed to close writer: %w", err)
+	}
+
+	err := c.db.Close()
 	c.db = nil
 	return err
 }

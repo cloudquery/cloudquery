@@ -17,6 +17,9 @@ type SpecReader struct {
 	sourcesMap      map[string]*Source
 	destinationsMap map[string]*Destination
 
+	sourceWarningsMap      map[string]Warnings
+	destinationWarningsMap map[string]Warnings
+
 	Sources      []*Source
 	Destinations []*Destination
 }
@@ -88,6 +91,7 @@ func (r *SpecReader) loadSpecsFromFile(path string) error {
 			if r.sourcesMap[source.Name] != nil {
 				return fmt.Errorf("duplicate source name %s", source.Name)
 			}
+			r.sourceWarningsMap[source.Name] = source.GetWarnings()
 			source.SetDefaults()
 			if err := source.Validate(); err != nil {
 				return fmt.Errorf("failed to validate source %s: %w", source.Name, err)
@@ -99,6 +103,7 @@ func (r *SpecReader) loadSpecsFromFile(path string) error {
 			if r.destinationsMap[destination.Name] != nil {
 				return fmt.Errorf("duplicate destination name %s", destination.Name)
 			}
+			r.destinationWarningsMap[destination.Name] = destination.GetWarnings()
 			// We set the default value to 0, so it can be overridden later by plugins' defaults
 			destination.SetDefaults(0, 0)
 			if err := destination.Validate(); err != nil {
@@ -164,6 +169,14 @@ func (r *SpecReader) GetDestinationByName(name string) *Destination {
 	return r.destinationsMap[name]
 }
 
+func (r *SpecReader) GetSourceWarningsByName(name string) Warnings {
+	return r.sourceWarningsMap[name]
+}
+
+func (r *SpecReader) GetDestinationWarningsByName(name string) Warnings {
+	return r.destinationWarningsMap[name]
+}
+
 func (r *SpecReader) GetDestinationNamesForSource(name string) []string {
 	var destinations []string
 	source := r.sourcesMap[name]
@@ -177,10 +190,12 @@ func (r *SpecReader) GetDestinationNamesForSource(name string) []string {
 
 func NewSpecReader(paths []string) (*SpecReader, error) {
 	reader := &SpecReader{
-		sourcesMap:      make(map[string]*Source),
-		destinationsMap: make(map[string]*Destination),
-		Sources:         make([]*Source, 0),
-		Destinations:    make([]*Destination, 0),
+		sourcesMap:             make(map[string]*Source),
+		destinationsMap:        make(map[string]*Destination),
+		Sources:                make([]*Source, 0),
+		Destinations:           make([]*Destination, 0),
+		sourceWarningsMap:      make(map[string]Warnings),
+		destinationWarningsMap: make(map[string]Warnings),
 	}
 	for _, path := range paths {
 		file, err := os.Open(path)

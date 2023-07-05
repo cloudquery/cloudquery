@@ -5,7 +5,7 @@ import (
 
 	vmmigration "cloud.google.com/go/vmmigration/apiv1"
 	pb "cloud.google.com/go/vmmigration/apiv1/vmmigrationpb"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/api/iterator"
 )

@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	"golang.org/x/exp/slices"
 )
 

@@ -21,6 +21,7 @@ type IamClient interface {
 	GetGroupPolicy(context.Context, *iam.GetGroupPolicyInput, ...func(*iam.Options)) (*iam.GetGroupPolicyOutput, error)
 	GetInstanceProfile(context.Context, *iam.GetInstanceProfileInput, ...func(*iam.Options)) (*iam.GetInstanceProfileOutput, error)
 	GetLoginProfile(context.Context, *iam.GetLoginProfileInput, ...func(*iam.Options)) (*iam.GetLoginProfileOutput, error)
+	GetMFADevice(context.Context, *iam.GetMFADeviceInput, ...func(*iam.Options)) (*iam.GetMFADeviceOutput, error)
 	GetOpenIDConnectProvider(context.Context, *iam.GetOpenIDConnectProviderInput, ...func(*iam.Options)) (*iam.GetOpenIDConnectProviderOutput, error)
 	GetOrganizationsAccessReport(context.Context, *iam.GetOrganizationsAccessReportInput, ...func(*iam.Options)) (*iam.GetOrganizationsAccessReportOutput, error)
 	GetPolicy(context.Context, *iam.GetPolicyInput, ...func(*iam.Options)) (*iam.GetPolicyOutput, error)

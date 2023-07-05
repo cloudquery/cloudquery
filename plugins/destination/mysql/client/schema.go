@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func identifier(name string) string {
@@ -60,7 +60,7 @@ func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schem
 
 		schemaType := mySQLTypeToArrowType(typ)
 		var primaryKey bool
-		if constraintType != nil && c.pkEnabled() {
+		if constraintType != nil {
 			primaryKey = strings.Contains(*constraintType, "PRIMARY KEY")
 		}
 		columns = append(columns, schema.Column{
@@ -76,7 +76,7 @@ func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schem
 
 // TODO: in the future this could theoretically be done in a single query and then the tables could be filtered in memory
 func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema.Tables, error) {
-	query := `SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE';`
+	query := `SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND (DATABASE() IS NULL OR table_SCHEMA = DATABASE());`
 	rows, err := c.db.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err
@@ -140,7 +140,7 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
 		builder.WriteString(" ")
 		builder.WriteString(arrowTypeToMySqlStr(column.Type))
 
-		if c.pkEnabled() && column.PrimaryKey {
+		if column.PrimaryKey {
 			primaryKeysIndices = append(primaryKeysIndices, i)
 		} else {
 			// Primary keys are implicitly not null and unique, so we only need to add these constraints if the column is not a primary key

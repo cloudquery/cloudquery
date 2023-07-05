@@ -6,7 +6,9 @@ spec:
   version: "VERSION_SOURCE_HACKERNEWS"
   concurrency: 10000
   tables: ["*"]
-  backend: local
+  backend_options:
+    table_name: "cq_hackernews_state"
+    connection: "@@plugin.DESTINATION_NAME.connection"
   destinations:
     - "DESTINATION_NAME"
   spec:

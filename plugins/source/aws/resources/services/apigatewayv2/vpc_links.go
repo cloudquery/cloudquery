@@ -18,7 +18,7 @@ func VpcLinks() *schema.Table {
 	tableName := "aws_apigatewayv2_vpc_links"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_VpcLink.html`,
+		Description: `https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/vpclinks.html#vpclinks-prop-vpclink`,
 		Resolver:    fetchApigatewayv2VpcLinks,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.VpcLink{}),
