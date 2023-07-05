@@ -27,6 +27,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/vpcs"
 	"github.com/cloudquery/plugin-sdk/v4/caser"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func getTables() []*schema.Table {
@@ -55,19 +56,13 @@ func getTables() []*schema.Table {
 		vpcs.Vpcs(),
 	}
 
+	if err := transformers.TransformTables(tables); err != nil {
+		panic(err)
+	}
+	if err := transformers.Apply(tables, titleTransformer); err != nil {
+		panic(err)
+	}
 	for _, t := range tables {
-		if err := t.Transform(t); err != nil {
-			panic(err)
-		}
-		t.Title = titleTransformer(t)
-
-		for _, rel := range t.Relations {
-			if err := rel.Transform(rel); err != nil {
-				panic(err)
-			}
-			rel.Title = titleTransformer(rel)
-		}
-
 		schema.AddCqIDs(t)
 	}
 
@@ -80,11 +75,12 @@ var customExceptions = map[string]string{
 	"cors":         "CORS",
 }
 
-func titleTransformer(table *schema.Table) string {
+func titleTransformer(table *schema.Table) error {
 	if table.Title != "" {
-		return table.Title
+		return nil
 	}
 	csr := caser.New(caser.WithCustomExceptions(customExceptions))
 	t := csr.ToTitle(table.Name)
-	return strings.Trim(strings.ReplaceAll(t, "  ", " "), " ")
+	table.Title = strings.Trim(strings.ReplaceAll(t, "  ", " "), " ")
+	return nil
 }
