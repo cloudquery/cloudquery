@@ -75,8 +75,14 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
 
-	spec := &Spec{}
+	spec := &Spec{
+		AccessToken: testToken,
+		ShopURL:     "https://test.myshopify.com",
+	}
 	spec.SetDefaults()
+	if err := spec.Validate(); err != nil {
+		t.Fatalf("failed to validate spec: %v", err)
+	}
 
 	if err := createServices(router); err != nil {
 		t.Fatalf("failed to create services: %v", err)
@@ -85,7 +91,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 	services, err := shopify.New(shopify.ClientOptions{
 		Log:         l,
 		HC:          mockClient,
-		AccessToken: testToken,
+		AccessToken: spec.AccessToken,
 		ShopURL:     h.URL,
 		MaxRetries:  1,
 		PageSize:    50,
