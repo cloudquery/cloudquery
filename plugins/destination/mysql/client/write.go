@@ -33,6 +33,7 @@ func (c *Client) writeResources(ctx context.Context, query string, msgs message.
 		if err != nil {
 			return err
 		}
+		// TODO: log a warning that a blob or text field that is a PK has more than 191 characters
 		for _, transformedRecord := range transformedRecords {
 			_, err := c.db.ExecContext(ctx, query, transformedRecord...)
 			if err != nil {
