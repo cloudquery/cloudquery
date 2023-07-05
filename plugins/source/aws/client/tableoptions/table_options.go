@@ -12,6 +12,7 @@ type TableOptions struct {
 	AccessAnalyzerFindings *AccessanalyzerFindings `json:"aws_accessanalyzer_analyzer_findings,omitempty"`
 	Inspector2Findings     *Inspector2APIs         `json:"aws_inspector2_findings,omitempty"`
 	CustomCostExplorer     *CostExplorerAPIs       `json:"aws_alpha_costexplorer_cost_custom,omitempty"`
+	SecurityHubFindings    *SecurityHubAPIs        `json:"aws_securityhub_findings,omitempty"`
 }
 
 func (t TableOptions) Validate() error {

@@ -15,6 +15,8 @@ import (
 	costexplorertypes "github.com/aws/aws-sdk-go-v2/service/costexplorer/types"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	inspector2types "github.com/aws/aws-sdk-go-v2/service/inspector2/types"
+	"github.com/aws/aws-sdk-go-v2/service/securityhub"
+	securityhubtypes "github.com/aws/aws-sdk-go-v2/service/securityhub/types"
 	"github.com/stretchr/testify/require"
 
 	"github.com/cloudquery/plugin-sdk/v3/caser"
@@ -108,6 +110,16 @@ func TestTableOptionsUnmarshal(t *testing.T) {
 		costexplorertypes.TagValues{},
 		costexplorertypes.GroupDefinition{},
 		costexplorer.GetCostAndUsageInput{},
+		securityhub.GetFindingsInput{},
+		securityhubtypes.AwsSecurityFindingFilters{},
+		securityhubtypes.StringFilter{},
+		securityhubtypes.NumberFilter{},
+		securityhubtypes.DateFilter{},
+		securityhubtypes.KeywordFilter{},
+		securityhubtypes.MapFilter{},
+		securityhubtypes.IpFilter{},
+		securityhubtypes.BooleanFilter{},
+		securityhubtypes.SortCriterion{},
 	)); diff != "" {
 		t.Fatalf("mismatch between objects after loading from snake case json: %v", diff)
 	}
