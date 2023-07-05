@@ -49,7 +49,7 @@ These SQL queries are sampled from CloudQuery policies and are compatible with P
 
 ```sql
 SELECT
-  'SQS queues should be encrypted at rest using AWS KMS' AS title,
+  'Amazon SQS queues should be encrypted at rest' AS title,
   account_id,
   arn AS resource_id,
   CASE
