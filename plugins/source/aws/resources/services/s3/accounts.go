@@ -16,10 +16,11 @@ import (
 func Accounts() *schema.Table {
 	tableName := "aws_s3_accounts"
 	return &schema.Table{
-		Name:      tableName,
-		Resolver:  fetchS3Accounts,
-		Transform: transformers.TransformWithStruct(&models.PublicAccessBlockConfigurationWrapper{}, transformers.WithUnwrapStructFields("PublicAccessBlockConfiguration")),
-		Multiplex: client.AccountMultiplex(tableName),
+		Name:        tableName,
+		Description: "https://docs.aws.amazon.com/AmazonS3/latest/API/API_control_PublicAccessBlockConfiguration.html",
+		Resolver:    fetchS3Accounts,
+		Transform:   transformers.TransformWithStruct(&models.PublicAccessBlockConfigurationWrapper{}, transformers.WithUnwrapStructFields("PublicAccessBlockConfiguration")),
+		Multiplex:   client.AccountMultiplex(tableName),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 		},

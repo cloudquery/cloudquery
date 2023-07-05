@@ -1,7 +1,7 @@
 package queries
 
 import (
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 type (
@@ -13,7 +13,7 @@ type (
 	}
 )
 
-func CreateTable(schemaName string, table *schema.Table, pkEnabled bool) string {
+func CreateTable(schemaName string, table *schema.Table) string {
 	builder := &createTableQueryBuilder{
 		Schema:  schemaName,
 		Table:   table.Name,

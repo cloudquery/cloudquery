@@ -27,6 +27,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go-v2/service/codeartifact"
 	"github.com/aws/aws-sdk-go-v2/service/codebuild"
+	"github.com/aws/aws-sdk-go-v2/service/codecommit"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
@@ -35,6 +36,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/costexplorer"
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/aws/aws-sdk-go-v2/service/dax"
+	"github.com/aws/aws-sdk-go-v2/service/detective"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
@@ -83,6 +85,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroups"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
+	"github.com/aws/aws-sdk-go-v2/service/route53resolver"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
@@ -98,6 +101,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/sfn"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
+	"github.com/aws/aws-sdk-go-v2/service/signer"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
@@ -143,6 +147,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Cloudwatchlogs:            cloudwatchlogs.NewFromConfig(awsCfg),
 		Codeartifact:              codeartifact.NewFromConfig(awsCfg),
 		Codebuild:                 codebuild.NewFromConfig(awsCfg),
+		Codecommit:                codecommit.NewFromConfig(awsCfg),
 		Codepipeline:              codepipeline.NewFromConfig(awsCfg),
 		Cognitoidentity:           cognitoidentity.NewFromConfig(awsCfg),
 		Cognitoidentityprovider:   cognitoidentityprovider.NewFromConfig(awsCfg),
@@ -152,6 +157,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Databasemigrationservice:  databasemigrationservice.NewFromConfig(awsCfg),
 		Dax:                       dax.NewFromConfig(awsCfg),
 		Directconnect:             directconnect.NewFromConfig(awsCfg),
+		Detective:                 detective.NewFromConfig(awsCfg),
 		Docdb:                     docdb.NewFromConfig(awsCfg),
 		Dynamodb:                  dynamodb.NewFromConfig(awsCfg),
 		Dynamodbstreams:           dynamodbstreams.NewFromConfig(awsCfg),
@@ -199,6 +205,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Resourcegroups:            resourcegroups.NewFromConfig(awsCfg),
 		Route53:                   route53.NewFromConfig(awsCfg),
 		Route53domains:            route53domains.NewFromConfig(awsCfg),
+		Route53resolver:           route53resolver.NewFromConfig(awsCfg),
 		S3:                        s3.NewFromConfig(awsCfg),
 		S3control:                 s3control.NewFromConfig(awsCfg),
 		Sagemaker:                 sagemaker.NewFromConfig(awsCfg),
@@ -214,6 +221,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Sesv2:                     sesv2.NewFromConfig(awsCfg),
 		Sfn:                       sfn.NewFromConfig(awsCfg),
 		Shield:                    shield.NewFromConfig(awsCfg),
+		Signer:                    signer.NewFromConfig(awsCfg),
 		Sns:                       sns.NewFromConfig(awsCfg),
 		Sqs:                       sqs.NewFromConfig(awsCfg),
 		Ssm:                       ssm.NewFromConfig(awsCfg),
@@ -257,6 +265,7 @@ type Services struct {
 	Cloudwatchlogs            services.CloudwatchlogsClient
 	Codeartifact              services.CodeartifactClient
 	Codebuild                 services.CodebuildClient
+	Codecommit                services.CodecommitClient
 	Codepipeline              services.CodepipelineClient
 	Cognitoidentity           services.CognitoidentityClient
 	Cognitoidentityprovider   services.CognitoidentityproviderClient
@@ -265,6 +274,7 @@ type Services struct {
 	Costexplorer              services.CostexplorerClient
 	Databasemigrationservice  services.DatabasemigrationserviceClient
 	Dax                       services.DaxClient
+	Detective                 services.DetectiveClient
 	Directconnect             services.DirectconnectClient
 	Docdb                     services.DocdbClient
 	Dynamodb                  services.DynamodbClient
@@ -313,6 +323,7 @@ type Services struct {
 	Resiliencehub             services.ResiliencehubClient
 	Route53                   services.Route53Client
 	Route53domains            services.Route53domainsClient
+	Route53resolver           services.Route53resolverClient
 	S3                        services.S3Client
 	S3control                 services.S3controlClient
 	Sagemaker                 services.SagemakerClient
@@ -328,6 +339,7 @@ type Services struct {
 	Sesv2                     services.Sesv2Client
 	Sfn                       services.SfnClient
 	Shield                    services.ShieldClient
+	Signer                    services.SignerClient
 	Sns                       services.SnsClient
 	Sqs                       services.SqsClient
 	Ssm                       services.SsmClient

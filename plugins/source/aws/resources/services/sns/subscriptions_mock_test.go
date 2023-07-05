@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/stretchr/testify/require"
 
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sns/types"
@@ -16,16 +17,10 @@ import (
 func buildSnsSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockSnsClient(ctrl)
 	sub := types.Subscription{}
-	err := faker.FakeObject(&sub)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&sub))
 
 	subTemp := types.Subscription{}
-	err = faker.FakeObject(&subTemp)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&subTemp))
 	emptySub := types.Subscription{
 		SubscriptionArn: aws.String("PendingConfirmation"),
 		Owner:           subTemp.Owner,

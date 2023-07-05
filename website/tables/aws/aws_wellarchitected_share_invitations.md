@@ -2,7 +2,7 @@
 
 This table shows data for AWS Well-Architected Share Invitations.
 
-https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_Workload.html
+https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_ShareInvitation.html
 
 The composite primary key for this table is (**account_id**, **region**, **share_invitation_id**).
 

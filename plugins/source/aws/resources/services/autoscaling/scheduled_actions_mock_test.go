@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildAutoscalingSheduledActionMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -17,10 +18,7 @@ func buildAutoscalingSheduledActionMock(t *testing.T, ctrl *gomock.Controller) c
 		Autoscaling: m,
 	}
 	l := types.ScheduledUpdateGroupAction{}
-	err := faker.FakeObject(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&l))
 	autoscalingLaunchConfigurations := &autoscaling.DescribeScheduledActionsOutput{
 		ScheduledUpdateGroupActions: []types.ScheduledUpdateGroupAction{l},
 	}

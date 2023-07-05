@@ -9,20 +9,17 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildStackSet(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockCloudformationClient(ctrl)
 
 	var stack types.StackSet
-	if err := faker.FakeObject(&stack); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&stack))
 
 	var stackSummary types.StackSetSummary
-	if err := faker.FakeObject(&stackSummary); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&stackSummary))
 
 	mock.EXPECT().ListStackSets(
 		gomock.Any(),
@@ -43,9 +40,7 @@ func buildStackSet(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var stackSetOperationSummary types.StackSetOperationSummary
-	if err := faker.FakeObject(&stackSetOperationSummary); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&stackSetOperationSummary))
 
 	mock.EXPECT().ListStackSetOperations(
 		gomock.Any(),
@@ -57,9 +52,7 @@ func buildStackSet(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var stackSetOperation types.StackSetOperation
-	if err := faker.FakeObject(&stackSetOperation); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&stackSetOperation))
 
 	mock.EXPECT().DescribeStackSetOperation(
 		gomock.Any(),
@@ -71,9 +64,7 @@ func buildStackSet(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var stackSetOperationResultSummary types.StackSetOperationResultSummary
-	if err := faker.FakeObject(&stackSetOperationResultSummary); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&stackSetOperationResultSummary))
 
 	mock.EXPECT().ListStackSetOperationResults(
 		gomock.Any(),

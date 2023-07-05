@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 const defaultPrecision = 10
@@ -133,6 +133,7 @@ func arrowTypeToMySqlStr(t arrow.DataType) string {
 		return "text"
 	case *arrow.BinaryType, *arrow.LargeBinaryType:
 		return "blob"
+	// nolint:typecheck
 	case *types.UUIDType:
 		return "binary(16)"
 	case *arrow.TimestampType:

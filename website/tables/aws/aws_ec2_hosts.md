@@ -20,6 +20,7 @@ The primary key for this table is **arn**.
 |tags|`json`|
 |allocation_time|`timestamp[us, tz=UTC]`|
 |allows_multiple_instance_types|`utf8`|
+|asset_id|`utf8`|
 |auto_placement|`utf8`|
 |availability_zone|`utf8`|
 |availability_zone_id|`utf8`|

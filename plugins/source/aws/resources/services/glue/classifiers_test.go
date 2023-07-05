@@ -8,15 +8,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildClassifiers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockGlueClient(ctrl)
 
 	var c glue.GetClassifiersOutput
-	if err := faker.FakeObject(&c); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&c))
+
 	c.NextToken = nil
 	m.EXPECT().GetClassifiers(gomock.Any(), gomock.Any(), gomock.Any()).Return(&c, nil)
 

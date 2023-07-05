@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -41,7 +41,7 @@ func TestCreateTableNoOrderBy(t *testing.T) {
 		},
 	}, "", DefaultEngine())
 	require.NoError(t, err)
-	ensureContents(t, query, "create_table_no_order_by.sql")
+	ensureContents(t, query, "create_table_empty_order_by.sql")
 }
 
 func TestCreateTableOnCluster(t *testing.T) {

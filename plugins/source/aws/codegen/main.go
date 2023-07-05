@@ -30,6 +30,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go-v2/service/codeartifact"
 	"github.com/aws/aws-sdk-go-v2/service/codebuild"
+	"github.com/aws/aws-sdk-go-v2/service/codecommit"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
@@ -38,6 +39,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/costexplorer"
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/aws/aws-sdk-go-v2/service/dax"
+	"github.com/aws/aws-sdk-go-v2/service/detective"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
@@ -86,6 +88,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroups"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
+	"github.com/aws/aws-sdk-go-v2/service/route53resolver"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
@@ -101,6 +104,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/sfn"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
+	"github.com/aws/aws-sdk-go-v2/service/signer"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
@@ -144,6 +148,7 @@ var clients = []any{
 	&cloudwatchlogs.Client{},
 	&codeartifact.Client{},
 	&codebuild.Client{},
+	&codecommit.Client{},
 	&codepipeline.Client{},
 	&cognitoidentity.Client{},
 	&cognitoidentityprovider.Client{},
@@ -153,6 +158,7 @@ var clients = []any{
 	&databasemigrationservice.Client{},
 	&dax.Client{},
 	&directconnect.Client{},
+	&detective.Client{},
 	&docdb.Client{},
 	&dynamodb.Client{},
 	&dynamodbstreams.Client{},
@@ -200,6 +206,7 @@ var clients = []any{
 	&resourcegroups.Client{},
 	&route53.Client{},
 	&route53domains.Client{},
+	&route53resolver.Client{},
 	&s3.Client{},
 	&s3control.Client{},
 	&sagemaker.Client{},
@@ -215,6 +222,7 @@ var clients = []any{
 	&sesv2.Client{},
 	&sfn.Client{},
 	&shield.Client{},
+	&signer.Client{},
 	&sns.Client{},
 	&sqs.Client{},
 	&ssm.Client{},

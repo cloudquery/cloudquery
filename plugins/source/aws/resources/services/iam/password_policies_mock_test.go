@@ -9,15 +9,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v3/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildIamPasswordPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 	g := iamTypes.PasswordPolicy{}
-	err := faker.FakeObject(&g)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&g))
 
 	m.EXPECT().GetAccountPasswordPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.GetAccountPasswordPolicyOutput{

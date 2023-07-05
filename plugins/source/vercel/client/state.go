@@ -16,8 +16,8 @@ func (c *Client) GetPaginator(ctx context.Context, key string, ids ...string) (v
 		return pg, nil
 	}
 
-	id := strings.Join(append([]string{c.ID()}, ids...), ":")
-	value, err := c.Backend.Get(ctx, key, id)
+	id := strings.Join(append([]string{key, c.ID()}, ids...), ":")
+	value, err := c.Backend.GetKey(ctx, id)
 	if err != nil {
 		return pg, fmt.Errorf("failed to retrieve state from backend: %w", err)
 	}
@@ -38,6 +38,6 @@ func (c *Client) SavePaginator(ctx context.Context, key string, pg vercel.Pagina
 		return nil
 	}
 
-	id := strings.Join(append([]string{c.ID()}, ids...), ":")
-	return c.Backend.Set(ctx, key, id, strconv.FormatInt(*pg.Next, 10))
+	id := strings.Join(append([]string{key, c.ID()}, ids...), ":")
+	return c.Backend.SetKey(ctx, id, strconv.FormatInt(*pg.Next, 10))
 }

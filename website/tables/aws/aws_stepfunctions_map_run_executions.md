@@ -33,5 +33,7 @@ This table depends on [aws_stepfunctions_map_runs](aws_stepfunctions_map_runs).
 |name|`utf8`|
 |output|`utf8`|
 |output_details|`json`|
+|state_machine_alias_arn|`utf8`|
+|state_machine_version_arn|`utf8`|
 |stop_date|`timestamp[us, tz=UTC]`|
 |trace_header|`utf8`|
