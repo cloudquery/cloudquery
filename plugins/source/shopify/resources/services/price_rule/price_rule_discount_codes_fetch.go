@@ -5,7 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/client"
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/internal/shopify"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func fetchPriceRuleDiscountCodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
