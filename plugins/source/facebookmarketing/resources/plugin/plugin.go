@@ -38,9 +38,7 @@ var customExceptions = map[string]string{
 }
 
 func titleTransformer(table *schema.Table) {
-	if table.Title != "" {
-		return
-	} else {
+	if table.Title == "" {
 		exceptions := make(map[string]string)
 		for k, v := range docs.DefaultTitleExceptions {
 			exceptions[k] = v
