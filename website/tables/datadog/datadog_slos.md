@@ -1,6 +1,6 @@
 # Table: datadog_slos
 
-This table shows data for Datadog Slos.
+This table shows data for Datadog SLOs.
 
 The composite primary key for this table is (**account_name**, **id**).
 

@@ -1,6 +1,6 @@
 # Table: datadog_slo_corrections
 
-This table shows data for Datadog Slo Corrections.
+This table shows data for Datadog SLO Corrections.
 
 The composite primary key for this table is (**account_name**, **id**).
 
