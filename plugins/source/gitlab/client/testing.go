@@ -63,7 +63,7 @@ func GitlabMockTestHelper(t *testing.T, table *schema.Table, createService func(
 	if err != nil {
 		t.Fatalf("failed to sync: %v", err)
 	}
-	records := filterInserts(messages).GetRecordsForTable(table)
+	records := messages.GetInserts().GetRecordsForTable(table)
 	emptyColumns := schema.FindEmptyColumns(table, records)
 	if len(emptyColumns) > 0 {
 		t.Fatalf("empty columns: %v", emptyColumns)
