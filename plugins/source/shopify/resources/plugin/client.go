@@ -19,6 +19,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/state"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
@@ -126,7 +127,7 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 		logger: logger,
 		scheduler: scheduler.NewScheduler(
 			scheduler.WithLogger(logger),
-			scheduler.WithConcurrency(uint64(config.Concurrency)),
+			scheduler.WithConcurrency(config.Concurrency),
 		),
 		services: services,
 		tables:   getTables(),
@@ -141,16 +142,10 @@ func getTables() schema.Tables {
 		price_rule.PriceRules(),
 		checkout.AbandonedCheckouts(),
 	}
+	if err := transformers.TransformTables(tables); err != nil {
+		panic(err)
+	}
 	for _, t := range tables {
-		if err := t.Transform(t); err != nil {
-			panic(err)
-		}
-		for _, rel := range t.Relations {
-			if err := rel.Transform(rel); err != nil {
-				panic(err)
-			}
-		}
-
 		schema.AddCqIDs(t)
 	}
 	return tables
