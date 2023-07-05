@@ -4,7 +4,6 @@ go 1.19
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
-	github.com/cloudquery/plugin-sdk v1.45.0
 	github.com/cloudquery/plugin-sdk/v4 v4.7.1-rc1
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/rs/zerolog v1.29.1

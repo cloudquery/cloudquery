@@ -44,10 +44,15 @@ func MockTestHelper(t *testing.T, table *schema.Table, opts TestOptions) {
 	}()
 
 	sched := scheduler.NewScheduler(scheduler.WithLogger(logger))
-	spec := &Spec{}
+	spec := &Spec{
+		APIKey: "sk_test_myTestKey",
+	}
+	if err := spec.Validate(); err != nil {
+		t.Fatalf("failed to validate spec: %v", err)
+	}
 	spec.SetDefaults()
 
-	cl := sclient.New("sk_test_myTestKey", getBackends(logger, *addr))
+	cl := sclient.New(spec.APIKey, getBackends(logger, *addr))
 
 	c := New(logger, *spec, cl, nil)
 
