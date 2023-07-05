@@ -20,12 +20,15 @@ type Client struct {
 	writer *batchwriter.BatchWriter
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "bq-dest").Logger(),
 	}
-	if err := json.Unmarshal(spec, &c.spec); err != nil {
+	if opts.NoConnection {
+		return c, nil
+	}
+	if err := json.Unmarshal(specBytes, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal BigQuery spec: %w", err)
 	}
 	c.spec.SetDefaults()

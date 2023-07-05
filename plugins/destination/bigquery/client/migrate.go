@@ -23,6 +23,12 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 	eg, gctx := errgroup.WithContext(ctx)
 	eg.SetLimit(concurrentMigrations)
 	for _, msg := range msgs {
+		if len(msg.Table.PrimaryKeys()) > 0 {
+			return fmt.Errorf("primary keys are not supported by the BigQuery plugin (if you are trying to use it as a state backend, this is not currently supported)")
+		}
+	}
+
+	for _, msg := range msgs {
 		table := msg.Table
 		eg.Go(func() error {
 			c.logger.Debug().Str("table", table.Name).Msg("Migrating table")
