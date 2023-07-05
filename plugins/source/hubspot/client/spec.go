@@ -7,7 +7,7 @@ const (
 type Spec struct {
 	MaxRequestsPerSecond *int         `yaml:"max_requests_per_second,omitempty" json:"max_requests_per_second,omitempty"`
 	TableOptions         TableOptions `yaml:"table_options,omitempty" json:"table_options,omitempty"`
-	Concurrency 				int          `yaml:"concurrency,omitempty" json:"concurrency,omitempty"`
+	Concurrency          int          `yaml:"concurrency,omitempty" json:"concurrency,omitempty"`
 }
 
 type TableOptions map[string]*TableOptionsSpec

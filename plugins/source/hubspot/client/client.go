@@ -43,7 +43,6 @@ func (c *Client) withObjectType(objectType string) *Client {
 }
 
 func New(ctx context.Context, logger zerolog.Logger, s Spec) (schema.ClientMeta, error) {
-
 	authToken := os.Getenv("HUBSPOT_APP_TOKEN")
 	if authToken == "" {
 		return nil, fmt.Errorf("failed to get hubspot auth token. Please provide an auth-token (see https://www.cloudquery.io/docs/plugins/sources/hubspot/overview#authentication)")

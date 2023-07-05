@@ -13,6 +13,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/rs/zerolog"
 )
 
@@ -25,9 +26,9 @@ var customExceptions = map[string]string{
 	"hubspot": "HubSpot",
 }
 
-func titleTransformer(table *schema.Table) string {
+func titleTransformer(table *schema.Table) {
 	if table.Title != "" {
-		return table.Title
+		return
 	}
 	exceptions := make(map[string]string)
 	for k, v := range docs.DefaultTitleExceptions {
@@ -37,7 +38,10 @@ func titleTransformer(table *schema.Table) string {
 		exceptions[k] = v
 	}
 	csr := caser.New(caser.WithCustomExceptions(exceptions))
-	return csr.ToTitle(table.Name)
+	table.Title = csr.ToTitle(table.Name)
+	for _, rel := range table.Relations {
+		titleTransformer(rel)
+	}
 }
 
 type Client struct {
@@ -105,6 +109,13 @@ func getTables() schema.Tables {
 		crm.Owners(),
 		crm.Pipelines(),
 	}
+	if err := transformers.TransformTables(tables); err != nil {
+		panic(err)
+	}
+	for _, table := range tables {
+		schema.AddCqIDs(table)
+		titleTransformer(table)
+	}
 	return tables
 }
 
@@ -112,6 +123,6 @@ func Plugin() *plugin.Plugin {
 	return plugin.NewPlugin(
 		"cloudquery-hubspot",
 		Version,
-		nil,
+		newClient,
 	)
 }
