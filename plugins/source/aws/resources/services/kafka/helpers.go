@@ -34,7 +34,7 @@ func resolveKafkaTags(path string) schema.ColumnResolver {
 	return func(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 		if path == "OperationArn" {
 			// cluster operations do not support tags. In a future release we should remove the column from the `aws_kafka_cluster_operations` table
-			return nil
+			return r.Set(c.Name, map[string]string{})
 		}
 		arn := funk.Get(r.Item, path, funk.WithAllowZero()).(*string)
 		cl := meta.(*client.Client)
