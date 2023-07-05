@@ -16,8 +16,6 @@ This table depends on [fastly_service_versions](fastly_service_versions).
 | ------------- | ------------- |
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|_cq_id|`uuid`|
-|_cq_parent_id|`uuid`|
 |name (PK)|`utf8`|
 |service_id (PK)|`utf8`|
 |service_version (PK)|`int64`|
