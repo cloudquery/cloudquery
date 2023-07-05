@@ -77,7 +77,11 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
 
 	spec := &Spec{
-		TeamIDs: []string{"test-team-id"},
+		AccessToken: testToken,
+		TeamIDs:     []string{"test-team-id"},
+	}
+	if err := spec.Validate(); err != nil {
+		t.Fatalf("failed to validate spec: %v", err)
 	}
 	spec.SetDefaults()
 
@@ -85,7 +89,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 		t.Fatalf("failed to create services: %v", err)
 	}
 
-	services := vercel.New(l, mockClient, h.URL, testToken, spec.TeamIDs[0], 5, 10, 100)
+	services := vercel.New(l, mockClient, h.URL, spec.AccessToken, spec.TeamIDs[0], 5, 10, 100)
 
 	c := New(l, *spec, services, spec.TeamIDs, nil)
 
