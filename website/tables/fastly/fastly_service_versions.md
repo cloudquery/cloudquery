@@ -21,8 +21,6 @@ The following tables depend on fastly_service_versions:
 | ------------- | ------------- |
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|_cq_id|`uuid`|
-|_cq_parent_id|`uuid`|
 |number (PK)|`int64`|
 |service_id (PK)|`utf8`|
 |active|`bool`|

@@ -45,7 +45,7 @@ func newClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, opt
 		return nil, err
 	}
 	c.client = clientMeta.(*client.Client)
-	c.scheduler = scheduler.NewScheduler(scheduler.WithLogger(logger), scheduler.WithConcurrency(uint64(spec.Concurrency)))
+	c.scheduler = scheduler.NewScheduler(scheduler.WithLogger(logger), scheduler.WithConcurrency(spec.Concurrency))
 	return nil, nil
 }
 

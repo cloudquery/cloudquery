@@ -25,9 +25,6 @@ func getTables() schema.Tables {
 	}
 	for _, table := range tables {
 		schema.AddCqIDs(table)
-		for _, rel := range table.Relations {
-			schema.AddCqIDs(rel)
-		}
 	}
 	return tables
 }
