@@ -30,7 +30,7 @@ func titleTransformer(table *schema.Table) {
 		exceptions[k] = v
 	}
 	csr := caser.New(caser.WithCustomExceptions(exceptions))
-	table.Title =  csr.ToTitle(table.Name)
+	table.Title = csr.ToTitle(table.Name)
 	for _, rel := range table.Relations {
 		titleTransformer(rel)
 	}
