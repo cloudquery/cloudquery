@@ -1,6 +1,8 @@
 package plugin
 
 import (
+	"strings"
+
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/accounts"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/balances"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/billing_history"
@@ -23,11 +25,12 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/spaces"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/storage"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/vpcs"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/caser"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func Tables() []*schema.Table {
-	return []*schema.Table{
+func getTables() []*schema.Table {
+	tables := []*schema.Table{
 		accounts.Accounts(),
 		cdns.Cdns(),
 		billing_history.BillingHistory(),
@@ -51,4 +54,44 @@ func Tables() []*schema.Table {
 		storage.Volumes(),
 		vpcs.Vpcs(),
 	}
+
+	for _, t := range tables {
+		if err := t.Transform(t); err != nil {
+			panic(err)
+		}
+		t.Title = titleTransformer(t)
+
+		for _, rel := range t.Relations {
+			if err := rel.Transform(rel); err != nil {
+				panic(err)
+			}
+			rel.Title = titleTransformer(rel)
+		}
+
+		schema.AddCqIDs(t)
+	}
+
+	return tables
+}
+
+var customExceptions = map[string]string{
+	"digitalocean": "DigitalOcean",
+	"cdns":         "CDNs",
+	"cors":         "CORS",
+}
+
+func titleTransformer(table *schema.Table) string {
+	if table.Title != "" {
+		return table.Title
+	}
+	exceptions := make(map[string]string)
+	//for k, v := range source.DefaultTitleExceptions {
+	//	exceptions[k] = v
+	//}
+	for k, v := range customExceptions {
+		exceptions[k] = v
+	}
+	csr := caser.New(caser.WithCustomExceptions(exceptions))
+	t := csr.ToTitle(table.Name)
+	return strings.Trim(strings.ReplaceAll(t, "  ", " "), " ")
 }

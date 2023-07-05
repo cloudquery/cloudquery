@@ -1,6 +1,6 @@
 # Table: digitalocean_vpc_members
 
-This table shows data for DigitalOcean VPC Members.
+This table shows data for DigitalOcean Vpc Members.
 
 https://docs.digitalocean.com/reference/api/api-reference/#operation/vpcs_list_members
 
@@ -14,8 +14,6 @@ This table depends on [digitalocean_vpcs](digitalocean_vpcs).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |urn (PK)|`utf8`|
