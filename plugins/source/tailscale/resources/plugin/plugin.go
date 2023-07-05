@@ -1,42 +1,80 @@
 package plugin
 
 import (
+	"context"
+	"encoding/json"
+	"fmt"
+
 	"github.com/cloudquery/cloudquery/plugins/source/tailscale/client"
-	"github.com/cloudquery/plugin-sdk/v3/caser"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/rs/zerolog"
 )
 
 var Version = "Development"
 
-var customExceptions = map[string]string{
-	"acls":        "Access Control Lists (ACLs)",
-	"dns":         "Domain Name System (DNS)",
-	"nameservers": "Name Servers",
-	"searchpaths": "Search Paths",
+type Client struct {
+	plugin.UnimplementedDestination
+	schduler   *scheduler.Scheduler
+	syncClient *client.Client
+	options    plugin.NewClientOptions
 }
 
-func titleTransformer(table *schema.Table) string {
-	if table.Title != "" {
-		return table.Title
+func newClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, options plugin.NewClientOptions) (plugin.Client, error) {
+	c := &Client{
+		options: options,
 	}
-	exceptions := make(map[string]string)
-	for k, v := range source.DefaultTitleExceptions {
-		exceptions[k] = v
+	if options.NoConnection {
+		return c, nil
 	}
-	for k, v := range customExceptions {
-		exceptions[k] = v
+	spec := &client.Spec{}
+	if err := json.Unmarshal(specBytes, spec); err != nil {
+		return nil, err
 	}
-	csr := caser.New(caser.WithCustomExceptions(exceptions))
-	return csr.ToTitle(table.Name)
+	spec.SetDefaults()
+	if err := spec.Validate(); err != nil {
+		return nil, err
+	}
+	syncClient, err := client.Configure(ctx, logger, spec)
+	if err != nil {
+		return nil, err
+	}
+	c.syncClient = syncClient.(*client.Client)
+	c.schduler = scheduler.NewScheduler(scheduler.WithLogger(logger), scheduler.WithConcurrency(uint64(spec.Concurrency)))
+	return c, nil
 }
 
-func Tailscale() *source.Plugin {
-	return source.NewPlugin(
+func (*Client) Close(ctx context.Context) error {
+	return nil
+}
+
+func (*Client) Tables(ctx context.Context, options plugin.TableOptions) (schema.Tables, error) {
+	tables := Tables()
+	tables, err := tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
+	if err != nil {
+		return nil, err
+	}
+	return tables, nil
+}
+
+func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.SyncMessage) error {
+	if c.options.NoConnection {
+		return fmt.Errorf("no connection")
+	}
+	tables := Tables()
+	tables, err := tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
+	if err != nil {
+		return err
+	}
+	return c.schduler.Sync(ctx, c.syncClient, tables, res)
+}
+
+func Tailscale() *plugin.Plugin {
+	return plugin.NewPlugin(
 		"tailscale",
 		Version,
-		tables(),
-		client.Configure,
-		source.WithTitleTransformer(titleTransformer),
+		newClient,
 	)
 }
