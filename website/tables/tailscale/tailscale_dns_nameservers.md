@@ -1,6 +1,6 @@
 # Table: tailscale_dns_nameservers
 
-This table shows data for Tailscale DNS Nameservers.
+This table shows data for Tailscale Domain Name System (DNS) Name Servers.
 
 https://github.com/tailscale/tailscale/blob/main/api.md#tailnet-dns-preferences-get
 

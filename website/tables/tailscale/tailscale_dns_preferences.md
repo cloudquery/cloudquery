@@ -1,6 +1,6 @@
 # Table: tailscale_dns_preferences
 
-This table shows data for Tailscale DNS Preferences.
+This table shows data for Tailscale Domain Name System (DNS) Preferences.
 
 https://github.com/tailscale/tailscale/blob/main/api.md#tailnet-dns-preferences-get
 

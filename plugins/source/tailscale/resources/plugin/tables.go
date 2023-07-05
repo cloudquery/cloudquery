@@ -18,9 +18,9 @@ var customExceptions = map[string]string{
 	"searchpaths": "Search Paths",
 }
 
-func titleTransformer(table *schema.Table) string {
+func titleTransformer(table *schema.Table) {
 	if table.Title != "" {
-		return table.Title
+		return
 	}
 	exceptions := make(map[string]string)
 	for k, v := range docs.DefaultTitleExceptions {
@@ -30,7 +30,10 @@ func titleTransformer(table *schema.Table) string {
 		exceptions[k] = v
 	}
 	csr := caser.New(caser.WithCustomExceptions(exceptions))
-	return csr.ToTitle(table.Name)
+	table.Title =  csr.ToTitle(table.Name)
+	for _, rel := range table.Relations {
+		titleTransformer(rel)
+	}
 }
 
 func addCqIDs(table *schema.Table) {
