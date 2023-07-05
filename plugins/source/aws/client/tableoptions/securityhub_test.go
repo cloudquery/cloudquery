@@ -11,7 +11,6 @@ import (
 func TestGetFindings(t *testing.T) {
 	u := CustomGetFindingsOpts{}
 	require.NoError(t, faker.FakeObject(&u))
-
 	api := SecurityHubAPIs{
 		GetFindingsOpts: []CustomGetFindingsOpts{u},
 	}
@@ -22,5 +21,5 @@ func TestGetFindings(t *testing.T) {
 	// Ensure that as soon as the validation passes that there are no unexpected empty or nil fields
 	api.GetFindingsOpts[0].NextToken = nil
 	err = api.Validate()
-	assert.Nil(t, err)
+	assert.EqualError(t, err, "invalid range: MaxResults must be within range [1-100]")
 }
