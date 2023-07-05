@@ -40,11 +40,6 @@ func (s *ECSTaskAPIs) validateListTasks() error {
 		if aws.ToString(opt.Cluster) != "" {
 			return errors.New("invalid input: cannot set Cluster in ListTasks")
 		}
-
-		// As per https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ListTasks.html
-		if aws.ToInt32(opt.MaxResults) < 0 || aws.ToInt32(opt.MaxResults) > 100 {
-			return errors.New("invalid range: MaxResults must be within range [1-100]")
-		}
 	}
 	return nil
 }
