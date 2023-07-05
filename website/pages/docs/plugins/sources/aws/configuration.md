@@ -160,6 +160,9 @@ This is the (nested) spec used by the AWS source plugin.
     aws_securityhub_findings:
       get_findings:
         - <[GetFindings](https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html)>
+    aws_ecs_cluster_tasks:
+      list_tasks:
+        - <[ListTasks](https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ListTasks.html)>
   ```
 
 
