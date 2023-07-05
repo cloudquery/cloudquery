@@ -36,6 +36,8 @@ func (s *SecurityHubAPIs) validateGetFindingEvent() error {
 		if aws.ToString(opt.NextToken) != "" {
 			return errors.New("invalid input: cannot set NextToken in GetFindings")
 		}
+
+		// As per https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html#API_GetFindings_RequestSyntax
 		if opt.MaxResults < 1 || opt.MaxResults > 100 {
 			return errors.New("invalid range: MaxResults must be within range [1-100]")
 		}
@@ -43,6 +45,15 @@ func (s *SecurityHubAPIs) validateGetFindingEvent() error {
 	return nil
 }
 
+func (s *SecurityHubAPIs) setDefaults() {
+	for i := 0; i < len(s.GetFindingsOpts); i++ {
+		if s.GetFindingsOpts[i].MaxResults == 0 {
+			s.GetFindingsOpts[i].MaxResults = 100
+		}
+	}
+}
+
 func (s *SecurityHubAPIs) Validate() error {
+	s.setDefaults()
 	return s.validateGetFindingEvent()
 }

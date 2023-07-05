@@ -50,7 +50,7 @@ func fetchFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	if cl.Spec.TableOptions.SecurityHubFindings != nil && cl.Spec.TableOptions.SecurityHubFindings.GetFindingsOpts != nil {
 		allConfigs = cl.Spec.TableOptions.SecurityHubFindings.GetFindingsOpts
 	} else {
-		allConfigs = make([]tableoptions.CustomGetFindingsOpts, 1)
+		allConfigs = []tableoptions.CustomGetFindingsOpts{{GetFindingsInput: securityhub.GetFindingsInput{MaxResults: 100}}}
 	}
 
 	svc := cl.Services().Securityhub
@@ -58,9 +58,6 @@ func fetchFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	var config securityhub.GetFindingsInput
 	for _, w := range allConfigs {
 		config = w.GetFindingsInput
-		if config.MaxResults == 0 {
-			config.MaxResults = 100
-		}
 		p := securityhub.NewGetFindingsPaginator(svc, &config)
 		for p.HasMorePages() {
 			response, err := p.NextPage(ctx, func(o *securityhub.Options) {
