@@ -1,6 +1,6 @@
 # Table: digitalocean_vpc_members
 
-This table shows data for DigitalOcean Vpc Members.
+This table shows data for DigitalOcean VPC Members.
 
 https://docs.digitalocean.com/reference/api/api-reference/#operation/vpcs_list_members
 

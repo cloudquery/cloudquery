@@ -26,6 +26,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/storage"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/vpcs"
 	"github.com/cloudquery/plugin-sdk/v4/caser"
+	"github.com/cloudquery/plugin-sdk/v4/docs"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
@@ -79,7 +80,11 @@ func titleTransformer(table *schema.Table) error {
 	if table.Title != "" {
 		return nil
 	}
-	csr := caser.New(caser.WithCustomExceptions(customExceptions))
+	list := docs.DefaultTitleExceptions
+	for k, v := range customExceptions {
+		list[k] = v
+	}
+	csr := caser.New(caser.WithCustomExceptions(list))
 	t := csr.ToTitle(table.Name)
 	table.Title = strings.Trim(strings.ReplaceAll(t, "  ", " "), " ")
 	return nil

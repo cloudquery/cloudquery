@@ -1,6 +1,6 @@
 # Table: digitalocean_floating_ips
 
-This table shows data for DigitalOcean Floating Ips.
+This table shows data for DigitalOcean Floating IPs.
 
 Deprecated. https://docs.digitalocean.com/reference/api/api-reference/#tag/Floating-IPs
 

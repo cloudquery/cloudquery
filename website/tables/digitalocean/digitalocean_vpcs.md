@@ -1,6 +1,6 @@
 # Table: digitalocean_vpcs
 
-This table shows data for DigitalOcean Vpcs.
+This table shows data for DigitalOcean VPCs.
 
 https://docs.digitalocean.com/reference/api/api-reference/#tag/VPCs
 
