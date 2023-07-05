@@ -45,9 +45,9 @@ var googleAdsExceptions = map[string]string{
 	"rbac":                  "Role-Based Access Control (RBAC)",
 }
 
-func titleTransformer(table *schema.Table) string {
+func titleTransformer(table *schema.Table) {
 	if table.Title != "" {
-		return table.Title
+		return
 	}
 	exceptions := maps.Clone(docs.DefaultTitleExceptions)
 	for k, v := range googleAdsExceptions {
@@ -55,7 +55,10 @@ func titleTransformer(table *schema.Table) string {
 	}
 	csr := caser.New(caser.WithCustomExceptions(exceptions))
 	t := csr.ToTitle(table.Name)
-	return strings.Trim(strings.ReplaceAll(t, "  ", " "), " ")
+	table.Title = strings.Trim(strings.ReplaceAll(t, "  ", " "), " ")
+	for _, relation := range table.Relations {
+		titleTransformer(relation)
+	}
 }
 
 type Client struct {
@@ -161,6 +164,7 @@ func getTables() schema.Tables {
 	}
 	for _, table := range tables {
 		schema.AddCqIDs(table)
+		titleTransformer(table)
 		for _, rel := range table.Relations {
 			schema.AddCqIDs(rel)
 		}
