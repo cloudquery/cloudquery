@@ -1,8 +1,13 @@
 package client
 
+const (
+	defaultConcurrency = 1000
+)
+
 type Spec struct {
 	MaxRequestsPerSecond *int         `yaml:"max_requests_per_second,omitempty" json:"max_requests_per_second,omitempty"`
 	TableOptions         TableOptions `yaml:"table_options,omitempty" json:"table_options,omitempty"`
+	Concurrency          int          `yaml:"concurrency,omitempty" json:"concurrency,omitempty"`
 }
 
 type TableOptions map[string]*TableOptionsSpec
@@ -12,7 +17,7 @@ type TableOptionsSpec struct {
 	Associations []string `yaml:"associations,omitempty" json:"associations,omitempty"`
 }
 
-func (spec *Spec) setDefaults() {
+func (spec *Spec) SetDefaults() {
 	// https://developers.hubspot.com/docs/api/usage-details#rate-limits
 	// Hubspot, for Pro and Enterprise, accounts, has rate limits of:
 	// - 15 requests / second / private-app
@@ -23,6 +28,10 @@ func (spec *Spec) setDefaults() {
 
 	if spec.MaxRequestsPerSecond == nil || *spec.MaxRequestsPerSecond == 0 {
 		spec.MaxRequestsPerSecond = &defaultRateLimitPerSecond
+	}
+
+	if spec.Concurrency == 0 {
+		spec.Concurrency = defaultConcurrency
 	}
 }
 

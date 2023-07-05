@@ -5,9 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
 	apiextensionsclientset "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 	"k8s.io/client-go/kubernetes"
@@ -77,13 +75,7 @@ func (c *Client) WithNamespace(namespace string) *Client {
 	return &newC
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
-	var k8sSpec Spec
-
-	if err := s.UnmarshalSpec(&k8sSpec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal k8s spec: %w", err)
-	}
-
+func Configure(ctx context.Context, logger zerolog.Logger, s Spec) (schema.ClientMeta, error) {
 	kubeConfig := clientcmd.NewNonInteractiveDeferredLoadingClientConfig(
 		clientcmd.NewDefaultClientConfigLoadingRules(),
 		&clientcmd.ConfigOverrides{},
@@ -94,24 +86,24 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 	}
 
 	var contexts []string
-	switch len(k8sSpec.Contexts) {
+	switch len(s.Contexts) {
 	case 0:
 		logger.Debug().Str("context", rawKubeConfig.CurrentContext).Msg("no context set in configuration using current default defined context")
 		contexts = []string{rawKubeConfig.CurrentContext}
 	case 1:
-		if k8sSpec.Contexts[0] == "*" {
+		if s.Contexts[0] == "*" {
 			logger.Debug().Msg("loading all available configuration")
 			for cName := range rawKubeConfig.Contexts {
 				contexts = append(contexts, cName)
 			}
 		} else {
-			if _, ok := rawKubeConfig.Contexts[k8sSpec.Contexts[0]]; !ok {
-				return nil, fmt.Errorf("context %q doesn't exist in kube configuration", k8sSpec.Contexts[0])
+			if _, ok := rawKubeConfig.Contexts[s.Contexts[0]]; !ok {
+				return nil, fmt.Errorf("context %q doesn't exist in kube configuration", s.Contexts[0])
 			}
-			contexts = []string{k8sSpec.Contexts[0]}
+			contexts = []string{s.Contexts[0]}
 		}
 	default:
-		for _, cName := range k8sSpec.Contexts {
+		for _, cName := range s.Contexts {
 			if _, ok := rawKubeConfig.Contexts[cName]; !ok {
 				return nil, fmt.Errorf("context %q doesn't exist in kube configuration", cName)
 			}
@@ -128,7 +120,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 		clients:       make(map[string]kubernetes.Interface),
 		namespaces:    make(map[string][]v1.Namespace),
 		apiExtensions: make(map[string]apiextensionsclientset.Interface),
-		spec:          &k8sSpec,
+		spec:          &s,
 		contexts:      contexts,
 		Context:       contexts[0],
 		paths:         make(map[string]struct{}),
