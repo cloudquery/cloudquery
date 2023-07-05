@@ -15,18 +15,15 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/okta/okta-sdk-golang/v3/okta"
-	"google.golang.org/grpc"
-
 	"github.com/rs/zerolog"
 )
 
 type Client struct {
-	logger      zerolog.Logger
-	config      client.Spec
-	tables      schema.Tables
-	scheduler   *scheduler.Scheduler
-	backendConn *grpc.ClientConn
-	services    *okta.APIClient
+	logger    zerolog.Logger
+	config    client.Spec
+	tables    schema.Tables
+	scheduler *scheduler.Scheduler
+	services  *okta.APIClient
 
 	plugin.UnimplementedDestination
 }
@@ -57,8 +54,8 @@ func (c *Client) Tables(_ context.Context, options plugin.TableOptions) (schema.
 	return tt, nil
 }
 
-func (c *Client) Close(_ context.Context) error {
-	return c.backendConn.Close()
+func (*Client) Close(_ context.Context) error {
+	return nil
 }
 
 func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
