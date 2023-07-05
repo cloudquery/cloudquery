@@ -5,7 +5,6 @@ spec:
   name: stripe
   path: cloudquery/stripe
   version: "VERSION_SOURCE_STRIPE"
-  concurrency: 10000
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
   skip_tables:
@@ -16,6 +15,7 @@ spec:
   # Stripe specific configuration
   spec:
     api_key: "<YOUR_SECRET_API_KEY_HERE>"
+#    concurrency: 10000
 ```
 
 The Stripe plugin supports incremental syncing. This means that only new data will be fetched from Stripe and loaded into your destination for supported tables (support depending on API endpoint). This is done by keeping track of the last item fetched and only fetching data that has been created since then.

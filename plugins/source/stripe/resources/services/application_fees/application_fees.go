@@ -7,8 +7,8 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/stripe/stripe-go/v74"
 )
 
@@ -49,7 +49,7 @@ func fetchApplicationFees(ctx context.Context, meta schema.ClientMeta, parent *s
 	const key = "application_fees"
 
 	if cl.Backend != nil {
-		value, err := cl.Backend.Get(ctx, key, cl.ID())
+		value, err := cl.Backend.GetKey(ctx, key)
 		if err != nil {
 			return fmt.Errorf("failed to retrieve state from backend: %w", err)
 		}
@@ -71,7 +71,7 @@ func fetchApplicationFees(ctx context.Context, meta schema.ClientMeta, parent *s
 
 	err := it.Err()
 	if cl.Backend != nil && err == nil && lp.Created != nil {
-		return cl.Backend.Set(ctx, key, cl.ID(), strconv.FormatInt(*lp.Created, 10))
+		return cl.Backend.SetKey(ctx, key, strconv.FormatInt(*lp.Created, 10))
 	}
 	return err
 }

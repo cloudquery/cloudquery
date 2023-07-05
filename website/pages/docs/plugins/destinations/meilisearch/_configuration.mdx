@@ -13,6 +13,12 @@ spec:
     # meilisearch plugin spec
     api_key: "<YOUR_MEILISEARCH_API_KEY>"
     host: "http://localhost:7700"
-    # timeout: 5m # optional
-    # ca_cert: "<YOUR_MEILISEARCH_CA_CERT>" # optional
+    # Optional parameters:
+    # timeout: 5m
+    # ca_cert: "<YOUR_MEILISEARCH_CA_CERT>"
+    #
+    # Batching options
+    # batch_size:       1000   # 10K entries
+    # batch_size_bytes: 4194304 # 4 MiB
+    # batch_timeout:    20s
 ```
