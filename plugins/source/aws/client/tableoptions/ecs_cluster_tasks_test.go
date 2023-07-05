@@ -11,7 +11,7 @@ import (
 func TestListTasks(t *testing.T) {
 	u := CustomListTasksOpts{}
 	require.NoError(t, faker.FakeObject(&u))
-	api := ECSAPIs{
+	api := ECSTaskAPIs{
 		ListTasksOpts: []CustomListTasksOpts{u},
 	}
 	// Ensure that the validation works as expected
@@ -21,5 +21,5 @@ func TestListTasks(t *testing.T) {
 	// Ensure that as soon as the validation passes that there are no unexpected empty or nil fields
 	api.ListTasksOpts[0].NextToken = nil
 	err = api.Validate()
-	assert.EqualError(t, err, "invalid range: MaxResults must be within range [1-100]")
+	assert.EqualError(t, err, "invalid input: cannot set Cluster in ListTasks")
 }
