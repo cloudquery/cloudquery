@@ -27,4 +27,4 @@ SELECT
         THEN 'fail'
         ELSE 'pass'
     END                                                                                                   AS status
-FROM gcp_project_policy_members;
+FROM member_with_roles;
