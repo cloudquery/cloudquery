@@ -2,7 +2,6 @@ package services
 
 import (
 	"context"
-	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/test/client"
@@ -13,14 +12,19 @@ func TestDataTable() *schema.Table {
 	table := schema.TestTable("test_testdata_table", schema.TestSourceOptions{
 		SkipMaps: true,
 	})
-	for i, c := range table.Columns {
-		if strings.HasPrefix(c.Name, "_cq_") {
-			table.Columns[i].Name = "test" + c.Name
+
+	idIndex := -1
+	for i := range table.Columns {
+		if table.Columns[i].Name == `id` {
+			idIndex = i
 		}
 		table.Columns[i].PrimaryKey = false
 		table.Columns[i].IncrementalKey = false
 		table.Columns[i].NotNull = false
 		table.Columns[i].Resolver = schema.PathResolver(table.Columns[i].Name)
+	}
+	if idIndex > -1 {
+		table.Columns = append(table.Columns[:idIndex], table.Columns[idIndex+1:]...)
 	}
 
 	table.Columns = append(table.Columns, schema.Column{
@@ -30,7 +34,8 @@ func TestDataTable() *schema.Table {
 		Resolver:    client.ResolveClientID,
 	})
 
-	data := schema.GenTestData(table, schema.GenTestDataOptions{
+	tg := schema.NewTestDataGenerator()
+	data := tg.Generate(table, schema.GenTestDataOptions{
 		MaxRows: 1,
 	})
 	if len(data) != 1 {

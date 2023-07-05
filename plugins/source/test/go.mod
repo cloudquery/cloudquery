@@ -4,13 +4,11 @@ go 1.19
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
-	github.com/cloudquery/plugin-sdk/v4 v4.6.1-rc1
+	github.com/cloudquery/plugin-sdk/v4 v4.8.0-rc1
 	github.com/rs/zerolog v1.29.1
 )
 
 replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230703001435-df3b664a289d
-
-replace github.com/cloudquery/plugin-sdk/v4 => ../../../../plugin-sdk
 
 require (
 	github.com/cloudquery/plugin-pb-go v1.6.0 // indirect

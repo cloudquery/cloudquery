@@ -11,6 +11,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/rs/zerolog"
 )
 
@@ -86,18 +87,11 @@ func getTables() schema.Tables {
 		services.TestSomeTable(),
 		services.TestDataTable(),
 	}
-	for i := range tables {
-		cqIDCol := schema.CqIDColumn
-		if len(tables[i].PrimaryKeysIndexes()) == 0 {
-			cqIDCol.PrimaryKey = true
-		}
-		tables[i].Columns = append([]schema.Column{cqIDCol, schema.CqParentIDColumn}, tables[i].Columns...)
-
-		if tables[i].Transform != nil {
-			if err := tables[i].Transform(tables[i]); err != nil {
-				panic(err)
-			}
-		}
+	if err := transformers.TransformTables(tables); err != nil {
+		panic(err)
+	}
+	for _, t := range tables {
+		schema.AddCqIDs(t)
 	}
 	return tables
 }
