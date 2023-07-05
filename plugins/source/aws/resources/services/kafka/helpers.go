@@ -32,6 +32,10 @@ func describeClustersInput(resource *schema.Resource) kafka.DescribeClusterV2Inp
 
 func resolveKafkaTags(path string) schema.ColumnResolver {
 	return func(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+		if path == "ClusterOperations" {
+			// cluster operations do not support tags. In a future release we should remove the column from the `aws_kafka_cluster_operations` table
+			return nil
+		}
 		arn := funk.Get(r.Item, path, funk.WithAllowZero()).(*string)
 		cl := meta.(*client.Client)
 		svc := cl.Services().Kafka
