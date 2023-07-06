@@ -52,5 +52,4 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 	if len(emptyColumns) > 0 {
 		t.Fatalf("empty columns: %v", emptyColumns)
 	}
-
 }

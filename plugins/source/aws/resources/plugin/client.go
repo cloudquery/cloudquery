@@ -55,11 +55,11 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, options p
 	return c, nil
 }
 
-func (c *Client) Close(ctx context.Context) error {
+func (*Client) Close(ctx context.Context) error {
 	return nil
 }
 
-func (c *Client) Tables(ctx context.Context, options plugin.TableOptions) (schema.Tables, error) {
+func (*Client) Tables(ctx context.Context, options plugin.TableOptions) (schema.Tables, error) {
 	tables := tables()
 	tt, err := tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
 	if err != nil {
