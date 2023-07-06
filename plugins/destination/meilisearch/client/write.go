@@ -5,24 +5,33 @@ import (
 	"fmt"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, records []arrow.Record) error {
-	index, err := c.Meilisearch.GetIndex(table.Name)
+func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) error {
+	if err := c.writer.Write(ctx, res); err != nil {
+		return fmt.Errorf("write error: %w", err)
+	}
+	return c.writer.Flush(ctx)
+}
+
+func (c *Client) WriteTableBatch(ctx context.Context, name string, messages message.WriteInserts) error {
+	if len(messages) == 0 {
+		return nil
+	}
+	table := messages[0].GetTable()
+
+	index, err := c.Meilisearch.GetIndex(name)
 	if err != nil {
 		return err
 	}
 
-	var transformer rowTransformer
-	switch c.dstSpec.WriteMode {
-	case specs.WriteModeAppend:
-		transformer = toMap(table)
-	case specs.WriteModeOverwrite, specs.WriteModeOverwriteDeleteStale:
-		transformer = toMapWithHash(table)
-	default:
-		return fmt.Errorf("unsupported write mode %q", c.dstSpec.WriteMode.String())
+	transformer := transform(table)
+
+	records := make([]arrow.Record, 0, len(messages))
+	for _, msg := range messages {
+		records = append(records, msg.Record)
 	}
 
 	docs := make([]map[string]any, 0, len(records)) // at least 1 row in record
@@ -34,7 +43,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 		docs = append(docs, rows...)
 	}
 
-	taskInfo, err := index.AddDocuments(&docs, c.pkColumn)
+	taskInfo, err := index.AddDocuments(&docs, index.PrimaryKey)
 	if err != nil {
 		return err
 	}
@@ -59,9 +68,10 @@ func toMap(table *schema.Table) rowTransformer {
 	}
 }
 
-func toMapWithHash(table *schema.Table) rowTransformer {
+func transform(table *schema.Table) rowTransformer {
 	m := toMap(table)
 	h := hashUUID(table)
+	// we always use the hashUUID func
 	return func(record arrow.Record) ([]map[string]any, error) {
 		rows, err := m(record)
 		if err != nil {

@@ -2,14 +2,12 @@ package client
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"testing"
 	"time"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/golang/mock/gomock"
 	"github.com/rs/zerolog"
 )
@@ -20,48 +18,30 @@ const (
 )
 
 func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) Clients) {
-	version := "vDev"
-
 	t.Helper()
 	table.IgnoreInTests = false
 
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	logger := zerolog.New(zerolog.NewTestWriter(t)).Output(
+	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
-
-	newTestExecutionClient := func(ctx context.Context, _ zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
-		var cfSpec Spec
-		if err := spec.UnmarshalSpec(&cfSpec); err != nil {
-			return nil, fmt.Errorf("failed to unmarshal cloudflare spec: %w", err)
-		}
-
-		clients := builder(t, ctrl)
-		c := New(logger, clients, clients[TestAccountID], AccountZones{
-			TestAccountID: {
-				AccountId: TestAccountID,
-				Zones:     []string{TestZoneID},
-			},
-		})
-
-		return c.withZoneID(TestAccountID, TestZoneID), nil
-	}
-
-	p := source.NewPlugin(
-		table.Name,
-		version,
-		[]*schema.Table{
-			table,
+	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
+	clients := builder(t, ctrl)
+	c := New(l, clients, clients[TestAccountID], AccountZones{
+		TestAccountID: {
+			AccountId: TestAccountID,
+			Zones:     []string{TestZoneID},
 		},
-		newTestExecutionClient,
-	)
-	p.SetLogger(logger)
-	source.TestPluginSync(t, p, specs.Source{
-		Name:         "dev",
-		Path:         "cloudquery/dev",
-		Version:      version,
-		Tables:       []string{table.Name},
-		Destinations: []string{"mock-destination"},
 	})
+
+	messages, err := sched.SyncAll(context.Background(), &c, schema.Tables{table})
+	if err != nil {
+		t.Fatalf("failed to sync: %v", err)
+	}
+	records := messages.GetInserts().GetRecordsForTable(table)
+	emptyColumns := schema.FindEmptyColumns(table, records)
+	if len(emptyColumns) > 0 {
+		t.Fatalf("empty columns: %v", emptyColumns)
+	}
 }

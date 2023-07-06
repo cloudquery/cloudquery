@@ -18,7 +18,7 @@ func apiAuthorizers() *schema.Table {
 	tableName := "aws_apigatewayv2_api_authorizers"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Authorizer.html`,
+		Description: `https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/apis-apiid-authorizers.html`,
 		Resolver:    fetchApigatewayv2ApiAuthorizers,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.Authorizer{}),

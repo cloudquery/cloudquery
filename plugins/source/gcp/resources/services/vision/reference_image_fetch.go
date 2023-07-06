@@ -5,7 +5,7 @@ import (
 
 	vision "cloud.google.com/go/vision/v2/apiv1"
 	pb "cloud.google.com/go/vision/v2/apiv1/visionpb"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/api/iterator"
 )

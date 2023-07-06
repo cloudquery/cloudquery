@@ -27,6 +27,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go-v2/service/codeartifact"
 	"github.com/aws/aws-sdk-go-v2/service/codebuild"
+	"github.com/aws/aws-sdk-go-v2/service/codecommit"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
@@ -84,6 +85,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroups"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
+	"github.com/aws/aws-sdk-go-v2/service/route53resolver"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
@@ -145,6 +147,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Cloudwatchlogs:            cloudwatchlogs.NewFromConfig(awsCfg),
 		Codeartifact:              codeartifact.NewFromConfig(awsCfg),
 		Codebuild:                 codebuild.NewFromConfig(awsCfg),
+		Codecommit:                codecommit.NewFromConfig(awsCfg),
 		Codepipeline:              codepipeline.NewFromConfig(awsCfg),
 		Cognitoidentity:           cognitoidentity.NewFromConfig(awsCfg),
 		Cognitoidentityprovider:   cognitoidentityprovider.NewFromConfig(awsCfg),
@@ -202,6 +205,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Resourcegroups:            resourcegroups.NewFromConfig(awsCfg),
 		Route53:                   route53.NewFromConfig(awsCfg),
 		Route53domains:            route53domains.NewFromConfig(awsCfg),
+		Route53resolver:           route53resolver.NewFromConfig(awsCfg),
 		S3:                        s3.NewFromConfig(awsCfg),
 		S3control:                 s3control.NewFromConfig(awsCfg),
 		Sagemaker:                 sagemaker.NewFromConfig(awsCfg),
@@ -261,6 +265,7 @@ type Services struct {
 	Cloudwatchlogs            services.CloudwatchlogsClient
 	Codeartifact              services.CodeartifactClient
 	Codebuild                 services.CodebuildClient
+	Codecommit                services.CodecommitClient
 	Codepipeline              services.CodepipelineClient
 	Cognitoidentity           services.CognitoidentityClient
 	Cognitoidentityprovider   services.CognitoidentityproviderClient
@@ -318,6 +323,7 @@ type Services struct {
 	Resiliencehub             services.ResiliencehubClient
 	Route53                   services.Route53Client
 	Route53domains            services.Route53domainsClient
+	Route53resolver           services.Route53resolverClient
 	S3                        services.S3Client
 	S3control                 services.S3controlClient
 	Sagemaker                 services.SagemakerClient

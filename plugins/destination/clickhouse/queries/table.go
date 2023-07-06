@@ -4,7 +4,8 @@ import (
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/arrow/types"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func GetTablesSchema(database string) (query string, params []any) {
@@ -13,8 +14,8 @@ func GetTablesSchema(database string) (query string, params []any) {
 }
 
 // ScanTableSchemas doesn't close rows, so that's on caller.
-func ScanTableSchemas(rows driver.Rows, need schema.Tables) (schema.Tables, error) {
-	defs := make(map[string]schema.ColumnList)
+func ScanTableSchemas(rows driver.Rows, messages message.WriteMigrateTables) (schema.Tables, error) {
+	defs := make(map[string]schema.ColumnList, len(messages))
 
 	var table, name, typ string
 	for rows.Next() {
@@ -22,7 +23,7 @@ func ScanTableSchemas(rows driver.Rows, need schema.Tables) (schema.Tables, erro
 			return nil, err
 		}
 
-		if need.Get(table) == nil {
+		if !messages.Exists(table) {
 			// only save the info about required tables
 			continue
 		}

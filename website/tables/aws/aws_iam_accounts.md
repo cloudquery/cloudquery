@@ -2,6 +2,8 @@
 
 This table shows data for IAM Accounts.
 
+https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetAccountSummary.html
+
 The primary key for this table is **account_id**.
 
 ## Columns
@@ -44,6 +46,27 @@ The primary key for this table is **account_id**.
 ## Example Queries
 
 These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Security contact information should be provided for an AWS account
+
+```sql
+SELECT
+  'Security contact information should be provided for an AWS account' AS title,
+  aws_iam_accounts.account_id,
+  CASE WHEN alternate_contact_type IS NULL THEN 'fail' ELSE 'pass' END AS status
+FROM
+  aws_iam_accounts
+  LEFT JOIN (
+      SELECT
+        *
+      FROM
+        aws_account_alternate_contacts
+      WHERE
+        alternate_contact_type = 'SECURITY'
+    )
+      AS account_security_contacts ON
+      aws_iam_accounts.account_id = account_security_contacts.account_id;
+```
 
 ### S3 Block Public Access setting should be enabled
 

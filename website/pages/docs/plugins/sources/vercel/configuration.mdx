@@ -32,3 +32,6 @@ This is the (nested) spec used by the Vercel source plugin:
 
 - `page_size` (integer, optional. Default: 100):
   Number of items to request in each API call. This is a tradeoff between the number of API calls and the number of items per API call, which might take too long. The maximum allowed value is 100.
+
+- `concurrency` (integer, optional. Default: 10000):
+    Number of concurrent requests to Vercel REST API.

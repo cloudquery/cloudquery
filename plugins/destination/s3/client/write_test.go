@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/filetypes/v3"
+	"github.com/cloudquery/filetypes/v4"
 	"github.com/google/go-cmp/cmp"
 )
 

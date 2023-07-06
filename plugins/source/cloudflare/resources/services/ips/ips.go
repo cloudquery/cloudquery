@@ -5,7 +5,7 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudflare/cloudflare-go"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 type IpWrapper struct {

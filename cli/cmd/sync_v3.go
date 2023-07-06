@@ -9,6 +9,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/cloudquery/cli/internal/transformer"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -16,12 +17,14 @@ import (
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // nolint:dupl
 func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, destinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination, uid string, _ bool) error {
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
+	tables := make(map[string]bool, 0)
 	defer func() {
 		if analyticsClient != nil {
 			log.Info().Msg("Sending sync summary to " + analyticsClient.Host())
@@ -39,6 +42,9 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("Start sync")
 	defer log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("End sync")
 
+	variables := specs.Variables{
+		Plugins: make(map[string]specs.PluginVariables),
+	}
 	sourcePbClient := plugin.NewPluginClient(sourceClient.Conn)
 	destinationsPbClients := make([]plugin.PluginClient, len(destinationsClients))
 	destinationTransformers := make([]*transformer.RecordTransformer, len(destinationsClients))
@@ -55,17 +61,13 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 			opts = append(opts, transformer.WithCQIDPrimaryKey())
 		}
 		destinationTransformers[i] = transformer.NewRecordTransformer(opts...)
+		connection := destinationsClients[i].ConnectionString()
+		variables.Plugins[destinationSpecs[i].Name] = specs.PluginVariables{
+			Connection: connection,
+		}
 	}
 
-	specBytes, err := json.Marshal(sourceSpec.Spec)
-	if err != nil {
-		return err
-	}
-	if _, err := sourcePbClient.Init(ctx, &plugin.Init_Request{
-		Spec: specBytes,
-	}); err != nil {
-		return err
-	}
+	// initialize destinations first, so that their connections may be used as backends by the source
 	for i := range destinationsClients {
 		destSpec := destinationSpecs[i]
 		destSpecBytes, err := json.Marshal(destSpec.Spec)
@@ -79,19 +81,34 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		}
 	}
 
+	// replace @@plugins.name.connection with the actual GRPC connection string from the client
+	// NOTE: if this becomes a stable feature, it can move out of sync_v3 and into sync.go
+	specBytes, err := json.Marshal(sourceSpec)
+	if err != nil {
+		return err
+	}
+	specBytesExpanded, err := specs.ReplaceVariables(string(specBytes), variables)
+	if err != nil {
+		return err
+	}
+	if err := json.Unmarshal([]byte(specBytesExpanded), &sourceSpec); err != nil {
+		return err
+	}
+
+	sourceSpecBytes, err := json.Marshal(sourceSpec.Spec)
+	if err != nil {
+		return err
+	}
+	if _, err := sourcePbClient.Init(ctx, &plugin.Init_Request{
+		Spec: sourceSpecBytes,
+	}); err != nil {
+		return err
+	}
+
 	writeClients := make([]plugin.Plugin_WriteClient, len(destinationsPbClients))
 	for i := range destinationsPbClients {
 		writeClients[i], err = destinationsPbClients[i].Write(ctx)
 		if err != nil {
-			return err
-		}
-		if err := writeClients[i].Send(&plugin.Write_Request{
-			Message: &plugin.Write_Request_Options{
-				Options: &plugin.WriteOptions{
-					MigrateForce: destinationSpecs[i].MigrateMode == specs.MigrateModeForced,
-				},
-			},
-		}); err != nil {
 			return err
 		}
 	}
@@ -99,20 +116,19 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Msg("Start fetching resources")
 	fmt.Printf("Starting sync for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
 
-	// TODO(v4): figure out backends
-	syncClient, err := sourcePbClient.Sync(ctx, &plugin.Sync_Request{
+	syncReq := &plugin.Sync_Request{
 		Tables:              sourceSpec.Tables,
 		SkipTables:          sourceSpec.SkipTables,
 		SkipDependentTables: sourceSpec.SkipDependentTables,
 		DeterministicCqId:   sourceSpec.DeterministicCQID,
-		// StateBackend: &plugin.StateBackendSpec{
-		//	Name:     sourceSpec.Backend,
-		//	Path:     "",
-		//	Version:  "",
-		//	Registry: 0,
-		//	Spec:     sourceSpec.BackendSpec,
-		// },
-	})
+	}
+	if sourceSpec.BackendOptions != nil {
+		syncReq.Backend = &plugin.Sync_BackendOptions{
+			TableName:  sourceSpec.BackendOptions.TableName,
+			Connection: sourceSpec.BackendOptions.Connection,
+		}
+	}
+	syncClient, err := sourcePbClient.Sync(ctx, syncReq)
 	if err != nil {
 		return err
 	}
@@ -161,6 +177,7 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 			if err != nil {
 				return fmt.Errorf("failed to get record from bytes: %w", err)
 			}
+
 			atomic.AddInt64(&newResources, record.NumRows())
 			totalResources += int(record.NumRows())
 			for i := range destinationsPbClients {
@@ -171,7 +188,7 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 				}
 				wr := &plugin.Write_Request{}
 				wr.Message = &plugin.Write_Request_Insert{
-					Insert: &plugin.MessageInsert{
+					Insert: &plugin.Write_MessageInsert{
 						Record: transformedRecordBytes,
 					},
 				}
@@ -184,6 +201,8 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 			if err != nil {
 				return err
 			}
+			tableName := tableNameFromSchema(sc)
+			tables[tableName] = true
 			for i := range destinationsPbClients {
 				transformedSchema := destinationTransformers[i].TransformSchema(sc)
 				transformedSchemaBytes, err := plugin.SchemaToBytes(transformedSchema)
@@ -192,22 +211,13 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 				}
 				wr := &plugin.Write_Request{}
 				wr.Message = &plugin.Write_Request_MigrateTable{
-					MigrateTable: &plugin.MessageMigrateTable{
-						Table: transformedSchemaBytes,
+					MigrateTable: &plugin.Write_MessageMigrateTable{
+						MigrateForce: destinationSpecs[i].MigrateMode == specs.MigrateModeForced,
+						Table:        transformedSchemaBytes,
 					},
 				}
 				if err := writeClients[i].Send(wr); err != nil {
 					return fmt.Errorf("failed to send write request (migrate): %w", err)
-				}
-			}
-		case *plugin.Sync_Response_Delete:
-			for i := range destinationsPbClients {
-				wr := &plugin.Write_Request{}
-				wr.Message = &plugin.Write_Request_Delete{
-					Delete: m.Delete,
-				}
-				if err := writeClients[i].Send(wr); err != nil {
-					return fmt.Errorf("failed to send write request (delete): %w", err)
 				}
 			}
 		default:
@@ -220,6 +230,11 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 	}
 
 	for i := range destinationsClients {
+		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
+			if err := deleteStale(writeClients[i], tables, sourceName, syncTime); err != nil {
+				return err
+			}
+		}
 		if _, err := writeClients[i].CloseAndRecv(); err != nil {
 			return err
 		}
@@ -247,5 +262,28 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		msg = "Sync completed with errors, see logs for details"
 	}
 	fmt.Printf("%s. Resources: %d, Errors: %d, Warnings: %d, Time: %s\n", msg, totalResources, totals.Errors, totals.Warnings, syncTimeTook.Truncate(time.Second).String())
+	return nil
+}
+
+func tableNameFromSchema(sc *arrow.Schema) string {
+	tableName, _ := sc.Metadata().GetValue("cq:table_name")
+	return tableName
+}
+
+func deleteStale(client plugin.Plugin_WriteClient, tables map[string]bool, sourceName string, syncTime time.Time) error {
+	for tableName := range tables {
+		if err := client.Send(&plugin.Write_Request{
+			Message: &plugin.Write_Request_Delete{
+				Delete: &plugin.Write_MessageDeleteStale{
+					SourceName: sourceName,
+					SyncTime:   timestamppb.New(syncTime),
+					TableName:  tableName,
+				},
+			},
+		}); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
