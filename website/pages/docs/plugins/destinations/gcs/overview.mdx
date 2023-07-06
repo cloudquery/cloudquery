@@ -21,7 +21,7 @@ This is useful in various use-cases, especially in data lakes where you can quer
 
 <Configuration />
 
-The GCS destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
+The GCS destination utilizes batching, and supports `batch_size`, `batch_size_bytes` and `batch_timeout` options (see below).
 
 ## GCS Spec
 
@@ -41,6 +41,18 @@ This is the (nested) spec used by the CSV destination Plugin.
 
 - `format_spec` (map [format_spec](#format_spec)) (optional)
   Optional parameters to change the format of the file
+
+- `batch_size` (integer, optional. default: 10000)
+
+  Number of records to write before starting a new file.
+
+- `batch_size_bytes` (integer, optional. default: 52428800 (50 MiB))
+
+  Number of bytes (as Arrow buffer size) to write before starting a new file.
+
+- `batch_timeout` (duration, optional. default: 30s (30 seconds))
+
+  Inactivity time before starting a new object.
 
 ## format_spec
 
