@@ -36,7 +36,8 @@ func TestPlugin(t *testing.T) {
 			SkipDeleteStale: true,
 		},
 		plugin.WithTestDataOptions(schema.TestSourceOptions{
-			SkipMaps:  true,
+			SkipMaps: true,
+			// https://github.com/cloudquery/cloudquery/issues/12022
 			SkipTimes: true,
 		}),
 		plugin.WithTestIgnoreNullsInLists(),
