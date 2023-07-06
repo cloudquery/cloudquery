@@ -5,7 +5,6 @@ import (
 	"log"
 
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/plugin"
-
 	"github.com/cloudquery/plugin-sdk/v4/serve"
 )
 

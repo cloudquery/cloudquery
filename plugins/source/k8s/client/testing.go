@@ -6,7 +6,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/golang/mock/gomock"
@@ -47,21 +46,11 @@ func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 	if err != nil {
 		t.Fatalf("failed to sync: %v", err)
 	}
-	records := filterInserts(messages).GetRecordsForTable(table)
+	records := messages.GetInserts().GetRecordsForTable(table)
 	emptyColumns := schema.FindEmptyColumns(table, records)
 	if len(emptyColumns) > 0 {
 		t.Fatalf("empty columns: %v", emptyColumns)
 	}
-}
-
-func filterInserts(msgs message.SyncMessages) message.SyncInserts {
-	inserts := []*message.SyncInsert{}
-	for _, msg := range msgs {
-		if m, ok := msg.(*message.SyncInsert); ok {
-			inserts = append(inserts, m)
-		}
-	}
-	return inserts
 }
 
 func APIExtensionsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) apiextensionsclientset.Interface, opts ...TestOption) {
@@ -86,7 +75,7 @@ func APIExtensionsMockTestHelper(t *testing.T, table *schema.Table, builder func
 	if err != nil {
 		t.Fatalf("failed to sync: %v", err)
 	}
-	records := filterInserts(messages).GetRecordsForTable(table)
+	records := messages.GetInserts().GetRecordsForTable(table)
 	emptyColumns := schema.FindEmptyColumns(table, records)
 	if len(emptyColumns) > 0 {
 		t.Fatalf("empty columns: %v", emptyColumns)
