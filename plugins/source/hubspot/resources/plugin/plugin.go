@@ -26,9 +26,9 @@ var customExceptions = map[string]string{
 	"hubspot": "HubSpot",
 }
 
-func titleTransformer(table *schema.Table) {
+func titleTransformer(table *schema.Table) error {
 	if table.Title != "" {
-		return
+		return nil
 	}
 	exceptions := make(map[string]string)
 	for k, v := range docs.DefaultTitleExceptions {
@@ -39,9 +39,7 @@ func titleTransformer(table *schema.Table) {
 	}
 	csr := caser.New(caser.WithCustomExceptions(exceptions))
 	table.Title = csr.ToTitle(table.Name)
-	for _, rel := range table.Relations {
-		titleTransformer(rel)
-	}
+	return nil
 }
 
 type Client struct {
@@ -68,17 +66,16 @@ func newClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, opt
 		return nil, err
 	}
 	c.syncClient = syncClient.(*client.Client)
-	c.schduler = scheduler.NewScheduler(scheduler.WithLogger(logger), scheduler.WithConcurrency(uint64(spec.Concurrency)))
+	c.schduler = scheduler.NewScheduler(scheduler.WithLogger(logger), scheduler.WithConcurrency(spec.Concurrency))
 	return c, nil
 }
 
-func (*Client) Close(ctx context.Context) error {
+func (*Client) Close(_ context.Context) error {
 	return nil
 }
 
-func (*Client) Tables(ctx context.Context, options plugin.TableOptions) (schema.Tables, error) {
-	tables := getTables()
-	tables, err := tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
+func (*Client) Tables(_ context.Context, options plugin.TableOptions) (schema.Tables, error) {
+	tables, err := getTables().FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
 	if err != nil {
 		return nil, err
 	}
@@ -89,8 +86,7 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	if c.options.NoConnection {
 		return fmt.Errorf("no connection")
 	}
-	tables := getTables()
-	tables, err := tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
+	tables, err := getTables().FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
 	if err != nil {
 		return err
 	}
@@ -112,9 +108,11 @@ func getTables() schema.Tables {
 	if err := transformers.TransformTables(tables); err != nil {
 		panic(err)
 	}
+	if err := transformers.Apply(tables, titleTransformer); err != nil {
+		panic(err)
+	}
 	for _, table := range tables {
 		schema.AddCqIDs(table)
-		titleTransformer(table)
 	}
 	return tables
 }

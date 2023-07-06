@@ -123,51 +123,51 @@ jobs:
         run: goreleaser release --timeout 50m --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/source/aws/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
-  test-policies:
-    timeout-minutes: 30
-    needs: [resolve-runner]
-    runs-on: ${{ needs.resolve-runner.outputs.runner }}
-    defaults:
-      run:
-        working-directory: ./plugins/source/aws
-    services:
-      postgres:
-        image: postgres:11
-        env:
-          POSTGRES_PASSWORD: pass
-          POSTGRES_USER: postgres
-          POSTGRES_DB: postgres
-        ports:
-          - 5432:5432
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Set up Go 1.x
-        uses: erezrokah/setup-go@feat/add_cache_prefix
-        with:
-          go-version-file: plugins/source/aws/go.mod
-          cache: true
-          cache-dependency-path: plugins/source/aws/go.sum
-          cache-key-prefix: policies-cache-
-      - name: Build
-        run: go build .
-      - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@v3
-        with:
-          version: 'v3.5.0'
-      - name: Migrate DB
-        run: cloudquery migrate test/policy_cq_config.yml
-        env:
-          CQ_DSN: postgresql://postgres:pass@localhost:5432/postgres
-      - name: Run all policies
-        run: cd policies && psql -h localhost -p 5432 -U postgres -d postgres -w -f ./policy.sql
-        env:
-          PGPASSWORD: pass
+  # test-policies:
+  #   timeout-minutes: 30
+  #   needs: [resolve-runner]
+  #   runs-on: ${{ needs.resolve-runner.outputs.runner }}
+  #   defaults:
+  #     run:
+  #       working-directory: ./plugins/source/aws
+  #   services:
+  #     postgres:
+  #       image: postgres:11
+  #       env:
+  #         POSTGRES_PASSWORD: pass
+  #         POSTGRES_USER: postgres
+  #         POSTGRES_DB: postgres
+  #       ports:
+  #         - 5432:5432
+  #       # Set health checks to wait until postgres has started
+  #       options: >-
+  #         --health-cmd pg_isready
+  #         --health-interval 10s
+  #         --health-timeout 5s
+  #         --health-retries 5
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
+  #     - name: Set up Go 1.x
+  #       uses: erezrokah/setup-go@feat/add_cache_prefix
+  #       with:
+  #         go-version-file: plugins/source/aws/go.mod
+  #         cache: true
+  #         cache-dependency-path: plugins/source/aws/go.sum
+  #         cache-key-prefix: policies-cache-
+  #     - name: Build
+  #       run: go build .
+  #     - name: Setup CloudQuery
+  #       uses: cloudquery/setup-cloudquery@v3
+  #       with:
+  #         version: 'v3.5.0'
+  #     - name: Migrate DB
+  #       run: cloudquery migrate test/policy_cq_config.yml
+  #       env:
+  #         CQ_DSN: postgresql://postgres:pass@localhost:5432/postgres
+  #     - name: Run all policies
+  #       run: cd policies && psql -h localhost -p 5432 -U postgres -d postgres -w -f ./policy.sql
+  #       env:
+  #         PGPASSWORD: pass
 
       

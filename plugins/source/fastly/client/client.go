@@ -53,7 +53,7 @@ func (c *Client) withServiceAndRegion(service *fastly.Service, region string) sc
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMeta, error) {
+func Configure(_ context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMeta, error) {
 	client, err := fastly.NewClient(spec.FastlyAPIKey)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create fastly client: %w", err)
