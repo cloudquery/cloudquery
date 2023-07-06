@@ -53,7 +53,20 @@ This is the (nested) spec used by the file destination Plugin.
   Otherwise, for every batch a new file will be created with a different `.<UUID>` suffix.
 
 - `format_spec` (map [format_spec](#format_spec)) (optional)
-Optional parameters to change the format of the file
+
+  Optional parameters to change the format of the file
+
+- `batch_size` (integer, optional. default: 10000)
+
+  Number of records to write before starting a new file.
+
+- `batch_size_bytes` (integer, optional. default: 52428800 (50 MiB))
+
+  Number of bytes (as Arrow buffer size) to write before starting a new file.
+
+- `batch_timeout` (duration, optional. default: 30s (30 seconds))
+
+  Inactivity time before starting a new object.
 
 ### format_spec
 

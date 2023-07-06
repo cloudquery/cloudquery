@@ -38,5 +38,8 @@ This is the (nested) spec used by the Stripe source plugin:
 - `max_retries` (integer, optional. Default: 2):
   Number of retries if a request was rate limited at the API endpoint.
 
+- `concurrency` (integer, optional. Default: 10000):
+  Number of concurrent requests to Stripe API.
+
 - `stripe_debug` (boolean, optional. Default: false):
   Enables verbose logging on the Stripe client.
