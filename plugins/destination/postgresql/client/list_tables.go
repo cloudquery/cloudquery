@@ -55,7 +55,11 @@ ORDER BY
 
 func (c *Client) listTables(ctx context.Context, include, exclude []string) (schema.Tables, error) {
 	var tables schema.Tables
-	q := fmt.Sprintf(selectTables, c.currentSchemaName, c.whereClause(include, exclude))
+	whereClause := c.whereClause(include, exclude)
+	if c.pgType == pgTypeCockroachDB {
+		whereClause += " AND information_schema.columns.is_hidden != 'YES'"
+	}
+	q := fmt.Sprintf(selectTables, c.currentSchemaName, whereClause)
 	rows, err := c.conn.Query(ctx, q)
 	if err != nil {
 		return nil, err
