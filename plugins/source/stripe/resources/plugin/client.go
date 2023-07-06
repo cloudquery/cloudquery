@@ -13,6 +13,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/state"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/stripe/stripe-go/v74"
 	sclient "github.com/stripe/stripe-go/v74/client"
 	"golang.org/x/time/rate"
@@ -113,7 +114,7 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 		logger: logger,
 		scheduler: scheduler.NewScheduler(
 			scheduler.WithLogger(logger),
-			scheduler.WithConcurrency(uint64(config.Concurrency)),
+			scheduler.WithConcurrency(config.Concurrency),
 		),
 		services: services,
 		tables:   getTables(),
@@ -122,16 +123,10 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 
 func getTables() schema.Tables {
 	tables := rawTables()
+	if err := transformers.TransformTables(tables); err != nil {
+		panic(err)
+	}
 	for _, t := range tables {
-		if err := t.Transform(t); err != nil {
-			panic(err)
-		}
-		for _, rel := range t.Relations {
-			if err := rel.Transform(rel); err != nil {
-				panic(err)
-			}
-		}
-
 		schema.AddCqIDs(t)
 	}
 	return tables

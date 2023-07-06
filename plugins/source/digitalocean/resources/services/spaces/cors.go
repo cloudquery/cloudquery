@@ -2,8 +2,8 @@ package spaces
 
 import (
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func cors() *schema.Table {

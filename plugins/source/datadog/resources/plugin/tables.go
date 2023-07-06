@@ -18,27 +18,9 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func addCqIDs(table *schema.Table) {
-	havePks := len(table.PrimaryKeys()) > 0
-	cqIdColumn := schema.CqIDColumn
-	if !havePks {
-		cqIdColumn.PrimaryKey = true
-	}
-	table.Columns = append(
-		schema.ColumnList{
-			cqIdColumn,
-			schema.CqParentIDColumn,
-		},
-		table.Columns...,
-	)
-	for _, rel := range table.Relations {
-		addCqIDs(rel)
-	}
-}
-
-func titleTransformer(table *schema.Table) {
+func titleTransformer(table *schema.Table) error {
 	if table.Title != "" {
-		return
+		return nil
 	}
 	exceptions := make(map[string]string)
 	for k, v := range docs.DefaultTitleExceptions {
@@ -49,9 +31,7 @@ func titleTransformer(table *schema.Table) {
 	}
 	csr := caser.New(caser.WithCustomExceptions(exceptions))
 	table.Title = csr.ToTitle(table.Name)
-	for _, rel := range table.Relations {
-		titleTransformer(rel)
-	}
+	return nil
 }
 
 func Tables() schema.Tables {
@@ -75,9 +55,11 @@ func Tables() schema.Tables {
 	if err := transformers.TransformTables(tables); err != nil {
 		panic(err)
 	}
+	if err := transformers.Apply(tables, titleTransformer); err != nil {
+		panic(err)
+	}
 	for _, table := range tables {
-		addCqIDs(table)
-		titleTransformer(table)
+		schema.AddCqIDs(table)
 	}
 	return tables
 }
