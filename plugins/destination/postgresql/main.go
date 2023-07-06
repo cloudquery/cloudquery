@@ -16,7 +16,10 @@ const (
 
 func main() {
 	p := pluginSDK.NewPlugin("postgresql", plugin.Version, client.New)
-	server := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN))
+	server := serve.Plugin(p,
+		serve.WithPluginSentryDSN(sentryDSN),
+		serve.WithDestinationV0V1Server(),
+	)
 	err := server.Serve(context.Background())
 	if err != nil {
 		log.Fatalf("failed to serve plugin: %v", err)

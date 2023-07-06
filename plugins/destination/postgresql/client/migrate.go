@@ -125,6 +125,10 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 			}
 		case schema.TableColumnChangeTypeRemove:
 			if change.Previous.PrimaryKey || change.Previous.NotNull {
+				if change.ColumnName == "rowid" {
+					// special case for CockroachDB when table has no primary key
+					return true
+				}
 				return false
 			}
 		case schema.TableColumnChangeTypeUpdate:
@@ -227,7 +231,8 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 	sb.WriteString(")")
 	_, err := c.conn.Exec(ctx, sb.String())
 	if err != nil {
-		return fmt.Errorf("failed to create table %s: %w", tName, err)
+		c.logger.Error().Err(err).Str("table", tName).Str("query", sb.String()).Msg("Failed to create table")
+		return fmt.Errorf("failed to create table %s: %w"+sb.String(), tName, err)
 	}
 	return nil
 }
