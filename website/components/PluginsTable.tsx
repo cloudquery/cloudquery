@@ -47,13 +47,15 @@ const TableRow = ({ type, name, id, stage, tier, meta = () => null }) => {
       )}
       <Td>{stage}</Td>
       {tier === "free" ? (
-        <Td>{tier}</Td>
+        <Td>Free</Td>
       ) : (
-        <TableLink
+          <Td>
+              <TableLink
           text="Premium"
           href={tier}
           target="_blank"
-        />
+              />
+          </Td>
       )}
 
     </Tr>
