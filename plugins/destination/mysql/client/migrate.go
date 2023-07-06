@@ -96,7 +96,6 @@ func getTables(msgs message.WriteMigrateTables) schema.Tables {
 // Migrate relies on the CLI/client to lock before running migration.
 func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
 	tables := getTables(msgs)
-
 	mysqlTables, err := c.schemaTables(ctx, tables)
 	if err != nil {
 		return err
