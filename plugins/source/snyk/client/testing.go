@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/julienschmidt/httprouter"
 	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 	"github.com/rs/zerolog"
