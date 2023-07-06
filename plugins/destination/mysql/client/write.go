@@ -28,7 +28,7 @@ func getInsertQueryBuild(table *schema.Table) *strings.Builder {
 
 func (c *Client) writeResources(ctx context.Context, query string, msgs message.WriteInserts) error {
 	table := msgs[0].GetTable()
-	var pks []int
+	pks := make([]int, 0)
 	for i, col := range table.Columns {
 		if !col.PrimaryKey {
 			continue
@@ -39,7 +39,6 @@ func (c *Client) writeResources(ctx context.Context, query string, msgs message.
 		}
 		// only if the PK is a blob or a text do we care about the length of the data
 		pks = append(pks, i)
-
 	}
 	for _, msg := range msgs {
 		rec := msg.Record
@@ -47,7 +46,7 @@ func (c *Client) writeResources(ctx context.Context, query string, msgs message.
 		if err != nil {
 			return err
 		}
-		//log a warning that a blob or text field that is a PK has more than 191 characters
+		// log a warning that a blob or text field that is a PK has more than 191 characters
 		for _, record := range transformedRecords {
 			for _, pki := range pks {
 				if len(record[pki].(string)) > maxPrefixLength {
