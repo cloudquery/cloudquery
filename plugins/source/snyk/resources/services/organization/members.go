@@ -36,10 +36,7 @@ func fetchOrganizationMembers(ctx context.Context, meta schema.ClientMeta, _ *sc
 	if err != nil {
 		return err
 	}
-
-	for _, member := range result {
-		res <- member
-	}
+	res <- result
 
 	return nil
 }

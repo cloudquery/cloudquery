@@ -43,12 +43,10 @@ func fetchPendingProvisions(ctx context.Context, meta schema.ClientMeta, _ *sche
 			return err
 		}
 
-		for _, prov := range result {
-			res <- prov
-		}
 		if len(result) == 0 {
 			break
 		}
+		res <- result
 		opts.Page++
 	}
 

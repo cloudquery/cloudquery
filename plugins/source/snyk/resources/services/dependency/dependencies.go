@@ -2,7 +2,6 @@ package dependency
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -28,11 +27,6 @@ func fetchDependencies(ctx context.Context, meta schema.ClientMeta, _ *schema.Re
 	if err != nil {
 		return err
 	}
-	for _, dep := range result {
-		res <- dep
-		fmt.Println(dep)
-	}
-
 	res <- result
 
 	return nil
