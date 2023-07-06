@@ -21,7 +21,6 @@ All releases contain a release log that indicates all of the changes (and highli
 
 ### Preview features
 
-
 Sometimes features or tables will be released and marked as `alpha` this indicates that future minor versions might change, break or remove functionality. This enables the CloudQuery team to release functionality prior to it being fully stable so that the community can give its feedback prior. Once a feature is released as Generally Available then all of the above rules for semantic versioning will apply
 
 
