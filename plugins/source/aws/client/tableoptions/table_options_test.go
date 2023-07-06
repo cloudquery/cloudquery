@@ -13,6 +13,7 @@ import (
 	cloudwatchtypes "github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/aws/aws-sdk-go-v2/service/costexplorer"
 	costexplorertypes "github.com/aws/aws-sdk-go-v2/service/costexplorer/types"
+	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	inspector2types "github.com/aws/aws-sdk-go-v2/service/inspector2/types"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub"
@@ -120,6 +121,7 @@ func TestTableOptionsUnmarshal(t *testing.T) {
 		securityhubtypes.IpFilter{},
 		securityhubtypes.BooleanFilter{},
 		securityhubtypes.SortCriterion{},
+		ecs.ListTasksInput{},
 	)); diff != "" {
 		t.Fatalf("mismatch between objects after loading from snake case json: %v", diff)
 	}
