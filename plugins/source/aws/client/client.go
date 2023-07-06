@@ -11,10 +11,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/aws/smithy-go/logging"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/backend"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/state"
 	"github.com/rs/zerolog"
 	"github.com/thoas/go-funk"
 	"golang.org/x/sync/errgroup"
@@ -32,7 +30,7 @@ type Client struct {
 	WAFScope             wafv2types.Scope
 	Partition            string
 	LanguageCode         string
-	Backend              backend.Backend
+	Backend              state.Client
 	specificRegions      bool
 	Spec                 *Spec
 	// Do not rely on this field, it will be removed once https://github.com/aws/aws-sdk-go-v2/issues/2163 is resolved
@@ -91,9 +89,8 @@ func (s *ServicesManager) InitServicesForPartitionAccount(partition, accountId s
 	s.services[partition][accountId].Regions = funk.UniqString(append(s.services[partition][accountId].Regions, svcs.Regions...))
 }
 
-func NewAwsClient(logger zerolog.Logger, b backend.Backend, spec *Spec) Client {
+func NewAwsClient(logger zerolog.Logger, spec *Spec) Client {
 	return Client{
-		Backend: b,
 		ServicesManager: ServicesManager{
 			services: ServicesPartitionAccountMap{},
 		},
@@ -120,6 +117,11 @@ func (c *Client) ID() string {
 
 func (c *Client) Services() *Services {
 	return c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID)
+}
+
+func (c *Client) Duplicate() *Client {
+	duplicateClient := *c
+	return &duplicateClient
 }
 
 func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region string) *Client {
@@ -173,21 +175,13 @@ func (c *Client) withLanguageCode(code string) *Client {
 }
 
 // Configure is the entrypoint into configuring the AWS plugin. It is called by the plugin initialization in resources/plugin/aws.go
-func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, opts source.Options) (schema.ClientMeta, error) {
-	var awsPluginSpec Spec
-	err := spec.UnmarshalSpec(&awsPluginSpec)
-	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
-	}
-
-	err = awsPluginSpec.Validate()
-	if err != nil {
+func Configure(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMeta, error) {
+	if err := spec.Validate(); err != nil {
 		return nil, fmt.Errorf("spec validation failed: %w", err)
 	}
+	spec.SetDefaults()
 
-	awsPluginSpec.SetDefaults()
-
-	client := NewAwsClient(logger, opts.Backend, &awsPluginSpec)
+	client := NewAwsClient(logger, &spec)
 
 	var adminAccountSts AssumeRoleAPIClient
 
@@ -226,8 +220,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 			return nil
 		})
 	}
-	err = errorGroup.Wait()
-	if err != nil {
+	if err := errorGroup.Wait(); err != nil {
 		return nil, err
 	}
 
