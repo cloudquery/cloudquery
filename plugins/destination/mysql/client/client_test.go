@@ -36,9 +36,9 @@ func TestPlugin(t *testing.T) {
 		{
 			SkipMaps: true,
 		},
-		{
-			SkipLists: true,
-		},
+		// {
+		// 	SkipLists: true,
+		// },
 	} {
 		plugin.TestWriterSuiteRunner(t,
 			p,
