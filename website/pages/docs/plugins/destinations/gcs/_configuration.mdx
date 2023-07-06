@@ -6,12 +6,12 @@ spec:
   name: "gcs"
   path: "cloudquery/gcs"
   version: "VERSION_DESTINATION_GCS"
-  write_mode: "append" # gcs only supports 'append' mode
-  # batch_size: 10000 # optional
-  # batch_size_bytes: 5242880 # optional
   spec:
     bucket: "bucket_name"
     path: "path/to/files"
+#    batch_size: 10000 # optional
+#    batch_size_bytes: 52428800 # optional
+#    batch_timeout: 30s # optional
     format: "csv"
     format_spec:
       delimiter: ","
