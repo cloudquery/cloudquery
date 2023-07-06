@@ -54,6 +54,9 @@ This is the (nested) spec used by the Shopify source plugin:
 - `page_size` (integer, optional. Default: 50):
   Maximum number of items queried each request. Find an optimum value to balance amount of data fetched and requests timing out. Maximum value 250.
 
+- `concurrency` (integer, optional. Default: 1000):
+  Maximum number of concurrent requests to the Shopify Admin API.
+
 # Query Examples
 
 ## Get all your active products with a specific tag

@@ -40,9 +40,7 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewC
 		return nil, err
 	}
 	c.spec.SetDefaults()
-	if err := c.spec.Validate(); err != nil {
-		return nil, err
-	}
+
 	if c.spec.Verbose {
 		sarama.Logger = NewSaramaLoggerAdapter(logger)
 	}

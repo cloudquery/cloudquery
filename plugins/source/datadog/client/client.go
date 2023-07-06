@@ -2,12 +2,9 @@ package client
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadog"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 )
@@ -70,13 +67,13 @@ func (c *Client) withAccount(account Account) schema.ClientMeta {
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
-	cfSpec := &Spec{}
-	if err := s.UnmarshalSpec(cfSpec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal datadog spec: %w", err)
-	}
+func (c *Client) Duplicate() schema.ClientMeta {
+	newClient := *c
+	return &newClient
+}
 
-	if len(cfSpec.Accounts) == 0 {
+func Configure(ctx context.Context, logger zerolog.Logger, spec *Spec) (schema.ClientMeta, error) {
+	if len(spec.Accounts) == 0 {
 		return nil, errors.New("no datadog accounts configured")
 	}
 	configuration := datadog.NewConfiguration()
@@ -84,7 +81,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 
 	client := Client{
 		logger:     logger,
-		Accounts:   cfSpec.Accounts,
+		Accounts:   spec.Accounts,
 		DDServices: NewDatadogServices(apiClient),
 	}
 
