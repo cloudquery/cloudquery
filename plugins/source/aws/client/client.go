@@ -91,7 +91,6 @@ func (s *ServicesManager) InitServicesForPartitionAccount(partition, accountId s
 
 func NewAwsClient(logger zerolog.Logger, spec *Spec) Client {
 	return Client{
-		// Backend: b,
 		ServicesManager: ServicesManager{
 			services: ServicesPartitionAccountMap{},
 		},

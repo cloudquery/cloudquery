@@ -50,10 +50,8 @@ func fetchCloudtrailEvents(ctx context.Context, meta schema.ClientMeta, parent *
 	svc := cl.Services().Cloudtrail
 
 	allConfigs := []tableoptions.CustomLookupEventsOpts{{}}
-	noTableConfig := true
 	if cl.Spec.TableOptions.CloudTrailEvents != nil {
 		allConfigs = cl.Spec.TableOptions.CloudTrailEvents.LookupEventsOpts
-		noTableConfig = false
 	}
 	for _, w := range allConfigs {
 		le := w.LookupEventsInput
@@ -67,10 +65,6 @@ func fetchCloudtrailEvents(ctx context.Context, meta schema.ClientMeta, parent *
 				return err
 			}
 			backendKey = fmt.Sprintf("%s-%d", cl.ID(), hash)
-			if noTableConfig {
-				// for backwards-compatibility, default to client id if there is no table config
-				backendKey = cl.ID()
-			}
 			value, err := cl.Backend.GetKey(ctx, tableName+backendKey)
 			if err != nil {
 				return fmt.Errorf("failed to retrieve state from backend: %w", err)
