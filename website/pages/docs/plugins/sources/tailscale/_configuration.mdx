@@ -3,7 +3,8 @@ kind: source
 # Common source-plugin configuration
 spec:
   name: tailscale
-  path: cloudquery/tailscale
+  path: "/path/to/plugin" # Path to your premium plugin
+  registry: "local"
   version: "VERSION_SOURCE_TAILSCALE"
   concurrency: 10000
   tables: ["*"]
