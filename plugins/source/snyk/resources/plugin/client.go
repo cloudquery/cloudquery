@@ -24,7 +24,7 @@ type Client struct {
 
 var _ plugin.Client = (*Client)(nil)
 
-func (c *Client) Close(context.Context) error { return nil }
+func (*Client) Close(context.Context) error { return nil }
 
 func (c *Client) Tables(_ context.Context, options plugin.TableOptions) (schema.Tables, error) {
 	tt, err := c.tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
