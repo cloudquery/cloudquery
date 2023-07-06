@@ -19,8 +19,13 @@ cols.COLUMN_NAME,
 COLUMN_TYPE,
 IS_NULLABLE,
 constraint_type
+, sub_part
 FROM
 INFORMATION_SCHEMA.COLUMNS AS cols
+	LEFT JOIN  information_schema.STATISTICS as stats on
+		cols.table_schema = stats.table_schema and
+		cols.TABLE_NAME = stats.table_name and
+		cols.COLUMN_NAME = stats.column_name and index_name = 'PRIMARY'
 	LEFT JOIN
 (SELECT 
 	tc.constraint_schema,
@@ -41,7 +46,8 @@ GROUP BY tc.constraint_schema , tc.table_name , kcu.column_name) AS constraints 
 	AND constraints.table_name = cols.TABLE_NAME
 	AND constraints.column_name = cols.COLUMN_NAME
 WHERE
-cols.TABLE_NAME = ?;`
+cols.TABLE_NAME = ? and
+(DATABASE() IS NULL OR cols.table_schema = DATABASE());`
 
 func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schema.Column, error) {
 	var columns []schema.Column
@@ -55,8 +61,8 @@ func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schem
 		var typ string
 		var nullable string
 		var constraintType *string
-
-		if err := rows.Scan(&name, &typ, &nullable, &constraintType); err != nil {
+		var subpart *int
+		if err := rows.Scan(&name, &typ, &nullable, &constraintType, &subpart); err != nil {
 			return nil, err
 		}
 
@@ -64,6 +70,9 @@ func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schem
 		var primaryKey bool
 		if constraintType != nil {
 			primaryKey = strings.Contains(*constraintType, "PRIMARY KEY")
+		}
+		if subpart != nil && *subpart != maxPrefixLength {
+			primaryKey = false
 		}
 		columns = append(columns, schema.Column{
 			Name:       name,
