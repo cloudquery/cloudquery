@@ -9,7 +9,6 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"gvisor.dev/gvisor/pkg/sleep"
 )
 
 func getConnectionString() string {
@@ -52,6 +51,6 @@ func TestPlugin(t *testing.T) {
 			},
 			plugin.WithTestDataOptions(skipOpts),
 		)
-		sleep.Until(time.Now().Add(time.Second))
+		time.Sleep(1 * time.Second)
 	}
 }
