@@ -14,26 +14,21 @@ import (
 	"github.com/apache/arrow/go/v13/arrow/decimal128"
 	"github.com/apache/arrow/go/v13/arrow/decimal256"
 	"github.com/apache/arrow/go/v13/arrow/memory"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/goccy/go-json"
 	"google.golang.org/api/iterator"
 )
 
 const (
-	readSQL = "SELECT %s FROM `%s.%s.%s` WHERE `_cq_source_name` = @cq_source_name order by _cq_sync_time asc"
+	readSQL = "SELECT %s FROM `%s.%s.%s`"
 )
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
+func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
 	colSQL := "`" + strings.Join(table.Columns.Names(), "`, `") + "`"
-	stmt := fmt.Sprintf(readSQL, colSQL, c.pluginSpec.ProjectID, c.pluginSpec.DatasetID, table.Name)
+	stmt := fmt.Sprintf(readSQL, colSQL, c.spec.ProjectID, c.spec.DatasetID, table.Name)
 	q := c.client.Query(stmt)
-	q.Parameters = []bigquery.QueryParameter{
-		{
-			Name:  "cq_source_name",
-			Value: sourceName,
-		},
-	}
+	q.Parameters = []bigquery.QueryParameter{}
 	q.Location = c.client.Location
 	it, err := q.Read(ctx)
 	if err != nil {
