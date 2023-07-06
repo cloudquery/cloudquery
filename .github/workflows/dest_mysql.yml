@@ -29,7 +29,7 @@ jobs:
         ports:
           - 3306:3306
         options: >-
-          --health-cmd "mysqladmin ping && mysql --user=root --password=test -e "SHOW VARIABLES LIKE "%version%";"
+          --health-cmd "mysqladmin ping && mysql --user=root --password=test -e "SHOW VARIABLES LIKE \"%version\";"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
