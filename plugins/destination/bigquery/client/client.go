@@ -18,6 +18,8 @@ type Client struct {
 	spec   Spec
 	client *bigquery.Client
 	writer *batchwriter.BatchWriter
+
+	batchwriter.UnimplementedDeleteStale
 }
 
 func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
@@ -35,7 +37,12 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 	if err := c.spec.Validate(); err != nil {
 		return nil, err
 	}
-	c.writer, err = batchwriter.New(c, batchwriter.WithLogger(logger), batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))
+	c.writer, err = batchwriter.New(c,
+		batchwriter.WithLogger(logger),
+		batchwriter.WithBatchSize(c.spec.BatchSize),
+		batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes),
+		batchwriter.WithBatchTimeout(c.spec.BatchTimeout.Duration()),
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -66,6 +73,9 @@ func (c *Client) bqClient(ctx context.Context) (*bigquery.Client, error) {
 	return client, nil
 }
 
-func (c *Client) Close(_ context.Context) error {
+func (c *Client) Close(ctx context.Context) error {
+	if err := c.writer.Close(ctx); err != nil {
+		return err
+	}
 	return c.client.Close()
 }
