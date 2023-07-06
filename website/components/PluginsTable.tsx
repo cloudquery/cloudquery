@@ -19,7 +19,7 @@ const pluralize = {
   destination: "destinations",
 };
 
-const TableRow = ({ type, name, id, stage, meta = () => null }) => {
+const TableRow = ({ type, name, id, stage, tier, meta = () => null }) => {
   return (
     <Tr>
       <Td>
@@ -46,6 +46,16 @@ const TableRow = ({ type, name, id, stage, meta = () => null }) => {
         </Td>
       )}
       <Td>{stage}</Td>
+      {tier === "free" ? (
+        <Td>{tier}</Td>
+      ) : (
+        <TableLink
+          text="Premium"
+          href={tier}
+          target="_blank"
+        />
+      )}
+
     </Tr>
   );
 };
@@ -62,9 +72,10 @@ export const PluginsTable = ({ plugins, type }) => {
         <Th>Changelog</Th>
         {type === "source" && <Th>Tables</Th>}
         <Th>Stage</Th>
+        <Th>Tier</Th>
       </thead>
       <tbody>
-        {sortedPlugins.map(({ name, stage, meta, id = name }) => (
+        {sortedPlugins.map(({ name, stage, meta, tier, id = name }) => (
           <TableRow
             key={id}
             type={type}
@@ -72,6 +83,7 @@ export const PluginsTable = ({ plugins, type }) => {
             id={id.toLowerCase()}
             stage={stage}
             meta={meta}
+            tier={tier}
           />
         ))}
       </tbody>
