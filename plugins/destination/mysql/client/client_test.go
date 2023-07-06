@@ -51,6 +51,8 @@ func TestPlugin(t *testing.T) {
 			},
 			plugin.WithTestDataOptions(skipOpts),
 		)
+		// This is necessary because tables are named based on the current time
+		// As we iterate through the tests, if we don't sleep here then tables can be created with the same name
 		time.Sleep(1 * time.Second)
 	}
 }
