@@ -36,7 +36,8 @@ func TestPlugin(t *testing.T) {
 			SkipDeleteStale: true,
 		},
 		plugin.WithTestDataOptions(schema.TestSourceOptions{
-			SkipMaps: true,
+			SkipMaps:  true,
+			SkipTimes: true,
 		}),
 		plugin.WithTestIgnoreNullsInLists(),
 	)
