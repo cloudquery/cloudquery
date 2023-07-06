@@ -16,7 +16,7 @@ func getConnectionString() string {
 		return testConn
 	}
 
-	return `root:test@/cloudquery`
+	return `root:my-secret-pw@(localhost:3307)/cloudquery`
 }
 
 func TestPlugin(t *testing.T) {

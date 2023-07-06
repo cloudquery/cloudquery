@@ -27,13 +27,35 @@ func getInsertQueryBuild(table *schema.Table) *strings.Builder {
 }
 
 func (c *Client) writeResources(ctx context.Context, query string, msgs message.WriteInserts) error {
+	table := msgs[0].GetTable()
+	var pks []int
+	for i, col := range table.Columns {
+		if !col.PrimaryKey {
+			continue
+		}
+		sqlType := arrowTypeToMySqlStr(col.Type)
+		if sqlType != "blob" && sqlType != "text" {
+			continue
+		}
+		// only if the PK is a blob or a text do we care about the length of the data
+		pks = append(pks, i)
+
+	}
 	for _, msg := range msgs {
 		rec := msg.Record
 		transformedRecords, err := transformRecord(rec)
 		if err != nil {
 			return err
 		}
-		// TODO: log a warning that a blob or text field that is a PK has more than 191 characters
+		//log a warning that a blob or text field that is a PK has more than 191 characters
+		for _, record := range transformedRecords {
+			for _, pki := range pks {
+				if len(record[pki].(string)) > maxPrefixLength {
+					c.logger.Warn().Any("record", record).Msgf("record contains a primary key that is longer than mysql can handle. only the first %d will be included in the index", maxPrefixLength)
+				}
+			}
+		}
+
 		for _, transformedRecord := range transformedRecords {
 			_, err := c.db.ExecContext(ctx, query, transformedRecord...)
 			if err != nil {
