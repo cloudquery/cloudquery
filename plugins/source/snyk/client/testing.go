@@ -2,13 +2,11 @@ package client
 
 import (
 	"context"
-	"fmt"
 	"net/http/httptest"
 	"os"
 	"testing"
 	"time"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/julienschmidt/httprouter"
@@ -18,69 +16,41 @@ import (
 )
 
 func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httprouter.Router) error) {
-	version := "vDev"
 	t.Helper()
+
+	mux := httprouter.New()
+	ts := httptest.NewUnstartedServer(mux)
+	defer ts.Close()
+
+	require.NoError(t, createService(mux))
+	ts.Start()
 
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
 
-	mux := httprouter.New()
-	ts := httptest.NewUnstartedServer(mux)
-	defer ts.Close()
+	snykClient := snyk.NewClient("test-key", snyk.WithBaseURL(ts.URL+"/"))
 
-	spec := &Spec{
-		APIKey:        "test-key",
+	c := &Client{
+		Client: snykClient,
+		logger: l,
 		Organizations: []snyk.Organization{
 			{ID: "test-org-id", Name: "test-org-name", Group: &snyk.Group{
 				ID:   "test-group-id",
 				Name: "test-group-name",
 			}},
-		EndpointURL:   ts.URL + "/",
-	}
-	spec.SetDefaults()
-	require.NoError(t, spec.Validate())
-	if err := spec.Validate(); err != nil {
-		t.Fatalf("failed to validate spec: %v", err)
-	}
-	table.IgnoreInTests = false
-
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, _ specs.Source, _ source.Options) (schema.ClientMeta, error) {
-		err := createService(mux)
-		if err != nil {
-			return nil, fmt.Errorf("failed to createService: %w", err)
-		}
-		ts.Start()
-
-		snykClient := snyk.NewClient("test-key", snyk.WithBaseURL(ts.URL+"/"))
-		if err != nil {
-			return nil, fmt.Errorf("failed to create client: %w", err)
-		}
-
-		c := &Client{
-			Client: snykClient,
-			logger: logger,
-			Organizations:
-			},
-		}
-		return c, nil
-	}
-
-	p := source.NewPlugin(
-		table.Name,
-		version,
-		[]*schema.Table{
-			table,
 		},
-		newTestExecutionClient)
-	p.SetLogger(l)
+	}
 
-	source.TestPluginSync(t, p, specs.Source{
-		Name:         "dev",
-		Path:         "cloudquery/dev",
-		Version:      version,
-		Tables:       []string{table.Name},
-		Destinations: []string{"mock-destination"},
-	})
+	table.IgnoreInTests = false
+	messages, err := sched.SyncAll(context.Background(), c, schema.Tables{table})
+	if err != nil {
+		t.Fatalf("failed to sync: %v", err)
+	}
+	records := messages.GetInserts().GetRecordsForTable(table)
+	emptyColumns := schema.FindEmptyColumns(table, records)
+	if len(emptyColumns) > 0 {
+		t.Fatalf("empty columns: %v", emptyColumns)
+	}
 }
