@@ -5,9 +5,11 @@ import (
 	"encoding/json"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"gvisor.dev/gvisor/pkg/sleep"
 )
 
 func getConnectionString() string {
@@ -36,9 +38,9 @@ func TestPlugin(t *testing.T) {
 		{
 			SkipMaps: true,
 		},
-		// {
-		// 	SkipLists: true,
-		// },
+		{
+			SkipLists: true,
+		},
 	} {
 		plugin.TestWriterSuiteRunner(t,
 			p,
@@ -50,5 +52,6 @@ func TestPlugin(t *testing.T) {
 			},
 			plugin.WithTestDataOptions(skipOpts),
 		)
+		sleep.Until(time.Now().Add(time.Second))
 	}
 }
