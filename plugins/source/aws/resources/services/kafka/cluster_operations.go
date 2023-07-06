@@ -34,6 +34,7 @@ func clusterOperations() *schema.Table {
 				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
+			// TODO: This is column should be removed as the resource doesn't support tagging, but currently the column will always be empty
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
