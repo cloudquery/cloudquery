@@ -20,7 +20,7 @@ This destination plugin lets you sync data from a CloudQuery source to remote Az
 
 ## Example
 
-This example configures an Azure blob storage destination, to create CSV files in `https://cqdestinationazblob.blob.core.windows.net/test/path/to/files`. Note that the Azure blob storage plugin only supports `append` write-mode.
+This example configures an Azure blob storage destination, to create CSV files in `https://cqdestinationazblob.blob.core.windows.net/test/path/to/files`.
 
 The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
@@ -30,19 +30,19 @@ spec:
   name: "azblob"
   path: "cloudquery/azblob"
   version: "VERSION_DESTINATION_AZBLOB"
-  write_mode: "append" # this plugin only supports 'append' mode
-  # batch_size: 10000 # optional
-  # batch_size_bytes: 5242880 # optional
   spec:
     storage_account: "cqdestinationazblob"
     container: "test"
     path: "path/to/files"
+#    batch_size: 10000 # optional
+#    batch_size_bytes: 52428800 # optional
+#    batch_timeout: 30s # optional
     format: "csv"
     format_spec:
       delimiter: ","
 ```
 
-The Azure blob destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes). 
+The Azure Blob destination utilizes batching, and supports `batch_size`, `batch_size_bytes` and `batch_timeout` options (see below).
 
 ## Azure Blob Spec
 
@@ -67,6 +67,18 @@ This is the (nested) spec used by the Azure blob destination Plugin.
 - `format_spec` (map [format_spec](#format_spec)) (optional)
 
   Optional parameters to change the format of the file
+
+- `batch_size` (integer, optional. default: 10000)
+
+  Number of records to write before starting a new object.
+
+- `batch_size_bytes` (integer, optional. default: 52428800 (50 MiB))
+
+  Number of bytes (as Arrow buffer size) to write before starting a new object.
+
+- `batch_timeout` (duration, optional. default: 30s (30 seconds))
+
+  Inactivity time before starting a new object.
 
 ## format_spec
 
