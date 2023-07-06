@@ -71,6 +71,7 @@ func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schem
 		if constraintType != nil {
 			primaryKey = strings.Contains(*constraintType, "PRIMARY KEY")
 		}
+		// subpart only non nil for pks on blob/text columns
 		if subpart != nil && *subpart != maxPrefixLength {
 			primaryKey = false
 		}
