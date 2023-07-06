@@ -9,21 +9,42 @@ import (
 	"time"
 
 	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v4/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/julienschmidt/httprouter"
 	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 	"github.com/rs/zerolog"
+	"github.com/stretchr/testify/require"
 )
 
 func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httprouter.Router) error) {
 	version := "vDev"
 	t.Helper()
 
-	table.IgnoreInTests = false
+	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
+		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
+	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
+
 	mux := httprouter.New()
 	ts := httptest.NewUnstartedServer(mux)
 	defer ts.Close()
+
+	spec := &Spec{
+		APIKey:        "test-key",
+		Organizations: []snyk.Organization{
+			{ID: "test-org-id", Name: "test-org-name", Group: &snyk.Group{
+				ID:   "test-group-id",
+				Name: "test-group-name",
+			}},
+		EndpointURL:   ts.URL + "/",
+	}
+	spec.SetDefaults()
+	require.NoError(t, spec.Validate())
+	if err := spec.Validate(); err != nil {
+		t.Fatalf("failed to validate spec: %v", err)
+	}
+	table.IgnoreInTests = false
 
 	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, _ specs.Source, _ source.Options) (schema.ClientMeta, error) {
 		err := createService(mux)
@@ -40,19 +61,11 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httpr
 		c := &Client{
 			Client: snykClient,
 			logger: logger,
-			Organizations: []snyk.Organization{
-				{ID: "test-org-id", Name: "test-org-name", Group: &snyk.Group{
-					ID:   "test-group-id",
-					Name: "test-group-name",
-				}},
+			Organizations:
 			},
 		}
 		return c, nil
 	}
-
-	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
-		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
-	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 
 	p := source.NewPlugin(
 		table.Name,
