@@ -1,10 +1,13 @@
 package main
 
 import (
+	"context"
+	"log"
+
 	"github.com/cloudquery/cloudquery/plugins/destination/bigquery/client"
-	"github.com/cloudquery/cloudquery/plugins/destination/bigquery/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/v3/serve"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/bigquery/resources/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/serve"
 )
 
 const (
@@ -12,12 +15,8 @@ const (
 )
 
 func main() {
-	p := destination.NewPlugin("bigquery", plugin.Version, client.New,
-		destination.WithManagedWriter(),
-		destination.WithDefaultBatchSize(1000),
-		// documented BigQuery limit is 10MB, and we try to keep well below that as the size
-		// estimate is not exact and there are also limits on request size, apart from the batch size
-		destination.WithDefaultBatchSizeBytes(5*1024*1024),
-	)
-	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
+	p := plugin.NewPlugin("bigquery", internalPlugin.Version, client.New)
+	if err := serve.Plugin(p, serve.WithDestinationV0V1Server(), serve.WithPluginSentryDSN(sentryDSN)).Serve(context.Background()); err != nil {
+		log.Fatal(err)
+	}
 }

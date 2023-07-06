@@ -3,7 +3,6 @@ package client
 import (
 	"bytes"
 	"context"
-	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -13,10 +12,9 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/internal/shopify"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/backend"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/state"
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog"
 )
@@ -24,7 +22,7 @@ import (
 const testToken = "SomeToken"
 
 type TestOptions struct {
-	Backend backend.Backend
+	Backend state.Client
 }
 
 type MockHttpClient struct {
@@ -57,9 +55,7 @@ func (c *MockHttpClient) Do(req *http.Request) (*http.Response, error) {
 	return c.client.Do(req)
 }
 
-func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.Router) error, opts TestOptions) {
-	version := "vDev"
-
+func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.Router) error, _ TestOptions) {
 	t.Helper()
 	table.IgnoreInTests = false
 
@@ -73,50 +69,45 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 	defer h.Close()
 	mockClient := NewMockHttpClient(h.Client(), h.URL)
 
-	logger := zerolog.New(zerolog.NewTestWriter(t)).Output(
+	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
 
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
-		var spSpec Spec
-		if err := spec.UnmarshalSpec(&spSpec); err != nil {
-			return nil, fmt.Errorf("failed to unmarshal shopify spec: %w", err)
-		}
-
-		if err := createServices(router); err != nil {
-			return nil, err
-		}
-
-		services, err := shopify.New(shopify.ClientOptions{
-			Log:         logger,
-			HC:          mockClient,
-			AccessToken: testToken,
-			ShopURL:     h.URL,
-			MaxRetries:  1,
-			PageSize:    50,
-		})
-		if err != nil {
-			return nil, err
-		}
-
-		c := New(logger, spec, spSpec, services, opts.Backend)
-		return &c, nil
+	spec := &Spec{
+		AccessToken: testToken,
+		ShopURL:     "https://test.myshopify.com",
+	}
+	spec.SetDefaults()
+	if err := spec.Validate(); err != nil {
+		t.Fatalf("failed to validate spec: %v", err)
 	}
 
-	p := source.NewPlugin(
-		table.Name,
-		version,
-		[]*schema.Table{
-			table,
-		},
-		newTestExecutionClient,
-	)
-	p.SetLogger(logger)
-	source.TestPluginSync(t, p, specs.Source{
-		Name:         "dev",
-		Path:         "cloudquery/dev",
-		Version:      version,
-		Tables:       []string{table.Name},
-		Destinations: []string{"mock-destination"},
+	if err := createServices(router); err != nil {
+		t.Fatalf("failed to create services: %v", err)
+	}
+
+	services, err := shopify.New(shopify.ClientOptions{
+		Log:         l,
+		HC:          mockClient,
+		AccessToken: spec.AccessToken,
+		ShopURL:     h.URL,
+		MaxRetries:  1,
+		PageSize:    50,
 	})
+	if err != nil {
+		t.Fatalf("failed to create client: %v", err)
+	}
+
+	c := New(l, *spec, services, nil)
+
+	messages, err := sched.SyncAll(context.Background(), c, schema.Tables{table})
+	if err != nil {
+		t.Fatalf("failed to sync: %v", err)
+	}
+	records := messages.GetInserts().GetRecordsForTable(table)
+	emptyColumns := schema.FindEmptyColumns(table, records)
+	if len(emptyColumns) > 0 {
+		t.Fatalf("empty columns: %v", emptyColumns)
+	}
 }

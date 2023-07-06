@@ -11,10 +11,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/backend"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/state"
 	"github.com/rs/zerolog"
 	"github.com/stripe/stripe-go/v74"
 	sclient "github.com/stripe/stripe-go/v74/client"
@@ -22,12 +21,10 @@ import (
 )
 
 type TestOptions struct {
-	Backend backend.Backend
+	Backend state.Client
 }
 
 func MockTestHelper(t *testing.T, table *schema.Table, opts TestOptions) {
-	version := "vDev"
-
 	t.Helper()
 	table.IgnoreInTests = false
 
@@ -45,32 +42,28 @@ func MockTestHelper(t *testing.T, table *schema.Table, opts TestOptions) {
 		}
 	}()
 
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, opts source.Options) (schema.ClientMeta, error) {
-		var stSpec Spec
-		if err := spec.UnmarshalSpec(&stSpec); err != nil {
-			return nil, fmt.Errorf("failed to unmarshal stripe spec: %w", err)
-		}
-
-		cl := sclient.New("sk_test_myTestKey", getBackends(logger, *addr))
-		return New(logger, spec, stSpec, cl, opts.Backend), nil
+	sched := scheduler.NewScheduler(scheduler.WithLogger(logger))
+	spec := &Spec{
+		APIKey: "sk_test_myTestKey",
 	}
+	if err := spec.Validate(); err != nil {
+		t.Fatalf("failed to validate spec: %v", err)
+	}
+	spec.SetDefaults()
 
-	p := source.NewPlugin(
-		table.Name,
-		version,
-		[]*schema.Table{
-			table,
-		},
-		newTestExecutionClient,
-	)
-	p.SetLogger(logger)
-	source.TestPluginSync(t, p, specs.Source{
-		Name:         "dev",
-		Path:         "cloudquery/dev",
-		Version:      version,
-		Tables:       []string{table.Name},
-		Destinations: []string{"mock-destination"},
-	})
+	cl := sclient.New(spec.APIKey, getBackends(logger, *addr))
+
+	c := New(logger, *spec, cl, nil)
+
+	messages, err := sched.SyncAll(context.Background(), c, schema.Tables{table})
+	if err != nil {
+		t.Fatalf("failed to sync: %v", err)
+	}
+	records := messages.GetInserts().GetRecordsForTable(table)
+	emptyColumns := schema.FindEmptyColumns(table, records)
+	if len(emptyColumns) > 0 {
+		t.Fatalf("empty columns: %v", emptyColumns)
+	}
 }
 
 func startMockServer() (*string, func() error, error) {

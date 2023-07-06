@@ -3,10 +3,10 @@ package plugin
 import (
 	"strings"
 
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/caser"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v4/caser"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 var (
@@ -84,28 +84,28 @@ var awsExceptions = map[string]string{
 	"xray":                   "AWS X-Ray",
 }
 
-func titleTransformer(table *schema.Table) string {
-	if table.Title != "" {
-		return table.Title
+func titleTransformer(table *schema.Table) {
+	if table.Title == "" {
+		exceptions := make(map[string]string)
+		for k, v := range source.DefaultTitleExceptions {
+			exceptions[k] = v
+		}
+		for k, v := range awsExceptions {
+			exceptions[k] = v
+		}
+		csr := caser.New(caser.WithCustomExceptions(exceptions))
+		t := csr.ToTitle(table.Name)
+		table.Title = strings.Trim(strings.ReplaceAll(t, "  ", " "), " ")
 	}
-	exceptions := make(map[string]string)
-	for k, v := range source.DefaultTitleExceptions {
-		exceptions[k] = v
+	for _, rel := range table.Relations {
+		titleTransformer(rel)
 	}
-	for k, v := range awsExceptions {
-		exceptions[k] = v
-	}
-	csr := caser.New(caser.WithCustomExceptions(exceptions))
-	t := csr.ToTitle(table.Name)
-	return strings.Trim(strings.ReplaceAll(t, "  ", " "), " ")
 }
 
-func AWS() *source.Plugin {
-	return source.NewPlugin(
+func AWS() *plugin.Plugin {
+	return plugin.NewPlugin(
 		"aws",
 		Version,
-		tables(),
-		client.Configure,
-		source.WithTitleTransformer(titleTransformer),
+		New,
 	)
 }

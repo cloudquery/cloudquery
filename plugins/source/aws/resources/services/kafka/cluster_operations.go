@@ -3,14 +3,14 @@ package kafka
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/kafka"
 	"github.com/aws/aws-sdk-go-v2/service/kafka/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func clusterOperations() *schema.Table {
@@ -34,6 +34,7 @@ func clusterOperations() *schema.Table {
 				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
+			// TODO: This is column should be removed as the resource doesn't support tagging, but currently the column will always be empty
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
