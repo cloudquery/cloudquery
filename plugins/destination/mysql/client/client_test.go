@@ -18,7 +18,7 @@ func getConnectionString() string {
 	return `root:test@/cloudquery`
 }
 
-func TestPluginWithoutLists(t *testing.T) {
+func TestPlugin(t *testing.T) {
 	ctx := context.Background()
 	p := plugin.NewPlugin("mysql", "development", New)
 	s := &Spec{
