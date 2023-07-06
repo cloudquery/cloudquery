@@ -1,4 +1,4 @@
-This example configures connects to a Kafka destination with no authentication and pushes messages in JSON format. Note that the plugin only supports `append` write-mode.
+This example configures connects to a Kafka destination with no authentication and pushes messages in JSON format.
 
 The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
@@ -8,9 +8,10 @@ spec:
   name: "kafka"
   path: "cloudquery/kafka"
   version: "VERSION_DESTINATION_KAFKA"
-  write_mode: "append" # only supports 'append'
-
   spec:
     brokers: ["<broker-host>:<broker-port>"]
-    format: "json"
+#    batch_size: 1000 # optional
+    format: "json" # options: json, csv
 ```
+
+Note that the Kafka plugin only supports `append` write-mode. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
