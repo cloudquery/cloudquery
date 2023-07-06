@@ -125,6 +125,7 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 			}
 		case schema.TableColumnChangeTypeRemove:
 			if change.Previous.PrimaryKey || change.Previous.NotNull {
+				// nolint:gosimple
 				if change.ColumnName == "rowid" {
 					// special case for CockroachDB when table has no primary key
 					return true
