@@ -28,7 +28,7 @@ type Client struct {
 	plugin.UnimplementedSource
 }
 
-// Assert that Client implements plugin.Client interface. 
+// Assert that Client implements plugin.Client interface.
 var _ plugin.Client = (*Client)(nil)
 
 type pgType int
