@@ -1,165 +1,26 @@
 package client
 
 import (
-	"bytes"
 	"context"
+	"database/sql/driver"
 	"fmt"
-	"net"
-	"net/netip"
 	"strings"
-	"time"
-
-	"github.com/goccy/go-json"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
+	"github.com/apache/arrow/go/v13/arrow/decimal128"
 	"github.com/apache/arrow/go/v13/arrow/memory"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/types"
-	"github.com/google/uuid"
+	"github.com/cloudquery/plugin-sdk/v4/scalar"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const (
-	readSQL = "SELECT %s FROM %s WHERE _cq_source_name = $1 order by _cq_sync_time asc"
+	readSQL = "SELECT %s FROM %s"
 )
 
-// nolint: dupl
-func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
-	if val == nil {
-		bldr.AppendNull()
-		return nil
-	}
-
-	switch b := bldr.(type) {
-	case *array.BooleanBuilder:
-		b.Append(val.(bool))
-	case *array.Int8Builder:
-		// pgx always return int16 for int8
-		b.Append(int8(val.(int16)))
-	case *array.Int16Builder:
-		b.Append(val.(int16))
-	case *array.Int32Builder:
-		b.Append(val.(int32))
-	case *array.Int64Builder:
-		b.Append(val.(int64))
-	case *array.Uint8Builder:
-		b.Append(uint8(val.(int16)))
-	case *array.Uint16Builder:
-		b.Append(uint16(val.(int32)))
-	case *array.Uint32Builder:
-		b.Append(uint32(val.(int64)))
-	case *array.Uint64Builder:
-		v := val.(pgtype.Numeric)
-		b.Append(v.Int.Uint64())
-	case *array.Float32Builder:
-		b.Append(val.(float32))
-	case *array.Float64Builder:
-		b.Append(val.(float64))
-	case *array.StringBuilder:
-		va, ok := val.(string)
-		if !ok {
-			return fmt.Errorf("unsupported type %T with builder %T and column %s", val, bldr, f.Name)
-		}
-		b.Append(va)
-	case *array.LargeStringBuilder:
-		b.Append(val.(string))
-	case *array.BinaryBuilder:
-		b.Append(val.([]byte))
-	case *array.TimestampBuilder:
-		switch b.Type().(*arrow.TimestampType).Unit {
-		case arrow.Second:
-			b.Append(arrow.Timestamp(val.(time.Time).Unix()))
-		case arrow.Millisecond:
-			b.Append(arrow.Timestamp(val.(time.Time).UnixMilli()))
-		case arrow.Microsecond:
-			b.Append(arrow.Timestamp(val.(time.Time).UnixMicro()))
-		case arrow.Nanosecond:
-			b.Append(arrow.Timestamp(val.(time.Time).UnixNano()))
-		default:
-			return fmt.Errorf("unsupported timestamp unit %s", f.Type.(*arrow.TimestampType).Unit)
-		}
-	case *types.UUIDBuilder:
-		va, ok := val.([16]byte)
-		if !ok {
-			return fmt.Errorf("unsupported type %T with builder %T", val, bldr)
-		}
-		u, err := uuid.FromBytes(va[:])
-		if err != nil {
-			return err
-		}
-		b.Append(u)
-	case *types.JSONBuilder:
-		b.Append(val)
-	case *array.StructBuilder:
-		structBytes, err := json.Marshal(val)
-		if err != nil {
-			return fmt.Errorf("failed to marshal struct: %w", err)
-		}
-		dec := json.NewDecoder(bytes.NewReader(structBytes))
-		if err := b.UnmarshalOne(dec); err != nil {
-			return fmt.Errorf("failed to unmarshal struct: %w", err)
-		}
-	case *types.InetBuilder:
-		if v, ok := val.(netip.Prefix); ok {
-			_, ipnet, err := net.ParseCIDR(v.String())
-			if err != nil {
-				return err
-			}
-			b.Append(ipnet)
-			return nil
-		}
-		b.Append(val.(*net.IPNet))
-	case *types.MACBuilder:
-		if c.pgType == pgTypePostgreSQL {
-			b.Append(val.(net.HardwareAddr))
-		} else {
-			hardwareAddr, err := net.ParseMAC(val.(string))
-			if err != nil {
-				return err
-			}
-			b.Append(hardwareAddr)
-		}
-	case array.ListLikeBuilder:
-		b.Append(true)
-		valBuilder := b.ValueBuilder()
-		for _, v := range val.([]any) {
-			if err := c.reverseTransform(f, valBuilder, v); err != nil {
-				return err
-			}
-		}
-	default:
-		v, ok := val.(string)
-		if !ok {
-			return fmt.Errorf("unsupported type %T with builder %T", val, bldr)
-		}
-		if err := bldr.AppendValueFromString(v); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func (c *Client) reverseTransformer(table *schema.Table, values []any) (arrow.Record, error) {
-	sc := table.ToArrowSchema()
-	bldr := array.NewRecordBuilder(memory.DefaultAllocator, sc)
-	for i, f := range sc.Fields() {
-		if c.pgType == pgTypePostgreSQL {
-			if err := c.reverseTransform(f, bldr.Field(i), values[i]); err != nil {
-				return nil, err
-			}
-		} else {
-			if err := c.reverseTransformCockroach(f, bldr.Field(i), values[i]); err != nil {
-				return nil, err
-			}
-		}
-	}
-	rec := bldr.NewRecord()
-	return rec, nil
-}
-
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
+func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
 	colNames := make([]string, 0, len(table.Columns))
 	for _, col := range table.Columns {
 		colNames = append(colNames, pgx.Identifier{col.Name}.Sanitize())
@@ -167,7 +28,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 	cols := strings.Join(colNames, ",")
 	tableName := table.Name
 	sql := fmt.Sprintf(readSQL, cols, pgx.Identifier{tableName}.Sanitize())
-	rows, err := c.conn.Query(ctx, sql, sourceName)
+	rows, err := c.conn.Query(ctx, sql)
 	if err != nil {
 		return err
 	}
@@ -176,12 +37,126 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		if err != nil {
 			return err
 		}
-		rec, err := c.reverseTransformer(table, values)
-		if err != nil {
-			return err
+
+		arrowSchema := table.ToArrowSchema()
+		rb := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
+		for i := range values {
+			val, err := prepareValueForResourceSet(arrowSchema.Field(i).Type, values[i])
+			if err != nil {
+				return err
+			}
+			s := scalar.NewScalar(arrowSchema.Field(i).Type)
+			if err := s.Set(val); err != nil {
+				return err
+			}
+			scalar.AppendToBuilder(rb.Field(i), s)
 		}
-		res <- rec
+		res <- rb.NewRecord()
 	}
 	rows.Close()
 	return nil
+}
+
+func prepareValueForResourceSet(dataType arrow.DataType, v any) (any, error) {
+	if v == nil {
+		return nil, nil
+	}
+	switch tp := dataType.(type) {
+	case *arrow.Decimal128Type:
+		if vt, ok := v.(pgtype.Numeric); ok {
+			if vt.Valid {
+				v = decimal128.FromBigInt(vt.Int)
+			} else {
+				v = nil
+			}
+		}
+	case *arrow.ListType:
+		vl := v.([]any)
+		for i := range vl {
+			var err error
+			vl[i], err = prepareValueForResourceSet(tp.Elem(), vl[i])
+			if err != nil {
+				return nil, err
+			}
+		}
+		return vl, nil
+	case *arrow.LargeListType:
+		vl := v.([]any)
+		for i := range vl {
+			var err error
+			vl[i], err = prepareValueForResourceSet(tp.Elem(), vl[i])
+			if err != nil {
+				return nil, err
+			}
+		}
+		return vl, nil
+	case *arrow.StringType:
+		if value, ok := v.(driver.Valuer); ok {
+			if value == driver.Valuer(nil) {
+				v = nil
+			} else {
+				val, err := value.Value()
+				if err != nil {
+					return nil, err
+				}
+				if s, ok := val.(string); ok {
+					v = s
+				}
+			}
+		}
+		return v, nil
+	case *arrow.Time32Type:
+		switch vt := v.(type) {
+		case pgtype.Time:
+			t, err := vt.TimeValue()
+			if err != nil {
+				return nil, err
+			}
+			v = stringForTime(t, tp.Unit)
+			return v, nil
+		case string:
+			v = vt
+		}
+	case *arrow.Time64Type:
+		switch vt := v.(type) {
+		case pgtype.Time:
+			t, err := vt.TimeValue()
+			if err != nil {
+				return nil, err
+			}
+			v = stringForTime(t, tp.Unit)
+			return v, nil
+		case string:
+			v = vt
+		}
+	case *arrow.Uint64Type:
+		if vt, ok := v.(pgtype.Numeric); ok {
+			if !vt.Valid {
+				v = nil
+			} else {
+				v = vt.Int.Uint64()
+			}
+		}
+		return v, nil
+	}
+	return v, nil
+}
+
+func stringForTime(t pgtype.Time, unit arrow.TimeUnit) string {
+	extra := ""
+	hour := t.Microseconds / 1e6 / 60 / 60
+	minute := t.Microseconds / 1e6 / 60 % 60
+	second := t.Microseconds / 1e6 % 60
+	micros := t.Microseconds % 1e6
+	switch unit {
+	case arrow.Millisecond:
+		extra = fmt.Sprintf(".%03d", (micros)/1e3)
+	case arrow.Microsecond:
+		extra = fmt.Sprintf(".%06d", micros)
+	case arrow.Nanosecond:
+		// postgres doesn't support nanosecond precision
+		extra = fmt.Sprintf(".%06d", micros)
+	}
+
+	return fmt.Sprintf("%02d:%02d:%02d"+extra, hour, minute, second)
 }
