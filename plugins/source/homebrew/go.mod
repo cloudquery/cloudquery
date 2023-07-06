@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/source/homebrew
 
-go 1.19
+go 1.20
 
 require (
 	github.com/cloudquery/plugin-pb-go v1.6.0
