@@ -96,6 +96,25 @@ func getTables(msgs message.WriteMigrateTables) schema.Tables {
 // Migrate relies on the CLI/client to lock before running migration.
 func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
 	tables := getTables(msgs)
+
+	query := `SHOW VARIABLES LIKE "%version%";`
+	rows, err := c.db.QueryContext(ctx, query)
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+	var variableName, value string
+	vals := make(map[string]string)
+	for rows.Next() {
+		if err := rows.Scan(&variableName, &value); err != nil {
+			return err
+		}
+		vals[variableName] = value
+	}
+	if len(vals) > 0 {
+		return fmt.Errorf("failed to get MySQL version, got %v", vals)
+	}
+
 	mysqlTables, err := c.schemaTables(ctx, tables)
 	if err != nil {
 		return err
