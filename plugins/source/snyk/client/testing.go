@@ -43,6 +43,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(*httpr
 		},
 	}
 
+	Transform(schema.Tables{table})
 	table.IgnoreInTests = false
 	messages, err := sched.SyncAll(context.Background(), c, schema.Tables{table})
 	if err != nil {
