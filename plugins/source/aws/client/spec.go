@@ -51,7 +51,7 @@ type Spec struct {
 	InitializationConcurrency int                        `json:"initialization_concurrency"`
 	UsePaidAPIs               bool                       `json:"use_paid_apis"`
 	TableOptions              *tableoptions.TableOptions `json:"table_options,omitempty"`
-	Concurrency               uint64                     `json:"concurrency"`
+	Concurrency               int                        `json:"concurrency"`
 	Scheduler                 scheduler.Strategy         `json:"scheduler,omitempty"`
 }
 

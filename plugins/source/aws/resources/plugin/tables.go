@@ -557,6 +557,8 @@ func tables() schema.Tables {
 		panic(err)
 	}
 	for _, table := range t {
+		schema.AddCqIDs(table)
+		titleTransformer(table)
 		if err := validateTagsIsJSON(table); err != nil {
 			panic(err)
 		}

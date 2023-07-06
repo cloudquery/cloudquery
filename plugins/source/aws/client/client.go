@@ -120,6 +120,11 @@ func (c *Client) Services() *Services {
 	return c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID)
 }
 
+func (c *Client) Duplicate() *Client {
+	duplicateClient := *c
+	return &duplicateClient
+}
+
 func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region string) *Client {
 	return &Client{
 		Partition:            partition,
