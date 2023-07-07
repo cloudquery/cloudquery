@@ -193,6 +193,12 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 					},
 				}
 				if err := writeClients[i].Send(wr); err != nil {
+					if err == io.EOF {
+						// we need to get back the original error
+						if _, err := writeClients[i].CloseAndRecv(); err != nil {
+							return fmt.Errorf("failed to close write client: %w", err)
+						}
+					}
 					return fmt.Errorf("failed to send write request (insert): %w", err)
 				}
 			}
@@ -217,6 +223,12 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 					},
 				}
 				if err := writeClients[i].Send(wr); err != nil {
+					if err == io.EOF {
+						// we need to get back the original error
+						if _, err := writeClients[i].CloseAndRecv(); err != nil {
+							return fmt.Errorf("failed to close write client: %w", err)
+						}
+					}
 					return fmt.Errorf("failed to send write request (migrate): %w", err)
 				}
 			}
