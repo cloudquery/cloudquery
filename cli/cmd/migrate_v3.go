@@ -74,7 +74,7 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 	}
 
 	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Msg("Start fetching resources")
-	fmt.Printf("Starting sync for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
+	fmt.Printf("Starting migration for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
 
 	getTablesRes, err := sourcePbClient.GetTables(ctx, &plugin.GetTables_Request{
 		Tables:     sourceSpec.Tables,
