@@ -116,7 +116,7 @@ func migrate(cmd *cobra.Command, args []string) error {
 				}
 			}
 			if err := migrateConnectionV3(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec); err != nil {
-				return fmt.Errorf("failed to sync v3 source %s: %w", cl.Name(), err)
+				return fmt.Errorf("failed to migrate v3 source %s: %w", cl.Name(), err)
 			}
 		case 2:
 			for _, destination := range destinationClientsForSource {
