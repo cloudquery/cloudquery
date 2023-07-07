@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
 	"time"
 
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
@@ -105,13 +104,7 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 				},
 			}
 			if err := writeClients[i].Send(wr); err != nil {
-				if err == io.EOF {
-					// we need to get back the original error
-					if _, err := writeClients[i].CloseAndRecv(); err != nil {
-						return fmt.Errorf("failed to close write client: %w", err)
-					}
-				}
-				return fmt.Errorf("failed to send write request (migrate): %w", err)
+				return handleSendError(err, writeClients[i], "migrate")
 			}
 		}
 		if _, err := writeClients[i].CloseAndRecv(); err != nil {
