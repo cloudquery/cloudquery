@@ -79,7 +79,7 @@
   "plugins/source/alicloud+FILLER": "0.0.0",
   "plugins/destination/mssql": "4.2.2",
   "plugins/destination/mssql+FILLER": "0.0.0",
-  "plugins/source/plausible": "2.0.2",
+  "plugins/source/plausible": "2.1.0",
   "plugins/source/plausible+FILLER": "0.0.0",
   "plugins/source/shopify": "2.0.2",
   "plugins/source/shopify+FILLER": "0.0.0",
