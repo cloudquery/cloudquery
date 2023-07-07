@@ -28,6 +28,6 @@ func (spec *Spec) SetDefaults() {
 	}
 }
 
-func (spec *Spec) Validate() error {
+func (*Spec) Validate() error {
 	return nil
 }
