@@ -1,10 +1,10 @@
 package plugin
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/v3/caser"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/caser"
+	"github.com/cloudquery/plugin-sdk/v4/docs"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 var (
@@ -64,28 +64,25 @@ var azureExceptions = map[string]string{
 	"windowsiot":                "Windows IoT",
 }
 
-func titleTransformer(table *schema.Table) string {
-	if table.Title != "" {
-		return table.Title
+func titleTransformer(table *schema.Table) error {
+	if table.Title == "" {
+		exceptions := make(map[string]string)
+		for k, v := range docs.DefaultTitleExceptions {
+			exceptions[k] = v
+		}
+		for k, v := range azureExceptions {
+			exceptions[k] = v
+		}
+		csr := caser.New(caser.WithCustomExceptions(exceptions))
+		table.Title = csr.ToTitle(table.Name)
 	}
-	exceptions := make(map[string]string)
-	for k, v := range source.DefaultTitleExceptions {
-		exceptions[k] = v
-	}
-	for k, v := range azureExceptions {
-		exceptions[k] = v
-	}
-	csr := caser.New(caser.WithCustomExceptions(exceptions))
-	t := csr.ToTitle(table.Name)
-	return t
+	return nil
 }
 
-func Plugin() *source.Plugin {
-	return source.NewPlugin(
+func Plugin() *plugin.Plugin {
+	return plugin.NewPlugin(
 		"azure",
 		Version,
-		tables(),
-		client.New,
-		source.WithTitleTransformer(titleTransformer),
+		NewClient,
 	)
 }

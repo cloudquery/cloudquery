@@ -7,41 +7,40 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/homebrew/internal/homebrew"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/rs/zerolog"
 )
 
 type TestOptions struct{}
 
 func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T) *homebrew.Client, opts TestOptions) {
-	version := "vDev"
 	table.IgnoreInTests = false
 	t.Helper()
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
-		return &Client{
-			logger:   l,
-			Homebrew: builder(t),
-			Spec:     Spec{},
-		}, nil
+	schedulerClient := &Client{
+		Homebrew:   builder(t),
+		Logger:     l,
+		Spec:       nil,
+		MaxRetries: defaultMaxRetries,
+		Backoff:    defaultBackoff,
 	}
-	p := source.NewPlugin(
-		table.Name,
-		version,
-		[]*schema.Table{
-			table,
-		},
-		newTestExecutionClient)
-	p.SetLogger(l)
-	source.TestPluginSync(t, p, specs.Source{
-		Name:         "dev",
-		Path:         "cloudquery/dev",
-		Version:      version,
-		Tables:       []string{table.Name},
-		Destinations: []string{"mock-destination"},
-	})
+	tables := schema.Tables{table}
+	if err := transformers.TransformTables(tables); err != nil {
+		t.Fatal(err)
+	}
+	sc := scheduler.NewScheduler(scheduler.WithLogger(l))
+	messages, err := sc.SyncAll(context.Background(), schedulerClient, tables)
+	if err != nil {
+		t.Fatal(err)
+	}
+	inserts := messages.InsertMessage()
+	records := inserts.GetRecordsForTable(table)
+	emptyColumns := schema.FindEmptyColumns(table, records)
+	if len(emptyColumns) > 0 {
+		t.Fatalf("empty columns: %v", emptyColumns)
+	}
 }

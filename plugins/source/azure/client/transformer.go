@@ -3,7 +3,7 @@ package client
 import (
 	"reflect"
 
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 var _ transformers.NameTransformer = ETagNameTransformer
