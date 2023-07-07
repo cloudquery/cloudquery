@@ -96,7 +96,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func tables() schema.Tables {
+func getTables() schema.Tables {
 	list := []*schema.Table{
 		advisor.RecommendationMetadata(),
 		advisor.Recommendations(),

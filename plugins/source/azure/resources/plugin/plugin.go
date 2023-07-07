@@ -5,6 +5,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/docs"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"golang.org/x/exp/maps"
 )
 
 var (
@@ -65,17 +66,16 @@ var azureExceptions = map[string]string{
 }
 
 func titleTransformer(table *schema.Table) error {
-	if table.Title == "" {
-		exceptions := make(map[string]string)
-		for k, v := range docs.DefaultTitleExceptions {
-			exceptions[k] = v
-		}
-		for k, v := range azureExceptions {
-			exceptions[k] = v
-		}
-		csr := caser.New(caser.WithCustomExceptions(exceptions))
-		table.Title = csr.ToTitle(table.Name)
+	if table.Title != "" {
+		return nil
 	}
+
+	exceptions := maps.Clone(docs.DefaultTitleExceptions)
+	for k, v := range azureExceptions {
+		exceptions[k] = v
+	}
+	csr := caser.New(caser.WithCustomExceptions(exceptions))
+	table.Title = csr.ToTitle(table.Name)
 	return nil
 }
 
