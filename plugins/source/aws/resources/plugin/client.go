@@ -30,8 +30,9 @@ type Client struct {
 func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, options plugin.NewClientOptions) (plugin.Client, error) {
 	var spec client.Spec
 	c := &Client{
-		options: options,
-		logger:  logger,
+		options:   options,
+		logger:    logger,
+		allTables: getTables(),
 	}
 	if options.NoConnection {
 		return c, nil
@@ -53,7 +54,6 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, options p
 		scheduler.WithConcurrency(spec.Concurrency),
 		scheduler.WithLogger(logger),
 	)
-	c.allTables = getTables()
 	return c, nil
 }
 

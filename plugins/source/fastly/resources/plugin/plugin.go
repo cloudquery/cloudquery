@@ -27,7 +27,8 @@ type Client struct {
 
 func newClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, options plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
-		options: options,
+		options:   options,
+		allTables: getTables(),
 	}
 	if options.NoConnection {
 		return c, nil
@@ -43,7 +44,6 @@ func newClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, opt
 	}
 	c.syncClient = syncClient.(*client.Client)
 	c.scheduler = scheduler.NewScheduler(scheduler.WithLogger(logger), scheduler.WithConcurrency(spec.Concurrency))
-	c.allTables = getTables()
 	return c, nil
 }
 
