@@ -104,7 +104,7 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 				},
 			}
 			if err := writeClients[i].Send(wr); err != nil {
-				return fmt.Errorf("failed to send write request (migrate): %w", err)
+				return handleSendError(err, writeClients[i], "migrate")
 			}
 		}
 		if _, err := writeClients[i].CloseAndRecv(); err != nil {
