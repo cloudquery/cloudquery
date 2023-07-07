@@ -1,6 +1,6 @@
 # Table: pagerduty_user_contact_methods
 
-This table shows data for PagerDuty User Contact Methods.
+This table shows data for Pagerduty User Contact Methods.
 
 https://developer.pagerduty.com/api-reference/50d46c0eb020d-list-a-user-s-contact-methods
 
@@ -14,8 +14,6 @@ This table depends on [pagerduty_users](pagerduty_users).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |id (PK)|`utf8`|

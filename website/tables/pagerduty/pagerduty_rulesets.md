@@ -1,6 +1,6 @@
 # Table: pagerduty_rulesets
 
-This table shows data for PagerDuty Rulesets.
+This table shows data for Pagerduty Rulesets.
 
 https://developer.pagerduty.com/api-reference/633f1ecb6c03b-list-rulesets
 
@@ -15,8 +15,6 @@ The following tables depend on pagerduty_rulesets:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |id (PK)|`utf8`|

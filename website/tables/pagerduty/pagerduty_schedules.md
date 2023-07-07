@@ -1,6 +1,6 @@
 # Table: pagerduty_schedules
 
-This table shows data for PagerDuty Schedules.
+This table shows data for Pagerduty Schedules.
 
 https://developer.pagerduty.com/api-reference/846ecf84402bb-list-schedules
 
@@ -10,8 +10,6 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |id (PK)|`utf8`|

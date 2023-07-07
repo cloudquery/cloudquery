@@ -1,6 +1,6 @@
 # Table: pagerduty_incident_log_entries
 
-This table shows data for PagerDuty Incident Log Entries.
+This table shows data for Pagerduty Incident Log Entries.
 
 https://developer.pagerduty.com/api-reference/367602cbc1c28-list-log-entries-for-an-incident
 
@@ -14,8 +14,6 @@ This table depends on [pagerduty_incidents](pagerduty_incidents).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |id (PK)|`utf8`|

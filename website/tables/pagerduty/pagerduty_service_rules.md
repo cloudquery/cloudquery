@@ -1,6 +1,6 @@
 # Table: pagerduty_service_rules
 
-This table shows data for PagerDuty Service Rules.
+This table shows data for Pagerduty Service Rules.
 
 https://developer.pagerduty.com/api-reference/d69ad7f1ec900-list-service-s-event-rules
 
@@ -14,8 +14,6 @@ This table depends on [pagerduty_services](pagerduty_services).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |id (PK)|`utf8`|

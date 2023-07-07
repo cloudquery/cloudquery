@@ -1,6 +1,6 @@
 # Table: pagerduty_business_services
 
-This table shows data for PagerDuty Business Services.
+This table shows data for Pagerduty Business Services.
 
 https://developer.pagerduty.com/api-reference/e67570b9d0e3d-list-business-services
 
@@ -10,8 +10,6 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |dependencies|`json`|

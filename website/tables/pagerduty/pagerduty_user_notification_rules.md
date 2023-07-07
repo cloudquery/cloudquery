@@ -1,6 +1,6 @@
 # Table: pagerduty_user_notification_rules
 
-This table shows data for PagerDuty User Notification Rules.
+This table shows data for Pagerduty User Notification Rules.
 
 https://developer.pagerduty.com/api-reference/043092de7e3e1-list-a-user-s-notification-rules
 
@@ -14,8 +14,6 @@ This table depends on [pagerduty_users](pagerduty_users).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |id (PK)|`utf8`|

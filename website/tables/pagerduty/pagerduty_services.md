@@ -1,6 +1,6 @@
 # Table: pagerduty_services
 
-This table shows data for PagerDuty Services.
+This table shows data for Pagerduty Services.
 
 https://developer.pagerduty.com/api-reference/e960cca205c0f-list-services
 
@@ -15,8 +15,6 @@ The following tables depend on pagerduty_services:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |dependencies|`json`|

@@ -1,6 +1,6 @@
 # Table: pagerduty_ruleset_rules
 
-This table shows data for PagerDuty Ruleset Rules.
+This table shows data for Pagerduty Ruleset Rules.
 
 https://developer.pagerduty.com/api-reference/c39605f86c5b7-list-event-rules
 
@@ -14,8 +14,6 @@ This table depends on [pagerduty_rulesets](pagerduty_rulesets).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |id (PK)|`utf8`|
