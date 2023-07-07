@@ -6,15 +6,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
-	"sync/atomic"
 	"time"
 
-	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
 	"github.com/aws/aws-sdk-go-v2/service/firehose/types"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
 )
 
 const (
@@ -23,8 +21,8 @@ const (
 	MaxBatchSizeBytes  = 4194000
 )
 
-func (c *Client) Write(ctx context.Context, tables schema.Tables, record <-chan arrow.Record) error {
-	parsedARN, err := arn.Parse(c.pluginSpec.StreamARN)
+func (c *Client) Write(ctx context.Context, messages <-chan message.WriteMessage) error {
+	parsedARN, err := arn.Parse(c.spec.StreamARN)
 	if err != nil {
 		c.logger.Error().Err(err).Msg("invalid firehose stream ARN")
 		return err
@@ -39,16 +37,21 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, record <-chan 
 	}
 	batchSize := 0
 
-	for rec := range record {
-		tableName, ok := rec.Schema().Metadata().GetValue(schema.MetadataTableName)
-		if !ok {
-			return fmt.Errorf("%q metadata key not found", schema.MetadataTableName)
+	for m := range messages {
+		switch m := m.(type) {
+		case *message.WriteDeleteStale:
+			c.logger.Warn().Str("table", m.TableName).Msg("DeleteStale not implemented")
+			continue
+		case *message.WriteMigrateTable:
+			c.logger.Warn().Str("table", m.Table.Name).Msg("Migrate not implemented")
+			continue
+		case *message.WriteInsert:
+		// ok, handle outside of switch
+		default:
+			return fmt.Errorf("unsupported message type: %T", m)
 		}
-
-		table := tables.Get(tableName)
-		if table == nil {
-			return fmt.Errorf("table %s not found", tableName)
-		}
+		ins := m.(*message.WriteInsert)
+		table, rec := ins.GetTable(), ins.Record
 
 		for row := int64(0); row < rec.NumRows(); row++ {
 			jsonObj := make(map[string]any, rec.NumCols()+1)
@@ -57,7 +60,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, record <-chan 
 			}
 			// Add table name to the json object
 			// TODO: This should be added to the SDK so that it can be used for other plugins as well
-			jsonObj["_cq_table_name"] = tableName
+			jsonObj["_cq_table_name"] = table.Name
 			b, err := json.Marshal(jsonObj)
 			if err != nil {
 				return err
@@ -73,7 +76,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, record <-chan 
 			}
 
 			// If adding this record would exceed the batch size, send the batch
-			if len(dst.Bytes())+batchSize > min(c.spec.BatchSizeBytes, MaxBatchSizeBytes) {
+			if len(dst.Bytes())+batchSize > MaxBatchSizeBytes {
 				err := c.sendBatch(ctx, recordsBatchInput, 0)
 				if err != nil {
 					return err
@@ -89,7 +92,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, record <-chan 
 			batchSize += len(dst.Bytes())
 
 			// Send the batch if it is full
-			if len(recordsBatchInput.Records) == min(c.spec.BatchSize, MaxBatchRecords) {
+			if len(recordsBatchInput.Records) == MaxBatchRecords {
 				err := c.sendBatch(ctx, recordsBatchInput, 0)
 				if err != nil {
 					return err
@@ -105,7 +108,7 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, record <-chan 
 }
 
 func (c *Client) sendBatch(ctx context.Context, recordsBatchInput *firehose.PutRecordBatchInput, count int) error {
-	if count == *c.pluginSpec.MaxRetries {
+	if count == *c.spec.MaxRetries {
 		return fmt.Errorf("max retries reached")
 	}
 	if recordsBatchInput == nil || len(recordsBatchInput.Records) == 0 {
@@ -118,7 +121,6 @@ func (c *Client) sendBatch(ctx context.Context, recordsBatchInput *firehose.PutR
 		return err
 	}
 	retryRecords := getFailedRecords(recordsBatchInput, resp)
-	atomic.AddUint64(&c.metrics.Writes, uint64(len(recordsBatchInput.Records)-len(retryRecords.Records)))
 	return c.sendBatch(ctx, retryRecords, count+1)
 }
 
@@ -132,11 +134,4 @@ func getFailedRecords(recordsBatchInput *firehose.PutRecordBatchInput, resp *fir
 		}
 	}
 	return retryRecords
-}
-
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
 }

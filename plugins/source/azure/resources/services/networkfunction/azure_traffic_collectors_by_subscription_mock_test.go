@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction/v2"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/gorilla/mux"
 )
 

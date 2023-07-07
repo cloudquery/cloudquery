@@ -5,8 +5,8 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 )
 
@@ -36,10 +36,7 @@ func fetchOrganizationMembers(ctx context.Context, meta schema.ClientMeta, _ *sc
 	if err != nil {
 		return err
 	}
-
-	for _, member := range result {
-		res <- member
-	}
+	res <- result
 
 	return nil
 }
