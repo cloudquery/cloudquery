@@ -108,5 +108,6 @@
   "plugins/source/firestore": "2.0.1",
   "plugins/source/firestore+FILLER": "0.0.0",
   "plugins/source/oracledb": "2.0.0",
-  "plugins/source/oracledb+FILLER": "0.0.0"
+  "plugins/source/oracledb+FILLER": "0.0.0",
+  "plugins/source/mixpanel": "1.0.0"
 }
