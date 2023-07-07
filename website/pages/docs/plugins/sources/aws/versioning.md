@@ -9,7 +9,7 @@ It is recommended that you specify the exact tables you wish to sync rather than
 </Callout>
 
 
-###  Breaking changes:
+###  Breaking changes
 The following examples are some of the most common examples of reasons for a major version change:
 
 1. Changing a primary key for a table
@@ -17,14 +17,14 @@ The following examples are some of the most common examples of reasons for a maj
 3. Changing the permissions required to sync a resource
 
 
-All releases contain a release log that indicates all of the changes (and highlights the breaking changes), all changelogs are available [here](https://github.com/cloudquery/cloudquery/releases?q=plugins-source-aws-). If you are ever unsure about a change that is included feel free to reach out to the CloudQuery team on Discord to find out more
+All releases contain a release log that indicates all of the changes (and highlights the breaking changes), all changelogs are available [here](https://github.com/cloudquery/cloudquery/releases?q=plugins-source-aws-). If you are ever unsure about a change that is included feel free to reach out to the CloudQuery team on Discord to find out more.
 
 ### Preview features
 
-Sometimes features or tables will be released and marked as `alpha` this indicates that future minor versions might change, break or remove functionality. This enables the CloudQuery team to release functionality prior to it being fully stable so that the community can give its feedback prior. Once a feature is released as Generally Available then all of the above rules for semantic versioning will apply
+Sometimes features or tables will be released and marked as `alpha`. This indicates that future minor versions might change, break or remove functionality. This enables the CloudQuery team to release functionality prior to it being fully stable so that the community can give feedback. Once a feature is released as Generally Available then all of the above rules for semantic versioning will apply.
 
 
-#### Current Preview features:
+#### Current Preview features
 
 The following features are currently in `Preview`
 
