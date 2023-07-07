@@ -1,13 +1,9 @@
 package client
 
 import (
-	"context"
-	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
 )
 
@@ -41,17 +37,8 @@ func (c *Client) WithAccountIDAndRegion(accountID, region string) *Client {
 	}
 }
 
-func New(_ context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
-	var spec Spec
-	err := s.UnmarshalSpec(&spec)
-	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal alicloud spec: %w", err)
-	}
-	spec.SetDefaults()
-	if err := spec.Validate(); err != nil {
-		return nil, err
-	}
-
+func New(logger zerolog.Logger, spec Spec) (schema.ClientMeta, error) {
+	var err error
 	services := make(map[string]map[string]*Services)
 	for _, account := range spec.Accounts {
 		for _, region := range account.Regions {
