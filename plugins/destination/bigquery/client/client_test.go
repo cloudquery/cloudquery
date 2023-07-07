@@ -1,46 +1,45 @@
 package client
 
 import (
+	"context"
+	"encoding/json"
 	"os"
 	"testing"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-var migrateStrategy = destination.MigrateStrategy{
-	AddColumn:           specs.MigrateModeSafe,
-	AddColumnNotNull:    specs.MigrateModeForced,
-	RemoveColumn:        specs.MigrateModeSafe,
-	RemoveColumnNotNull: specs.MigrateModeForced,
-	ChangeColumn:        specs.MigrateModeForced,
-}
-
 func TestPlugin(t *testing.T) {
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin("bigquery", "development", New, destination.WithManagedWriter())
-		},
-		specs.Destination{
-			Spec: &Spec{
-				ProjectID:        os.Getenv("BIGQUERY_PROJECT_ID"),
-				DatasetID:        os.Getenv("BIGQUERY_DATASET_ID"),
-				TimePartitioning: "none",
-			},
-		},
-		destination.PluginTestSuiteTests{
-			SkipOverwrite:             true,
-			SkipMigrateOverwrite:      true,
-			SkipMigrateOverwriteForce: true,
-			SkipMigrateAppendForce:    true,
+	ctx := context.Background()
 
-			// This fails due to a delay in schema propagation. Another solution is to wait a few minutes, but that makes tests super slow.
-			SkipMigrateAppend: true,
+	p := plugin.NewPlugin("bigquery", "development", New)
+	spec := &Spec{
+		ProjectID:        os.Getenv("BIGQUERY_PROJECT_ID"),
+		DatasetID:        os.Getenv("BIGQUERY_DATASET_ID"),
+		DatasetLocation:  os.Getenv("BIGQUERY_DATASET_LOCATION"),
+		TimePartitioning: "none",
+	}
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
+		t.Fatal(err)
+	}
 
-			MigrateStrategyOverwrite: migrateStrategy,
-			MigrateStrategyAppend:    migrateStrategy,
+	plugin.TestWriterSuiteRunner(t,
+		p,
+		plugin.WriterTestSuiteTests{
+			SkipUpsert:      true,
+			SkipMigrate:     true,
+			SkipDeleteStale: true,
 		},
-		destination.WithTestIgnoreNullsInLists(),
-		destination.WithTestSourceSkipMaps(),
+		plugin.WithTestDataOptions(schema.TestSourceOptions{
+			SkipMaps: true,
+			// https://github.com/cloudquery/cloudquery/issues/12022
+			SkipTimes: true,
+		}),
+		plugin.WithTestIgnoreNullsInLists(),
 	)
 }

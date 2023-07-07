@@ -3,6 +3,16 @@ package client
 import (
 	"encoding/json"
 	"fmt"
+	"time"
+
+	"github.com/cloudquery/plugin-sdk/v4/configtype"
+)
+
+const (
+	batchSize = 10000
+	// documented BigQuery limit is 10MB, and we try to keep well below that as the size
+	// estimate is not exact and there are also limits on request size, apart from the batch size
+	batchSizeBytes = 5 * 1024 * 1024
 )
 
 type TimePartitioningOption string
@@ -34,11 +44,23 @@ type Spec struct {
 	DatasetLocation       string                 `json:"dataset_location"`
 	TimePartitioning      TimePartitioningOption `json:"time_partitioning"`
 	ServiceAccountKeyJSON string                 `json:"service_account_key_json"`
+	BatchSize             int                    `json:"batch_size"`
+	BatchSizeBytes        int                    `json:"batch_size_bytes"`
+	BatchTimeout          configtype.Duration    `json:"batch_timeout"`
 }
 
 func (s *Spec) SetDefaults() {
 	if s.TimePartitioning == "" {
 		s.TimePartitioning = TimePartitioningOptionNone
+	}
+	if s.BatchSize == 0 {
+		s.BatchSize = batchSize
+	}
+	if s.BatchSizeBytes == 0 {
+		s.BatchSizeBytes = batchSizeBytes
+	}
+	if s.BatchTimeout.Duration() <= 0 {
+		s.BatchTimeout = configtype.NewDuration(10 * time.Second)
 	}
 }
 
