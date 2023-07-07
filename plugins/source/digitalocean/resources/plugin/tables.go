@@ -29,6 +29,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/docs"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	"golang.org/x/exp/maps"
 )
 
 func getTables() []*schema.Table {
@@ -80,11 +81,11 @@ func titleTransformer(table *schema.Table) error {
 	if table.Title != "" {
 		return nil
 	}
-	list := docs.DefaultTitleExceptions
+	exceptions := maps.Clone(docs.DefaultTitleExceptions)
 	for k, v := range customExceptions {
-		list[k] = v
+		exceptions[k] = v
 	}
-	csr := caser.New(caser.WithCustomExceptions(list))
+	csr := caser.New(caser.WithCustomExceptions(exceptions))
 	t := csr.ToTitle(table.Name)
 	table.Title = strings.Trim(strings.ReplaceAll(t, "  ", " "), " ")
 	return nil
