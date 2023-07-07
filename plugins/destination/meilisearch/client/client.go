@@ -96,7 +96,7 @@ func New(_ context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.Ne
 	client.writer, err = batchwriter.New(client,
 		batchwriter.WithBatchSize(spec.BatchSize),
 		batchwriter.WithBatchSizeBytes(spec.BatchSizeBytes),
-		batchwriter.WithBatchTimeout(spec.Timeout),
+		batchwriter.WithBatchTimeout(spec.BatchTimeout.Duration()),
 	)
 	if err != nil {
 		return nil, err

@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"time"
 
 	"cloud.google.com/go/storage"
 	"github.com/cloudquery/filetypes/v4"
@@ -66,7 +65,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 	c.writer, err = streamingbatchwriter.New(c,
 		streamingbatchwriter.WithBatchSizeRows(*c.spec.BatchSize),
 		streamingbatchwriter.WithBatchSizeBytes(*c.spec.BatchSizeBytes),
-		streamingbatchwriter.WithBatchTimeout(time.Duration(*c.spec.BatchTimeoutMs)*time.Millisecond),
+		streamingbatchwriter.WithBatchTimeout(c.spec.BatchTimeout.Duration()),
 	)
 	if err != nil {
 		return nil, err

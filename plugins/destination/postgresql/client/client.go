@@ -2,12 +2,13 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
-
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/writers/mixedbatchwriter"
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -16,16 +17,19 @@ import (
 )
 
 type Client struct {
-	destination.UnimplementedManagedWriter
 	conn                *pgxpool.Pool
 	logger              zerolog.Logger
-	spec                specs.Destination
 	currentDatabaseName string
 	currentSchemaName   string
 	pgType              pgType
-	metrics             destination.Metrics
 	batchSize           int
+	writer              *mixedbatchwriter.MixedBatchWriter
+
+	plugin.UnimplementedSource
 }
+
+// Assert Client implements plugin.Client interface.
+var _ plugin.Client = (*Client)(nil)
 
 type pgType int
 
@@ -35,23 +39,27 @@ const (
 	pgTypeCockroachDB
 )
 
-func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "pg-dest").Logger(),
 	}
-	var specPostgreSql Spec
-	c.spec = spec
-	if err := spec.UnmarshalSpec(&specPostgreSql); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
+	if opts.NoConnection {
+		return c, nil
 	}
-	specPostgreSql.SetDefaults()
-	c.batchSize = spec.BatchSize
-	logLevel, err := tracelog.LogLevelFromString(specPostgreSql.PgxLogLevel.String())
+
+	var spec Spec
+	err := json.Unmarshal(specBytes, &spec)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse pgx log level %s: %w", specPostgreSql.PgxLogLevel, err)
+		return nil, err
 	}
-	c.logger.Info().Str("pgx_log_level", specPostgreSql.PgxLogLevel.String()).Msg("Initializing postgresql destination")
-	pgxConfig, err := pgxpool.ParseConfig(specPostgreSql.ConnectionString)
+	spec.SetDefaults()
+	c.batchSize = spec.BatchSize
+	logLevel, err := tracelog.LogLevelFromString(spec.PgxLogLevel.String())
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse pgx log level %s: %w", spec.PgxLogLevel, err)
+	}
+	c.logger.Info().Str("pgx_log_level", spec.PgxLogLevel.String()).Msg("Initializing postgresql destination")
+	pgxConfig, err := pgxpool.ParseConfig(spec.ConnectionString)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse connection string %w", err)
 	}
@@ -82,7 +90,20 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	if err != nil {
 		return nil, fmt.Errorf("failed to get database type: %w", err)
 	}
+	c.writer, err = mixedbatchwriter.New(c,
+		mixedbatchwriter.WithLogger(c.logger),
+		mixedbatchwriter.WithBatchSize(spec.BatchSize),
+		mixedbatchwriter.WithBatchSizeBytes(spec.BatchSizeBytes),
+		mixedbatchwriter.WithBatchTimeout(spec.BatchTimeout.Duration()),
+	)
+	if err != nil {
+		return nil, err
+	}
 	return c, nil
+}
+
+func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) error {
+	return c.writer.Write(ctx, res)
 }
 
 func (c *Client) Close(ctx context.Context) error {
