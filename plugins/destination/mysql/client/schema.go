@@ -18,8 +18,8 @@ const columnQuery = `SELECT
 cols.COLUMN_NAME,
 COLUMN_TYPE,
 IS_NULLABLE,
-constraint_type
-, sub_part
+constraint_type,
+sub_part
 FROM
 INFORMATION_SCHEMA.COLUMNS AS cols
 	LEFT JOIN  information_schema.STATISTICS as stats on
@@ -179,7 +179,7 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
 				// `blob/text` SQL types require specifying prefix length to use for the primary key
 				// https://dev.mysql.com/doc/refman/8.0/en/innodb-limits.html
 				// The index key prefix length limit is 767 bytes for InnoDB tables that use the REDUNDANT or COMPACT row format. For example, you might hit this limit with a column prefix index of more than 191 characters on a TEXT or VARCHAR column, assuming a utf8mb4 character set and the maximum of 4 bytes for each character.
-				builder.WriteString("(" + fmt.Sprintf("%d", maxPrefixLength) + ")")
+				builder.WriteString("(" + strconv.Itoa(maxPrefixLength) + ")")
 			}
 			if i < len(primaryKeysIndices)-1 {
 				builder.WriteString(", ")
