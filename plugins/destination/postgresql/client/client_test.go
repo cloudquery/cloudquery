@@ -1,11 +1,13 @@
 package client
 
 import (
+	"context"
+	"encoding/json"
 	"os"
 	"testing"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func getTestConnection() string {
@@ -16,29 +18,37 @@ func getTestConnection() string {
 	return testConn
 }
 
-var strategy = destination.MigrateStrategy{
-	AddColumn:           specs.MigrateModeSafe,
-	AddColumnNotNull:    specs.MigrateModeForced,
-	RemoveColumn:        specs.MigrateModeSafe,
-	RemoveColumnNotNull: specs.MigrateModeForced,
-	ChangeColumn:        specs.MigrateModeForced,
+var safeMigrations = plugin.SafeMigrations{
+	AddColumn:           true,
+	AddColumnNotNull:    false,
+	RemoveColumn:        true,
+	RemoveColumnNotNull: false,
+	ChangeColumn:        false,
 }
 
 func TestPgPlugin(t *testing.T) {
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin("postgresql", "development", New)
+	ctx := context.Background()
+	p := plugin.NewPlugin("postgresql", "development", New)
+	s := &Spec{
+		ConnectionString: getTestConnection(),
+		PgxLogLevel:      LogLevelTrace,
+	}
+	b, err := json.Marshal(s)
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = p.Init(ctx, b, plugin.NewClientOptions{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	testOpts := schema.TestSourceOptions{
+		SkipMaps: true,
+	}
+	plugin.TestWriterSuiteRunner(t,
+		p,
+		plugin.WriterTestSuiteTests{
+			SafeMigrations: safeMigrations,
 		},
-		specs.Destination{
-			Spec: &Spec{
-				ConnectionString: getTestConnection(),
-				PgxLogLevel:      LogLevelTrace,
-			},
-		},
-		destination.PluginTestSuiteTests{
-			MigrateStrategyOverwrite: strategy,
-			MigrateStrategyAppend:    strategy,
-		},
-		destination.WithTestSourceSkipMaps(),
+		plugin.WithTestDataOptions(testOpts),
 	)
 }

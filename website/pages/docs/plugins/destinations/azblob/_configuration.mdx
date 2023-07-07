@@ -4,12 +4,14 @@ spec:
   name: "azblob"
   path: "cloudquery/azblob"
   version: "VERSION_DESTINATION_AZBLOB"
-  write_mode: "append" # this plugin only supports 'append' mode
-  # batch_size: 10000 # optional
-  # batch_size_bytes: 5242880 # optional
   spec:
     storage_account: "cqdestinationazblob"
     container: "test"
     path: "path/to/files"
-    format: "parquet" # options: parquet, json, csv
+#    batch_size: 10000 # optional
+#    batch_size_bytes: 52428800 # optional
+#    batch_timeout: 30s # optional
+    format: "csv" # options: parquet, json, csv
+    format_spec:
+      delimiter: ","
 ```

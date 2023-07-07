@@ -12,11 +12,30 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/slos"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/synthetics"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/resources/services/users"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/caser"
+	"github.com/cloudquery/plugin-sdk/v4/docs"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func Tables() []*schema.Table {
-	return []*schema.Table{
+func titleTransformer(table *schema.Table) error {
+	if table.Title != "" {
+		return nil
+	}
+	exceptions := make(map[string]string)
+	for k, v := range docs.DefaultTitleExceptions {
+		exceptions[k] = v
+	}
+	for k, v := range customExceptions {
+		exceptions[k] = v
+	}
+	csr := caser.New(caser.WithCustomExceptions(exceptions))
+	table.Title = csr.ToTitle(table.Name)
+	return nil
+}
+
+func Tables() schema.Tables {
+	tables := []*schema.Table{
 		dashboards.Dashboards(),
 		dashboards.Lists(),
 		downtimes.Downtimes(),
@@ -33,4 +52,14 @@ func Tables() []*schema.Table {
 		synthetics.Synthetics(),
 		users.Users(),
 	}
+	if err := transformers.TransformTables(tables); err != nil {
+		panic(err)
+	}
+	if err := transformers.Apply(tables, titleTransformer); err != nil {
+		panic(err)
+	}
+	for _, table := range tables {
+		schema.AddCqIDs(table)
+	}
+	return tables
 }
