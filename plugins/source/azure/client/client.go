@@ -18,9 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
 	"github.com/thoas/go-funk"
 	"golang.org/x/exp/maps"
@@ -237,25 +235,18 @@ func getCloudConfigFromSpec(specCloud string) (cloud.Configuration, error) {
 	return cloud.Configuration{}, fmt.Errorf("unknown Azure cloud name %q. Supported values are %q", specCloud, maps.Keys(specCloudToConfig))
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
-	var spec Spec
-	var err error
-	if err := s.UnmarshalSpec(&spec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal gcp spec: %w", err)
-	}
-
-	spec.SetDefaults()
-
-	uniqueSubscriptions := funk.Uniq(spec.Subscriptions).([]string)
+func New(ctx context.Context, logger zerolog.Logger, s *Spec) (schema.ClientMeta, error) {
+	s.SetDefaults()
+	uniqueSubscriptions := funk.Uniq(s.Subscriptions).([]string)
 	c := &Client{
 		logger:             logger,
 		subscriptions:      uniqueSubscriptions,
-		pluginSpec:         &spec,
+		pluginSpec:         s,
 		storageAccountKeys: &sync.Map{},
 	}
 
-	if spec.CloudName != "" {
-		cloudConfig, err := getCloudConfigFromSpec(spec.CloudName)
+	if s.CloudName != "" {
+		cloudConfig, err := getCloudConfigFromSpec(s.CloudName)
 		if err != nil {
 			return nil, err
 		}
@@ -278,7 +269,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 	if c.Options != nil {
 		credsOptions = &azidentity.DefaultAzureCredentialOptions{ClientOptions: c.Options.ClientOptions}
 	}
-
+	var err error
 	c.Creds, err = azidentity.NewDefaultAzureCredential(credsOptions)
 	if err != nil {
 		return nil, err
@@ -294,7 +285,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 		}
 	}
 	// User specified subscriptions, that CloudQuery should skip syncing
-	c.subscriptions = funk.LeftJoinString(c.subscriptions, spec.SkipSubscriptions)
+	c.subscriptions = funk.LeftJoinString(c.subscriptions, s.SkipSubscriptions)
 
 	if len(c.subscriptions) == 0 {
 		return nil, fmt.Errorf("no subscriptions found")
@@ -333,6 +324,11 @@ func (c *Client) ID() string {
 		return fmt.Sprintf("subscriptions/%s/billingPeriods/%s", c.SubscriptionId, *c.BillingPeriod.Name)
 	}
 	return fmt.Sprintf("subscriptions/%s", c.SubscriptionId)
+}
+
+func (c *Client) Duplicate() *Client {
+	newClient := *c
+	return &newClient
 }
 
 // withSubscription allows multiplexer to create a new client with given subscriptionId
