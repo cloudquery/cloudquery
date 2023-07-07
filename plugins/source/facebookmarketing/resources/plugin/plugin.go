@@ -16,6 +16,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/rs/zerolog"
+	"golang.org/x/exp/maps"
 )
 
 var (
@@ -39,10 +40,7 @@ var customExceptions = map[string]string{
 
 func titleTransformer(table *schema.Table) {
 	if table.Title == "" {
-		exceptions := make(map[string]string)
-		for k, v := range docs.DefaultTitleExceptions {
-			exceptions[k] = v
-		}
+		exceptions := maps.Clone(docs.DefaultTitleExceptions)
 		for k, v := range customExceptions {
 			exceptions[k] = v
 		}

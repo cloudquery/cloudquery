@@ -64,12 +64,12 @@ type Client struct {
 	scheduler  *scheduler.Scheduler
 	syncClient *client.Client
 	options    plugin.NewClientOptions
-	allTables schema.Tables,
+	allTables  schema.Tables
 }
 
 func newClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, options plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
-		options: options,
+		options:   options,
 		allTables: getTables(),
 	}
 	if options.NoConnection {
