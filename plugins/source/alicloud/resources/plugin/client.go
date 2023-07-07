@@ -58,12 +58,12 @@ func getTables() []*schema.Table {
 		ecs.Instances(),
 		oss.Buckets(),
 	}
-	for i := range tables {
-		schema.AddCqIDs(tables[i])
-	}
 	err := transformers.TransformTables(tables)
 	if err != nil {
 		panic(err)
+	}
+	for i := range tables {
+		schema.AddCqIDs(tables[i])
 	}
 	return tables
 }
