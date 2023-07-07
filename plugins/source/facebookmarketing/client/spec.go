@@ -2,9 +2,14 @@ package client
 
 import "fmt"
 
+const (
+	defaultConcurrency = 1000
+)
+
 type Spec struct {
 	AdAccountId string `json:"ad_account_id"`
 	AccessToken string `json:"access_token"`
+	Concurrency int    `json:"concurrency"`
 }
 
 func (s *Spec) Validate() error {
@@ -17,4 +22,10 @@ func (s *Spec) Validate() error {
 	}
 
 	return nil
+}
+
+func (s *Spec) SetDefaults() {
+	if s.Concurrency == 0 {
+		s.Concurrency = defaultConcurrency
+	}
 }
