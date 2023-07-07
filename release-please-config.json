@@ -148,17 +148,11 @@
     "plugins/source/stripe": {
       "component": "plugins-source-stripe"
     },
-    "plugins/source/tailscale": {
-      "component": "plugins-source-tailscale"
-    },
     "plugins/source/terraform": {
       "component": "plugins-source-terraform"
     },
     "plugins/source/test": {
       "component": "plugins-source-test"
-    },
-    "plugins/source/vercel": {
-      "component": "plugins-source-vercel"
     },
     "scaffold": {
       "component": "scaffold"
