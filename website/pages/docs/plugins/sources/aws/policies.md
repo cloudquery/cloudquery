@@ -176,9 +176,9 @@ AWS PCI DSS v3.2.1 performs the following checks:
   - Secrets Manager secrets configured with automatic rotation should rotate successfully
   - Remove unused Secrets Manager secrets
   - Secrets Manager secrets should be rotated within a specified number of days
-  - All EC2 instances managed by Systems Manager should be compliant with patching requirements
-  - Instances managed by Systems Manager should have an association compliance status of COMPLIANT
-  - EC2 instances should be managed by AWS Systems Manager
+  - Amazon EC2 instances managed by Systems Manager should have a patch compliance status of COMPLIANT after a patch installation
+  - Amazon EC2 instances managed by Systems Manager should have an association compliance status of COMPLIANT
+  - Amazon EC2 instances should be managed by AWS Systems Manager
   - AWS WAF Classic global web ACL logging should be enabled
 
 ### Dependent Views
@@ -400,9 +400,9 @@ AWS Foundational Security Best Practices performs the following checks:
   - Secrets Manager secrets should be rotated within a specified number of days
   - SNS topics should be encrypted at rest using AWS KMS
   - Amazon SQS queues should be encrypted at rest
-  - EC2 instances should be managed by AWS Systems Manager
-  - All EC2 instances managed by Systems Manager should be compliant with patching requirements
-  - Instances managed by Systems Manager should have an association compliance status of COMPLIANT
+  - Amazon EC2 instances should be managed by AWS Systems Manager
+  - Amazon EC2 instances managed by Systems Manager should have a patch compliance status of COMPLIANT after a patch installation
+  - Amazon EC2 instances managed by Systems Manager should have an association compliance status of COMPLIANT
   - SSM documents should not be public
   - AWS WAF Classic global web ACL logging should be enabled
 
