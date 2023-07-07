@@ -31,9 +31,10 @@ var (
 
 type Client struct {
 	plugin.UnimplementedDestination
-	schduler   *scheduler.Scheduler
+	scheduler  *scheduler.Scheduler
 	syncClient *client.Client
 	options    plugin.NewClientOptions
+	allTables  schema.Tables
 }
 
 func newClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, options plugin.NewClientOptions) (plugin.Client, error) {
@@ -53,7 +54,8 @@ func newClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, opt
 		return nil, err
 	}
 	c.syncClient = syncClient.(*client.Client)
-	c.schduler = scheduler.NewScheduler(scheduler.WithLogger(logger), scheduler.WithConcurrency(spec.Concurrency))
+	c.scheduler = scheduler.NewScheduler(scheduler.WithLogger(logger), scheduler.WithConcurrency(spec.Concurrency))
+	c.allTables = getTables()
 	return c, nil
 }
 
@@ -61,23 +63,19 @@ func (*Client) Close(_ context.Context) error {
 	return nil
 }
 
-func (*Client) Tables(_ context.Context, options plugin.TableOptions) (schema.Tables, error) {
-	tables, err := getTables().FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
-	if err != nil {
-		return nil, err
-	}
-	return tables, nil
+func (c *Client) Tables(_ context.Context, options plugin.TableOptions) (schema.Tables, error) {
+	return c.allTables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
 }
 
 func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.SyncMessage) error {
 	if c.options.NoConnection {
 		return fmt.Errorf("no connection")
 	}
-	tables, err := getTables().FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
+	tables, err := c.allTables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
 	if err != nil {
 		return err
 	}
-	return c.schduler.Sync(ctx, c.syncClient, tables, res)
+	return c.scheduler.Sync(ctx, c.syncClient, tables, res)
 }
 
 func Plugin() *plugin.Plugin {

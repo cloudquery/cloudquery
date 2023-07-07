@@ -34,7 +34,7 @@ func titleTransformer(table *schema.Table) error {
 	return nil
 }
 
-func Tables() schema.Tables {
+func getTables() schema.Tables {
 	tables := []*schema.Table{
 		dashboards.Dashboards(),
 		dashboards.Lists(),
