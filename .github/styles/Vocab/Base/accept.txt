@@ -110,6 +110,7 @@ IPs
 json
 JSON
 jsonb
+Jira
 Kestra
 keyless
 Kibana
