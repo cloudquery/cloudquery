@@ -14,6 +14,7 @@ require (
 	github.com/golang/mock v1.6.0
 	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.29.1
+	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df
 )
 
 replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230703001435-df3b664a289d
@@ -27,7 +28,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.35 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.26 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.26 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.29 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.28 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.23 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.12.12 // indirect
@@ -58,7 +59,6 @@ require (
 	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
-	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df // indirect
 	golang.org/x/mod v0.11.0 // indirect
 	golang.org/x/net v0.9.0 // indirect
 	golang.org/x/oauth2 v0.7.0 // indirect
