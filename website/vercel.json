@@ -245,6 +245,10 @@
     {
       "source": "/docs/advanced-topics/docker",
       "destination": "/docs/deployment/docker"
+    },
+    {
+      "source": "/buy/jira",
+      "destination": "https://buy.stripe.com/eVa4gk8U99tB9ywbIR"
     }
   ]
 }
