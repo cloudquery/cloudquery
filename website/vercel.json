@@ -249,6 +249,42 @@
     {
       "source": "/buy/jira",
       "destination": "https://buy.stripe.com/eVa4gk8U99tB9ywbIR"
+    },
+    {
+      "source": "/buy/googleads",
+      "destination": "https://buy.stripe.com/dR6aEIgmBcFN5ig000"
+    },
+    {
+      "source": "/buy/firehose",
+      "destination": "https://buy.stripe.com/6oEbIMfix35d7qo28i"
+    },
+    {
+      "source": "/buy/gandi",
+      "destination": "https://buy.stripe.com/00geUY6M17lt9yw3cd"
+    },
+    {
+      "source": "/buy/heroku",
+      "destination": "https://buy.stripe.com/28o28c0nD7ltfWU9AC"
+    },
+    {
+      "source": "/buy/launchdarkly",
+      "destination": "https://buy.stripe.com/9AQbIM0nDgW35ig4gj"
+    },
+    {
+      "source": "/buy/mixpanel",
+      "destination": "https://buy.stripe.com/fZe4gk1rH6hpcKI7sw"
+    },
+    {
+      "source": "/buy/slack",
+      "destination": "https://buy.stripe.com/6oE5koc6l49h1209AF"
+    },
+    {
+      "source": "/buy/tailscale",
+      "destination": "https://buy.stripe.com/14kdQU6M17lt8us14c"
+    },
+    {
+      "source": "/buy/vercel",
+      "destination": "https://buy.stripe.com/fZeeUYeet7lteSQcMS"
     }
   ]
 }
