@@ -22,4 +22,19 @@ Details about policies for every cloud provider can be found on its source plugi
 
 We also provide premium paid policies:
 
-- [Azure CIS for Snowflake v1.3.0](https://cloudquery.io/buy/azure_cis_130_snowflake) - One time `$50` with 6 months of support and updates.
+- [Azure CIS V1.3.0 for Snowflake](https://cloudquery.io/buy/azure_cis_130_snowflake) - One time `$50` with 6 months of support and updates.
+- [Azure CIS V1.3.0 for BigQuery](https://cloudquery.io/buy/azure_cis_130_bigquery) - One time `$50` with 6 months of support and updates.
+- [Azure HIPPA HITRUST v9.2 for Snowflake](https://cloudquery.io/buy/azure_hippa_92_snowflake) - One time `$50` with 6 months of support and updates.
+- [Azure HIPPA HITRUST v9.2 for BigQuery](https://cloudquery.io/buy/azure_hippa_92_bigquery) - One time `$50` with 6 months of support and updates.
+
+- [AWS CIS V1.5.0 for Snowflake](https://cloudquery.io/buy/aws_cis_150_snowflake) - One time `$50` with 6 months of support and updates.
+- [AWS CIS V1.5.0 for BigQuery](https://cloudquery.io/buy/aws_cis_150_bigquery) - One time `$50` with 6 months of support and updates.
+- [AWS Foundational Security for Snowflake](https://cloudquery.io/buy/aws_foundational_security_snowflake) - One time `$50` with 6 months of support and updates.
+- [AWS Foundational Security for BigQuery](https://cloudquery.io/buy/aws_foundational_security_bigquery) - One time `$50` with 6 months of support and updates.
+
+
+- [GCP CIS V1.2.0 for Snowflake](https://cloudquery.io/buy/gcp_cis_120_snowflake) - One time `$50` with 6 months of support and updates.
+- [GCP CIS V1.2.0 for BigQuery](https://cloudquery.io/buy/gcp_cis_120_bigquery) - One time `$50` with 6 months of support and updates.
+
+- [K8S NSA CISA V1 for Snowflake](https://cloudquery.io/buy/k8s_nsa_cisa_v1_snowflake) - One time `$50` with 6 months of support and updates.
+- [K8S NSA CISA V1 for BigQuery](https://cloudquery.io/buy/k8s_nsa_cisa_v1_bigquery) - One time `$50` with 6 months of support and updates.
