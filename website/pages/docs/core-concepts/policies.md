@@ -17,3 +17,9 @@ Details about policies for every cloud provider can be found on its source plugi
 - [Azure](/docs/plugins/sources/azure/policies)
 - [GCP](/docs/plugins/sources/gcp/policies)
 - [Kubernetes](/docs/plugins/sources/k8s/policies)
+
+## Premium Policies
+
+We also provide premium paid policies:
+
+- [Azure CIS for Snowflake v1.3.0](https://cloudquery.io/buy/azure_cis_130_snowflake) - One time `$50` with 6 months of support and updates.

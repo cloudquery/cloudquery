@@ -285,6 +285,10 @@
     {
       "source": "/buy/vercel",
       "destination": "https://buy.stripe.com/fZeeUYeet7lteSQcMS"
+    },
+    {
+      "source": "/buy/azure_cis_130_snowflake",
+      "destination": "https://buy.stripe.com/9AQ148fixcFNfWU8wH"
     }
   ]
 }
