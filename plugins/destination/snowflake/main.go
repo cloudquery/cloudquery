@@ -17,7 +17,7 @@ const (
 
 func main() {
 	p := plugin.NewPlugin("snowflake", internalPlugin.Version, client.New)
-	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN)).Serve(context.Background()); err != nil {
+	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN), serve.WithDestinationV0V1Server()).Serve(context.Background()); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
