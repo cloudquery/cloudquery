@@ -15,8 +15,6 @@ The primary key for this table is **arn**.
 |account_id|`utf8`|
 |arn (PK)|`utf8`|
 |tags|`json`|
-|created_time|`timestamp[us, tz=UTC]`|
-|description|`utf8`|
-|display_name|`utf8`|
-|id|`utf8`|
-|provider_name|`utf8`|
+|budgets|`json`|
+|portfolio_detail|`json`|
+|tag_options|`json`|

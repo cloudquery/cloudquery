@@ -32,7 +32,7 @@ func ProvisionedProducts() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveProvisionedProductTags,
+				Resolver: client.ResolveTags,
 			},
 		},
 	}
@@ -55,9 +55,4 @@ func fetchServicecatalogProvisionedProducts(ctx context.Context, meta schema.Cli
 	}
 
 	return nil
-}
-
-func resolveProvisionedProductTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p := resource.Item.(types.ProvisionedProductAttribute)
-	return resource.Set(c.Name, client.TagsToMap(p.Tags))
 }
