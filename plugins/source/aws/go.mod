@@ -79,7 +79,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/mq v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.16.2
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.20.7
-	github.com/aws/aws-sdk-go-v2/service/networkfirewall v1.28.2
+	github.com/aws/aws-sdk-go-v2/service/networkfirewall v1.28.3
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.19.8
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.15.13
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.37.2
@@ -97,10 +97,10 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/savingsplans v1.12.12
 	github.com/aws/aws-sdk-go-v2/service/scheduler v1.1.13
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.19.10
-	github.com/aws/aws-sdk-go-v2/service/securityhub v1.33.1
+	github.com/aws/aws-sdk-go-v2/service/securityhub v1.33.2
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.19.2
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.17.6
-	github.com/aws/aws-sdk-go-v2/service/servicediscovery v1.21.6
+	github.com/aws/aws-sdk-go-v2/service/servicediscovery v1.21.7
 	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.14.14
 	github.com/aws/aws-sdk-go-v2/service/ses v1.15.11
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.18.2
@@ -142,7 +142,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230703001435-df3b664a289d
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230710001530-a2a76ebbb85f
 
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect

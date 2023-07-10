@@ -1,6 +1,6 @@
 ---
 name: Vercel
-stage: GA
+stage: GA (Premium)
 title: Vercel Source Plugin
 description: CloudQuery Vercel source plugin documentation
 ---
@@ -10,7 +10,9 @@ import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
 import Authentication from "./_authentication.mdx";
 
-<Badge text={"Latest: " + getLatestVersion("source", `vercel`)}/>
+<Badge text={"Premium Latest: " + getLatestVersion("source", `vercel`)}/>
+
+This is a premium plugin that you can buy [here](https://cloudquery.io/buy/vercel) (`$50` with 6 months of free updates and support).
 
 The CloudQuery Vercel plugin pulls configuration out of Vercel resources and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 

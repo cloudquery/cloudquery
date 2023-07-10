@@ -1,6 +1,6 @@
 ---
 name: Tailscale
-stage: GA
+stage: GA (Premium)
 title: Tailscale Source Plugin
 description: CloudQuery Tailscale source plugin documentation
 ---
@@ -11,7 +11,9 @@ import { Badge } from "../../../../../components/Badge";
 import Configuration from "./_configuration.mdx";
 import Authentication from "./_authentication.mdx";
 
-<Badge text={"Latest: " + getLatestVersion("source", `tailscale`)}/>
+<Badge text={"Premium Latest: " + getLatestVersion("source", `tailscale`)}/>
+
+This is a premium plugin that you can buy [here](https://cloudquery.io/buy/tailscale) (`$50` with 6 months of free updates and support).
 
 The CloudQuery Tailscale plugin pulls configuration out of Tailscale resources and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
