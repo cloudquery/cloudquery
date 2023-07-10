@@ -10,9 +10,10 @@ var customExceptions = map[string]string{
 	"pagerduty": "PagerDuty",
 }
 
-func titleTransformer(table *schema.Table) string {
+func titleTransformer(table *schema.Table) error {
 	if table.Title != "" {
-		return table.Title
+		// respect hard-coded titles
+		return nil
 	}
 	exceptions := make(map[string]string)
 	for k, v := range docs.DefaultTitleExceptions {
@@ -22,5 +23,6 @@ func titleTransformer(table *schema.Table) string {
 		exceptions[k] = v
 	}
 	csr := caser.New(caser.WithCustomExceptions(exceptions))
-	return csr.ToTitle(table.Name)
+	table.Title = csr.ToTitle(table.Name)
+	return nil
 }

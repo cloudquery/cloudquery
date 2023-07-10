@@ -1,6 +1,6 @@
 # Table: pagerduty_incident_log_entries
 
-This table shows data for Pagerduty Incident Log Entries.
+This table shows data for PagerDuty Incident Log Entries.
 
 https://developer.pagerduty.com/api-reference/367602cbc1c28-list-log-entries-for-an-incident
 

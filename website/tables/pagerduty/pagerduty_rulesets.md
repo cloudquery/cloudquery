@@ -1,6 +1,6 @@
 # Table: pagerduty_rulesets
 
-This table shows data for Pagerduty Rulesets.
+This table shows data for PagerDuty Rulesets.
 
 https://developer.pagerduty.com/api-reference/633f1ecb6c03b-list-rulesets
 

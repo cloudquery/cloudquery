@@ -1,6 +1,6 @@
 # Table: pagerduty_incident_alerts
 
-This table shows data for Pagerduty Incident Alerts.
+This table shows data for PagerDuty Incident Alerts.
 
 https://developer.pagerduty.com/api-reference/4bc42e7ac0c59-list-alerts-for-an-incident
 

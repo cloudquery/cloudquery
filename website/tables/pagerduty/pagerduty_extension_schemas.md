@@ -1,6 +1,6 @@
 # Table: pagerduty_extension_schemas
 
-This table shows data for Pagerduty Extension Schemas.
+This table shows data for PagerDuty Extension Schemas.
 
 https://developer.pagerduty.com/api-reference/6eef27c5b452f-list-extension-schemas
 

@@ -21,7 +21,7 @@ import (
 )
 
 func getTables() []*schema.Table {
-	t := []*schema.Table{
+	t := schema.Tables{
 		addons.Addons(),
 		incidents.Incidents(),
 		business_services.BusinessServices(),
@@ -43,7 +43,10 @@ func getTables() []*schema.Table {
 	}
 	for _, table := range t {
 		schema.AddCqIDs(table)
-		titleTransformer(table)
+	}
+	err := transformers.Apply(t, titleTransformer)
+	if err != nil {
+		panic(err)
 	}
 	return t
 }

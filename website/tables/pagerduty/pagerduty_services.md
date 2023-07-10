@@ -1,6 +1,6 @@
 # Table: pagerduty_services
 
-This table shows data for Pagerduty Services.
+This table shows data for PagerDuty Services.
 
 https://developer.pagerduty.com/api-reference/e960cca205c0f-list-services
 

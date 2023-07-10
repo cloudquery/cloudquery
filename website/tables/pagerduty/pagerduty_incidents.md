@@ -1,6 +1,6 @@
 # Table: pagerduty_incidents
 
-This table shows data for Pagerduty Incidents.
+This table shows data for PagerDuty Incidents.
 
 https://developer.pagerduty.com/api-reference/9d0b4b12e36f9-list-incidents
 
