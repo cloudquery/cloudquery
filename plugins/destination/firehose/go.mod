@@ -14,7 +14,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230703001435-df3b664a289d
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230709001641-0a5253362e51
 
 require (
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.26 // indirect

@@ -7,10 +7,11 @@ require (
 	github.com/cloudquery/plugin-sdk/v4 v4.8.1-rc1
 	github.com/rs/zerolog v1.29.1
 	github.com/thoas/go-funk v0.9.3
+	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230703001435-df3b664a289d
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230709001641-0a5253362e51
 
 require (
 	github.com/cloudquery/plugin-pb-go v1.6.0 // indirect
@@ -36,7 +37,6 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
-	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df // indirect
 	golang.org/x/mod v0.11.0 // indirect
 	golang.org/x/net v0.9.0 // indirect
 	golang.org/x/sync v0.1.0 // indirect
