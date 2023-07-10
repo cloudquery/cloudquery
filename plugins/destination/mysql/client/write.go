@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
+	"golang.org/x/exp/maps"
 )
 
 func getInsertQueryBuild(table *schema.Table) *strings.Builder {
@@ -28,10 +29,10 @@ func getInsertQueryBuild(table *schema.Table) *strings.Builder {
 }
 
 func logTablesWithTruncation(logger zerolog.Logger, tables map[string]bool) {
-	keys := make([]string, len(tables))
 	if len(tables) == 0 {
 		return
 	}
+	keys := maps.Keys(tables)
 	for k := range tables {
 		keys = append(keys, k)
 	}
