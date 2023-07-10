@@ -24,8 +24,4 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to serve plugin: %v", err)
 	}
-
-	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN)).Serve(context.Background()); err != nil {
-		log.Fatalf("failed to serve plugin: %v", err)
-	}
 }
