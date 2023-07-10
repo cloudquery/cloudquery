@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v4.1.1...plugins-destination-duckdb-v4.1.2) (2023-07-10)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 0a52533 ([#12091](https://github.com/cloudquery/cloudquery/issues/12091)) ([927cefa](https://github.com/cloudquery/cloudquery/commit/927cefa943ec3969a2ec39b628bc1eba545a2108))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to a2a76eb ([#12104](https://github.com/cloudquery/cloudquery/issues/12104)) ([311f474](https://github.com/cloudquery/cloudquery/commit/311f4749af2491a606f29483190717a5fe238da6))
+* **duckdb:** Support V0/V1 syncs ([#12106](https://github.com/cloudquery/cloudquery/issues/12106)) ([eb2e1e4](https://github.com/cloudquery/cloudquery/commit/eb2e1e4f16df0c7ffdd34944ecb2d2b10c0f9993)), closes [#12105](https://github.com/cloudquery/cloudquery/issues/12105)
+* **postgresql:** Rerun release please ([#12002](https://github.com/cloudquery/cloudquery/issues/12002)) ([9d12843](https://github.com/cloudquery/cloudquery/commit/9d12843462d1019d26bc239f8f928bf5f62940cf))
+
 ## [4.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v4.1.0...plugins-destination-duckdb-v4.1.1) (2023-07-03)
 
 
