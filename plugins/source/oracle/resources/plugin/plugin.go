@@ -3,15 +3,17 @@ package plugin
 import (
 	"sort"
 
-	"github.com/cloudquery/cloudquery/plugins/source/oracle/client"
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/resources/services/blockstorage"
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/resources/services/database"
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/resources/services/filestorage"
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/resources/services/identity"
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/resources/services/objectstorage"
-	"github.com/cloudquery/plugin-sdk/v3/caser"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/caser"
+	"github.com/cloudquery/plugin-sdk/v4/docs"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	"golang.org/x/exp/maps"
 )
 
 var (
@@ -36,19 +38,18 @@ var customExceptions = map[string]string{
 	"vtaps":           "Virtual Tunnel Access Points (VTAPs)",
 }
 
-func titleTransformer(table *schema.Table) string {
+func titleTransformer(table *schema.Table) error {
 	if table.Title != "" {
-		return table.Title
+		return nil
 	}
-	exceptions := make(map[string]string)
-	for k, v := range source.DefaultTitleExceptions {
-		exceptions[k] = v
-	}
+
+	exceptions := maps.Clone(docs.DefaultTitleExceptions)
 	for k, v := range customExceptions {
 		exceptions[k] = v
 	}
 	csr := caser.New(caser.WithCustomExceptions(exceptions))
-	return csr.ToTitle(table.Name)
+	table.Title = csr.ToTitle(table.Name)
+	return nil
 }
 
 var customTables = []*schema.Table{
@@ -96,19 +97,30 @@ var customTables = []*schema.Table{
 	objectstorage.WorkRequests(),
 }
 
-func Plugin() *source.Plugin {
-	allTables := append(Tables(), customTables...)
+func getTables() schema.Tables {
+	tables := append(Tables(), customTables...)
 
-	sort.Slice(allTables, func(i, j int) bool {
-		return allTables[i].Name < allTables[j].Name
+	sort.Slice(tables, func(i, j int) bool {
+		return tables[i].Name < tables[j].Name
 	})
 
-	// here you can append custom non-generated tables
-	return source.NewPlugin(
+	if err := transformers.TransformTables(tables); err != nil {
+		panic(err)
+	}
+	if err := transformers.Apply(tables, titleTransformer); err != nil {
+		panic(err)
+	}
+	for _, t := range tables {
+		schema.AddCqIDs(t)
+	}
+
+	return tables
+}
+
+func Plugin() *plugin.Plugin {
+	return plugin.NewPlugin(
 		"oracle",
 		Version,
-		allTables,
-		client.Configure,
-		source.WithTitleTransformer(titleTransformer),
+		Configure,
 	)
 }
