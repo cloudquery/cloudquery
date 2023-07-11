@@ -41,22 +41,20 @@ func logTablesWithTruncation(logger zerolog.Logger, tables map[string]bool) {
 
 func (c *Client) writeResources(ctx context.Context, query string, msgs message.WriteInserts) error {
 	tablesWithTruncation := make(map[string]bool)
-	for _, msg := range msgs {
-		// This assumes that all the records in the message are from the same table
-		// If we can assume all msgs are from the same table, we can move this outside the loop
-		table := msg.GetTable()
-		pks := make([]int, 0)
-		for i, col := range table.Columns {
-			if !col.PrimaryKey {
-				continue
-			}
-			sqlType := arrowTypeToMySqlStr(col.Type)
-			if sqlType != "blob" && sqlType != "text" {
-				continue
-			}
-			// only if the PK is a blob or a text do we care about the length of the data
-			pks = append(pks, i)
+	table := msgs[0].GetTable()
+	pks := make([]int, 0)
+	for i, col := range table.Columns {
+		if !col.PrimaryKey {
+			continue
 		}
+		sqlType := arrowTypeToMySqlStr(col.Type)
+		if sqlType != "blob" && sqlType != "text" {
+			continue
+		}
+		// only if the PK is a blob or a text do we care about the length of the data
+		pks = append(pks, i)
+	}
+	for _, msg := range msgs {
 		rec := msg.Record
 		transformedRecords, err := transformRecord(rec)
 		if err != nil {
@@ -65,10 +63,16 @@ func (c *Client) writeResources(ctx context.Context, query string, msgs message.
 
 		// log a warning that a blob or text field that is a PK has more than 191 characters
 		for _, record := range transformedRecords {
-			for _, pki := range pks {
-				if len(record[pki].(string)) > maxPrefixLength {
-					c.logger.Debug().Any("record", record).Msgf("record contains a primary key that is longer than MySQL can handle. only the first %d will be included in the index", maxPrefixLength)
+			for _, truncatablePKIndex := range pks {
+				if len(record[truncatablePKIndex].(string)) > maxPrefixLength {
+					indexes := table.PrimaryKeysIndexes()
+					pkValues := make(map[string]any, len(indexes))
+					for i, pkIndex := range indexes {
+						pkValues[table.Columns[pkIndex].Name] = record[i]
+					}
+					c.logger.Debug().Any("Primary keys for the record", pkValues).Msgf("record contains a primary key that is longer than MySQL can handle. only the first %d will be included in the index", maxPrefixLength)
 					tablesWithTruncation[table.Name] = true
+					break
 				}
 			}
 		}
