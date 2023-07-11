@@ -50,7 +50,7 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 		records := messages.GetInserts().GetRecordsForTable(table)
 		emptyColumns := schema.FindEmptyColumns(table, records)
 		if len(emptyColumns) > 0 {
-			t.Fatalf("empty columns: %v", emptyColumns)
+			t.Fatalf("found empty column(s): %v in %s", emptyColumns, table.Name)
 		}
 	}
 }
