@@ -9,8 +9,9 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 var (
@@ -25,18 +26,14 @@ func buildCloudWatchMetricsMock(t *testing.T, ctrl *gomock.Controller) client.Se
 	}
 
 	a := types.Metric{}
-	if err := faker.FakeObject(&a); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&a))
 
 	m.EXPECT().ListMetrics(gomock.Any(), gomock.Any(), gomock.Any()).Return(&cloudwatch.ListMetricsOutput{
 		Metrics: []types.Metric{a},
 	}, nil)
 
 	o := cloudwatch.GetMetricStatisticsOutput{}
-	if err := faker.FakeObject(&o); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&o))
 
 	m.EXPECT().GetMetricStatistics(gomock.Any(), &cloudwatch.GetMetricStatisticsInput{
 		MetricName: a.MetricName,

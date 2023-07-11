@@ -17,8 +17,6 @@ The following tables depend on aws_s3_buckets:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -31,6 +29,7 @@ The following tables depend on aws_s3_buckets:
 |logging_target_bucket|`utf8`|
 |logging_target_prefix|`utf8`|
 |policy|`json`|
+|policy_status|`json`|
 |versioning_status|`utf8`|
 |versioning_mfa_delete|`utf8`|
 |block_public_acls|`bool`|

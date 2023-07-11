@@ -2,14 +2,14 @@
 
 This table shows data for IAM Credential Reports.
 
+https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_getting-report.html#id_credentials_understanding_the_report_format
+
 The composite primary key for this table is (**arn**, **user_creation_time**).
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |arn (PK)|`utf8`|

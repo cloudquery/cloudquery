@@ -2,16 +2,16 @@ package client
 
 import (
 	"context"
-	"fmt"
 	"net"
 	"net/http/httptest"
 	"os"
+	"sync"
 	"testing"
 	"time"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/state"
 	"github.com/julienschmidt/httprouter"
 	"github.com/rs/zerolog"
 	"golang.org/x/sync/errgroup"
@@ -26,7 +26,6 @@ type TestOptions struct {
 }
 
 func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*grpc.Server) error, options TestOptions) {
-	version := "vDev"
 	t.Helper()
 
 	table.IgnoreInTests = false
@@ -37,53 +36,40 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 	}
 	defer gsrv.Stop()
 	eg := &errgroup.Group{}
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, opts source.Options) (schema.ClientMeta, error) {
-		err := createService(gsrv)
-		if err != nil {
-			return nil, fmt.Errorf("failed to createService: %w", err)
-		}
-		eg.Go(func() error {
-			return gsrv.Serve(listener)
-		})
-		var gcpSpec Spec
-		if err := spec.UnmarshalSpec(&gcpSpec); err != nil {
-			return nil, fmt.Errorf("failed to unmarshal gcp spec: %w", err)
-		}
-		clientOptions := []option.ClientOption{
-			option.WithEndpoint(listener.Addr().String()),
-			option.WithoutAuthentication(),
-			option.WithGRPCDialOption(grpc.WithTransportCredentials(insecure.NewCredentials())),
-		}
-		c := &Client{
-			logger:        logger,
-			ClientOptions: clientOptions,
-			projects:      []string{"testProject"},
-			orgs:          []*crmv1.Organization{{Name: "organizations/testOrg"}},
-			folderIds:     []string{"testFolder"},
-			Backend:       opts.Backend,
-		}
-
-		return c, nil
+	if err := createService(gsrv); err != nil {
+		t.Fatal(err)
+	}
+	eg.Go(func() error {
+		return gsrv.Serve(listener)
+	})
+	clientOptions := []option.ClientOption{
+		option.WithEndpoint(listener.Addr().String()),
+		option.WithoutAuthentication(),
+		option.WithGRPCDialOption(grpc.WithTransportCredentials(insecure.NewCredentials())),
 	}
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+	c := &Client{
+		logger:        l,
+		ClientOptions: clientOptions,
+		projects:      []string{"testProject"},
+		orgs:          []*crmv1.Organization{{Name: "organizations/testOrg"}},
+		folderIds:     []string{"testFolder"},
+		Backend:       &state.NoOpClient{},
+	}
 
-	p := source.NewPlugin(
-		table.Name,
-		version,
-		[]*schema.Table{
-			table,
-		},
-		newTestExecutionClient)
-	p.SetLogger(l)
-	source.TestPluginSync(t, p, specs.Source{
-		Name:         "dev",
-		Path:         "cloudquery/dev",
-		Version:      version,
-		Tables:       []string{table.Name},
-		Destinations: []string{"mock-destination"},
-	})
+	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
+	messages, err := sched.SyncAll(context.Background(), c, schema.Tables{table})
+	if err != nil {
+		t.Fatalf("failed to sync: %v", err)
+	}
+
+	records := messages.GetInserts().GetRecordsForTable(table)
+	emptyColumns := schema.FindEmptyColumns(table, records)
+	if len(emptyColumns) > 0 {
+		t.Fatalf("empty columns: %v", emptyColumns)
+	}
 	gsrv.Stop()
 	if err := eg.Wait(); err != nil {
 		t.Fatalf("failed to serve: %v", err)
@@ -91,53 +77,49 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 }
 
 func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*httprouter.Router) error, options TestOptions) {
-	version := "vDev"
 	t.Helper()
 
 	table.IgnoreInTests = false
 	mux := httprouter.New()
 	ts := httptest.NewUnstartedServer(mux)
+	tsURL := "http://" + ts.Listener.Addr().String()
 	defer ts.Close()
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
-		err := createService(mux)
-		if err != nil {
-			return nil, fmt.Errorf("failed to createService: %w", err)
-		}
+	if err := createService(mux); err != nil {
+		t.Fatal(err)
+	}
+	wg := &sync.WaitGroup{}
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
 		ts.Start()
-		var gcpSpec Spec
-		if err := spec.UnmarshalSpec(&gcpSpec); err != nil {
-			return nil, fmt.Errorf("failed to unmarshal gcp spec: %w", err)
-		}
-		clientOptions := []option.ClientOption{
-			option.WithEndpoint(ts.URL),
-			option.WithoutAuthentication(),
-		}
-		c := &Client{
-			logger:        logger,
-			ClientOptions: clientOptions,
-			projects:      []string{"testProject"},
-			orgs:          []*crmv1.Organization{{Name: "organizations/testOrg"}},
-		}
-
-		return c, nil
+	}()
+	clientOptions := []option.ClientOption{
+		option.WithEndpoint(tsURL),
+		option.WithoutAuthentication(),
+		option.WithGRPCDialOption(grpc.WithBlock()),
 	}
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+	c := &Client{
+		logger:        l,
+		ClientOptions: clientOptions,
+		projects:      []string{"testProject"},
+		orgs:          []*crmv1.Organization{{Name: "organizations/testOrg"}},
+		Backend:       &state.NoOpClient{},
+	}
 
-	p := source.NewPlugin(
-		table.Name,
-		version,
-		[]*schema.Table{
-			table,
-		},
-		newTestExecutionClient)
-	p.SetLogger(l)
-	source.TestPluginSync(t, p, specs.Source{
-		Name:         "dev",
-		Path:         "cloudquery/dev",
-		Version:      version,
-		Tables:       []string{table.Name},
-		Destinations: []string{"mock-destination"},
-	})
+	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
+	messages, err := sched.SyncAll(context.Background(), c, schema.Tables{table})
+	if err != nil {
+		t.Fatalf("failed to sync: %v", err)
+	}
+
+	records := messages.GetInserts().GetRecordsForTable(table)
+	emptyColumns := schema.FindEmptyColumns(table, records)
+	if len(emptyColumns) > 0 {
+		t.Fatalf("empty columns: %v", emptyColumns)
+	}
+	ts.Close()
+	wg.Wait()
 }

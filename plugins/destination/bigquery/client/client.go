@@ -2,43 +2,50 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"cloud.google.com/go/bigquery"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/rs/zerolog"
 	"google.golang.org/api/option"
 )
 
 type Client struct {
-	destination.UnimplementedUnmanagedWriter
-	logger     zerolog.Logger
-	spec       specs.Destination
-	metrics    destination.Metrics
-	pluginSpec Spec
-	client     *bigquery.Client
+	plugin.UnimplementedSource
+	logger zerolog.Logger
+	spec   Spec
+	client *bigquery.Client
+	writer *batchwriter.BatchWriter
+
+	batchwriter.UnimplementedDeleteStale
 }
 
-func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination) (destination.Client, error) {
-	if destSpec.WriteMode != specs.WriteModeAppend {
-		return nil, fmt.Errorf("bigquery destination only supports append mode")
-	}
+func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "bq-dest").Logger(),
-		spec:   destSpec,
 	}
-	var spec Spec
-	if err := destSpec.UnmarshalSpec(&spec); err != nil {
+	if opts.NoConnection {
+		return c, nil
+	}
+	if err := json.Unmarshal(specBytes, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal BigQuery spec: %w", err)
 	}
-	spec.SetDefaults()
-	if err := spec.Validate(); err != nil {
+	c.spec.SetDefaults()
+	if err := c.spec.Validate(); err != nil {
 		return nil, err
 	}
-
-	c.pluginSpec = spec
+	c.writer, err = batchwriter.New(c,
+		batchwriter.WithLogger(logger),
+		batchwriter.WithBatchSize(c.spec.BatchSize),
+		batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes),
+		batchwriter.WithBatchTimeout(c.spec.BatchTimeout.Duration()),
+	)
+	if err != nil {
+		return nil, err
+	}
 
 	// the context here is used for token refresh so this is workaround as suggested
 	// https://github.com/googleapis/google-cloud-go/issues/946
@@ -53,19 +60,22 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 
 func (c *Client) bqClient(ctx context.Context) (*bigquery.Client, error) {
 	opts := []option.ClientOption{option.WithRequestReason("CloudQuery BigQuery destination")}
-	if len(c.pluginSpec.ServiceAccountKeyJSON) != 0 {
-		opts = append(opts, option.WithCredentialsJSON([]byte(c.pluginSpec.ServiceAccountKeyJSON)))
+	if len(c.spec.ServiceAccountKeyJSON) != 0 {
+		opts = append(opts, option.WithCredentialsJSON([]byte(c.spec.ServiceAccountKeyJSON)))
 	}
-	client, err := bigquery.NewClient(ctx, c.pluginSpec.ProjectID, opts...)
+	client, err := bigquery.NewClient(ctx, c.spec.ProjectID, opts...)
 	if err != nil {
 		return nil, err
 	}
-	if c.pluginSpec.DatasetLocation != "" {
-		client.Location = c.pluginSpec.DatasetLocation
+	if c.spec.DatasetLocation != "" {
+		client.Location = c.spec.DatasetLocation
 	}
 	return client, nil
 }
 
-func (c *Client) Close(_ context.Context) error {
+func (c *Client) Close(ctx context.Context) error {
+	if err := c.writer.Close(ctx); err != nil {
+		return err
+	}
 	return c.client.Close()
 }

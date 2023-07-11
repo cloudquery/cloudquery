@@ -6,18 +6,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/costexplorer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func build30DayForecast(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockCostexplorerClient(ctrl)
 
 	gcfo := costexplorer.GetCostForecastOutput{}
-	err := faker.FakeObject(&gcfo)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&gcfo))
 	m.EXPECT().GetCostForecast(gomock.Any(), gomock.Any(), gomock.Any()).MinTimes(1).Return(
 		&gcfo, nil)
 

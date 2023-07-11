@@ -14,8 +14,6 @@ This table depends on [aws_lambda_functions](aws_lambda_functions).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -25,6 +23,7 @@ This table depends on [aws_lambda_functions](aws_lambda_functions).
 |batch_size|`int64`|
 |bisect_batch_on_function_error|`bool`|
 |destination_config|`json`|
+|document_db_event_source_config|`json`|
 |event_source_arn|`utf8`|
 |filter_criteria|`json`|
 |function_response_types|`list<item: utf8, nullable>`|

@@ -3,54 +3,51 @@ package client
 import (
 	"context"
 	"crypto/tls"
+	"encoding/json"
 	"fmt"
 	"time"
 
-	"github.com/cloudquery/filetypes/v3"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
-
 	"github.com/Shopify/sarama"
+	"github.com/cloudquery/filetypes/v4"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/rs/zerolog"
 )
 
 type Client struct {
-	destination.UnimplementedManagedWriter
+	plugin.UnimplementedSource
 
 	conf     *sarama.Config
 	producer sarama.SyncProducer
 
-	logger     zerolog.Logger
-	spec       specs.Destination
-	pluginSpec Spec
-	metrics    destination.Metrics
+	logger zerolog.Logger
+	spec   *Spec
 
 	*filetypes.Client
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
-	if spec.WriteMode != specs.WriteModeAppend {
-		return nil, fmt.Errorf("destination only supports append mode")
-	}
+func New(_ context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "dest-kafka").Logger(),
 	}
+	if opts.NoConnection {
+		return c, nil
+	}
 
-	c.spec = spec
-	if err := spec.UnmarshalSpec(&c.pluginSpec); err != nil {
+	if err := json.Unmarshal(spec, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
-	c.pluginSpec.SetDefaults()
-	if err := c.pluginSpec.Validate(); err != nil {
+	if err := c.spec.Validate(); err != nil {
 		return nil, err
 	}
-	if c.pluginSpec.Verbose {
+	c.spec.SetDefaults()
+
+	if c.spec.Verbose {
 		sarama.Logger = NewSaramaLoggerAdapter(logger)
 	}
 
 	c.conf = sarama.NewConfig()
-	if c.pluginSpec.MaxMetadataRetries != 0 {
-		c.conf.Metadata.Retry.Max = c.pluginSpec.MaxMetadataRetries
+	if c.spec.MaxMetadataRetries != 0 {
+		c.conf.Metadata.Retry.Max = c.spec.MaxMetadataRetries
 	}
 	c.conf.Metadata.Retry.Backoff = time.Millisecond * 500
 	c.conf.Producer.Retry.Max = 1
@@ -59,24 +56,24 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	c.conf.Metadata.Full = true
 	c.conf.Version = sarama.V1_0_0_0
 	c.conf.Metadata.Full = true
-	c.conf.ClientID = "cq-destination-kafka-" + c.spec.Name
+	c.conf.ClientID = c.spec.ClientID
 
-	if c.pluginSpec.SaslUsername != "" {
+	if c.spec.SaslUsername != "" {
 		c.conf.Net.SASL.Enable = true
-		c.conf.Net.SASL.User = c.pluginSpec.SaslUsername
-		c.conf.Net.SASL.Password = c.pluginSpec.SaslPassword
+		c.conf.Net.SASL.User = c.spec.SaslUsername
+		c.conf.Net.SASL.Password = c.spec.SaslPassword
 		c.conf.Net.TLS.Enable = true
 		c.conf.Net.TLS.Config = &tls.Config{InsecureSkipVerify: true}
 		c.conf.Net.SASL.Handshake = true
 	}
 
 	var err error
-	c.producer, err = sarama.NewSyncProducer(c.pluginSpec.Brokers, c.conf)
+	c.producer, err = sarama.NewSyncProducer(c.spec.Brokers, c.conf)
 	if err != nil {
 		return nil, err
 	}
 
-	filetypesClient, err := filetypes.NewClient(c.pluginSpec.FileSpec)
+	filetypesClient, err := filetypes.NewClient(c.spec.FileSpec)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
 	}
@@ -85,6 +82,6 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 	return c, nil
 }
 
-func (c *Client) Close(ctx context.Context) error {
+func (c *Client) Close(_ context.Context) error {
 	return c.producer.Close()
 }

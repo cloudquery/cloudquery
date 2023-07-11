@@ -1,41 +1,39 @@
 package client
 
 import (
+	"context"
+	"encoding/json"
 	"os"
 	"testing"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
-
-var migrateStrategy = destination.MigrateStrategy{
-	AddColumn:           specs.MigrateModeSafe,
-	AddColumnNotNull:    specs.MigrateModeForced,
-	RemoveColumn:        specs.MigrateModeSafe,
-	RemoveColumnNotNull: specs.MigrateModeForced,
-	ChangeColumn:        specs.MigrateModeForced,
-}
 
 func TestPlugin(t *testing.T) {
 	address := os.Getenv("ELASTICSEARCH_ADDRESS")
 	if address == "" {
 		address = "http://localhost:9200"
 	}
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin("elasticsearch", "development", New, destination.WithManagedWriter())
-		},
-		specs.Destination{
-			Spec: &Spec{
-				Addresses: []string{address},
+	p := plugin.NewPlugin("elasticsearch", "development", New)
+	spec := &Spec{
+		Addresses: []string{address},
+	}
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := p.Init(context.Background(), specBytes, plugin.NewClientOptions{}); err != nil {
+		t.Fatal(err)
+	}
+	plugin.TestWriterSuiteRunner(t,
+		p,
+		plugin.WriterTestSuiteTests{
+			SafeMigrations: plugin.SafeMigrations{
+				AddColumn:           true,
+				RemoveColumn:        true,
+				RemoveColumnNotNull: true,
+				AddColumnNotNull:    true,
 			},
-		},
-		destination.PluginTestSuiteTests{
-			SkipMigrateOverwriteForce: true,
-			SkipMigrateAppendForce:    true,
-
-			MigrateStrategyOverwrite: migrateStrategy,
-			MigrateStrategyAppend:    migrateStrategy,
 		},
 	)
 }

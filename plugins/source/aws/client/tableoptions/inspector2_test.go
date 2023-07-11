@@ -4,15 +4,14 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/cloudquery/plugin-sdk/faker"
 )
 
 func TestInspector2ListFindings(t *testing.T) {
 	u := CustomInspector2ListFindingsInput{}
-	if err := faker.FakeObject(&u); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&u))
 
 	api := Inspector2APIs{
 		ListFindingsOpts: []CustomInspector2ListFindingsInput{u},

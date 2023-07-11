@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/google/go-github/v49/github"
 )
 
@@ -35,10 +35,11 @@ func fetchMembers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resourc
 			return err
 		}
 		res <- members
-		opts.Page = resp.NextPage
-		if opts.Page == resp.LastPage {
+
+		if resp.NextPage == 0 {
 			return nil
 		}
+		opts.Page = resp.NextPage
 	}
 }
 

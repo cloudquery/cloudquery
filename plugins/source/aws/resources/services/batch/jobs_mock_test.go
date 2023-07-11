@@ -7,8 +7,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/batch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildBatchJobsMock(t *testing.T, m *mocks.MockBatchClient) client.Services {
@@ -16,16 +17,10 @@ func buildBatchJobsMock(t *testing.T, m *mocks.MockBatchClient) client.Services 
 		Batch: m,
 	}
 	a := types.JobSummary{}
-	err := faker.FakeObject(&a)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&a))
 
 	d := types.JobDetail{}
-	err = faker.FakeObject(&d)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&d))
 
 	m.EXPECT().ListJobs(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&batch.ListJobsOutput{
@@ -40,10 +35,7 @@ func buildBatchJobsMock(t *testing.T, m *mocks.MockBatchClient) client.Services 
 		}, nil).Times(len(allJobStatuses))
 
 	tagResponse := batch.ListTagsForResourceOutput{}
-	err = faker.FakeObject(&tagResponse)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tagResponse))
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagResponse, nil).Times(len(allJobStatuses))
 
 	return services

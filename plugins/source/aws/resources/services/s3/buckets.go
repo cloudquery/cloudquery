@@ -9,8 +9,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3/models"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Buckets() *schema.Table {
@@ -98,6 +98,7 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *
 	resolvers := []func(context.Context, schema.ClientMeta, *models.WrappedBucket) error{
 		resolveBucketLogging,
 		resolveBucketPolicy,
+		resolveBucketPolicyStatus,
 		resolveBucketVersioning,
 		resolveBucketPublicAccessBlock,
 		resolveBucketReplication,
@@ -163,6 +164,25 @@ func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *
 		return fmt.Errorf("failed to unmarshal JSON policy: %v", err)
 	}
 	resource.Policy = p
+	return nil
+}
+
+func resolveBucketPolicyStatus(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().S3
+	policyStatusOutput, err := svc.GetBucketPolicyStatus(ctx, &s3.GetBucketPolicyStatusInput{Bucket: resource.Name}, func(o *s3.Options) {
+		o.Region = resource.Region
+	})
+	// check if we got an error but its access denied we can continue
+	if err != nil {
+		if client.IgnoreAccessDeniedServiceDisabled(err) {
+			return nil
+		}
+		return err
+	}
+	if policyStatusOutput != nil {
+		resource.PolicyStatus = policyStatusOutput.PolicyStatus
+	}
 	return nil
 }
 

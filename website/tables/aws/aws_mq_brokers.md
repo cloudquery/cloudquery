@@ -16,8 +16,6 @@ The following tables depend on aws_mq_brokers:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -33,6 +31,8 @@ The following tables depend on aws_mq_brokers:
 |broker_state|`utf8`|
 |configurations|`json`|
 |created|`timestamp[us, tz=UTC]`|
+|data_replication_metadata|`json`|
+|data_replication_mode|`utf8`|
 |deployment_mode|`utf8`|
 |encryption_options|`json`|
 |engine_type|`utf8`|
@@ -42,6 +42,8 @@ The following tables depend on aws_mq_brokers:
 |logs|`json`|
 |maintenance_window_start_time|`json`|
 |pending_authentication_strategy|`utf8`|
+|pending_data_replication_metadata|`json`|
+|pending_data_replication_mode|`utf8`|
 |pending_engine_version|`utf8`|
 |pending_host_instance_type|`utf8`|
 |pending_ldap_server_metadata|`json`|

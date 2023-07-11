@@ -5,7 +5,6 @@ spec:
   name: okta
   path: cloudquery/okta
   version: "VERSION_SOURCE_OKTA"
-  concurrency: 10000
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
   spec:
@@ -21,4 +20,6 @@ spec:
     # rate_limit:
     #   max_backoff: 5s
     #   max_retries: 3
+
+    # concurrency: 10000
 ```

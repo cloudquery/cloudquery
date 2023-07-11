@@ -6,9 +6,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/fastly/client/services"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/fastly/go-fastly/v7/fastly"
 	"github.com/rs/zerolog"
 	"github.com/thoas/go-funk"
@@ -21,7 +19,6 @@ const (
 
 type Client struct {
 	logger zerolog.Logger
-	spec   specs.Source
 	Fastly services.FastlyClient
 	Spec   Spec
 
@@ -39,14 +36,13 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-func (c *Client) ID() string {
-	return c.spec.Name
+func (*Client) ID() string {
+	return "fastly"
 }
 
 func (c *Client) withServiceAndRegion(service *fastly.Service, region string) schema.ClientMeta {
 	return &Client{
 		logger:     c.logger.With().Str("service_id", service.ID).Str("Region", region).Logger(),
-		spec:       c.spec,
 		Fastly:     c.Fastly,
 		maxRetries: c.maxRetries,
 		backoff:    c.backoff,
@@ -57,18 +53,13 @@ func (c *Client) withServiceAndRegion(service *fastly.Service, region string) sc
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Source, _ source.Options) (schema.ClientMeta, error) {
-	var config Spec
-	err := sourceSpec.UnmarshalSpec(&config)
-	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
-	}
-	client, err := fastly.NewClient(config.FastlyAPIKey)
+func Configure(_ context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMeta, error) {
+	client, err := fastly.NewClient(spec.FastlyAPIKey)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create fastly client: %w", err)
 	}
 
-	fastlyServices, err := listServices(client, config)
+	fastlyServices, err := listServices(client, spec)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list services: %w", err)
 	}
@@ -79,12 +70,12 @@ func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Sour
 
 	return &Client{
 		logger:     logger,
-		spec:       sourceSpec,
 		Fastly:     client,
 		maxRetries: defaultMaxRetries,
 		backoff:    defaultBackoff,
 		services:   fastlyServices,
 		regions:    regions,
+		Spec:       spec,
 	}, nil
 }
 

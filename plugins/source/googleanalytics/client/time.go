@@ -6,7 +6,7 @@ import (
 )
 
 func genDates(ctx context.Context, c *Client, table string) (<-chan time.Time, error) {
-	res, err := c.backend.Get(ctx, table, c.ID())
+	res, err := c.backend.GetKey(ctx, table+c.ID())
 	if err != nil {
 		return nil, err
 	}

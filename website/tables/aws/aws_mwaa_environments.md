@@ -10,8 +10,6 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -37,6 +35,8 @@ The primary key for this table is **arn**.
 |schedulers|`int64`|
 |service_role_arn|`utf8`|
 |source_bucket_arn|`utf8`|
+|startup_script_s3_object_version|`utf8`|
+|startup_script_s3_path|`utf8`|
 |status|`utf8`|
 |tags|`json`|
 |webserver_access_mode|`utf8`|

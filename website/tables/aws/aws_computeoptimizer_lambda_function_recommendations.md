@@ -10,11 +10,10 @@ The primary key for this table is **function_arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
+|tags|`json`|
 |current_memory_size|`int64`|
 |current_performance_risk|`utf8`|
 |finding|`utf8`|

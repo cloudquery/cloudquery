@@ -15,8 +15,6 @@ The following tables depend on aws_lightsail_disks:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -26,6 +24,7 @@ The following tables depend on aws_lightsail_disks:
 |add_ons|`json`|
 |attached_to|`utf8`|
 |attachment_state|`utf8`|
+|auto_mount_status|`utf8`|
 |created_at|`timestamp[us, tz=UTC]`|
 |gb_in_use|`int64`|
 |iops|`int64`|

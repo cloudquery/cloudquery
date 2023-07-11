@@ -7,16 +7,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/emr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildSecurityConfigurations(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockEmrClient(ctrl)
 	var summary types.SecurityConfigurationSummary
-	if err := faker.FakeObject(&summary); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&summary))
+
 	mock.EXPECT().ListSecurityConfigurations(gomock.Any(), &emr.ListSecurityConfigurationsInput{}, gomock.Any()).Return(
 		&emr.ListSecurityConfigurationsOutput{SecurityConfigurations: []types.SecurityConfigurationSummary{summary}},
 		nil,

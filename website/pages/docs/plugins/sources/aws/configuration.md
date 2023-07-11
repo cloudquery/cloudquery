@@ -15,6 +15,7 @@ spec:
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_s3_buckets"]
   destinations: ["DESTINATION_NAME"]
+  concurrency: 10000
   spec: 
     # AWS Spec section described below
     regions: 
@@ -38,6 +39,7 @@ spec:
   version: "VERSION_SOURCE_AWS"
   tables: ['aws_s3_buckets']
   destinations: ["DESTINATION_NAME"]
+  concurrency: 10000
   spec:
     aws_debug: false
     org:
@@ -103,9 +105,9 @@ This is the (nested) spec used by the AWS source plugin.
 
   When set to `true` plugin will sync data from APIs that incur a fee. Currently only `aws_costexplorer*` and `aws_alpha_cloudwatch_metric*` tables require this flag to be set to `true`.
 
-- **experimental** `table_options` (map) (default: not used)
+- **preview** `table_options` (map) (default: not used)
 
-  This is an experimental feature that enables users to override the default options for specific tables. The root of the object takes a table name, and the next level takes an API method name. The final level is the actual input object as defined by the API. 
+  This is a preview feature (for more information about `preview` features look at (Plugin Versioning)[(/docs/plugins/sources/aws/versioning)] `) that enables users to override the default options for specific tables. The root of the object takes a table name, and the next level takes an API method name. The final level is the actual input object as defined by the API. 
   The format of the `table_options` object is as follows:
   ```yaml
   table_options:
@@ -155,6 +157,12 @@ This is the (nested) spec used by the AWS source plugin.
     aws_inspector2_findings:
       list_findings:
         - <[ListFindings](https://docs.aws.amazon.com/inspector/v2/APIReference/API_ListFindings.html)>
+    aws_securityhub_findings:
+      get_findings:
+        - <[GetFindings](https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html)>
+    aws_ecs_cluster_tasks:
+      list_tasks:
+        - <[ListTasks](https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ListTasks.html)>
   ```
 
 
@@ -278,6 +286,7 @@ spec:
     - aws_rds_engine_versions
     - aws_servicequotas_services
   destinations: ["postgresql"]
+  concurrency: 10000
   spec: 
     # AWS Spec section described below
 ```

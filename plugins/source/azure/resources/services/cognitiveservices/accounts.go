@@ -5,8 +5,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Accounts() *schema.Table {
@@ -18,6 +18,14 @@ func Accounts() *schema.Table {
 		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_cognitiveservices_accounts", client.Namespacemicrosoft_cognitiveservices),
 		Transform:            transformers.TransformWithStruct(&armcognitiveservices.Account{}, transformers.WithPrimaryKeys("ID")),
 		Columns:              schema.ColumnList{client.SubscriptionID},
+		Relations: schema.Tables{
+			accountSKUs(),
+			accountUsages(),
+			accountModels(),
+			accountDeployments(),
+			accountPrivateEndpointConnections(),
+			accountPrivateLinkResources(),
+		},
 	}
 }
 

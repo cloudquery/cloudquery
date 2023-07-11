@@ -4,15 +4,15 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	arrow_types "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/arrow/types"
 	ch_types "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func CanonizedTables(tables schema.Tables) (schema.Tables, error) {
-	flattened := tables.FlattenTables()
-	canonized := make(schema.Tables, len(flattened))
+func CanonizedTables(messages message.WriteMigrateTables) (schema.Tables, error) {
+	canonized := make(schema.Tables, len(messages))
 	var err error
-	for i, table := range flattened {
-		canonized[i], err = CanonizedTable(table)
+	for i, msg := range messages {
+		canonized[i], err = CanonizedTable(msg.Table)
 		if err != nil {
 			return nil, err
 		}

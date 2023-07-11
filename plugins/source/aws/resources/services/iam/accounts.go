@@ -6,18 +6,19 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam/models"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/mitchellh/mapstructure"
 )
 
 func Accounts() *schema.Table {
 	tableName := "aws_iam_accounts"
 	return &schema.Table{
-		Name:      tableName,
-		Resolver:  fetchIamAccounts,
-		Transform: transformers.TransformWithStruct(&models.Account{}),
-		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "iam"),
+		Name:        tableName,
+		Description: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetAccountSummary.html",
+		Resolver:    fetchIamAccounts,
+		Transform:   transformers.TransformWithStruct(&models.Account{}),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 		},

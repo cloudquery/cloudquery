@@ -14,8 +14,6 @@ This table depends on [aws_backup_vaults](aws_backup_vaults).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -40,6 +38,7 @@ This table depends on [aws_backup_vaults](aws_backup_vaults).
 |parent_recovery_point_arn|`utf8`|
 |recovery_point_arn|`utf8`|
 |resource_arn|`utf8`|
+|resource_name|`utf8`|
 |resource_type|`utf8`|
 |source_backup_vault_arn|`utf8`|
 |status|`utf8`|

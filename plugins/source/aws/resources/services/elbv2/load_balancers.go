@@ -2,18 +2,15 @@ package elbv2
 
 import (
 	"context"
-	"errors"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
-	"github.com/aws/aws-sdk-go-v2/service/wafv2"
-	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func LoadBalancers() *schema.Table {
@@ -27,11 +24,6 @@ func LoadBalancers() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
-			{
-				Name:     "web_acl_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: resolveLoadBalancerWebACLArn,
-			},
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
@@ -48,6 +40,7 @@ func LoadBalancers() *schema.Table {
 		Relations: []*schema.Table{
 			listeners(),
 			loadBalancerAttributes(),
+			webACLs(),
 		},
 	}
 }
@@ -67,34 +60,6 @@ func fetchLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *sch
 		res <- page.LoadBalancers
 	}
 	return nil
-}
-func resolveLoadBalancerWebACLArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p := resource.Item.(types.LoadBalancer)
-	// only application load balancer can have web acl arn
-	if p.Type != types.LoadBalancerTypeEnumApplication {
-		return nil
-	}
-	cl := meta.(*client.Client)
-	wafClient := cl.Services().Wafv2
-	input := wafv2.GetWebACLForResourceInput{ResourceArn: p.LoadBalancerArn}
-	response, err := wafClient.GetWebACLForResource(ctx, &input, func(options *wafv2.Options) {}, func(options *wafv2.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		var exc *wafv2types.WAFNonexistentItemException
-		if errors.As(err, &exc) {
-			if exc.ErrorCode() == "WAFNonexistentItemException" {
-				return nil
-			}
-		}
-
-		return err
-	}
-	if response.WebACL == nil {
-		return nil
-	}
-
-	return resource.Set(c.Name, response.WebACL.ARN)
 }
 
 func resolveLoadBalancerTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {

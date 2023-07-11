@@ -1,6 +1,6 @@
 # Table: aws_route53_domains
 
-This table shows data for Route53 Domains.
+This table shows data for Amazon Route 53 Domains.
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_domains_GetDomainDetail.html
 
@@ -10,8 +10,6 @@ The composite primary key for this table is (**account_id**, **domain_name**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id (PK)|`utf8`|

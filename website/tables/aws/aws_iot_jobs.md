@@ -10,8 +10,6 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -23,6 +21,7 @@ The primary key for this table is **arn**.
 |completed_at|`timestamp[us, tz=UTC]`|
 |created_at|`timestamp[us, tz=UTC]`|
 |description|`utf8`|
+|destination_package_versions|`list<item: utf8, nullable>`|
 |document_parameters|`json`|
 |force_canceled|`bool`|
 |is_concurrent|`bool`|
@@ -36,6 +35,7 @@ The primary key for this table is **arn**.
 |namespace_id|`utf8`|
 |presigned_url_config|`json`|
 |reason_code|`utf8`|
+|scheduled_job_rollouts|`json`|
 |scheduling_config|`json`|
 |status|`utf8`|
 |target_selection|`utf8`|

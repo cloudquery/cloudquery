@@ -10,8 +10,6 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -86,6 +84,7 @@ The primary key for this table is **arn**.
 |publicly_accessible|`bool`|
 |read_replica_db_cluster_identifiers|`list<item: utf8, nullable>`|
 |read_replica_db_instance_identifiers|`list<item: utf8, nullable>`|
+|read_replica_source_db_cluster_identifier|`utf8`|
 |read_replica_source_db_instance_identifier|`utf8`|
 |replica_mode|`utf8`|
 |resume_full_automation_mode_time|`timestamp[us, tz=UTC]`|

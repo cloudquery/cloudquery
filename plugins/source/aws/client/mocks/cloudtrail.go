@@ -275,6 +275,36 @@ func (mr *MockCloudtrailClientMockRecorder) GetQueryResults(arg0, arg1 interface
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetQueryResults", reflect.TypeOf((*MockCloudtrailClient)(nil).GetQueryResults), varargs...)
 }
 
+// GetResourcePolicy mocks base method.
+func (m *MockCloudtrailClient) GetResourcePolicy(arg0 context.Context, arg1 *cloudtrail.GetResourcePolicyInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.GetResourcePolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudtrail.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetResourcePolicy")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetResourcePolicy", varargs...)
+	ret0, _ := ret[0].(*cloudtrail.GetResourcePolicyOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetResourcePolicy indicates an expected call of GetResourcePolicy.
+func (mr *MockCloudtrailClientMockRecorder) GetResourcePolicy(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetResourcePolicy", reflect.TypeOf((*MockCloudtrailClient)(nil).GetResourcePolicy), varargs...)
+}
+
 // GetTrail mocks base method.
 func (m *MockCloudtrailClient) GetTrail(arg0 context.Context, arg1 *cloudtrail.GetTrailInput, arg2 ...func(*cloudtrail.Options)) (*cloudtrail.GetTrailOutput, error) {
 

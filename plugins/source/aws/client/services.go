@@ -25,7 +25,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
+	"github.com/aws/aws-sdk-go-v2/service/codeartifact"
 	"github.com/aws/aws-sdk-go-v2/service/codebuild"
+	"github.com/aws/aws-sdk-go-v2/service/codecommit"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
@@ -34,6 +36,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/costexplorer"
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/aws/aws-sdk-go-v2/service/dax"
+	"github.com/aws/aws-sdk-go-v2/service/detective"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
@@ -72,6 +75,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/mwaa"
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/networkfirewall"
+	"github.com/aws/aws-sdk-go-v2/service/networkmanager"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/aws/aws-sdk-go-v2/service/quicksight"
@@ -82,6 +86,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroups"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
+	"github.com/aws/aws-sdk-go-v2/service/route53resolver"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
@@ -91,11 +96,13 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
+	"github.com/aws/aws-sdk-go-v2/service/servicediscovery"
 	"github.com/aws/aws-sdk-go-v2/service/servicequotas"
 	"github.com/aws/aws-sdk-go-v2/service/ses"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/sfn"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
+	"github.com/aws/aws-sdk-go-v2/service/signer"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
@@ -106,6 +113,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
+	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/workspaces"
 	"github.com/aws/aws-sdk-go-v2/service/xray"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
@@ -138,7 +146,9 @@ func initServices(c aws.Config, regions []string) Services {
 		Cloudtrail:                cloudtrail.NewFromConfig(awsCfg),
 		Cloudwatch:                cloudwatch.NewFromConfig(awsCfg),
 		Cloudwatchlogs:            cloudwatchlogs.NewFromConfig(awsCfg),
+		Codeartifact:              codeartifact.NewFromConfig(awsCfg),
 		Codebuild:                 codebuild.NewFromConfig(awsCfg),
+		Codecommit:                codecommit.NewFromConfig(awsCfg),
 		Codepipeline:              codepipeline.NewFromConfig(awsCfg),
 		Cognitoidentity:           cognitoidentity.NewFromConfig(awsCfg),
 		Cognitoidentityprovider:   cognitoidentityprovider.NewFromConfig(awsCfg),
@@ -148,6 +158,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Databasemigrationservice:  databasemigrationservice.NewFromConfig(awsCfg),
 		Dax:                       dax.NewFromConfig(awsCfg),
 		Directconnect:             directconnect.NewFromConfig(awsCfg),
+		Detective:                 detective.NewFromConfig(awsCfg),
 		Docdb:                     docdb.NewFromConfig(awsCfg),
 		Dynamodb:                  dynamodb.NewFromConfig(awsCfg),
 		Dynamodbstreams:           dynamodbstreams.NewFromConfig(awsCfg),
@@ -185,6 +196,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Mwaa:                      mwaa.NewFromConfig(awsCfg),
 		Neptune:                   neptune.NewFromConfig(awsCfg),
 		Networkfirewall:           networkfirewall.NewFromConfig(awsCfg),
+		Networkmanager:            networkmanager.NewFromConfig(awsCfg),
 		Organizations:             organizations.NewFromConfig(awsCfg),
 		Qldb:                      qldb.NewFromConfig(awsCfg),
 		Quicksight:                quicksight.NewFromConfig(awsCfg),
@@ -195,6 +207,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Resourcegroups:            resourcegroups.NewFromConfig(awsCfg),
 		Route53:                   route53.NewFromConfig(awsCfg),
 		Route53domains:            route53domains.NewFromConfig(awsCfg),
+		Route53resolver:           route53resolver.NewFromConfig(awsCfg),
 		S3:                        s3.NewFromConfig(awsCfg),
 		S3control:                 s3control.NewFromConfig(awsCfg),
 		Sagemaker:                 sagemaker.NewFromConfig(awsCfg),
@@ -204,11 +217,13 @@ func initServices(c aws.Config, regions []string) Services {
 		Securityhub:               securityhub.NewFromConfig(awsCfg),
 		Servicecatalog:            servicecatalog.NewFromConfig(awsCfg),
 		Servicecatalogappregistry: servicecatalogappregistry.NewFromConfig(awsCfg),
+		Servicediscovery:          servicediscovery.NewFromConfig(awsCfg),
 		Servicequotas:             servicequotas.NewFromConfig(awsCfg),
 		Ses:                       ses.NewFromConfig(awsCfg),
 		Sesv2:                     sesv2.NewFromConfig(awsCfg),
 		Sfn:                       sfn.NewFromConfig(awsCfg),
 		Shield:                    shield.NewFromConfig(awsCfg),
+		Signer:                    signer.NewFromConfig(awsCfg),
 		Sns:                       sns.NewFromConfig(awsCfg),
 		Sqs:                       sqs.NewFromConfig(awsCfg),
 		Ssm:                       ssm.NewFromConfig(awsCfg),
@@ -219,6 +234,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Waf:                       waf.NewFromConfig(awsCfg),
 		Wafregional:               wafregional.NewFromConfig(awsCfg),
 		Wafv2:                     wafv2.NewFromConfig(awsCfg),
+		Wellarchitected:           wellarchitected.NewFromConfig(awsCfg),
 		Workspaces:                workspaces.NewFromConfig(awsCfg),
 		Xray:                      xray.NewFromConfig(awsCfg),
 	}
@@ -249,7 +265,9 @@ type Services struct {
 	Cloudtrail                services.CloudtrailClient
 	Cloudwatch                services.CloudwatchClient
 	Cloudwatchlogs            services.CloudwatchlogsClient
+	Codeartifact              services.CodeartifactClient
 	Codebuild                 services.CodebuildClient
+	Codecommit                services.CodecommitClient
 	Codepipeline              services.CodepipelineClient
 	Cognitoidentity           services.CognitoidentityClient
 	Cognitoidentityprovider   services.CognitoidentityproviderClient
@@ -258,6 +276,7 @@ type Services struct {
 	Costexplorer              services.CostexplorerClient
 	Databasemigrationservice  services.DatabasemigrationserviceClient
 	Dax                       services.DaxClient
+	Detective                 services.DetectiveClient
 	Directconnect             services.DirectconnectClient
 	Docdb                     services.DocdbClient
 	Dynamodb                  services.DynamodbClient
@@ -296,6 +315,7 @@ type Services struct {
 	Mwaa                      services.MwaaClient
 	Neptune                   services.NeptuneClient
 	Networkfirewall           services.NetworkfirewallClient
+	Networkmanager            services.NetworkmanagerClient
 	Organizations             services.OrganizationsClient
 	Qldb                      services.QldbClient
 	Quicksight                services.QuicksightClient
@@ -306,6 +326,7 @@ type Services struct {
 	Resiliencehub             services.ResiliencehubClient
 	Route53                   services.Route53Client
 	Route53domains            services.Route53domainsClient
+	Route53resolver           services.Route53resolverClient
 	S3                        services.S3Client
 	S3control                 services.S3controlClient
 	Sagemaker                 services.SagemakerClient
@@ -315,11 +336,13 @@ type Services struct {
 	Securityhub               services.SecurityhubClient
 	Servicecatalog            services.ServicecatalogClient
 	Servicecatalogappregistry services.ServicecatalogappregistryClient
+	Servicediscovery          services.ServicediscoveryClient
 	Servicequotas             services.ServicequotasClient
 	Ses                       services.SesClient
 	Sesv2                     services.Sesv2Client
 	Sfn                       services.SfnClient
 	Shield                    services.ShieldClient
+	Signer                    services.SignerClient
 	Sns                       services.SnsClient
 	Sqs                       services.SqsClient
 	Ssm                       services.SsmClient
@@ -330,6 +353,7 @@ type Services struct {
 	Waf                       services.WafClient
 	Wafregional               services.WafregionalClient
 	Wafv2                     services.Wafv2Client
+	Wellarchitected           services.WellarchitectedClient
 	Workspaces                services.WorkspacesClient
 	Xray                      services.XrayClient
 }

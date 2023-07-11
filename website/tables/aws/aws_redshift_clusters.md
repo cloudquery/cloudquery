@@ -18,8 +18,6 @@ The following tables depend on aws_redshift_clusters:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -44,6 +42,9 @@ The following tables depend on aws_redshift_clusters:
 |cluster_status|`utf8`|
 |cluster_subnet_group_name|`utf8`|
 |cluster_version|`utf8`|
+|custom_domain_certificate_arn|`utf8`|
+|custom_domain_certificate_expiry_date|`timestamp[us, tz=UTC]`|
+|custom_domain_name|`utf8`|
 |db_name|`utf8`|
 |data_transfer_progress|`json`|
 |default_iam_role_arn|`utf8`|

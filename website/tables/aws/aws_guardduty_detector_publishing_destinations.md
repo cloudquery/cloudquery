@@ -2,7 +2,7 @@
 
 This table shows data for Amazon GuardDuty Detector Publishing Destinations.
 
-https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Member.html
+https://docs.aws.amazon.com/guardduty/latest/APIReference/API_DescribePublishingDestination.html
 
 The composite primary key for this table is (**detector_arn**, **destination_id**).
 
@@ -14,8 +14,6 @@ This table depends on [aws_guardduty_detectors](aws_guardduty_detectors).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |detector_arn (PK)|`utf8`|

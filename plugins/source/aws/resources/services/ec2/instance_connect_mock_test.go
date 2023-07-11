@@ -8,17 +8,16 @@ import (
 	"github.com/aws/smithy-go/middleware"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildInstanceConnectEndpoint(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	endpoint := types.Ec2InstanceConnectEndpoint{}
-	err := faker.FakeObject(&endpoint)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&endpoint))
+
 	m.EXPECT().DescribeInstanceConnectEndpoints(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ec2.DescribeInstanceConnectEndpointsOutput{
 			InstanceConnectEndpoints: []types.Ec2InstanceConnectEndpoint{endpoint},

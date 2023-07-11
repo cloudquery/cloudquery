@@ -11,8 +11,6 @@ The composite primary key for this table is (**request_account_id**, **request_r
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |request_account_id (PK)|`utf8`|
@@ -28,6 +26,8 @@ The composite primary key for this table is (**request_account_id**, **request_r
 |severity|`utf8`|
 |status|`utf8`|
 |type|`utf8`|
+|code_vulnerability_details|`json`|
+|epss|`json`|
 |exploit_available|`utf8`|
 |exploitability_details|`json`|
 |fix_available|`utf8`|

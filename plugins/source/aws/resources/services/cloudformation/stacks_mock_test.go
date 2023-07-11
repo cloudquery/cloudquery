@@ -8,8 +8,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildStacksWithTemplate(tmpl string) func(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -17,9 +18,7 @@ func buildStacksWithTemplate(tmpl string) func(t *testing.T, ctrl *gomock.Contro
 		mock := mocks.NewMockCloudformationClient(ctrl)
 
 		var stack types.Stack
-		if err := faker.FakeObject(&stack); err != nil {
-			t.Fatal(err)
-		}
+		require.NoError(t, faker.FakeObject(&stack))
 		mock.EXPECT().DescribeStacks(
 			gomock.Any(),
 			&cloudformation.DescribeStacksInput{},
@@ -30,9 +29,7 @@ func buildStacksWithTemplate(tmpl string) func(t *testing.T, ctrl *gomock.Contro
 		)
 
 		var resource types.StackResourceSummary
-		if err := faker.FakeObject(&resource); err != nil {
-			t.Fatal(err)
-		}
+		require.NoError(t, faker.FakeObject(&resource))
 		mock.EXPECT().ListStackResources(
 			gomock.Any(),
 			&cloudformation.ListStackResourcesInput{StackName: stack.StackName},
@@ -43,9 +40,7 @@ func buildStacksWithTemplate(tmpl string) func(t *testing.T, ctrl *gomock.Contro
 		)
 
 		var summary cloudformation.GetTemplateSummaryOutput
-		if err := faker.FakeObject(&summary); err != nil {
-			t.Fatal(err)
-		}
+		require.NoError(t, faker.FakeObject(&summary))
 		summary.Metadata = aws.String(`{ "some": "metadata" }`) // Required as faker doesn't handle this.
 
 		mock.EXPECT().GetTemplateSummary(
@@ -58,9 +53,7 @@ func buildStacksWithTemplate(tmpl string) func(t *testing.T, ctrl *gomock.Contro
 		)
 
 		var template cloudformation.GetTemplateOutput
-		if err := faker.FakeObject(&template); err != nil {
-			t.Fatal(err)
-		}
+		require.NoError(t, faker.FakeObject(&template))
 		template.TemplateBody = aws.String(tmpl) // Required as faker doesn't handle this.
 
 		mock.EXPECT().GetTemplate(

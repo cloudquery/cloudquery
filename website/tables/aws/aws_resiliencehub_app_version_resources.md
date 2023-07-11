@@ -14,8 +14,6 @@ This table depends on [aws_resiliencehub_app_versions](aws_resiliencehub_app_ver
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -26,5 +24,9 @@ This table depends on [aws_resiliencehub_app_versions](aws_resiliencehub_app_ver
 |logical_resource_id|`json`|
 |physical_resource_id|`json`|
 |resource_type|`utf8`|
+|additional_info|`json`|
 |app_components|`json`|
+|excluded|`bool`|
+|parent_resource_name|`utf8`|
 |resource_name|`utf8`|
+|source_type|`utf8`|

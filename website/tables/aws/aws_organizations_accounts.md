@@ -10,14 +10,13 @@ The composite primary key for this table is (**request_account_id**, **arn**).
 ## Relations
 
 The following tables depend on aws_organizations_accounts:
+  - [aws_organizations_account_parents](aws_organizations_account_parents)
   - [aws_organizations_delegated_services](aws_organizations_delegated_services)
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |request_account_id (PK)|`utf8`|

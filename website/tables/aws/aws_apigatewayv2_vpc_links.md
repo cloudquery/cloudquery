@@ -2,7 +2,7 @@
 
 This table shows data for Amazon API Gateway v2 VPC Links.
 
-https://docs.aws.amazon.com/apigateway/latest/api/API_VpcLink.html
+https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/vpclinks.html#vpclinks-prop-vpclink
 
 The composite primary key for this table is (**account_id**, **arn**).
 
@@ -10,8 +10,6 @@ The composite primary key for this table is (**account_id**, **arn**).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id (PK)|`utf8`|

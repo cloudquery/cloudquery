@@ -17,8 +17,6 @@ The following tables depend on aws_stepfunctions_executions:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -36,5 +34,7 @@ The following tables depend on aws_stepfunctions_executions:
 |name|`utf8`|
 |output|`utf8`|
 |output_details|`json`|
+|state_machine_alias_arn|`utf8`|
+|state_machine_version_arn|`utf8`|
 |stop_date|`timestamp[us, tz=UTC]`|
 |trace_header|`utf8`|

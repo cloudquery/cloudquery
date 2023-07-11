@@ -17,8 +17,6 @@ The following tables depend on aws_glue_database_tables:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -30,6 +28,7 @@ The following tables depend on aws_glue_database_tables:
 |created_by|`utf8`|
 |database_name|`utf8`|
 |description|`utf8`|
+|federated_table|`json`|
 |is_registered_with_lake_formation|`bool`|
 |last_access_time|`timestamp[us, tz=UTC]`|
 |last_analyzed_time|`timestamp[us, tz=UTC]`|

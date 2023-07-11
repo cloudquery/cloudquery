@@ -10,8 +10,6 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -23,6 +21,7 @@ The primary key for this table is **arn**.
 |model_arn|`utf8`|
 |model_name|`utf8`|
 |containers|`json`|
+|deployment_recommendation|`json`|
 |enable_network_isolation|`bool`|
 |inference_execution_config|`json`|
 |primary_container|`json`|

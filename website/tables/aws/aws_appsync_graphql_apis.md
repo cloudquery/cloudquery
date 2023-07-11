@@ -10,8 +10,6 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -19,13 +17,19 @@ The primary key for this table is **arn**.
 |arn (PK)|`utf8`|
 |additional_authentication_providers|`json`|
 |api_id|`utf8`|
+|api_type|`utf8`|
 |authentication_type|`utf8`|
+|dns|`json`|
 |lambda_authorizer_config|`json`|
 |log_config|`json`|
+|merged_api_execution_role_arn|`utf8`|
 |name|`utf8`|
 |open_id_connect_config|`json`|
+|owner|`utf8`|
+|owner_contact|`utf8`|
 |tags|`json`|
 |uris|`json`|
 |user_pool_config|`json`|
+|visibility|`utf8`|
 |waf_web_acl_arn|`utf8`|
 |xray_enabled|`bool`|

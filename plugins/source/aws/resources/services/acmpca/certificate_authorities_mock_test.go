@@ -8,17 +8,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/acmpca/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildACMPCACertificateAuthorities(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockAcmpcaClient(ctrl)
 
 	var ca types.CertificateAuthority
-	if err := faker.FakeObject(&ca); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ca))
+
 	mock.EXPECT().ListCertificateAuthorities(
 		gomock.Any(),
 		&acmpca.ListCertificateAuthoritiesInput{},

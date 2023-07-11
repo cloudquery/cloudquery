@@ -286,6 +286,11 @@ func Test_getChanges(t *testing.T) {
 			diffDataFile: "testdata/pr_11259_diff.txt",
 			wantChanges:  []change{},
 		},
+		{
+			name:         "Should ignore removal of _cq_source_name and _cq_sync_time for SDK v4 migration",
+			diffDataFile: "testdata/pr_11855_diff.txt",
+			wantChanges:  []change{},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

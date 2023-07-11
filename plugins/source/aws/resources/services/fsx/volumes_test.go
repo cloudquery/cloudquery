@@ -8,17 +8,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/fsx/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildVolumesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockFsxClient(ctrl)
 
 	var v types.Volume
-	if err := faker.FakeObject(&v); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&v))
+
 	v.Lifecycle = types.VolumeLifecycleAvailable
 	v.VolumeType = types.VolumeTypeOntap
 	m.EXPECT().DescribeVolumes(

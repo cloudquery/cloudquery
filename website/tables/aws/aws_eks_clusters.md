@@ -9,15 +9,15 @@ The primary key for this table is **arn**.
 ## Relations
 
 The following tables depend on aws_eks_clusters:
+  - [aws_eks_cluster_addons](aws_eks_cluster_addons)
   - [aws_eks_cluster_node_groups](aws_eks_cluster_node_groups)
+  - [aws_eks_cluster_oidc_identity_provider_configs](aws_eks_cluster_oidc_identity_provider_configs)
   - [aws_eks_fargate_profiles](aws_eks_fargate_profiles)
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|

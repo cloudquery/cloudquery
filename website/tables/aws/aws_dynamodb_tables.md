@@ -16,8 +16,6 @@ The following tables depend on aws_dynamodb_tables:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -28,6 +26,7 @@ The following tables depend on aws_dynamodb_tables:
 |attribute_definitions|`json`|
 |billing_mode_summary|`json`|
 |creation_date_time|`timestamp[us, tz=UTC]`|
+|deletion_protection_enabled|`bool`|
 |global_secondary_indexes|`json`|
 |global_table_version|`utf8`|
 |item_count|`int64`|

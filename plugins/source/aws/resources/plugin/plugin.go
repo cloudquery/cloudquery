@@ -3,10 +3,10 @@ package plugin
 import (
 	"strings"
 
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/caser"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v4/caser"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 var (
@@ -33,8 +33,12 @@ var awsExceptions = map[string]string{
 	"cloudhsm":               "AWS CloudHSM",
 	"cloudhsmv2":             "AWS CloudHSM v2",
 	"cloudtrail":             "AWS CloudTrail",
-	"costexplorer":           "AWS Cost Explorer",
+	"codeartifact":           "AWS CodeArtifact",
+	"codebuild":              "AWS CodeBuild",
+	"codecommit":             "AWS CodeCommit",
 	"computeoptimizer":       "Compute Optimizer",
+	"costexplorer":           "AWS Cost Explorer",
+	"detective":              "Amazon Detective",
 	"directconnect":          "AWS Direct Connect",
 	"docdb":                  "Amazon DocumentDB",
 	"dynamodb":               "Amazon DynamoDB",
@@ -65,38 +69,43 @@ var awsExceptions = map[string]string{
 	"qldb":                   "Quantum Ledger Database (QLDB)",
 	"quicksight":             "QuickSight",
 	"rds":                    "Amazon Relational Database Service (RDS)",
+	"route53":                "Amazon Route 53",
+	"route53resolver":        "Amazon Route 53 Resolver",
 	"resiliencehub":          "AWS Resilience Hub",
 	"sagemaker":              "Amazon SageMaker",
 	"secretsmanager":         "AWS Secrets Manager",
 	"securityhub":            "AWS Security Hub",
 	"servicecatalog":         "AWS Service Catalog",
+	"servicediscovery":       "AWS Cloud Map",
 	"ses":                    "Amazon Simple Email Service (SES)",
+	"signer":                 "AWS Signer",
 	"ssm":                    "AWS Systems Manager (SSM)",
+	"wellarchitected":        "AWS Well-Architected",
 	"xray":                   "AWS X-Ray",
 }
 
-func titleTransformer(table *schema.Table) string {
-	if table.Title != "" {
-		return table.Title
+func titleTransformer(table *schema.Table) {
+	if table.Title == "" {
+		exceptions := make(map[string]string)
+		for k, v := range source.DefaultTitleExceptions {
+			exceptions[k] = v
+		}
+		for k, v := range awsExceptions {
+			exceptions[k] = v
+		}
+		csr := caser.New(caser.WithCustomExceptions(exceptions))
+		t := csr.ToTitle(table.Name)
+		table.Title = strings.Trim(strings.ReplaceAll(t, "  ", " "), " ")
 	}
-	exceptions := make(map[string]string)
-	for k, v := range source.DefaultTitleExceptions {
-		exceptions[k] = v
+	for _, rel := range table.Relations {
+		titleTransformer(rel)
 	}
-	for k, v := range awsExceptions {
-		exceptions[k] = v
-	}
-	csr := caser.New(caser.WithCustomExceptions(exceptions))
-	t := csr.ToTitle(table.Name)
-	return strings.Trim(strings.ReplaceAll(t, "  ", " "), " ")
 }
 
-func AWS() *source.Plugin {
-	return source.NewPlugin(
+func AWS() *plugin.Plugin {
+	return plugin.NewPlugin(
 		"aws",
 		Version,
-		tables(),
-		client.Configure,
-		source.WithTitleTransformer(titleTransformer),
+		New,
 	)
 }

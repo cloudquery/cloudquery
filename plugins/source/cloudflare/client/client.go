@@ -3,14 +3,11 @@ package client
 import (
 	"context"
 	"errors"
-	"fmt"
 	"os"
 	"strings"
 
 	"github.com/cloudflare/cloudflare-go"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
 	"github.com/thoas/go-funk"
 )
@@ -78,13 +75,8 @@ func (c *Client) withZoneID(accountId, zoneId string) *Client {
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
-	cfSpec := &Spec{}
-	if err := s.UnmarshalSpec(cfSpec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal cloudflare spec: %w", err)
-	}
-
-	clientApi, err := getCloudflareClient(cfSpec)
+func Configure(ctx context.Context, logger zerolog.Logger, spec *Spec) (schema.ClientMeta, error) {
+	clientApi, err := getCloudflareClient(spec)
 	if err != nil {
 		return nil, err
 	}
@@ -98,7 +90,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 	}
 
 	for _, account := range accounts {
-		if len(cfSpec.Accounts) > 0 && !funk.ContainsString(cfSpec.Accounts, account.ID) {
+		if len(spec.Accounts) > 0 && !funk.ContainsString(spec.Accounts, account.ID) {
 			continue
 		}
 
@@ -128,7 +120,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 
 	clients := make(Clients)
 	for _, account := range accountsZones {
-		c, err := getCloudflareClient(cfSpec)
+		c, err := getCloudflareClient(spec)
 		if err != nil {
 			return nil, err
 		}

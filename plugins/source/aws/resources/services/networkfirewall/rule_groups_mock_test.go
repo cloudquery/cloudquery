@@ -7,17 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/networkfirewall/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockNetworkfirewallClient(ctrl)
 	rgm := types.RuleGroupMetadata{}
-	err := faker.FakeObject(&rgm)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&rgm))
 
 	m.EXPECT().ListRuleGroups(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&networkfirewall.ListRuleGroupsOutput{
@@ -25,9 +23,7 @@ func buildRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 		}, nil)
 
 	rg := networkfirewall.DescribeRuleGroupOutput{}
-	if err := faker.FakeObject(&rg); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&rg))
 
 	m.EXPECT().DescribeRuleGroup(gomock.Any(), gomock.Any(), gomock.Any()).Return(&rg, nil)
 

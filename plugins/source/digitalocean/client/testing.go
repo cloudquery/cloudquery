@@ -2,14 +2,12 @@ package client
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"testing"
 	"time"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/golang/mock/gomock"
 	"github.com/rs/zerolog"
 )
@@ -19,44 +17,37 @@ type TestOptions struct {
 }
 
 func MockTestHelper(t *testing.T, table *schema.Table, createService func(t *testing.T, ctrl *gomock.Controller) Services, options TestOptions) {
-	version := "vDev"
-
 	t.Helper()
 	table.IgnoreInTests = false
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
 
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
-		var doSpec Spec
-		if err := spec.UnmarshalSpec(&doSpec); err != nil {
-			return nil, fmt.Errorf("failed to unmarshal do spec: %w", err)
-		}
-
-		ctrl := gomock.NewController(t)
-		services := createService(t, ctrl)
-
-		c := Client{
-			logger:       l,
-			SpacesRegion: "nyc3",
-			Services:     &services,
-		}
-		return &c, nil
+	spec := &Spec{
+		Token: "test-token",
+	}
+	spec.SetDefaults()
+	if err := spec.Validate(); err != nil {
+		t.Fatalf("failed to validate spec: %v", err)
 	}
 
-	p := source.NewPlugin(
-		table.Name,
-		version,
-		[]*schema.Table{
-			table,
-		},
-		newTestExecutionClient)
-	p.SetLogger(l)
-	source.TestPluginSync(t, p, specs.Source{
-		Name:         "dev",
-		Path:         "cloudquery/dev",
-		Version:      version,
-		Tables:       []string{table.Name},
-		Destinations: []string{"mock-destination"},
-	})
+	ctrl := gomock.NewController(t)
+	services := createService(t, ctrl)
+
+	c := &Client{
+		logger:       l,
+		SpacesRegion: firstSpacesRegion,
+		Services:     &services,
+	}
+
+	messages, err := sched.SyncAll(context.Background(), c, schema.Tables{table})
+	if err != nil {
+		t.Fatalf("failed to sync: %v", err)
+	}
+	records := messages.GetInserts().GetRecordsForTable(table)
+	emptyColumns := schema.FindEmptyColumns(table, records)
+	if len(emptyColumns) > 0 {
+		t.Fatalf("empty columns: %v", emptyColumns)
+	}
 }

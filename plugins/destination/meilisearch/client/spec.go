@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/cloudquery/plugin-sdk/v4/configtype"
 	"github.com/meilisearch/meilisearch-go"
 	"github.com/valyala/fasthttp"
 )
@@ -18,6 +19,10 @@ type Spec struct {
 	// optional
 	Timeout time.Duration `json:"timeout,omitempty"`
 	CACert  string        `json:"ca_cert,omitempty"`
+
+	BatchSize      int                  `json:"batch_size,omitempty"`
+	BatchSizeBytes int                  `json:"batch_size_bytes,omitempty"`
+	BatchTimeout   *configtype.Duration `json:"batch_timeout,omitempty"`
 }
 
 func (s *Spec) validate() error {
@@ -34,6 +39,19 @@ func (s *Spec) validate() error {
 func (s *Spec) setDefaults() {
 	if s.Timeout == 0 {
 		s.Timeout = 5 * time.Minute
+	}
+
+	if s.BatchSize == 0 {
+		s.BatchSize = 1000 // 1K
+	}
+
+	if s.BatchSizeBytes == 0 {
+		s.BatchSizeBytes = 4 << 20 // 4 MiB
+	}
+
+	if s.BatchTimeout == nil {
+		d := configtype.NewDuration(20 * time.Second) // 20s
+		s.BatchTimeout = &d
 	}
 }
 

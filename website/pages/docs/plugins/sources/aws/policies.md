@@ -176,9 +176,9 @@ AWS PCI DSS v3.2.1 performs the following checks:
   - Secrets Manager secrets configured with automatic rotation should rotate successfully
   - Remove unused Secrets Manager secrets
   - Secrets Manager secrets should be rotated within a specified number of days
-  - All EC2 instances managed by Systems Manager should be compliant with patching requirements
-  - Instances managed by Systems Manager should have an association compliance status of COMPLIANT
-  - EC2 instances should be managed by AWS Systems Manager
+  - Amazon EC2 instances managed by Systems Manager should have a patch compliance status of COMPLIANT after a patch installation
+  - Amazon EC2 instances managed by Systems Manager should have an association compliance status of COMPLIANT
+  - Amazon EC2 instances should be managed by AWS Systems Manager
   - AWS WAF Classic global web ACL logging should be enabled
 
 ### Dependent Views
@@ -196,6 +196,7 @@ AWS Foundational Security Best Practices requires the following tables to be syn
 
 ```yaml
 tables:
+  - aws_account_alternate_contacts
   - aws_acm_certificates
   - aws_apigateway_rest_api_stages
   - aws_apigateway_rest_apis
@@ -281,6 +282,7 @@ tables:
 ### Queries
 
 AWS Foundational Security Best Practices performs the following checks:
+  - Security contact information should be provided for an AWS account
   - certificate has less than 30 days to be renewed
   - API Gateway REST and WebSocket API logging should be enabled
   - API Gateway REST API stages should be configured to use SSL certificates for backend authentication
@@ -397,10 +399,11 @@ AWS Foundational Security Best Practices performs the following checks:
   - Remove unused Secrets Manager secrets
   - Secrets Manager secrets should be rotated within a specified number of days
   - SNS topics should be encrypted at rest using AWS KMS
-  - SQS queues should be encrypted at rest using AWS KMS
-  - EC2 instances should be managed by AWS Systems Manager
-  - All EC2 instances managed by Systems Manager should be compliant with patching requirements
-  - Instances managed by Systems Manager should have an association compliance status of COMPLIANT
+  - Logging of delivery status should be enabled for notification messages sent to a topic
+  - Amazon SQS queues should be encrypted at rest
+  - Amazon EC2 instances should be managed by AWS Systems Manager
+  - Amazon EC2 instances managed by Systems Manager should have a patch compliance status of COMPLIANT after a patch installation
+  - Amazon EC2 instances managed by Systems Manager should have an association compliance status of COMPLIANT
   - SSM documents should not be public
   - AWS WAF Classic global web ACL logging should be enabled
 

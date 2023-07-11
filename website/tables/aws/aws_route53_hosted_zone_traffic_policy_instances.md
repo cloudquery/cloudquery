@@ -1,6 +1,6 @@
 # Table: aws_route53_hosted_zone_traffic_policy_instances
 
-This table shows data for Route53 Hosted Zone Traffic Policy Instances.
+This table shows data for Amazon Route 53 Hosted Zone Traffic Policy Instances.
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicyInstance.html
 
@@ -14,8 +14,6 @@ This table depends on [aws_route53_hosted_zones](aws_route53_hosted_zones).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id (PK)|`utf8`|

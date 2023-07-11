@@ -3,22 +3,30 @@ package client
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func identifier(name string) string {
 	return fmt.Sprintf("`%s`", name)
 }
 
+const maxPrefixLength = 191
+
 const columnQuery = `SELECT 
 cols.COLUMN_NAME,
 COLUMN_TYPE,
 IS_NULLABLE,
-constraint_type
+constraint_type,
+sub_part
 FROM
 INFORMATION_SCHEMA.COLUMNS AS cols
+	LEFT JOIN  information_schema.STATISTICS as stats on
+		cols.table_schema = stats.table_schema and
+		cols.TABLE_NAME = stats.table_name and
+		cols.COLUMN_NAME = stats.column_name and index_name = 'PRIMARY'
 	LEFT JOIN
 (SELECT 
 	tc.constraint_schema,
@@ -39,7 +47,8 @@ GROUP BY tc.constraint_schema , tc.table_name , kcu.column_name) AS constraints 
 	AND constraints.table_name = cols.TABLE_NAME
 	AND constraints.column_name = cols.COLUMN_NAME
 WHERE
-cols.TABLE_NAME = ?;`
+cols.TABLE_NAME = ? and
+(DATABASE() IS NULL OR cols.table_schema = DATABASE());`
 
 func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schema.Column, error) {
 	var columns []schema.Column
@@ -53,15 +62,19 @@ func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schem
 		var typ string
 		var nullable string
 		var constraintType *string
-
-		if err := rows.Scan(&name, &typ, &nullable, &constraintType); err != nil {
+		var subpart *int
+		if err := rows.Scan(&name, &typ, &nullable, &constraintType, &subpart); err != nil {
 			return nil, err
 		}
 
 		schemaType := mySQLTypeToArrowType(typ)
 		var primaryKey bool
-		if constraintType != nil && c.pkEnabled() {
+		if constraintType != nil {
 			primaryKey = strings.Contains(*constraintType, "PRIMARY KEY")
+		}
+		// subpart only non nil for pks on blob/text columns
+		if subpart != nil && *subpart != maxPrefixLength {
+			primaryKey = false
 		}
 		columns = append(columns, schema.Column{
 			Name:       name,
@@ -76,7 +89,7 @@ func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schem
 
 // TODO: in the future this could theoretically be done in a single query and then the tables could be filtered in memory
 func (c *Client) schemaTables(ctx context.Context, tables schema.Tables) (schema.Tables, error) {
-	query := `SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE';`
+	query := `SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND (DATABASE() IS NULL OR table_SCHEMA = DATABASE());`
 	rows, err := c.db.QueryContext(ctx, query)
 	if err != nil {
 		return nil, err
@@ -140,7 +153,7 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
 		builder.WriteString(" ")
 		builder.WriteString(arrowTypeToMySqlStr(column.Type))
 
-		if c.pkEnabled() && column.PrimaryKey {
+		if column.PrimaryKey {
 			primaryKeysIndices = append(primaryKeysIndices, i)
 		} else {
 			// Primary keys are implicitly not null and unique, so we only need to add these constraints if the column is not a primary key
@@ -165,7 +178,9 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
 			sqlType := arrowTypeToMySqlStr(column.Type)
 			if sqlType == "blob" || sqlType == "text" {
 				// `blob/text` SQL types require specifying prefix length to use for the primary key
-				builder.WriteString("(64)")
+				// https://dev.mysql.com/doc/refman/8.0/en/innodb-limits.html
+				// The index key prefix length limit is 767 bytes for InnoDB tables that use the REDUNDANT or COMPACT row format. For example, you might hit this limit with a column prefix index of more than 191 characters on a TEXT or VARCHAR column, assuming a utf8mb4 character set and the maximum of 4 bytes for each character.
+				builder.WriteString("(" + strconv.Itoa(maxPrefixLength) + ")")
 			}
 			if i < len(primaryKeysIndices)-1 {
 				builder.WriteString(", ")

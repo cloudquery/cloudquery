@@ -1,17 +1,20 @@
 # Table: aws_codebuild_projects
 
-This table shows data for Codebuild Projects.
+This table shows data for AWS CodeBuild Projects.
 
 https://docs.aws.amazon.com/codebuild/latest/APIReference/API_Project.html
 
 The primary key for this table is **arn**.
 
+## Relations
+
+The following tables depend on aws_codebuild_projects:
+  - [aws_codebuild_builds](aws_codebuild_builds)
+
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|

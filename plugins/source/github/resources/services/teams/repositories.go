@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/google/go-github/v49/github"
 )
 
@@ -34,10 +34,12 @@ func fetchRepositories(ctx context.Context, meta schema.ClientMeta, parent *sche
 			return err
 		}
 		res <- repos
-		opts.Page = resp.NextPage
-		if opts.Page == resp.LastPage {
+
+		if resp.NextPage == 0 {
 			break
 		}
+
+		opts.Page = resp.NextPage
 	}
 	return nil
 }

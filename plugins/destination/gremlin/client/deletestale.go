@@ -2,29 +2,30 @@ package client
 
 import (
 	"context"
-	"time"
 
 	gremlingo "github.com/apache/tinkerpop/gremlin-go/v3/driver"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source string, syncTime time.Time) error {
+func (c *Client) DeleteStale(_ context.Context, msgs message.WriteDeleteStales) error {
 	session, closer, err := c.newSession()
 	if err != nil {
 		return err
 	}
 	defer closer()
 
-	for _, table := range tables {
+	for _, msg := range msgs {
 		g := gremlingo.Traversal_().WithRemote(session).
 			V().
-			HasLabel(table.Name).
-			Has(schema.CqSourceNameColumn.Name, source).
-			Has(schema.CqSyncTimeColumn.Name, gremlingo.P.Lt(syncTime)).
+			HasLabel(msg.GetTable().Name).
+			Has(schema.CqSourceNameColumn.Name, msg.SourceName).
+			Has(schema.CqSyncTimeColumn.Name, gremlingo.P.Lt(msg.SyncTime)).
 			SideEffect(AnonT.Drop())
 		if err := <-g.Iterate(); err != nil {
 			return err
 		}
 	}
+
 	return nil
 }

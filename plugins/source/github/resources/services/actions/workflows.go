@@ -7,8 +7,8 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/google/go-github/v49/github"
 )
 
@@ -40,10 +40,11 @@ func fetchWorkflows(ctx context.Context, meta schema.ClientMeta, _ *schema.Resou
 			return err
 		}
 		res <- workflows.Workflows
-		actionOpts.Page = resp.NextPage
-		if actionOpts.Page == resp.LastPage {
+
+		if resp.NextPage == 0 {
 			break
 		}
+		actionOpts.Page = resp.NextPage
 	}
 	return nil
 }

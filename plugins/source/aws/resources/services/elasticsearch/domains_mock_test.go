@@ -7,17 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildElasticSearchDomains(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockElasticsearchserviceClient(ctrl)
 
 	var info types.DomainInfo
-	if err := faker.FakeObject(&info); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&info))
+
 	m.EXPECT().ListDomainNames(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticsearchservice.ListDomainNamesOutput{
 			DomainNames: []types.DomainInfo{info},
@@ -26,9 +26,8 @@ func buildElasticSearchDomains(t *testing.T, ctrl *gomock.Controller) client.Ser
 	)
 
 	var ds types.ElasticsearchDomainStatus
-	if err := faker.FakeObject(&ds); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ds))
+
 	m.EXPECT().DescribeElasticsearchDomain(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticsearchservice.DescribeElasticsearchDomainOutput{
 			DomainStatus: &ds,
@@ -37,9 +36,8 @@ func buildElasticSearchDomains(t *testing.T, ctrl *gomock.Controller) client.Ser
 	)
 
 	var principal types.AuthorizedPrincipal
-	if err := faker.FakeObject(&principal); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&principal))
+
 	m.EXPECT().ListVpcEndpointAccess(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticsearchservice.ListVpcEndpointAccessOutput{
 			AuthorizedPrincipalList: []types.AuthorizedPrincipal{principal},
@@ -48,9 +46,8 @@ func buildElasticSearchDomains(t *testing.T, ctrl *gomock.Controller) client.Ser
 	)
 
 	var tags elasticsearchservice.ListTagsOutput
-	if err := faker.FakeObject(&tags); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tags))
+
 	m.EXPECT().ListTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tags, nil)
 
 	return client.Services{Elasticsearchservice: m}

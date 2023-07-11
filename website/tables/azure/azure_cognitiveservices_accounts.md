@@ -6,12 +6,20 @@ https://learn.microsoft.com/en-us/rest/api/cognitiveservices/accountmanagement/a
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on azure_cognitiveservices_accounts:
+  - [azure_cognitiveservices_account_deployments](azure_cognitiveservices_account_deployments)
+  - [azure_cognitiveservices_account_models](azure_cognitiveservices_account_models)
+  - [azure_cognitiveservices_account_private_endpoint_connections](azure_cognitiveservices_account_private_endpoint_connections)
+  - [azure_cognitiveservices_account_private_link_resources](azure_cognitiveservices_account_private_link_resources)
+  - [azure_cognitiveservices_account_skus](azure_cognitiveservices_account_skus)
+  - [azure_cognitiveservices_account_usages](azure_cognitiveservices_account_usages)
+
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |subscription_id|`utf8`|
