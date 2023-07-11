@@ -55,8 +55,9 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	if options.BackendOptions == nil {
 		c.logger.Info().Msg("No backend options provided, using no state backend")
 		stateClient = &state.NoOpClient{}
+		c.backendConn = nil
 	} else {
-		conn, err := grpc.DialContext(ctx, options.BackendOptions.Connection,
+		c.backendConn, err = grpc.DialContext(ctx, options.BackendOptions.Connection,
 			grpc.WithTransportCredentials(insecure.NewCredentials()),
 			grpc.WithDefaultCallOptions(
 				grpc.MaxCallRecvMsgSize(maxMsgSize),
@@ -66,7 +67,7 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 		if err != nil {
 			return fmt.Errorf("failed to dial grpc source plugin at %s: %w", options.BackendOptions.Connection, err)
 		}
-		stateClient, err = state.NewClient(ctx, conn, options.BackendOptions.TableName)
+		stateClient, err = state.NewClient(ctx, c.backendConn, options.BackendOptions.TableName)
 		if err != nil {
 			return fmt.Errorf("failed to create state client: %w", err)
 		}

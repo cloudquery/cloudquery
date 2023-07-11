@@ -53,8 +53,9 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	if options.BackendOptions == nil {
 		c.logger.Info().Msg("No backend options provided, using no state backend")
 		stateClient = &state.NoOpClient{}
+		c.backendConn = nil
 	} else {
-		conn, err := grpc.DialContext(ctx, options.BackendOptions.Connection,
+		c.backendConn, err = grpc.DialContext(ctx, options.BackendOptions.Connection,
 			grpc.WithTransportCredentials(insecure.NewCredentials()),
 			grpc.WithDefaultCallOptions(
 				grpc.MaxCallRecvMsgSize(maxMsgSize),
@@ -109,7 +110,7 @@ func getTables() []*schema.Table {
 	return tables
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
+func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	if opts.NoConnection {
 		return &Client{
 			logger: logger,
