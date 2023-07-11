@@ -245,6 +245,94 @@
     {
       "source": "/docs/advanced-topics/docker",
       "destination": "/docs/deployment/docker"
+    },
+    {
+      "source": "/buy/jira",
+      "destination": "https://buy.stripe.com/eVa4gk8U99tB9ywbIR"
+    },
+    {
+      "source": "/buy/googleads",
+      "destination": "https://buy.stripe.com/dR6aEIgmBcFN5ig000"
+    },
+    {
+      "source": "/buy/firehose",
+      "destination": "https://buy.stripe.com/6oEbIMfix35d7qo28i"
+    },
+    {
+      "source": "/buy/gandi",
+      "destination": "https://buy.stripe.com/00geUY6M17lt9yw3cd"
+    },
+    {
+      "source": "/buy/heroku",
+      "destination": "https://buy.stripe.com/28o28c0nD7ltfWU9AC"
+    },
+    {
+      "source": "/buy/launchdarkly",
+      "destination": "https://buy.stripe.com/9AQbIM0nDgW35ig4gj"
+    },
+    {
+      "source": "/buy/mixpanel",
+      "destination": "https://buy.stripe.com/fZe4gk1rH6hpcKI7sw"
+    },
+    {
+      "source": "/buy/slack",
+      "destination": "https://buy.stripe.com/6oE5koc6l49h1209AF"
+    },
+    {
+      "source": "/buy/tailscale",
+      "destination": "https://buy.stripe.com/14kdQU6M17lt8us14c"
+    },
+    {
+      "source": "/buy/vercel",
+      "destination": "https://buy.stripe.com/fZeeUYeet7lteSQcMS"
+    },
+    {
+      "source": "/buy/azure_cis_130_snowflake",
+      "destination": "https://buy.stripe.com/9AQ148fixcFNfWU8wH"
+    },
+    {
+      "source": "/buy/azure_cis_130_bigquery",
+      "destination": "https://buy.stripe.com/28o3cggmB219cKI5kw"
+    },
+    {
+      "source": "/buy/azure_hippa_92_snowflake",
+      "destination": "https://buy.stripe.com/bIY28c4DTfRZaCA9AN"
+    },
+    {
+      "source": "/buy/azure_hippa_92_bigquery",
+      "destination": "https://buy.stripe.com/14k0040nD35dfWUeV8"
+    },
+    {
+      "source": "/buy/aws_cis_150_snowflake",
+      "destination": "https://buy.stripe.com/cN2cMQ0nD0X5dOM6oD"
+    },
+    {
+      "source": "/buy/aws_cis_150_bigquery",
+      "destination": "https://buy.stripe.com/9AQ8wAgmB9tB26400g"
+    },
+    {
+      "source": "/buy/aws_foundational_security_snowflake",
+      "destination": "https://buy.stripe.com/cN2eUYdap6hp264eVb"
+    },
+    {
+      "source": "/buy/aws_foundational_security_bigquery",
+      "destination": "https://buy.stripe.com/4gw7sw9Yd49h26428q"
+    },
+    {
+      "source": "/buy/gcp_cis_120_snowflake",
+      "destination": "https://buy.stripe.com/eVa5ko8U9gW3264cN5"
+    },
+    {
+      "source": "/buy/gcp_cis_120_bigquery",
+      "destination": "https://buy.stripe.com/9AQaEIb2h7ltaCA00k"
+    },
+    {
+      "source": "/buy/k8s_nsa_cisa_v1_snowflake",
+      "destination": "https://buy.stripe.com/00g28c3zPaxFfWUfZj"
+    },
+    {
+      "source": "/buy/k8s_nsa_cisa_v1_bigquery",
+      "destination": "https://buy.stripe.com/fZedQU1rHgW3cKI9AW"
     }
   ]
 }

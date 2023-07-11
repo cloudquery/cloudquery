@@ -5,10 +5,10 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/terraform/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func TFResources() *schema.Table {
+func tfResources() *schema.Table {
 	return &schema.Table{
 		Name:        "tf_resources",
 		Description: "Terraform resources",
@@ -52,7 +52,7 @@ func TFResources() *schema.Table {
 				Resolver:    resolveProviderName,
 			},
 		},
-		Relations: []*schema.Table{TFResourceInstances()},
+		Relations: []*schema.Table{tfResourceInstances()},
 	}
 }
 

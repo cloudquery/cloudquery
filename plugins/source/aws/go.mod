@@ -79,7 +79,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/mq v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.16.2
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.20.7
-	github.com/aws/aws-sdk-go-v2/service/networkfirewall v1.28.2
+	github.com/aws/aws-sdk-go-v2/service/networkfirewall v1.28.3
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.19.8
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.15.13
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.37.2
@@ -97,10 +97,10 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/savingsplans v1.12.12
 	github.com/aws/aws-sdk-go-v2/service/scheduler v1.1.13
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.19.10
-	github.com/aws/aws-sdk-go-v2/service/securityhub v1.33.1
+	github.com/aws/aws-sdk-go-v2/service/securityhub v1.33.2
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.19.2
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.17.6
-	github.com/aws/aws-sdk-go-v2/service/servicediscovery v1.21.6
+	github.com/aws/aws-sdk-go-v2/service/servicediscovery v1.21.7
 	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.14.14
 	github.com/aws/aws-sdk-go-v2/service/ses v1.15.11
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.18.2
@@ -124,10 +124,9 @@ require (
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/codegen v0.2.1
-	github.com/cloudquery/plugin-pb-go v1.6.0
-	github.com/cloudquery/plugin-sdk/v3 v3.10.6
-	github.com/cockroachdb/cockroachdb-parser v0.0.0-20230515042840-c9c144eab71a
-	github.com/gocarina/gocsv v0.0.0-20230616125104-99d496ca653d
+	github.com/cloudquery/plugin-sdk/v4 v4.8.1-rc1
+	github.com/cockroachdb/cockroachdb-parser v0.0.0-20221207165326-ea0ac1a4778b
+	github.com/gocarina/gocsv v0.0.0-20230513223533-9ddd7fd60602
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
 	github.com/mitchellh/hashstructure/v2 v2.0.2
@@ -139,10 +138,11 @@ require (
 	github.com/thoas/go-funk v0.9.3
 	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df
 	golang.org/x/sync v0.1.0
+	google.golang.org/grpc v1.55.0
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230703001435-df3b664a289d
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230710001530-a2a76ebbb85f
 
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect
@@ -172,13 +172,12 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
-	github.com/klauspost/compress v1.16.0 // indirect
+	github.com/klauspost/compress v1.16.6 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.5 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/pierrec/lz4/v4 v4.1.17 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
@@ -187,12 +186,11 @@ require (
 
 require (
 	github.com/biogo/store v0.0.0-20201120204734-aad293a2328f // indirect
-	github.com/blevesearch/snowballstem v0.9.0 // indirect
+	github.com/cloudquery/plugin-pb-go v1.6.0 // indirect
 	github.com/cockroachdb/apd/v3 v3.1.0 // indirect
 	github.com/cockroachdb/errors v1.9.0 // indirect
 	github.com/cockroachdb/logtags v0.0.0-20230118201751-21c54148d20b // indirect
 	github.com/cockroachdb/redact v1.1.3 // indirect
-	github.com/dave/dst v0.27.2 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/geo v0.0.0-20230421003525-6adc56603217 // indirect
@@ -204,6 +202,7 @@ require (
 	github.com/pierrre/geohash v1.0.0 // indirect
 	github.com/rogpeppe/go-internal v1.9.0 // indirect
 	github.com/sasha-s/go-deadlock v0.3.1 // indirect
+	github.com/spf13/cast v1.5.0 // indirect
 	github.com/twpayne/go-geom v1.4.2 // indirect
 	github.com/twpayne/go-kml v1.5.2 // indirect
 	golang.org/x/mod v0.11.0 // indirect
@@ -214,7 +213,6 @@ require (
 	google.golang.org/genproto v0.0.0-20230525234025-438c736192d0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20230525234020-1aefcd67740a // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230629202037-9506855d4529 // indirect
-	google.golang.org/grpc v1.55.0 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

@@ -26,6 +26,13 @@ type BackendConfigBlock struct {
 	Config      *json.RawMessage `json:"config"`
 }
 
+func (bc *BackendConfigBlock) Validate() error {
+	if bc.Config == nil {
+		return errors.New("missing `config` in spec")
+	}
+	return nil
+}
+
 type TerraformBackend struct {
 	BackendType BackendType
 	BackendName string
@@ -147,23 +154,11 @@ func NewLocalTerraformBackend(cfg *BackendConfigBlock) (*TerraformBackend, error
 
 // NewBackend initialize function
 func NewBackend(ctx context.Context, cfg *BackendConfigBlock) (*TerraformBackend, error) {
-	if cfg.Config == nil {
-		return nil, errors.New("missing `config` in spec")
-	}
-
 	switch cfg.Type {
 	case LOCAL:
-		localBackend, err := NewLocalTerraformBackend(cfg)
-		if err != nil {
-			return nil, err
-		}
-		return localBackend, nil
+		return NewLocalTerraformBackend(cfg)
 	case S3:
-		s3Backend, err := NewS3TerraformBackend(ctx, cfg)
-		if err != nil {
-			return nil, err
-		}
-		return s3Backend, nil
+		return NewS3TerraformBackend(ctx, cfg)
 	default:
 		return nil, fmt.Errorf("unsupported backend: %q", cfg.Type)
 	}

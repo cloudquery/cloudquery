@@ -31,6 +31,8 @@ type Spec struct {
 	RetryDelaySeconds int `json:"retry_delay_seconds,omitempty"`
 
 	TableOptions TableOptions `json:"table_options,omitempty"`
+
+	Concurrency int `json:"concurrency,omitempty"`
 }
 
 type TableOptions struct {
@@ -122,4 +124,10 @@ func (s *Spec) Validate() error {
 		return fmt.Errorf("missing API key")
 	}
 	return s.TableOptions.Validate()
+}
+
+func (s *Spec) SetDefaults() {
+	if s.Concurrency < 1 {
+		s.Concurrency = 10000
+	}
 }

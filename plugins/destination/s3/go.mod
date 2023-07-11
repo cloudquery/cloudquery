@@ -6,10 +6,10 @@ require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
 	github.com/aws/aws-sdk-go-v2 v1.18.1
 	github.com/aws/aws-sdk-go-v2/config v1.18.27
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.70
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.35.0
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.71
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.36.0
 	github.com/cloudquery/filetypes/v4 v4.0.0
-	github.com/cloudquery/plugin-sdk/v4 v4.7.0-rc1
+	github.com/cloudquery/plugin-sdk/v4 v4.8.1-rc1
 	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.1
@@ -17,7 +17,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230703001435-df3b664a289d
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230710001530-a2a76ebbb85f
 
 require (
 	github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c // indirect

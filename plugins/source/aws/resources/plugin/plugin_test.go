@@ -18,8 +18,7 @@ func TestAWS(t *testing.T) {
 // This test ensures that all tables have a unique description.
 func TestAWSTableDescriptions(t *testing.T) {
 	descriptions := make(map[string]string)
-	p := AWS()
-	tables := p.Tables().FlattenTables()
+	tables := getTables().FlattenTables()
 	for _, table := range tables {
 		if ignoreTable(table.Name) {
 			continue

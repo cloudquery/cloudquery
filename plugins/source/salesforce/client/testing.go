@@ -7,9 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog"
 )
@@ -20,55 +19,51 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 	logger := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+	sched := scheduler.NewScheduler(scheduler.WithLogger(logger))
 
 	table.IgnoreInTests = false
-	version := "vDev"
 	router := mux.NewRouter()
 	h := httptest.NewServer(router)
 	defer h.Close()
 
-	configureTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
-		err := createServices(router)
-		if err != nil {
-			return nil, err
-		}
-		var pluginSpec Spec
-		if err = spec.UnmarshalSpec(&pluginSpec); err != nil {
-			return nil, err
-		}
-		pluginSpec.SetDefaults()
-		cqClient := Client{
-			logger: logger,
-			Client: h.Client(),
-			LoginResponse: LoginResponse{
-				AccessToken: "SomeTestToken",
-				InstanceUrl: h.URL,
-			},
-			HTTPDataEndpoint: h.URL + "/services/data/" + ApiVersion,
-			ListObjectsResponse: ListObjectsResponse{
-				Sobject: []Sobject{
-					{
-						Name: "TestObject",
-					},
+	if err := createServices(router); err != nil {
+		t.Fatal(err)
+	}
+	spec := Spec{
+		Username:     "test",
+		Password:     "test",
+		ClientId:     "test",
+		ClientSecret: "test",
+	}
+	spec.SetDefaults()
+	if err := spec.Validate(); err != nil {
+		t.Fatal(err)
+	}
+	cqClient := &Client{
+		logger: logger,
+		Client: h.Client(),
+		LoginResponse: LoginResponse{
+			AccessToken: "SomeTestToken",
+			InstanceUrl: h.URL,
+		},
+		HTTPDataEndpoint: h.URL + "/services/data/" + ApiVersion,
+		ListObjectsResponse: ListObjectsResponse{
+			Sobject: []Sobject{
+				{
+					Name: "TestObject",
 				},
 			},
-			pluginSpec: pluginSpec,
-		}
-		return &cqClient, nil
+		},
+		spec: spec,
 	}
 
-	p := source.NewPlugin(
-		table.Name,
-		version,
-		[]*schema.Table{table},
-		configureTestExecutionClient,
-	)
-	p.SetLogger(logger)
-	source.TestPluginSync(t, p, specs.Source{
-		Name:         "dev",
-		Path:         "cloudquery/dev",
-		Version:      version,
-		Tables:       []string{table.Name},
-		Destinations: []string{"mock-destination"},
-	})
+	messages, err := sched.SyncAll(context.Background(), cqClient, schema.Tables{table})
+	if err != nil {
+		t.Fatalf("failed to sync: %v", err)
+	}
+	records := messages.GetInserts().GetRecordsForTable(table)
+	emptyColumns := schema.FindEmptyColumns(table, records)
+	if len(emptyColumns) > 0 {
+		t.Fatalf("empty columns: %v", emptyColumns)
+	}
 }

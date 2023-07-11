@@ -3,9 +3,8 @@ kind: source
 # Common source-plugin configuration
 spec:
   name: vercel
-  path: cloudquery/vercel
+  path: /path/to/downloaded/plugin # https://cloudquery.io/buy/vercle
   version: "VERSION_SOURCE_VERCEL"
-  concurrency: 10000
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
   skip_tables:
@@ -15,6 +14,7 @@ spec:
   # Vercel specific configuration
   spec:
     access_token: "<YOUR_ACCESS_TOKEN_HERE>"
+#    concurrency: 10000
 ```
 
 The Vercel plugin supports incremental syncing. This means that only new data will be fetched from Vercel and loaded into your destination for supported tables (support depending on API endpoint). This is done by keeping track of the last `paginator` for each table and only fetching data that has been updated since then.
