@@ -5,7 +5,7 @@ import (
 
 	"github.com/PagerDuty/go-pagerduty"
 	"github.com/cloudquery/cloudquery/plugins/source/pagerduty/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func fetchSchedules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {

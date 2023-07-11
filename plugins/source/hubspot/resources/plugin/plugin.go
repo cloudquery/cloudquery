@@ -82,7 +82,7 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	if c.options.NoConnection {
 		return fmt.Errorf("no connection")
 	}
-	tables, err := getTables().FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
+	tables, err := c.allTables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
 	if err != nil {
 		return err
 	}

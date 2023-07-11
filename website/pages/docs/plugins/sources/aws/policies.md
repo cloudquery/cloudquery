@@ -399,6 +399,7 @@ AWS Foundational Security Best Practices performs the following checks:
   - Remove unused Secrets Manager secrets
   - Secrets Manager secrets should be rotated within a specified number of days
   - SNS topics should be encrypted at rest using AWS KMS
+  - Logging of delivery status should be enabled for notification messages sent to a topic
   - Amazon SQS queues should be encrypted at rest
   - Amazon EC2 instances should be managed by AWS Systems Manager
   - Amazon EC2 instances managed by Systems Manager should have a patch compliance status of COMPLIANT after a patch installation

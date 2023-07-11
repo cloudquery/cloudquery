@@ -1,10 +1,10 @@
-package resources
+package services
 
 import (
 	"context"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func terms() *schema.Table {
@@ -16,7 +16,7 @@ func terms() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&Term{}, transformers.WithPrimaryKeys("OfferTermCode", "Sku")),
 	}
 }
-func fetchTerms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchTerms(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	pricingFile := parent.Item.(PricingFile)
 	res <- pricingFile.Terms
 	return nil

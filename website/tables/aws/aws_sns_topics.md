@@ -49,6 +49,28 @@ FROM
   aws_sns_topics;
 ```
 
+### Logging of delivery status should be enabled for notification messages sent to a topic
+
+```sql
+SELECT
+  'Logging of delivery status should be enabled for notification messages sent to a topic'
+    AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN (unknown_fields->'HTTPSuccessFeedbackRoleArn') IS NULL
+  AND (unknown_fields->'FirehoseSuccessFeedbackRoleArn') IS NULL
+  AND (unknown_fields->'LambdaSuccessFeedbackRoleArn') IS NULL
+  AND (unknown_fields->'ApplicationSuccessFeedbackRoleArn') IS NULL
+  AND (unknown_fields->'SQSSuccessFeedbackRoleArn') IS NULL
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_sns_topics;
+```
+
 ### Unused SNS topic
 
 ```sql

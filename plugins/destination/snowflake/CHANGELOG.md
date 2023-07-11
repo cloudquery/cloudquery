@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v2.3.3...plugins-destination-snowflake-v2.4.0) (2023-07-09)
+
+
+### Features
+
+* **snowflake:** Support old protobuf versions ([#12087](https://github.com/cloudquery/cloudquery/issues/12087)) ([183154d](https://github.com/cloudquery/cloudquery/commit/183154d797aff4de32732bea7255d08dcdca9521))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/feature/s3/manager to v1.11.71 ([#12076](https://github.com/cloudquery/cloudquery/issues/12076)) ([4d3f9d8](https://github.com/cloudquery/cloudquery/commit/4d3f9d8db2409bb5905951f7a0f024312891a66e))
+* **postgresql:** Rerun release please ([#12002](https://github.com/cloudquery/cloudquery/issues/12002)) ([9d12843](https://github.com/cloudquery/cloudquery/commit/9d12843462d1019d26bc239f8f928bf5f62940cf))
+
 ## [2.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v2.3.2...plugins-destination-snowflake-v2.3.3) (2023-07-03)
 
 
