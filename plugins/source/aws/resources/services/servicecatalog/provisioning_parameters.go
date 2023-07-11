@@ -48,7 +48,7 @@ func provisioningParameters() *schema.Table {
 func fetchProvisioningParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Servicecatalog
-	p := parent.Parent.Parent.Item.(types.ProvisionedProductAttribute)
+	p := parent.Parent.Item.(types.ProvisionedProductAttribute)
 	launchPathSummary := parent.Item.(types.LaunchPathSummary)
 	input := servicecatalog.DescribeProvisioningParametersInput{
 		ProductId:              p.ProductId,
