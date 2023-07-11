@@ -3,7 +3,7 @@ select
     :'execution_time' as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
-    'All EC2 instances managed by Systems Manager should be compliant with patching requirements' as title,
+    'Amazon EC2 instances managed by Systems Manager should have a patch compliance status of COMPLIANT after a patch installation' as title,
     aws_ssm_instances.account_id,
     aws_ssm_instances.arn,
     case when
