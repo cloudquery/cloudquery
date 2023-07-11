@@ -1,4 +1,4 @@
-package resources
+package services
 
 import (
 	"context"
@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/awspricing/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 const ROOT_URL = "https://pricing.us-east-1.amazonaws.com"
@@ -31,7 +31,7 @@ func Services() *schema.Table {
 	}
 }
 
-func fetchServicesTable(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchServicesTable(_ context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	links, err := getPricingFileLinks(c)
 	if err != nil {
@@ -116,7 +116,7 @@ func getRegionalPricingFileLinks(c *client.Client, link string) ([]string, error
 	return links, nil
 }
 
-func getPricingFile(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+func getPricingFile(_ context.Context, _ schema.ClientMeta, resource *schema.Resource) error {
 	link := resource.Item.(string)
 	resp, err := http.Get(link)
 	if err != nil {

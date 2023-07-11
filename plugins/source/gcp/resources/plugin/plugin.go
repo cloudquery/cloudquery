@@ -7,6 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/docs"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"golang.org/x/exp/maps"
 )
 
 var (
@@ -84,10 +85,7 @@ func titleTransformer(table *schema.Table) error {
 	if table.Title != "" {
 		return nil
 	}
-	exceptions := make(map[string]string)
-	for k, v := range docs.DefaultTitleExceptions {
-		exceptions[k] = v
-	}
+	exceptions := maps.Clone(docs.DefaultTitleExceptions)
 	for k, v := range gcpExceptions {
 		exceptions[k] = v
 	}

@@ -7,18 +7,23 @@ import (
 )
 
 type Spec struct {
-	PropertyID string     `json:"property_id,omitempty"`
-	StartDate  string     `json:"start_date,omitempty"`
-	OAuth      *oauthSpec `json:"oauth,omitempty"`
-	Reports    []*Report  `json:"reports,omitempty"`
+	PropertyID  string     `json:"property_id,omitempty"`
+	StartDate   string     `json:"start_date,omitempty"`
+	OAuth       *oauthSpec `json:"oauth,omitempty"`
+	Reports     []*Report  `json:"reports,omitempty"`
+	Concurrency uint64     `json:"concurrency,omitempty"`
 }
 
 const layout = "2006-01-02"
+const defaultConcurrency = 10000
 
 func (s *Spec) setDefaults() {
 	if len(s.StartDate) == 0 {
 		// date 7 days prior
 		s.StartDate = time.Now().UTC().Add(-7 * 24 * time.Hour).Format(layout)
+	}
+	if s.Concurrency == 0 {
+		s.Concurrency = defaultConcurrency
 	}
 }
 

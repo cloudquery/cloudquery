@@ -6,7 +6,7 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/terraform/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 var providerNameRegex = regexp.MustCompile(`^.*\["(?P<Hostname>.*)/(?P<Namespace>.*)/(?P<Type>.*)"\].*?$`)
@@ -51,7 +51,7 @@ func TFData() *schema.Table {
 				Description: "The \"lineage\" is a unique ID assigned to a state when it is created",
 			},
 		},
-		Relations: []*schema.Table{TFResources()},
+		Relations: []*schema.Table{tfResources()},
 	}
 }
 

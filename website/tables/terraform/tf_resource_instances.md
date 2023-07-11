@@ -14,8 +14,6 @@ This table depends on [tf_resources](tf_resources).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |resource_name|`utf8`|

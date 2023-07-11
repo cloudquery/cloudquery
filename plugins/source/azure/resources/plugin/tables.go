@@ -92,10 +92,11 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/synapse"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/windowsiot"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/workloads"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func tables() []*schema.Table {
+func getTables() schema.Tables {
 	list := []*schema.Table{
 		advisor.RecommendationMetadata(),
 		advisor.Recommendations(),
@@ -357,6 +358,15 @@ func tables() []*schema.Table {
 		if list[i].PostResourceResolver == nil {
 			panic("no PostResourceResolver in " + list[i].Name)
 		}
+	}
+	if err := transformers.TransformTables(list); err != nil {
+		panic(err)
+	}
+	if err := transformers.Apply(list, titleTransformer); err != nil {
+		panic(err)
+	}
+	for _, table := range list {
+		schema.AddCqIDs(table)
 	}
 	return list
 }
