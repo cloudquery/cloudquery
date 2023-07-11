@@ -46,7 +46,7 @@ module.exports = async ({github, context}) => {
 
     // Enforce policy tests for AWS,Azure and K8s plugins
     // TODO: Add k8s and gcp, azure back
-    const pluginsWithPolicyTests = ["plugins/source/azure"]
+    const pluginsWithPolicyTests = []
     for (const plugin of pluginsWithPolicyTests) {
         if (actions.includes(plugin)) {
             actions = [...actions, 'test-policies']

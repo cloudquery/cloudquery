@@ -24,13 +24,15 @@ type Client struct {
 	client    schema.ClientMeta
 	logger    zerolog.Logger
 	options   plugin.NewClientOptions
+	allTables schema.Tables
 }
 
 func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, options plugin.NewClientOptions) (plugin.Client, error) {
 	var spec client.Spec
 	c := &Client{
-		options: options,
-		logger:  logger,
+		options:   options,
+		logger:    logger,
+		allTables: getTables(),
 	}
 	if options.NoConnection {
 		return c, nil
@@ -55,25 +57,19 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, options p
 	return c, nil
 }
 
-func (*Client) Close(ctx context.Context) error {
+func (*Client) Close(_ context.Context) error {
 	return nil
 }
 
-func (*Client) Tables(ctx context.Context, options plugin.TableOptions) (schema.Tables, error) {
-	tables := tables()
-	tt, err := tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
-	if err != nil {
-		return nil, err
-	}
-	return tt, nil
+func (c *Client) Tables(_ context.Context, options plugin.TableOptions) (schema.Tables, error) {
+	return c.allTables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
 }
 
 func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.SyncMessage) error {
 	if c.options.NoConnection {
 		return fmt.Errorf("no connection")
 	}
-	tables := tables()
-	tt, err := tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
+	tt, err := c.allTables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
 	if err != nil {
 		return err
 	}
