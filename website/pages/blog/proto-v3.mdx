@@ -2,8 +2,7 @@
 title: What's new in CloudQuery Plugin Protocol v3
 tag: product
 date: 2023/07/10
-description: >-
-  Summary of changes and features in Plugin Protocol v3
+description: Summary of changes and features in Plugin Protocol v3
 author: yevgenypats
 ---
 
@@ -13,36 +12,31 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 We are thrilled to announce the release of the new [gRPC Plugin Version v3](https://github.com/cloudquery/plugin-pb/blob/main/plugin/v3/plugin.proto), which brings exciting enhancements to writing CloudQuery plugins!
 
-The [gRPC protocol](https://github.com/cloudquery/plugin-pb) is the underlying protocol which
-enables CloudQuery plugins to be decuopled of one another, which is crucial for a system with unlimited number of integrations.
+The [gRPC protocol](https://github.com/cloudquery/plugin-pb) is the underlying protocol which enables CloudQuery plugins to be decoupled from one another, which is crucial for a system with an unlimited number of integrations.
 
-This blog is covering the gRPC changes, for language specific changes see [Go SDK V4](./go_sdk_v4).
+This blog covers the gRPC changes. For language-specific changes, see [Go SDK V4](./go_sdk_v4).
 
 # Overview
 
 Let's begin with a high-level summary before diving deeper into each of the updates:
 
-- **[Apache Arrow](./adopting_apache_arrow_at_cloudquery)** - Proto V3 now fully speaks arrow which was introduces in Proto v2 (Sources) and Proto v1 (Destinations).
-- **Unified Protocol for Sources and Destinations** - We have streamlined the gRPC protocol to utilize a single protocol. This allows CloudQuery plugins to function as both source and destination simultaneously, simplifying gRPC versioning and updates.
+- **[Apache Arrow](./adopting_apache_arrow_at_cloudquery)** - Proto V3 now fully supports Apache Arrow, which was introduced in Proto v2 (Sources) and Proto v1 (Destinations).
+- **Unified Protocol for Sources and Destinations** - We have streamlined the gRPC protocol to utilize a single protocol. This allows CloudQuery plugins to function as both a source and a destination simultaneously, simplifying gRPC versioning and updates.
 - **Transition Sync/Write to Streaming API** - We have transitioned the `Sync` and `Write` operations to a streaming-based API, enabling new use cases like Change Data Capture (CDC).
 
 ## Apache Arrow
 
-We extensively discussed this update in our previous [blog post](./adopting_apache_arrow_at_cloudquery).
-Now, with all our [destinations](../docs/plugins/destinations/overview) migrated to SDK V4, they support over 30 different [Apache Arrow data types](https://arrow.apache.org/docs/python/api/datatypes.html)!
+We extensively discussed this update in our previous [blog post](./adopting_apache_arrow_at_cloudquery). Now, with all our [destinations](../docs/plugins/destinations/overview) migrated to SDK V4, they support over 30 different [Apache Arrow data types](https://arrow.apache.org/docs/python/api/datatypes.html)!
 
-All fields that are sending CloudQuery tables are encoded Apache Arrow Schemas and all fields sending data are
-Apache Arrow records (Fields are commented in the code).
+All fields that are sending CloudQuery tables are encoded as Apache Arrow Schemas, and all fields sending data are Apache Arrow records (Fields are commented in the code).
 
 ## Unified Protocol
 
 Updates to [plugin-pb](https://github.com/cloudquery/plugin-pb/blob/main/plugin/v3/plugin.proto) are vital for introducing new features and enhancing the developer experience for plugin authors and end users.
 
-Having a single protocol version ensures better manageability of upgrades and maintains backward compatibility, providing users and developers with ample time for transitioning.
-It also enables plugin authors to create plugins that function as both sources and destinations.
+Having a single protocol version ensures better manageability of upgrades and maintains backward compatibility, providing users and developers with ample time for transitioning. It also enables plugin authors to create plugins that function as both sources and destinations.
 
-Moreover, any of the CloudQuery destinations can now be utilized as backends for [incremental syncs](docs/core-concepts/syncs#incremental-table-syncs).
-For example, You can now specify the following for sources with incremental syncs:
+Moreover, any of the CloudQuery destinations can now be utilized as backends for [incremental syncs](docs/core-concepts/syncs#incremental-table-syncs). For example, you can now specify the following for sources with incremental syncs:
 
 ```
 kind: source
@@ -66,7 +60,7 @@ spec:
 
 `@@plugins.X` can reference any of the destinations specified in your config.
 
-Lastly, This also opens the door for more easily creating a CloudQuery SDK for new languages, so stay tuned!
+Lastly, this also opens the door for more easily creating a CloudQuery SDK for new languages, so stay tuned!
 
 ## Streaming API
 
@@ -76,21 +70,16 @@ With the new streaming support, the `Write` method now supports three messages:
 
 - `MessageMigrateTable` - Migrate table to a specific target table safely or force (dropping and re-creating)
 - `MessageInsert` - Insert Arrow Record
-- `MessageDeleteStale` - This is a specific message that might be generalized later to a more general delete message. This indicates a plugin
-   to delete data from a table with `_cq_source_name` = `source_name` and `_cq_sync_time` < `sync_time`.
+- `MessageDeleteStale` - This is a specific message that might be generalized later to a more general delete message. This indicates a plugin to delete data from a table with `_cq_source_name` = `source_name` and `_cq_sync_time` < `sync_time`.
 
-With this change to streaming that contain messages we can easily extand the protocol in backward compatible way to
-support more messages like `DeleteTable`, `DeleteRecord` to support use-cases such as CDC or other use-cases that requires those kind of data updates.
+With this change to streaming that contains messages, we can easily extend the protocol in a backward-compatible way to support more messages like `DeleteTable`, `DeleteRecord` to support use cases such as CDC or other use cases that require those kinds of data updates.
 
-multiple messages, such as `CreateTable`, and can easily accommodate new messages to enhance and facilitate such use cases.
-All Available messages are available [here](https://github.com/cloudquery/plugin-pb/blob/main/plugin/v3/plugin.proto#L103)
+Multiple messages, such as `CreateTable`, can easily be accommodated to enhance and facilitate such use cases. All available messages are available [here](https://github.com/cloudquery/plugin-pb/blob/main/plugin/v3/plugin.proto#L103).
 
 # Migration Guide
 
-On how to migrate Go plugins please take a look at [Go SDK V4 Update](./go_sdk_v4).
+To learn how to migrate Go plugins, please take a look at [Go SDK V4 Update](./go_sdk_v4).
 
 # Summary
 
 We are thrilled about this major release! Don't hesitate to try your hand at developing a new CloudQuery plugin. Feel free to reach out to us on [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://cloudquery.io/discord) with any questions or feedback.
-
-
