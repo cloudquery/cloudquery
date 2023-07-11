@@ -69,7 +69,7 @@ func (c *Client) writeResources(ctx context.Context, query string, table *schema
 					for i, pkIndex := range indexes {
 						pkValues[table.Columns[pkIndex].Name] = record[i]
 					}
-					c.logger.Debug().Any("Primary keys for the record", pkValues).Msgf("record contains a primary key that is longer than MySQL can handle. only the first %d will be included in the index", maxPrefixLength)
+					c.logger.Debug().Any("pk_values", pkValues).Msgf("record contains a primary key that is longer than MySQL can handle. only the first %d will be included in the index", maxPrefixLength)
 					tablesWithTruncation[table.Name] = true
 					break
 				}
