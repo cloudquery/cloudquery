@@ -21,7 +21,7 @@ jobs:
       run:
         working-directory: ./plugins/destination/mysql
     services:
-      postgres:
+      mysql:
         image: mysql:5.7
         env:
           MYSQL_ROOT_PASSWORD: test
