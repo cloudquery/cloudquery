@@ -17,13 +17,14 @@ func Products() *schema.Table {
 	tableName := "aws_servicecatalog_products"
 	return &schema.Table{
 		Name:                tableName,
-		Description:         `https://docs.aws.amazon.com/servicecatalog/latest/dg/API_ProductViewDetail.html`,
+		Description:         `https://docs.aws.amazon.com/servicecatalog/latest/dg/API_DescribeProductAsAdmin.html`,
 		Resolver:            fetchServicecatalogProducts,
 		PreResourceResolver: getServicecatalogProduct,
 		Transform:           transformers.TransformWithStruct(&servicecatalog.DescribeProductAsAdminOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "servicecatalog"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:       "arn",
 				Type:       arrow.BinaryTypes.String,

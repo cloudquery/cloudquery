@@ -576,6 +576,8 @@
 - [aws_servicecatalog_portfolios](tables/aws_servicecatalog_portfolios)
 - [aws_servicecatalog_products](tables/aws_servicecatalog_products)
 - [aws_servicecatalog_provisioned_products](tables/aws_servicecatalog_provisioned_products)
+  - [aws_servicecatalog_provisioning_artifacts](tables/aws_servicecatalog_provisioning_artifacts)
+  - [aws_servicecatalog_provisioning_parameters](tables/aws_servicecatalog_provisioning_parameters)
 - [aws_servicediscovery_namespaces](tables/aws_servicediscovery_namespaces)
 - [aws_servicediscovery_services](tables/aws_servicediscovery_services)
   - [aws_servicediscovery_instances](tables/aws_servicediscovery_instances)

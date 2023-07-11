@@ -23,6 +23,7 @@ func ProvisionedProducts() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "servicecatalog"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:       "arn",
 				Type:       arrow.BinaryTypes.String,
@@ -34,6 +35,10 @@ func ProvisionedProducts() *schema.Table {
 				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: client.ResolveTags,
 			},
+		},
+		Relations: schema.Tables{
+			provisioningArtifact(),
+			provisioningParameters(),
 		},
 	}
 }

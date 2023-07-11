@@ -17,13 +17,14 @@ func Portfolios() *schema.Table {
 	tableName := "aws_servicecatalog_portfolios"
 	return &schema.Table{
 		Name:                tableName,
-		Description:         `https://docs.aws.amazon.com/servicecatalog/latest/dg/API_PortfolioDetail.html`,
+		Description:         `https://docs.aws.amazon.com/servicecatalog/latest/dg/API_DescribePortfolio.html`,
 		Resolver:            fetchServicecatalogPortfolios,
 		PreResourceResolver: getPortfolio,
 		Transform:           transformers.TransformWithStruct(&servicecatalog.DescribePortfolioOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "servicecatalog"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:       "arn",
 				Type:       arrow.BinaryTypes.String,
@@ -42,9 +43,9 @@ func Portfolios() *schema.Table {
 func fetchServicecatalogPortfolios(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Servicecatalog
-	pagintor := servicecatalog.NewListPortfoliosPaginator(svc, &servicecatalog.ListPortfoliosInput{})
-	for pagintor.HasMorePages() {
-		page, err := pagintor.NextPage(ctx, func(o *servicecatalog.Options) {
+	paginator := servicecatalog.NewListPortfoliosPaginator(svc, &servicecatalog.ListPortfoliosInput{})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx, func(o *servicecatalog.Options) {
 			o.Region = cl.Region
 		})
 		if err != nil {

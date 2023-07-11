@@ -19,10 +19,15 @@ func buildProvisionedProducts(t *testing.T, ctrl *gomock.Controller) client.Serv
 
 	o.NextPageToken = nil
 
-	mk.EXPECT().SearchProvisionedProducts(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&o,
-		nil,
-	)
+	mk.EXPECT().SearchProvisionedProducts(gomock.Any(), gomock.Any(), gomock.Any()).Return(&o, nil)
+
+	pao := servicecatalog.DescribeProvisioningArtifactOutput{}
+	require.NoError(t, faker.FakeObject(&pao))
+	mk.EXPECT().DescribeProvisioningArtifact(gomock.Any(), gomock.Any(), gomock.Any()).Return(&pao, nil)
+
+	ppo := servicecatalog.DescribeProvisioningParametersOutput{}
+	require.NoError(t, faker.FakeObject(&ppo))
+	mk.EXPECT().DescribeProvisioningParameters(gomock.Any(), gomock.Any(), gomock.Any()).Return(&ppo, nil)
 
 	return client.Services{
 		Servicecatalog: mk,
