@@ -1,4 +1,4 @@
-import {DESTINATION_PLUGINS, Plugin} from "../pluginData";
+import {ALL_DESTINATION_PLUGINS, Plugin} from "../pluginData";
 import {LogoContainer} from "../LogoContainer";
 import React from "react";
 import Head from "next/head";
@@ -24,13 +24,21 @@ export default function Integration({
                         &nbsp;to any destination
                     </h1>
                     <p className="max-w-2xl mt-6 nx-text-xl font-medium leading-tight text-gray-400 sm:nx-text-2xl md:nx-text-3xl lg:nx-text-4xl">
-                        CloudQuery is an open-source ELT platform that allows you to extract data from any source into any destination. It is a free and open source alternative to Fivetran or Airbyte that requires no account, and it takes only minutes to get started.
+                        CloudQuery is an open-source, self-hosted ELT platform that allows you to extract data from any source into any destination on your own infrastructure. It is an alternative to Fivetran or Airbyte that requires no account, imposes no limits on rows and takes only minutes to get started.
                     </p>
                     <p className="max-w-2xl mt-6 nx-text-xl font-medium leading-tight text-gray-400 sm:nx-text-2xl md:nx-text-3xl lg:nx-text-4xl">
-                        {source.kind === "unpublished" ?
+                        {
+                            {
+                                'unpublished': <>The CloudQuery {source.name} plugin allows you to sync data from {source.website ? <a href={source.website} className="text-blue-500 hover:text-blue-600">{source.name}</a> : source.name } to any supported CloudQuery destination listed below. It is available for <strong>pre-order</strong></>,
+                                'free': <>The CloudQuery {source.name} plugin allows you to sync data from {source.website ? <a href={source.website} className="text-blue-500 hover:text-blue-600">{source.name}</a> : source.name } to any supported CloudQuery destination. Select the destination you would like to sync {source.name} data from the list of supported destinations below:</>,
+                                'premium': <></>,
+                                'partner': <>The CloudQuery {source.name} plugin allows you to sync data from {source.website ? <a href={source.website} className="text-blue-500 hover:text-blue-600">{source.name}</a> : source.name } to any supported CloudQuery destination. Select the destination you would like to sync {source.name} data from the list of supported destinations below:</>,
+                                'community': <>The CloudQuery {source.name} plugin allows you to sync data from {source.website ? <a href={source.website} className="text-blue-500 hover:text-blue-600">{source.name}</a> : source.name } to any supported CloudQuery destination. Select the destination you would like to sync {source.name} data from the list of supported destinations below:</>,
+                            }[source.availability]
+                        }
+                        {source.availability === "unpublished" ?
                             <>A CloudQuery {source.name} plugin is on our roadmap. Please upvote and subscribe to the <a href={source.href} className="text-blue-500 hover:text-blue-600">issue on GitHub ↗</a> to register your interest and get updates on its progress. Once it is released, it will allow you to sync data from {source.website ? <a href={source.website} className="text-blue-500 hover:text-blue-600">{source.name}</a> : source.name } to any supported CloudQuery destination from the list below:</>
                             :
-                            <>The CloudQuery {source.name} plugin allows you to sync data from {source.website ? <a href={source.website} className="text-blue-500 hover:text-blue-600">{source.name}</a> : source.name } to any destination. Select the destination you would like to sync {source.name} data from the list of supported destinations below:</>
                         }
                     </p>
                 </div>
@@ -38,7 +46,7 @@ export default function Integration({
 
             <div className="mx-4 px-4 mx-auto w-auto">
                 <div className="flex justify-left items-left flex-wrap gap-9 pt-8 sm:mt-4">
-                    {DESTINATION_PLUGINS.map((plugin) => (
+                    {ALL_DESTINATION_PLUGINS.map((plugin) => (
                         <LogoContainer
                             title={plugin.name}
                             href={plugin.href || `/integrations/${source.id}/${plugin.id}`}

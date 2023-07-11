@@ -13,7 +13,7 @@ export default function RequestedSources() {
                     logo={plugin.logo}
                     logoDark={plugin.logoDark}
                     name={plugin.name}
-                    published={false}
+                    availability={plugin.availability}
                     category={plugin.category}
                 >
                 </LogoContainer>

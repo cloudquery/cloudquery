@@ -2,11 +2,13 @@ const fs = require("fs");
 const path = require("path");
 
 // Read the plugin data file
-import {Plugin, SOURCE_PLUGINS, UNPUBLISHED_SOURCE_PLUGINS, DESTINATION_PLUGINS} from "../components/pluginData";
+import {
+    Plugin,
+    ALL_SOURCE_PLUGINS, ALL_DESTINATION_PLUGINS
+} from "../components/pluginData";
 
 // Define the directories to write the MDX files to
 const outputDir = "./integrations";
-const metaJSONsDir = "./pages/integrations";
 const mdxSourceComponentDir = "./components/mdx/plugins/source";
 const mdxDestinationComponentDir = "./components/mdx/plugins/destination";
 
@@ -40,7 +42,7 @@ function copySourceAuthenticationFile(source: Plugin) : boolean {
 function copySourceConfigurationFile(source: Plugin): boolean {
     const configFilePath = `./pages/docs/plugins/sources/${source.id}/_configuration.mdx`;
     if (fs.existsSync(configFilePath)) {
-        DESTINATION_PLUGINS.forEach((destination) => {
+        ALL_DESTINATION_PLUGINS.forEach((destination) => {
             const sourceConfigDir = mdxSourceComponentDir + `/${source.id}/${destination.id}`;
             recreateDirectory(sourceConfigDir);
             let fileContents = fs.readFileSync(configFilePath, "utf8");
@@ -103,8 +105,8 @@ function createSourceDestinationIntegrationFile(source: Plugin, destination: Plu
         `${source.id}/${destination.id}.mdx`
     );
 
-    const isOfficialSource = source.kind === "official";
-    const isOfficialDestination = destination.kind === "official";
+    const isOfficialSource = source.availability === "free";
+    const isOfficialDestination = destination.availability === "free";
 
     // Define the contents of the MDX file
     const fileContents = `---
@@ -146,7 +148,7 @@ function generateFiles() {
     let hasAuthFile = {};
 
     // Loop through each source plugin and generate or copy MDX files
-    [...SOURCE_PLUGINS, ...UNPUBLISHED_SOURCE_PLUGINS].forEach((source) => {
+    ALL_SOURCE_PLUGINS.forEach((source) => {
       if (sources.has(source.id)) {
         throw new Error("Duplicate source id: " + source.id + ". Did you forget to remove an unpublished plugin you implemented?");
       }
@@ -154,7 +156,7 @@ function generateFiles() {
       recreateDirectory(outputDir + "/" + source.id);
 
       const hasConfiguration = copySourceConfigurationFile(source);
-      const isOfficial = source.kind === "official";
+      const isOfficial = source.availability === "free";
       if (isOfficial && !hasConfiguration) {
           throw new Error("No _configuration.mdx file found for source: " + source.id);
       }
@@ -164,7 +166,7 @@ function generateFiles() {
     });
 
     // Loop through each destination plugin and generate or copy MDX files
-    DESTINATION_PLUGINS.forEach((destination) => {
+    ALL_DESTINATION_PLUGINS.forEach((destination) => {
         if (destinations.has(destination.id)) {
             throw new Error("Duplicate destination id: " + destination.id);
         }
@@ -172,7 +174,7 @@ function generateFiles() {
         recreateDirectory(mdxDestinationComponentDir + "/" + destination.id);
 
         const hasConfiguration = copyDestinationConfigurationFile(destination);
-        const isOfficial = destination.kind === "official";
+        const isOfficial = destination.availability === "free";
         if (isOfficial && !hasConfiguration && destination.id !== "more") {
             throw new Error("No _configuration.mdx file found for destination: " + destination.id);
         }
@@ -181,8 +183,8 @@ function generateFiles() {
     });
 
     // Create the source -> destination integration files
-    [...SOURCE_PLUGINS, ...UNPUBLISHED_SOURCE_PLUGINS].forEach((source: Plugin) => {
-       DESTINATION_PLUGINS.forEach((destination: Plugin) => {
+    ALL_SOURCE_PLUGINS.forEach((source: Plugin) => {
+        ALL_DESTINATION_PLUGINS.forEach((destination: Plugin) => {
            const sourceHasAuth = hasAuthFile['source-' + source.id];
            const destHasAuth = hasAuthFile['destination-' + destination.id];
            createSourceDestinationIntegrationFile(source, destination, sourceHasAuth, destHasAuth);

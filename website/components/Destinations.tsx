@@ -1,10 +1,10 @@
-import {DESTINATION_PLUGINS} from "./pluginData";
+import {ALL_DESTINATION_PLUGINS} from "./pluginData";
 import {LogoContainer} from "./LogoContainer";
 
 export function Destinations() {
     return (
         <div className="flex justify-center items-center flex-wrap gap-9 pt-8 sm:mt-4">
-            {DESTINATION_PLUGINS.map(plugin => (
+            {ALL_DESTINATION_PLUGINS.map(plugin => (
                 <LogoContainer
                     title={plugin.name}
                     href={plugin.href || `/docs/plugins/destinations/${plugin.id}/overview`}
@@ -14,6 +14,7 @@ export function Destinations() {
                     logoDark={plugin.logoDark}
                     name={plugin.name}
                     category={plugin.category}
+                    availability={plugin.availability}
                 >
                 </LogoContainer>
             ))}
