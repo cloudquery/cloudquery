@@ -83,7 +83,10 @@ func (c *Client) Tables(_ context.Context, options plugin.TableOptions) (schema.
 }
 
 func (c *Client) Close(_ context.Context) error {
-	return c.backendConn.Close()
+	if c.backendConn != nil {
+		return c.backendConn.Close()
+	}
+	return nil
 }
 
 func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {

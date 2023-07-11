@@ -79,7 +79,7 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	return c.scheduler.Sync(ctx, schedulerClient, tt, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
 }
 
-func (c *Client) Tables(ctx context.Context, options plugin.TableOptions) (schema.Tables, error) {
+func (c *Client) Tables(_ context.Context, options plugin.TableOptions) (schema.Tables, error) {
 	tt, err := c.tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
 	if err != nil {
 		return nil, err
@@ -87,8 +87,11 @@ func (c *Client) Tables(ctx context.Context, options plugin.TableOptions) (schem
 	return tt, nil
 }
 
-func (c *Client) Close(ctx context.Context) error {
-	return c.backendConn.Close()
+func (c *Client) Close(_ context.Context) error {
+	if c.backendConn != nil {
+		return c.backendConn.Close()
+	}
+	return nil
 }
 
 func getTables() []*schema.Table {
