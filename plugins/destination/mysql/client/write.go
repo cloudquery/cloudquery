@@ -39,9 +39,8 @@ func logTablesWithTruncation(logger zerolog.Logger, tables map[string]bool) {
 	logger.Warn().Strs("tables", keys).Msg("tables contain a value in a primary key that is longer than what is supported by MySQL. only the first 191 characters will be included in the index. To see the complete record enable debug logs using `--log-level debug`")
 }
 
-func (c *Client) writeResources(ctx context.Context, query string, msgs message.WriteInserts) error {
+func (c *Client) writeResources(ctx context.Context, query string, table *schema.Table, msgs message.WriteInserts) error {
 	tablesWithTruncation := make(map[string]bool)
-	table := msgs[0].GetTable()
 	pks := make([]int, 0)
 	for i, col := range table.Columns {
 		if !col.PrimaryKey {
@@ -92,7 +91,7 @@ func (c *Client) writeResources(ctx context.Context, query string, msgs message.
 func (c *Client) appendTableBatch(ctx context.Context, table *schema.Table, resources message.WriteInserts) error {
 	builder := getInsertQueryBuild(table)
 	builder.WriteString(";")
-	return c.writeResources(ctx, builder.String(), resources)
+	return c.writeResources(ctx, builder.String(), resources[0].GetTable(), resources)
 }
 
 func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, msgs message.WriteInserts) error {
@@ -104,7 +103,8 @@ func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, m
 			builder.WriteString(", ")
 		}
 	}
-	return c.writeResources(ctx, builder.String(), msgs)
+
+	return c.writeResources(ctx, builder.String(), msgs[0].GetTable(), msgs)
 }
 
 func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) error {
