@@ -105,9 +105,9 @@ This is the (nested) spec used by the AWS source plugin.
 
   When set to `true` plugin will sync data from APIs that incur a fee. Currently only `aws_costexplorer*` and `aws_alpha_cloudwatch_metric*` tables require this flag to be set to `true`.
 
-- **experimental** `table_options` (map) (default: not used)
+- **preview** `table_options` (map) (default: not used)
 
-  This is an experimental feature that enables users to override the default options for specific tables. The root of the object takes a table name, and the next level takes an API method name. The final level is the actual input object as defined by the API. 
+  This is a preview feature (for more information about `preview` features look at (Plugin Versioning)[(/docs/plugins/sources/aws/versioning)] `) that enables users to override the default options for specific tables. The root of the object takes a table name, and the next level takes an API method name. The final level is the actual input object as defined by the API. 
   The format of the `table_options` object is as follows:
   ```yaml
   table_options:
