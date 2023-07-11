@@ -15,12 +15,11 @@ import (
 func provisioningParameters() *schema.Table {
 	tableName := "aws_servicecatalog_provisioning_parameters"
 	return &schema.Table{
-		Name:                tableName,
-		Description:         `https://docs.aws.amazon.com/servicecatalog/latest/dg/API_DescribeProvisioningParameters.html`,
-		Resolver:            listLaunchPaths,
-		PreResourceResolver: fetchProvisioningParameters,
-		Transform:           transformers.TransformWithStruct(&servicecatalog.DescribeProvisioningParametersOutput{}, transformers.WithSkipFields("ResultMetadata", "ProvisioningArtifactOutputs")),
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "servicecatalog"),
+		Name:        tableName,
+		Description: `https://docs.aws.amazon.com/servicecatalog/latest/dg/API_DescribeProvisioningParameters.html`,
+		Resolver:    fetchProvisioningParameters,
+		Transform:   transformers.TransformWithStruct(&servicecatalog.DescribeProvisioningParametersOutput{}, transformers.WithSkipFields("ResultMetadata", "ProvisioningArtifactOutputs")),
+		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "servicecatalog"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
@@ -45,37 +44,12 @@ func provisioningParameters() *schema.Table {
 		},
 	}
 }
-func listLaunchPaths(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+
+func fetchProvisioningParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Servicecatalog
-	p := parent.Item.(types.ProvisionedProductAttribute)
-
-	input := servicecatalog.ListLaunchPathsInput{
-		ProductId: p.ProductId,
-	}
-
-	pager := servicecatalog.NewListLaunchPathsPaginator(svc, &input)
-
-	for pager.HasMorePages() {
-		page, err := pager.NextPage(ctx, func(o *servicecatalog.Options) {
-			o.Region = cl.Region
-		})
-		if err != nil {
-			return err
-		}
-		for _, path := range page.LaunchPathSummaries {
-			res <- path
-		}
-	}
-	return nil
-}
-
-func fetchProvisioningParameters(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-
-	cl := meta.(*client.Client)
-	svc := cl.Services().Servicecatalog
-	p := resource.Parent.Item.(types.ProvisionedProductAttribute)
-	launchPathSummary := resource.Item.(types.LaunchPathSummary)
+	p := parent.Parent.Parent.Item.(types.ProvisionedProductAttribute)
+	launchPathSummary := parent.Item.(types.LaunchPathSummary)
 	input := servicecatalog.DescribeProvisioningParametersInput{
 		ProductId:              p.ProductId,
 		ProvisioningArtifactId: p.ProvisioningArtifactId,
@@ -88,7 +62,7 @@ func fetchProvisioningParameters(ctx context.Context, meta schema.ClientMeta, re
 	if err != nil {
 		return err
 	}
-	resource.Item = resp
+	res <- resp
 	return nil
 }
 

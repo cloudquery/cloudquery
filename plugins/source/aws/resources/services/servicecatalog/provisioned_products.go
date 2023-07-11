@@ -38,7 +38,7 @@ func ProvisionedProducts() *schema.Table {
 		},
 		Relations: schema.Tables{
 			provisioningArtifact(),
-			provisioningParameters(),
+			launchPaths(),
 		},
 	}
 }
