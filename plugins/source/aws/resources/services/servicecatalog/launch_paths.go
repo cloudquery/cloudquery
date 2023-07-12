@@ -9,30 +9,41 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func launchPaths() *schema.Table {
 	tableName := "aws_servicecatalog_launch_paths"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/servicecatalog/latest/dg/API_DescribeProvisioningParameters.html`,
+		Description: `https://docs.aws.amazon.com/servicecatalog/latest/dg/API_LaunchPathSummary.html`,
 		Resolver:    listLaunchPaths,
-		Transform:   transformers.TransformWithStruct(&servicecatalog.DescribeProvisioningParametersOutput{}, transformers.WithSkipFields("ResultMetadata", "ProvisioningArtifactOutputs")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "servicecatalog"),
+		Transform:   transformers.TransformWithStruct(&types.LaunchPathSummary{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
+				Name:       "provisioned_product_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
+			},
+			{
 				Name:       "product_id",
 				Type:       arrow.BinaryTypes.String,
-				Resolver:   parentPathResolver("ProductId"),
+				Resolver:   schema.ParentColumnResolver("product_id"),
 				PrimaryKey: true,
 			},
 			{
 				Name:       "provisioning_artifact_id",
 				Type:       arrow.BinaryTypes.String,
-				Resolver:   parentPathResolver("ProvisioningArtifactId"),
+				Resolver:   schema.ParentColumnResolver("provisioning_artifact_id"),
 				PrimaryKey: true,
+			},
+			{
+				Name:     "tags",
+				Type:     sdkTypes.ExtensionTypes.JSON,
+				Resolver: client.ResolveTags,
 			},
 		},
 		Relations: schema.Tables{

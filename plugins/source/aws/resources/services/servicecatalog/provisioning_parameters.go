@@ -9,7 +9,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	"github.com/thoas/go-funk"
 )
 
 func provisioningParameters() *schema.Table {
@@ -19,26 +18,31 @@ func provisioningParameters() *schema.Table {
 		Description: `https://docs.aws.amazon.com/servicecatalog/latest/dg/API_DescribeProvisioningParameters.html`,
 		Resolver:    fetchProvisioningParameters,
 		Transform:   transformers.TransformWithStruct(&servicecatalog.DescribeProvisioningParametersOutput{}, transformers.WithSkipFields("ResultMetadata", "ProvisioningArtifactOutputs")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "servicecatalog"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
+				Name:       "provisioned_product_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("provisioned_product_arn"),
+				PrimaryKey: true,
+			},
+			{
 				Name:       "product_id",
 				Type:       arrow.BinaryTypes.String,
-				Resolver:   parentPathResolver("ProductId"),
+				Resolver:   grandParentColumnResolver("product_id"),
 				PrimaryKey: true,
 			},
 			{
 				Name:       "provisioning_artifact_id",
 				Type:       arrow.BinaryTypes.String,
-				Resolver:   parentPathResolver("ProvisioningArtifactId"),
+				Resolver:   grandParentColumnResolver("provisioning_artifact_id"),
 				PrimaryKey: true,
 			},
 			{
 				Name:       "path_id",
 				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolvePathID("ProvisioningArtifactId"),
+				Resolver:   schema.ParentColumnResolver("id"),
 				PrimaryKey: true,
 			},
 		},
@@ -66,14 +70,8 @@ func fetchProvisioningParameters(ctx context.Context, meta schema.ClientMeta, pa
 	return nil
 }
 
-func parentPathResolver(path string) func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	return func(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
-		return r.Set(c.Name, funk.Get(r.Parent.Item, path, funk.WithAllowZero()))
-	}
-}
-
-func resolvePathID(path string) func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	return func(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
-		return r.Set(c.Name, funk.Get(r.Parent.Item, path, funk.WithAllowZero()))
+func grandParentColumnResolver(name string) func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	return func(_ context.Context, _ schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+		return r.Set(c.Name, r.Parent.Get(name))
 	}
 }

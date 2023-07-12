@@ -9,8 +9,8 @@ The primary key for this table is **arn**.
 ## Relations
 
 The following tables depend on aws_servicecatalog_provisioned_products:
+  - [aws_servicecatalog_launch_paths](aws_servicecatalog_launch_paths)
   - [aws_servicecatalog_provisioning_artifacts](aws_servicecatalog_provisioning_artifacts)
-  - [aws_servicecatalog_provisioning_parameters](aws_servicecatalog_provisioning_parameters)
 
 ## Columns
 

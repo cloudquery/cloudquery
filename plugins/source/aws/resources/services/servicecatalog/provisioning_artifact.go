@@ -18,20 +18,25 @@ func provisioningArtifact() *schema.Table {
 		Description: `https://docs.aws.amazon.com/servicecatalog/latest/dg/API_DescribeProvisioningArtifact.html`,
 		Resolver:    fetchProvisioningArtifacts,
 		Transform:   transformers.TransformWithStruct(&servicecatalog.DescribeProvisioningArtifactOutput{}, transformers.WithSkipFields("ResultMetadata")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "servicecatalog"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
+				Name:       "provisioned_product_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
+			},
+			{
 				Name:       "product_id",
 				Type:       arrow.BinaryTypes.String,
-				Resolver:   parentPathResolver("ProductId"),
+				Resolver:   schema.ParentColumnResolver("product_id"),
 				PrimaryKey: true,
 			},
 			{
 				Name:       "provisioning_artifact_id",
 				Type:       arrow.BinaryTypes.String,
-				Resolver:   parentPathResolver("ProvisioningArtifactId"),
+				Resolver:   schema.ParentColumnResolver("provisioning_artifact_id"),
 				PrimaryKey: true,
 			},
 		},
