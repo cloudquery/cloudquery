@@ -20,10 +20,10 @@ func Eips() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Address.html`,
 		Resolver:    fetchEc2Eips,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
-		Transform:   transformers.TransformWithStruct(&types.Address{}),
+		Transform:   transformers.TransformWithStruct(&types.Address{}, transformers.WithPrimaryKeys("AllocationId")),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
