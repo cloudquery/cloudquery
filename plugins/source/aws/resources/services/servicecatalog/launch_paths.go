@@ -59,7 +59,6 @@ func listLaunchPaths(ctx context.Context, meta schema.ClientMeta, parent *schema
 			return err
 		}
 		res <- page.LaunchPathSummaries
-
 	}
 	return nil
 }
