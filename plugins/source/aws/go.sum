@@ -231,6 +231,8 @@ github.com/aws/aws-sdk-go-v2/service/neptune v1.20.7 h1:cZ5WMVZeKBJZDNliJiEXjU3A
 github.com/aws/aws-sdk-go-v2/service/neptune v1.20.7/go.mod h1:N1cuDqSpLRxxf3RUIKUvG7MFORReZmLFyskIXMeUCLY=
 github.com/aws/aws-sdk-go-v2/service/networkfirewall v1.28.3 h1:I2/694EUpsKBUHtde0tFvQP4QFmotf0HlpSypHPhc/w=
 github.com/aws/aws-sdk-go-v2/service/networkfirewall v1.28.3/go.mod h1:Tu0EpGIMGYf2M/lwZGOBJmuLni5LosLVyW/mA2P8KkY=
+github.com/aws/aws-sdk-go-v2/service/networkmanager v1.17.14 h1:FvpEYpS6ogpIVWvpZ3EBP63bkWInTzcUmcqutgJJP6w=
+github.com/aws/aws-sdk-go-v2/service/networkmanager v1.17.14/go.mod h1:Qh1h62fsEzKedDLrPADTiSYPm1+tNrizgdzmvZTkpEE=
 github.com/aws/aws-sdk-go-v2/service/organizations v1.19.8 h1:pgfroy2lvlAkiaCQG3UJIQ8ohfC+q+ifXPn10SfpZTA=
 github.com/aws/aws-sdk-go-v2/service/organizations v1.19.8/go.mod h1:lCaHkTl2YLeyJhgEz0Lg9iLI1D20SajjC7Jr/rWn1Sg=
 github.com/aws/aws-sdk-go-v2/service/qldb v1.15.13 h1:iwKtlmYoS0wXm8VaCMnEpLjLrnyW3rT7YBsr9VlACCA=
@@ -347,8 +349,8 @@ github.com/cloudquery/plugin-sdk v1.45.0 h1:5vrfQZtaO1dp6ebKt8ouXDmPC7eeLuOB3JMd
 github.com/cloudquery/plugin-sdk v1.45.0/go.mod h1:9KGuuTGjTCKgh9amKwS+7Zrrqq7/M6lormteOyqoKwg=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0/go.mod h1:pAX6ojIW99b/Vg4CkhnsGkRIzNaVEceYMR+Bdit73ug=
-github.com/cloudquery/plugin-sdk/v4 v4.8.1-rc1 h1:23MfOXbCXzoHuXbEGPTomneiPWAAucq8M+BaAaSi/6Q=
-github.com/cloudquery/plugin-sdk/v4 v4.8.1-rc1/go.mod h1:Y5HzxesZrpmSTUrbvR8EmGCK5wXDAhqSqzNEXC2ouvI=
+github.com/cloudquery/plugin-sdk/v4 v4.0.0 h1:T5fEGLXFzKmPs1DGfvKxb69N+DtrjkqHFaBT3Zp+Tdg=
+github.com/cloudquery/plugin-sdk/v4 v4.0.0/go.mod h1:87grEi32vA95lVQ9nIPC3QWVs325nEgtZf/MeXgUcrw=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/cockroachdb/apd/v3 v3.1.0 h1:MK3Ow7LH0W8zkd5GMKA1PvS9qG3bWFI95WaVNfyZJ/w=

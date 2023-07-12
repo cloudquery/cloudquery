@@ -16,10 +16,14 @@ import (
 
 type TestOptions struct {
 	TableOptions tableoptions.TableOptions
+	Region       string
 }
 
 func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*testing.T, *gomock.Controller) Services, testOpts TestOptions) {
 	parentTable.IgnoreInTests = false
+	if testOpts.Region == "" {
+		testOpts.Region = "us-east-1"
+	}
 	t.Helper()
 	ctrl := gomock.NewController(t)
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
@@ -32,7 +36,7 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 	awsSpec.TableOptions = &testOpts.TableOptions
 	c := NewAwsClient(l, &awsSpec)
 	services := builder(t, ctrl)
-	services.Regions = []string{"us-east-1"}
+	services.Regions = []string{testOpts.Region}
 	c.ServicesManager.InitServicesForPartitionAccount("aws", "testAccount", services)
 	c.Partition = "aws"
 	tables := schema.Tables{parentTable}
@@ -50,7 +54,7 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 		records := messages.GetInserts().GetRecordsForTable(table)
 		emptyColumns := schema.FindEmptyColumns(table, records)
 		if len(emptyColumns) > 0 {
-			t.Fatalf("empty columns: %v", emptyColumns)
+			t.Fatalf("found empty column(s): %v in %s", emptyColumns, table.Name)
 		}
 	}
 }

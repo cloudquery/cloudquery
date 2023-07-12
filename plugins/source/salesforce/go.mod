@@ -1,10 +1,10 @@
 module github.com/cloudquery/cloudquery/plugins/source/salesforce
 
-go 1.19
+go 1.20
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
-	github.com/cloudquery/plugin-sdk/v4 v4.8.1-rc1
+	github.com/cloudquery/plugin-sdk/v4 v4.0.0
 	github.com/gorilla/mux v1.8.0
 	github.com/rs/zerolog v1.29.1
 )

@@ -46,11 +46,11 @@ func (c *Client) ID() string {
 	return "googleanalytics:property-id:{" + c.PropertyID + "}"
 }
 
-func (*Client) Close(ctx context.Context) error {
+func (*Client) Close(_ context.Context) error {
 	return nil
 }
 
-func (c *Client) Tables(ctx context.Context, options plugin.TableOptions) (schema.Tables, error) {
+func (c *Client) Tables(_ context.Context, options plugin.TableOptions) (schema.Tables, error) {
 	tables := make(schema.Tables, len(c.reports))
 	for i, r := range c.reports {
 		tables[i] = r.table(c.PropertyID)

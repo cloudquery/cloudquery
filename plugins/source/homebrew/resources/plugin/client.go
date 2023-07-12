@@ -105,7 +105,7 @@ func Configure(_ context.Context, logger zerolog.Logger, spec []byte, options pl
 	}
 	sc := scheduler.NewScheduler(
 		scheduler.WithLogger(logger),
-		scheduler.WithConcurrency(uint64(config.Concurrency)),
+		scheduler.WithConcurrency(config.Concurrency),
 	)
 	return &Client{
 		logger:    logger,
