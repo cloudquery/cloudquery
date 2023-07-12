@@ -154,10 +154,12 @@ export function Plugins() {
 
                 <div className="lg:col-span-3">
                   <div className="flex justify-center items-center flex-wrap gap-9 sm:mt-4">
-                    {selectedPlugins.map(plugin => (
-                        <LogoContainer
+                    {
+                      selectedPlugins.length > 0 ?
+                      selectedPlugins.map((plugin) => {
+                        return <LogoContainer
                             title={plugin.name}
-                            href={ (plugin.kind === 'source') ? `/integrations/${plugin.id}` : `/docs/plugins/destinations/${plugin.id}/overview`}
+                            href={(plugin.kind === 'source') ? `/integrations/${plugin.id}` : `/docs/plugins/destinations/${plugin.id}/overview`}
                             key={plugin.id}
                             external={false}
                             logo={plugin.logo}
@@ -165,9 +167,14 @@ export function Plugins() {
                             name={plugin.name}
                             availability={plugin.availability}
                             category={plugin.category}
-                        >
-                        </LogoContainer>
-                    ))}
+                        ></LogoContainer>
+                      }) :
+                      <>
+                        <p className="text-center font-light text-gray-500 sm:text-xl dark:text-gray-400">
+                          No plugins matched the search criteria.<br/>Try adjusting the search and filters or <a href="https://github.com/cloudquery/cloudquery/issues/new/choose" className="font-bold dark:text-white">request a new plugin</a>.
+                        </p>
+                      </>
+                    }
                   </div>
                 </div>
               </div>
