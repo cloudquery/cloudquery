@@ -1,7 +1,5 @@
-import {Sources} from "../Sources";
-import {Destinations} from "../Destinations";
+import {Plugins} from "../Plugins";
 import React from "react";
-import PricingCard from "../PricingCard";
 
 export default function Integrations() {
     return <>
@@ -14,22 +12,9 @@ export default function Integrations() {
                     </p>
                 </div>
                 <div>
-                    <Sources />
+                    <Plugins />
                 </div>
             </div>
         </section>
-        {/*<div className="max-w-8xl px-4 pb-12 mx-auto lg:px-8">*/}
-        {/*    <div className="sm:py-20 lg:py-24">*/}
-        {/*        <div className="max-w-8xl px-4 pb-12 mx-auto lg:px-8 ">*/}
-        {/*            <h2 className="nx-text-4xl font-extrabold leading-tight tracking-tight lg:nx-text-5xl xl:nx-text-6xl text-center dark:text-white">*/}
-        {/*                */}
-        {/*            </h2>*/}
-        {/*            <p className="mx-auto mt-4 font-medium text-lg text-gray-400 lg:max-w-3xl lg:nx-text-xl text-center">*/}
-        {/*                */}
-        {/*            </p>*/}
-        {/*            */}
-        {/*        </div>*/}
-        {/*    </div>*/}
-        {/*</div>*/}
     </>;
 }

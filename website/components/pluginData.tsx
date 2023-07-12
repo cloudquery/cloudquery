@@ -909,14 +909,14 @@ export const ALL_PLUGINS: Plugin[] = [
   {
     name: "MongoDB Atlas",
     id: "mongodb-atlas",
-    href: "https://github.com/cloudquery/cloudquery/issues/9134",
+    website: "https://www.mongodb.com/atlas/database",
     kind: "source",
-    availability: "unpublished",
+    availability: "premium",
     category: "databases",
     logo: "/images/logos/plugins/mongodb.svg",
     buyLinks: {
-      'standard': 'https://buy.stripe.com/3cs28c1rH6hpaCA4hl',
-      'extended': 'https://buy.stripe.com/28oeUYeet219bGE7ty'
+      'standard': 'https://buy.stripe.com/3csdQU7Q55dl264dTv',
+      'extended': 'https://buy.stripe.com/fZe1489YdcFN5ig9Dg'
     },
   },
   {

@@ -44,7 +44,7 @@ const filters = [
   },
 ]
 
-export function Sources() {
+export function Plugins() {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
   const [availability, setAvailability] = useState(['free', 'premium']);
@@ -157,7 +157,7 @@ export function Sources() {
                     {selectedPlugins.map(plugin => (
                         <LogoContainer
                             title={plugin.name}
-                            href={`/integrations/${plugin.id}`}
+                            href={ (plugin.kind === 'source') ? `/integrations/${plugin.id}` : `/docs/plugins/destinations/${plugin.id}/overview`}
                             key={plugin.id}
                             external={false}
                             logo={plugin.logo}

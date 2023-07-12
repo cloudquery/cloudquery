@@ -1,11 +1,10 @@
-import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 import copy from "copy-to-clipboard";
 import Head from "next/head";
 import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
 import { Container } from "../Container";
 import Features from "../Features";
-import { Sources } from "../Sources";
+import { Plugins } from "../Plugins";
 import { LogosBlock } from "../clients/LogosBlock";
 import { QueriesExamples } from "../QueriesExamples";
 import React from "react";
@@ -138,7 +137,7 @@ export default function Home() {
         <p className="mx-auto mt-4 font-medium text-lg text-gray-400 lg:max-w-3xl lg:nx-text-xl text-center">
           Export data from an ever-growing list of <a className="dark:text-white" href="/docs/plugins/sources/overview">cloud providers, databases and SaaS apps</a> with more than 1,000 unique tables. Sync to your <a href="/docs/plugins/destinations/overview" className="dark:text-white">favorite database, data warehouse or data lake</a>.
         </p>
-        <Sources />
+        <Plugins />
       </div>
       <Container>
         <div className="px-4 py-16 mx-auto mt-10 sm:max-w-none sm:flex sm:justify-center">
