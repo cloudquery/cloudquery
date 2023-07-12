@@ -1,5 +1,9 @@
 name: Destination Plugin Kinesis Firehose Workflow
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     paths:
@@ -16,7 +20,7 @@ jobs:
   plugins-destination-firehose:
     timeout-minutes: 30
     name: "plugins/destination/firehose"
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     defaults:
       run:
         working-directory: ./plugins/destination/firehose
@@ -53,7 +57,7 @@ jobs:
       #   run: make test
   validate-release:
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     env:
       CGO_ENABLED: 0
     steps:
@@ -66,9 +70,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('plugins/destination/firehose/go.sum') }}
+          key: ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/destination/firehose/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.4-release-cache-plugins-destination-firehose
+            ${{ runner.os }}-go-1.20.5-release-cache-plugins-destination-firehose
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3

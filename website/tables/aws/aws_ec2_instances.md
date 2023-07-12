@@ -263,11 +263,11 @@ FROM
   aws_ec2_instances;
 ```
 
-### EC2 instances should be managed by AWS Systems Manager
+### Amazon EC2 instances should be managed by AWS Systems Manager
 
 ```sql
 SELECT
-  'EC2 instances should be managed by AWS Systems Manager' AS title,
+  'Amazon EC2 instances should be managed by AWS Systems Manager' AS title,
   aws_ec2_instances.account_id,
   aws_ec2_instances.arn AS resource_id,
   CASE

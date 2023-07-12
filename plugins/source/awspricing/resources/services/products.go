@@ -1,10 +1,10 @@
-package resources
+package services
 
 import (
 	"context"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func products() *schema.Table {
@@ -17,7 +17,7 @@ func products() *schema.Table {
 	}
 }
 
-func fetchProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchProducts(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	pricingFile := parent.Item.(PricingFile)
 	res <- pricingFile.Products
 	return nil
