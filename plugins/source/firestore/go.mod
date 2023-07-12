@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/source/firestore
 
-go 1.19
+go 1.20
 
 require (
 	cloud.google.com/go/firestore v1.9.0
