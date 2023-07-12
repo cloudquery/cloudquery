@@ -6,20 +6,20 @@ require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
 	github.com/cenkalti/backoff/v4 v4.2.0
 	github.com/cloudquery/plugin-sdk/v4 v4.0.0
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/elastic/elastic-transport-go/v8 v8.0.0-20211216131617-bbee439d559c // indirect
 	github.com/elastic/go-elasticsearch/v8 v8.6.0
 	github.com/goccy/go-json v0.10.2
+	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rs/zerolog v1.29.1
 	github.com/segmentio/fasthash v1.0.3
-	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/testify v1.8.4 // indirect
 	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
-	github.com/elastic/elastic-transport-go/v8 v8.0.0-20211216131617-bbee439d559c // indirect
 	golang.org/x/sync v0.1.0
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/cloudquery/plugin-sdk/v4 => github.com/disq/plugin-sdk/v4 e87946c51a31dae7e9f31a7a54734b425d79fba4
+replace github.com/cloudquery/plugin-sdk/v4 => github.com/disq/plugin-sdk/v4 v4.0.0-20230712231129-e87946c51a31
 
 require (
 	github.com/cloudquery/plugin-pb-go v1.6.0 // indirect
