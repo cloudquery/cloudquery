@@ -43,13 +43,13 @@ With this change to streaming that contains messages, we can easily extend the p
 
 There are a few things to consider when migrating, but for the most part, it will be just a syntactic change.
 
-Go is not a great language for frameworks, so we made the Plugin SDK very lightweight and moved other heavy functionality to its own sub-packages, which makes it easier to extend and test.
+Go is not a great language for frameworks, so we made the Plugin SDK lightweight and moved other heavy functionality to its own sub-packages, which makes it easier to extend and test.
 
 - `schedulers` - Schedulers now live under [plugin-sdk/scheduler](https://github.com/cloudquery/plugin-sdk).
 - `writers` - Writers now live under [plugin-sdk/writers](https://github.com/cloudquery/plugin-sdk/tree/main/writers).
 - `message` - All messages for `Sync` and `Write` are under [plugin-sdk/message](https://github.com/cloudquery/plugin-sdk/tree/main/message).
 
-If you are migrating sources, take a look at our [homebrew plugin PR](https://github.com/cloudquery/cloudquery/pull/11646).
+If you are migrating sources, take a look at our [`homebrew` plugin PR](https://github.com/cloudquery/cloudquery/pull/11646).
 
 # Summary
 

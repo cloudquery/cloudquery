@@ -20,7 +20,7 @@ This blog covers the gRPC changes. For language-specific changes, see [Go SDK V4
 
 Let's begin with a high-level summary before diving deeper into each of the updates:
 
-- **[Apache Arrow](./adopting_apache_arrow_at_cloudquery)** - Proto V3 now fully supports Apache Arrow, which was introduced in Proto v2 (Sources) and Proto v1 (Destinations).
+- **[Apache Arrow](./adopting_apache_arrow_at_cloudquery)** - protobuf V3 now fully supports Apache Arrow, which was introduced in protobuf v2 (Sources) and protobuf v1 (Destinations).
 - **Unified Protocol for Sources and Destinations** - We have streamlined the gRPC protocol to utilize a single protocol. This allows CloudQuery plugins to function as both a source and a destination simultaneously, simplifying gRPC versioning and updates.
 - **Transition Sync/Write to Streaming API** - We have transitioned the `Sync` and `Write` operations to a streaming-based API, enabling new use cases like Change Data Capture (CDC).
 
