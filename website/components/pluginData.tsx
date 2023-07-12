@@ -516,7 +516,6 @@ export const ALL_PLUGINS: Plugin[] = [
   {
     name: "Firehose",
     logo: "/images/logos/plugins/s3.svg",
-    logoDark: "/images/logos/plugins/s3-dark.svg",
     id: "firehose",
     kind: "destination",
     availability: "premium",

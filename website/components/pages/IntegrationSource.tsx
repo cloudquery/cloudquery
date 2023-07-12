@@ -9,7 +9,7 @@ const licenses = {
         {
             id: "standard",
             name: "Standard License",
-            description: "For internal use at one organization",
+            description: "For internal use in one organization",
             attributes: {
                 Price: "$250",
                 PriceDetails: "USD. Perpetual fallback license.",
@@ -35,7 +35,7 @@ const licenses = {
         {
             id: "standard",
             name: "Standard License",
-            description: "For internal use at one organization",
+            description: "For internal use in one organization",
             attributes: {
                 Price: "$500",
                 PriceDetails: "USD. Perpetual fallback license.",
