@@ -14,6 +14,7 @@ export type Plugin = {
   kind: Kind;
   availability: Availability;
   category: Category;
+  buyLinks?: any;
 };
 
 export const ALL_PLUGINS: Plugin[] = [
@@ -33,6 +34,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "premium",
     category: "engineering-analytics",
     logo: "/images/logos/plugins/jira.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/cN29AE5HX8px5ig4i7',
+      'extended': 'https://buy.stripe.com/14k0048U935ddOMcOE'
+    },
   },
   {
     name: "AWS",
@@ -145,6 +150,10 @@ export const ALL_PLUGINS: Plugin[] = [
     kind: "source",
     availability: "premium",
     category: "cloud-infrastructure",
+    buyLinks: {
+      standard: "https://buy.stripe.com/00g6oseeteNVbGE03A",
+      extended: "https://buy.stripe.com/eVa9AE2vL2199yw9E9",
+    }
   },
   {
     name: "GitHub",
@@ -170,6 +179,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "premium",
     category: "marketing-analytics",
     logo: "/images/logos/plugins/ga2.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/6oE3cg9Yd6hp3a801T',
+      'extended': 'https://buy.stripe.com/4gweUY8U99tB3a8g0S'
+    },
   },
   {
     name: "Google Analytics",
@@ -203,6 +216,10 @@ export const ALL_PLUGINS: Plugin[] = [
     kind: "source",
     availability: "premium",
     category: "cloud-infrastructure",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/6oE004eetgW3cKIeYf',
+      'extended': 'https://buy.stripe.com/eVa1485HX49h2646rK'
+    },
   },
   {
     name: "Homebrew",
@@ -234,8 +251,12 @@ export const ALL_PLUGINS: Plugin[] = [
     logoDark: "/images/logos/plugins/launchdarkly-dark.svg",
     id: "launchdarkly",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "engineering-analytics",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/3cs1480nD219fWUaI1',
+      'extended': 'https://buy.stripe.com/28o4gkgmBgW3cKI7vQ'
+    },
   },
   {
     name: "Mixpanel",
@@ -243,8 +264,12 @@ export const ALL_PLUGINS: Plugin[] = [
     logoDark: "/images/logos/plugins/mixpanel-dark.svg",
     id: "mixpanel",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "marketing-analytics",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/4gwfZ29Yd7ltaCA3fB',
+      'extended': 'https://buy.stripe.com/4gw28cb2haxF8usaI4'
+    },
   },
   {
     name: "MySQL",
@@ -301,8 +326,12 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/plausibleanalytics.svg",
     id: "plausible",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "marketing-analytics",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/cN28wA9YdfRZ9ywcQj',
+      'extended': 'https://buy.stripe.com/00g28cb2hfRZ6mkg2w'
+    },
   },
   {
     name: "PostgreSQL",
@@ -369,8 +398,12 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/slack.svg",
     id: "slack",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "engineering-analytics",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/6oE28c1rHfRZaCA03r',
+      'extended': 'https://buy.stripe.com/7sIaEI8U935dfWU8zY'
+    },
   },
   {
     name: "Snyk",
@@ -396,6 +429,10 @@ export const ALL_PLUGINS: Plugin[] = [
     kind: "source",
     availability: "free",
     category: "cloud-infrastructure",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/14k8wAdap49hbGE6rR',
+      'extended': 'https://buy.stripe.com/aEU1482vL6hpcKI17y'
+    },
   },
   {
     name: "Terraform",
@@ -413,6 +450,10 @@ export const ALL_PLUGINS: Plugin[] = [
     kind: "source",
     availability: "free",
     category: "cloud-infrastructure",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/bIY7swc6lcFN9yw5nP',
+      'extended': 'https://buy.stripe.com/5kA6oseet0X55ig8A2'
+    },
   },
   {
     name: "Yandex Cloud",
@@ -471,6 +512,19 @@ export const ALL_PLUGINS: Plugin[] = [
     kind: "destination",
     availability: "free",
     category: "data-warehouses-lakes",
+  },
+  {
+    name: "Firehose",
+    logo: "/images/logos/plugins/s3.svg",
+    logoDark: "/images/logos/plugins/s3-dark.svg",
+    id: "firehose",
+    kind: "destination",
+    availability: "premium",
+    category: "data-warehouses-lakes",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/9AQ4gk1rH8pxbGE4jz',
+      'extended': 'https://buy.stripe.com/cN26os5HX6hpcKI7vM'
+    },
   },
   {
     name: "GCS",
@@ -588,6 +642,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "project-management",
     logo: "/images/logos/plugins/airtable.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/14kbIMeetbBJ6mk14r',
+      'extended': 'https://buy.stripe.com/dR61481rHbBJ2646s0'
+    },
   },
   {
     name: "AfterShip",
@@ -597,6 +655,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "shipment-tracking",
     logo: "/images/logos/plugins/aftership.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/6oE6os9Yd9tBdOMcNd',
+      'extended': 'https://buy.stripe.com/7sIaEI8U9gW39yw17H'
+    },
   },
   {
     name: "Amazon Ads",
@@ -607,6 +669,10 @@ export const ALL_PLUGINS: Plugin[] = [
     category: "marketing-analytics",
     logo: "/images/logos/plugins/amazon.svg",
     logoDark: "/images/logos/plugins/amazon-dark.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/00g28cgmBfRZfWU9B2',
+      'extended': 'https://buy.stripe.com/cN2cMQ0nDbBJ7qo8wZ'
+    },
   },
   {
     name: "Amplitude",
@@ -616,6 +682,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "product-analytics",
     logo: "/images/logos/plugins/amplitude.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/fZe28c3zPaxF26428E',
+      'extended': 'https://buy.stripe.com/00g4gk2vL0X53a8dUr'
+    },
   },
   {
     name: "Bamboo HR",
@@ -625,6 +695,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "other",
     logo: "/images/logos/plugins/bamboohr.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/3cs4gk9Yd0X53a8dRn',
+      'extended': 'https://buy.stripe.com/bIYbIM1rH5dlfWUbJg'
+    },
   },
   {
     name: "Baremetrics",
@@ -634,6 +708,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "marketing-analytics",
     logo: "/images/logos/plugins/baremetrics.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/6oEaEI4DTaxF3a89B9',
+      'extended': 'https://buy.stripe.com/dR66osgmB6hp4eccNm'
+    },
   },
   {
     name: "Bing Ads",
@@ -643,6 +721,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "marketing-analytics",
     logo: "/images/logos/plugins/bingads.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/5kA5koc6l8pxdOM5kV',
+      'extended': 'https://buy.stripe.com/5kA28cc6lgW34ec28K'
+    },
   },
   {
     name: "BitBucket",
@@ -652,6 +734,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "engineering-analytics",
     logo: "/images/logos/plugins/bitbucket.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/28o8wA1rHdJR9yw3cP',
+      'extended': 'https://buy.stripe.com/bIY9AE3zP2193a83cQ'
+    },
   },
   {
     name: "Chargebee",
@@ -661,6 +747,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "cloud-finops",
     logo: "/images/logos/plugins/chargebee.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/9AQ4gkfix49hh0Y00F',
+      'extended': 'https://buy.stripe.com/5kA8wA7Q50X58usaFk'
+    },
   },
   {
     name: "Cloudinary",
@@ -670,6 +760,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "cloud-infrastructure",
     logo: "/images/logos/plugins/cloudinary.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/5kA9AE4DTgW3dOM7t9',
+      'extended': 'https://buy.stripe.com/00g8wA4DTfRZ8us9Bi'
+    },
   },
   {
     name: "Detrack",
@@ -678,6 +772,10 @@ export const ALL_PLUGINS: Plugin[] = [
     kind: "source",
     availability: "unpublished",
     category: "shipment-tracking",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/28obIMb2heNV5ig3cV',
+      'extended': 'https://buy.stripe.com/8wM28cc6lcFN9yw14O'
+    },
   },
   {
     name: "Gmail",
@@ -686,6 +784,10 @@ export const ALL_PLUGINS: Plugin[] = [
     kind: "source",
     availability: "unpublished",
     category: "marketing-analytics",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/7sI7sw7Q52199yw7td',
+      'extended': 'https://buy.stripe.com/aEUcMQfixfRZ264cNy'
+    },
   },
   {
     name: "Google Sheets",
@@ -695,6 +797,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "other",
     logo: "/images/logos/plugins/google-sheets.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/14kfZ25HXeNVbGEaFr',
+      'extended': 'https://buy.stripe.com/4gw148eet7lt6mkbJw'
+    },
   },
   {
     name: "Hashicorp Vault",
@@ -705,6 +811,10 @@ export const ALL_PLUGINS: Plugin[] = [
     category: "cloud-infrastructure",
     logo: "/images/logos/plugins/hashicorp-vault.svg",
     logoDark: "/images/logos/plugins/hashicorp-vault-dark.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/bIY5koeetfRZh0Y14T',
+      'extended': 'https://buy.stripe.com/7sIcMQc6lbBJ6mkcNC'
+    },
   },
   {
     name: "Infoblox",
@@ -715,6 +825,10 @@ export const ALL_PLUGINS: Plugin[] = [
     category: "cloud-infrastructure",
     logo: "/images/logos/plugins/infoblox.svg",
     logoDark: "/images/logos/plugins/infoblox-dark.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/28oaEIb2hcFN5ig28Z',
+      'extended': 'https://buy.stripe.com/4gwaEIdap9tB5ig14W'
+    },
   },
   {
     name: "Intercom",
@@ -724,6 +838,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "cloud-infrastructure",
     logo: "/images/logos/plugins/intercom.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/4gw6os4DT5dl9yw9Bt',
+      'extended': 'https://buy.stripe.com/3cseUYeet7ltaCAeVO'
+    },
   },
   {
     name: "LinkedIn Ads",
@@ -733,6 +851,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "marketing-analytics",
     logo: "/images/logos/plugins/linkedin.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/3cs1480nDdJReSQ293',
+      'extended': 'https://buy.stripe.com/3csfZ25HXcFN6mk4hc'
+    },
   },
   {
     name: "Mailchimp",
@@ -742,6 +864,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "marketing-analytics",
     logo: "/images/logos/plugins/mailchimp.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/cN2eUY8U9axF120dRN',
+      'extended': 'https://buy.stripe.com/4gw3cgc6lfRZh0Y296'
+    },
   },
   {
     name: "Mailgun",
@@ -751,6 +877,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "marketing-analytics",
     logo: "/images/logos/plugins/mailgun.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/4gw28c7Q535d264cNL',
+      'extended': 'https://buy.stripe.com/cN24gkdapbBJ264fZY'
+    },
   },
   {
     name: "Marketo",
@@ -760,6 +890,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "marketing-analytics",
     logo: "/images/logos/plugins/marketo.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/cN29AE0nD49h9yweVV',
+      'extended': 'https://buy.stripe.com/4gwcMQ2vLeNVcKI156'
+    },
   },
   {
     name: "Monday",
@@ -768,6 +902,10 @@ export const ALL_PLUGINS: Plugin[] = [
     kind: "source",
     availability: "unpublished",
     category: "project-management",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/5kA1483zPcFNfWUg01',
+      'extended': 'https://buy.stripe.com/9AQ0041rHbBJdOMg02'
+    },
   },
   {
     name: "MongoDB Atlas",
@@ -777,6 +915,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "databases",
     logo: "/images/logos/plugins/mongodb.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/3cs28c1rH6hpaCA4hl',
+      'extended': 'https://buy.stripe.com/28oeUYeet219bGE7ty'
+    },
   },
   {
     name: "Microsoft SQL Server",
@@ -786,6 +928,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "databases",
     logo: "/images/logos/plugins/mssql.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/bIYbIMb2h7lteSQ8xD',
+      'extended': 'https://buy.stripe.com/14k3cg6M135d4ecg06'
+    },
   },
   {
     name: "New Relic",
@@ -794,6 +940,10 @@ export const ALL_PLUGINS: Plugin[] = [
     kind: "source",
     availability: "unpublished",
     category: "product-analytics",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/fZe7sw0nDaxF8us7tB',
+      'extended': 'https://buy.stripe.com/4gw6os7Q55dlbGE3dm'
+    },
   },
   {
     name: "Paypal",
@@ -803,6 +953,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "cloud-finops",
     logo: "/images/logos/plugins/paypal.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/4gwcMQfixeNV6mkaFP',
+      'extended': 'https://buy.stripe.com/fZebIM4DT219h0YcNY'
+    },
   },
   {
     name: "Pendo",
@@ -811,6 +965,10 @@ export const ALL_PLUGINS: Plugin[] = [
     kind: "source",
     availability: "unpublished",
     category: "marketing-analytics",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/dR6cMQ2vLgW3cKI6pB',
+      'extended': 'https://buy.stripe.com/aEUbIM9Yd9tBh0Y29m'
+    },
   },
   {
     name: "Prisma",
@@ -821,14 +979,22 @@ export const ALL_PLUGINS: Plugin[] = [
     category: "cloud-infrastructure",
     logo: "/images/logos/plugins/prisma.svg",
     logoDark: "/images/logos/plugins/prisma-dark.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/9AQ9AE4DT6hp5ig5lz',
+      'extended': 'https://buy.stripe.com/eVafZ24DT0X526415k'
+    },
   },
   {
     name: "Render",
     id: "render",
-    href: "https://github.com/cloudquery/cloudquery/issues/9161",
+    website: "https://render.com/",
     kind: "source",
-    availability: "unpublished",
+    availability: "premium",
     category: "cloud-infrastructure",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/8wMdQUeet5dlcKI16x',
+      'extended': 'https://buy.stripe.com/eVa004dapdJR7qo5mO'
+    },
   },
   {
     name: "Reddit Advertising",
@@ -838,6 +1004,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "marketing-analytics",
     logo: "/images/logos/plugins/reddit.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/6oEbIMb2hcFNaCA9BT',
+      'extended': 'https://buy.stripe.com/eVaaEI2vLgW3120cO6'
+    },
   },
   {
     name: "Samsara",
@@ -846,6 +1016,10 @@ export const ALL_PLUGINS: Plugin[] = [
     kind: "source",
     availability: "unpublished",
     category: "fleet-management",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/aEU3cgdap219bGEbK3',
+      'extended': 'https://buy.stripe.com/bIY7sweetaxF2649BW'
+    },
   },
   {
     name: "SentinelOne",
@@ -854,6 +1028,10 @@ export const ALL_PLUGINS: Plugin[] = [
     kind: "source",
     availability: "unpublished",
     category: "security",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/00gaEIgmB9tBdOM29v',
+      'extended': 'https://buy.stripe.com/cN2cMQ5HXeNVfWUg0m'
+    },
   },
   {
     name: "Shippo",
@@ -863,6 +1041,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "shipment-tracking",
     logo: "/images/logos/plugins/shippo.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/5kA0043zP49hdOM7tR',
+      'extended': 'https://buy.stripe.com/cN2cMQb2h6hp9yweWk'
+    },
   },
   {
     name: "Shipup",
@@ -871,6 +1053,10 @@ export const ALL_PLUGINS: Plugin[] = [
     kind: "source",
     availability: "unpublished",
     category: "shipment-tracking",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/bIYaEIfix9tB8useWl',
+      'extended': 'https://buy.stripe.com/6oE8wA5HXcFN6mk29A'
+    },
   },
   {
     name: "S3 Bucket",
@@ -880,6 +1066,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "data-warehouses-lakes",
     logo: "/images/logos/plugins/s3.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/00g3cg8U9cFN5igcOf',
+      'extended': 'https://buy.stripe.com/cN24gk0nD8px2649C4'
+    },
   },
   {
     name: "Snowflake Configuration",
@@ -889,6 +1079,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "databases",
     logo: "/images/logos/plugins/snowflake.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/28o8wA2vL219aCA5lP',
+      'extended': 'https://buy.stripe.com/fZe3cg0nDaxF6mkdSm'
+    },
   },
   {
     name: "Sonatype Nexus",
@@ -898,6 +1092,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "cloud-infrastructure",
     logo: "/images/logos/plugins/sonatype.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/cN2bIM2vL6hp4eceWr',
+      'extended': 'https://buy.stripe.com/fZeaEIeet9tB8us8y4'
+    },
   },
   {
     name: "Sophos",
@@ -906,6 +1104,10 @@ export const ALL_PLUGINS: Plugin[] = [
     kind: "source",
     availability: "unpublished",
     category: "security",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/9AQ9AE7Q549h5ig15D',
+      'extended': 'https://buy.stripe.com/9AQfZ26M1dJRaCA01A'
+    },
   },
   {
     name: "Square",
@@ -916,6 +1118,10 @@ export const ALL_PLUGINS: Plugin[] = [
     category: "cloud-finops",
     logo: "/images/logos/plugins/square.svg",
     logoDark: "/images/logos/plugins/square-dark.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/5kA6osdapaxFcKI6pZ',
+      'extended': 'https://buy.stripe.com/4gwcMQfixcFNeSQ4hS'
+    },
   },
   {
     name: "Tenable",
@@ -924,6 +1130,10 @@ export const ALL_PLUGINS: Plugin[] = [
     kind: "source",
     availability: "unpublished",
     category: "security",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/00g6os6M17ltaCA7u5',
+      'extended': 'https://buy.stripe.com/cN2bIMfix6hp120cOq'
+    },
   },
   {
     name: "Twilio",
@@ -933,6 +1143,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "cloud-infrastructure",
     logo: "/images/logos/plugins/twilio.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/7sI5ko8U9dJRaCAaGj',
+      'extended': 'https://buy.stripe.com/bIYaEI0nD49hh0Y7u8'
+    },
   },
   {
     name: "Twilio Sendgrid",
@@ -942,6 +1156,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "marketing-analytics",
     logo: "/images/logos/plugins/sendgrid.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/fZe28c5HXeNVfWUcOt',
+      'extended': 'https://buy.stripe.com/eVa1486M1gW37qog0G'
+    },
   },
   {
     name: "Typeform",
@@ -952,6 +1170,10 @@ export const ALL_PLUGINS: Plugin[] = [
     category: "marketing-analytics",
     logo: "/images/logos/plugins/typeform.svg",
     logoDark: "/images/logos/plugins/typeform-dark.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/28o3cg5HXbBJdOM3dV',
+      'extended': 'https://buy.stripe.com/6oEeUYfixcFN8us01K'
+    },
   },
   {
     name: "Zoho Campaign",
@@ -962,6 +1184,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "product-analytics",
     logo: "/images/logos/plugins/zoho.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/bIYcMQ0nD7lt1203dX',
+      'extended': 'https://buy.stripe.com/cN2dQU9Yd8px1205m6'
+    },
   },
   {
     name: "Zoho CRM",
@@ -972,6 +1198,10 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "other",
     logo: "/images/logos/plugins/zoho.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/dR6dQUb2h5dldOM4i3',
+      'extended': 'https://buy.stripe.com/8wM5ko6M18px8us8yk'
+    },
   },
   {
     name: "Zoom",
@@ -981,20 +1211,27 @@ export const ALL_PLUGINS: Plugin[] = [
     availability: "unpublished",
     category: "cloud-infrastructure",
     logo: "/images/logos/plugins/zoom.svg",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/00g5ko4DT8pxcKI9Cp',
+      'extended': 'https://buy.stripe.com/00g3cgfix35d1205ma'
+    },
   },
 ].sort((a, b) => a.name.localeCompare(b.name)) as Plugin[];
 
 export const ALL_SOURCE_PLUGINS: Plugin[] = ALL_PLUGINS.filter((p) => p.kind === "source");
 export const ALL_DESTINATION_PLUGINS: Plugin[] = ALL_PLUGINS.filter((p) => p.kind === "destination");
 
-export const PUBLISHED_SOURCE_PLUGINS: Plugin[] = ALL_PLUGINS.filter(
-    (p) => p.kind === "source" && p.availability !== "unpublished"
+export const PUBLISHED_SOURCE_PLUGINS: Plugin[] = ALL_SOURCE_PLUGINS.filter(
+    (p) => p.availability !== "unpublished"
 );
-export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = ALL_PLUGINS.filter(
-  (p) => p.kind === "source" && p.availability === "unpublished"
+export const UNPUBLISHED_SOURCE_PLUGINS: Plugin[] = ALL_SOURCE_PLUGINS.filter(
+  (p) => p.availability === "unpublished"
 );
-export const UNPUBLISHED_DESTINATION_PLUGINS: Plugin[] = ALL_PLUGINS.filter(
-    (p) => p.kind === "destination" && p.availability === "unpublished"
+export const PUBLISHED_DESTINATION_PLUGINS: Plugin[] = ALL_DESTINATION_PLUGINS.filter(
+    (p) => p.availability !== "unpublished"
+);
+export const UNPUBLISHED_DESTINATION_PLUGINS: Plugin[] = ALL_DESTINATION_PLUGINS.filter(
+    (p) => p.availability === "unpublished"
 );
 
 export const SOURCE_CATEGORIES: Category[] = ALL_SOURCE_PLUGINS.map((p) => p.category).filter(

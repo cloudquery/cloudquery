@@ -80,7 +80,7 @@ export function Sources() {
                 <div className="absolute inset-y-0 flex items-center pl-3 pointer-events-none">
                   <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                           d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                   </svg>
                 </div>
@@ -96,7 +96,7 @@ export function Sources() {
                 <form className="hidden lg:block" onSubmit={(e) => {e.preventDefault();}}>
                   <h3 className="nx-text-2xl font-extrabold leading-tight tracking-tight lg:nx-text-3xl xl:nx-text-4xl dark:text-white pb-4">Filters</h3>
                   {filters.map((section) => (
-                      <div className="space-y-4 pb-6 border-b border-gray-200">
+                      <div key={section.id} className="space-y-4 pb-6 border-b border-gray-200">
                         {section.options.map((option, optionIdx) => (
                             <div key={option.value} className="flex items-center">
                               <input

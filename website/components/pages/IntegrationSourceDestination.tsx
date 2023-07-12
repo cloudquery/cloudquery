@@ -68,7 +68,7 @@ export default function Integration({
 }) {
     const sourceFilename = source.id === destination.id ? `source-${source.id}.yaml` : `${source.id}.yaml`;
     const destinationFilename = source.id === destination.id ? `destination-${destination.id}.yaml` : `${destination.id}.yaml`;
-    if (source.kind === "unpublished" || destination.kind === "unpublished") {
+    if (source.availability === "unpublished" || destination.availability === "unpublished") {
         return unpublishedPlugin({source, destination});
     }
     return <>

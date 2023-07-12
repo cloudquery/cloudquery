@@ -37,33 +37,17 @@
     "title": "Solutions",
     "type": "menu",
     "items": {
-      "Cloud Security Posture Management": {
-        "title": "Cloud Security Posture Management",
-        "href": "/solutions/cloud-security-posture-management"
+      "blog": {
+        "title": "Blog",
+        "href": "/blog"
       },
-      "Cloud Cost Optimization": {
-        "title": "Cloud Cost Optimization",
-        "href": "/solutions/cloud-cost-optimization"
-      },
-      "Cloud Governance": {
-        "title": "Cloud Governance",
-        "href": "/solutions/cloud-governance"
-      },
-      "Cloud Monitoring": {
-        "title": "Cloud Monitoring",
-        "href": "/solutions/cloud-monitoring"
-      },
-      "Database Replication": {
-        "title": "Database Replication",
-        "href": "/solutions/database-replication"
-      },
-      "Data Integration": {
-        "title": "Data Integration",
-        "href": "/solutions/database-replication"
-      },
-      "Case Studies": {
-        "title": "Customer Case Studies",
+      "case-studies": {
+        "title": "Case Studies",
         "href": "/case-studies"
+      },
+      "glossary": {
+        "title": "Glossary",
+        "href": "/docs/glossary/overview"
       }
     }
   },
