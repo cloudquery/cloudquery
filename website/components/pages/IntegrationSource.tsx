@@ -109,16 +109,16 @@ export default function Integration({
                         </div>
                         <div className="max-w-5xl mx-auto">
                             <h2 className="mx-auto mt-24 nx-text-4xl font-extrabold tracking-tight lg:nx-text-5xl xl:nx-text-6xl dark:text-white">FAQ</h2>
-                            <h3 className="font-bold text-lg text-gray-700 lg:max-w-3xl lg:nx-text-xl mt-4">
+                            <h3 className="font-bold text-lg text-gray-700 lg:max-w-3xl lg:nx-text-xl mt-4 dark:text-white">
                                 What is the difference between the standard and extended license?
                             </h3>
-                            <p className="font-medium text-lg text-gray-700 lg:max-w-3xl lg:nx-text-xl">
+                            <p className="font-medium text-lg text-gray-700 lg:max-w-3xl lg:nx-text-xl dark:text-white">
                                 The standard license is for use in internal products, such as dashboards, internal cloud inventory tools, or other products that are not customer-facing. The extended license is for use of the data in customer-facing products, such as SaaS applications or security products.
                             </p>
-                            <h3 className="font-bold text-lg text-gray-700 lg:max-w-3xl lg:nx-text-xl mt-4">
+                            <h3 className="font-bold text-lg text-gray-700 lg:max-w-3xl lg:nx-text-xl mt-4 dark:text-white">
                                 What is a perpetual fallback license?
                             </h3>
-                            <p className="font-medium text-lg text-gray-700 lg:max-w-3xl lg:nx-text-xl">
+                            <p className="font-medium text-lg text-gray-700 lg:max-w-3xl lg:nx-text-xl dark:text-white">
                                 A perpetual fallback license is a license that allows you to use the plugin in perpetuity, even if you stop paying for updates. The license will never expire, but you will not receive updates after your license expires. You will have access to all new versions of the plugin published up to the date your license expires.
                             </p>
                         </div>
