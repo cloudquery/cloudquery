@@ -10,20 +10,16 @@ require (
 	github.com/goccy/go-json v0.10.2
 	github.com/rs/zerolog v1.29.1
 	github.com/segmentio/fasthash v1.0.3
-)
-
-require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/testify v1.8.4 // indirect
 	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-)
-
-require (
 	github.com/elastic/elastic-transport-go/v8 v8.0.0-20211216131617-bbee439d559c // indirect
 	golang.org/x/sync v0.1.0
 )
+
+replace github.com/cloudquery/plugin-sdk/v4 => github.com/disq/plugin-sdk/v4 e87946c51a31dae7e9f31a7a54734b425d79fba4
 
 require (
 	github.com/cloudquery/plugin-pb-go v1.6.0 // indirect

@@ -16,6 +16,8 @@ require (
 // TODO: remove once all updates are merged
 replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230710001530-a2a76ebbb85f
 
+replace github.com/cloudquery/plugin-sdk/v4 => github.com/disq/plugin-sdk/v4 e87946c51a31dae7e9f31a7a54734b425d79fba4
+
 require (
 	github.com/ClickHouse/ch-go v0.57.0 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
