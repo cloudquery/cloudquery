@@ -75,6 +75,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/mwaa"
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/networkfirewall"
+	"github.com/aws/aws-sdk-go-v2/service/networkmanager"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/aws/aws-sdk-go-v2/service/quicksight"
@@ -195,6 +196,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Mwaa:                      mwaa.NewFromConfig(awsCfg),
 		Neptune:                   neptune.NewFromConfig(awsCfg),
 		Networkfirewall:           networkfirewall.NewFromConfig(awsCfg),
+		Networkmanager:            networkmanager.NewFromConfig(awsCfg),
 		Organizations:             organizations.NewFromConfig(awsCfg),
 		Qldb:                      qldb.NewFromConfig(awsCfg),
 		Quicksight:                quicksight.NewFromConfig(awsCfg),
@@ -313,6 +315,7 @@ type Services struct {
 	Mwaa                      services.MwaaClient
 	Neptune                   services.NeptuneClient
 	Networkfirewall           services.NetworkfirewallClient
+	Networkmanager            services.NetworkmanagerClient
 	Organizations             services.OrganizationsClient
 	Qldb                      services.QldbClient
 	Quicksight                services.QuicksightClient

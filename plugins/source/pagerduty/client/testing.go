@@ -14,9 +14,9 @@ import (
 	"time"
 
 	"github.com/PagerDuty/go-pagerduty"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/rs/zerolog"
 	"golang.org/x/exp/slices"
 )
@@ -37,42 +37,38 @@ func (mockHttpClient *MockHttpClient) AddMockResponse(url string, object any) {
 
 func PagerdutyMockTestHelper(t *testing.T, table *schema.Table, buildMockHttpClient func() *MockHttpClient) {
 	t.Helper()
-
-	logger := zerolog.New(zerolog.NewTestWriter(t)).Output(
+	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
-
-	table.IgnoreInTests = false
-
-	version := "vDev"
-
-	configureTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
-		pagerdutyClient := pagerduty.NewClient("test_auth_token")
-		pagerdutyClient.HTTPClient = buildMockHttpClient()
-
-		cqClient := Client{
-			PagerdutyClient: pagerdutyClient,
-			Spec:            &Spec{},
-			logger:          logger,
-		}
-
-		return &cqClient, nil
+	spec := Spec{
+		TeamIds:              nil,
+		MaxRequestsPerSecond: nil,
+		Concurrency:          0,
 	}
 
-	p := source.NewPlugin(
-		table.Name,
-		version,
-		[]*schema.Table{table},
-		configureTestExecutionClient,
-	)
-	p.SetLogger(logger)
-	source.TestPluginSync(t, p, specs.Source{
-		Name:         "dev",
-		Path:         "cloudquery/dev",
-		Version:      version,
-		Tables:       []string{table.Name},
-		Destinations: []string{"mock-destination"},
-	})
+	pagerdutyClient := pagerduty.NewClient("test_auth_token")
+	pagerdutyClient.HTTPClient = buildMockHttpClient()
+
+	schedulerClient, err := New(l, spec, WithClient(pagerdutyClient))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	tables := schema.Tables{table}
+	if err := transformers.TransformTables(tables); err != nil {
+		t.Fatal(err)
+	}
+	sc := scheduler.NewScheduler(scheduler.WithLogger(l))
+	messages, err := sc.SyncAll(context.Background(), schedulerClient, tables)
+	if err != nil {
+		t.Fatal(err)
+	}
+	inserts := messages.GetInserts()
+	records := inserts.GetRecordsForTable(table)
+	emptyColumns := schema.FindEmptyColumns(table, records)
+	if len(emptyColumns) > 0 {
+		t.Fatalf("empty columns: %v", emptyColumns)
+	}
 }
 
 func (mockHttpClient *MockHttpClient) Do(req *http.Request) (*http.Response, error) {

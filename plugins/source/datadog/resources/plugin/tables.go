@@ -16,16 +16,14 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/docs"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	"golang.org/x/exp/maps"
 )
 
 func titleTransformer(table *schema.Table) error {
 	if table.Title != "" {
 		return nil
 	}
-	exceptions := make(map[string]string)
-	for k, v := range docs.DefaultTitleExceptions {
-		exceptions[k] = v
-	}
+	exceptions := maps.Clone(docs.DefaultTitleExceptions)
 	for k, v := range customExceptions {
 		exceptions[k] = v
 	}
@@ -34,7 +32,7 @@ func titleTransformer(table *schema.Table) error {
 	return nil
 }
 
-func Tables() schema.Tables {
+func getTables() schema.Tables {
 	tables := []*schema.Table{
 		dashboards.Dashboards(),
 		dashboards.Lists(),
