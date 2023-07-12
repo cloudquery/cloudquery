@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [20.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v19.2.0...plugins-source-aws-v20.0.0) (2023-07-12)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_ec2_eips`: primary key constraint added to column `account_id` (:warning: breaking)
+- Table `aws_ec2_eips`: primary key constraint added to column `allocation_id` (:warning: breaking)
+- Table `aws_ec2_eips`: primary key constraint added to column `region` (:warning: breaking)
+- Table `aws_ec2_eips`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_networkmanager_global_networks` was added
+- Table `aws_networkmanager_links` was added
+- Table `aws_networkmanager_sites` was added
+- Table `aws_networkmanager_transit_gateway_registrations` was added
+
 ### ⚠ BREAKING CHANGES
 
 * **aws:** Define primary key for eips ([#11728](https://github.com/cloudquery/cloudquery/issues/11728))
