@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/source/homebrew
 
-go 1.19
+go 1.20
 
 require (
 	github.com/cloudquery/plugin-sdk/v4 v4.7.0-rc1

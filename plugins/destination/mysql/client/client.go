@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
@@ -14,12 +15,23 @@ import (
 	mysql "github.com/go-sql-driver/mysql"
 )
 
+type ServerType int64
+
+const (
+	ServerTypeMySQL   ServerType = 0
+	ServerTypeMariaDB ServerType = 1
+)
+
+// Client is the MySQL client
+
 type Client struct {
 	plugin.UnimplementedSource
-	logger zerolog.Logger
-	spec   Spec
-	db     *sql.DB
-	writer *batchwriter.BatchWriter
+	logger        zerolog.Logger
+	spec          Spec
+	db            *sql.DB
+	writer        *batchwriter.BatchWriter
+	serverType    ServerType
+	serverVersion string
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
@@ -57,7 +69,53 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 	db.SetMaxIdleConns(10)
 	c.db = db
 
+	if err := c.validateConnection(ctx); err != nil {
+		return nil, err
+	}
+
+	if err := c.getVersion(ctx); err != nil {
+		return nil, err
+	}
+
 	return c, nil
+}
+
+func (c *Client) validateConnection(ctx context.Context) error {
+	rows, err := c.db.QueryContext(ctx, "select database()")
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var name *string
+		if err := rows.Scan(&name); err != nil {
+			return err
+		}
+		if name == nil {
+			return fmt.Errorf("default database is not selected. Update connection string to include database name")
+		}
+	}
+	return nil
+}
+
+func (c *Client) getVersion(ctx context.Context) error {
+	rows, err := c.db.QueryContext(ctx, "SELECT VERSION()")
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var versionString *string
+		if err := rows.Scan(&versionString); err != nil {
+			return err
+		}
+		if strings.Contains(*versionString, "-MariaDB") {
+			c.serverType = ServerTypeMariaDB
+			c.logger.Warn().Msg("MariaDB detected. Some features may not work as expected")
+		}
+		c.serverVersion = strings.Split(*versionString, "-")[0]
+	}
+	return nil
 }
 
 func (c *Client) Close(ctx context.Context) error {
