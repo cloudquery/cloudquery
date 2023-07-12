@@ -16,7 +16,7 @@ jobs:
   plugins-source-stripe:
     timeout-minutes: 30
     name: "plugins/source/stripe"
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     defaults:
       run:
         working-directory: ./plugins/source/stripe
@@ -50,7 +50,7 @@ jobs:
         run: make test
   validate-release:
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     env:
       CGO_ENABLED: 0
     steps:

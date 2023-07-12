@@ -16,7 +16,7 @@ jobs:
   plugins-destination-postgresql:
     timeout-minutes: 30
     name: "plugins/destination/postgresql"
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     defaults:
       run:
         working-directory: ./plugins/destination/postgresql
@@ -69,7 +69,7 @@ jobs:
         run: CQ_DEST_PG_TEST_CONN="postgresql://root@localhost:26257/postgres?sslmode=disable" make test
   validate-release:
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     env:
       CGO_ENABLED: 0
     steps:

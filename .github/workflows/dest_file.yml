@@ -18,7 +18,7 @@ jobs:
   plugins-destination-file:
     timeout-minutes: 30
     name: "plugins/destination/file"
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     defaults:
       run:
         working-directory: ./plugins/destination/file
@@ -46,7 +46,7 @@ jobs:
         run: make test
   validate-release:
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     env:
       CGO_ENABLED: 0
     steps:

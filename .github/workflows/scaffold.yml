@@ -16,7 +16,7 @@ jobs:
   scaffold:
     timeout-minutes: 30
     name: "scaffold"
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     defaults:
       run:
         working-directory: ./scaffold
@@ -32,7 +32,6 @@ jobs:
           cache-dependency-path: scaffold/go.sum
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
-        if: matrix.os == 'ubuntu-latest'
         with:
           version: v1.52.2
           working-directory: cli
@@ -44,7 +43,7 @@ jobs:
         run: make test
   validate-release:
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     env:
       CGO_ENABLED: 0
     steps:

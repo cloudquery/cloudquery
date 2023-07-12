@@ -16,7 +16,7 @@ jobs:
   plugins-destination-mongodb:
     timeout-minutes: 30
     name: "plugins/destination/mongodb"
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     defaults:
       run:
         working-directory: ./plugins/destination/mongodb
@@ -47,7 +47,7 @@ jobs:
         run: make test
   validate-release:
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     env:
       CGO_ENABLED: 0
     steps:

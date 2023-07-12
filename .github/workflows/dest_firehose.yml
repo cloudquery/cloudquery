@@ -16,7 +16,7 @@ jobs:
   plugins-destination-firehose:
     timeout-minutes: 30
     name: "plugins/destination/firehose"
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     defaults:
       run:
         working-directory: ./plugins/destination/firehose
@@ -53,7 +53,7 @@ jobs:
       #   run: make test
   validate-release:
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     env:
       CGO_ENABLED: 0
     steps:

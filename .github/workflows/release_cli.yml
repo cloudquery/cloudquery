@@ -9,7 +9,7 @@ env:
 jobs:
   release-cli:
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     steps:
       # Tag format is cli-<version>
       - name: Split tag
