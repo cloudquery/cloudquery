@@ -9,6 +9,8 @@ type Spec struct {
 	Password       string   `json:"password"`
 	IncludeObjects []string `json:"include_objects"`
 	ExcludeObjects []string `json:"exclude_objects"`
+
+	Concurrency int `json:"concurrency,omitempty"`
 }
 
 func (s *Spec) Validate() error {
@@ -33,5 +35,8 @@ func (s *Spec) SetDefaults() {
 	}
 	if s.ExcludeObjects == nil {
 		s.ExcludeObjects = []string{}
+	}
+	if s.Concurrency < 1 {
+		s.Concurrency = 10000
 	}
 }

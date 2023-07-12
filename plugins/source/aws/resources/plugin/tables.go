@@ -1,6 +1,8 @@
 package plugin
 
 import (
+	"fmt"
+
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/accessanalyzer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/account"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/acm"
@@ -73,6 +75,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/mwaa"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/neptune"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/networkfirewall"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/networkmanager"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/organizations"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/qldb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/quicksight"
@@ -109,11 +112,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wellarchitected"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/workspaces"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/xray"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
-func tables() []*schema.Table {
-	return []*schema.Table{
+func getTables() schema.Tables {
+	t := []*schema.Table{
 		accessanalyzer.Analyzers(),
 		account.AlternateContacts(),
 		account.Contacts(),
@@ -412,6 +417,7 @@ func tables() []*schema.Table {
 		networkfirewall.Firewalls(),
 		networkfirewall.RuleGroups(),
 		networkfirewall.TLSInspectionConfigurations(),
+		networkmanager.GlobalNetworks(),
 		organizations.Accounts(),
 		organizations.DelegatedAdministrators(),
 		organizations.OrganizationalUnits(),
@@ -549,4 +555,24 @@ func tables() []*schema.Table {
 		xray.ResourcePolicies(),
 		xray.SamplingRules(),
 	}
+	if err := transformers.TransformTables(t); err != nil {
+		panic(err)
+	}
+	for _, table := range t {
+		schema.AddCqIDs(table)
+		titleTransformer(table)
+		if err := validateTagsIsJSON(table); err != nil {
+			panic(err)
+		}
+	}
+	return t
+}
+
+func validateTagsIsJSON(table *schema.Table) error {
+	for _, col := range table.Columns {
+		if col.Name == "tags" && col.Type != types.ExtensionTypes.JSON {
+			return fmt.Errorf("column %s in table %s must be of type %s", col.Name, table.Name, types.ExtensionTypes.JSON)
+		}
+	}
+	return nil
 }

@@ -94,7 +94,7 @@ func migrate(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			return fmt.Errorf("failed to get source versions: %w", err)
 		}
-		maxVersion := findMaxCommonVersion(versions, []int{2, 1, 0})
+		maxVersion := findMaxCommonVersion(versions, []int{3, 2, 1, 0})
 
 		var destinationClientsForSource []*managedplugin.Client
 		var destinationForSourceSpec []specs.Destination
@@ -105,6 +105,19 @@ func migrate(cmd *cobra.Command, args []string) error {
 			}
 		}
 		switch maxVersion {
+		case 3:
+			for _, destination := range destinationClientsForSource {
+				versions, err := destination.Versions(ctx)
+				if err != nil {
+					return fmt.Errorf("failed to get destination versions: %w", err)
+				}
+				if !slices.Contains(versions, 3) {
+					return fmt.Errorf("destination %[1]s does not support CloudQuery protocol version 3, required by %[2]s. Please upgrade to newer version of %[1]s", destination.Name(), source.Name)
+				}
+			}
+			if err := migrateConnectionV3(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec); err != nil {
+				return fmt.Errorf("failed to migrate v3 source %s: %w", cl.Name(), err)
+			}
 		case 2:
 			for _, destination := range destinationClientsForSource {
 				versions, err := destination.Versions(ctx)

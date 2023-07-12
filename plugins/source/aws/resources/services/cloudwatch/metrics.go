@@ -8,13 +8,13 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
-	cqtypes "github.com/cloudquery/plugin-sdk/v3/types"
+	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/mitchellh/hashstructure/v2"
 
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 type metricOutput struct {

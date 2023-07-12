@@ -6,9 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 	"github.com/rs/zerolog"
 )
@@ -70,48 +68,32 @@ func (l *SnykLogger) Log(args ...any) {
 	m.Msg("Log from Snyk SDK")
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
-	snykSpec := new(Spec)
-	err := spec.UnmarshalSpec(snykSpec)
-	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
-	}
-	err = snykSpec.Validate()
-	if err != nil {
-		return nil, fmt.Errorf("failed to validate spec: %w", err)
-	}
-
-	snykLogger := SnykLogger{
-		logger: logger,
-	}
+func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMeta, error) {
 	httpClient := http.DefaultClient
 	httpClient.Timeout = 1 * time.Minute
 	options := []snyk.ClientOption{
 		snyk.WithHTTPClient(httpClient),
-		snyk.WithUserAgent("cloudquery/snyk/" + spec.Version),
-		snyk.WithLogger(&snykLogger),
+		snyk.WithUserAgent("cloudquery:source-snyk"),
+		snyk.WithLogger(&SnykLogger{logger: logger}),
 		snyk.WithLogRequests(true), // these will be filtered out by the logger if not in debug mode
 	}
-	if len(snykSpec.EndpointURL) > 0 {
-		options = append(options, snyk.WithBaseURL(snykSpec.EndpointURL))
+	if len(spec.EndpointURL) > 0 {
+		options = append(options, snyk.WithBaseURL(spec.EndpointURL))
 	}
 
-	client := snyk.NewClient(snykSpec.APIKey, options...)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create Snyk client: %w", err)
-	}
+	client := snyk.NewClient(spec.APIKey, options...)
 
 	maxRetries := defaultMaxRetries
-	if snykSpec.Retries > 0 {
-		maxRetries = snykSpec.Retries
+	if spec.Retries > 0 {
+		maxRetries = spec.Retries
 	}
 	backoff := defaultBackoff
-	if snykSpec.RetryDelaySeconds > 0 {
-		backoff = time.Duration(snykSpec.RetryDelaySeconds) * time.Second
+	if spec.RetryDelaySeconds > 0 {
+		backoff = time.Duration(spec.RetryDelaySeconds) * time.Second
 	}
 	c := &Client{
 		Client:     client,
-		Spec:       *snykSpec,
+		Spec:       spec,
 		logger:     logger,
 		maxRetries: maxRetries,
 		backoff:    backoff,

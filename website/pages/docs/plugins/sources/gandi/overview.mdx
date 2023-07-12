@@ -1,6 +1,6 @@
 ---
 name: Gandi
-stage: GA
+stage: GA (Premium)
 title: Gandi Source Plugin
 description: CloudQuery Gandi source plugin documentation
 ---
@@ -10,7 +10,9 @@ import { getLatestVersion } from "../../../../../utils/versions";
 import { Badge } from "../../../../../components/Badge";
 import Authentication from "./_authentication.mdx";
 
-<Badge text={"Latest: " + getLatestVersion("source", `gandi`)}/>
+<Badge text={"Latest Premium: " + getLatestVersion("source", `gandi`)}/>
+
+This is a premium plugin that you can buy [here](https://cloudquery.io/buy/gandi) (`$50` with 6 months of free updates and support).
 
 The CloudQuery Gandi plugin pulls configuration out of Gandi resources and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 

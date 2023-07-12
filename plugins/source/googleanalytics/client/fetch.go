@@ -3,7 +3,7 @@ package client
 import (
 	"context"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	analyticsdata "google.golang.org/api/analyticsdata/v1beta"
 )
 
@@ -50,7 +50,7 @@ func fetch(tableName string, request *analyticsdata.RunReportRequest) schema.Tab
 
 			// We save current date here, even with data loss (as the report should be edited to get all the data)
 			// Data loss refers to the `(other)` value, see https://support.google.com/analytics/answer/1333168.
-			if err := c.backend.Set(ctx, tableName, c.ID(), dateStr); err != nil {
+			if err := c.backend.SetKey(ctx, tableName+c.ID(), dateStr); err != nil {
 				logger.Err(err).Msg("failed to save state")
 				return err
 			}

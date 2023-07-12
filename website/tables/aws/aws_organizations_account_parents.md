@@ -15,8 +15,6 @@ This table depends on [aws_organizations_accounts](aws_organizations_accounts).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |request_account_id (PK)|`utf8`|
