@@ -77,7 +77,7 @@ jobs:
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: 'v3.5.0'
+          version: 'v3.9.0'
       - name: Configure AWS credentials
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
         uses: aws-actions/configure-aws-credentials@v2
@@ -103,9 +103,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/source/aws/go.sum') }}
+          key: ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/source/aws/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.5-release-cache-plugins-source-aws
+            ${{ runner.os }}-go-1.20.5-release-cache-plugins-source-aws
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3
