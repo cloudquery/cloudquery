@@ -26,7 +26,7 @@ Let's begin with a high-level summary before diving deeper into each of the upda
 
 ## Apache Arrow
 
-We extensively discussed this update in our previous [blog post](./adopting-apache-arrow-at-cloudquery). Now, with all our [destinations](../docs/plugins/destinations/overview) migrated to SDK V4, they support over 30 different [Apache Arrow data types](https://arrow.apache.org/docs/python/api/datatypes.html)!
+We extensively discussed this update in our previous [blog post](/blog/adopting-apache-arrow-at-cloudquery). Now, with all our [destinations](/docs/plugins/destinations/overview) migrated to SDK V4, they support over 30 different [Apache Arrow data types](https://arrow.apache.org/docs/python/api/datatypes.html)!
 
 All fields that are sending CloudQuery tables are encoded as Apache Arrow Schemas, and all fields sending data are Apache Arrow records (Fields are commented in the code).
 
@@ -36,7 +36,7 @@ Updates to [plugin-pb](https://github.com/cloudquery/plugin-pb/blob/main/plugin/
 
 Having a single protocol version ensures better manageability of upgrades and maintains backward compatibility, providing users and developers with ample time for transitioning. It also enables plugin authors to create plugins that function as both sources and destinations.
 
-Moreover, any of the CloudQuery destinations can now be utilized as backends for [incremental syncs](docs/core-concepts/syncs#incremental-table-syncs). For example, you can now specify the following for sources with incremental syncs:
+Moreover, any of the CloudQuery destinations can now be utilized as backends for [incremental syncs](/docs/core-concepts/syncs#incremental-table-syncs). For example, you can now specify the following for sources with incremental syncs:
 
 ```
 kind: source
