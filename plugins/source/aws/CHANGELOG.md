@@ -6,6 +6,48 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [20.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v19.2.0...plugins-source-aws-v20.0.0) (2023-07-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* **aws:** Define primary key for eips ([#11728](https://github.com/cloudquery/cloudquery/issues/11728))
+* Upgrades the awspricing source plugin to use plugin-sdk v4. This version does not contain any user-facing breaking changes, but because it is now using CloudQuery gRPC protocol v3, it does require use of a destination plugin that also supports protocol v3. All recent destination plugin versions support this.
+
+### Features
+
+* Add table_options support for aws_securityhub_findings table ([#11955](https://github.com/cloudquery/cloudquery/issues/11955)) ([c9eff12](https://github.com/cloudquery/cloudquery/commit/c9eff1252fb2a6768373b954dabc291d52904fb6))
+* **aws-policies:** Add in AWS security account contact query ([#11729](https://github.com/cloudquery/cloudquery/issues/11729)) ([c9d7294](https://github.com/cloudquery/cloudquery/commit/c9d7294a6294daf6906fe68dd623aa7b3df87b4b))
+* **aws-policies:** Add sns logging of delivery status to AWS Policies ([#12074](https://github.com/cloudquery/cloudquery/issues/12074)) ([80f0b88](https://github.com/cloudquery/cloudquery/commit/80f0b88eb4f751175d396278440560867dfe2d6c))
+* **aws-policies:** Update sqs encryption for aws foundational security policies ([#11777](https://github.com/cloudquery/cloudquery/issues/11777)) ([30d415c](https://github.com/cloudquery/cloudquery/commit/30d415ca186a136da420ad75e6bf3d5457c12ab2))
+* **aws-policies:** Update ssm queries for aws policies ([#12067](https://github.com/cloudquery/cloudquery/issues/12067)) ([2b9180f](https://github.com/cloudquery/cloudquery/commit/2b9180f5024f9d949dcf49ba216aa9136ffb469a))
+* **aws-services:** Support newly added regions ([#11922](https://github.com/cloudquery/cloudquery/issues/11922)) ([6680d7a](https://github.com/cloudquery/cloudquery/commit/6680d7a03353c8b0b807b682495af312109aa7c1))
+* **aws-services:** Support newly added regions ([#12120](https://github.com/cloudquery/cloudquery/issues/12120)) ([15ea38c](https://github.com/cloudquery/cloudquery/commit/15ea38c54fd07368ecb3c570c4ae4a40dbf4cde8))
+* **aws:** Add Support for `ecs:ListTasks` in `table_options` ([#11986](https://github.com/cloudquery/cloudquery/issues/11986)) ([3016c16](https://github.com/cloudquery/cloudquery/commit/3016c16d6b59ba4c5c1182ee9601b0bda8fd3591)), closes [#11981](https://github.com/cloudquery/cloudquery/issues/11981)
+* **aws:** Define primary key for eips ([#11728](https://github.com/cloudquery/cloudquery/issues/11728)) ([fa48d4a](https://github.com/cloudquery/cloudquery/commit/fa48d4a65fcd8150e29f8c85720554ec1c58cfbb))
+* **aws:** Support networkmanager resources ([#12123](https://github.com/cloudquery/cloudquery/issues/12123)) ([a642ce0](https://github.com/cloudquery/cloudquery/commit/a642ce04f09a73341e8916538c3f4411a7c390f8))
+* Upgrades the awspricing source plugin to use plugin-sdk v4. This version does not contain any user-facing breaking changes, but because it is now using CloudQuery gRPC protocol v3, it does require use of a destination plugin that also supports protocol v3. All recent destination plugin versions support this. ([7d50d29](https://github.com/cloudquery/cloudquery/commit/7d50d29e6fcdf44579112ecfbcb92908a8bc1247))
+
+
+### Bug Fixes
+
+* **aws:** Skip fetching tags for `aws_kafka_cluster_operations` ([#11973](https://github.com/cloudquery/cloudquery/issues/11973)) ([2b62ba4](https://github.com/cloudquery/cloudquery/commit/2b62ba4c3f8ae801fff76f7ecf626a1e2abdfb84))
+* **aws:** Validate table relations not just top level table ([#12121](https://github.com/cloudquery/cloudquery/issues/12121)) ([e13d931](https://github.com/cloudquery/cloudquery/commit/e13d9317f1c3032278fd4c3fa81004126d083772))
+* **deps:** Update github.com/apache/arrow/go/v13 digest to 5a06b2e ([#11857](https://github.com/cloudquery/cloudquery/issues/11857)) ([43c2f5f](https://github.com/cloudquery/cloudquery/commit/43c2f5f3a893e5286f67c4943a9d1bc2736e2aeb))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 0a52533 ([#12091](https://github.com/cloudquery/cloudquery/issues/12091)) ([927cefa](https://github.com/cloudquery/cloudquery/commit/927cefa943ec3969a2ec39b628bc1eba545a2108))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to a2a76eb ([#12104](https://github.com/cloudquery/cloudquery/issues/12104)) ([311f474](https://github.com/cloudquery/cloudquery/commit/311f4749af2491a606f29483190717a5fe238da6))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to df3b664 ([#11882](https://github.com/cloudquery/cloudquery/issues/11882)) ([9635b22](https://github.com/cloudquery/cloudquery/commit/9635b22b10a2cd9ca0f91819cffb7f4ba75dc2d9))
+* **deps:** Update github.com/cockroachdb/cockroachdb-parser digest to c9c144e ([#11863](https://github.com/cloudquery/cloudquery/issues/11863)) ([1547efd](https://github.com/cloudquery/cloudquery/commit/1547efd045abbf8905f5a7bf5856571603bd64d9))
+* **deps:** Update github.com/cockroachdb/logtags digest to 21c5414 ([#11864](https://github.com/cloudquery/cloudquery/issues/11864)) ([da48b1f](https://github.com/cloudquery/cloudquery/commit/da48b1fc86576ea5777505e5bb59ecaf0febf7ca))
+* **deps:** Update github.com/gocarina/gocsv digest to 99d496c ([#11865](https://github.com/cloudquery/cloudquery/issues/11865)) ([c3de686](https://github.com/cloudquery/cloudquery/commit/c3de686895d4d15d4687ea7b505466195b09f546))
+* **deps:** Update github.com/golang/geo digest to 6adc566 ([#11866](https://github.com/cloudquery/cloudquery/issues/11866)) ([edb7ed8](https://github.com/cloudquery/cloudquery/commit/edb7ed83896842e6f174079ba020f18d713f6f91))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/networkfirewall to v1.28.3 ([#12079](https://github.com/cloudquery/cloudquery/issues/12079)) ([a27fa21](https://github.com/cloudquery/cloudquery/commit/a27fa21c7252036ec4e3d79c5133b98e61a4acd0))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/securityhub to v1.33.2 ([#12081](https://github.com/cloudquery/cloudquery/issues/12081)) ([e77f93e](https://github.com/cloudquery/cloudquery/commit/e77f93ea85457943b1cd2021f5dfd4ac69d37785))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/servicediscovery to v1.21.7 ([#12082](https://github.com/cloudquery/cloudquery/issues/12082)) ([01f8b59](https://github.com/cloudquery/cloudquery/commit/01f8b599f992dc1aadf955f5b04e67ce5d09affb))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.5.0 ([#11850](https://github.com/cloudquery/cloudquery/issues/11850)) ([3255857](https://github.com/cloudquery/cloudquery/commit/3255857938bf16862d52491f5c2a8a0fa53faef0))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.6.0 ([#11916](https://github.com/cloudquery/cloudquery/issues/11916)) ([421e752](https://github.com/cloudquery/cloudquery/commit/421e7529360965175c8d156ff006d2b703ee9da2))
+* **postgresql:** Rerun release please ([#12002](https://github.com/cloudquery/cloudquery/issues/12002)) ([9d12843](https://github.com/cloudquery/cloudquery/commit/9d12843462d1019d26bc239f8f928bf5f62940cf))
+
 ## [19.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v19.1.0...plugins-source-aws-v19.2.0) (2023-06-30)
 
 
