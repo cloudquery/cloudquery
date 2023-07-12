@@ -9,7 +9,7 @@ env:
 jobs:
   release-scaffold:
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     steps:
       # Tag format is scaffold-<version>
       - name: Split tag

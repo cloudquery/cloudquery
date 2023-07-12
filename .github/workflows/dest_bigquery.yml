@@ -1,5 +1,9 @@
 name: Destination Plugin BigQuery Workflow
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     paths:
@@ -16,7 +20,7 @@ jobs:
   plugins-destination-bigquery:
     timeout-minutes: 10
     name: "plugins/destination/bigquery"
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     defaults:
       run:
         working-directory: ./plugins/destination/bigquery
@@ -59,7 +63,7 @@ jobs:
           BIGQUERY_DATASET_LOCATION: us-west1
   validate-release:
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     steps:
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'

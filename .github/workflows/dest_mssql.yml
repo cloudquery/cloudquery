@@ -1,5 +1,9 @@
 name: Destination Plugin Microsoft SQL Server Workflow
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     paths:
@@ -15,7 +19,7 @@ on:
 jobs:
   plugins-destination-mssql:
     name: "plugins/destination/mssql"
-    runs-on:         ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     timeout-minutes: 30
     env:
       DB_USER:     SA
@@ -73,7 +77,7 @@ jobs:
       run:  make test
   validate-release:
     timeout-minutes: 30
-    runs-on:         ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     env:
       CGO_ENABLED: 0
     steps:
