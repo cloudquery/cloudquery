@@ -1,5 +1,9 @@
 name: Destination Plugin BigQuery Workflow
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     paths:
