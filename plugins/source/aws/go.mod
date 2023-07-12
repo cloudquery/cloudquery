@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/source/aws
 
-go 1.19
+go 1.20
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
@@ -80,6 +80,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.16.2
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.20.7
 	github.com/aws/aws-sdk-go-v2/service/networkfirewall v1.28.3
+	github.com/aws/aws-sdk-go-v2/service/networkmanager v1.17.14
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.19.8
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.15.13
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.37.2
@@ -124,7 +125,7 @@ require (
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/codegen v0.2.1
-	github.com/cloudquery/plugin-sdk/v4 v4.8.1-rc1
+	github.com/cloudquery/plugin-sdk/v4 v4.0.0
 	github.com/cockroachdb/cockroachdb-parser v0.0.0-20221207165326-ea0ac1a4778b
 	github.com/gocarina/gocsv v0.0.0-20230513223533-9ddd7fd60602
 	github.com/golang/mock v1.6.0

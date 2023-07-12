@@ -75,6 +75,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/mwaa"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/neptune"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/networkfirewall"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/networkmanager"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/organizations"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/qldb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/quicksight"
@@ -416,6 +417,7 @@ func getTables() schema.Tables {
 		networkfirewall.Firewalls(),
 		networkfirewall.RuleGroups(),
 		networkfirewall.TLSInspectionConfigurations(),
+		networkmanager.GlobalNetworks(),
 		organizations.Accounts(),
 		organizations.DelegatedAdministrators(),
 		organizations.OrganizationalUnits(),

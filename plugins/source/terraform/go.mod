@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/source/terraform
 
-go 1.19
+go 1.20
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
@@ -10,7 +10,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.71
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.36.0
 	github.com/aws/aws-sdk-go-v2/service/sts v1.19.2
-	github.com/cloudquery/plugin-sdk/v4 v4.8.1-rc1
+	github.com/cloudquery/plugin-sdk/v4 v4.0.0
 	github.com/rs/zerolog v1.29.1
 	github.com/stretchr/testify v1.8.4
 )
