@@ -4,8 +4,8 @@ import (
 	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	schemav2 "github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugin-sdk/v3/types"
+	schemav2 "github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 var cqToArrow = map[string]arrow.DataType{}

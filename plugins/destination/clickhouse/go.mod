@@ -19,7 +19,6 @@ replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13
 require (
 	github.com/ClickHouse/ch-go v0.57.0 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.21.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
@@ -60,3 +59,5 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+require github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
