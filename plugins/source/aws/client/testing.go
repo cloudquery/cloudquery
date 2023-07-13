@@ -88,6 +88,6 @@ func validateMultiplexers(t *testing.T, parentTable *schema.Table) {
 		if table.Multiplex == nil {
 			continue
 		}
-		t.Fatalf("table %s should not have multiplexer", table.Name)
+		t.Fatalf("table %s is a relation and should not have multiplexer", table.Name)
 	}
 }
