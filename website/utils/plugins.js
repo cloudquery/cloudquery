@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const matter = require("gray-matter");
 const title = require("title");
+const pluginTitle = (plugin) => title(plugin.replace(/-/g, " "));
 
 const getData = (pluginsDir, plugin) => {
   try {
@@ -11,13 +12,13 @@ const getData = (pluginsDir, plugin) => {
     );
     return {
       id: plugin,
-      name: title(plugin),
+      name: pluginTitle(plugin),
       stage: "Preview",
       ...matter(overviewFile).data,
     };
   } catch (e) {
     console.warn(`No overview file found for ${plugin}`);
-    return { id: plugin, name: title(plugin), stage: "Preview" };
+    return { id: plugin, name: pluginTitle(plugin), stage: "Preview" };
   }
 };
 
