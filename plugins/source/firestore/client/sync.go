@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"fmt"
 
 	"cloud.google.com/go/firestore"
 	"github.com/apache/arrow/go/v13/arrow/array"
@@ -14,18 +15,23 @@ import (
 	"google.golang.org/api/iterator"
 )
 
-func (c Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.Message) error {
-	filtered := schema.Tables{}
-	for _, table := range c.tables {
-		if !plugin.MatchesTable(table.Name, options.Tables, options.SkipTables) {
-			continue
+func (c Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.SyncMessage) error {
+	if c.options.NoConnection {
+		return fmt.Errorf("no connection")
+	}
+	filtered, err := c.tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
+	if err != nil {
+		return err
+	}
+	for _, table := range filtered {
+		res <- &message.SyncMigrateTable{
+			Table: table,
 		}
-		filtered = append(filtered, table)
 	}
 	return c.syncTables(ctx, filtered, res)
 }
 
-func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- message.Message) error {
+func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- message.SyncMessage) error {
 	var err error
 	lastDocumentId := ""
 	maxBatchSize := c.maxBatchSize
@@ -80,7 +86,7 @@ func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- 
 			dataField := rb.Field(3).(*types.JSONBuilder)
 			dataField.Append(docSnap.Data())
 
-			res <- &message.Insert{Record: rb.NewRecord()}
+			res <- &message.SyncInsert{Record: rb.NewRecord()}
 		}
 		c.logger.Info().Msgf("Synced %d documents from %s", documentCount, table.Name)
 		if skippedCount > 0 {
@@ -93,7 +99,7 @@ func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- 
 	return err
 }
 
-func (c *Client) syncTables(ctx context.Context, tables schema.Tables, res chan<- message.Message) error {
+func (c *Client) syncTables(ctx context.Context, tables schema.Tables, res chan<- message.SyncMessage) error {
 	eg, gctx := errgroup.WithContext(ctx)
 	for _, table := range tables {
 		t := table

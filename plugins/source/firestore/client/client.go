@@ -16,6 +16,7 @@ type Client struct {
 	plugin.UnimplementedDestination
 	logger         zerolog.Logger
 	tables         schema.Tables
+	options        plugin.NewClientOptions
 	client         *firestore.Client
 	maxBatchSize   int
 	orderBy        string
@@ -28,7 +29,7 @@ func (*Client) ID() string {
 	return "source-firestore"
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	var firestoreSpec Spec
 	err := json.Unmarshal(spec, &firestoreSpec)
 	if err != nil {
@@ -62,6 +63,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.
 		maxBatchSize:   firestoreSpec.MaxBatchSize,
 		orderBy:        firestoreSpec.OrderBy,
 		orderDirection: firestoreSpec.OrderDirection,
+		options:        opts,
 	}
 
 	c.tables, err = c.listTables(ctx, client)
@@ -75,7 +77,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.
 	return c, nil
 }
 
-func (c Client) Tables(ctx context.Context) (schema.Tables, error) {
+func (c Client) Tables(ctx context.Context, opts plugin.TableOptions) (schema.Tables, error) {
 	return c.tables, nil
 }
 

@@ -38,7 +38,7 @@ func TestPlugin(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	require.NoError(t, p.Init(ctx, specBytes))
+	require.NoError(t, p.Init(ctx, specBytes, plugin.NewClientOptions{}))
 }
 
 func TestPlugin_OrderBy(t *testing.T) {
@@ -58,7 +58,7 @@ func TestPlugin_OrderBy(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	require.NoError(t, p.Init(ctx, specBytes))
+	require.NoError(t, p.Init(ctx, specBytes, plugin.NewClientOptions{}))
 }
 
 func assertTimestamp(t *testing.T, expected time.Time, ts *array.Timestamp) {
@@ -83,9 +83,9 @@ func TestPluginSync(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	require.NoError(t, p.Init(ctx, specBytes))
+	require.NoError(t, p.Init(ctx, specBytes, plugin.NewClientOptions{}))
 
-	res := make(chan message.Message, 1)
+	res := make(chan message.SyncMessage, 1)
 	g := errgroup.Group{}
 	g.Go(func() error {
 		defer close(res)
@@ -95,8 +95,10 @@ func TestPluginSync(t *testing.T) {
 	})
 	actualRecords := make([]arrow.Record, 0)
 	for r := range res {
-		insert := r.(*message.Insert).Record
-		actualRecords = append(actualRecords, insert)
+		m, ok := r.(*message.SyncInsert)
+		if ok {
+			actualRecords = append(actualRecords, m.Record)
+		}
 	}
 	err = g.Wait()
 	if err != nil {
