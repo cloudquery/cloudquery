@@ -18,12 +18,17 @@ import (
 )
 
 func (c Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.SyncMessage) error {
-	filtered := schema.Tables{}
-	for _, table := range c.tables {
-		if !plugin.MatchesTable(table.Name, options.Tables, options.SkipTables) {
-			continue
+	if c.options.NoConnection {
+		return fmt.Errorf("no connection")
+	}
+	filtered, err := c.tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
+	if err != nil {
+		return err
+	}
+	for _, table := range filtered {
+		res <- &message.SyncMigrateTable{
+			Table: table,
 		}
-		filtered = append(filtered, table)
 	}
 	return c.syncTables(ctx, filtered, res)
 }

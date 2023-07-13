@@ -181,8 +181,10 @@ func TestPlugin(t *testing.T) {
 	})
 	actualRecords := make([]arrow.Record, 0)
 	for r := range res {
-		insert := r.(*message.SyncInsert).Record
-		actualRecords = append(actualRecords, insert)
+		m, ok := r.(*message.SyncInsert)
+		if ok {
+			actualRecords = append(actualRecords, m.Record)
+		}
 	}
 	err = g.Wait()
 	if err != nil {

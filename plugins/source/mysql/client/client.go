@@ -17,6 +17,7 @@ type Client struct {
 	plugin.UnimplementedDestination
 	logger      zerolog.Logger
 	tables      schema.Tables
+	options     plugin.NewClientOptions
 	db          *sql.DB
 	tableSchema string
 }
@@ -56,7 +57,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec []byte, opts plu
 	db.SetMaxOpenConns(10)
 	db.SetMaxIdleConns(10)
 
-	c := Client{logger: logger.With().Str("module", "mysql-source").Logger(), db: db, tableSchema: dsn.DBName}
+	c := Client{logger: logger.With().Str("module", "mysql-source").Logger(), db: db, tableSchema: dsn.DBName, options: opts}
 	c.tables, err = c.listTables(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list tables: %w", err)
