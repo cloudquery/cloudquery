@@ -27,7 +27,7 @@ func (*Client) ID() string {
 	return "source-mysql"
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	var mySQLSpec Spec
 	err := json.Unmarshal(spec, &mySQLSpec)
 	if err != nil {
@@ -68,7 +68,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.
 	return c, nil
 }
 
-func (c Client) Tables(ctx context.Context) (schema.Tables, error) {
+func (c Client) Tables(ctx context.Context, opts plugin.TableOptions) (schema.Tables, error) {
 	return c.tables, nil
 }
 

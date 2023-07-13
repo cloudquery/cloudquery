@@ -150,7 +150,7 @@ func TestPlugin(t *testing.T) {
 		t.Fatal(err)
 	}
 	syncTime := time.Now()
-	expectedRecords := schema.GenTestData(testTable, schema.GenTestDataOptions{MaxRows: 2, SyncTime: syncTime})
+	expectedRecords := schema.NewTestDataGenerator().Generate(testTable, schema.GenTestDataOptions{MaxRows: 2, SyncTime: syncTime})
 	if err := insertTable(ctx, db, testTable, expectedRecords); err != nil {
 		t.Fatal(err)
 	}
@@ -162,16 +162,16 @@ func TestPlugin(t *testing.T) {
 	if err := createTable(ctx, db, otherTable); err != nil {
 		t.Fatal(err)
 	}
-	otherData := schema.GenTestData(otherTable, schema.GenTestDataOptions{MaxRows: 1, SyncTime: syncTime})
+	otherData := schema.NewTestDataGenerator().Generate(otherTable, schema.GenTestDataOptions{MaxRows: 1, SyncTime: syncTime})
 	if err := insertTable(ctx, db, otherTable, otherData); err != nil {
 		t.Fatal(err)
 	}
 
 	// Init the plugin so we can call migrate
-	if err := p.Init(ctx, specBytes); err != nil {
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
 		t.Fatal(err)
 	}
-	res := make(chan message.Message, 1)
+	res := make(chan message.SyncMessage, 1)
 	g := errgroup.Group{}
 
 	g.Go(func() error {
@@ -181,7 +181,7 @@ func TestPlugin(t *testing.T) {
 	})
 	actualRecords := make([]arrow.Record, 0)
 	for r := range res {
-		insert := r.(*message.Insert).Record
+		insert := r.(*message.SyncInsert).Record
 		actualRecords = append(actualRecords, insert)
 	}
 	err = g.Wait()
