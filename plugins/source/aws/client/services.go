@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/amplify"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
+	"github.com/aws/aws-sdk-go-v2/service/appconfig"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/apprunner"
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
@@ -131,7 +132,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Amplify:                   amplify.NewFromConfig(awsCfg),
 		Apigateway:                apigateway.NewFromConfig(awsCfg),
 		Apigatewayv2:              apigatewayv2.NewFromConfig(awsCfg),
-		Appconfig					appconfig.NewFromConfig(awsCfg),
+		Appconfig:                 appconfig.NewFromConfig(awsCfg),
 		Applicationautoscaling:    applicationautoscaling.NewFromConfig(awsCfg),
 		Apprunner:                 apprunner.NewFromConfig(awsCfg),
 		Appstream:                 appstream.NewFromConfig(awsCfg),
@@ -251,7 +252,7 @@ type Services struct {
 	Amplify                   services.AmplifyClient
 	Apigateway                services.ApigatewayClient
 	Apigatewayv2              services.Apigatewayv2Client
-	Appconfig					services.AppconfigClient
+	Appconfig                 services.AppconfigClient
 	Applicationautoscaling    services.ApplicationautoscalingClient
 	Apprunner                 services.ApprunnerClient
 	Appstream                 services.AppstreamClient
