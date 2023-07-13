@@ -17,7 +17,6 @@ func dataCatalogDatabaseTables() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/athena/latest/APIReference/API_TableMetadata.html`,
 		Resolver:    fetchAthenaDataCatalogDatabaseTables,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "athena"),
 		Transform:   transformers.TransformWithStruct(&types.TableMetadata{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -19,7 +19,6 @@ func clusterServices() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Service.html`,
 		Resolver:    fetchEcsClusterServices,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ecs"),
 		Transform:   transformers.TransformWithStruct(&types.Service{}, transformers.WithPrimaryKeys("ClusterArn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

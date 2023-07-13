@@ -20,7 +20,6 @@ func transitGatewayPeeringAttachments() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayPeeringAttachment.html`,
 		Resolver:    fetchEc2TransitGatewayPeeringAttachments,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.TransitGatewayPeeringAttachment{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

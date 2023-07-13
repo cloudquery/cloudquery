@@ -17,7 +17,6 @@ func configRuleComplianceDetails() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_EvaluationResult.html`,
 		Resolver:    fetchConfigConfigRuleComplianceDetails,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "config"),
 		// no primary key because all the relevant candidate fields can either be null or are not
 		// uniquely identifying of a resource. For example, ResourceEvaluationId can be null,
 		// and so can ResultToken. However, hashing the entire object can work because a combination of

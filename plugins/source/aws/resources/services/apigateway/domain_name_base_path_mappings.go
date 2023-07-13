@@ -20,7 +20,6 @@ func domainNameBasePathMappings() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_BasePathMapping.html`,
 		Resolver:    fetchApigatewayDomainNameBasePathMappings,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.BasePathMapping{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

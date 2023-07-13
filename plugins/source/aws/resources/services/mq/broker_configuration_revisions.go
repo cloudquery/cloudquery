@@ -28,7 +28,6 @@ func brokerConfigurationRevisions() *schema.Table {
 		Resolver:            fetchMqBrokerConfigurationRevisions,
 		PreResourceResolver: getMqBrokerConfigurationRevision,
 		Transform:           transformers.TransformWithStruct(&mq.DescribeConfigurationRevisionOutput{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "mq"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

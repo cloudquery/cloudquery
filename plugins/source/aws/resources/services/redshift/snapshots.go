@@ -23,7 +23,6 @@ func snapshots() *schema.Table {
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_Snapshot.html`,
 		Resolver:    fetchSnapshots,
 		Transform:   transformers.TransformWithStruct(&types.Snapshot{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -20,7 +20,6 @@ func transitGatewayAttachments() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayAttachment.html`,
 		Resolver:    fetchEc2TransitGatewayAttachments,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.TransitGatewayAttachment{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

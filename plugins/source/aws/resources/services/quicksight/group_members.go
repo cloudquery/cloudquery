@@ -19,7 +19,6 @@ func groupMembers() *schema.Table {
 		Description: "https://docs.aws.amazon.com/quicksight/latest/APIReference/API_GroupMember.html",
 		Resolver:    fetchQuicksightGroupMembers,
 		Transform:   transformers.TransformWithStruct(&types.GroupMember{}, transformers.WithPrimaryKeys("Arn")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "quicksight"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

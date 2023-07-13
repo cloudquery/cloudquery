@@ -18,7 +18,6 @@ func functionVersions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_FunctionConfiguration.html`,
 		Resolver:    fetchLambdaFunctionVersions,
 		Transform:   transformers.TransformWithStruct(&types.FunctionConfiguration{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lambda"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

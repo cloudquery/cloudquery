@@ -19,8 +19,7 @@ func lensReviews() *schema.Table {
 		Transform: transformers.TransformWithStruct(new(types.LensReview),
 			transformers.WithPrimaryKeys("LensAlias"),
 		),
-		Multiplex: client.ServiceAccountRegionMultiplexer(name, "wellarchitected"),
-		Resolver:  fetchLensReviews,
+		Resolver: fetchLensReviews,
 		Columns: schema.ColumnList{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

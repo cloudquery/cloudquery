@@ -22,7 +22,6 @@ func registrySchemas() *schema.Table {
 		Resolver:            fetchGlueRegistrySchemas,
 		PreResourceResolver: getRegistrySchema,
 		Transform:           transformers.TransformWithStruct(&glue.GetSchemaOutput{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -20,7 +20,6 @@ func restApiGatewayResponses() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_GatewayResponse.html`,
 		Resolver:    fetchApigatewayRestApiGatewayResponses,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.GatewayResponse{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

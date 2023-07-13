@@ -30,7 +30,6 @@ func jobs() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/batch/latest/APIReference/API_DescribeJobs.html`,
 		Resolver:    fetchBatchJobs,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "batch"),
 		Transform:   transformers.TransformWithStruct(&types.JobDetail{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
