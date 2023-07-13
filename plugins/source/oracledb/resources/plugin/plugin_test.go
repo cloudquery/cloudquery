@@ -268,6 +268,7 @@ func TestPerformance(t *testing.T) {
 	defer db.Close()
 
 	group, gtx := errgroup.WithContext(ctx)
+	group.SetLimit(5)
 	const numTables = 20
 	for i := 0; i < numTables; i++ {
 		table := schema.TestTable(fmt.Sprintf("test_oracledb_source_performance_%d", i), schema.TestSourceOptions{})
@@ -303,8 +304,11 @@ func TestPerformance(t *testing.T) {
 		return p.Sync(ctx, opts, res)
 	})
 	totalResources := 0
-	for range res {
-		totalResources++
+	for r := range res {
+		_, ok := r.(*message.SyncInsert)
+		if ok {
+			totalResources++
+		}
 	}
 	err = g.Wait()
 	if err != nil {
