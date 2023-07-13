@@ -47,7 +47,8 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 	if err := transformers.TransformTables(tables); err != nil {
 		t.Fatal(err)
 	}
-
+	validateTagStructure(t, tables)
+	validateMultiplexers(t, parentTable)
 	sc := scheduler.NewScheduler(scheduler.WithLogger(l))
 	messages, err := sc.SyncAll(context.Background(), &c, tables)
 	if err != nil {
@@ -59,9 +60,7 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 		if len(emptyColumns) > 0 {
 			t.Fatalf("found empty column(s): %v in %s", emptyColumns, table.Name)
 		}
-		validateTagStructure(t, tables)
 	}
-	validateMultiplexers(t, parentTable)
 }
 
 func validateTagStructure(t *testing.T, tables schema.Tables) {
@@ -90,6 +89,5 @@ func validateMultiplexers(t *testing.T, parentTable *schema.Table) {
 			continue
 		}
 		t.Fatalf("table %s should not have multiplexer", table.Name)
-
 	}
 }
