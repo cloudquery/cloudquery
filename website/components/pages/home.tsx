@@ -153,7 +153,7 @@ export default function Home() {
         </div>
       </Container>
       <p className="mx-auto mt-24 font-medium text-lg text-gray-400 lg:max-w-3xl lg:nx-text-xl text-center">
-        Couldn't find the source you were looking for? <a href="/new-source-plugin" className="text-blue-500 hover:text-blue-600">Request a New Source Plugin</a>
+        Couldn't find the plugin you were looking for? <a href="https://github.com/cloudquery/cloudquery/issues/new/choose" className="text-blue-500 hover:text-blue-600">Request a New Source Plugin</a>
       </p>
     </div>
     <Toaster position="bottom-right" />
