@@ -518,12 +518,8 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/s3.svg",
     id: "firehose",
     kind: "destination",
-    availability: "premium",
+    availability: "free",
     category: "data-warehouses-lakes",
-    buyLinks: {
-      'standard': 'https://buy.stripe.com/9AQ4gk1rH8pxbGE4jz',
-      'extended': 'https://buy.stripe.com/cN26os5HX6hpcKI7vM'
-    },
   },
   {
     name: "GCS",
