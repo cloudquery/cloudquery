@@ -18,7 +18,6 @@ func listenerCertificates() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_Certificate.html`,
 		Resolver:    fetchListenerCertificates,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticloadbalancing"),
 		Transform:   transformers.TransformWithStruct(&types.Certificate{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -19,7 +19,6 @@ func clusterContainerInstances() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerInstance.html`,
 		Resolver:    fetchEcsClusterContainerInstances,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ecs"),
 		Transform:   transformers.TransformWithStruct(&types.ContainerInstance{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -21,8 +21,7 @@ func workloadMilestones() *schema.Table {
 			transformers.WithUnwrapAllEmbeddedStructs(),
 			transformers.WithSkipFields("WorkloadSummary"),
 		),
-		Multiplex: client.ServiceAccountRegionMultiplexer(name, "wellarchitected"),
-		Resolver:  fetchWorkloadMilestones,
+		Resolver: fetchWorkloadMilestones,
 		Columns: schema.ColumnList{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

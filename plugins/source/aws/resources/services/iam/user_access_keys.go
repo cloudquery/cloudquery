@@ -20,7 +20,6 @@ func userAccessKeys() *schema.Table {
 		Resolver:             fetchIamUserAccessKeys,
 		PostResourceResolver: postIamUserAccessKeyResolver,
 		Transform:            transformers.TransformWithStruct(&models.AccessKeyWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
-		Multiplex:            client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{

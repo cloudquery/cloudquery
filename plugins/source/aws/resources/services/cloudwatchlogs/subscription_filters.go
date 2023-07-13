@@ -17,7 +17,6 @@ func subscriptionFilters() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_SubscriptionFilter.html`,
 		Resolver:    fetchCloudwatchlogsSubscriptionFilters,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "logs"),
 		Transform:   transformers.TransformWithStruct(&types.SubscriptionFilter{}, transformers.WithPrimaryKeys("FilterName", "CreationTime")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

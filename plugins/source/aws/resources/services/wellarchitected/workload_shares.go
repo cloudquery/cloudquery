@@ -19,8 +19,7 @@ func workloadShares() *schema.Table {
 		Transform: transformers.TransformWithStruct(new(types.WorkloadShareSummary),
 			transformers.WithPrimaryKeys("ShareId"),
 		),
-		Multiplex: client.ServiceAccountRegionMultiplexer(name, "wellarchitected"),
-		Resolver:  fetchWorkloadShares,
+		Resolver: fetchWorkloadShares,
 		Columns: schema.ColumnList{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

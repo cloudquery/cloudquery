@@ -15,7 +15,6 @@ func layerVersions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_LayerVersionsListItem.html`,
 		Resolver:    fetchLambdaLayerVersions,
 		Transform:   transformers.TransformWithStruct(&types.LayerVersionsListItem{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lambda"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

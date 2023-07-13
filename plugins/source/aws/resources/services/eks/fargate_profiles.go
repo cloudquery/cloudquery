@@ -18,7 +18,6 @@ func fargateProfiles() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/eks/latest/APIReference/API_FargateProfile.html`,
 		Resolver:            fetchFargateProfiles,
 		PreResourceResolver: getFargateProfile,
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "eks"),
 		Transform:           transformers.TransformWithStruct(&types.FargateProfile{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
