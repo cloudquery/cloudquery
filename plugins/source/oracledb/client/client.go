@@ -18,6 +18,7 @@ type Client struct {
 	plugin.UnimplementedDestination
 	logger      zerolog.Logger
 	tables      schema.Tables
+	options     plugin.NewClientOptions
 	db          *sql.DB
 	concurrency int
 }
@@ -28,7 +29,7 @@ func (*Client) ID() string {
 	return "oracledb"
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	var oracleDBSpec Spec
 	err := json.Unmarshal(spec, &oracleDBSpec)
 	if err != nil {
@@ -52,7 +53,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.
 	}
 	defer conn.Close()
 
-	c := &Client{logger: logger.With().Str("module", "oracledb-source").Logger(), db: db, concurrency: oracleDBSpec.Concurrency}
+	c := &Client{logger: logger.With().Str("module", "oracledb-source").Logger(), db: db, concurrency: oracleDBSpec.Concurrency, options: opts}
 	c.tables, err = c.listTables(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list tables: %w", err)
@@ -61,7 +62,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.
 	return c, nil
 }
 
-func (c Client) Tables(ctx context.Context) (schema.Tables, error) {
+func (c Client) Tables(ctx context.Context, opts plugin.TableOptions) (schema.Tables, error) {
 	return c.tables, nil
 }
 

@@ -80,7 +80,9 @@ func SchemaType(dataType string) arrow.DataType {
 		return types.ExtensionTypes.UUID
 	case "char(1)":
 		return arrow.FixedWidthTypes.Boolean
-	case "float", "binary_float", "binary_double":
+	case "binary_float":
+		return arrow.PrimitiveTypes.Float32
+	case "float", "binary_double":
 		return arrow.PrimitiveTypes.Float64
 	case "binary", "blob", "raw", "long raw":
 		return arrow.BinaryTypes.Binary

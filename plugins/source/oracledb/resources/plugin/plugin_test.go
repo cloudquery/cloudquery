@@ -134,20 +134,12 @@ func isNotExistsError(err error) bool {
 }
 
 func sortResults(table *schema.Table, records []arrow.Record) {
-	cqIDIndex := table.Columns.Index(schema.CqIDColumn.Name)
+	idIndex := table.Columns.Index("id")
 	sort.Slice(records, func(i, j int) bool {
-		firstUUID := records[i].Column(cqIDIndex).ValueStr(0)
-		secondUUID := records[j].Column(cqIDIndex).ValueStr(0)
+		firstUUID := records[i].Column(idIndex).ValueStr(0)
+		secondUUID := records[j].Column(idIndex).ValueStr(0)
 		return strings.Compare(firstUUID, secondUUID) < 0
 	})
-}
-
-func normalizedUint64Columns(table *schema.Table) {
-	for i, col := range table.Columns {
-		if col.Type == arrow.PrimitiveTypes.Uint64 {
-			table.Columns[i].Type = arrow.PrimitiveTypes.Uint32
-		}
-	}
 }
 
 func TestPlugin(t *testing.T) {
@@ -171,8 +163,6 @@ func TestPlugin(t *testing.T) {
 	defer db.Close()
 
 	testTable := schema.TestTable("test_oracledb_source", schema.TestSourceOptions{})
-	// TODO: Remove this once https://github.com/sijms/go-ora/issues/378 is fixed
-	normalizedUint64Columns(testTable)
 	if _, err := db.ExecContext(ctx, "DROP TABLE \"test_oracledb_source\""); err != nil {
 		if !isNotExistsError(err) {
 			t.Fatal(err)
@@ -181,7 +171,7 @@ func TestPlugin(t *testing.T) {
 	if err := createTable(ctx, db, testTable); err != nil {
 		t.Fatal(err)
 	}
-	expectedRecords := schema.GenTestData(testTable, schema.GenTestDataOptions{MaxRows: 2})
+	expectedRecords := schema.NewTestDataGenerator().Generate(testTable, schema.GenTestDataOptions{MaxRows: 2})
 	if err := insertTable(ctx, db, testTable, expectedRecords); err != nil {
 		t.Fatal(err)
 	}
@@ -195,15 +185,15 @@ func TestPlugin(t *testing.T) {
 	if err := createTable(ctx, db, otherTable); err != nil {
 		t.Fatal(err)
 	}
-	otherData := schema.GenTestData(otherTable, schema.GenTestDataOptions{MaxRows: 1})
+	otherData := schema.NewTestDataGenerator().Generate(otherTable, schema.GenTestDataOptions{MaxRows: 1})
 	if err := insertTable(ctx, db, otherTable, otherData); err != nil {
 		t.Fatal(err)
 	}
 
-	if err := p.Init(ctx, specBytes); err != nil {
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
 		t.Fatal(err)
 	}
-	res := make(chan message.Message, 1)
+	res := make(chan message.SyncMessage, 1)
 	g := errgroup.Group{}
 
 	g.Go(func() error {
@@ -213,8 +203,10 @@ func TestPlugin(t *testing.T) {
 	})
 	actualRecords := make([]arrow.Record, 0)
 	for r := range res {
-		insert := r.(*message.Insert).Record
-		actualRecords = append(actualRecords, insert)
+		m, ok := r.(*message.SyncInsert)
+		if ok {
+			actualRecords = append(actualRecords, m.Record)
+		}
 	}
 	err = g.Wait()
 	if err != nil {
@@ -279,7 +271,7 @@ func TestPerformance(t *testing.T) {
 	const numTables = 20
 	for i := 0; i < numTables; i++ {
 		table := schema.TestTable(fmt.Sprintf("test_oracledb_source_performance_%d", i), schema.TestSourceOptions{})
-		data := schema.GenTestData(table, schema.GenTestDataOptions{MaxRows: 1})
+		data := schema.NewTestDataGenerator().Generate(table, schema.GenTestDataOptions{MaxRows: 1})
 
 		group.Go(func() error {
 			if _, err := db.ExecContext(gtx, fmt.Sprintf("DROP TABLE \"%s\"", table.Name)); err != nil {
@@ -299,11 +291,11 @@ func TestPerformance(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if err := p.Init(ctx, specBytes); err != nil {
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
 		t.Fatal(err)
 	}
 
-	res := make(chan message.Message, 1)
+	res := make(chan message.SyncMessage, 1)
 	g := errgroup.Group{}
 	g.Go(func() error {
 		defer close(res)

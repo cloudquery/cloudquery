@@ -17,13 +17,15 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-func (c Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.Message) error {
-	filtered := schema.Tables{}
-	for _, table := range c.tables {
-		if !plugin.MatchesTable(table.Name, options.Tables, options.SkipTables) {
-			continue
+func (c Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.SyncMessage) error {
+	filtered, err := c.tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
+	if err != nil {
+		return err
+	}
+	for _, table := range filtered {
+		res <- &message.SyncMigrateTable{
+			Table: table,
 		}
-		filtered = append(filtered, table)
 	}
 	return c.syncTables(ctx, filtered, res)
 }
@@ -42,6 +44,9 @@ func (*Client) createResultsArray(table *schema.Table) []any {
 		case *arrow.Decimal128Type:
 			var r *string
 			results = append(results, &r)
+		case *arrow.Float32Type:
+			var r *float32
+			results = append(results, &r)
 		case *arrow.Float64Type:
 			var r *float64
 			results = append(results, &r)
@@ -56,7 +61,7 @@ func (*Client) createResultsArray(table *schema.Table) []any {
 	return results
 }
 
-func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- message.Message) error {
+func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- message.SyncMessage) error {
 	colNames := make([]string, len(table.Columns))
 	for i, col := range table.Columns {
 		colNames[i] = Identifier(col.Name)
@@ -84,12 +89,12 @@ func (c *Client) syncTable(ctx context.Context, table *schema.Table, res chan<- 
 			}
 			scalar.AppendToBuilder(rb.Field(i), s)
 		}
-		res <- &message.Insert{Record: rb.NewRecord()}
+		res <- &message.SyncInsert{Record: rb.NewRecord()}
 	}
 	return nil
 }
 
-func (c *Client) syncTables(ctx context.Context, tables schema.Tables, res chan<- message.Message) error {
+func (c *Client) syncTables(ctx context.Context, tables schema.Tables, res chan<- message.SyncMessage) error {
 	group, gctx := errgroup.WithContext(ctx)
 	group.SetLimit(c.concurrency)
 	for _, table := range tables {
