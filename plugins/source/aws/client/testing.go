@@ -6,6 +6,8 @@ import (
 	"testing"
 	"time"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -57,5 +59,37 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 		if len(emptyColumns) > 0 {
 			t.Fatalf("found empty column(s): %v in %s", emptyColumns, table.Name)
 		}
+		validateTagStructure(t, tables)
+	}
+	validateMultiplexers(t, parentTable)
+}
+
+func validateTagStructure(t *testing.T, tables schema.Tables) {
+	for _, table := range tables.FlattenTables() {
+		t.Run(table.Name, func(t *testing.T) {
+			for _, column := range table.Columns {
+				if column.Name != "tags" {
+					continue
+				}
+				if column.Type != sdkTypes.ExtensionTypes.JSON {
+					t.Fatalf("tags column in %s should be of type JSON", table.Name)
+				}
+				// TODO: Get actual field value and ensure it is of type map[string]string
+			}
+		})
+	}
+}
+
+func validateMultiplexers(t *testing.T, parentTable *schema.Table) {
+	tables := schema.Tables{parentTable}
+	for _, table := range tables.FlattenTables() {
+		if table.Name == parentTable.Name {
+			continue
+		}
+		if table.Multiplex == nil {
+			continue
+		}
+		t.Fatalf("table %s should not have multiplexer", table.Name)
+
 	}
 }
