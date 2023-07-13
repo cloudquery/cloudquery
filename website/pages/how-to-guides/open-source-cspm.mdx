@@ -51,7 +51,7 @@ cd cloudquery/plugins/source/aws/policies
 psql postgres://postgres:pass@localhost:5432/postgres -f policy.sql
 ```
 
-This should run all [available](https://github.com/cloudquery/cq-provider-aws/tree/main/policies#policies-and-compliance-frameworks-available) compliance framework and store the results in [aws_policy_results](https://github.com/cloudquery/cq-provider-aws/tree/main/policies#policies-and-compliance-frameworks-available). Now you can query the table directly and export in various formats such as CSV or HTML, all with standard `psql` , and of course visualize them in your favorite BI tool. We prepared a pre-built dashboard for Grafana that you can check out [here](https://github.com/cloudquery/cq-provider-aws/tree/main/dashboards#aws-compliance-and-cspm-cloud-security-posture-management-dashboard):
+This should run all [available](/docs/plugins/sources/aws/policies) compliance framework and store the results in [aws_policy_results](/docs/plugins/sources/aws/policies). Now you can query the table directly and export in various formats such as CSV or HTML, all with standard `psql` , and of course visualize them in your favorite BI tool. We prepared a pre-built dashboard for Grafana that you can check out [here](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/dashboards):
 
 ![](/images/blog/open-source-cspm/image0.png)
 
