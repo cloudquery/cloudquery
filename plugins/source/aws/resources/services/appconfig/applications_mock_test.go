@@ -52,6 +52,23 @@ func buildApps(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
+	var hostedConfigurationVersionSummary types.HostedConfigurationVersionSummary
+	require.NoError(t, faker.FakeObject(&hostedConfigurationVersionSummary))
+
+	m.EXPECT().ListHostedConfigurationVersions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&appconfig.ListHostedConfigurationVersionsOutput{
+			Items: []types.HostedConfigurationVersionSummary{hostedConfigurationVersionSummary},
+		},
+		nil,
+	)
+	var hostedConfigurationVersionOutput appconfig.GetHostedConfigurationVersionOutput
+	require.NoError(t, faker.FakeObject(&hostedConfigurationVersionOutput))
+
+	m.EXPECT().GetHostedConfigurationVersion(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&hostedConfigurationVersionOutput,
+		nil,
+	)
+
 	return client.Services{Appconfig: m}
 }
 

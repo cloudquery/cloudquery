@@ -48,6 +48,7 @@
 - [aws_apigatewayv2_vpc_links](tables/aws_apigatewayv2_vpc_links)
 - [aws_appconfig_applications](tables/aws_appconfig_applications)
   - [aws_appconfig_configuration_profiles](tables/aws_appconfig_configuration_profiles)
+    - [aws_appconfig_hosted_configuration_versions](tables/aws_appconfig_hosted_configuration_versions)
   - [aws_appconfig_environments](tables/aws_appconfig_environments)
 - [aws_appconfig_applications](tables/aws_appconfig_applications)
 - [aws_applicationautoscaling_policies](tables/aws_applicationautoscaling_policies)

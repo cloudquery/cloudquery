@@ -38,7 +38,9 @@ func configurationProfiles() *schema.Table {
 				PrimaryKey: true,
 			},
 		},
-		Relations: []*schema.Table{},
+		Relations: []*schema.Table{
+			hostedConfigurationVersions(),
+		},
 	}
 }
 

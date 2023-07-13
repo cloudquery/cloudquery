@@ -10,6 +10,9 @@ The composite primary key for this table is (**application_arn**, **arn**).
 
 This table depends on [aws_appconfig_applications](aws_appconfig_applications).
 
+The following tables depend on aws_appconfig_configuration_profiles:
+  - [aws_appconfig_hosted_configuration_versions](aws_appconfig_hosted_configuration_versions)
+
 ## Columns
 
 | Name          | Type          |
