@@ -12,7 +12,6 @@
       "toc": true
     }
   },
-  "docs": "Docs",
   "integrations": {
     "title": "Integrations",
     "type": "page",
@@ -21,22 +20,76 @@
       "sidebar": false
     }
   },
-  "how-to-guides": {
-    "title": "How-to Guides",
-    "theme": {
-      "typesetting": "article"
-    }
-  },
   "case-studies": {
     "title": "Case Studies",
+    "display": "hidden",
     "theme": {
       "typesetting": "article"
     }
   },
   "pricing": {
-    "title": "Pricing",
+    "title": "Support",
     "theme": {
       "layout": "full"
+    }
+  },
+  "solutions": {
+    "title": "Solutions",
+    "type": "menu",
+    "items": {
+      "blog": {
+        "title": "Blog",
+        "href": "/blog"
+      },
+      "case-studies": {
+        "title": "Case Studies",
+        "href": "/case-studies"
+      },
+      "glossary": {
+        "title": "Glossary",
+        "href": "/docs/glossary/overview"
+      }
+    }
+  },
+  "documentation": {
+    "title": "Docs",
+    "type": "menu",
+    "items": {
+      "overview":  {
+        "title": "Overview",
+        "href": "/docs"
+      },
+      "plugins":  {
+        "title": "Plugins",
+        "href": "/docs/plugins/overview"
+      },
+      "tables":  {
+        "title": "Tables",
+        "href": "/tables"
+      },
+      "how-to-guides":  {
+        "title": "How-to Guides",
+        "href": "/how-to-guides"
+      },
+      "cli":  {
+        "title": "CLI Reference",
+        "href": "/docs/reference/cli/cloudquery"
+      },
+      "source-spec-reference":  {
+        "title": "Source Config",
+        "href": "/docs/reference/source-spec"
+      },
+      "destination-spec-reference":  {
+        "title": "Destination Config",
+        "href": "/docs/reference/destination-spec"
+      }
+    }
+  },
+  "how-to-guides":  {
+    "title": "How-to Guides",
+    "display": "hidden",
+    "theme": {
+      "typesetting": "article"
     }
   },
   "new-source-plugin": {
@@ -47,21 +100,20 @@
     }
   },
   "blog": {
-    "title": "Blog",
+    "display": "hidden",
     "theme": {
       "typesetting": "article"
     }
-  },
-  "plugins": {
-    "title": "Plugins",
-    "href": "/docs/plugins/overview",
-    "route": "#"
   },
   "tables": {
-    "title": "Tables",
+    "display": "hidden",
     "theme": {
       "typesetting": "article"
     }
+  },
+  "docs": {
+    "title": "Documentation",
+    "display": "hidden"
   },
   "confirm": {
     "title": "Confirm",
@@ -77,6 +129,9 @@
   },
   "logo": {
     "title": "Brand Logo",
+    "display": "hidden"
+  },
+  "buy": {
     "display": "hidden"
   }
 }
