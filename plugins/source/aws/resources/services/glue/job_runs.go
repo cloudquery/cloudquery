@@ -20,7 +20,6 @@ func jobRuns() *schema.Table {
 		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_JobRun.html`,
 		Resolver:    fetchGlueJobRuns,
 		Transform:   transformers.TransformWithStruct(&types.JobRun{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

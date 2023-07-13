@@ -18,7 +18,6 @@ func containerServiceDeployments() *schema.Table {
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_ContainerServiceDeployment.html`,
 		Resolver:    fetchLightsailContainerServiceDeployments,
 		Transform:   transformers.TransformWithStruct(&types.ContainerServiceDeployment{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lightsail"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

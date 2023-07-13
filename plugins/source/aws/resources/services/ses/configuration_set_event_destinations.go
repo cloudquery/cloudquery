@@ -18,7 +18,6 @@ func configurationSetEventDestinations() *schema.Table {
 		Description: `https://docs.aws.amazon.com/ses/latest/APIReference-V2/API_EventDestination.html`,
 		Resolver:    fetchSesConfigurationSetEventDestinations,
 		Transform:   transformers.TransformWithStruct(&types.EventDestination{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "email"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

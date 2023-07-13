@@ -20,7 +20,6 @@ func detectorThreatIntelSets() *schema.Table {
 		Resolver:            fetchDetectorThreatIntelSets,
 		PreResourceResolver: getDetectorThreatIntelSet,
 		Transform:           transformers.TransformWithStruct(&guardduty.GetThreatIntelSetOutput{}, transformers.WithPrimaryKeys("Name"), transformers.WithSkipFields("ResultMetadata")),
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
 		Columns: []schema.Column{
 			{
 				Name:       "detector_arn",

@@ -20,7 +20,6 @@ func domainNameRestApiMappings() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/domainnames-domainname-apimappings.html`,
 		Resolver:    fetchApigatewayv2DomainNameRestApiMappings,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.ApiMapping{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

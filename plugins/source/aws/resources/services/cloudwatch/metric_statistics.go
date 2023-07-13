@@ -33,8 +33,7 @@ To sync this table you must set the 'use_paid_apis' option to 'true' and set the
 
 Please note that this table is considered **alpha** (experimental) and may have breaking changes or be removed in the future.
 `,
-		Resolver:  fetchCloudwatchMetricStatistics,
-		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "monitoring"),
+		Resolver: fetchCloudwatchMetricStatistics,
 		Transform: transformers.TransformWithStruct(&statOutput{},
 			transformers.WithPrimaryKeys("Timestamp", "Label"),
 			transformers.WithSkipFields("ResultMetadata"),

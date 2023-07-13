@@ -20,7 +20,6 @@ func apiIntegrationResponses() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/apis-apiid-integrations-integrationid-integrationresponses-integrationresponseid.html`,
 		Resolver:    fetchApigatewayv2ApiIntegrationResponses,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.IntegrationResponse{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

@@ -19,7 +19,6 @@ func executions() *schema.Table {
 		Resolver:            fetchStepfunctionsExecutions,
 		PreResourceResolver: getExecution,
 		Transform:           transformers.TransformWithStruct(&sfn.DescribeExecutionOutput{}, transformers.WithSkipFields("ResultMetadata")),
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "states"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

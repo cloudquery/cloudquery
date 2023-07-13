@@ -20,7 +20,6 @@ func loadBalancerPolicies() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/2012-06-01/APIReference/API_PolicyDescription.html`,
 		Resolver:    fetchElbv1LoadBalancerPolicies,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticloadbalancing"),
 		Transform:   transformers.TransformWithStruct(&types.PolicyDescription{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

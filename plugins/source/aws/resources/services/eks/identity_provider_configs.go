@@ -19,7 +19,6 @@ func identityProviderConfigs() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/eks/latest/APIReference/API_OidcIdentityProviderConfig.html`,
 		Resolver:            fetchIdentityProviderConfigs,
 		PreResourceResolver: getIdentityProviderConfigs,
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "eks"),
 		Transform:           transformers.TransformWithStruct(&types.OidcIdentityProviderConfig{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

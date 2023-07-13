@@ -19,7 +19,6 @@ func workGroupQueryExecutions() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/athena/latest/APIReference/API_QueryExecution.html`,
 		Resolver:            fetchAthenaWorkGroupQueryExecutions,
 		PreResourceResolver: getWorkGroupQueryExecution,
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "athena"),
 		Transform:           transformers.TransformWithStruct(&types.QueryExecution{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
