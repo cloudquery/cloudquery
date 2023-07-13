@@ -27,7 +27,7 @@ func (s *Spec) SetDefaults() {
 		s.MaxRetries = new(int)
 		*s.MaxRetries = 5
 	}
-	if s.MaxRecordSizeBytes == 0 {
+	if s.MaxRecordSizeBytes < 1 {
 		s.MaxRecordSizeBytes = defaultMaxRecordSizeBytes
 	}
 	if s.MaxBatchRecords < 1 {
