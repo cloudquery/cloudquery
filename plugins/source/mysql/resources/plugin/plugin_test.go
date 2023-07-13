@@ -114,10 +114,10 @@ func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, records [
 }
 
 func sortResults(table *schema.Table, records []arrow.Record) {
-	cqIDIndex := table.Columns.Index(schema.CqIDColumn.Name)
+	idIndex := table.Columns.Index("id")
 	sort.Slice(records, func(i, j int) bool {
-		firstUUID := records[i].Column(cqIDIndex).ValueStr(0)
-		secondUUID := records[j].Column(cqIDIndex).ValueStr(0)
+		firstUUID := records[i].Column(idIndex).ValueStr(0)
+		secondUUID := records[j].Column(idIndex).ValueStr(0)
 		return strings.Compare(firstUUID, secondUUID) < 0
 	})
 }
