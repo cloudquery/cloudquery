@@ -19,8 +19,6 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/cloudquery/plugin-sdk/v4 => github.com/disq/plugin-sdk/v4 v4.0.0-20230712231129-e87946c51a31
-
 require (
 	github.com/cloudquery/plugin-pb-go v1.6.0 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
