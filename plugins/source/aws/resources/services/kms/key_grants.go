@@ -19,7 +19,6 @@ func keyGrants() *schema.Table {
 		Description: `https://docs.aws.amazon.com/kms/latest/APIReference/API_GrantListEntry.html`,
 		Resolver:    fetchKmsKeyGrants,
 		Transform:   transformers.TransformWithStruct(&types.GrantListEntry{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "kms"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

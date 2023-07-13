@@ -19,7 +19,6 @@ func detectorFilters() *schema.Table {
 		Resolver:            fetchDetectorFilters,
 		PreResourceResolver: getDetectorFilter,
 		Transform:           transformers.TransformWithStruct(&guardduty.GetFilterOutput{}, transformers.WithPrimaryKeys("Name"), transformers.WithSkipFields("ResultMetadata")),
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
 		Columns: []schema.Column{
 			{
 				Name:       "detector_arn",

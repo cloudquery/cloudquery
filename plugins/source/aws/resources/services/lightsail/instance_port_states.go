@@ -18,7 +18,6 @@ func instancePortStates() *schema.Table {
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_InstancePortState.html`,
 		Resolver:    fetchLightsailInstancePortStates,
 		Transform:   transformers.TransformWithStruct(&types.InstancePortState{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lightsail"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

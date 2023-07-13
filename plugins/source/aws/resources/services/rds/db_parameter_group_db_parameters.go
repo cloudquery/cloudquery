@@ -15,7 +15,6 @@ func DbParameterGroupDbParameters() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Parameter.html`,
 		Resolver:    fetchRdsDbParameterGroupDbParameters,
 		Transform:   transformers.TransformWithStruct(&types.Parameter{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "rds"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

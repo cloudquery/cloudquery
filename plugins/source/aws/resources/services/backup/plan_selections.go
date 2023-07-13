@@ -17,7 +17,6 @@ func planSelections() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/aws-backup/latest/devguide/API_GetBackupSelection.html`,
 		Resolver:    fetchBackupPlanSelections,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "backup"),
 		Transform:   transformers.TransformWithStruct(&backup.GetBackupSelectionOutput{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

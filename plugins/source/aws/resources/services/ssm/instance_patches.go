@@ -18,7 +18,6 @@ func instancePatches() *schema.Table {
 		Description: `https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_PatchComplianceData.html`,
 		Resolver:    fetchSsmInstancePatches,
 		Transform:   transformers.TransformWithStruct(&types.PatchComplianceData{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ssm"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

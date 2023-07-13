@@ -23,7 +23,6 @@ func detectorFindings() *schema.Table {
 			transformers.WithResolverTransformer(client.TimestampResolverTransformer),
 			transformers.WithPrimaryKeys("Arn"),
 		),
-		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
 		Columns: []schema.Column{
 			{
 				Name:       "detector_arn",

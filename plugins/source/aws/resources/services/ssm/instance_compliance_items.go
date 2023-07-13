@@ -18,7 +18,6 @@ func instanceComplianceItems() *schema.Table {
 		Description: `https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_ComplianceItem.html`,
 		Resolver:    fetchSsmInstanceComplianceItems,
 		Transform:   transformers.TransformWithStruct(&types.ComplianceItem{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ssm"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

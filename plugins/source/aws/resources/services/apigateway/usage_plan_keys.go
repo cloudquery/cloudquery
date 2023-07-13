@@ -14,7 +14,6 @@ func usagePlanKeys() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_UsagePlanKey.html`,
 		Resolver:    fetchApigatewayUsagePlanKeys,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.UsagePlanKey{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

@@ -20,7 +20,6 @@ func transitGatewayMulticastDomains() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayMulticastDomain.html`,
 		Resolver:    fetchEc2TransitGatewayMulticastDomains,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.TransitGatewayMulticastDomain{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
