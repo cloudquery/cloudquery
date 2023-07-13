@@ -45,7 +45,7 @@ func BenchmarkFromArray(b *testing.B) {
 		SyncTime:   syncTime,
 		MaxRows:    b.N,
 	}
-	records := schema.NewTestDataGenerator().Generate(table, opts)
+	records := schema.GenTestData(table, opts)
 	b.ResetTimer()
 	for n := range table.Columns {
 		for i := range records {
