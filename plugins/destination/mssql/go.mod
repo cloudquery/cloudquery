@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
-	github.com/cloudquery/plugin-sdk/v4 v4.1.0
+	github.com/cloudquery/plugin-sdk/v4 v4.1.1
 	github.com/goccy/go-json v0.10.2
 	github.com/google/uuid v1.3.0
 	github.com/microsoft/go-mssqldb v0.19.0
@@ -21,7 +21,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.2.2 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.2.0 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v0.9.0 // indirect
-	github.com/cloudquery/plugin-pb-go v1.7.0 // indirect
+	github.com/cloudquery/plugin-pb-go v1.7.1 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
