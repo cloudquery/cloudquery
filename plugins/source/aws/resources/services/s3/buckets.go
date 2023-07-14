@@ -3,6 +3,7 @@ package s3
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	"github.com/apache/arrow/go/v13/arrow"
@@ -94,6 +95,7 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *
 	if output != nil && output.LocationConstraint != "" {
 		resource.Region = string(output.LocationConstraint)
 	}
+	var errAll error
 
 	resolvers := []func(context.Context, schema.ClientMeta, *models.WrappedBucket) error{
 		resolveBucketLogging,
@@ -111,11 +113,12 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *
 			if isBucketNotFoundError(cl, err) {
 				return nil
 			}
-			return err
+			// This enables 403 errors to be recorded, but not block subsequent
+			errAll = errors.Join(errAll, err)
 		}
 	}
 	r.Item = resource
-	return nil
+	return errAll
 }
 
 func resolveBucketLogging(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
