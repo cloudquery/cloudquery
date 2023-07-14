@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/PagerDuty/go-pagerduty v1.6.0
 	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
-	github.com/cloudquery/plugin-sdk/v4 v4.1.0
+	github.com/cloudquery/plugin-sdk/v4 v4.1.1
 	github.com/rs/zerolog v1.29.1
 	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df
 	golang.org/x/time v0.3.0
@@ -15,7 +15,7 @@ require (
 replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230710001530-a2a76ebbb85f
 
 require (
-	github.com/cloudquery/plugin-pb-go v1.7.0 // indirect
+	github.com/cloudquery/plugin-pb-go v1.7.1 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
