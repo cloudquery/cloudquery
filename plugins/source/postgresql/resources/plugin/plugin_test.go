@@ -81,7 +81,7 @@ func getTestCases(serialValue int64) []testCase {
 		panic(err)
 	}
 	inet := scalar.Inet{}
-	err = inet.Set("192.168.0.0/24")
+	err = inet.Set("192.168.0.1/24")
 	if err != nil {
 		panic(err)
 	}
@@ -107,16 +107,16 @@ func getTestCases(serialValue int64) []testCase {
 	if err != nil {
 		panic(err)
 	}
-	// timestampMillisecond := scalar.Timestamp{
-	// 	Type: &arrow.TimestampType{
-	// 		Unit:     arrow.Millisecond,
-	// 		TimeZone: "UTC",
-	// 	},
-	// }
-	// err = timestampMillisecond.Set("1999-01-08 04:05:06.789")
-	// if err != nil {
-	// 	panic(err)
-	// }
+	timestampMillisecond := scalar.Timestamp{
+		Type: &arrow.TimestampType{
+			Unit:     arrow.Millisecond,
+			TimeZone: "UTC",
+		},
+	}
+	err = timestampMillisecond.Set("1999-01-08 04:05:06.789")
+	if err != nil {
+		panic(err)
+	}
 	uuidData := scalar.UUID{}
 	err = uuidData.Set(uuid.New())
 	if err != nil {
@@ -141,7 +141,7 @@ func getTestCases(serialValue int64) []testCase {
 		{"circle", "<(1,2),3>", &scalar.String{Value: "<(1,2),3>", Valid: true}},
 		{"date", "1999-01-08", &scalar.Date32{Value: 10599, Valid: true}},
 		{"double precision", 1.1, &scalar.Float{Value: 1.1, Valid: true, BitWidth: 64}},
-		{"inet", "192.168.0.0/24", &inet},
+		{"inet", "192.168.0.1/24", &inet},
 		{"integer", 1, &scalar.Int{Value: 1, Valid: true, BitWidth: 32}},
 		{"interval", "1-2", &scalar.String{Value: "14 mon 00:00:00.000000", Valid: true}},
 		{"json", `{"a":1}`, &scalar.JSON{Value: []byte(`{"a":1}`), Valid: true}},
@@ -164,8 +164,8 @@ func getTestCases(serialValue int64) []testCase {
 		{"time(3) without time zone", "04:05:06.789", &timeMillisecond},
 		{"timestamp", "1999-01-08 04:05:06.789", &timestamp},
 		{"timestamp without time zone", "1999-01-08 04:05:06.789", &timestamp},
-		// {"timestamp(3)", "1999-01-08 04:05:06.789", &timestampMillisecond},
-		// {"timestamp(3) without time zone", "1999-01-08 04:05:06.789", &timestampMillisecond},
+		{"timestamp(3)", "1999-01-08 04:05:06.789", &timestampMillisecond},
+		{"timestamp(3) without time zone", "1999-01-08 04:05:06.789", &timestampMillisecond},
 		{"tsquery", "a & b", &scalar.String{Value: "'a' & 'b'", Valid: true}},
 		{"tsvector", "'a':1 'b':2", &scalar.String{Value: "'a':1 'b':2", Valid: true}},
 		{"uuid", &uuidData, &uuidData},
