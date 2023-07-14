@@ -109,11 +109,11 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *
 	}
 	for _, resolver := range resolvers {
 		if err := resolver(ctx, meta, resource); err != nil {
-			r.Item = resource
 			if isBucketNotFoundError(cl, err) {
+				r.Item = resource
 				return nil
 			}
-			// This enables 403 errors to be recorded, but not block subsequent
+			// This enables 403 errors to be recorded, but not block subsequent resolver calls
 			errAll = errors.Join(errAll, err)
 		}
 	}
