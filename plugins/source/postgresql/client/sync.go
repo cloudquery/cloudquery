@@ -39,6 +39,12 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 		return err
 	}
 
+	for _, table := range filteredTables {
+		res <- &message.SyncMigrateTable{
+			Table: table,
+		}
+	}
+
 	if c.pluginSpec.CDCId != "" {
 		snapshotName, err = c.startCDC(ctx, filteredTables, conn)
 		if err != nil {
