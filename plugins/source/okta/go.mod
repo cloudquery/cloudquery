@@ -15,7 +15,7 @@ replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13
 
 require (
 	github.com/cenkalti/backoff/v4 v4.1.3 // indirect
-	github.com/cloudquery/plugin-pb-go v1.6.0 // indirect
+	github.com/cloudquery/plugin-pb-go v1.7.0 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect

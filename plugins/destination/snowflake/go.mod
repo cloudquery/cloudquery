@@ -36,7 +36,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.14.3 // indirect
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.36.0 // indirect
 	github.com/aws/smithy-go v1.13.5 // indirect
-	github.com/cloudquery/plugin-pb-go v1.6.0 // indirect
+	github.com/cloudquery/plugin-pb-go v1.7.0 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/danieljoos/wincred v1.1.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
