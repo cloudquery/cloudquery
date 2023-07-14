@@ -19,7 +19,6 @@ func databaseParameters() *schema.Table {
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_RelationalDatabaseParameter.html`,
 		Resolver:    fetchLightsailDatabaseParameters,
 		Transform:   transformers.TransformWithStruct(&types.RelationalDatabaseParameter{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lightsail"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

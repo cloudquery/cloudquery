@@ -18,7 +18,6 @@ func appVersionResourceMappings() *schema.Table {
 		Description: `https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_ResourceMapping.html`,
 		Resolver:    fetchAppVersionResourceMappings,
 		Transform:   transformers.TransformWithStruct(&types.ResourceMapping{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "resiliencehub"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARN, appVersion,
 			{

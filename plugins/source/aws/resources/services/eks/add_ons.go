@@ -18,7 +18,6 @@ func addOns() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/eks/latest/APIReference/API_Addon.html`,
 		Resolver:            fetchAddOns,
 		PreResourceResolver: getAddOn,
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "eks"),
 		Transform:           transformers.TransformWithStruct(&types.Addon{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

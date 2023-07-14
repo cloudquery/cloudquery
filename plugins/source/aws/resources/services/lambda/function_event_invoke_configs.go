@@ -18,7 +18,6 @@ func functionEventInvokeConfigs() *schema.Table {
 		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_FunctionEventInvokeConfig.html`,
 		Resolver:    fetchLambdaFunctionEventInvokeConfigs,
 		Transform:   transformers.TransformWithStruct(&types.FunctionEventInvokeConfig{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lambda"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

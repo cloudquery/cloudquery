@@ -17,7 +17,6 @@ func stackResources() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackResourceSummary.html`,
 		Resolver:    fetchCloudformationStackResources,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "cloudformation"),
 		Transform:   transformers.TransformWithStruct(&types.StackResourceSummary{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

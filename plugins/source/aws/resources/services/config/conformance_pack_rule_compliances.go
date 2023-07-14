@@ -18,7 +18,6 @@ func conformancePackRuleCompliances() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeConformancePackCompliance.html`,
 		Resolver:    fetchConfigConformancePackRuleCompliances,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "config"),
 		Transform:   transformers.TransformWithStruct(&models.ConformancePackComplianceWrapper{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

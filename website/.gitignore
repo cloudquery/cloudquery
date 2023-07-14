@@ -3,6 +3,7 @@ node_modules
 .env
 
 /integrations
+/pages/buy/*.mdx
 public/robots.txt
 public/sitemap.xml
 public/sitemap-0.xml

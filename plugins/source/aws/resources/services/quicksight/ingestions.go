@@ -19,7 +19,6 @@ func ingestions() *schema.Table {
 		Description: "https://docs.aws.amazon.com/quicksight/latest/APIReference/API_Ingestion.html",
 		Resolver:    fetchQuicksightIngestions,
 		Transform:   transformers.TransformWithStruct(&types.Ingestion{}, transformers.WithPrimaryKeys("Arn")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "quicksight"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
