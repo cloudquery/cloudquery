@@ -19,7 +19,6 @@ func clusterInstances() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/emr/latest/APIReference/API_Instance.html`,
 		Resolver:    fetchClusterInstances,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticmapreduce"),
 		Transform:   transformers.TransformWithStruct(&types.Instance{}),
 		Columns: []schema.Column{
 			{

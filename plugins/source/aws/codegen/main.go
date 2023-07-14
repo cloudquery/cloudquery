@@ -78,6 +78,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/mwaa"
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/networkfirewall"
+	"github.com/aws/aws-sdk-go-v2/service/networkmanager"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/aws/aws-sdk-go-v2/service/quicksight"
@@ -196,6 +197,7 @@ var clients = []any{
 	&mwaa.Client{},
 	&neptune.Client{},
 	&networkfirewall.Client{},
+	&networkmanager.Client{},
 	&organizations.Client{},
 	&qldb.Client{},
 	&quicksight.Client{},

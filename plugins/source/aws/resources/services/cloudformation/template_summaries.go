@@ -18,7 +18,6 @@ func templateSummaries() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_GetTemplateSummary.html`,
 		Resolver:    fetchTemplateSummary,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "cloudformation"),
 		Transform: transformers.TransformWithStruct(
 			&cloudformation.GetTemplateSummaryOutput{},
 			transformers.WithSkipFields("ResultMetadata"), // This field contains metadata about the API call rather than the template itself, so remove it.

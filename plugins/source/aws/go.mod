@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/source/aws
 
-go 1.19
+go 1.20
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
@@ -79,7 +79,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/mq v1.15.0
 	github.com/aws/aws-sdk-go-v2/service/mwaa v1.16.2
 	github.com/aws/aws-sdk-go-v2/service/neptune v1.20.7
-	github.com/aws/aws-sdk-go-v2/service/networkfirewall v1.28.2
+	github.com/aws/aws-sdk-go-v2/service/networkfirewall v1.28.3
+	github.com/aws/aws-sdk-go-v2/service/networkmanager v1.17.14
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.19.8
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.15.13
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.37.2
@@ -97,10 +98,10 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/savingsplans v1.12.12
 	github.com/aws/aws-sdk-go-v2/service/scheduler v1.1.13
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.19.10
-	github.com/aws/aws-sdk-go-v2/service/securityhub v1.33.1
+	github.com/aws/aws-sdk-go-v2/service/securityhub v1.33.2
 	github.com/aws/aws-sdk-go-v2/service/servicecatalog v1.19.2
 	github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry v1.17.6
-	github.com/aws/aws-sdk-go-v2/service/servicediscovery v1.21.6
+	github.com/aws/aws-sdk-go-v2/service/servicediscovery v1.21.7
 	github.com/aws/aws-sdk-go-v2/service/servicequotas v1.14.14
 	github.com/aws/aws-sdk-go-v2/service/ses v1.15.11
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.18.2
@@ -124,7 +125,7 @@ require (
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/codegen v0.2.1
-	github.com/cloudquery/plugin-sdk/v4 v4.8.1-rc1
+	github.com/cloudquery/plugin-sdk/v4 v4.1.0
 	github.com/cockroachdb/cockroachdb-parser v0.0.0-20221207165326-ea0ac1a4778b
 	github.com/gocarina/gocsv v0.0.0-20230513223533-9ddd7fd60602
 	github.com/golang/mock v1.6.0
@@ -142,7 +143,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230703001435-df3b664a289d
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230710001530-a2a76ebbb85f
 
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect
@@ -186,7 +187,7 @@ require (
 
 require (
 	github.com/biogo/store v0.0.0-20201120204734-aad293a2328f // indirect
-	github.com/cloudquery/plugin-pb-go v1.6.0 // indirect
+	github.com/cloudquery/plugin-pb-go v1.7.0 // indirect
 	github.com/cockroachdb/apd/v3 v3.1.0 // indirect
 	github.com/cockroachdb/errors v1.9.0 // indirect
 	github.com/cockroachdb/logtags v0.0.0-20230118201751-21c54148d20b // indirect

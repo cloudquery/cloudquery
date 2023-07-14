@@ -18,7 +18,6 @@ func listenerRules() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_Rule.html`,
 		Resolver:    fetchListenerRules,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticloadbalancing"),
 		Transform:   transformers.TransformWithStruct(&types.Rule{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

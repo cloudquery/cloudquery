@@ -18,7 +18,6 @@ func workGroupPreparedStatements() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/athena/latest/APIReference/API_PreparedStatement.html`,
 		Resolver:            fetchAthenaWorkGroupPreparedStatements,
 		PreResourceResolver: getWorkGroupPreparedStatement,
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "athena"),
 		Transform:           transformers.TransformWithStruct(&types.PreparedStatement{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

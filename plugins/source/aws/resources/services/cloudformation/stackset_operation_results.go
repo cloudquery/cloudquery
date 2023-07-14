@@ -19,7 +19,6 @@ func stackSetOperationResults() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackSetOperationResultSummary.html.
 The 'request_account_id' and 'request_region' columns are added to show the account and region of where the request was made from.`,
 		Resolver:  fetchCloudformationStackSetOperationResults,
-		Multiplex: client.ServiceAccountRegionMultiplexer(table_name, "cloudformation"),
 		Transform: transformers.TransformWithStruct(&types.StackSetOperationResultSummary{}),
 		Columns: []schema.Column{
 			{

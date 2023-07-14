@@ -18,7 +18,6 @@ func userPoolIdentityProviders() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_IdentityProviderType.html`,
 		Resolver:            fetchCognitoUserPoolIdentityProviders,
 		PreResourceResolver: getUserPoolIdentityProvider,
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "cognito-identity"),
 		Transform:           transformers.TransformWithStruct(&types.IdentityProviderType{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

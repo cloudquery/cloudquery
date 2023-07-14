@@ -11,11 +11,12 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/repositories"
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/teams"
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/traffic"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func Tables() []*schema.Table {
-	return []*schema.Table{
+func getTables() []*schema.Table {
+	tables := []*schema.Table{
 		actions.Workflows(),
 		billing.Action(),
 		billing.Storage(),
@@ -32,4 +33,13 @@ func Tables() []*schema.Table {
 		traffic.Views(),
 		traffic.Referrers(),
 	}
+
+	if err := transformers.TransformTables(tables); err != nil {
+		panic(err)
+	}
+	for _, t := range tables {
+		schema.AddCqIDs(t)
+	}
+
+	return tables
 }

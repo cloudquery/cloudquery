@@ -5,6 +5,28 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.9.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.9.0...cli-v3.9.1) (2023-07-13)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 0a52533 ([#12091](https://github.com/cloudquery/cloudquery/issues/12091)) ([927cefa](https://github.com/cloudquery/cloudquery/commit/927cefa943ec3969a2ec39b628bc1eba545a2108))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to a2a76eb ([#12104](https://github.com/cloudquery/cloudquery/issues/12104)) ([311f474](https://github.com/cloudquery/cloudquery/commit/311f4749af2491a606f29483190717a5fe238da6))
+* Improve version mismatch errors to include plugin type ([#12151](https://github.com/cloudquery/cloudquery/issues/12151)) ([137b0fe](https://github.com/cloudquery/cloudquery/commit/137b0fef57ebad7678ea5fcf6fafeb16abd18247))
+
+## [3.9.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.8.1...cli-v3.9.0) (2023-07-07)
+
+
+### Features
+
+* **cli:** Add migrate v3 ([#12051](https://github.com/cloudquery/cloudquery/issues/12051)) ([56c9c04](https://github.com/cloudquery/cloudquery/commit/56c9c04d0e41f1ccb63f710dc7d74b0766f59c8b))
+
+
+### Bug Fixes
+
+* **cli:** Provide helpful message when write fails ([#12056](https://github.com/cloudquery/cloudquery/issues/12056)) ([a6d4ae9](https://github.com/cloudquery/cloudquery/commit/a6d4ae9e4cc4bf24c2cba814dd934d87dd0a198f))
+* **postgresql:** Rerun release please ([#12002](https://github.com/cloudquery/cloudquery/issues/12002)) ([9d12843](https://github.com/cloudquery/cloudquery/commit/9d12843462d1019d26bc239f8f928bf5f62940cf))
+
 ## [3.8.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.8.0...cli-v3.8.1) (2023-07-06)
 
 

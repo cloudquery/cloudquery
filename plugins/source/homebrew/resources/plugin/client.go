@@ -86,7 +86,7 @@ func getTables() []*schema.Table {
 	return tables
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec []byte, options plugin.NewClientOptions) (plugin.Client, error) {
+func Configure(_ context.Context, logger zerolog.Logger, spec []byte, options plugin.NewClientOptions) (plugin.Client, error) {
 	if options.NoConnection {
 		return &Client{
 			logger: logger,
@@ -105,7 +105,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec []byte, options 
 	}
 	sc := scheduler.NewScheduler(
 		scheduler.WithLogger(logger),
-		scheduler.WithConcurrency(uint64(config.Concurrency)),
+		scheduler.WithConcurrency(config.Concurrency),
 	)
 	return &Client{
 		logger:    logger,

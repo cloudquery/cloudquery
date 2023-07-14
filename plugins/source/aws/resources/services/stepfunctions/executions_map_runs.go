@@ -19,7 +19,6 @@ func mapRuns() *schema.Table {
 		Resolver:            fetchStepfunctionsMapRuns,
 		PreResourceResolver: getMapRun,
 		Transform:           transformers.TransformWithStruct(&sfn.DescribeMapRunOutput{}, transformers.WithSkipFields("ResultMetadata")),
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "states"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

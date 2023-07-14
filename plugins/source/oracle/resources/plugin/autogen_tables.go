@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/resources/services/networkfirewall"
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/resources/services/networkloadbalancer"
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/resources/services/virtualnetwork"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func Tables() []*schema.Table {

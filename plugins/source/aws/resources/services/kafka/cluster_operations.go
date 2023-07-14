@@ -20,7 +20,6 @@ func clusterOperations() *schema.Table {
 		Description: `https://docs.aws.amazon.com/msk/1.0/apireference/clusters-clusterarn-operations.html`,
 		Resolver:    fetchKafkaClusterOperations,
 		Transform:   transformers.TransformWithStruct(&types.ClusterOperationInfo{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "kafka"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

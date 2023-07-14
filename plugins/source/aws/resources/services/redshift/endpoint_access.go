@@ -19,7 +19,6 @@ func endpointAccess() *schema.Table {
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_EndpointAccess.html`,
 		Resolver:    fetchEndpointAccess,
 		Transform:   transformers.TransformWithStruct(&types.EndpointAccess{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
