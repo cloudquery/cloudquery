@@ -41,7 +41,7 @@ function CaseStudyTitle({ data }: { data: PostMeta }) {
     return null;
   }
 
-  return <h1>{title}</h1>;
+  return <h1 className="my-10 text-center font-bold leading-tight lg:text-3xl">{title}</h1>;
 }
 
 export function CaseStudyHeader() {
