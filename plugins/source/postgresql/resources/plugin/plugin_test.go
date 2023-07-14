@@ -355,10 +355,10 @@ func TestPlugin(t *testing.T) {
 	}
 
 	// Init the plugin so we can call migrate
-	if err := p.Init(ctx, specBytes); err != nil {
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
 		t.Fatal(err)
 	}
-	res := make(chan message.Message, 1)
+	res := make(chan message.SyncMessage, 1)
 	g := errgroup.Group{}
 	g.Go(func() error {
 		defer close(res)
@@ -368,8 +368,11 @@ func TestPlugin(t *testing.T) {
 	var actualRecord arrow.Record
 	totalResources := 0
 	for r := range res {
-		actualRecord = r.(*message.Insert).Record
-		totalResources++
+		m, ok := r.(*message.SyncInsert)
+		if ok {
+			actualRecord = m.Record
+			totalResources++
+		}
 	}
 	err = g.Wait()
 	if err != nil {
@@ -426,10 +429,10 @@ func TestPluginCDC(t *testing.T) {
 	}
 
 	// Init the plugin so we can call migrate
-	if err := p.Init(ctx, specBytes); err != nil {
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
 		t.Fatal(err)
 	}
-	res := make(chan message.Message, 10)
+	res := make(chan message.SyncMessage, 10)
 	var wg sync.WaitGroup
 	var syncErr error
 	syncCtx, cancel := context.WithTimeout(ctx, 15*time.Second)
@@ -454,8 +457,11 @@ func TestPluginCDC(t *testing.T) {
 
 	records := make([]arrow.Record, 0)
 	for r := range res {
-		record := r.(*message.Insert).Record
-		records = append(records, record)
+		m, ok := r.(*message.SyncInsert)
+		if ok {
+			record := m.Record
+			records = append(records, record)
+		}
 	}
 	wg.Wait()
 	if len(records) != 2 {

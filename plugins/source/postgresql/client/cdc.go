@@ -84,7 +84,7 @@ func getReplicationName(specName string) string {
 	return strings.ReplaceAll(specName, "-", "_")
 }
 
-func (c *Client) listenCDC(ctx context.Context, res chan<- message.Message) error {
+func (c *Client) listenCDC(ctx context.Context, res chan<- message.SyncMessage) error {
 	connPool, err := c.Conn.Acquire(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to acquire connection: %w", err)
@@ -285,7 +285,7 @@ func decodeTextColumnData(mi *pgtype.Map, data []byte, dataType uint32) (any, er
 	return string(data), nil
 }
 
-func (c *Client) resourceFromCDCValues(tableName string, values map[string]any) (message.Message, error) {
+func (c *Client) resourceFromCDCValues(tableName string, values map[string]any) (message.SyncMessage, error) {
 	table := c.tables.Get(tableName)
 	arrowSchema := table.ToArrowSchema()
 	rb := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
@@ -300,5 +300,5 @@ func (c *Client) resourceFromCDCValues(tableName string, values map[string]any) 
 		}
 		scalar.AppendToBuilder(rb.Field(i), s)
 	}
-	return &message.Insert{Record: rb.NewRecord()}, nil
+	return &message.SyncInsert{Record: rb.NewRecord()}, nil
 }

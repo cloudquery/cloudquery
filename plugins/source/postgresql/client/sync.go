@@ -18,7 +18,7 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.Message) error {
+func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.SyncMessage) error {
 	var err error
 	var snapshotName string
 
@@ -64,7 +64,7 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	return nil
 }
 
-func (c *Client) syncTables(ctx context.Context, snapshotName string, filteredTables schema.Tables, res chan<- message.Message) error {
+func (c *Client) syncTables(ctx context.Context, snapshotName string, filteredTables schema.Tables, res chan<- message.SyncMessage) error {
 	tx, err := c.Conn.BeginTx(ctx, pgx.TxOptions{
 		// this transaction is needed for us to take a snapshot and we need to close it only at the end of the initial sync
 		// https://www.postgresql.org/docs/current/transaction-iso.html
@@ -101,7 +101,7 @@ func (c *Client) syncTables(ctx context.Context, snapshotName string, filteredTa
 	return nil
 }
 
-func syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- message.Message) error {
+func syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- message.SyncMessage) error {
 	colNames := make([]string, 0, len(table.Columns)-2)
 	for _, col := range table.Columns {
 		colNames = append(colNames, pgx.Identifier{col.Name}.Sanitize())
@@ -131,7 +131,7 @@ func syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- m
 			}
 			scalar.AppendToBuilder(rb.Field(i), s)
 		}
-		res <- &message.Insert{Record: rb.NewRecord()}
+		res <- &message.SyncInsert{Record: rb.NewRecord()}
 	}
 	return nil
 }

@@ -25,6 +25,7 @@ type Client struct {
 	pgType              pgType
 	tables              schema.Tables
 	cdcId               string
+	options             plugin.NewClientOptions
 }
 
 type pgType int
@@ -39,7 +40,7 @@ func (*Client) ID() string {
 	return "source-pg"
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.Client, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "pg-source").Logger(),
 	}
@@ -108,6 +109,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec []byte) (plugin.
 		}
 	}
 	c.cdcId = pluginSpec.CDCId
+	c.options = opts
 
 	return c, nil
 }
@@ -164,7 +166,7 @@ func (c *Client) currentSchema(ctx context.Context) (string, error) {
 	return schemaName, nil
 }
 
-func (c Client) Tables(ctx context.Context) (schema.Tables, error) {
+func (c Client) Tables(ctx context.Context, opts plugin.TableOptions) (schema.Tables, error) {
 	return c.tables, nil
 }
 
