@@ -37,13 +37,17 @@
     "title": "Solutions",
     "type": "menu",
     "items": {
-      "blog": {
-        "title": "Blog",
-        "href": "/blog"
+      "cspm": {
+        "title": "Cloud Security Posture Management",
+        "href": "/solutions/open-source-cspm"
       },
       "policies": {
         "title": "Policies",
         "href": "/docs/core-concepts/policies"
+      },
+      "blog": {
+        "title": "Blog",
+        "href": "/blog"
       },
       "case-studies": {
         "title": "Case Studies",
