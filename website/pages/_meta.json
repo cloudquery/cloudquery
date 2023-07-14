@@ -41,6 +41,10 @@
         "title": "Blog",
         "href": "/blog"
       },
+      "policies": {
+        "title": "Policies",
+        "href": "/docs/core-concepts/policies"
+      },
       "case-studies": {
         "title": "Case Studies",
         "href": "/case-studies"
