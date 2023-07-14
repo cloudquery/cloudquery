@@ -125,7 +125,7 @@ require (
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/codegen v0.2.1
-	github.com/cloudquery/plugin-sdk/v4 v4.0.0
+	github.com/cloudquery/plugin-sdk/v4 v4.1.0
 	github.com/cockroachdb/cockroachdb-parser v0.0.0-20221207165326-ea0ac1a4778b
 	github.com/gocarina/gocsv v0.0.0-20230513223533-9ddd7fd60602
 	github.com/golang/mock v1.6.0
@@ -187,7 +187,7 @@ require (
 
 require (
 	github.com/biogo/store v0.0.0-20201120204734-aad293a2328f // indirect
-	github.com/cloudquery/plugin-pb-go v1.6.0 // indirect
+	github.com/cloudquery/plugin-pb-go v1.7.0 // indirect
 	github.com/cockroachdb/apd/v3 v3.1.0 // indirect
 	github.com/cockroachdb/errors v1.9.0 // indirect
 	github.com/cockroachdb/logtags v0.0.0-20230118201751-21c54148d20b // indirect

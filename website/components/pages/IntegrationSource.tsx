@@ -13,8 +13,8 @@ const licenses = {
             attributes: {
                 Price: "$250",
                 PriceDetails: "USD. Perpetual fallback license.",
-                Limits: "No usage-based billing or limits on number of rows.",
-                Includes: "Includes 6 months of support and updates.",
+                Limits: "No usage-based billing or row restrictions.",
+                Includes: "6 months of support and updates included.",
                 NormalPrice: "$500 (50% pre-order discount)",
             }
         },
@@ -25,8 +25,8 @@ const licenses = {
             attributes: {
                 Price: "$1250",
                 PriceDetails: "USD. Perpetual fallback license.",
-                Limits: "No usage-based billing or limits on number of rows.",
-                Includes: "Includes 6 months of support and updates.",
+                Limits: "No usage-based billing or row restrictions.",
+                Includes: "6 months of support and updates included.",
                 NormalPrice: "$2500 (50% pre-order discount)",
             }
         }
@@ -39,8 +39,8 @@ const licenses = {
             attributes: {
                 Price: "$500",
                 PriceDetails: "USD. Perpetual fallback license.",
-                Limits: "No usage-based billing or limits on number of rows.",
-                Includes: "Includes 6 months of support and updates.",
+                Limits: "No usage-based billing or row restrictions.",
+                Includes: "6 months of support and updates included.",
             }
         },
         {
@@ -50,8 +50,8 @@ const licenses = {
             attributes: {
                 Price: "$2500",
                 PriceDetails: "USD. Perpetual fallback license",
-                Limits: "No usage-based billing or limits on number of rows.",
-                Includes: "Includes 6 months of support and updates.",
+                Limits: "No usage-based billing or row restrictions.",
+                Includes: "6 months of support and updates included.",
             }
         }
     ]
@@ -107,19 +107,29 @@ export default function Integration({
                                 />
                             ))}
                         </div>
-                        <div className="max-w-5xl mx-auto">
+                        <div className="max-w-5xl px-4 pb-12 mx-auto lg:px-8">
                             <h2 className="mx-auto mt-24 nx-text-4xl font-extrabold tracking-tight lg:nx-text-5xl xl:nx-text-6xl dark:text-white">FAQ</h2>
                             <h3 className="font-bold text-lg text-gray-700 lg:max-w-3xl lg:nx-text-xl mt-4 dark:text-white">
                                 What is the difference between the standard and extended license?
                             </h3>
-                            <p className="font-light text-sm text-gray-700 lg:max-w-3xl lg:nx-text-xl dark:text-white">
+                            <p className="font-light text-gray-700 lg:nx-text-xl dark:text-white">
                                 The standard license is for use in internal products, such as dashboards, internal cloud inventory tools, or other products that are not customer-facing. The extended license is for use of the data in customer-facing products, such as SaaS applications or security products.
                             </p>
-                            <h3 className="font-bold text-lg text-gray-700 lg:max-w-3xl lg:nx-text-xl mt-4 dark:text-white">
+                            <h3 className="font-bold text-lg text-gray-700 lg:nx-text-xl mt-4 dark:text-white">
                                 What is a perpetual fallback license?
                             </h3>
-                            <p className="font-light text-sm text-gray-700 lg:max-w-3xl lg:nx-text-xl dark:text-white">
+                            <p className="font-light text-gray-700 lg:nx-text-xl dark:text-white">
                                 A perpetual fallback license is a license that allows you to use the plugin in perpetuity, even if you stop paying for updates. The license will never expire, but you will not receive updates after your license expires. You will have access to all new versions of the plugin published up to the date your license expires.
+                            </p>
+                            <h3 className="font-bold text-lg text-gray-700 lg:nx-text-xl mt-4 dark:text-white">
+                                What tables and columns will be included?
+                            </h3>
+                            <p className="font-light text-gray-700 lg:nx-text-xl dark:text-white">
+                                {source.availability === "premium" ?
+                                    <>You can find a list of the tables and their columns in the <a className="text-blue-500 hover:text-blue-600" href={"/docs/plugins/sources/" + source.id + "/tables"}>{source.name} plugin documentation</a>.</>
+                                    :
+                                    <>The tables in the first version will be closely modeled around the endpoints available in the official {source.name} API. After initial release you will also be able to request more tables and columns as part of the included support.</>
+                                }
                             </p>
                         </div>
                     </>

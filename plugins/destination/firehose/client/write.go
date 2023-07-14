@@ -15,12 +15,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/message"
 )
 
-const (
-	MaxRecordSizeBytes = 1024000
-	MaxBatchRecords    = 500
-	MaxBatchSizeBytes  = 4194000
-)
-
 func (c *Client) Write(ctx context.Context, messages <-chan message.WriteMessage) error {
 	parsedARN, err := arn.Parse(c.spec.StreamARN)
 	if err != nil {
@@ -70,18 +64,18 @@ func (c *Client) Write(ctx context.Context, messages <-chan message.WriteMessage
 			if err != nil {
 				return err
 			}
-			if len(dst.Bytes()) > MaxRecordSizeBytes {
+			if len(dst.Bytes()) > c.spec.MaxRecordSizeBytes {
 				c.logger.Warn().Msgf("skipping record because it is too large: %s", string(b))
 				continue
 			}
 
 			// If adding this record would exceed the batch size, send the batch
-			if len(dst.Bytes())+batchSize > MaxBatchSizeBytes {
+			if len(dst.Bytes())+batchSize > c.spec.MaxBatchSizeBytes {
 				err := c.sendBatch(ctx, recordsBatchInput, 0)
 				if err != nil {
 					return err
 				}
-				recordsBatchInput.Records = nil
+				recordsBatchInput.Records = recordsBatchInput.Records[:0]
 				batchSize = 0
 			}
 
@@ -92,13 +86,13 @@ func (c *Client) Write(ctx context.Context, messages <-chan message.WriteMessage
 			batchSize += len(dst.Bytes())
 
 			// Send the batch if it is full
-			if len(recordsBatchInput.Records) == MaxBatchRecords {
+			if len(recordsBatchInput.Records) >= c.spec.MaxBatchRecords {
 				err := c.sendBatch(ctx, recordsBatchInput, 0)
 				if err != nil {
 					return err
 				}
 				// Reset the batch
-				recordsBatchInput.Records = nil
+				recordsBatchInput.Records = recordsBatchInput.Records[:0]
 				batchSize = 0
 			}
 		}

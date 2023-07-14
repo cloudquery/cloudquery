@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.71
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.36.0
 	github.com/cloudquery/filetypes/v4 v4.0.1
-	github.com/cloudquery/plugin-sdk/v4 v4.0.0
+	github.com/cloudquery/plugin-sdk/v4 v4.1.0
 	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.1
@@ -38,7 +38,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.12 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.19.2 // indirect
 	github.com/aws/smithy-go v1.13.5 // indirect
-	github.com/cloudquery/plugin-pb-go v1.6.0 // indirect
+	github.com/cloudquery/plugin-pb-go v1.7.0 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect

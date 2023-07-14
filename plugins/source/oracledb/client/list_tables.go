@@ -7,7 +7,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 type column struct {

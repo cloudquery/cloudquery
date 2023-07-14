@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
 	github.com/cenkalti/backoff/v4 v4.2.1
-	github.com/cloudquery/plugin-sdk/v4 v4.6.1-rc1
+	github.com/cloudquery/plugin-sdk/v4 v4.1.0
 	github.com/google/uuid v1.3.0
 	github.com/marcboeker/go-duckdb v1.4.1
 	github.com/rs/zerolog v1.29.1
@@ -19,7 +19,7 @@ require (
 	github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/apache/thrift v0.18.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.6.0 // indirect
+	github.com/cloudquery/plugin-pb-go v1.7.0 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
