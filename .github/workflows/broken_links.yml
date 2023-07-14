@@ -89,5 +89,6 @@ jobs:
             --exclude localhost \
             --exclude twitter.com \
             --exclude mongodb.com \
+            --exclude regex101.com \
             ${{ steps.vercel.outputs.url }} \
             | grep -v '───OK───' | grep -v '──SKIP──' | grep -v '0 broken'

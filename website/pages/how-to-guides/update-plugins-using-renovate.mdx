@@ -72,7 +72,7 @@ You can see that we have three 'keys', meaning fields that are static across all
 
 Now that we've identified the fields we need to extract from the configuration file to create the custom regex, next we need to construct the regex statement to extract those 'keys' into named capture groups.
 
-For this it's recommended to use a regex testing tool to ensure your regex is actually working. Regex101 is a popular one but feel free to use any others as long as they support the PCRE2 regex engine. So taking our sample configuration file from above, we begin to play around with various regex until we meet the following criteria:
+For this it's recommended to use a regex testing tool to ensure your regex is actually working. [Regex101](https://regex101.com/) is a popular one but feel free to use any others as long as they support the PCRE2 regex engine. So taking our sample configuration file from above, we begin to play around with various regex until we meet the following criteria:
 
 - a named capture group for the plugin type (source or destination) which we will reference as 'kind' in this tutorial.
 - a named capture group for the plugin name (aws, gcp, etc..) which we will reference as 'plugin' in this tutorial.
