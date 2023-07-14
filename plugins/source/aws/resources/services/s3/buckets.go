@@ -109,6 +109,8 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *
 	}
 	for _, resolver := range resolvers {
 		if err := resolver(ctx, meta, resource); err != nil {
+			// If we received any error other than NoSuchBucketError, we return as this indicates that the bucket has been deleted
+			// and therefore no other attributes can be resolved
 			if isBucketNotFoundError(cl, err) {
 				r.Item = resource
 				return nil
