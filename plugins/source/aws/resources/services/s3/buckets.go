@@ -95,7 +95,7 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *
 	if output != nil && output.LocationConstraint != "" {
 		resource.Region = string(output.LocationConstraint)
 	}
-	var errAll error
+	var errAll []error
 
 	resolvers := []func(context.Context, schema.ClientMeta, *models.WrappedBucket) error{
 		resolveBucketLogging,
@@ -116,11 +116,11 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *
 				return nil
 			}
 			// This enables 403 errors to be recorded, but not block subsequent resolver calls
-			errAll = errors.Join(errAll, err)
+			errAll = append(errAll, err)
 		}
 	}
 	r.Item = resource
-	return errAll
+	return errors.Join(errAll...)
 }
 
 func resolveBucketLogging(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
