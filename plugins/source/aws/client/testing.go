@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
@@ -54,13 +55,8 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, table := range tables.FlattenTables() {
-		records := messages.GetInserts().GetRecordsForTable(table)
-		emptyColumns := schema.FindEmptyColumns(table, records)
-		if len(emptyColumns) > 0 {
-			t.Fatalf("found empty column(s): %v in %s", emptyColumns, table.Name)
-		}
-	}
+
+	plugin.ValidateNoEmptyColumns(t, tables, messages)
 }
 
 func validateTagStructure(t *testing.T, tables schema.Tables) {

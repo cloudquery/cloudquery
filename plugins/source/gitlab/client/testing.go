@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/julienschmidt/httprouter"
@@ -48,13 +49,10 @@ func GitlabMockTestHelper(t *testing.T, table *schema.Table, createService func(
 	}
 
 	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
-	messages, err := sched.SyncAll(context.Background(), c, schema.Tables{table})
+	tables := schema.Tables{table}
+	messages, err := sched.SyncAll(context.Background(), c, tables)
 	if err != nil {
 		t.Fatalf("failed to sync: %v", err)
 	}
-	records := messages.GetInserts().GetRecordsForTable(table)
-	emptyColumns := schema.FindEmptyColumns(table, records)
-	if len(emptyColumns) > 0 {
-		t.Fatalf("empty columns: %v", emptyColumns)
-	}
+	plugin.ValidateNoEmptyColumns(t, tables, messages)
 }
