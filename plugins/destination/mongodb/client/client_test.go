@@ -5,8 +5,10 @@ import (
 	"encoding/json"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func getTestConnection() string {
@@ -36,6 +38,8 @@ func TestPlugin(t *testing.T) {
 		plugin.WriterTestSuiteTests{
 			SkipMigrate: true,
 		},
-		// plugin.WithTestSourceTimePrecision(time.Millisecond),
+		plugin.WithTestDataOptions(schema.TestSourceOptions{
+			TimePrecision: time.Millisecond,
+		}),
 	)
 }
