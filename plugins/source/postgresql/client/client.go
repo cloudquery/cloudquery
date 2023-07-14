@@ -167,7 +167,7 @@ func (c *Client) currentSchema(ctx context.Context) (string, error) {
 }
 
 func (c Client) Tables(ctx context.Context, opts plugin.TableOptions) (schema.Tables, error) {
-	return c.tables, nil
+	return c.tables.FilterDfs(opts.Tables, opts.SkipTables, opts.SkipDependentTables)
 }
 
 func (c Client) Close(_ context.Context) error {
