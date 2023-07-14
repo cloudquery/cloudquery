@@ -395,7 +395,6 @@ func TestPluginCDC(t *testing.T) {
 	spec := client.Spec{
 		ConnectionString: getTestConnectionString() + "&replication=database",
 		PgxLogLevel:      client.LogLevelTrace,
-		CDC:              true,
 		CDCId:            "test_pg_source",
 	}
 	specBytes, err := json.Marshal(spec)

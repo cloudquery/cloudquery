@@ -19,6 +19,9 @@ import (
 )
 
 func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.SyncMessage) error {
+	if c.options.NoConnection {
+		return fmt.Errorf("no connection")
+	}
 	var err error
 	var snapshotName string
 
@@ -31,22 +34,19 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	defer connPool.Release()
 	conn := connPool.Conn().PgConn()
 
-	filteredTables := schema.Tables{}
-	for _, table := range c.tables {
-		if !plugin.MatchesTable(table.Name, options.Tables, options.SkipTables) {
-			continue
-		}
-		filteredTables = append(filteredTables, table)
+	filteredTables, err := c.tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
+	if err != nil {
+		return err
 	}
 
-	if c.pluginSpec.CDC {
+	if c.pluginSpec.CDCId != "" {
 		snapshotName, err = c.startCDC(ctx, filteredTables, conn)
 		if err != nil {
 			return err
 		}
 	}
 
-	if c.pluginSpec.CDC && snapshotName == "" {
+	if c.pluginSpec.CDCId != "" && snapshotName == "" {
 		c.logger.Info().Msg("cdc is enabled but replication slot already exists, skipping initial sync")
 	} else {
 		if err := c.syncTables(ctx, snapshotName, filteredTables, res); err != nil {
@@ -54,7 +54,7 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 		}
 	}
 
-	if !c.pluginSpec.CDC {
+	if c.pluginSpec.CDCId == "" {
 		return nil
 	}
 

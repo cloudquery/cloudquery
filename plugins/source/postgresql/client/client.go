@@ -48,10 +48,6 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec []byte, opts plu
 	if err := json.Unmarshal(spec, &pluginSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
 	}
-	pluginSpec.SetDefaults()
-	if err := pluginSpec.Validate(); err != nil {
-		return nil, err
-	}
 	c.pluginSpec = pluginSpec
 	logLevel, err := tracelog.LogLevelFromString(pluginSpec.PgxLogLevel.String())
 	if err != nil {
@@ -62,7 +58,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec []byte, opts plu
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse connection string %w", err)
 	}
-	if c.pluginSpec.CDC {
+	if c.pluginSpec.CDCId != "" {
 		// if cdc is specified the connection must be in replication mode
 		// https://www.postgresql.org/docs/current/libpq-connect.html
 		pgxConfig.ConnConfig.RuntimeParams["replication"] = "database"
@@ -99,7 +95,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec []byte, opts plu
 		return nil, fmt.Errorf("failed to list tables: %w", err)
 	}
 
-	if c.pluginSpec.CDC {
+	if c.pluginSpec.CDCId != "" {
 		walLevel, err := c.walLevel(ctx)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get wal_level: %w", err)
