@@ -15,6 +15,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/state"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/rs/zerolog"
 	"github.com/stripe/stripe-go/v74"
 	sclient "github.com/stripe/stripe-go/v74/client"
@@ -53,10 +54,12 @@ func MockTestHelper(t *testing.T, table *schema.Table, opts TestOptions) {
 	spec.SetDefaults()
 
 	cl := sclient.New(spec.APIKey, getBackends(logger, *addr))
-
 	c := New(logger, *spec, cl, nil)
 
 	tables := schema.Tables{table}
+	if err := transformers.TransformTables(tables); err != nil {
+		t.Fatal(err)
+	}
 	messages, err := sched.SyncAll(context.Background(), c, tables)
 	if err != nil {
 		t.Fatalf("failed to sync: %v", err)

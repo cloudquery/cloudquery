@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog"
 
@@ -145,6 +146,9 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
 
 	tables := schema.Tables{table}
+	if err := transformers.TransformTables(tables); err != nil {
+		t.Fatal(err)
+	}
 	messages, err := sched.SyncAll(context.Background(), c, tables)
 	if err != nil {
 		t.Fatalf("failed to sync: %v", err)
