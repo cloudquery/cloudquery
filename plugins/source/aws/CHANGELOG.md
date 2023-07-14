@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [20.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v20.0.0...plugins-source-aws-v20.0.1) (2023-07-14)
+
+
+### Bug Fixes
+
+* **aws:** Make S3 column resolvers non-blocking ([#12165](https://github.com/cloudquery/cloudquery/issues/12165)) ([c384406](https://github.com/cloudquery/cloudquery/commit/c3844063a93ab4970e0400e870da6f03b702151f))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.7.0 ([#12166](https://github.com/cloudquery/cloudquery/issues/12166)) ([94390dd](https://github.com/cloudquery/cloudquery/commit/94390dde19d0c37fee9d035219d62f6ae7edb127))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.1.0 ([#12174](https://github.com/cloudquery/cloudquery/issues/12174)) ([80f0289](https://github.com/cloudquery/cloudquery/commit/80f02892a4cf876c4bf4dd4fd9367afb3770ad26))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.1.1 ([#12185](https://github.com/cloudquery/cloudquery/issues/12185)) ([cfaff16](https://github.com/cloudquery/cloudquery/commit/cfaff16d89800235b6e3015eeb6957d5783d1393))
+* **deps:** Upgrade source plugins to SDK v4.0.0 release ([#12135](https://github.com/cloudquery/cloudquery/issues/12135)) ([c20a111](https://github.com/cloudquery/cloudquery/commit/c20a111d591101fb1bbc42292accc953af38e8a6))
+
 ## [20.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v19.2.0...plugins-source-aws-v20.0.0) (2023-07-12)
 
 
