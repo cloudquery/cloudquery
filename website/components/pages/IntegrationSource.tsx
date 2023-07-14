@@ -13,8 +13,8 @@ const licenses = {
             attributes: {
                 Price: "$250",
                 PriceDetails: "USD. Perpetual fallback license.",
-                Limits: "No usage-based billing or limits on number of rows.",
-                Includes: "Includes 6 months of support and updates.",
+                Limits: "No usage-based billing or row restrictions.",
+                Includes: "6 months of support and updates included.",
                 NormalPrice: "$500 (50% pre-order discount)",
             }
         },
@@ -25,8 +25,8 @@ const licenses = {
             attributes: {
                 Price: "$1250",
                 PriceDetails: "USD. Perpetual fallback license.",
-                Limits: "No usage-based billing or limits on number of rows.",
-                Includes: "Includes 6 months of support and updates.",
+                Limits: "No usage-based billing or row restrictions.",
+                Includes: "6 months of support and updates included.",
                 NormalPrice: "$2500 (50% pre-order discount)",
             }
         }
@@ -39,8 +39,8 @@ const licenses = {
             attributes: {
                 Price: "$500",
                 PriceDetails: "USD. Perpetual fallback license.",
-                Limits: "No usage-based billing or limits on number of rows.",
-                Includes: "Includes 6 months of support and updates.",
+                Limits: "No usage-based billing or row restrictions.",
+                Includes: "6 months of support and updates included.",
             }
         },
         {
@@ -50,8 +50,8 @@ const licenses = {
             attributes: {
                 Price: "$2500",
                 PriceDetails: "USD. Perpetual fallback license",
-                Limits: "No usage-based billing or limits on number of rows.",
-                Includes: "Includes 6 months of support and updates.",
+                Limits: "No usage-based billing or row restrictions.",
+                Includes: "6 months of support and updates included.",
             }
         }
     ]
