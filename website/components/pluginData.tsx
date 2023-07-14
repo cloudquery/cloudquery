@@ -29,7 +29,7 @@ export const ALL_PLUGINS: Plugin[] = [
   },
   {
     name: "Atlassian Jira",
-    id: "atlassian-jira",
+    id: "jira",
     kind: "source",
     availability: "premium",
     category: "engineering-analytics",

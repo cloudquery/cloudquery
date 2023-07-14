@@ -57,7 +57,7 @@ export default function PluginPricingCard({license, preOrder, buyLink} : {licens
         <div className="relative h-full">
             <div className="absolute inset-x-0 bottom-0">
                 <a href={buyLink}
-                   className="btn btn-purple w-full block"
+                   className="btn btn-green w-full block"
                 >
                     {preOrder ? "Pre-order Now" : "Buy Now"}
                 </a>
