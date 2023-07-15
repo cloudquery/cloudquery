@@ -20,6 +20,27 @@ Details about policies for every cloud provider can be found on its source plugi
 
 ## Premium Policies
 
+### AWS Cost Optimization Pack
+
+This is an AWS Cost pack. It includes pre-built queries for PostgreSQL, BigQuery and Snowflake with dashboards for Grafana, Superset and Metabase.
+
+- [Standard license](/buy/aws-cost-pack-standard), for internal use in one organization: `$500`, includes 6 months of support and updates.
+- [Extended license](/buy/aws-cost-pack-extended), for use in customer-facing products: `$2500`, includes 6 months of support and updates.
+
+### Azure Cost Optimization Pack
+
+This is an Azure Cost pack. It includes pre-built queries for PostgreSQL, BigQuery and Snowflake with dashboards for Grafana, Superset and Metabase.
+
+- [Standard license](/buy/azure-cost-pack-standard), for internal use in one organization: `$500`, includes 6 months of support and updates.
+- [Extended license](/buy/azure-cost-pack-extended), for use in customer-facing products: `$5000`, includes 6 months of support and updates.
+
+### GCP Cost Optimization Pack
+
+This is GCP Cost pack. It includes pre-built queries for PostgreSQL, BigQuery and Snowflake with dashboards for Grafana, Superset and Metabase.
+
+- [Standard license](/buy/gcp-cost-pack-standard), for internal use in one organization: `$500`, includes 6 months of support and updates.
+- [Extended license](/buy/gcp-cost-pack-extended), for use in customer-facing products: `$5000`, includes 6 months of support and updates.
+
 ### Azure CIS V1.3.0 for Snowflake
 - [Standard license](/buy/azure_cis_v1_3_0_snowflake-standard), for internal use in one organization: `$250`, includes 6 months of support and updates.
 - [Extended license](/buy/azure_cis_v1_3_0_snowflake-extended), for use in customer-facing products: `$1000`, includes 6 months of support and updates.
