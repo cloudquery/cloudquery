@@ -635,6 +635,36 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeRefreshSchemas
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeRefreshSchemasStatus", reflect.TypeOf((*MockDatabasemigrationserviceClient)(nil).DescribeRefreshSchemasStatus), varargs...)
 }
 
+// DescribeReplicationConfigs mocks base method.
+func (m *MockDatabasemigrationserviceClient) DescribeReplicationConfigs(arg0 context.Context, arg1 *databasemigrationservice.DescribeReplicationConfigsInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeReplicationConfigsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReplicationConfigs")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeReplicationConfigs", varargs...)
+	ret0, _ := ret[0].(*databasemigrationservice.DescribeReplicationConfigsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeReplicationConfigs indicates an expected call of DescribeReplicationConfigs.
+func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeReplicationConfigs(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeReplicationConfigs", reflect.TypeOf((*MockDatabasemigrationserviceClient)(nil).DescribeReplicationConfigs), varargs...)
+}
+
 // DescribeReplicationInstanceTaskLogs mocks base method.
 func (m *MockDatabasemigrationserviceClient) DescribeReplicationInstanceTaskLogs(arg0 context.Context, arg1 *databasemigrationservice.DescribeReplicationInstanceTaskLogsInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeReplicationInstanceTaskLogsOutput, error) {
 
@@ -723,6 +753,36 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeReplicationSub
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeReplicationSubnetGroups", reflect.TypeOf((*MockDatabasemigrationserviceClient)(nil).DescribeReplicationSubnetGroups), varargs...)
+}
+
+// DescribeReplicationTableStatistics mocks base method.
+func (m *MockDatabasemigrationserviceClient) DescribeReplicationTableStatistics(arg0 context.Context, arg1 *databasemigrationservice.DescribeReplicationTableStatisticsInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeReplicationTableStatisticsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReplicationTableStatistics")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeReplicationTableStatistics", varargs...)
+	ret0, _ := ret[0].(*databasemigrationservice.DescribeReplicationTableStatisticsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeReplicationTableStatistics indicates an expected call of DescribeReplicationTableStatistics.
+func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeReplicationTableStatistics(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeReplicationTableStatistics", reflect.TypeOf((*MockDatabasemigrationserviceClient)(nil).DescribeReplicationTableStatistics), varargs...)
 }
 
 // DescribeReplicationTaskAssessmentResults mocks base method.
@@ -843,6 +903,36 @@ func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeReplicationTas
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeReplicationTasks", reflect.TypeOf((*MockDatabasemigrationserviceClient)(nil).DescribeReplicationTasks), varargs...)
+}
+
+// DescribeReplications mocks base method.
+func (m *MockDatabasemigrationserviceClient) DescribeReplications(arg0 context.Context, arg1 *databasemigrationservice.DescribeReplicationsInput, arg2 ...func(*databasemigrationservice.Options)) (*databasemigrationservice.DescribeReplicationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &databasemigrationservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReplications")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeReplications", varargs...)
+	ret0, _ := ret[0].(*databasemigrationservice.DescribeReplicationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeReplications indicates an expected call of DescribeReplications.
+func (mr *MockDatabasemigrationserviceClientMockRecorder) DescribeReplications(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeReplications", reflect.TypeOf((*MockDatabasemigrationserviceClient)(nil).DescribeReplications), varargs...)
 }
 
 // DescribeSchemas mocks base method.

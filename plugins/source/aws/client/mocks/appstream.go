@@ -35,6 +35,66 @@ func (m *MockAppstreamClient) EXPECT() *MockAppstreamClientMockRecorder {
 	return m.recorder
 }
 
+// DescribeAppBlockBuilderAppBlockAssociations mocks base method.
+func (m *MockAppstreamClient) DescribeAppBlockBuilderAppBlockAssociations(arg0 context.Context, arg1 *appstream.DescribeAppBlockBuilderAppBlockAssociationsInput, arg2 ...func(*appstream.Options)) (*appstream.DescribeAppBlockBuilderAppBlockAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &appstream.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAppBlockBuilderAppBlockAssociations")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeAppBlockBuilderAppBlockAssociations", varargs...)
+	ret0, _ := ret[0].(*appstream.DescribeAppBlockBuilderAppBlockAssociationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeAppBlockBuilderAppBlockAssociations indicates an expected call of DescribeAppBlockBuilderAppBlockAssociations.
+func (mr *MockAppstreamClientMockRecorder) DescribeAppBlockBuilderAppBlockAssociations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeAppBlockBuilderAppBlockAssociations", reflect.TypeOf((*MockAppstreamClient)(nil).DescribeAppBlockBuilderAppBlockAssociations), varargs...)
+}
+
+// DescribeAppBlockBuilders mocks base method.
+func (m *MockAppstreamClient) DescribeAppBlockBuilders(arg0 context.Context, arg1 *appstream.DescribeAppBlockBuildersInput, arg2 ...func(*appstream.Options)) (*appstream.DescribeAppBlockBuildersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &appstream.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAppBlockBuilders")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeAppBlockBuilders", varargs...)
+	ret0, _ := ret[0].(*appstream.DescribeAppBlockBuildersOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeAppBlockBuilders indicates an expected call of DescribeAppBlockBuilders.
+func (mr *MockAppstreamClientMockRecorder) DescribeAppBlockBuilders(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeAppBlockBuilders", reflect.TypeOf((*MockAppstreamClient)(nil).DescribeAppBlockBuilders), varargs...)
+}
+
 // DescribeAppBlocks mocks base method.
 func (m *MockAppstreamClient) DescribeAppBlocks(arg0 context.Context, arg1 *appstream.DescribeAppBlocksInput, arg2 ...func(*appstream.Options)) (*appstream.DescribeAppBlocksOutput, error) {
 

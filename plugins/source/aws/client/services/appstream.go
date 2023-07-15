@@ -8,6 +8,8 @@ import (
 
 //go:generate mockgen -package=mocks -destination=../mocks/appstream.go -source=appstream.go AppstreamClient
 type AppstreamClient interface {
+	DescribeAppBlockBuilderAppBlockAssociations(context.Context, *appstream.DescribeAppBlockBuilderAppBlockAssociationsInput, ...func(*appstream.Options)) (*appstream.DescribeAppBlockBuilderAppBlockAssociationsOutput, error)
+	DescribeAppBlockBuilders(context.Context, *appstream.DescribeAppBlockBuildersInput, ...func(*appstream.Options)) (*appstream.DescribeAppBlockBuildersOutput, error)
 	DescribeAppBlocks(context.Context, *appstream.DescribeAppBlocksInput, ...func(*appstream.Options)) (*appstream.DescribeAppBlocksOutput, error)
 	DescribeApplicationFleetAssociations(context.Context, *appstream.DescribeApplicationFleetAssociationsInput, ...func(*appstream.Options)) (*appstream.DescribeApplicationFleetAssociationsOutput, error)
 	DescribeApplications(context.Context, *appstream.DescribeApplicationsInput, ...func(*appstream.Options)) (*appstream.DescribeApplicationsOutput, error)
