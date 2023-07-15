@@ -60,9 +60,10 @@ This is the (nested) spec used by the PostgreSQL source Plugin.
   Available: "error", "warn", "info", "debug", "trace"
   define if and in which level to log [`pgx`](https://github.com/jackc/pgx) call.
 
-- `cdc` (bool, optional. Default: false)
+- `cdc_id` (string, optional. Default: "")
 
-  If enabled the source plugin will start syncing CDC via PostgreSQL logical replication in real-time.
+  If set to a non empty string the source plugin will start syncing CDC via PostgreSQL logical replication in real-time.
+  The value should be unique across all sources.
 
 
 ### Verbose logging for debug
