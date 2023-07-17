@@ -12,6 +12,15 @@
       "toc": true
     }
   },
+  "register_for_cloud": {
+    "title": "Register for CloudQuery Cloud",
+    "type": "page",
+    "theme": {
+      "layout": "full",
+      "sidebar": false
+    },
+    "href": "/register_for_cloud"
+  },
   "integrations": {
     "title": "Integrations",
     "type": "page",

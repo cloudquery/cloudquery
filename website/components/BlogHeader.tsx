@@ -2,6 +2,7 @@ import { Avatar } from "./Avatar";
 import Head from "next/head";
 import { useConfig } from "nextra-theme-docs";
 import {AuthorByName} from "../content/authors";
+import { Title as BlogTitle } from "./Title";
 
 type BlogPostMeta = {
   title: string;
@@ -34,16 +35,6 @@ function Authors({ data }: { data: BlogPostMeta }) {
       </div>
     </div>
   );
-}
-
-function BlogTitle({ data }: { data: BlogPostMeta }) {
-  const title = data.title;
-
-  if (!title) {
-    return null;
-  }
-
-  return <h1 className="my-10 text-center font-bold leading-tight lg:text-3xl">{title}</h1>;
 }
 
 function BlogDate({ data }: { data: BlogPostMeta }) {
