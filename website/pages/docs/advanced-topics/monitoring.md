@@ -42,7 +42,6 @@ spec:
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_s3_buckets"]
   destinations: ["postgresql"]
-  enabled: true
   otel_endpoint: "localhost:4318"
   otel_endpoint_insecure: true # this is only in development when running local jaeger
   spec:
