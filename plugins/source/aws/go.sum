@@ -91,6 +91,8 @@ github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.14 h1:mXf/MQX2zcKpWTfI4YgH
 github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.14/go.mod h1:KJyzRVA5DkFaU4hVgKDoHiSrCobfmYP8UpRXlybTuTU=
 github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.14 h1:2jRKwxT+e40l1vepcIIenlrZBXrCWnx1Z2JkoUUqWrU=
 github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.14/go.mod h1:lg/1D90DDo2//C84mvygysHF4JRo+Vf/W5YbkHoeUk8=
+github.com/aws/aws-sdk-go-v2/service/appconfig v1.17.12 h1:Q3NZZovS0n7wjarVowJauA4J2gimuoO3sCmOIXcfj0o=
+github.com/aws/aws-sdk-go-v2/service/appconfig v1.17.12/go.mod h1:6gR+cgK0eeRijq2memTG03It8s9AQznYOtOP76cYTlQ=
 github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.21.3 h1:WtGKwrKlFfsSbWUzu7c0lU2gGWF1VIrxFs5l3MsEG10=
 github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.21.3/go.mod h1:ScZxu5HkhJX/1JYLO/lI3j+E2WdcedME8Gyv0+rQguE=
 github.com/aws/aws-sdk-go-v2/service/apprunner v1.17.12 h1:N+D3pKbf4KsQZqyjkp6wxHmOoDspMg1NwZ5yamU2m1s=
@@ -726,6 +728,7 @@ github.com/spf13/pflag v1.0.5/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An
 github.com/spf13/viper v1.3.2/go.mod h1:ZiWeW+zYFKm7srdB9IoDzzZXaJaI5eL9QjNiN/DMA2s=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.4.0/go.mod h1:YvHI0jy2hoMjB+UWwv71VJQ9isScKT/TqJzVSSt89Yw=
+github.com/stretchr/objx v0.5.0/go.mod h1:Yh+to48EsGEfYuaHDzXPcE3xhTkx73EhmCGUpEOglKo=
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=

@@ -27,7 +27,7 @@ import Head from "next/head";
 
 ## Purchase ${plugin.name} (${licenseName}${(plugin.availability === "unpublished") ? " - Pre-order" : ""})
 
-You will be redirected to a Stripe checkout page to complete your purchase in 5 seconds...
+You will be redirected to a Stripe checkout page to complete your purchase in 5 seconds…
 
 If the page does not redirect automatically, please click this link: [${plugin.buyLinks[licenseType]}](${plugin.buyLinks[licenseType]})
 `;
@@ -61,7 +61,7 @@ import Head from "next/head";
 
 ## Purchase ${policy.name} (${licenseName})
 
-You will be redirected to a Stripe checkout page to complete your purchase in 5 seconds...
+You will be redirected to a Stripe checkout page to complete your purchase in 5 seconds…
 
 If the page does not redirect automatically, please click this link: [${policy.buyLinks[licenseType]}](${policy.buyLinks[licenseType]})
 `;
