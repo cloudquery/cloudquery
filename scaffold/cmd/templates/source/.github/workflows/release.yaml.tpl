@@ -24,7 +24,6 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version-file: go.mod
-          cache: true
       - name: Run GoReleaser Dry-Run
         uses: goreleaser/goreleaser-action@v3
         with:
