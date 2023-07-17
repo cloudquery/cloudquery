@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
@@ -49,10 +50,6 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 	if err != nil {
 		t.Fatal(err)
 	}
-	inserts := messages.GetInserts()
-	records := inserts.GetRecordsForTable(table)
-	emptyColumns := schema.FindEmptyColumns(table, records)
-	if len(emptyColumns) > 0 {
-		t.Fatalf("empty columns: %v", emptyColumns)
-	}
+
+	plugin.ValidateNoEmptyColumns(t, tables, messages)
 }

@@ -12,6 +12,15 @@
       "toc": true
     }
   },
+  "register_for_cloud": {
+    "title": "Register for CloudQuery Cloud",
+    "type": "page",
+    "theme": {
+      "layout": "full",
+      "sidebar": false
+    },
+    "href": "/register_for_cloud"
+  },
   "integrations": {
     "title": "Integrations",
     "type": "page",
@@ -37,13 +46,17 @@
     "title": "Solutions",
     "type": "menu",
     "items": {
-      "blog": {
-        "title": "Blog",
-        "href": "/blog"
+      "cspm": {
+        "title": "Cloud Security Posture Management",
+        "href": "/solutions/open-source-cspm"
       },
       "policies": {
         "title": "Policies",
         "href": "/docs/core-concepts/policies"
+      },
+      "blog": {
+        "title": "Blog",
+        "href": "/blog"
       },
       "case-studies": {
         "title": "Case Studies",

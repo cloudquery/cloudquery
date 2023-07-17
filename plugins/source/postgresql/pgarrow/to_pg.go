@@ -4,7 +4,7 @@ import (
 	"strconv"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	cqtypes "github.com/cloudquery/plugin-sdk/v3/types"
+	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func ArrowToPg10(t arrow.DataType) string {

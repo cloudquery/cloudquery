@@ -41,7 +41,7 @@ module.exports = async ({github, context}) => {
     // We test the CLI on multiple OSes, so we need to wait for all of them
     if (actions.includes("cli")) {
         actions = actions.filter(action => action !== "cli")
-        actions = ["cli (large-ubuntu-monorepo)", "cli (large-windows-monorepo)", "cli (macos-latest)", ...actions]
+        actions = ["cli (large-ubuntu-monorepo)", "cli (large-windows-monorepo)", "cli (macos-latest-xl)", ...actions]
     }
 
     // Enforce policy tests for AWS,Azure and K8s plugins
