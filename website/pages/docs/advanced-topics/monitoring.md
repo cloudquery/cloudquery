@@ -22,7 +22,7 @@ CloudQuery supports [OpenTelemetry](https://opentelemetry.io/) tracing out of th
 
 To collect traces you need a collector that supports OpenTelemetry protocol, for example [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/). For example you can use [Jaeger](https://opentelemetry.io/docs/instrumentation/go/exporters/#jaeger) to visualize and analyze traces.
 
-To start jaeger locally you can use docker:
+To start Jaeger locally you can use Docker:
 
 ```bash
 docker run -d \
