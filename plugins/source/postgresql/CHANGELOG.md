@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-postgresql-v2.0.0...plugins-source-postgresql-v2.0.1) (2023-07-17)
+
+
+### Bug Fixes
+
+* Fail if can't read current_schema or current_database ([#12238](https://github.com/cloudquery/cloudquery/issues/12238)) ([8a39440](https://github.com/cloudquery/cloudquery/commit/8a39440beed178a3df8e67a2747d19bd962a84c3))
+
 ## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-postgresql-v1.2.1...plugins-source-postgresql-v2.0.0) (2023-07-17)
 
 
