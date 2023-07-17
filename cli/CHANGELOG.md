@@ -5,6 +5,24 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.9.2](https://github.com/cloudquery/cloudquery/compare/cli-v3.9.1...cli-v3.9.2) (2023-07-14)
+
+
+### Bug Fixes
+
+* **cmd-migrate:** Set `NoConnection` to true ([#12172](https://github.com/cloudquery/cloudquery/issues/12172)) ([f21dc42](https://github.com/cloudquery/cloudquery/commit/f21dc423030a4421567fd22a690e2c03825a07dd))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.7.0 ([#12166](https://github.com/cloudquery/cloudquery/issues/12166)) ([94390dd](https://github.com/cloudquery/cloudquery/commit/94390dde19d0c37fee9d035219d62f6ae7edb127))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.7.1 ([#12178](https://github.com/cloudquery/cloudquery/issues/12178)) ([8e88bf3](https://github.com/cloudquery/cloudquery/commit/8e88bf3c4bee1d63da61d0463038b645cfae8187))
+
+## [3.9.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.9.0...cli-v3.9.1) (2023-07-13)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 0a52533 ([#12091](https://github.com/cloudquery/cloudquery/issues/12091)) ([927cefa](https://github.com/cloudquery/cloudquery/commit/927cefa943ec3969a2ec39b628bc1eba545a2108))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to a2a76eb ([#12104](https://github.com/cloudquery/cloudquery/issues/12104)) ([311f474](https://github.com/cloudquery/cloudquery/commit/311f4749af2491a606f29483190717a5fe238da6))
+* Improve version mismatch errors to include plugin type ([#12151](https://github.com/cloudquery/cloudquery/issues/12151)) ([137b0fe](https://github.com/cloudquery/cloudquery/commit/137b0fef57ebad7678ea5fcf6fafeb16abd18247))
+
 ## [3.9.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.8.1...cli-v3.9.0) (2023-07-07)
 
 

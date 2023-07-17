@@ -53,11 +53,15 @@ export default function PluginPricingCard({license, preOrder, buyLink} : {licens
                     {check}
                     <span><strong>Pre-order Discount</strong>: Normal price {license.attributes.NormalPrice}</span>
                 </li> : null }
+            <li className="flex items-center space-x-3">
+                {check}
+                <span><strong>Peace of Mind Guarantee</strong>: 14-day money-back guarantee</span>
+            </li>
         </ul>
         <div className="relative h-full">
             <div className="absolute inset-x-0 bottom-0">
                 <a href={buyLink}
-                   className="btn btn-purple w-full block"
+                   className="btn btn-green w-full block"
                 >
                     {preOrder ? "Pre-order Now" : "Buy Now"}
                 </a>

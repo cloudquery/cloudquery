@@ -60,7 +60,8 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 		return err
 	}
 	if _, err := sourcePbClient.Init(ctx, &plugin.Init_Request{
-		Spec: specBytes,
+		Spec:         specBytes,
+		NoConnection: true,
 	}); err != nil {
 		return err
 	}

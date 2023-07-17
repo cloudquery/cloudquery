@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	cqtypes "github.com/cloudquery/plugin-sdk/v3/types"
+	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 var (

@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 const defaultPrecision = 38
@@ -49,14 +49,16 @@ func SQLType(t arrow.DataType) string {
 	case *arrow.Int8Type, *arrow.Int16Type, *arrow.Int32Type, *arrow.Int64Type,
 		*arrow.Uint8Type, *arrow.Uint16Type, *arrow.Uint32Type, *arrow.Uint64Type:
 		return "NUMBER(38)"
-	case *arrow.Float16Type, *arrow.Float32Type, *arrow.Float64Type:
+	case *arrow.Float16Type, *arrow.Float32Type:
+		return "binary_float"
+	case *arrow.Float64Type:
 		return "binary_double"
 	case *types.UUIDType:
 		return "raw(16)"
 	case *arrow.BinaryType, *arrow.LargeBinaryType, *arrow.FixedSizeBinaryType:
 		return "blob"
 	case *arrow.TimestampType:
-		return "timestamp"
+		return "timestamp(9)"
 	default:
 		return "clob"
 	}
@@ -78,7 +80,9 @@ func SchemaType(dataType string) arrow.DataType {
 		return types.ExtensionTypes.UUID
 	case "char(1)":
 		return arrow.FixedWidthTypes.Boolean
-	case "float", "binary_float", "binary_double":
+	case "binary_float":
+		return arrow.PrimitiveTypes.Float32
+	case "float", "binary_double":
 		return arrow.PrimitiveTypes.Float64
 	case "binary", "blob", "raw", "long raw":
 		return arrow.BinaryTypes.Binary

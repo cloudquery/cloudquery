@@ -3,7 +3,8 @@ package client
 import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/types"
+	go_ora "github.com/sijms/go-ora/v2"
 )
 
 func GetValue(arr arrow.Array, i int) (any, error) {
@@ -50,7 +51,9 @@ func GetValue(arr arrow.Array, i int) (any, error) {
 		if err != nil {
 			return nil, err
 		}
-		return toTime(a.Value(i)), nil
+		t := toTime(a.Value(i))
+		asTimeStamp := go_ora.TimeStamp(t)
+		return asTimeStamp, nil
 	case *types.UUIDArray:
 		bUUID, err := a.Value(i).MarshalBinary()
 		if err != nil {
