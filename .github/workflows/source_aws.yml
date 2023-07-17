@@ -91,7 +91,7 @@ jobs:
             ${{ runner.os }}-go-1.20.5-release-cache-plugins-source-aws
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v3
         with:
           go-version-file: plugins/source/aws/go.mod
       - name: Install GoReleaser
