@@ -798,7 +798,7 @@ export const ALL_PLUGINS: Plugin[] = [
     },
   },
   {
-    name: "Hashicorp Vault",
+    name: "HashiCorp Vault",
     id: "hashicorp-vault",
     href: "https://github.com/cloudquery/cloudquery/issues/6738",
     kind: "source",
@@ -941,7 +941,7 @@ export const ALL_PLUGINS: Plugin[] = [
     },
   },
   {
-    name: "Paypal",
+    name: "PayPal",
     id: "paypal",
     href: "https://github.com/cloudquery/cloudquery/issues/6781",
     kind: "source",
@@ -1144,7 +1144,7 @@ export const ALL_PLUGINS: Plugin[] = [
     },
   },
   {
-    name: "Twilio Sendgrid",
+    name: "Twilio SendGrid",
     id: "sendgrid",
     href: "https://github.com/cloudquery/cloudquery/issues/9039",
     kind: "source",
