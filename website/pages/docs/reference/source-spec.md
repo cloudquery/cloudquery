@@ -122,7 +122,7 @@ A flag that indicates whether the value of `_cq_id` should be a UUID that is a h
 Supported by source plugins released on 2023-03-08 and later
 
 <!-- vale off -->
-### otel_endpoint
+### otel_endpoint (preview)
 <!-- vale on -->
 
 (`string`, optional, introduced in CLI `v3.10.0`)
