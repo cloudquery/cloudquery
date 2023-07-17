@@ -61,7 +61,7 @@ import Head from "next/head";
 
 ## Purchase ${policy.name} (${licenseName})
 
-You will be redirected to a Stripe checkout page to complete your purchase in 5 seconds...
+You will be redirected to a Stripe checkout page to complete your purchase in 5 seconds…
 
 If the page does not redirect automatically, please click this link: [${policy.buyLinks[licenseType]}](${policy.buyLinks[licenseType]})
 `;
