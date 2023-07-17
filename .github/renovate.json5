@@ -30,7 +30,7 @@
   gomod: {
     fileMatch: ["go\\.mod\\.tpl$"],
   },
-  github-actions: {
+  "github-actions": {
     fileMatch: ["\\.yaml\\.tpl$"],
   },
 }
