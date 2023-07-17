@@ -96,6 +96,8 @@ s3:
   - plugins/destination/s3/**/*
 salesforce:
   - plugins/source/salesforce/**/*
+scaffold:
+  - scaffold/**/*
 shopify:
   - plugins/source/shopify/**/*
 slack:
