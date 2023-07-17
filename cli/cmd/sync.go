@@ -98,54 +98,69 @@ func sync(cmd *cobra.Command, args []string) error {
 	}
 	sources := specReader.Sources
 	destinations := specReader.Destinations
-	opts := []managedplugin.Option{
-		managedplugin.WithLogger(log.Logger),
-	}
-	if cqDir != "" {
-		opts = append(opts, managedplugin.WithDirectory(cqDir))
-	}
-	if disableSentry {
-		opts = append(opts, managedplugin.WithNoSentry())
-	}
-	sourcePluginConfigs := make([]managedplugin.Config, 0, len(sources))
-	for _, source := range sources {
-		sourcePluginConfigs = append(sourcePluginConfigs, managedplugin.Config{
-			Name:     source.Name,
-			Registry: SpecRegistryToPlugin(source.Registry),
-			Version:  source.Version,
-			Path:     source.Path,
-		})
-	}
-
-	destinationPluginConfigs := make([]managedplugin.Config, 0, len(destinations))
-	for _, destination := range destinations {
-		destinationPluginConfigs = append(destinationPluginConfigs, managedplugin.Config{
-			Name:     destination.Name,
-			Registry: SpecRegistryToPlugin(destination.Registry),
-			Version:  destination.Version,
-			Path:     destination.Path,
-		})
-	}
-
-	sourcePluginClients, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, sourcePluginConfigs, opts...)
-	if err != nil {
-		return err
-	}
+	sourcePluginClients := make(managedplugin.Clients, 0)
 	defer func() {
 		if err := sourcePluginClients.Terminate(); err != nil {
 			fmt.Println(err)
 		}
 	}()
-
-	destinationPluginClients, err := managedplugin.NewClients(ctx, managedplugin.PluginDestination, destinationPluginConfigs, opts...)
-	if err != nil {
-		return err
+	for _, source := range sources {
+		opts := []managedplugin.Option{
+			managedplugin.WithLogger(log.Logger),
+		}
+		if cqDir != "" {
+			opts = append(opts, managedplugin.WithDirectory(cqDir))
+		}
+		if disableSentry {
+			opts = append(opts, managedplugin.WithNoSentry())
+		}
+		if source.OtelEndpoint != "" {
+			opts = append(opts, managedplugin.WithOtelEndpoint(source.OtelEndpoint))
+		}
+		if source.OtelEndpointInsecure {
+			opts = append(opts, managedplugin.WithOtelEndpointInsecure())
+		}
+		cfg := managedplugin.Config{
+			Name:     source.Name,
+			Registry: SpecRegistryToPlugin(source.Registry),
+			Version:  source.Version,
+			Path:     source.Path,
+		}
+		sourcePluginClient, err := managedplugin.NewClient(ctx, managedplugin.PluginSource, cfg, opts...)
+		if err != nil {
+			return err
+		}
+		sourcePluginClients = append(sourcePluginClients, sourcePluginClient)
 	}
+
+	destinationPluginClients := make(managedplugin.Clients, 0)
 	defer func() {
 		if err := destinationPluginClients.Terminate(); err != nil {
 			fmt.Println(err)
 		}
 	}()
+	for _, destination := range destinations {
+		opts := []managedplugin.Option{
+			managedplugin.WithLogger(log.Logger),
+		}
+		if cqDir != "" {
+			opts = append(opts, managedplugin.WithDirectory(cqDir))
+		}
+		if disableSentry {
+			opts = append(opts, managedplugin.WithNoSentry())
+		}
+		cfg := managedplugin.Config{
+			Name:     destination.Name,
+			Registry: SpecRegistryToPlugin(destination.Registry),
+			Version:  destination.Version,
+			Path:     destination.Path,
+		}
+		destPluginClient, err := managedplugin.NewClient(ctx, managedplugin.PluginDestination, cfg, opts...)
+		if err != nil {
+			return err
+		}
+		destinationPluginClients = append(destinationPluginClients, destPluginClient)
+	}
 
 	for _, source := range sources {
 		cl := sourcePluginClients.ClientByName(source.Name)
