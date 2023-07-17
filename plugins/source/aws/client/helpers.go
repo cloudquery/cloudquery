@@ -42,7 +42,8 @@ type DetailResolverFunc func(ctx context.Context, meta schema.ClientMeta, result
 
 const (
 	ApigatewayService           AWSService = "apigateway"
-	Athena                      AWSService = "athena"
+	AppconfigService            AWSService = "appconfig"
+	AthenaService               AWSService = "athena"
 	CloudformationService       AWSService = "cloudformation"
 	CloudfrontService           AWSService = "cloudfront"
 	CognitoIdentityService      AWSService = "cognito-identity"

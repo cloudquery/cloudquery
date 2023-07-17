@@ -116,7 +116,7 @@ func resolveAthenaDataCatalogTags(ctx context.Context, meta schema.ClientMeta, r
 func createDataCatalogArn(cl *client.Client, catalogName string) string {
 	return arn.ARN{
 		Partition: cl.Partition,
-		Service:   string(client.Athena),
+		Service:   string(client.AthenaService),
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
 		Resource:  fmt.Sprintf("datacatalog/%s", catalogName),
