@@ -115,7 +115,7 @@ func resolveAthenaWorkGroupTags(ctx context.Context, meta schema.ClientMeta, res
 func createWorkGroupArn(cl *client.Client, groupName string) string {
 	return arn.ARN{
 		Partition: cl.Partition,
-		Service:   string(client.Athena),
+		Service:   string(client.AthenaService),
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
 		Resource:  fmt.Sprintf("workgroup/%s", groupName),
