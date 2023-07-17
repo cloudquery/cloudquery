@@ -1,6 +1,6 @@
 ---
 title: Monitoring CloudQuery
-description: Short walkthrough on how to use open telemetry to monitor CloudQuery Syncs
+description: Short walkthrough on how to use OpenTelemetry to monitor CloudQuery Syncs
 ---
 
 # Monitoring
