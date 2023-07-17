@@ -115,17 +115,11 @@ func (c *Client) getValueForElasticsearch(col arrow.Array, i int) any {
 	case *cqtypes.JSONArray:
 		return col.ValueStr(i)
 	case array.ListLike:
-		elems := make([]any, 0, col.Len())
-		for j := 0; j < col.Len(); j++ {
-			from, to := col.ValueOffsets(j)
-			slc := array.NewSlice(col.ListValues(), from, to)
-			for k := 0; k < slc.Len(); k++ {
-				if slc.IsNull(k) {
-					elems = append(elems, nil)
-				} else {
-					elems = append(elems, c.getValueForElasticsearch(slc, k))
-				}
-			}
+		from, to := col.ValueOffsets(i)
+		slc := array.NewSlice(col.ListValues(), from, to)
+		elems := make([]any, slc.Len())
+		for k := 0; k < slc.Len(); k++ {
+			elems[k] = c.getValueForElasticsearch(slc, k)
 		}
 		return elems
 	case *array.Timestamp:
