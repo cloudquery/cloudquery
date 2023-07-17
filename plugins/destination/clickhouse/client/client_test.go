@@ -45,7 +45,7 @@ func TestPlugin(t *testing.T) {
 		},
 		plugin.WithTestSourceAllowNull(types.CanBeNullable),
 		plugin.WithTestDataOptions(schema.TestSourceOptions{
-			SkipStructs: true, // panic during unmarshal
+			SkipStructs: true, // panic during marshal during diff
 			SkipMaps:    true, // ordering doesn't match when read back
 		}),
 	)
