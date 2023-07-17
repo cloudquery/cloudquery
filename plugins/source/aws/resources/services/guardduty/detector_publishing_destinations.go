@@ -20,7 +20,6 @@ func detectorPublishingDestinations() *schema.Table {
 		Description: `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_DescribePublishingDestination.html`,
 		Resolver:    fetchGuarddutyDetectorPublishingDestinations,
 		Transform:   transformers.TransformWithStruct(&types.Destination{}, transformers.WithPrimaryKeys("DestinationId")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
 		Columns: []schema.Column{
 			{
 				Name:       "detector_arn",

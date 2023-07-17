@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/PagerDuty/go-pagerduty"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
@@ -49,7 +50,7 @@ func PagerdutyMockTestHelper(t *testing.T, table *schema.Table, buildMockHttpCli
 	pagerdutyClient := pagerduty.NewClient("test_auth_token")
 	pagerdutyClient.HTTPClient = buildMockHttpClient()
 
-	schedulerClient, err := New(l, spec, WithClient(pagerdutyClient))
+	c, err := New(l, spec, WithClient(pagerdutyClient))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -58,17 +59,12 @@ func PagerdutyMockTestHelper(t *testing.T, table *schema.Table, buildMockHttpCli
 	if err := transformers.TransformTables(tables); err != nil {
 		t.Fatal(err)
 	}
-	sc := scheduler.NewScheduler(scheduler.WithLogger(l))
-	messages, err := sc.SyncAll(context.Background(), schedulerClient, tables)
+	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
+	messages, err := sched.SyncAll(context.Background(), c, tables)
 	if err != nil {
-		t.Fatal(err)
+		t.Fatalf("failed to sync: %v", err)
 	}
-	inserts := messages.GetInserts()
-	records := inserts.GetRecordsForTable(table)
-	emptyColumns := schema.FindEmptyColumns(table, records)
-	if len(emptyColumns) > 0 {
-		t.Fatalf("empty columns: %v", emptyColumns)
-	}
+	plugin.ValidateNoEmptyColumns(t, tables, messages)
 }
 
 func (mockHttpClient *MockHttpClient) Do(req *http.Request) (*http.Response, error) {

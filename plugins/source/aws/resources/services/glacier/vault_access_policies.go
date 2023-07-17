@@ -20,7 +20,6 @@ func vaultAccessPolicies() *schema.Table {
 		Description: `https://docs.aws.amazon.com/amazonglacier/latest/dev/api-GetVaultAccessPolicy.html`,
 		Resolver:    fetchGlacierVaultAccessPolicies,
 		Transform:   transformers.TransformWithStruct(&types.VaultAccessPolicy{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "glacier"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -22,7 +22,6 @@ func vaultRecoveryPoints() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/aws-backup/latest/devguide/API_RecoveryPointByBackupVault.html`,
 		Resolver:    fetchBackupVaultRecoveryPoints,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "backup"),
 		Transform:   transformers.TransformWithStruct(&types.RecoveryPointByBackupVault{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -20,7 +20,6 @@ func webACLs() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/waf/latest/APIReference/API_GetWebACLForResource.html`,
 		Resolver:    resolveLoadBalancerWebACL,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "waf-regional"),
 		Transform:   transformers.TransformWithStruct(&wafv2types.WebACL{}, transformers.WithPrimaryKeys("ARN")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

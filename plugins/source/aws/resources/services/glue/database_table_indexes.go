@@ -15,7 +15,6 @@ func databaseTableIndexes() *schema.Table {
 		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_PartitionIndexDescriptor.html`,
 		Resolver:    fetchGlueDatabaseTableIndexes,
 		Transform:   transformers.TransformWithStruct(&types.PartitionIndexDescriptor{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

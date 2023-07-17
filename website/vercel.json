@@ -333,6 +333,14 @@
     {
       "source": "/buy/k8s_nsa_cisa_v1_bigquery",
       "destination": "https://buy.stripe.com/fZedQU1rHgW3cKI9AW"
+    },
+    {
+      "source": "/new-source-plugin",
+      "destination": "/integrations"
+    },
+    {
+      "source": "/register_for_cloud",
+      "destination": "https://forms.gle/g8LtfCDD8qy9T6CV8"
     }
   ]
 }

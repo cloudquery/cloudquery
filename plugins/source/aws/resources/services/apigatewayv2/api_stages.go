@@ -20,7 +20,6 @@ func apiStages() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/apis-apiid-stages.html`,
 		Resolver:    fetchApigatewayv2ApiStages,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.Stage{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

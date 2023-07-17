@@ -18,7 +18,6 @@ func launchTemplateVersions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_LaunchTemplateVersion.html`,
 		Resolver:    fetchEc2LaunchTemplateVersions,
 		Transform:   transformers.TransformWithStruct(&types.LaunchTemplateVersion{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

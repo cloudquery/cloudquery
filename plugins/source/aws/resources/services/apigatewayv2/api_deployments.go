@@ -20,7 +20,6 @@ func apiDeployments() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/apis-apiid-deployments.html`,
 		Resolver:    fetchApigatewayv2ApiDeployments,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.Deployment{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

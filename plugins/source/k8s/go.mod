@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
-	github.com/cloudquery/plugin-sdk/v4 v4.0.0
+	github.com/cloudquery/plugin-sdk/v4 v4.1.1
 	github.com/cockroachdb/cockroachdb-parser v0.0.0-20230515042840-c9c144eab71a
 	github.com/golang/mock v1.6.0
 	github.com/google/gnostic v0.6.9
@@ -19,12 +19,12 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230710001530-a2a76ebbb85f
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230717001540-8e2219bec8ee
 
 require (
 	github.com/biogo/store v0.0.0-20201120204734-aad293a2328f // indirect
 	github.com/blevesearch/snowballstem v0.9.0 // indirect
-	github.com/cloudquery/plugin-pb-go v1.6.0 // indirect
+	github.com/cloudquery/plugin-pb-go v1.7.1 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/cockroachdb/apd/v3 v3.1.0 // indirect
 	github.com/cockroachdb/errors v1.9.0 // indirect

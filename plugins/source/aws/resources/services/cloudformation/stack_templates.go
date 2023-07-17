@@ -22,7 +22,6 @@ func stackTemplates() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_GetTemplate.html`,
 		Resolver:    fetchCloudformationStackTemplates,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "cloudformation"),
 		Transform:   transformers.TransformWithStruct(&cloudformation.GetTemplateOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

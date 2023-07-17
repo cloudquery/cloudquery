@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
-	github.com/cloudquery/plugin-sdk/v4 v4.6.1-rc1
+	github.com/cloudquery/plugin-sdk/v4 v4.1.1
 	github.com/goccy/go-json v0.10.2
 	github.com/rs/zerolog v1.29.1
 	github.com/snowflakedb/gosnowflake v1.6.19
@@ -12,7 +12,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230710001530-a2a76ebbb85f
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230717001540-8e2219bec8ee
 
 require (
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
@@ -23,20 +23,20 @@ require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/apache/arrow/go/v10 v10.0.1 // indirect
 	github.com/apache/thrift v0.16.0 // indirect
-	github.com/aws/aws-sdk-go-v2 v1.18.1 // indirect
+	github.com/aws/aws-sdk-go-v2 v1.19.0 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect
-	github.com/aws/aws-sdk-go-v2/credentials v1.13.26 // indirect
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.71 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.34 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.28 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.26 // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.13.27 // indirect
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.72 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.35 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.29 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.27 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.29 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.28 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.14.3 // indirect
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.36.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.30 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.29 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.14.4 // indirect
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.37.0 // indirect
 	github.com/aws/smithy-go v1.13.5 // indirect
-	github.com/cloudquery/plugin-pb-go v1.6.0 // indirect
+	github.com/cloudquery/plugin-pb-go v1.7.1 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/danieljoos/wincred v1.1.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect

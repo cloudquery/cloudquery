@@ -21,7 +21,6 @@ func diskSnapshots() *schema.Table {
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_DiskSnapshot.html`,
 		Resolver:    fetchLightsailDiskSnapshots,
 		Transform:   transformers.TransformWithStruct(&types.DiskSnapshot{}, transformers.WithPrimaryKeys("Arn")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lightsail"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

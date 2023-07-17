@@ -19,7 +19,6 @@ func databaseEvents() *schema.Table {
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_RelationalDatabaseEvent.html`,
 		Resolver:    fetchLightsailDatabaseEvents,
 		Transform:   transformers.TransformWithStruct(&types.RelationalDatabaseEvent{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lightsail"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

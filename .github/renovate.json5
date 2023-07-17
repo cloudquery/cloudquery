@@ -20,6 +20,11 @@
       matchPackageNames: ["github.com/jackc/pgx/v4"],
       allowedVersions: "<5",
     },
+    {
+      matchPackageNames: ["github.com/cloudquery/plugin-pb-go"],
+      matchFileNames: ["plugins/**"],
+      enabled: false,
+    },
   ],
   ignorePaths: [],
   gomod: {

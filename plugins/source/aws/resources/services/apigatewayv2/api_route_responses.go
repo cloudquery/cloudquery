@@ -20,7 +20,6 @@ func apiRouteResponses() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/apis-apiid-routes-routeid-routeresponses.html`,
 		Resolver:    fetchApigatewayv2ApiRouteResponses,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.RouteResponse{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

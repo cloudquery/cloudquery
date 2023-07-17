@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 // this returns the following table in sorted manner:
@@ -65,6 +65,9 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 		return nil, err
 	}
 	defer rows.Close()
+
+	tableMap := make(map[string]*schema.Table)
+
 	for rows.Next() {
 		var ordinalPosition int
 		var tableName, columnName, columnType, pkName string
@@ -72,13 +75,16 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 		if err := rows.Scan(&ordinalPosition, &tableName, &columnName, &columnType, &isPrimaryKey, &notNull, &isUnique, &pkName); err != nil {
 			return nil, err
 		}
-		if ordinalPosition == 1 {
-			tables = append(tables, &schema.Table{
+		table := tableMap[tableName]
+		if table == nil {
+			table = &schema.Table{
 				Name:    tableName,
 				Columns: make([]schema.Column, 0),
-			})
+			}
+			tableMap[tableName] = table
+			tables = append(tables, table)
 		}
-		table := tables[len(tables)-1]
+
 		if pkName != "" {
 			table.PkConstraintName = pkName
 		}
