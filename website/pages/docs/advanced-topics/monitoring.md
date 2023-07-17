@@ -8,7 +8,7 @@ description: Short walkthrough on how to use OpenTelemetry to monitor CloudQuery
 Monitoring CloudQuery can be done in a number of main ways:
 
 - Logging
-- Open-Telemetry
+- OpenTelemetry
 
 ## Logging
 
