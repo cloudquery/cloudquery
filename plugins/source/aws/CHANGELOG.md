@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [20.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v20.0.1...plugins-source-aws-v20.1.0) (2023-07-17)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_appconfig_applications` was added
+- Table `aws_appconfig_configuration_profiles` was added
+- Table `aws_appconfig_environments` was added
+- Table `aws_appconfig_hosted_configuration_versions` was added
+- Table `aws_appstream_app_blocks`: column added with name `app_block_errors` and type `json`
+- Table `aws_appstream_app_blocks`: column added with name `packaging_type` and type `utf8`
+- Table `aws_appstream_app_blocks`: column added with name `post_setup_script_details` and type `json`
+- Table `aws_appstream_app_blocks`: column added with name `state` and type `utf8`
+- Table `aws_ec2_instance_types`: column added with name `nitro_enclaves_support` and type `utf8`
+
 ### Features
 
 * **aws:** Add support for `App Config` ([#12150](https://github.com/cloudquery/cloudquery/issues/12150)) ([48038aa](https://github.com/cloudquery/cloudquery/commit/48038aa882c7ec33e47cf4fabf299249ccb10683))
