@@ -16,7 +16,7 @@ CloudQuery is utilizing structured [logging](../reference/cli/cloudquery) (in pl
 
 ## OpenTelemetry (Preview)
 
-ELT workloads can be long running and sometimes it is necessary to understand better what calls taking the most time to potentially optimize those on the plugin side, ignore them or split them to a different workload.
+ELT workloads can be long running and sometimes it is necessary to better understand what calls are taking the most time; to potentially optimize those on the plugin side, ignore them or split them to a different workload.
 
 CloudQuery supports [OpenTelemetry](https://opentelemetry.io/) tracing out of the box and can be enabled easily via [configuration](../reference/source-spec).
 
