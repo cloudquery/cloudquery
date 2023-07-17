@@ -27,7 +27,6 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 	if testOpts.Region == "" {
 		testOpts.Region = "us-east-1"
 	}
-
 	t.Helper()
 	ctrl := gomock.NewController(t)
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
