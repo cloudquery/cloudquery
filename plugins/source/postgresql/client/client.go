@@ -149,6 +149,9 @@ func (c *Client) currentDatabase(ctx context.Context) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	if db == "" {
+		return "", fmt.Errorf("failed to get CURRENT_DATABASE")
+	}
 	return db, nil
 }
 
@@ -158,11 +161,14 @@ func (c *Client) currentSchema(ctx context.Context) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	if schemaName == "" {
+		return "", fmt.Errorf("failed to get CURRENT_SCHEMA")
+	}
 
 	return schemaName, nil
 }
 
-func (c Client) Tables(ctx context.Context, opts plugin.TableOptions) (schema.Tables, error) {
+func (c Client) Tables(_ context.Context, opts plugin.TableOptions) (schema.Tables, error) {
 	return c.tables.FilterDfs(opts.Tables, opts.SkipTables, opts.SkipDependentTables)
 }
 
