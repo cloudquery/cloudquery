@@ -24,10 +24,9 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 	if err != nil {
 		return fmt.Errorf("failed to refresh index before read: %w", err)
 	}
-	io.Copy(io.Discard, resp.Body)
-	resp.Body.Close()
+	_, _ = io.Copy(io.Discard, resp.Body)
+	_ = resp.Body.Close()
 
-	// do the read
 	resp, err = c.typedClient.Search().Index(index).Request(&search.Request{
 		Query: &types.Query{
 			MatchAll: &types.MatchAllQuery{},
@@ -36,14 +35,19 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 	if err != nil {
 		return fmt.Errorf("failed to read: %w", err)
 	}
+
 	defer resp.Body.Close()
+	if resp.StatusCode > 299 {
+		data, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("failed to read: %s: %s", resp.Status, string(data))
+	}
 
 	var result struct {
 		Hits struct {
 			Hits []struct {
 				Source map[string]any `json:"_source"`
-			}
-		}
+			} `json:"hits"`
+		} `json:"hits"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return fmt.Errorf("failed to decode response body: %w", err)

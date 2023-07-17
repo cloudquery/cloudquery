@@ -91,14 +91,13 @@ func (c *Client) writeRecord(ctx context.Context, table *schema.Table, record ar
 		return fmt.Errorf("failed to read bulk response: %w", err)
 	}
 	var bulkResp bulkResponse
-	err = json.Unmarshal(b, &bulkResp)
-	if err != nil {
+	if err := json.Unmarshal(b, &bulkResp); err != nil {
 		return fmt.Errorf("failed to unmarshal bulk response: %w", err)
 	}
 	if bulkResp.Errors {
 		return fmt.Errorf("bulk request had errors: %s", string(b))
 	}
-	return err
+	return nil
 }
 
 func (c *Client) getValueForElasticsearch(col arrow.Array, i int) any {

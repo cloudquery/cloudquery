@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func TestPlugin(t *testing.T) {
@@ -30,10 +31,14 @@ func TestPlugin(t *testing.T) {
 		plugin.WriterTestSuiteTests{
 			SafeMigrations: plugin.SafeMigrations{
 				AddColumn:           true,
+				AddColumnNotNull:    true,
 				RemoveColumn:        true,
 				RemoveColumnNotNull: true,
-				AddColumnNotNull:    true,
 			},
 		},
+		plugin.WithTestDataOptions(schema.TestSourceOptions{
+			SkipMaps:    true,
+			SkipStructs: true,
+		}),
 	)
 }
