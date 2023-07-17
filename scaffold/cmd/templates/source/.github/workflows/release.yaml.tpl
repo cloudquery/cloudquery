@@ -26,12 +26,12 @@ jobs:
           go-version-file: go.mod
           cache: true
       - name: Run GoReleaser Dry-Run
-        uses: goreleaser/goreleaser-action@v3
+        uses: goreleaser/goreleaser-action@v4
         with:
           version: latest
           args: release --clean --skip-validate --skip-publish --skip-sign
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v3
+        uses: goreleaser/goreleaser-action@v4
         with:
           version: latest
           args: release --clean --skip-sign
