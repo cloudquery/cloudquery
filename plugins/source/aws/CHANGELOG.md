@@ -9,6 +9,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [21.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v20.1.0...plugins-source-aws-v21.0.0) (2023-07-18)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_servicecatalog_launch_paths` was added
+- Table `aws_servicecatalog_portfolios`: column `created_time` removed from table (:warning: breaking)
+- Table `aws_servicecatalog_portfolios`: column `description` removed from table (:warning: breaking)
+- Table `aws_servicecatalog_portfolios`: column `display_name` removed from table (:warning: breaking)
+- Table `aws_servicecatalog_portfolios`: column `id` removed from table (:warning: breaking)
+- Table `aws_servicecatalog_portfolios`: column `provider_name` removed from table (:warning: breaking)
+- Table `aws_servicecatalog_portfolios`: column added with name `budgets` and type `json`
+- Table `aws_servicecatalog_portfolios`: column added with name `portfolio_detail` and type `json`
+- Table `aws_servicecatalog_portfolios`: column added with name `region` and type `utf8`
+- Table `aws_servicecatalog_portfolios`: column added with name `tag_options` and type `json`
+- Table `aws_servicecatalog_products`: column `created_time` removed from table (:warning: breaking)
+- Table `aws_servicecatalog_products`: column `product_arn` removed from table (:warning: breaking)
+- Table `aws_servicecatalog_products`: column `product_view_summary` removed from table (:warning: breaking)
+- Table `aws_servicecatalog_products`: column `source_connection` removed from table (:warning: breaking)
+- Table `aws_servicecatalog_products`: column `status` removed from table (:warning: breaking)
+- Table `aws_servicecatalog_products`: column added with name `budgets` and type `json`
+- Table `aws_servicecatalog_products`: column added with name `product_view_detail` and type `json`
+- Table `aws_servicecatalog_products`: column added with name `provisioning_artifact_summaries` and type `json`
+- Table `aws_servicecatalog_products`: column added with name `region` and type `utf8`
+- Table `aws_servicecatalog_products`: column added with name `tag_options` and type `json`
+- Table `aws_servicecatalog_provisioned_products`: column added with name `region` and type `utf8`
+- Table `aws_servicecatalog_provisioning_artifacts` was added
+- Table `aws_servicecatalog_provisioning_parameters` was added
+
 ### ⚠ BREAKING CHANGES
 
 * **aws:** Fix Service Catalog resources ([#12117](https://github.com/cloudquery/cloudquery/issues/12117))
