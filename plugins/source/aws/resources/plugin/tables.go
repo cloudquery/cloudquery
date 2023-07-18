@@ -165,6 +165,7 @@ func getTables() schema.Tables {
 		autoscaling.ScheduledActions(),
 		autoscalingplans.Plans(),
 		backup.GlobalSettings(),
+		backup.Jobs(),
 		backup.Plans(),
 		backup.ProtectedResources(),
 		backup.RegionSettings(),
