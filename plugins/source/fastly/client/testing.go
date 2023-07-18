@@ -7,8 +7,10 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/fastly/client/services"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/fastly/go-fastly/v7/fastly"
 	"github.com/golang/mock/gomock"
 	"github.com/rs/zerolog"
@@ -33,13 +35,13 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 		regions:  []string{opts.Region},
 	}
 	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
-	messages, err := sched.SyncAll(context.Background(), c, schema.Tables{table})
+	tables := schema.Tables{table}
+	if err := transformers.TransformTables(tables); err != nil {
+		t.Fatal(err)
+	}
+	messages, err := sched.SyncAll(context.Background(), c, tables)
 	if err != nil {
 		t.Fatalf("failed to sync: %v", err)
 	}
-	records := messages.GetInserts().GetRecordsForTable(table)
-	emptyColumns := schema.FindEmptyColumns(table, records)
-	if len(emptyColumns) > 0 {
-		t.Fatalf("empty columns: %v", emptyColumns)
-	}
+	plugin.ValidateNoEmptyColumns(t, tables, messages)
 }

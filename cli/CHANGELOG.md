@@ -5,6 +5,27 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.10.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.9.2...cli-v3.10.0) (2023-07-18)
+
+
+### Features
+
+* **cli:** Add OpenTelemetry support via otel_endpoint ([#12268](https://github.com/cloudquery/cloudquery/issues/12268)) ([3091166](https://github.com/cloudquery/cloudquery/commit/3091166598c9ed665d3b7354e49f6333f40b8109))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 8e2219b ([#12220](https://github.com/cloudquery/cloudquery/issues/12220)) ([24e8fb5](https://github.com/cloudquery/cloudquery/commit/24e8fb588740896fe11a660e8b80231e741b753c))
+
+## [3.9.2](https://github.com/cloudquery/cloudquery/compare/cli-v3.9.1...cli-v3.9.2) (2023-07-14)
+
+
+### Bug Fixes
+
+* **cmd-migrate:** Set `NoConnection` to true ([#12172](https://github.com/cloudquery/cloudquery/issues/12172)) ([f21dc42](https://github.com/cloudquery/cloudquery/commit/f21dc423030a4421567fd22a690e2c03825a07dd))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.7.0 ([#12166](https://github.com/cloudquery/cloudquery/issues/12166)) ([94390dd](https://github.com/cloudquery/cloudquery/commit/94390dde19d0c37fee9d035219d62f6ae7edb127))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.7.1 ([#12178](https://github.com/cloudquery/cloudquery/issues/12178)) ([8e88bf3](https://github.com/cloudquery/cloudquery/commit/8e88bf3c4bee1d63da61d0463038b645cfae8187))
+
 ## [3.9.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.9.0...cli-v3.9.1) (2023-07-13)
 
 

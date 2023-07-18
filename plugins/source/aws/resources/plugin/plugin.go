@@ -20,6 +20,7 @@ var awsExceptions = map[string]string{
 	"amp":                    "Amazon Managed Service for Prometheus (AMP)",
 	"apigateway":             "Amazon API Gateway",
 	"apigatewayv2":           "Amazon API Gateway v2",
+	"appconfig":              "AWS AppConfig",
 	"applicationautoscaling": "Application Auto Scaling",
 	"apprunner":              "AWS App Runner",
 	"appstream":              "Amazon AppStream",
