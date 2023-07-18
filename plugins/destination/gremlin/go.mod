@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.19.0
 	github.com/aws/aws-sdk-go-v2/config v1.18.28
 	github.com/cenkalti/backoff/v4 v4.2.1
-	github.com/cloudquery/plugin-sdk/v4 v4.2.0
+	github.com/cloudquery/plugin-sdk/v4 v4.2.1
 	github.com/rs/zerolog v1.29.1
 	github.com/stretchr/testify v1.8.4
 )
@@ -27,7 +27,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.13 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.19.3 // indirect
 	github.com/aws/smithy-go v1.13.5 // indirect
-	github.com/cloudquery/plugin-pb-go v1.7.1 // indirect
+	github.com/cloudquery/plugin-pb-go v1.8.0 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
@@ -45,7 +45,6 @@ require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/klauspost/compress v1.16.6 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.5 // indirect
-	github.com/kr/pretty v0.3.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/nicksnyder/go-i18n/v2 v2.2.1 // indirect

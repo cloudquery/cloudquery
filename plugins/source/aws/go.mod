@@ -126,7 +126,7 @@ require (
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/codegen v0.2.1
-	github.com/cloudquery/plugin-sdk/v4 v4.2.0
+	github.com/cloudquery/plugin-sdk/v4 v4.2.1
 	github.com/cockroachdb/cockroachdb-parser v0.0.0-20221207165326-ea0ac1a4778b
 	github.com/gocarina/gocsv v0.0.0-20230513223533-9ddd7fd60602
 	github.com/golang/mock v1.6.0
@@ -189,7 +189,7 @@ require (
 require (
 	github.com/biogo/store v0.0.0-20201120204734-aad293a2328f // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.7.1 // indirect
+	github.com/cloudquery/plugin-pb-go v1.8.0 // indirect
 	github.com/cockroachdb/apd/v3 v3.1.0 // indirect
 	github.com/cockroachdb/errors v1.9.0 // indirect
 	github.com/cockroachdb/logtags v0.0.0-20230118201751-21c54148d20b // indirect
@@ -201,12 +201,12 @@ require (
 	github.com/golang/geo v0.0.0-20230421003525-6adc56603217 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.0 // indirect
-	github.com/kr/pretty v0.3.0 // indirect
+	github.com/kr/pretty v0.3.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/lib/pq v1.10.6 // indirect
 	github.com/petermattis/goid v0.0.0-20211229010228-4d14c490ee36 // indirect
 	github.com/pierrre/geohash v1.0.0 // indirect
-	github.com/rogpeppe/go-internal v1.9.0 // indirect
+	github.com/rogpeppe/go-internal v1.10.0 // indirect
 	github.com/sasha-s/go-deadlock v0.3.1 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/twpayne/go-geom v1.4.2 // indirect

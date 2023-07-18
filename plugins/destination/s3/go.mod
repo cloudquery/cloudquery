@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.72
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.37.0
 	github.com/cloudquery/filetypes/v4 v4.0.1
-	github.com/cloudquery/plugin-sdk/v4 v4.2.0
+	github.com/cloudquery/plugin-sdk/v4 v4.2.1
 	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.1
@@ -39,7 +39,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.19.3 // indirect
 	github.com/aws/smithy-go v1.13.5 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.7.1 // indirect
+	github.com/cloudquery/plugin-pb-go v1.8.0 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
@@ -58,7 +58,6 @@ require (
 	github.com/klauspost/asmfmt v1.3.2 // indirect
 	github.com/klauspost/compress v1.16.6 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.5 // indirect
-	github.com/kr/pretty v0.3.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/minio/asm2plan9s v0.0.0-20200509001527-cdd76441f9d8 // indirect

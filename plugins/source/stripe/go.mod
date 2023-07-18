@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
-	github.com/cloudquery/plugin-sdk/v4 v4.2.0
+	github.com/cloudquery/plugin-sdk/v4 v4.2.1
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/rs/zerolog v1.29.1
 	github.com/stripe/stripe-go/v74 v74.16.0
@@ -17,7 +17,7 @@ replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13
 
 require (
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.7.1 // indirect
+	github.com/cloudquery/plugin-pb-go v1.8.0 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
@@ -34,7 +34,6 @@ require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/klauspost/compress v1.16.6 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.5 // indirect
-	github.com/kr/pretty v0.3.0 // indirect
 	github.com/lestrrat-go/jspointer v0.0.0-20181205001929-82fadba7561c // indirect
 	github.com/lestrrat-go/jsref v0.0.0-20211028120858-c0bcbb5abf20 // indirect
 	github.com/lestrrat-go/jsschema v0.0.0-20181205002244-5c81c58ffcc3 // indirect

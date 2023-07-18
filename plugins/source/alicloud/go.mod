@@ -7,7 +7,7 @@ require (
 	github.com/aliyun/aliyun-oss-go-sdk v2.2.7+incompatible
 	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
 	github.com/cloudquery/codegen v0.2.1
-	github.com/cloudquery/plugin-sdk/v4 v4.2.0
+	github.com/cloudquery/plugin-sdk/v4 v4.2.1
 	github.com/golang/mock v1.5.0
 	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.29.1
@@ -18,7 +18,7 @@ replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13
 
 require (
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.7.1 // indirect
+	github.com/cloudquery/plugin-pb-go v1.8.0 // indirect
 	github.com/cloudquery/plugin-sdk v1.45.0 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -38,7 +38,6 @@ require (
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.16.6 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.5 // indirect
-	github.com/kr/pretty v0.3.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
