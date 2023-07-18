@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [21.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v21.0.0...plugins-source-aws-v21.1.0) (2023-07-18)
+
+
+### Features
+
+* **resources:** Add Backup Jobs ([#12389](https://github.com/cloudquery/cloudquery/issues/12389)) ([4e6825c](https://github.com/cloudquery/cloudquery/commit/4e6825ce431876ac21678bc170dc7c366c79fb00))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.3 ([#12307](https://github.com/cloudquery/cloudquery/issues/12307)) ([8f14e4d](https://github.com/cloudquery/cloudquery/commit/8f14e4de7bf4d4c833f501135ea0610916a42f8b))
+
 ## [21.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v20.1.0...plugins-source-aws-v21.0.0) (2023-07-18)
 
 
