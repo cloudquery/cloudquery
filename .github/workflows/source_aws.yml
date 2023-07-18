@@ -142,7 +142,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: 'v3.9.2'
+          version: 'v3.10.1'
       - name: Migrate DB
         run: cloudquery migrate test/policy_cq_config.yml
         env:
