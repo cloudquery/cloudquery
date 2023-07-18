@@ -30,9 +30,9 @@ func TestPlugin(t *testing.T) {
 		plugin.WriterTestSuiteTests{
 			SafeMigrations: plugin.SafeMigrations{
 				AddColumn:           true,
+				AddColumnNotNull:    true,
 				RemoveColumn:        true,
 				RemoveColumnNotNull: true,
-				AddColumnNotNull:    true,
 			},
 		},
 	)
