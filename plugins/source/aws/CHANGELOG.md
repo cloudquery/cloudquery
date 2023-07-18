@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [21.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v21.0.0...plugins-source-aws-v21.1.0) (2023-07-18)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_backup_jobs` was added
+
 ### Features
 
 * **resources:** Add Backup Jobs ([#12389](https://github.com/cloudquery/cloudquery/issues/12389)) ([4e6825c](https://github.com/cloudquery/cloudquery/commit/4e6825ce431876ac21678bc170dc7c366c79fb00))
