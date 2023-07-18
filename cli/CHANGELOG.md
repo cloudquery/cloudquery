@@ -5,6 +5,14 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.10.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.10.0...cli-v3.10.1) (2023-07-18)
+
+
+### Bug Fixes
+
+* **cmd-tables:** Better error message for sources with v3 protocol ([#12332](https://github.com/cloudquery/cloudquery/issues/12332)) ([75c0490](https://github.com/cloudquery/cloudquery/commit/75c0490af75971189e67f7791d4e556e1d3133b5))
+* **spec-reader:** Quote content of JSON files that have line breaks during file replacement ([#12294](https://github.com/cloudquery/cloudquery/issues/12294)) ([687f9b9](https://github.com/cloudquery/cloudquery/commit/687f9b9fc224248dda9ce73402f1408c6ce11ce2))
+
 ## [3.10.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.9.2...cli-v3.10.0) (2023-07-18)
 
 
