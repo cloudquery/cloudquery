@@ -64,8 +64,8 @@ github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46t
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/disq/plugin-sdk/v4 v4.0.0-20230717164755-137326a25c0a h1:phN4wljorJwHGQ3t+PBX5BAiW3YB7gukzRe6PNdbXUg=
-github.com/disq/plugin-sdk/v4 v4.0.0-20230717164755-137326a25c0a/go.mod h1:avMT6BfF2E13v5OM5vpKhPKqDLxMv+oOgSI0+tat/E8=
+github.com/disq/plugin-sdk/v4 v4.0.0-20230718083517-18083fa50ea5 h1:NWq1cpC1af9X9H77h94hvRYbvD7LYKbnkZOPmKOZXRw=
+github.com/disq/plugin-sdk/v4 v4.0.0-20230718083517-18083fa50ea5/go.mod h1:avMT6BfF2E13v5OM5vpKhPKqDLxMv+oOgSI0+tat/E8=
 github.com/elastic/elastic-transport-go/v8 v8.0.0-20211216131617-bbee439d559c h1:onA2RpIyeCPvYAj1LFYiiMTrSpqVINWMfYFRS7lofJs=
 github.com/elastic/elastic-transport-go/v8 v8.0.0-20211216131617-bbee439d559c/go.mod h1:87Tcz8IVNe6rVSLdBux1o/PEItLtyabHU3naC7IoqKI=
 github.com/elastic/go-elasticsearch/v8 v8.6.0 h1:xMaSe8jIh7NHzmNo9YBkewmaD2Pr+tX+zLkXxhieny4=

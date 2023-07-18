@@ -12,8 +12,7 @@ require (
 	github.com/segmentio/fasthash v1.0.3
 )
 
-//replace github.com/cloudquery/plugin-sdk/v4 => ../../../../plugin-sdk
-replace github.com/cloudquery/plugin-sdk/v4 => github.com/disq/plugin-sdk/v4 v4.0.0-20230717164755-137326a25c0a
+replace github.com/cloudquery/plugin-sdk/v4 => github.com/disq/plugin-sdk/v4 v4.0.0-20230718083517-18083fa50ea5
 
 require (
 	github.com/cloudquery/plugin-pb-go v1.8.0 // indirect
