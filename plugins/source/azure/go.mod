@@ -99,7 +99,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads v0.2.0
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue v0.1.0
 	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
-	github.com/cloudquery/plugin-sdk/v4 v4.2.1
+	github.com/cloudquery/plugin-sdk/v4 v4.2.3
 	github.com/cockroachdb/cockroachdb-parser v0.0.0-20230515042840-c9c144eab71a
 	github.com/gorilla/mux v1.8.0
 	github.com/mitchellh/hashstructure/v2 v2.0.2
