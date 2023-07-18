@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v3.3.0...plugins-destination-clickhouse-v3.3.1) (2023-07-18)
+
+
+### Bug Fixes
+
+* **clickhouse:** Update to SDK v4.2.1 ([#12155](https://github.com/cloudquery/cloudquery/issues/12155)) ([bde9102](https://github.com/cloudquery/cloudquery/commit/bde91021801587138918d137d715558f0a3a2d5f))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 8e2219b ([#12220](https://github.com/cloudquery/cloudquery/issues/12220)) ([24e8fb5](https://github.com/cloudquery/cloudquery/commit/24e8fb588740896fe11a660e8b80231e741b753c))
+
 ## [3.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v3.2.1...plugins-destination-clickhouse-v3.3.0) (2023-07-14)
 
 
