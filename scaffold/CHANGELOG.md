@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.1.1](https://github.com/cloudquery/cloudquery/compare/scaffold-v2.1.0...scaffold-v2.1.1) (2023-07-18)
+
+
+### Bug Fixes
+
+* **deps:** Update actions/setup-go action to v4 ([#12266](https://github.com/cloudquery/cloudquery/issues/12266)) ([9112685](https://github.com/cloudquery/cloudquery/commit/9112685364510cb5acbd7e5d41809af66f8b79ba))
+* **deps:** Update goreleaser/goreleaser-action action to v4 ([#12267](https://github.com/cloudquery/cloudquery/issues/12267)) ([c1d0773](https://github.com/cloudquery/cloudquery/commit/c1d07737e360a3e8ef73f4cb8a0cf275a001f1b1))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.8.0 ([#12269](https://github.com/cloudquery/cloudquery/issues/12269)) ([a446f68](https://github.com/cloudquery/cloudquery/commit/a446f685793af77af786f7c72aac7b43b9aa92ce))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.0 ([#12256](https://github.com/cloudquery/cloudquery/issues/12256)) ([eaec331](https://github.com/cloudquery/cloudquery/commit/eaec33165345ad51fdb6ddbffbf8a1199ebd6384))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.1 ([#12272](https://github.com/cloudquery/cloudquery/issues/12272)) ([557ca69](https://github.com/cloudquery/cloudquery/commit/557ca69a7dee9dabb80e6afb6f41f205fd8a80d8))
+
 ## [2.1.0](https://github.com/cloudquery/cloudquery/compare/scaffold-v2.0.2...scaffold-v2.1.0) (2023-07-17)
 
 
