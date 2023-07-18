@@ -92,6 +92,7 @@
 - [aws_autoscaling_scheduled_actions](tables/aws_autoscaling_scheduled_actions)
 - [aws_availability_zones](tables/aws_availability_zones)
 - [aws_backup_global_settings](tables/aws_backup_global_settings)
+- [aws_backup_jobs](tables/aws_backup_jobs)
 - [aws_backup_plans](tables/aws_backup_plans)
   - [aws_backup_plan_selections](tables/aws_backup_plan_selections)
 - [aws_backup_protected_resources](tables/aws_backup_protected_resources)
