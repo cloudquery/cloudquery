@@ -5,6 +5,18 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.10.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.9.2...cli-v3.10.0) (2023-07-18)
+
+
+### Features
+
+* **cli:** Add OpenTelemetry support via otel_endpoint ([#12268](https://github.com/cloudquery/cloudquery/issues/12268)) ([3091166](https://github.com/cloudquery/cloudquery/commit/3091166598c9ed665d3b7354e49f6333f40b8109))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 8e2219b ([#12220](https://github.com/cloudquery/cloudquery/issues/12220)) ([24e8fb5](https://github.com/cloudquery/cloudquery/commit/24e8fb588740896fe11a660e8b80231e741b753c))
+
 ## [3.9.2](https://github.com/cloudquery/cloudquery/compare/cli-v3.9.1...cli-v3.9.2) (2023-07-14)
 
 
