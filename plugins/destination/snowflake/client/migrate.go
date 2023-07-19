@@ -10,10 +10,8 @@ import (
 )
 
 const (
-	// Use ILIKE for case insensitivity
-
-	isTableExistSQL = "SELECT count(*) FROM information_schema.tables WHERE table_name ILIKE ?;"
-	sqlTableInfo    = "select column_name, data_type, is_nullable from information_schema.columns where table_name ILIKE ?;"
+	sqlTableList = "select table_name from information_schema.tables where table_schema=CURRENT_SCHEMA();"
+	sqlTableInfo = "select column_name, data_type, is_nullable from information_schema.columns where table_name ILIKE ?;"
 )
 
 type columnInfo struct {
@@ -36,15 +34,16 @@ func (i *tableInfo) getColumn(name string) *columnInfo {
 }
 
 func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
+	tableList, err := c.listTables(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to get list of tables: %w", err)
+	}
+
 	for _, msg := range msgs {
 		table := msg.Table
 		tableName := table.Name
 		c.logger.Debug().Str("table", tableName).Msg("Migrating table")
-		tableExist, err := c.isTableExistSQL(ctx, tableName)
-		if err != nil {
-			return fmt.Errorf("failed to check if table %s exists: %w", tableName, err)
-		}
-		if tableExist {
+		if tableExists(tableList, tableName) {
 			c.logger.Debug().Str("table", tableName).Msg("Table exists, auto-migrating")
 			if err := c.autoMigrateTable(ctx, table); err != nil {
 				return err
@@ -59,36 +58,24 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 	return nil
 }
 
-// This is the responsibility of the CLI of the client to lock before running migration
-func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
-	for _, table := range tables {
-		tableName := table.Name
-		c.logger.Debug().Str("table", tableName).Msg("Migrating table")
-		tableExist, err := c.isTableExistSQL(ctx, tableName)
-		if err != nil {
-			return fmt.Errorf("failed to check if table %s exists: %w", tableName, err)
-		}
-		if tableExist {
-			c.logger.Debug().Str("table", tableName).Msg("Table exists, auto-migrating")
-			if err := c.autoMigrateTable(ctx, table); err != nil {
-				return err
-			}
-		} else {
-			c.logger.Debug().Str("table", tableName).Msg("Table doesn't exist, creating")
-			if err := c.createTableIfNotExist(ctx, table); err != nil {
-				return err
-			}
-		}
+func (c *Client) listTables(ctx context.Context) ([]string, error) {
+	var tables []string
+	rows, err := c.db.QueryContext(ctx, sqlTableList)
+	if err != nil {
+		return nil, err
 	}
-	return nil
-}
-
-func (c *Client) isTableExistSQL(ctx context.Context, table string) (bool, error) {
-	var tableExist int
-	if err := c.db.QueryRowContext(ctx, isTableExistSQL, table).Scan(&tableExist); err != nil {
-		return false, fmt.Errorf("failed to check if table %s exists: %w", table, err)
+	defer rows.Close()
+	for rows.Next() {
+		var t string
+		if err := rows.Scan(&t); err != nil {
+			return nil, err
+		}
+		tables = append(tables, t)
 	}
-	return tableExist == 1, nil
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return tables, nil
 }
 
 func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) error {
@@ -199,4 +186,14 @@ func parseYesNoString(str string) (bool, error) {
 	default:
 		return false, fmt.Errorf("failed to parse yes/no string: %s", str)
 	}
+}
+
+func tableExists(list []string, table string) bool {
+	tbl := strings.ToUpper(table)
+	for _, t := range list {
+		if strings.ToUpper(t) == tbl {
+			return true
+		}
+	}
+	return false
 }
