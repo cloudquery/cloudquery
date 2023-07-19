@@ -11,6 +11,7 @@ The following tables depend on github_repositories:
   - [github_repository_branches](github_repository_branches)
   - [github_repository_dependabot_alerts](github_repository_dependabot_alerts)
   - [github_repository_dependabot_secrets](github_repository_dependabot_secrets)
+  - [github_repository_keys](github_repository_keys)
 
 ## Columns
 
