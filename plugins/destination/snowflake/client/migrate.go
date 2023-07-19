@@ -92,6 +92,19 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, forc
 		columnType := c.SchemaTypeToSnowflake(col.Type)
 		snowflakeColumn := info.getColumn(columnName)
 
+		if len(snowflakeColumn) == 1 && !strings.EqualFold(snowflakeColumn[0].typ, columnType) {
+			if !force {
+				return fmt.Errorf("column %s on table %s has different type than schema, expected %s got %s. migrate manually or consider using 'migrate_mode: forced'", col.Name, tableName, columnType, snowflakeColumn[0].typ)
+			}
+			c.logger.Debug().Str("table", tableName).Str("column", col.Name).Str("current_type", snowflakeColumn[0].typ).Str("want_type", columnType).Msg("Column type mismatch, dropping to recreate")
+			sql := fmt.Sprintf("alter table %s drop column %q", tableName, columnName)
+			if _, err := c.db.ExecContext(ctx, sql); err != nil {
+				return fmt.Errorf("failed to drop column %s from table %s: %w", col.Name, tableName, err)
+			}
+			snowflakeColumn = nil
+			// proceed to add column
+		}
+
 		switch {
 		case len(snowflakeColumn) == 0:
 			c.logger.Debug().Str("table", tableName).Str("column", col.Name).Msg("Column doesn't exist, creating")
@@ -114,9 +127,6 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, forc
 					}
 				}
 			}
-
-		case !strings.EqualFold(snowflakeColumn[0].typ, columnType):
-			return fmt.Errorf("column %s on table %s has different type than schema, expected %s got %s. Try dropping the column and re-running", col.Name, tableName, columnType, snowflakeColumn[0].typ)
 
 		case snowflakeColumn[0].name != columnName: // case sensitivity
 			c.logger.Debug().Str("table", tableName).Str("column", columnName).Str("current_name", snowflakeColumn[0].name).Msg("Column name doesn't match, migrating")
