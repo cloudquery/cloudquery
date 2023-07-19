@@ -21,7 +21,7 @@ func Regions() *schema.Table {
 		Multiplex:   client.AccountMultiplex(tableName),
 		Transform:   transformers.TransformWithStruct(&types.Region{}),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "enabled",
 				Type:     arrow.FixedWidthTypes.Boolean,
@@ -33,9 +33,10 @@ func Regions() *schema.Table {
 				Resolver: client.ResolveAWSPartition,
 			},
 			{
-				Name:     "region",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.PathResolver("RegionName"),
+				Name:       "region",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("RegionName"),
+				PrimaryKey: true,
 			},
 		},
 	}
