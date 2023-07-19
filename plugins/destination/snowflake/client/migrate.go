@@ -24,13 +24,14 @@ type tableInfo struct {
 	columns []columnInfo
 }
 
-func (i *tableInfo) getColumn(name string) *columnInfo {
-	for _, col := range i.columns {
+func (i *tableInfo) getColumn(name string) []columnInfo {
+	var cols []columnInfo
+	for idx, col := range i.columns {
 		if strings.ToUpper(col.name) == name {
-			return &col
+			cols = append(cols, i.columns[idx])
 		}
 	}
-	return nil
+	return cols
 }
 
 func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
@@ -45,7 +46,7 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 		c.logger.Debug().Str("table", tableName).Msg("Migrating table")
 		if tableExists(tableList, tableName) {
 			c.logger.Debug().Str("table", tableName).Msg("Table exists, auto-migrating")
-			if err := c.autoMigrateTable(ctx, table); err != nil {
+			if err := c.autoMigrateTable(ctx, table, msg.MigrateForce); err != nil {
 				return err
 			}
 		} else {
@@ -78,7 +79,7 @@ func (c *Client) listTables(ctx context.Context) ([]string, error) {
 	return tables, nil
 }
 
-func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) error {
+func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, force bool) error {
 	var err error
 	var info *tableInfo
 	tableName := table.Name
@@ -92,19 +93,36 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 		snowflakeColumn := info.getColumn(columnName)
 
 		switch {
-		case snowflakeColumn == nil:
+		case len(snowflakeColumn) == 0:
 			c.logger.Debug().Str("table", tableName).Str("column", col.Name).Msg("Column doesn't exist, creating")
 			sql := fmt.Sprintf("alter table %s add column %q %s", tableName, columnName, columnType)
 			if _, err := c.db.ExecContext(ctx, sql); err != nil {
 				return fmt.Errorf("failed to add column %s on table %s: %w", col.Name, tableName, err)
 			}
-		case !strings.EqualFold(snowflakeColumn.typ, columnType):
-			return fmt.Errorf("column %s on table %s has different type than schema, expected %s got %s. Try dropping the column and re-running", col.Name, tableName, columnType, snowflakeColumn.typ)
-		case snowflakeColumn.name != columnName: // case sensitivity
-			c.logger.Debug().Str("table", tableName).Str("column", columnName).Str("current_name", snowflakeColumn.name).Msg("Column name doesn't match, migrating")
-			sql := fmt.Sprintf("alter table %s rename column %q TO %q", tableName, snowflakeColumn.name, columnName)
+
+		// have multiple columns, drop all but one
+		case len(snowflakeColumn) > 1 && !force:
+			return fmt.Errorf("table %s has multiple columns for %s. migrate manually or consider using 'migrate_mode: forced'", tableName, col.Name)
+
+		case len(snowflakeColumn) > 1:
+			for _, sc := range snowflakeColumn {
+				if sc.name != columnName {
+					c.logger.Debug().Str("table", tableName).Str("column", columnName).Msg("Column exists with different name, dropping")
+					sql := fmt.Sprintf("alter table %s drop column %q", tableName, sc.name)
+					if _, err := c.db.ExecContext(ctx, sql); err != nil {
+						return fmt.Errorf("failed to drop column %s on table %s: %w", sc.name, tableName, err)
+					}
+				}
+			}
+
+		case !strings.EqualFold(snowflakeColumn[0].typ, columnType):
+			return fmt.Errorf("column %s on table %s has different type than schema, expected %s got %s. Try dropping the column and re-running", col.Name, tableName, columnType, snowflakeColumn[0].typ)
+
+		case snowflakeColumn[0].name != columnName: // case sensitivity
+			c.logger.Debug().Str("table", tableName).Str("column", columnName).Str("current_name", snowflakeColumn[0].name).Msg("Column name doesn't match, migrating")
+			sql := fmt.Sprintf("alter table %s rename column %q TO %q", tableName, snowflakeColumn[0].name, columnName)
 			if _, err := c.db.ExecContext(ctx, sql); err != nil {
-				return fmt.Errorf("failed to rename column %s on table %s: %w", snowflakeColumn.name, tableName, err)
+				return fmt.Errorf("failed to rename column %s on table %s: %w", snowflakeColumn[0].name, tableName, err)
 			}
 		}
 	}
