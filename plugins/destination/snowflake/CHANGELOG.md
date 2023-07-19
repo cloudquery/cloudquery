@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v2.4.1...plugins-destination-snowflake-v3.0.0) (2023-07-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* **snowflake:** Make all quoted column names uppercase to support unquoted queries ([#12412](https://github.com/cloudquery/cloudquery/issues/12412))
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.3 ([#12307](https://github.com/cloudquery/cloudquery/issues/12307)) ([8f14e4d](https://github.com/cloudquery/cloudquery/commit/8f14e4de7bf4d4c833f501135ea0610916a42f8b))
+* **snowflake:** Make all quoted column names uppercase to support unquoted queries ([#12412](https://github.com/cloudquery/cloudquery/issues/12412)) ([7328d74](https://github.com/cloudquery/cloudquery/commit/7328d74a79a4111d517c7378c1d1097ad39c44a3))
+
 ## [2.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v2.4.0...plugins-destination-snowflake-v2.4.1) (2023-07-18)
 
 
