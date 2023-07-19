@@ -47,6 +47,14 @@ func buildRepositories(t *testing.T, ctrl *gomock.Controller) client.GithubServi
 
 	dependabot := buildDependabot(t, ctrl)
 
+	var key github.Key
+	if err := faker.FakeObject(&key); err != nil {
+		t.Fatal(err)
+	}
+
+	mock.EXPECT().ListKeys(gomock.Any(), "testorg", gomock.Any(), gomock.Any()).Return(
+		[]*github.Key{&key}, &github.Response{}, nil)
+
 	return client.GithubServices{
 		Dependabot:   dependabot,
 		Repositories: mock,
