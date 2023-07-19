@@ -45,7 +45,7 @@ type testSpec struct {
 	baseDir  string
 }
 
-func testSpecsWithoutFormat(t *testing.T) []testSpec {
+func testSpecsWithoutFormat() []testSpec {
 	var (
 		ret  []testSpec
 		zero int64
@@ -92,7 +92,7 @@ func testSpecsWithoutFormat(t *testing.T) []testSpec {
 func testSpecs(t *testing.T) []testSpec {
 	var ret []testSpec
 	formats := testFormats()
-	for _, s := range testSpecsWithoutFormat(t) {
+	for _, s := range testSpecsWithoutFormat() {
 		s := s
 		s.NoRotate = true
 		for i := range formats {
