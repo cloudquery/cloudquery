@@ -169,6 +169,7 @@
 - [azure_monitor_tenant_activity_logs](../../../../../website/tables/azure/azure_monitor_tenant_activity_logs.md)
 - [azure_mysql_servers](../../../../../website/tables/azure/azure_mysql_servers.md)
   - [azure_mysql_server_configurations](../../../../../website/tables/azure/azure_mysql_server_configurations.md)
+  - [azure_mysql_server_databases](../../../../../website/tables/azure/azure_mysql_server_databases.md)
 - [azure_mysqlflexibleservers_servers](../../../../../website/tables/azure/azure_mysqlflexibleservers_servers.md)
 - [azure_network_application_gateways](../../../../../website/tables/azure/azure_network_application_gateways.md)
 - [azure_network_application_security_groups](../../../../../website/tables/azure/azure_network_application_security_groups.md)
