@@ -17,14 +17,15 @@ func functionVersions() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_FunctionConfiguration.html`,
 		Resolver:    fetchLambdaFunctionVersions,
-		Transform:   transformers.TransformWithStruct(&types.FunctionConfiguration{}),
+		Transform:   transformers.TransformWithStruct(&types.FunctionConfiguration{}, transformers.WithPrimaryKeys("Version")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "function_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "function_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
