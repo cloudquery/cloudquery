@@ -23,7 +23,7 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 
 			name := fmt.Sprintf("%s/%s.%s%s.%s", c.spec.Path, table.Name, c.spec.Format, c.spec.FileSpec.Compression.Extension(), uuid.NewString())
 			if c.spec.NoRotate {
-				name = fmt.Sprintf("%s/%s%s.%s", c.spec.Path, table.Name, c.spec.Format, c.spec.FileSpec.Compression.Extension())
+				name = fmt.Sprintf("%s/%s.%s%s", c.spec.Path, table.Name, c.spec.Format, c.spec.FileSpec.Compression.Extension())
 			}
 
 			w = c.gcsClient.Bucket(c.spec.Bucket).Object(name).NewWriter(ctx)
