@@ -34,9 +34,6 @@ func testFormats() []filetypes.FileSpec {
 			Format: filetypes.FormatTypeJSON,
 		},
 		{
-			Format: filetypes.FormatTypeJSON,
-		},
-		{
 			Format: filetypes.FormatTypeParquet,
 		},
 	}
