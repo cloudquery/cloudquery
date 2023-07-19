@@ -115,7 +115,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 			return fmt.Errorf("column %s on table %s has different type than schema, expected %s got %s. Try dropping the column and re-running", col.Name, tableName, columnType, snowflakeColumn.typ)
 		case snowflakeColumn.name != columnName: // case sensitivity
 			c.logger.Debug().Str("table", tableName).Str("column", columnName).Str("current_name", snowflakeColumn.name).Msg("Column name doesn't match, migrating")
-			sql := fmt.Sprintf("alter table %s rename column %q TO %q", tableName, snowflakeColumn.name, columnName)
+			sql := fmt.Sprintf("alter table %s rename column %q TO %s", tableName, snowflakeColumn.name, columnName)
 			if _, err := c.db.ExecContext(ctx, sql); err != nil {
 				return fmt.Errorf("failed to rename column %s on table %s: %w", snowflakeColumn.name, tableName, err)
 			}
@@ -136,7 +136,7 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 	for i, col := range table.Columns {
 		sqlType := c.SchemaTypeToSnowflake(col.Type)
 		// TODO: sanitize column name
-		fieldDef := `"` + strings.ToUpper(col.Name) + `" ` + sqlType
+		fieldDef := col.Name + " " + sqlType
 		if col.Name == schema.CqIDColumn.Name {
 			// _cq_id column should always have a "unique not null" constraint
 			fieldDef += " UNIQUE NOT NULL"
