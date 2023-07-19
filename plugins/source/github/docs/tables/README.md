@@ -20,6 +20,7 @@
   - [github_repository_branches](../../../../../website/tables/github/github_repository_branches.md)
   - [github_repository_dependabot_alerts](../../../../../website/tables/github/github_repository_dependabot_alerts.md)
   - [github_repository_dependabot_secrets](../../../../../website/tables/github/github_repository_dependabot_secrets.md)
+  - [github_repository_keys](../../../../../website/tables/github/github_repository_keys.md)
 - [github_teams](../../../../../website/tables/github/github_teams.md)
   - [github_team_members](../../../../../website/tables/github/github_team_members.md)
   - [github_team_repositories](../../../../../website/tables/github/github_team_repositories.md)
