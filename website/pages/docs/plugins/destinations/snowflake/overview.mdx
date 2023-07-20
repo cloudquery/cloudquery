@@ -58,6 +58,11 @@ This is the top level spec used by the Snowflake destination plugin.
 
   Number of bytes (as Arrow buffer size) to batch together before sending to the database.
 
+- `migrate_concurrency` (integer, optional. default: 1)
+
+  By default tables are migrated one at a time. This option allows you to migrate multiple tables concurrently. This can be useful if you have a lot of tables to migrate and want to speed up the process.
+  Setting this to a negative number means no limit.
+
 ## Underlying library
 
 We use the official [github.com/snowflakedb/gosnowflake](https://github.com/snowflakedb/gosnowflake) package for database connection.
