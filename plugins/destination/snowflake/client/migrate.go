@@ -62,7 +62,6 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 			}
 			return nil
 		})
-
 	}
 	return g.Wait()
 }
