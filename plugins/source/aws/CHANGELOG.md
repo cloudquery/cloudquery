@@ -9,6 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [22.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v21.1.0...plugins-source-aws-v22.0.0) (2023-07-20)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_appconfig_applications`: column `deployment_duration_in_minutes` removed from table (:warning: breaking)
+- Table `aws_appconfig_applications`: column `final_bake_time_in_minutes` removed from table (:warning: breaking)
+- Table `aws_appconfig_applications`: column `growth_factor` removed from table (:warning: breaking)
+- Table `aws_appconfig_applications`: column `growth_type` removed from table (:warning: breaking)
+- Table `aws_appconfig_applications`: column `replicate_to` removed from table (:warning: breaking)
+- Table `aws_appconfig_deployment_strategies` was added
+- Table `aws_dynamodb_table_continuous_backups`: primary key constraint added to column `table_arn` (:warning: breaking)
+- Table `aws_dynamodb_table_continuous_backups`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_lambda_function_versions`: primary key constraint added to column `function_arn` (:warning: breaking)
+- Table `aws_lambda_function_versions`: primary key constraint added to column `version` (:warning: breaking)
+- Table `aws_lambda_function_versions`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_regions`: primary key constraint added to column `account_id` (:warning: breaking)
+- Table `aws_regions`: primary key constraint added to column `region` (:warning: breaking)
+- Table `aws_regions`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_s3_bucket_encryption_rules`: primary key constraint added to column `bucket_arn` (:warning: breaking)
+- Table `aws_s3_bucket_encryption_rules`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+
 ### ⚠ BREAKING CHANGES
 
 * **aws:** Define composite primary key for regions ([#12415](https://github.com/cloudquery/cloudquery/issues/12415))
