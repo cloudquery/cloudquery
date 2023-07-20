@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.0.0...plugins-destination-snowflake-v3.1.0) (2023-07-20)
+
+
+### Features
+
+* **migrate:** Add `migrate_concurrency` ([#12418](https://github.com/cloudquery/cloudquery/issues/12418)) ([97907e8](https://github.com/cloudquery/cloudquery/commit/97907e8624f14a057a1c5cc15ef4bd7f7ac348de))
+
 ## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v2.4.1...plugins-destination-snowflake-v3.0.0) (2023-07-19)
 
 
