@@ -83,5 +83,5 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 		}
 		syncClient = c.syncClient.WithBackend(stateClient)
 	}
-	return c.scheduler.Sync(ctx, syncClient, tables, res)
+	return c.scheduler.Sync(ctx, syncClient, tables, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
 }

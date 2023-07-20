@@ -60,5 +60,5 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	if err != nil {
 		return err
 	}
-	return c.scheduler.Sync(ctx, c.syncClient.Duplicate(), tables, res)
+	return c.scheduler.Sync(ctx, c.syncClient.Duplicate(), tables, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
 }
