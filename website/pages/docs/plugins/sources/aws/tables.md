@@ -50,7 +50,7 @@
   - [aws_appconfig_configuration_profiles](tables/aws_appconfig_configuration_profiles)
     - [aws_appconfig_hosted_configuration_versions](tables/aws_appconfig_hosted_configuration_versions)
   - [aws_appconfig_environments](tables/aws_appconfig_environments)
-- [aws_appconfig_applications](tables/aws_appconfig_applications)
+- [aws_appconfig_deployment_strategies](tables/aws_appconfig_deployment_strategies)
 - [aws_applicationautoscaling_policies](tables/aws_applicationautoscaling_policies)
 - [aws_applicationautoscaling_scalable_targets](tables/aws_applicationautoscaling_scalable_targets)
 - [aws_applicationautoscaling_scaling_activities](tables/aws_applicationautoscaling_scaling_activities)

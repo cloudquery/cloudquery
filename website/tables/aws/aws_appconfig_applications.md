@@ -2,9 +2,15 @@
 
 This table shows data for AWS AppConfig Applications.
 
-https://docs.aws.amazon.com/appconfig/2019-10-09/APIReference/API_DeploymentStrategy.html
+https://docs.aws.amazon.com/appconfig/2019-10-09/APIReference/API_Application.html
 
 The primary key for this table is **arn**.
+
+## Relations
+
+The following tables depend on aws_appconfig_applications:
+  - [aws_appconfig_configuration_profiles](aws_appconfig_configuration_profiles)
+  - [aws_appconfig_environments](aws_appconfig_environments)
 
 ## Columns
 
@@ -15,11 +21,6 @@ The primary key for this table is **arn**.
 |account_id|`utf8`|
 |region|`utf8`|
 |arn (PK)|`utf8`|
-|deployment_duration_in_minutes|`int64`|
 |description|`utf8`|
-|final_bake_time_in_minutes|`int64`|
-|growth_factor|`float64`|
-|growth_type|`utf8`|
 |id|`utf8`|
 |name|`utf8`|
-|replicate_to|`utf8`|
