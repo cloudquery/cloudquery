@@ -1,6 +1,6 @@
-# Table: azure_privatedns_virtual_network_links
+# Table: azure_privatedns_private_zone_virtual_network_links
 
-This table shows data for Azure Privatedns Virtual Network Links.
+This table shows data for Azure Privatedns Private Zone Virtual Network Links.
 
 https://learn.microsoft.com/en-us/rest/api/dns/privatedns/virtual-network-links/list?tabs=HTTP#virtualnetworklink
 

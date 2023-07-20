@@ -15,11 +15,11 @@ import (
 
 func recordSets() *schema.Table {
 	return &schema.Table{
-		Name:                 "azure_privatedns_record_sets",
+		Name:                 "azure_privatedns_private_zone_record_sets",
 		Resolver:             fetchRecordSets,
 		PostResourceResolver: client.LowercaseIDResolver,
 		Description:          "https://learn.microsoft.com/en-us/rest/api/dns/privatedns/record-sets/list?tabs=HTTP#recordset",
-		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_privatedns_record_sets", client.Namespacemicrosoft_network),
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_privatedns_private_zone_record_sets", client.Namespacemicrosoft_network),
 		Transform:            transformers.TransformWithStruct(&armprivatedns.RecordSet{}, transformers.WithPrimaryKeys("ID")),
 		Columns:              schema.ColumnList{client.SubscriptionID},
 	}

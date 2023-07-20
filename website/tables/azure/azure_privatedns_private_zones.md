@@ -9,8 +9,8 @@ The primary key for this table is **id**.
 ## Relations
 
 The following tables depend on azure_privatedns_private_zones:
-  - [azure_privatedns_record_sets](azure_privatedns_record_sets)
-  - [azure_privatedns_virtual_network_links](azure_privatedns_virtual_network_links)
+  - [azure_privatedns_private_zone_record_sets](azure_privatedns_private_zone_record_sets)
+  - [azure_privatedns_private_zone_virtual_network_links](azure_privatedns_private_zone_virtual_network_links)
 
 ## Columns
 

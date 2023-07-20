@@ -1,6 +1,6 @@
-# Table: azure_privatedns_record_sets
+# Table: azure_privatedns_private_zone_record_sets
 
-This table shows data for Azure Privatedns Record Sets.
+This table shows data for Azure Privatedns Private Zone Record Sets.
 
 https://learn.microsoft.com/en-us/rest/api/dns/privatedns/record-sets/list?tabs=HTTP#recordset
 

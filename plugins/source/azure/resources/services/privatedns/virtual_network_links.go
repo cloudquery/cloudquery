@@ -15,11 +15,11 @@ import (
 
 func virtualNetworkLinks() *schema.Table {
 	return &schema.Table{
-		Name:                 "azure_privatedns_virtual_network_links",
+		Name:                 "azure_privatedns_private_zone_virtual_network_links",
 		Resolver:             fetchVirtualNetworkLinks,
 		PostResourceResolver: client.LowercaseIDResolver,
 		Description:          "https://learn.microsoft.com/en-us/rest/api/dns/privatedns/virtual-network-links/list?tabs=HTTP#virtualnetworklink",
-		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_privatedns_virtual_network_links", client.Namespacemicrosoft_network),
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_privatedns_private_zone_virtual_network_links", client.Namespacemicrosoft_network),
 		Transform:            transformers.TransformWithStruct(&armprivatedns.VirtualNetworkLink{}, transformers.WithPrimaryKeys("ID")),
 		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
