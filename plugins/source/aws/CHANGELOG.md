@@ -10,11 +10,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ### This Release has the Following Changes to Tables
-- Table `aws_appconfig_applications`: column `deployment_duration_in_minutes` removed from table (:warning: breaking)
-- Table `aws_appconfig_applications`: column `final_bake_time_in_minutes` removed from table (:warning: breaking)
-- Table `aws_appconfig_applications`: column `growth_factor` removed from table (:warning: breaking)
-- Table `aws_appconfig_applications`: column `growth_type` removed from table (:warning: breaking)
-- Table `aws_appconfig_applications`: column `replicate_to` removed from table (:warning: breaking)
 - Table `aws_appconfig_deployment_strategies` was added
 - Table `aws_dynamodb_table_continuous_backups`: primary key constraint added to column `table_arn` (:warning: breaking)
 - Table `aws_dynamodb_table_continuous_backups`: primary key constraint removed from column `_cq_id` (:warning: breaking)
