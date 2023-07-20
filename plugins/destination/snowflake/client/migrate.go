@@ -7,6 +7,7 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"golang.org/x/sync/errgroup"
 )
 
 const (
@@ -40,23 +41,29 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 		return fmt.Errorf("failed to get list of tables: %w", err)
 	}
 
+	g, gctx := errgroup.WithContext(ctx)
+	g.SetLimit(c.spec.MigrateConcurrency)
 	for _, msg := range msgs {
 		table := msg.Table
+		migrateForce := msg.MigrateForce
 		tableName := table.Name
-		c.logger.Debug().Str("table", tableName).Msg("Migrating table")
-		if tableExists(tableList, tableName) {
-			c.logger.Debug().Str("table", tableName).Msg("Table exists, auto-migrating")
-			if err := c.autoMigrateTable(ctx, table, msg.MigrateForce); err != nil {
-				return err
+		g.Go(func() error {
+			c.logger.Debug().Str("table", tableName).Msg("Migrating table")
+			if tableExists(tableList, tableName) {
+				c.logger.Debug().Str("table", tableName).Msg("Table exists, auto-migrating")
+				if err := c.autoMigrateTable(gctx, table, migrateForce); err != nil {
+					return err
+				}
+			} else {
+				c.logger.Debug().Str("table", tableName).Msg("Table doesn't exist, creating")
+				if err := c.createTableIfNotExist(gctx, table); err != nil {
+					return err
+				}
 			}
-		} else {
-			c.logger.Debug().Str("table", tableName).Msg("Table doesn't exist, creating")
-			if err := c.createTableIfNotExist(ctx, table); err != nil {
-				return err
-			}
-		}
+			return nil
+		})
 	}
-	return nil
+	return g.Wait()
 }
 
 func (c *Client) listTables(ctx context.Context) ([]string, error) {
