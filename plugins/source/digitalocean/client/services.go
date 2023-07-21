@@ -77,6 +77,11 @@ type KeysService interface {
 	List(context.Context, *godo.ListOptions) ([]godo.Key, *godo.Response, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/kubernetes_service.go . KubernetesService
+type KUbernetesService interface {
+	List(context.Context, *godo.ListOptions) ([]godo.KubernetesCluster, *godo.Response, error)
+}
+
 //go:generate mockgen -package=mocks -destination=./mocks/load_balancers_service.go . LoadBalancersService
 type LoadBalancersService interface {
 	List(context.Context, *godo.ListOptions) ([]godo.LoadBalancer, *godo.Response, error)

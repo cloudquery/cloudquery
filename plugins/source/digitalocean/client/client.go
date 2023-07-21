@@ -182,7 +182,7 @@ func initServices(doClient *godo.Client, spacesService SpacesService) *Services 
 		FloatingIps:    doClient.FloatingIPs,
 		Images:         doClient.Images,
 		Keys:           doClient.Keys,
-		Kubernetes      doClient.Kubernetes
+		Kubernetes      doClient.KubernetesCluster
 		LoadBalancers:  doClient.LoadBalancers,
 		Projects:       doClient.Projects,
 		Regions:        doClient.Regions,
