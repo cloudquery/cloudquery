@@ -70,3 +70,20 @@ spec:
     connection_string: ${PG_CONNECTION_STRING}
     pgx_log_level: debug # Available: error, warn, info, debug, trace. Default: "error"
 ```
+### migrate to latest versions of the plugins.
+
+By default, the `sync` command executes a migration before syncing resources. However, there are situations where you might need to run it in forced mode for migration.
+
+Note: Before proceeding with the migration, it is crucial to take a backup of the database to ensure that there is no impact on the production environment.
+
+```yaml copy
+kind: destination
+spec:
+  name: postgresql
+  path: cloudquery/postgresql
+  version: "VERSION_DESTINATION_POSTGRESQL"
+  migrate_mode: forced
+  spec:
+    connection_string: ${PG_CONNECTION_STRING}
+    pgx_log_level: debug # Available: error, warn, info, debug, trace. Default: "error"
+```
