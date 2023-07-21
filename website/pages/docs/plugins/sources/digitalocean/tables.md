@@ -7,6 +7,7 @@
 - [digitalocean_billing_history](tables/digitalocean_billing_history)
 - [digitalocean_cdns](tables/digitalocean_cdns)
 - [digitalocean_certificates](tables/digitalocean_certificates)
+- [digitalocean_clusters](tables/digitalocean_clusters)
 - [digitalocean_databases](tables/digitalocean_databases)
   - [digitalocean_database_backups](tables/digitalocean_database_backups)
   - [digitalocean_database_firewall_rules](tables/digitalocean_database_firewall_rules)
