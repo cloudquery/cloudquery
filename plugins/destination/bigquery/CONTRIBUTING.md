@@ -22,7 +22,7 @@ make lint
 
 ## Running with a local emulator
 
-Run the emulator:
+Run the [emulator](https://github.com/goccy/bigquery-emulator): 
 
 ```bash
 docker run -d -p 9050:9050 -it ghcr.io/goccy/bigquery-emulator:latest --project=test --dataset=test
