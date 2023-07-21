@@ -15,7 +15,7 @@ import (
 )
 
 func DeploymentStrategies() *schema.Table {
-	tableName := "aws_appconfig_applications"
+	tableName := "aws_appconfig_deployment_strategies"
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/appconfig/2019-10-09/APIReference/API_DeploymentStrategy.html`,

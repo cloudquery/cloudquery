@@ -34,7 +34,6 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 		},
 		BillHistoryMonths: 0,
 		Concurrency:       0,
-		DeterministicCQID: false,
 	}
 	schedulerClient, err := New(l, spec)
 	if err != nil {
