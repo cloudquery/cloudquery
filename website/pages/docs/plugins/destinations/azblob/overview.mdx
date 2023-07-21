@@ -37,6 +37,7 @@ spec:
 #    batch_size: 10000 # optional
 #    batch_size_bytes: 52428800 # optional
 #    batch_timeout: 30s # optional
+#    compression: gzip # optional
     format: "csv"
     format_spec:
       delimiter: ","
@@ -66,7 +67,11 @@ This is the (nested) spec used by the Azure blob destination Plugin.
 
 - `format_spec` (map [format_spec](#format_spec)) (optional)
 
-  Optional parameters to change the format of the file
+  Optional parameters to change the format of the file.
+
+- `compression` (string, optional. default: empty)
+
+  Compression algorithm to use. Supported values are empty or `gzip`. Not supported for `parquet` format.
 
 - `batch_size` (integer, optional. default: 10000)
 
