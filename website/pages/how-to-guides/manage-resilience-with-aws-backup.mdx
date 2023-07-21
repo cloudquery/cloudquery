@@ -2,10 +2,10 @@
 title: How to Manage Resilience Strategy and Visibility with AWS Backup and CloudQuery
 tag: tutorial
 description: >-
-  How to manage a business resilience
-strategy with AWS Backup with
-CloudQuery to protect against data
-loss, improve backup and recovery, and ensure compliance.
+ How to manage a business resilience
+ strategy with AWS Backup with
+ CloudQuery to protect against data
+ loss, improve backup and recovery, and ensure compliance
 author: jsonkao
 ---
 
@@ -13,19 +13,58 @@ import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
 <HowToGuideHeader/>
 
+![AWS Health Dashboard Powered by CloudQuery and Grafana](/images/how-to-guides/manage-resilience-with-aws-backup/backuphealthdashboard.png)
 
 ## Walkthrough
 
 ### Prerequisites
 
-
 ### Step 1: Install or Deploy CloudQuery
 
 ### Step 2: Sync Data from AWS to PostgreSQL
 
+```yaml copy
+kind: source
+spec:
+  # Source spec section
+  name: aws
+  path: cloudquery/aws
+  version: "VERSION_SOURCE_AWS"
+  tables: 
+    - aws_backup_*
+    - aws_s3_buckets
+    - aws_dynamodb_*
+    - aws_ec2_instances
+  destinations: ["DESTINATION_NAME"]
+  spec: 
+    # AWS Spec section described below
+    regions: 
+      - us-east-1
+    accounts:
+      - id: "account1"
+        local_profile: "account1-profile"
+```
+
 ### Step 3: Set up Grafana for Visualization
 
 ### Step 4: Run Queries 
+
+```sql
+SELECT * 
+FROM aws_backup_jobs
+WHERE state='FAILED';
+```
+
+```sql
+SELECT * 
+FROM aws_backup_protected_resources;
+```
+
+```sql
+SELECT resource_type, COUNT(arn), account_id 
+FROM aws_backup_protected_resources
+GROUP BY resource_type, account_id;
+```
 
 ### Step 5: Create Custom Visualizations and Dashboards
 
