@@ -29,7 +29,7 @@ This is the (nested) spec used by the file destination Plugin.
   Path template string that determines where files will be written. The path supports the following placeholder variables:
 
   - `{{TABLE}}` will be replaced with the table name
-  - `{{FORMAT}}` will be replaced with the file format, such as `csv`, `json` or `parquet`
+  - `{{FORMAT}}` will be replaced with the file format, such as `csv`, `json` or `parquet`. If compression is enabled, the format will be `csv.gz`, `json.gz` etc.
   - `{{UUID}}` will be replaced with a random UUID to uniquely identify each file
   - `{{YEAR}}` will be replaced with the current year in `YYYY` format
   - `{{MONTH}}` will be replaced with the current month in `MM` format
@@ -54,7 +54,11 @@ This is the (nested) spec used by the file destination Plugin.
 
 - `format_spec` (map [format_spec](#format_spec)) (optional)
 
-  Optional parameters to change the format of the file
+  Optional parameters to change the format of the file.
+
+- `compression` (string, optional. default: empty)
+
+  Compression algorithm to use. Supported values are empty or `gzip`. Not supported for `parquet` format.
 
 - `batch_size` (integer, optional. default: 10000)
 
