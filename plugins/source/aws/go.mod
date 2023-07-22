@@ -25,16 +25,16 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/autoscalingplans v1.13.13
 	github.com/aws/aws-sdk-go-v2/service/backup v1.22.3
 	github.com/aws/aws-sdk-go-v2/service/batch v1.24.1
-	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.30.1
+	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.31.0
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.26.9
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.13
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.27.2
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.26.3
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.22.1
-	github.com/aws/aws-sdk-go-v2/service/codeartifact v1.18.7
+	github.com/aws/aws-sdk-go-v2/service/codeartifact v1.18.8
 	github.com/aws/aws-sdk-go-v2/service/codebuild v1.20.16
 	github.com/aws/aws-sdk-go-v2/service/codecommit v1.14.15
-	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.15.3
+	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.15.4
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.15.14
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.23.0
 	github.com/aws/aws-sdk-go-v2/service/computeoptimizer v1.24.3
@@ -44,10 +44,10 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/dax v1.12.13
 	github.com/aws/aws-sdk-go-v2/service/detective v1.19.3
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.18.18
-	github.com/aws/aws-sdk-go-v2/service/docdb v1.21.6
+	github.com/aws/aws-sdk-go-v2/service/docdb v1.22.0
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.20.1
 	github.com/aws/aws-sdk-go-v2/service/dynamodbstreams v1.14.15
-	github.com/aws/aws-sdk-go-v2/service/ec2 v1.104.0
+	github.com/aws/aws-sdk-go-v2/service/ec2 v1.105.1
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.18.14
 	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.16.5
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.28.1
@@ -65,7 +65,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/frauddetector v1.25.3
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.30.0
 	github.com/aws/aws-sdk-go-v2/service/glacier v1.14.14
-	github.com/aws/aws-sdk-go-v2/service/glue v1.54.1
+	github.com/aws/aws-sdk-go-v2/service/glue v1.56.0
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.24.1
 	github.com/aws/aws-sdk-go-v2/service/iam v1.21.1
 	github.com/aws/aws-sdk-go-v2/service/identitystore v1.16.14
@@ -85,18 +85,18 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.19.9
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.15.14
 	github.com/aws/aws-sdk-go-v2/service/quicksight v1.38.1
-	github.com/aws/aws-sdk-go-v2/service/ram v1.18.5
-	github.com/aws/aws-sdk-go-v2/service/rds v1.46.2
+	github.com/aws/aws-sdk-go-v2/service/ram v1.19.0
+	github.com/aws/aws-sdk-go-v2/service/rds v1.47.0
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.28.1
 	github.com/aws/aws-sdk-go-v2/service/resiliencehub v1.11.4
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.14.14
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.28.4
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.15.1
-	github.com/aws/aws-sdk-go-v2/service/route53resolver v1.17.14
+	github.com/aws/aws-sdk-go-v2/service/route53resolver v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.37.0
-	github.com/aws/aws-sdk-go-v2/service/s3control v1.31.8
-	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.92.0
-	github.com/aws/aws-sdk-go-v2/service/savingsplans v1.12.13
+	github.com/aws/aws-sdk-go-v2/service/s3control v1.31.9
+	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.93.0
+	github.com/aws/aws-sdk-go-v2/service/savingsplans v1.12.15
 	github.com/aws/aws-sdk-go-v2/service/scheduler v1.1.14
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.19.11
 	github.com/aws/aws-sdk-go-v2/service/securityhub v1.33.3
@@ -119,9 +119,9 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/transfer v1.31.1
 	github.com/aws/aws-sdk-go-v2/service/waf v1.12.13
 	github.com/aws/aws-sdk-go-v2/service/wafregional v1.13.16
-	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.35.2
+	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.36.0
 	github.com/aws/aws-sdk-go-v2/service/wellarchitected v1.21.2
-	github.com/aws/aws-sdk-go-v2/service/workspaces v1.28.16
+	github.com/aws/aws-sdk-go-v2/service/workspaces v1.28.17
 	github.com/aws/aws-sdk-go-v2/service/xray v1.16.14
 	github.com/aws/smithy-go v1.13.5
 	github.com/basgys/goxml2json v1.1.0
