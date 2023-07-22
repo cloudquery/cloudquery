@@ -129,6 +129,7 @@ type SagemakerClient interface {
 	ListPipelines(context.Context, *sagemaker.ListPipelinesInput, ...func(*sagemaker.Options)) (*sagemaker.ListPipelinesOutput, error)
 	ListProcessingJobs(context.Context, *sagemaker.ListProcessingJobsInput, ...func(*sagemaker.Options)) (*sagemaker.ListProcessingJobsOutput, error)
 	ListProjects(context.Context, *sagemaker.ListProjectsInput, ...func(*sagemaker.Options)) (*sagemaker.ListProjectsOutput, error)
+	ListResourceCatalogs(context.Context, *sagemaker.ListResourceCatalogsInput, ...func(*sagemaker.Options)) (*sagemaker.ListResourceCatalogsOutput, error)
 	ListSpaces(context.Context, *sagemaker.ListSpacesInput, ...func(*sagemaker.Options)) (*sagemaker.ListSpacesOutput, error)
 	ListStageDevices(context.Context, *sagemaker.ListStageDevicesInput, ...func(*sagemaker.Options)) (*sagemaker.ListStageDevicesOutput, error)
 	ListStudioLifecycleConfigs(context.Context, *sagemaker.ListStudioLifecycleConfigsInput, ...func(*sagemaker.Options)) (*sagemaker.ListStudioLifecycleConfigsOutput, error)
