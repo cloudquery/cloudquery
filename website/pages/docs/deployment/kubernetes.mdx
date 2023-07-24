@@ -60,10 +60,10 @@ The Schedule expression follows the same format as crontab; that is a space sepa
 Which in the above example would be midnight (i.e. 00:00) every day.
 
 <Callout type="info">
-To learn more about cron schedule expressions, check out https://crontab.guru/ or the kubernetes documentation https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/
+To learn more about cron schedule expressions, check out https://crontab.guru/ or the Kubernetes documentation https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/
 </Callout>
 
-The jobTemplate describes what to run, how to run it, and any volumes that it needs.
+The `jobTemplate` describes what to run, how to run it, and any volumes that it needs.
 
 As this follows the same structure as a Kubernetes Workload, we won't go too deep into the details here.
 
@@ -104,7 +104,7 @@ spec:
 
 Looking at this completed manifest, there are three key elements to pay attention to: `args`, `envFrom`, `volumes`
 
-In the `args`, you'll see the arguments to be passed to cloudquery, in `envFrom` you're instructing kubernetes to use the secret you created earlier, and in `volumes` you're telling kubernetes where to find the config file.
+In the `args`, you'll see the arguments to be passed to cloudquery, in `envFrom` you're instructing Kubernetes to use the secret you created earlier, and in `volumes` you're telling Kubernetes where to find the config file.
 
 
 ## Step 3: Defining the ConfigMap to hold the CloudQuery Config
