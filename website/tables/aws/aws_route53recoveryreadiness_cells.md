@@ -1,6 +1,6 @@
 # Table: aws_route53recoveryreadiness_cells
 
-This table shows data for Route53recoveryreadiness Cells.
+This table shows data for Amazon Route 53 Application Recovery Controller Recovery Readiness Cells.
 
 https://docs.aws.amazon.com/recovery-readiness/latest/api/cells.html
 

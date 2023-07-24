@@ -1,6 +1,6 @@
 # Table: aws_route53recoveryreadiness_resource_sets
 
-This table shows data for Route53recoveryreadiness Resource Sets.
+This table shows data for Amazon Route 53 Application Recovery Controller Recovery Readiness Resource Sets.
 
 https://docs.aws.amazon.com/recovery-readiness/latest/api/resourcesets.html
 

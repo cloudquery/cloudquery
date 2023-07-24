@@ -1,6 +1,6 @@
 # Table: aws_route53recoveryreadiness_recovery_groups
 
-This table shows data for Route53recoveryreadiness Recovery Groups.
+This table shows data for Amazon Route 53 Application Recovery Controller Recovery Readiness Recovery Groups.
 
 https://docs.aws.amazon.com/recovery-readiness/latest/api/recoverygroups.html
 
