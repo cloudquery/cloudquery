@@ -195,6 +195,7 @@ var GcpServices = map[string]bool{
 	"pagespeedonline.googleapis.com":                  true,
 	"paymentsresellersubscription.googleapis.com":     true,
 	"people.googleapis.com":                           true,
+	"places.googleapis.com":                           true,
 	"playcustomapp.googleapis.com":                    true,
 	"playdeveloperreporting.googleapis.com":           true,
 	"playintegrity.googleapis.com":                    true,
