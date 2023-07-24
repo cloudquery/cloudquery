@@ -188,7 +188,6 @@ require (
 )
 
 require (
-	github.com/aws/aws-sdk-go-v2/service/route53recoverycontrolconfig v1.11.13 // indirect
 	github.com/biogo/store v0.0.0-20201120204734-aad293a2328f // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/cloudquery/plugin-pb-go v1.8.0 // indirect
