@@ -36,9 +36,7 @@ CloudQuery supports [many more destinations](/docs/plugins/destinations/overview
 
 ### Prerequisites
 
-* AWS Account(s) with AWS Backup
-* PostgreSQL 
-* Grafana
+* AWS Account(s) with [AWS Backup configured and running](https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html).  
 
 ### Step 1: Install or Deploy CloudQuery
 
@@ -46,7 +44,7 @@ To get started with CloudQuery, additional information can be found in our [quic
 
 ### Step 2: Sync Data from AWS to PostgreSQL
 
-In this reference, we'll sync data about AWS Backup, AWS S3, AWS DynamoDB, and AWS EC2.  CloudQuery can be customized to sync data from other [infrastructure in AWS](/docs/plugins/sources/aws/tables) as needed.
+AWS Backup supports [multiple resources in AWS](https://docs.aws.amazon.com/aws-backup/latest/devguide/whatisbackup.html) including RDS, EBS, S3, EFS, Redshift, Timestream, Neptune, DocumentDB, and more.  In this reference example, we'll sync data about AWS Backup, AWS S3, AWS DynamoDB, and AWS EC2.  CloudQuery can be customized to sync data from other [infrastructure in AWS](/docs/plugins/sources/aws/tables) as needed.
 
 Additional information on configuring CloudQuery to sync from AWS can be found [in our documentation](/docs/plugins/sources/aws/configuration) as well as additional information on how to configure CloudQuery to [sync from multiple AWS Accounts](/docs/plugins/sources/aws/multi-account).
 
@@ -74,10 +72,19 @@ spec:
 
 ### Step 3: Set up Grafana for Visualization
 
-If Grafana isn't setup yet for visualization, follow this guide:
+Follow these Grafana guides to setup Grafana, an open-source observability and visualization tool.:
 
+* Self-hosted Grafana [Official Guide](https://grafana.com/docs/grafana/latest/setup-grafana/installation/)
+* SaaS/Managed Grafana: [Grafana](https://grafana.com/)
+* AWS Fully-Managed Grafana: [Amazon Managed Grafana](https://aws.amazon.com/grafana/)
+
+Make sure to configure Grafana to source data from the CloudQuery synced PostgreSQL data.
 
 ### Step 4: Run Queries 
+
+Now that we have CloudQuery syncing infrastructure data from AWS to PostgreSQL and a Grafana visualization layer, we can execute queries.
+
+We'll start with the following query to search for all failed AWS Backup Jobs with their status messages for more information:
 
 ```sql
 SELECT * 
@@ -85,16 +92,33 @@ FROM aws_backup_jobs
 WHERE state='FAILED';
 ```
 
+![Backup Failed Jobs](/images/how-to-guides/manage-resilience-with-aws-backup/failedjobs.png)
+
+Next, we can query our data for all resources backed up and protected by AWS Backup: 
+
 ```sql
 SELECT * 
 FROM aws_backup_protected_resources;
 ```
+
+![AWS Backup Protected Resources](/images/how-to-guides/manage-resilience-with-aws-backup/protectedresources.png)
+
+
+Another query we can run is to find a summary count of the types of resources (such as S3, DynamoDB, EC2) backed up by AWS Backup per AWS Account.  
 
 ```sql
 SELECT resource_type, COUNT(arn), account_id 
 FROM aws_backup_protected_resources
 GROUP BY resource_type, account_id;
 ```
+
+![Backed Up Resources Grouped by Resource Type and Account](/images/how-to-guides/manage-resilience-with-aws-backup/backupupresourcesgroupedcount.png)
+
+
+Additional examples that can be run are:
+* Searching by tags if a tag-based backup strategy is being used.
+* Querying the AWS Backup settings in each AWS account.
+* Validating success of selected resources for AWS Backup.  
 
 ### Step 5: Create Custom Visualizations and Dashboards
 
