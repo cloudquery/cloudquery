@@ -1,7 +1,7 @@
 github.com/avast/retry-go/v4 v4.3.4 h1:pHLkL7jvCvP317I8Ge+Km2Yhntv3SdkJm7uekkqbKhM=
 github.com/avast/retry-go/v4 v4.3.4/go.mod h1:rv+Nla6Vk3/ilU0H51VHddWHiwimzX66yZ0JT6T+UvE=
-github.com/cloudquery/arrow/go/v13 v13.0.0-20230717001540-8e2219bec8ee h1:YTL32wlLEntGAqAwceD4+LKzkBDa1sI2/MAeNRkcsyg=
-github.com/cloudquery/arrow/go/v13 v13.0.0-20230717001540-8e2219bec8ee/go.mod h1:W69eByFNO0ZR30q1/7Sr9d83zcVZmF2MiP3fFYAWJOc=
+github.com/cloudquery/arrow/go/v13 v13.0.0-20230723001421-10df4b9d1986 h1:3M6t0f+3WHgWSdd2KJXUXt7Z++zLHbHElHZQ+SCLrxI=
+github.com/cloudquery/arrow/go/v13 v13.0.0-20230723001421-10df4b9d1986/go.mod h1:W69eByFNO0ZR30q1/7Sr9d83zcVZmF2MiP3fFYAWJOc=
 github.com/cloudquery/plugin-pb-go v1.8.0 h1:6boOwbTj6cP17I1f1jC7jZ70TsYlgF0sVT4f9x33MHs=
 github.com/cloudquery/plugin-pb-go v1.8.0/go.mod h1:R0Wse6NbJDZIHcRQjJ1sZGYDo3mrIDm4k3El1YUrvGA=
 github.com/coreos/go-systemd/v22 v22.5.0/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
