@@ -29,3 +29,4 @@ This table depends on [aws_cloudformation_stacks](aws_cloudformation_stacks).
 |resource_identifier_summaries|`json`|
 |resource_types|`list<item: utf8, nullable>`|
 |version|`utf8`|
+|warnings|`json`|
