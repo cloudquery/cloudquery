@@ -180,6 +180,9 @@ func resolveBucketPolicyStatus(ctx context.Context, meta schema.ClientMeta, reso
 	})
 	// check if we got an error but its access denied we can continue
 	if err != nil {
+		if client.IsAWSError(err, "NoSuchBucketPolicy") {
+			return nil
+		}
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
 			return nil
 		}
