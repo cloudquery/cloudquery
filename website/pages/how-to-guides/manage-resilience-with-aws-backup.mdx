@@ -13,15 +13,42 @@ import { HowToGuideHeader } from "../../components/HowToGuideHeader"
 
 <HowToGuideHeader/>
 
-![AWS Health Dashboard Powered by CloudQuery and Grafana](/images/how-to-guides/manage-resilience-with-aws-backup/backuphealthdashboard.png)
+In this guide, we'll walkthrough how to use CloudQuery to manage a company resilience strategy utilizing AWS Backup to protect against data loss, support backup and recovery initiatives, and ensure compliance.
+
+AWS Backup is a fully managed service that can be used for data protection at scale.  By using CloudQuery, we can:
+* Manage AWS Backup at scale across multiple AWS accounts.
+* Monitor status of AWS Backup and compliance with company strategies or requirements.
+* Monitor overall health of AWS Backup including failures, issues, and successes.
+* Manage AWS Backup settings and reduce data protection issues.
+
+An example AWS Backup Health Dashboard Powered by CloudQuery and Grafana is shown below.  More information can be found [here](/register_for_cloud).
+![AWS Backup Health Dashboard Powered by CloudQuery and Grafana](/images/how-to-guides/manage-resilience-with-aws-backup/backuphealthdashboard.png)
 
 ## Walkthrough
 
+We'll use the following components for our architecture:
+* AWS (Amazon Web Services) for infrastructure source
+* CloudQuery for ETL
+* PostgreSQL as the destination
+* Grafana for a visualization layer
+
+CloudQuery supports [many more destinations](/docs/plugins/destinations/overview) and visualization layers that can be used in place of PostgreSQL and Grafana.  
+
 ### Prerequisites
+
+* AWS Account(s) with AWS Backup
+* PostgreSQL 
+* Grafana
 
 ### Step 1: Install or Deploy CloudQuery
 
+To get started with CloudQuery, additional information can be found in our [quickstart guide](/docs/quickstart/macOS).
+
 ### Step 2: Sync Data from AWS to PostgreSQL
+
+In this reference, we'll sync data about AWS Backup, AWS S3, AWS DynamoDB, and AWS EC2.  CloudQuery can be customized to sync data from other [infrastructure in AWS](/docs/plugins/sources/aws/tables) as needed.
+
+Additional information on configuring CloudQuery to sync from AWS can be found [in our documentation](/docs/plugins/sources/aws/configuration) as well as additional information on how to configure CloudQuery to [sync from multiple AWS Accounts](/docs/plugins/sources/aws/multi-account).
 
 ```yaml copy
 kind: source
@@ -46,6 +73,9 @@ spec:
 ```
 
 ### Step 3: Set up Grafana for Visualization
+
+If Grafana isn't setup yet for visualization, follow this guide:
+
 
 ### Step 4: Run Queries 
 
