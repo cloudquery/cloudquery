@@ -112,7 +112,7 @@ FROM aws_backup_protected_resources
 GROUP BY resource_type, account_id;
 ```
 
-![Backed Up Resources Grouped by Resource Type and Account](/images/how-to-guides/manage-resilience-with-aws-backup/backupupresourcesgroupedcount.png)
+![Backed Up Resources Grouped by Resource Type and Account](/images/how-to-guides/manage-resilience-with-aws-backup/backupresourcesgroupedcount.png)
 
 
 Additional examples that can be run are:
@@ -121,5 +121,10 @@ Additional examples that can be run are:
 * Validating success of selected resources for AWS Backup.  
 
 ### Step 5: Create Custom Visualizations and Dashboards
+
+Now with Grafana, we can add custom visualizations and create dashboards to explore our Backup Data
+
+![AWS Backup Health Dashboard Powered by CloudQuery and Grafana](/images/how-to-guides/manage-resilience-with-aws-backup/backuphealthdashboard.png)
+
 
 ### Summary
