@@ -1,6 +1,6 @@
 # Table: aws_route53recoverycontrolconfig_clusters
 
-This table shows data for Route53recoverycontrolconfig Clusters.
+This table shows data for Amazon Route 53 Application Recovery Controller Recovery Control Configuration Clusters.
 
 https://docs.aws.amazon.com/recovery-cluster/latest/api/cluster.html
 

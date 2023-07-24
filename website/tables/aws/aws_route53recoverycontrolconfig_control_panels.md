@@ -1,6 +1,6 @@
 # Table: aws_route53recoverycontrolconfig_control_panels
 
-This table shows data for Route53recoverycontrolconfig Control Panels.
+This table shows data for Amazon Route 53 Application Recovery Controller Recovery Control Configuration Control Panels.
 
 https://docs.aws.amazon.com/recovery-cluster/latest/api/controlpanels.html
 

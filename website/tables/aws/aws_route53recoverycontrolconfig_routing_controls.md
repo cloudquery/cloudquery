@@ -1,6 +1,6 @@
 # Table: aws_route53recoverycontrolconfig_routing_controls
 
-This table shows data for Route53recoverycontrolconfig Routing Controls.
+This table shows data for Amazon Route 53 Application Recovery Controller Recovery Control Configuration Routing Controls.
 
 https://docs.aws.amazon.com/routing-control/latest/APIReference/API_ListRoutingControls.html
 

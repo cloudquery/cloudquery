@@ -1,6 +1,6 @@
 # Table: aws_route53recoverycontrolconfig_safety_rules
 
-This table shows data for Route53recoverycontrolconfig Safety Rules.
+This table shows data for Amazon Route 53 Application Recovery Controller Recovery Control Configuration Safety Rules.
 
 https://docs.aws.amazon.com/recovery-cluster/latest/api/controlpanel-controlpanelarn-safetyrules.html
 
