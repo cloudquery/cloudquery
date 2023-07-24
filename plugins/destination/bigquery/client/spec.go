@@ -47,6 +47,7 @@ type Spec struct {
 	BatchSize             int                    `json:"batch_size"`
 	BatchSizeBytes        int                    `json:"batch_size_bytes"`
 	BatchTimeout          configtype.Duration    `json:"batch_timeout"`
+	Endpoint              string                 `json:"endpoint"`
 }
 
 func (s *Spec) SetDefaults() {

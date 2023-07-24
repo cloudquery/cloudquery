@@ -6,6 +6,59 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.0.0...plugins-source-aws-v22.0.1) (2023-07-22)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_cloudformation_template_summaries`: column added with name `warnings` and type `json`
+- Table `aws_ec2_instance_types`: column added with name `nitro_tpm_info` and type `json`
+- Table `aws_ec2_instance_types`: column added with name `nitro_tpm_support` and type `utf8`
+- Table `aws_rds_db_snapshots`: column added with name `db_system_id` and type `utf8`
+- Table `aws_route53resolver_resolver_endpoints`: column added with name `outpost_arn` and type `utf8`
+- Table `aws_route53resolver_resolver_endpoints`: column added with name `preferred_instance_type` and type `utf8`
+
+### Bug Fixes
+
+* **aws:** Make `aws_s3_buckets` properties nullable to clarify successful resolver results ([#12432](https://github.com/cloudquery/cloudquery/issues/12432)) ([d61502b](https://github.com/cloudquery/cloudquery/commit/d61502bab088c804c33584239635830489bd12b3))
+* **deps:** Update AWS modules ([#12441](https://github.com/cloudquery/cloudquery/issues/12441)) ([9d7f2df](https://github.com/cloudquery/cloudquery/commit/9d7f2df624c2ea459a4b2e796267dd96ccaaf543))
+* **resources-acm-certificates:** Filter by all key usages ([#12436](https://github.com/cloudquery/cloudquery/issues/12436)) ([dc6504e](https://github.com/cloudquery/cloudquery/commit/dc6504eb5199b17a1743dbde4dc292b40d763e7a))
+
+## [22.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v21.1.0...plugins-source-aws-v22.0.0) (2023-07-20)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_appconfig_deployment_strategies` was added
+- Table `aws_dynamodb_table_continuous_backups`: primary key constraint added to column `table_arn` (:warning: breaking)
+- Table `aws_dynamodb_table_continuous_backups`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_lambda_function_versions`: primary key constraint added to column `function_arn` (:warning: breaking)
+- Table `aws_lambda_function_versions`: primary key constraint added to column `version` (:warning: breaking)
+- Table `aws_lambda_function_versions`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_regions`: primary key constraint added to column `account_id` (:warning: breaking)
+- Table `aws_regions`: primary key constraint added to column `region` (:warning: breaking)
+- Table `aws_regions`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_s3_bucket_encryption_rules`: primary key constraint added to column `bucket_arn` (:warning: breaking)
+- Table `aws_s3_bucket_encryption_rules`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+
+### ⚠ BREAKING CHANGES
+
+* **aws:** Define composite primary key for regions ([#12415](https://github.com/cloudquery/cloudquery/issues/12415))
+* **aws:** Define primary key for s3_bucket_encryption_rules ([#12408](https://github.com/cloudquery/cloudquery/issues/12408))
+* **aws:** Define primary key for dynamodb_table_continuous_backups ([#12409](https://github.com/cloudquery/cloudquery/issues/12409))
+* **aws:** Define composite primary key for lambda_function_versions ([#12402](https://github.com/cloudquery/cloudquery/issues/12402))
+
+### Features
+
+* **aws:** Define composite primary key for lambda_function_versions ([#12402](https://github.com/cloudquery/cloudquery/issues/12402)) ([d1add18](https://github.com/cloudquery/cloudquery/commit/d1add18c5435c01579cbe86eb46164e656d4cd66))
+* **aws:** Define composite primary key for regions ([#12415](https://github.com/cloudquery/cloudquery/issues/12415)) ([681ea97](https://github.com/cloudquery/cloudquery/commit/681ea9731fc13dcf0965e97513cfc209589b4765))
+* **aws:** Define primary key for dynamodb_table_continuous_backups ([#12409](https://github.com/cloudquery/cloudquery/issues/12409)) ([7d4a657](https://github.com/cloudquery/cloudquery/commit/7d4a657afaed5e129e1650b06595abd8d333572d))
+* **aws:** Define primary key for s3_bucket_encryption_rules ([#12408](https://github.com/cloudquery/cloudquery/issues/12408)) ([a026b98](https://github.com/cloudquery/cloudquery/commit/a026b989ad6cafd61f76374dcc5fa6bc43a57073))
+
+
+### Bug Fixes
+
+* **sync:** Pass `DeterministicCQID` option to scheduler ([#12424](https://github.com/cloudquery/cloudquery/issues/12424)) ([eaac2e6](https://github.com/cloudquery/cloudquery/commit/eaac2e684bd6e9744a38be8eef3a1f5e77d163f5))
+* Use correct name for `DeploymentStrategies` table ([#12428](https://github.com/cloudquery/cloudquery/issues/12428)) ([dda4205](https://github.com/cloudquery/cloudquery/commit/dda42056ec2c3e0038ca72a95469cf75cf9d22a4))
+
 ## [21.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v21.0.0...plugins-source-aws-v21.1.0) (2023-07-18)
 
 

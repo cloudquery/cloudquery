@@ -232,7 +232,7 @@
     },
     {
       "source": "/contact",
-      "destination": "https://docs.google.com/forms/d/e/1FAIpQLSfSbz6B1z7SsqbqqadjnA2EJ6QoZ67S1NCtjjImCLlMacGkyg/viewform?usp=sf_link"
+      "destination": "https://cloudquery.typeform.com/to/UrgOydHV"
     },
     {
       "source": "/docs/support",
@@ -340,7 +340,7 @@
     },
     {
       "source": "/register_for_cloud",
-      "destination": "https://forms.gle/g8LtfCDD8qy9T6CV8"
+      "destination": "https://cloudquery.typeform.com/to/MZ0DSN82"
     }
   ]
 }

@@ -28,7 +28,7 @@ Build the CLI and all plugins:
    spec:
      # global config
      name: "aws"
-     version: "v15.2.0"
+     version: "VERSION_SOURCE_AWS"
      registry: "grpc"
      path: "localhost:7777"
      tables: ["*"]
