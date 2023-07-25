@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-salesforce-v3.0.1...plugins-source-salesforce-v3.0.2) (2023-07-25)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 10df4b9 ([#12443](https://github.com/cloudquery/cloudquery/issues/12443)) ([e385283](https://github.com/cloudquery/cloudquery/commit/e38528309f862f37bc7e278f9b69cf92d5aa5bd5))
+
 ## [3.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-salesforce-v3.0.0...plugins-source-salesforce-v3.0.1) (2023-07-18)
 
 
