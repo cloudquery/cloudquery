@@ -150,5 +150,8 @@
   },
   "buy": {
     "display": "hidden"
+  },
+  "landing": {
+    "display": "hidden"
   }
 }
