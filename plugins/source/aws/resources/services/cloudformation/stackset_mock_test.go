@@ -75,6 +75,34 @@ func buildStackSet(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
+	var stackInstanceSummary types.StackInstanceSummary
+	require.NoError(t, faker.FakeObject(&stackInstanceSummary))
+	mock.EXPECT().ListStackInstances(
+		gomock.Any(),
+		&cloudformation.ListStackInstancesInput{StackSetName: stackSummary.StackSetName, CallAs: types.CallAsDelegatedAdmin},
+		gomock.Any(),
+	).Return(
+		&cloudformation.ListStackInstancesOutput{Summaries: []types.StackInstanceSummary{stackInstanceSummary}},
+		nil,
+	)
+
+	var stackInstanceResourceDriftsSummary types.StackInstanceResourceDriftsSummary
+	require.NoError(t, faker.FakeObject(&stackInstanceResourceDriftsSummary))
+	mock.EXPECT().ListStackInstanceResourceDrifts(
+		gomock.Any(),
+		&cloudformation.ListStackInstanceResourceDriftsInput{
+			OperationId:          stackInstanceSummary.LastOperationId,
+			StackInstanceAccount: stackInstanceSummary.Account,
+			StackInstanceRegion:  stackInstanceSummary.Region,
+			StackSetName:         stackSummary.StackSetName,
+			CallAs:               types.CallAsDelegatedAdmin,
+		},
+		gomock.Any(),
+	).Return(
+		&cloudformation.ListStackInstanceResourceDriftsOutput{Summaries: []types.StackInstanceResourceDriftsSummary{stackInstanceResourceDriftsSummary}},
+		nil,
+	)
+
 	return client.Services{Cloudformation: mock}
 }
 
