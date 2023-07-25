@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-homebrew-v3.0.1...plugins-source-homebrew-v3.0.2) (2023-07-25)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 10df4b9 ([#12453](https://github.com/cloudquery/cloudquery/issues/12453)) ([3b92dd0](https://github.com/cloudquery/cloudquery/commit/3b92dd0e304954ec4c608c2ab2322552357f0f97))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.3 ([#12307](https://github.com/cloudquery/cloudquery/issues/12307)) ([8f14e4d](https://github.com/cloudquery/cloudquery/commit/8f14e4de7bf4d4c833f501135ea0610916a42f8b))
+
 ## [3.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-homebrew-v3.0.0...plugins-source-homebrew-v3.0.1) (2023-07-18)
 
 
