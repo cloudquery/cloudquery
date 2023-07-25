@@ -2,7 +2,7 @@
 
 This table shows data for AWS CloudFormation Stack Instance Resource Drifts.
 
-https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackSetOperationResultSummary.html.
+https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackInstanceResourceDriftsSummary.html.
 The 'request_account_id' and 'request_region' columns are added to show the account and region of where the request was made from.
 
 The primary key for this table is **_cq_id**.
