@@ -17,13 +17,10 @@ type tablesPreWrapper struct {
 func fetchTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
-	bigqueryService, err := bigquery.NewService(ctx, c.ClientOptions...)
-	if err != nil {
-		return err
-	}
-	dsid := parent.Item.(*bigquery.Dataset).DatasetReference.DatasetId
+	p := parent.Item.(*datasetWrapper)
+	dsid := p.DatasetReference.DatasetId
 	for {
-		output, err := bigqueryService.Tables.List(c.ProjectId, dsid).PageToken(nextPageToken).Do()
+		output, err := p.svc.Tables.List(c.ProjectId, dsid).PageToken(nextPageToken).Context(ctx).Do()
 		if err != nil {
 			return err
 		}
@@ -31,7 +28,7 @@ func fetchTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 			res <- &tablesPreWrapper{
 				datasetID: dsid,
 				tableID:   output.Tables[i].TableReference.TableId,
-				svc:       bigqueryService,
+				svc:       p.svc,
 			}
 		}
 		if output.NextPageToken == "" {

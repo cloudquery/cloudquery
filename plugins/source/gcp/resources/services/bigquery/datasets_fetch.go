@@ -47,6 +47,9 @@ func datasetGet(ctx context.Context, meta schema.ClientMeta, r *schema.Resource)
 	if err != nil {
 		return err
 	}
-	r.SetItem(item)
+	r.SetItem(&datasetWrapper{
+		Dataset: item,
+		svc:     wrapped.svc,
+	})
 	return nil
 }
