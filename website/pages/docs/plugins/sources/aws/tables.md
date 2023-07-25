@@ -103,6 +103,8 @@
 - [aws_batch_job_queues](tables/aws_batch_job_queues)
   - [aws_batch_jobs](tables/aws_batch_jobs)
 - [aws_cloudformation_stack_sets](tables/aws_cloudformation_stack_sets)
+  - [aws_cloudformation_stack_instance_summaries](tables/aws_cloudformation_stack_instance_summaries)
+    - [aws_cloudformation_stack_instance_resource_drifts](tables/aws_cloudformation_stack_instance_resource_drifts)
   - [aws_cloudformation_stack_set_operations](tables/aws_cloudformation_stack_set_operations)
     - [aws_cloudformation_stack_set_operation_results](tables/aws_cloudformation_stack_set_operation_results)
 - [aws_cloudformation_stacks](tables/aws_cloudformation_stacks)
