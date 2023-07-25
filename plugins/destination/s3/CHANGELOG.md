@@ -1,5 +1,20 @@
 # Changelog
 
+## [4.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v4.5.2...plugins-destination-s3-v4.6.0) (2023-07-25)
+
+
+### Features
+
+* Support compression ([#12411](https://github.com/cloudquery/cloudquery/issues/12411)) ([03fae6d](https://github.com/cloudquery/cloudquery/commit/03fae6d803a4e2ac00ff83d9e90a4169b247c346))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 10df4b9 ([#12443](https://github.com/cloudquery/cloudquery/issues/12443)) ([e385283](https://github.com/cloudquery/cloudquery/commit/e38528309f862f37bc7e278f9b69cf92d5aa5bd5))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.0.2 ([#12388](https://github.com/cloudquery/cloudquery/issues/12388)) ([af71bb1](https://github.com/cloudquery/cloudquery/commit/af71bb1d35837b0e4cc028525b5408a48d252d02))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.0.3 ([#12422](https://github.com/cloudquery/cloudquery/issues/12422)) ([96c6f27](https://github.com/cloudquery/cloudquery/commit/96c6f27aa019fdbfe3f4cbb3e4c9e74cb0ebec43))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.1.0 ([#12433](https://github.com/cloudquery/cloudquery/issues/12433)) ([6f91a34](https://github.com/cloudquery/cloudquery/commit/6f91a34d571d2361069079cb17f0556ec11d1130))
+
 ## [4.5.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v4.5.1...plugins-destination-s3-v4.5.2) (2023-07-18)
 
 
