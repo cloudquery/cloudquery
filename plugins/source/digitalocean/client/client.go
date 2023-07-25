@@ -85,6 +85,7 @@ type Services struct {
 	FloatingIps    FloatingIpsService
 	Images         ImagesService
 	Keys           KeysService
+	Kubernetes     KubernetesService
 	LoadBalancers  LoadBalancersService
 	Projects       ProjectsService
 	Regions        RegionsService
@@ -181,6 +182,7 @@ func initServices(doClient *godo.Client, spacesService SpacesService) *Services 
 		FloatingIps:    doClient.FloatingIPs,
 		Images:         doClient.Images,
 		Keys:           doClient.Keys,
+		Kubernetes:     doClient.Kubernetes,
 		LoadBalancers:  doClient.LoadBalancers,
 		Projects:       doClient.Projects,
 		Regions:        doClient.Regions,
