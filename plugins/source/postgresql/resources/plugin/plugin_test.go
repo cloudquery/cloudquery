@@ -17,6 +17,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scalar"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/google/uuid"
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
@@ -197,6 +198,34 @@ func createTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string) 
 	return nil
 }
 
+func createTableWithUniqueKeys(ctx context.Context, conn *pgxpool.Pool, tableName string) error {
+	var query = `
+	create table %s (
+		column1 int primary key,
+		column2 int unique,
+		column3 int unique,
+		column4 int unique,
+		column5 int unique,
+		column6 int unique,
+		column7 int unique,
+		column8 int unique,
+		column9 int unique,
+		column10 int unique,
+		column11 int unique,
+		column12 int unique,
+		column13 int unique,
+		column14 int unique,
+		column15 int unique,
+		column16 int
+	 )
+ `
+
+	if _, err := conn.Exec(ctx, fmt.Sprintf(query, tableName)); err != nil {
+		return err
+	}
+	return nil
+}
+
 func insertTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string, testCases []testCase) error {
 	var query = ""
 	query += "INSERT INTO " + pgx.Identifier{tableName}.Sanitize() + " ("
@@ -294,9 +323,9 @@ func assertRecord(t *testing.T, actualRecord arrow.Record, expected []testCase) 
 	if len(expected) != int(actualRecord.NumCols()) {
 		t.Fatalf("expected record to have %d columns, got %d", len(expected), actualRecord.NumCols())
 	}
-	schema := actualRecord.Schema()
+	sc := actualRecord.Schema()
 	for i, val := range expected {
-		actualScalar := scalar.NewScalar(schema.Field(i).Type)
+		actualScalar := scalar.NewScalar(sc.Field(i).Type)
 		actualVal, err := getValue(actualRecord.Column(i), 0)
 		if err != nil {
 			t.Fatal(err)
@@ -484,4 +513,76 @@ func IsContextDeadlineExceeded(err error) bool {
 		err = errors.Unwrap(err)
 	}
 	return deadlineExceeded
+}
+
+func TestMigrate(t *testing.T) {
+	p := Plugin()
+	ctx := context.Background()
+	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
+		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
+	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+	p.SetLogger(l)
+	spec := client.Spec{
+		ConnectionString: getTestConnectionString(),
+		PgxLogLevel:      client.LogLevelTrace,
+	}
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	conn, err := getTestConnection(ctx, l, spec.ConnectionString)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer conn.Close()
+
+	testTable := "test_pg_migrate"
+	if _, err := conn.Exec(ctx, "DROP TABLE IF EXISTS test_pg_migrate"); err != nil {
+		t.Fatal(err)
+	}
+	if err := createTableWithUniqueKeys(ctx, conn, testTable); err != nil {
+		t.Fatal(err)
+	}
+
+	// Init the plugin so we can call migrate
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
+		t.Fatal(err)
+	}
+	res := make(chan message.SyncMessage, 1)
+	g := errgroup.Group{}
+	g.Go(func() error {
+		defer close(res)
+		opts := plugin.SyncOptions{Tables: []string{testTable}}
+		return p.Sync(ctx, opts, res)
+	})
+	var table *schema.Table
+	for r := range res {
+		m, ok := r.(*message.SyncMigrateTable)
+		if ok {
+			table = m.Table
+		}
+	}
+	err = g.Wait()
+	if err != nil {
+		t.Fatal("got unexpected error:", err)
+	}
+
+	require.Equal(t, schema.ColumnList{
+		{Name: "column1", Type: &arrow.Int32Type{}, PrimaryKey: true, Unique: true, NotNull: true},
+		{Name: "column2", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column3", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column4", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column5", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column6", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column7", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column8", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column9", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column10", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column11", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column12", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column13", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column14", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column15", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column16", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: false, NotNull: false},
+	}, table.Columns)
 }
