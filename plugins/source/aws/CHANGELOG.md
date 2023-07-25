@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.0.0...plugins-source-aws-v22.0.1) (2023-07-22)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_cloudformation_template_summaries`: column added with name `warnings` and type `json`
+- Table `aws_ec2_instance_types`: column added with name `nitro_tpm_info` and type `json`
+- Table `aws_ec2_instance_types`: column added with name `nitro_tpm_support` and type `utf8`
+- Table `aws_rds_db_snapshots`: column added with name `db_system_id` and type `utf8`
+- Table `aws_route53resolver_resolver_endpoints`: column added with name `outpost_arn` and type `utf8`
+- Table `aws_route53resolver_resolver_endpoints`: column added with name `preferred_instance_type` and type `utf8`
+
+### Bug Fixes
+
+* **aws:** Make `aws_s3_buckets` properties nullable to clarify successful resolver results ([#12432](https://github.com/cloudquery/cloudquery/issues/12432)) ([d61502b](https://github.com/cloudquery/cloudquery/commit/d61502bab088c804c33584239635830489bd12b3))
+* **deps:** Update AWS modules ([#12441](https://github.com/cloudquery/cloudquery/issues/12441)) ([9d7f2df](https://github.com/cloudquery/cloudquery/commit/9d7f2df624c2ea459a4b2e796267dd96ccaaf543))
+* **resources-acm-certificates:** Filter by all key usages ([#12436](https://github.com/cloudquery/cloudquery/issues/12436)) ([dc6504e](https://github.com/cloudquery/cloudquery/commit/dc6504eb5199b17a1743dbde4dc292b40d763e7a))
+
 ## [22.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v21.1.0...plugins-source-aws-v22.0.0) (2023-07-20)
 
 

@@ -22,7 +22,7 @@ type Client struct {
 	batchwriter.UnimplementedDeleteStale
 }
 
-func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
+func New(_ context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "bq-dest").Logger(),
@@ -62,6 +62,9 @@ func (c *Client) bqClient(ctx context.Context) (*bigquery.Client, error) {
 	opts := []option.ClientOption{option.WithRequestReason("CloudQuery BigQuery destination")}
 	if len(c.spec.ServiceAccountKeyJSON) != 0 {
 		opts = append(opts, option.WithCredentialsJSON([]byte(c.spec.ServiceAccountKeyJSON)))
+	}
+	if c.spec.Endpoint != "" {
+		opts = append(opts, option.WithEndpoint(c.spec.Endpoint))
 	}
 	client, err := bigquery.NewClient(ctx, c.spec.ProjectID, opts...)
 	if err != nil {
