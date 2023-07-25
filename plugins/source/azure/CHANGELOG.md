@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [9.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v9.0.3...plugins-source-azure-v9.1.0) (2023-07-25)
 
 
+### This Release has the Following Changes to Tables
+- Table `azure_mysql_server_databases` was added
+- Table `azure_network_private_endpoints` was added
+- Table `azure_privatedns_private_zone_record_sets` was added
+- Table `azure_privatedns_private_zone_virtual_network_links` was added
+- Table `azure_trafficmanager_profiles` was added
+
 ### Features
 
 * **azure:** Add azure private endpoints ([#12473](https://github.com/cloudquery/cloudquery/issues/12473)) ([24d111c](https://github.com/cloudquery/cloudquery/commit/24d111ced3f5ca5eae8aae189e199aae5de02c7d))
