@@ -3,22 +3,19 @@ package mysql
 import (
 	"encoding/json"
 	"net/http"
-	"testing"
-
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/gorilla/mux"
 )
 
-func createServers(router *mux.Router) error {
-	var item armmysql.ServersClientListResponse
+func createDatabases(router *mux.Router) error {
+	var item armmysql.DatabasesClientListByServerResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.DBforMySQL/servers", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/servers/{serverName}/databases", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
@@ -29,14 +26,5 @@ func createServers(router *mux.Router) error {
 			return
 		}
 	})
-
-	if err := createDatabases(router); err != nil {
-		return err
-	}
-
-	return createServerConfigurations(router)
-}
-
-func TestServers(t *testing.T) {
-	client.MockTestHelper(t, Servers(), createServers)
+	return nil
 }
