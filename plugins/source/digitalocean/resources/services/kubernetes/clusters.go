@@ -1,12 +1,23 @@
-package clusters
+package kubernetes
 
 import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/digitalocean/godo"
 )
+
+func Clusters() *schema.Table {
+	return &schema.Table{
+		Name:        "digitalocean_kubernetes_clusters",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#operation/kubernetes_list_clusters",
+		Resolver:    fetchKubernetesClusters,
+		Transform:   transformers.TransformWithStruct(&godo.KubernetesCluster{}, transformers.WithPrimaryKeys("ID")),
+		Columns:     []schema.Column{},
+	}
+}
 
 func fetchKubernetesClusters(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client)

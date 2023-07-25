@@ -1,4 +1,4 @@
-package clusters
+package kubernetes
 
 import (
 	"testing"
@@ -11,19 +11,17 @@ import (
 )
 
 func createClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
-	m := mocks.NewMockClustersService(ctrl)
+	m := mocks.NewMockKubernetesService(ctrl)
 
-	var data []godo.KubernetesCluster
+	var data []*godo.KubernetesCluster
 	if err := faker.FakeObject(&data); err != nil {
 		t.Fatal(err)
 	}
-
+	data[0].MaintenancePolicy.Day = godo.KubernetesMaintenanceDayAny
 	m.EXPECT().List(gomock.Any(), gomock.Any()).Return(data, &godo.Response{}, nil)
 
-	createNeighbors(t, m)
-
 	return client.Services{
-		Clusters: m,
+		Kubernetes: m,
 	}
 }
 
