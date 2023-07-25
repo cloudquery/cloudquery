@@ -2,7 +2,6 @@ package bigquery
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"testing"
 
@@ -111,8 +110,6 @@ func createBigqueryDatasets(mux *httprouter.Router) error {
 	}
 
 	mux.GET("/projects/testProject/datasets/testDataset/tables/:table", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		fmt.Println("what")
-		fmt.Println(r.URL)
 		b, err := json.Marshal(&table)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
