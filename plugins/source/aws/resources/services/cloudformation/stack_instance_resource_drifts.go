@@ -17,7 +17,7 @@ func stackInstanceResourceDrifts() *schema.Table {
 	table_name := "aws_cloudformation_stack_instance_resource_drifts"
 	return &schema.Table{
 		Name: table_name,
-		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackSetOperationResultSummary.html.
+		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackInstanceResourceDriftsSummary.html.
 The 'request_account_id' and 'request_region' columns are added to show the account and region of where the request was made from.`,
 		Resolver:  fetchStackInstanceResourceDrifts,
 		Transform: transformers.TransformWithStruct(&types.StackInstanceResourceDriftsSummary{}),
