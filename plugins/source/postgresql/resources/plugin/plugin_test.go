@@ -323,9 +323,9 @@ func assertRecord(t *testing.T, actualRecord arrow.Record, expected []testCase) 
 	if len(expected) != int(actualRecord.NumCols()) {
 		t.Fatalf("expected record to have %d columns, got %d", len(expected), actualRecord.NumCols())
 	}
-	schema := actualRecord.Schema()
+	sc := actualRecord.Schema()
 	for i, val := range expected {
-		actualScalar := scalar.NewScalar(schema.Field(i).Type)
+		actualScalar := scalar.NewScalar(sc.Field(i).Type)
 		actualVal, err := getValue(actualRecord.Column(i), 0)
 		if err != nil {
 			t.Fatal(err)
@@ -557,9 +557,9 @@ func TestMigrate(t *testing.T) {
 	})
 	var table *schema.Table
 	for r := range res {
-		switch r := r.(type) {
-		case *message.SyncMigrateTable:
-			table = r.Table
+		m, ok := r.(*message.SyncMigrateTable)
+		if ok {
+			table = m.Table
 		}
 	}
 	err = g.Wait()
