@@ -8,6 +8,12 @@ import (
 	"google.golang.org/api/bigquery/v2"
 )
 
+type tablesPreWrapper struct {
+	datasetID string
+	tableID   string
+	svc       *bigquery.Service
+}
+
 func fetchTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
@@ -15,13 +21,19 @@ func fetchTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	if err != nil {
 		return err
 	}
+	dsid := parent.Item.(*bigquery.Dataset).DatasetReference.DatasetId
 	for {
-		output, err := bigqueryService.Tables.List(c.ProjectId, parent.Item.(*bigquery.Dataset).DatasetReference.DatasetId).PageToken(nextPageToken).Do()
+		output, err := bigqueryService.Tables.List(c.ProjectId, dsid).PageToken(nextPageToken).Do()
 		if err != nil {
 			return err
 		}
-		res <- output.Tables
-
+		for i := range output.Tables {
+			res <- &tablesPreWrapper{
+				datasetID: dsid,
+				tableID:   output.Tables[i].TableReference.TableId,
+				svc:       bigqueryService,
+			}
+		}
 		if output.NextPageToken == "" {
 			break
 		}
@@ -32,11 +44,8 @@ func fetchTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 
 func tableGet(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
 	c := meta.(*client.Client)
-	bigqueryService, err := bigquery.NewService(ctx, c.ClientOptions...)
-	if err != nil {
-		return err
-	}
-	item, err := bigqueryService.Tables.Get(c.ProjectId, r.Parent.Item.(*bigquery.Dataset).DatasetReference.DatasetId, r.Item.(*bigquery.TableListTables).TableReference.TableId).Do()
+	wrapped := r.Item.(*tablesPreWrapper)
+	item, err := wrapped.svc.Tables.Get(c.ProjectId, wrapped.datasetID, wrapped.tableID).Context(ctx).Do()
 	if err != nil {
 		return err
 	}
