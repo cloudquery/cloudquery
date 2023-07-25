@@ -18,6 +18,7 @@ func Studios() *schema.Table {
 		PreResourceResolver: getStudio,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "elasticmapreduce"),
 		Transform:           transformers.TransformWithStruct(&types.Studio{}),
+		Relations:           []*schema.Table{studioSessionMapping()},
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

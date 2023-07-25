@@ -6,6 +6,11 @@ https://docs.aws.amazon.com/emr/latest/APIReference/API_Studio.html
 
 The primary key for this table is **_cq_id**.
 
+## Relations
+
+The following tables depend on aws_emr_studios:
+  - [aws_emr_studio_session_mapping](aws_emr_studio_session_mapping)
+
 ## Columns
 
 | Name          | Type          |
