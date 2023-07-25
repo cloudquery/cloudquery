@@ -105,6 +105,6 @@
   "plugins/destination/meilisearch+FILLER": "1.0.0",
   "plugins/source/firestore": "3.0.1",
   "plugins/source/firestore+FILLER": "0.0.0",
-  "plugins/source/oracledb": "3.0.2",
+  "plugins/source/oracledb": "3.0.3",
   "plugins/source/oracledb+FILLER": "0.0.0"
 }
