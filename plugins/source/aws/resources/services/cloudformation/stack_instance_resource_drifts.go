@@ -37,12 +37,21 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("stack_set_arn"),
 			},
+			{
+				Name:     "operation_id",
+				Type:     arrow.BinaryTypes.String,
+				Resolver: schema.ParentColumnResolver("last_operation_id"),
+			},
 		},
 	}
 }
 func fetchStackInstanceResourceDrifts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	stackSet := parent.Parent.Item.(models.ExpandedStackSet)
 	instance := parent.Item.(models.ExpandedStackInstanceSummary)
+	if instance.DriftStatus == types.StackDriftStatusNotChecked {
+		return nil
+	}
+
+	stackSet := parent.Parent.Item.(models.ExpandedStackSet)
 	config := cloudformation.ListStackInstanceResourceDriftsInput{
 		OperationId:          instance.LastOperationId,
 		StackInstanceAccount: instance.Account,

@@ -20,6 +20,7 @@ This table depends on [aws_cloudformation_stack_instance_summaries](aws_cloudfor
 |request_account_id|`utf8`|
 |request_region|`utf8`|
 |stack_set_arn|`utf8`|
+|operation_id|`utf8`|
 |logical_resource_id|`utf8`|
 |resource_type|`utf8`|
 |stack_id|`utf8`|
