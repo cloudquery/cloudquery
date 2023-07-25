@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [5.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v5.1.1...plugins-source-digitalocean-v5.2.0) (2023-07-25)
 
 
+### This Release has the Following Changes to Tables
+- Table `digitalocean_kubernetes_clusters` was added
+
 ### Features
 
 * **resources:** Add DigitalOcean Kubernetes Clusters table ([#12438](https://github.com/cloudquery/cloudquery/issues/12438)) ([95dcaa6](https://github.com/cloudquery/cloudquery/commit/95dcaa6769a4019bd3ad6e0e11808f6f630095f0))
