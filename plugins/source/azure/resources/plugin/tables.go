@@ -258,6 +258,7 @@ func getTables() schema.Tables {
 		network.LoadBalancers(),
 		network.NatGateways(),
 		network.PrivateLinkServices(),
+		network.PrivateEndpoints(),
 		network.Profiles(),
 		network.PublicIpAddresses(),
 		network.PublicIpPrefixes(),
