@@ -22,7 +22,7 @@ The following use cases and solutions are powered by CloudQuery.  Reach out to [
 
 ![A Grafana dashboard of AWS EC2 data](/images/blog/open-source-cloud-asset-inventory-with-cloudquery-and-grafana/image1.png)
 
-More information can be found [here for building an open-source CSPM solution powered by CloudQuery.](/solutions/open-source-cspm)  CloudQuery can be used as a CSPM platform with the ability to build custom rules, create custom visualizations, and layer [policy packs](/docs/core-concepts/policies) for a flexible and scaleable cloud security posture management tool that can cover multiple cloud providers.
+More information can be found [here for building an open-source CSPM solution powered by CloudQuery.](/solutions/open-source-cspm)  CloudQuery can be used as a CSPM platform with the ability to build custom rules, create custom visualizations, and layer [policy packs](/docs/core-concepts/policies) for a flexible and scalable cloud security posture management tool that can cover multiple cloud providers.
 
 ### Resilience and Data Backup
 
