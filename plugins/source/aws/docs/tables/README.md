@@ -307,6 +307,7 @@
   - [aws_emr_cluster_instance_groups](../../../../../website/tables/aws/aws_emr_cluster_instance_groups.md)
   - [aws_emr_cluster_instances](../../../../../website/tables/aws/aws_emr_cluster_instances.md)
 - [aws_emr_security_configurations](../../../../../website/tables/aws/aws_emr_security_configurations.md)
+- [aws_emr_studios](../../../../../website/tables/aws/aws_emr_studios.md)
 - [aws_eventbridge_api_destinations](../../../../../website/tables/aws/aws_eventbridge_api_destinations.md)
 - [aws_eventbridge_archives](../../../../../website/tables/aws/aws_eventbridge_archives.md)
 - [aws_eventbridge_connections](../../../../../website/tables/aws/aws_eventbridge_connections.md)
