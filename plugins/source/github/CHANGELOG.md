@@ -3,6 +3,9 @@
 ## [7.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v7.0.1...plugins-source-github-v7.1.0) (2023-07-25)
 
 
+### This Release has the Following Changes to Tables
+- Table `github_repository_keys` was added
+
 ### Features
 
 * **resources:** Add Repository Keys ([#12407](https://github.com/cloudquery/cloudquery/issues/12407)) ([cce0cac](https://github.com/cloudquery/cloudquery/commit/cce0cacaf44aee203245a54846c2a2209177ceef))
