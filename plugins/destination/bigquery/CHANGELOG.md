@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v3.1.1...plugins-destination-bigquery-v3.2.0) (2023-07-25)
+
+
+### Features
+
+* **bigquery:** Add `endpoint` for local testing ([#12435](https://github.com/cloudquery/cloudquery/issues/12435)) ([98e7dfb](https://github.com/cloudquery/cloudquery/commit/98e7dfb58f7508460425523f4948dc79b5c8cef7)), closes [#12131](https://github.com/cloudquery/cloudquery/issues/12131)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 10df4b9 ([#12443](https://github.com/cloudquery/cloudquery/issues/12443)) ([e385283](https://github.com/cloudquery/cloudquery/commit/e38528309f862f37bc7e278f9b69cf92d5aa5bd5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.3 ([#12307](https://github.com/cloudquery/cloudquery/issues/12307)) ([8f14e4d](https://github.com/cloudquery/cloudquery/commit/8f14e4de7bf4d4c833f501135ea0610916a42f8b))
+
 ## [3.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v3.1.0...plugins-destination-bigquery-v3.1.1) (2023-07-18)
 
 
