@@ -7,6 +7,7 @@ module.exports = {
   generateRobotsTxt: true,
   exclude: [
     "/buy/*",
+    "/landing/*",
     "/docs/plugins/sources/_*",
     "/docs/plugins/destinations/_*",
     "/docs/plugins/sources/*/_*",
