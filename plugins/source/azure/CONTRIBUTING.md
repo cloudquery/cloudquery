@@ -13,7 +13,7 @@ The mock tests use an HTTP server to mock the Azure API. See [the `azure_mysql_s
 
 ## Mapping a resource to a resource provider
 
-If the resource uses the `SubscriptionMultiplexRegisteredNamespace`, please ensure you're using the correct resource provider for the resource.
+If the resource uses `SubscriptionMultiplexRegisteredNamespace`, please ensure you're using the correct resource provider for the resource.
 The mapping can be found [here](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers).
 See [the `azure_mysql_servers` resource](./resources/services/mysql/servers.go#L18) for an example.
 
