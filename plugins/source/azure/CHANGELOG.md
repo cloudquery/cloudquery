@@ -5,6 +5,28 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v9.0.3...plugins-source-azure-v9.1.0) (2023-07-25)
+
+
+### This Release has the Following Changes to Tables
+- Table `azure_mysql_server_databases` was added
+- Table `azure_network_private_endpoints` was added
+- Table `azure_privatedns_private_zone_record_sets` was added
+- Table `azure_privatedns_private_zone_virtual_network_links` was added
+- Table `azure_trafficmanager_profiles` was added
+
+### Features
+
+* **azure:** Add azure private endpoints ([#12473](https://github.com/cloudquery/cloudquery/issues/12473)) ([24d111c](https://github.com/cloudquery/cloudquery/commit/24d111ced3f5ca5eae8aae189e199aae5de02c7d))
+* **azure:** Add azure trafficmanager profiles ([#12458](https://github.com/cloudquery/cloudquery/issues/12458)) ([347b5c5](https://github.com/cloudquery/cloudquery/commit/347b5c51ea888ad27dcc4f10061520558d8fbaa1))
+* **azure:** Add private dns record sets and vnet links ([#12417](https://github.com/cloudquery/cloudquery/issues/12417)) ([2f337b1](https://github.com/cloudquery/cloudquery/commit/2f337b14d450385718afc487457ccaae55538bed))
+* **resources:** Add MySQL Server Databases ([#12410](https://github.com/cloudquery/cloudquery/issues/12410)) ([553b11d](https://github.com/cloudquery/cloudquery/commit/553b11d4f28b6489c6cedba3b651f34d9ba53434))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 10df4b9 ([#12443](https://github.com/cloudquery/cloudquery/issues/12443)) ([e385283](https://github.com/cloudquery/cloudquery/commit/e38528309f862f37bc7e278f9b69cf92d5aa5bd5))
+
 ## [9.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v9.0.2...plugins-source-azure-v9.0.3) (2023-07-20)
 
 

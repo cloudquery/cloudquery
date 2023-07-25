@@ -1,18 +1,13 @@
 # Generate mocks for mock/unit testing 
 .PHONY: generate-mocks
 generate-mocks:
-	go generate ./client/services/...
+	go install github.com/golang/mock/mockgen@v1.6.0
+	go generate ./client/services.go
 
 # Test unit
 .PHONY: test
 test:
 	go test -race -timeout 3m ./...
-
-# Install tools
-.PHONY: install-tools
-install-tools:
-	@echo Installing tools from tools/tool.go
-	@cat tools/tool.go | grep _ | awk -F'"' '{print $$2}' | xargs -tI % go install %
 
 .PHONY: lint
 lint:
@@ -30,4 +25,4 @@ gen-docs:
 
 # All gen targets
 .PHONY: gen
-gen: gen-docs
+gen: generate-mocks gen-docs
