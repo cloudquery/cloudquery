@@ -6,6 +6,10 @@ https://docs.aws.amazon.com/routing-control/latest/APIReference/API_ListRoutingC
 
 The composite primary key for this table is (**arn**, **control_panel_arn**).
 
+## Relations
+
+This table depends on [aws_route53recoverycontrolconfig_control_panels](aws_route53recoverycontrolconfig_control_panels).
+
 ## Columns
 
 | Name          | Type          |

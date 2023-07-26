@@ -18,7 +18,6 @@ func routingControls() *schema.Table {
 		Description: `https://docs.aws.amazon.com/routing-control/latest/APIReference/API_ListRoutingControls.html`,
 		Resolver:    fetchRoutingControls,
 		Transform:   transformers.TransformWithStruct(&types.RoutingControl{}, transformers.WithPrimaryKeys("ControlPanelArn")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "route53-recovery-control-config"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

@@ -9,6 +9,7 @@ The primary key for this table is **arn**.
 ## Relations
 
 The following tables depend on aws_route53recoverycontrolconfig_control_panels:
+  - [aws_route53recoverycontrolconfig_routing_controls](aws_route53recoverycontrolconfig_routing_controls)
   - [aws_route53recoverycontrolconfig_safety_rules](aws_route53recoverycontrolconfig_safety_rules)
 
 ## Columns
