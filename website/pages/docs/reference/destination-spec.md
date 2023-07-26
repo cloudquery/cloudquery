@@ -66,8 +66,8 @@ Specifies the update method to use when inserting rows. The exact semantics depe
 - `overwrite`: Same as `overwrite-delete-stale`, but doesn't delete stale rows from previous `sync`s.
 - `append`: Rows are never overwritten or deleted, only appended.
 
-> Switching from `overwrite-delete-stale` or `overwrite` to `append`, or from `append` to `overwrite-delete-stale` or `overwrite` is not supported without dropping all the tables.
-To drop all tables automatically, use the `migrate_mode: forced` option.
+> Switching from `overwrite-delete-stale` or `overwrite` to `append`, or from `append` to `overwrite-delete-stale` or `overwrite` is not supported without dropping all tables specified in the configuration.
+To drop tables automatically, use the `migrate_mode: forced` option.
 
 <!-- vale off -->
 ### migrate_mode
