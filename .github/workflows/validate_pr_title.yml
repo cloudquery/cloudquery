@@ -33,6 +33,7 @@ jobs:
           scopes: |
             deps
             resources
+            services
             main
           # Configure additional validation for the subject based on a regex.
           # This example ensures the subject starts with an uppercase character.
