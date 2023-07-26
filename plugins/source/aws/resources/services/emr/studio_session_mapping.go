@@ -2,6 +2,7 @@ package emr
 
 import (
 	"context"
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/emr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -16,10 +17,17 @@ func studioSessionMapping() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/emr/latest/APIReference/API_GetStudioSessionMapping.html`,
 		Resolver:            fetchEmrStudioSessionMapping,
 		PreResourceResolver: getSessionMapping,
-		Transform:           transformers.TransformWithStruct(&types.SessionMappingDetail{}, transformers.WithPrimaryKeys("StudioId", "IdentityType", "IdentityId")),
+		Transform:           transformers.TransformWithStruct(&types.SessionMappingDetail{}, transformers.WithPrimaryKeys("IdentityType", "IdentityId")),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(true),
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
+			{
+				Name:        "studio_arn",
+				Description: "The Amazon Resource Name (ARN) of the EMR Studio.",
+				Type:        arrow.BinaryTypes.String,
+				Resolver:    schema.ParentColumnResolver("arn"),
+				PrimaryKey:  true,
+			},
 		},
 	}
 }
