@@ -82,10 +82,8 @@ func arrowToDuckDB(dt arrow.DataType) string {
 		return "uuid"
 	case *types.JSONType:
 		return "json"
-	case *arrow.TimestampType:
+	case *arrow.Date32Type, *arrow.Date64Type, *arrow.TimestampType:
 		return "timestamp"
-	case *arrow.Date32Type, *arrow.Date64Type:
-		return "date"
 	case *arrow.DayTimeIntervalType:
 		return "interval"
 	default:
@@ -128,8 +126,6 @@ func duckDBToArrow(t string) arrow.DataType {
 		return arrow.PrimitiveTypes.Float32
 	case "blob", "bytea", "binary", "varbinary":
 		return arrow.BinaryTypes.Binary
-	case "date":
-		return arrow.FixedWidthTypes.Date64
 	case "timestamp", "datetime", "timestamp with time zone", "timestamptz":
 		return arrow.FixedWidthTypes.Timestamp_us
 	case "interval":
