@@ -47,9 +47,9 @@ func fetchSubFolders(ctx context.Context, meta schema.ClientMeta, parent *schema
 	}
 
 	var do func(string) error
-	do = func(name string) error {
+	do = func(parentName string) error {
 		req := &pb.ListFoldersRequest{
-			Parent: name,
+			Parent: parentName,
 		}
 		it := fClient.ListFolders(ctx, req)
 		for {
