@@ -54,10 +54,11 @@ func fetchEmrStudioSessionMapping(ctx context.Context, meta schema.ClientMeta, p
 func getSessionMapping(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Emr
+	sms := resource.Item.(types.SessionMappingSummary)
 	response, err := svc.GetStudioSessionMapping(ctx, &emr.GetStudioSessionMappingInput{
-		StudioId:     resource.Item.(types.SessionMappingSummary).StudioId,
-		IdentityType: resource.Item.(types.SessionMappingSummary).IdentityType,
-		IdentityId:   resource.Item.(types.SessionMappingSummary).IdentityId,
+		StudioId:     sms.StudioId,
+		IdentityType: sms.IdentityType,
+		IdentityId:   sms.IdentityId,
 	}, func(options *emr.Options) {
 		options.Region = cl.Region
 	})
