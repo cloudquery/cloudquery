@@ -23,11 +23,13 @@ func Studios() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "studio_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("StudioId"),
-				PrimaryKey: true,
-			}},
+				Name:        "arn",
+				Type:        arrow.BinaryTypes.String,
+				Description: `The Amazon Resource Name (ARN) of the EMR Studio.`,
+				Resolver:    schema.PathResolver("StudioArn"),
+				PrimaryKey:  true,
+			},
+		},
 		Relations: []*schema.Table{
 			studioSessionMapping(),
 		},
