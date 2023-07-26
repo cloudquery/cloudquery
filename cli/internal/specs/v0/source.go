@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/thoas/go-funk"
+	"golang.org/x/exp/slices"
 )
 
 const (
@@ -89,6 +90,13 @@ func (s *Source) GetWarnings() Warnings {
 	if s.ResourceConcurrency != 0 {
 		warnings["resource_concurrency"] = "the `resource_concurrency` option is deprecated. Please use the plugin-level concurrency option instead"
 	}
+	if s.SkipDependentTables && slices.Contains(s.Tables, "*") {
+		warnings["skip_dependent_tables"] = "the `skip_dependent_tables` option is ineffective when used with '*' `tables`"
+	}
+	if slices.Contains(s.Tables, "*") && len(s.Tables) > 1 {
+		warnings["all_tables_with_more_tables"] = "`tables` option contains '*' as well as other tables. '*' will match all tables"
+	}
+
 	return warnings
 }
 
