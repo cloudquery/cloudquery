@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func RoutingControls() *schema.Table {
+func routingControls() *schema.Table {
 	tableName := "aws_route53recoverycontrolconfig_routing_controls"
 	return &schema.Table{
 		Name:        tableName,
@@ -34,7 +34,10 @@ func RoutingControls() *schema.Table {
 func fetchRoutingControls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Route53recoverycontrolconfig
-	paginator := route53recoverycontrolconfig.NewListRoutingControlsPaginator(svc, &route53recoverycontrolconfig.ListRoutingControlsInput{})
+	controlPanel := parent.Item.(types.ControlPanel)
+	paginator := route53recoverycontrolconfig.NewListRoutingControlsPaginator(svc, &route53recoverycontrolconfig.ListRoutingControlsInput{
+		ControlPanelArn: controlPanel.ControlPanelArn,
+	})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(o *route53recoverycontrolconfig.Options) {
 			o.Region = cl.Region

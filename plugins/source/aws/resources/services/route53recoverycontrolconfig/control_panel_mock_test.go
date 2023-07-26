@@ -49,6 +49,20 @@ func buildControlPanels(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
+	var rc types.RoutingControl
+	require.NoError(t, faker.FakeObject(&rc))
+
+	m.EXPECT().ListRoutingControls(
+		gomock.Any(),
+		gomock.Any(),
+		gomock.Any(),
+	).Return(
+		&route53recoverycontrolconfig.ListRoutingControlsOutput{
+			RoutingControls: []types.RoutingControl{rc},
+		},
+		nil,
+	)
+
 	return client.Services{
 		Route53recoverycontrolconfig: m,
 	}

@@ -477,7 +477,6 @@ func getTables() schema.Tables {
 		route53.TrafficPolicies(),
 		route53recoverycontrolconfig.Clusters(),
 		route53recoverycontrolconfig.ControlPanels(),
-		route53recoverycontrolconfig.RoutingControls(),
 		route53resolver.FirewallConfigs(),
 		route53resolver.FirewallDomainLists(),
 		route53resolver.FirewallRuleGroupAssociations(),

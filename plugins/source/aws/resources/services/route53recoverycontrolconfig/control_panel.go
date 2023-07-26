@@ -30,6 +30,7 @@ func ControlPanels() *schema.Table {
 		},
 		Relations: schema.Tables{
 			safetyRules(),
+			routingControls(),
 		},
 	}
 }
