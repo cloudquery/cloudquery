@@ -66,13 +66,16 @@ Specifies the update method to use when inserting rows. The exact semantics depe
 - `overwrite`: Same as `overwrite-delete-stale`, but doesn't delete stale rows from previous `sync`s.
 - `append`: Rows are never overwritten or deleted, only appended.
 
+> Switching from `overwrite-delete-stale` or `overwrite` to `append`, or from `append` to `overwrite-delete-stale` or `overwrite` is not supported without dropping all the tables.
+To drop all tables automatically, use the `migrate_mode: forced` option.
+
 <!-- vale off -->
 ### migrate_mode
 <!-- vale on -->
 
 (`string`, optional, default: `safe`. Available: `safe`, `forced`)
 
-Specifies the migration mode to use when source tables are changed. In `safe` mode (the default), CloudQuery will not run migrations that would result in data loss, and will print an error instead. In `forced` mode, CloudQuery will run migrations that may result in data loss and the migration should always succeed without errors.
+Specifies the migration mode to use when source tables are changed. In `safe` mode (the default), CloudQuery will not run migrations that would result in data loss, and will print an error instead. In `forced` mode, CloudQuery will run migrations that may result in data loss and the migration should succeed without errors, unless a table has user created dependant objects (e.g. views).
 `migrate_mode: forced` is only supported for the ClickHouse, MySQL, PostgreSQL, MSSQL and SQLite destination plugins at the moment.
 
 Read more about how CloudQuery handles migrations [here](/docs/advanced-topics/migrations).
