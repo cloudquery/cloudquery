@@ -36,3 +36,38 @@ func fetchFolders(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	}
 	return nil
 }
+
+func fetchSubFolders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
+	p := parent.Item.(*pb.Folder)
+
+	fClient, err := resourcemanager.NewFoldersClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return err
+	}
+
+	var do func(string) error
+	do = func(name string) error {
+		req := &pb.ListFoldersRequest{
+			Parent: name,
+		}
+		it := fClient.ListFolders(ctx, req)
+		for {
+			resp, err := it.Next()
+			if err == iterator.Done {
+				break
+			}
+			if err != nil {
+				return err
+			}
+
+			res <- resp
+			if err := do(resp.Name); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+
+	return do(p.Name)
+}
