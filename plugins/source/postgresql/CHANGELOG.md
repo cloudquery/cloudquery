@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-postgresql-v2.0.3...plugins-source-postgresql-v2.0.4) (2023-07-26)
+
+
+### Bug Fixes
+
+* Support syncing tables with a single column ([#12533](https://github.com/cloudquery/cloudquery/issues/12533)) ([1106a24](https://github.com/cloudquery/cloudquery/commit/1106a24e4fc8899772678ad9e0fa1d275f28d0d5))
+
 ## [2.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-postgresql-v2.0.2...plugins-source-postgresql-v2.0.3) (2023-07-25)
 
 
