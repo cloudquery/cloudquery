@@ -13,10 +13,14 @@ func studioSessionMapping() *schema.Table {
 	tableName := "aws_emr_studio_session_mapping"
 	return &schema.Table{
 		Name:                tableName,
-		Description:         `https://docs.aws.amazon.com/emr/latest/APIReference/API_SessionMappingSummary.html`,
+		Description:         `https://docs.aws.amazon.com/emr/latest/APIReference/API_GetStudioSessionMapping.html`,
 		Resolver:            fetchEmrStudioSessionMapping,
 		PreResourceResolver: getSessionMapping,
-		Transform:           transformers.TransformWithStruct(&types.SessionMappingDetail{}),
+		Transform:           transformers.TransformWithStruct(&types.SessionMappingDetail{}, transformers.WithPrimaryKeys("StudioId", "IdentityType", "IdentityId")),
+		Columns: []schema.Column{
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
+		},
 	}
 }
 

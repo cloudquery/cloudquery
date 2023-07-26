@@ -2,6 +2,7 @@ package emr
 
 import (
 	"context"
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/emr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -18,10 +19,17 @@ func Studios() *schema.Table {
 		PreResourceResolver: getStudio,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "elasticmapreduce"),
 		Transform:           transformers.TransformWithStruct(&types.Studio{}),
-		Relations:           []*schema.Table{studioSessionMapping()},
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
+			{
+				Name:       "studio_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("StudioId"),
+				PrimaryKey: true,
+			}},
+		Relations: []*schema.Table{
+			studioSessionMapping(),
 		},
 	}
 }

@@ -4,7 +4,7 @@ This table shows data for Amazon EMR Studios.
 
 https://docs.aws.amazon.com/emr/latest/APIReference/API_Studio.html
 
-The primary key for this table is **_cq_id**.
+The primary key for this table is **studio_id**.
 
 ## Relations
 
@@ -15,10 +15,11 @@ The following tables depend on aws_emr_studios:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id (PK)|`uuid`|
+|_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
+|studio_id (PK)|`utf8`|
 |auth_mode|`utf8`|
 |creation_time|`timestamp[us, tz=UTC]`|
 |default_s3_location|`utf8`|
@@ -29,7 +30,6 @@ The following tables depend on aws_emr_studios:
 |name|`utf8`|
 |service_role|`utf8`|
 |studio_arn|`utf8`|
-|studio_id|`utf8`|
 |subnet_ids|`list<item: utf8, nullable>`|
 |tags|`json`|
 |url|`utf8`|
