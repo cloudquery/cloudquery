@@ -562,7 +562,7 @@
   - [aws_route53recoverycontrolconfig_routing_controls](../../../../../website/tables/aws/aws_route53recoverycontrolconfig_routing_controls.md)
   - [aws_route53recoverycontrolconfig_safety_rules](../../../../../website/tables/aws/aws_route53recoverycontrolconfig_safety_rules.md)
 - [aws_route53recoveryreadiness_cells](../../../../../website/tables/aws/aws_route53recoveryreadiness_cells.md)
-- [aws_route53recoveryreadiness_readiness_check](../../../../../website/tables/aws/aws_route53recoveryreadiness_readiness_check.md)
+- [aws_route53recoveryreadiness_readiness_checks](../../../../../website/tables/aws/aws_route53recoveryreadiness_readiness_checks.md)
 - [aws_route53recoveryreadiness_recovery_groups](../../../../../website/tables/aws/aws_route53recoveryreadiness_recovery_groups.md)
 - [aws_route53recoveryreadiness_resource_sets](../../../../../website/tables/aws/aws_route53recoveryreadiness_resource_sets.md)
 - [aws_route53resolver_firewall_configs](../../../../../website/tables/aws/aws_route53resolver_firewall_configs.md)
