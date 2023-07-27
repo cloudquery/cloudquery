@@ -9,6 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [22.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.1.0...plugins-source-aws-v22.2.0) (2023-07-27)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_cloudformation_stack_instance_resource_drifts` was added
+- Table `aws_cloudformation_stack_instance_summaries` was added
+- Table `aws_emr_studio_session_mappings` was added
+- Table `aws_emr_studios` was added
+- Table `aws_route53recoverycontrolconfig_clusters` was added
+- Table `aws_route53recoverycontrolconfig_control_panels` was added
+- Table `aws_route53recoverycontrolconfig_routing_controls` was added
+- Table `aws_route53recoverycontrolconfig_safety_rules` was added
+- Table `aws_route53recoveryreadiness_cells` was added
+- Table `aws_route53recoveryreadiness_readiness_checks` was added
+- Table `aws_route53recoveryreadiness_recovery_groups` was added
+- Table `aws_route53recoveryreadiness_resource_sets` was added
+- Table `aws_s3_multi_region_access_points` was added
+
 ### Features
 
 * **resources-s3:** Add support for S3 Multi Region Access Points ([#12525](https://github.com/cloudquery/cloudquery/issues/12525)) ([00c6a3f](https://github.com/cloudquery/cloudquery/commit/00c6a3fa781c29d1e47216d79dc098d6ad1777c3))
