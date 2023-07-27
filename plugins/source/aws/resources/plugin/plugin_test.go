@@ -3,6 +3,8 @@ package plugin
 import (
 	"strings"
 	"testing"
+
+	"github.com/gertd/go-pluralize"
 )
 
 func TestAWS(t *testing.T) {
@@ -18,10 +20,12 @@ func TestAWS(t *testing.T) {
 
 // This test ensures that all tables have proper name and description.
 func TestAWSTables(t *testing.T) {
+	pluralize := pluralize.NewClient()
 	descriptions := make(map[string]string)
 	tables := getTables().FlattenTables()
 	for _, table := range tables {
-		if !ignorePluralName(table.Name) && !strings.HasSuffix(table.Name, "s") {
+		arrayTableName := strings.Split(table.Name, "_")
+		if !ignorePluralName(table.Name) && !pluralize.IsPlural(arrayTableName[len(arrayTableName)-1]) {
 			t.Errorf("invalid table name: %s. must be plural.", table.Name)
 		}
 		if ignoreTableDescription(table.Name) {
@@ -67,6 +71,7 @@ func ignorePluralName(tableName string) bool {
 		"aws_costexplorer_cost_30d":           true,
 		"aws_costexplorer_cost_forecast_30d":  true,
 		"aws_redshift_endpoint_authorization": true, // TODO: In a future release we should change this name, but for now will just ignore it
+		"aws_redshift_endpoint_access":        true, // TODO: In a future release we should change this name, but for now will just ignore it
 	}
 	_, ok := tableNamesToIgnore[tableName]
 	return ok
