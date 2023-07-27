@@ -19,6 +19,7 @@
 - [digitalocean_floating_ips](../../../../../website/tables/digitalocean/digitalocean_floating_ips.md)
 - [digitalocean_images](../../../../../website/tables/digitalocean/digitalocean_images.md)
 - [digitalocean_keys](../../../../../website/tables/digitalocean/digitalocean_keys.md)
+- [digitalocean_kubernetes_clusters](../../../../../website/tables/digitalocean/digitalocean_kubernetes_clusters.md)
 - [digitalocean_load_balancers](../../../../../website/tables/digitalocean/digitalocean_load_balancers.md)
 - [digitalocean_monitoring_alert_policies](../../../../../website/tables/digitalocean/digitalocean_monitoring_alert_policies.md)
 - [digitalocean_projects](../../../../../website/tables/digitalocean/digitalocean_projects.md)
