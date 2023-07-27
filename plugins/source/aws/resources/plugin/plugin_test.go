@@ -32,7 +32,6 @@ func TestAWSTables(t *testing.T) {
 		} else {
 			descriptions[table.Description] = table.Name
 		}
-
 	}
 }
 
@@ -67,9 +66,8 @@ func ignorePluralName(tableName string) bool {
 		"aws_alpha_costexplorer_cost_custom":  true,
 		"aws_costexplorer_cost_30d":           true,
 		"aws_costexplorer_cost_forecast_30d":  true,
-		"aws_redshift_endpoint_authorization": true, //TODO: In a future release we should change this name, but for now will just ignore it
+		"aws_redshift_endpoint_authorization": true, // TODO: In a future release we should change this name, but for now will just ignore it
 	}
 	_, ok := tableNamesToIgnore[tableName]
 	return ok
-
 }
