@@ -88,6 +88,27 @@ func buildEMRClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
+	var notebookExecutionSummary types.NotebookExecutionSummary
+	require.NoError(t, faker.FakeObject(&notebookExecutionSummary))
+
+	mock.EXPECT().ListNotebookExecutions(gomock.Any(), &emr.ListNotebookExecutionsInput{ExecutionEngineId: summary1.Id}, gomock.Any()).Return(
+		&emr.ListNotebookExecutionsOutput{NotebookExecutions: []types.NotebookExecutionSummary{notebookExecutionSummary}},
+		nil,
+	)
+
+	mock.EXPECT().ListNotebookExecutions(gomock.Any(), &emr.ListNotebookExecutionsInput{ExecutionEngineId: summary2.Id}, gomock.Any()).Return(
+		&emr.ListNotebookExecutionsOutput{NotebookExecutions: []types.NotebookExecutionSummary{}},
+		nil,
+	)
+
+	var notebookExecution types.NotebookExecution
+	require.NoError(t, faker.FakeObject(&notebookExecution))
+
+	mock.EXPECT().DescribeNotebookExecution(gomock.Any(), &emr.DescribeNotebookExecutionInput{NotebookExecutionId: notebookExecutionSummary.NotebookExecutionId}, gomock.Any()).Return(
+		&emr.DescribeNotebookExecutionOutput{NotebookExecution: &notebookExecution},
+		nil,
+	)
+
 	return client.Services{Emr: mock}
 }
 

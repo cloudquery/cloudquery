@@ -306,6 +306,7 @@
   - [aws_emr_cluster_instance_fleets](tables/aws_emr_cluster_instance_fleets)
   - [aws_emr_cluster_instance_groups](tables/aws_emr_cluster_instance_groups)
   - [aws_emr_cluster_instances](tables/aws_emr_cluster_instances)
+  - [aws_emr_notebook_executions](tables/aws_emr_notebook_executions)
 - [aws_emr_security_configurations](tables/aws_emr_security_configurations)
 - [aws_emr_studios](tables/aws_emr_studios)
   - [aws_emr_studio_session_mappings](tables/aws_emr_studio_session_mappings)
