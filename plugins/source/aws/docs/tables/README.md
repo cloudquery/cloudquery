@@ -558,7 +558,7 @@
 - [aws_route53_traffic_policies](../../../../../website/tables/aws/aws_route53_traffic_policies.md)
   - [aws_route53_traffic_policy_versions](../../../../../website/tables/aws/aws_route53_traffic_policy_versions.md)
 - [aws_route53recoveryreadiness_cells](../../../../../website/tables/aws/aws_route53recoveryreadiness_cells.md)
-- [aws_route53recoveryreadiness_readiness_check](../../../../../website/tables/aws/aws_route53recoveryreadiness_readiness_check.md)
+- [aws_route53recoveryreadiness_readiness_checks](../../../../../website/tables/aws/aws_route53recoveryreadiness_readiness_checks.md)
 - [aws_route53recoveryreadiness_recovery_groups](../../../../../website/tables/aws/aws_route53recoveryreadiness_recovery_groups.md)
 - [aws_route53recoveryreadiness_resource_sets](../../../../../website/tables/aws/aws_route53recoveryreadiness_resource_sets.md)
 - [aws_route53resolver_firewall_configs](../../../../../website/tables/aws/aws_route53resolver_firewall_configs.md)
