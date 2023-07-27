@@ -143,6 +143,18 @@ export const ALL_PLUGINS: Plugin[] = [
     category: "cloud-infrastructure",
   },
   {
+    name: "File",
+    logo: "/images/logos/plugins/file.svg",
+    id: "file",
+    kind: "source",
+    availability: "premium",
+    category: "cloud-finops",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/6oE28c1rHfRZaCA03r',
+      'extended': 'https://buy.stripe.com/7sIaEI8U935dfWU8zY'
+    },
+  },
+  {
     name: "Gandi",
     logo: "/images/logos/plugins/gandi.svg",
     logoDark: "/images/logos/plugins/gandi-dark.svg",
