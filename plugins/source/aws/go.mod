@@ -25,7 +25,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/autoscalingplans v1.13.13
 	github.com/aws/aws-sdk-go-v2/service/backup v1.22.3
 	github.com/aws/aws-sdk-go-v2/service/batch v1.24.1
-	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.31.0
+	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.32.0
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.26.9
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.13
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.27.2
@@ -92,6 +92,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.14.14
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.28.4
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.15.1
+	github.com/aws/aws-sdk-go-v2/service/route53recoverycontrolconfig v1.11.13
+	github.com/aws/aws-sdk-go-v2/service/route53recoveryreadiness v1.9.13
 	github.com/aws/aws-sdk-go-v2/service/route53resolver v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.37.0
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.31.9
@@ -128,6 +130,7 @@ require (
 	github.com/cloudquery/codegen v0.2.1
 	github.com/cloudquery/plugin-sdk/v4 v4.2.3
 	github.com/cockroachdb/cockroachdb-parser v0.0.0-20221207165326-ea0ac1a4778b
+	github.com/gertd/go-pluralize v0.2.1
 	github.com/gocarina/gocsv v0.0.0-20230513223533-9ddd7fd60602
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9

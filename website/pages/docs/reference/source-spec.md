@@ -130,7 +130,7 @@ Supported by source plugins released on 2023-03-08 and later
 Open Telemetry [OTLP/HTTP](https://opentelemetry.io/docs/specs/otel/protocol/exporter/) exporter. Also, supports Jaeger endpoint. This will send traces of syncs to that endpoint.
 
 <!-- vale off -->
-### otel_insecure (preview)
+### otel_endpoint_insecure (preview)
 <!-- vale on -->
 
 (`bool`, optional, default: `false`, introduced in CLI `v3.10.0`)
