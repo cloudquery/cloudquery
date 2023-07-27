@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.1.0...plugins-source-aws-v22.2.0) (2023-07-27)
+
+
+### Features
+
+* **resources-s3:** Add support for S3 Multi Region Access Points ([#12525](https://github.com/cloudquery/cloudquery/issues/12525)) ([00c6a3f](https://github.com/cloudquery/cloudquery/commit/00c6a3fa781c29d1e47216d79dc098d6ad1777c3))
+* **resources:** Add additional emr resources for studio and studio session mapping ([#12529](https://github.com/cloudquery/cloudquery/issues/12529)) ([66a20a5](https://github.com/cloudquery/cloudquery/commit/66a20a5b2f97ebadee017b165fd413dfaa6d4086))
+* **resources:** Add Support for Amazon Route 53 ARC Recovery Control Configuration ([#12460](https://github.com/cloudquery/cloudquery/issues/12460)) ([8c3109b](https://github.com/cloudquery/cloudquery/commit/8c3109b9deaad7cfa82fd0ff32f2ab4ad842cc88))
+* **resources:** Add Support for Cloudformation Stack Instance Summaries and Stack Instance Resource Drifts ([#12495](https://github.com/cloudquery/cloudquery/issues/12495)) ([e1d9a74](https://github.com/cloudquery/cloudquery/commit/e1d9a746718cad26473e8a6a117ff55f381ecffe)), closes [#12461](https://github.com/cloudquery/cloudquery/issues/12461)
+* **resources:** Add Support for Route53 ARC Recovery Readiness ([#12459](https://github.com/cloudquery/cloudquery/issues/12459)) ([7d6d4c0](https://github.com/cloudquery/cloudquery/commit/7d6d4c0d55d94f5ec8e34518154fd4c45b7ccbf0))
+
 ## [22.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.0.1...plugins-source-aws-v22.1.0) (2023-07-25)
 
 
