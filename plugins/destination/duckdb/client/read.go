@@ -118,6 +118,12 @@ func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
 		return reverseTransformUint8(arr.(*array.Uint32))
 	case *arrow.TimestampType:
 		return transformTimestamp(dt, arr.(*array.Timestamp))
+	case *arrow.Date32Type:
+		// We save date types as Timestamp
+		return reverseTransformDate32(arr.(*array.Timestamp))
+	case *arrow.Date64Type:
+		// We save date types as Timestamp
+		return reverseTransformDate64(arr.(*array.Timestamp))
 	case *arrow.StructType:
 		arr := arr.(*array.Struct)
 		children := make([]arrow.ArrayData, arr.NumField())
@@ -183,6 +189,32 @@ func reverseTransformUint16(arr *array.Uint32) arrow.Array {
 			continue
 		}
 		builder.Append(uint16(arr.Value(i)))
+	}
+
+	return builder.NewArray()
+}
+
+func reverseTransformDate32(arr *array.Timestamp) arrow.Array {
+	builder := array.NewDate32Builder(memory.DefaultAllocator)
+	for i := 0; i < arr.Len(); i++ {
+		if arr.IsNull(i) {
+			builder.AppendNull()
+			continue
+		}
+		builder.Append(arrow.Date32FromTime(arr.Value(i).ToTime(arrow.Microsecond)))
+	}
+
+	return builder.NewArray()
+}
+
+func reverseTransformDate64(arr *array.Timestamp) arrow.Array {
+	builder := array.NewDate64Builder(memory.DefaultAllocator)
+	for i := 0; i < arr.Len(); i++ {
+		if arr.IsNull(i) {
+			builder.AppendNull()
+			continue
+		}
+		builder.Append(arrow.Date64FromTime(arr.Value(i).ToTime(arrow.Microsecond)))
 	}
 
 	return builder.NewArray()
