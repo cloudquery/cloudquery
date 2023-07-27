@@ -326,5 +326,6 @@
 - [azure_support_tickets](../../../../../website/tables/azure/azure_support_tickets.md)
 - [azure_synapse_private_link_hubs](../../../../../website/tables/azure/azure_synapse_private_link_hubs.md)
 - [azure_synapse_workspaces](../../../../../website/tables/azure/azure_synapse_workspaces.md)
+- [azure_trafficmanager_profiles](../../../../../website/tables/azure/azure_trafficmanager_profiles.md)
 - [azure_windowsiot_services](../../../../../website/tables/azure/azure_windowsiot_services.md)
 - [azure_workloads_monitors](../../../../../website/tables/azure/azure_workloads_monitors.md)

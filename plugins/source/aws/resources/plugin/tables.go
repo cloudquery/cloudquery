@@ -486,6 +486,7 @@ func getTables() schema.Tables {
 		s3.AccessPoints(),
 		s3.Accounts(),
 		s3.Buckets(),
+		s3.MultiRegionAccessPoints(),
 		sagemaker.Apps(),
 		sagemaker.EndpointConfigurations(),
 		sagemaker.Models(),
