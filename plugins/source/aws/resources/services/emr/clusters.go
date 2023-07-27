@@ -37,7 +37,7 @@ func Clusters() *schema.Table {
 				Resolver: client.ResolveTags,
 			},
 		},
-		Relations: []*schema.Table{clusterInstanceFleets(), clusterInstanceGroups(), clusterInstances(), notebookExecutions()},
+		Relations: []*schema.Table{clusterInstanceFleets(), clusterInstanceGroups(), clusterInstances(), notebookExecutions(), steps()},
 	}
 }
 

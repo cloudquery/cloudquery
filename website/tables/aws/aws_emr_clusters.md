@@ -13,6 +13,7 @@ The following tables depend on aws_emr_clusters:
   - [aws_emr_cluster_instance_groups](aws_emr_cluster_instance_groups)
   - [aws_emr_cluster_instances](aws_emr_cluster_instances)
   - [aws_emr_notebook_executions](aws_emr_notebook_executions)
+  - [aws_emr_steps](aws_emr_steps)
 
 ## Columns
 
