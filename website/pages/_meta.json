@@ -54,6 +54,10 @@
         "title": "Policies",
         "href": "/docs/core-concepts/policies"
       },
+      "dashboards": {
+        "title": "Dashboards",
+        "href": "/docs/core-concepts/dashboards"
+      },
       "blog": {
         "title": "Blog",
         "href": "/blog"
@@ -149,6 +153,9 @@
     "display": "hidden"
   },
   "buy": {
+    "display": "hidden"
+  },
+  "landing": {
     "display": "hidden"
   }
 }

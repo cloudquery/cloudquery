@@ -88,6 +88,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
 	"github.com/aws/aws-sdk-go-v2/service/route53recoverycontrolconfig"
+	"github.com/aws/aws-sdk-go-v2/service/route53recoveryreadiness"
 	"github.com/aws/aws-sdk-go-v2/service/route53resolver"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
@@ -210,8 +211,9 @@ func initServices(c aws.Config, regions []string) Services {
 		Resourcegroups:               resourcegroups.NewFromConfig(awsCfg),
 		Route53:                      route53.NewFromConfig(awsCfg),
 		Route53domains:               route53domains.NewFromConfig(awsCfg),
-		Route53resolver:              route53resolver.NewFromConfig(awsCfg),
 		Route53recoverycontrolconfig: route53recoverycontrolconfig.NewFromConfig(awsCfg),
+		Route53recoveryreadiness:     route53recoveryreadiness.NewFromConfig(awsCfg),
+		Route53resolver:              route53resolver.NewFromConfig(awsCfg),
 		S3:                           s3.NewFromConfig(awsCfg),
 		S3control:                    s3control.NewFromConfig(awsCfg),
 		Sagemaker:                    sagemaker.NewFromConfig(awsCfg),
@@ -332,6 +334,7 @@ type Services struct {
 	Route53                      services.Route53Client
 	Route53domains               services.Route53domainsClient
 	Route53recoverycontrolconfig services.Route53recoverycontrolconfigClient
+	Route53recoveryreadiness     services.Route53recoveryreadinessClient
 	Route53resolver              services.Route53resolverClient
 	S3                           services.S3Client
 	S3control                    services.S3controlClient

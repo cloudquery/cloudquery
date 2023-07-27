@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-gitlab-v4.1.1...plugins-source-gitlab-v4.1.2) (2023-07-25)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 10df4b9 ([#12443](https://github.com/cloudquery/cloudquery/issues/12443)) ([e385283](https://github.com/cloudquery/cloudquery/commit/e38528309f862f37bc7e278f9b69cf92d5aa5bd5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.3 ([#12307](https://github.com/cloudquery/cloudquery/issues/12307)) ([8f14e4d](https://github.com/cloudquery/cloudquery/commit/8f14e4de7bf4d4c833f501135ea0610916a42f8b))
+* **sync:** Pass `DeterministicCQID` option to scheduler ([#12424](https://github.com/cloudquery/cloudquery/issues/12424)) ([eaac2e6](https://github.com/cloudquery/cloudquery/commit/eaac2e684bd6e9744a38be8eef3a1f5e77d163f5))
+
 ## [4.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gitlab-v4.1.0...plugins-source-gitlab-v4.1.1) (2023-07-18)
 
 

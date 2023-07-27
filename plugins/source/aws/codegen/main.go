@@ -212,6 +212,7 @@ var clients = []any{
 	&resourcegroups.Client{},
 	&route53.Client{},
 	&route53domains.Client{},
+	&route53recoveryreadiness.Client{},
 	&route53resolver.Client{},
 	&route53recoverycontrolconfig.Client{},
 	&route53recoveryreadiness.Client{},

@@ -87,6 +87,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resourcegroups"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53recoverycontrolconfig"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53recoveryreadiness"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53resolver"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sagemaker"
@@ -320,6 +321,7 @@ func getTables() schema.Tables {
 		emr.BlockPublicAccessConfigs(),
 		emr.Clusters(),
 		emr.SecurityConfigurations(),
+		emr.Studios(),
 		eventbridge.ApiDestinations(),
 		eventbridge.Archives(),
 		eventbridge.Connections(),
@@ -477,6 +479,10 @@ func getTables() schema.Tables {
 		route53.TrafficPolicies(),
 		route53recoverycontrolconfig.Clusters(),
 		route53recoverycontrolconfig.ControlPanels(),
+		route53recoveryreadiness.Cells(),
+		route53recoveryreadiness.ReadinessChecks(),
+		route53recoveryreadiness.RecoveryGroups(),
+		route53recoveryreadiness.ResourceSets(),
 		route53resolver.FirewallConfigs(),
 		route53resolver.FirewallDomainLists(),
 		route53resolver.FirewallRuleGroupAssociations(),
@@ -489,6 +495,7 @@ func getTables() schema.Tables {
 		s3.AccessPoints(),
 		s3.Accounts(),
 		s3.Buckets(),
+		s3.MultiRegionAccessPoints(),
 		sagemaker.Apps(),
 		sagemaker.EndpointConfigurations(),
 		sagemaker.Models(),
