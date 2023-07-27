@@ -25,7 +25,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/autoscalingplans v1.13.13
 	github.com/aws/aws-sdk-go-v2/service/backup v1.22.3
 	github.com/aws/aws-sdk-go-v2/service/batch v1.24.1
-	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.31.0
+	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.32.0
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.26.9
 	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.13
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.27.2

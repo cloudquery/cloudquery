@@ -5,6 +5,22 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v5.1.1...plugins-source-digitalocean-v5.2.0) (2023-07-25)
+
+
+### This Release has the Following Changes to Tables
+- Table `digitalocean_kubernetes_clusters` was added
+
+### Features
+
+* **resources:** Add DigitalOcean Kubernetes Clusters table ([#12438](https://github.com/cloudquery/cloudquery/issues/12438)) ([95dcaa6](https://github.com/cloudquery/cloudquery/commit/95dcaa6769a4019bd3ad6e0e11808f6f630095f0))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 10df4b9 ([#12443](https://github.com/cloudquery/cloudquery/issues/12443)) ([e385283](https://github.com/cloudquery/cloudquery/commit/e38528309f862f37bc7e278f9b69cf92d5aa5bd5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.3 ([#12307](https://github.com/cloudquery/cloudquery/issues/12307)) ([8f14e4d](https://github.com/cloudquery/cloudquery/commit/8f14e4de7bf4d4c833f501135ea0610916a42f8b))
+
 ## [5.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v5.1.0...plugins-source-digitalocean-v5.1.1) (2023-07-18)
 
 
