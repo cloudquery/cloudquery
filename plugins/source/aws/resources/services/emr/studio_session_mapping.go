@@ -11,7 +11,7 @@ import (
 )
 
 func studioSessionMapping() *schema.Table {
-	tableName := "aws_emr_studio_session_mapping"
+	tableName := "aws_emr_studio_session_mappings"
 	return &schema.Table{
 		Name:                tableName,
 		Description:         `https://docs.aws.amazon.com/emr/latest/APIReference/API_GetStudioSessionMapping.html`,

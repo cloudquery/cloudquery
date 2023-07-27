@@ -1,6 +1,6 @@
-# Table: aws_emr_studio_session_mapping
+# Table: aws_emr_studio_session_mappings
 
-This table shows data for Amazon EMR Studio Session Mapping.
+This table shows data for Amazon EMR Studio Session Mappings.
 
 https://docs.aws.amazon.com/emr/latest/APIReference/API_GetStudioSessionMapping.html
 

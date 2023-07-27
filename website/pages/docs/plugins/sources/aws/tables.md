@@ -308,7 +308,7 @@
   - [aws_emr_cluster_instances](tables/aws_emr_cluster_instances)
 - [aws_emr_security_configurations](tables/aws_emr_security_configurations)
 - [aws_emr_studios](tables/aws_emr_studios)
-  - [aws_emr_studio_session_mapping](tables/aws_emr_studio_session_mapping)
+  - [aws_emr_studio_session_mappings](tables/aws_emr_studio_session_mappings)
 - [aws_eventbridge_api_destinations](tables/aws_eventbridge_api_destinations)
 - [aws_eventbridge_archives](tables/aws_eventbridge_archives)
 - [aws_eventbridge_connections](tables/aws_eventbridge_connections)

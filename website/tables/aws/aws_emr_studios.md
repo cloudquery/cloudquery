@@ -9,7 +9,7 @@ The primary key for this table is **arn**.
 ## Relations
 
 The following tables depend on aws_emr_studios:
-  - [aws_emr_studio_session_mapping](aws_emr_studio_session_mapping)
+  - [aws_emr_studio_session_mappings](aws_emr_studio_session_mappings)
 
 ## Columns
 
