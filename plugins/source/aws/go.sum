@@ -112,8 +112,8 @@ github.com/aws/aws-sdk-go-v2/service/backup v1.22.3 h1:ludL7GSB3KDkOTuJ1xoPyELZm
 github.com/aws/aws-sdk-go-v2/service/backup v1.22.3/go.mod h1:N11NwVXjnpqghGiyWOWdm99VUX/rzaZY4E7fVkeMDkg=
 github.com/aws/aws-sdk-go-v2/service/batch v1.24.1 h1:604CTNuamB5pSpJZCR4fRb7mFym3b1Itwa0x8+NxQG4=
 github.com/aws/aws-sdk-go-v2/service/batch v1.24.1/go.mod h1:ceF4VN6wW8CK7Cy0/c+XJqVur9TbXz1KPPPSi4AB97Y=
-github.com/aws/aws-sdk-go-v2/service/cloudformation v1.31.0 h1:sMN3a5Bhu2H2oDI3FGYW7jg7iI33CIEf5+E5sDNRql4=
-github.com/aws/aws-sdk-go-v2/service/cloudformation v1.31.0/go.mod h1:laKFhtn8EH6gcPl7KEQ4kcuSYcQF1tqUm82ENxMwlMk=
+github.com/aws/aws-sdk-go-v2/service/cloudformation v1.32.0 h1:AwJ39mY7jwiLIbR7FIKT8LH1Zjd432SiWHF7vVqvktA=
+github.com/aws/aws-sdk-go-v2/service/cloudformation v1.32.0/go.mod h1:laKFhtn8EH6gcPl7KEQ4kcuSYcQF1tqUm82ENxMwlMk=
 github.com/aws/aws-sdk-go-v2/service/cloudfront v1.26.9 h1:4O/O22aiQnseomkhDKmLmxbu/cvuh3h04TIkIt3y52g=
 github.com/aws/aws-sdk-go-v2/service/cloudfront v1.26.9/go.mod h1:NmocATyq+MjavfhK3WQwXpsVosmwkaV5fq4dSco8xtA=
 github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.14.13 h1:aEmb9sTAeKI60SS91pSYRncoS7h0OFjW2QLY0tSK8Do=
@@ -256,6 +256,10 @@ github.com/aws/aws-sdk-go-v2/service/route53 v1.28.4 h1:p4mTxJfCAyiTT4Wp6p/mOPa6
 github.com/aws/aws-sdk-go-v2/service/route53 v1.28.4/go.mod h1:VBLWpaHvhQNeu7N9rMEf00SWeOONb/HvaDUxe/7b44k=
 github.com/aws/aws-sdk-go-v2/service/route53domains v1.15.1 h1:/Ee1E7OYAumqf46sU6vMI98e5fBIrUmuGI0DxpdAHmk=
 github.com/aws/aws-sdk-go-v2/service/route53domains v1.15.1/go.mod h1:DROsXQRGn8+TXcBeknaMza5f+nIGCam+fK0qykKcQTo=
+github.com/aws/aws-sdk-go-v2/service/route53recoverycontrolconfig v1.11.13 h1:10JgpX81eFWtugpXvVsmSghEaMsEaxOQSSKKvY5MmXs=
+github.com/aws/aws-sdk-go-v2/service/route53recoverycontrolconfig v1.11.13/go.mod h1:uuoU8IBKU3KnwSS6ooHTJY4dppyrGK9mfoc6M4CDVyk=
+github.com/aws/aws-sdk-go-v2/service/route53recoveryreadiness v1.9.13 h1:OazXU03mAHGPFLkzGPHsyCM0CiyxZ2sPOeXWAz2vZX4=
+github.com/aws/aws-sdk-go-v2/service/route53recoveryreadiness v1.9.13/go.mod h1:yUKL4UTyh+Jz16DXkzy8AhJRxnFrvHFscFcupNNVBXQ=
 github.com/aws/aws-sdk-go-v2/service/route53resolver v1.18.0 h1:aSnjifrU+Q/ivHyXjIpqCKvl2LcIQ26M+klheZkbwl0=
 github.com/aws/aws-sdk-go-v2/service/route53resolver v1.18.0/go.mod h1:mGIvE2Osob/vMdKiDxqB6ug2A5RvqguxQj9c+rwGz7w=
 github.com/aws/aws-sdk-go-v2/service/s3 v1.37.0 h1:PalLOEGZ/4XfQxpGZFTLaoJSmPoybnqJYotaIZEf/Rg=
@@ -432,6 +436,8 @@ github.com/frankban/quicktest v1.14.3 h1:FJKSZTDHjyhriyC81FLQ0LY93eSai0ZyR/ZIkd3
 github.com/fsnotify/fsnotify v1.4.7/go.mod h1:jwhsz4b93w/PPRr/qN1Yymfu8t87LnFCMoQvtojpjFo=
 github.com/fsnotify/fsnotify v1.4.9/go.mod h1:znqG4EE+3YCdAaPaxE2ZRY/06pZUdp0tY4IgpuI1SZQ=
 github.com/gavv/httpexpect v2.0.0+incompatible/go.mod h1:x+9tiU1YnrOvnB725RkpoLv1M62hOWzwo5OXotisrKc=
+github.com/gertd/go-pluralize v0.2.1 h1:M3uASbVjMnTsPb0PNqg+E/24Vwigyo/tvyMTtAlLgiA=
+github.com/gertd/go-pluralize v0.2.1/go.mod h1:rbYaKDbsXxmRfr8uygAEKhOWsjyrrqrkHVpZvoOp8zk=
 github.com/getsentry/sentry-go v0.12.0/go.mod h1:NSap0JBYWzHND8oMbyi0+XZhUalc1TBdRL1M71JZW2c=
 github.com/getsentry/sentry-go v0.20.0 h1:bwXW98iMRIWxn+4FgPW7vMrjmbym6HblXALmhjHmQaQ=
 github.com/getsentry/sentry-go v0.20.0/go.mod h1:lc76E2QywIyW8WuBnwl8Lc4bkmQH4+w1gwTf25trprY=

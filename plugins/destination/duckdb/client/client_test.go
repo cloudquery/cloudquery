@@ -41,8 +41,6 @@ func TestPlugin(t *testing.T) {
 			SkipDurations: true,
 			SkipIntervals: true,
 			// not supported in duckDB for now
-			SkipTimes:      true,
-			SkipDates:      true,
 			SkipLargeTypes: true,
 		}),
 	)
