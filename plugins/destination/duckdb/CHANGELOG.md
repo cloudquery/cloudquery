@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v4.1.4...plugins-destination-duckdb-v4.2.0) (2023-07-27)
+
+
+### Features
+
+* Support date types ([#12538](https://github.com/cloudquery/cloudquery/issues/12538)) ([abb9ec0](https://github.com/cloudquery/cloudquery/commit/abb9ec06c23fe0204707667824f46a1b5435b8f5))
+
 ## [4.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v4.1.3...plugins-destination-duckdb-v4.1.4) (2023-07-25)
 
 
