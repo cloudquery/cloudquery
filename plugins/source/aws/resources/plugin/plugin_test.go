@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -15,12 +16,15 @@ func TestAWS(t *testing.T) {
 	}
 }
 
-// This test ensures that all tables have a unique description.
-func TestAWSTableDescriptions(t *testing.T) {
+// This test ensures that all tables have proper name and description.
+func TestAWSTables(t *testing.T) {
 	descriptions := make(map[string]string)
 	tables := getTables().FlattenTables()
 	for _, table := range tables {
-		if ignoreTable(table.Name) {
+		if !ignorePluralName(table.Name) && !strings.HasSuffix(table.Name, "s") {
+			t.Errorf("invalid table name: %s. must be plural.", table.Name)
+		}
+		if ignoreTableDescription(table.Name) {
 			continue
 		}
 		if val, ok := descriptions[table.Description]; ok || table.Description == "" {
@@ -28,10 +32,11 @@ func TestAWSTableDescriptions(t *testing.T) {
 		} else {
 			descriptions[table.Description] = table.Name
 		}
+
 	}
 }
 
-func ignoreTable(tableName string) bool {
+func ignoreTableDescription(tableName string) bool {
 	tablesToIgnore := map[string]bool{
 		"aws_resiliencehub_suggested_resiliency_policies": true,
 		// TODO: Remove this once we breakup S3 Bucket into multiple tables rather than a single composite table
@@ -55,4 +60,16 @@ func ignoreTable(tableName string) bool {
 	}
 	_, ok := tablesToIgnore[tableName]
 	return ok
+}
+
+func ignorePluralName(tableName string) bool {
+	tableNamesToIgnore := map[string]bool{
+		"aws_alpha_costexplorer_cost_custom":  true,
+		"aws_costexplorer_cost_30d":           true,
+		"aws_costexplorer_cost_forecast_30d":  true,
+		"aws_redshift_endpoint_authorization": true, //TODO: In a future release we should change this name, but for now will just ignore it
+	}
+	_, ok := tableNamesToIgnore[tableName]
+	return ok
+
 }
