@@ -49,6 +49,7 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 	}
 	validateTagStructure(t, tables)
 	validateMultiplexers(t, parentTable)
+	validateSkippedColumns(t, tables)
 	sc := scheduler.NewScheduler(scheduler.WithLogger(l))
 	messages, err := sc.SyncAll(context.Background(), &c, tables)
 	if err != nil {
@@ -85,4 +86,59 @@ func validateMultiplexers(t *testing.T, parentTable *schema.Table) {
 		}
 		t.Fatalf("table %s is a relation and should not have multiplexer", table.Name)
 	}
+}
+
+func validateSkippedColumns(t *testing.T, tables schema.Tables) {
+	for _, table := range tables.FlattenTables() {
+		t.Run(table.Name, func(t *testing.T) {
+			for _, columnName := range []string{"result_metadata"} {
+				col := table.Columns.Get(columnName)
+				if !ignoreNonSkippedColumns(table.Name, columnName) && col != nil {
+					t.Fatalf("column %s in table %s should be skipped", columnName, table.Name)
+				}
+			}
+		})
+	}
+}
+
+func ignoreNonSkippedColumns(tableName, column string) bool {
+	tableColumnNamesToIgnore := map[string]bool{
+		// TODO: remove all of these fields in a future breaking release
+		"aws_backup_global_settings_result_metadata":                true,
+		"aws_backup_plan_selections_result_metadata":                true,
+		"aws_backup_plans_result_metadata":                          true,
+		"aws_backup_region_settings_result_metadata":                true,
+		"aws_cloudfront_functions_result_metadata":                  true,
+		"aws_cloudtrail_channels_result_metadata":                   true,
+		"aws_codepipeline_pipelines_result_metadata":                true,
+		"aws_cognito_identity_pools_result_metadata":                true,
+		"aws_ecr_registries_result_metadata":                        true,
+		"aws_ecr_registry_policies_result_metadata":                 true,
+		"aws_emr_block_public_access_configs_result_metadata":       true,
+		"aws_glue_registry_schema_versions_result_metadata":         true,
+		"aws_glue_registry_schemas_result_metadata":                 true,
+		"aws_guardduty_detectors_result_metadata":                   true,
+		"aws_iam_group_policies_result_metadata":                    true,
+		"aws_iam_openid_connect_identity_providers_result_metadata": true,
+		"aws_iam_role_policies_result_metadata":                     true,
+		"aws_iam_user_policies_result_metadata":                     true,
+		"aws_iot_billing_groups_result_metadata":                    true,
+		"aws_iot_security_profiles_result_metadata":                 true,
+		"aws_iot_thing_groups_result_metadata":                      true,
+		"aws_iot_topic_rules_result_metadata":                       true,
+		"aws_lambda_functions_result_metadata":                      true,
+		"aws_lambda_layer_version_policies_result_metadata":         true,
+		"aws_mq_broker_configuration_revisions_result_metadata":     true,
+		"aws_mq_broker_users_result_metadata":                       true,
+		"aws_mq_brokers_result_metadata":                            true,
+		"aws_qldb_ledgers_result_metadata":                          true,
+		"aws_route53_domains_result_metadata":                       true,
+		"aws_sagemaker_endpoint_configurations_result_metadata":     true,
+		"aws_sagemaker_models_result_metadata":                      true,
+		"aws_sagemaker_notebook_instances_result_metadata":          true,
+		"aws_sagemaker_training_jobs_result_metadata":               true,
+		"aws_securityhub_hubs_result_metadata":                      true,
+	}
+	_, ok := tableColumnNamesToIgnore[tableName+"_"+column]
+	return ok
 }
