@@ -24,8 +24,7 @@ func TestAWSTables(t *testing.T) {
 	descriptions := make(map[string]string)
 	tables := getTables().FlattenTables()
 	for _, table := range tables {
-		arrayTableName := strings.Split(table.Name, "_")
-		if !ignorePluralName(table.Name) && !pluralize.IsPlural(arrayTableName[len(arrayTableName)-1]) {
+		if !ignorePluralName(table.Name) && !pluralize.IsPlural(table.Name[strings.LastIndex(table.Name, ",")+1:]) {
 			t.Errorf("invalid table name: %s. must be plural.", table.Name)
 		}
 		if ignoreTableDescription(table.Name) {
