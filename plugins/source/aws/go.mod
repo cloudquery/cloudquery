@@ -92,6 +92,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/resourcegroups v1.14.14
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.28.4
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.15.1
+	github.com/aws/aws-sdk-go-v2/service/route53recoveryreadiness v1.9.13
 	github.com/aws/aws-sdk-go-v2/service/route53resolver v1.18.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.37.0
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.31.9

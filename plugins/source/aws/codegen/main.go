@@ -90,6 +90,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroups"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
+	"github.com/aws/aws-sdk-go-v2/service/route53recoveryreadiness"
 	"github.com/aws/aws-sdk-go-v2/service/route53resolver"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
@@ -210,6 +211,7 @@ var clients = []any{
 	&resourcegroups.Client{},
 	&route53.Client{},
 	&route53domains.Client{},
+	&route53recoveryreadiness.Client{},
 	&route53resolver.Client{},
 	&s3.Client{},
 	&s3control.Client{},
