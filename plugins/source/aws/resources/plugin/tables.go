@@ -320,6 +320,7 @@ func getTables() schema.Tables {
 		elbv2.TargetGroups(),
 		emr.BlockPublicAccessConfigs(),
 		emr.Clusters(),
+		emr.ReleaseLabels(),
 		emr.SecurityConfigurations(),
 		emr.Studios(),
 		eventbridge.ApiDestinations(),

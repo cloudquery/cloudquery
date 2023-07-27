@@ -14,7 +14,7 @@ func steps() *schema.Table {
 	tableName := "aws_emr_steps"
 	return &schema.Table{
 		Name:                tableName,
-		Description:         ``,
+		Description:         `https://docs.aws.amazon.com/emr/latest/APIReference/API_Step.html`,
 		Resolver:            fetchEmrSteps,
 		PreResourceResolver: getStep,
 		Transform:           transformers.TransformWithStruct(&types.Step{}, transformers.WithPrimaryKeys("Id")),

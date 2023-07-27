@@ -14,7 +14,7 @@ func notebookExecutions() *schema.Table {
 	tableName := "aws_emr_notebook_executions"
 	return &schema.Table{
 		Name:                tableName,
-		Description:         `https://docs.aws.amazon.com/emr/latest/APIReference/API_NotebookExecutionSummary.html`,
+		Description:         `https://docs.aws.amazon.com/emr/latest/APIReference/API_NotebookExecution.html`,
 		Resolver:            fetchNotebookExecutions,
 		PreResourceResolver: getNotebookExecution,
 		Transform:           transformers.TransformWithStruct(&types.NotebookExecution{}, transformers.WithPrimaryKeys("Arn")),

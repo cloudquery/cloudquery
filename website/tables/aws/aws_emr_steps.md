@@ -2,6 +2,8 @@
 
 This table shows data for Amazon EMR Steps.
 
+https://docs.aws.amazon.com/emr/latest/APIReference/API_Step.html
+
 The composite primary key for this table is (**cluster_arn**, **id**).
 
 ## Relations

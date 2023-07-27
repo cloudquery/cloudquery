@@ -2,7 +2,7 @@
 
 This table shows data for Amazon EMR Notebook Executions.
 
-https://docs.aws.amazon.com/emr/latest/APIReference/API_NotebookExecutionSummary.html
+https://docs.aws.amazon.com/emr/latest/APIReference/API_NotebookExecution.html
 
 The composite primary key for this table is (**cluster_arn**, **arn**).
 
