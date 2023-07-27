@@ -112,8 +112,6 @@ github.com/aws/aws-sdk-go-v2/service/backup v1.22.3 h1:ludL7GSB3KDkOTuJ1xoPyELZm
 github.com/aws/aws-sdk-go-v2/service/backup v1.22.3/go.mod h1:N11NwVXjnpqghGiyWOWdm99VUX/rzaZY4E7fVkeMDkg=
 github.com/aws/aws-sdk-go-v2/service/batch v1.24.1 h1:604CTNuamB5pSpJZCR4fRb7mFym3b1Itwa0x8+NxQG4=
 github.com/aws/aws-sdk-go-v2/service/batch v1.24.1/go.mod h1:ceF4VN6wW8CK7Cy0/c+XJqVur9TbXz1KPPPSi4AB97Y=
-github.com/aws/aws-sdk-go-v2/service/cloudformation v1.31.0 h1:sMN3a5Bhu2H2oDI3FGYW7jg7iI33CIEf5+E5sDNRql4=
-github.com/aws/aws-sdk-go-v2/service/cloudformation v1.31.0/go.mod h1:laKFhtn8EH6gcPl7KEQ4kcuSYcQF1tqUm82ENxMwlMk=
 github.com/aws/aws-sdk-go-v2/service/cloudformation v1.32.0 h1:AwJ39mY7jwiLIbR7FIKT8LH1Zjd432SiWHF7vVqvktA=
 github.com/aws/aws-sdk-go-v2/service/cloudformation v1.32.0/go.mod h1:laKFhtn8EH6gcPl7KEQ4kcuSYcQF1tqUm82ENxMwlMk=
 github.com/aws/aws-sdk-go-v2/service/cloudfront v1.26.9 h1:4O/O22aiQnseomkhDKmLmxbu/cvuh3h04TIkIt3y52g=
@@ -258,6 +256,8 @@ github.com/aws/aws-sdk-go-v2/service/route53 v1.28.4 h1:p4mTxJfCAyiTT4Wp6p/mOPa6
 github.com/aws/aws-sdk-go-v2/service/route53 v1.28.4/go.mod h1:VBLWpaHvhQNeu7N9rMEf00SWeOONb/HvaDUxe/7b44k=
 github.com/aws/aws-sdk-go-v2/service/route53domains v1.15.1 h1:/Ee1E7OYAumqf46sU6vMI98e5fBIrUmuGI0DxpdAHmk=
 github.com/aws/aws-sdk-go-v2/service/route53domains v1.15.1/go.mod h1:DROsXQRGn8+TXcBeknaMza5f+nIGCam+fK0qykKcQTo=
+github.com/aws/aws-sdk-go-v2/service/route53recoverycontrolconfig v1.11.13 h1:10JgpX81eFWtugpXvVsmSghEaMsEaxOQSSKKvY5MmXs=
+github.com/aws/aws-sdk-go-v2/service/route53recoverycontrolconfig v1.11.13/go.mod h1:uuoU8IBKU3KnwSS6ooHTJY4dppyrGK9mfoc6M4CDVyk=
 github.com/aws/aws-sdk-go-v2/service/route53recoveryreadiness v1.9.13 h1:OazXU03mAHGPFLkzGPHsyCM0CiyxZ2sPOeXWAz2vZX4=
 github.com/aws/aws-sdk-go-v2/service/route53recoveryreadiness v1.9.13/go.mod h1:yUKL4UTyh+Jz16DXkzy8AhJRxnFrvHFscFcupNNVBXQ=
 github.com/aws/aws-sdk-go-v2/service/route53resolver v1.18.0 h1:aSnjifrU+Q/ivHyXjIpqCKvl2LcIQ26M+klheZkbwl0=
@@ -759,7 +759,6 @@ github.com/spf13/pflag v1.0.5/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An
 github.com/spf13/viper v1.3.2/go.mod h1:ZiWeW+zYFKm7srdB9IoDzzZXaJaI5eL9QjNiN/DMA2s=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.4.0/go.mod h1:YvHI0jy2hoMjB+UWwv71VJQ9isScKT/TqJzVSSt89Yw=
-github.com/stretchr/objx v0.5.0/go.mod h1:Yh+to48EsGEfYuaHDzXPcE3xhTkx73EhmCGUpEOglKo=
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
