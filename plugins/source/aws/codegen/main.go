@@ -13,6 +13,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/amplify"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
+	"github.com/aws/aws-sdk-go-v2/service/appconfig"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/apprunner"
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
@@ -89,6 +90,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroups"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
+	"github.com/aws/aws-sdk-go-v2/service/route53recoverycontrolconfig"
+	"github.com/aws/aws-sdk-go-v2/service/route53recoveryreadiness"
 	"github.com/aws/aws-sdk-go-v2/service/route53resolver"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
@@ -132,6 +135,7 @@ var clients = []any{
 	&amplify.Client{},
 	&apigateway.Client{},
 	&apigatewayv2.Client{},
+	&appconfig.Client{},
 	&applicationautoscaling.Client{},
 	&apprunner.Client{},
 	&appstream.Client{},
@@ -208,7 +212,10 @@ var clients = []any{
 	&resourcegroups.Client{},
 	&route53.Client{},
 	&route53domains.Client{},
+	&route53recoveryreadiness.Client{},
 	&route53resolver.Client{},
+	&route53recoverycontrolconfig.Client{},
+	&route53recoveryreadiness.Client{},
 	&s3.Client{},
 	&s3control.Client{},
 	&sagemaker.Client{},

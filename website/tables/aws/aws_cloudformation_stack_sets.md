@@ -9,6 +9,7 @@ The primary key for this table is **arn**.
 ## Relations
 
 The following tables depend on aws_cloudformation_stack_sets:
+  - [aws_cloudformation_stack_instance_summaries](aws_cloudformation_stack_instance_summaries)
   - [aws_cloudformation_stack_set_operations](aws_cloudformation_stack_set_operations)
 
 ## Columns

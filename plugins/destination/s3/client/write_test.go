@@ -96,7 +96,15 @@ func TestReplacePathVariables(t *testing.T) {
 
 	tm := time.Date(2021, 3, 5, 4, 1, 2, 3, time.UTC)
 	for _, tc := range cases {
-		if diff := cmp.Diff(tc.expectedPath, replacePathVariables(tc.inputPath, tc.tableName, tc.uuid, filetypes.FormatTypeJSON, tm)); diff != "" {
+		c := &Client{
+			spec: &Spec{
+				Path: tc.inputPath,
+				FileSpec: &filetypes.FileSpec{
+					Format: filetypes.FormatTypeJSON,
+				},
+			},
+		}
+		if diff := cmp.Diff(tc.expectedPath, c.replacePathVariables(tc.tableName, tc.uuid, tm)); diff != "" {
 			t.Errorf("unexpected Path Substitution (-want +got):\n%s", diff)
 		}
 	}

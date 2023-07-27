@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/thoas/go-funk"
+	"golang.org/x/exp/slices"
 )
 
 const (
@@ -63,6 +64,11 @@ type Source struct {
 	// DeterministicCQID is a flag that indicates whether the source plugin should generate a random UUID as the value of _cq_id
 	// or whether it should calculate a UUID that is a hash of the primary keys (if they exist) or the entire resource.
 	DeterministicCQID bool `json:"deterministic_cq_id,omitempty"`
+
+	// If specified this will spawn the plugin with --otel-endpoint
+	OtelEndpoint string `json:"otel_endpoint,omitempty"`
+	// If specified this will spawn the plugin with --otel-endpoint-insecure
+	OtelEndpointInsecure bool `json:"otel_endpoint_insecure,omitempty"`
 }
 
 // GetWarnings returns a list of deprecated options that were used in the source config. This should be
@@ -84,6 +90,13 @@ func (s *Source) GetWarnings() Warnings {
 	if s.ResourceConcurrency != 0 {
 		warnings["resource_concurrency"] = "the `resource_concurrency` option is deprecated. Please use the plugin-level concurrency option instead"
 	}
+	if s.SkipDependentTables && slices.Contains(s.Tables, "*") {
+		warnings["skip_dependent_tables"] = "the `skip_dependent_tables` option is ineffective when used with '*' `tables`"
+	}
+	if slices.Contains(s.Tables, "*") && len(s.Tables) > 1 {
+		warnings["all_tables_with_more_tables"] = "`tables` option contains '*' as well as other tables. '*' will match all tables"
+	}
+
 	return warnings
 }
 

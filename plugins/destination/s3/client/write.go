@@ -40,7 +40,7 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 		if s == nil {
 			table := msg.GetTable()
 
-			objKey := replacePathVariables(c.spec.Path, table.Name, uuid.NewString(), c.spec.Format, time.Now().UTC())
+			objKey := c.replacePathVariables(table.Name, uuid.NewString(), time.Now().UTC())
 
 			var err error
 			s, err = c.Client.StartStream(table, func(r io.Reader) error {
@@ -119,9 +119,12 @@ func sanitizeJSONKeysForObject(obj any) {
 	}
 }
 
-func replacePathVariables(specPath, table, fileIdentifier string, format filetypes.FormatType, t time.Time) string {
-	name := strings.ReplaceAll(specPath, PathVarTable, table)
-	name = strings.ReplaceAll(name, PathVarFormat, string(format))
+func (c *Client) replacePathVariables(table, fileIdentifier string, t time.Time) string {
+	name := strings.ReplaceAll(c.spec.Path, PathVarTable, table)
+	if strings.Contains(name, PathVarFormat) {
+		e := string(c.spec.Format) + c.spec.Compression.Extension()
+		name = strings.ReplaceAll(name, PathVarFormat, e)
+	}
 	name = strings.ReplaceAll(name, PathVarUUID, fileIdentifier)
 	name = strings.ReplaceAll(name, YearVar, t.Format("2006"))
 	name = strings.ReplaceAll(name, MonthVar, t.Format("01"))

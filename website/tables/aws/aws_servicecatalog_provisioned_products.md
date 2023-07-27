@@ -6,6 +6,12 @@ https://docs.aws.amazon.com/servicecatalog/latest/dg/API_ProvisionedProductAttri
 
 The primary key for this table is **arn**.
 
+## Relations
+
+The following tables depend on aws_servicecatalog_provisioned_products:
+  - [aws_servicecatalog_launch_paths](aws_servicecatalog_launch_paths)
+  - [aws_servicecatalog_provisioning_artifacts](aws_servicecatalog_provisioning_artifacts)
+
 ## Columns
 
 | Name          | Type          |
@@ -13,6 +19,7 @@ The primary key for this table is **arn**.
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
+|region|`utf8`|
 |arn (PK)|`utf8`|
 |tags|`json`|
 |created_time|`timestamp[us, tz=UTC]`|

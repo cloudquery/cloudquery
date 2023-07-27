@@ -18,6 +18,10 @@ func PrivateZones() *schema.Table {
 		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_privatedns_private_zones", client.Namespacemicrosoft_network),
 		Transform:            transformers.TransformWithStruct(&armprivatedns.PrivateZone{}, transformers.WithPrimaryKeys("ID")),
 		Columns:              schema.ColumnList{client.SubscriptionID},
+		Relations: []*schema.Table{
+			recordSets(),
+			virtualNetworkLinks(),
+		},
 	}
 }
 

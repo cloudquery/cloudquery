@@ -19,7 +19,6 @@ func detectorIPSets() *schema.Table {
 		Resolver:            fetchDetectorIPSets,
 		PreResourceResolver: getDetectorIPSet,
 		Transform:           transformers.TransformWithStruct(&guardduty.GetIPSetOutput{}, transformers.WithPrimaryKeys("Name"), transformers.WithSkipFields("ResultMetadata")),
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
 		Columns: []schema.Column{
 			{
 				Name:       "detector_arn",

@@ -1,5 +1,9 @@
 name: CLI Workflow
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     paths:
@@ -23,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-cli-large-runner, macos-latest, windows-cli-large-runner]
+        os: [large-ubuntu-monorepo, macos-latest-xl, large-windows-monorepo]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -36,7 +40,7 @@ jobs:
           cache-dependency-path: cli/go.sum
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
-        if: matrix.os == 'ubuntu-cli-large-runner'
+        if: matrix.os == 'large-ubuntu-monorepo'
         with:
           version: v1.52.2
           working-directory: cli
@@ -47,14 +51,14 @@ jobs:
       - name: Test
         run: make test
       - name: gen-docs
-        if: matrix.os == 'ubuntu-cli-large-runner'
+        if: matrix.os == 'large-ubuntu-monorepo'
         run: make gen-docs
       - name: Fail if docs are changed
-        if: matrix.os == 'ubuntu-cli-large-runner'
+        if: matrix.os == 'large-ubuntu-monorepo'
         run: test "$(git status -s ../website/pages/docs/reference/cli/*.md | wc -l)" -eq 0
   validate-release:
     timeout-minutes: 30
-    runs-on: ubuntu-cli-large-runner
+    runs-on: large-ubuntu-monorepo
     env:
       CGO_ENABLED: 0
     steps:
@@ -67,9 +71,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ubuntu-go-1.19.5-release-cache-${{ hashFiles('cli/go.sum') }}
+          key: ubuntu-go-1.20.5-release-cache-${{ hashFiles('cli/go.sum') }}
           restore-keys: |
-            ubuntu-go-1.19.5-release-cache-cli
+            ubuntu-go-1.20.5-release-cache-cli
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3

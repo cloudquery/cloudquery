@@ -19,7 +19,6 @@ func workGroupNamedQueries() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/athena/latest/APIReference/API_NamedQuery.html`,
 		Resolver:            fetchAthenaWorkGroupNamedQueries,
 		PreResourceResolver: getWorkGroupNamedQuery,
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "athena"),
 		Transform:           transformers.TransformWithStruct(&types.NamedQuery{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

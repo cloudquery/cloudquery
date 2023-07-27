@@ -94,7 +94,7 @@ In the git repository, create a new file called `simple-analytics.yml` and add t
 kind: source
 spec:
   name: "simple-analytics"
-  path: "simpleanalytics/simple-analytics"
+  path: "simpleanalytics/simpleanalytics"
   version: "v1.0.0"
   tables:
     ["*"]
@@ -118,7 +118,7 @@ kind: destination
 spec:
   name: bigquery
   path: cloudquery/bigquery
-  version: "v2.1.2"
+  version: "VERSION_DESTINATION_BIGQUERY"
   write_mode: "append"
   spec:
     project_id: ${SA_BIGQUERY_PROJECT_ID}

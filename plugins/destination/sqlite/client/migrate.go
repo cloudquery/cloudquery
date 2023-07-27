@@ -140,7 +140,7 @@ func (c *Client) migrate(ctx context.Context, force bool, tables schema.Tables) 
 	if !force {
 		nonAutoMigratableTables, changes := c.nonAutoMigratableTables(normalizedTables, sqliteTables)
 		if len(nonAutoMigratableTables) > 0 {
-			return fmt.Errorf("tables %s with changes %v require force migration. use 'migrate_mode: forced'", strings.Join(nonAutoMigratableTables, ","), changes)
+			return fmt.Errorf("tables %s with changes %v require migration. Migrate manually or consider using 'migrate_mode: forced'", strings.Join(nonAutoMigratableTables, ","), changes)
 		}
 	}
 

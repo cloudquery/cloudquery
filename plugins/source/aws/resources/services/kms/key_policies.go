@@ -26,7 +26,6 @@ func keyPolicies() *schema.Table {
 		Description: `https://docs.aws.amazon.com/kms/latest/APIReference/API_GetKeyPolicy.html`,
 		Resolver:    fetchKeyPolicies,
 		Transform:   transformers.TransformWithStruct(&KeyPolicy{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "kms"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

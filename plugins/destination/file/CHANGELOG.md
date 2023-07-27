@@ -1,5 +1,43 @@
 # Changelog
 
+## [3.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v3.3.2...plugins-destination-file-v3.4.0) (2023-07-25)
+
+
+### Features
+
+* Support compression ([#12411](https://github.com/cloudquery/cloudquery/issues/12411)) ([03fae6d](https://github.com/cloudquery/cloudquery/commit/03fae6d803a4e2ac00ff83d9e90a4169b247c346))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 10df4b9 ([#12443](https://github.com/cloudquery/cloudquery/issues/12443)) ([e385283](https://github.com/cloudquery/cloudquery/commit/e38528309f862f37bc7e278f9b69cf92d5aa5bd5))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.0.2 ([#12388](https://github.com/cloudquery/cloudquery/issues/12388)) ([af71bb1](https://github.com/cloudquery/cloudquery/commit/af71bb1d35837b0e4cc028525b5408a48d252d02))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.0.3 ([#12422](https://github.com/cloudquery/cloudquery/issues/12422)) ([96c6f27](https://github.com/cloudquery/cloudquery/commit/96c6f27aa019fdbfe3f4cbb3e4c9e74cb0ebec43))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.1.0 ([#12433](https://github.com/cloudquery/cloudquery/issues/12433)) ([6f91a34](https://github.com/cloudquery/cloudquery/commit/6f91a34d571d2361069079cb17f0556ec11d1130))
+
+## [3.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v3.3.1...plugins-destination-file-v3.3.2) (2023-07-18)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.3 ([#12307](https://github.com/cloudquery/cloudquery/issues/12307)) ([8f14e4d](https://github.com/cloudquery/cloudquery/commit/8f14e4de7bf4d4c833f501135ea0610916a42f8b))
+
+## [3.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v3.3.0...plugins-destination-file-v3.3.1) (2023-07-18)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 0a52533 ([#12091](https://github.com/cloudquery/cloudquery/issues/12091)) ([927cefa](https://github.com/cloudquery/cloudquery/commit/927cefa943ec3969a2ec39b628bc1eba545a2108))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 8e2219b ([#12220](https://github.com/cloudquery/cloudquery/issues/12220)) ([24e8fb5](https://github.com/cloudquery/cloudquery/commit/24e8fb588740896fe11a660e8b80231e741b753c))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to a2a76eb ([#12104](https://github.com/cloudquery/cloudquery/issues/12104)) ([311f474](https://github.com/cloudquery/cloudquery/commit/311f4749af2491a606f29483190717a5fe238da6))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.0.1 ([#12140](https://github.com/cloudquery/cloudquery/issues/12140)) ([7321d97](https://github.com/cloudquery/cloudquery/commit/7321d97f12292755ae99e943ac42369a46f6cddf))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.7.0 ([#12166](https://github.com/cloudquery/cloudquery/issues/12166)) ([94390dd](https://github.com/cloudquery/cloudquery/commit/94390dde19d0c37fee9d035219d62f6ae7edb127))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.1.0 ([#12174](https://github.com/cloudquery/cloudquery/issues/12174)) ([80f0289](https://github.com/cloudquery/cloudquery/commit/80f02892a4cf876c4bf4dd4fd9367afb3770ad26))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.1.1 ([#12185](https://github.com/cloudquery/cloudquery/issues/12185)) ([cfaff16](https://github.com/cloudquery/cloudquery/commit/cfaff16d89800235b6e3015eeb6957d5783d1393))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.0 ([#12256](https://github.com/cloudquery/cloudquery/issues/12256)) ([eaec331](https://github.com/cloudquery/cloudquery/commit/eaec33165345ad51fdb6ddbffbf8a1199ebd6384))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.1 ([#12272](https://github.com/cloudquery/cloudquery/issues/12272)) ([557ca69](https://github.com/cloudquery/cloudquery/commit/557ca69a7dee9dabb80e6afb6f41f205fd8a80d8))
+* **deps:** Upgrade destination plugins to SDK v4.0.0 release ([#12137](https://github.com/cloudquery/cloudquery/issues/12137)) ([bf48760](https://github.com/cloudquery/cloudquery/commit/bf48760eef9fe7ce24d73f54bd25da72287a2ed4))
+
 ## [3.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v3.2.2...plugins-destination-file-v3.3.0) (2023-07-06)
 
 

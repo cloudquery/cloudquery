@@ -2,6 +2,7 @@ import { Avatar } from "./Avatar";
 import {AuthorByName} from "../content/authors";
 import Head from "next/head";
 import { useConfig } from "nextra-theme-docs";
+import { Title as CaseStudyTitle } from "./Title";
 
 type PostMeta = {
   title: string;
@@ -32,16 +33,6 @@ function Authors({ data }: { data: PostMeta }) {
       </div>
     </div>
   );
-}
-
-function CaseStudyTitle({ data }: { data: PostMeta }) {
-  const title = data.title;
-
-  if (!title) {
-    return null;
-  }
-
-  return <h1>{title}</h1>;
 }
 
 export function CaseStudyHeader() {

@@ -11,7 +11,7 @@ type Spec struct {
 	StartDate   string     `json:"start_date,omitempty"`
 	OAuth       *oauthSpec `json:"oauth,omitempty"`
 	Reports     []*Report  `json:"reports,omitempty"`
-	Concurrency uint64     `json:"concurrency,omitempty"`
+	Concurrency int        `json:"concurrency,omitempty"`
 }
 
 const layout = "2006-01-02"

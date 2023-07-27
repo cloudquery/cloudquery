@@ -21,7 +21,6 @@ func configurationOptions() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ConfigurationOptionDescription.html`,
 		Resolver:    fetchElasticbeanstalkConfigurationOptions,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticbeanstalk"),
 		Transform:   transformers.TransformWithStruct(&models.ConfigurationOptionDescriptionWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -19,7 +19,6 @@ func endpointAuthorization() *schema.Table {
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_EndpointAuthorization.html`,
 		Resolver:    fetchEndpointAuthorization,
 		Transform:   transformers.TransformWithStruct(&types.EndpointAuthorization{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

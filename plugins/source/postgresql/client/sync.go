@@ -8,22 +8,22 @@ import (
 	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/apache/arrow/go/v13/arrow/array"
+	"github.com/apache/arrow/go/v13/arrow/memory"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/scalar"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *schema.Resource) error {
+func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.SyncMessage) error {
+	if c.options.NoConnection {
+		return fmt.Errorf("no connection")
+	}
 	var err error
 	var snapshotName string
-	c.metrics = metrics
-	for _, table := range c.Tables {
-		if c.metrics.TableClient[table.Name] == nil {
-			c.metrics.TableClient[table.Name] = make(map[string]*source.TableClientMetrics)
-			c.metrics.TableClient[table.Name][c.ID()] = &source.TableClientMetrics{}
-		}
-	}
 
 	connPool, err := c.Conn.Acquire(ctx)
 	if err != nil {
@@ -34,22 +34,33 @@ func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *
 	defer connPool.Release()
 	conn := connPool.Conn().PgConn()
 
-	if c.pluginSpec.CDC {
-		snapshotName, err = c.startCDC(ctx, conn)
+	filteredTables, err := c.tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
+	if err != nil {
+		return err
+	}
+
+	for _, table := range filteredTables {
+		res <- &message.SyncMigrateTable{
+			Table: table,
+		}
+	}
+
+	if c.pluginSpec.CDCId != "" {
+		snapshotName, err = c.startCDC(ctx, filteredTables, conn)
 		if err != nil {
 			return err
 		}
 	}
 
-	if c.pluginSpec.CDC && snapshotName == "" {
+	if c.pluginSpec.CDCId != "" && snapshotName == "" {
 		c.logger.Info().Msg("cdc is enabled but replication slot already exists, skipping initial sync")
 	} else {
-		if err := c.syncTables(ctx, snapshotName, res); err != nil {
+		if err := c.syncTables(ctx, snapshotName, filteredTables, res); err != nil {
 			return err
 		}
 	}
 
-	if !c.pluginSpec.CDC {
+	if c.pluginSpec.CDCId == "" {
 		return nil
 	}
 
@@ -59,7 +70,7 @@ func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *
 	return nil
 }
 
-func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<- *schema.Resource) error {
+func (c *Client) syncTables(ctx context.Context, snapshotName string, filteredTables schema.Tables, res chan<- message.SyncMessage) error {
 	tx, err := c.Conn.BeginTx(ctx, pgx.TxOptions{
 		// this transaction is needed for us to take a snapshot and we need to close it only at the end of the initial sync
 		// https://www.postgresql.org/docs/current/transaction-iso.html
@@ -85,8 +96,8 @@ func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<-
 		}
 	}
 
-	for _, table := range c.Tables {
-		if err := c.syncTable(ctx, tx, table, res); err != nil {
+	for _, table := range filteredTables {
+		if err := syncTable(ctx, tx, table, res); err != nil {
 			return err
 		}
 	}
@@ -96,56 +107,43 @@ func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<-
 	return nil
 }
 
-func (c *Client) syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- *schema.Resource) error {
-	colNames := make([]string, 0, len(table.Columns)-2)
+func syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- message.SyncMessage) error {
+	colNames := make([]string, 0, len(table.Columns))
 	for _, col := range table.Columns {
 		colNames = append(colNames, pgx.Identifier{col.Name}.Sanitize())
 	}
 	query := "SELECT " + strings.Join(colNames, ",") + " FROM " + pgx.Identifier{table.Name}.Sanitize()
 	rows, err := tx.Query(ctx, query)
 	if err != nil {
-		c.metrics.TableClient[table.Name][c.ID()].Errors++
 		return err
 	}
 	defer rows.Close()
 	for rows.Next() {
 		values, err := rows.Values()
 		if err != nil {
-			c.metrics.TableClient[table.Name][c.ID()].Errors++
-			return err
-		}
-		resource, err := c.resourceFromValues(table.Name, values)
-		if err != nil {
-			c.metrics.TableClient[table.Name][c.ID()].Errors++
 			return err
 		}
 
-		c.metrics.TableClient[table.Name][c.ID()].Resources++
-
-		res <- resource
+		arrowSchema := table.ToArrowSchema()
+		rb := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
+		for i := range values {
+			val, err := prepareValueForResourceSet(arrowSchema.Field(i).Type, values[i])
+			if err != nil {
+				return err
+			}
+			s := scalar.NewScalar(arrowSchema.Field(i).Type)
+			if err := s.Set(val); err != nil {
+				return err
+			}
+			scalar.AppendToBuilder(rb.Field(i), s)
+		}
+		res <- &message.SyncInsert{Record: rb.NewRecord()}
 	}
 	return nil
 }
 
-func (c *Client) resourceFromValues(tableName string, values []any) (*schema.Resource, error) {
-	table := c.Tables.Get(tableName)
-	resource := schema.NewResourceData(table, nil, values)
-	var i int
-	for _, col := range table.Columns {
-		v, err := prepareValueForResourceSet(col, values[i])
-		if err != nil {
-			return nil, err
-		}
-		if err := resource.Set(col.Name, v); err != nil {
-			return nil, err
-		}
-		i++
-	}
-	return resource, nil
-}
-
-func prepareValueForResourceSet(col schema.Column, v any) (any, error) {
-	switch tp := col.Type.(type) {
+func prepareValueForResourceSet(dataType arrow.DataType, v any) (any, error) {
+	switch tp := dataType.(type) {
 	case *arrow.StringType:
 		if value, ok := v.(driver.Valuer); ok {
 			if value == driver.Valuer(nil) {

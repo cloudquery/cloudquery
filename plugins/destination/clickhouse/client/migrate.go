@@ -75,13 +75,13 @@ func (c *Client) checkForced(have, want schema.Tables, messages message.WriteMig
 			c.logger.Error().
 				Str("table", m.Table.Name).
 				Str("changes", util.ChangesPrettified(m.Table.Name, unsafe)).
-				Msg("'migrate_mode: forced' is required")
+				Msg("migrate manually or consider using 'migrate_mode: forced'")
 			forcedErr = true
 		}
 	}
 
 	if forcedErr {
-		return errors.New("'migrate_mode: forced' is required for the migration")
+		return errors.New("migrate manually or consider using 'migrate_mode: forced'")
 	}
 	return nil
 }

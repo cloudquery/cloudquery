@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client/services"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/state"
@@ -31,7 +32,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 	if !opts.StartTime.IsZero() {
 		startTimeStr = opts.StartTime.Format(time.RFC3339)
 	}
-	schedulerClient := &Client{
+	c := &Client{
 		logger:     l,
 		HackerNews: builder(t, gomock.NewController(t)),
 		Backend:    opts.Backend,
@@ -46,15 +47,10 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 	if err := transformers.TransformTables(tables); err != nil {
 		t.Fatal(err)
 	}
-	sc := scheduler.NewScheduler(scheduler.WithLogger(l))
-	messages, err := sc.SyncAll(context.Background(), schedulerClient, tables)
+	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
+	messages, err := sched.SyncAll(context.Background(), c, tables)
 	if err != nil {
-		t.Fatal(err)
+		t.Fatalf("failed to sync: %v", err)
 	}
-	inserts := messages.InsertMessage()
-	records := inserts.GetRecordsForTable(table)
-	emptyColumns := schema.FindEmptyColumns(table, records)
-	if len(emptyColumns) > 0 {
-		t.Fatalf("empty columns: %v", emptyColumns)
-	}
+	plugin.ValidateNoEmptyColumns(t, tables, messages)
 }

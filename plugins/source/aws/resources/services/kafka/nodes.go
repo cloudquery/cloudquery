@@ -18,7 +18,6 @@ func nodes() *schema.Table {
 		Description: `https://docs.aws.amazon.com/msk/1.0/apireference/clusters-clusterarn-nodes.html#ListNodes`,
 		Resolver:    fetchKafkaNodes,
 		Transform:   transformers.TransformWithStruct(&types.NodeInfo{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "kafka"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

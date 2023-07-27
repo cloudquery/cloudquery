@@ -11,6 +11,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/amplify"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigateway"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigatewayv2"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appconfig"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/applicationautoscaling"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apprunner"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appstream"
@@ -85,6 +86,8 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resiliencehub"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resourcegroups"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53recoverycontrolconfig"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53recoveryreadiness"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53resolver"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sagemaker"
@@ -135,6 +138,8 @@ func getTables() schema.Tables {
 		apigatewayv2.Apis(),
 		apigatewayv2.DomainNames(),
 		apigatewayv2.VpcLinks(),
+		appconfig.Applications(),
+		appconfig.DeploymentStrategies(),
 		applicationautoscaling.Policies(),
 		applicationautoscaling.ScalableTargets(),
 		applicationautoscaling.ScalingActivities(),
@@ -162,6 +167,7 @@ func getTables() schema.Tables {
 		autoscaling.ScheduledActions(),
 		autoscalingplans.Plans(),
 		backup.GlobalSettings(),
+		backup.Jobs(),
 		backup.Plans(),
 		backup.ProtectedResources(),
 		backup.RegionSettings(),
@@ -315,6 +321,7 @@ func getTables() schema.Tables {
 		emr.BlockPublicAccessConfigs(),
 		emr.Clusters(),
 		emr.SecurityConfigurations(),
+		emr.Studios(),
 		eventbridge.ApiDestinations(),
 		eventbridge.Archives(),
 		eventbridge.Connections(),
@@ -470,6 +477,12 @@ func getTables() schema.Tables {
 		route53.HostedZones(),
 		route53.Operations(),
 		route53.TrafficPolicies(),
+		route53recoverycontrolconfig.Clusters(),
+		route53recoverycontrolconfig.ControlPanels(),
+		route53recoveryreadiness.Cells(),
+		route53recoveryreadiness.ReadinessChecks(),
+		route53recoveryreadiness.RecoveryGroups(),
+		route53recoveryreadiness.ResourceSets(),
 		route53resolver.FirewallConfigs(),
 		route53resolver.FirewallDomainLists(),
 		route53resolver.FirewallRuleGroupAssociations(),
@@ -482,6 +495,7 @@ func getTables() schema.Tables {
 		s3.AccessPoints(),
 		s3.Accounts(),
 		s3.Buckets(),
+		s3.MultiRegionAccessPoints(),
 		sagemaker.Apps(),
 		sagemaker.EndpointConfigurations(),
 		sagemaker.Models(),

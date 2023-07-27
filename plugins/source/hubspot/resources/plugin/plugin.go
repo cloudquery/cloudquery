@@ -86,7 +86,7 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	if err != nil {
 		return err
 	}
-	return c.scheduler.Sync(ctx, c.syncClient, tables, res)
+	return c.scheduler.Sync(ctx, c.syncClient, tables, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
 }
 
 func getTables() schema.Tables {
