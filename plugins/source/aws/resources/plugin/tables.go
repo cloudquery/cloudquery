@@ -319,6 +319,7 @@ func getTables() schema.Tables {
 		emr.BlockPublicAccessConfigs(),
 		emr.Clusters(),
 		emr.SecurityConfigurations(),
+		emr.Studios(),
 		eventbridge.ApiDestinations(),
 		eventbridge.Archives(),
 		eventbridge.Connections(),
