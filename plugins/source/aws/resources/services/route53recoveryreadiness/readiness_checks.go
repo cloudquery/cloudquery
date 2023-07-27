@@ -12,7 +12,7 @@ import (
 )
 
 func ReadinessChecks() *schema.Table {
-	tableName := "aws_route53recoveryreadiness_readiness_check"
+	tableName := "aws_route53recoveryreadiness_readiness_checks"
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/recovery-readiness/latest/api/readinesschecks.html`,

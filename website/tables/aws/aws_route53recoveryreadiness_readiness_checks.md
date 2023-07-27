@@ -1,6 +1,6 @@
-# Table: aws_route53recoveryreadiness_readiness_check
+# Table: aws_route53recoveryreadiness_readiness_checks
 
-This table shows data for Amazon Route 53 Application Recovery Controller Recovery Readiness Readiness Check.
+This table shows data for Amazon Route 53 Application Recovery Controller Recovery Readiness Readiness Checks.
 
 https://docs.aws.amazon.com/recovery-readiness/latest/api/readinesschecks.html
 
