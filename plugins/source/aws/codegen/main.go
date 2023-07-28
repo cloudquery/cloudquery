@@ -20,6 +20,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appsync"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
+	"github.com/aws/aws-sdk-go-v2/service/auditmanager"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/autoscalingplans"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
@@ -143,6 +144,7 @@ var clients = []any{
 	&appstream.Client{},
 	&appsync.Client{},
 	&athena.Client{},
+	&auditmanager.Client{},
 	&autoscaling.Client{},
 	&autoscalingplans.Client{},
 	&backup.Client{},
@@ -164,8 +166,8 @@ var clients = []any{
 	&costexplorer.Client{},
 	&databasemigrationservice.Client{},
 	&dax.Client{},
-	&directconnect.Client{},
 	&detective.Client{},
+	&directconnect.Client{},
 	&docdb.Client{},
 	&dynamodb.Client{},
 	&dynamodbstreams.Client{},

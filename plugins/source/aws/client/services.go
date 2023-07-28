@@ -17,6 +17,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appsync"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
+	"github.com/aws/aws-sdk-go-v2/service/auditmanager"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/autoscalingplans"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
@@ -142,6 +143,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Appstream:                    appstream.NewFromConfig(awsCfg),
 		Appsync:                      appsync.NewFromConfig(awsCfg),
 		Athena:                       athena.NewFromConfig(awsCfg),
+		Auditmanager:                 auditmanager.NewFromConfig(awsCfg),
 		Autoscaling:                  autoscaling.NewFromConfig(awsCfg),
 		Autoscalingplans:             autoscalingplans.NewFromConfig(awsCfg),
 		Batch:                        batch.NewFromConfig(awsCfg),
@@ -265,6 +267,7 @@ type Services struct {
 	Appstream                    services.AppstreamClient
 	Appsync                      services.AppsyncClient
 	Athena                       services.AthenaClient
+	Auditmanager                 services.AuditmanagerClient
 	Autoscaling                  services.AutoscalingClient
 	Autoscalingplans             services.AutoscalingplansClient
 	Backup                       services.BackupClient
