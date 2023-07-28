@@ -1,6 +1,6 @@
 # Table: aws_appmesh_meshes
 
-This table shows data for Appmesh Meshes.
+This table shows data for AWS App Mesh Meshes.
 
 https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_MeshData.html
 The 'request_account_id' and 'request_region' columns are added to show the account and region of where the request was made from.

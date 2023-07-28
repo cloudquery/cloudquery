@@ -1,6 +1,6 @@
 # Table: aws_appmesh_virtual_routers
 
-This table shows data for Appmesh Virtual Routers.
+This table shows data for AWS App Mesh Virtual Routers.
 
 https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_VirtualRouterData.html
 

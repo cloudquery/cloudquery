@@ -1,6 +1,6 @@
 # Table: aws_appmesh_virtual_nodes
 
-This table shows data for Appmesh Virtual Nodes.
+This table shows data for AWS App Mesh Virtual Nodes.
 
 https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_VirtualNodeData.html
 

@@ -1,6 +1,6 @@
 # Table: aws_appmesh_virtual_gateways
 
-This table shows data for Appmesh Virtual Gateways.
+This table shows data for AWS App Mesh Virtual Gateways.
 
 https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_VirtualGatewayData.html
 

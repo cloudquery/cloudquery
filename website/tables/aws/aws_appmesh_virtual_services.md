@@ -1,6 +1,6 @@
 # Table: aws_appmesh_virtual_services
 
-This table shows data for Appmesh Virtual Services.
+This table shows data for AWS App Mesh Virtual Services.
 
 https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_VirtualServiceData.html
 
