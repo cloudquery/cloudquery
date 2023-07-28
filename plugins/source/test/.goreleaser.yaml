@@ -24,6 +24,7 @@ dockers:
       - "ghcr.io/cloudquery/cq-source-test:{{.Version}}-linux-amd64"
       - "ghcr.io/cloudquery/cq-source-test:{{ .Major }}.{{ .Minor }}-linux-amd64"
     build_flag_templates:
+      - "--builder=mybuilder"
       - "--platform=linux/amd64"
       - "--label=org.opencontainers.image.source=https://github.com/cloudquery/cloudquery"
       - "--label=org.opencontainers.image.title={{.ProjectName}}"
@@ -38,6 +39,7 @@ dockers:
       - "ghcr.io/cloudquery/cq-source-test:{{.Version}}-linux-arm64"
       - "ghcr.io/cloudquery/cq-source-test:{{ .Major }}.{{ .Minor }}-linux-arm64"
     build_flag_templates:
+      - "--builder=mybuilder"
       - "--platform=linux/arm64"
       - "--label=org.opencontainers.image.source=https://github.com/cloudquery/cloudquery"
       - "--label=org.opencontainers.image.title={{.ProjectName}}"
@@ -46,12 +48,13 @@ dockers:
   - goos: windows
     goarch: amd64
     use: buildx
-    dockerfile: Dockerfile.goreleaser
+    dockerfile: Dockerfile.windows.goreleaser
     image_templates:
       - "ghcr.io/cloudquery/cq-source-test:latest-windows-amd64"
       - "ghcr.io/cloudquery/cq-source-test:{{.Version}}-windows-amd64"
       - "ghcr.io/cloudquery/cq-source-test:{{ .Major }}.{{ .Minor }}-windows-amd64"
     build_flag_templates:
+      - "--builder=mybuilder"
       - "--platform=windows/amd64"
       - "--label=org.opencontainers.image.source=https://github.com/cloudquery/cloudquery"
       - "--label=org.opencontainers.image.title={{.ProjectName}}"
