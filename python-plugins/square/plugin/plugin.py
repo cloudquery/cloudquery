@@ -7,7 +7,6 @@ from plugin.client import Spec
 from plugin.client import Client
 from plugin import tables
 
-import queue
 
 PLUGIN_NAME = "square"
 PLUGIN_VERSION = "0.0.1"
@@ -28,6 +27,6 @@ class SquarePlugin(plugin.Plugin):
             tables.Payments(),
         ]
 
-    def sync(self, options: plugin.SyncOptions, results: queue.Queue) -> Generator[message.SyncMessage, None, None]:
+    def sync(self, options: plugin.SyncOptions) -> Generator[message.SyncMessage, None, None]:
         return self._scheduler.sync(self._spec, [tables.PaymentsResolver()])
 
