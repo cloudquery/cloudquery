@@ -14,6 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/appconfig"
+	"github.com/aws/aws-sdk-go-v2/service/appflow"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/apprunner"
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
@@ -137,6 +138,7 @@ var clients = []any{
 	&apigateway.Client{},
 	&apigatewayv2.Client{},
 	&appconfig.Client{},
+	&appflow.Client{},
 	&applicationautoscaling.Client{},
 	&apprunner.Client{},
 	&appstream.Client{},
