@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
-	github.com/aws/aws-sdk-go-v2 v1.19.0
+	github.com/aws/aws-sdk-go-v2 v1.19.1
 	github.com/aws/aws-sdk-go-v2/config v1.18.28
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.27
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.19.15
@@ -16,6 +16,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.16.14
 	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.13.14
 	github.com/aws/aws-sdk-go-v2/service/appconfig v1.17.12
+	github.com/aws/aws-sdk-go-v2/service/appflow v1.32.2
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.21.3
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.17.12
 	github.com/aws/aws-sdk-go-v2/service/appstream v1.21.1
@@ -152,8 +153,8 @@ replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.13.5 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.35 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.29 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.36 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.30 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.36 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.27 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.11 // indirect

@@ -21,6 +21,7 @@ var awsExceptions = map[string]string{
 	"apigateway":                   "Amazon API Gateway",
 	"apigatewayv2":                 "Amazon API Gateway v2",
 	"appconfig":                    "AWS AppConfig",
+	"appflow":                      "Amazon AppFlow",
 	"applicationautoscaling":       "Application Auto Scaling",
 	"apprunner":                    "AWS App Runner",
 	"appstream":                    "Amazon AppStream",
