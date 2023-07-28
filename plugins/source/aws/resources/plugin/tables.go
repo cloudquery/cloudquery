@@ -17,6 +17,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appstream"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appsync"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/athena"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/auditmanager"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscaling"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscalingplans"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/backup"
@@ -162,6 +163,7 @@ func getTables() schema.Tables {
 		appsync.GraphqlApis(),
 		athena.DataCatalogs(),
 		athena.WorkGroups(),
+		auditmanager.Assessments(),
 		autoscaling.Groups(),
 		autoscaling.LaunchConfigurations(),
 		autoscaling.ScheduledActions(),

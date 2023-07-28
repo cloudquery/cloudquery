@@ -83,6 +83,7 @@
   - [aws_athena_work_group_named_queries](tables/aws_athena_work_group_named_queries)
   - [aws_athena_work_group_prepared_statements](tables/aws_athena_work_group_prepared_statements)
   - [aws_athena_work_group_query_executions](tables/aws_athena_work_group_query_executions)
+- [aws_auditmanager_assessments](tables/aws_auditmanager_assessments)
 - [aws_autoscaling_groups](tables/aws_autoscaling_groups)
   - [aws_autoscaling_group_lifecycle_hooks](tables/aws_autoscaling_group_lifecycle_hooks)
   - [aws_autoscaling_group_scaling_policies](tables/aws_autoscaling_group_scaling_policies)
