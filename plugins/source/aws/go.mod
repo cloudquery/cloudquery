@@ -18,6 +18,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/appconfig v1.17.12
 	github.com/aws/aws-sdk-go-v2/service/appflow v1.32.2
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.21.3
+	github.com/aws/aws-sdk-go-v2/service/appmesh v1.17.14
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.17.12
 	github.com/aws/aws-sdk-go-v2/service/appstream v1.21.1
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.21.3
@@ -192,7 +193,6 @@ require (
 )
 
 require (
-	github.com/aws/aws-sdk-go-v2/service/appmesh v1.17.14 // indirect
 	github.com/biogo/store v0.0.0-20201120204734-aad293a2328f // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/cloudquery/plugin-pb-go v1.8.0 // indirect

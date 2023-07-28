@@ -56,6 +56,7 @@
 - [aws_applicationautoscaling_scalable_targets](tables/aws_applicationautoscaling_scalable_targets)
 - [aws_applicationautoscaling_scaling_activities](tables/aws_applicationautoscaling_scaling_activities)
 - [aws_applicationautoscaling_scheduled_actions](tables/aws_applicationautoscaling_scheduled_actions)
+- [aws_appmesh_meshes](tables/aws_appmesh_meshes)
 - [aws_apprunner_auto_scaling_configurations](tables/aws_apprunner_auto_scaling_configurations)
 - [aws_apprunner_connections](tables/aws_apprunner_connections)
 - [aws_apprunner_observability_configurations](tables/aws_apprunner_observability_configurations)
