@@ -54,7 +54,10 @@ func transformArray(arr arrow.Array) arrow.Array {
 			[]arrow.ArrayData{transformArray(arr.ListValues()).Data()},
 			arr.NullN(), arr.Data().Offset(),
 		))
-
+	case *array.Date32:
+		return transformDate32ToTimestamp(arr)
+	case *array.Date64:
+		return transformDate64ToTimestamp(arr)
 	default:
 		return transformToStringArray(arr)
 	}
@@ -109,5 +112,29 @@ func transformTimestamp(dt *arrow.TimestampType, arr *array.Timestamp) arrow.Arr
 		builder.Append(arrow.Timestamp(arrow.ConvertTimestampValue(in, out, int64(arr.Value(i)))))
 	}
 
+	return builder.NewArray()
+}
+
+func transformDate32ToTimestamp(arr *array.Date32) arrow.Array {
+	builder := array.NewTimestampBuilder(memory.DefaultAllocator, &arrow.TimestampType{Unit: arrow.Microsecond, TimeZone: "UTC"})
+	for i := 0; i < arr.Len(); i++ {
+		if arr.IsNull(i) {
+			builder.AppendNull()
+			continue
+		}
+		builder.AppendTime(arr.Value(i).ToTime())
+	}
+	return builder.NewArray()
+}
+
+func transformDate64ToTimestamp(arr *array.Date64) arrow.Array {
+	builder := array.NewTimestampBuilder(memory.DefaultAllocator, &arrow.TimestampType{Unit: arrow.Microsecond, TimeZone: "UTC"})
+	for i := 0; i < arr.Len(); i++ {
+		if arr.IsNull(i) {
+			builder.AppendNull()
+			continue
+		}
+		builder.AppendTime(arr.Value(i).ToTime())
+	}
 	return builder.NewArray()
 }

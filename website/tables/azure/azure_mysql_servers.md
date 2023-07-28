@@ -10,6 +10,7 @@ The primary key for this table is **id**.
 
 The following tables depend on azure_mysql_servers:
   - [azure_mysql_server_configurations](azure_mysql_server_configurations)
+  - [azure_mysql_server_databases](azure_mysql_server_databases)
 
 ## Columns
 

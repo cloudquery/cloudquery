@@ -6,6 +6,47 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.1.0...plugins-source-aws-v22.2.0) (2023-07-27)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_cloudformation_stack_instance_resource_drifts` was added
+- Table `aws_cloudformation_stack_instance_summaries` was added
+- Table `aws_emr_studio_session_mappings` was added
+- Table `aws_emr_studios` was added
+- Table `aws_route53recoverycontrolconfig_clusters` was added
+- Table `aws_route53recoverycontrolconfig_control_panels` was added
+- Table `aws_route53recoverycontrolconfig_routing_controls` was added
+- Table `aws_route53recoverycontrolconfig_safety_rules` was added
+- Table `aws_route53recoveryreadiness_cells` was added
+- Table `aws_route53recoveryreadiness_readiness_checks` was added
+- Table `aws_route53recoveryreadiness_recovery_groups` was added
+- Table `aws_route53recoveryreadiness_resource_sets` was added
+- Table `aws_s3_multi_region_access_points` was added
+
+### Features
+
+* **resources-s3:** Add support for S3 Multi Region Access Points ([#12525](https://github.com/cloudquery/cloudquery/issues/12525)) ([00c6a3f](https://github.com/cloudquery/cloudquery/commit/00c6a3fa781c29d1e47216d79dc098d6ad1777c3))
+* **resources:** Add additional emr resources for studio and studio session mapping ([#12529](https://github.com/cloudquery/cloudquery/issues/12529)) ([66a20a5](https://github.com/cloudquery/cloudquery/commit/66a20a5b2f97ebadee017b165fd413dfaa6d4086))
+* **resources:** Add Support for Amazon Route 53 ARC Recovery Control Configuration ([#12460](https://github.com/cloudquery/cloudquery/issues/12460)) ([8c3109b](https://github.com/cloudquery/cloudquery/commit/8c3109b9deaad7cfa82fd0ff32f2ab4ad842cc88))
+* **resources:** Add Support for Cloudformation Stack Instance Summaries and Stack Instance Resource Drifts ([#12495](https://github.com/cloudquery/cloudquery/issues/12495)) ([e1d9a74](https://github.com/cloudquery/cloudquery/commit/e1d9a746718cad26473e8a6a117ff55f381ecffe)), closes [#12461](https://github.com/cloudquery/cloudquery/issues/12461)
+* **resources:** Add Support for Route53 ARC Recovery Readiness ([#12459](https://github.com/cloudquery/cloudquery/issues/12459)) ([7d6d4c0](https://github.com/cloudquery/cloudquery/commit/7d6d4c0d55d94f5ec8e34518154fd4c45b7ccbf0))
+
+## [22.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.0.1...plugins-source-aws-v22.1.0) (2023-07-25)
+
+
+### Features
+
+* **aws-services:** Support newly added regions ([#12463](https://github.com/cloudquery/cloudquery/issues/12463)) ([0c6f414](https://github.com/cloudquery/cloudquery/commit/0c6f4142d7f2d75a6804edc4b755340570dc32c2))
+* **aws:** Improve error message ([#12456](https://github.com/cloudquery/cloudquery/issues/12456)) ([ce05f5c](https://github.com/cloudquery/cloudquery/commit/ce05f5cda2c018bb478ac1e9e6c0c120241a6936)), closes [#12169](https://github.com/cloudquery/cloudquery/issues/12169)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 10df4b9 ([#12443](https://github.com/cloudquery/cloudquery/issues/12443)) ([e385283](https://github.com/cloudquery/cloudquery/commit/e38528309f862f37bc7e278f9b69cf92d5aa5bd5))
+* Resolve attributes for S3 buckets with no policy status ([#12457](https://github.com/cloudquery/cloudquery/issues/12457)) ([0593de9](https://github.com/cloudquery/cloudquery/commit/0593de92c2a2bcd3cdb1800ecca8f02a2015e087)), closes [#12393](https://github.com/cloudquery/cloudquery/issues/12393)
+* **resources-web-acls:** Ignore `nil` responses from `GetWebACLForResource` ([#12454](https://github.com/cloudquery/cloudquery/issues/12454)) ([ec8714d](https://github.com/cloudquery/cloudquery/commit/ec8714d6c27153e7115306e8164884cddb7bd205))
+
 ## [22.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.0.0...plugins-source-aws-v22.0.1) (2023-07-22)
 
 

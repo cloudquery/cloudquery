@@ -143,6 +143,7 @@
 - [gcp_projects](../../../../../website/tables/gcp/gcp_projects.md)
 - [gcp_redis_instances](../../../../../website/tables/gcp/gcp_redis_instances.md)
 - [gcp_resourcemanager_folders](../../../../../website/tables/gcp/gcp_resourcemanager_folders.md)
+  - [gcp_resourcemanager_subfolders](../../../../../website/tables/gcp/gcp_resourcemanager_subfolders.md)
 - [gcp_resourcemanager_project_policies](../../../../../website/tables/gcp/gcp_resourcemanager_project_policies.md)
 - [gcp_resourcemanager_projects](../../../../../website/tables/gcp/gcp_resourcemanager_projects.md)
 - [gcp_run_locations](../../../../../website/tables/gcp/gcp_run_locations.md)

@@ -5,6 +5,15 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.3.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.3.3...plugins-source-gcp-v9.3.4) (2023-07-25)
+
+
+### Bug Fixes
+
+* **bigquery:** Create less clients per dataset/table ([#12465](https://github.com/cloudquery/cloudquery/issues/12465)) ([6c4c568](https://github.com/cloudquery/cloudquery/commit/6c4c5686cf2d4204272881383e5d840d29bccee9))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 10df4b9 ([#12443](https://github.com/cloudquery/cloudquery/issues/12443)) ([e385283](https://github.com/cloudquery/cloudquery/commit/e38528309f862f37bc7e278f9b69cf92d5aa5bd5))
+* **services:** Update GCP Services ([#12445](https://github.com/cloudquery/cloudquery/issues/12445)) ([34cf9d1](https://github.com/cloudquery/cloudquery/commit/34cf9d1c816659beec4d8e95723a5aedf4f5e539))
+
 ## [9.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.3.2...plugins-source-gcp-v9.3.3) (2023-07-20)
 
 
