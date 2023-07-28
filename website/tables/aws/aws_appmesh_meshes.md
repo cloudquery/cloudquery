@@ -7,6 +7,14 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 
 The composite primary key for this table is (**request_account_id**, **request_region**, **arn**).
 
+## Relations
+
+The following tables depend on aws_appmesh_meshes:
+  - [aws_appmesh_virtual_gateways](aws_appmesh_virtual_gateways)
+  - [aws_appmesh_virtual_nodes](aws_appmesh_virtual_nodes)
+  - [aws_appmesh_virtual_routers](aws_appmesh_virtual_routers)
+  - [aws_appmesh_virtual_services](aws_appmesh_virtual_services)
+
 ## Columns
 
 | Name          | Type          |

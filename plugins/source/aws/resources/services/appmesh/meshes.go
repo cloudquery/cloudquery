@@ -49,6 +49,12 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 				Resolver: resolveMeshTags,
 			},
 		},
+		Relations: []*schema.Table{
+			virtualServices(),
+			virtualNodes(),
+			virtualRouters(),
+			virtualGateways(),
+		},
 	}
 }
 
