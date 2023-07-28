@@ -15,5 +15,7 @@ COPY main.py .
 # (Optional) Expose any ports your app uses
 EXPOSE 7777
 
+ENTRYPOINT [ "python" ]
+
 # Specify the command to run when the container starts
-CMD ["python", "main.py", "serve", "--address", "[::]:7777"]
+CMD ["main.py", "serve", "--address", "[::]:7777"]
