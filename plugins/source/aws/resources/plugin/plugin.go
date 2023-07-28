@@ -26,6 +26,7 @@ var awsExceptions = map[string]string{
 	"appstream":                    "Amazon AppStream",
 	"arn":                          "Amazon Resource Name (ARN)",
 	"arns":                         "Amazon Resource Names (ARNs)",
+	"auditmanager":                 "AWS Audit Manager",
 	"autoscaling":                  "Auto Scaling",
 	"autoscalingplans":             "Auto Scaling Plans",
 	"aws":                          "", // remove "AWS" from names, because in most cases it will be replaced with either Amazon or AWS
