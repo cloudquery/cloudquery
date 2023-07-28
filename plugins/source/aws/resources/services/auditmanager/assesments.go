@@ -17,7 +17,7 @@ func Assessments() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/audit-manager/latest/APIReference/API_Assessment.html`,
 		Resolver:            fetchAssessments,
 		PreResourceResolver: getAssessment,
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "appsync"),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "auditmanager"),
 		Transform:           transformers.TransformWithStruct(&types.Assessment{}, transformers.WithPrimaryKeys("Arn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
