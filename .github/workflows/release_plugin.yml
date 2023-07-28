@@ -64,6 +64,8 @@ jobs:
         uses: crazy-max/ghaction-import-gpg@v5
         with:
           gpg_private_key: ${{ secrets.PRIVATE_KEY }}
+      - name: Add Docker builder
+        run: docker buildx create --name mybuilder --driver docker-container --bootstrap
       - name: Run GoReleaser
         run: goreleaser release --timeout 50m --clean -f ./${{steps.split.outputs.plugins_dir}}/.goreleaser.yaml
         env:
