@@ -309,6 +309,7 @@
   - [aws_emr_notebook_executions](../../../../../website/tables/aws/aws_emr_notebook_executions.md)
   - [aws_emr_steps](../../../../../website/tables/aws/aws_emr_steps.md)
 - [aws_emr_release_labels](../../../../../website/tables/aws/aws_emr_release_labels.md)
+  - [aws_emr_supported_instance_types](../../../../../website/tables/aws/aws_emr_supported_instance_types.md)
 - [aws_emr_security_configurations](../../../../../website/tables/aws/aws_emr_security_configurations.md)
 - [aws_emr_studios](../../../../../website/tables/aws/aws_emr_studios.md)
   - [aws_emr_studio_session_mappings](../../../../../website/tables/aws/aws_emr_studio_session_mappings.md)

@@ -109,6 +109,27 @@ func buildEMRClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
+	var stepSummary types.StepSummary
+	require.NoError(t, faker.FakeObject(&stepSummary))
+
+	mock.EXPECT().ListSteps(gomock.Any(), &emr.ListStepsInput{ClusterId: summary1.Id}, gomock.Any()).Return(
+		&emr.ListStepsOutput{Steps: []types.StepSummary{stepSummary}},
+		nil,
+	)
+
+	mock.EXPECT().ListSteps(gomock.Any(), &emr.ListStepsInput{ClusterId: summary2.Id}, gomock.Any()).Return(
+		&emr.ListStepsOutput{Steps: []types.StepSummary{}},
+		nil,
+	)
+
+	var step types.Step
+	require.NoError(t, faker.FakeObject(&step))
+
+	mock.EXPECT().DescribeStep(gomock.Any(), &emr.DescribeStepInput{ClusterId: summary1.Id, StepId: stepSummary.Id}, gomock.Any()).Return(
+		&emr.DescribeStepOutput{Step: &step},
+		nil,
+	)
+
 	return client.Services{Emr: mock}
 }
 
