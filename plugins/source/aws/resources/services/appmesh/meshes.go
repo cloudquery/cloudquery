@@ -36,7 +36,6 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 				Resolver:   client.ResolveAWSRegion,
 				PrimaryKey: true,
 			},
-
 			{
 				Name:       "arn",
 				Type:       arrow.BinaryTypes.String,

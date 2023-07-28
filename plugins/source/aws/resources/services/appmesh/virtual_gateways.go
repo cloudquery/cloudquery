@@ -3,6 +3,7 @@ package appmesh
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/appmesh"
 	"github.com/aws/aws-sdk-go-v2/service/appmesh/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -18,8 +19,30 @@ func virtualGateways() *schema.Table {
 		PreResourceResolver: getVirtualGateway,
 		Transform:           transformers.TransformWithStruct(&types.VirtualGatewayData{}),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
+			{
+				Name:       "request_account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSAccount,
+				PrimaryKey: true,
+			},
+			{
+				Name:       "request_region",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSRegion,
+				PrimaryKey: true,
+			},
+			{
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Metadata.Arn"),
+				PrimaryKey: true,
+			},
+			{
+				Name:       "mesh_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
+			},
 		},
 	}
 }
