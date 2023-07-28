@@ -1,3 +1,0 @@
-FROM scratch
-ENTRYPOINT ["/test.exe"]
-COPY ./test.exe /test.exe
