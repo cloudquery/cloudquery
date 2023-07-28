@@ -28,3 +28,71 @@ signs:
       - "${artifact}"
 release:
   prerelease: auto
+
+dockers:
+  - goos: linux
+    goarch: amd64
+    use: buildx
+    dockerfile: Dockerfile.goreleaser
+    image_templates:
+      - "ghcr.io/cloudquery/{{ .Var.docker_tag }}:latest-linux-amd64"
+      - "ghcr.io/cloudquery/{{ .Var.docker_tag }}:{{.Version}}-linux-amd64"
+      - "ghcr.io/cloudquery/{{ .Var.docker_tag }}:{{ .Major }}.{{ .Minor }}-linux-amd64"
+    build_flag_templates:
+      - "--builder=mybuilder"
+      - "--platform=linux/amd64"
+      - "--label=org.opencontainers.image.source=https://github.com/cloudquery/cloudquery"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+  - goos: linux
+    goarch: arm64
+    use: buildx
+    dockerfile: Dockerfile.goreleaser
+    image_templates:
+      - "ghcr.io/cloudquery/{{ .Var.docker_tag }}:latest-linux-arm64"
+      - "ghcr.io/cloudquery/{{ .Var.docker_tag }}:{{.Version}}-linux-arm64"
+      - "ghcr.io/cloudquery/{{ .Var.docker_tag }}:{{ .Major }}.{{ .Minor }}-linux-arm64"
+    build_flag_templates:
+      - "--builder=mybuilder"
+      - "--platform=linux/arm64"
+      - "--label=org.opencontainers.image.source=https://github.com/cloudquery/cloudquery"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+  - goos: windows
+    goarch: amd64
+    use: buildx
+    dockerfile: Dockerfile.windows.goreleaser
+    image_templates:
+      - "ghcr.io/cloudquery/{{ .Var.docker_tag }}:latest-windows-amd64"
+      - "ghcr.io/cloudquery/{{ .Var.docker_tag }}:{{.Version}}-windows-amd64"
+      - "ghcr.io/cloudquery/{{ .Var.docker_tag }}:{{ .Major }}.{{ .Minor }}-windows-amd64"
+    build_flag_templates:
+      - "--builder=mybuilder"
+      - "--platform=windows/amd64"
+      - "--label=org.opencontainers.image.source=https://github.com/cloudquery/cloudquery"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+
+docker_manifests:
+  # https://goreleaser.com/customization/docker_manifest/
+
+  - name_template: ghcr.io/cloudquery/{{ .Var.docker_tag }}:latest
+    image_templates:
+      - ghcr.io/cloudquery/{{ .Var.docker_tag }}:latest-linux-amd64
+      - ghcr.io/cloudquery/{{ .Var.docker_tag }}:latest-linux-arm64
+      - ghcr.io/cloudquery/{{ .Var.docker_tag }}:latest-windows-amd64
+
+  - name_template: ghcr.io/cloudquery/{{ .Var.docker_tag }}:{{.Version}}
+    image_templates:
+      - ghcr.io/cloudquery/{{ .Var.docker_tag }}:{{.Version}}-linux-amd64
+      - ghcr.io/cloudquery/{{ .Var.docker_tag }}:{{.Version}}-linux-arm64
+      - ghcr.io/cloudquery/{{ .Var.docker_tag }}:{{.Version}}-windows-amd64
+
+  - name_template: ghcr.io/cloudquery/{{ .Var.docker_tag }}:{{ .Major }}.{{ .Minor }}
+    image_templates:
+      - ghcr.io/cloudquery/{{ .Var.docker_tag }}:{{ .Major }}.{{ .Minor }}-linux-amd64
+      - ghcr.io/cloudquery/{{ .Var.docker_tag }}:{{ .Major }}.{{ .Minor }}-linux-arm64
+      - ghcr.io/cloudquery/{{ .Var.docker_tag }}:{{ .Major }}.{{ .Minor }}-windows-amd64
