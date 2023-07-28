@@ -51,7 +51,7 @@ jobs:
           version: latest
           install-only: true
       - name: Add Docker builder
-        run: docker buildx create --name mybuilder --driver docker-container --bootstrap
+        run: docker buildx create --name xbuilder --driver docker-container --bootstrap --platform linux/amd64,linux/arm64,windows/amd64
       - name: Run GoReleaser Dry-Run
         run: goreleaser release --timeout 50m --clean --skip-validate --skip-publish --skip-sign -f ./plugins/source/test/.goreleaser.yaml
         env:
