@@ -1,12 +1,5 @@
 # Changelog
 
-## [3.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v3.0.2...plugins-source-test-v3.0.3) (2023-07-28)
-
-
-### Bug Fixes
-
-* Add line break to makefile ([#12563](https://github.com/cloudquery/cloudquery/issues/12563)) ([5302423](https://github.com/cloudquery/cloudquery/commit/53024232d6a5db81bfafe04642f8bc6c17674541))
-
 ## [3.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v3.0.1...plugins-source-test-v3.0.2) (2023-07-25)
 
 
