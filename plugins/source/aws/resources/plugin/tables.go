@@ -175,6 +175,7 @@ func getTables() schema.Tables {
 		backup.Plans(),
 		backup.ProtectedResources(),
 		backup.RegionSettings(),
+		backup.ReportPlans(),
 		backup.Vaults(),
 		batch.JobQueues(),
 		batch.JobDefinitions(),

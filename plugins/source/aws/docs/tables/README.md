@@ -99,6 +99,7 @@
   - [aws_backup_plan_selections](../../../../../website/tables/aws/aws_backup_plan_selections.md)
 - [aws_backup_protected_resources](../../../../../website/tables/aws/aws_backup_protected_resources.md)
 - [aws_backup_region_settings](../../../../../website/tables/aws/aws_backup_region_settings.md)
+- [aws_backup_report_plans](../../../../../website/tables/aws/aws_backup_report_plans.md)
 - [aws_backup_vaults](../../../../../website/tables/aws/aws_backup_vaults.md)
   - [aws_backup_vault_recovery_points](../../../../../website/tables/aws/aws_backup_vault_recovery_points.md)
 - [aws_batch_job_definitions](../../../../../website/tables/aws/aws_batch_job_definitions.md)
