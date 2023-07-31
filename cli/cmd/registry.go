@@ -13,6 +13,8 @@ func SpecRegistryToPlugin(registry specs.Registry) managedplugin.Registry {
 		return managedplugin.RegistryLocal
 	case specs.RegistryGrpc:
 		return managedplugin.RegistryGrpc
+	case specs.RegistryDocker:
+		return managedplugin.RegistryDocker
 	default:
 		panic("unknown registry " + registry.String())
 	}
