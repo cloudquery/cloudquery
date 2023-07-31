@@ -27,6 +27,7 @@ The primary key for this table is **arn**.
 |outpost_arn|`utf8`|
 |size|`int64`|
 |snapshot_id|`utf8`|
+|sse_type|`utf8`|
 |state|`utf8`|
 |throughput|`int64`|
 |volume_id|`utf8`|
