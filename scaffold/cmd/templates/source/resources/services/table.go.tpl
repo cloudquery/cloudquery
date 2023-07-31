@@ -1,4 +1,4 @@
-package resources
+package services
 
 import (
 	"context"
@@ -6,6 +6,7 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/{{.Org}}/cq-source-{{.Name}}/client"
 )
 
 func SampleTable() *schema.Table {
@@ -22,5 +23,6 @@ func SampleTable() *schema.Table {
 }
 
 func fetchSampleTable(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan <- any) error {
-  return fmt.Errorf("not implemented")
+  cl := meta.(*client.Client)
+  return fmt.Errorf("not implemented. client id: " + cl.ID())
 }
