@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.3.2...plugins-destination-mssql-v4.3.3) (2023-07-31)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 3452eb0 ([#12595](https://github.com/cloudquery/cloudquery/issues/12595)) ([c1c0949](https://github.com/cloudquery/cloudquery/commit/c1c09490b17f2e64435e05d745890cdb8b22310d))
+* Don't use row index for accessing chunk data ([#12645](https://github.com/cloudquery/cloudquery/issues/12645)) ([741cb1c](https://github.com/cloudquery/cloudquery/commit/741cb1c17f79efc77dc2689437b6fdf06ce89a15))
+
 ## [4.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.3.1...plugins-destination-mssql-v4.3.2) (2023-07-25)
 
 
