@@ -4,7 +4,7 @@ This table shows data for Amazon EMR Notebook Executions.
 
 https://docs.aws.amazon.com/emr/latest/APIReference/API_NotebookExecution.html
 
-The composite primary key for this table is (**cluster_arn**, **arn**).
+The primary key for this table is **arn**.
 
 ## Relations
 
@@ -18,7 +18,7 @@ This table depends on [aws_emr_clusters](aws_emr_clusters).
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|cluster_arn (PK)|`utf8`|
+|cluster_arn|`utf8`|
 |arn (PK)|`utf8`|
 |editor_id|`utf8`|
 |end_time|`timestamp[us, tz=UTC]`|

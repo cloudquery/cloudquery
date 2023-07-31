@@ -26,7 +26,7 @@ func notebookExecutions() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) of the EMR Cluster.",
 				Type:        arrow.BinaryTypes.String,
 				Resolver:    schema.ParentColumnResolver("arn"),
-				PrimaryKey:  true,
+				PrimaryKey:  false,
 			},
 		},
 	}
