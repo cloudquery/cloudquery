@@ -14,14 +14,13 @@ func GetRows(table arrow.Table) ([][]any, error) {
 	for n := 0; n < int(table.NumCols()); n++ {
 		col := table.Column(n)
 		row := 0
-		for _, chunk := range col.Data().Chunks() {
-			for i := 0; i < chunk.Len(); i++ {
-				rows[row][n], err = getColValue(chunk, row)
-				if err != nil {
-					return nil, err
-				}
-				row++
+		for _, chunkArray := range col.Data().Chunks() {
+			// We only support records with arrays of length == 1
+			rows[row][n], err = getColValue(chunkArray, 0)
+			if err != nil {
+				return nil, err
 			}
+			row++
 		}
 	}
 	return rows, nil
