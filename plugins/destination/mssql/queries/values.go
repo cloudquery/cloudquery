@@ -15,7 +15,7 @@ func GetRows(table arrow.Table) ([][]any, error) {
 		col := table.Column(n)
 		row := 0
 		for _, chunkArray := range col.Data().Chunks() {
-			// We only support records with arrays of length == 1
+			// We only support records with arrays of length == 1, so we always extract the first value
 			rows[row][n], err = getColValue(chunkArray, 0)
 			if err != nil {
 				return nil, err
