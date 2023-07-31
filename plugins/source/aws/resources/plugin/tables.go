@@ -12,6 +12,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigateway"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigatewayv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appconfig"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appflow"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/applicationautoscaling"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apprunner"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appstream"
@@ -140,6 +141,7 @@ func getTables() schema.Tables {
 		apigatewayv2.DomainNames(),
 		apigatewayv2.VpcLinks(),
 		appconfig.Applications(),
+		appflow.Flows(),
 		appconfig.DeploymentStrategies(),
 		applicationautoscaling.Policies(),
 		applicationautoscaling.ScalableTargets(),

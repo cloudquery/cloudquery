@@ -19,6 +19,8 @@ type QuicksightClient interface {
 	DescribeDashboard(context.Context, *quicksight.DescribeDashboardInput, ...func(*quicksight.Options)) (*quicksight.DescribeDashboardOutput, error)
 	DescribeDashboardDefinition(context.Context, *quicksight.DescribeDashboardDefinitionInput, ...func(*quicksight.Options)) (*quicksight.DescribeDashboardDefinitionOutput, error)
 	DescribeDashboardPermissions(context.Context, *quicksight.DescribeDashboardPermissionsInput, ...func(*quicksight.Options)) (*quicksight.DescribeDashboardPermissionsOutput, error)
+	DescribeDashboardSnapshotJob(context.Context, *quicksight.DescribeDashboardSnapshotJobInput, ...func(*quicksight.Options)) (*quicksight.DescribeDashboardSnapshotJobOutput, error)
+	DescribeDashboardSnapshotJobResult(context.Context, *quicksight.DescribeDashboardSnapshotJobResultInput, ...func(*quicksight.Options)) (*quicksight.DescribeDashboardSnapshotJobResultOutput, error)
 	DescribeDataSet(context.Context, *quicksight.DescribeDataSetInput, ...func(*quicksight.Options)) (*quicksight.DescribeDataSetOutput, error)
 	DescribeDataSetPermissions(context.Context, *quicksight.DescribeDataSetPermissionsInput, ...func(*quicksight.Options)) (*quicksight.DescribeDataSetPermissionsOutput, error)
 	DescribeDataSetRefreshProperties(context.Context, *quicksight.DescribeDataSetRefreshPropertiesInput, ...func(*quicksight.Options)) (*quicksight.DescribeDataSetRefreshPropertiesOutput, error)

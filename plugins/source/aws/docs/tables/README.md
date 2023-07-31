@@ -51,6 +51,7 @@
     - [aws_appconfig_hosted_configuration_versions](../../../../../website/tables/aws/aws_appconfig_hosted_configuration_versions.md)
   - [aws_appconfig_environments](../../../../../website/tables/aws/aws_appconfig_environments.md)
 - [aws_appconfig_deployment_strategies](../../../../../website/tables/aws/aws_appconfig_deployment_strategies.md)
+- [aws_appflow_flows](../../../../../website/tables/aws/aws_appflow_flows.md)
 - [aws_applicationautoscaling_policies](../../../../../website/tables/aws/aws_applicationautoscaling_policies.md)
 - [aws_applicationautoscaling_scalable_targets](../../../../../website/tables/aws/aws_applicationautoscaling_scalable_targets.md)
 - [aws_applicationautoscaling_scaling_activities](../../../../../website/tables/aws/aws_applicationautoscaling_scaling_activities.md)
