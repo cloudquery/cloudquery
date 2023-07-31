@@ -2,6 +2,7 @@ package emr
 
 import (
 	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -49,12 +50,26 @@ func getReleaseLabel(ctx context.Context, meta schema.ClientMeta, resource *sche
 	cl := meta.(*client.Client)
 	svc := cl.Services().Emr
 	releaseLabel := resource.Item.(string)
-	response, err := svc.DescribeReleaseLabel(ctx, &emr.DescribeReleaseLabelInput{ReleaseLabel: &releaseLabel}, func(options *emr.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		return err
+
+	config := &emr.DescribeReleaseLabelInput{ReleaseLabel: &releaseLabel}
+	result := &emr.DescribeReleaseLabelOutput{ReleaseLabel: &releaseLabel}
+
+	// No paginator available
+	for {
+		response, err := svc.DescribeReleaseLabel(ctx, config, func(options *emr.Options) {
+			options.Region = cl.Region
+		})
+		if err != nil {
+			return err
+		}
+		result.Applications = append(result.Applications, response.Applications...)
+		result.AvailableOSReleases = append(result.AvailableOSReleases, response.AvailableOSReleases...)
+		if aws.ToString(response.NextToken) == "" {
+			break
+		}
+		config.NextToken = response.NextToken
 	}
-	resource.Item = response
+
+	resource.Item = result
 	return nil
 }
