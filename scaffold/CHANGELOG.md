@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.1.3](https://github.com/cloudquery/cloudquery/compare/scaffold-v2.1.2...scaffold-v2.1.3) (2023-07-31)
+
+
+### Bug Fixes
+
+* Create separate plugin client package ([#12649](https://github.com/cloudquery/cloudquery/issues/12649)) ([4eaadd3](https://github.com/cloudquery/cloudquery/commit/4eaadd364874180b792ecf2288bf76971c776dcc))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.9.0 ([#12579](https://github.com/cloudquery/cloudquery/issues/12579)) ([4f1f419](https://github.com/cloudquery/cloudquery/commit/4f1f41931cab91667ebfa76a835de3e83b7bd00f))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.9.1 ([#12593](https://github.com/cloudquery/cloudquery/issues/12593)) ([19e8ae3](https://github.com/cloudquery/cloudquery/commit/19e8ae3ecc12e41fa41b247ce139d3a062fef218))
+
 ## [2.1.2](https://github.com/cloudquery/cloudquery/compare/scaffold-v2.1.1...scaffold-v2.1.2) (2023-07-25)
 
 
