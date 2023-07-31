@@ -25,7 +25,7 @@ type Client struct {
 	plugin.UnimplementedDestination
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	if opts.NoConnection {
 		return &Client{
 			logger: logger,

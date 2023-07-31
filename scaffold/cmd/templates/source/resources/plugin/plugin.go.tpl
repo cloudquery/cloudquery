@@ -9,5 +9,5 @@ var (
 )
 
 func Plugin() *plugin.Plugin {
-	return plugin.NewPlugin("{{.Org}}-{{.Name}}", Version, New)
+	return plugin.NewPlugin("{{.Org}}-{{.Name}}", Version, Configure)
 }
