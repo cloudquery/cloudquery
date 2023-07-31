@@ -95,6 +95,36 @@ func (mr *MockKafkaClientMockRecorder) DescribeClusterOperation(arg0, arg1 inter
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeClusterOperation", reflect.TypeOf((*MockKafkaClient)(nil).DescribeClusterOperation), varargs...)
 }
 
+// DescribeClusterOperationV2 mocks base method.
+func (m *MockKafkaClient) DescribeClusterOperationV2(arg0 context.Context, arg1 *kafka.DescribeClusterOperationV2Input, arg2 ...func(*kafka.Options)) (*kafka.DescribeClusterOperationV2Output, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kafka.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClusterOperationV2")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeClusterOperationV2", varargs...)
+	ret0, _ := ret[0].(*kafka.DescribeClusterOperationV2Output)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeClusterOperationV2 indicates an expected call of DescribeClusterOperationV2.
+func (mr *MockKafkaClientMockRecorder) DescribeClusterOperationV2(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeClusterOperationV2", reflect.TypeOf((*MockKafkaClient)(nil).DescribeClusterOperationV2), varargs...)
+}
+
 // DescribeClusterV2 mocks base method.
 func (m *MockKafkaClient) DescribeClusterV2(arg0 context.Context, arg1 *kafka.DescribeClusterV2Input, arg2 ...func(*kafka.Options)) (*kafka.DescribeClusterV2Output, error) {
 
@@ -363,6 +393,36 @@ func (mr *MockKafkaClientMockRecorder) ListClusterOperations(arg0, arg1 interfac
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListClusterOperations", reflect.TypeOf((*MockKafkaClient)(nil).ListClusterOperations), varargs...)
+}
+
+// ListClusterOperationsV2 mocks base method.
+func (m *MockKafkaClient) ListClusterOperationsV2(arg0 context.Context, arg1 *kafka.ListClusterOperationsV2Input, arg2 ...func(*kafka.Options)) (*kafka.ListClusterOperationsV2Output, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kafka.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListClusterOperationsV2")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListClusterOperationsV2", varargs...)
+	ret0, _ := ret[0].(*kafka.ListClusterOperationsV2Output)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListClusterOperationsV2 indicates an expected call of ListClusterOperationsV2.
+func (mr *MockKafkaClientMockRecorder) ListClusterOperationsV2(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListClusterOperationsV2", reflect.TypeOf((*MockKafkaClient)(nil).ListClusterOperationsV2), varargs...)
 }
 
 // ListClusters mocks base method.
