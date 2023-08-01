@@ -258,6 +258,7 @@
 - [aws_ecr_repositories](tables/aws_ecr_repositories)
   - [aws_ecr_repository_images](tables/aws_ecr_repository_images)
     - [aws_ecr_repository_image_scan_findings](tables/aws_ecr_repository_image_scan_findings)
+  - [aws_ecr_repository_lifecycle_policies](tables/aws_ecr_repository_lifecycle_policies)
 - [aws_ecrpublic_repositories](tables/aws_ecrpublic_repositories)
   - [aws_ecrpublic_repository_images](tables/aws_ecrpublic_repository_images)
 - [aws_ecs_clusters](tables/aws_ecs_clusters)
