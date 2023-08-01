@@ -223,6 +223,8 @@
 - [aws_ec2_instance_types](../../../../../website/tables/aws/aws_ec2_instance_types.md)
 - [aws_ec2_instances](../../../../../website/tables/aws/aws_ec2_instances.md)
 - [aws_ec2_internet_gateways](../../../../../website/tables/aws/aws_ec2_internet_gateways.md)
+- [aws_ec2_ipam_pools](../../../../../website/tables/aws/aws_ec2_ipam_pools.md)
+- [aws_ec2_ipams](../../../../../website/tables/aws/aws_ec2_ipams.md)
 - [aws_ec2_key_pairs](../../../../../website/tables/aws/aws_ec2_key_pairs.md)
 - [aws_ec2_launch_templates](../../../../../website/tables/aws/aws_ec2_launch_templates.md)
   - [aws_ec2_launch_template_versions](../../../../../website/tables/aws/aws_ec2_launch_template_versions.md)

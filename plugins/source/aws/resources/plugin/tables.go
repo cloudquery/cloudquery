@@ -267,6 +267,8 @@ func getTables() schema.Tables {
 		ec2.InstanceStatuses(),
 		ec2.InstanceTypes(),
 		ec2.InternetGateways(),
+		ec2.IPAMPools(),
+		ec2.IPAMs(),
 		ec2.KeyPairs(),
 		ec2.LaunchTemplates(),
 		ec2.ManagedPrefixLists(),
