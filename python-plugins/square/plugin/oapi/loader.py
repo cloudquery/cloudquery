@@ -1,5 +1,6 @@
 import json
 
+
 class OAPILoader:
     DATA = None
 

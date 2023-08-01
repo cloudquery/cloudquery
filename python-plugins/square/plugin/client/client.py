@@ -1,10 +1,10 @@
-
 from dataclasses import dataclass, field
 import square
 import square.client
 
 DEFAULT_CONCURRENCY = 100
 DEFAULT_QUEUE_SIZE = 10000
+
 
 @dataclass
 class Spec:
@@ -23,9 +23,10 @@ class Spec:
 class Client:
     def __init__(self, spec: Spec) -> None:
         self._spec = spec
-        self._client = square.client.Client(access_token=self._spec.access_token, environment=self._spec.environment)
-    
+        self._client = square.client.Client(
+            access_token=self._spec.access_token, environment=self._spec.environment
+        )
+
     @property
     def client(self) -> square.client.Client:
         return self._client
-    

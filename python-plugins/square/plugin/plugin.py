@@ -11,10 +11,11 @@ from plugin import tables
 PLUGIN_NAME = "square"
 PLUGIN_VERSION = "0.0.1"
 
+
 class SquarePlugin(plugin.Plugin):
     def __init__(self) -> None:
         super().__init__(PLUGIN_NAME, PLUGIN_VERSION)
-    
+
     def init(self, spec_bytes):
         self._spec_json = json.loads(spec_bytes)
         self._spec = Spec(**self._spec_json)
@@ -27,6 +28,7 @@ class SquarePlugin(plugin.Plugin):
             tables.Payments(),
         ]
 
-    def sync(self, options: plugin.SyncOptions) -> Generator[message.SyncMessage, None, None]:
+    def sync(
+        self, options: plugin.SyncOptions
+    ) -> Generator[message.SyncMessage, None, None]:
         return self._scheduler.sync(self._spec, [tables.PaymentsResolver()])
-
