@@ -26,6 +26,9 @@ class Client:
         self._client = square.client.Client(
             access_token=self._spec.access_token, environment=self._spec.environment
         )
+    
+    def id(self):
+        return "square"
 
     @property
     def client(self) -> square.client.Client:
