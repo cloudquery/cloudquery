@@ -1,5 +1,9 @@
 package client
 
+import (
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
+)
+
 const defaultConcurrency = 1000
 
 type Spec struct {
@@ -9,7 +13,8 @@ type Spec struct {
 
 	MaxRequestsPerSecond *int `json:"max_requests_per_second"`
 
-	Concurrency int `json:"concurrency"`
+	Concurrency int                `json:"concurrency"`
+	Scheduler   scheduler.Strategy `json:"scheduler,omitempty"`
 }
 
 func (spec *Spec) SetDefaults() {

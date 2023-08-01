@@ -4,14 +4,17 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 )
 
 type Spec struct {
-	PropertyID  string     `json:"property_id,omitempty"`
-	StartDate   string     `json:"start_date,omitempty"`
-	OAuth       *oauthSpec `json:"oauth,omitempty"`
-	Reports     []*Report  `json:"reports,omitempty"`
-	Concurrency int        `json:"concurrency,omitempty"`
+	PropertyID  string             `json:"property_id,omitempty"`
+	StartDate   string             `json:"start_date,omitempty"`
+	OAuth       *oauthSpec         `json:"oauth,omitempty"`
+	Reports     []*Report          `json:"reports,omitempty"`
+	Concurrency int                `json:"concurrency,omitempty"`
+	Scheduler   scheduler.Strategy `json:"scheduler,omitempty"`
 }
 
 const layout = "2006-01-02"

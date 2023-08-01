@@ -3,6 +3,7 @@ package client
 import (
 	"os"
 
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/pkg/errors"
 )
 
@@ -18,7 +19,8 @@ type Spec struct {
 	// SpacesDebugLogging allows enabling AWS S3 request logging on spaces requests
 	SpacesDebugLogging bool `json:"spaces_debug_logging,omitempty"`
 
-	Concurrency int `json:"concurrency,omitempty"`
+	Concurrency int                `json:"concurrency,omitempty"`
+	Scheduler   scheduler.Strategy `json:"scheduler,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {

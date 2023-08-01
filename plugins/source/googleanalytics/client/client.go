@@ -147,6 +147,6 @@ func Configure(ctx context.Context, logger zerolog.Logger, specBytes []byte, opt
 			Str("property_id", spec.PropertyID).
 			Logger(),
 	}
-	c.scheduler = scheduler.NewScheduler(scheduler.WithConcurrency(spec.Concurrency))
+	c.scheduler = scheduler.NewScheduler(scheduler.WithLogger(logger), scheduler.WithConcurrency(spec.Concurrency), scheduler.WithStrategy(spec.Scheduler))
 	return c, nil
 }

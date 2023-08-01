@@ -1,6 +1,10 @@
 package client
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
+)
 
 type Spec struct {
 	AccessToken        string              `json:"access_token"`
@@ -9,7 +13,8 @@ type Spec struct {
 	AppAuth            []AppAuthSpec       `json:"app_auth"`
 	EnterpriseSettings *EnterpriseSettings `json:"enterprise"`
 
-	Concurrency int `json:"concurrency,omitempty"`
+	Concurrency int                `json:"concurrency,omitempty"`
+	Scheduler   scheduler.Strategy `json:"scheduler,omitempty"`
 }
 
 type EnterpriseSettings struct {

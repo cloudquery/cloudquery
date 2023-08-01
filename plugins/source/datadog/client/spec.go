@@ -1,8 +1,13 @@
 package client
 
+import (
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
+)
+
 type Spec struct {
-	Accounts    []Account `json:"accounts"`
-	Concurrency int       `json:"concurrency"`
+	Accounts    []Account          `json:"accounts"`
+	Concurrency int                `json:"concurrency"`
+	Scheduler   scheduler.Strategy `json:"scheduler,omitempty"`
 }
 
 type Account struct {

@@ -3,6 +3,8 @@ package client
 import (
 	"errors"
 	"strings"
+
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 )
 
 type Spec struct {
@@ -12,7 +14,8 @@ type Spec struct {
 	RateLimit   int64 `json:"rate_limit,omitempty"`
 	StripeDebug bool  `json:"stripe_debug,omitempty"`
 
-	Concurrency int `json:"concurrency,omitempty"`
+	Concurrency int                `json:"concurrency,omitempty"`
+	Scheduler   scheduler.Strategy `json:"scheduler,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {

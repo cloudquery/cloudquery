@@ -5,16 +5,18 @@ import (
 	"os"
 	"time"
 
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/rs/zerolog"
 )
 
 type (
 	Spec struct {
-		Token       string     `json:"token,omitempty"`
-		Domain      string     `json:"domain,omitempty"`
-		RateLimit   *RateLimit `json:"rate_limit,omitempty"`
-		Debug       bool       `json:"debug,omitempty"`
-		Concurrency int        `json:"concurrency,omitempty"`
+		Token       string             `json:"token,omitempty"`
+		Domain      string             `json:"domain,omitempty"`
+		RateLimit   *RateLimit         `json:"rate_limit,omitempty"`
+		Debug       bool               `json:"debug,omitempty"`
+		Concurrency int                `json:"concurrency,omitempty"`
+		Scheduler   scheduler.Strategy `json:"scheduler,omitempty"`
 	}
 	RateLimit struct {
 		MaxBackoff time.Duration `json:"max_backoff,omitempty"`

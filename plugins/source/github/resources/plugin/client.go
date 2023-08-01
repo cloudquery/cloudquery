@@ -80,6 +80,7 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 		scheduler: scheduler.NewScheduler(
 			scheduler.WithLogger(logger),
 			scheduler.WithConcurrency(config.Concurrency),
+			scheduler.WithStrategy(config.Scheduler),
 		),
 		tables: getTables(),
 	}, nil
