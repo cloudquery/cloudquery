@@ -21,7 +21,6 @@ class SquarePlugin(plugin.Plugin):
         self._spec.validate()
         self._scheduler = Scheduler(self._spec.concurrency, self._spec.queue_size)
         self._client = Client(self._spec)
-        # self._client.client.
 
     def get_tables(self, options: plugin.TableOptions) -> List[plugin.Table]:
         t: List[plugin.Table] = [
