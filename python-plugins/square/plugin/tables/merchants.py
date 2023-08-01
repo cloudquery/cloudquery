@@ -7,36 +7,41 @@ from cloudquery.sdk.schema import Column
 from cloudquery.sdk.schema import Table
 from cloudquery.sdk.scheduler import TableResolver
 from plugin.client import Client
-from square.api.payments_api import PaymentsApi
+from square.api.merchants_api import MerchantsApi
 
 
-class Payments(Table):
+class Merchants(Table):
     def __init__(self) -> None:
         super().__init__(
-            "payments",
+            "merchants",
             [
                 Column("id", pa.string(), primary_key=True),
+                Column("business_name", pa.string()),
+                Column("country", pa.string()),
+                Column("language_code", pa.string()),
+                Column("currency", pa.string()),
                 Column("status", pa.string()),
-                Column("order_id", pa.string()),
+                Column("main_location_id", pa.string()),
+                Column("created_at", pa.timestamp("ms")),
             ],
         )
 
     @property
     def resolverClass(self):
-        return PaymentsResolver(self)
+        return MerchantsResolver(self)
 
 
-class PaymentsResolver(TableResolver):
+class MerchantsResolver(TableResolver):
     def __init__(self, table) -> None:
         super().__init__(table=table)
 
     def resolve(self, client: Client, parent_resource) -> Generator[Any, None, None]:
-        payments: PaymentsApi = client.client.payments
+        merchants: MerchantsApi = client.client.merchants
         cursor = None
         while True:
-            response = payments.list_payments(cursor=cursor)
-            for payment in response.payments:
-                yield payment
+            response = merchants.list_merchants(cursor=cursor)
+            for merchant in response.merchants:
+                yield merchant
             if response.cursor is None:
                 break
         return
