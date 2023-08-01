@@ -10,7 +10,9 @@ from square.api.payments_api import PaymentsApi
 from square.http.api_response import ApiResponse
 
 
-payments_columns = oapi_definition_to_columns(OAPILoader.get_definition('Payment'))
+payments_columns = oapi_definition_to_columns(
+    OAPILoader.get_definition('Payment'),
+    override_columns=[Column(name='id', type=pa.string(), primary_key=True)])
 
 class Payments(Table):
     def __init__(self) -> None:
