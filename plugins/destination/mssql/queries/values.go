@@ -16,10 +16,10 @@ func GetRows(table arrow.Table) ([][]any, error) {
 		for _, chunk := range col.Data().Chunks() {
 			for i := 0; i < chunk.Len(); i++ {
 				rows[row][c], err = getColValue(chunk, i)
+				row++
 				if err != nil {
 					return nil, err
 				}
-				row++
 			}
 		}
 	}
