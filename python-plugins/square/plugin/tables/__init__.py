@@ -1,2 +1,3 @@
-from .payments import Payments, PaymentsResolver
-from .merchants import Merchants, MerchantsResolver
+from .locations import Locations
+from .merchants import Merchants
+from .payments import Payments

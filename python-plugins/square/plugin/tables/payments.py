@@ -1,10 +1,7 @@
-from cloudquery.sdk.schema.table import Table
 import pyarrow as pa
-from typing import Any, Generator, List
+from typing import Any, Generator
 
-from cloudquery.sdk.schema import Table
-from cloudquery.sdk.schema import Column
-from cloudquery.sdk.schema import Table
+from cloudquery.sdk.schema import Column, Table
 from cloudquery.sdk.scheduler import TableResolver
 from plugin.client import Client
 from square.api.payments_api import PaymentsApi
