@@ -1,7 +1,7 @@
 import json
 from cloudquery.sdk import plugin
 from cloudquery.sdk.scheduler import Scheduler, TableResolver
-from cloudquery.sdk import message
+from cloudquery.sdk import message, schema
 from typing import List, Generator
 from plugin.client import Spec
 from plugin.client import Client
@@ -24,10 +24,11 @@ class SquarePlugin(plugin.Plugin):
         self._client = Client(self._spec)
 
     def get_tables(self, options: plugin.TableOptions) -> List[plugin.Table]:
-        return [
+        t: List[plugin.Table] = [
             tables.Payments(),
             tables.Merchants(),
         ]
+        return schema.filter_dfs(t, options.tables, options.skip_tables)
 
     def sync(
         self, options: plugin.SyncOptions
