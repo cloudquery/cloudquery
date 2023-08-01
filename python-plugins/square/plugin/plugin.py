@@ -3,6 +3,7 @@ from cloudquery.sdk import plugin
 from cloudquery.sdk.scheduler import Scheduler, TableResolver
 from cloudquery.sdk import message, schema
 from typing import List, Generator
+import structlog
 from plugin.client import Client, Spec
 from plugin import tables
 
@@ -14,12 +15,16 @@ PLUGIN_VERSION = "0.0.1"
 class SquarePlugin(plugin.Plugin):
     def __init__(self) -> None:
         super().__init__(PLUGIN_NAME, PLUGIN_VERSION)
+        self._logger = structlog.get_logger()
+
+    def set_logger(self, logger) -> None:
+        self._logger = logger
 
     def init(self, spec_bytes):
         self._spec_json = json.loads(spec_bytes)
         self._spec = Spec(**self._spec_json)
         self._spec.validate()
-        self._scheduler = Scheduler(self._spec.concurrency, self._spec.queue_size)
+        self._scheduler = Scheduler(self._spec.concurrency, self._spec.queue_size, logger=self._logger)
         self._client = Client(self._spec)
 
     def get_tables(self, options: plugin.TableOptions) -> List[plugin.Table]:
