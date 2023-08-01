@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [22.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.3.0...plugins-source-aws-v22.4.0) (2023-08-01)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_appmesh_meshes` was added
+- Table `aws_appmesh_virtual_gateways` was added
+- Table `aws_appmesh_virtual_nodes` was added
+- Table `aws_appmesh_virtual_routers` was added
+- Table `aws_appmesh_virtual_services` was added
+- Table `aws_ecr_repository_lifecycle_policies` was added
+
 ### Features
 
 * **resources:** Add Support for AWS App Mesh resources ([#12582](https://github.com/cloudquery/cloudquery/issues/12582)) ([e0ca2be](https://github.com/cloudquery/cloudquery/commit/e0ca2be01f613fc40660c9cf438a65af17028f24))
