@@ -39,7 +39,11 @@ class BookingsResolver(TableResolver):
             response: ApiResponse = bookings.list_bookings(cursor=cursor)
             if response.is_error():
                 for error in response.errors:
-                    if error['category'] == 'AUTHENTICATION_ERROR' and error['code'] == 'UNAUTHORIZED' and error['detail'] == 'Merchant not onboarded to Appointments':
+                    if (
+                        error["category"] == "AUTHENTICATION_ERROR"
+                        and error["code"] == "UNAUTHORIZED"
+                        and error["detail"] == "Merchant not onboarded to Appointments"
+                    ):
                         # TODO log
                         return
                 raise Exception(response)

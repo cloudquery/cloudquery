@@ -29,12 +29,16 @@ class Locations(Table):
 
     @property
     def resolver(self):
-        return LocationsResolver(self)
+        child_resolvers: list[TableResolver] = []
+        for rel in self.relations:
+            child_resolvers.append(rel.resolver)
+
+        return LocationsResolver(self, child_resolvers)
 
 
 class LocationsResolver(TableResolver):
-    def __init__(self, table: Table) -> None:
-        super().__init__(table=table)
+    def __init__(self, table: Table, child_resolvers: list[TableResolver]) -> None:
+        super().__init__(table=table, child_resolvers=child_resolvers)
 
     def resolve(self, client: Client, parent_resource) -> Generator[Any, None, None]:
         locations: LocationsApi = client.client.locations

@@ -1,7 +1,7 @@
 import pyarrow as pa
 from typing import Any, Generator
 
-from cloudquery.sdk.schema import Column, Table
+from cloudquery.sdk.schema import Column, Table, Resource
 from cloudquery.sdk.scheduler import TableResolver
 from plugin.client import Client
 from plugin.oapi import OAPILoader
@@ -32,12 +32,15 @@ class InvoicesResolver(TableResolver):
     def __init__(self, table: Table) -> None:
         super().__init__(table=table)
 
-    def resolve(self, client: Client, parent_resource) -> Generator[Any, None, None]:
+    def resolve(
+        self, client: Client, parent_resource: Resource
+    ) -> Generator[Any, None, None]:
+        loc_id = parent_resource.item["id"]
         invoices: InvoicesApi = client.client.invoices
         cursor = None
         while True:
             response: ApiResponse = invoices.list_invoices(
-                location_id=parent_resource.id, cursor=cursor
+                location_id=loc_id, cursor=cursor
             )
             if response.is_error():
                 raise Exception(response)
