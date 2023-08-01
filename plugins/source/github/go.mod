@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/github
 go 1.20
 
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
+	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882
 	github.com/beatlabs/github-auth v0.0.0-20230511110449-0a8b9e608b75
 	github.com/cloudquery/plugin-sdk/v4 v4.2.3
 	github.com/gofri/go-github-ratelimit v1.0.3

@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/fastly
 go 1.20
 
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
+	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882
 	github.com/cloudquery/codegen v0.2.1
 	github.com/cloudquery/plugin-sdk/v4 v4.2.3
 	github.com/fastly/go-fastly/v7 v7.0.0
