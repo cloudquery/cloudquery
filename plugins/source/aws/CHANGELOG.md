@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [22.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.2.0...plugins-source-aws-v22.3.0) (2023-08-01)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_appflow_flows` was added
+- Table `aws_auditmanager_assessments` was added
+- Table `aws_backup_report_plans` was added
+- Table `aws_cloudformation_stacks`: column added with name `retain_except_on_create` and type `bool`
+- Table `aws_ec2_ebs_snapshots`: column added with name `sse_type` and type `utf8`
+- Table `aws_ec2_ebs_volumes`: column added with name `sse_type` and type `utf8`
+- Table `aws_emr_notebook_executions` was added
+- Table `aws_emr_release_labels` was added
+- Table `aws_emr_steps` was added
+- Table `aws_emr_supported_instance_types` was added
+- Table `aws_rds_instances`: column added with name `percent_progress` and type `utf8`
+
 ### Features
 
 * **resources:** Add support for Amazon Appflow Flows ([#12575](https://github.com/cloudquery/cloudquery/issues/12575)) ([43ed08e](https://github.com/cloudquery/cloudquery/commit/43ed08ee453b0043d43a3ff295b37055606fe6a5))
