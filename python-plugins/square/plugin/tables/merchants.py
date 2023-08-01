@@ -27,12 +27,12 @@ class Merchants(Table):
         )
 
     @property
-    def resolverClass(self):
+    def resolver(self):
         return MerchantsResolver(self)
 
 
 class MerchantsResolver(TableResolver):
-    def __init__(self, table) -> None:
+    def __init__(self, table: Table) -> None:
         super().__init__(table=table)
 
     def resolve(self, client: Client, parent_resource) -> Generator[Any, None, None]:

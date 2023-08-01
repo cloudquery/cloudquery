@@ -40,6 +40,6 @@ class SquarePlugin(plugin.Plugin):
                 skip_dependent_tables=options.skip_dependent_tables,
             )
         ):
-            resolvers.append(table.resolverClass)
+            resolvers.append(table.resolver)
 
-        return self._scheduler.sync(self._client, resolvers)
+        return self._scheduler.sync(self._client, resolvers, options.deterministic_cq_id)

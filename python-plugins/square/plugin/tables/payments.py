@@ -22,12 +22,12 @@ class Payments(Table):
         )
 
     @property
-    def resolverClass(self):
+    def resolver(self):
         return PaymentsResolver(self)
 
 
 class PaymentsResolver(TableResolver):
-    def __init__(self, table) -> None:
+    def __init__(self, table: Table) -> None:
         super().__init__(table=table)
 
     def resolve(self, client: Client, parent_resource) -> Generator[Any, None, None]:
