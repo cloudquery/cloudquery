@@ -7,7 +7,7 @@ select
   account_id,
   account_id,
   case when
-    password_reuse_prevention != 1
+    password_reuse_prevention != 24
     then 'fail'
     else 'pass'
   end
