@@ -37,8 +37,10 @@ class MerchantsResolver(TableResolver):
         cursor = None
         while True:
             response = merchants.list_merchants(cursor=cursor)
+            if response.is_error():
+                raise Exception(response.errors)
+
             for merchant in response.merchants:
                 yield merchant
             if response.cursor is None:
                 break
-        return

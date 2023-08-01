@@ -32,8 +32,10 @@ class PaymentsResolver(TableResolver):
         cursor = None
         while True:
             response = payments.list_payments(cursor=cursor)
+            if response.is_error():
+                raise Exception(response.errors)
+
             for payment in response.payments:
                 yield payment
             if response.cursor is None:
                 break
-        return

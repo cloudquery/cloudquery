@@ -39,5 +39,8 @@ class LocationsResolver(TableResolver):
     def resolve(self, client: Client, parent_resource) -> Generator[Any, None, None]:
         locations: LocationsApi = client.client.locations
         response = locations.list_locations()
+        if response.is_error():
+            raise Exception(response.errors)
+
         for location in response.locations:
             yield location
