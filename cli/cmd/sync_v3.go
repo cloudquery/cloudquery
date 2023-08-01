@@ -77,7 +77,7 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		if _, err := destinationsPbClients[i].Init(ctx, &plugin.Init_Request{
 			Spec: destSpecBytes,
 		}); err != nil {
-			return err
+			return fmt.Errorf("failed to init destination %v: %w", destSpec.Name, err)
 		}
 	}
 
