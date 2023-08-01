@@ -92,5 +92,6 @@ jobs:
             --exclude twitter.com \
             --exclude mongodb.com \
             --exclude regex101.com \
+            --exclude help.shopify.com/en/manual/apps/app-types/custom-apps \
             ${{ steps.vercel.outputs.url }} \
             | grep -v '───OK───' | grep -v '──SKIP──' | grep -v '0 broken'
