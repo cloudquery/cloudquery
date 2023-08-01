@@ -25,6 +25,7 @@ class SquarePlugin(plugin.Plugin):
 
     def get_tables(self, options: plugin.TableOptions) -> List[plugin.Table]:
         t: List[plugin.Table] = [
+            tables.Bookings(),
             tables.Disputes(),
             tables.Locations(),
             tables.Merchants(),

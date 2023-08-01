@@ -1,3 +1,4 @@
+from .bookings import Bookings
 from .disputes import Disputes
 from .locations import Locations
 from .merchants import Merchants
