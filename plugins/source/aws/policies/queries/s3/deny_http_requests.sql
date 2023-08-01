@@ -1,4 +1,4 @@
-insert into aws_policy_results
+INSERT INTO aws_policy_results
 WITH pass_buckets AS (
     SELECT
         arn
