@@ -3,16 +3,18 @@ from typing import Any, Generator
 
 from cloudquery.sdk.schema import Column, Table
 from cloudquery.sdk.scheduler import TableResolver
-from cloudquery.sdk.types import JSONType
 from plugin.client import Client
 from square.api.locations_api import LocationsApi
 from square.http.api_response import ApiResponse
 from plugin.oapi import OAPILoader
 from cloudquery.sdk.transformers.openapi import oapi_definition_to_columns
 
+from .invoices import Invoices
+
 columns = oapi_definition_to_columns(
-    OAPILoader.get_definition('Location'),
-    override_columns=[Column(name='id', type=pa.string(), primary_key=True)])
+    OAPILoader.get_definition("Location"),
+    override_columns=[Column(name="id", type=pa.string(), primary_key=True)],
+)
 
 
 class Locations(Table):
@@ -20,6 +22,9 @@ class Locations(Table):
         super().__init__(
             "square_locations",
             columns=columns,
+            relations=[
+                Invoices(),
+            ],
         )
 
     @property
@@ -36,5 +41,5 @@ class LocationsResolver(TableResolver):
         response: ApiResponse = locations.list_locations()
         if response.is_error():
             raise Exception(response)
-        for location in response.body.get('locations', []):
+        for location in response.body.get("locations", []):
             yield location

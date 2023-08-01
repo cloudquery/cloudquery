@@ -25,9 +25,12 @@ class SquarePlugin(plugin.Plugin):
 
     def get_tables(self, options: plugin.TableOptions) -> List[plugin.Table]:
         t: List[plugin.Table] = [
+            tables.Disputes(),
             tables.Locations(),
             tables.Merchants(),
             tables.Payments(),
+            tables.Payouts(),
+            tables.Refunds(),
         ]
         return schema.filter_dfs(t, options.tables, options.skip_tables)
 

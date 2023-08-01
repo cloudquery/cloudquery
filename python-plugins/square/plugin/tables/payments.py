@@ -11,8 +11,10 @@ from square.http.api_response import ApiResponse
 
 
 payments_columns = oapi_definition_to_columns(
-    OAPILoader.get_definition('Payment'),
-    override_columns=[Column(name='id', type=pa.string(), primary_key=True)])
+    OAPILoader.get_definition("Payment"),
+    override_columns=[Column(name="id", type=pa.string(), primary_key=True)],
+)
+
 
 class Payments(Table):
     def __init__(self) -> None:
@@ -34,10 +36,10 @@ class PaymentsResolver(TableResolver):
         payments: PaymentsApi = client.client.payments
         cursor = None
         while True:
-            response = payments.list_payments(cursor=cursor)
+            response: ApiResponse = payments.list_payments(cursor=cursor)
             if response.is_error():
-              raise Exception(response)
-            for payment in response.body.get('payments', []):
+                raise Exception(response)
+            for payment in response.body.get("payments", []):
                 yield payment
             if response.cursor is None:
                 break

@@ -4,41 +4,42 @@ from typing import Any, Generator
 from cloudquery.sdk.schema import Column, Table
 from cloudquery.sdk.scheduler import TableResolver
 from plugin.client import Client
-from square.api.merchants_api import MerchantsApi
-from square.http.api_response import ApiResponse
 from plugin.oapi import OAPILoader
 from cloudquery.sdk.transformers.openapi import oapi_definition_to_columns
+from square.api.disputes_api import DisputesApi
+from square.http.api_response import ApiResponse
 
-columns = oapi_definition_to_columns(
-    OAPILoader.get_definition("Merchant"),
+
+disputes_columns = oapi_definition_to_columns(
+    OAPILoader.get_definition("Dispute"),
     override_columns=[Column(name="id", type=pa.string(), primary_key=True)],
 )
 
 
-class Merchants(Table):
+class Disputes(Table):
     def __init__(self) -> None:
         super().__init__(
-            "square_merchants",
-            columns,
+            "square_disputes",
+            disputes_columns,
         )
 
     @property
     def resolver(self):
-        return MerchantsResolver(self)
+        return DisputesResolver(self)
 
 
-class MerchantsResolver(TableResolver):
+class DisputesResolver(TableResolver):
     def __init__(self, table: Table) -> None:
         super().__init__(table=table)
 
     def resolve(self, client: Client, parent_resource) -> Generator[Any, None, None]:
-        merchants: MerchantsApi = client.client.merchants
+        disputes: DisputesApi = client.client.disputes
         cursor = None
         while True:
-            response: ApiResponse = merchants.list_merchants(cursor=cursor)
+            response: ApiResponse = disputes.list_disputes(cursor=cursor)
             if response.is_error():
                 raise Exception(response)
-            for merchant in response.body.get("merchant", []):
-                yield merchant
+            for dispute in response.body.get("disputes", []):
+                yield dispute
             if response.cursor is None:
                 break

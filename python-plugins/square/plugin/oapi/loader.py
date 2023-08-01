@@ -1,13 +1,14 @@
 import json
 import os
 
+
 class OAPILoader:
     DATA = None
 
     @classmethod
     def load_spec(cls):
         if cls.DATA is None:
-            with open(os.path.join(os.path.dirname(__file__), 'api.json'), "r") as f:
+            with open(os.path.join(os.path.dirname(__file__), "api.json"), "r") as f:
                 cls.DATA = json.load(f)
         return cls.DATA
 
