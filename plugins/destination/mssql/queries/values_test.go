@@ -5,6 +5,7 @@ import (
 	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/apache/arrow/go/v13/arrow/memory"
 	"github.com/stretchr/testify/require"
+	"math/rand"
 	"testing"
 )
 
@@ -23,23 +24,41 @@ func TestGetRows(t *testing.T) {
 	builder := array.NewRecordBuilder(mem, schema)
 	defer builder.Release()
 
-	const rowsPerRecord = 100
-	for _, fBuilder := range builder.Fields() {
-		fBuilder.AppendEmptyValues(rowsPerRecord)
-	}
-	record := builder.NewRecord()
-	defer record.Release()
+	records := make([]arrow.Record, 7)
+	defer func() {
+		for _, rec := range records {
+			rec.Release()
+		}
+	}()
 
-	table := array.NewTableFromRecords(schema, []arrow.Record{record, record, record})
+	var total int64
+	for i := range records {
+		rec := genRecord(mem, schema, rand.Intn(500))
+		records[i] = rec
+		t.Logf("generated record with %d rows\n", rec.NumRows())
+		total += rec.NumRows()
+	}
+	t.Logf("generated %d rows in total\n", total)
+
+	table := array.NewTableFromRecords(schema, records)
 	defer table.Release()
 
 	require.Equal(t, int64(schema.NumFields()), table.NumCols())
-	require.Equal(t, int64(3*rowsPerRecord), table.NumRows())
+	require.Equal(t, total, table.NumRows())
 
 	rows, err := GetRows(table)
 	require.NoError(t, err)
-	require.Equal(t, 3*rowsPerRecord, len(rows))
+	require.Equal(t, int(total), len(rows))
 	for _, row := range rows {
 		require.Equal(t, schema.NumFields(), len(row))
 	}
+}
+
+func genRecord(mem memory.Allocator, schema *arrow.Schema, rows int) arrow.Record {
+	builder := array.NewRecordBuilder(mem, schema)
+	defer builder.Release()
+	for _, fBuilder := range builder.Fields() {
+		fBuilder.AppendEmptyValues(rows)
+	}
+	return builder.NewRecord()
 }
