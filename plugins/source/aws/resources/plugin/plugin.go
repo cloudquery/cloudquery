@@ -23,6 +23,7 @@ var awsExceptions = map[string]string{
 	"appconfig":                    "AWS AppConfig",
 	"appflow":                      "Amazon AppFlow",
 	"applicationautoscaling":       "Application Auto Scaling",
+	"appmesh":                      "AWS App Mesh",
 	"apprunner":                    "AWS App Runner",
 	"appstream":                    "Amazon AppStream",
 	"arn":                          "Amazon Resource Name (ARN)",

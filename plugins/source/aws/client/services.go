@@ -13,6 +13,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/appconfig"
 	"github.com/aws/aws-sdk-go-v2/service/appflow"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
+	"github.com/aws/aws-sdk-go-v2/service/appmesh"
 	"github.com/aws/aws-sdk-go-v2/service/apprunner"
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appsync"
@@ -139,6 +140,7 @@ func initServices(c aws.Config, regions []string) Services {
 		Appconfig:                    appconfig.NewFromConfig(awsCfg),
 		Appflow:                      appflow.NewFromConfig(awsCfg),
 		Applicationautoscaling:       applicationautoscaling.NewFromConfig(awsCfg),
+		Appmesh:                      appmesh.NewFromConfig(awsCfg),
 		Apprunner:                    apprunner.NewFromConfig(awsCfg),
 		Appstream:                    appstream.NewFromConfig(awsCfg),
 		Appsync:                      appsync.NewFromConfig(awsCfg),
@@ -263,6 +265,7 @@ type Services struct {
 	Appconfig                    services.AppconfigClient
 	Appflow                      services.AppflowClient
 	Applicationautoscaling       services.ApplicationautoscalingClient
+	Appmesh                      services.AppmeshClient
 	Apprunner                    services.ApprunnerClient
 	Appstream                    services.AppstreamClient
 	Appsync                      services.AppsyncClient
