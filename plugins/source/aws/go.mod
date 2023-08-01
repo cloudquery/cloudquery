@@ -18,6 +18,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/appconfig v1.17.13
 	github.com/aws/aws-sdk-go-v2/service/appflow v1.32.2
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.21.4
+	github.com/aws/aws-sdk-go-v2/service/appmesh v1.17.14
 	github.com/aws/aws-sdk-go-v2/service/apprunner v1.17.13
 	github.com/aws/aws-sdk-go-v2/service/appstream v1.21.2
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.21.4
