@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [9.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.3.4...plugins-source-gcp-v9.4.0) (2023-08-01)
 
 
+### This Release has the Following Changes to Tables
+- Table `gcp_resourcemanager_subfolders` was added
+
 ### Features
 
 * **resources:** Fetch lower level folders ([#12539](https://github.com/cloudquery/cloudquery/issues/12539)) ([431e95f](https://github.com/cloudquery/cloudquery/commit/431e95fff273c35ba6021fce9b8fcdc0e60fc64b))
