@@ -1,12 +1,7 @@
 package client
 
-import (
-	"github.com/cloudquery/plugin-sdk/v4/scheduler"
-)
-
 type Spec struct {
-	Concurrency int                `json:"concurrency,omitempty"`
-	Scheduler   scheduler.Strategy `json:"scheduler,omitempty"`
+	Concurrency int `json:"concurrency,omitempty"`
 }
 
 func (*Spec) Validate() error {

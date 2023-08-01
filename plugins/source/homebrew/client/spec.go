@@ -5,8 +5,7 @@ import (
 )
 
 type Spec struct {
-	Concurrency int                `json:"concurrency"`
-	Scheduler   scheduler.Strategy `json:"scheduler,omitempty"`
+	Concurrency int `json:"concurrency"`
 }
 
 func (s *Spec) SetDefaults() {

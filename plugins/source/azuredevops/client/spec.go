@@ -1,17 +1,12 @@
 package client
 
-import (
-	"fmt"
-
-	"github.com/cloudquery/plugin-sdk/v4/scheduler"
-)
+import "fmt"
 
 type Spec struct {
 	PersonalAccessToken string `json:"personal_access_token"`
 	OrganizationURL     string `json:"organization_url"`
 
-	Concurrency int                `json:"concurrency,omitempty"`
-	Scheduler   scheduler.Strategy `json:"scheduler,omitempty"`
+	Concurrency int `json:"concurrency,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {

@@ -84,7 +84,6 @@ func configure(ctx context.Context, logger zerolog.Logger, specBytes []byte, opt
 		scheduler: scheduler.NewScheduler(
 			scheduler.WithLogger(logger),
 			scheduler.WithConcurrency(spec.Concurrency),
-			scheduler.WithStrategy(spec.Scheduler),
 		),
 		tables: getTables(),
 	}, nil

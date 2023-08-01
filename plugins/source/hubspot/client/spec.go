@@ -1,18 +1,13 @@
 package client
 
-import (
-	"github.com/cloudquery/plugin-sdk/v4/scheduler"
-)
-
 const (
 	defaultConcurrency = 1000
 )
 
 type Spec struct {
-	MaxRequestsPerSecond *int               `yaml:"max_requests_per_second,omitempty" json:"max_requests_per_second,omitempty"`
-	TableOptions         TableOptions       `yaml:"table_options,omitempty" json:"table_options,omitempty"`
-	Concurrency          int                `yaml:"concurrency,omitempty" json:"concurrency,omitempty"`
-	Scheduler            scheduler.Strategy `json:"scheduler,omitempty"`
+	MaxRequestsPerSecond *int         `yaml:"max_requests_per_second,omitempty" json:"max_requests_per_second,omitempty"`
+	TableOptions         TableOptions `yaml:"table_options,omitempty" json:"table_options,omitempty"`
+	Concurrency          int          `yaml:"concurrency,omitempty" json:"concurrency,omitempty"`
 }
 
 type TableOptions map[string]*TableOptionsSpec

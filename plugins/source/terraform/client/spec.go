@@ -2,14 +2,11 @@ package client
 
 import (
 	"errors"
-
-	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 )
 
 type Spec struct {
 	Backends    []BackendConfigBlock `json:"backends,omitempty"`
 	Concurrency int                  `json:"concurrency,omitempty"`
-	Scheduler   scheduler.Strategy   `json:"scheduler,omitempty"`
 }
 
 func (s *Spec) Validate() error {

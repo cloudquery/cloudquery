@@ -6,8 +6,6 @@ import (
 	"regexp"
 	"strconv"
 	"time"
-
-	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 )
 
 const defaultPeriod = "30d"
@@ -34,8 +32,7 @@ type Spec struct {
 
 	TableOptions TableOptions `json:"table_options,omitempty"`
 
-	Concurrency int                `json:"concurrency,omitempty"`
-	Scheduler   scheduler.Strategy `json:"scheduler,omitempty"`
+	Concurrency int `json:"concurrency,omitempty"`
 }
 
 type TableOptions struct {

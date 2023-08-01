@@ -1,10 +1,6 @@
 package client
 
-import (
-	"fmt"
-
-	"github.com/cloudquery/plugin-sdk/v4/scheduler"
-)
+import "fmt"
 
 type Spec struct {
 	ClientId       string   `json:"client_id"`
@@ -14,8 +10,7 @@ type Spec struct {
 	IncludeObjects []string `json:"include_objects"`
 	ExcludeObjects []string `json:"exclude_objects"`
 
-	Concurrency int                `json:"concurrency,omitempty"`
-	Scheduler   scheduler.Strategy `json:"scheduler,omitempty"`
+	Concurrency int `json:"concurrency,omitempty"`
 }
 
 func (s *Spec) Validate() error {

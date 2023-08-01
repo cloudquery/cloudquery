@@ -1,21 +1,16 @@
 package client
 
-import (
-	"github.com/cloudquery/plugin-sdk/v4/scheduler"
-)
-
 const (
 	defaultConcurrency = 50000
 )
 
 type Spec struct {
-	Subscriptions        []string           `json:"subscriptions"`
-	CloudName            string             `json:"cloud_name"`
-	DiscoveryConcurrency int                `json:"discovery_concurrency"`
-	SkipSubscriptions    []string           `json:"skip_subscriptions"`
-	NormalizeIDs         bool               `json:"normalize_ids"`
-	Concurrency          int                `json:"concurrency"`
-	Scheduler            scheduler.Strategy `json:"scheduler,omitempty"`
+	Subscriptions        []string `json:"subscriptions"`
+	CloudName            string   `json:"cloud_name"`
+	DiscoveryConcurrency int      `json:"discovery_concurrency"`
+	SkipSubscriptions    []string `json:"skip_subscriptions"`
+	NormalizeIDs         bool     `json:"normalize_ids"`
+	Concurrency          int      `json:"concurrency"`
 }
 
 func (s *Spec) SetDefaults() {

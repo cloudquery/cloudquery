@@ -3,8 +3,6 @@ package client
 import (
 	"errors"
 	"strings"
-
-	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 )
 
 type Spec struct {
@@ -18,11 +16,10 @@ type Spec struct {
 	ShopURL string `json:"shop_url"`
 
 	// Optional
-	Timeout     int64              `json:"timeout_secs,omitempty"`
-	MaxRetries  int64              `json:"max_retries,omitempty"`
-	PageSize    int64              `json:"page_size,omitempty"`
-	Concurrency int                `json:"concurrency,omitempty"`
-	Scheduler   scheduler.Strategy `json:"scheduler,omitempty"`
+	Timeout     int64 `json:"timeout_secs,omitempty"`
+	MaxRetries  int64 `json:"max_retries,omitempty"`
+	PageSize    int64 `json:"page_size,omitempty"`
+	Concurrency int   `json:"concurrency,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {

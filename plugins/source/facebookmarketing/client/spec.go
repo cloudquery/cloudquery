@@ -1,20 +1,15 @@
 package client
 
-import (
-	"fmt"
-
-	"github.com/cloudquery/plugin-sdk/v4/scheduler"
-)
+import "fmt"
 
 const (
 	defaultConcurrency = 1000
 )
 
 type Spec struct {
-	AdAccountId string             `json:"ad_account_id"`
-	AccessToken string             `json:"access_token"`
-	Concurrency int                `json:"concurrency"`
-	Scheduler   scheduler.Strategy `json:"scheduler,omitempty"`
+	AdAccountId string `json:"ad_account_id"`
+	AccessToken string `json:"access_token"`
+	Concurrency int    `json:"concurrency"`
 }
 
 func (s *Spec) Validate() error {
