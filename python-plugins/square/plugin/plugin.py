@@ -42,4 +42,6 @@ class SquarePlugin(plugin.Plugin):
         ):
             resolvers.append(table.resolver)
 
-        return self._scheduler.sync(self._client, resolvers, options.deterministic_cq_id)
+        return self._scheduler.sync(
+            self._client, resolvers, options.deterministic_cq_id
+        )
