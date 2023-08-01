@@ -5,9 +5,9 @@ spec:
   path: cloudquery/hubspot
   version: "VERSION_SOURCE_HUBSPOT"
   destinations: ["DESTINATION_NAME"]
-  concurrency: 10000
   tables: ["*"]
   spec:
+    concurrency: 10000
     # optional, default is 5.
     # See https://developers.hubspot.com/docs/api/usage-details#rate-limits
     max_requests_per_second: 5

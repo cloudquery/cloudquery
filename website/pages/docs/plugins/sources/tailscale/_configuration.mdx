@@ -6,12 +6,12 @@ spec:
   path: /path/to/downloaded/plugin # Buy from here: https://cloudquery.io/integrations/tailscale
   registry: local
   version: "PREMIUM"
-  concurrency: 10000
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
 
   # plugin specific configuration
   spec:
+    concurrency: 10000
     client_id: "<YOUR_CLIENT_ID_HERE>"
     client_secret: ${CLIENT_SECRET_ENV_VARIABLE}
     tailnet: "<YOUR_TAILNET>"

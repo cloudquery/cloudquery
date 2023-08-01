@@ -4,9 +4,10 @@ spec:
   name: "homebrew"
   path: "cloudquery/homebrew"
   version: "VERSION_SOURCE_HOMEBREW"
-  concurrency: 10000
   tables: ["*"]
-  backend: local
   destinations:
     - "DESTINATION_NAME"
+  spec:
+    backend: local
+    concurrency: 10000
 ```

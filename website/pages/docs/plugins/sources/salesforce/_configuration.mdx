@@ -4,11 +4,11 @@ spec:
   name: slack
   path: cloudquery/salesforce
   version: "VERSION_SOURCE_SALESFORCE"
-  concurrency: 10000
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
   # Salesforce specific configuration
   spec:
+    concurrency: 10000
     client_id: "${SF_CLIENT_ID}"
     client_secret: "${SF_CLIENT_SECRET}"
     username: "${SF_USERNAME}"

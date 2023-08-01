@@ -5,12 +5,12 @@ spec:
   name: gitlab
   path: cloudquery/gitlab
   version: "VERSION_SOURCE_GITLAB"
-  concurrency: 10000
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
 
   # Gitlab specific configuration
   spec:
+    concurrency: 10000
     access_token: "<YOUR_ACCESS_TOKEN_HERE>"
     base_url: "<INSTANCE_URL>" # optional, leave empty for GitLab SaaS
 ```

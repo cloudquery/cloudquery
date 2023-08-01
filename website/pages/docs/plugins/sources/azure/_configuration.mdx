@@ -6,9 +6,9 @@ spec:
   path: "cloudquery/azure"
   version: "VERSION_SOURCE_AZURE"
   destinations: ["DESTINATION_NAME"]
-  concurrency: 10000
   tables: ["azure_compute_virtual_machines"]
   spec:
+    concurrency: 10000
     # Azure Spec section
     subscriptions: ["00000000-0000-0000-0000-000000000000"]
 ```

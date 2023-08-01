@@ -6,9 +6,9 @@ spec:
   registry: local
   version: "PREMIUM"
   destinations: ["DESTINATION_NAME"]
-  concurrency: 10000
   tables: ["*"]
   spec:
+    concurrency: 10000
     base_url: "https://your_uri.atlassian.net"
   	username: "your_username"
     token: ${ENV_WITH_API_KEY}

@@ -5,10 +5,10 @@ spec:
   name: k8s
   path: cloudquery/k8s
   version: "VERSION_SOURCE_K8S"
-  concurrency: 10000
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
 
   spec:
+    concurrency: 10000
     contexts: ["context"]
 ```

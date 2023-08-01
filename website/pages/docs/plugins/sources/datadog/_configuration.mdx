@@ -5,11 +5,11 @@ spec:
   name: "datadog"
   path: "cloudquery/datadog"
   version: "VERSION_SOURCE_DATADOG"
-  concurrency: 10000
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
 
   spec:
+    concurrency: 10000
     accounts:
       - name: example_account # Required. Name to distinguish accounts
         api_key: <DD_CLIENT_API_KEY> # Required. API key

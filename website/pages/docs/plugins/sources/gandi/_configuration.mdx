@@ -6,12 +6,12 @@ spec:
   path: /path/to/downloaded/plugin # Buy from here: https://cloudquery.io/integrations/gandi
   registry: local
   version: "PREMIUM"
-  concurrency: 10000
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
 
   # Gandi specific configuration
   spec:
+    concurrency: 10000
     api_key: "${GANDI_API_KEY}"
 ```
 

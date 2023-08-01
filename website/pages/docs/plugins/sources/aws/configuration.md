@@ -15,10 +15,10 @@ spec:
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_s3_buckets"]
   destinations: ["DESTINATION_NAME"]
-  concurrency: 10000
-  spec: 
+  spec:
+    concurrency: 10000
     # AWS Spec section described below
-    regions: 
+    regions:
       - us-east-1
     accounts:
       - id: "account1"
@@ -39,8 +39,8 @@ spec:
   version: "VERSION_SOURCE_AWS"
   tables: ['aws_s3_buckets']
   destinations: ["DESTINATION_NAME"]
-  concurrency: 10000
   spec:
+    concurrency: 10000
     aws_debug: false
     org:
       admin_account:
@@ -48,7 +48,7 @@ spec:
       member_role_name: OrganizationAccountAccessRole
     regions:
       - '*'
-  ```
+```
 
 For full details, see the [Multi Account Configuration Tutorial](/docs/plugins/sources/aws/multi-account).
 
@@ -79,10 +79,10 @@ This is the (nested) spec used by the AWS source plugin.
 
 - `max_retries` (int) (default: 10)
 
-  Defines the maximum number of times an API request will be retried 
+  Defines the maximum number of times an API request will be retried
 
 - `max_backoff` (int) (default: 30)
-  
+
   Defines the duration between retry attempts
 
 - `custom_endpoint_url` (string) (default: not used)
@@ -108,7 +108,8 @@ This is the (nested) spec used by the AWS source plugin.
 - **preview** `table_options` (map) (default: not used)
 
   This is a preview feature (for more information about `preview` features look at (Plugin Versioning)[(/docs/plugins/sources/aws/versioning)] `) that enables users to override the default options for specific tables. The root of the object takes a table name, and the next level takes an API method name. The final level is the actual input object as defined by the API. 
-  The format of the `table_options` object is as follows:
+The format of the `table_options` object is as follows:
+
   ```yaml
   table_options:
     <table_name>:
@@ -140,6 +141,7 @@ This is the (nested) spec used by the AWS source plugin.
   ```
 
   The naming for all of the fields is the same as the AWS API but in snake case. For example `EndTime` is represented as `end_time`. As of `v18.4.0` the following tables and APIs are supported:
+
   ```yaml
   table_options:
     aws_accessanalyzer_analyzer_findings:
@@ -149,7 +151,7 @@ This is the (nested) spec used by the AWS source plugin.
       - list_metrics:
           <[ListMetrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_ListMetrics.html)>
         get_metric_statistics:
-          # Namespace, MetricName and Dimensions fields cannot be set here and are derived from the result of the respective ListMetrics call 
+          # Namespace, MetricName and Dimensions fields cannot be set here and are derived from the result of the respective ListMetrics call
           - <[GetMetricStatistics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html)>
     aws_cloudtrail_events:
       lookup_events:
@@ -164,8 +166,6 @@ This is the (nested) spec used by the AWS source plugin.
       list_tasks:
         - <[ListTasks](https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ListTasks.html)>
   ```
-
-
 
 ### account
 
@@ -212,7 +212,6 @@ This is used to specify one or more accounts to extract information from. Note t
 
   Regions to use for this account. Defaults to global `regions` setting.
 
-
 ### org
 
 - `admin_account` ([Account](#account))
@@ -255,7 +254,7 @@ This is used to specify one or more accounts to extract information from. Note t
 
 ### Skip Tables
 
-AWS has tables that may contain many resources, nested information, and AWS-provided data.  These tables may cause certain syncs to be slow due to the amount of AWS-provided data and may not be needed.  We recommend only specifying syncing from necessary tables.  If `*` is necessary for tables, Below is a reference configuration of skip tables, where certain tables are skipped.  
+AWS has tables that may contain many resources, nested information, and AWS-provided data. These tables may cause certain syncs to be slow due to the amount of AWS-provided data and may not be needed. We recommend only specifying syncing from necessary tables. If `*` is necessary for tables, Below is a reference configuration of skip tables, where certain tables are skipped.
 
 ```yaml
 kind: source
@@ -270,7 +269,7 @@ spec:
     - aws_docdb_cluster_parameter_groups
     - aws_docdb_engine_versions
     - aws_ec2_instance_types
-    - aws_ec2_vpc_endpoint_services 
+    - aws_ec2_vpc_endpoint_services
     - aws_elasticache_engine_versions
     - aws_elasticache_parameter_groups
     - aws_elasticache_reserved_cache_nodes_offerings
@@ -288,7 +287,7 @@ spec:
     - aws_stepfunctions_map_run_executions
     - aws_stepfunctions_map_runs
   destinations: ["postgresql"]
-  concurrency: 10000
-  spec: 
+  spec:
+    concurrency: 10000
     # AWS Spec section described below
 ```

@@ -6,12 +6,12 @@ spec:
   path: /path/to/downloaded/plugin # Buy from here: https://cloudquery.io/integrations/launchdakrly
   registry: local
   version: "PREMIUM"
-  concurrency: 10000
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
-  backend: local
   # LaunchDarkly specific configuration
   spec:
+    backend: local
+    concurrency: 10000
     access_token: "<YOUR_ACCESS_TOKEN_HERE>"
 ```
 

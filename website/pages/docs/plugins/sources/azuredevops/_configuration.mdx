@@ -5,12 +5,12 @@ spec:
   name: azuredevops
   path: cloudquery/azuredevops
   version: "VERSION_SOURCE_AZUREDEVOPS"
-  concurrency: 10000
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
 
   # Azure DevOps specific configuration
   spec:
+    concurrency: 10000
     personal_access_token: "${AZURE_DEVOPS_PERSONAL_ACCESS_TOKEN}"
     organization_url: "${AZURE_DEVOPS_ORGANIZATION_URL}"
 ```

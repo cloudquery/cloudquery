@@ -5,10 +5,10 @@ spec: # Common source spec section
   path: /path/to/downloaded/plugin # Buy from here: https://cloudquery.io/integrations/heroku
   registry: local
   version: "PREMIUM"
-  concurrency: 10000
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
 
   spec: # Heroku specific section
+    concurrency: 10000
     token: <YOUR_TOKEN_HERE>
 ```

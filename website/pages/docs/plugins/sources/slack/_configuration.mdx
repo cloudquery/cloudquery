@@ -6,11 +6,11 @@ spec:
   path: /path/to/downloaded/plugin # Buy from here: https://cloudquery.io/integrations/slack
   registry: local
   version: "PREMIUM"
-  concurrency: 10000
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
 
   # Slack specific configuration
   spec:
+    concurrency: 10000
     token: "<YOUR_BOT_TOKEN_HERE>"
 ```
