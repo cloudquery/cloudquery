@@ -1,42 +1,37 @@
 insert into aws_policy_results
-select
-    :'execution_time' as execution_time,
-    :'framework' as framework,
-    :'check_id' as check_id,
-    'S3 buckets should deny non-HTTPS requests' as title,
-    account_id,
-    arn as resource_id,
-    'fail' as status
-from
-    aws_s3_buckets
-where
-    arn not in (
-        -- Find all buckets that have a bucket policy that denies non-SSL requests
-        select arn
-        from (select aws_s3_buckets.arn,
-                     statements,
-                     statements -> 'Principal' as principals
-              from aws_s3_buckets,
-                   jsonb_array_elements(
-                           case jsonb_typeof(policy -> 'Statement')
-                               when
-                                   'string' then jsonb_build_array(
-                                       policy ->> 'Statement'
-                                   )
-                               when 'array' then policy -> 'Statement'
-                               end
-                       ) as statements
-              where statements -> 'Effect' = '"Deny"') as foo,
-             jsonb_array_elements_text(
-                     statements -> 'Condition' -> 'Bool' -> 'aws:securetransport'
-                 ) as ssl
-        where principals = '"*"'
-           or (
-                          principals::JSONB ? 'AWS'
-                      and (
-                                          principals -> 'AWS' = '"*"'
-                                  or principals -> 'AWS' @> '"*"'
-                              )
-                  )
-            and ssl::BOOL = FALSE
+WITH pass_buckets AS (
+    SELECT
+        arn
+    FROM
+        aws_s3_buckets s3,
+        jsonb_array_elements(s3.policy->'Statement') statement,
+        jsonb_array_elements_text(
+            CASE jsonb_typeof(statement->'Resource')
+                WHEN 'string' THEN jsonb_build_array(statement->>'Resource')
+                WHEN 'array' THEN statement->'Resource'
+            END
+        ) resource
+    WHERE
+        statement->>'Effect' = 'Deny'
+        AND statement->>'Action' = 's3:*'
+        AND statement->'Condition'->'Bool'->>'aws:SecureTransport' IS NOT DISTINCT FROM 'false'
+        AND (
+            statement->>'Principal' = '*'
+         OR statement->'Principal'->>'AWS' IS NOT DISTINCT FROM '*'
         )
+        AND resource ~ CONCAT('^arn:aws:s3:::', name, '\/\*$')
+    GROUP BY arn
+)
+SELECT
+    :'execution_time'::timestamp                AS execution_time,
+    :'framework'                                AS framework,
+    :'check_id'                                 AS check_id,
+    'S3 buckets should deny non-HTTPS requests' AS title,
+    account_id,
+    aws_s3_buckets.arn                          AS resource_id,
+    CASE
+        WHEN pass_buckets.arn IS NULL THEN 'fail'
+        ELSE 'pass'
+    END                                         AS status
+FROM aws_s3_buckets
+    LEFT JOIN pass_buckets ON aws_s3_buckets.arn = pass_buckets.arn
