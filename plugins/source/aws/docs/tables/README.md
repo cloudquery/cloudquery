@@ -253,6 +253,7 @@
 - [aws_ecr_repositories](../../../../../website/tables/aws/aws_ecr_repositories.md)
   - [aws_ecr_repository_images](../../../../../website/tables/aws/aws_ecr_repository_images.md)
     - [aws_ecr_repository_image_scan_findings](../../../../../website/tables/aws/aws_ecr_repository_image_scan_findings.md)
+  - [aws_ecr_repository_lifecycle_policies](../../../../../website/tables/aws/aws_ecr_repository_lifecycle_policies.md)
 - [aws_ecrpublic_repositories](../../../../../website/tables/aws/aws_ecrpublic_repositories.md)
   - [aws_ecrpublic_repository_images](../../../../../website/tables/aws/aws_ecrpublic_repository_images.md)
 - [aws_ecs_clusters](../../../../../website/tables/aws/aws_ecs_clusters.md)
