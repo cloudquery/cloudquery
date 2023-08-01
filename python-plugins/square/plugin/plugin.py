@@ -31,4 +31,4 @@ class SquarePlugin(plugin.Plugin):
     def sync(
         self, options: plugin.SyncOptions
     ) -> Generator[message.SyncMessage, None, None]:
-        return self._scheduler.sync(self._spec, [tables.PaymentsResolver()])
+        return self._scheduler.sync(self._client, [tables.PaymentsResolver()])
