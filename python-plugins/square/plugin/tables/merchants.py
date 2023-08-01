@@ -5,22 +5,17 @@ from cloudquery.sdk.schema import Column, Table
 from cloudquery.sdk.scheduler import TableResolver
 from plugin.client import Client
 from square.api.merchants_api import MerchantsApi
+from square.http.api_response import ApiResponse
+from plugin.oapi import OAPILoader
+from cloudquery.sdk.transformers.openapi import oapi_definition_to_columns
 
+columns = oapi_definition_to_columns(OAPILoader.get_definition('Merchant'))
 
 class Merchants(Table):
     def __init__(self) -> None:
         super().__init__(
-            "merchants",
-            [
-                Column("id", pa.string(), primary_key=True),
-                Column("business_name", pa.string()),
-                Column("country", pa.string()),
-                Column("language_code", pa.string()),
-                Column("currency", pa.string()),
-                Column("status", pa.string()),
-                Column("main_location_id", pa.string()),
-                Column("created_at", pa.timestamp("ms")),
-            ],
+            "square_merchants",
+            columns,
         )
 
     @property
@@ -38,9 +33,8 @@ class MerchantsResolver(TableResolver):
         while True:
             response = merchants.list_merchants(cursor=cursor)
             if response.is_error():
-                raise Exception(response.errors)
-
-            for merchant in response.merchants:
+              raise Exception(response)
+            for merchant in response.body.get('merchant', []):
                 yield merchant
             if response.cursor is None:
                 break

@@ -6,25 +6,18 @@ from cloudquery.sdk.scheduler import TableResolver
 from cloudquery.sdk.types import JSONType
 from plugin.client import Client
 from square.api.locations_api import LocationsApi
+from square.http.api_response import ApiResponse
+from plugin.oapi import OAPILoader
+from cloudquery.sdk.transformers.openapi import oapi_definition_to_columns
+
+columns = oapi_definition_to_columns(OAPILoader.get_definition('Location'))
 
 
 class Locations(Table):
     def __init__(self) -> None:
         super().__init__(
-            "locations",
-            [
-                Column("id", pa.string(), primary_key=True),
-                Column("name", pa.string()),
-                Column("address", JSONType()),
-                Column("timezone", pa.string()),
-                Column("capabilities", JSONType()),
-                Column("status", pa.string()),
-                Column("created_at", pa.timestamp("ms")),
-                Column("merchant_id", pa.string()),
-                Column("country", pa.string()),
-                Column("language_code", pa.string()),
-                Column("currency", pa.string()),
-            ],
+            "square_locations",
+            columns=columns,
         )
 
     @property
@@ -38,9 +31,8 @@ class LocationsResolver(TableResolver):
 
     def resolve(self, client: Client, parent_resource) -> Generator[Any, None, None]:
         locations: LocationsApi = client.client.locations
-        response = locations.list_locations()
+        response: ApiResponse = locations.list_locations()
         if response.is_error():
-            raise Exception(response.errors)
-
-        for location in response.locations:
+            raise Exception(response)
+        for location in response.body.get('locations', []):
             yield location

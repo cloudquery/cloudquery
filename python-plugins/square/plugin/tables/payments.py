@@ -4,18 +4,19 @@ from typing import Any, Generator
 from cloudquery.sdk.schema import Column, Table
 from cloudquery.sdk.scheduler import TableResolver
 from plugin.client import Client
+from plugin.oapi import OAPILoader
+from cloudquery.sdk.transformers.openapi import oapi_definition_to_columns
 from square.api.payments_api import PaymentsApi
+from square.http.api_response import ApiResponse
 
+
+payments_columns = oapi_definition_to_columns(OAPILoader.get_definition('Payment'))
 
 class Payments(Table):
     def __init__(self) -> None:
         super().__init__(
-            "payments",
-            [
-                Column("id", pa.string(), primary_key=True),
-                Column("status", pa.string()),
-                Column("order_id", pa.string()),
-            ],
+            "square_payments",
+            payments_columns,
         )
 
     @property
@@ -33,9 +34,8 @@ class PaymentsResolver(TableResolver):
         while True:
             response = payments.list_payments(cursor=cursor)
             if response.is_error():
-                raise Exception(response.errors)
-
-            for payment in response.payments:
+              raise Exception(response)
+            for payment in response.body.get('payments', []):
                 yield payment
             if response.cursor is None:
                 break
