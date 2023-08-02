@@ -5,6 +5,38 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.4.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.4.1...plugins-source-gcp-v9.4.2) (2023-08-02)
+
+
+### Bug Fixes
+
+* **main:** Use call options when performing the initial org/project/folder listing ([#12704](https://github.com/cloudquery/cloudquery/issues/12704)) ([a5bcd33](https://github.com/cloudquery/cloudquery/commit/a5bcd3392f9a284711016721efd1bdda54a6bfe1)), closes [#12698](https://github.com/cloudquery/cloudquery/issues/12698)
+
+## [9.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.4.0...plugins-source-gcp-v9.4.1) (2023-08-01)
+
+
+### Bug Fixes
+
+* Add and use scheduler option ([#12696](https://github.com/cloudquery/cloudquery/issues/12696)) ([343a19c](https://github.com/cloudquery/cloudquery/commit/343a19c6109826edab2601b3692307d75f7768dd))
+
+## [9.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.3.4...plugins-source-gcp-v9.4.0) (2023-08-01)
+
+
+### This Release has the Following Changes to Tables
+- Table `gcp_resourcemanager_subfolders` was added
+
+### Features
+
+* **resources:** Fetch lower level folders ([#12539](https://github.com/cloudquery/cloudquery/issues/12539)) ([431e95f](https://github.com/cloudquery/cloudquery/commit/431e95fff273c35ba6021fce9b8fcdc0e60fc64b))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v13 digest to 112f949 ([#12659](https://github.com/cloudquery/cloudquery/issues/12659)) ([48d73a9](https://github.com/cloudquery/cloudquery/commit/48d73a93e678994f43171c363f5a75c29547b0b9))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 3452eb0 ([#12595](https://github.com/cloudquery/cloudquery/issues/12595)) ([c1c0949](https://github.com/cloudquery/cloudquery/commit/c1c09490b17f2e64435e05d745890cdb8b22310d))
+* **deps:** Update github.com/cockroachdb/cockroachdb-parser digest to 302c9ad ([#12664](https://github.com/cloudquery/cloudquery/issues/12664)) ([924509c](https://github.com/cloudquery/cloudquery/commit/924509c409fcf008c93f67fc6a0c5dcf4b2bddc5))
+* **deps:** Update github.com/petermattis/goid digest to 80aa455 ([#12669](https://github.com/cloudquery/cloudquery/issues/12669)) ([a140396](https://github.com/cloudquery/cloudquery/commit/a140396153d62d3e68646d58a7749426aa2cc9fe))
+
 ## [9.3.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.3.3...plugins-source-gcp-v9.3.4) (2023-07-25)
 
 

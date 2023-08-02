@@ -108,6 +108,7 @@ tables:
   - aws_iam_policies
   - aws_iam_user_access_keys
   - aws_iam_user_attached_policies
+  - aws_iam_user_policies
   - aws_iam_users
   - aws_iam_virtual_mfa_devices
   - aws_kms_keys

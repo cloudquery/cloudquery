@@ -16,6 +16,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/appconfig"
 	"github.com/aws/aws-sdk-go-v2/service/appflow"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
+	"github.com/aws/aws-sdk-go-v2/service/appmesh"
 	"github.com/aws/aws-sdk-go-v2/service/apprunner"
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appsync"
@@ -141,6 +142,7 @@ var clients = []any{
 	&appflow.Client{},
 	&applicationautoscaling.Client{},
 	&apprunner.Client{},
+	&appmesh.Client{},
 	&appstream.Client{},
 	&appsync.Client{},
 	&athena.Client{},

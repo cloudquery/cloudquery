@@ -14,6 +14,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appconfig"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appflow"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/applicationautoscaling"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appmesh"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apprunner"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appstream"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appsync"
@@ -141,8 +142,9 @@ func getTables() schema.Tables {
 		apigatewayv2.DomainNames(),
 		apigatewayv2.VpcLinks(),
 		appconfig.Applications(),
-		appflow.Flows(),
 		appconfig.DeploymentStrategies(),
+		appflow.Flows(),
+		appmesh.Meshes(),
 		applicationautoscaling.Policies(),
 		applicationautoscaling.ScalableTargets(),
 		applicationautoscaling.ScalingActivities(),
@@ -175,6 +177,7 @@ func getTables() schema.Tables {
 		backup.Plans(),
 		backup.ProtectedResources(),
 		backup.RegionSettings(),
+		backup.ReportPlans(),
 		backup.Vaults(),
 		batch.JobQueues(),
 		batch.JobDefinitions(),
@@ -324,6 +327,7 @@ func getTables() schema.Tables {
 		elbv2.TargetGroups(),
 		emr.BlockPublicAccessConfigs(),
 		emr.Clusters(),
+		emr.ReleaseLabels(),
 		emr.SecurityConfigurations(),
 		emr.Studios(),
 		eventbridge.ApiDestinations(),
