@@ -5,6 +5,36 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.12.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.12.0...cli-v3.12.1) (2023-08-01)
+
+
+### Bug Fixes
+
+* Add missing `DeleteStale` messages for old destinations ([#12684](https://github.com/cloudquery/cloudquery/issues/12684)) ([5198ed7](https://github.com/cloudquery/cloudquery/commit/5198ed77757d69df5d6e9258a101d85baa73b60a))
+
+## [3.12.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.11.0...cli-v3.12.0) (2023-08-01)
+
+
+### Features
+
+* Support Docker registry in CLI ([#12576](https://github.com/cloudquery/cloudquery/issues/12576)) ([6f31129](https://github.com/cloudquery/cloudquery/commit/6f3112955c0c71f66844304cae96fe23a8872a41))
+
+
+### Bug Fixes
+
+* Add name of destination to error on init ([#12675](https://github.com/cloudquery/cloudquery/issues/12675)) ([095194d](https://github.com/cloudquery/cloudquery/commit/095194d06ab7bd297d64572f849a68f122be5acb))
+* **deps:** Update github.com/apache/arrow/go/v13 digest to 112f949 ([#12659](https://github.com/cloudquery/cloudquery/issues/12659)) ([48d73a9](https://github.com/cloudquery/cloudquery/commit/48d73a93e678994f43171c363f5a75c29547b0b9))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 3452eb0 ([#12595](https://github.com/cloudquery/cloudquery/issues/12595)) ([c1c0949](https://github.com/cloudquery/cloudquery/commit/c1c09490b17f2e64435e05d745890cdb8b22310d))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.9.0 ([#12579](https://github.com/cloudquery/cloudquery/issues/12579)) ([4f1f419](https://github.com/cloudquery/cloudquery/commit/4f1f41931cab91667ebfa76a835de3e83b7bd00f))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.9.1 ([#12593](https://github.com/cloudquery/cloudquery/issues/12593)) ([19e8ae3](https://github.com/cloudquery/cloudquery/commit/19e8ae3ecc12e41fa41b247ce139d3a062fef218))
+
+## [3.11.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.10.2...cli-v3.11.0) (2023-07-27)
+
+
+### Features
+
+* **source-spec:** Warn if ineffective options are detected ([#12536](https://github.com/cloudquery/cloudquery/issues/12536)) ([0da111e](https://github.com/cloudquery/cloudquery/commit/0da111e2c5ae175c23be69a318bf92b392584090))
+
 ## [3.10.2](https://github.com/cloudquery/cloudquery/compare/cli-v3.10.1...cli-v3.10.2) (2023-07-25)
 
 

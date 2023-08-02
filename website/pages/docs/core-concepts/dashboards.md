@@ -30,6 +30,12 @@ More information can be found [here for building an open-source CSPM solution po
 
 More information and a getting started guide can be found [here on how to manage resilience with AWS Backup and CloudQuery](/how-to-guides/manage-resilience-with-aws-backup).  CloudQuery can be used to manage resilience and support a data protection strategy by monitoring and visualizing AWS Backup Health and protected resources.  
 
+### Cost Optimization
+
+![AWS Cost Optimization Dashboard Powered by CloudQuery and Grafana](/images/dashboards/aws-cost.png)
+
+For more information visit our [premium policies page](/docs/core-concepts/policies#premium-policies). CloudQuery can be used to monitor and visualize cost data to help optimize cloud spend.
+
 ## Building Custom Dashboards
 
 Custom dashboards can be built with different BI tools such as Grafana, Apache Superset, QuickSight, PowerBI.  These can be layered on top of CloudQuery synced data in the [destination of your choice](/docs/plugins/destinations/overview).  These reference solutions are built on a PostgreSQL and Grafana architecture.  For other possible solutions and architecture, reach out to the CloudQuery team.

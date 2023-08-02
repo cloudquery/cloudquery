@@ -49,6 +49,11 @@ func buildEcrRepositoriesMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 	repoResponse.PolicyText = &policyText
 	m.EXPECT().GetRepositoryPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(&repoResponse, nil)
 
+	var lifeCyclePolicy ecr.GetLifecyclePolicyOutput
+	require.NoError(t, faker.FakeObject(&lifeCyclePolicy))
+	lifecyclePolicyText := `{"rules":[{"rulePriority":1,"description":"Expire images older than 14 days","selection":{"tagStatus":"untagged","countType":"sinceImagePushed","countUnit":"days","countNumber":14},"action":{"type":"expire"}}]}`
+	lifeCyclePolicy.LifecyclePolicyText = &lifecyclePolicyText
+	m.EXPECT().GetLifecyclePolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(&lifeCyclePolicy, nil)
 	return client.Services{
 		Ecr: m,
 	}

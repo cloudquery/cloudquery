@@ -43,9 +43,9 @@ require (
 	cloud.google.com/go/vpcaccess v1.6.0
 	cloud.google.com/go/websecurityscanner v1.5.0
 	cloud.google.com/go/workflows v1.10.0
-	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
+	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882
 	github.com/cloudquery/plugin-sdk/v4 v4.2.3
-	github.com/cockroachdb/cockroachdb-parser v0.0.0-20230515042840-c9c144eab71a
+	github.com/cockroachdb/cockroachdb-parser v0.0.0-20230705064001-302c9ad52e1a
 	github.com/golang/mock v1.6.0
 	github.com/googleapis/gax-go/v2 v2.7.1
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3
@@ -66,7 +66,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230723001421-10df4b9d1986
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230731001320-3452eb0f930f
 
 require (
 	cloud.google.com/go v0.110.0 // indirect
@@ -113,7 +113,7 @@ require (
 	github.com/lib/pq v1.10.6 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
-	github.com/petermattis/goid v0.0.0-20211229010228-4d14c490ee36 // indirect
+	github.com/petermattis/goid v0.0.0-20230518223814-80aa455d8761 // indirect
 	github.com/pierrec/lz4/v4 v4.1.17 // indirect
 	github.com/pierrre/geohash v1.0.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect

@@ -45,6 +45,7 @@ func Repositories() *schema.Table {
 
 		Relations: []*schema.Table{
 			repositoryImages(),
+			lifeCyclePolicy(),
 		},
 	}
 }

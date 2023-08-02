@@ -12,11 +12,14 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigateway"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigatewayv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appconfig"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appflow"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/applicationautoscaling"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appmesh"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apprunner"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appstream"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appsync"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/athena"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/auditmanager"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscaling"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscalingplans"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/backup"
@@ -140,6 +143,8 @@ func getTables() schema.Tables {
 		apigatewayv2.VpcLinks(),
 		appconfig.Applications(),
 		appconfig.DeploymentStrategies(),
+		appflow.Flows(),
+		appmesh.Meshes(),
 		applicationautoscaling.Policies(),
 		applicationautoscaling.ScalableTargets(),
 		applicationautoscaling.ScalingActivities(),
@@ -162,6 +167,7 @@ func getTables() schema.Tables {
 		appsync.GraphqlApis(),
 		athena.DataCatalogs(),
 		athena.WorkGroups(),
+		auditmanager.Assessments(),
 		autoscaling.Groups(),
 		autoscaling.LaunchConfigurations(),
 		autoscaling.ScheduledActions(),
@@ -171,6 +177,7 @@ func getTables() schema.Tables {
 		backup.Plans(),
 		backup.ProtectedResources(),
 		backup.RegionSettings(),
+		backup.ReportPlans(),
 		backup.Vaults(),
 		batch.JobQueues(),
 		batch.JobDefinitions(),
@@ -320,6 +327,7 @@ func getTables() schema.Tables {
 		elbv2.TargetGroups(),
 		emr.BlockPublicAccessConfigs(),
 		emr.Clusters(),
+		emr.ReleaseLabels(),
 		emr.SecurityConfigurations(),
 		emr.Studios(),
 		eventbridge.ApiDestinations(),
