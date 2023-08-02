@@ -1,6 +1,6 @@
 # Jira Source Plugin
 
-The HubSpot source plugin extracts information from the Jira API (This is an open-core plugin).
+The Jira source plugin extracts information from the Jira API (This is an open-core plugin).
 
 ## Links
 
