@@ -23,3 +23,6 @@ The composite primary key for this table is (**project_id**, **name**).
 |ttl_after_completion_days|`int64`|
 |labels|`json`|
 |error|`json`|
+|mode|`utf8`|
+|batch_mode_priority|`int64`|
+|optimization|`utf8`|

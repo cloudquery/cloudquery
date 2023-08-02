@@ -24,3 +24,4 @@ The composite primary key for this table is (**project_id**, **name**).
 |update_time|`timestamp[us, tz=UTC]`|
 |etag|`utf8`|
 |execution_configs|`json`|
+|deploy_parameters|`json`|
