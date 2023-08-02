@@ -1,21 +1,30 @@
-insert into aws_policy_results
-select
-    :'execution_time' as execution_time,
-    :'framework' as framework,
-    :'check_id' as check_id,
-    'Ensure CloudTrail is enabled in all regions' as title,
-    aws_cloudtrail_trails.account_id,
-    arn as resource_id,
-    case
-        when is_multi_region_trail = FALSE or (
-                    is_multi_region_trail = TRUE and (
-                        read_write_type != 'All' or include_management_events = FALSE
-                )) then 'fail'
-        else 'pass'
-    end as status
-from aws_cloudtrail_trails
-inner join
-    aws_cloudtrail_trail_event_selectors on
-        aws_cloudtrail_trails.arn = aws_cloudtrail_trail_event_selectors.trail_arn
-        and aws_cloudtrail_trails.region = aws_cloudtrail_trail_event_selectors.region
-        and aws_cloudtrail_trails.account_id = aws_cloudtrail_trail_event_selectors.account_id
+INSERT INTO aws_policy_results
+WITH global_trail_status AS (
+    SELECT
+        trails.account_id,
+        trails.arn,
+        bool_or(
+            is_multi_region_trail
+            AND (status->>'IsLogging')::bool
+            AND include_management_events
+            AND read_write_type = 'All'
+        ) AS is_global_trail
+    FROM
+        aws_cloudtrail_trails trails
+        JOIN aws_cloudtrail_trail_event_selectors actes
+             ON trails._cq_id = actes._cq_parent_id
+    GROUP BY trails.account_id, trails.arn
+)
+SELECT
+    :'execution_time'                             AS execution_time,
+    :'framework'                                  AS framework,
+    :'check_id'                                   AS check_id,
+    'Ensure CloudTrail is enabled in all regions' AS title,
+    account_id,
+    arn                                           AS resource_id,
+    CASE
+        WHEN is_global_trail
+        THEN 'pass'
+        ELSE 'fail'
+    END                                           AS status
+FROM global_trail_status
