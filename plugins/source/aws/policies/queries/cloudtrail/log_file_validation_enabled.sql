@@ -7,7 +7,8 @@ select
     account_id,
     arn as resource_id,
     case
-      when log_file_validation_enabled = false then 'fail'
-      else 'pass'
+      when bool_or(log_file_validation_enabled) then 'pass'
+      else 'fail'
     end as status
 from aws_cloudtrail_trails
+group by account_id, arn
