@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"math/big"
 	"strings"
@@ -38,12 +39,13 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 	for {
 		values := make([]bigquery.Value, len(table.Columns))
 		err := it.Next(&values)
-		if err == iterator.Done {
-			break
-		}
 		if err != nil {
+			if errors.Is(err, iterator.Done) {
+				break
+			}
 			return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
 		}
+
 		rb := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
 		for i := range values {
 			err := appendValue(rb.Field(i), values[i])
