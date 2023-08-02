@@ -68,6 +68,10 @@ This is the (nested) spec used by the AWS source plugin.
 
   In AWS organization mode, CloudQuery will source all accounts underneath automatically
 
+- `concurrency` (int, optional, default: 50000):
+
+  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
+
 - `initialization_concurrency` (int) (default: 4)
 
   During initialization the AWS source plugin fetches information about each account and region. This setting controls how many accounts can be initialized concurrently.
@@ -104,6 +108,24 @@ This is the (nested) spec used by the AWS source plugin.
 - `use_paid_apis` (boolean) (default: false)
 
   When set to `true` plugin will sync data from APIs that incur a fee. Currently only `aws_costexplorer*` and `aws_alpha_cloudwatch_metric*` tables require this flag to be set to `true`.
+
+- **preview** `backend_options` (object) (default: not used)
+
+  Allowed properties are `table_name` and `connection`. Use this configuration to enable incremental syncs for supported tables. See more [here](https://www.cloudquery.io/blog/proto-v3#unified-protocol).
+  Example
+
+  ```yaml
+  kind: source
+  spec:
+    name: aws
+    path: cloudquery/aws
+    version: "VERSION_SOURCE_AWS"
+    destinations: ["postgresql"]
+    spec:
+      backend_options:
+        table_name: "test_state_table"
+        connection: "@@plugins.postgresql.connection"
+  ```
 
 - **preview** `table_options` (map) (default: not used)
 

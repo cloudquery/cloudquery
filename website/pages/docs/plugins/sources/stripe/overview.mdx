@@ -4,6 +4,7 @@ stage: GA
 title: Stripe Source Plugin
 description: CloudQuery Stripe source plugin documentation
 ---
+
 # Stripe Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -43,3 +44,6 @@ This is the (nested) spec used by the Stripe source plugin:
 
 - `stripe_debug` (boolean, optional. Default: false):
   Enables verbose logging on the Stripe client.
+
+- `concurrency` (int, optional, default: 10000):
+  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.

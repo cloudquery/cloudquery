@@ -21,6 +21,10 @@ This is the (nested) spec used by the Azure source plugin.
   The name of the cloud environment to use. Possible values are `AzureCloud`, `AzureChinaCloud`, `AzureUSGovernment`.
   See the [Azure CLI documentation for more information](https://learn.microsoft.com/en-us/cli/azure/manage-clouds-azure-cli).
 
+- `concurrency` (int, optional, default: 50000):
+
+  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
+
 - `discovery_concurrency` (int) (default: 400)
 
   During initialization the Azure source plugin discovers all resource groups and enabled resource providers per subscription, to be used later on during the sync process.
