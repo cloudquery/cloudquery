@@ -24,7 +24,9 @@ class SquarePlugin(plugin.Plugin):
         self._spec_json = json.loads(spec_bytes)
         self._spec = Spec(**self._spec_json)
         self._spec.validate()
-        self._scheduler = Scheduler(self._spec.concurrency, self._spec.queue_size, logger=self._logger)
+        self._scheduler = Scheduler(
+            self._spec.concurrency, self._spec.queue_size, logger=self._logger
+        )
         self._client = Client(self._spec)
 
     def get_tables(self, options: plugin.TableOptions) -> List[plugin.Table]:
