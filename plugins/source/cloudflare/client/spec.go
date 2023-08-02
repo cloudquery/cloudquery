@@ -1,7 +1,7 @@
 package client
 
 const (
-	defaultConccurency = 10000
+	defaultConcurrency = 10000
 )
 
 type Spec struct {
@@ -15,6 +15,6 @@ type Spec struct {
 
 func (s *Spec) SetDefaults() {
 	if s.Concurrency == 0 {
-		s.Concurrency = defaultConccurency
+		s.Concurrency = defaultConcurrency
 	}
 }

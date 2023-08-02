@@ -14,6 +14,7 @@ The composite primary key for this table is (**project_id**, **name**).
 |_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |classification|`json`|
+|contact_email|`utf8`|
 |create_time|`utf8`|
 |creator|`json`|
 |description|`utf8`|
