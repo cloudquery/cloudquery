@@ -9,11 +9,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func Fields() *schema.Table{
+func Fields() *schema.Table {
 	return &schema.Table{
-		Name: "jira_fields",
+		Name:      "jira_fields",
 		Transform: transformers.TransformWithStruct(&jira.Field{}, transformers.WithPrimaryKeys("ID")),
-		Resolver: fetchFields,
+		Resolver:  fetchFields,
 	}
 }
 
@@ -26,4 +26,3 @@ func fetchFields(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	res <- list
 	return nil
 }
-

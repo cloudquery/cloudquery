@@ -9,12 +9,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-
-func Boards() *schema.Table{
+func Boards() *schema.Table {
 	return &schema.Table{
-		Name: "jira_boards",
+		Name:      "jira_boards",
 		Transform: transformers.TransformWithStruct(&jira.Board{}, transformers.WithPrimaryKeys("Self")),
-		Resolver: fetchBoards,
+		Resolver:  fetchBoards,
 	}
 }
 

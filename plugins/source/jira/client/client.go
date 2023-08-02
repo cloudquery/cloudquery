@@ -21,9 +21,9 @@ import (
 
 type Client struct {
 	plugin.UnimplementedDestination
-	syncClient    *sync.Client
-	options   plugin.NewClientOptions
-	scheduler *scheduler.Scheduler
+	syncClient *sync.Client
+	options    plugin.NewClientOptions
+	scheduler  *scheduler.Scheduler
 }
 
 func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, options plugin.NewClientOptions) (plugin.Client, error) {
@@ -74,8 +74,7 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	return nil
 }
 
-
-func getTables() schema.Tables{
+func getTables() schema.Tables {
 	tables := schema.Tables{
 		boards.Boards(),
 		projects.Projects(),

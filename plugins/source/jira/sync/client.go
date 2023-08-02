@@ -17,10 +17,10 @@ type Client struct {
 }
 
 type Spec struct {
-	Username string `json:"username"`
-	Token string `json:"token"`
-	BaseURL string `json:"base_url"`
-	Concurrency int `json:"concurrency"`
+	Username    string `json:"username"`
+	Token       string `json:"token"`
+	BaseURL     string `json:"base_url"`
+	Concurrency int    `json:"concurrency"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -60,6 +60,6 @@ func New(ctx context.Context, logger zerolog.Logger, spec *Spec) (*Client, error
 	return c, nil
 }
 
-func (c *Client) ID() string {
+func (*Client) ID() string {
 	return "jira"
 }

@@ -9,11 +9,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func Issues() *schema.Table{
+func Issues() *schema.Table {
 	return &schema.Table{
-		Name: "jira_issues",
+		Name:      "jira_issues",
 		Transform: transformers.TransformWithStruct(&jira.Issue{}, transformers.WithPrimaryKeys("Self")),
-		Resolver: fetchResolver,
+		Resolver:  fetchResolver,
 	}
 }
 
@@ -26,4 +26,3 @@ func fetchResolver(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	res <- issueList
 	return nil
 }
-

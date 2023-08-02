@@ -9,11 +9,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func Priorities() *schema.Table{
+func Priorities() *schema.Table {
 	return &schema.Table{
-		Name: "jira_priorities",
+		Name:      "jira_priorities",
 		Transform: transformers.TransformWithStruct(&jira.Priority{}, transformers.WithPrimaryKeys("Self")),
-		Resolver: fetchPriorities,
+		Resolver:  fetchPriorities,
 	}
 }
 
@@ -26,4 +26,3 @@ func fetchPriorities(ctx context.Context, meta schema.ClientMeta, parent *schema
 	res <- list
 	return nil
 }
-

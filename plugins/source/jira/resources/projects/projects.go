@@ -10,22 +10,22 @@ import (
 )
 
 type ProjectListEntry struct {
-	Expand          string          `json:"expand" structs:"expand"`
-	Self            string          `json:"self" structs:"self"`
-	ID              string          `json:"id" structs:"id"`
-	Key             string          `json:"key" structs:"key"`
-	Name            string          `json:"name" structs:"name"`
+	Expand          string               `json:"expand" structs:"expand"`
+	Self            string               `json:"self" structs:"self"`
+	ID              string               `json:"id" structs:"id"`
+	Key             string               `json:"key" structs:"key"`
+	Name            string               `json:"name" structs:"name"`
 	AvatarUrls      jira.AvatarUrls      `json:"avatarUrls" structs:"avatarUrls"`
-	ProjectTypeKey  string          `json:"projectTypeKey" structs:"projectTypeKey"`
+	ProjectTypeKey  string               `json:"projectTypeKey" structs:"projectTypeKey"`
 	ProjectCategory jira.ProjectCategory `json:"projectCategory,omitempty" structs:"projectsCategory,omitempty"`
 	IssueTypes      []jira.IssueType     `json:"issueTypes,omitempty" structs:"issueTypes,omitempty"`
 }
 
-func Projects() *schema.Table{
+func Projects() *schema.Table {
 	return &schema.Table{
-		Name: "jira_projects",
+		Name:      "jira_projects",
 		Transform: transformers.TransformWithStruct(&ProjectListEntry{}, transformers.WithPrimaryKeys("Self")),
-		Resolver: fetchProjects,
+		Resolver:  fetchProjects,
 	}
 }
 
@@ -38,4 +38,3 @@ func fetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	res <- projectList
 	return nil
 }
-
