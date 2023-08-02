@@ -79,6 +79,7 @@ func fetchRoute53HostedZones(ctx context.Context, meta schema.ClientMeta, parent
 				HostedZone:      h,
 				Tags:            client.TagsToMap(getTags(*h.Id, tagsResponse.ResourceTagSets)),
 				DelegationSetId: delegationSetId,
+				DelegationSet:   gotHostedZone.DelegationSet,
 				VPCs:            gotHostedZone.VPCs,
 			}
 		}
