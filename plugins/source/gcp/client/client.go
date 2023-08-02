@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 	"sync"
@@ -194,7 +195,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec *Spec) (schema.ClientM
 	switch {
 	case len(projects) == 0 && len(spec.FolderIDs) == 0 && len(spec.ProjectFilter) == 0:
 		c.logger.Info().Msg("No project_ids, folder_ids, or project_filter specified - assuming all active projects")
-		projects, err = getProjectsV1(ctx, c.ClientOptions...)
+		projects, err = searchActiveProjectsV1(ctx, projectsClient, "lifecycleState=ACTIVE", c.CallOptions...)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get projects: %w", err)
 		}
@@ -222,7 +223,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec *Spec) (schema.ClientM
 
 	case len(spec.ProjectFilter) > 0:
 		c.logger.Info().Msg("Listing projects with filter...")
-		projectsWithFilter, err := getProjectsV1WithFilter(ctx, spec.ProjectFilter, c.ClientOptions...)
+		projectsWithFilter, err := searchActiveProjectsV1(ctx, projectsClient, spec.ProjectFilter, c.CallOptions...)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get projects with filter: %w", err)
 		}
@@ -331,61 +332,33 @@ func logOrganizationIds(logger *zerolog.Logger, organizations []*crmv1.Organizat
 	}
 }
 
-// getProjectsV1 requires the `resourcemanager.projects.get` permission to list projects
-func getProjectsV1(ctx context.Context, options ...option.ClientOption) ([]string, error) {
+// searchActiveProjectsV1 requires the `resourcemanager.projects.get` permission to list projects.
+// filter may be empty, too.
+// The result of the search request is filtered to return only the projects in the active state.
+func searchActiveProjectsV1(ctx context.Context, client *resourcemanager.ProjectsClient, filter string, options ...gax.CallOption) ([]string, error) {
 	var projects []string
 
-	service, err := crmv1.NewService(ctx, options...)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
-	}
-
-	call := service.Projects.List().Filter("lifecycleState=ACTIVE").Context(ctx)
+	it := client.SearchProjects(ctx, &resourcemanagerpb.SearchProjectsRequest{
+		Query: filter,
+	}, options...)
 	for {
-		output, err := call.Do()
+		project, err := it.Next()
 		if err != nil {
+			if errors.Is(err, iterator.Done) {
+				break
+			}
 			return nil, err
 		}
-		for _, project := range output.Projects {
-			projects = append(projects, project.ProjectId)
+
+		if project.State != resourcemanagerpb.Project_ACTIVE {
+			continue
 		}
-		if output.NextPageToken == "" {
-			break
-		}
-		call.PageToken(output.NextPageToken)
+
+		projects = append(projects, project.ProjectId)
 	}
 
 	if len(projects) == 0 {
-		return nil, fmt.Errorf("no active projects")
-	}
-
-	return projects, nil
-}
-
-func getProjectsV1WithFilter(ctx context.Context, filter string, options ...option.ClientOption) ([]string, error) {
-	var projects []string
-
-	service, err := crmv1.NewService(ctx, options...)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
-	}
-
-	call := service.Projects.List().Filter(filter).Context(ctx)
-	for {
-		output, err := call.Do()
-		if err != nil {
-			return nil, err
-		}
-		for _, project := range output.Projects {
-			if project.LifecycleState != "ACTIVE" {
-				continue
-			}
-			projects = append(projects, project.ProjectId)
-		}
-		if output.NextPageToken == "" {
-			break
-		}
-		call.PageToken(output.NextPageToken)
+		return nil, errors.New("no active projects")
 	}
 
 	return projects, nil
