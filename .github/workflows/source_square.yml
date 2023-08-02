@@ -26,8 +26,6 @@ jobs:
         working-directory: ./plugins/source/square
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -38,3 +36,20 @@ jobs:
         run: make fmt-check
       - name: Run tests
         run: make test
+
+  validate-release:
+    timeout-minutes: 10
+    runs-on: large-ubuntu-monorepo
+    env:
+      IMAGE_NAME_PREFIX: cloudquery
+      REGISTRY: ghcr.io
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        with:
+          context: "{{defaultContext}}:plugins/source/square"
+          platforms: linux/amd64,linux/arm64
+          load: true
