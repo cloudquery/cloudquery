@@ -47,7 +47,10 @@ func Configure(_ context.Context, logger zerolog.Logger, spec []byte, opts plugi
 		config:     *config,
 		tables:     getTables(),
 		syncClient: &syncClient,
-		scheduler:  scheduler.NewScheduler(scheduler.WithLogger(logger)),
+		scheduler: scheduler.NewScheduler(
+			scheduler.WithLogger(logger),
+			scheduler.WithConcurrency(config.Concurrency),
+		),
 	}, nil
 }
 
