@@ -7,7 +7,8 @@ select
     account_id,
     arn as resource_id,
     case
-        when kms_key_id is NULL then 'fail'
+        when bool_or(kms_key_id is null) then 'fail'
         else 'pass'
     end as status
-FROM aws_cloudtrail_trails
+from aws_cloudtrail_trails
+group by account_id, arn
