@@ -82,6 +82,24 @@ This is the (nested) spec used by GCP Source Plugin
 
   Service Account impersonation configuration.
 
+- **preview** `backend_options` (object) (default: not used)
+
+  Allowed properties are `table_name` and `connection`. Use this configuration to enable incremental syncs for supported tables. See more [here](/blog/proto-v3#unified-protocol).
+  Example
+
+  ```yaml
+  kind: source
+  spec:
+    name: gcp
+    path: cloudquery/gcp
+    version: "VERSION_SOURCE_GCP"
+    destinations: ["postgresql"]
+    spec:
+      backend_options:
+        table_name: "test_state_table"
+        connection: "@@plugins.postgresql.connection"
+  ```
+
 ### Service Account Impersonation Spec
 
 - `target_principal` (`string`, optional. Default: empty)

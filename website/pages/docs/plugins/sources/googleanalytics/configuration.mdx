@@ -54,6 +54,24 @@ requires OAuth authorization for `https://www.googleapis.com/auth/analytics.read
 
   OAuth 2.0 Client secret.
 
+- **preview** `backend_options` (object) (default: not used)
+
+  Allowed properties are `table_name` and `connection`. Use this configuration to enable incremental syncs for supported tables. See more [here](/blog/proto-v3#unified-protocol).
+  Example
+
+  ```yaml
+  kind: source
+  spec:
+    name: googleanalytics
+    path: cloudquery/googleanalytics
+    version: "VERSION_SOURCE_GOOGLEANALYTICS"
+    destinations: ["postgresql"]
+    spec:
+      backend_options:
+        table_name: "test_state_table"
+        connection: "@@plugins.postgresql.connection"
+  ```
+
 ### Google Analytics Report spec
 
 Report specification will be transformed into a Google Analytics Data API v1

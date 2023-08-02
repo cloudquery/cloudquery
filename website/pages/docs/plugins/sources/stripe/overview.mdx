@@ -47,3 +47,21 @@ This is the (nested) spec used by the Stripe source plugin:
 
 - `concurrency` (int, optional, default: 10000):
   A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
+
+- **preview** `backend_options` (object) (default: not used)
+
+  Allowed properties are `table_name` and `connection`. Use this configuration to enable incremental syncs for supported tables. See more [here](/blog/proto-v3#unified-protocol).
+  Example
+
+  ```yaml
+  kind: source
+  spec:
+    name: stripe
+    path: cloudquery/stripe
+    version: "VERSION_SOURCE_STRIPE"
+    destinations: ["postgresql"]
+    spec:
+      backend_options:
+        table_name: "test_state_table"
+        connection: "@@plugins.postgresql.connection"
+  ```

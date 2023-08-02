@@ -16,7 +16,6 @@ spec:
   tables: ["aws_s3_buckets"]
   destinations: ["DESTINATION_NAME"]
   spec:
-    concurrency: 10000
     # AWS Spec section described below
     regions:
       - us-east-1
@@ -40,7 +39,6 @@ spec:
   tables: ['aws_s3_buckets']
   destinations: ["DESTINATION_NAME"]
   spec:
-    concurrency: 10000
     aws_debug: false
     org:
       admin_account:
@@ -111,7 +109,7 @@ This is the (nested) spec used by the AWS source plugin.
 
 - **preview** `backend_options` (object) (default: not used)
 
-  Allowed properties are `table_name` and `connection`. Use this configuration to enable incremental syncs for supported tables. See more [here](https://www.cloudquery.io/blog/proto-v3#unified-protocol).
+  Allowed properties are `table_name` and `connection`. Use this configuration to enable incremental syncs for supported tables. See more [here](/blog/proto-v3#unified-protocol).
   Example
 
   ```yaml
@@ -310,6 +308,5 @@ spec:
     - aws_stepfunctions_map_runs
   destinations: ["postgresql"]
   spec:
-    concurrency: 10000
     # AWS Spec section described below
 ```
