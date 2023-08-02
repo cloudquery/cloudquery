@@ -44,6 +44,8 @@ def test_forms(mock_typeform_client):
     }))
     msgs = list(p.sync(options=plugin.SyncOptions(
         tables=["typeform_forms"],
+        skip_tables=[],
+        skip_dependent_tables=False,
     )))
     client.list_forms.assert_called()
     client.list_form_responses.assert_called()

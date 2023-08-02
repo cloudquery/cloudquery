@@ -18,4 +18,4 @@ EXPOSE 7777
 ENTRYPOINT ["python3", "main.py"]
 
 # Specify the command to run when the container starts
-CMD ["serve", "--address", "[::]:7777"]
+CMD ["serve", "--address", "[::]:7777", "--log-format", "json", "--log-level", "info"]

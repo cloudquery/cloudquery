@@ -1,1 +1,1 @@
-from .forms import Forms, FormsResolver
+from .forms import Forms

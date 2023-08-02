@@ -29,10 +29,14 @@ class FormResponses(Table):
                 Column("variables", JSONType()),
             ])
 
+    @property
+    def resolver(self):
+        return FormResponsesResolver(table=self)
+
 
 class FormResponsesResolver(TableResolver):
-    def __init__(self) -> None:
-        super().__init__(table=FormResponses())
+    def __init__(self, table) -> None:
+        super().__init__(table=table)
 
     def resolve(self, client: Client, parent_resource: Resource) -> Generator[Any, None, None]:
         for form_response in client.client.list_form_responses(form_id=parent_resource.item["id"]):

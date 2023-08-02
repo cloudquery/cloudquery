@@ -3,7 +3,8 @@ from typing import List, Generator
 
 from cloudquery.sdk import message
 from cloudquery.sdk import plugin
-from cloudquery.sdk.scheduler import Scheduler
+from cloudquery.sdk import schema
+from cloudquery.sdk.scheduler import Scheduler, TableResolver
 
 from plugin import tables
 from plugin.client import Client, Spec
@@ -28,14 +29,31 @@ class TypeformPlugin(plugin.Plugin):
         self._client = Client(self._spec)
 
     def get_tables(self, options: plugin.TableOptions) -> List[plugin.Table]:
-        all_tables = [
+        all_tables: List[plugin.Table] = [
             tables.Forms(),
         ]
+
         # set parent table relationships
         for table in all_tables:
             for relation in table.relations:
                 relation.parent = table
-        return all_tables
+
+        # set initial values
+        if options.tables is None:
+            options.tables = []
+        if options.skip_tables is None:
+            options.skip_tables = []
+            
+        return schema.filter_dfs(all_tables, options.tables, options.skip_tables)
 
     def sync(self, options: plugin.SyncOptions) -> Generator[message.SyncMessage, None, None]:
-        return self._scheduler.sync(self._client, [tables.FormsResolver()])
+        resolvers: list[TableResolver] = []
+        for table in self.get_tables(
+                plugin.TableOptions(
+                    tables=options.tables,
+                    skip_tables=options.skip_tables,
+                    skip_dependent_tables=options.skip_dependent_tables,
+                )
+        ):
+            resolvers.append(table.resolver)
+        return self._scheduler.sync(self._client, resolvers, options.deterministic_cq_id)

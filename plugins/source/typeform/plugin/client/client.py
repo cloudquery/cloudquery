@@ -23,6 +23,9 @@ class Client:
         self._spec = spec
         self._client = TypeformClient(spec.access_token, spec.base_url)
 
+    def id(self):
+        return "typeform"
+
     @property
     def client(self) -> TypeformClient:
         return self._client

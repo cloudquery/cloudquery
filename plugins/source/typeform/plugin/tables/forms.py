@@ -7,7 +7,7 @@ from cloudquery.sdk.schema import Table
 from cloudquery.sdk.types import JSONType
 
 from plugin.client import Client
-from plugin.tables.form_responses import FormResponsesResolver, FormResponses
+from plugin.tables.form_responses import FormResponses
 
 
 class Forms(Table):
@@ -29,10 +29,14 @@ class Forms(Table):
             relations=[FormResponses()],
         )
 
+    @property
+    def resolver(self):
+        return FormsResolver(table=self)
+
 
 class FormsResolver(TableResolver):
-    def __init__(self) -> None:
-        super().__init__(table=Forms())
+    def __init__(self, table=None) -> None:
+        super().__init__(table=table)
 
     def resolve(self, client: Client, parent_resource) -> Generator[Any, None, None]:
         for form in client.client.list_forms():
@@ -40,6 +44,4 @@ class FormsResolver(TableResolver):
 
     @property
     def child_resolvers(self):
-        return [
-            FormResponsesResolver(),
-        ]
+        return [table.resolver for table in self._table.relations]
