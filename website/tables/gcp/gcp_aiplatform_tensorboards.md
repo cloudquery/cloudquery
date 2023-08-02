@@ -27,3 +27,4 @@ This table depends on [gcp_aiplatform_tensorboard_locations](gcp_aiplatform_tens
 |update_time|`timestamp[us, tz=UTC]`|
 |labels|`json`|
 |etag|`utf8`|
+|is_default|`bool`|

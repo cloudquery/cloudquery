@@ -14,6 +14,8 @@ The primary key for this table is **self_link**.
 |_cq_parent_id|`uuid`|
 |project_id|`utf8`|
 |architecture|`utf8`|
+|async_primary_disk|`json`|
+|async_secondary_disks|`json`|
 |creation_timestamp|`utf8`|
 |description|`utf8`|
 |disk_encryption_key|`json`|
@@ -32,12 +34,16 @@ The primary key for this table is **self_link**.
 |params|`json`|
 |physical_block_size_bytes|`int64`|
 |provisioned_iops|`int64`|
+|provisioned_throughput|`int64`|
 |region|`utf8`|
 |replica_zones|`list<item: utf8, nullable>`|
 |resource_policies|`list<item: utf8, nullable>`|
+|resource_status|`json`|
 |satisfies_pzs|`bool`|
 |self_link (PK)|`utf8`|
 |size_gb|`int64`|
+|source_consistency_group_policy|`utf8`|
+|source_consistency_group_policy_id|`utf8`|
 |source_disk|`utf8`|
 |source_disk_id|`utf8`|
 |source_image|`utf8`|
