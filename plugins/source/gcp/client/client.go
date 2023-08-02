@@ -20,6 +20,7 @@ import (
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	"github.com/rs/zerolog"
 	"golang.org/x/sync/errgroup"
+	crmv1 "google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/impersonate"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
@@ -33,7 +34,7 @@ const maxIdsToLog int = 100
 
 type Client struct {
 	projects  []string
-	orgs      []*resourcemanagerpb.Organization
+	orgs      []*crmv1.Organization
 	folderIds []string
 
 	ClientOptions []option.ClientOption
@@ -44,7 +45,7 @@ type Client struct {
 	ProjectId string
 	// this is set by table client Org multiplexer
 	OrgId string
-	Org   *resourcemanagerpb.Organization
+	Org   *crmv1.Organization
 	// this is set by table client Folder multiplexer
 	FolderId string
 	// this is set by table client Location multiplexer
@@ -79,7 +80,7 @@ func (c *Client) withLocation(location string) *Client {
 }
 
 // withOrg allows multiplexer to create a new client with given organization
-func (c *Client) withOrg(org *resourcemanagerpb.Organization) *Client {
+func (c *Client) withOrg(org *crmv1.Organization) *Client {
 	orgId := strings.TrimPrefix(org.Name, "organizations/")
 	newClient := *c
 	newClient.logger = c.logger.With().Str("org_id", orgId).Logger()
@@ -130,7 +131,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec *Spec) (schema.ClientM
 	}
 
 	projects := spec.ProjectIDs
-	organizations := make([]*resourcemanagerpb.Organization, 0)
+	organizations := make([]*crmv1.Organization, 0)
 	if spec.BackoffRetries > 0 {
 		c.CallOptions = append(c.CallOptions, gax.WithRetry(func() gax.Retryer {
 			return &Retrier{
@@ -250,7 +251,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec *Spec) (schema.ClientM
 				if err != nil {
 					return nil, fmt.Errorf("failed to get spec organization: %w", err)
 				}
-				organizations = append(organizations, org)
+				organizations = append(organizations, orgPBToCRM(org))
 			}
 		}
 		if len(spec.OrganizationFilter) > 0 {
@@ -321,7 +322,7 @@ func logProjectIds(logger *zerolog.Logger, projectIds []string) {
 	}
 }
 
-func logOrganizationIds(logger *zerolog.Logger, organizations []*resourcemanagerpb.Organization) {
+func logOrganizationIds(logger *zerolog.Logger, organizations []*crmv1.Organization) {
 	// If there are too many organizations, just log the first maxIdsToLog.
 	organizationIds := make([]string, len(organizations))
 	for i, org := range organizations {
@@ -430,8 +431,8 @@ func listProjectsInFolders(ctx context.Context, client *resourcemanager.Projects
 }
 
 // searchOrganizations returns only the ACTIVE organizations
-func searchOrganizations(ctx context.Context, client *resourcemanager.OrganizationsClient, filter string, options ...gax.CallOption) ([]*resourcemanagerpb.Organization, error) {
-	var orgs []*resourcemanagerpb.Organization
+func searchOrganizations(ctx context.Context, client *resourcemanager.OrganizationsClient, filter string, options ...gax.CallOption) ([]*crmv1.Organization, error) {
+	var orgs []*crmv1.Organization
 
 	it := client.SearchOrganizations(ctx, &resourcemanagerpb.SearchOrganizationsRequest{Query: filter}, options...)
 	for {
@@ -447,7 +448,7 @@ func searchOrganizations(ctx context.Context, client *resourcemanager.Organizati
 			continue
 		}
 
-		orgs = append(orgs, org)
+		orgs = append(orgs, orgPBToCRM(org))
 	}
 
 	return orgs, nil
@@ -455,6 +456,18 @@ func searchOrganizations(ctx context.Context, client *resourcemanager.Organizati
 
 func getOrganization(ctx context.Context, client *resourcemanager.OrganizationsClient, id string, options ...gax.CallOption) (*resourcemanagerpb.Organization, error) {
 	return client.GetOrganization(ctx, &resourcemanagerpb.GetOrganizationRequest{Name: "organizations/" + id}, options...)
+}
+
+func orgPBToCRM(org *resourcemanagerpb.Organization) *crmv1.Organization {
+	return &crmv1.Organization{
+		CreationTime:   org.GetCreateTime().String(),
+		DisplayName:    org.GetDisplayName(),
+		LifecycleState: org.GetState().String(),
+		Name:           org.GetName(),
+		Owner: &crmv1.OrganizationOwner{
+			DirectoryCustomerId: org.GetOwner().(*resourcemanagerpb.Organization_DirectoryCustomerId).DirectoryCustomerId,
+		},
+	}
 }
 
 func setUnion(a []string, b []string) []string {

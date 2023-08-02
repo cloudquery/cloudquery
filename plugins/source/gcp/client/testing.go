@@ -1,7 +1,6 @@
 package client
 
 import (
-	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	"context"
 	"net"
 	"net/http/httptest"
@@ -18,6 +17,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/rs/zerolog"
 	"golang.org/x/sync/errgroup"
+	crmv1 "google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/option"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -56,7 +56,7 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 		logger:        l,
 		ClientOptions: clientOptions,
 		projects:      []string{"testProject"},
-		orgs:          []*resourcemanagerpb.Organization{{Name: "organizations/testOrg"}},
+		orgs:          []*crmv1.Organization{{Name: "organizations/testOrg"}},
 		folderIds:     []string{"testFolder"},
 		Backend:       &state.NoOpClient{},
 	}
@@ -107,7 +107,7 @@ func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*h
 		logger:        l,
 		ClientOptions: clientOptions,
 		projects:      []string{"testProject"},
-		orgs:          []*resourcemanagerpb.Organization{{Name: "organizations/testOrg"}},
+		orgs:          []*crmv1.Organization{{Name: "organizations/testOrg"}},
 		Backend:       &state.NoOpClient{},
 	}
 
