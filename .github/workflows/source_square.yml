@@ -1,4 +1,4 @@
-name: Source Plugin Squre Workflow
+name: Source Plugin Square Workflow
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
