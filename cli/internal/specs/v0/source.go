@@ -76,10 +76,10 @@ type Source struct {
 func (s *Source) GetWarnings() Warnings {
 	warnings := make(map[string]string)
 	if s.Backend.String() != BackendNone.String() {
-		warnings["backend"] = "the top-level `backend` option is deprecated. Please use the plugin-level `backend` option instead"
+		warnings["backend"] = "the top-level `backend` option is deprecated. Please use the plugin-level `backend_options` option instead"
 	}
 	if s.BackendSpec != nil {
-		warnings["backend_spec"] = "the top-level `backend_spec` option is deprecated. Please use the plugin-level `backend_spec` option instead"
+		warnings["backend_spec"] = "the top-level `backend_spec` option is deprecated. Please use the plugin-level `backend_options` option instead"
 	}
 	if s.Scheduler.String() != SchedulerDFS.String() {
 		warnings["scheduler"] = "the top-level `scheduler` option is deprecated. Please use the plugin-level `scheduler` option instead"
