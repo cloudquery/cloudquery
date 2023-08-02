@@ -66,7 +66,7 @@ This is the (nested) spec used by the AWS source plugin.
 
   In AWS organization mode, CloudQuery will source all accounts underneath automatically
 
-- `concurrency` (int, optional, default: 50000):
+- `concurrency` (int) (default: 50000):
 
   A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
 

@@ -25,7 +25,7 @@ The following configuration syncs from AWS Pricing service to a Postgres destina
 
 This is the (nested) spec used by the AWS Pricing source plugin.
 
-- `concurrency` (int, optional, default: 10000):
+- `concurrency` (int) (default: 10000):
 
   A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
 
