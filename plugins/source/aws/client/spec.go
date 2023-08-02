@@ -6,7 +6,6 @@ import (
 	"regexp"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
-	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 )
 
 const (
@@ -52,7 +51,6 @@ type Spec struct {
 	UsePaidAPIs               bool                       `json:"use_paid_apis"`
 	TableOptions              *tableoptions.TableOptions `json:"table_options,omitempty"`
 	Concurrency               int                        `json:"concurrency"`
-	Scheduler                 scheduler.Strategy         `json:"scheduler,omitempty"`
 }
 
 func (s *Spec) Validate() error {

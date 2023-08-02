@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/okta
 go 1.20
 
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
+	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882
 	github.com/cloudquery/plugin-sdk/v4 v4.2.3
 	github.com/gorilla/mux v1.8.0
 	github.com/okta/okta-sdk-golang/v3 v3.0.2
@@ -11,7 +11,7 @@ require (
 	github.com/thoas/go-funk v0.9.3
 )
 
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230723001421-10df4b9d1986
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230731001320-3452eb0f930f
 
 require (
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect

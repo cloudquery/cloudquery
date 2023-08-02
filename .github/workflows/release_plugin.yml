@@ -6,6 +6,7 @@ on:
       - "!plugins-destination-duckdb-v*.*.*"
       - "!plugins-destination-sqlite-v*.*.*"
       - "!plugins-destination-snowflake-v*.*.*"
+      - "!plugins-source-test-v*.*.*"
 env:
   CGO_ENABLED: 0
 

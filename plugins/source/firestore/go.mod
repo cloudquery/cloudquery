@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	cloud.google.com/go/firestore v1.9.0
-	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
+	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882
 	github.com/cloudquery/plugin-sdk/v4 v4.2.3
 	github.com/rs/zerolog v1.29.1
 	github.com/stretchr/testify v1.8.4
@@ -12,7 +12,7 @@ require (
 	google.golang.org/api v0.114.0
 )
 
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230723001421-10df4b9d1986
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230731001320-3452eb0f930f
 
 require (
 	cloud.google.com/go v0.110.0 // indirect

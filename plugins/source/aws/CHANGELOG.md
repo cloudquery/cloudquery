@@ -6,6 +6,85 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.3.0...plugins-source-aws-v22.4.0) (2023-08-01)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_appmesh_meshes` was added
+- Table `aws_appmesh_virtual_gateways` was added
+- Table `aws_appmesh_virtual_nodes` was added
+- Table `aws_appmesh_virtual_routers` was added
+- Table `aws_appmesh_virtual_services` was added
+- Table `aws_ecr_repository_lifecycle_policies` was added
+
+### Features
+
+* **resources:** Add Support for AWS App Mesh resources ([#12582](https://github.com/cloudquery/cloudquery/issues/12582)) ([e0ca2be](https://github.com/cloudquery/cloudquery/commit/e0ca2be01f613fc40660c9cf438a65af17028f24))
+* **resources:** Add support for ECR Lifecycle policy ([#12644](https://github.com/cloudquery/cloudquery/issues/12644)) ([344b6e6](https://github.com/cloudquery/cloudquery/commit/344b6e61d715b68c8c9bfeb75acef93e73a79790)), closes [#12594](https://github.com/cloudquery/cloudquery/issues/12594)
+
+## [22.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.2.0...plugins-source-aws-v22.3.0) (2023-08-01)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_appflow_flows` was added
+- Table `aws_auditmanager_assessments` was added
+- Table `aws_backup_report_plans` was added
+- Table `aws_cloudformation_stacks`: column added with name `retain_except_on_create` and type `bool`
+- Table `aws_ec2_ebs_snapshots`: column added with name `sse_type` and type `utf8`
+- Table `aws_ec2_ebs_volumes`: column added with name `sse_type` and type `utf8`
+- Table `aws_emr_notebook_executions` was added
+- Table `aws_emr_release_labels` was added
+- Table `aws_emr_steps` was added
+- Table `aws_emr_supported_instance_types` was added
+- Table `aws_rds_instances`: column added with name `percent_progress` and type `utf8`
+
+### Features
+
+* **resources:** Add support for Amazon Appflow Flows ([#12575](https://github.com/cloudquery/cloudquery/issues/12575)) ([43ed08e](https://github.com/cloudquery/cloudquery/commit/43ed08ee453b0043d43a3ff295b37055606fe6a5))
+* **resources:** Add Support for AWS Audit Manager Assessments ([#12573](https://github.com/cloudquery/cloudquery/issues/12573)) ([ab5a939](https://github.com/cloudquery/cloudquery/commit/ab5a9392dc3fa8a49b6c2adb679895870ddd9af6))
+* **resources:** Add support for AWS Backup Report Plan ([#12578](https://github.com/cloudquery/cloudquery/issues/12578)) ([5fa1af1](https://github.com/cloudquery/cloudquery/commit/5fa1af103a6e0e0b62d05f4d5d6f902c23a9e03e))
+* **resources:** Adding additional EMR cluster resources ([#12562](https://github.com/cloudquery/cloudquery/issues/12562)) ([4a25c5c](https://github.com/cloudquery/cloudquery/commit/4a25c5cc03465d55fae305165a5d9311f1fd9c67))
+* **services:** Support newly added regions ([#12671](https://github.com/cloudquery/cloudquery/issues/12671)) ([5af2d31](https://github.com/cloudquery/cloudquery/commit/5af2d3123635e71287c90deb54df06a83f9b3432))
+
+
+### Bug Fixes
+
+* **deps:** Update AWS modules ([#12591](https://github.com/cloudquery/cloudquery/issues/12591)) ([20eb1bf](https://github.com/cloudquery/cloudquery/commit/20eb1bf2328438a3478d667a78cc5fe03f96fa4f))
+* **deps:** Update AWS modules ([#12592](https://github.com/cloudquery/cloudquery/issues/12592)) ([80ad5c5](https://github.com/cloudquery/cloudquery/commit/80ad5c564d5928def2a14ffa6ed6e7e034b39a36))
+* **deps:** Update github.com/apache/arrow/go/v13 digest to 112f949 ([#12659](https://github.com/cloudquery/cloudquery/issues/12659)) ([48d73a9](https://github.com/cloudquery/cloudquery/commit/48d73a93e678994f43171c363f5a75c29547b0b9))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 3452eb0 ([#12595](https://github.com/cloudquery/cloudquery/issues/12595)) ([c1c0949](https://github.com/cloudquery/cloudquery/commit/c1c09490b17f2e64435e05d745890cdb8b22310d))
+* **deps:** Update github.com/cockroachdb/cockroachdb-parser digest to 302c9ad ([#12664](https://github.com/cloudquery/cloudquery/issues/12664)) ([924509c](https://github.com/cloudquery/cloudquery/commit/924509c409fcf008c93f67fc6a0c5dcf4b2bddc5))
+* **deps:** Update github.com/gocarina/gocsv digest to 99d496c ([#12667](https://github.com/cloudquery/cloudquery/issues/12667)) ([428f719](https://github.com/cloudquery/cloudquery/commit/428f71968fd0ebe8a20e99c771f647267f614894))
+* **deps:** Update github.com/petermattis/goid digest to 80aa455 ([#12669](https://github.com/cloudquery/cloudquery/issues/12669)) ([a140396](https://github.com/cloudquery/cloudquery/commit/a140396153d62d3e68646d58a7749426aa2cc9fe))
+* Detecting conditions for CIS AWS v1.5.0 Section 1 ([#12670](https://github.com/cloudquery/cloudquery/issues/12670)) ([f7bd160](https://github.com/cloudquery/cloudquery/commit/f7bd160e69fc3a222968df0c5f77ee4ed460fb51))
+* **resources:** Handle Pagination for AWS Code Commit Repositories ([#12653](https://github.com/cloudquery/cloudquery/issues/12653)) ([6f37e56](https://github.com/cloudquery/cloudquery/commit/6f37e560535357f1c0a34a5acb2d631c1785e742))
+
+## [22.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.1.0...plugins-source-aws-v22.2.0) (2023-07-27)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_cloudformation_stack_instance_resource_drifts` was added
+- Table `aws_cloudformation_stack_instance_summaries` was added
+- Table `aws_emr_studio_session_mappings` was added
+- Table `aws_emr_studios` was added
+- Table `aws_route53recoverycontrolconfig_clusters` was added
+- Table `aws_route53recoverycontrolconfig_control_panels` was added
+- Table `aws_route53recoverycontrolconfig_routing_controls` was added
+- Table `aws_route53recoverycontrolconfig_safety_rules` was added
+- Table `aws_route53recoveryreadiness_cells` was added
+- Table `aws_route53recoveryreadiness_readiness_checks` was added
+- Table `aws_route53recoveryreadiness_recovery_groups` was added
+- Table `aws_route53recoveryreadiness_resource_sets` was added
+- Table `aws_s3_multi_region_access_points` was added
+
+### Features
+
+* **resources-s3:** Add support for S3 Multi Region Access Points ([#12525](https://github.com/cloudquery/cloudquery/issues/12525)) ([00c6a3f](https://github.com/cloudquery/cloudquery/commit/00c6a3fa781c29d1e47216d79dc098d6ad1777c3))
+* **resources:** Add additional emr resources for studio and studio session mapping ([#12529](https://github.com/cloudquery/cloudquery/issues/12529)) ([66a20a5](https://github.com/cloudquery/cloudquery/commit/66a20a5b2f97ebadee017b165fd413dfaa6d4086))
+* **resources:** Add Support for Amazon Route 53 ARC Recovery Control Configuration ([#12460](https://github.com/cloudquery/cloudquery/issues/12460)) ([8c3109b](https://github.com/cloudquery/cloudquery/commit/8c3109b9deaad7cfa82fd0ff32f2ab4ad842cc88))
+* **resources:** Add Support for Cloudformation Stack Instance Summaries and Stack Instance Resource Drifts ([#12495](https://github.com/cloudquery/cloudquery/issues/12495)) ([e1d9a74](https://github.com/cloudquery/cloudquery/commit/e1d9a746718cad26473e8a6a117ff55f381ecffe)), closes [#12461](https://github.com/cloudquery/cloudquery/issues/12461)
+* **resources:** Add Support for Route53 ARC Recovery Readiness ([#12459](https://github.com/cloudquery/cloudquery/issues/12459)) ([7d6d4c0](https://github.com/cloudquery/cloudquery/commit/7d6d4c0d55d94f5ec8e34518154fd4c45b7ccbf0))
+
 ## [22.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.0.1...plugins-source-aws-v22.1.0) (2023-07-25)
 
 

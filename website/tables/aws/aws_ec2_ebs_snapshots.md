@@ -31,6 +31,7 @@ The following tables depend on aws_ec2_ebs_snapshots:
 |progress|`utf8`|
 |restore_expiry_time|`timestamp[us, tz=UTC]`|
 |snapshot_id|`utf8`|
+|sse_type|`utf8`|
 |start_time|`timestamp[us, tz=UTC]`|
 |state|`utf8`|
 |state_message|`utf8`|

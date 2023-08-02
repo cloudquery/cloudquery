@@ -123,6 +123,7 @@ func getTables() schema.Tables {
 		authorization.ProviderOperationsMetadata(),
 		authorization.RoleAssignments(),
 		authorization.RoleDefinitions(),
+		authorization.RoleManagementPolicyAssignments(),
 		automation.Account(),
 		azurearcdata.PostgresInstances(),
 		azurearcdata.SqlManagedInstances(),

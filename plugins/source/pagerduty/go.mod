@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/PagerDuty/go-pagerduty v1.6.0
-	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
+	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882
 	github.com/cloudquery/plugin-sdk/v4 v4.2.3
 	github.com/rs/zerolog v1.29.1
 	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df
@@ -12,7 +12,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 )
 
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230723001421-10df4b9d1986
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230731001320-3452eb0f930f
 
 require (
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect

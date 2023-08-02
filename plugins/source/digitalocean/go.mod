@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/digitalocean
 go 1.20
 
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230630125530-5a06b2ec2a8e
+	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882
 	github.com/avast/retry-go/v4 v4.3.4
 	github.com/aws/aws-sdk-go-v2 v1.19.0
 	github.com/aws/aws-sdk-go-v2/config v1.18.28
@@ -17,7 +17,7 @@ require (
 	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df
 )
 
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230723001421-10df4b9d1986
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230731001320-3452eb0f930f
 
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect
