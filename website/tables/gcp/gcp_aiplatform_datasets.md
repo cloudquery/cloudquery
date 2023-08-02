@@ -22,6 +22,7 @@ This table depends on [gcp_aiplatform_dataset_locations](gcp_aiplatform_dataset_
 |description|`utf8`|
 |metadata_schema_uri|`utf8`|
 |metadata|`json`|
+|data_item_count|`int64`|
 |create_time|`timestamp[us, tz=UTC]`|
 |update_time|`timestamp[us, tz=UTC]`|
 |etag|`utf8`|
