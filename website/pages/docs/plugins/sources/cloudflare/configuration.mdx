@@ -27,3 +27,5 @@ This is the (nested) spec used by the Cloudflare source plugin.
 - `zones` ([]string, optional. Default: empty):
   List of zones to target. If empty, all available zones will be targeted.
 
+- `concurrency` (int, optional, default: 10000):
+  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.

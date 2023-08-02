@@ -36,15 +36,15 @@ This table depends on [gcp_bigquery_datasets](gcp_bigquery_datasets).
 |materialized_view|`json`|
 |max_staleness|`utf8`|
 |model|`json`|
-|num_bytes|`int64`|
-|num_long_term_bytes|`int64`|
-|num_physical_bytes|`int64`|
-|num_rows|`int64`|
 |num_active_logical_bytes|`int64`|
 |num_active_physical_bytes|`int64`|
+|num_bytes|`int64`|
+|num_long_term_bytes|`int64`|
 |num_long_term_logical_bytes|`int64`|
 |num_long_term_physical_bytes|`int64`|
 |num_partitions|`int64`|
+|num_physical_bytes|`int64`|
+|num_rows|`int64`|
 |num_time_travel_physical_bytes|`int64`|
 |num_total_logical_bytes|`int64`|
 |num_total_physical_bytes|`int64`|
@@ -54,6 +54,7 @@ This table depends on [gcp_bigquery_datasets](gcp_bigquery_datasets).
 |self_link|`utf8`|
 |snapshot_definition|`json`|
 |streaming_buffer|`json`|
+|table_constraints|`json`|
 |table_reference|`json`|
 |time_partitioning|`json`|
 |type|`utf8`|
