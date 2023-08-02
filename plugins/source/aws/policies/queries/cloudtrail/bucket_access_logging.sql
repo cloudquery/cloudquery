@@ -7,8 +7,9 @@ select
     t.account_id,
     t.arn as resource_id,
     case
-        when b.logging_target_bucket is null or b.logging_target_prefix is null then 'fail'
+        when bool_and(b.logging_target_bucket is null or b.logging_target_prefix is null) then 'fail'
         else 'pass'
     end as status
 from aws_cloudtrail_trails t
-inner join aws_s3_buckets b on t.s3_bucket_name = b.name
+    left join aws_s3_buckets b on t.s3_bucket_name = b.name
+group by t.account_id, t.arn
