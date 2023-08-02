@@ -251,7 +251,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec *Spec) (schema.ClientM
 				if err != nil {
 					return nil, fmt.Errorf("failed to get spec organization: %w", err)
 				}
-				organizations = append(organizations, orgPBToCRM(org))
+				organizations = append(organizations, org)
 			}
 		}
 		if len(spec.OrganizationFilter) > 0 {
@@ -444,18 +444,20 @@ func searchOrganizations(ctx context.Context, client *resourcemanager.Organizati
 			return nil, err
 		}
 
-		if org.State != resourcemanagerpb.Organization_ACTIVE {
-			continue
+		if org.State == resourcemanagerpb.Organization_ACTIVE {
+			orgs = append(orgs, orgPBToCRM(org))
 		}
-
-		orgs = append(orgs, orgPBToCRM(org))
 	}
 
 	return orgs, nil
 }
 
-func getOrganization(ctx context.Context, client *resourcemanager.OrganizationsClient, id string, options ...gax.CallOption) (*resourcemanagerpb.Organization, error) {
-	return client.GetOrganization(ctx, &resourcemanagerpb.GetOrganizationRequest{Name: "organizations/" + id}, options...)
+func getOrganization(ctx context.Context, client *resourcemanager.OrganizationsClient, id string, options ...gax.CallOption) (*crmv1.Organization, error) {
+	org, err := client.GetOrganization(ctx, &resourcemanagerpb.GetOrganizationRequest{Name: "organizations/" + id}, options...)
+	if err != nil {
+		return nil, err
+	}
+	return orgPBToCRM(org), nil
 }
 
 func orgPBToCRM(org *resourcemanagerpb.Organization) *crmv1.Organization {
