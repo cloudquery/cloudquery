@@ -47,7 +47,7 @@ jobs:
         run: make test
   validate-release:
     timeout-minutes: 120
-    runs-on: large-ubuntu-go-duckdb
+    runs-on: large-ubuntu-monorepo
     container:
       image: ghcr.io/cloudquery/golang-cross:v10.0.0
       env:
