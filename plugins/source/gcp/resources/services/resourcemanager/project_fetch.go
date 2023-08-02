@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
-func fetchProjects(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- any) error {
+func fetchProjects(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	req := &resourcemanagerpb.GetProjectRequest{
 		Name: "projects/" + c.ProjectId,
@@ -18,7 +18,7 @@ func fetchProjects(ctx context.Context, meta schema.ClientMeta, r *schema.Resour
 	if err != nil {
 		return err
 	}
-	output, err := projectsClient.GetProject(ctx, req)
+	output, err := projectsClient.GetProject(ctx, req, c.CallOptions...)
 	if err != nil {
 		return err
 	}

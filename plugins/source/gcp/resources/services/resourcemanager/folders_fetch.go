@@ -2,6 +2,7 @@ package resourcemanager
 
 import (
 	"context"
+	"errors"
 
 	"google.golang.org/api/iterator"
 
@@ -11,7 +12,7 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
-func fetchFolders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchFolders(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 
 	fClient, err := resourcemanager.NewFoldersClient(ctx, c.ClientOptions...)
@@ -25,10 +26,10 @@ func fetchFolders(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	it := fClient.ListFolders(ctx, req)
 	for {
 		resp, err := it.Next()
-		if err == iterator.Done {
-			break
-		}
 		if err != nil {
+			if errors.Is(err, iterator.Done) {
+				break
+			}
 			return err
 		}
 
@@ -51,13 +52,13 @@ func fetchSubFolders(ctx context.Context, meta schema.ClientMeta, parent *schema
 		req := &pb.ListFoldersRequest{
 			Parent: parentName,
 		}
-		it := fClient.ListFolders(ctx, req)
+		it := fClient.ListFolders(ctx, req, c.CallOptions...)
 		for {
 			resp, err := it.Next()
-			if err == iterator.Done {
-				break
-			}
 			if err != nil {
+				if errors.Is(err, iterator.Done) {
+					break
+				}
 				return err
 			}
 
