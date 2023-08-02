@@ -11,16 +11,15 @@ func GetRows(table arrow.Table) ([][]any, error) {
 	rows := prealloc(table.NumRows(), table.NumCols())
 	var err error
 
-	for n := 0; n < int(table.NumCols()); n++ {
-		col := table.Column(n)
-		row := 0
+	for c := 0; c < int(table.NumCols()); c++ {
+		row, col := 0, table.Column(c)
 		for _, chunk := range col.Data().Chunks() {
 			for i := 0; i < chunk.Len(); i++ {
-				rows[row][n], err = getColValue(chunk, row)
+				rows[row][c], err = getColValue(chunk, i)
+				row++
 				if err != nil {
 					return nil, err
 				}
-				row++
 			}
 		}
 	}

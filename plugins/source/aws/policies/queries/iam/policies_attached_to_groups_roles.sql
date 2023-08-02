@@ -6,8 +6,13 @@ select distinct
     'IAM users should not have IAM policies attached' as title,
     aws_iam_users.account_id,
     arn AS resource_id,
-    case when
-        aws_iam_user_attached_policies.user_arn is not null
-    then 'fail' else 'pass' end as status
+    case 
+        when
+            aws_iam_user_attached_policies.user_arn is not null
+            or aws_iam_user_policies.user_arn is not null
+        then 'fail' 
+        else 'pass' 
+    end as status
 from aws_iam_users
 left join aws_iam_user_attached_policies on aws_iam_users.arn = aws_iam_user_attached_policies.user_arn
+left join aws_iam_user_policies on aws_iam_users.arn = aws_iam_user_policies.user_arn

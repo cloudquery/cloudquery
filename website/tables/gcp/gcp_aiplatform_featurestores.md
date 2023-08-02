@@ -24,4 +24,5 @@ This table depends on [gcp_aiplatform_featurestore_locations](gcp_aiplatform_fea
 |labels|`json`|
 |online_serving_config|`json`|
 |state|`utf8`|
+|online_storage_ttl_days|`int64`|
 |encryption_spec|`json`|

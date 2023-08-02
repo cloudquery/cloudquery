@@ -4,13 +4,15 @@ kind: source
 spec:
   name: launchdarkly
   path: /path/to/downloaded/plugin # Buy from here: https://cloudquery.io/integrations/launchdakrly
-  version: "VERSION_SOURCE_LAUNCHDARKLY"
-  concurrency: 10000
+  registry: local
+  version: "PREMIUM"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
-  backend: local
   # LaunchDarkly specific configuration
   spec:
+    backend_options:
+      table_name: "test_state_table"
+      connection: "@@plugins.DESTINATION_NAME.connection"
     access_token: "<YOUR_ACCESS_TOKEN_HERE>"
 ```
 

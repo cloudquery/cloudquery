@@ -16,6 +16,7 @@ The primary key for this table is **self_link**.
 |creation_timestamp|`utf8`|
 |description|`utf8`|
 |fingerprint|`utf8`|
+|http_keep_alive_timeout_sec|`int64`|
 |id|`int64`|
 |kind|`utf8`|
 |name|`utf8`|

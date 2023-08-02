@@ -17,6 +17,7 @@ The primary key for this table is **self_link**.
 |ip_protocol|`utf8`|
 |all_ports|`bool`|
 |allow_global_access|`bool`|
+|allow_psc_global_access|`bool`|
 |backend_service|`utf8`|
 |base_forwarding_rule|`utf8`|
 |creation_timestamp|`utf8`|
