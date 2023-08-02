@@ -126,28 +126,21 @@ If set to `true`, the exporter will not verify the server will connect via `http
 (`object`, optional)
 
 Plugin-specific configurations. Visit [source plugins](/docs/plugins/sources/overview) documentation for more information.
-The following options are available for most source plugins:
 
-#### concurrency
+## Top level deprecated options
 
-(`int`, optional, default: `<unique-per-plugin>`, introduced in CLI `v3.6.0`)
+### concurrency
 
-A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
+This option was deprecated in CLI `v3.6.0` in favor of plugin level concurrency, as each plugin as its own concurrency requirements. See more in each plugin documentation.
 
-#### scheduler
+### scheduler
 
-(`string`, optional, default: `dfs`, introduced in CLI `v3.6.0`, **EXPERIMENTAL**)
+This option was deprecated in CLI `v3.6.0` in favor of plugin level scheduler, as each plugin as its own scheduler requirements. See more in each plugin documentation.
 
-The scheduler to use when determining the priority of resources to sync. Currently, the only supported values are `dfs` (depth-first search) and `round-robin`. This is an experimental feature, and may be removed in the future. For more information about this, see [performance tuning](/docs/advanced-topics/performance-tuning).
+### backend
 
-#### backend
+This option was deprecated in CLI `v3.6.0` in favor of plugin level `backend_options`, as each plugin as its own backend requirements. See more in each plugin documentation.
 
-(`string`, optional, default: `local`, introduced in CLI `v3.6.0`)
+### backend_spec
 
-The backend to use for storing the state of incremental tables. Currently, the only supported value is `local` (store the state in the local filesystem). For more information, see [managing incremental tables](/docs/advanced-topics/managing-incremental-tables).
-
-#### backend_spec
-
-(`object`, optional, introduced in CLI `v3.6.0`)
-
-The backend spec is specific to the backend used. For the `local` backend, the only option is `path`, which specifies the name of the directory to use when storing metadata files.
+This option was deprecated in CLI `v3.6.0` in favor of plugin level `backend_options`, as each plugin as its own backend requirements. See more in each plugin documentation.
