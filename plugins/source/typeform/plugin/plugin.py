@@ -43,17 +43,21 @@ class TypeformPlugin(plugin.Plugin):
             options.tables = []
         if options.skip_tables is None:
             options.skip_tables = []
-            
+
         return schema.filter_dfs(all_tables, options.tables, options.skip_tables)
 
-    def sync(self, options: plugin.SyncOptions) -> Generator[message.SyncMessage, None, None]:
+    def sync(
+        self, options: plugin.SyncOptions
+    ) -> Generator[message.SyncMessage, None, None]:
         resolvers: list[TableResolver] = []
         for table in self.get_tables(
-                plugin.TableOptions(
-                    tables=options.tables,
-                    skip_tables=options.skip_tables,
-                    skip_dependent_tables=options.skip_dependent_tables,
-                )
+            plugin.TableOptions(
+                tables=options.tables,
+                skip_tables=options.skip_tables,
+                skip_dependent_tables=options.skip_dependent_tables,
+            )
         ):
             resolvers.append(table.resolver)
-        return self._scheduler.sync(self._client, resolvers, options.deterministic_cq_id)
+        return self._scheduler.sync(
+            self._client, resolvers, options.deterministic_cq_id
+        )

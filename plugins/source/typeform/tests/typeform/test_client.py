@@ -51,7 +51,7 @@ class MockServerRequestHandler(BaseHTTPRequestHandler):
 
 def get_free_port():
     s = socket.socket(socket.AF_INET, type=socket.SOCK_STREAM)
-    s.bind(('localhost', 0))
+    s.bind(("localhost", 0))
     address, port = s.getsockname()
     s.close()
     return port
@@ -62,7 +62,9 @@ class TestMockServer(object):
     def setup_class(cls):
         # Configure mock server.
         cls.mock_server_port = get_free_port()
-        cls.mock_server = HTTPServer(('localhost', cls.mock_server_port), MockServerRequestHandler)
+        cls.mock_server = HTTPServer(
+            ("localhost", cls.mock_server_port), MockServerRequestHandler
+        )
 
         # Start running mock server in a separate thread.
         # Daemon threads automatically shut down when the main process exits.
@@ -71,7 +73,10 @@ class TestMockServer(object):
         cls.mock_server_thread.start()
 
     def test_list_forms(self):
-        client = TypeformClient(base_url='http://localhost:{}'.format(self.mock_server_port), access_token="fake")
+        client = TypeformClient(
+            base_url="http://localhost:{}".format(self.mock_server_port),
+            access_token="fake",
+        )
         forms = list(client.list_forms())
         assert len(forms) == 2
         assert forms[0]["id"] == "form1"

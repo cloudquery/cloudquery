@@ -27,7 +27,8 @@ class FormResponses(Table):
                 Column("hidden", JSONType()),
                 Column("calculated", JSONType()),
                 Column("variables", JSONType()),
-            ])
+            ],
+        )
 
     @property
     def resolver(self):
@@ -38,7 +39,11 @@ class FormResponsesResolver(TableResolver):
     def __init__(self, table) -> None:
         super().__init__(table=table)
 
-    def resolve(self, client: Client, parent_resource: Resource) -> Generator[Any, None, None]:
-        for form_response in client.client.list_form_responses(form_id=parent_resource.item["id"]):
+    def resolve(
+        self, client: Client, parent_resource: Resource
+    ) -> Generator[Any, None, None]:
+        for form_response in client.client.list_form_responses(
+            form_id=parent_resource.item["id"]
+        ):
             form_response["form_id"] = parent_resource.item["id"]
             yield form_response
