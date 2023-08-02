@@ -4,6 +4,7 @@ stage: GA
 title: Oracle Source Plugin
 description: CloudQuery Oracle source plugin documentation
 ---
+
 # Oracle Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -26,3 +27,10 @@ In order to get started with the Oracle plugin, you need to create a YAML file i
 The following example sets up the Oracle plugin, and connects it to a postgresql destination:
 
 <Configuration/>
+
+## Oracle Spec
+
+This is the (nested) spec used by Oracle Source Plugin
+
+- `concurrency` (int, optional, default: 10000):
+  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.

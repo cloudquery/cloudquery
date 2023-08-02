@@ -8,7 +8,7 @@ import (
 	pb "google.golang.org/api/cloudresourcemanager/v3"
 )
 
-func fetchProjectPolicies(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- any) error {
+func fetchProjectPolicies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	projectsClient, err := pb.NewService(ctx, c.ClientOptions...)
 	if err != nil {

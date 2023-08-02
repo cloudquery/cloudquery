@@ -1,5 +1,5 @@
 {
-  "cli": "3.12.1",
+  "cli": "3.12.2",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "22.4.0",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -9,7 +9,7 @@
   "plugins/source/cloudflare+FILLER": "0.0.0",
   "plugins/source/digitalocean": "5.2.0",
   "plugins/source/digitalocean+FILLER": "0.0.0",
-  "plugins/source/gcp": "9.4.1",
+  "plugins/source/gcp": "9.4.2",
   "plugins/source/gcp+FILLER": "0.0.0",
   "plugins/source/github": "7.1.0",
   "plugins/source/github+FILLER": "0.0.0",
@@ -108,5 +108,6 @@
   "plugins/source/firestore": "3.0.2",
   "plugins/source/firestore+FILLER": "0.0.0",
   "plugins/source/oracledb": "3.0.3",
-  "plugins/source/oracledb+FILLER": "0.0.0"
+  "plugins/source/oracledb+FILLER": "0.0.0",
+  "plugins/source/square": "0.1.0"
 }

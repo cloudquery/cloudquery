@@ -4,6 +4,7 @@ stage: GA
 title: DigitalOcean Source Plugin
 description: CloudQuery DigitalOcean Plugin documentation
 ---
+
 # DigitalOcean Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -25,6 +26,11 @@ The following example config sets up the DigitalOcean plugin, and connects it to
 
 <Configuration/>
 
+## DigitalOcean Spec
+
+- `concurrency` (int, optional, default: 10000):
+  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
+
 ## Query Examples
 
 ### Find public facing spaces
@@ -40,8 +46,8 @@ SELECT bucket->>'Name',location,public FROM digitalocean_spaces WHERE public = t
 -- Find any droplets that have a public ipv6 or ipv4 IP
 SELECT id, name, v4->>'ip_address' AS address_v4, v4->>'netmask' AS netmask_v4, v4->>'gateway' AS gateway_v4,
        v6->>'ip_address' AS address_v6, v6->>'netmask' AS netmask_v6, v6->>'gateway' AS gateway_v6
-FROM 
-  (SELECT id,name,v4,NULL as v6 FROM digitalocean_droplets CROSS JOIN JSONB_ARRAY_ELEMENTS(digitalocean_droplets.networks->'v4') AS v4 
+FROM
+  (SELECT id,name,v4,NULL as v6 FROM digitalocean_droplets CROSS JOIN JSONB_ARRAY_ELEMENTS(digitalocean_droplets.networks->'v4') AS v4
   UNION
   SELECT id,name,NULL as v4,v6 FROM digitalocean_droplets CROSS JOIN JSONB_ARRAY_ELEMENTS(digitalocean_droplets.networks->'v6') AS v6) AS union_v46
 WHERE v4->>'type' = 'public' OR v6->>'type' = 'public';

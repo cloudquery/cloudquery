@@ -43,6 +43,7 @@ kind: source
 spec:
   name: aws
   path: cloudquery/aws
+  version: "VERSION_SOURCE_AWS"
   destinations: ["postgresql"]
   spec:
     backend_options:
@@ -54,6 +55,7 @@ kind: destination
 spec:
   name: postgresql
   path: "cloudquery/postgresql"
+  version: "VERSION_DESTINATION_POSTGRESQL"
   spec:
     connection_string: .... 
 ```

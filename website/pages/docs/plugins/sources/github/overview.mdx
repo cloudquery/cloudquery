@@ -4,6 +4,7 @@ stage: GA
 title: GitHub Source Plugin
 description: CloudQuery GitHub source plugin documentation
 ---
+
 # GitHub Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -22,3 +23,10 @@ The CloudQuery GitHub plugin extracts your GitHub API and loads it into any supp
 ## Configuration
 
 <Configuration/>
+
+## GitHub Spec
+
+This is the (nested) spec used by GCP Source Plugin
+
+- `concurrency` (int, optional, default: 10000):
+  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.

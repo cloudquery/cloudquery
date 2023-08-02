@@ -40,3 +40,4 @@ The following tables depend on gcp_clouddeploy_releases:
 |target_artifacts|`json`|
 |target_renders|`json`|
 |condition|`json`|
+|deploy_parameters|`json`|
