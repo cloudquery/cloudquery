@@ -1,6 +1,10 @@
 import json
 from unittest import mock
 
+from cloudquery.sdk.message import (
+    SyncInsertMessage,
+    SyncMigrateTableMessage,
+)
 from cloudquery.sdk.plugin import plugin
 from cloudquery.sdk.schema import Table
 
@@ -44,12 +48,35 @@ def test_forms(mock_typeform_client):
     client.list_forms.assert_called()
     client.list_form_responses.assert_called()
 
-    print(msgs)
-    assert len(msgs) == 6  # 2 migrations + 2 forms + 1 response each
-    assert Table.from_arrow_schema(msgs[0].table).name == "typeform_forms"
-    assert Table.from_arrow_schema(msgs[1].table).name == "typeform_form_responses"
+    migrations = get_migration_messages(msgs)
+    assert len(migrations) == 2
+    assert Table.from_arrow_schema(migrations[0].table).name == "typeform_forms"
+    assert Table.from_arrow_schema(migrations[1].table).name == "typeform_form_responses"
 
-    assert msgs[2].record["id"][0].as_py() == "form1"
-    assert msgs[2].record["title"][0].as_py() == "Form 1"
-    assert msgs[3].record["id"][0].as_py() == "form2"
-    assert msgs[3].record["title"][0].as_py() == "Form 2"
+    form_msgs = get_insert_messages(table="typeform_forms", msgs=msgs)
+    assert len(form_msgs) == 2
+    assert form_msgs[0].record["id"][0].as_py() == "form1"
+    assert form_msgs[0].record["title"][0].as_py() == "Form 1"
+    assert form_msgs[1].record["id"][0].as_py() == "form2"
+    assert form_msgs[1].record["title"][0].as_py() == "Form 2"
+
+    response_msgs = get_insert_messages(table="typeform_form_responses", msgs=msgs)
+    assert len(response_msgs) == 2
+
+    assert len(msgs) == 6
+
+
+def get_migration_messages(msgs):
+    migrations = []
+    for msg in msgs:
+        if type(msg) == SyncMigrateTableMessage:
+            migrations.append(msg)
+    return migrations
+
+
+def get_insert_messages(table, msgs):
+    inserts = []
+    for msg in msgs:
+        if type(msg) == SyncInsertMessage and Table.from_arrow_schema(msg.record.schema).name == table:
+            inserts.append(msg)
+    return inserts
