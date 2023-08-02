@@ -27,11 +27,21 @@ This example syncs from Vault to a Postgres destination. The (top level) source 
 
 # Configuration Reference
 
-TODO: add configuration reference
+This is the (nested) spec used by the Vault source plugin:
+
+- `vault_address` (string, required\*):
+  The is the address of the Vault server. This should be a complete URL (including the port) such as `"http://localhost:8200"`
+
+- `concurrency` (integer, optional. Default: 10000):
+  Maximum number of concurrent requests to the Vault server.
 
 # Query Examples
 
-TODO: add an example
+## List the current auth methods with lease times
 
+```sql copy
+SELECT 
+  path, type, config->'default_lease_ttl' as default_lease_ttl, config->'max_lease_ttl' as max_lease_ttl 
+FROM 
+  vault_sys_auths;
 ```
-
