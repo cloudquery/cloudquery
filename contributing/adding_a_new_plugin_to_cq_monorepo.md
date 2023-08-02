@@ -1,4 +1,4 @@
-# Adding New Plugin To CQ Monorepo
+# Adding a New Plugin To CQ Monorepo
 
 This guide relates only when you add a new plugin to the CloudQuery Monorepo.
 
