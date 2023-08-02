@@ -7,9 +7,12 @@ select
     account_id,
     arn as resource_id,
     case
-        when cloud_watch_logs_log_group_arn is null
-            OR (status->>'LatestCloudWatchLogsDeliveryTime')::timestamp < (now() - '1 days'::INTERVAL)
-        then 'fail'
-        else 'pass'
+        when bool_or(
+            cloud_watch_logs_log_group_arn is not null
+            and (status->>'LatestCloudWatchLogsDeliveryTime')::timestamp - now() < '1 days'::INTERVAL
+        )
+        then 'pass'
+        else 'fail'
     end as status
 from aws_cloudtrail_trails
+group by account_id, arn
