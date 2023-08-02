@@ -1,0 +1,54 @@
+name: Source Plugin Square Workflow
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    paths:
+      - "plugins/source/square/**"
+      - ".github/workflows/source_square.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/source/square/**"
+      - ".github/workflows/source_square.yml"
+
+jobs:
+  plugins-source-square:
+    timeout-minutes: 30
+    name: "plugins/source/square"
+    runs-on: large-ubuntu-monorepo
+    defaults:
+      run:
+        working-directory: ./plugins/source/square
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Check formatting
+        run: make fmt-check
+      - name: Run tests
+        run: make test
+
+  validate-release:
+    timeout-minutes: 10
+    runs-on: large-ubuntu-monorepo
+    env:
+      IMAGE_NAME_PREFIX: cloudquery
+      REGISTRY: ghcr.io
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@4c0219f9ac95b02789c1075625400b2acbff50b1
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        with:
+          context: "{{defaultContext}}:plugins/source/square"
+          load: true

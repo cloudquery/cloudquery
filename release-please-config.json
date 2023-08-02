@@ -157,6 +157,10 @@
     "plugins/source/test": {
       "component": "plugins-source-test"
     },
+    "plugins/source/square": {
+      "component": "plugins-source-square",
+      "release-type": "python"
+    },
     "scaffold": {
       "component": "scaffold"
     }
