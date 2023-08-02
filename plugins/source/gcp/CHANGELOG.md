@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.4.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.4.1...plugins-source-gcp-v9.4.2) (2023-08-02)
+
+
+### Bug Fixes
+
+* **main:** Use call options when performing the initial org/project/folder listing ([#12704](https://github.com/cloudquery/cloudquery/issues/12704)) ([a5bcd33](https://github.com/cloudquery/cloudquery/commit/a5bcd3392f9a284711016721efd1bdda54a6bfe1)), closes [#12698](https://github.com/cloudquery/cloudquery/issues/12698)
+
 ## [9.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.4.0...plugins-source-gcp-v9.4.1) (2023-08-01)
 
 
