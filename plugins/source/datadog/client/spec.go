@@ -11,3 +11,9 @@ type Account struct {
 	AppKey string `json:"app_key"`
 	APIUrl string `json:"api_url,omitempty"`
 }
+
+func (s *Spec) SetDefaults() {
+	if s.Concurrency == 0 {
+		s.Concurrency = 10000
+	}
+}
