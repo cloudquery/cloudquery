@@ -12,19 +12,22 @@ from plugin.client import Client
 
 class FormResponses(Table):
     def __init__(self) -> None:
-        super().__init__("typeform_form_responses", columns=[
-            Column("form_id", pa.string(), primary_key=True),
-            Column("response_id", pa.string(), primary_key=True),
-            Column("landing_id", pa.string()),
-            Column("landed_at", pa.timestamp(unit="s")),
-            Column("submitted_at", pa.timestamp(unit="s")),
-            Column("token", pa.string()),
-            Column("metadata", JSONType()),
-            Column("answers", JSONType()),
-            Column("hidden", JSONType()),
-            Column("calculated", JSONType()),
-            Column("variables", JSONType()),
-        ])
+        super().__init__(
+            name="typeform_form_responses",
+            title="Typeform Form Responses",
+            columns=[
+                Column("form_id", pa.string(), primary_key=True),
+                Column("response_id", pa.string(), primary_key=True),
+                Column("landing_id", pa.string()),
+                Column("landed_at", pa.timestamp(unit="s")),
+                Column("submitted_at", pa.timestamp(unit="s")),
+                Column("token", pa.string()),
+                Column("metadata", JSONType()),
+                Column("answers", JSONType()),
+                Column("hidden", JSONType()),
+                Column("calculated", JSONType()),
+                Column("variables", JSONType()),
+            ])
 
 
 class FormResponsesResolver(TableResolver):

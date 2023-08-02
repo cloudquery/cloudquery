@@ -28,9 +28,14 @@ class TypeformPlugin(plugin.Plugin):
         self._client = Client(self._spec)
 
     def get_tables(self, options: plugin.TableOptions) -> List[plugin.Table]:
-        return [
+        all_tables = [
             tables.Forms(),
         ]
+        # set parent table relationships
+        for table in all_tables:
+            for relation in table.relations:
+                relation.parent = table
+        return all_tables
 
     def sync(self, options: plugin.SyncOptions) -> Generator[message.SyncMessage, None, None]:
         return self._scheduler.sync(self._client, [tables.FormsResolver()])
