@@ -6,7 +6,8 @@
 \echo "Executing check 3.2"
 \ir ../queries/cloudtrail/log_file_validation_enabled.sql
 \set check_id '3.3'
--- todo
+\echo "Executing check 3.3"
+\ir ../queries/cloudtrail/bucket_is_not_public.sql
 \set check_id '3.4'
 \echo "Executing check 3.4"
 \ir ../queries/cloudtrail/integrated_with_cloudwatch_logs.sql
