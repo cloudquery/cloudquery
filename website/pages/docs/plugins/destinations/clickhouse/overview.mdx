@@ -51,7 +51,7 @@ This is the (nested) spec used by the ClickHouse destination plugin.
   See [file variable substitution](/docs/advanced-topics/environment-variable-substitution#file-variable-substitution-example)
   for how to read this value from a file.
 
-- `engine` (optional, structure documented [below](#clickhouse-table-engine). Default: `MergeTree` engine)
+- `engine` (optional, [table engine settings](#clickhouse-table-engine). Default: `MergeTree` engine)
 
   Engine to be used for tables.
   Only [`*MergeTree` family](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family) is supported at the moment.
