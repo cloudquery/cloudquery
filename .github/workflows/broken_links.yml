@@ -85,6 +85,8 @@ jobs:
             --exclude github.com \
             --exclude support.google.com \
             --exclude work-bench.com \
+            --exclude api.typeform.com \
+            --exclude api.eu.typeform.com \
             --exclude mailchimp.com \
             --exclude returngis.net \
             --exclude plausible.io \
