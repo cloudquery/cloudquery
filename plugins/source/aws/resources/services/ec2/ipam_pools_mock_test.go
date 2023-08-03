@@ -27,5 +27,5 @@ func buildIpamPools(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestIpamPools(t *testing.T) {
-	client.AwsMockTestHelper(t, IPAMPools(), buildIpamPools, client.TestOptions{})
+	client.AwsMockTestHelper(t, IpamPools(), buildIpamPools, client.TestOptions{})
 }

@@ -13,11 +13,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func Ipams() *schema.Table {
-	tableName := "aws_ec2_ipams"
+func IpamScopes() *schema.Table {
+	tableName := "aws_ec2_ipam_scopes"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Ipam.html`,
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_IpamScope.html`,
 		Resolver:    fetchIPAMS,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.Ipam{}),

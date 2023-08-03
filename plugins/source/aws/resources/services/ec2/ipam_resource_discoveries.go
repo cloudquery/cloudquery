@@ -13,14 +13,14 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func Ipams() *schema.Table {
-	tableName := "aws_ec2_ipams"
+func IpamResourceDiscoveries() *schema.Table {
+	tableName := "aws_ec2_ipam_resource_discoveries"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Ipam.html`,
-		Resolver:    fetchIPAMS,
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_IpamResourceDiscovery.html`,
+		Resolver:    fetchIPAMResourceDiscoveries,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
-		Transform:   transformers.TransformWithStruct(&types.Ipam{}),
+		Transform:   transformers.TransformWithStruct(&types.IpamResourceDiscovery{}),
 		Columns: []schema.Column{
 			{
 				Name:       "request_account_id",
@@ -37,7 +37,7 @@ func Ipams() *schema.Table {
 			{
 				Name:       "arn",
 				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("IpamArn"),
+				Resolver:   schema.PathResolver("IpamResourceDiscoveryArn"),
 				PrimaryKey: true,
 			},
 
@@ -50,10 +50,10 @@ func Ipams() *schema.Table {
 	}
 }
 
-func fetchIPAMS(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+func fetchIPAMResourceDiscoveries(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Ec2
-	paginator := ec2.NewDescribeIpamsPaginator(svc, &ec2.DescribeIpamsInput{})
+	paginator := ec2.NewDescribeIpamResourceDiscoveriesPaginator(svc, &ec2.DescribeIpamResourceDiscoveriesInput{})
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *ec2.Options) {
 			options.Region = cl.Region
@@ -61,7 +61,7 @@ func fetchIPAMS(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 		if err != nil {
 			return err
 		}
-		res <- output.Ipams
+		res <- output.IpamResourceDiscoveries
 	}
 
 	return nil

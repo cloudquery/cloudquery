@@ -13,7 +13,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func IPAMPools() *schema.Table {
+func IpamPools() *schema.Table {
 	tableName := "aws_ec2_ipam_pools"
 	return &schema.Table{
 		Name:        tableName,

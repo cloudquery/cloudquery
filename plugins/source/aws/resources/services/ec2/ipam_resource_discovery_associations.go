@@ -13,14 +13,14 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func Ipams() *schema.Table {
-	tableName := "aws_ec2_ipams"
+func IpamResourceDiscoveryAssociations() *schema.Table {
+	tableName := "aws_ec2_ipam_resource_discovery_associations"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Ipam.html`,
-		Resolver:    fetchIPAMS,
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_IpamResourceDiscovery.html`,
+		Resolver:    fetchIpamResourceDiscoveryAssociations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
-		Transform:   transformers.TransformWithStruct(&types.Ipam{}),
+		Transform:   transformers.TransformWithStruct(&types.IpamResourceDiscoveryAssociation{}),
 		Columns: []schema.Column{
 			{
 				Name:       "request_account_id",
@@ -37,7 +37,7 @@ func Ipams() *schema.Table {
 			{
 				Name:       "arn",
 				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("IpamArn"),
+				Resolver:   schema.PathResolver("IpamResourceDiscoveryAssociationArn"),
 				PrimaryKey: true,
 			},
 
@@ -50,10 +50,10 @@ func Ipams() *schema.Table {
 	}
 }
 
-func fetchIPAMS(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+func fetchIpamResourceDiscoveryAssociations(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Ec2
-	paginator := ec2.NewDescribeIpamsPaginator(svc, &ec2.DescribeIpamsInput{})
+	paginator := ec2.NewDescribeIpamResourceDiscoveryAssociationsPaginator(svc, &ec2.DescribeIpamResourceDiscoveryAssociationsInput{})
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *ec2.Options) {
 			options.Region = cl.Region
@@ -61,7 +61,7 @@ func fetchIPAMS(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 		if err != nil {
 			return err
 		}
-		res <- output.Ipams
+		res <- output.IpamResourceDiscoveryAssociations
 	}
 
 	return nil
