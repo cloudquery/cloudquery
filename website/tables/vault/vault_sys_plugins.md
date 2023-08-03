@@ -2,16 +2,16 @@
 
 This table shows data for Vault Sys Plugins.
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is (**type**, **name**, **version**).
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id (PK)|`uuid`|
+|_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|type|`utf8`|
-|name|`utf8`|
-|version|`utf8`|
+|type (PK)|`utf8`|
+|name (PK)|`utf8`|
+|version (PK)|`utf8`|
 |builtin|`bool`|
 |deprecation_status|`utf8`|

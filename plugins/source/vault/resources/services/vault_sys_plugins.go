@@ -12,7 +12,7 @@ func VaultSysPlugins() *schema.Table {
 	return &schema.Table{
 		Name:      "vault_sys_plugins",
 		Resolver:  fetchVaultSysPlugins,
-		Transform: transformers.TransformWithStruct(api.PluginDetails{}),
+		Transform: transformers.TransformWithStruct(api.PluginDetails{}, transformers.WithPrimaryKeys("Type", "Name", "Version")),
 	}
 }
 
