@@ -148,6 +148,10 @@
     "plugins/source/snyk": {
       "component": "plugins-source-snyk"
     },
+    "plugins/source/square": {
+      "component": "plugins-source-square",
+      "release-type": "python"
+    },
     "plugins/source/stripe": {
       "component": "plugins-source-stripe"
     },
