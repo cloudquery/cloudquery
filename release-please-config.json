@@ -165,7 +165,7 @@
       "component": "plugins-source-typeform",
       "release-type": "simple",
       "extra-files": [
-        "plugins/source/typeform/version.py"
+        "plugins/source/typeform/plugin/plugin.py"
       ]
     },
     "plugins/source/square": {
