@@ -20,7 +20,7 @@ CloudQuery is designed with a pluggable architecture and uses [Apache Arrow](htt
 
 ## Features
 
-The Python SDK provides a number of features to make plugin development easier, and plugins written in Python performant.
+The Python SDK provides a number of features to make plugin development easier, and make plugins written in Python performant.
 
 ### Plugin Server
 
@@ -52,9 +52,7 @@ A CloudQuery Python source plugin, like `MyPlugin` above, should subclass `cloud
 
 ### Multi-threaded Scheduler
 
-{/* <!-- vale off --> */}
-The scheduler's main responsibilities are to manage concurrent execution of requests and the order in which tables are synced to avoid dependency issues. It also place limits on the number of concurrent requests and memory usage. For the scheduler in the Python SDK, we implemented a new queue-based scheduling algorithm that can take advantage of multiple cores, without plugin developers needing to think about this.
-{/* <!-- vale on --> */}
+The scheduler's main responsibilities are to manage concurrent execution of requests and the order in which tables are synced to avoid dependency issues. It also place limits on the number of concurrent requests and memory usage.
 
 To invoke the scheduler, the `sync` method of a plugin should pass a list of its tables and options to the scheduler. The scheduler will take care of the rest. Here is an example [from the Typeform plugin](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/typeform/plugin/plugin.py):
 
