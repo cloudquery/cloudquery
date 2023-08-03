@@ -164,13 +164,7 @@
     "plugins/source/typeform": {
       "component": "plugins-source-typeform",
       "release-type": "simple",
-      "extra-files": [
-        "plugins/source/typeform/plugin/plugin.py"
-      ]
-    },
-    "plugins/source/square": {
-      "component": "plugins-source-square",
-      "release-type": "python"
+      "extra-files": ["plugins/source/typeform/plugin/plugin.py"]
     },
     "scaffold": {
       "component": "scaffold"
