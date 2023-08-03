@@ -13,6 +13,7 @@ The primary key for this table is **name**.
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |project_id|`utf8`|
+|details|`json`|
 |name (PK)|`utf8`|
 |resource|`json`|
 |note_name|`utf8`|

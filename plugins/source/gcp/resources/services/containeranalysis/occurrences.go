@@ -7,7 +7,6 @@ import (
 	pb "cloud.google.com/go/containeranalysis/apiv1beta1/grafeas/grafeaspb"
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	common "google.golang.org/genproto/googleapis/devtools/containeranalysis/v1beta1/common"
 
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
@@ -64,26 +63,5 @@ func fetchOccurrences(ctx context.Context, meta schema.ClientMeta, parent *schem
 // details column resolver
 func resolveDetails(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, col schema.Column) error {
 	occurrence := r.Item.(*pb.Occurrence)
-	switch occurrence.GetKind() {
-	// The note and occurrence represent a package vulnerability.
-	case common.NoteKind_VULNERABILITY:
-		return r.Set(col.Name, occurrence.GetVulnerability())
-	// The note and occurrence assert build provenance.
-	case common.NoteKind_BUILD:
-		return r.Set(col.Name, occurrence.GetBuild())
-	// This represents an image basis relationship.
-	case common.NoteKind_IMAGE:
-		return r.Set(col.Name, occurrence.GetDerivedImage())
-	// The note and occurrence track deployment events.
-	case common.NoteKind_DEPLOYMENT:
-		return r.Set(col.Name, occurrence.GetDeployment())
-	// The note and occurrence track the initial discovery status of a resource.
-	case common.NoteKind_DISCOVERY:
-		return r.Set(col.Name, occurrence.GetDiscovered())
-	// This represents a logical "role" that can attest to artifacts.
-	case common.NoteKind_ATTESTATION:
-		return r.Set(col.Name, occurrence.GetAttestation())
-	}
-	return nil
-
+	return r.Set(col.Name, occurrence.GetDetails())
 }

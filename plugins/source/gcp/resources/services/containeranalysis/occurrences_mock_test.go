@@ -22,12 +22,19 @@ type fakeOccurrencesServer struct {
 }
 
 func (*fakeOccurrencesServer) ListOccurrences(context.Context, *pb.ListOccurrencesRequest) (*pb.ListOccurrencesResponse, error) {
-	resp := pb.ListOccurrencesResponse{}
-	if err := faker.FakeObject(&resp); err != nil {
+	occ := pb.Occurrence{}
+	if err := faker.FakeObject(&occ); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
-	resp.NextPageToken = ""
-	return &resp, nil
+	occVul := pb.Occurrence_Vulnerability{}
+
+	if err := faker.FakeObject(&occVul); err != nil {
+		return nil, fmt.Errorf("failed to fake data: %w", err)
+	}
+	occ.Details = &occVul
+	return &pb.ListOccurrencesResponse{
+		Occurrences: []*pb.Occurrence{&occ},
+	}, nil
 }
 
 func TestOccurrences(t *testing.T) {
