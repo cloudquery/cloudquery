@@ -52,7 +52,9 @@ A CloudQuery Python source plugin, like `MyPlugin` above, should subclass `cloud
 
 ### Multi-threaded Scheduler
 
+{/* <!-- vale off --> */}
 The scheduler's responsibility is to manage the order in which tables are synced, ensuring that tables are synced in the correct order to avoid dependency issues, and to place limits on the number of concurrent requests and memory usage. For the scheduler in the Python SDK, we implemented a new queue-based scheduling algorithm that can take advantage of multiple cores, without plugin developers needing to think about this.
+{/* <!-- vale on --> */}
 
 To invoke the scheduler, the `sync` method of a plugin should pass a list of its tables and options to the scheduler. The scheduler will take care of the rest. Here is an example [from the Typeform plugin](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/typeform/plugin/plugin.py):
 
