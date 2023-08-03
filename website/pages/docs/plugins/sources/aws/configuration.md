@@ -54,7 +54,7 @@ For full details, see the [Multi Account Configuration Tutorial](/docs/plugins/s
 
 This is the (nested) spec used by the AWS source plugin.
 
-- `regions` ([]string) (default: Empty. Will use all enabled regions)
+- `regions` (`[]string`) (default: `[]`. Will use all enabled regions)
 
   Regions to use.
 
@@ -66,69 +66,55 @@ This is the (nested) spec used by the AWS source plugin.
 
   In AWS organization mode, CloudQuery will source all accounts underneath automatically
 
-- `concurrency` (int) (default: 50000):
+- `concurrency` (`int`) (default: `50000`):
 
   A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
 
-- `initialization_concurrency` (int) (default: 4)
+- `initialization_concurrency` (`int`) (default: `4`)
 
   During initialization the AWS source plugin fetches information about each account and region. This setting controls how many accounts can be initialized concurrently.
   Only configurations with many accounts (either hardcoded or discovered via Organizations) should require modifying this setting, to either lower it to avoid rate limit errors, or to increase it to speed up the initialization process.
 
-- `aws_debug` (bool) (default: false)
+- `aws_debug` (`bool`) (default: `false`)
 
   If true, will log AWS debug logs, including retries and other request/response metadata
 
-- `max_retries` (int) (default: 10)
+- `max_retries` (`int`) (default: `10`)
 
   Defines the maximum number of times an API request will be retried
 
-- `max_backoff` (int) (default: 30)
+- `max_backoff` (`int`) (default: `30`)
 
   Defines the duration between retry attempts
 
-- `custom_endpoint_url` (string) (default: not used)
+- `custom_endpoint_url` (`string`) (default: not used)
 
   The base URL endpoint the SDK API clients will use to make API calls to. The SDK will suffix URI path and query elements to this endpoint
 
-- `custom_endpoint_hostname_immutable` (bool) (default: not used)
+- `custom_endpoint_hostname_immutable` (`bool`) (default: not used)
 
   Specifies if the endpoint's hostname can be modified by the SDK's API client. When using something like LocalStack make sure to set it equal to `True`
 
-- `custom_endpoint_partition_id` (string) (default: not used)
+- `custom_endpoint_partition_id` (`string`) (default: not used)
 
   The AWS partition the endpoint belongs to
 
-- `custom_endpoint_signing_region` (string) (default: not used)
+- `custom_endpoint_signing_region` (`string`) (default: not used)
 
   The region that should be used for signing the request to the endpoint
 
-- `use_paid_apis` (boolean) (default: false)
+- `use_paid_apis` (`bool`) (default: `false`)
 
-  When set to `true` plugin will sync data from APIs that incur a fee. Currently only `aws_costexplorer*` and `aws_alpha_cloudwatch_metric*` tables require this flag to be set to `true`.
+  When set to `true` plugin will sync data from APIs that incur a fee. 
+  Currently only `aws_costexplorer*` and `aws_alpha_cloudwatch_metric*` tables require this flag to be set to `true`.
 
-- **preview** `backend_options` (object) (default: not used)
+- **preview** `table_options` (`map`) (default: not used)
 
-  Allowed properties are `table_name` and `connection`. Use this configuration to enable incremental syncs for supported tables. See more [here](/blog/proto-v3#unified-protocol).
-  Example
+  This is a preview feature (for more information about `preview` features look at (Plugin Versioning)[(/docs/plugins/sources/aws/versioning)] ) that enables users to override the default options for specific tables.
+  The root of the object takes a table name, and the next level takes an API method name.
+  The final level is the actual input object as defined by the API. 
 
-  ```yaml
-  kind: source
-  spec:
-    name: aws
-    path: cloudquery/aws
-    version: "VERSION_SOURCE_AWS"
-    destinations: ["postgresql"]
-    spec:
-      backend_options:
-        table_name: "test_state_table"
-        connection: "@@plugins.postgresql.connection"
-  ```
-
-- **preview** `table_options` (map) (default: not used)
-
-  This is a preview feature (for more information about `preview` features look at (Plugin Versioning)[(/docs/plugins/sources/aws/versioning)] `) that enables users to override the default options for specific tables. The root of the object takes a table name, and the next level takes an API method name. The final level is the actual input object as defined by the API. 
-The format of the `table_options` object is as follows:
+  The format of the `table_options` object is as follows:
 
   ```yaml
   table_options:
