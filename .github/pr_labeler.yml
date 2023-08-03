@@ -62,6 +62,8 @@ homebrew:
   - plugins/source/homebrew/**/*
 hubspot:
   - plugins/source/hubspot/**/*
+jira:
+  - plugins/source/jira/**/*
 k8s:
   - plugins/source/k8s/**/*
 kafka:

@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882
 	github.com/cloudquery/plugin-pb-go v1.9.1
-	github.com/cloudquery/plugin-sdk/v4 v4.2.4
+	github.com/cloudquery/plugin-sdk/v4 v4.2.5
 	github.com/jackc/pgx-zerolog v0.0.0-20230315001418-f978528409eb
 	github.com/jackc/pgx/v5 v5.3.1
 	github.com/rs/zerolog v1.29.1
