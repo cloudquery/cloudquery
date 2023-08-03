@@ -14,7 +14,7 @@ We're excited to announce the first release of a Python SDK for CloudQuery plugi
 
 ## Background
 
-CloudQuery has a pluggable architecture and uses [Apache Arrow](https://arrow.apache.org/) over [gRPC](https://grpc.io/) for communication between plugins. Source and destination plugins are independent of one another, and this architecture allows plugins to be written in different languages but still communicate with one another. Until now, we've only provided an SDK for writing plugins in Go, but we're excited to announce that we now have an SDK for writing plugins in Python as well!
+CloudQuery is designed with a pluggable architecture and uses [Apache Arrow](https://arrow.apache.org/) over [gRPC](https://grpc.io/) for communication between plugins. Source and destination plugins are independent of one another, and this architecture allows plugins to be written in different languages but still communicate with one another. Until now, we've only provided an SDK for writing plugins in Go, but we're excited to announce that we now have an SDK for writing plugins in Python as well.
 
 ![cloudquery high-level architecture](/images/cloudquery-architecture.png)
 
@@ -44,17 +44,17 @@ if __name__ == "__main__":
     main()
 ```
 
-`MyPlugin` is a class that extends `cloudquery.sdk.plugin.Plugin`.
+Here `MyPlugin` is a class that extends `cloudquery.sdk.plugin.Plugin`. We'll look at the `Plugin` class in more detail next.
 
-### Base Plugin Class
+### Plugin Class
 
-A CloudQuery Python plugin, like `MyPlugin` above, should subclass `cloudquery.sdk.plugin.Plugin` and only needs to implement three methods: `init`, `get_tables` and `sync`. The `init` method is called when the plugin is started, and is where you can do any initialization work. The `get_tables` method should return a list of tables that the plugin supports. The `sync` method is called when a table needs to be synced, and is where the SDK scheduler can be used to manage the syncing of all the supported tables.
+A CloudQuery Python source plugin, like `MyPlugin` above, should subclass `cloudquery.sdk.plugin.Plugin` and needs to implement three methods: `init`, `get_tables` and `sync`. The `init` method is called when the plugin is started, and is where you can do any initialization work. The `get_tables` method should return a list of tables that the plugin supports. The `sync` method is called when a table needs to be synced, and is where the SDK scheduler can be used to manage the syncing of all the supported tables.
 
 ### Multi-threaded Scheduler
 
-The scheduler is an optional (but highly recommended) component of a plugin, with the responsibility to manage the order in which tables are synced, to ensure that tables are synced in the correct order to avoid dependency issues, and place limits on the number of concurrent requests and memory usage. For the scheduler in the Python SDK, we implemented a new queue-based scheduling algorithm that can take advantage of multiple cores, without plugin developers needing to think about this.
+The scheduler's responsibility is to manage the order in which tables are synced, ensuring that tables are synced in the correct order to avoid dependency issues, and to place limits on the number of concurrent requests and memory usage. For the scheduler in the Python SDK, we implemented a new queue-based scheduling algorithm that can take advantage of multiple cores, without plugin developers needing to think about this.
 
-The `sync` method of a plugin needs to pass a list of its tables and options to the scheduler, and the scheduler will take care of the rest. Here is an example of this code [from the Typeform plugin](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/typeform/plugin/plugin.py):
+To invoke the scheduler, the `sync` method of a plugin should pass a list of its tables and options to the scheduler. The scheduler will take care of the rest. Here is an example [from the Typeform plugin](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/typeform/plugin/plugin.py):
 
 ```python
 from typing import Generator
@@ -86,7 +86,7 @@ class TypeformPlugin(plugin.Plugin):
 
 ### Apache Arrow-based Type System with Custom Types
 
-Table columns are defined using the Apache Arrow type system, which is a powerful and flexible way to define data types. CloudQuery destinations support almost all Arrow types, and the Python SDK provides support for a few additional types, such as UUID, IP address and JSON. For example, here is the definition of the `typeform_forms` table from the Typeform plugin, that uses `string`, `timestamp` and `JSON` types:
+Table columns are defined using the Apache Arrow type system, a powerful and flexible way to define data types. CloudQuery destinations support almost all Arrow types, and the Python SDK provides support for a few additional types, such as UUID, IP address and JSON. For example, here is the definition of the `typeform_forms` table from the Typeform plugin, that uses `string`, `timestamp` and `JSON` types:
 
 ```python
 import pyarrow as pa
@@ -118,11 +118,28 @@ class Forms(Table):
 
 ([Browse the full code on GitHub](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/typeform/plugin/tables/forms.py))
 
+### OpenAPI Transformer
+
+The Python SDK introduces a transformer that can convert fields from an OpenAPI specification into CloudQuery-compatible table schemas. This can greatly reduce the manual work needed to develop plugins for APIs that have an OpenAPI spec. Check out the [Square plugin source code](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/square/plugin/tables/bookings.py) for a great example of this in action.
+
 ### Docker for Cross-Platform Distribution
 
-To support cross-platform packaging of Python plugins (and other languages in the future) in `v3.12.0` we introduced a new `docker` registry type to the CloudQuery CLI. Whereas Go-based plugins are downloaded as binaries from GitHub releases, Python plugins can be downloaded as Docker images from the specified Docker registry. This allows us to support multiple platforms, and also makes it easier to distribute plugins that have dependencies on external libraries.
+To support cross-platform packaging of Python plugins (and other languages in the future) in `v3.12.0` we introduced a new `docker` registry type to the CloudQuery CLI. Where Go-based plugins are downloaded as binaries from GitHub releases, Python plugins are downloaded as Docker images from the specified Docker registry. This allows CloudQuery to support multiple platforms, and also makes it easier to distribute plugins that have dependencies on external libraries.
 
 ## Getting Started
+
+If you're keen to dive right in and develop a source plugin in Python, check out the [Python SDK documentation](https://github.com/cloudquery/plugin-sdk-python) and sample plugins on GitHub:
+ - [Python SDK on PyPI](https://pypi.org/project/cloudquery-plugin-sdk/)
+ - [Square plugin](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/square)
+ - [Typeform plugin](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/typeform)
+
+We will also be adding more documentation and examples in the coming weeks, so stay tuned!
+
+## Future Work
+
+Work is already underway to add SDKs for more languages. We won't spoil the surprise here, but we're excited to share more details soon. Be sure to follow us on [Twitter](https://twitter.com/cloudqueryio) or subscribe to our newsletter below 👇 to get the latest updates.
+
+The first release of the Python SDK only officially supports source plugins. Writing a destination plugin in Python is possible using the low-level gRPC APIs, but is not yet officially supported by the Python SDK.
 
 ## Feedback
 
