@@ -19,8 +19,9 @@ payouts_columns = oapi_definition_to_columns(
 class Payouts(Table):
     def __init__(self) -> None:
         super().__init__(
-            "square_payouts",
-            payouts_columns,
+            name="square_payouts",
+            title="Square Payouts",
+            columns=payouts_columns,
         )
 
     @property
