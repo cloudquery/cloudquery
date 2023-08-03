@@ -157,6 +157,13 @@
     "plugins/source/test": {
       "component": "plugins-source-test"
     },
+    "plugins/source/typeform": {
+      "component": "plugins-source-typeform",
+      "release-type": "simple",
+      "extra-files": [
+        "plugins/source/typeform/version.py"
+      ]
+    },
     "plugins/source/square": {
       "component": "plugins-source-square",
       "release-type": "python"
