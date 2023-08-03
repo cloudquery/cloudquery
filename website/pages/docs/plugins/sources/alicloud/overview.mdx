@@ -22,20 +22,20 @@ The following configuration syncs from Alibaba Cloud to a Postgres destination. 
 
 <Configuration />
 
-- `concurrency` (int, optional, default: 50000):
+- `concurrency` (`int`, optional, default: `50000`):
 
   A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
 
-- `accounts` (array[object], required):
+- `accounts` (`array[object]`, required):
 
   A list of accounts to sync. Every account must have a unique name, and must specify at least one region. The `access_key` and `secret_key` are required and can be specified as environment variables, as shown in the example above.
 
-  - `name` (string, required): A unique name for the account.
-  - `regions` (array[string], required): A list of regions to sync. For example, `["cn-hangzhou", "cn-beijing"]`.
-  - `access_key` (string, required): A valid access key for the account
-  - `secret_key` (string, required): A valid secret key for the account, corresponding to the access key
+  - `name` (`string`, required): A unique name for the account.
+  - `regions` (`array[string]`, required): A list of regions to sync. For example, `["cn-hangzhou", "cn-beijing"]`.
+  - `access_key` (`string`, required): A valid access key for the account
+  - `secret_key` (`string`, required): A valid secret key for the account, corresponding to the access key
 
-- `bill_history_months` (int, optional):
+- `bill_history_months` (`int`, optional):
 
   The number of months of billing history to fetch for the `alicloud_bss_bill` and `alicloud_bss_bill_overview` tables. Defaults to 12.
 

@@ -19,8 +19,9 @@ refunds_columns = oapi_definition_to_columns(
 class Refunds(Table):
     def __init__(self) -> None:
         super().__init__(
-            "square_refunds",
-            refunds_columns,
+            name="square_refunds",
+            title="Square Refunds",
+            columns=refunds_columns,
         )
 
     @property
