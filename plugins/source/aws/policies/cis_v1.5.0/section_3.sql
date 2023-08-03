@@ -10,6 +10,9 @@
 \set check_id '3.4'
 \echo "Executing check 3.4"
 \ir ../queries/cloudtrail/integrated_with_cloudwatch_logs.sql
+\set check_id '3.5'
+\echo "Executing check 3.5"
+\ir ../queries/config/enabled_all_regions.sql
 \set check_id '3.6'
 \echo "Executing check 3.6"
 \ir ../queries/cloudtrail/bucket_access_logging.sql
