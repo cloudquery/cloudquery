@@ -1,5 +1,16 @@
 # Changelog
 
+## [5.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v5.0.2...plugins-destination-postgresql-v5.0.3) (2023-08-03)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v13 digest to 112f949 ([#12659](https://github.com/cloudquery/cloudquery/issues/12659)) ([48d73a9](https://github.com/cloudquery/cloudquery/commit/48d73a93e678994f43171c363f5a75c29547b0b9))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 3452eb0 ([#12595](https://github.com/cloudquery/cloudquery/issues/12595)) ([c1c0949](https://github.com/cloudquery/cloudquery/commit/c1c09490b17f2e64435e05d745890cdb8b22310d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.4 ([#12718](https://github.com/cloudquery/cloudquery/issues/12718)) ([f059a15](https://github.com/cloudquery/cloudquery/commit/f059a159a2ee406ab2b0a33792c244cd217025a6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.5 ([#12731](https://github.com/cloudquery/cloudquery/issues/12731)) ([d267239](https://github.com/cloudquery/cloudquery/commit/d267239aa3aca5f94bd36a8db1ec0d9f7dc0865f))
+* Strip NUL bytes in JSON ([#12755](https://github.com/cloudquery/cloudquery/issues/12755)) ([57e41ac](https://github.com/cloudquery/cloudquery/commit/57e41ac2dc3d8a539ab0a39964c4f993abd131b7))
+
 ## [5.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v5.0.1...plugins-destination-postgresql-v5.0.2) (2023-07-25)
 
 
