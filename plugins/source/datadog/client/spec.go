@@ -9,7 +9,6 @@ type Account struct {
 	Name   string `json:"name"`
 	APIKey string `json:"api_key"`
 	AppKey string `json:"app_key"`
-	APIUrl string `json:"api_url,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {
