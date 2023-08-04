@@ -31,7 +31,7 @@ func TestPlugin(t *testing.T) {
 		SaslUsername:       getenv("CQ_DEST_KAFKA_SASL_USERNAME", ""),
 		SaslPassword:       getenv("CQ_DEST_KAFKA_SASL_PASSWORD", ""),
 		Verbose:            true,
-		MaxMetadataRetries: 15,
+		maxMetadataRetries: 15,
 		FileSpec: &filetypes.FileSpec{
 			Format: filetypes.FormatTypeJSON,
 		},

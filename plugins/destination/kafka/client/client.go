@@ -46,8 +46,8 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewC
 	}
 
 	c.conf = sarama.NewConfig()
-	if c.spec.MaxMetadataRetries != 0 {
-		c.conf.Metadata.Retry.Max = c.spec.MaxMetadataRetries
+	if c.spec.maxMetadataRetries != 0 {
+		c.conf.Metadata.Retry.Max = c.spec.maxMetadataRetries
 	}
 	c.conf.Metadata.Retry.Backoff = time.Millisecond * 500
 	c.conf.Producer.Retry.Max = 1
