@@ -22,6 +22,7 @@ The following tables depend on gcp_appengine_versions:
 |project_id (PK)|`utf8`|
 |name (PK)|`utf8`|
 |id|`utf8`|
+|scaling|`json`|
 |inbound_services|`list<item: int64, nullable>`|
 |instance_class|`utf8`|
 |network|`json`|
