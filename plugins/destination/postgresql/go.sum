@@ -64,8 +64,8 @@ github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46t
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/disq/plugin-sdk/v4 v4.0.0-20230804123653-eb0f99e2399f h1:aJxfFEq89hcOZ7PkLlzQkAHPIOrKyqk5/Z/Jl32MCh0=
-github.com/disq/plugin-sdk/v4 v4.0.0-20230804123653-eb0f99e2399f/go.mod h1:WPcEvIn3tTfi5SLpSAtehyZTjcYrPGe3EgxZUztYRp4=
+github.com/disq/plugin-sdk/v4 v4.0.0-20230804125937-aafcf9dab3cb h1:9pYLcsGHsw3rpn0IDMPks9sDo8hzxEPudRRpWvp3+Jw=
+github.com/disq/plugin-sdk/v4 v4.0.0-20230804125937-aafcf9dab3cb/go.mod h1:WPcEvIn3tTfi5SLpSAtehyZTjcYrPGe3EgxZUztYRp4=
 github.com/envoyproxy/go-control-plane v0.9.0/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/go-control-plane v0.9.1-0.20191026205805-5f8ba28d4473/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/go-control-plane v0.9.4/go.mod h1:6rpuAdCZL397s3pYoYcLgu1mIlRU8Am5FuJP05cCM98=
