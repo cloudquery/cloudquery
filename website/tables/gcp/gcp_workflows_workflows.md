@@ -22,3 +22,4 @@ The composite primary key for this table is (**project_id**, **name**).
 |revision_create_time|`timestamp[us, tz=UTC]`|
 |labels|`json`|
 |service_account|`utf8`|
+|source_code|`json`|

@@ -17,6 +17,7 @@ This table depends on [gcp_vmmigration_source_migrating_vms](gcp_vmmigration_sou
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
+|target_vm_details|`json`|
 |create_time|`timestamp[us, tz=UTC]`|
 |end_time|`timestamp[us, tz=UTC]`|
 |name (PK)|`utf8`|
