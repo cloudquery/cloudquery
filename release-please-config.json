@@ -163,8 +163,10 @@
     },
     "plugins/source/typeform": {
       "component": "plugins-source-typeform",
-      "release-type": "python",
-      "extra-files": ["plugin/plugin.py"]
+      "extra-files": [
+        "plugin/plugin.py"
+      ],
+      "release-type": "python"
     },
     "scaffold": {
       "component": "scaffold"
