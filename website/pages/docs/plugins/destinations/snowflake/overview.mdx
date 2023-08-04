@@ -50,15 +50,15 @@ This is the top level spec used by the Snowflake destination plugin.
   `account` - Name assigned to your Snowflake account. If you are not on us-west-2 or AWS deployment, append the region and platform to the end, e.g., `<account>.<region> or <account>.<region>.<platform>`.
 
 
-- `batch_size` (integer, optional. default: 1000)
+- `batch_size` (integer) (optional) (default: 1000)
 
   Number of records to batch together before sending to the database.
 
-- `batch_size_bytes` (integer, optional. default: 4194304 (4MiB))
+- `batch_size_bytes` (integer) (optional) (default: 4194304 (4MiB))
 
   Number of bytes (as Arrow buffer size) to batch together before sending to the database.
 
-- `migrate_concurrency` (integer, optional. default: 1)
+- `migrate_concurrency` (integer) (optional) (default: 1)
 
   By default tables are migrated one at a time. This option allows you to migrate multiple tables concurrently. This can be useful if you have a lot of tables to migrate and want to speed up the process.
   Setting this to a negative number means no limit.
