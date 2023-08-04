@@ -2,7 +2,6 @@ package client
 
 import (
 	"encoding/json"
-	"math/big"
 	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
@@ -102,10 +101,7 @@ func transformArr(arr arrow.Array) []any {
 				Valid: a.IsValid(i),
 			}
 		case *array.Uint64:
-			pgArr[i] = pgtype.Numeric{
-				Int:   big.NewInt(int64(a.Value(i))),
-				Valid: a.IsValid(i),
-			}
+			pgArr[i] = a.Value(i)
 		case *array.Float32:
 			pgArr[i] = pgtype.Float4{
 				Float32: a.Value(i),
