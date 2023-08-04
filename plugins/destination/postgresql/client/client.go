@@ -8,7 +8,7 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
-	"github.com/cloudquery/plugin-sdk/v4/writers/mixedbatchwriter"
+	"github.com/cloudquery/plugin-sdk/v4/writers/streamingbatchwriter"
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -22,14 +22,14 @@ type Client struct {
 	currentDatabaseName string
 	currentSchemaName   string
 	pgType              pgType
-	batchSize           int
-	writer              *mixedbatchwriter.MixedBatchWriter
 
 	plugin.UnimplementedSource
+	writer *streamingbatchwriter.StreamingBatchWriter
 }
 
 // Assert Client implements plugin.Client interface.
 var _ plugin.Client = (*Client)(nil)
+var _ streamingbatchwriter.Client = (*Client)(nil)
 
 type pgType int
 
@@ -53,7 +53,7 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 		return nil, err
 	}
 	spec.SetDefaults()
-	c.batchSize = spec.BatchSize
+
 	logLevel, err := tracelog.LogLevelFromString(spec.PgxLogLevel.String())
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse pgx log level %s: %w", spec.PgxLogLevel, err)
@@ -90,11 +90,11 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 	if err != nil {
 		return nil, fmt.Errorf("failed to get database type: %w", err)
 	}
-	c.writer, err = mixedbatchwriter.New(c,
-		mixedbatchwriter.WithLogger(c.logger),
-		mixedbatchwriter.WithBatchSize(spec.BatchSize),
-		mixedbatchwriter.WithBatchSizeBytes(spec.BatchSizeBytes),
-		mixedbatchwriter.WithBatchTimeout(spec.BatchTimeout.Duration()),
+	c.writer, err = streamingbatchwriter.New(c,
+		streamingbatchwriter.WithLogger(c.logger),
+		streamingbatchwriter.WithBatchSizeRows(int64(spec.BatchSize)),
+		streamingbatchwriter.WithBatchSizeBytes(int64(spec.BatchSizeBytes)),
+		streamingbatchwriter.WithBatchTimeout(spec.BatchTimeout.Duration()),
 	)
 	if err != nil {
 		return nil, err
@@ -106,7 +106,7 @@ func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) err
 	return c.writer.Write(ctx, res)
 }
 
-func (c *Client) Close(ctx context.Context) error {
+func (c *Client) Close(context.Context) error {
 	var err error
 	if c.conn == nil {
 		return fmt.Errorf("client already closed or not initialized")

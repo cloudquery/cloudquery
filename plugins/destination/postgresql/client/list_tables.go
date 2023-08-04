@@ -53,9 +53,8 @@ ORDER BY
 	table_name ASC, ordinal_position ASC;
 `
 
-func (c *Client) listTables(ctx context.Context, include, exclude []string) (schema.Tables, error) {
-	var tables schema.Tables
-	whereClause := c.whereClause(include, exclude)
+func (c *Client) getDBTable(ctx context.Context, name string) (*schema.Table, error) {
+	whereClause := "AND pg_class.relname = '" + inClause(name) + "'"
 	if c.pgType == pgTypeCockroachDB {
 		whereClause += " AND information_schema.columns.is_hidden != 'YES'"
 	}
@@ -65,20 +64,25 @@ func (c *Client) listTables(ctx context.Context, include, exclude []string) (sch
 		return nil, err
 	}
 	defer rows.Close()
+
+	var table *schema.Table
 	for rows.Next() {
 		var ordinalPosition int
 		var tableName, columnName, columnType, pkName string
 		var isPrimaryKey, notNull bool
+
 		if err := rows.Scan(&ordinalPosition, &tableName, &columnName, &columnType, &isPrimaryKey, &notNull, &pkName); err != nil {
 			return nil, err
 		}
-		if ordinalPosition == 1 {
-			tables = append(tables, &schema.Table{
-				Name:    tableName,
-				Columns: make([]schema.Column, 0),
-			})
+
+		if table == nil {
+			// need this to return nil if table doesn't exist
+			table = &schema.Table{
+				Name:    name,
+				Columns: make(schema.ColumnList, 0),
+			}
 		}
-		table := tables[len(tables)-1]
+
 		if pkName != "" {
 			table.PkConstraintName = pkName
 		}
@@ -89,24 +93,11 @@ func (c *Client) listTables(ctx context.Context, include, exclude []string) (sch
 			Type:       c.PgToSchemaType(columnType),
 		})
 	}
-	return tables, nil
+
+	return table, nil
 }
 
-func (c *Client) whereClause(include, exclude []string) string {
-	if len(include) == 0 && len(exclude) == 0 {
-		return ""
-	}
-	var where string
-	if len(include) > 0 {
-		where = fmt.Sprintf("AND pg_class.relname IN (%s)", c.inClause(include))
-	}
-	if len(exclude) > 0 {
-		where = fmt.Sprintf("AND pg_class.relname NOT IN (%s)", c.inClause(exclude))
-	}
-	return where
-}
-
-func (*Client) inClause(values []string) string {
+func inClause(values ...string) string {
 	var inClause string
 	for i, value := range values {
 		value = strings.ReplaceAll(value, "'", "")  // strip single quotes

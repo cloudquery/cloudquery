@@ -10,65 +10,53 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-// MigrateTableBatch migrates a table. It forms part of the writer.MixedBatchWriter interface.
-func (c *Client) MigrateTableBatch(ctx context.Context, messages message.WriteMigrateTables) error {
-	tables, err := tablesFromMessages(messages)
-	if err != nil {
-		return err
-	}
-	include := make([]string, len(tables))
-	for i, table := range tables {
-		include[i] = table.Name
-	}
-	var exclude []string
-	pgTables, err := c.listTables(ctx, include, exclude)
-	if err != nil {
-		return fmt.Errorf("failed listing postgres tables: %w", err)
-	}
-	tables = c.normalizeTables(tables, pgTables)
-
-	safeTables := map[string]bool{}
-	for _, msg := range messages {
-		// last message takes precedence; we don't actually expect the same table to be
-		// in the same batch twice.
-		safeTables[msg.Table.Name] = !msg.MigrateForce
-	}
-	nonAutoMigrateableTables, changes := c.nonAutoMigrateableTables(tables, pgTables, safeTables)
-	if len(nonAutoMigrateableTables) > 0 {
-		return fmt.Errorf("tables %s with changes %v require migration. Migrate manually or consider using 'migrate_mode: forced'", strings.Join(nonAutoMigrateableTables, ","), changes)
-	}
-
-	for _, table := range tables {
-		tableName := table.Name
-		c.logger.Info().Str("table", tableName).Msg("Migrating table")
+// MigrateTable migrates a table.
+// Part of the streamingbatchwriter.Client interface.
+func (c *Client) MigrateTable(ctx context.Context, messages <-chan *message.WriteMigrateTable) error {
+	for msg := range messages {
+		table := msg.Table
 		if len(table.Columns) == 0 {
-			c.logger.Info().Str("table", tableName).Msg("Table with no columns, skipping")
+			c.logger.Info().Str("table", table.Name).Msg("Table with no columns, skipping")
 			continue
 		}
-		pgTable := pgTables.Get(tableName)
+
+		pgTable, err := c.getDBTable(ctx, table.Name)
+		if err != nil {
+			return fmt.Errorf("failed getting postgres table %s: %w", table.Name, err)
+		}
+
+		table = c.normalizeTable(table, pgTable) // we can call normalize here to ensure the schema even for the new table
+
 		if pgTable == nil {
-			c.logger.Debug().Str("table", tableName).Msg("Table doesn't exist, creating")
+			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
 			if err := c.createTableIfNotExist(ctx, table); err != nil {
 				return err
 			}
-		} else {
-			changes := table.GetChanges(pgTable)
-			if c.canAutoMigrate(changes) {
-				c.logger.Info().Str("table", tableName).Msg("Table exists, auto-migrating")
-				if err := c.autoMigrateTable(ctx, table, changes); err != nil {
-					return err
-				}
-			} else {
-				c.logger.Info().Str("table", tableName).Msg("Table exists, force migration required")
-				if err := c.dropTable(ctx, tableName); err != nil {
-					return err
-				}
-				if err := c.createTableIfNotExist(ctx, table); err != nil {
-					return err
-				}
+			continue
+		}
+
+		changes := table.GetChanges(pgTable)
+		if c.canAutoMigrate(changes) {
+			c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
+			if err := c.autoMigrateTable(ctx, table, changes); err != nil {
+				return err
 			}
+			continue
+		}
+
+		if !msg.MigrateForce {
+			return fmt.Errorf("table %s with changes %v requires migration. Migrate manually or consider using 'migrate_mode: forced'", table.Name, changes)
+		}
+
+		c.logger.Info().Str("table", table.Name).Msg("Table exists, force migration required")
+		if err := c.dropTable(ctx, table.Name); err != nil {
+			return err
+		}
+		if err := c.createTableIfNotExist(ctx, table); err != nil {
+			return err
 		}
 	}
+
 	conn, err := c.conn.Acquire(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to acquire connection: %w", err)
@@ -139,37 +127,6 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 		}
 	}
 	return true
-}
-
-// normalize the requested schema to be compatible with what Postgres supports
-func (c *Client) normalizeTables(tables schema.Tables, pgTables schema.Tables) schema.Tables {
-	var result schema.Tables
-	for _, table := range tables {
-		pgTable := pgTables.Get(table.Name)
-		if pgTable == nil {
-			result = append(result, table)
-		} else {
-			result = append(result, c.normalizeTable(table, pgTable))
-		}
-	}
-	return result
-}
-
-func (c *Client) nonAutoMigrateableTables(tables schema.Tables, pgTables schema.Tables, safeTables map[string]bool) ([]string, [][]schema.TableColumnChange) {
-	var result []string
-	var tableChanges [][]schema.TableColumnChange
-	for _, t := range tables {
-		pgTable := pgTables.Get(t.Name)
-		if pgTable == nil {
-			continue
-		}
-		changes := t.GetChanges(pgTable)
-		if safeTables[t.Name] && !c.canAutoMigrate(changes) {
-			result = append(result, t.Name)
-			tableChanges = append(tableChanges, changes)
-		}
-	}
-	return result, tableChanges
 }
 
 func (c *Client) dropTable(ctx context.Context, tableName string) error {

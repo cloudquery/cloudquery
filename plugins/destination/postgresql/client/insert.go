@@ -13,61 +13,36 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
-// InsertBatch inserts records into the destination table. It forms part of the writer.MixedBatchWriter interface.
-func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts) error {
-	tables, err := tablesFromMessages[*message.WriteInsert](messages)
-	if err != nil {
-		return err
-	}
-
-	include := make([]string, len(tables))
-	for i, table := range tables {
-		include[i] = table.Name
-	}
-	var exclude []string
-	pgTables, err := c.listTables(ctx, include, exclude)
-	if err != nil {
-		return err
-	}
-	tables = c.normalizeTables(tables, pgTables)
-	if err != nil {
-		return err
-	}
+// WriteTable inserts records into the destination table.
+// Part of the streamingbatchwriter.Client interface.
+func (c *Client) WriteTable(ctx context.Context, messages <-chan *message.WriteInsert) error {
+	var table *schema.Table
+	var pgTable *schema.Table
+	var err error
 
 	var sql string
 	batch := &pgx.Batch{}
-	for _, msg := range messages {
-		r := msg.Record
-		md := r.Schema().Metadata()
-		tableName, ok := md.GetValue(schema.MetadataTableName)
-		if !ok {
-			return fmt.Errorf("table name not found in metadata")
-		}
-		table := tables.Get(tableName)
+	for msg := range messages {
 		if table == nil {
-			return fmt.Errorf("table %s not found", tableName)
-		}
-		if len(table.PrimaryKeysIndexes()) > 0 {
-			sql = c.upsert(table)
-		} else {
-			sql = c.insert(table)
-		}
-		rows := transformValues(r)
-		for _, rowVals := range rows {
-			batch.Queue(sql, rowVals...)
-		}
-		batchSize := batch.Len()
-		if batchSize >= c.batchSize {
-			br := c.conn.SendBatch(ctx, batch)
-			if err := br.Close(); err != nil {
-				var pgErr *pgconn.PgError
-				if !errors.As(err, &pgErr) {
-					// not recoverable error
-					return fmt.Errorf("failed to execute batch: %w", err)
-				}
-				return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
+			table = msg.GetTable()
+			pgTable, err = c.getDBTable(ctx, table.Name)
+			if err != nil {
+				return fmt.Errorf("failed getting postgres table %s: %w", table.Name, err)
 			}
-			batch = &pgx.Batch{}
+			if pgTable == nil {
+				return fmt.Errorf("missing expected postgres table %s", table.Name)
+			}
+			table = c.normalizeTable(table, pgTable) // we can call normalize here to ensure the schema even for the new table
+
+			if len(table.PrimaryKeysIndexes()) > 0 {
+				sql = c.upsert(table)
+			} else {
+				sql = c.insert(table)
+			}
+		}
+
+		for _, row := range transformValues(msg.Record) {
+			batch.Queue(sql, row...)
 		}
 	}
 

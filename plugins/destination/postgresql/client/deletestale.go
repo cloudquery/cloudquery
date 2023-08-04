@@ -10,10 +10,11 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-// DeleteStaleBatch deletes stale records from the destination table. It forms part of the writer.MixedBatchWriter interface.
-func (c *Client) DeleteStaleBatch(ctx context.Context, messages message.WriteDeleteStales) error {
+// DeleteStale deletes stale records from the destination table.
+// Part of the streamingbatchwriter.Client interface.
+func (c *Client) DeleteStale(ctx context.Context, messages <-chan *message.WriteDeleteStale) error {
 	batch := &pgx.Batch{}
-	for _, msg := range messages {
+	for msg := range messages {
 		var sb strings.Builder
 		sb.WriteString("delete from ")
 		sb.WriteString(pgx.Identifier{msg.TableName}.Sanitize())
