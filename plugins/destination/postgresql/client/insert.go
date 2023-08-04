@@ -63,28 +63,23 @@ func (c *Client) WriteTable(ctx context.Context, messages <-chan *message.WriteI
 
 func (*Client) insert(table *schema.Table) string {
 	var sb strings.Builder
-	tableName := table.Name
 	sb.WriteString("insert into ")
-	sb.WriteString(pgx.Identifier{tableName}.Sanitize())
+	sb.WriteString(pgx.Identifier{table.Name}.Sanitize())
 	sb.WriteString(" (")
-	columns := table.Columns
-	columnsLen := len(columns)
-	for i, c := range columns {
+	for i, c := range table.Columns {
+		if i > 0 {
+			sb.WriteString(",")
+		}
 		sb.WriteString(pgx.Identifier{c.Name}.Sanitize())
-		if i < columnsLen-1 {
-			sb.WriteString(",")
-		} else {
-			sb.WriteString(") values (")
-		}
 	}
-	for i := range columns {
+	sb.WriteString(") values (")
+	for i := range table.Columns {
+		if i > 0 {
+			sb.WriteString(",")
+		}
 		sb.WriteString(fmt.Sprintf("$%d", i+1))
-		if i < columnsLen-1 {
-			sb.WriteString(",")
-		} else {
-			sb.WriteString(")")
-		}
 	}
+	sb.WriteString(")")
 	return sb.String()
 }
 
@@ -92,22 +87,18 @@ func (c *Client) upsert(table *schema.Table) string {
 	var sb strings.Builder
 
 	sb.WriteString(c.insert(table))
-	columns := table.Columns
-	columnsLen := len(columns)
 
 	constraintName := table.PkConstraintName
 	sb.WriteString(" on conflict on constraint ")
 	sb.WriteString(pgx.Identifier{constraintName}.Sanitize())
 	sb.WriteString(" do update set ")
-	for i, column := range columns {
+	for i, column := range table.Columns {
+		if i > 0 {
+			sb.WriteString(",")
+		}
 		sb.WriteString(pgx.Identifier{column.Name}.Sanitize())
 		sb.WriteString("=excluded.") // excluded references the new values
 		sb.WriteString(pgx.Identifier{column.Name}.Sanitize())
-		if i < columnsLen-1 {
-			sb.WriteString(",")
-		} else {
-			sb.WriteString("")
-		}
 	}
 
 	return sb.String()
