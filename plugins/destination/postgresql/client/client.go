@@ -110,11 +110,10 @@ func (c *Client) Close(ctx context.Context) error {
 	if c.conn == nil {
 		return fmt.Errorf("client already closed or not initialized")
 	}
-
+	err := c.writer.Close(ctx)
 	c.conn.Close()
 	c.conn = nil
-
-	return c.writer.Close(ctx)
+	return err
 }
 
 func (c *Client) currentDatabase(ctx context.Context) (string, error) {
