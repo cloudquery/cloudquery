@@ -141,6 +141,7 @@ func TestPg10ToArrow(t *testing.T) {
 		})
 	}
 }
+
 func TestCockroachToArrow(t *testing.T) {
 	cases := []struct {
 		pgType string

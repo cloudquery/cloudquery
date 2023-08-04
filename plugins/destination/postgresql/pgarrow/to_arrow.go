@@ -105,7 +105,7 @@ func CockroachToArrow(t string) arrow.DataType {
 	case "int", "bigint", "int8", "int64", "integer":
 		// Cockroach has different aliases for ints
 		return arrow.PrimitiveTypes.Int64
-	case "numeric(20,0)", "decimal(20,0)":
+	case "numeric(20,0)":
 		// special case.
 		// TODO: add Decimal128/256 support
 		return arrow.PrimitiveTypes.Uint64
