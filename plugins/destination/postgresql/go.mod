@@ -16,7 +16,7 @@ require (
 replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230731001320-3452eb0f930f
 
 // TODO: remove after https://github.com/cloudquery/plugin-sdk/pull/1130
-replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/v4 v4.8.1-rc1.0.20230804104331-c81a61271520
+replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/v4 v4.8.1-rc1.0.20230804105852-aaf780e1a80e
 
 require (
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
