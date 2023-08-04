@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql/driver"
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
@@ -131,22 +130,11 @@ func prepareValueForResourceSet(dataType arrow.DataType, v any) (any, error) {
 			v = vt
 		}
 	case *arrow.Uint64Type:
-		switch vt := v.(type) {
-		case pgtype.Numeric:
+		if vt, ok := v.(pgtype.Numeric); ok {
 			if !vt.Valid {
 				v = nil
 			} else {
 				v = vt.Int.Uint64()
-			}
-		case string:
-			if len(vt) == 0 {
-				v = nil
-			} else {
-				n, err := strconv.ParseInt(vt, 10, 64)
-				if err != nil {
-					return nil, err
-				}
-				v = uint64(n)
 			}
 		}
 		return v, nil
