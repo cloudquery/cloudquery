@@ -15,6 +15,8 @@ The composite primary key for this table is (**project_id**, **name**).
 |project_id (PK)|`utf8`|
 |name (PK)|`utf8`|
 |description|`utf8`|
+|source_code|`json`|
+|trigger|`json`|
 |status|`utf8`|
 |entry_point|`utf8`|
 |runtime|`utf8`|

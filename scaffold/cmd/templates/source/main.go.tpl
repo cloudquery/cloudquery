@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/{{.Org}}/cq-source-{{.Name}}/plugin"
+	"github.com/{{.Org}}/cq-source-{{.Name}}/resources/plugin"
 
 	"github.com/cloudquery/plugin-sdk/v4/serve"
 )

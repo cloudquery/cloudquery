@@ -56,6 +56,10 @@ func resolveLoadBalancerWebACL(ctx context.Context, meta schema.ClientMeta, pare
 
 		return err
 	}
-	res <- response.WebACL
+	// nil value means no web acl is associated
+	if response.WebACL != nil {
+		res <- response.WebACL
+	}
+
 	return nil
 }

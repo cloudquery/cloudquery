@@ -46,6 +46,7 @@ func StackSets() *schema.Table {
 
 		Relations: []*schema.Table{
 			stackSetOperations(),
+			stackInstanceSummaries(),
 		},
 	}
 }

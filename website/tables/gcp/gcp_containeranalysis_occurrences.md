@@ -20,3 +20,4 @@ The primary key for this table is **name**.
 |remediation|`utf8`|
 |create_time|`timestamp[us, tz=UTC]`|
 |update_time|`timestamp[us, tz=UTC]`|
+|details|`json`|

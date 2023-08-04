@@ -4,6 +4,7 @@ stage: GA
 title: Alibaba Cloud Source Plugin
 description: Documentation for the Alibaba Cloud source plugin for CloudQuery
 ---
+
 # Alibaba Cloud Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -21,18 +22,22 @@ The following configuration syncs from Alibaba Cloud to a Postgres destination. 
 
 <Configuration />
 
-- `accounts` (array[object], required):
+- `concurrency` (`int`, optional, default: `50000`):
+
+  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
+
+- `accounts` (`array[object]`, required):
 
   A list of accounts to sync. Every account must have a unique name, and must specify at least one region. The `access_key` and `secret_key` are required and can be specified as environment variables, as shown in the example above.
-  - `name` (string, required): A unique name for the account.
-  - `regions` (array[string], required): A list of regions to sync. For example, `["cn-hangzhou", "cn-beijing"]`.
-  - `access_key` (string, required): A valid access key for the account
-  - `secret_key` (string, required): A valid secret key for the account, corresponding to the access key
 
-- `bill_history_months` (int, optional):
+  - `name` (`string`, required): A unique name for the account.
+  - `regions` (`array[string]`, required): A list of regions to sync. For example, `["cn-hangzhou", "cn-beijing"]`.
+  - `access_key` (`string`, required): A valid access key for the account
+  - `secret_key` (`string`, required): A valid secret key for the account, corresponding to the access key
+
+- `bill_history_months` (`int`, optional):
 
   The number of months of billing history to fetch for the `alicloud_bss_bill` and `alicloud_bss_bill_overview` tables. Defaults to 12.
-
 
 See the [Alibaba documentation](https://www.alibabacloud.com/help/en/basics-for-beginners/latest/obtain-an-accesskey-pair) for how to obtain an AccessKey pair.
 
@@ -45,15 +50,15 @@ See the [Alibaba documentation](https://www.alibabacloud.com/help/en/basics-for-
 ### Find all ECS instances in a region
 
 ```sql copy
-select 
-  instance_id, 
-  os_name, 
-  region_id, 
-  start_time, 
-  tags 
-from 
-  alicloud_ecs_instances 
-where 
+select
+  instance_id,
+  os_name,
+  region_id,
+  start_time,
+  tags
+from
+  alicloud_ecs_instances
+where
   region_id = 'eu-west-1';
 ```
 
@@ -68,13 +73,13 @@ where
 ### Query past bills
 
 ```sql copy
-select 
-  product_name, 
-  item, 
-  pip_code, 
-  currency, 
-  adjust_amount 
-from 
+select
+  product_name,
+  item,
+  pip_code,
+  currency,
+  adjust_amount
+from
   alicloud_bss_bill_overview;
 ```
 
@@ -89,12 +94,12 @@ from
 ### Query bucket stats
 
 ```sql copy
-select 
-  account_id, 
-  bucket_name, 
-  object_count, 
-  storage 
-from 
+select
+  account_id,
+  bucket_name,
+  object_count,
+  storage
+from
   alicloud_oss_bucket_stats;
 ```
 

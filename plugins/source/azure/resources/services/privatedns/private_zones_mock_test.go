@@ -34,7 +34,11 @@ func createPrivateZones(router *mux.Router) error {
 		}
 	})
 
-	return nil
+	if err := createMockRecordSets(router); err != nil {
+		return err
+	}
+
+	return createMockVirtualNetworkLinks(router)
 }
 
 func TestPrivateZones(t *testing.T) {

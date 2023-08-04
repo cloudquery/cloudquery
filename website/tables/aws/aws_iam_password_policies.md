@@ -135,9 +135,7 @@ SELECT
   account_id,
   account_id,
   CASE
-  WHEN (password_reuse_prevention IS NULL OR password_reuse_prevention > 24)
-  OR policy_exists = false
-  THEN 'fail'
+  WHEN password_reuse_prevention IS DISTINCT FROM 24 THEN 'fail'
   ELSE 'pass'
   END
 FROM

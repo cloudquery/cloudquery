@@ -45,7 +45,7 @@ func NewClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, opt
 		return nil, err
 	}
 	c.syncClient = syncClient.(*client.Client)
-	c.scheduler = scheduler.NewScheduler(scheduler.WithLogger(logger), scheduler.WithConcurrency(spec.Concurrency))
+	c.scheduler = scheduler.NewScheduler(scheduler.WithLogger(logger), scheduler.WithConcurrency(spec.Concurrency), scheduler.WithStrategy(spec.Scheduler))
 	return c, nil
 }
 
@@ -83,5 +83,5 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 		}
 		syncClient = c.syncClient.WithBackend(stateClient)
 	}
-	return c.scheduler.Sync(ctx, syncClient, tables, res)
+	return c.scheduler.Sync(ctx, syncClient, tables, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
 }

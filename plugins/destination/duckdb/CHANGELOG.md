@@ -1,5 +1,31 @@
 # Changelog
 
+## [4.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v4.2.0...plugins-destination-duckdb-v4.2.1) (2023-08-01)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v13 digest to 112f949 ([#12659](https://github.com/cloudquery/cloudquery/issues/12659)) ([48d73a9](https://github.com/cloudquery/cloudquery/commit/48d73a93e678994f43171c363f5a75c29547b0b9))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 3452eb0 ([#12595](https://github.com/cloudquery/cloudquery/issues/12595)) ([c1c0949](https://github.com/cloudquery/cloudquery/commit/c1c09490b17f2e64435e05d745890cdb8b22310d))
+* **deps:** Update module github.com/marcboeker/go-duckdb to v1.4.2 ([#12657](https://github.com/cloudquery/cloudquery/issues/12657)) ([feebab9](https://github.com/cloudquery/cloudquery/commit/feebab9b107f9d3e6f2278b9af9e40fec05e575f))
+* **deps:** Update module github.com/marcboeker/go-duckdb to v1.4.3 ([#12672](https://github.com/cloudquery/cloudquery/issues/12672)) ([877133f](https://github.com/cloudquery/cloudquery/commit/877133f20042ec9a027b13dfb633135602a75770))
+
+## [4.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v4.1.4...plugins-destination-duckdb-v4.2.0) (2023-07-27)
+
+
+### Features
+
+* Support date types ([#12538](https://github.com/cloudquery/cloudquery/issues/12538)) ([abb9ec0](https://github.com/cloudquery/cloudquery/commit/abb9ec06c23fe0204707667824f46a1b5435b8f5))
+
+## [4.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v4.1.3...plugins-destination-duckdb-v4.1.4) (2023-07-25)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 10df4b9 ([#12443](https://github.com/cloudquery/cloudquery/issues/12443)) ([e385283](https://github.com/cloudquery/cloudquery/commit/e38528309f862f37bc7e278f9b69cf92d5aa5bd5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.3 ([#12307](https://github.com/cloudquery/cloudquery/issues/12307)) ([8f14e4d](https://github.com/cloudquery/cloudquery/commit/8f14e4de7bf4d4c833f501135ea0610916a42f8b))
+* **migration:** Make it clear that migration can be done manually and not only via `migrate_mode: forced` ([#12390](https://github.com/cloudquery/cloudquery/issues/12390)) ([33d39cf](https://github.com/cloudquery/cloudquery/commit/33d39cfa87243660241518e23fd5d845ce56d9da))
+
 ## [4.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v4.1.2...plugins-destination-duckdb-v4.1.3) (2023-07-18)
 
 

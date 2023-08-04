@@ -16,6 +16,7 @@ The composite primary key for this table is (**project_id**, **name**).
 |name (PK)|`utf8`|
 |input_uri|`utf8`|
 |output_uri|`utf8`|
+|job_config|`json`|
 |state|`utf8`|
 |create_time|`timestamp[us, tz=UTC]`|
 |start_time|`timestamp[us, tz=UTC]`|
@@ -23,3 +24,6 @@ The composite primary key for this table is (**project_id**, **name**).
 |ttl_after_completion_days|`int64`|
 |labels|`json`|
 |error|`json`|
+|mode|`utf8`|
+|batch_mode_priority|`int64`|
+|optimization|`utf8`|

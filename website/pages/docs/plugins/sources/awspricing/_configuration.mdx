@@ -4,9 +4,12 @@ spec:
   name: "awspricing"
   path: "cloudquery/awspricing"
   version: "VERSION_SOURCE_AWSPRICING"
-  concurrency: 10000
   tables: ["*"]
   destinations:
     - "DESTINATION_NAME"
   spec:
+    # Optional parameters
+    # region_codes: []
+    # offer_codes: []
+    # concurrency: 10000
 ```

@@ -27,40 +27,45 @@ The GCS destination utilizes batching, and supports `batch_size`, `batch_size_by
 
 This is the (nested) spec used by the CSV destination Plugin.
 
-- `bucket` (string) (required)
+- `bucket` (`string`) (required)
 
   Bucket where to sync the files.
 
-- `path` (string) (required)
+- `path` (`string`) (required)
 
   Path to where the files will be uploaded in the above bucket.
 
-- `format` (string) (required)
+- `format` (`string`) (required)
 
   Format of the output file. Supported values are `csv`, `json` and `parquet`.
 
-- `format_spec` (map [format_spec](#format_spec)) (optional)
-  Optional parameters to change the format of the file
+- `format_spec` ([format_spec](#format_spec)) (optional)
 
-- `batch_size` (integer, optional. default: 10000)
+  Optional parameters to change the format of the file.
 
-  Number of records to write before starting a new file.
+- `compression` (`string`) (optional) (default: empty)
 
-- `batch_size_bytes` (integer, optional. default: 52428800 (50 MiB))
+  Compression algorithm to use. Supported values are empty or `gzip`. Not supported for `parquet` format.
 
-  Number of bytes (as Arrow buffer size) to write before starting a new file.
+- `batch_size` (`integer`) (optional) (default: `10000`)
 
-- `batch_timeout` (duration, optional. default: 30s (30 seconds))
+  Number of records to write before starting a new object.
+
+- `batch_size_bytes` (`integer`) (optional) (default: `52428800` (50 MiB))
+
+  Number of bytes (as Arrow buffer size) to write before starting a new object.
+
+- `batch_timeout` (`duration`) (optional) (default: `30s` (30 seconds))
 
   Inactivity time before starting a new object.
 
 ## format_spec
 
-- `delimiter` (string) (optional) (default: `,`)
+- `delimiter` (`string`) (optional) (default: `,`)
 
-  Character that will be used as want to use as the delimiter if the format type is `csv`
+  Character that will be used as want to use as the delimiter if the format type is `csv`.
 
-- `skip_header` (bool) (optional) (default: false)
+- `skip_header` (`boolean`) (optional) (default: `false`)
 
   Specifies if the first line of a file should be the headers (when format is `csv`).
 

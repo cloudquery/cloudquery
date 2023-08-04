@@ -6,7 +6,6 @@ type Spec struct {
 	Accounts          []AccountSpec `json:"accounts,omitempty"`
 	BillHistoryMonths int           `json:"bill_history_months,omitempty"`
 	Concurrency       int           `json:"concurrency,omitempty"`
-	DeterministicCQID bool          `json:"deterministic_cq_id,omitempty"`
 }
 
 type AccountSpec struct {
@@ -17,6 +16,9 @@ type AccountSpec struct {
 }
 
 func (s *Spec) SetDefaults() {
+	if s.Concurrency == 0 {
+		s.Concurrency = 50000
+	}
 	if s.BillHistoryMonths == 0 {
 		s.BillHistoryMonths = 12
 	}

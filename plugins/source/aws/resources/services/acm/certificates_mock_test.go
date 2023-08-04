@@ -24,9 +24,9 @@ func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) client.Services
 		&acm.ListCertificatesInput{
 			CertificateStatuses: types.CertificateStatus("").Values(),
 			Includes: &types.Filters{
-				ExtendedKeyUsage: []types.ExtendedKeyUsageName{types.ExtendedKeyUsageNameAny},
+				ExtendedKeyUsage: types.ExtendedKeyUsageName("").Values(),
 				KeyTypes:         types.KeyAlgorithm("").Values(),
-				KeyUsage:         []types.KeyUsageName{types.KeyUsageNameAny},
+				KeyUsage:         allowedKeyUsages(),
 			},
 		},
 		gomock.Any(),

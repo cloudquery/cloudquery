@@ -1,5 +1,22 @@
 # Changelog
 
+## [4.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.3.2...plugins-destination-mssql-v4.3.3) (2023-07-31)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 3452eb0 ([#12595](https://github.com/cloudquery/cloudquery/issues/12595)) ([c1c0949](https://github.com/cloudquery/cloudquery/commit/c1c09490b17f2e64435e05d745890cdb8b22310d))
+* Don't use row index for accessing chunk data ([#12645](https://github.com/cloudquery/cloudquery/issues/12645)) ([741cb1c](https://github.com/cloudquery/cloudquery/commit/741cb1c17f79efc77dc2689437b6fdf06ce89a15))
+
+## [4.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.3.1...plugins-destination-mssql-v4.3.2) (2023-07-25)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 10df4b9 ([#12443](https://github.com/cloudquery/cloudquery/issues/12443)) ([e385283](https://github.com/cloudquery/cloudquery/commit/e38528309f862f37bc7e278f9b69cf92d5aa5bd5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.3 ([#12307](https://github.com/cloudquery/cloudquery/issues/12307)) ([8f14e4d](https://github.com/cloudquery/cloudquery/commit/8f14e4de7bf4d4c833f501135ea0610916a42f8b))
+* **migration:** Make it clear that migration can be done manually and not only via `migrate_mode: forced` ([#12390](https://github.com/cloudquery/cloudquery/issues/12390)) ([33d39cf](https://github.com/cloudquery/cloudquery/commit/33d39cfa87243660241518e23fd5d845ce56d9da))
+
 ## [4.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.3.0...plugins-destination-mssql-v4.3.1) (2023-07-18)
 
 

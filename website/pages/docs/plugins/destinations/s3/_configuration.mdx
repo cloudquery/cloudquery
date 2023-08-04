@@ -13,12 +13,13 @@ spec:
     region: "region-name" # Example: us-east-1
     path: "path/to/files/{{TABLE}}/{{UUID}}.parquet"
     format: "parquet" # options: parquet, json, csv
-#    format_spec:
-#      delimiter: "," # for CSV format
+    # format_spec:
+    #   delimiter: "," # for CSV format
     athena: false # <- set this to true for Athena compatibility
-#    batch_size: 10000 # optional
-#    batch_size_bytes: 52428800 # optional
-#    batch_timeout: 30s # optional
+    # compression: gzip # optional
+    # batch_size: 10000 # optional
+    # batch_size_bytes: 52428800 # optional
+    # batch_timeout: 30s # optional
 ```
 
 It is also possible to use `{{YEAR}}`, `{{MONTH}}`, `{{DAY}}` and `{{HOUR}}` in the path to create a directory structure based on the current time. For example:

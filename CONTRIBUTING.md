@@ -69,6 +69,7 @@ CloudQuery has the ability to be run locally with a corresponding local Postgres
 
 * [Creating a new plugin](./contributing/creating_a_new_plugin.md)
 * [Adding a new resource](./contributing/adding_a_new_resource.md)
+* [Adding New Plugin To CQ Monorepo](./contributing/adding_a_new_plugin_to_cq_monorepo.md)
 
 #### Commit Messages
 

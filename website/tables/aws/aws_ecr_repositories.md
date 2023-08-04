@@ -10,6 +10,7 @@ The primary key for this table is **arn**.
 
 The following tables depend on aws_ecr_repositories:
   - [aws_ecr_repository_images](aws_ecr_repository_images)
+  - [aws_ecr_repository_lifecycle_policies](aws_ecr_repository_lifecycle_policies)
 
 ## Columns
 

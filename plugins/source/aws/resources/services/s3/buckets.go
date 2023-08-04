@@ -113,7 +113,7 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *
 			// and therefore no other attributes can be resolved
 			if isBucketNotFoundError(cl, err) {
 				r.Item = resource
-				return nil
+				return errors.Join(errAll...)
 			}
 			// This enables 403 errors to be recorded, but not block subsequent resolver calls
 			errAll = append(errAll, err)
@@ -180,6 +180,9 @@ func resolveBucketPolicyStatus(ctx context.Context, meta schema.ClientMeta, reso
 	})
 	// check if we got an error but its access denied we can continue
 	if err != nil {
+		if client.IsAWSError(err, "NoSuchBucketPolicy") {
+			return nil
+		}
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
 			return nil
 		}
@@ -203,8 +206,8 @@ func resolveBucketVersioning(ctx context.Context, meta schema.ClientMeta, resour
 		}
 		return err
 	}
-	resource.VersioningStatus = versioningOutput.Status
-	resource.VersioningMfaDelete = versioningOutput.MFADelete
+	resource.VersioningStatus = &versioningOutput.Status
+	resource.VersioningMfaDelete = &versioningOutput.MFADelete
 	return nil
 }
 
@@ -224,10 +227,10 @@ func resolveBucketPublicAccessBlock(ctx context.Context, meta schema.ClientMeta,
 		}
 		return err
 	}
-	resource.BlockPublicAcls = publicAccessOutput.PublicAccessBlockConfiguration.BlockPublicAcls
-	resource.BlockPublicPolicy = publicAccessOutput.PublicAccessBlockConfiguration.BlockPublicPolicy
-	resource.IgnorePublicAcls = publicAccessOutput.PublicAccessBlockConfiguration.IgnorePublicAcls
-	resource.RestrictPublicBuckets = publicAccessOutput.PublicAccessBlockConfiguration.RestrictPublicBuckets
+	resource.BlockPublicAcls = &publicAccessOutput.PublicAccessBlockConfiguration.BlockPublicAcls
+	resource.BlockPublicPolicy = &publicAccessOutput.PublicAccessBlockConfiguration.BlockPublicPolicy
+	resource.IgnorePublicAcls = &publicAccessOutput.PublicAccessBlockConfiguration.IgnorePublicAcls
+	resource.RestrictPublicBuckets = &publicAccessOutput.PublicAccessBlockConfiguration.RestrictPublicBuckets
 	return nil
 }
 

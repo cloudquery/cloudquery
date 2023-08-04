@@ -143,6 +143,18 @@ export const ALL_PLUGINS: Plugin[] = [
     category: "cloud-infrastructure",
   },
   {
+    name: "File",
+    logo: "/images/logos/plugins/file.svg",
+    id: "file",
+    kind: "source",
+    availability: "premium",
+    category: "cloud-finops",
+    buyLinks: {
+      'standard': 'https://buy.stripe.com/6oE7sw5HXcFN2647wB',
+      'extended': 'https://buy.stripe.com/14kaEI0nD6hph0YbMS'
+    },
+  },
+  {
     name: "Gandi",
     logo: "/images/logos/plugins/gandi.svg",
     logoDark: "/images/logos/plugins/gandi-dark.svg",
@@ -1159,16 +1171,11 @@ export const ALL_PLUGINS: Plugin[] = [
   {
     name: "Typeform",
     id: "typeform",
-    href: "https://github.com/cloudquery/cloudquery/issues/9034",
     kind: "source",
-    availability: "unpublished",
+    availability: "free",
     category: "marketing-analytics",
     logo: "/images/logos/plugins/typeform.svg",
     logoDark: "/images/logos/plugins/typeform-dark.svg",
-    buyLinks: {
-      'standard': 'https://buy.stripe.com/28o3cg5HXbBJdOM3dV',
-      'extended': 'https://buy.stripe.com/6oEeUYfixcFN8us01K'
-    },
   },
   {
     name: "Zoho Campaign",
