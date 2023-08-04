@@ -45,6 +45,10 @@ func Pg10ToArrow(t string) arrow.DataType {
 		return arrow.PrimitiveTypes.Int32
 	case "bigint", "int8":
 		return arrow.PrimitiveTypes.Int64
+	case "numeric(20,0)":
+		// special case.
+		// TODO: add Decimal128/256 support
+		return arrow.PrimitiveTypes.Uint64
 	case "double precision", "float8":
 		return arrow.PrimitiveTypes.Float64
 	case "real", "float4":
@@ -101,6 +105,10 @@ func Pg10ToCockroach(t string) arrow.DataType {
 	case "int", "bigint", "int8", "int64", "integer":
 		// Cockroach has different aliases for ints
 		return arrow.PrimitiveTypes.Int64
+	case "numeric(20,0)":
+		// special case.
+		// TODO: add Decimal128/256 support
+		return arrow.PrimitiveTypes.Uint64
 	case "double precision", "float8":
 		return arrow.PrimitiveTypes.Float64
 	case "real", "float4":

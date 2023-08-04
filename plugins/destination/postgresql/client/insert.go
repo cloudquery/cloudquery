@@ -32,7 +32,7 @@ func (c *Client) WriteTable(ctx context.Context, messages <-chan *message.WriteI
 			if pgTable == nil {
 				return fmt.Errorf("missing expected postgres table %s", table.Name)
 			}
-			table = c.normalizeTable(table, pgTable) // we can call normalize here to ensure the schema even for the new table
+			table = c.normalizeTable(table, pgTable)
 
 			if len(table.PrimaryKeysIndexes()) > 0 {
 				sql = c.upsert(table)

@@ -91,6 +91,8 @@ func TestPg10ToSchemaType(t *testing.T) {
 		{"time(4) with time zone", arrow.FixedWidthTypes.Time64us},
 		{"time(5) with time zone", arrow.FixedWidthTypes.Time64us},
 		{"time(6) with time zone", arrow.FixedWidthTypes.Time64us},
+		// special case for uint64
+		{"numeric(20,0)", arrow.PrimitiveTypes.Uint64},
 
 		// types that are converted to string for now - more specific support for these types
 		// may be added in the future
