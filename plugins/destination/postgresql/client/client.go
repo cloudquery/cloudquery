@@ -106,8 +106,7 @@ func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) err
 	return c.writer.Write(ctx, res)
 }
 
-func (c *Client) Close(context.Context) error {
-	var err error
+func (c *Client) Close(ctx context.Context) error {
 	if c.conn == nil {
 		return fmt.Errorf("client already closed or not initialized")
 	}
@@ -115,7 +114,7 @@ func (c *Client) Close(context.Context) error {
 		c.conn.Close()
 		c.conn = nil
 	}
-	return err
+	return c.writer.Close(ctx)
 }
 
 func (c *Client) currentDatabase(ctx context.Context) (string, error) {
