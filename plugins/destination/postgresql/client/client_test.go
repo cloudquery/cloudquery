@@ -8,6 +8,7 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/stretchr/testify/assert"
 )
 
 func getTestConnection() string {
@@ -51,4 +52,6 @@ func TestPgPlugin(t *testing.T) {
 		},
 		plugin.WithTestDataOptions(testOpts),
 	)
+
+	assert.NoError(t, p.Close(ctx))
 }
