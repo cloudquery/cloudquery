@@ -72,10 +72,10 @@ func Pg10ToArrow(t string) arrow.DataType {
 	}
 }
 
-func Pg10ToCockroach(t string) arrow.DataType {
+func CockroachToArrow(t string) arrow.DataType {
 	t = normalize(t)
 	if strings.HasSuffix(t, "[]") {
-		return arrow.ListOf(Pg10ToCockroach(t[:len(t)-2]))
+		return arrow.ListOf(CockroachToArrow(t[:len(t)-2]))
 	}
 
 	parsers := []func(string) (arrow.DataType, bool){
