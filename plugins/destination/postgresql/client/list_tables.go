@@ -54,7 +54,7 @@ ORDER BY
 `
 
 func (c *Client) getDBTable(ctx context.Context, name string) (*schema.Table, error) {
-	whereClause := "AND pg_class.relname = '" + inClause(name) + "'"
+	whereClause := "AND pg_class.relname = " + inClause(name)
 	if c.pgType == pgTypeCockroachDB {
 		whereClause += " AND information_schema.columns.is_hidden != 'YES'"
 	}
