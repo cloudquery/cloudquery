@@ -20,12 +20,11 @@ func Organizations() *schema.Table {
 			&types.Organization{},
 			transformers.WithSkipFields(
 				"AvailablePolicyTypes", // deprecated and misleading field according to docs
-				"AccountId",            // an organization doesn't belong to an account, other way around
 			),
 			transformers.WithPrimaryKeys("Arn"),
 		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "organizations"),
-		Columns:   []schema.Column{client.DefaultAccountIDColumn(false)},
+		Columns:   []schema.Column{},
 	}
 }
 
