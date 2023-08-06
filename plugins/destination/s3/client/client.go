@@ -61,7 +61,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.Ne
 	}
 
 	cfg.Region = c.spec.Region
-	cfg.EndpointResolverWithOptions = c
+	cfg.WithEndpointResolverV2 = c
 
 	c.s3Client = s3.NewFromConfig(cfg)
 	c.uploader = manager.NewUploader(c.s3Client)
@@ -95,7 +95,7 @@ func (c *Client) Close(ctx context.Context) error {
 	return c.writer.Close(ctx)
 }
 
-func (c *Client) ResolveEndpoint(service, region string, options ...any) (aws.Endpoint, error) {
+func (c *Client) WithEndpointResolverV2(service, region string, options ...any) (aws.Endpoint, error) {
 	if c.spec.Endpoint == "" || service != s3.ServiceID {
 		return aws.Endpoint{}, &aws.EndpointNotFoundError{}
 	}

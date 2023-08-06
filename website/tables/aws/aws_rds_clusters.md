@@ -68,6 +68,7 @@ The following tables depend on aws_rds_clusters:
 |iops|`int64`|
 |kms_key_id|`utf8`|
 |latest_restorable_time|`timestamp[us, tz=UTC]`|
+|local_write_forwarding_status|`utf8`|
 |master_user_secret|`json`|
 |master_username|`utf8`|
 |monitoring_interval|`int64`|
