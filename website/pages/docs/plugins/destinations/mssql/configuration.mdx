@@ -15,12 +15,12 @@ import Configuration from "./_configuration.mdx";
 
 This is the (nested) spec used by the Microsoft SQL Server destination plugin.
 
-- `connection_string` (string) (required)
+- `connection_string` (`string`) (required)
 
   Connection string to connect to the database.
   See [SDK documentation](https://github.com/microsoft/go-mssqldb#connection-parameters-and-dsn) for more details.
 
-- `auth_mode` (string) (optional) (default: `ms`)
+- `auth_mode` (`string`) (optional) (default: `ms`)
 
   If you need to authenticate via Azure Active Directory ensure you specify `azure` value.
   See [SDK documentation](https://github.com/microsoft/go-mssqldb#azure-active-directory-authentication) for more
@@ -30,7 +30,7 @@ This is the (nested) spec used by the Microsoft SQL Server destination plugin.
     - `ms` _connect to Microsoft SQL Server instance_
     - `azure` _connect to Azure SQL Server instance_
 
-- `schema` (string) (optional) (default: `dbo`)
+- `schema` (`string`) (optional) (default: `dbo`)
 
   Schema name to be used. 
   By default, Microsoft SQL Server destination plugin will use the
