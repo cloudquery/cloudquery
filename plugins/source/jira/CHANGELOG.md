@@ -3,6 +3,13 @@
 ## 1.0.0 (2023-08-07)
 
 
+### This Release has the Following Changes to Tables
+- Table `jira_boards` was added
+- Table `jira_fields` was added
+- Table `jira_issues` was added
+- Table `jira_priorities` was added
+- Table `jira_projects` was added
+
 ### Features
 
 * Add Jira plugin to open-core from premium ([#12726](https://github.com/cloudquery/cloudquery/issues/12726)) ([96d48b0](https://github.com/cloudquery/cloudquery/commit/96d48b087656d812a499e07f3459e119b473863d))
