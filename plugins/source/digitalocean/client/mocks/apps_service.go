@@ -50,3 +50,19 @@ func (mr *MockAppsServiceMockRecorder) List(arg0, arg1 interface{}) *gomock.Call
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "List", reflect.TypeOf((*MockAppsService)(nil).List), arg0, arg1)
 }
+
+// ListAlerts mocks base method.
+func (m *MockAppsService) ListAlerts(arg0 context.Context, arg1 string) ([]*godo.AppAlert, *godo.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListAlerts", arg0, arg1)
+	ret0, _ := ret[0].([]*godo.AppAlert)
+	ret1, _ := ret[1].(*godo.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListAlerts indicates an expected call of ListAlerts.
+func (mr *MockAppsServiceMockRecorder) ListAlerts(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAlerts", reflect.TypeOf((*MockAppsService)(nil).ListAlerts), arg0, arg1)
+}
