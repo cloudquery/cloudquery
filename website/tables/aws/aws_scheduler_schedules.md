@@ -16,6 +16,7 @@ The primary key for this table is **arn**.
 |region|`utf8`|
 |tags|`json`|
 |arn (PK)|`utf8`|
+|action_after_completion|`utf8`|
 |creation_date|`timestamp[us, tz=UTC]`|
 |description|`utf8`|
 |end_date|`timestamp[us, tz=UTC]`|

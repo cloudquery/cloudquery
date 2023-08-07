@@ -335,6 +335,36 @@ func (mr *MockResiliencehubClientMockRecorder) ListAlarmRecommendations(arg0, ar
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAlarmRecommendations", reflect.TypeOf((*MockResiliencehubClient)(nil).ListAlarmRecommendations), varargs...)
 }
 
+// ListAppAssessmentComplianceDrifts mocks base method.
+func (m *MockResiliencehubClient) ListAppAssessmentComplianceDrifts(arg0 context.Context, arg1 *resiliencehub.ListAppAssessmentComplianceDriftsInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.ListAppAssessmentComplianceDriftsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &resiliencehub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAppAssessmentComplianceDrifts")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListAppAssessmentComplianceDrifts", varargs...)
+	ret0, _ := ret[0].(*resiliencehub.ListAppAssessmentComplianceDriftsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListAppAssessmentComplianceDrifts indicates an expected call of ListAppAssessmentComplianceDrifts.
+func (mr *MockResiliencehubClientMockRecorder) ListAppAssessmentComplianceDrifts(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAppAssessmentComplianceDrifts", reflect.TypeOf((*MockResiliencehubClient)(nil).ListAppAssessmentComplianceDrifts), varargs...)
+}
+
 // ListAppAssessments mocks base method.
 func (m *MockResiliencehubClient) ListAppAssessments(arg0 context.Context, arg1 *resiliencehub.ListAppAssessmentsInput, arg2 ...func(*resiliencehub.Options)) (*resiliencehub.ListAppAssessmentsOutput, error) {
 

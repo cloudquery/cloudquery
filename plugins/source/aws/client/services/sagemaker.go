@@ -70,6 +70,7 @@ type SagemakerClient interface {
 	GetLineageGroupPolicy(context.Context, *sagemaker.GetLineageGroupPolicyInput, ...func(*sagemaker.Options)) (*sagemaker.GetLineageGroupPolicyOutput, error)
 	GetModelPackageGroupPolicy(context.Context, *sagemaker.GetModelPackageGroupPolicyInput, ...func(*sagemaker.Options)) (*sagemaker.GetModelPackageGroupPolicyOutput, error)
 	GetSagemakerServicecatalogPortfolioStatus(context.Context, *sagemaker.GetSagemakerServicecatalogPortfolioStatusInput, ...func(*sagemaker.Options)) (*sagemaker.GetSagemakerServicecatalogPortfolioStatusOutput, error)
+	GetScalingConfigurationRecommendation(context.Context, *sagemaker.GetScalingConfigurationRecommendationInput, ...func(*sagemaker.Options)) (*sagemaker.GetScalingConfigurationRecommendationOutput, error)
 	GetSearchSuggestions(context.Context, *sagemaker.GetSearchSuggestionsInput, ...func(*sagemaker.Options)) (*sagemaker.GetSearchSuggestionsOutput, error)
 	ListActions(context.Context, *sagemaker.ListActionsInput, ...func(*sagemaker.Options)) (*sagemaker.ListActionsOutput, error)
 	ListAlgorithms(context.Context, *sagemaker.ListAlgorithmsInput, ...func(*sagemaker.Options)) (*sagemaker.ListAlgorithmsOutput, error)

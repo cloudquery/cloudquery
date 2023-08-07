@@ -1166,16 +1166,11 @@ export const ALL_PLUGINS: Plugin[] = [
   {
     name: "Typeform",
     id: "typeform",
-    href: "https://github.com/cloudquery/cloudquery/issues/9034",
     kind: "source",
-    availability: "unpublished",
+    availability: "free",
     category: "marketing-analytics",
     logo: "/images/logos/plugins/typeform.svg",
     logoDark: "/images/logos/plugins/typeform-dark.svg",
-    buyLinks: {
-      'standard': 'https://buy.stripe.com/28o3cg5HXbBJdOM3dV',
-      'extended': 'https://buy.stripe.com/6oEeUYfixcFN8us01K'
-    },
   },
   {
     name: "Zoho Campaign",

@@ -10,6 +10,7 @@ import (
 type Inspector2Client interface {
 	BatchGetAccountStatus(context.Context, *inspector2.BatchGetAccountStatusInput, ...func(*inspector2.Options)) (*inspector2.BatchGetAccountStatusOutput, error)
 	BatchGetCodeSnippet(context.Context, *inspector2.BatchGetCodeSnippetInput, ...func(*inspector2.Options)) (*inspector2.BatchGetCodeSnippetOutput, error)
+	BatchGetFindingDetails(context.Context, *inspector2.BatchGetFindingDetailsInput, ...func(*inspector2.Options)) (*inspector2.BatchGetFindingDetailsOutput, error)
 	BatchGetFreeTrialInfo(context.Context, *inspector2.BatchGetFreeTrialInfoInput, ...func(*inspector2.Options)) (*inspector2.BatchGetFreeTrialInfoOutput, error)
 	BatchGetMemberEc2DeepInspectionStatus(context.Context, *inspector2.BatchGetMemberEc2DeepInspectionStatusInput, ...func(*inspector2.Options)) (*inspector2.BatchGetMemberEc2DeepInspectionStatusOutput, error)
 	DescribeOrganizationConfiguration(context.Context, *inspector2.DescribeOrganizationConfigurationInput, ...func(*inspector2.Options)) (*inspector2.DescribeOrganizationConfigurationOutput, error)

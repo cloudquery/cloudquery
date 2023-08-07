@@ -19,8 +19,9 @@ bookings_columns = oapi_definition_to_columns(
 class Bookings(Table):
     def __init__(self) -> None:
         super().__init__(
-            "square_bookings",
-            bookings_columns,
+            name="square_bookings",
+            title="Square Bookings",
+            columns=bookings_columns,
         )
 
     @property
