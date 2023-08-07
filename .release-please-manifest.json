@@ -47,8 +47,6 @@
   "plugins/source/salesforce+FILLER": "0.0.0",
   "plugins/source/fastly": "2.1.2",
   "plugins/source/fastly+FILLER": "0.0.0",
-  "plugins/source/jira": "1.0.0",
-  "plugins/source/jira+FILLER": "0.0.0",
   "plugins/source/snyk": "3.1.2",
   "plugins/source/snyk+FILLER": "0.0.0",
   "plugins/destination/gcs": "3.4.0",
@@ -110,5 +108,9 @@
   "plugins/source/oracledb": "3.0.3",
   "plugins/source/oracledb+FILLER": "0.0.0",
   "plugins/source/square": "0.1.0",
-  "plugins/source/typeform": "0.1.0"
+  "plugins/source/square+FILLER": "0.0.0",
+  "plugins/source/typeform": "0.1.0",
+  "plugins/source/typeform+FILLER": "0.0.0",
+  "plugins/source/jira": "1.0.0",
+  "plugins/source/jira+FILLER": "0.0.0"
 }

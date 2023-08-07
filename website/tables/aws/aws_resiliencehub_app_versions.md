@@ -24,3 +24,6 @@ The following tables depend on aws_resiliencehub_app_versions:
 |region|`utf8`|
 |app_arn (PK)|`utf8`|
 |app_version (PK)|`utf8`|
+|creation_time|`timestamp[us, tz=UTC]`|
+|identifier|`int64`|
+|version_name|`utf8`|
