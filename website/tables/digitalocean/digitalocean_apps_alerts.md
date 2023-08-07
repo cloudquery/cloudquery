@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Apps Alerts.
 
+https://docs.digitalocean.com/reference/api/api-reference/#operation/apps_list_alerts
+
 The primary key for this table is **id**.
 
 ## Relations

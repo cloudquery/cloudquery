@@ -10,7 +10,7 @@ import (
 func alerts() *schema.Table {
 	return &schema.Table{
 		Name:        "digitalocean_apps_alerts",
-		Description: "",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#operation/apps_list_alerts",
 		Resolver:    fetchAppsAlerts,
 		Transform:   transformers.TransformWithStruct(&godo.AppAlert{}),
 		Columns: []schema.Column{
