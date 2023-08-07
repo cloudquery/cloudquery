@@ -54,11 +54,11 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
   Available: `error`, `warn`, `info`, `debug`, `trace`.
   Defines what [`pgx`](https://github.com/jackc/pgx) call events should be logged.
 
-- `batch_size` (`int`) (optional) (default: `10000`)
+- `batch_size` (`integer`) (optional) (default: `10000`)
 
   This parameter controls the maximum amount of items may be grouped together to be written as a single write.
 
-- `batch_size_bytes` (`int`) (optional) (default: `1000000` (= 1 MB))
+- `batch_size_bytes` (`integer`) (optional) (default: `1000000` (= 1 MB))
 
   This parameter controls the maximum size of items that may be grouped together to be written as a single write.
 
