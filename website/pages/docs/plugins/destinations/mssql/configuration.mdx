@@ -11,6 +11,12 @@ import Configuration from "./_configuration.mdx";
 
 <Configuration/>
 
+<Callout type="info">
+Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
+</Callout>
+
+The Microsoft SQL Server destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
+
 ## Microsoft SQL Server spec
 
 This is the (nested) spec used by the Microsoft SQL Server destination plugin.
@@ -48,10 +54,6 @@ This is the (nested) spec used by the Microsoft SQL Server destination plugin.
 - `batch_timeout` (`duration`) (optional) (default: `20s` (= 20 seconds))
 
   This parameter controls the timeout for writing a single batch.
-
-<Callout type="info">
-  Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
-</Callout>
 
 ### Verbose logging for debug
 
