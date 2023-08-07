@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"os"
 	"testing"
-	"time"
 
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/meilisearch/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
@@ -21,7 +20,7 @@ func getTestSpec() *Spec {
 		host = "http://localhost:7700"
 	}
 
-	return &Spec{Host: host, APIKey: apiKey, Timeout: time.Minute}
+	return &Spec{Host: host, APIKey: apiKey}
 }
 
 func TestPlugin(t *testing.T) {
