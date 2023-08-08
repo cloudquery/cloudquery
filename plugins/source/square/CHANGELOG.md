@@ -3,6 +3,16 @@
 ## [0.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v0.1.0...plugins-source-square-v0.1.1) (2023-08-08)
 
 
+### This Release has the Following Changes to Tables
+- Table `square_bookings` was added
+- Table `square_disputes` was added
+- Table `square_invoices` was added
+- Table `square_locations` was added
+- Table `square_merchants` was added
+- Table `square_payments` was added
+- Table `square_payouts` was added
+- Table `square_refunds` was added
+
 ### Bug Fixes
 
 * **deps:** Update dependency cloudquery-plugin-sdk to v0.0.10 ([#12733](https://github.com/cloudquery/cloudquery/issues/12733)) ([472ca1e](https://github.com/cloudquery/cloudquery/commit/472ca1eb903da6a922a4fdd9891917c47346e0bb))
