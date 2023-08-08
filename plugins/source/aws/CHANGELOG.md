@@ -9,6 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [22.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.4.0...plugins-source-aws-v22.5.0) (2023-08-08)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_rds_cluster_snapshots`: column added with name `db_cluster_resource_id` and type `utf8`
+- Table `aws_rds_clusters`: column added with name `local_write_forwarding_status` and type `utf8`
+- Table `aws_rds_engine_versions`: column added with name `supports_local_write_forwarding` and type `bool`
+- Table `aws_resiliencehub_alarm_recommendations`: column added with name `app_component_names` and type `list<item: utf8, nullable>`
+- Table `aws_resiliencehub_app_assessments`: column added with name `drift_status` and type `utf8`
+- Table `aws_resiliencehub_app_assessments`: column added with name `version_name` and type `utf8`
+- Table `aws_resiliencehub_app_versions`: column added with name `creation_time` and type `timestamp[us, tz=UTC]`
+- Table `aws_resiliencehub_app_versions`: column added with name `identifier` and type `int64`
+- Table `aws_resiliencehub_app_versions`: column added with name `version_name` and type `utf8`
+- Table `aws_resiliencehub_apps`: column added with name `drift_status` and type `utf8`
+- Table `aws_resiliencehub_apps`: column added with name `event_subscriptions` and type `json`
+- Table `aws_resiliencehub_apps`: column added with name `last_drift_evaluation_time` and type `timestamp[us, tz=UTC]`
+- Table `aws_resiliencehub_apps`: column added with name `permission_model` and type `json`
+- Table `aws_route53_hosted_zones`: column added with name `delegation_set` and type `json`
+- Table `aws_scheduler_schedules`: column added with name `action_after_completion` and type `utf8`
+
 ### Features
 
 * Replace DelegationSetId with full DelegationSet in aws_route53_hosted_zones ([#12737](https://github.com/cloudquery/cloudquery/issues/12737)) ([a78012d](https://github.com/cloudquery/cloudquery/commit/a78012db43ee529bb18f1dbdea9a0845ac169549))
