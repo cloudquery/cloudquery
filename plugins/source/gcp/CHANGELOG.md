@@ -8,6 +8,70 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [9.4.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.4.2...plugins-source-gcp-v9.4.3) (2023-08-08)
 
 
+### This Release has the Following Changes to Tables
+- Table `gcp_aiplatform_datasets`: column added with name `data_item_count` and type `int64`
+- Table `gcp_aiplatform_featurestores`: column added with name `online_storage_ttl_days` and type `int64`
+- Table `gcp_aiplatform_models`: column added with name `pipeline_job` and type `utf8`
+- Table `gcp_aiplatform_operations`: column added with name `result` and type `json`
+- Table `gcp_aiplatform_pipeline_jobs`: column added with name `reserved_ip_ranges` and type `list<item: utf8, nullable>`
+- Table `gcp_aiplatform_tensorboards`: column added with name `is_default` and type `bool`
+- Table `gcp_appengine_versions`: column added with name `scaling` and type `json`
+- Table `gcp_artifactregistry_repositories`: column added with name `format_config` and type `json`
+- Table `gcp_batch_task_groups`: column added with name `scheduling_policy` and type `utf8`
+- Table `gcp_bigquery_tables`: column added with name `table_constraints` and type `json`
+- Table `gcp_bigtableadmin_app_profiles`: column added with name `routing_policy` and type `json`
+- Table `gcp_binaryauthorization_assertors`: column added with name `attestor_type` and type `json`
+- Table `gcp_certificatemanager_certificate_map_entries`: column added with name `match` and type `json`
+- Table `gcp_certificatemanager_certificates`: column added with name `type` and type `json`
+- Table `gcp_clouddeploy_delivery_pipelines`: column added with name `pipeline` and type `json`
+- Table `gcp_clouddeploy_job_runs`: column added with name `job_run` and type `json`
+- Table `gcp_clouddeploy_releases`: column added with name `deploy_parameters` and type `json`
+- Table `gcp_clouddeploy_targets`: column added with name `deploy_parameters` and type `json`
+- Table `gcp_clouddeploy_targets`: column added with name `deployment_target` and type `json`
+- Table `gcp_cloudscheduler_jobs`: column added with name `target` and type `json`
+- Table `gcp_cloudsupport_cases`: column added with name `contact_email` and type `utf8`
+- Table `gcp_compute_addresses`: column added with name `label_fingerprint` and type `utf8`
+- Table `gcp_compute_addresses`: column added with name `labels` and type `json`
+- Table `gcp_compute_backend_services`: column added with name `metadatas` and type `json`
+- Table `gcp_compute_disks`: column added with name `async_primary_disk` and type `json`
+- Table `gcp_compute_disks`: column added with name `async_secondary_disks` and type `json`
+- Table `gcp_compute_disks`: column added with name `provisioned_throughput` and type `int64`
+- Table `gcp_compute_disks`: column added with name `resource_status` and type `json`
+- Table `gcp_compute_disks`: column added with name `source_consistency_group_policy_id` and type `utf8`
+- Table `gcp_compute_disks`: column added with name `source_consistency_group_policy` and type `utf8`
+- Table `gcp_compute_forwarding_rules`: column added with name `allow_psc_global_access` and type `bool`
+- Table `gcp_compute_instances`: column added with name `instance_encryption_key` and type `json`
+- Table `gcp_compute_interconnects`: column added with name `label_fingerprint` and type `utf8`
+- Table `gcp_compute_interconnects`: column added with name `labels` and type `json`
+- Table `gcp_compute_interconnects`: column added with name `remote_location` and type `utf8`
+- Table `gcp_compute_target_http_proxies`: column added with name `http_keep_alive_timeout_sec` and type `int64`
+- Table `gcp_container_clusters`: column added with name `enable_k8s_beta_apis` and type `json`
+- Table `gcp_container_clusters`: column added with name `security_posture_config` and type `json`
+- Table `gcp_containeranalysis_occurrences`: column added with name `details` and type `json`
+- Table `gcp_functions_functions`: column added with name `source_code` and type `json`
+- Table `gcp_functions_functions`: column added with name `trigger` and type `json`
+- Table `gcp_kms_crypto_keys`: column added with name `rotation_schedule` and type `json`
+- Table `gcp_logging_sinks`: column added with name `options` and type `json`
+- Table `gcp_redis_instances`: column added with name `available_maintenance_versions` and type `list<item: utf8, nullable>`
+- Table `gcp_redis_instances`: column added with name `customer_managed_key` and type `utf8`
+- Table `gcp_redis_instances`: column added with name `maintenance_version` and type `utf8`
+- Table `gcp_redis_instances`: column added with name `persistence_config` and type `json`
+- Table `gcp_redis_instances`: column added with name `suspension_reasons` and type `list<item: int64, nullable>`
+- Table `gcp_run_services`: column added with name `custom_audiences` and type `list<item: utf8, nullable>`
+- Table `gcp_run_services`: column added with name `satisfies_pzs` and type `bool`
+- Table `gcp_secretmanager_secrets`: column added with name `expiration` and type `json`
+- Table `gcp_translate_glossaries`: column added with name `languages` and type `json`
+- Table `gcp_videotranscoder_jobs`: column added with name `batch_mode_priority` and type `int64`
+- Table `gcp_videotranscoder_jobs`: column added with name `job_config` and type `json`
+- Table `gcp_videotranscoder_jobs`: column added with name `mode` and type `utf8`
+- Table `gcp_videotranscoder_jobs`: column added with name `optimization` and type `utf8`
+- Table `gcp_vmmigration_source_migrating_vm_clone_jobs`: column added with name `target_vm_details` and type `json`
+- Table `gcp_vmmigration_source_migrating_vm_cutover_jobs`: column added with name `target_vm_details` and type `json`
+- Table `gcp_vmmigration_source_migrating_vms`: column added with name `source_vm_details` and type `json`
+- Table `gcp_vmmigration_source_migrating_vms`: column added with name `target_vm_defaults` and type `json`
+- Table `gcp_vmmigration_sources`: column added with name `source_details` and type `json`
+- Table `gcp_workflows_workflows`: column added with name `source_code` and type `json`
+
 ### Bug Fixes
 
 * **deps:** Update github.com/cloudquery/arrow/go/v13 digest to f53878d ([#12778](https://github.com/cloudquery/cloudquery/issues/12778)) ([6f5d58e](https://github.com/cloudquery/cloudquery/commit/6f5d58e3b84d3c76b1d1a3d6c5a488f77995a057))
