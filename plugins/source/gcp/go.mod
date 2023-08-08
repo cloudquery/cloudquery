@@ -44,7 +44,7 @@ require (
 	cloud.google.com/go/websecurityscanner v1.6.1
 	cloud.google.com/go/workflows v1.11.1
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882
-	github.com/cloudquery/plugin-sdk/v4 v4.2.5
+	github.com/cloudquery/plugin-sdk/v4 v4.2.6
 	github.com/cockroachdb/cockroachdb-parser v0.0.0-20230705064001-302c9ad52e1a
 	github.com/golang/mock v1.6.0
 	github.com/googleapis/gax-go/v2 v2.11.0
@@ -66,7 +66,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230731001320-3452eb0f930f
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230805001301-f53878dc8a89
 
 require (
 	cloud.google.com/go v0.110.6 // indirect

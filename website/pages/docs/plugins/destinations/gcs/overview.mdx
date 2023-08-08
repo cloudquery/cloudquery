@@ -47,6 +47,11 @@ This is the (nested) spec used by the CSV destination Plugin.
 
   Compression algorithm to use. Supported values are empty or `gzip`. Not supported for `parquet` format.
 
+- `no_rotate` (`boolean`) (optional) (default: `false`)
+
+  If set to `true`, the plugin will write to one file per table.
+  Otherwise, for every batch a new file will be created with a different `.<UUID>` suffix.
+
 - `batch_size` (`integer`) (optional) (default: `10000`)
 
   Number of records to write before starting a new object.
@@ -59,7 +64,7 @@ This is the (nested) spec used by the CSV destination Plugin.
 
   Inactivity time before starting a new object.
 
-## format_spec
+### format_spec
 
 - `delimiter` (`string`) (optional) (default: `,`)
 

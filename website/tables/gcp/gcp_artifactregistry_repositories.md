@@ -22,6 +22,7 @@ The following tables depend on gcp_artifactregistry_repositories:
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
+|format_config|`json`|
 |name (PK)|`utf8`|
 |format|`utf8`|
 |description|`utf8`|

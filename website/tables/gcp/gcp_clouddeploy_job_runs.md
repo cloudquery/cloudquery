@@ -25,4 +25,5 @@ This table depends on [gcp_clouddeploy_rollouts](gcp_clouddeploy_rollouts).
 |start_time|`timestamp[us, tz=UTC]`|
 |end_time|`timestamp[us, tz=UTC]`|
 |state|`utf8`|
+|job_run|`json`|
 |etag|`utf8`|

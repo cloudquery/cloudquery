@@ -1,6 +1,7 @@
 package client
 
 import (
+	"errors"
 	"strings"
 	"time"
 
@@ -24,6 +25,13 @@ type Spec struct {
 	BatchSize      int                  `json:"batch_size,omitempty"`
 	BatchSizeBytes int                  `json:"batch_size_bytes,omitempty"`
 	BatchTimeout   *configtype.Duration `json:"batch_timeout,omitempty"`
+}
+
+func (s *Spec) Validate() error {
+	if len(s.ConnectionString) == 0 {
+		return errors.New("missing required \"connection_string\" option")
+	}
+	return nil
 }
 
 func (s *Spec) SetDefaults() {

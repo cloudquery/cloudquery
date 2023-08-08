@@ -7,7 +7,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.0.0
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882
 	github.com/cloudquery/filetypes/v4 v4.1.0
-	github.com/cloudquery/plugin-sdk/v4 v4.2.5
+	github.com/cloudquery/plugin-sdk/v4 v4.2.6
 	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.1
@@ -15,7 +15,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230731001320-3452eb0f930f
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230805001301-f53878dc8a89
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.4.0 // indirect

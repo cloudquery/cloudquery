@@ -18,10 +18,6 @@ type Spec struct {
 	*filetypes.FileSpec
 
 	BatchSize int `json:"batch_size"`
-
-	// This is currently only used for testing to wait for
-	// kafka cluster to be ready in GitHub actions.
-	maxMetadataRetries int
 }
 
 func (s *Spec) SetDefaults() {

@@ -66,7 +66,6 @@ var GcpServices = map[string]bool{
 	"cloudbilling.googleapis.com":                     true,
 	"cloudbuild.googleapis.com":                       true,
 	"cloudchannel.googleapis.com":                     true,
-	"clouddebugger.googleapis.com":                    true,
 	"clouddeploy.googleapis.com":                      true,
 	"clouderrorreporting.googleapis.com":              true,
 	"cloudfunctions.googleapis.com":                   true,
