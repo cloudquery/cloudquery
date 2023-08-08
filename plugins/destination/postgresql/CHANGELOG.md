@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v5.0.3...plugins-destination-postgresql-v5.0.4) (2023-08-08)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to f53878d ([#12778](https://github.com/cloudquery/cloudquery/issues/12778)) ([6f5d58e](https://github.com/cloudquery/cloudquery/commit/6f5d58e3b84d3c76b1d1a3d6c5a488f77995a057))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.6 ([#12799](https://github.com/cloudquery/cloudquery/issues/12799)) ([fb0e0d7](https://github.com/cloudquery/cloudquery/commit/fb0e0d75ab010f421c834e58d93676de76fcb423))
+
 ## [5.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v5.0.2...plugins-destination-postgresql-v5.0.3) (2023-08-03)
 
 
