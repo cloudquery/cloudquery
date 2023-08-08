@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.12.4](https://github.com/cloudquery/cloudquery/compare/cli-v3.12.3...cli-v3.12.4) (2023-08-08)
+
+
+### Bug Fixes
+
+* Add missing `skip_dependent_tables` to tables call ([#12861](https://github.com/cloudquery/cloudquery/issues/12861)) ([4dbc280](https://github.com/cloudquery/cloudquery/commit/4dbc28076c0518e4f534272562af242134200928))
+
 ## [3.12.3](https://github.com/cloudquery/cloudquery/compare/cli-v3.12.2...cli-v3.12.3) (2023-08-08)
 
 
