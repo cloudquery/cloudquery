@@ -7,9 +7,14 @@ import (
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	pluginPb "github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func tablesV3(ctx context.Context, sourceClient *managedplugin.Client, path string, format string) error {
+	err := types.RegisterAllExtensions()
+	if err != nil {
+		return err
+	}
 	sourcePbClient := pluginPb.NewPluginClient(sourceClient.Conn)
 	if _, err := sourcePbClient.Init(ctx, &pluginPb.Init_Request{
 		NoConnection: true,
@@ -35,8 +40,12 @@ func tablesV3(ctx context.Context, sourceClient *managedplugin.Client, path stri
 	if err != nil {
 		return err
 	}
+	topLevelTables, err := tables.UnflattenTables()
+	if err != nil {
+		return err
+	}
 
-	g := docs.NewGenerator(name.Name, tables)
+	g := docs.NewGenerator(name.Name, topLevelTables)
 	f := docs.FormatMarkdown
 	if format == "json" {
 		f = docs.FormatJSON

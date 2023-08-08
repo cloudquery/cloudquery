@@ -24,7 +24,7 @@ cloudquery tables ./directory --output-dir ./docs
 
 func NewCmdTables() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "tables [files or directories]",
+		Use:     "tables",
 		Short:   tablesShort,
 		Long:    tablesShort,
 		Example: tablesExample,
@@ -33,6 +33,10 @@ func NewCmdTables() *cobra.Command {
 	}
 	cmd.Flags().String("output-dir", "cq-docs", "Base output directory for generated files")
 	cmd.Flags().String("format", "json", "Output format. One of: json, markdown")
+	cmd.Flags().String("config", "", "Path to file or directories")
+	cmd.Flags().String("registry", "", "")
+	cmd.Flags().String("path", "", "")
+	cmd.Flags().String("version", "", "")
 	return cmd
 }
 
