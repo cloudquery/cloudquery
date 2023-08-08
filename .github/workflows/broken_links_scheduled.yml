@@ -1,4 +1,4 @@
-name: Check for broken links
+name: Check for internal and external broken links
 
 on:
   workflow_dispatch:
