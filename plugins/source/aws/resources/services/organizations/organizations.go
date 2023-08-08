@@ -3,6 +3,7 @@ package organizations
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/organizations/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -24,7 +25,14 @@ func Organizations() *schema.Table {
 			transformers.WithPrimaryKeys("Arn"),
 		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "organizations"),
-		Columns:   []schema.Column{},
+		Columns: []schema.Column{
+			{
+				Name:       "request_account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSAccount,
+				PrimaryKey: true,
+			},
+		},
 	}
 }
 
