@@ -266,7 +266,7 @@ func New(ctx context.Context, logger zerolog.Logger, s *Spec) (schema.ClientMeta
 		}
 	})
 
-	oidcToken := os.Getenv("OIDC_TOKEN")
+	oidcToken := c.pluginSpec.OIDCToken
 	var credsOptions *azidentity.DefaultAzureCredentialOptions
 	if c.Options != nil {
 		credsOptions = &azidentity.DefaultAzureCredentialOptions{ClientOptions: c.Options.ClientOptions}
