@@ -17,8 +17,8 @@ type Spec struct {
 	APIKey string `json:"api_key,omitempty"`
 
 	// optional
-	Timeout time.Duration `json:"timeout,omitempty"`
-	CACert  string        `json:"ca_cert,omitempty"`
+	Timeout *configtype.Duration `json:"timeout,omitempty"`
+	CACert  string               `json:"ca_cert,omitempty"`
 
 	BatchSize      int                  `json:"batch_size,omitempty"`
 	BatchSizeBytes int                  `json:"batch_size_bytes,omitempty"`
@@ -37,8 +37,9 @@ func (s *Spec) validate() error {
 }
 
 func (s *Spec) setDefaults() {
-	if s.Timeout == 0 {
-		s.Timeout = 5 * time.Minute
+	if s.Timeout == nil {
+		d := configtype.NewDuration(5 * time.Minute) // 5m
+		s.Timeout = &d
 	}
 
 	if s.BatchSize == 0 {
@@ -59,7 +60,7 @@ func (s *Spec) getClient() (*meilisearch.Client, error) {
 	config := meilisearch.ClientConfig{
 		Host:    s.Host,
 		APIKey:  s.APIKey,
-		Timeout: s.Timeout,
+		Timeout: s.Timeout.Duration(),
 	}
 	if len(s.CACert) == 0 {
 		return meilisearch.NewClient(config), nil

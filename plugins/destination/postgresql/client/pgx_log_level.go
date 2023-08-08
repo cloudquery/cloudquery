@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"strings"
 )
 
 type LogLevel int
@@ -16,10 +17,18 @@ const (
 	LogLevelTrace
 )
 
-func (r LogLevel) String() string {
-	return [...]string{"error", "warn", "info", "debug", "trace"}[r]
+var logLevels = [...]string{
+	LogLevelError: "error",
+	LogLevelWarn:  "warn",
+	LogLevelInfo:  "info",
+	LogLevelDebug: "debug",
+	LogLevelTrace: "trace",
 }
-func (r LogLevel) MarshalJSON() ([]byte, error) {
+
+func (r *LogLevel) String() string {
+	return logLevels[*r]
+}
+func (r *LogLevel) MarshalJSON() ([]byte, error) {
 	buffer := bytes.NewBufferString(`"`)
 	buffer.WriteString(r.String())
 	buffer.WriteString(`"`)
@@ -31,25 +40,24 @@ func (r *LogLevel) UnmarshalJSON(data []byte) (err error) {
 	if err := json.Unmarshal(data, &loglevel); err != nil {
 		return err
 	}
-	if *r, err = LogLevelFromString(loglevel); err != nil {
+	if *r, err = logLevelFromString(loglevel); err != nil {
 		return err
 	}
 	return nil
 }
 
-func LogLevelFromString(s string) (LogLevel, error) {
-	switch s {
-	case "trace":
-		return LogLevelTrace, nil
-	case "debug":
-		return LogLevelDebug, nil
-	case "info":
-		return LogLevelInfo, nil
-	case "warn":
-		return LogLevelWarn, nil
-	case "error":
+func logLevelFromString(s string) (LogLevel, error) {
+	if len(s) == 0 {
 		return LogLevelError, nil
-	default:
-		return LogLevelError, fmt.Errorf("invalid level %s", s)
 	}
+
+	s = strings.ToLower(s)
+
+	for i, level := range logLevels {
+		if level == s {
+			return LogLevel(i), nil
+		}
+	}
+
+	return LogLevelError, fmt.Errorf("invalid level %s", s)
 }

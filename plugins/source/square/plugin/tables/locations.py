@@ -11,7 +11,7 @@ from cloudquery.sdk.transformers.openapi import oapi_definition_to_columns
 
 from .invoices import Invoices
 
-columns = oapi_definition_to_columns(
+locations_columns = oapi_definition_to_columns(
     OAPILoader.get_definition("Location"),
     override_columns=[Column(name="id", type=pa.string(), primary_key=True)],
 )
@@ -20,8 +20,9 @@ columns = oapi_definition_to_columns(
 class Locations(Table):
     def __init__(self) -> None:
         super().__init__(
-            "square_locations",
-            columns=columns,
+            name="square_locations",
+            title="Square Locations",
+            columns=locations_columns,
             relations=[
                 Invoices(),
             ],

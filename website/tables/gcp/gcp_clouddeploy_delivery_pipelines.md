@@ -25,6 +25,7 @@ The following tables depend on gcp_clouddeploy_delivery_pipelines:
 |labels|`json`|
 |create_time|`timestamp[us, tz=UTC]`|
 |update_time|`timestamp[us, tz=UTC]`|
+|pipeline|`json`|
 |condition|`json`|
 |etag|`utf8`|
 |suspended|`bool`|

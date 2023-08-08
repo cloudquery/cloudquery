@@ -22,6 +22,7 @@ The composite primary key for this table is (**project_id**, **name**).
 |output_version_format|`utf8`|
 |writer_identity|`utf8`|
 |include_children|`bool`|
+|options|`json`|
 |create_time|`timestamp[us, tz=UTC]`|
 |update_time|`timestamp[us, tz=UTC]`|
 

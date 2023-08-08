@@ -1,4 +1,4 @@
-This example syncs from Fastly to a destination, using the token provided in an environment variable called `FASTLY_API_KEY`. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
+This example syncs from Fastly, using the token provided in an environment variable called `FASTLY_API_KEY`. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
 ```yaml copy
 kind: source
@@ -8,7 +8,7 @@ spec:
   path: cloudquery/fastly
   version: "VERSION_SOURCE_FASTLY"
   tables: ["*"]
-  destinations: ["postgresql"]
+  destinations: ["DESTINATION_NAME"]
 
   # Fastly specific configuration
   spec:

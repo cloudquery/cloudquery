@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882
-	github.com/cloudquery/plugin-sdk/v4 v4.2.5
+	github.com/cloudquery/plugin-sdk/v4 v4.2.6
 	github.com/google/uuid v1.3.0
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/pavel-snyk/snyk-sdk-go v0.4.1
@@ -15,7 +15,7 @@ require (
 
 replace (
 	// TODO: remove once the changes are merged to upstream
-	github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230731001320-3452eb0f930f
+	github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230805001301-f53878dc8a89
 	github.com/pavel-snyk/snyk-sdk-go => github.com/cloudquery/snyk-sdk-go v0.5.0
 )
 

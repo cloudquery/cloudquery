@@ -29,11 +29,11 @@ The Snowflake destination utilizes batching, and supports [`batch_size`](/docs/r
 
 This is the top level spec used by the Snowflake destination plugin.
 
-- `connection_string` (string) (required)
+- `connection_string` (`string`) (required)
 
-  Snowflake `connection_string`
+  Snowflake `connection_string`.
 
-  Example `connection_string`:
+  Example:
 
   ```yaml copy
   # user[:password]@account/database/schema?warehouse=user_warehouse[&param1=value1&paramN=valueN]
@@ -50,18 +50,21 @@ This is the top level spec used by the Snowflake destination plugin.
   `account` - Name assigned to your Snowflake account. If you are not on us-west-2 or AWS deployment, append the region and platform to the end, e.g., `<account>.<region> or <account>.<region>.<platform>`.
 
 
-- `batch_size` (integer, optional. default: 1000)
+- `migrate_concurrency` (`integer`) (optional) (default: `1`)
+
+  By default, tables are migrated one at a time.
+  This option allows you to migrate multiple tables concurrently.
+  This can be useful if you have a lot of tables to migrate and want to speed up the process.
+
+  Setting this to a negative number means no limit.
+
+- `batch_size` (`integer`) (optional) (default: `1000`)
 
   Number of records to batch together before sending to the database.
 
-- `batch_size_bytes` (integer, optional. default: 4194304 (4MiB))
+- `batch_size_bytes` (`integer`) (optional) (default: `4194304` (= 4 MiB))
 
   Number of bytes (as Arrow buffer size) to batch together before sending to the database.
-
-- `migrate_concurrency` (integer, optional. default: 1)
-
-  By default tables are migrated one at a time. This option allows you to migrate multiple tables concurrently. This can be useful if you have a lot of tables to migrate and want to speed up the process.
-  Setting this to a negative number means no limit.
 
 ## Underlying library
 
