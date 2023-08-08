@@ -10,8 +10,8 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-// MigrateTableBatch migrates a table. It forms part of the writer.MixedBatchWriter interface.
-func (c *Client) MigrateTableBatch(ctx context.Context, messages message.WriteMigrateTables) error {
+// MigrateTables migrates a table. It forms part of the writer.MixedBatchWriter interface.
+func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrateTables) error {
 	tables, err := tablesFromMessages(messages)
 	if err != nil {
 		return err

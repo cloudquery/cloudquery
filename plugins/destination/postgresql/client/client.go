@@ -8,7 +8,7 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
-	"github.com/cloudquery/plugin-sdk/v4/writers/mixedbatchwriter"
+	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -23,13 +23,14 @@ type Client struct {
 	currentSchemaName   string
 	pgType              pgType
 	batchSize           int
-	writer              *mixedbatchwriter.MixedBatchWriter
+	writer              *batchwriter.BatchWriter
 
 	plugin.UnimplementedSource
 }
 
 // Assert Client implements plugin.Client interface.
 var _ plugin.Client = (*Client)(nil)
+var _ batchwriter.Client = (*Client)(nil)
 
 type pgType int
 
@@ -90,11 +91,11 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 	if err != nil {
 		return nil, fmt.Errorf("failed to get database type: %w", err)
 	}
-	c.writer, err = mixedbatchwriter.New(c,
-		mixedbatchwriter.WithLogger(c.logger),
-		mixedbatchwriter.WithBatchSize(spec.BatchSize),
-		mixedbatchwriter.WithBatchSizeBytes(spec.BatchSizeBytes),
-		mixedbatchwriter.WithBatchTimeout(spec.BatchTimeout.Duration()),
+	c.writer, err = batchwriter.New(c,
+		batchwriter.WithLogger(c.logger),
+		batchwriter.WithBatchSize(spec.BatchSize),
+		batchwriter.WithBatchSizeBytes(spec.BatchSizeBytes),
+		batchwriter.WithBatchTimeout(spec.BatchTimeout.Duration()),
 	)
 	if err != nil {
 		return nil, err

@@ -13,19 +13,14 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
-// InsertBatch inserts records into the destination table. It forms part of the writer.MixedBatchWriter interface.
-func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts) error {
+// WriteTableBatch inserts records into the destination table. It forms part of the writer.MixedBatchWriter interface.
+func (c *Client) WriteTableBatch(ctx context.Context, name string, messages message.WriteInserts) error {
 	tables, err := tablesFromMessages[*message.WriteInsert](messages)
 	if err != nil {
 		return err
 	}
 
-	include := make([]string, len(tables))
-	for i, table := range tables {
-		include[i] = table.Name
-	}
-	var exclude []string
-	pgTables, err := c.listTables(ctx, include, exclude)
+	pgTables, err := c.listTables(ctx, []string{name}, nil)
 	if err != nil {
 		return err
 	}
