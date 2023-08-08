@@ -78,8 +78,9 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 	fmt.Printf("Starting migration for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
 
 	getTablesRes, err := sourcePbClient.GetTables(ctx, &plugin.GetTables_Request{
-		Tables:     sourceSpec.Tables,
-		SkipTables: sourceSpec.SkipTables,
+		Tables:              sourceSpec.Tables,
+		SkipTables:          sourceSpec.SkipTables,
+		SkipDependentTables: sourceSpec.SkipDependentTables,
 	})
 	if err != nil {
 		return err
