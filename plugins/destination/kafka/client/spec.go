@@ -7,13 +7,11 @@ import (
 )
 
 type Spec struct {
-	Brokers      []string `json:"brokers,omitempty"`
-	Verbose      bool     `json:"verbose,omitempty"`
-	SaslUsername string   `json:"sasl_username,omitempty"`
-	SaslPassword string   `json:"sasl_password,omitempty"`
-	// This is currently only used for testing to wait for
-	// kafka cluster to be ready in GitHub actions.
-	MaxMetadataRetries int `json:"max_metadata_retries,omitempty"`
+	Brokers []string `json:"brokers,omitempty"`
+	Verbose bool     `json:"verbose,omitempty"`
+
+	SaslUsername string `json:"sasl_username,omitempty"`
+	SaslPassword string `json:"sasl_password,omitempty"`
 
 	ClientID string `json:"client_id,omitempty"`
 

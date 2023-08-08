@@ -19,6 +19,7 @@ type CognitoidentityproviderClient interface {
 	GetDevice(context.Context, *cognitoidentityprovider.GetDeviceInput, ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.GetDeviceOutput, error)
 	GetGroup(context.Context, *cognitoidentityprovider.GetGroupInput, ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.GetGroupOutput, error)
 	GetIdentityProviderByIdentifier(context.Context, *cognitoidentityprovider.GetIdentityProviderByIdentifierInput, ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.GetIdentityProviderByIdentifierOutput, error)
+	GetLogDeliveryConfiguration(context.Context, *cognitoidentityprovider.GetLogDeliveryConfigurationInput, ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.GetLogDeliveryConfigurationOutput, error)
 	GetSigningCertificate(context.Context, *cognitoidentityprovider.GetSigningCertificateInput, ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.GetSigningCertificateOutput, error)
 	GetUICustomization(context.Context, *cognitoidentityprovider.GetUICustomizationInput, ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.GetUICustomizationOutput, error)
 	GetUser(context.Context, *cognitoidentityprovider.GetUserInput, ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.GetUserOutput, error)

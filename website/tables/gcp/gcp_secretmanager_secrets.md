@@ -18,6 +18,7 @@ The primary key for this table is **name**.
 |create_time|`timestamp[us, tz=UTC]`|
 |labels|`json`|
 |topics|`json`|
+|expiration|`json`|
 |etag|`utf8`|
 |rotation|`json`|
 |version_aliases|`json`|

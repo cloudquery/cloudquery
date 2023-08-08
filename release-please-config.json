@@ -118,6 +118,9 @@
     "plugins/source/hubspot": {
       "component": "plugins-source-hubspot"
     },
+    "plugins/source/jira": {
+      "component": "plugins-source-jira"
+    },
     "plugins/source/k8s": {
       "component": "plugins-source-k8s"
     },
@@ -163,8 +166,10 @@
     },
     "plugins/source/typeform": {
       "component": "plugins-source-typeform",
-      "release-type": "python",
-      "extra-files": ["plugin/plugin.py"]
+      "extra-files": [
+        "plugin/plugin.py"
+      ],
+      "release-type": "python"
     },
     "scaffold": {
       "component": "scaffold"

@@ -56,7 +56,7 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 	c.batchSize = spec.BatchSize
 	logLevel, err := tracelog.LogLevelFromString(spec.PgxLogLevel.String())
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse pgx log level %s: %w", spec.PgxLogLevel, err)
+		return nil, fmt.Errorf("failed to parse pgx log level %s: %w", spec.PgxLogLevel.String(), err)
 	}
 	c.logger.Info().Str("pgx_log_level", spec.PgxLogLevel.String()).Msg("Initializing postgresql destination")
 	pgxConfig, err := pgxpool.ParseConfig(spec.ConnectionString)
