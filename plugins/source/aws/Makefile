@@ -3,6 +3,10 @@
 test:
 	go test -race -timeout 3m ./...
 
+.PHONY: build
+build:
+	go build -o aws
+
 # Install tools
 .PHONY: install-tools
 install-tools:
@@ -23,13 +27,14 @@ gen-mocks:
 	go run client/mockassert/main.go
 
 .PHONY: gen-docs
-gen-docs:
-	go run main.go doc --format json docs
-	go run scripts/policy_docs/main.go aws policies ../../../website/pages/docs/plugins/sources/aws/policies.md docs/__tables.json
-	rm docs/__tables.json
+gen-docs: build
+	cd ../../../cli && go build -o cli && cd -
+	../../../cli/cli tables --format json --output-dir ./docs test/config.yml
+	go run scripts/policy_docs/main.go aws policies ../../../website/pages/docs/plugins/sources/aws/policies.md docs/aws/__tables.json
+	rm docs/aws/__tables.json
 
 	rm -rf ../../../website/tables/aws
-	go run main.go doc ../../../website/tables/aws
+	../../../cli/cli tables --format markdown --output-dir ../../../website/tables test/config.yml
 	go run scripts/example_queries/main.go policies/queries ../../../website/tables/aws
 	sed 's_(\(.*\))_(../../../../../website/tables/aws/\1)_' ../../../website/tables/aws/README.md > ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/aws/README.md
