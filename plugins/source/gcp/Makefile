@@ -2,6 +2,10 @@
 test:
 	go test -race -timeout 3m ./...
 
+.PHONY: build
+build:
+	go build -o gcp
+
 # Install tools
 .PHONY: install-tools
 install-tools:
@@ -13,13 +17,18 @@ lint:
 	golangci-lint run --config ../../.golangci.yml
 
 .PHONY: gen-docs
-gen-docs:
-	go run main.go doc --format json docs
-	go run scripts/policy_docs/main.go gcp policies ../../../website/pages/docs/plugins/sources/gcp/policies.md docs/__tables.json
-	rm docs/__tables.json
+gen-docs: build
+	@command -v cloudquery >/dev/null 2>&1 || { \
+		echo "Error: 'cloudquery' command not found. Please install it before running gen-docs."; \
+		echo "You can install it by following the instructions at: https://www.cloudquery.io/docs/quickstart"; \
+		exit 1; \
+	}
+	cloudquery tables --format json --output-dir ./docs test/config.yml
+	go run scripts/policy_docs/main.go gcp policies ../../../website/pages/docs/plugins/sources/gcp/policies.md docs/gcp/__tables.json
+	rm docs/gcp/__tables.json
 
 	rm -rf ../../../website/tables/gcp
-	go run main.go doc ../../../website/tables/gcp
+	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
 	go run scripts/example_queries/main.go policies/queries ../../../website/tables/gcp
 	sed 's_(\(.*\))_(../../../../../website/tables/gcp/\1)_' ../../../website/tables/gcp/README.md > ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/gcp/README.md
