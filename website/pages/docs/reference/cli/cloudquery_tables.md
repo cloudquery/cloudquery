@@ -10,7 +10,7 @@ Generate documentation for all supported tables of source plugins specified in t
 Generate documentation for all supported tables of source plugins specified in the spec(s)
 
 ```
-cloudquery tables [files or directories] [flags]
+cloudquery tables [flags]
 ```
 
 ### Examples
