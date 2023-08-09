@@ -100,13 +100,13 @@ func ArrowToCockroach(t arrow.DataType) string {
 	case *arrow.Uint32Type:
 		return "int8"
 	case *arrow.Uint64Type:
-		return "numeric(20,0)"
+		return "decimal(20,0)"
 	case *arrow.Float32Type:
 		return "real"
 	case *arrow.Float64Type:
 		return "double precision"
 	case arrow.DecimalType:
-		return "numeric(" + strconv.Itoa(int(dt.GetPrecision())) + "," + strconv.Itoa(int(dt.GetScale())) + ")"
+		return "decimal(" + strconv.Itoa(int(dt.GetPrecision())) + "," + strconv.Itoa(int(dt.GetScale())) + ")"
 	case *arrow.StringType:
 		return "text"
 	case *arrow.BinaryType:
