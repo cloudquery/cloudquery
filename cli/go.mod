@@ -22,8 +22,6 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 )
 
-replace github.com/cloudquery/plugin-sdk/v4 => ../../plugin-sdk
-
 require (
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
