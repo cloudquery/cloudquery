@@ -325,6 +325,32 @@ spec:
 	}
 }
 
+func TestExpandMultilineFile(t *testing.T) {
+	cfg := []byte(`
+kind: source
+spec:
+	name: test
+	version: v1.0.0
+	spec:
+		private_key: "${file:./testdata/example.key}"
+	`)
+	expectedCfg := []byte(`
+kind: source
+spec:
+	name: test
+	version: v1.0.0
+	spec:
+		private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCxPzSMfK9a8qvA\nDt1qEc9I9E6wABA07NgnxRaW\n-----END PRIVATE KEY-----\n"
+	`)
+	expandedCfg, err := expandFileConfig(cfg)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(expandedCfg, expectedCfg) {
+		t.Fatalf("got: %s expected: %s", expandedCfg, expectedCfg)
+	}
+}
+
 func TestExpandEnv(t *testing.T) {
 	os.Setenv("TEST_ENV_CREDS", "mytestcreds")
 	os.Setenv("TEST_ENV_CREDS2", "anothercredtest")

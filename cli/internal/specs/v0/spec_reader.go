@@ -2,7 +2,6 @@ package specs
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"math/rand"
 	"os"
@@ -26,8 +25,10 @@ type SpecReader struct {
 	Destinations []*Destination
 }
 
-var fileRegex = regexp.MustCompile(`\$\{file:([^}]+)\}`)
-var envRegex = regexp.MustCompile(`\$\{([^}]+)\}`)
+var (
+	fileRegex = regexp.MustCompile(`\$\{file:([^}]+)\}`)
+	envRegex  = regexp.MustCompile(`\$\{([^}]+)\}`)
+)
 
 func expandFileConfig(cfg []byte) ([]byte, error) {
 	var expandErr error
@@ -38,13 +39,19 @@ func expandFileConfig(cfg []byte) ([]byte, error) {
 			expandErr = err
 			return nil
 		}
-		if bytes.ContainsAny(content, "\n\r") && json.Valid(content) {
-			// Values that should be treated as strings in YAML have leading and trailing quotes already
-			// so we remove the one added by strconv.Quote
-			quoted := strconv.Quote(string(content))
-			return []byte(quoted[1 : len(quoted)-1])
-		}
-		return content
+
+		// FIXME: We need to know how the string in the YAML file has been
+		// written to know whether we should escape values. When the file
+		// contents are json.Valid then we have previously made an assumption
+		// that it's in a "string". We can't always assume that, as the default
+		// YAML behaviour for `key: value\nbreak` is actually equivalent to
+		// {"key": "value\\nbreak"} :facepalm:
+		//
+		// Instead, decode the YAML into a yaml.Node and walk through the nodes
+		// to find strings? I think the strings we get at that point are safe to
+		// mutate then we can finally decode the Spec via yaml.Node.Unmarshal?
+		quoted := strconv.QuoteToASCII(string(bytes.TrimSpace(content)))
+		return []byte(quoted[1 : len(quoted)-1])
 	})
 	return cfg, expandErr
 }
@@ -151,7 +158,7 @@ func (r *SpecReader) validate() error {
 	}
 
 	// here we check if source with different versions use the same destination and error out if yes
-	var destinationSourceMap = make(map[string]string)
+	destinationSourceMap := make(map[string]string)
 	for _, source := range r.Sources {
 		for _, destination := range source.Destinations {
 			if r.destinationsMap[destination] == nil {
