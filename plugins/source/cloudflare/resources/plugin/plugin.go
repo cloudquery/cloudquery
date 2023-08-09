@@ -17,6 +17,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/worker_meta_data"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/worker_routes"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/zones"
+	"github.com/cloudquery/plugin-sdk/v4/docs"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
@@ -103,6 +104,10 @@ func getTables() schema.Tables {
 	if err := transformers.TransformTables(tables); err != nil {
 		panic(err)
 	}
+	transformers.Apply(tables, func(t *schema.Table) error {
+		t.Title = docs.DefaultTitleTransformer(t)
+		return nil
+	})
 	for _, table := range tables {
 		schema.AddCqIDs(table)
 	}
