@@ -3,6 +3,10 @@
 test:
 	go test -race -timeout 3m ./...
 
+.PHONY: build
+build:
+	go build
+
 # Install tools
 .PHONY: install-tools
 install-tools:
@@ -14,9 +18,9 @@ lint:
 	golangci-lint run --config ../../.golangci.yml
 
 .PHONY: gen-docs
-gen-docs:
+gen-docs: build
 	rm -rf ./docs/tables/*
-	go run main.go doc ./docs/tables
+	cloudquery tables --output-dir docs/tables testdata
 
 # All gen targets
 .PHONY: gen
