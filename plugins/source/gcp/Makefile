@@ -20,8 +20,8 @@ lint:
 gen-docs: build
 	cd ../../../cli && go build -o cli && cd -
 	../../../cli/cli tables --format json --output-dir ./docs test/config.yml
-	go run scripts/policy_docs/main.go gcp policies ../../../website/pages/docs/plugins/sources/gcp/policies.md docs/__tables.json
-	rm docs/__tables.json
+	go run scripts/policy_docs/main.go gcp policies ../../../website/pages/docs/plugins/sources/gcp/policies.md docs/gcp/__tables.json
+	rm docs/gcp/__tables.json
 
 	rm -rf ../../../website/tables/gcp
 	../../../cli/cli tables --format markdown --output-dir ../../../website/tables test/config.yml
