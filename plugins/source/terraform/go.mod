@@ -10,7 +10,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.72
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.37.0
 	github.com/aws/aws-sdk-go-v2/service/sts v1.19.3
-	github.com/cloudquery/plugin-sdk/v4 v4.2.6
+	github.com/cloudquery/plugin-sdk/v4 v4.4.0
 	github.com/rs/zerolog v1.29.1
 	github.com/stretchr/testify v1.8.4
 )
@@ -32,7 +32,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.13 // indirect
 	github.com/aws/smithy-go v1.13.5 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.9.1 // indirect
+	github.com/cloudquery/plugin-pb-go v1.9.2 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
@@ -41,7 +41,7 @@ require (
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
-	github.com/google/flatbuffers v23.1.21+incompatible // indirect
+	github.com/google/flatbuffers v23.5.26+incompatible // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3 // indirect
