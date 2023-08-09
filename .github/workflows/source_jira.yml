@@ -50,9 +50,10 @@ jobs:
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
-      - name: Fail if generation updated files
-        if: github.event_name == 'pull_request'
-        run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
+# Disabled because we make some manual changes to the table index to indicate which tables are free/premium
+#      - name: Fail if generation updated files
+#        if: github.event_name == 'pull_request'
+#        run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
       - name: Build
         run: go build .
       - name: Test
