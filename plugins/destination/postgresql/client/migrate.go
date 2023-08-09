@@ -145,12 +145,7 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 func (c *Client) normalizeTables(tables schema.Tables, pgTables schema.Tables) schema.Tables {
 	var result schema.Tables
 	for _, table := range tables {
-		pgTable := pgTables.Get(table.Name)
-		if pgTable == nil {
-			result = append(result, table)
-		} else {
-			result = append(result, c.normalizeTable(table, pgTable))
-		}
+		result = append(result, c.normalizeTable(table, pgTables.Get(table.Name)))
 	}
 	return result
 }
