@@ -104,10 +104,12 @@ func getTables() schema.Tables {
 	if err := transformers.TransformTables(tables); err != nil {
 		panic(err)
 	}
-	transformers.Apply(tables, func(t *schema.Table) error {
+	if err := transformers.Apply(tables, func(t *schema.Table) error {
 		t.Title = docs.DefaultTitleTransformer(t)
 		return nil
-	})
+	}); err != nil {
+		panic(err)
+	}
 	for _, table := range tables {
 		schema.AddCqIDs(table)
 	}
