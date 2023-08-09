@@ -11,6 +11,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/jira/resources/priorities"
 	"github.com/cloudquery/cloudquery/plugins/source/jira/resources/projects"
 	"github.com/cloudquery/cloudquery/plugins/source/jira/sync"
+	"github.com/cloudquery/plugin-sdk/v4/docs"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
@@ -83,6 +84,12 @@ func getTables() schema.Tables {
 		fields.Fields(),
 	}
 	if err := transformers.TransformTables(tables); err != nil {
+		panic(err)
+	}
+	if err := transformers.Apply(tables, func(t *schema.Table) error {
+		t.Title = docs.DefaultTitleTransformer(t)
+		return nil
+	}); err != nil {
 		panic(err)
 	}
 	return tables
