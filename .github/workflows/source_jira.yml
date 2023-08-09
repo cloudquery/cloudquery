@@ -42,12 +42,18 @@ jobs:
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
           skip-build-cache: true
+      - name: Setup CloudQuery
+        if: github.event_name == 'pull_request'
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: 'v3.13.0'
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
-      - name: Fail if generation updated files
-        if: github.event_name == 'pull_request'
-        run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
+# Disabled because we make some manual changes to the table index to indicate which tables are free/premium
+#      - name: Fail if generation updated files
+#        if: github.event_name == 'pull_request'
+#        run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
       - name: Build
         run: go build .
       - name: Test
