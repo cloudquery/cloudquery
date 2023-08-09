@@ -11,8 +11,8 @@ build:
 gen-docs: build
 	cd ../../../cli && go build -o cli && cd -
 	../../../cli/cli tables --format json --output-dir ./docs test/config.yml
-	go run scripts/policy_docs/main.go azure policies ../../../website/pages/docs/plugins/sources/azure/policies.md docs/__tables.json
-	rm docs/__tables.json
+	go run scripts/policy_docs/main.go azure policies ../../../website/pages/docs/plugins/sources/azure/policies.md docs/azure/__tables.json
+	rm docs/azure/__tables.json
 
 	rm -rf ../../../website/tables/azure
 	../../../cli/cli tables --format markdown --output-dir ../../../website/tables test/config.yml
