@@ -112,6 +112,8 @@ source-mysql:
   - plugins/source/mysql/**/*
 source-postgresql:
   - plugins/source/postgresql/**/*
+square:
+  - plugins/source/square/**/*
 sqlite:
   - plugins/destination/sqlite/**/*
 stripe:
@@ -120,6 +122,8 @@ tailscale:
   - plugins/source/tailscale/**/*
 terraform:
   - plugins/source/terraform/**/*
+typeform:
+  - plugins/source/typeform/**/*
 vercel:
   - plugins/source/vercel/**/*
 website:
