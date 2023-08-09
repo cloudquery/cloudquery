@@ -3,6 +3,10 @@
 test:
 	go test -race -timeout 3m ./...
 
+.PHONY: build
+build:
+	go build -o aws .
+
 # Install tools
 .PHONY: install-tools
 install-tools:
@@ -23,7 +27,7 @@ gen-mocks:
 	go run client/mockassert/main.go
 
 .PHONY: gen-docs
-gen-docs:
+gen-docs: build
 	@command -v cloudquery >/dev/null 2>&1 || { \
 		echo "Error: 'cloudquery' command not found. Please install it before running gen-docs."; \
 		echo "You can install it by following the instructions at: https://www.cloudquery.io/docs/quickstart"; \
