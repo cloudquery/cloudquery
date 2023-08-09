@@ -53,16 +53,12 @@ jobs:
             ${{ steps.vercel.outputs.url }} \
             | grep -v '───OK───' | grep -v '──SKIP──' | grep -v '0 broken'
       - name: Slack Notify
-        uses: rtCamp/action-slack-notify@v2.2.0
+        uses: ravsamhq/notify-slack-action@v2 # https://github.com/marketplace/actions/notify-slack-action
         if: always()
         with:
           status: ${{ job.status }}
           notify_when: 'failure'
+          notification_title: 'Broken links detected :bang:'
+          footer: '<{repo_url}|{repo}>'
         env:
-          SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL_NAME }}}
-          SLACK_COLOR: ${{ job.status }}
-          SLACK_ICON: https://github.com/cloudquery.png?size=48
-          SLACK_MESSAGE: 'Broken links detected :bang:'
-          SLACK_TITLE: Broken Links Checker
-          SLACK_USERNAME: cq-bot
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
