@@ -14,6 +14,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/resources/services/order"
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/resources/services/price_rule"
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/resources/services/product"
+	"github.com/cloudquery/plugin-sdk/v4/docs"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
@@ -147,6 +148,12 @@ func getTables() schema.Tables {
 		checkout.AbandonedCheckouts(),
 	}
 	if err := transformers.TransformTables(tables); err != nil {
+		panic(err)
+	}
+	if err := transformers.Apply(tables, func(t *schema.Table) error {
+		t.Title = docs.DefaultTitleTransformer(t)
+		return nil
+	}); err != nil {
 		panic(err)
 	}
 	for _, t := range tables {
