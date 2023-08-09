@@ -24,10 +24,10 @@ func newMockApps(t *testing.T, ctrl *gomock.Controller) client.Services {
 		isCtx        = gomock.AssignableToTypeOf(ctxInterface)
 	)
 
-	apps := mocks.NewMockAppsService(ctrl)
+	svc := mocks.NewMockAppsService(ctrl)
 
 	// Page 1.
-	apps.EXPECT().List(isCtx, &godo.ListOptions{Page: 1, PerPage: client.MaxItemsPerPage}).
+	svc.EXPECT().List(isCtx, &godo.ListOptions{Page: 1, PerPage: client.MaxItemsPerPage}).
 		Return(
 			[]*godo.App{
 				fakeApp("11111111-0000-4000-0000-000000000000"),
@@ -44,7 +44,7 @@ func newMockApps(t *testing.T, ctrl *gomock.Controller) client.Services {
 			},
 			nil,
 		)
-	apps.EXPECT().ListAlerts(isCtx, "11111111-0000-4000-0000-000000000000").
+	svc.EXPECT().ListAlerts(isCtx, "11111111-0000-4000-0000-000000000000").
 		Return(
 			[]*godo.AppAlert{
 				fakeAlert("11111111-1111-4000-0000-000000000000"),
@@ -53,7 +53,7 @@ func newMockApps(t *testing.T, ctrl *gomock.Controller) client.Services {
 			&godo.Response{},
 			nil,
 		)
-	apps.EXPECT().ListAlerts(isCtx, "22222222-0000-4000-0000-000000000000").
+	svc.EXPECT().ListAlerts(isCtx, "22222222-0000-4000-0000-000000000000").
 		Return(
 			[]*godo.AppAlert{
 				fakeAlert("22222222-1111-4000-0000-000000000000"),
@@ -64,7 +64,7 @@ func newMockApps(t *testing.T, ctrl *gomock.Controller) client.Services {
 		)
 
 	// Page 2.
-	apps.EXPECT().List(isCtx, &godo.ListOptions{Page: 2, PerPage: client.MaxItemsPerPage}).
+	svc.EXPECT().List(isCtx, &godo.ListOptions{Page: 2, PerPage: client.MaxItemsPerPage}).
 		Return(
 			[]*godo.App{
 				fakeApp("33333333-0000-4000-0000-000000000000"),
@@ -81,7 +81,7 @@ func newMockApps(t *testing.T, ctrl *gomock.Controller) client.Services {
 			},
 			nil,
 		)
-	apps.EXPECT().ListAlerts(isCtx, "33333333-0000-4000-0000-000000000000").
+	svc.EXPECT().ListAlerts(isCtx, "33333333-0000-4000-0000-000000000000").
 		Return(
 			[]*godo.AppAlert{
 				fakeAlert("33333333-1111-4000-0000-000000000000"),
@@ -90,7 +90,7 @@ func newMockApps(t *testing.T, ctrl *gomock.Controller) client.Services {
 			&godo.Response{},
 			nil,
 		)
-	apps.EXPECT().ListAlerts(isCtx, "44444444-0000-4000-0000-000000000000").
+	svc.EXPECT().ListAlerts(isCtx, "44444444-0000-4000-0000-000000000000").
 		Return(
 			[]*godo.AppAlert{
 				fakeAlert("44444444-1111-4000-0000-000000000000"),
@@ -100,7 +100,7 @@ func newMockApps(t *testing.T, ctrl *gomock.Controller) client.Services {
 			nil,
 		)
 
-	return client.Services{Apps: apps}
+	return client.Services{Apps: svc}
 }
 
 func fakeApp(id string) *godo.App {
