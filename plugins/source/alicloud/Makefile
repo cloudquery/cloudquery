@@ -3,6 +3,10 @@
 test:
 	go test -timeout 3m ./...
 
+.PHONY: build
+build:
+	go build -o alicloud
+
 # Install tools
 .PHONY: install-tools
 install-tools:
@@ -29,7 +33,7 @@ gen-mocks:
 .PHONY: gen-docs
 gen-docs:
 	rm -rf ../../../website/tables/alicloud
-	go run main.go doc ../../../website/tables/alicloud
+	../../../cli/cli tables --format markdown --output-dir ../../../website/tables test/config.yml
 	sed 's_(\(.*\))_(../../../../../website/tables/alicloud/\1)_' ../../../website/tables/alicloud/README.md > ./docs/tables/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/alicloud/README.md
 	mv ../../../website/tables/alicloud/README.md ../../../website/pages/docs/plugins/sources/alicloud/tables.md
