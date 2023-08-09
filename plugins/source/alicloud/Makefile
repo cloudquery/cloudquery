@@ -32,6 +32,7 @@ gen-mocks:
 
 .PHONY: gen-docs
 gen-docs: build
+	cd ../../../cli && go build -o cli && cd -
 	rm -rf ../../../website/tables/alicloud
 	../../../cli/cli tables --format markdown --output-dir ../../../website/tables test/config.yml
 	sed 's_(\(.*\))_(../../../../../website/tables/alicloud/\1)_' ../../../website/tables/alicloud/README.md > ./docs/tables/README.md
