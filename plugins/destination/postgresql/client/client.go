@@ -103,19 +103,20 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 	return c, nil
 }
 
-func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) error {
-	return c.writer.Write(ctx, res)
+func (c *Client) Write(ctx context.Context, messages <-chan message.WriteMessage) error {
+	if err := c.writer.Write(ctx, messages); err != nil {
+		return err
+	}
+	return c.writer.Flush(ctx)
 }
 
 func (c *Client) Close(ctx context.Context) error {
-	var err error
 	if c.conn == nil {
 		return fmt.Errorf("client already closed or not initialized")
 	}
-	if c.conn != nil {
-		c.conn.Close()
-		c.conn = nil
-	}
+	err := c.writer.Close(ctx)
+	c.conn.Close()
+	c.conn = nil
 	return err
 }
 
