@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 	"sync"
 
@@ -265,14 +266,31 @@ func New(ctx context.Context, logger zerolog.Logger, s *Spec) (schema.ClientMeta
 		}
 	})
 
+	oidcToken := c.pluginSpec.OIDCToken
 	var credsOptions *azidentity.DefaultAzureCredentialOptions
 	if c.Options != nil {
 		credsOptions = &azidentity.DefaultAzureCredentialOptions{ClientOptions: c.Options.ClientOptions}
 	}
 	var err error
-	c.Creds, err = azidentity.NewDefaultAzureCredential(credsOptions)
-	if err != nil {
-		return nil, err
+	if oidcToken != "" {
+		// Accessing Azure using OIDC token
+		tenantID := os.Getenv("AZURE_TENANT_ID")
+		clientID := os.Getenv("AZURE_CLIENT_ID")
+		if tenantID == "" {
+			return nil, errors.New("AZURE_TENANT_ID is empty")
+		}
+		c.Creds, err = azidentity.NewClientAssertionCredential(tenantID, clientID, func(ctx context.Context) (string, error) {
+			return oidcToken, nil
+		}, nil)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		// Use default Azure credential chain
+		c.Creds, err = azidentity.NewDefaultAzureCredential(credsOptions)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	log.SetListener(nil)
