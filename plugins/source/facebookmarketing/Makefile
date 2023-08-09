@@ -2,6 +2,10 @@
 test:
 	go test -timeout 3m ./...
 
+.PHONY: build
+build:
+	go build
+
 .PHONY: lint
 lint:
 	golangci-lint run --config ../../.golangci.yml
