@@ -1,0 +1,114 @@
+[
+  {
+    "name": "incremental_table",
+    "title": "Incremental Table",
+    "description": "Description for incremental table",
+    "columns": [
+      {
+        "name": "int_col",
+        "type": "int64"
+      },
+      {
+        "name": "id_col",
+        "type": "int64",
+        "is_primary_key": true,
+        "is_incremental_key": true
+      },
+      {
+        "name": "id_col2",
+        "type": "int64",
+        "is_incremental_key": true
+      }
+    ],
+    "relations": []
+  },
+  {
+    "name": "test_table",
+    "title": "Test Table",
+    "description": "Description for test table",
+    "columns": [
+      {
+        "name": "int_col",
+        "type": "int64"
+      },
+      {
+        "name": "id_col",
+        "type": "int64",
+        "is_primary_key": true
+      },
+      {
+        "name": "id_col2",
+        "type": "int64",
+        "is_primary_key": true
+      },
+      {
+        "name": "json_col",
+        "type": "json"
+      },
+      {
+        "name": "list_col",
+        "type": "list<item: int64, nullable>"
+      },
+      {
+        "name": "map_col",
+        "type": "map<utf8, int64, items_nullable>"
+      },
+      {
+        "name": "struct_col",
+        "type": "struct<string_field: utf8, int_field: int64>"
+      }
+    ],
+    "relations": [
+      {
+        "name": "relation_table",
+        "title": "Relation Table",
+        "description": "Description for relational table",
+        "columns": [
+          {
+            "name": "string_col",
+            "type": "utf8"
+          }
+        ],
+        "relations": [
+          {
+            "name": "relation_relation_table_a",
+            "title": "Relation Relation Table A",
+            "description": "Description for relational table's relation",
+            "columns": [
+              {
+                "name": "string_col",
+                "type": "utf8"
+              }
+            ],
+            "relations": []
+          },
+          {
+            "name": "relation_relation_table_b",
+            "title": "Relation Relation Table B",
+            "description": "Description for relational table's relation",
+            "columns": [
+              {
+                "name": "string_col",
+                "type": "utf8"
+              }
+            ],
+            "relations": []
+          }
+        ]
+      },
+      {
+        "name": "relation_table2",
+        "title": "Relation Table2",
+        "description": "Description for second relational table",
+        "columns": [
+          {
+            "name": "string_col",
+            "type": "utf8"
+          }
+        ],
+        "relations": []
+      }
+    ]
+  }
+]
+

@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.13.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.12.4...cli-v3.13.0) (2023-08-09)
+
+
+### Features
+
+* Add protocol v3 tables command (move doc generation to CLI) ([#12758](https://github.com/cloudquery/cloudquery/issues/12758)) ([e2e8575](https://github.com/cloudquery/cloudquery/commit/e2e8575cd4fa8733ceb8c8f709dea1179aa68240))
+
 ## [3.12.4](https://github.com/cloudquery/cloudquery/compare/cli-v3.12.3...cli-v3.12.4) (2023-08-08)
 
 
