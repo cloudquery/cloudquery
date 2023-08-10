@@ -112,10 +112,10 @@ source-mysql:
   - plugins/source/mysql/**/*
 source-postgresql:
   - plugins/source/postgresql/**/*
-square:
-  - plugins/source/square/**/*
 sqlite:
   - plugins/destination/sqlite/**/*
+square:
+  - plugins/source/square/**/*
 stripe:
   - plugins/source/stripe/**/*
 tailscale:
