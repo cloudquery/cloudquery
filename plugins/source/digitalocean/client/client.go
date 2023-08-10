@@ -73,6 +73,7 @@ func (SpacesEndpointResolver) ResolveEndpoint(_, region string, options ...any) 
 
 type Services struct {
 	Account        AccountService
+	Apps           AppsService
 	Cdn            CdnService
 	BillingHistory BillingHistoryService
 	Monitoring     MonitoringService
@@ -170,6 +171,7 @@ func (c Client) ID() string {
 func initServices(doClient *godo.Client, spacesService SpacesService) *Services {
 	return &Services{
 		Account:        doClient.Account,
+		Apps:           doClient.Apps,
 		Cdn:            doClient.CDNs,
 		BillingHistory: doClient.BillingHistory,
 		Monitoring:     doClient.Monitoring,

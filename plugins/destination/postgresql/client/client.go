@@ -107,15 +107,13 @@ func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) err
 }
 
 func (c *Client) Close(ctx context.Context) error {
-	var err error
 	if c.conn == nil {
 		return fmt.Errorf("client already closed or not initialized")
 	}
-	if c.conn != nil {
-		c.conn.Close()
-		c.conn = nil
-	}
-	return err
+
+	c.conn.Close()
+	c.conn = nil
+	return nil
 }
 
 func (c *Client) currentDatabase(ctx context.Context) (string, error) {
