@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [5.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v5.2.1...plugins-source-digitalocean-v5.3.0) (2023-08-10)
 
 
+### This Release has the Following Changes to Tables
+- Table `digitalocean_apps` was added
+- Table `digitalocean_apps_alerts` was added
+
 ### Features
 
 * **resources:** DigitalOcean apps, apps_alerts tables. ([#12792](https://github.com/cloudquery/cloudquery/issues/12792)) ([5d2dbcf](https://github.com/cloudquery/cloudquery/commit/5d2dbcf4edc5b8dca52c4a2c0274b3f9424f3dd0))
