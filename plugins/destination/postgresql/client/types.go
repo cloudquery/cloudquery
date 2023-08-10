@@ -17,7 +17,7 @@ func (c *Client) SchemaTypeToPg(t arrow.DataType) string {
 func (c *Client) PgToSchemaType(t string) arrow.DataType {
 	switch c.pgType {
 	case pgTypeCockroachDB:
-		return pgarrow.Pg10ToCockroach(t)
+		return pgarrow.CockroachToArrow(t)
 	default:
 		return pgarrow.Pg10ToArrow(t)
 	}
