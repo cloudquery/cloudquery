@@ -5,6 +5,22 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v5.2.1...plugins-source-digitalocean-v5.3.0) (2023-08-10)
+
+
+### This Release has the Following Changes to Tables
+- Table `digitalocean_apps` was added
+- Table `digitalocean_apps_alerts` was added
+
+### Features
+
+* **resources:** DigitalOcean apps, apps_alerts tables. ([#12792](https://github.com/cloudquery/cloudquery/issues/12792)) ([5d2dbcf](https://github.com/cloudquery/cloudquery/commit/5d2dbcf4edc5b8dca52c4a2c0274b3f9424f3dd0))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.4.0 ([#12850](https://github.com/cloudquery/cloudquery/issues/12850)) ([0861200](https://github.com/cloudquery/cloudquery/commit/086120054b45213947e95be954ba6164b9cf6587))
+
 ## [5.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v5.2.0...plugins-source-digitalocean-v5.2.1) (2023-08-08)
 
 
