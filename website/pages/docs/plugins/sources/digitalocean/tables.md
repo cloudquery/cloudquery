@@ -3,6 +3,8 @@
 ## Tables
 
 - [digitalocean_accounts](tables/digitalocean_accounts)
+- [digitalocean_apps](tables/digitalocean_apps)
+  - [digitalocean_apps_alerts](tables/digitalocean_apps_alerts)
 - [digitalocean_balances](tables/digitalocean_balances)
 - [digitalocean_billing_history](tables/digitalocean_billing_history)
 - [digitalocean_cdns](tables/digitalocean_cdns)
