@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net"
+	"regexp"
 	"strings"
 	"time"
 
@@ -325,7 +326,31 @@ func parseAuthenticator(v string) (sf.AuthType, bool) {
 	return unknown, false
 }
 
+var whitespace = regexp.MustCompile(`\s+`)
+
 func parsePEMRSAKey(blob string) (*rsa.PrivateKey, error) {
+	// Chop out the relevant parts of the key.
+	const (
+		pemBegin = "-----BEGIN "
+		pemSep   = "-----"
+		pemEnd   = "-----END "
+	)
+	_, rest, hadBegin := strings.Cut(blob, pemBegin)
+	head, rest, hadEnd := strings.Cut(rest, pemSep)
+	key, rest, hadKey := strings.Cut(rest, pemEnd)
+	tail, _, hadTail := strings.Cut(rest, pemSep)
+	if !hadBegin || !hadEnd || !hadKey || !hadTail {
+		return nil, fmt.Errorf("unable to find %s...%s...%s...%s in private key", pemBegin, pemSep, pemEnd, pemSep)
+	}
+
+	// Rebuild the key with the correct line breaks.
+	//
+	// The expansion of ${file:./private.key} in our YAML specs doesn't retain
+	// newlines at the time of writing (unless private.key contains valid JSON,
+	// which it shouldn't here) so we're going to substitute all inner
+	// whitespace with newlines.
+	blob = pemBegin + head + pemSep + "\n" + strings.TrimSpace(whitespace.ReplaceAllString(key, "\n")) + "\n" + pemEnd + tail + pemSep
+
 	// https://github.com/snowflakedb/gosnowflake/blob/7de6b8d13750ca70667f554335862f97a82720ea/cmd/keypair/keypair.go#L39-L52
 	block, _ := pem.Decode([]byte(blob))
 	if block == nil {
