@@ -23,6 +23,9 @@ SELECT
 	pg_class.relname AS table_name,
 	pg_attribute.attname AS column_name,
 	CASE
+	    -- This is required per the differences in pg_catalog.format_type implementations
+	    -- between PostgreSQL & CockroachDB.
+	    -- namely, numeric(20,0)[] is returned as numeric[] unless we use the typelem format + []
 	    WHEN pg_type.typcategory = 'A' AND pg_type.typelem != 0
 		THEN pg_catalog.format_type(pg_type.typelem, pg_attribute.atttypmod) || '[]'
 		ELSE pg_catalog.format_type(pg_attribute.atttypid, pg_attribute.atttypmod)
