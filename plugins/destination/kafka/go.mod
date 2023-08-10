@@ -5,9 +5,9 @@ go 1.20
 require (
 	github.com/Shopify/sarama v1.37.2
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882
-	github.com/cloudquery/filetypes/v4 v4.1.0
-	github.com/cloudquery/plugin-sdk/v4 v4.2.5
-	github.com/rs/zerolog v1.29.1
+	github.com/cloudquery/filetypes/v4 v4.1.2
+	github.com/cloudquery/plugin-sdk/v4 v4.4.0
+	github.com/rs/zerolog v1.30.0
 )
 
 // TODO: remove once all updates are merged
@@ -18,7 +18,7 @@ require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
 	github.com/apache/thrift v0.18.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.9.1 // indirect
+	github.com/cloudquery/plugin-pb-go v1.9.2 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/eapache/go-resiliency v1.3.0 // indirect
@@ -31,7 +31,7 @@ require (
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
-	github.com/google/flatbuffers v23.5.9+incompatible // indirect
+	github.com/google/flatbuffers v23.5.26+incompatible // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3 // indirect

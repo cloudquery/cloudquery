@@ -61,9 +61,13 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.Ne
 	}
 
 	cfg.Region = c.spec.Region
-	cfg.EndpointResolverWithOptions = c
 
-	c.s3Client = s3.NewFromConfig(cfg)
+	c.s3Client = s3.NewFromConfig(cfg, func(o *s3.Options) {
+		if len(c.spec.Endpoint) > 0 {
+			baseEndpoint := c.spec.Endpoint
+			o.BaseEndpoint = &baseEndpoint
+		}
+	})
 	c.uploader = manager.NewUploader(c.s3Client)
 	c.downloader = manager.NewDownloader(c.s3Client)
 
@@ -93,17 +97,4 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.Ne
 
 func (c *Client) Close(ctx context.Context) error {
 	return c.writer.Close(ctx)
-}
-
-func (c *Client) ResolveEndpoint(service, region string, options ...any) (aws.Endpoint, error) {
-	if c.spec.Endpoint == "" || service != s3.ServiceID {
-		return aws.Endpoint{}, &aws.EndpointNotFoundError{}
-	}
-
-	return aws.Endpoint{
-		PartitionID:   "aws",
-		URL:           c.spec.Endpoint,
-		SigningRegion: region,
-		Source:        aws.EndpointSourceCustom,
-	}, nil
 }

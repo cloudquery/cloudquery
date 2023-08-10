@@ -34,6 +34,11 @@ jobs:
         run: pip install -r requirements.txt
       - name: Check formatting
         run: make fmt-check
+      - name: Setup CloudQuery
+        if: github.event_name == 'pull_request'
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: 'v3.13.0'
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen

@@ -39,6 +39,10 @@ func New(_ context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.Ne
 	}
 	spec.SetDefaults()
 
+	if err := spec.Validate(); err != nil {
+		return nil, err
+	}
+
 	connector, err := spec.Connector()
 	if err != nil {
 		return nil, fmt.Errorf("failed to prepare connection %w", err)
