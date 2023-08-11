@@ -101,12 +101,12 @@ func (c *Client) insert(ctx context.Context, table *schema.Table, rows [][]any) 
 }
 
 func (c *Client) copyFrom(ctx context.Context, table *schema.Table, rows [][]any) error {
-	c.logger.Warn().Str("table", table.Name).Int("rows", len(rows)).Msg("will copy from")
 	inserted, err := c.conn.CopyFrom(ctx, pgx.Identifier{table.Name}, table.Columns.Names(), pgx.CopyFromRows(rows))
-	c.logger.Warn().Err(err).
+	c.logger.Debug().
+		Err(err).
 		Str("table", table.Name).
 		Int("rows", len(rows)).
 		Int64("inserted", inserted).
-		Msg("copied from")
+		Msg("copied from rows")
 	return err
 }
