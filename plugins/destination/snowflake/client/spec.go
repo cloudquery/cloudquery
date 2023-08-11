@@ -295,11 +295,11 @@ func parsePEMRSAKey(blob string) (*rsa.PrivateKey, error) {
 
 	// Encrypted private keys aren't supported (TODO: Is this only because
 	// pem.Decode doesn't support it? Does the underlying Snowflake Go SQL
-	// Driver suport it?)
+	// Driver support it?)
 	const pemPrivKey = "PRIVATE KEY"
 	switch strings.ToUpper(head) {
 	case pemPrivKey:
-		break // OK.
+		// OK.
 	case "ENCRYPTED PRIVATE KEY":
 		return nil, errors.New("encrypted private keys are not supported, use decrypted private key")
 	default:
