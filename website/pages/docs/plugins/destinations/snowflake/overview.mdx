@@ -127,7 +127,10 @@ openssl pkcs8 -topk8 -nocrypt -in enc.key -out dec.key
 
 This is the top level spec used by the Snowflake destination plugin.
 
-- `connection_string` (`string`) (required)
+Note that either `connection_string`, or `account`, `user`, etc. must be
+configured to connect to Snowflake.
+
+- `connection_string` (`string`) (optional)
 
   Snowflake `connection_string`.
 
@@ -147,6 +150,63 @@ This is the top level spec used by the Snowflake destination plugin.
 
   `account` - Name assigned to your Snowflake account. If you are not on us-west-2 or AWS deployment, append the region and platform to the end, e.g., `<account>.<region> or <account>.<region>.<platform>`.
 
+- `connection_string` (`string`)
+
+- `account` (`string`)
+
+- `user` (`string`)
+
+- `password` (`string`)
+
+- `database` (`string`)
+
+- `schema` (`string`)
+
+- `warehouse` (`string`) (optional)
+
+- `role` (`string`) (optional)
+
+- `region` (`string`) (optional)
+
+- `params` (`map[string]string`) (optional)
+
+- `client_ip` (`string`) (optional)
+
+- `protocol` (`string`) (optional)
+
+- `host` (`string`) (optional)
+
+- `port` (`int`) (optional)
+
+- `authenticator` (`string`) (optional)
+
+- `login_timeout` (`time.Duration`) (optional)
+
+- `request_timeout` (`time.Duration`) (optional)
+
+- `jwt_expire_timeout` (`time.Duration`) (optional)
+
+- `client_timeout` (`time.Duration`) (optional)
+
+- `application` (`string`) (optional)
+
+- `insecure_mode` (`*bool`) (optional)
+
+- `ocsp_fail_open` (`string`) (optional)
+
+- `token` (`string`) (optional)
+
+- `keep_session_alive` (`*bool`) (optional)
+
+- `private_key` (`string`) (optional)
+
+- `disable_telemetry` (`*bool`) (optional)
+
+- `tracing` (`string`) (optional)
+
+- `client_request_mfa_token` (`*bool`) (optional)
+
+- `client_store_temporary_credential` (`*bool`) (optional)
 
 - `migrate_concurrency` (`integer`) (optional) (default: `1`)
 
