@@ -25,6 +25,104 @@ There are two ways to sync data to Snowflake:
 
 The Snowflake destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
 
+## Authentication
+
+Authentication of the connection to Snowflake can be specified using:
+
+* A username and password in the DSN:
+
+  ```yaml
+  kind: destination
+  spec:
+    name: snowflake
+    ...
+    spec:
+      connection_string: "user:pass@account/db/schema?warehouse=wh"
+  ```
+
+* A username and password in separate fields:
+
+  ```yaml
+  kind: destination
+  spec:
+    name: snowflake
+    ...
+    spec:
+      user: user
+      password: pass
+      account: account
+      warehouse: wh
+      database: db
+      schema: schema
+  ```
+
+* A private key inline:
+
+  ```yaml
+  kind: destination
+  spec:
+    name: snowflake
+    ...
+    spec:
+      user: user
+      account: acc
+      private_key: |
+        -----BEGIN PRIVATE KEY-----
+        MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC2ajPRIbPtbxZ1
+        3DONLA02eZJuCzsgIkBWov/Me5TL6cKN0gnY+mbA8OnNCH+9HSzgiU9P8XhTUrIN
+        85diD+rj6uK+E0sSyxGk6HG17TyR5oBq8nz2hbZlbaNi/HO9qYoHQgAgMq908YBz
+        ...
+        DUmOIrBYEMf2nDTlTu/QVcKb
+        -----END PRIVATE KEY-----
+      warehouse: wh
+      database: db
+      schema: schema
+  ```
+
+* A private key included from a file:
+
+  ```yaml
+  kind: destination
+  spec:
+    name: snowflake
+    ...
+    spec:
+      user: user
+      account: acc
+      private_key: "${file:./private.key}"
+      warehouse: wh
+      database: db
+      schema: schema
+  ```
+
+  where ./private.key is PEM-encoded private key file with contents of the form:
+
+  ```txt
+  -----BEGIN PRIVATE KEY-----
+  MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC2ajPRIbPtbxZ1
+  3DONLA02eZJuCzsgIkBWov/Me5TL6cKN0gnY+mbA8OnNCH+9HSzgiU9P8XhTUrIN
+  85diD+rj6uK+E0sSyxGk6HG17TyR5oBq8nz2hbZlbaNi/HO9qYoHQgAgMq908YBz
+  ...
+  DUmOIrBYEMf2nDTlTu/QVcKb
+  -----END PRIVATE KEY-----
+  ```
+
+### Private Key Authentication Setup
+
+The Snowflake guide for [Key Pair
+Authentication](https://docs.snowflake.com/en/user-guide/key-pair-auth)
+demonstrates how to create an RSA private key with the ability to authenticate
+as a Snowflake user.
+
+Note that encrypted private keys are not supported by the Snowflake Go SQL
+driver, and hence not supported by the CloudQuery Snowflake plugin. You can
+decrypt a private key in file enc.key and store it in a file dec.key using the
+following command:
+
+```bash
+openssl pkcs8 -topk8 -nocrypt -in enc.key -out dec.key
+```
+
 ## Snowflake Spec
 
 This is the top level spec used by the Snowflake destination plugin.
