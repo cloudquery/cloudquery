@@ -128,6 +128,7 @@ func TestSpec_Config(t *testing.T) {
 				} else if !strings.Contains(err.Error(), test.WantErr) {
 					t.Fatalf("Wanted error containing %q but got error %q from spec: %s", test.WantErr, err, specjson)
 				}
+				return
 			}
 			if test.WantErr != "" {
 				t.Fatalf("Wanted error %q but got none from spec: %s", err, specjson)
