@@ -2,6 +2,7 @@ package client
 
 import (
 	"encoding/json"
+	"net/netip"
 	"strings"
 
 	"github.com/apache/arrow/go/v13/arrow"
@@ -131,6 +132,9 @@ func transformArr(arr arrow.Array) []any {
 				Time:  a.Value(i).ToTime(a.DataType().(*arrow.TimestampType).Unit).UTC(),
 				Valid: a.IsValid(i),
 			}
+		case *types.InetArray:
+			// we need to parse prefix here, as otherwise the v4 IP is scanned as v6 & the mask may be lost
+			pgArr[i] = netip.MustParsePrefix(a.Value(i).String())
 		case *types.UUIDArray:
 			bUUID, err := a.Value(i).MarshalBinary()
 			if err != nil {
