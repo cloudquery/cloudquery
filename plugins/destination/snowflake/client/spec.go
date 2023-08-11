@@ -343,6 +343,19 @@ func parsePEMRSAKey(blob string) (*rsa.PrivateKey, error) {
 		return nil, fmt.Errorf("unable to find %s...%s...%s...%s in private key", pemBegin, pemSep, pemEnd, pemSep)
 	}
 
+	// Encrypted private keys aren't supported (TODO: Is this only because
+	// pem.Decode doesn't support it? Does the underlying Snowflake Go SQL
+	// Driver suport it?)
+	const pemPrivKey = "PRIVATE KEY"
+	switch strings.ToUpper(head) {
+	case pemPrivKey:
+		break // OK.
+	case "ENCRYPTED PRIVATE KEY":
+		return nil, errors.New("encrypted private keys are not supported, use decrypted private key")
+	default:
+		return nil, fmt.Errorf("unrecognised start block %s%s%s, expected %s%s%s", pemBegin, head, pemSep, pemBegin, pemPrivKey, pemSep)
+	}
+
 	// Rebuild the key with the correct line breaks.
 	//
 	// The expansion of ${file:./private.key} in our YAML specs doesn't retain
