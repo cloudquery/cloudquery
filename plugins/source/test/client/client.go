@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
@@ -13,8 +14,8 @@ type Client struct {
 	ClientID int
 }
 
-func (*Client) ID() string {
-	return "Client"
+func (c *Client) ID() string {
+	return fmt.Sprintf("Client#%d", c.ClientID+1)
 }
 
 func (c *Client) withClientID(i int) *Client {
