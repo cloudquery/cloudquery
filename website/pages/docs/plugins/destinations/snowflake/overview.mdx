@@ -175,26 +175,9 @@ configured to connect to Snowflake.
 
   A password to authenticate as the named user.
 
-- `authenticator` (`string`) (optional)
-
-  Controls how authentication is performed with Snowflake. One of:
-
-  * `snowflake` (default): Username and password authentication.
-  * `snowflake_jwt` (implied when `private_key` used): For key-pair authentication.
-  * `https://<okta_account_name>.okta.com` (i.e. the URL endpoint for your Okta account) to [authenticate through native Okta](https://docs.snowflake.com/en/user-guide/admin-security-fed-auth-use.html#label-native-sso-okta) (only supported if your IdP is Okta).
-
-  * `externalbrowser`: Couldn't get this to work?
-  * `oauth`: TODO: test me!
-  * `username_password_mfa`: TODO: test me!
-
-- `token` (`string`) (optional)
-
-  The OAuth token to use for authentication when `authenticator: oauth` is
-  specified.
-
 - `private_key` (`string`) (optional)
 
-  The PEM-encoded private key. Implies `authenticator: snowflake_jwt`. See [authentication examples](#authentication).
+  The PEM-encoded private key. See [authentication examples](#authentication).
 
 - `jwt_expire_timeout_ms` (`int`) (optional)
 
@@ -203,10 +186,6 @@ configured to connect to Snowflake.
 - `login_timeout_ms` (`int`) (optional)
 
   Login retry timeout in milliseconds excluding network roundtrip and HTTP response reading.
-
-- `client_request_mfa_token` (`*bool`) (optional)
-
-  Cache the MFA token in the credential manager when using `authenticator: username_password_mfa`. Defaults to true on Windows and OS X and false on Linux.
 
 - `client_store_temporary_credential` (`*bool`) (optional)
 

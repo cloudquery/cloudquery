@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"net"
-	"net/url"
 	"regexp"
 	"strings"
 	"time"
@@ -56,9 +55,6 @@ type Spec struct {
 	// Port is [sf.Config.Port].
 	Port int `json:"port,omitempty"`
 
-	// Authenticator maps to [sf.Config.Authenticator].
-	Authenticator string `json:"authenticator,omitempty"`
-
 	// LoginTimeoutMS is [sf.Config.LoginTimeout] - Login retry timeout
 	// EXCLUDING network roundtrip and read out http response.
 	LoginTimeoutMS int64 `json:"login_timeout_ms,omitempty"`
@@ -72,17 +68,12 @@ type Spec struct {
 	// trip + read out http response.
 	ClientTimeoutMS int64 `json:"client_timeout_ms,omitempty"`
 
-	// Application is [sf.Config.Application] - the application name.
-	Application string `json:"application,omitempty"`
 	// InsecureMode is [sf.Config.InsecureMode] - driver doesn't check
 	// certificate revocation status.
 	InsecureMode *bool `json:"insecure_mode,omitempty"`
 	// OCSPFailOpen is [sf.Config.OCSPFailOpen].
 	OCSPFailOpen string `json:"ocsp_fail_open,omitempty"` // FIXME: map to OCSPFailOpenMode?
 
-	// Token is [sf.Config.Token] - Token to use for OAuth other forms of token
-	// based auth.
-	Token string `json:"token,omitempty"`
 	// KeepSessionAlive is [sf.Config.KeepSessionAlive] - Enables the session to
 	// persist even after the connection is closed.
 	KeepSessionAlive *bool `json:"keep_session_alive,omitempty"`
@@ -111,10 +102,6 @@ type Spec struct {
 	// Tracing is [sf.Config.Tracing] - sets logging level.
 	Tracing string `json:"tracing,omitempty"`
 
-	// ClientRequestMfaToken is [sf.Config.ClientRequestMfaToken] -
-	// When true the MFA token is cached in the credential manager. True by
-	// default in Windows/OSX. False for Linux.
-	ClientRequestMfaToken *bool `json:"client_request_mfa_token,omitempty"`
 	// ClientStoreTemporaryCredential is
 	// [sf.Config.ClientStoreTemporaryCredential] - When true the ID
 	// token is cached in the credential manager. True by default in
@@ -191,14 +178,6 @@ func (s *Spec) Config(extraParams map[string]*string) (*sf.Config, error) {
 	if s.Port != 0 {
 		cfg.Port = s.Port
 	}
-	if s.Authenticator != "" {
-		authType, oktaURL, ok := parseAuthenticator(s.Authenticator)
-		if !ok {
-			return nil, fmt.Errorf("authenticator: unknown value %q", s.Authenticator)
-		}
-		cfg.Authenticator = authType
-		cfg.OktaURL = oktaURL
-	}
 
 	if s.LoginTimeoutMS != 0 {
 		cfg.LoginTimeout = time.Duration(s.LoginTimeoutMS) * time.Millisecond
@@ -213,9 +192,6 @@ func (s *Spec) Config(extraParams map[string]*string) (*sf.Config, error) {
 		cfg.ClientTimeout = time.Duration(s.ClientTimeoutMS) * time.Millisecond
 	}
 
-	if s.Application != "" {
-		cfg.Application = s.Application
-	}
 	if s.InsecureMode != nil {
 		cfg.InsecureMode = *s.InsecureMode
 	}
@@ -227,13 +203,11 @@ func (s *Spec) Config(extraParams map[string]*string) (*sf.Config, error) {
 		cfg.OCSPFailOpen = failOpen
 	}
 
-	if s.Token != "" {
-		cfg.Token = s.Token
-	}
 	if s.KeepSessionAlive != nil {
 		cfg.KeepSessionAlive = *s.KeepSessionAlive
 	}
 
+	cfg.Authenticator = sf.AuthTypeSnowflake
 	if s.PrivateKey != "" {
 		rsaKey, err := parsePEMRSAKey(s.PrivateKey)
 		if err != nil {
@@ -251,9 +225,6 @@ func (s *Spec) Config(extraParams map[string]*string) (*sf.Config, error) {
 		cfg.Tracing = s.Tracing
 	}
 
-	if s.ClientRequestMfaToken != nil {
-		cfg.ClientRequestMfaToken = boolPtrToConfig(s.ClientRequestMfaToken)
-	}
 	if s.ClientStoreTemporaryCredential != nil {
 		cfg.ClientStoreTemporaryCredential = boolPtrToConfig(s.ClientStoreTemporaryCredential)
 	}
@@ -303,31 +274,6 @@ func parseOCSPFailOpen(v string) (sf.OCSPFailOpenMode, bool) {
 
 	var unknown sf.OCSPFailOpenMode
 	return unknown, false
-}
-
-func parseAuthenticator(v string) (sf.AuthType, *url.URL, bool) {
-	// https://github.com/snowflakedb/gosnowflake/blob/v1.6.23/auth.go#L106
-	switch strings.ToUpper(v) {
-	case "SNOWFLAKE":
-		return sf.AuthTypeSnowflake, nil, true
-	case "OAUTH":
-		return sf.AuthTypeOAuth, nil, true
-	case "EXTERNALBROWSER":
-		return sf.AuthTypeExternalBrowser, nil, true
-	case "OKTA":
-		return sf.AuthTypeOkta, nil, true
-	case "SNOWFLAKE_JWT":
-		return sf.AuthTypeJwt, nil, true
-	case "USERNAME_PASSWORD_MFA":
-		return sf.AuthTypeUsernamePasswordMFA, nil, true
-	}
-
-	if u, err := url.Parse(v); err == nil && u.Scheme == "https" && strings.HasSuffix(u.Hostname(), ".okta.com") {
-		return sf.AuthTypeOkta, u, true
-	}
-
-	var unknown sf.AuthType
-	return unknown, nil, false
 }
 
 var whitespace = regexp.MustCompile(`\s+`)
