@@ -130,6 +130,9 @@ This is the top level spec used by the Snowflake destination plugin.
 Note that either `connection_string`, or `account`, `user`, etc. must be
 configured to connect to Snowflake.
 
+
+### Authentication parameters
+
 - `connection_string` (`string`) (optional)
 
   Snowflake `connection_string`.
@@ -148,65 +151,140 @@ configured to connect to Snowflake.
 
   From Snowflake documentation:
 
-  `account` - Name assigned to your Snowflake account. If you are not on us-west-2 or AWS deployment, append the region and platform to the end, e.g., `<account>.<region> or <account>.<region>.<platform>`.
+  `account` - Name assigned to your Snowflake account. If you are not on us-west-2 or AWS deployment, append the region and platform to the end, e.g., `<account>.<region>` or `<account>.<region>.<platform>`.
 
-- `connection_string` (`string`)
+- `account` (`string`) (required if not in `connection_string`)
 
-- `account` (`string`)
+  The name of the account. May include the region as "acc.europe-west4.gcp", for example.
 
-- `user` (`string`)
+- `region` (`string`) (optional) (default: `us-west-2`)
 
-- `password` (`string`)
+  The region in which the account is defined.
 
-- `database` (`string`)
+- `user` (`string`) (required if not in `connection_string`)
 
-- `schema` (`string`)
-
-- `warehouse` (`string`) (optional)
+  The name of the user to authenticate and write as.
 
 - `role` (`string`) (optional)
 
-- `region` (`string`) (optional)
+  Specifies the default access control role to use in the Snowflake session
+  initiated. The specified role should be an existing role that has already been
+  assigned to the specified user, otherwise the role is not used.
+
+- `password` (`string`) (optional)
+
+  A password to authenticate as the named user.
+
+- `authenticator` (`string`) (optional)
+
+  Controls how authentication is performed with Snowflake. One of:
+
+  * `snowflake` (default): Username and password authentication.
+  * `snowflake_jwt` (implied when `private_key` used): For key-pair authentication.
+  * `https://<okta_account_name>.okta.com` (i.e. the URL endpoint for your Okta account) to [authenticate through native Okta](https://docs.snowflake.com/en/user-guide/admin-security-fed-auth-use.html#label-native-sso-okta) (only supported if your IdP is Okta).
+
+  * `externalbrowser`: Couldn't get this to work?
+  * `oauth`: TODO: test me!
+  * `username_password_mfa`: TODO: test me!
+
+- `token` (`string`) (optional)
+
+  The OAuth token to use for authentication when `authenticator: oauth` is
+  specified.
+
+- `private_key` (`string`) (optional)
+
+  The PEM-encoded private key. Implies `authenticator: snowflake_jwt`. See [authentication examples](#authentication).
+
+- `jwt_expire_timeout_ms` (`int`) (optional)
+
+  JWT expiry timeout in milliseconds.
+
+- `login_timeout_ms` (`int`) (optional)
+
+  Login retry timeout in milliseconds excluding network roundtrip and HTTP response reading.
+
+- `client_request_mfa_token` (`*bool`) (optional)
+
+  Cache the MFA token in the credential manager when using `authenticator: username_password_mfa`. Defaults to true on Windows and OS X and false on Linux.
+
+- `client_store_temporary_credential` (`*bool`) (optional)
+
+  Cache the ID token in the credential manager. Defaults to true on Windows and OS X and false on Linux.
+
+
+### Database parameters
+
+- `warehouse` (`string`) (required if not in `connection_string`)
+
+  Specifies the virtual warehouse to use once connected.
+
+- `database` (`string`) (required if not in `connection_string`)
+
+  Specifies the database in which to look for the schema and create filetypes.
+
+- `schema` (`string`) (required if not in `connection_string`)
+
+  Specifies the schema in which to create and populate tables.
+
+- `application` (`string`) (optional)
+
+  (Snowflake partner use only.) Specifies the name of the partner application to connect through.
+
+
+### Connection parameters
 
 - `params` (`map[string]string`) (optional)
+
+  Extra connection parameters to include in the Snowflake DSN.
 
 - `client_ip` (`string`) (optional)
 
 - `protocol` (`string`) (optional)
 
-- `host` (`string`) (optional)
+  "HTTP" or "HTTPS".
 
-- `port` (`int`) (optional)
+- `host` (`string`) (optional) (default: `${account}.${region}.snowflakecomputing.com`)
 
-- `authenticator` (`string`) (optional)
+  The Snowflake service to connect to.
 
-- `login_timeout` (`time.Duration`) (optional)
+- `port` (`int`) (optional) (default: `443`)
 
-- `request_timeout` (`time.Duration`) (optional)
-
-- `jwt_expire_timeout` (`time.Duration`) (optional)
-
-- `client_timeout` (`time.Duration`) (optional)
-
-- `application` (`string`) (optional)
+  The port of the Snowflake service to connect to.
 
 - `insecure_mode` (`*bool`) (optional)
 
+  Don't validate Snowflake certificates.
+
 - `ocsp_fail_open` (`string`) (optional)
 
-- `token` (`string`) (optional)
+  Specifies that the driver should “fail open” if unable reach the OCSP server
+  to verify the certificate.
+
+  When the driver connects, Snowflake sends a certificate to confirm that the
+  connection is to Snowflake rather than to a host that is impersonating
+  Snowflake. The driver sends that certificate to an OCSP (Online Certificate
+  Status Protocol) server to verify that the certificate has not been revoked.
+
+  If the driver cannot reach the OCSP server to verify the certificate, the
+  driver can [“fail open” or “fail closed”](https://docs.snowflake.com/en/user-guide/ocsp#label-ocsp-fail-open-or-fail-close).
 
 - `keep_session_alive` (`*bool`) (optional)
-
-- `private_key` (`string`) (optional)
 
 - `disable_telemetry` (`*bool`) (optional)
 
 - `tracing` (`string`) (optional)
 
-- `client_request_mfa_token` (`*bool`) (optional)
+- `request_timeout_ms` (`int`) (optional)
 
-- `client_store_temporary_credential` (`*bool`) (optional)
+  Request retry timeout in milliseconds excluding network roundtrip and HTTP response reading.
+
+- `client_timeout_ms` (`int`) (optional)
+
+  Timeout in milliseconds for network roundtrip and reading HTTP responses.
+
+
+### Table migration parameters
 
 - `migrate_concurrency` (`integer`) (optional) (default: `1`)
 
@@ -215,6 +293,9 @@ configured to connect to Snowflake.
   This can be useful if you have a lot of tables to migrate and want to speed up the process.
 
   Setting this to a negative number means no limit.
+
+
+### Batch-writing parameters
 
 - `batch_size` (`integer`) (optional) (default: `1000`)
 

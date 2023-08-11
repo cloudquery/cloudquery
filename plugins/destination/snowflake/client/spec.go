@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net"
+	"net/url"
 	"regexp"
 	"strings"
 	"time"
@@ -58,18 +59,18 @@ type Spec struct {
 	// Authenticator maps to [sf.Config.Authenticator].
 	Authenticator string `json:"authenticator,omitempty"`
 
-	// Login is [sf.Config.LoginTimeout] - Login retry timeout EXCLUDING network
-	// roundtrip and read out http response.
-	LoginTimeout time.Duration `json:"login_timeout,omitempty"`
-	// RequestTimeout is [sf.Config.RequestTimeout] - request retry timeout
+	// LoginTimeoutMS is [sf.Config.LoginTimeout] - Login retry timeout
 	// EXCLUDING network roundtrip and read out http response.
-	RequestTimeout time.Duration `json:"request_timeout,omitempty"`
-	// JWTExpireTimeout is [sf.Config.JWTExpireTimeout] - JWT expire after
+	LoginTimeoutMS int64 `json:"login_timeout_ms,omitempty"`
+	// RequestTimeoutMS is [sf.Config.RequestTimeout] - request retry timeout
+	// EXCLUDING network roundtrip and read out http response.
+	RequestTimeoutMS int64 `json:"request_timeout_ms,omitempty"`
+	// JWTExpireTimeoutMS is [sf.Config.JWTExpireTimeout] - JWT expire after
 	// timeout.
-	JWTExpireTimeout time.Duration `json:"jwt_expire_timeout,omitempty"`
-	// ClientTimeout is [sf.Config.ClientTimeout] - Timeout for network round
+	JWTExpireTimeoutMS int64 `json:"jwt_expire_timeout_ms,omitempty"`
+	// ClientTimeoutMS is [sf.Config.ClientTimeout] - Timeout for network round
 	// trip + read out http response.
-	ClientTimeout time.Duration `json:"client_timeout,omitempty"`
+	ClientTimeoutMS int64 `json:"client_timeout_ms,omitempty"`
 
 	// Application is [sf.Config.Application] - the application name.
 	Application string `json:"application,omitempty"`
@@ -112,12 +113,12 @@ type Spec struct {
 
 	// ClientRequestMfaToken is [sf.Config.ClientRequestMfaToken] -
 	// When true the MFA token is cached in the credential manager. True by
-	// default in Windows/OSX. False for Linux..
+	// default in Windows/OSX. False for Linux.
 	ClientRequestMfaToken *bool `json:"client_request_mfa_token,omitempty"`
 	// ClientStoreTemporaryCredential is
 	// [sf.Config.ClientStoreTemporaryCredential] - When true the ID
 	// token is cached in the credential manager. True by default in
-	// Windows/OSX. False for Linux..
+	// Windows/OSX. False for Linux.
 	ClientStoreTemporaryCredential *bool `json:"client_store_temporary_credential,omitempty"`
 
 	// CloudQuery destination config options.
@@ -191,24 +192,25 @@ func (s *Spec) Config(extraParams map[string]*string) (*sf.Config, error) {
 		cfg.Port = s.Port
 	}
 	if s.Authenticator != "" {
-		authType, ok := parseAuthenticator(s.Authenticator)
+		authType, oktaURL, ok := parseAuthenticator(s.Authenticator)
 		if !ok {
 			return nil, fmt.Errorf("authenticator: unknown value %q", s.Authenticator)
 		}
 		cfg.Authenticator = authType
+		cfg.OktaURL = oktaURL
 	}
 
-	if s.LoginTimeout != 0 {
-		cfg.LoginTimeout = s.LoginTimeout
+	if s.LoginTimeoutMS != 0 {
+		cfg.LoginTimeout = time.Duration(s.LoginTimeoutMS) * time.Millisecond
 	}
-	if s.RequestTimeout != 0 {
-		cfg.RequestTimeout = s.RequestTimeout
+	if s.RequestTimeoutMS != 0 {
+		cfg.RequestTimeout = time.Duration(s.RequestTimeoutMS) * time.Millisecond
 	}
-	if s.JWTExpireTimeout != 0 {
-		cfg.JWTExpireTimeout = s.JWTExpireTimeout
+	if s.JWTExpireTimeoutMS != 0 {
+		cfg.JWTExpireTimeout = time.Duration(s.JWTExpireTimeoutMS) * time.Millisecond
 	}
-	if s.ClientTimeout != 0 {
-		cfg.ClientTimeout = s.ClientTimeout
+	if s.ClientTimeoutMS != 0 {
+		cfg.ClientTimeout = time.Duration(s.ClientTimeoutMS) * time.Millisecond
 	}
 
 	if s.Application != "" {
@@ -303,27 +305,29 @@ func parseOCSPFailOpen(v string) (sf.OCSPFailOpenMode, bool) {
 	return unknown, false
 }
 
-func parseAuthenticator(v string) (sf.AuthType, bool) {
+func parseAuthenticator(v string) (sf.AuthType, *url.URL, bool) {
 	// https://github.com/snowflakedb/gosnowflake/blob/v1.6.23/auth.go#L106
 	switch strings.ToUpper(v) {
 	case "SNOWFLAKE":
-		return sf.AuthTypeSnowflake, true
+		return sf.AuthTypeSnowflake, nil, true
 	case "OAUTH":
-		return sf.AuthTypeOAuth, true
+		return sf.AuthTypeOAuth, nil, true
 	case "EXTERNALBROWSER":
-		return sf.AuthTypeExternalBrowser, true
+		return sf.AuthTypeExternalBrowser, nil, true
 	case "OKTA":
-		return sf.AuthTypeOkta, true
+		return sf.AuthTypeOkta, nil, true
 	case "SNOWFLAKE_JWT":
-		return sf.AuthTypeJwt, true
-	case "TOKENACCESSOR":
-		return sf.AuthTypeTokenAccessor, true
+		return sf.AuthTypeJwt, nil, true
 	case "USERNAME_PASSWORD_MFA":
-		return sf.AuthTypeUsernamePasswordMFA, true
+		return sf.AuthTypeUsernamePasswordMFA, nil, true
+	}
+
+	if u, err := url.Parse(v); err == nil && u.Scheme == "https" && strings.HasSuffix(u.Hostname(), ".okta.com") {
+		return sf.AuthTypeOkta, u, true
 	}
 
 	var unknown sf.AuthType
-	return unknown, false
+	return unknown, nil, false
 }
 
 var whitespace = regexp.MustCompile(`\s+`)
