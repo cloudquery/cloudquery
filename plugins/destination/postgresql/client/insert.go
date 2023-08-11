@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
@@ -70,28 +69,16 @@ func (c *Client) insert(ctx context.Context, table *schema.Table, rows [][]any) 
 		}
 		sb.WriteString(pgx.Identifier{c.Name}.Sanitize())
 	}
-	sb.WriteString(") values\n")
-
-	params := make([]any, 0, len(table.Columns)*len(rows))
-	var p int64
-	for r, row := range rows {
-		if r > 0 {
-			sb.WriteString(",\n")
+	sb.WriteString(") values (")
+	for i := range table.Columns {
+		if i > 0 {
+			sb.WriteString(",")
 		}
-		sb.WriteString("(")
-		for i := range row {
-			p++ // params start from $1
-			if i > 0 {
-				sb.WriteString(",")
-			}
-			sb.WriteString("$" + strconv.FormatInt(p, 10))
-		}
-		sb.WriteString(")")
-		params = append(params, row...)
+		sb.WriteString(fmt.Sprintf("$%d", i+1))
 	}
 
 	constraintName := table.PkConstraintName
-	sb.WriteString("\non conflict on constraint ")
+	sb.WriteString(") on conflict on constraint ")
 	sb.WriteString(pgx.Identifier{constraintName}.Sanitize())
 	sb.WriteString(" do update set ")
 	for i, column := range table.Columns {
@@ -104,8 +91,13 @@ func (c *Client) insert(ctx context.Context, table *schema.Table, rows [][]any) 
 	}
 
 	query := sb.String()
-	_, err := c.conn.Exec(ctx, query, params...)
-	return err
+
+	batch := new(pgx.Batch)
+	for _, row := range rows {
+		batch.Queue(query, row...)
+	}
+
+	return c.conn.SendBatch(ctx, batch).Close()
 }
 
 func (c *Client) copyFrom(ctx context.Context, table *schema.Table, rows [][]any) error {
