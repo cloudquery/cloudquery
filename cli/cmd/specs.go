@@ -22,6 +22,8 @@ func CLIRegistryToPbRegistry(registry specs.Registry) pbSpecs.Registry {
 		return pbSpecs.RegistryGithub
 	case specs.RegistryLocal:
 		return pbSpecs.RegistryLocal
+	case specs.RegistryGo:
+		return pbSpecs.RegistryGo
 	case specs.RegistryGrpc:
 		return pbSpecs.RegistryGrpc
 	default:

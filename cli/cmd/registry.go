@@ -11,6 +11,8 @@ func SpecRegistryToPlugin(registry specs.Registry) managedplugin.Registry {
 		return managedplugin.RegistryGithub
 	case specs.RegistryLocal:
 		return managedplugin.RegistryLocal
+	case specs.RegistryGo:
+		return managedplugin.RegistryGo
 	case specs.RegistryGrpc:
 		return managedplugin.RegistryGrpc
 	case specs.RegistryDocker:
