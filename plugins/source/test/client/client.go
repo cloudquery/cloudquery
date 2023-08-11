@@ -7,32 +7,32 @@ import (
 	"github.com/rs/zerolog"
 )
 
-type TestClient struct {
+type Client struct {
 	Logger   zerolog.Logger
 	Spec     Spec
 	ClientID int
 }
 
-func (*TestClient) ID() string {
-	return "TestClient"
+func (*Client) ID() string {
+	return "Client"
 }
 
-func (c *TestClient) withClientID(i int) *TestClient {
+func (c *Client) withClientID(i int) *Client {
 	t := *c
 	t.ClientID = i
 	return &t
 }
 
 func MultiplexBySpec(meta schema.ClientMeta) []schema.ClientMeta {
-	cl := meta.(*TestClient)
+	cl := meta.(*Client)
 	clients := make([]schema.ClientMeta, cl.Spec.NumClients)
 	for i := 0; i < cl.Spec.NumClients; i++ {
-		clients[i] = cl.withClientID(i)
+		clients[i] = cl.withClientID(i + 1)
 	}
 	return clients
 }
 
 func ResolveClientID(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*TestClient)
+	cl := meta.(*Client)
 	return resource.Set(c.Name, cl.ClientID)
 }
