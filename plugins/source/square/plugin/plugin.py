@@ -51,7 +51,7 @@ class SquarePlugin(plugin.Plugin):
             for relation in table.relations:
                 relation.parent = table
 
-        return all_tables  # schema.filter_dfs(all_tables, options.tables, options.skip_tables)
+        return schema.filter_dfs(all_tables, options.tables, options.skip_tables)
 
     def sync(
         self, options: plugin.SyncOptions

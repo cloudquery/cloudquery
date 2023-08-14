@@ -1,5 +1,7 @@
 # Table: square_locations
 
+This table shows data for Square Locations.
+
 The primary key for this table is **id**.
 
 ## Columns

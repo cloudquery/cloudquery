@@ -1,5 +1,7 @@
 # Table: square_payouts
 
+This table shows data for Square Payouts.
+
 The primary key for this table is **id**.
 
 ## Columns

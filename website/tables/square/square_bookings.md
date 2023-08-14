@@ -1,5 +1,7 @@
 # Table: square_bookings
 
+This table shows data for Square Bookings.
+
 The primary key for this table is **id**.
 
 ## Columns

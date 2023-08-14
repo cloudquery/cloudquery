@@ -1,5 +1,7 @@
 # Table: square_payments
 
+This table shows data for Square Payments.
+
 The primary key for this table is **id**.
 
 ## Columns

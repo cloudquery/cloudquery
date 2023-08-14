@@ -1,5 +1,7 @@
 # Table: square_disputes
 
+This table shows data for Square Disputes.
+
 The primary key for this table is **id**.
 
 ## Columns

@@ -1,5 +1,7 @@
 # Table: square_refunds
 
+This table shows data for Square Refunds.
+
 The primary key for this table is **id**.
 
 ## Columns

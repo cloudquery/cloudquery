@@ -1,5 +1,7 @@
 # Table: square_merchants
 
+This table shows data for Square Merchants.
+
 The primary key for this table is **id**.
 
 ## Columns

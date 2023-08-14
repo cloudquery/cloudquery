@@ -2,8 +2,8 @@ kind: source
 spec:
   name: square
   destinations: [test]
-  path: "square:latest"
-  registry: docker
+  path: "localhost:7777"
+  registry: grpc
   tables: ["*"]
   spec:
     environment: "sandbox" # sandbox or production
