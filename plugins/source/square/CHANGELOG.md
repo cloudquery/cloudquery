@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v0.1.2...plugins-source-square-v1.0.0) (2023-08-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* Update to latest Python SDK ([#13051](https://github.com/cloudquery/cloudquery/issues/13051))
+
+### Bug Fixes
+
+* Update to latest Python SDK ([#13051](https://github.com/cloudquery/cloudquery/issues/13051)) ([a8254d6](https://github.com/cloudquery/cloudquery/commit/a8254d6233b15fb02b1987250bb0021bc904f507))
+
 ## [0.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v0.1.1...plugins-source-square-v0.1.2) (2023-08-09)
 
 
