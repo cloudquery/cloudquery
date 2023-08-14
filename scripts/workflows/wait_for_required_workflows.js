@@ -57,7 +57,7 @@ module.exports = async ({github, context}) => {
     while (now <= deadline) {
         const checkRuns = await github.paginate(github.rest.checks.listForRef, {
             owner: 'cloudquery',
-            repo: context.vars.REPOSITORY_VAR,
+            repo: context.payload.repository.name,
             ref: context.payload.pull_request.head.sha,
             status: 'completed',
             per_page: 100
