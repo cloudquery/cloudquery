@@ -29,6 +29,12 @@ jobs:
           repository: ${{ github.event.client_payload.pull_request.head.repo.full_name }}
           token: ${{ secrets.GH_CQ_BOT }}
 
+      - name: Setup CloudQuery
+        if: github.event_name == 'pull_request'
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: 'v3.13.0'
+
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
