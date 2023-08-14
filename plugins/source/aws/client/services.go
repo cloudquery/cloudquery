@@ -45,6 +45,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodbstreams"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
+	"github.com/aws/aws-sdk-go-v2/service/ecrpublic"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/efs"
 	"github.com/aws/aws-sdk-go-v2/service/eks"
@@ -110,6 +111,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/support"
 	"github.com/aws/aws-sdk-go-v2/service/timestreamwrite"
 	"github.com/aws/aws-sdk-go-v2/service/transfer"
+	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
@@ -326,6 +328,8 @@ func (s *Services) InitService(awsConfig *aws.Config, service string) {
 		s.Ec2 = ec2.NewFromConfig(c)
 	case "ecr":
 		s.Ecr = ecr.NewFromConfig(c)
+	case "ecrpublic":
+		s.Ecrpublic = ecrpublic.NewFromConfig(c)
 	case "ecs":
 		s.Ecs = ecs.NewFromConfig(c)
 	case "efs":
@@ -456,6 +460,8 @@ func (s *Services) InitService(awsConfig *aws.Config, service string) {
 		s.Timestreamwrite = timestreamwrite.NewFromConfig(c)
 	case "transfer":
 		s.Transfer = transfer.NewFromConfig(c)
+	case "waf":
+		s.Waf = waf.NewFromConfig(c)
 	case "wafv2":
 		s.Wafv2 = wafv2.NewFromConfig(c)
 	case "wafregional":
