@@ -36,8 +36,7 @@ type Client struct {
 	specificRegions      bool
 	Spec                 *Spec
 	accountMutex         map[string]*sync.Mutex
-	// Do not rely on this field, it will be removed once https://github.com/aws/aws-sdk-go-v2/issues/2163 is resolved
-	AWSConfig *aws.Config
+	AWSConfig            *aws.Config
 }
 
 type AwsLogger struct {
