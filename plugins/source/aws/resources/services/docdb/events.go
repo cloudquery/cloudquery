@@ -27,7 +27,7 @@ func Events() *schema.Table {
 
 func fetchDocdbEvents(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Docdb
+	svc := cl.Services("docdb").Docdb
 
 	input := &docdb.DescribeEventsInput{}
 

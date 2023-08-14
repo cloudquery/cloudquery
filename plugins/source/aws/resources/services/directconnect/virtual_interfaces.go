@@ -47,7 +47,7 @@ func VirtualInterfaces() *schema.Table {
 func fetchDirectconnectVirtualInterfaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config directconnect.DescribeVirtualInterfacesInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Directconnect
+	svc := cl.Services("directconnect").Directconnect
 	output, err := svc.DescribeVirtualInterfaces(ctx, &config, func(options *directconnect.Options) {
 		options.Region = cl.Region
 	})

@@ -34,7 +34,7 @@ func Workspaces() *schema.Table {
 
 func fetchWorkspacesWorkspaces(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Workspaces
+	svc := cl.Services("workspaces").Workspaces
 	input := workspaces.DescribeWorkspacesInput{}
 	paginator := workspaces.NewDescribeWorkspacesPaginator(svc, &input)
 	for paginator.HasMorePages() {

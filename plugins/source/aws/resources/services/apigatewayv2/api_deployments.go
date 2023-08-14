@@ -50,7 +50,7 @@ func fetchApigatewayv2ApiDeployments(ctx context.Context, meta schema.ClientMeta
 		ApiId: r.ApiId,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigatewayv2
+	svc := cl.Services("apigatewayv2").Apigatewayv2
 	// No paginator available
 	for {
 		response, err := svc.GetDeployments(ctx, &config, func(options *apigatewayv2.Options) {

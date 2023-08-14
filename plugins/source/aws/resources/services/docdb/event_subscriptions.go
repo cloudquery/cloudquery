@@ -28,7 +28,7 @@ func EventSubscriptions() *schema.Table {
 
 func fetchDocdbEventSubscriptions(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Docdb
+	svc := cl.Services("docdb").Docdb
 
 	input := &docdb.DescribeEventSubscriptionsInput{
 		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"docdb"}}},

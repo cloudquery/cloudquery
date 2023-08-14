@@ -27,7 +27,7 @@ func FirewallRuleGroupAssociations() *schema.Table {
 
 func fetchFirewallRuleGroupAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Route53resolver
+	svc := cl.Services("route53resolver").Route53resolver
 	var input route53resolver.ListFirewallRuleGroupAssociationsInput
 	paginator := route53resolver.NewListFirewallRuleGroupAssociationsPaginator(svc, &input)
 	for paginator.HasMorePages() {

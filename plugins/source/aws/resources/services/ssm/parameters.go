@@ -34,7 +34,7 @@ func Parameters() *schema.Table {
 
 func fetchSsmParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ssm
+	svc := cl.Services("ssm").Ssm
 	paginator := ssm.NewDescribeParametersPaginator(svc, &ssm.DescribeParametersInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(o *ssm.Options) {

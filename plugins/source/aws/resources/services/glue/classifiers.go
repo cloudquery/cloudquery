@@ -34,7 +34,7 @@ func Classifiers() *schema.Table {
 
 func fetchGlueClassifiers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Glue
+	svc := cl.Services("glue").Glue
 
 	paginator := glue.NewGetClassifiersPaginator(svc, &glue.GetClassifiersInput{})
 	for paginator.HasMorePages() {

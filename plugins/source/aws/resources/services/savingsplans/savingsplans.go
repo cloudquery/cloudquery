@@ -35,7 +35,7 @@ func Plans() *schema.Table {
 
 func fetchSavingsPlans(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Savingsplans
+	svc := cl.Services("savingsplans").Savingsplans
 	config := savingsplans.DescribeSavingsPlansInput{
 		MaxResults: aws.Int32(1000),
 	}

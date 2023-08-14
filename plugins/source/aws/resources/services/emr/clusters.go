@@ -51,7 +51,7 @@ func fetchEmrClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 		},
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Emr
+	svc := cl.Services("emr").Emr
 	paginator := emr.NewListClustersPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *emr.Options) {
@@ -67,7 +67,7 @@ func fetchEmrClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 
 func getCluster(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Emr
+	svc := cl.Services("emr").Emr
 	response, err := svc.DescribeCluster(ctx, &emr.DescribeClusterInput{ClusterId: resource.Item.(types.ClusterSummary).Id}, func(options *emr.Options) {
 		options.Region = cl.Region
 	})

@@ -39,7 +39,7 @@ func ruleGroupsNamespaces() *schema.Table {
 
 func fetchAmpRuleGroupsNamespaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Amp
+	svc := cl.Services("amp").Amp
 
 	p := amp.NewListRuleGroupsNamespacesPaginator(svc,
 		&amp.ListRuleGroupsNamespacesInput{
@@ -64,7 +64,7 @@ func fetchAmpRuleGroupsNamespaces(ctx context.Context, meta schema.ClientMeta, p
 
 func describeRuleGroupsNamespace(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Amp
+	svc := cl.Services("amp").Amp
 
 	out, err := svc.DescribeRuleGroupsNamespace(ctx,
 		&amp.DescribeRuleGroupsNamespaceInput{WorkspaceId: resource.Parent.Item.(*types.WorkspaceDescription).WorkspaceId},

@@ -38,7 +38,7 @@ func SamlIdentityProviders() *schema.Table {
 
 func fetchIamSamlIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services("iam").Iam
 	response, err := svc.ListSAMLProviders(ctx, &iam.ListSAMLProvidersInput{}, func(options *iam.Options) {
 		options.Region = cl.Region
 	})
@@ -52,7 +52,7 @@ func fetchIamSamlIdentityProviders(ctx context.Context, meta schema.ClientMeta, 
 
 func getSamlIdentityProvider(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services("iam").Iam
 	p := resource.Item.(types.SAMLProviderListEntry)
 
 	providerResponse, err := svc.GetSAMLProvider(ctx, &iam.GetSAMLProviderInput{SAMLProviderArn: p.Arn}, func(options *iam.Options) {

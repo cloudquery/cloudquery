@@ -41,7 +41,7 @@ func instanceComplianceItems() *schema.Table {
 func fetchSsmInstanceComplianceItems(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	instance := parent.Item.(types.InstanceInformation)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ssm
+	svc := cl.Services("ssm").Ssm
 
 	input := ssm.ListComplianceItemsInput{
 		ResourceIds: []string{*instance.InstanceId},

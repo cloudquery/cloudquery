@@ -37,7 +37,7 @@ func repositoryImages() *schema.Table {
 }
 func fetchEcrRepositoryImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecr
+	svc := cl.Services("ecr").Ecr
 	config := ecr.DescribeImagesInput{
 		RepositoryName: parent.Item.(types.Repository).RepositoryName,
 		MaxResults:     aws.Int32(1000),

@@ -44,7 +44,7 @@ func userAttachedPolicies() *schema.Table {
 func fetchIamUserAttachedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(*types.User)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services("iam").Iam
 	config := iam.ListAttachedUserPoliciesInput{
 		UserName: p.UserName,
 	}

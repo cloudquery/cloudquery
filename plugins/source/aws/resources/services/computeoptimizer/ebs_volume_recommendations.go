@@ -35,7 +35,7 @@ func EbsVolumeRecommendations() *schema.Table {
 func fetchEbsVolumeRecommendations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 
-	svc := cl.Services().Computeoptimizer
+	svc := cl.Services("computeoptimizer").Computeoptimizer
 
 	input := computeoptimizer.GetEBSVolumeRecommendationsInput{
 		MaxResults: aws.Int32(1000),

@@ -25,9 +25,7 @@ func EnrollmentStatuses() *schema.Table {
 
 func fetchEnrollmentStatus(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	s := cl.Services()
-	svc := s.Computeoptimizer
-
+	svc := cl.Services("computeoptimizer").Computeoptimizer
 	output, err := svc.GetEnrollmentStatus(ctx, &computeoptimizer.GetEnrollmentStatusInput{}, func(options *computeoptimizer.Options) {
 		options.Region = cl.Region
 	})

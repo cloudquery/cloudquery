@@ -41,7 +41,7 @@ func ResourceTypes() *schema.Table {
 func fetchRamResourceTypes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	input := &ram.ListResourceTypesInput{MaxResults: aws.Int32(500)}
-	paginator := ram.NewListResourceTypesPaginator(meta.(*client.Client).Services().Ram, input)
+	paginator := ram.NewListResourceTypesPaginator(meta.(*client.Client).Services("ram").Ram, input)
 	for paginator.HasMorePages() {
 		response, err := paginator.NextPage(ctx, func(options *ram.Options) {
 			options.Region = cl.Region

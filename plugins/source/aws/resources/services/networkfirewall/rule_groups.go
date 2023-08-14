@@ -47,7 +47,7 @@ func RuleGroups() *schema.Table {
 func fetchRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input networkfirewall.ListRuleGroupsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Networkfirewall
+	svc := cl.Services("networkfirewall").Networkfirewall
 	p := networkfirewall.NewListRuleGroupsPaginator(svc, &input)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *networkfirewall.Options) {
@@ -64,7 +64,7 @@ func fetchRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema
 
 func getRuleGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Networkfirewall
+	svc := cl.Services("networkfirewall").Networkfirewall
 	metadata := resource.Item.(types.RuleGroupMetadata)
 
 	ruleGroup, err := svc.DescribeRuleGroup(ctx, &networkfirewall.DescribeRuleGroupInput{

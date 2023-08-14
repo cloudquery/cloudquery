@@ -46,7 +46,7 @@ func fetchApigatewayv2DomainNameRestApiMappings(ctx context.Context, meta schema
 		DomainName: r.DomainName,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigatewayv2
+	svc := cl.Services("apigatewayv2").Apigatewayv2
 	for {
 		response, err := svc.GetApiMappings(ctx, &config, func(options *apigatewayv2.Options) {
 			options.Region = cl.Region

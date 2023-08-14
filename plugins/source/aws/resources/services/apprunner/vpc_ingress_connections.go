@@ -51,7 +51,7 @@ Notes:
 func fetchApprunnerVpcIngressConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apprunner.ListVpcIngressConnectionsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apprunner
+	svc := cl.Services("apprunner").Apprunner
 	paginator := apprunner.NewListVpcIngressConnectionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *apprunner.Options) {
@@ -67,7 +67,7 @@ func fetchApprunnerVpcIngressConnections(ctx context.Context, meta schema.Client
 
 func getVpcIngressConnection(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apprunner
+	svc := cl.Services("apprunner").Apprunner
 	asConfig := resource.Item.(types.VpcIngressConnectionSummary)
 
 	describeTaskDefinitionOutput, err := svc.DescribeVpcIngressConnection(ctx, &apprunner.DescribeVpcIngressConnectionInput{VpcIngressConnectionArn: asConfig.VpcIngressConnectionArn}, func(options *apprunner.Options) {

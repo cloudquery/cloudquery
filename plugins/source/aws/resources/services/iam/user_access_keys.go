@@ -56,7 +56,7 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 	var config iam.ListAccessKeysInput
 	p := parent.Item.(*types.User)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services("iam").Iam
 	config.UserName = p.UserName
 	paginator := iam.NewListAccessKeysPaginator(svc, &config)
 	for paginator.HasMorePages() {
@@ -88,7 +88,7 @@ func postIamUserAccessKeyResolver(ctx context.Context, meta schema.ClientMeta, r
 		return nil
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services("iam").Iam
 	output, err := svc.GetAccessKeyLastUsed(ctx, &iam.GetAccessKeyLastUsedInput{AccessKeyId: r.AccessKeyId}, func(options *iam.Options) {
 		options.Region = cl.Region
 	})

@@ -33,7 +33,7 @@ func VpnConnections() *schema.Table {
 
 func fetchVpnConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ec2
+	svc := cl.Services("ec2").Ec2
 	resp, err := svc.DescribeVpnConnections(ctx, nil, func(options *ec2.Options) {
 		options.Region = cl.Region
 	})

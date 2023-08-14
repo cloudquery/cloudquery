@@ -33,7 +33,7 @@ func Subscriptions() *schema.Table {
 
 func fetchShieldSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Shield
+	svc := cl.Services("shield").Shield
 	config := shield.DescribeSubscriptionInput{}
 	output, err := svc.DescribeSubscription(ctx, &config, func(o *shield.Options) {
 		o.Region = cl.Region

@@ -36,7 +36,7 @@ func mlTransformTaskRuns() *schema.Table {
 
 func fetchGlueMlTransformTaskRuns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Glue
+	svc := cl.Services("glue").Glue
 	paginator := glue.NewGetMLTaskRunsPaginator(svc, &glue.GetMLTaskRunsInput{
 		TransformId: parent.Item.(types.MLTransform).TransformId,
 	})

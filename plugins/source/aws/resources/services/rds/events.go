@@ -27,7 +27,7 @@ func Events() *schema.Table {
 
 func fetchRdsEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Rds
+	svc := cl.Services("rds").Rds
 	duration := int32(60 * 24 * 14) // 14 days (maximum)
 	config := rds.DescribeEventsInput{
 		Duration: &duration,

@@ -36,7 +36,7 @@ func fetchLambdaFunctionEventInvokeConfigs(ctx context.Context, meta schema.Clie
 		return nil
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lambda
+	svc := cl.Services("lambda").Lambda
 	config := lambda.ListFunctionEventInvokeConfigsInput{
 		FunctionName: p.Configuration.FunctionName,
 	}

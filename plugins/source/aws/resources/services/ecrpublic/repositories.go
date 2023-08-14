@@ -46,7 +46,7 @@ func Repositories() *schema.Table {
 
 func fetchEcrpublicRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecrpublic
+	svc := cl.Services("ecrpublic").Ecrpublic
 	paginator := ecrpublic.NewDescribeRepositoriesPaginator(svc, &ecrpublic.DescribeRepositoriesInput{
 		MaxResults: aws.Int32(1000),
 	})
@@ -67,7 +67,7 @@ func fetchEcrpublicRepositories(ctx context.Context, meta schema.ClientMeta, par
 
 func resolveRepositoryTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecrpublic
+	svc := cl.Services("ecrpublic").Ecrpublic
 	repo := resource.Item.(types.Repository)
 
 	input := ecrpublic.ListTagsForResourceInput{

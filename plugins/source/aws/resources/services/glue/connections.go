@@ -37,7 +37,7 @@ func Connections() *schema.Table {
 
 func fetchGlueConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Glue
+	svc := cl.Services("glue").Glue
 	paginator := glue.NewGetConnectionsPaginator(svc, &glue.GetConnectionsInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *glue.Options) {

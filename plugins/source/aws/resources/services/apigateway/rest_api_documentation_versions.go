@@ -43,7 +43,7 @@ func restApiDocumentationVersions() *schema.Table {
 func fetchApigatewayRestApiDocumentationVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.RestApi)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigateway
+	svc := cl.Services("apigateway").Apigateway
 	config := apigateway.GetDocumentationVersionsInput{RestApiId: r.Id, Limit: aws.Int32(500)}
 	// No paginator available
 	for {

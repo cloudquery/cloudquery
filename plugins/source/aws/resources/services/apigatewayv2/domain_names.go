@@ -41,7 +41,7 @@ func DomainNames() *schema.Table {
 func fetchApigatewayv2DomainNames(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	var config apigatewayv2.GetDomainNamesInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigatewayv2
+	svc := cl.Services("apigatewayv2").Apigatewayv2
 	// No paginator available
 	for {
 		response, err := svc.GetDomainNames(ctx, &config, func(options *apigatewayv2.Options) {

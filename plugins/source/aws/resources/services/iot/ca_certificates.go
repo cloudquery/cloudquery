@@ -45,7 +45,7 @@ func fetchIotCaCertificates(ctx context.Context, meta schema.ClientMeta, parent 
 	}
 	cl := meta.(*client.Client)
 
-	svc := cl.Services().Iot
+	svc := cl.Services("iot").Iot
 	paginator := iot.NewListCACertificatesPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
@@ -61,7 +61,7 @@ func fetchIotCaCertificates(ctx context.Context, meta schema.ClientMeta, parent 
 
 func getCaCertificate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
+	svc := cl.Services("iot").Iot
 
 	output, err := svc.DescribeCACertificate(ctx, &iot.DescribeCACertificateInput{
 		CertificateId: resource.Item.(types.CACertificate).CertificateId,
@@ -78,7 +78,7 @@ func getCaCertificate(ctx context.Context, meta schema.ClientMeta, resource *sch
 func ResolveIotCaCertificateCertificates(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*types.CACertificateDescription)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
+	svc := cl.Services("iot").Iot
 	input := iot.ListCertificatesByCAInput{
 		CaCertificateId: i.CertificateId,
 		PageSize:        aws.Int32(250),

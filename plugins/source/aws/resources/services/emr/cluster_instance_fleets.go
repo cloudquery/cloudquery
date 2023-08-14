@@ -42,7 +42,7 @@ func fetchClusterInstanceFleets(ctx context.Context, meta schema.ClientMeta, par
 		ClusterId: cluster.Id,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Emr
+	svc := cl.Services("emr").Emr
 	paginator := emr.NewListInstanceFleetsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *emr.Options) {

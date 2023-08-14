@@ -48,7 +48,7 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 
 func fetchRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Codeartifact
+	svc := cl.Services("codeartifact").Codeartifact
 	paginator := codeartifact.NewListRepositoriesPaginator(svc, nil)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *codeartifact.Options) {
@@ -65,7 +65,7 @@ func fetchRepositories(ctx context.Context, meta schema.ClientMeta, parent *sche
 func getRepository(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	repository := resource.Item.(types.RepositorySummary)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Codeartifact
+	svc := cl.Services("codeartifact").Codeartifact
 	repoOut, err := svc.DescribeRepository(ctx, &codeartifact.DescribeRepositoryInput{
 		Repository:  repository.Name,
 		Domain:      repository.DomainName,

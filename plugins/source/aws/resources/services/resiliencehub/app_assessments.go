@@ -33,7 +33,7 @@ func appAssesments() *schema.Table {
 
 func describeAppAssessments(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Resiliencehub
+	svc := cl.Services("resiliencehub").Resiliencehub
 	out, err := svc.DescribeAppAssessment(ctx,
 		&resiliencehub.DescribeAppAssessmentInput{AssessmentArn: resource.Item.(types.AppAssessmentSummary).AssessmentArn},
 		func(options *resiliencehub.Options) {
@@ -49,7 +49,7 @@ func describeAppAssessments(ctx context.Context, meta schema.ClientMeta, resourc
 
 func fetchAppAssessments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Resiliencehub
+	svc := cl.Services("resiliencehub").Resiliencehub
 	p := resiliencehub.NewListAppAssessmentsPaginator(svc, &resiliencehub.ListAppAssessmentsInput{AppArn: parent.Item.(*types.App).AppArn})
 	for p.HasMorePages() {
 		out, err := p.NextPage(ctx, func(options *resiliencehub.Options) {

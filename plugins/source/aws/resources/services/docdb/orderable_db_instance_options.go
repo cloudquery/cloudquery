@@ -25,7 +25,7 @@ func orderableDbInstanceOptions() *schema.Table {
 func fetchDocdbOrderableDbInstanceOptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	item := parent.Item.(types.DBEngineVersion)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Docdb
+	svc := cl.Services("docdb").Docdb
 
 	input := &docdb.DescribeOrderableDBInstanceOptionsInput{Engine: item.Engine}
 

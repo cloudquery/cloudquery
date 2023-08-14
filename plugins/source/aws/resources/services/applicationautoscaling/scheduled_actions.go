@@ -34,7 +34,7 @@ func ScheduledActions() *schema.Table {
 
 func fetchScheduledActions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Applicationautoscaling
+	svc := cl.Services("applicationautoscaling").Applicationautoscaling
 
 	config := applicationautoscaling.DescribeScheduledActionsInput{
 		ServiceNamespace: types.ServiceNamespace(cl.AutoscalingNamespace),

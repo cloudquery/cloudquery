@@ -11,7 +11,7 @@ import (
 
 func getIamInstance(ctx context.Context, meta schema.ClientMeta) (types.InstanceMetadata, error) {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ssoadmin
+	svc := cl.Services("ssoadmin").Ssoadmin
 	config := ssoadmin.ListInstancesInput{}
 	response, err := svc.ListInstances(ctx, &config, func(options *ssoadmin.Options) {
 		options.Region = cl.Region

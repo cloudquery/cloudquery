@@ -53,7 +53,7 @@ func Documents() *schema.Table {
 
 func fetchSsmDocuments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ssm
+	svc := cl.Services("ssm").Ssm
 
 	params := ssm.ListDocumentsInput{
 		Filters: []types.DocumentKeyValuesFilter{{Key: aws.String("Owner"), Values: []string{"Self"}}},
@@ -73,7 +73,7 @@ func fetchSsmDocuments(ctx context.Context, meta schema.ClientMeta, parent *sche
 
 func getDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ssm
+	svc := cl.Services("ssm").Ssm
 	d := resource.Item.(types.DocumentIdentifier)
 
 	dd, err := svc.DescribeDocument(ctx, &ssm.DescribeDocumentInput{Name: d.Name}, func(o *ssm.Options) {
@@ -90,7 +90,7 @@ func getDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 func resolveDocumentPermission(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) (exitErr error) {
 	d := resource.Item.(*types.DocumentDescription)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ssm
+	svc := cl.Services("ssm").Ssm
 
 	input := ssm.DescribeDocumentPermissionInput{
 		Name:           d.Name,

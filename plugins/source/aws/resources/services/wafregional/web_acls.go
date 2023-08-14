@@ -48,7 +48,7 @@ func WebAcls() *schema.Table {
 
 func fetchWafregionalWebAcls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Wafregional
+	svc := cl.Services("wafregional").Wafregional
 	var params wafregional.ListWebACLsInput
 	for {
 		result, err := svc.ListWebACLs(ctx, &params, func(o *wafregional.Options) {
@@ -82,7 +82,7 @@ func fetchWafregionalWebAcls(ctx context.Context, meta schema.ClientMeta, parent
 }
 func resolveWafregionalWebACLTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Wafregional
+	svc := cl.Services("wafregional").Wafregional
 	params := wafregional.ListTagsForResourceInput{ResourceARN: resource.Item.(types.WebACL).WebACLArn}
 	tags := make(map[string]string)
 	for {
@@ -105,7 +105,7 @@ func resolveWafregionalWebACLTags(ctx context.Context, meta schema.ClientMeta, r
 
 func resolveWafregionalWebACLResourcesForWebACL(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	service := cl.Services().Wafregional
+	service := cl.Services("wafregional").Wafregional
 	output, err := service.ListResourcesForWebACL(ctx, &wafregional.ListResourcesForWebACLInput{
 		WebACLId: resource.Item.(types.WebACL).WebACLId,
 	}, func(o *wafregional.Options) {

@@ -38,7 +38,7 @@ func fetchLambdaFunctionConcurrencyConfigs(ctx context.Context, meta schema.Clie
 	}
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lambda
+	svc := cl.Services("lambda").Lambda
 	config := lambda.ListProvisionedConcurrencyConfigsInput{
 		FunctionName: p.Configuration.FunctionName,
 	}

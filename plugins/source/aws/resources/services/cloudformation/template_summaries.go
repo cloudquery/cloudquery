@@ -48,7 +48,7 @@ func templateSummaries() *schema.Table {
 
 func fetchTemplateSummary(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudformation
+	svc := cl.Services("cloudformation").Cloudformation
 
 	stack := parent.Item.(types.Stack)
 

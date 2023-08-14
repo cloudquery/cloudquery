@@ -49,7 +49,7 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 	cluster := parent.Item.(types.Cluster)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecs
+	svc := cl.Services("ecs").Ecs
 	config := ecs.ListTasksInput{
 		Cluster: cluster.ClusterArn,
 	}
@@ -82,7 +82,7 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func getEcsTaskProtection(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecs
+	svc := cl.Services("ecs").Ecs
 	task := resource.Item.(types.Task)
 	resp, err := svc.GetTaskProtection(ctx, &ecs.GetTaskProtectionInput{
 		Cluster: task.ClusterArn,

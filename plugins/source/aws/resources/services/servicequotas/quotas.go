@@ -33,7 +33,7 @@ func quotas() *schema.Table {
 
 func fetchServicequotasQuotas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Servicequotas
+	svc := cl.Services("servicequotas").Servicequotas
 	service := parent.Item.(types.ServiceInfo)
 	config := servicequotas.ListServiceQuotasInput{
 		ServiceCode: service.ServiceCode,

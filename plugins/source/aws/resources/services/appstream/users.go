@@ -37,7 +37,7 @@ func fetchAppstreamUsers(ctx context.Context, meta schema.ClientMeta, parent *sc
 	var input appstream.DescribeUsersInput
 	input.AuthenticationType = types.AuthenticationTypeUserpool
 	cl := meta.(*client.Client)
-	svc := cl.Services().Appstream
+	svc := cl.Services("appstream").Appstream
 	// No paginator available
 	for {
 		response, err := svc.DescribeUsers(ctx, &input, func(options *appstream.Options) {

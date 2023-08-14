@@ -36,7 +36,7 @@ func secretVersions() *schema.Table {
 func fetchSecretsmanagerSecretsVersions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, res chan<- any) error {
 	secret := resource.Item.(*secretsmanager.DescribeSecretOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Secretsmanager
+	svc := cl.Services("secretsmanager").Secretsmanager
 	paginator := secretsmanager.NewListSecretVersionIdsPaginator(svc, &secretsmanager.ListSecretVersionIdsInput{
 		SecretId:          secret.ARN,
 		IncludeDeprecated: aws.Bool(true),

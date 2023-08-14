@@ -34,7 +34,7 @@ func SpotInstanceRequests() *schema.Table {
 
 func fetchEC2SpotInstanceRequests(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ec2
+	svc := cl.Services("ec2").Ec2
 	pag := ec2.NewDescribeSpotInstanceRequestsPaginator(svc, &ec2.DescribeSpotInstanceRequestsInput{})
 	for pag.HasMorePages() {
 		resp, err := pag.NextPage(ctx, func(options *ec2.Options) {

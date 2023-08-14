@@ -52,7 +52,7 @@ func fetchEc2TransitGatewayMulticastDomains(ctx context.Context, meta schema.Cli
 	}
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ec2
+	svc := cl.Services("ec2").Ec2
 	paginator := ec2.NewDescribeTransitGatewayMulticastDomainsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *ec2.Options) {

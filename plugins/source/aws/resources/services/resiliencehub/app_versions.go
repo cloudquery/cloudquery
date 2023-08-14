@@ -25,7 +25,7 @@ func appVersions() *schema.Table {
 
 func fetchAppVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Resiliencehub
+	svc := cl.Services("resiliencehub").Resiliencehub
 	p := resiliencehub.NewListAppVersionsPaginator(svc, &resiliencehub.ListAppVersionsInput{AppArn: parent.Item.(*types.App).AppArn})
 	for p.HasMorePages() {
 		out, err := p.NextPage(ctx, func(options *resiliencehub.Options) {

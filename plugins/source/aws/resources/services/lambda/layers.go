@@ -39,7 +39,7 @@ func Layers() *schema.Table {
 func fetchLambdaLayers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lambda.ListLayersInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lambda
+	svc := cl.Services("lambda").Lambda
 	paginator := lambda.NewListLayersPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *lambda.Options) {
@@ -56,7 +56,7 @@ func fetchLambdaLayers(ctx context.Context, meta schema.ClientMeta, parent *sche
 func fetchLambdaLayerVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(types.LayersListItem)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lambda
+	svc := cl.Services("lambda").Lambda
 	config := lambda.ListLayerVersionsInput{
 		LayerName: p.LayerName,
 	}
@@ -77,7 +77,7 @@ func fetchLambdaLayerVersionPolicies(ctx context.Context, meta schema.ClientMeta
 
 	pp := parent.Parent.Item.(types.LayersListItem)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lambda
+	svc := cl.Services("lambda").Lambda
 
 	config := lambda.GetLayerVersionPolicyInput{
 		LayerName:     pp.LayerName,

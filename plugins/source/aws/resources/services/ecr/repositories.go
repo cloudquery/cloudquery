@@ -50,7 +50,7 @@ func Repositories() *schema.Table {
 }
 func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecr
+	svc := cl.Services("ecr").Ecr
 	paginator := ecr.NewDescribeRepositoriesPaginator(svc, &ecr.DescribeRepositoriesInput{
 		MaxResults: aws.Int32(1000),
 	})
@@ -69,7 +69,7 @@ func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func resolveRepositoryTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecr
+	svc := cl.Services("ecr").Ecr
 	output, err := svc.ListTagsForResource(ctx, &ecr.ListTagsForResourceInput{
 		ResourceArn: resource.Item.(types.Repository).RepositoryArn,
 	}, func(options *ecr.Options) {
@@ -83,7 +83,7 @@ func resolveRepositoryTags(ctx context.Context, meta schema.ClientMeta, resource
 
 func resolveRepositoryPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecr
+	svc := cl.Services("ecr").Ecr
 	repo := resource.Item.(types.Repository)
 	output, err := svc.GetRepositoryPolicy(ctx, &ecr.GetRepositoryPolicyInput{
 		RepositoryName: repo.RepositoryName,

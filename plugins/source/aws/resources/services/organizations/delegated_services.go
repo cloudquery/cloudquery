@@ -24,7 +24,7 @@ func delegatedServices() *schema.Table {
 }
 func fetchOrganizationsDelegatedServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Organizations
+	svc := cl.Services("organizations").Organizations
 	paginator := organizations.NewListDelegatedServicesForAccountPaginator(svc, &organizations.ListDelegatedServicesForAccountInput{
 		AccountId: parent.Item.(types.Account).Id,
 	})

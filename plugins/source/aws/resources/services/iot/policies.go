@@ -43,7 +43,7 @@ func Policies() *schema.Table {
 
 func fetchIotPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
+	svc := cl.Services("iot").Iot
 	input := iot.ListPoliciesInput{
 		PageSize: aws.Int32(250),
 	}
@@ -63,7 +63,7 @@ func fetchIotPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 
 func getPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
+	svc := cl.Services("iot").Iot
 
 	output, err := svc.GetPolicy(ctx, &iot.GetPolicyInput{
 		PolicyName: resource.Item.(types.Policy).PolicyName,
@@ -80,6 +80,6 @@ func getPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 func ResolveIotPolicyTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.GetPolicyOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
+	svc := cl.Services("iot").Iot
 	return resolveIotTags(ctx, meta, svc, resource, c, i.PolicyArn)
 }

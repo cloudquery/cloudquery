@@ -39,7 +39,7 @@ func Workloads() *schema.Table {
 
 func fetchWorkloads(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	service := cl.Services().Wellarchitected
+	service := cl.Services("wellarchitected").Wellarchitected
 
 	p := wellarchitected.NewListWorkloadsPaginator(service, &wellarchitected.ListWorkloadsInput{MaxResults: 50})
 	for p.HasMorePages() {
@@ -57,7 +57,7 @@ func fetchWorkloads(ctx context.Context, meta schema.ClientMeta, _ *schema.Resou
 
 func getWorkload(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	service := cl.Services().Wellarchitected
+	service := cl.Services("wellarchitected").Wellarchitected
 	summary := resource.Item.(types.WorkloadSummary)
 
 	out, err := service.GetWorkload(ctx,

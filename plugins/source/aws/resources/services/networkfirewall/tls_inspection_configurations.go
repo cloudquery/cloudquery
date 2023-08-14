@@ -46,7 +46,7 @@ func TLSInspectionConfigurations() *schema.Table {
 func fetchTLSInspectionConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input networkfirewall.ListTLSInspectionConfigurationsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Networkfirewall
+	svc := cl.Services("networkfirewall").Networkfirewall
 	p := networkfirewall.NewListTLSInspectionConfigurationsPaginator(svc, &input)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *networkfirewall.Options) {
@@ -63,7 +63,7 @@ func fetchTLSInspectionConfigurations(ctx context.Context, meta schema.ClientMet
 
 func getTLSInspectionConfigurations(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Networkfirewall
+	svc := cl.Services("networkfirewall").Networkfirewall
 	metadata := resource.Item.(types.TLSInspectionConfigurationMetadata)
 
 	tlsInspectionConfigurationDetails, err := svc.DescribeTLSInspectionConfiguration(ctx, &networkfirewall.DescribeTLSInspectionConfigurationInput{

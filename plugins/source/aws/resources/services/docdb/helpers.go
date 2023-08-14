@@ -11,7 +11,7 @@ import (
 
 func resolveDocDBTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, name, columnName string) error {
 	cli := meta.(*client.Client)
-	svc := cli.Services().Docdb
+	svc := cli.Services("docdb").Docdb
 
 	response, err := svc.ListTagsForResource(ctx, &docdb.ListTagsForResourceInput{
 		ResourceName: aws.String(name),

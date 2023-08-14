@@ -48,7 +48,7 @@ func fetchBatchJobQueues(ctx context.Context, meta schema.ClientMeta, parent *sc
 		MaxResults: aws.Int32(100),
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Batch
+	svc := cl.Services("batch").Batch
 	p := batch.NewDescribeJobQueuesPaginator(svc, &config)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *batch.Options) {
@@ -64,7 +64,7 @@ func fetchBatchJobQueues(ctx context.Context, meta schema.ClientMeta, parent *sc
 
 func resolveBatchJobQueueTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Batch
+	svc := cl.Services("batch").Batch
 	summary := resource.Item.(types.JobQueueDetail)
 
 	input := batch.ListTagsForResourceInput{

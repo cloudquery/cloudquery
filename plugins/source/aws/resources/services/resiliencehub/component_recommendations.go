@@ -24,7 +24,7 @@ func appComponentRecommendations() *schema.Table {
 
 func fetchComponentRecommendations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Resiliencehub
+	svc := cl.Services("resiliencehub").Resiliencehub
 	p := resiliencehub.NewListAppComponentRecommendationsPaginator(svc, &resiliencehub.ListAppComponentRecommendationsInput{AssessmentArn: parent.Item.(*types.AppAssessment).AppArn})
 	for p.HasMorePages() {
 		out, err := p.NextPage(ctx, func(options *resiliencehub.Options) {

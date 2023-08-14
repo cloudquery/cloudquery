@@ -32,7 +32,7 @@ func TrustedAdvisorChecks() *schema.Table {
 
 func fetchTrustedAdvisorChecks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Support
+	svc := cl.Services("support").Support
 	input := support.DescribeTrustedAdvisorChecksInput{Language: aws.String(cl.LanguageCode)}
 
 	response, err := svc.DescribeTrustedAdvisorChecks(ctx, &input, func(o *support.Options) {

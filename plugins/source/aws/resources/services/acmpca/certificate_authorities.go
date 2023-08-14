@@ -40,7 +40,7 @@ func CertificateAuthorities() *schema.Table {
 
 func fetchAcmpcaCertificateAuthorities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Acmpca
+	svc := cl.Services("acmpca").Acmpca
 	paginator := acmpca.NewListCertificateAuthoritiesPaginator(svc, nil)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(o *acmpca.Options) {
@@ -57,7 +57,7 @@ func fetchAcmpcaCertificateAuthorities(ctx context.Context, meta schema.ClientMe
 func resolveCertificateAuthorityTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	certAuthority := resource.Item.(types.CertificateAuthority)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Acmpca
+	svc := cl.Services("acmpca").Acmpca
 	out, err := svc.ListTags(ctx,
 		&acmpca.ListTagsInput{CertificateAuthorityArn: certAuthority.Arn},
 		func(o *acmpca.Options) {

@@ -45,7 +45,7 @@ func EventSubscriptions() *schema.Table {
 
 func fetchEventSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Redshift
+	svc := cl.Services("redshift").Redshift
 	var params redshift.DescribeEventSubscriptionsInput
 	params.MaxRecords = aws.Int32(100)
 	paginator := redshift.NewDescribeEventSubscriptionsPaginator(svc, &params)

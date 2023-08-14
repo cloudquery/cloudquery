@@ -36,7 +36,7 @@ func endpointAuthorization() *schema.Table {
 func fetchEndpointAuthorization(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cluster := parent.Item.(types.Cluster)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Redshift
+	svc := cl.Services("redshift").Redshift
 
 	config := redshift.DescribeEndpointAuthorizationInput{
 		Account:           &cl.AccountID,

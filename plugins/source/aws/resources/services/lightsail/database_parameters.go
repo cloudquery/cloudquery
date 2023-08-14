@@ -38,7 +38,7 @@ func fetchLightsailDatabaseParameters(ctx context.Context, meta schema.ClientMet
 		RelationalDatabaseName: r.Name,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lightsail
+	svc := cl.Services("lightsail").Lightsail
 	// No paginator available
 	for {
 		response, err := svc.GetRelationalDatabaseParameters(ctx, &input, func(options *lightsail.Options) {

@@ -46,7 +46,7 @@ func ClusterParameterGroups() *schema.Table {
 
 func fetchNeptuneClusterParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Neptune
+	svc := cl.Services("neptune").Neptune
 	input := neptune.DescribeDBClusterParameterGroupsInput{
 		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
 	}

@@ -52,7 +52,7 @@ func fetchApigatewayRestApiResourceMethods(ctx context.Context, meta schema.Clie
 	api := parent.Parent.Item.(types.RestApi)
 	resource := parent.Item.(types.Resource)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigateway
+	svc := cl.Services("apigateway").Apigateway
 	for method := range resource.ResourceMethods {
 		config := apigateway.GetMethodInput{RestApiId: api.Id, ResourceId: resource.Id, HttpMethod: aws.String(method)}
 		resp, err := svc.GetMethod(ctx, &config, func(options *apigateway.Options) {

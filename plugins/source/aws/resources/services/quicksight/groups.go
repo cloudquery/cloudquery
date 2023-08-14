@@ -30,7 +30,7 @@ const defaultNamespace = "default"
 
 func fetchQuicksightGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Quicksight
+	svc := cl.Services("quicksight").Quicksight
 	input := quicksight.ListGroupsInput{
 		AwsAccountId: aws.String(cl.AccountID),
 		Namespace:    aws.String(defaultNamespace),

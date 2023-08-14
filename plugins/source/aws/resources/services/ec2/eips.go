@@ -35,7 +35,7 @@ func Eips() *schema.Table {
 
 func fetchEc2Eips(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ec2
+	svc := cl.Services("ec2").Ec2
 	output, err := svc.DescribeAddresses(ctx, &ec2.DescribeAddressesInput{
 		Filters: []types.Filter{{Name: aws.String("domain"), Values: []string{"vpc"}}},
 	}, func(options *ec2.Options) {

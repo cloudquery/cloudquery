@@ -31,7 +31,7 @@ func groupMemberships() *schema.Table {
 
 func fetchIdentitystoreGroupMemberships(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Identitystore
+	svc := cl.Services("identitystore").Identitystore
 	group := parent.Item.(types.Group)
 	config := identitystore.ListGroupMembershipsInput{
 		GroupId:         group.GroupId,

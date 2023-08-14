@@ -36,7 +36,7 @@ func UsageReportSubscriptions() *schema.Table {
 func fetchAppstreamUsageReportSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input appstream.DescribeUsageReportSubscriptionsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Appstream
+	svc := cl.Services("appstream").Appstream
 	// No paginator available
 	for {
 		response, err := svc.DescribeUsageReportSubscriptions(ctx, &input, func(options *appstream.Options) {

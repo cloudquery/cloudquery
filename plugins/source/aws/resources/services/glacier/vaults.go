@@ -47,7 +47,7 @@ func Vaults() *schema.Table {
 
 func fetchGlacierVaults(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Glacier
+	svc := cl.Services("glacier").Glacier
 	paginator := glacier.NewListVaultsPaginator(svc, &glacier.ListVaultsInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *glacier.Options) {
@@ -63,7 +63,7 @@ func fetchGlacierVaults(ctx context.Context, meta schema.ClientMeta, parent *sch
 
 func resolveGlacierVaultTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Glacier
+	svc := cl.Services("glacier").Glacier
 	it := resource.Item.(types.DescribeVaultOutput)
 	out, err := svc.ListTagsForVault(ctx, &glacier.ListTagsForVaultInput{
 		VaultName: it.VaultName,

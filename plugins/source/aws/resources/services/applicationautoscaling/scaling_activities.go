@@ -27,7 +27,7 @@ func ScalingActivities() *schema.Table {
 
 func fetchScalingActivities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Applicationautoscaling
+	svc := cl.Services("applicationautoscaling").Applicationautoscaling
 
 	config := applicationautoscaling.DescribeScalingActivitiesInput{
 		ServiceNamespace: types.ServiceNamespace(cl.AutoscalingNamespace),

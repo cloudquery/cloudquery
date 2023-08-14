@@ -28,7 +28,7 @@ func Profiles() *schema.Table {
 
 func fetchProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Signer
+	svc := cl.Services("signer").Signer
 	config := signer.ListSigningProfilesInput{}
 
 	paginator := signer.NewListSigningProfilesPaginator(svc, &config)
@@ -46,7 +46,7 @@ func fetchProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 
 func getProfile(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Signer
+	svc := cl.Services("signer").Signer
 	a := resource.Item.(types.SigningProfile)
 
 	profile, err := svc.GetSigningProfile(ctx, &signer.GetSigningProfileInput{ProfileName: a.ProfileName}, func(o *signer.Options) {

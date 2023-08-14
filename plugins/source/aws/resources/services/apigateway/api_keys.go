@@ -41,7 +41,7 @@ func fetchApigatewayApiKeys(ctx context.Context, meta schema.ClientMeta, parent 
 		Limit:         aws.Int32(500),
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigateway
+	svc := cl.Services("apigateway").Apigateway
 	p := apigateway.NewGetApiKeysPaginator(svc, &config)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *apigateway.Options) {

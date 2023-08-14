@@ -34,7 +34,7 @@ func BatchImports() *schema.Table {
 
 func fetchFrauddetectorBatchImports(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Frauddetector
+	svc := cl.Services("frauddetector").Frauddetector
 
 	paginator := frauddetector.NewGetBatchImportJobsPaginator(svc, nil)
 	for paginator.HasMorePages() {

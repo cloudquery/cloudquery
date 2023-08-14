@@ -43,7 +43,7 @@ func Pipelines() *schema.Table {
 
 func fetchCodepipelinePipelines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Codepipeline
+	svc := cl.Services("codepipeline").Codepipeline
 	config := codepipeline.ListPipelinesInput{}
 	paginator := codepipeline.NewListPipelinesPaginator(svc, &config)
 	for paginator.HasMorePages() {
@@ -60,7 +60,7 @@ func fetchCodepipelinePipelines(ctx context.Context, meta schema.ClientMeta, par
 
 func getPipeline(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Codepipeline
+	svc := cl.Services("codepipeline").Codepipeline
 	item := resource.Item.(types.PipelineSummary)
 	response, err := svc.GetPipeline(ctx, &codepipeline.GetPipelineInput{Name: item.Name}, func(options *codepipeline.Options) {
 		options.Region = cl.Region
@@ -76,7 +76,7 @@ func resolvePipelineTags(ctx context.Context, meta schema.ClientMeta, resource *
 	pipeline := resource.Item.(*codepipeline.GetPipelineOutput)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Codepipeline
+	svc := cl.Services("codepipeline").Codepipeline
 	paginator := codepipeline.NewListTagsForResourcePaginator(svc, &codepipeline.ListTagsForResourceInput{
 		ResourceArn: pipeline.Metadata.PipelineArn,
 	})

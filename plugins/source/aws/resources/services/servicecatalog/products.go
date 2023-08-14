@@ -41,7 +41,7 @@ func Products() *schema.Table {
 
 func fetchServicecatalogProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Servicecatalog
+	svc := cl.Services("servicecatalog").Servicecatalog
 
 	listInput := new(servicecatalog.SearchProductsAsAdminInput)
 	paginator := servicecatalog.NewSearchProductsAsAdminPaginator(svc, listInput)
@@ -62,7 +62,7 @@ func resolveProductTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	p := resource.Item.(types.ProductViewDetail)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Servicecatalogappregistry
+	svc := cl.Services("servicecatalogappregistry").Servicecatalogappregistry
 	response, err := svc.ListTagsForResource(ctx, &servicecatalogappregistry.ListTagsForResourceInput{
 		ResourceArn: p.ProductARN,
 	}, func(o *servicecatalogappregistry.Options) {

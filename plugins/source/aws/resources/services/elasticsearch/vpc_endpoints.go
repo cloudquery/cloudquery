@@ -35,7 +35,7 @@ func VpcEndpoints() *schema.Table {
 
 func fetchElasticsearchVpcEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticsearchservice
+	svc := cl.Services("elasticsearchservice").Elasticsearchservice
 	// get the IDs first
 	listInput := new(elasticsearchservice.ListVpcEndpointsInput)
 	var vpcEndpointIDs []string

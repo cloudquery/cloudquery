@@ -40,7 +40,7 @@ func gatewayAttachments() *schema.Table {
 func fetchDirectconnectGatewayAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	gateway := parent.Item.(types.DirectConnectGateway)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Directconnect
+	svc := cl.Services("directconnect").Directconnect
 	config := directconnect.DescribeDirectConnectGatewayAttachmentsInput{DirectConnectGatewayId: gateway.DirectConnectGatewayId}
 	// No paginator available
 	for {

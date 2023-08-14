@@ -42,7 +42,7 @@ func clusterParameters() *schema.Table {
 func fetchClusterParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	group := parent.Item.(types.ClusterParameterGroupStatus)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Redshift
+	svc := cl.Services("redshift").Redshift
 
 	config := redshift.DescribeClusterParametersInput{
 		ParameterGroupName: group.ParameterGroupName,

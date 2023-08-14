@@ -37,7 +37,7 @@ func fetchTimestreamTables(ctx context.Context, meta schema.ClientMeta, parent *
 		DatabaseName: parent.Item.(types.Database).DatabaseName,
 		MaxResults:   aws.Int32(20),
 	}
-	paginator := timestreamwrite.NewListTablesPaginator(cl.Services().Timestreamwrite, input)
+	paginator := timestreamwrite.NewListTablesPaginator(cl.Services("timestreamwrite").Timestreamwrite, input)
 	for paginator.HasMorePages() {
 		response, err := paginator.NextPage(ctx, func(o *timestreamwrite.Options) {
 			o.Region = cl.Region

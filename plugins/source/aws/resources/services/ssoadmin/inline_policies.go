@@ -45,7 +45,7 @@ func inlinePolicies() *schema.Table {
 
 func fetchInlinePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ssoadmin
+	svc := cl.Services("ssoadmin").Ssoadmin
 
 	permissionSetARN := parent.Item.(*types.PermissionSet).PermissionSetArn
 	instanceARN := parent.Parent.Item.(types.InstanceMetadata).InstanceArn

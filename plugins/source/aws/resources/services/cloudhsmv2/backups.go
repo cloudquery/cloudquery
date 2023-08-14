@@ -43,7 +43,7 @@ func Backups() *schema.Table {
 
 func fetchCloudhsmv2Backups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudhsmv2
+	svc := cl.Services("cloudhsmv2").Cloudhsmv2
 	var input cloudhsmv2.DescribeBackupsInput
 	paginator := cloudhsmv2.NewDescribeBackupsPaginator(svc, &input)
 	for paginator.HasMorePages() {

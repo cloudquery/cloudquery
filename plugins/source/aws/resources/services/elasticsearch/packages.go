@@ -34,7 +34,7 @@ func Packages() *schema.Table {
 
 func fetchElasticsearchPackages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticsearchservice
+	svc := cl.Services("elasticsearchservice").Elasticsearchservice
 
 	p := elasticsearchservice.NewDescribePackagesPaginator(svc, nil)
 	for p.HasMorePages() {

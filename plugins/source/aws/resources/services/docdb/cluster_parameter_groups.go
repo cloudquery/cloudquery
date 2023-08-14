@@ -56,7 +56,7 @@ func ClusterParameterGroups() *schema.Table {
 
 func fetchDocdbClusterParameterGroups(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Docdb
+	svc := cl.Services("docdb").Docdb
 
 	input := &docdb.DescribeDBClusterParameterGroupsInput{}
 
@@ -76,7 +76,7 @@ func fetchDocdbClusterParameterGroups(ctx context.Context, meta schema.ClientMet
 func resolveDocdbClusterParameterGroupParameters(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	item := resource.Item.(types.DBClusterParameterGroup)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Docdb
+	svc := cl.Services("docdb").Docdb
 
 	input := &docdb.DescribeDBClusterParametersInput{
 		DBClusterParameterGroupName: item.DBClusterParameterGroupName,

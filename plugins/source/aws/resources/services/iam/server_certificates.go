@@ -34,7 +34,7 @@ func ServerCertificates() *schema.Table {
 func fetchIamServerCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config iam.ListServerCertificatesInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services("iam").Iam
 	paginator := iam.NewListServerCertificatesPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *iam.Options) {

@@ -36,7 +36,7 @@ func fargateProfiles() *schema.Table {
 func fetchFargateProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cluster := parent.Item.(*types.Cluster)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Eks
+	svc := cl.Services("eks").Eks
 	paginator := eks.NewListFargateProfilesPaginator(svc, &eks.ListFargateProfilesInput{ClusterName: cluster.Name})
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *eks.Options) {
@@ -52,7 +52,7 @@ func fetchFargateProfiles(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func getFargateProfile(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Eks
+	svc := cl.Services("eks").Eks
 	name := resource.Item.(string)
 	cluster := resource.Parent.Item.(*types.Cluster)
 	output, err := svc.DescribeFargateProfile(

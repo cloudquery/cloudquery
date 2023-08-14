@@ -46,7 +46,7 @@ func Jobs() *schema.Table {
 
 func fetchGlueJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Glue
+	svc := cl.Services("glue").Glue
 	paginator := glue.NewGetJobsPaginator(svc, &glue.GetJobsInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *glue.Options) {
@@ -66,7 +66,7 @@ func resolveGlueJobArn(ctx context.Context, meta schema.ClientMeta, resource *sc
 }
 func resolveGlueJobTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Glue
+	svc := cl.Services("glue").Glue
 	result, err := svc.GetTags(ctx, &glue.GetTagsInput{
 		ResourceArn: aws.String(jobARN(cl, aws.ToString(resource.Item.(types.Job).Name))),
 	}, func(options *glue.Options) {

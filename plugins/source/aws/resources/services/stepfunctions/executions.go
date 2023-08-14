@@ -43,7 +43,7 @@ func executions() *schema.Table {
 
 func fetchStepfunctionsExecutions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sfn
+	svc := cl.Services("sfn").Sfn
 	sfnOutput := parent.Item.(*sfn.DescribeStateMachineOutput)
 	config := sfn.ListExecutionsInput{
 		MaxResults:      1000,
@@ -66,7 +66,7 @@ func getExecution(ctx context.Context, meta schema.ClientMeta, resource *schema.
 	execution := resource.Item.(types.ExecutionListItem)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sfn
+	svc := cl.Services("sfn").Sfn
 
 	executionResult, err := svc.DescribeExecution(ctx, &sfn.DescribeExecutionInput{
 		ExecutionArn: execution.ExecutionArn,

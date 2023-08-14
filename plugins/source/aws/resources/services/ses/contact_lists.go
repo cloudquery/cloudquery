@@ -42,7 +42,7 @@ func ContactLists() *schema.Table {
 
 func fetchSesContactLists(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sesv2
+	svc := cl.Services("sesv2").Sesv2
 
 	p := sesv2.NewListContactListsPaginator(svc, nil)
 	for p.HasMorePages() {
@@ -60,7 +60,7 @@ func fetchSesContactLists(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func getContactList(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sesv2
+	svc := cl.Services("sesv2").Sesv2
 	item := resource.Item.(types.ContactList)
 
 	getOutput, err := svc.GetContactList(ctx,

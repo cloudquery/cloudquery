@@ -33,7 +33,7 @@ func clusterParameterGroupParameters() *schema.Table {
 
 func fetchRdsClusterParameterGroupParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Rds
+	svc := cl.Services("rds").Rds
 	g := parent.Item.(types.DBClusterParameterGroup)
 	input := rds.DescribeDBClusterParametersInput{DBClusterParameterGroupName: g.DBClusterParameterGroupName}
 	paginator := rds.NewDescribeDBClusterParametersPaginator(svc, &input)

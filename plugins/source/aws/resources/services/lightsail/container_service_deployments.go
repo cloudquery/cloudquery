@@ -37,7 +37,7 @@ func fetchLightsailContainerServiceDeployments(ctx context.Context, meta schema.
 		ServiceName: r.ContainerServiceName,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lightsail
+	svc := cl.Services("lightsail").Lightsail
 	deployments, err := svc.GetContainerServiceDeployments(ctx, &input, func(options *lightsail.Options) {
 		options.Region = cl.Region
 	})

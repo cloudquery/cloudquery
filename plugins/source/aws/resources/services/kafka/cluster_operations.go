@@ -51,7 +51,7 @@ func fetchKafkaClusterOperations(ctx context.Context, meta schema.ClientMeta, pa
 
 	var input = getListClusterOperationsInput(parent)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Kafka
+	svc := cl.Services("kafka").Kafka
 	paginator := kafka.NewListClusterOperationsPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *kafka.Options) {

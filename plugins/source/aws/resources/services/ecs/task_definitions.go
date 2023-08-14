@@ -46,7 +46,7 @@ func TaskDefinitions() *schema.Table {
 func fetchEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config ecs.ListTaskDefinitionsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecs
+	svc := cl.Services("ecs").Ecs
 	paginator := ecs.NewListTaskDefinitionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *ecs.Options) {
@@ -62,7 +62,7 @@ func fetchEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, parent
 
 func getTaskDefinition(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecs
+	svc := cl.Services("ecs").Ecs
 	taskArn := resource.Item.(string)
 
 	describeTaskDefinitionOutput, err := svc.DescribeTaskDefinition(ctx, &ecs.DescribeTaskDefinitionInput{

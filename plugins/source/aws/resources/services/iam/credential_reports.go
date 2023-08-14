@@ -106,7 +106,7 @@ func fetchIamCredentialReports(ctx context.Context, meta schema.ClientMeta, _ *s
 	var apiErr smithy.APIError
 	var reportOutput *iam.GetCredentialReportOutput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services("iam").Iam
 	for {
 		reportOutput, err = svc.GetCredentialReport(ctx, &iam.GetCredentialReportInput{}, func(options *iam.Options) {
 			options.Region = cl.Region

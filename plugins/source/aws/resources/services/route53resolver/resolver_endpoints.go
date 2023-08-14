@@ -27,7 +27,7 @@ func ResolverEndpoints() *schema.Table {
 
 func fetchResolverEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Route53resolver
+	svc := cl.Services("route53resolver").Route53resolver
 	var input route53resolver.ListResolverEndpointsInput
 	paginator := route53resolver.NewListResolverEndpointsPaginator(svc, &input)
 	for paginator.HasMorePages() {

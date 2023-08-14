@@ -42,7 +42,7 @@ func rolePolicies() *schema.Table {
 
 func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services("iam").Iam
 	role := parent.Item.(*types.Role)
 	paginator := iam.NewListRolePoliciesPaginator(svc, &iam.ListRolePoliciesInput{
 		RoleName: role.RoleName,
@@ -64,7 +64,7 @@ func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func getRolePolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services("iam").Iam
 	p := resource.Item.(string)
 	role := resource.Parent.Item.(*types.Role)
 

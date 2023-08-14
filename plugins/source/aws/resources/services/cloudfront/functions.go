@@ -42,8 +42,7 @@ func Functions() *schema.Table {
 func fetchFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config cloudfront.ListFunctionsInput
 	cl := meta.(*client.Client)
-	s := cl.Services()
-	svc := s.Cloudfront
+	svc := cl.Services("cloudfront").Cloudfront
 	for {
 		response, err := svc.ListFunctions(ctx, &config, func(options *cloudfront.Options) {
 			options.Region = cl.Region
@@ -65,7 +64,7 @@ func fetchFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.
 }
 func getFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudfront
+	svc := cl.Services("cloudfront").Cloudfront
 
 	f := resource.Item.(types.FunctionSummary)
 

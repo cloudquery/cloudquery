@@ -50,7 +50,7 @@ func fetchCloudformationStackSetOperations(ctx context.Context, meta schema.Clie
 	}
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudformation
+	svc := cl.Services("cloudformation").Cloudformation
 	paginator := cloudformation.NewListStackSetOperationsPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cloudformation.Options) {
@@ -71,7 +71,7 @@ func fetchCloudformationStackSetOperations(ctx context.Context, meta schema.Clie
 
 func getStackSetOperation(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudformation
+	svc := cl.Services("cloudformation").Cloudformation
 	stack := resource.Parent.Item.(models.ExpandedStackSet)
 	operation := resource.Item.(models.ExpandedStackSetOperationSummary)
 

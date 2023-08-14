@@ -46,7 +46,7 @@ func EbsSnapshots() *schema.Table {
 
 func fetchEc2EbsSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ec2
+	svc := cl.Services("ec2").Ec2
 	paginator := ec2.NewDescribeSnapshotsPaginator(svc, &ec2.DescribeSnapshotsInput{
 		OwnerIds:   []string{cl.AccountID},
 		MaxResults: aws.Int32(1000),

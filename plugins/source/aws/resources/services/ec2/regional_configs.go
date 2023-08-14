@@ -29,7 +29,7 @@ https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_GetEbsEncryptionByDef
 func fetchEc2RegionalConfigs(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 
-	svc := cl.Services().Ec2
+	svc := cl.Services("ec2").Ec2
 	var regionalConfig models.RegionalConfig
 	resp, err := svc.GetEbsDefaultKmsKeyId(ctx, &ec2.GetEbsDefaultKmsKeyIdInput{}, func(options *ec2.Options) {
 		options.Region = cl.Region

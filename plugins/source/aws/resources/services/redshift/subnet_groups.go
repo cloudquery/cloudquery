@@ -44,7 +44,7 @@ func SubnetGroups() *schema.Table {
 func fetchSubnetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config redshift.DescribeClusterSubnetGroupsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Redshift
+	svc := cl.Services("redshift").Redshift
 	paginator := redshift.NewDescribeClusterSubnetGroupsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *redshift.Options) {

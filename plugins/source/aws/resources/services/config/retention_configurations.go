@@ -29,7 +29,7 @@ func RetentionConfigurations() *schema.Table {
 
 func fetchRetentionConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Configservice
+	svc := cl.Services("configservice").Configservice
 
 	p := configservice.NewDescribeRetentionConfigurationsPaginator(svc, nil)
 	for p.HasMorePages() {

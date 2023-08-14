@@ -42,7 +42,7 @@ func Databases() *schema.Table {
 func fetchLightsailDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lightsail.GetRelationalDatabasesInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lightsail
+	svc := cl.Services("lightsail").Lightsail
 	// No paginator available
 	for {
 		response, err := svc.GetRelationalDatabases(ctx, &input, func(options *lightsail.Options) {

@@ -33,7 +33,7 @@ func fetchTrustedAdvisorCheckSummaries(ctx context.Context, meta schema.ClientMe
 	if cl.LanguageCode != "en" {
 		return nil
 	}
-	svc := cl.Services().Support
+	svc := cl.Services("support").Support
 	check := parent.Item.(types.TrustedAdvisorCheckDescription)
 	input := support.DescribeTrustedAdvisorCheckSummariesInput{CheckIds: []*string{check.Id}}
 

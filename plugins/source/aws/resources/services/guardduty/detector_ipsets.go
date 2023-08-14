@@ -35,7 +35,7 @@ func fetchDetectorIPSets(ctx context.Context, meta schema.ClientMeta, parent *sc
 	detector := parent.Item.(*models.DetectorWrapper)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Guardduty
+	svc := cl.Services("guardduty").Guardduty
 	config := &guardduty.ListIPSetsInput{
 		DetectorId: &detector.Id,
 	}
@@ -54,7 +54,7 @@ func fetchDetectorIPSets(ctx context.Context, meta schema.ClientMeta, parent *sc
 
 func getDetectorIPSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Guardduty
+	svc := cl.Services("guardduty").Guardduty
 	id := resource.Item.(string)
 	detector := resource.Parent.Item.(*models.DetectorWrapper)
 

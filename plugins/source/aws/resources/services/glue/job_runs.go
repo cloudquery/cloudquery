@@ -35,7 +35,7 @@ func jobRuns() *schema.Table {
 
 func fetchGlueJobRuns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Glue
+	svc := cl.Services("glue").Glue
 	input := glue.GetJobRunsInput{
 		JobName: parent.Item.(types.Job).Name,
 	}

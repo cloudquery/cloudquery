@@ -34,7 +34,7 @@ func workGroupPreparedStatements() *schema.Table {
 
 func fetchAthenaWorkGroupPreparedStatements(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Athena
+	svc := cl.Services("athena").Athena
 	wg := parent.Item.(types.WorkGroup)
 	input := athena.ListPreparedStatementsInput{WorkGroup: wg.Name}
 	paginator := athena.NewListPreparedStatementsPaginator(svc, &input)
@@ -52,7 +52,7 @@ func fetchAthenaWorkGroupPreparedStatements(ctx context.Context, meta schema.Cli
 
 func getWorkGroupPreparedStatement(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Athena
+	svc := cl.Services("athena").Athena
 	wg := resource.Parent.Item.(types.WorkGroup)
 
 	d := resource.Item.(types.PreparedStatementSummary)

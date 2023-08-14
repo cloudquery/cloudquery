@@ -31,7 +31,7 @@ func fetchIdentitystoreGroups(ctx context.Context, meta schema.ClientMeta, paren
 		return err
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Identitystore
+	svc := cl.Services("identitystore").Identitystore
 	config := identitystore.ListGroupsInput{
 		IdentityStoreId: instance.IdentityStoreId,
 	}

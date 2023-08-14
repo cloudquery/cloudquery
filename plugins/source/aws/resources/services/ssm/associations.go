@@ -34,7 +34,7 @@ func Associations() *schema.Table {
 
 func fetchSsmAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ssm
+	svc := cl.Services("ssm").Ssm
 
 	paginator := ssm.NewListAssociationsPaginator(svc, nil)
 	for paginator.HasMorePages() {

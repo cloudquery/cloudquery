@@ -42,7 +42,7 @@ func diskSnapshots() *schema.Table {
 func fetchLightsailDiskSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lightsail.GetDiskSnapshotsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lightsail
+	svc := cl.Services("lightsail").Lightsail
 	// No paginator available
 	for {
 		response, err := svc.GetDiskSnapshots(ctx, &input, func(options *lightsail.Options) {

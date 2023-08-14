@@ -27,7 +27,7 @@ func fetchIdentitystoreUsers(ctx context.Context, meta schema.ClientMeta, parent
 		return err
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Identitystore
+	svc := cl.Services("identitystore").Identitystore
 	config := identitystore.ListUsersInput{
 		IdentityStoreId: instance.IdentityStoreId,
 	}

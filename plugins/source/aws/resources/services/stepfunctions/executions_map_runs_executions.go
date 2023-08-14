@@ -44,7 +44,7 @@ func mapRunExecutions() *schema.Table {
 
 func fetchStepfunctionsMapRunExecutions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sfn
+	svc := cl.Services("sfn").Sfn
 	config := sfn.ListExecutionsInput{
 		MaxResults: 1000,
 		MapRunArn:  parent.Item.(*sfn.DescribeMapRunOutput).MapRunArn,

@@ -33,7 +33,7 @@ func brokerUsers() *schema.Table {
 func fetchMqBrokerUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	broker := parent.Item.(*mq.DescribeBrokerOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Mq
+	svc := cl.Services("mq").Mq
 	for _, us := range broker.Users {
 		input := mq.DescribeUserInput{
 			BrokerId: broker.BrokerId,

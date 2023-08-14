@@ -28,7 +28,7 @@ func DataShares() *schema.Table {
 
 func fetchDataShares(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Redshift
+	svc := cl.Services("redshift").Redshift
 
 	config := redshift.DescribeDataSharesInput{
 		MaxRecords: aws.Int32(100),

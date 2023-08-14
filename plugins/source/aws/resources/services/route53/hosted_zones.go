@@ -49,7 +49,7 @@ func HostedZones() *schema.Table {
 func fetchRoute53HostedZones(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config route53.ListHostedZonesInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Route53
+	svc := cl.Services("route53").Route53
 
 	processHostedZonesBundle := func(hostedZones []types.HostedZone) error {
 		tagsCfg := &route53.ListTagsForResourcesInput{ResourceType: types.TagResourceTypeHostedzone, ResourceIds: make([]string, 0, len(hostedZones))}

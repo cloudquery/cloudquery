@@ -38,7 +38,7 @@ func signingCertificates() *schema.Table {
 func fetchUserSigningCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	config := &iam.ListSigningCertificatesInput{UserName: parent.Item.(*types.User).UserName}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services("iam").Iam
 	paginator := iam.NewListSigningCertificatesPaginator(svc, config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *iam.Options) {

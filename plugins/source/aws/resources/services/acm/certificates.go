@@ -42,7 +42,7 @@ func Certificates() *schema.Table {
 
 func fetchAcmCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Acm
+	svc := cl.Services("acm").Acm
 	input := acm.ListCertificatesInput{
 		CertificateStatuses: types.CertificateStatus("").Values(),
 		Includes: &types.Filters{
@@ -66,7 +66,7 @@ func fetchAcmCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func getCertificate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Acm
+	svc := cl.Services("acm").Acm
 	input := acm.DescribeCertificateInput{CertificateArn: resource.Item.(types.CertificateSummary).CertificateArn}
 	output, err := svc.DescribeCertificate(ctx, &input, func(o *acm.Options) { o.Region = cl.Region })
 	if err != nil {
@@ -79,7 +79,7 @@ func getCertificate(ctx context.Context, meta schema.ClientMeta, resource *schem
 func resolveCertificateTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cert := resource.Item.(*types.CertificateDetail)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Acm
+	svc := cl.Services("acm").Acm
 	out, err := svc.ListTagsForCertificate(ctx,
 		&acm.ListTagsForCertificateInput{CertificateArn: cert.CertificateArn},
 		func(o *acm.Options) {

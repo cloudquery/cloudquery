@@ -49,7 +49,7 @@ func fetchServicequotasServices(ctx context.Context, meta schema.ClientMeta, par
 	}
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Servicequotas
+	svc := cl.Services("servicequotas").Servicequotas
 	servicePaginator := servicequotas.NewListServicesPaginator(svc, &config)
 	for servicePaginator.HasMorePages() {
 		output, err := servicePaginator.NextPage(ctx, func(o *servicequotas.Options) {

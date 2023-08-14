@@ -39,7 +39,7 @@ func TrafficPolicies() *schema.Table {
 func fetchRoute53TrafficPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config route53.ListTrafficPoliciesInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Route53
+	svc := cl.Services("route53").Route53
 
 	for {
 		response, err := svc.ListTrafficPolicies(ctx, &config, func(options *route53.Options) {
@@ -61,7 +61,7 @@ func fetchRoute53TrafficPolicyVersions(ctx context.Context, meta schema.ClientMe
 	r := parent.Item.(types.TrafficPolicySummary)
 	config := route53.ListTrafficPolicyVersionsInput{Id: r.Id}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Route53
+	svc := cl.Services("route53").Route53
 	// no paginator available
 	for {
 		response, err := svc.ListTrafficPolicyVersions(ctx, &config, func(options *route53.Options) {

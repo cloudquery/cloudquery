@@ -42,7 +42,7 @@ func DataRepositoryAssociations() *schema.Table {
 
 func fetchFsxDataRepositoryAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Fsx
+	svc := cl.Services("fsx").Fsx
 	input := fsx.DescribeDataRepositoryAssociationsInput{MaxResults: aws.Int32(25)}
 	paginator := fsx.NewDescribeDataRepositoryAssociationsPaginator(svc, &input)
 	for paginator.HasMorePages() {

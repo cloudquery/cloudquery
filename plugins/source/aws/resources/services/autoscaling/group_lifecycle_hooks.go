@@ -35,7 +35,7 @@ func groupLifecycleHooks() *schema.Table {
 func fetchAutoscalingGroupLifecycleHooks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(models.AutoScalingGroupWrapper)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Autoscaling
+	svc := cl.Services("autoscaling").Autoscaling
 	config := autoscaling.DescribeLifecycleHooksInput{AutoScalingGroupName: p.AutoScalingGroupName}
 
 	output, err := svc.DescribeLifecycleHooks(ctx, &config, func(options *autoscaling.Options) {

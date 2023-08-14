@@ -35,7 +35,7 @@ func Endpoints() *schema.Table {
 func fetchEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input eventbridge.ListEndpointsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Eventbridge
+	svc := cl.Services("eventbridge").Eventbridge
 	// No paginator available
 	for {
 		response, err := svc.ListEndpoints(ctx, &input, func(options *eventbridge.Options) {

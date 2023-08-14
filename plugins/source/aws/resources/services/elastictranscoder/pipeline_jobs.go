@@ -33,7 +33,7 @@ func pipelineJobs() *schema.Table {
 
 func fetchElastictranscoderPipelineJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elastictranscoder
+	svc := cl.Services("elastictranscoder").Elastictranscoder
 
 	p := elastictranscoder.NewListJobsByPipelinePaginator(
 		svc,

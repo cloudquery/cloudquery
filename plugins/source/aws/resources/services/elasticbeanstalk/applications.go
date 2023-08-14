@@ -47,7 +47,7 @@ func Applications() *schema.Table {
 func fetchElasticbeanstalkApplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config elasticbeanstalk.DescribeApplicationsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticbeanstalk
+	svc := cl.Services("elasticbeanstalk").Elasticbeanstalk
 	output, err := svc.DescribeApplications(ctx, &config, func(options *elasticbeanstalk.Options) {
 		options.Region = cl.Region
 	})
@@ -61,7 +61,7 @@ func fetchElasticbeanstalkApplications(ctx context.Context, meta schema.ClientMe
 func resolveElasticbeanstalkApplicationTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.ApplicationDescription)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticbeanstalk
+	svc := cl.Services("elasticbeanstalk").Elasticbeanstalk
 	tagsOutput, err := svc.ListTagsForResource(ctx, &elasticbeanstalk.ListTagsForResourceInput{
 		ResourceArn: p.ApplicationArn,
 	}, func(o *elasticbeanstalk.Options) {

@@ -29,7 +29,7 @@ func clusterParameters() *schema.Table {
 
 func fetchDocdbClusterParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Docdb
+	svc := cl.Services("docdb").Docdb
 	switch item := parent.Item.(type) {
 	case types.DBClusterParameterGroup:
 		return fetchParameterGroupParameters(ctx, meta, svc, item, res)

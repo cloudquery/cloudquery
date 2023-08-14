@@ -28,7 +28,7 @@ func Locations() *schema.Table {
 func fetchDirectConnectLocations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config directconnect.DescribeLocationsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Directconnect
+	svc := cl.Services("directconnect").Directconnect
 	output, err := svc.DescribeLocations(ctx, &config, func(options *directconnect.Options) {
 		options.Region = cl.Region
 	})

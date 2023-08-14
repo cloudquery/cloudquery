@@ -39,7 +39,7 @@ func fetchDetectorFindings(ctx context.Context, meta schema.ClientMeta, parent *
 	detector := parent.Item.(*models.DetectorWrapper)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Guardduty
+	svc := cl.Services("guardduty").Guardduty
 	config := &guardduty.ListFindingsInput{
 		DetectorId: &detector.Id,
 	}

@@ -34,7 +34,7 @@ func listenerCertificates() *schema.Table {
 
 func fetchListenerCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticloadbalancingv2
+	svc := cl.Services("elasticloadbalancingv2").Elasticloadbalancingv2
 	listener := parent.Item.(types.Listener)
 	config := elbv2.DescribeListenerCertificatesInput{ListenerArn: listener.ListenerArn}
 	// No paginator available

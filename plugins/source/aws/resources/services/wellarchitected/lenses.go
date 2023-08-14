@@ -44,7 +44,7 @@ func Lenses() *schema.Table {
 
 func fetchLenses(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	service := cl.Services().Wellarchitected
+	service := cl.Services("wellarchitected").Wellarchitected
 
 	// we do fetch for all 3 types
 	for _, lensType := range types.LensType("").Values() {
@@ -71,7 +71,7 @@ func fetchLenses(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 
 func getLens(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	service := cl.Services().Wellarchitected
+	service := cl.Services("wellarchitected").Wellarchitected
 	summary := resource.Item.(types.LensSummary)
 	l := &lens{LensSummary: &summary}
 

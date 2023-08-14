@@ -34,7 +34,7 @@ func resolveKafkaTags(path string) schema.ColumnResolver {
 	return func(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 		arn := funk.Get(r.Item, path, funk.WithAllowZero()).(*string)
 		cl := meta.(*client.Client)
-		svc := cl.Services().Kafka
+		svc := cl.Services("kafka").Kafka
 		params := kafka.ListTagsForResourceInput{ResourceArn: arn}
 
 		output, err := svc.ListTagsForResource(ctx, &params, func(options *kafka.Options) {

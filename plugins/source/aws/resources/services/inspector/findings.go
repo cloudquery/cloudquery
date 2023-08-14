@@ -46,7 +46,7 @@ func Findings() *schema.Table {
 
 func fetchInspectorFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Inspector
+	svc := cl.Services("inspector").Inspector
 	input := inspector.ListFindingsInput{MaxResults: aws.Int32(50)}
 	paginator := inspector.NewListFindingsPaginator(svc, &input)
 	for paginator.HasMorePages() {

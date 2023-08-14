@@ -44,7 +44,7 @@ This is useful when multi region and account aggregation is enabled.`,
 
 func fetchFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Securityhub
+	svc := cl.Services("securityhub").Securityhub
 	config := securityhub.GetFindingsInput{
 		MaxResults: 100,
 	}

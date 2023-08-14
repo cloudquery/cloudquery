@@ -50,7 +50,7 @@ func fetchForecast(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		return nil
 	}
 	now := time.Now()
-	svc := cl.Services().Costexplorer
+	svc := cl.Services("costexplorer").Costexplorer
 
 	input := costexplorer.GetCostForecastInput{
 		Granularity: types.GranularityDaily,

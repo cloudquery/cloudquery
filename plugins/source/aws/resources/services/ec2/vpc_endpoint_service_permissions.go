@@ -38,7 +38,7 @@ func fetchEc2VpcEndpointServicePermissions(ctx context.Context, meta schema.Clie
 		return nil
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ec2
+	svc := cl.Services("ec2").Ec2
 	paginator := ec2.NewDescribeVpcEndpointServicePermissionsPaginator(svc, &ec2.DescribeVpcEndpointServicePermissionsInput{
 		ServiceId: endpointService.ServiceId,
 	})

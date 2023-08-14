@@ -35,7 +35,7 @@ func Exports() *schema.Table {
 
 func listExports(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Dynamodb
+	svc := cl.Services("dynamodb").Dynamodb
 
 	paginator := dynamodb.NewListExportsPaginator(svc, &dynamodb.ListExportsInput{})
 	for paginator.HasMorePages() {
@@ -53,7 +53,7 @@ func listExports(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 
 func getExport(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Dynamodb
+	svc := cl.Services("dynamodb").Dynamodb
 
 	exportSummary := resource.Item.(types.ExportSummary)
 

@@ -39,7 +39,7 @@ func fetchClusterInstanceGroups(ctx context.Context, meta schema.ClientMeta, par
 		return nil
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Emr
+	svc := cl.Services("emr").Emr
 	paginator := emr.NewListInstanceGroupsPaginator(svc, &emr.ListInstanceGroupsInput{
 		ClusterId: cluster.Id,
 	})

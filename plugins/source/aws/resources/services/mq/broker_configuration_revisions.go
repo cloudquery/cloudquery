@@ -49,7 +49,7 @@ func brokerConfigurationRevisions() *schema.Table {
 func fetchMqBrokerConfigurationRevisions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cfg := parent.Item.(mq.DescribeConfigurationOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Mq
+	svc := cl.Services("mq").Mq
 
 	input := mq.ListConfigurationRevisionsInput{ConfigurationId: cfg.Id}
 	// No paginator available
@@ -72,7 +72,7 @@ func fetchMqBrokerConfigurationRevisions(ctx context.Context, meta schema.Client
 
 func getMqBrokerConfigurationRevision(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Mq
+	svc := cl.Services("mq").Mq
 	rev := resource.Item.(types.ConfigurationRevision)
 	cfg := resource.Parent.Item.(mq.DescribeConfigurationOutput)
 

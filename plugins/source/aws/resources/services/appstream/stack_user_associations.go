@@ -51,7 +51,7 @@ func fetchAppstreamStackUserAssociations(ctx context.Context, meta schema.Client
 	input.MaxResults = aws.Int32(25)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Appstream
+	svc := cl.Services("appstream").Appstream
 	// No paginator available
 	for {
 		response, err := svc.DescribeUserStackAssociations(ctx, &input, func(options *appstream.Options) {

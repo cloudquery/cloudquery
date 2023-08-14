@@ -34,7 +34,7 @@ func Inventories() *schema.Table {
 
 func fetchSsmInventories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ssm
+	svc := cl.Services("ssm").Ssm
 
 	paginator := ssm.NewGetInventoryPaginator(svc, nil)
 	for paginator.HasMorePages() {

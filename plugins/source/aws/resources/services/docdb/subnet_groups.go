@@ -41,7 +41,7 @@ func SubnetGroups() *schema.Table {
 
 func fetchDocdbSubnetGroups(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Docdb
+	svc := cl.Services("docdb").Docdb
 
 	input := &docdb.DescribeDBSubnetGroupsInput{}
 

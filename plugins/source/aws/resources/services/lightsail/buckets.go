@@ -46,7 +46,7 @@ func Buckets() *schema.Table {
 func fetchLightsailBuckets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lightsail.GetBucketsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lightsail
+	svc := cl.Services("lightsail").Lightsail
 	// No paginator available
 	for {
 		response, err := svc.GetBuckets(ctx, &input, func(options *lightsail.Options) {

@@ -41,7 +41,7 @@ func Portfolios() *schema.Table {
 
 func fetchServicecatalogPortfolios(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Servicecatalog
+	svc := cl.Services("servicecatalog").Servicecatalog
 	pagintor := servicecatalog.NewListPortfoliosPaginator(svc, &servicecatalog.ListPortfoliosInput{})
 	for pagintor.HasMorePages() {
 		page, err := pagintor.NextPage(ctx, func(o *servicecatalog.Options) {
@@ -60,7 +60,7 @@ func resolvePortfolioTags(ctx context.Context, meta schema.ClientMeta, resource 
 	port := resource.Item.(types.PortfolioDetail)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Servicecatalogappregistry
+	svc := cl.Services("servicecatalogappregistry").Servicecatalogappregistry
 	response, err := svc.ListTagsForResource(ctx, &servicecatalogappregistry.ListTagsForResourceInput{
 		ResourceArn: port.ARN,
 	}, func(o *servicecatalogappregistry.Options) {

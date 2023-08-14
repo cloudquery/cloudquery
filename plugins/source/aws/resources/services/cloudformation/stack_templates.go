@@ -56,7 +56,7 @@ func fetchCloudformationStackTemplates(ctx context.Context, meta schema.ClientMe
 		StackName: stack.StackName,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudformation
+	svc := cl.Services("cloudformation").Cloudformation
 	resp, err := svc.GetTemplate(ctx, &config, func(options *cloudformation.Options) {
 		options.Region = cl.Region
 	})

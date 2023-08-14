@@ -50,7 +50,7 @@ func fetchElbv2Listeners(ctx context.Context, meta schema.ClientMeta, parent *sc
 		LoadBalancerArn: lb.LoadBalancerArn,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticloadbalancingv2
+	svc := cl.Services("elasticloadbalancingv2").Elasticloadbalancingv2
 	paginator := elbv2.NewDescribeListenersPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *elbv2.Options) {
@@ -70,7 +70,7 @@ func fetchElbv2Listeners(ctx context.Context, meta schema.ClientMeta, parent *sc
 func resolveElbv2listenerTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	region := meta.(*client.Client).Region
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticloadbalancingv2
+	svc := cl.Services("elasticloadbalancingv2").Elasticloadbalancingv2
 	listener := resource.Item.(types.Listener)
 	tagsOutput, err := svc.DescribeTags(ctx, &elbv2.DescribeTagsInput{
 		ResourceArns: []string{

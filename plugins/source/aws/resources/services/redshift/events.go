@@ -30,7 +30,7 @@ Only events occurred in the last 14 days are returned.`,
 
 func fetchEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Redshift
+	svc := cl.Services("redshift").Redshift
 
 	config := redshift.DescribeEventsInput{
 		Duration:   aws.Int32(60 * 24 * 14), // 14 days (maximum)

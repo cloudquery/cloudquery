@@ -29,7 +29,7 @@ func remediationConfigurations() *schema.Table {
 
 func fetchRemediationConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Configservice
+	svc := cl.Services("configservice").Configservice
 
 	configRule := parent.Item.(types.ConfigRule).ConfigRuleName
 	input := &configservice.DescribeRemediationConfigurationsInput{

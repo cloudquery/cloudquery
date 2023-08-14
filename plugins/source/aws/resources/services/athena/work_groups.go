@@ -50,7 +50,7 @@ func WorkGroups() *schema.Table {
 
 func fetchAthenaWorkGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Athena
+	svc := cl.Services("athena").Athena
 	input := athena.ListWorkGroupsInput{}
 	paginator := athena.NewListWorkGroupsPaginator(svc, &input)
 	for paginator.HasMorePages() {
@@ -68,7 +68,7 @@ func fetchAthenaWorkGroups(ctx context.Context, meta schema.ClientMeta, parent *
 
 func getWorkGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Athena
+	svc := cl.Services("athena").Athena
 
 	wg := resource.Item.(types.WorkGroupSummary)
 	dc, err := svc.GetWorkGroup(ctx, &athena.GetWorkGroupInput{
@@ -91,7 +91,7 @@ func resolveAthenaWorkGroupArn(ctx context.Context, meta schema.ClientMeta, reso
 
 func resolveAthenaWorkGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Athena
+	svc := cl.Services("athena").Athena
 	wg := resource.Item.(types.WorkGroup)
 	arnStr := createWorkGroupArn(cl, *wg.Name)
 	params := athena.ListTagsForResourceInput{ResourceARN: &arnStr}

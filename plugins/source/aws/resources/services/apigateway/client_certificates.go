@@ -38,7 +38,7 @@ func ClientCertificates() *schema.Table {
 func fetchApigatewayClientCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apigateway.GetClientCertificatesInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigateway
+	svc := cl.Services("apigateway").Apigateway
 	for p := apigateway.NewGetClientCertificatesPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx, func(options *apigateway.Options) {
 			options.Region = cl.Region

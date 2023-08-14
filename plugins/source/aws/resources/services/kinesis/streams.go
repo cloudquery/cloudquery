@@ -43,7 +43,7 @@ func Streams() *schema.Table {
 
 func fetchKinesisStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Kinesis
+	svc := cl.Services("kinesis").Kinesis
 	input := kinesis.ListStreamsInput{}
 	paginator := kinesis.NewListStreamsPaginator(svc, &input)
 	for paginator.HasMorePages() {
@@ -61,7 +61,7 @@ func fetchKinesisStreams(ctx context.Context, meta schema.ClientMeta, parent *sc
 func getStream(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
 	streamName := resource.Item.(string)
-	svc := cl.Services().Kinesis
+	svc := cl.Services("kinesis").Kinesis
 	streamSummary, err := svc.DescribeStreamSummary(ctx, &kinesis.DescribeStreamSummaryInput{
 		StreamName: aws.String(streamName),
 	}, func(options *kinesis.Options) {
@@ -76,7 +76,7 @@ func getStream(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 
 func resolveKinesisStreamTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Kinesis
+	svc := cl.Services("kinesis").Kinesis
 	summary := resource.Item.(*types.StreamDescriptionSummary)
 	input := kinesis.ListTagsForStreamInput{
 		StreamName: summary.StreamName,

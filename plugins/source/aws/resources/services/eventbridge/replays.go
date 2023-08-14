@@ -37,7 +37,7 @@ func Replays() *schema.Table {
 func fetchReplays(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input eventbridge.ListReplaysInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Eventbridge
+	svc := cl.Services("eventbridge").Eventbridge
 	// No paginator available
 	for {
 		response, err := svc.ListReplays(ctx, &input, func(options *eventbridge.Options) {
@@ -57,7 +57,7 @@ func fetchReplays(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 
 func getReplay(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Eventbridge
+	svc := cl.Services("eventbridge").Eventbridge
 
 	replay := resource.Item.(types.Replay)
 

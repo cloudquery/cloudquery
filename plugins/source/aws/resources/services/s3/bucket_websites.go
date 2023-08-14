@@ -31,7 +31,7 @@ func bucketWebsites() *schema.Table {
 func fetchS3BucketWebsites(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(*models.WrappedBucket)
 	cl := meta.(*client.Client)
-	svc := cl.Services().S3
+	svc := cl.Services("s3").S3
 	region := parent.Get("region").(*scalar.String)
 	if region == nil {
 		return nil

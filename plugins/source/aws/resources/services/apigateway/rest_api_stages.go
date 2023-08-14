@@ -43,7 +43,7 @@ func restApiStages() *schema.Table {
 func fetchApigatewayRestApiStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.RestApi)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigateway
+	svc := cl.Services("apigateway").Apigateway
 	config := apigateway.GetStagesInput{RestApiId: r.Id}
 
 	response, err := svc.GetStages(ctx, &config, func(options *apigateway.Options) {
