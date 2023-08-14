@@ -48,7 +48,7 @@ func fetchStackInstanceSummary(ctx context.Context, meta schema.ClientMeta, pare
 	}
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudformation
+	svc := cl.Services("cloudformation").Cloudformation
 
 	paginator := cloudformation.NewListStackInstancesPaginator(svc, &input)
 	for paginator.HasMorePages() {

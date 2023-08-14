@@ -37,7 +37,7 @@ func MultiRegionAccessPoints() *schema.Table {
 
 func fetchMultiRegionAccessPoints(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().S3control
+	svc := cl.Services("s3control").S3control
 
 	paginator := s3control.NewListMultiRegionAccessPointsPaginator(svc, &s3control.ListMultiRegionAccessPointsInput{
 		AccountId: aws.String(cl.AccountID),

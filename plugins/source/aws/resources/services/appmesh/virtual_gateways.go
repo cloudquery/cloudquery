@@ -49,7 +49,7 @@ func virtualGateways() *schema.Table {
 
 func fetchVirtualGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Appmesh
+	svc := cl.Services("appmesh").Appmesh
 	md := parent.Item.(*types.MeshData)
 	input := &appmesh.ListVirtualGatewaysInput{
 		MeshName:  md.MeshName,
@@ -70,7 +70,7 @@ func fetchVirtualGateways(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func getVirtualGateway(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Appmesh
+	svc := cl.Services("appmesh").Appmesh
 	vgr := resource.Item.(types.VirtualGatewayRef)
 	input := appmesh.DescribeVirtualGatewayInput{
 		MeshName:           vgr.MeshName,

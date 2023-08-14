@@ -276,8 +276,14 @@ func (s *Services) InitService(awsConfig *aws.Config, service string) {
 		s.Apigateway = apigateway.NewFromConfig(c)
 	case "apigatewayv2":
 		s.Apigatewayv2 = apigatewayv2.NewFromConfig(c)
+	case "appconfig":
+		s.Appconfig = appconfig.NewFromConfig(c)
+	case "appflow":
+		s.Appflow = appflow.NewFromConfig(c)
 	case "applicationautoscaling":
 		s.Applicationautoscaling = applicationautoscaling.NewFromConfig(c)
+	case "appmesh":
+		s.Appmesh = appmesh.NewFromConfig(c)
 	case "apprunner":
 		s.Apprunner = apprunner.NewFromConfig(c)
 	case "appstream":
@@ -286,6 +292,8 @@ func (s *Services) InitService(awsConfig *aws.Config, service string) {
 		s.Appsync = appsync.NewFromConfig(c)
 	case "athena":
 		s.Athena = athena.NewFromConfig(c)
+	case "auditmanager":
+		s.Auditmanager = auditmanager.NewFromConfig(c)
 	case "autoscaling":
 		s.Autoscaling = autoscaling.NewFromConfig(c)
 	case "autoscalingplans":
@@ -406,6 +414,8 @@ func (s *Services) InitService(awsConfig *aws.Config, service string) {
 		s.Neptune = neptune.NewFromConfig(c)
 	case "networkfirewall":
 		s.Networkfirewall = networkfirewall.NewFromConfig(c)
+	case "networkmanager":
+		s.Networkmanager = networkmanager.NewFromConfig(c)
 	case "organizations":
 		s.Organizations = organizations.NewFromConfig(c)
 	case "qldb":
@@ -426,6 +436,10 @@ func (s *Services) InitService(awsConfig *aws.Config, service string) {
 		s.Route53 = route53.NewFromConfig(c)
 	case "route53domains":
 		s.Route53domains = route53domains.NewFromConfig(c)
+	case "route53recoverycontrolconfig":
+		s.Route53recoverycontrolconfig = route53recoverycontrolconfig.NewFromConfig(c)
+	case "route53recoveryreadiness":
+		s.Route53recoveryreadiness = route53recoveryreadiness.NewFromConfig(c)
 	case "route53resolver":
 		s.Route53resolver = route53resolver.NewFromConfig(c)
 	case "s3":

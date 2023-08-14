@@ -63,7 +63,7 @@ func fetchStackInstanceResourceDrifts(ctx context.Context, meta schema.ClientMet
 	}
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudformation
+	svc := cl.Services("cloudformation").Cloudformation
 
 	// No paginator available
 	for {

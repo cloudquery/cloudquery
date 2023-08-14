@@ -32,7 +32,7 @@ func safetyRules() *schema.Table {
 
 func fetchSafetyRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Route53recoverycontrolconfig
+	svc := cl.Services("route53recoverycontrolconfig").Route53recoverycontrolconfig
 	controlPanel := parent.Item.(types.ControlPanel)
 	input := &route53recoverycontrolconfig.ListSafetyRulesInput{
 		ControlPanelArn: controlPanel.ControlPanelArn,

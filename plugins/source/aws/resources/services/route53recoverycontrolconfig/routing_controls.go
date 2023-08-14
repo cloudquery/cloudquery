@@ -32,7 +32,7 @@ func routingControls() *schema.Table {
 
 func fetchRoutingControls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Route53recoverycontrolconfig
+	svc := cl.Services("route53recoverycontrolconfig").Route53recoverycontrolconfig
 	controlPanel := parent.Item.(types.ControlPanel)
 	paginator := route53recoverycontrolconfig.NewListRoutingControlsPaginator(svc, &route53recoverycontrolconfig.ListRoutingControlsInput{
 		ControlPanelArn: controlPanel.ControlPanelArn,

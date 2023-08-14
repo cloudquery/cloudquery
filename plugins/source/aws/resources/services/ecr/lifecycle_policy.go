@@ -30,7 +30,7 @@ func lifeCyclePolicy() *schema.Table {
 }
 func fetchRepositoryLifecyclePolicy(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecr
+	svc := cl.Services("ecr").Ecr
 	config := ecr.GetLifecyclePolicyInput{
 		RepositoryName: parent.Item.(types.Repository).RepositoryName,
 	}

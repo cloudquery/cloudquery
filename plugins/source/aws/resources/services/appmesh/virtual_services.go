@@ -49,7 +49,7 @@ func virtualServices() *schema.Table {
 
 func fetchVirtualServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Appmesh
+	svc := cl.Services("appmesh").Appmesh
 	md := parent.Item.(*types.MeshData)
 	input := &appmesh.ListVirtualServicesInput{
 		MeshName:  md.MeshName,
@@ -70,7 +70,7 @@ func fetchVirtualServices(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func getVirtualService(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Appmesh
+	svc := cl.Services("appmesh").Appmesh
 	vsr := resource.Item.(types.VirtualServiceRef)
 	input := appmesh.DescribeVirtualServiceInput{
 		MeshName:           vsr.MeshName,

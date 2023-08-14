@@ -38,7 +38,7 @@ func DeploymentStrategies() *schema.Table {
 
 func fetchDeploymentStrategies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Appconfig
+	svc := cl.Services("appconfig").Appconfig
 	paginator := appconfig.NewListDeploymentStrategiesPaginator(svc, nil)
 	for paginator.HasMorePages() {
 		resp, err := paginator.NextPage(ctx, func(options *appconfig.Options) {

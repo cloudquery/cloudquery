@@ -47,7 +47,7 @@ func fetchEnvironments(ctx context.Context, meta schema.ClientMeta, parent *sche
 		ApplicationId: r.Id,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Appconfig
+	svc := cl.Services("appconfig").Appconfig
 
 	paginator := appconfig.NewListEnvironmentsPaginator(svc, &config)
 	for paginator.HasMorePages() {

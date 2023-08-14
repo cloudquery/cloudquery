@@ -49,7 +49,7 @@ func virtualNodes() *schema.Table {
 
 func fetchVirtualNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Appmesh
+	svc := cl.Services("appmesh").Appmesh
 	md := parent.Item.(*types.MeshData)
 	input := &appmesh.ListVirtualNodesInput{
 		MeshName:  md.MeshName,
@@ -70,7 +70,7 @@ func fetchVirtualNodes(ctx context.Context, meta schema.ClientMeta, parent *sche
 
 func getVirtualNode(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Appmesh
+	svc := cl.Services("appmesh").Appmesh
 	vnr := resource.Item.(types.VirtualNodeRef)
 	input := appmesh.DescribeVirtualNodeInput{
 		MeshName:        vnr.MeshName,
