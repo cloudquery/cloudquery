@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func functionVersions() *schema.Table {
@@ -17,15 +17,15 @@ func functionVersions() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_FunctionConfiguration.html`,
 		Resolver:    fetchLambdaFunctionVersions,
-		Transform:   transformers.TransformWithStruct(&types.FunctionConfiguration{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lambda"),
+		Transform:   transformers.TransformWithStruct(&types.FunctionConfiguration{}, transformers.WithPrimaryKeys("Version")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "function_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "function_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}

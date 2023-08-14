@@ -10,13 +10,12 @@ The primary key for this table is **id**.
 
 The following tables depend on azure_mysql_servers:
   - [azure_mysql_server_configurations](azure_mysql_server_configurations)
+  - [azure_mysql_server_databases](azure_mysql_server_databases)
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |subscription_id|`utf8`|

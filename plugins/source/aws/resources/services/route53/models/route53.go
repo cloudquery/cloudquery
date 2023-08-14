@@ -6,5 +6,6 @@ type Route53HostedZoneWrapper struct {
 	types.HostedZone
 	Tags            map[string]string
 	DelegationSetId *string
+	DelegationSet   *types.DelegationSet
 	VPCs            []types.VPC
 }

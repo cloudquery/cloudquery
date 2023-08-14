@@ -1,15 +1,12 @@
 package client
 
 import (
-	"context"
 	"fmt"
 	"os"
 	"path"
 
 	"github.com/PagerDuty/go-pagerduty"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
 	"gopkg.in/yaml.v3"
 )
@@ -25,28 +22,42 @@ type Client struct {
 	logger zerolog.Logger
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
-	var pagerdutySpec Spec
+type Options struct {
+	Client *pagerduty.Client
+}
 
-	if err := spec.UnmarshalSpec(&pagerdutySpec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal pagerduty spec: %w", err)
+type Option func(*Options)
+
+func WithClient(client *pagerduty.Client) Option {
+	return func(o *Options) {
+		o.Client = client
 	}
+}
 
-	pagerdutySpec.setDefaults()
-
-	authToken, err := getAuthToken()
-	if err != nil {
+func New(logger zerolog.Logger, spec Spec, options ...Option) (schema.ClientMeta, error) {
+	spec.SetDefaults()
+	if err := spec.Validate(); err != nil {
 		return nil, err
 	}
 
-	pagerdutyClient := pagerduty.NewClient(authToken)
-	pagerdutyClient.HTTPClient = newRateLimitedHttpClient(
-		pagerdutyClient.HTTPClient,
-		*pagerdutySpec.MaxRequestsPerSecond)
+	o := Options{}
+	for _, option := range options {
+		option(&o)
+	}
+
+	pdClient := o.Client
+	if pdClient == nil {
+		authToken, err := getAuthToken()
+		if err != nil {
+			return nil, err
+		}
+		pdClient = pagerduty.NewClient(authToken)
+	}
+	pdClient.HTTPClient = newRateLimitedHttpClient(pdClient.HTTPClient, *spec.MaxRequestsPerSecond)
 
 	cqClient := Client{
-		PagerdutyClient: pagerdutyClient,
-		Spec:            &pagerdutySpec,
+		PagerdutyClient: pdClient,
+		Spec:            &spec,
 		logger:          logger,
 	}
 

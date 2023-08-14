@@ -1,5 +1,9 @@
 name: Destination Plugin Kafka Workflow
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     paths:
@@ -16,10 +20,35 @@ jobs:
   plugins-destination-kafka:
     timeout-minutes: 30
     name: "plugins/destination/kafka"
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     defaults:
       run:
         working-directory: ./plugins/destination/kafka
+    services:
+      zookeeper:
+        image: confluentinc/cp-zookeeper:latest
+        env:
+          ZOOKEEPER_CLIENT_PORT: 2181
+          ZOOKEEPER_TICK_TIME: 2000
+        ports:
+        - 22181:2181
+      kafka:
+        image: confluentinc/cp-kafka:latest
+        ports:
+        - 29092:29092
+        env:
+          KAFKA_BROKER_ID: 1
+          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+          KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+          KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+          KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+          KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+        options: >-
+                 --health-cmd "nc -z localhost 9092 || exit 1"
+                 --health-interval 60s
+                 --health-timeout 30s
+                 --health-start-period 20s
+                 --health-retries 5
     steps:
       - uses: actions/checkout@v3
         with:
@@ -40,13 +69,11 @@ jobs:
           skip-build-cache: true
       - name: Build
         run: go build .
-      - name: Run Kafka
-        run: docker-compose up -d
       - name: Test
         run: make test
   validate-release:
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     env:
       CGO_ENABLED: 0
     steps:
@@ -59,9 +86,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/destination/kafka/go.sum') }}
+          key: ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/destination/kafka/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.5-release-cache-plugins-destination-kafka
+            ${{ runner.os }}-go-1.20.5-release-cache-plugins-destination-kafka
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3

@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/v3/caser"
+	"github.com/cloudquery/plugin-sdk/v4/caser"
 	"github.com/gertd/go-pluralize"
 )
 

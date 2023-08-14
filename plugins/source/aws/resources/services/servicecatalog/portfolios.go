@@ -3,37 +3,38 @@ package servicecatalog
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog/types"
-	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Portfolios() *schema.Table {
 	tableName := "aws_servicecatalog_portfolios"
 	return &schema.Table{
-		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/servicecatalog/latest/dg/API_PortfolioDetail.html`,
-		Resolver:    fetchServicecatalogPortfolios,
-		Transform:   transformers.TransformWithStruct(&types.PortfolioDetail{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "servicecatalog"),
+		Name:                tableName,
+		Description:         `https://docs.aws.amazon.com/servicecatalog/latest/dg/API_DescribePortfolio.html`,
+		Resolver:            fetchServicecatalogPortfolios,
+		PreResourceResolver: getPortfolio,
+		Transform:           transformers.TransformWithStruct(&servicecatalog.DescribePortfolioOutput{}, transformers.WithSkipFields("ResultMetadata")),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "servicecatalog"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:       "arn",
 				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ARN"),
+				Resolver:   schema.PathResolver("PortfolioDetail.ARN"),
 				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolvePortfolioTags,
+				Resolver: client.ResolveTags,
 			},
 		},
 	}
@@ -42,9 +43,9 @@ func Portfolios() *schema.Table {
 func fetchServicecatalogPortfolios(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services("servicecatalog").Servicecatalog
-	pagintor := servicecatalog.NewListPortfoliosPaginator(svc, &servicecatalog.ListPortfoliosInput{})
-	for pagintor.HasMorePages() {
-		page, err := pagintor.NextPage(ctx, func(o *servicecatalog.Options) {
+	paginator := servicecatalog.NewListPortfoliosPaginator(svc, &servicecatalog.ListPortfoliosInput{})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx, func(o *servicecatalog.Options) {
 			o.Region = cl.Region
 		})
 		if err != nil {
@@ -56,14 +57,12 @@ func fetchServicecatalogPortfolios(ctx context.Context, meta schema.ClientMeta, 
 	return nil
 }
 
-func resolvePortfolioTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	port := resource.Item.(types.PortfolioDetail)
-
+func getPortfolio(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("servicecatalogappregistry").Servicecatalogappregistry
-	response, err := svc.ListTagsForResource(ctx, &servicecatalogappregistry.ListTagsForResourceInput{
-		ResourceArn: port.ARN,
-	}, func(o *servicecatalogappregistry.Options) {
+	svc := cl.Services("servicecatalog").Servicecatalog
+	response, err := svc.DescribePortfolio(ctx, &servicecatalog.DescribePortfolioInput{
+		Id: resource.Item.(types.PortfolioDetail).Id,
+	}, func(o *servicecatalog.Options) {
 		o.Region = cl.Region
 	})
 	if err != nil {
@@ -72,5 +71,6 @@ func resolvePortfolioTags(ctx context.Context, meta schema.ClientMeta, resource 
 		}
 		return err
 	}
-	return resource.Set(c.Name, response.Tags)
+	resource.Item = response
+	return nil
 }

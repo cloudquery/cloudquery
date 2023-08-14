@@ -87,8 +87,12 @@ func tables(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			return fmt.Errorf("failed to get versions for %s. Error: %w", source.Name, err)
 		}
-		maxVersion := findMaxCommonVersion(versions, []int{2})
+		maxVersion := findMaxCommonVersion(versions, []int{2, 3})
 		switch maxVersion {
+		case 3:
+			if err := tablesV3(ctx, cl, outputPath, format); err != nil {
+				return err
+			}
 		case 2:
 			if err := tablesV2(ctx, cl, outputPath, format); err != nil {
 				return err

@@ -21,6 +21,8 @@ The following tables depend on gcp_vmmigration_source_migrating_vms:
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
+|target_vm_defaults|`json`|
+|source_vm_details|`json`|
 |name (PK)|`utf8`|
 |source_vm_id|`utf8`|
 |display_name|`utf8`|

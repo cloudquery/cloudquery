@@ -8,7 +8,9 @@ spec:
   version: "VERSION_DESTINATION_SNOWFLAKE"
   write_mode: "append"
   spec:
-    connection_string: ${SNOWFLAKE_CONNECTION_STRING}
-#    batch_size: 1000 # optional
-#    batch_size_bytes: 4194304 # optional
+    connection_string: "${SNOWFLAKE_CONNECTION_STRING}"
+    # Optional parameters
+    # migrate_concurrency: 1
+    # batch_size: 1000 # 1K entries
+    # batch_size_bytes: 4194304 # 4 MiB
 ```

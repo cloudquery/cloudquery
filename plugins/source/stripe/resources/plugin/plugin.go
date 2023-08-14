@@ -1,19 +1,17 @@
 package plugin
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 
 var (
 	Version = "development"
 )
 
-func Plugin() *source.Plugin {
-	return source.NewPlugin(
+func Plugin() *plugin.Plugin {
+	return plugin.NewPlugin(
 		"stripe",
 		Version,
-		tables(),
-		client.Configure,
+		Configure,
 	)
 }

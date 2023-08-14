@@ -29,6 +29,7 @@ This table depends on [gcp_aiplatform_model_locations](gcp_aiplatform_model_loca
 |metadata_schema_uri|`utf8`|
 |supported_export_formats|`json`|
 |training_pipeline|`utf8`|
+|pipeline_job|`utf8`|
 |container_spec|`json`|
 |artifact_uri|`utf8`|
 |supported_deployment_resources_types|`list<item: int64, nullable>`|

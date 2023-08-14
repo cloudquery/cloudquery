@@ -9,6 +9,7 @@ SELECT CASE
 END AS "execution_time"  \gset
 \set framework 'foundational_security'
 \ir ../create_aws_policy_results.sql
+\ir ./account.sql
 \ir ./acm.sql
 \ir ./apigateway.sql
 \ir ./autoscaling.sql

@@ -1,5 +1,9 @@
 name: Wait for all required workflows to pass
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+  
 on:
   pull_request:
     branches:

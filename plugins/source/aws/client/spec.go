@@ -8,6 +8,10 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
 )
 
+const (
+	defaultMaxConcurrency = 50000
+)
+
 type Account struct {
 	ID              string   `json:"id"`
 	AccountName     string   `json:"account_name,omitempty"`
@@ -46,6 +50,7 @@ type Spec struct {
 	InitializationConcurrency int                        `json:"initialization_concurrency"`
 	UsePaidAPIs               bool                       `json:"use_paid_apis"`
 	TableOptions              *tableoptions.TableOptions `json:"table_options,omitempty"`
+	Concurrency               int                        `json:"concurrency"`
 }
 
 func (s *Spec) Validate() error {
@@ -99,5 +104,8 @@ func (s *Spec) SetDefaults() {
 	}
 	if s.TableOptions == nil {
 		s.TableOptions = &tableoptions.TableOptions{}
+	}
+	if s.Concurrency == 0 {
+		s.Concurrency = defaultMaxConcurrency
 	}
 }

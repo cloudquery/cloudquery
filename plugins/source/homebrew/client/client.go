@@ -1,14 +1,9 @@
 package client
 
 import (
-	"context"
-	"fmt"
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/homebrew/internal/homebrew"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
 	"github.com/rs/zerolog"
 )
 
@@ -18,45 +13,13 @@ const (
 )
 
 type Client struct {
-	logger     zerolog.Logger
-	sourceSpec specs.Source
-	Spec       Spec
+	Logger     zerolog.Logger
+	Spec       *Spec
 	Homebrew   *homebrew.Client
-	maxRetries int
-	backoff    time.Duration // backoff duration between retries (jitter will be added)
-}
-
-func (c *Client) Logger() *zerolog.Logger {
-	return &c.logger
+	MaxRetries int
+	Backoff    time.Duration // backoff duration between retries (jitter will be added)
 }
 
 func (*Client) ID() string {
 	return "homebrew"
-}
-
-func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Source, opts source.Options) (schema.ClientMeta, error) {
-	var config Spec
-	err := sourceSpec.UnmarshalSpec(&config)
-	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
-	}
-	config.SetDefaults()
-	err = config.Validate()
-	if err != nil {
-		return nil, fmt.Errorf("failed to validate spec: %w", err)
-	}
-
-	client := homebrew.NewClient()
-	if err != nil {
-		return nil, fmt.Errorf("failed to create homebrew client: %w", err)
-	}
-
-	return &Client{
-		logger:     logger,
-		sourceSpec: sourceSpec,
-		Spec:       config,
-		Homebrew:   client,
-		maxRetries: defaultMaxRetries,
-		backoff:    defaultBackoff,
-	}, nil
 }

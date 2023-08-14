@@ -2,32 +2,30 @@ package client
 
 import (
 	"context"
-	"fmt"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
 	"github.com/rs/zerolog"
 )
 
 type Client struct {
-  Logger zerolog.Logger
+	logger   zerolog.Logger
+	Spec     Spec
 }
 
 func (c *Client) ID() string {
-  // TODO: Change to either your plugin name or a unique dynamic identifier
+	// TODO: Change to either your plugin name or a unique dynamic identifier
 	return "ID"
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source.Options) (schema.ClientMeta, error) {
-	var pluginSpec Spec
+func (c *Client) Logger() *zerolog.Logger {
+	return &c.logger
+}
 
-	if err := s.UnmarshalSpec(&pluginSpec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal plugin spec: %w", err)
+func New(ctx context.Context, logger zerolog.Logger, s *Spec) (Client, error) {
+	// TODO: Add your client initialization here
+	c := Client{
+		logger:	logger,
+		Spec: 	 *s,
 	}
-  // TODO: Add your client initialization here
 
-  return &Client{
-    Logger: logger,
-  }, nil
+	return c, nil
 }

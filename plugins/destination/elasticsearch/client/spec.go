@@ -23,7 +23,7 @@ type Spec struct {
 
 	Concurrency    int `json:"concurrency"`      // Number of concurrent worker goroutines to use for indexing. (Default: number of CPUs)
 	BatchSize      int `json:"batch_size"`       // Number of documents to batch together per request. (Default: 1000)
-	BatchSizeBytes int `json:"batch_size_bytes"` // Number of bytes to batch together per request. (Default: 1000000)
+	BatchSizeBytes int `json:"batch_size_bytes"` // Number of bytes to batch together per request. (Default: 5 MiB)
 }
 
 func (s *Spec) SetDefaults() {

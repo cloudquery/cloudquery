@@ -2,7 +2,7 @@
 
 This table shows data for AWS Service Catalog Products.
 
-https://docs.aws.amazon.com/servicecatalog/latest/dg/API_ProductViewDetail.html
+https://docs.aws.amazon.com/servicecatalog/latest/dg/API_DescribeProductAsAdmin.html
 
 The primary key for this table is **arn**.
 
@@ -10,15 +10,13 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
+|region|`utf8`|
 |arn (PK)|`utf8`|
 |tags|`json`|
-|created_time|`timestamp[us, tz=UTC]`|
-|product_arn|`utf8`|
-|product_view_summary|`json`|
-|source_connection|`json`|
-|status|`utf8`|
+|budgets|`json`|
+|product_view_detail|`json`|
+|provisioning_artifact_summaries|`json`|
+|tag_options|`json`|

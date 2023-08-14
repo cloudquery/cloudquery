@@ -1,0 +1,47 @@
+---
+name: Vault
+stage: GA
+title: Vault Source Plugin
+description: CloudQuery Vault source plugin documentation
+---
+# Vault Source Plugin
+
+import { getLatestVersion } from "../../../../../utils/versions";
+import { Badge } from "../../../../../components/Badge";
+import Configuration from "./_configuration.mdx";
+import Authentication from "./_authentication.mdx";
+
+<Badge text={"Latest: " + getLatestVersion("source", `vault`)}/>
+
+The CloudQuery Vault plugin pulls data from Vault and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
+
+## Authentication
+
+<Authentication/>
+
+## Example
+
+This example syncs from Vault to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
+
+<Configuration/>
+
+# Configuration Reference
+
+This is the (nested) spec used by the Vault source plugin:
+
+- `vault_address` (string, required\*):
+  The is the address of the Vault server. This should be a complete URL (including the port) such as `"http://localhost:8200"`
+
+- `concurrency` (integer, optional. Default: 10000):
+  Maximum number of concurrent requests to the Vault server.
+
+# Query Examples
+
+## List the current auth methods with lease times
+
+```sql copy
+SELECT 
+  path, type, config->'default_lease_ttl' as default_lease_ttl, config->'max_lease_ttl' as max_lease_ttl 
+FROM 
+  vault_sys_auths;
+```

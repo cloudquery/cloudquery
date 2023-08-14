@@ -9,8 +9,8 @@ import (
 	"cloud.google.com/go/bigquery"
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	"google.golang.org/api/googleapi"
 )
 
@@ -27,22 +27,35 @@ func (i *item) Save() (map[string]bigquery.Value, string, error) {
 	return i.cols, bigquery.NoDedupeID, nil
 }
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, records []arrow.Record) error {
-	inserter := c.client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Inserter()
+func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) error {
+	if err := c.writer.Write(ctx, res); err != nil {
+		return fmt.Errorf("failed to write: %w", err)
+	}
+	if err := c.writer.Flush(ctx); err != nil {
+		return fmt.Errorf("failed to flush: %w", err)
+	}
+	return nil
+}
+
+// WriteTableBatch(ctx context.Context, name string, msgs []*message.Insert) error
+func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
+	inserter := c.client.Dataset(c.spec.DatasetID).Table(name).Inserter()
 	inserter.IgnoreUnknownValues = true
 	inserter.SkipInvalidRows = false
 	batch := make([]*item, 0)
-	for _, rec := range records {
+	for _, msg := range msgs {
+		rec := msg.Record
+		sc := rec.Schema()
 		for r := 0; r < int(rec.NumRows()); r++ {
 			saver := &item{
-				cols: make(map[string]bigquery.Value, len(table.Columns)),
+				cols: make(map[string]bigquery.Value, len(sc.Fields())),
 			}
 			for i, col := range rec.Columns() {
 				if col.IsNull(r) {
 					// save some bandwidth by not sending nil values
 					continue
 				}
-				saver.cols[table.Columns[i].Name] = c.getValueForBigQuery(col, r)
+				saver.cols[sc.Fields()[i].Name] = c.getValueForBigQuery(col, r)
 			}
 			batch = append(batch, saver)
 		}
@@ -55,11 +68,11 @@ func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, recor
 		// check if bigquery error is 404 (table does not exist yet), then wait a bit and retry until it does exist
 		if e, ok := err.(*googleapi.Error); ok && e.Code == 404 {
 			// retry
-			c.logger.Info().Str("table", table.Name).Msg("Table does not exist yet, waiting for it to be created before retrying write")
+			c.logger.Info().Str("table", name).Msg("Table does not exist yet, waiting for it to be created before retrying write")
 			time.Sleep(1 * time.Second)
 			continue
 		}
-		return fmt.Errorf("failed to put item into BigQuery table %s: %w", table.Name, err)
+		return fmt.Errorf("failed to put item into BigQuery table %s: %w", name, err)
 	}
 
 	return nil

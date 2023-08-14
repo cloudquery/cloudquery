@@ -65,10 +65,10 @@ func NewRecordTransformer(opts ...RecordTransformerOption) *RecordTransformer {
 func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 	fields := make([]arrow.Field, 0, len(sc.Fields())+t.internalColumns)
 	if t.withSyncTime {
-		fields = append(fields, arrow.Field{Name: cqSyncTime, Type: arrow.FixedWidthTypes.Timestamp_us})
+		fields = append(fields, arrow.Field{Name: cqSyncTime, Type: arrow.FixedWidthTypes.Timestamp_us, Nullable: true})
 	}
 	if t.withSourceName {
-		fields = append(fields, arrow.Field{Name: cqSourceName, Type: arrow.BinaryTypes.String})
+		fields = append(fields, arrow.Field{Name: cqSourceName, Type: arrow.BinaryTypes.String, Nullable: true})
 	}
 	for _, field := range sc.Fields() {
 		mdMap := field.Metadata.ToMap()

@@ -3,7 +3,7 @@ package client
 import (
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 var unsupportedObjects = map[string]bool{
@@ -88,15 +88,15 @@ func MultiplexStandardObjects(meta schema.ClientMeta) []schema.ClientMeta {
 		if strings.HasSuffix(object.Name, "ChangeEvent") || unsupportedObjects[object.Name] {
 			continue
 		}
-		for _, exclude := range c.pluginSpec.ExcludeObjects {
+		for _, exclude := range c.spec.ExcludeObjects {
 			if exclude == object.Name {
 				continue
 			}
 		}
-		if c.pluginSpec.IncludeObjects[0] == "*" {
+		if c.spec.IncludeObjects[0] == "*" {
 			clients = append(clients, c.withObject(object.Name))
 		} else {
-			for _, include := range c.pluginSpec.IncludeObjects {
+			for _, include := range c.spec.IncludeObjects {
 				if include == object.Name {
 					clients = append(clients, c.withObject(object.Name))
 				}

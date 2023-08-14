@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func workloadMilestones() *schema.Table {
@@ -21,8 +21,7 @@ func workloadMilestones() *schema.Table {
 			transformers.WithUnwrapAllEmbeddedStructs(),
 			transformers.WithSkipFields("WorkloadSummary"),
 		),
-		Multiplex: client.ServiceAccountRegionMultiplexer(name, "wellarchitected"),
-		Resolver:  fetchWorkloadMilestones,
+		Resolver: fetchWorkloadMilestones,
 		Columns: schema.ColumnList{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

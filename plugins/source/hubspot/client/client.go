@@ -6,9 +6,7 @@ import (
 	"os"
 
 	"github.com/clarkmcc/go-hubspot"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
 	"golang.org/x/time/rate"
 )
@@ -44,15 +42,7 @@ func (c *Client) withObjectType(objectType string) *Client {
 	return &newClient
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
-	var hubspotSpec Spec
-
-	if err := s.UnmarshalSpec(&hubspotSpec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal plugin spec: %w", err)
-	}
-
-	hubspotSpec.setDefaults()
-
+func New(ctx context.Context, logger zerolog.Logger, s Spec) (schema.ClientMeta, error) {
 	authToken := os.Getenv("HUBSPOT_APP_TOKEN")
 	if authToken == "" {
 		return nil, fmt.Errorf("failed to get hubspot auth token. Please provide an auth-token (see https://www.cloudquery.io/docs/plugins/sources/hubspot/overview#authentication)")
@@ -61,9 +51,9 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 	return &Client{
 		Logger:     logger,
 		Authorizer: hubspot.NewTokenAuthorizer(authToken),
-		Spec:       hubspotSpec,
+		Spec:       s,
 		RateLimiter: rate.NewLimiter(
-			/* r= */ rate.Limit(*hubspotSpec.MaxRequestsPerSecond),
+			/* r= */ rate.Limit(*s.MaxRequestsPerSecond),
 			/* b= */ 1,
 		),
 	}, nil

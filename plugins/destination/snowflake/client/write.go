@@ -39,10 +39,11 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 		os.Remove(f.Name())
 	}()
 
+	enc := json.NewEncoder(f)
+	enc.SetEscapeHTML(false)
+
 	for _, r := range msgs {
 		arr := array.RecordToStructArray(r.Record)
-		enc := json.NewEncoder(f)
-		enc.SetEscapeHTML(false)
 		for i := 0; i < arr.Len(); i++ {
 			if err := enc.Encode(arr.GetOneForMarshal(i)); err != nil {
 				return err

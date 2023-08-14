@@ -4,8 +4,8 @@ import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func layerVersionPolicies() *schema.Table {
@@ -15,7 +15,6 @@ func layerVersionPolicies() *schema.Table {
 		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_GetLayerVersionPolicy.html`,
 		Resolver:    fetchLambdaLayerVersionPolicies,
 		Transform:   transformers.TransformWithStruct(&lambda.GetLayerVersionPolicyOutput{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "lambda"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

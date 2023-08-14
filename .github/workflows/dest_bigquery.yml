@@ -1,5 +1,9 @@
 name: Destination Plugin BigQuery Workflow
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     paths:
@@ -16,7 +20,7 @@ jobs:
   plugins-destination-bigquery:
     timeout-minutes: 10
     name: "plugins/destination/bigquery"
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     defaults:
       run:
         working-directory: ./plugins/destination/bigquery
@@ -56,9 +60,10 @@ jobs:
         env:
           BIGQUERY_PROJECT_ID: ${{ secrets.BIGQUERY_TEST_PROJECT_ID }}
           BIGQUERY_DATASET_ID: ${{ secrets.BIGQUERY_TEST_DATASET_ID }}
+          BIGQUERY_DATASET_LOCATION: us-west1
   validate-release:
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     steps:
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
@@ -69,9 +74,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/destination/bigquery/go.sum') }}
+          key: ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/destination/bigquery/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.5-release-cache-plugins-destination-bigquery
+            ${{ runner.os }}-go-1.20.5-release-cache-plugins-destination-bigquery
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3

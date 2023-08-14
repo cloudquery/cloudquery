@@ -1,0 +1,15 @@
+kind: source
+spec:
+  name: test
+  version: v1.0.0
+  destinations: [test-destination]
+  path: ./test
+  registry: local
+  tables: ["*"]
+  spec:
+---
+kind: destination
+spec:
+  name: test-destination
+  path: cloudquery/test
+  version: "v2.2.3" # latest version of test plugin

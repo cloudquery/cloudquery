@@ -1895,6 +1895,36 @@ func (mr *MockSagemakerClientMockRecorder) GetSagemakerServicecatalogPortfolioSt
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSagemakerServicecatalogPortfolioStatus", reflect.TypeOf((*MockSagemakerClient)(nil).GetSagemakerServicecatalogPortfolioStatus), varargs...)
 }
 
+// GetScalingConfigurationRecommendation mocks base method.
+func (m *MockSagemakerClient) GetScalingConfigurationRecommendation(arg0 context.Context, arg1 *sagemaker.GetScalingConfigurationRecommendationInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.GetScalingConfigurationRecommendationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetScalingConfigurationRecommendation")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetScalingConfigurationRecommendation", varargs...)
+	ret0, _ := ret[0].(*sagemaker.GetScalingConfigurationRecommendationOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetScalingConfigurationRecommendation indicates an expected call of GetScalingConfigurationRecommendation.
+func (mr *MockSagemakerClientMockRecorder) GetScalingConfigurationRecommendation(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetScalingConfigurationRecommendation", reflect.TypeOf((*MockSagemakerClient)(nil).GetScalingConfigurationRecommendation), varargs...)
+}
+
 // GetSearchSuggestions mocks base method.
 func (m *MockSagemakerClient) GetSearchSuggestions(arg0 context.Context, arg1 *sagemaker.GetSearchSuggestionsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.GetSearchSuggestionsOutput, error) {
 
@@ -3663,6 +3693,36 @@ func (mr *MockSagemakerClientMockRecorder) ListProjects(arg0, arg1 interface{}, 
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListProjects", reflect.TypeOf((*MockSagemakerClient)(nil).ListProjects), varargs...)
+}
+
+// ListResourceCatalogs mocks base method.
+func (m *MockSagemakerClient) ListResourceCatalogs(arg0 context.Context, arg1 *sagemaker.ListResourceCatalogsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListResourceCatalogsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListResourceCatalogs")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListResourceCatalogs", varargs...)
+	ret0, _ := ret[0].(*sagemaker.ListResourceCatalogsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListResourceCatalogs indicates an expected call of ListResourceCatalogs.
+func (mr *MockSagemakerClientMockRecorder) ListResourceCatalogs(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListResourceCatalogs", reflect.TypeOf((*MockSagemakerClient)(nil).ListResourceCatalogs), varargs...)
 }
 
 // ListSpaces mocks base method.

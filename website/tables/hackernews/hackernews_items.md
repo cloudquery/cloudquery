@@ -1,7 +1,5 @@
 # Table: hackernews_items
 
-This table shows data for Hackernews Items.
-
 https://github.com/HackerNews/API#items
 
 The primary key for this table is **id**.

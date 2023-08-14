@@ -5,8 +5,10 @@ import (
 	"encoding/json"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func getConnectionString() string {
@@ -30,13 +32,27 @@ func TestPlugin(t *testing.T) {
 	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
 		t.Fatal(err)
 	}
-	plugin.TestWriterSuiteRunner(t,
-		p,
-		plugin.WriterTestSuiteTests{
-			SafeMigrations: plugin.SafeMigrations{
-				AddColumn:    true,
-				RemoveColumn: true,
-			},
+	// We have to skip some data types each time because a single MySQL table cannot hold all the data types.
+	for _, skipOpts := range []schema.TestSourceOptions{
+		{
+			SkipMaps: true,
 		},
-	)
+		{
+			SkipLists: true,
+		},
+	} {
+		plugin.TestWriterSuiteRunner(t,
+			p,
+			plugin.WriterTestSuiteTests{
+				SafeMigrations: plugin.SafeMigrations{
+					AddColumn:    true,
+					RemoveColumn: true,
+				},
+			},
+			plugin.WithTestDataOptions(skipOpts),
+		)
+		// This is necessary because tables are named based on the current time
+		// As we iterate through the tests, if we don't sleep here then tables can be created with the same name
+		time.Sleep(1 * time.Second)
+	}
 }

@@ -1,5 +1,9 @@
 name: Source Plugin Firestore Workflow
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     paths:
@@ -17,13 +21,13 @@ jobs:
   plugins-source-firestore:
     timeout-minutes: 30
     name: "plugins/source/firestore"
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     defaults:
       run:
         working-directory: ./plugins/source/firestore
     services:
       firestore:
-        image: mtlynch/firestore-emulator@sha256:327f3c8cdc7d3a474e24ba183c14113e1d6883b30d0dee40da0708e532f5c3c3
+        image: mtlynch/firestore-emulator@sha256:74dc4be151bd8849117f00dfc0ff329be1919527261916893ef199a04a044137
         env:
           FIRESTORE_PROJECT_ID: cqtest-project
         ports:
@@ -54,7 +58,7 @@ jobs:
           FIRESTORE_EMULATOR_HOST: localhost:8080
   validate-release:
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     env:
       CGO_ENABLED: 0
     steps:
@@ -67,9 +71,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/source/firestore/go.sum') }}
+          key: ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/source/firestore/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.5-release-cache-plugins-source-firestore
+            ${{ runner.os }}-go-1.20.5-release-cache-plugins-source-firestore
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3

@@ -16,9 +16,9 @@ func (c *Client) RetryOnError(ctx context.Context, tableName string, f func() er
 	retries := 0
 	for err := f(); err != nil; err = f() {
 		if isRetryable(err) {
-			retryAfter := time.Duration(rand.Float64() * float64(c.backoff))
+			retryAfter := time.Duration(rand.Float64() * float64(c.Backoff))
 			retries++
-			c.logger.Info().Str("table", tableName).Msgf("Got retryable error (%v), retrying in %.2fs (%d/%d)", err, retryAfter.Seconds(), retries, c.maxRetries)
+			c.Logger.Info().Str("table", tableName).Msgf("Got retryable error (%v), retrying in %.2fs (%d/%d)", err, retryAfter.Seconds(), retries, c.MaxRetries)
 			select {
 			case <-ctx.Done():
 				return ctx.Err()

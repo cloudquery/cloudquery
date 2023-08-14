@@ -53,8 +53,9 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	if options.BackendOptions == nil {
 		c.logger.Info().Msg("No backend options provided, using no state backend")
 		stateClient = &state.NoOpClient{}
+		c.backendConn = nil
 	} else {
-		conn, err := grpc.DialContext(ctx, options.BackendOptions.Connection,
+		c.backendConn, err = grpc.DialContext(ctx, options.BackendOptions.Connection,
 			grpc.WithTransportCredentials(insecure.NewCredentials()),
 			grpc.WithDefaultCallOptions(
 				grpc.MaxCallRecvMsgSize(maxMsgSize),
@@ -64,7 +65,7 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 		if err != nil {
 			return fmt.Errorf("failed to dial grpc source plugin at %s: %w", options.BackendOptions.Connection, err)
 		}
-		stateClient, err = state.NewClient(ctx, conn, options.BackendOptions.TableName)
+		stateClient, err = state.NewClient(ctx, c.backendConn, options.BackendOptions.TableName)
 		if err != nil {
 			return fmt.Errorf("failed to create state client: %w", err)
 		}
@@ -79,7 +80,7 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	return c.scheduler.Sync(ctx, schedulerClient, tt, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
 }
 
-func (c *Client) Tables(ctx context.Context, options plugin.TableOptions) (schema.Tables, error) {
+func (c *Client) Tables(_ context.Context, options plugin.TableOptions) (schema.Tables, error) {
 	tt, err := c.tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
 	if err != nil {
 		return nil, err
@@ -87,8 +88,11 @@ func (c *Client) Tables(ctx context.Context, options plugin.TableOptions) (schem
 	return tt, nil
 }
 
-func (c *Client) Close(ctx context.Context) error {
-	return c.backendConn.Close()
+func (c *Client) Close(_ context.Context) error {
+	if c.backendConn != nil {
+		return c.backendConn.Close()
+	}
+	return nil
 }
 
 func getTables() []*schema.Table {
@@ -106,7 +110,7 @@ func getTables() []*schema.Table {
 	return tables
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
+func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	if opts.NoConnection {
 		return &Client{
 			logger: logger,

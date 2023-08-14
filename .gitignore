@@ -30,3 +30,5 @@ cli/cli
 __tables.json
 __debug_bin
 .vercel
+venv
+__pycache__

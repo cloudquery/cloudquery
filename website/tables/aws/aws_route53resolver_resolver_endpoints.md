@@ -10,8 +10,6 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -25,6 +23,8 @@ The primary key for this table is **arn**.
 |ip_address_count|`int64`|
 |modification_time|`utf8`|
 |name|`utf8`|
+|outpost_arn|`utf8`|
+|preferred_instance_type|`utf8`|
 |resolver_endpoint_type|`utf8`|
 |security_group_ids|`list<item: utf8, nullable>`|
 |status|`utf8`|

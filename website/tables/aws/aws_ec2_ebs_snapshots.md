@@ -15,8 +15,6 @@ The following tables depend on aws_ec2_ebs_snapshots:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -33,6 +31,7 @@ The following tables depend on aws_ec2_ebs_snapshots:
 |progress|`utf8`|
 |restore_expiry_time|`timestamp[us, tz=UTC]`|
 |snapshot_id|`utf8`|
+|sse_type|`utf8`|
 |start_time|`timestamp[us, tz=UTC]`|
 |state|`utf8`|
 |state_message|`utf8`|

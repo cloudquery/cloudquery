@@ -7,7 +7,8 @@ import (
 	"time"
 
 	"cloud.google.com/go/bigquery"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/api/googleapi"
 )
@@ -18,12 +19,17 @@ const (
 	maxTableChecks       = 20
 )
 
-// Migrate tables. It is the responsibility of the CLI of the client to lock before running migrations.
-func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
+func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
 	eg, gctx := errgroup.WithContext(ctx)
 	eg.SetLimit(concurrentMigrations)
-	for _, table := range tables {
-		table := table
+	for _, msg := range msgs {
+		if len(msg.Table.PrimaryKeys()) > 0 {
+			return fmt.Errorf("primary keys are not supported by the BigQuery plugin (if you are trying to use it as a state backend, this is not currently supported)")
+		}
+	}
+
+	for _, msg := range msgs {
+		table := msg.Table
 		eg.Go(func() error {
 			c.logger.Debug().Str("table", table.Name).Msg("Migrating table")
 			tableExists, err := c.doesTableExist(gctx, c.client, table.Name)
@@ -54,9 +60,10 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	}
 	return eg.Wait()
 }
+
 func (c *Client) doesTableExist(ctx context.Context, client *bigquery.Client, table string) (bool, error) {
-	c.logger.Debug().Str("dataset", c.pluginSpec.DatasetID).Str("table", table).Msg("Checking existence")
-	tableRef := client.Dataset(c.pluginSpec.DatasetID).Table(table)
+	c.logger.Debug().Str("dataset", c.spec.DatasetID).Str("table", table).Msg("Checking existence")
+	tableRef := client.Dataset(c.spec.DatasetID).Table(table)
 	md, err := tableRef.Metadata(ctx)
 	if err != nil {
 		if e, ok := err.(*googleapi.Error); ok {
@@ -64,7 +71,7 @@ func (c *Client) doesTableExist(ctx context.Context, client *bigquery.Client, ta
 				return false, nil
 			}
 		}
-		c.logger.Error().Str("dataset", c.pluginSpec.DatasetID).Str("table", table).Err(err).Msg("Got unexpected error while checking table metadata")
+		c.logger.Error().Str("dataset", c.spec.DatasetID).Str("table", table).Err(err).Msg("Got unexpected error while checking table metadata")
 		return false, err
 	}
 
@@ -100,7 +107,7 @@ func (c *Client) waitForSchemaToMatch(ctx context.Context, client *bigquery.Clie
 		// require this check to pass 3 times in a row to mitigate getting different responses from different BQ servers
 		tries := 3
 		for j := 0; j < tries; j++ {
-			md, err := client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Metadata(ctx)
+			md, err := client.Dataset(c.spec.DatasetID).Table(table.Name).Metadata(ctx)
 			if err != nil {
 				return err
 			}
@@ -120,7 +127,7 @@ func (c *Client) waitForSchemaToMatch(ctx context.Context, client *bigquery.Clie
 }
 
 func (c *Client) autoMigrateTable(ctx context.Context, client *bigquery.Client, table *schema.Table) error {
-	bqTable := client.Dataset(c.pluginSpec.DatasetID).Table(table.Name)
+	bqTable := client.Dataset(c.spec.DatasetID).Table(table.Name)
 	md, err := bqTable.Metadata(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to get metadata for table %q with error: %w", table.Name, err)
@@ -203,11 +210,11 @@ func (c *Client) createTable(ctx context.Context, client *bigquery.Client, table
 		Schema:           bqSchema,
 		TimePartitioning: c.timePartitioning(),
 	}
-	return client.Dataset(c.pluginSpec.DatasetID).Table(table.Name).Create(ctx, &tm)
+	return client.Dataset(c.spec.DatasetID).Table(table.Name).Create(ctx, &tm)
 }
 
 func (c *Client) timePartitioning() *bigquery.TimePartitioning {
-	switch c.pluginSpec.TimePartitioning {
+	switch c.spec.TimePartitioning {
 	case TimePartitioningOptionHour:
 		return &bigquery.TimePartitioning{
 			Type:  "HOUR",

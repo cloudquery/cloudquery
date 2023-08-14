@@ -2,13 +2,12 @@
   extends: [
     "github>cloudquery/.github//.github/renovate-go-default.json5",
     "github>cloudquery/.github//.github/renovate-node-default.json5",
+    "github>cloudquery/.github//.github/renovate-python-default.json5",
   ],
   regexManagers: [
-     {
+    {
       fileMatch: ["Dockerfile$"],
-      matchStrings: [
-        "GORELEASER_VERSION=(?<currentValue>.*)-pro$",
-      ],
+      matchStrings: ["GORELEASER_VERSION=(?<currentValue>.*)-pro$"],
       extractVersionTemplate: "^(?<version>.+)-pro$",
       depNameTemplate: "goreleaser/goreleaser-pro",
       datasourceTemplate: "github-releases",
@@ -20,9 +19,17 @@
       matchPackageNames: ["github.com/jackc/pgx/v4"],
       allowedVersions: "<5",
     },
+    {
+      matchPackageNames: ["github.com/cloudquery/plugin-pb-go"],
+      matchFileNames: ["plugins/**"],
+      enabled: false,
+    },
   ],
   ignorePaths: [],
   gomod: {
     fileMatch: ["go\\.mod\\.tpl$"],
+  },
+  "github-actions": {
+    fileMatch: ["\\.yaml\\.tpl$"],
   },
 }

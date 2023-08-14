@@ -22,6 +22,7 @@ The following tables depend on gcp_batch_task_groups:
 |task_spec|`json`|
 |task_count|`int64`|
 |parallelism|`int64`|
+|scheduling_policy|`utf8`|
 |task_environments|`json`|
 |task_count_per_node|`int64`|
 |require_hosts_file|`bool`|

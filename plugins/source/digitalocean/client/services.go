@@ -12,6 +12,17 @@ type AccountService interface {
 	Get(context.Context) (*godo.Account, *godo.Response, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/apps_service.go . AppsService
+type AppsService interface {
+	List(ctx context.Context, opts *godo.ListOptions) ([]*godo.App, *godo.Response, error)
+	// ListDeployments(ctx context.Context, appID string, opts *godo.ListOptions) ([]*godo.Deployment, *godo.Response, error)
+	// ListRegions(ctx context.Context) ([]*godo.AppRegion, *godo.Response, error)
+	// ListTiers(ctx context.Context) ([]*godo.AppTier, *godo.Response, error)
+	// ListInstanceSizes(ctx context.Context) ([]*godo.AppInstanceSize, *godo.Response, error)
+	ListAlerts(ctx context.Context, appID string) ([]*godo.AppAlert, *godo.Response, error)
+	// ListBuildpacks(ctx context.Context) ([]*godo.Buildpack, *godo.Response, error)
+}
+
 //go:generate mockgen -package=mocks -destination=./mocks/cdn_service.go . CdnService
 type CdnService interface {
 	List(context.Context, *godo.ListOptions) ([]godo.CDN, *godo.Response, error)
@@ -75,6 +86,11 @@ type ImagesService interface {
 //go:generate mockgen -package=mocks -destination=./mocks/keys_service.go . KeysService
 type KeysService interface {
 	List(context.Context, *godo.ListOptions) ([]godo.Key, *godo.Response, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/kubernetes_service.go . KubernetesService
+type KubernetesService interface {
+	List(context.Context, *godo.ListOptions) ([]*godo.KubernetesCluster, *godo.Response, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/load_balancers_service.go . LoadBalancersService

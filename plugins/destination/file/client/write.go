@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/filetypes/v4/types"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/google/uuid"
@@ -23,9 +22,7 @@ func (c *Client) WriteTable(_ context.Context, msgs <-chan *message.WriteInsert)
 	for msg := range msgs {
 		if f == nil {
 			table := msg.GetTable()
-
-			p := replacePathVariables(c.spec.Path, table.Name, c.spec.Format, uuid.NewString(), time.Now().UTC())
-
+			p := c.replacePathVariables(table.Name, uuid.NewString(), time.Now().UTC())
 			if err := os.MkdirAll(filepath.Dir(p), 0755); err != nil {
 				return fmt.Errorf("failed to create directory: %w", err)
 			}
@@ -57,9 +54,12 @@ func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) er
 	return c.writer.Write(ctx, msgs)
 }
 
-func replacePathVariables(specPath, table string, format filetypes.FormatType, fileIdentifier string, t time.Time) string {
-	name := strings.ReplaceAll(specPath, PathVarTable, table)
-	name = strings.ReplaceAll(name, PathVarFormat, string(format))
+func (c *Client) replacePathVariables(table string, fileIdentifier string, t time.Time) string {
+	name := strings.ReplaceAll(c.spec.Path, PathVarTable, table)
+	if strings.Contains(name, PathVarFormat) {
+		e := string(c.spec.Format) + c.spec.Compression.Extension()
+		name = strings.ReplaceAll(name, PathVarFormat, e)
+	}
 	name = strings.ReplaceAll(name, PathVarUUID, fileIdentifier)
 	name = strings.ReplaceAll(name, YearVar, t.Format("2006"))
 	name = strings.ReplaceAll(name, MonthVar, t.Format("01"))

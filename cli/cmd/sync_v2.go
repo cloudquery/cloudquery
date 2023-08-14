@@ -153,6 +153,17 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, d
 		}
 	}
 	for i := range destinationsClients {
+		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
+			_, err := destinationsPbClients[i].DeleteStale(ctx, &destination.DeleteStale_Request{
+				Tables:    tablesRes.Tables,
+				Source:    sourceSpec.Name,
+				Timestamp: timestamppb.New(syncTime),
+			})
+			if err != nil {
+				return err
+			}
+		}
+
 		if _, err := writeClients[i].CloseAndRecv(); err != nil {
 			return err
 		}

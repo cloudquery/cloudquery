@@ -16,15 +16,17 @@ import Authentication from "./_authentication.mdx";
 
 The Facebook Marketing source plugin for CloudQuery extracts information from the [Facebook marketing API](https://developers.facebook.com/docs/marketing-api/reference/v16.0).
 
-
 ## Configuration
 
 This following configuration example connects a Facebook Marketing source to a Postgres destination.
 
 <Configuration/>
 
-
 ## Authentication
 
 <Authentication/>
 
+## Facebook Marketing Spec
+
+- `concurrency` (int, optional, default: 10000):
+  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.

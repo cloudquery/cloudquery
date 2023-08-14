@@ -45,52 +45,42 @@ type testSpec struct {
 	baseDir  string
 }
 
-func testSpecsWithoutFormat(t *testing.T) []testSpec {
+func testSpecsWithoutFormat() []testSpec {
 	var (
 		ret  []testSpec
-		bd   string // temp variable to hold tempdir/basedir dir for each test case
 		zero int64
 	)
 
-	bd = t.TempDir()
 	ret = append(ret, testSpec{
 		testName: "Directory",
-		baseDir:  bd,
 		Spec: Spec{
-			Directory:      bd,
 			BatchSize:      &zero,
 			BatchSizeBytes: &zero,
 		},
 	})
 
-	bd = t.TempDir()
 	ret = append(ret, testSpec{
 		testName: "DirectoryWithTable",
-		baseDir:  bd,
 		Spec: Spec{
-			Directory:      filepath.Join(bd, "{{TABLE}}", "data.{{FORMAT}}"),
+			Directory:      filepath.Join("{{TABLE}}", "data.{{FORMAT}}"),
 			BatchSize:      &zero,
 			BatchSizeBytes: &zero,
 		},
 	})
 
-	bd = t.TempDir()
 	ret = append(ret, testSpec{
 		testName: "Path",
-		baseDir:  bd,
 		Spec: Spec{
-			Path:           filepath.Join(bd, "{{TABLE}}.{{FORMAT}}"),
+			Path:           filepath.Join("{{TABLE}}.{{FORMAT}}"),
 			BatchSize:      &zero,
 			BatchSizeBytes: &zero,
 		},
 	})
 
-	bd = t.TempDir()
 	ret = append(ret, testSpec{
 		testName: "PathWithTable",
-		baseDir:  bd,
 		Spec: Spec{
-			Path:           filepath.Join(bd, "{{TABLE}}", "data.{{FORMAT}}"),
+			Path:           filepath.Join("{{TABLE}}", "data.{{FORMAT}}"),
 			BatchSize:      &zero,
 			BatchSizeBytes: &zero,
 		},
@@ -102,7 +92,7 @@ func testSpecsWithoutFormat(t *testing.T) []testSpec {
 func testSpecs(t *testing.T) []testSpec {
 	var ret []testSpec
 	formats := testFormats()
-	for _, s := range testSpecsWithoutFormat(t) {
+	for _, s := range testSpecsWithoutFormat() {
 		s := s
 		s.NoRotate = true
 		for i := range formats {
@@ -110,6 +100,24 @@ func testSpecs(t *testing.T) []testSpec {
 			s2.testName += ":" + string(formats[i].Format)
 			s2.FileSpec = &formats[i]
 			ret = append(ret, s2)
+
+			if formats[i].Format != filetypes.FormatTypeParquet {
+				s2.testName += ":gzip"
+				fs := *s2.FileSpec
+				fs.Compression = filetypes.CompressionTypeGZip
+				s2.FileSpec = &fs
+				ret = append(ret, s2)
+			}
+		}
+	}
+
+	for i := range ret {
+		bd := t.TempDir()
+		ret[i].baseDir = bd
+		if ret[i].Spec.Path == "" {
+			ret[i].Spec.Directory = filepath.Join(bd, ret[i].Spec.Directory)
+		} else {
+			ret[i].Spec.Path = filepath.Join(bd, ret[i].Spec.Path)
 		}
 	}
 
@@ -120,7 +128,7 @@ func TestPlugin(t *testing.T) {
 	for _, ts := range testSpecs(t) {
 		ts := ts
 		t.Run(ts.testName, func(t *testing.T) {
-			if ts.Spec.Format == filetypes.FormatTypeParquet {
+			if ts.Spec.Format == filetypes.FormatTypeParquet || ts.Spec.Compression != filetypes.CompressionTypeNone {
 				testPluginCustom(t, &ts.Spec)
 			} else {
 				testPlugin(t, &ts.Spec)

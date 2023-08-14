@@ -2,5 +2,6 @@
   "plugins": "Plugins",
   "syncs": "Syncs",
   "configuration": "Configuration",
-  "policies": "Policies"
+  "policies": "Policies",
+  "dashboards": "Dashboards"
 }

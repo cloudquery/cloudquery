@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/acm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
@@ -24,9 +24,9 @@ func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) client.Services
 		&acm.ListCertificatesInput{
 			CertificateStatuses: types.CertificateStatus("").Values(),
 			Includes: &types.Filters{
-				ExtendedKeyUsage: []types.ExtendedKeyUsageName{types.ExtendedKeyUsageNameAny},
+				ExtendedKeyUsage: types.ExtendedKeyUsageName("").Values(),
 				KeyTypes:         types.KeyAlgorithm("").Values(),
-				KeyUsage:         []types.KeyUsageName{types.KeyUsageNameAny},
+				KeyUsage:         allowedKeyUsages(),
 			},
 		},
 		gomock.Any(),

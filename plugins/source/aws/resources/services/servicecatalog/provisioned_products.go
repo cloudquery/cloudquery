@@ -3,14 +3,14 @@ package servicecatalog
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func ProvisionedProducts() *schema.Table {
@@ -23,6 +23,7 @@ func ProvisionedProducts() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "servicecatalog"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
 				Name:       "arn",
 				Type:       arrow.BinaryTypes.String,
@@ -32,8 +33,12 @@ func ProvisionedProducts() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveProvisionedProductTags,
+				Resolver: client.ResolveTags,
 			},
+		},
+		Relations: schema.Tables{
+			provisioningArtifact(),
+			launchPaths(),
 		},
 	}
 }
@@ -55,9 +60,4 @@ func fetchServicecatalogProvisionedProducts(ctx context.Context, meta schema.Cli
 	}
 
 	return nil
-}
-
-func resolveProvisionedProductTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p := resource.Item.(types.ProvisionedProductAttribute)
-	return resource.Set(c.Name, client.TagsToMap(p.Tags))
 }

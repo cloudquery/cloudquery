@@ -6,12 +6,16 @@ https://learn.microsoft.com/en-us/rest/api/dns/privatedns/private-zones/list?tab
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on azure_privatedns_private_zones:
+  - [azure_privatedns_private_zone_record_sets](azure_privatedns_private_zone_record_sets)
+  - [azure_privatedns_private_zone_virtual_network_links](azure_privatedns_private_zone_virtual_network_links)
+
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |subscription_id|`utf8`|

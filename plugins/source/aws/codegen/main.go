@@ -13,11 +13,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/amplify"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
+	"github.com/aws/aws-sdk-go-v2/service/appconfig"
+	"github.com/aws/aws-sdk-go-v2/service/appflow"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
+	"github.com/aws/aws-sdk-go-v2/service/appmesh"
 	"github.com/aws/aws-sdk-go-v2/service/apprunner"
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appsync"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
+	"github.com/aws/aws-sdk-go-v2/service/auditmanager"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/autoscalingplans"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
@@ -78,6 +82,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/mwaa"
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/networkfirewall"
+	"github.com/aws/aws-sdk-go-v2/service/networkmanager"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/aws/aws-sdk-go-v2/service/quicksight"
@@ -88,6 +93,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroups"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
+	"github.com/aws/aws-sdk-go-v2/service/route53recoverycontrolconfig"
+	"github.com/aws/aws-sdk-go-v2/service/route53recoveryreadiness"
 	"github.com/aws/aws-sdk-go-v2/service/route53resolver"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
@@ -131,11 +138,15 @@ var clients = []any{
 	&amplify.Client{},
 	&apigateway.Client{},
 	&apigatewayv2.Client{},
+	&appconfig.Client{},
+	&appflow.Client{},
 	&applicationautoscaling.Client{},
 	&apprunner.Client{},
+	&appmesh.Client{},
 	&appstream.Client{},
 	&appsync.Client{},
 	&athena.Client{},
+	&auditmanager.Client{},
 	&autoscaling.Client{},
 	&autoscalingplans.Client{},
 	&backup.Client{},
@@ -157,8 +168,8 @@ var clients = []any{
 	&costexplorer.Client{},
 	&databasemigrationservice.Client{},
 	&dax.Client{},
-	&directconnect.Client{},
 	&detective.Client{},
+	&directconnect.Client{},
 	&docdb.Client{},
 	&dynamodb.Client{},
 	&dynamodbstreams.Client{},
@@ -196,6 +207,7 @@ var clients = []any{
 	&mwaa.Client{},
 	&neptune.Client{},
 	&networkfirewall.Client{},
+	&networkmanager.Client{},
 	&organizations.Client{},
 	&qldb.Client{},
 	&quicksight.Client{},
@@ -206,7 +218,10 @@ var clients = []any{
 	&resourcegroups.Client{},
 	&route53.Client{},
 	&route53domains.Client{},
+	&route53recoveryreadiness.Client{},
 	&route53resolver.Client{},
+	&route53recoverycontrolconfig.Client{},
+	&route53recoveryreadiness.Client{},
 	&s3.Client{},
 	&s3control.Client{},
 	&sagemaker.Client{},

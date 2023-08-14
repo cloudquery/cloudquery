@@ -10,8 +10,6 @@ The primary key for this table is **account_id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id (PK)|`utf8`|
@@ -137,9 +135,7 @@ SELECT
   account_id,
   account_id,
   CASE
-  WHEN (password_reuse_prevention IS NULL OR password_reuse_prevention > 24)
-  OR policy_exists = false
-  THEN 'fail'
+  WHEN password_reuse_prevention IS DISTINCT FROM 24 THEN 'fail'
   ELSE 'pass'
   END
 FROM

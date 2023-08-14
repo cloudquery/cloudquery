@@ -5,8 +5,8 @@ import (
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 )
 
@@ -43,12 +43,10 @@ func fetchPendingProvisions(ctx context.Context, meta schema.ClientMeta, _ *sche
 			return err
 		}
 
-		for _, prov := range result {
-			res <- prov
-		}
 		if len(result) == 0 {
 			break
 		}
+		res <- result
 		opts.Page++
 	}
 

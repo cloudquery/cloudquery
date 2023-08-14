@@ -5,6 +5,121 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v9.2.0...plugins-source-azure-v9.3.0) (2023-08-09)
+
+
+### Features
+
+* Adding support for OIDC Token in Azure plugin ([#12736](https://github.com/cloudquery/cloudquery/issues/12736)) ([4caae63](https://github.com/cloudquery/cloudquery/commit/4caae63a01586d533721a38864b1100feddc4918))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.4.0 ([#12850](https://github.com/cloudquery/cloudquery/issues/12850)) ([0861200](https://github.com/cloudquery/cloudquery/commit/086120054b45213947e95be954ba6164b9cf6587))
+
+## [9.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v9.1.0...plugins-source-azure-v9.2.0) (2023-08-08)
+
+
+### Features
+
+* **resources:** Add Role Management Policy Assignments ([#12557](https://github.com/cloudquery/cloudquery/issues/12557)) ([124d7f1](https://github.com/cloudquery/cloudquery/commit/124d7f10d7988aa4f7e1ad1167dd4cb7b51bc22c))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v13 digest to 112f949 ([#12659](https://github.com/cloudquery/cloudquery/issues/12659)) ([48d73a9](https://github.com/cloudquery/cloudquery/commit/48d73a93e678994f43171c363f5a75c29547b0b9))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 3452eb0 ([#12595](https://github.com/cloudquery/cloudquery/issues/12595)) ([c1c0949](https://github.com/cloudquery/cloudquery/commit/c1c09490b17f2e64435e05d745890cdb8b22310d))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to f53878d ([#12778](https://github.com/cloudquery/cloudquery/issues/12778)) ([6f5d58e](https://github.com/cloudquery/cloudquery/commit/6f5d58e3b84d3c76b1d1a3d6c5a488f77995a057))
+* **deps:** Update github.com/cockroachdb/cockroachdb-parser digest to 302c9ad ([#12664](https://github.com/cloudquery/cloudquery/issues/12664)) ([924509c](https://github.com/cloudquery/cloudquery/commit/924509c409fcf008c93f67fc6a0c5dcf4b2bddc5))
+* **deps:** Update github.com/petermattis/goid digest to 80aa455 ([#12669](https://github.com/cloudquery/cloudquery/issues/12669)) ([a140396](https://github.com/cloudquery/cloudquery/commit/a140396153d62d3e68646d58a7749426aa2cc9fe))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.4 ([#12718](https://github.com/cloudquery/cloudquery/issues/12718)) ([f059a15](https://github.com/cloudquery/cloudquery/commit/f059a159a2ee406ab2b0a33792c244cd217025a6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.5 ([#12731](https://github.com/cloudquery/cloudquery/issues/12731)) ([d267239](https://github.com/cloudquery/cloudquery/commit/d267239aa3aca5f94bd36a8db1ec0d9f7dc0865f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.6 ([#12799](https://github.com/cloudquery/cloudquery/issues/12799)) ([fb0e0d7](https://github.com/cloudquery/cloudquery/commit/fb0e0d75ab010f421c834e58d93676de76fcb423))
+
+## [9.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v9.0.3...plugins-source-azure-v9.1.0) (2023-07-25)
+
+
+### This Release has the Following Changes to Tables
+- Table `azure_mysql_server_databases` was added
+- Table `azure_network_private_endpoints` was added
+- Table `azure_privatedns_private_zone_record_sets` was added
+- Table `azure_privatedns_private_zone_virtual_network_links` was added
+- Table `azure_trafficmanager_profiles` was added
+
+### Features
+
+* **azure:** Add azure private endpoints ([#12473](https://github.com/cloudquery/cloudquery/issues/12473)) ([24d111c](https://github.com/cloudquery/cloudquery/commit/24d111ced3f5ca5eae8aae189e199aae5de02c7d))
+* **azure:** Add azure trafficmanager profiles ([#12458](https://github.com/cloudquery/cloudquery/issues/12458)) ([347b5c5](https://github.com/cloudquery/cloudquery/commit/347b5c51ea888ad27dcc4f10061520558d8fbaa1))
+* **azure:** Add private dns record sets and vnet links ([#12417](https://github.com/cloudquery/cloudquery/issues/12417)) ([2f337b1](https://github.com/cloudquery/cloudquery/commit/2f337b14d450385718afc487457ccaae55538bed))
+* **resources:** Add MySQL Server Databases ([#12410](https://github.com/cloudquery/cloudquery/issues/12410)) ([553b11d](https://github.com/cloudquery/cloudquery/commit/553b11d4f28b6489c6cedba3b651f34d9ba53434))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 10df4b9 ([#12443](https://github.com/cloudquery/cloudquery/issues/12443)) ([e385283](https://github.com/cloudquery/cloudquery/commit/e38528309f862f37bc7e278f9b69cf92d5aa5bd5))
+
+## [9.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v9.0.2...plugins-source-azure-v9.0.3) (2023-07-20)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.3 ([#12307](https://github.com/cloudquery/cloudquery/issues/12307)) ([8f14e4d](https://github.com/cloudquery/cloudquery/commit/8f14e4de7bf4d4c833f501135ea0610916a42f8b))
+* **sync:** Pass `DeterministicCQID` option to scheduler ([#12424](https://github.com/cloudquery/cloudquery/issues/12424)) ([eaac2e6](https://github.com/cloudquery/cloudquery/commit/eaac2e684bd6e9744a38be8eef3a1f5e77d163f5))
+
+## [9.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v9.0.1...plugins-source-azure-v9.0.2) (2023-07-18)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 8e2219b ([#12220](https://github.com/cloudquery/cloudquery/issues/12220)) ([24e8fb5](https://github.com/cloudquery/cloudquery/commit/24e8fb588740896fe11a660e8b80231e741b753c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.0 ([#12256](https://github.com/cloudquery/cloudquery/issues/12256)) ([eaec331](https://github.com/cloudquery/cloudquery/commit/eaec33165345ad51fdb6ddbffbf8a1199ebd6384))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.1 ([#12272](https://github.com/cloudquery/cloudquery/issues/12272)) ([557ca69](https://github.com/cloudquery/cloudquery/commit/557ca69a7dee9dabb80e6afb6f41f205fd8a80d8))
+
+## [9.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v9.0.0...plugins-source-azure-v9.0.1) (2023-07-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.7.0 ([#12166](https://github.com/cloudquery/cloudquery/issues/12166)) ([94390dd](https://github.com/cloudquery/cloudquery/commit/94390dde19d0c37fee9d035219d62f6ae7edb127))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.1.0 ([#12174](https://github.com/cloudquery/cloudquery/issues/12174)) ([80f0289](https://github.com/cloudquery/cloudquery/commit/80f02892a4cf876c4bf4dd4fd9367afb3770ad26))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.1.1 ([#12185](https://github.com/cloudquery/cloudquery/issues/12185)) ([cfaff16](https://github.com/cloudquery/cloudquery/commit/cfaff16d89800235b6e3015eeb6957d5783d1393))
+* **deps:** Upgrade source plugins to SDK v4.0.0 release ([#12135](https://github.com/cloudquery/cloudquery/issues/12135)) ([c20a111](https://github.com/cloudquery/cloudquery/commit/c20a111d591101fb1bbc42292accc953af38e8a6))
+
+## [9.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v8.3.0...plugins-source-azure-v9.0.0) (2023-07-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* Upgrades the Terraform source plugin to use plugin-sdk v4.
+
+### Features
+
+* Upgrades the Terraform source plugin to use plugin-sdk v4. ([9d4a538](https://github.com/cloudquery/cloudquery/commit/9d4a53834089cacf28a01cc25cbab934ab279c80))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v13 digest to 5a06b2e ([#11857](https://github.com/cloudquery/cloudquery/issues/11857)) ([43c2f5f](https://github.com/cloudquery/cloudquery/commit/43c2f5f3a893e5286f67c4943a9d1bc2736e2aeb))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 0656028 ([#11739](https://github.com/cloudquery/cloudquery/issues/11739)) ([7a6ad49](https://github.com/cloudquery/cloudquery/commit/7a6ad49e8402d51e914d6fdc444956c89db91ad3))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 0a52533 ([#12091](https://github.com/cloudquery/cloudquery/issues/12091)) ([927cefa](https://github.com/cloudquery/cloudquery/commit/927cefa943ec3969a2ec39b628bc1eba545a2108))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 43638cb ([#11672](https://github.com/cloudquery/cloudquery/issues/11672)) ([3c60bbb](https://github.com/cloudquery/cloudquery/commit/3c60bbbb0233b17f934583766938780745145864))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 8366a22 ([#11717](https://github.com/cloudquery/cloudquery/issues/11717)) ([8eeff5b](https://github.com/cloudquery/cloudquery/commit/8eeff5b17486d72845f830b99983f950fee7f5a0))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 95d3199 ([#11708](https://github.com/cloudquery/cloudquery/issues/11708)) ([03f214f](https://github.com/cloudquery/cloudquery/commit/03f214f3dfd719b74ce9eb698ba255a8cf7528c7))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to a2a76eb ([#12104](https://github.com/cloudquery/cloudquery/issues/12104)) ([311f474](https://github.com/cloudquery/cloudquery/commit/311f4749af2491a606f29483190717a5fe238da6))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to df3b664 ([#11882](https://github.com/cloudquery/cloudquery/issues/11882)) ([9635b22](https://github.com/cloudquery/cloudquery/commit/9635b22b10a2cd9ca0f91819cffb7f4ba75dc2d9))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to f060192 ([#11730](https://github.com/cloudquery/cloudquery/issues/11730)) ([c7019c2](https://github.com/cloudquery/cloudquery/commit/c7019c26c311f29b66c90fc5d461a0daf71d191c))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to f0dffc6 ([#11689](https://github.com/cloudquery/cloudquery/issues/11689)) ([18ac0e9](https://github.com/cloudquery/cloudquery/commit/18ac0e9dbef31d06701f1f13d263ad840ac60c5e))
+* **deps:** Update github.com/cockroachdb/logtags digest to 21c5414 ([#11864](https://github.com/cloudquery/cloudquery/issues/11864)) ([da48b1f](https://github.com/cloudquery/cloudquery/commit/da48b1fc86576ea5777505e5bb59ecaf0febf7ca))
+* **deps:** Update github.com/golang/geo digest to 6adc566 ([#11866](https://github.com/cloudquery/cloudquery/issues/11866)) ([edb7ed8](https://github.com/cloudquery/cloudquery/commit/edb7ed83896842e6f174079ba020f18d713f6f91))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.1.0 ([#11665](https://github.com/cloudquery/cloudquery/issues/11665)) ([d8947c9](https://github.com/cloudquery/cloudquery/commit/d8947c9efa6ab8bf3952ad9d929e8ed81f2dea55))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.2.0 ([#11720](https://github.com/cloudquery/cloudquery/issues/11720)) ([7ef521d](https://github.com/cloudquery/cloudquery/commit/7ef521db1423c6f0de197b08c73adf22c896f999))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.2.1 ([#11722](https://github.com/cloudquery/cloudquery/issues/11722)) ([309be72](https://github.com/cloudquery/cloudquery/commit/309be7276d7de157013c281b6fb3934513898b3f))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.3.3 ([#11726](https://github.com/cloudquery/cloudquery/issues/11726)) ([f0ca611](https://github.com/cloudquery/cloudquery/commit/f0ca61195014bde707761a15efa27a92955b59db))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.3.4 ([#11753](https://github.com/cloudquery/cloudquery/issues/11753)) ([cd4fe1c](https://github.com/cloudquery/cloudquery/commit/cd4fe1c54f85f8511252bebd5671361618ddb0d3))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.5.0 ([#11850](https://github.com/cloudquery/cloudquery/issues/11850)) ([3255857](https://github.com/cloudquery/cloudquery/commit/3255857938bf16862d52491f5c2a8a0fa53faef0))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.6.0 ([#11916](https://github.com/cloudquery/cloudquery/issues/11916)) ([421e752](https://github.com/cloudquery/cloudquery/commit/421e7529360965175c8d156ff006d2b703ee9da2))
+* **postgresql:** Rerun release please ([#12002](https://github.com/cloudquery/cloudquery/issues/12002)) ([9d12843](https://github.com/cloudquery/cloudquery/commit/9d12843462d1019d26bc239f8f928bf5f62940cf))
+
 ## [8.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v8.2.0...plugins-source-azure-v8.3.0) (2023-06-20)
 
 

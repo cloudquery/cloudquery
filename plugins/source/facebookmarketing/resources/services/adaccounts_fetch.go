@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/facebookmarketing/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func fetchAdaccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {

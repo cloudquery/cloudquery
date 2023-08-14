@@ -30,6 +30,7 @@ type CloudformationClient interface {
 	ListChangeSets(context.Context, *cloudformation.ListChangeSetsInput, ...func(*cloudformation.Options)) (*cloudformation.ListChangeSetsOutput, error)
 	ListExports(context.Context, *cloudformation.ListExportsInput, ...func(*cloudformation.Options)) (*cloudformation.ListExportsOutput, error)
 	ListImports(context.Context, *cloudformation.ListImportsInput, ...func(*cloudformation.Options)) (*cloudformation.ListImportsOutput, error)
+	ListStackInstanceResourceDrifts(context.Context, *cloudformation.ListStackInstanceResourceDriftsInput, ...func(*cloudformation.Options)) (*cloudformation.ListStackInstanceResourceDriftsOutput, error)
 	ListStackInstances(context.Context, *cloudformation.ListStackInstancesInput, ...func(*cloudformation.Options)) (*cloudformation.ListStackInstancesOutput, error)
 	ListStackResources(context.Context, *cloudformation.ListStackResourcesInput, ...func(*cloudformation.Options)) (*cloudformation.ListStackResourcesOutput, error)
 	ListStackSetOperationResults(context.Context, *cloudformation.ListStackSetOperationResultsInput, ...func(*cloudformation.Options)) (*cloudformation.ListStackSetOperationResultsOutput, error)

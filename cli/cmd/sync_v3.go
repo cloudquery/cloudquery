@@ -21,7 +21,7 @@ import (
 )
 
 // nolint:dupl
-func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, destinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination, uid string, _ bool) error {
+func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, destinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination, uid string, noMigrate bool) error {
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
 	tables := make(map[string]bool, 0)
@@ -77,7 +77,7 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 		if _, err := destinationsPbClients[i].Init(ctx, &plugin.Init_Request{
 			Spec: destSpecBytes,
 		}); err != nil {
-			return err
+			return fmt.Errorf("failed to init destination %v: %w", destSpec.Name, err)
 		}
 	}
 
@@ -193,10 +193,13 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 					},
 				}
 				if err := writeClients[i].Send(wr); err != nil {
-					return fmt.Errorf("failed to send write request (insert): %w", err)
+					return handleSendError(err, writeClients[i], "insert")
 				}
 			}
 		case *plugin.Sync_Response_MigrateTable:
+			if noMigrate {
+				continue
+			}
 			sc, err := plugin.NewSchemaFromBytes(m.MigrateTable.Table)
 			if err != nil {
 				return err
@@ -217,7 +220,7 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 					},
 				}
 				if err := writeClients[i].Send(wr); err != nil {
-					return fmt.Errorf("failed to send write request (migrate): %w", err)
+					return handleSendError(err, writeClients[i], "migrate")
 				}
 			}
 		default:

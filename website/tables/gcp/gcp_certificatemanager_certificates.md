@@ -18,6 +18,7 @@ The composite primary key for this table is (**project_id**, **name**).
 |create_time|`timestamp[us, tz=UTC]`|
 |update_time|`timestamp[us, tz=UTC]`|
 |labels|`json`|
+|type|`json`|
 |san_dnsnames|`list<item: utf8, nullable>`|
 |pem_certificate|`utf8`|
 |expire_time|`timestamp[us, tz=UTC]`|

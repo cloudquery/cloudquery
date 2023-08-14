@@ -10,6 +10,7 @@ import (
 type KafkaClient interface {
 	DescribeCluster(context.Context, *kafka.DescribeClusterInput, ...func(*kafka.Options)) (*kafka.DescribeClusterOutput, error)
 	DescribeClusterOperation(context.Context, *kafka.DescribeClusterOperationInput, ...func(*kafka.Options)) (*kafka.DescribeClusterOperationOutput, error)
+	DescribeClusterOperationV2(context.Context, *kafka.DescribeClusterOperationV2Input, ...func(*kafka.Options)) (*kafka.DescribeClusterOperationV2Output, error)
 	DescribeClusterV2(context.Context, *kafka.DescribeClusterV2Input, ...func(*kafka.Options)) (*kafka.DescribeClusterV2Output, error)
 	DescribeConfiguration(context.Context, *kafka.DescribeConfigurationInput, ...func(*kafka.Options)) (*kafka.DescribeConfigurationOutput, error)
 	DescribeConfigurationRevision(context.Context, *kafka.DescribeConfigurationRevisionInput, ...func(*kafka.Options)) (*kafka.DescribeConfigurationRevisionOutput, error)
@@ -19,6 +20,7 @@ type KafkaClient interface {
 	GetCompatibleKafkaVersions(context.Context, *kafka.GetCompatibleKafkaVersionsInput, ...func(*kafka.Options)) (*kafka.GetCompatibleKafkaVersionsOutput, error)
 	ListClientVpcConnections(context.Context, *kafka.ListClientVpcConnectionsInput, ...func(*kafka.Options)) (*kafka.ListClientVpcConnectionsOutput, error)
 	ListClusterOperations(context.Context, *kafka.ListClusterOperationsInput, ...func(*kafka.Options)) (*kafka.ListClusterOperationsOutput, error)
+	ListClusterOperationsV2(context.Context, *kafka.ListClusterOperationsV2Input, ...func(*kafka.Options)) (*kafka.ListClusterOperationsV2Output, error)
 	ListClusters(context.Context, *kafka.ListClustersInput, ...func(*kafka.Options)) (*kafka.ListClustersOutput, error)
 	ListClustersV2(context.Context, *kafka.ListClustersV2Input, ...func(*kafka.Options)) (*kafka.ListClustersV2Output, error)
 	ListConfigurationRevisions(context.Context, *kafka.ListConfigurationRevisionsInput, ...func(*kafka.Options)) (*kafka.ListConfigurationRevisionsOutput, error)

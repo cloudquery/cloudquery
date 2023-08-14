@@ -47,7 +47,7 @@ kind: source
 spec:
   name: "aws"
   path: "cloudquery/aws"
-  version: "v9.2.0"
+  version: "VERSION_SOURCE_AWS"
   destinations: ["neo4j"]
   tables: ["*"]
   spec:
@@ -65,7 +65,7 @@ Example neo4j.yml destination configuration file:
     name: "neo4j"
     registry: "github"
     path: "cloudquery/neo4j"
-    version: "v1.0.1"
+    version: "VERSION_DESTINATION_NEO4J"
     spec:
       connection_string: "bolt://localhost:7687"
       username: "${USERNAME}"

@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/resiliencehub"
 	"github.com/aws/aws-sdk-go-v2/service/resiliencehub/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func appAssesments() *schema.Table {
@@ -18,7 +18,6 @@ func appAssesments() *schema.Table {
 		Resolver:            fetchAppAssessments,
 		PreResourceResolver: describeAppAssessments,
 		Transform:           transformers.TransformWithStruct(&types.AppAssessment{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "resiliencehub"),
 		Columns:             []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARNTop, arnColumn("AssessmentArn")},
 		Relations: []*schema.Table{
 			appComponentCompliances(),

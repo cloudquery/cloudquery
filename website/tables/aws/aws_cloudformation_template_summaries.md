@@ -14,8 +14,6 @@ This table depends on [aws_cloudformation_stacks](aws_cloudformation_stacks).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -31,3 +29,4 @@ This table depends on [aws_cloudformation_stacks](aws_cloudformation_stacks).
 |resource_identifier_summaries|`json`|
 |resource_types|`list<item: utf8, nullable>`|
 |version|`utf8`|
+|warnings|`json`|

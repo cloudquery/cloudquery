@@ -8,8 +8,15 @@ author: yevgenypats
 ---
 
 import { BlogHeader } from "../../components/BlogHeader"
+import { Callout } from 'nextra-theme-docs';
 
 <BlogHeader/>
+
+{/* <!-- vale off --> */}
+<Callout type="info">
+**Update (July 2023)**: The Tailscale plugin is now a premium plugin. You can find more information about the pricing [here](/docs/plugins/sources/tailscale/overview).
+</Callout>
+{/* <!-- vale on --> */}
 
 ## Introduction
 
@@ -38,8 +45,9 @@ kind: source
 # Common source-plugin configuration
 spec:
   name: tailscale
-  path: cloudquery/tailscale
-  version: "VERSION_SOURCE_TAILSCALE"
+  path: /path/to/downloaded/plugin # Buy from here: https://cloudquery.io/integrations/tailscale
+  registry: local
+  version: "PREMIUM"
   tables: ["tailscale_devices"]
   destinations: ["postgresql"]
   # Tailscale specific configuration

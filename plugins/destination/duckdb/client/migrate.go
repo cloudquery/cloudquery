@@ -137,11 +137,20 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 	}
 
 	normalizedTables := c.normalizeColumns(tables)
-	nonAutoMigratableTables, changes := c.nonAutoMigratableTables(normalizedTables, duckdbTables)
-	for i, nonAutoMigratableTable := range nonAutoMigratableTables {
-		if !msgs[i].MigrateForce {
-			return fmt.Errorf("tables %s with changes %s require force migration. use 'migrate_mode: forced'", nonAutoMigratableTable, changes)
+	normalizedTablesSafeMode := make(schema.Tables, 0, len(normalizedTables))
+	for _, table := range normalizedTables {
+		msg := msgs.GetMessageByTable(table.Name)
+		if msg == nil {
+			continue
 		}
+		if !msg.MigrateForce {
+			normalizedTablesSafeMode = append(normalizedTablesSafeMode, table)
+		}
+	}
+
+	nonAutoMigratableTables, changes := c.nonAutoMigratableTables(normalizedTablesSafeMode, duckdbTables)
+	if len(nonAutoMigratableTables) > 0 {
+		return fmt.Errorf("tables %s with changes %v require migration. Migrate manually or consider using 'migrate_mode: forced'", strings.Join(nonAutoMigratableTables, ","), changes)
 	}
 
 	for _, table := range normalizedTables {

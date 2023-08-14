@@ -1,21 +1,17 @@
 package plugin
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/github/client"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 
 var (
-	Version = "Development"
+	Version = "development"
 )
 
-func Plugin() *source.Plugin {
-	allTables := Tables()
-	// here you can append custom non-generated tables
-	return source.NewPlugin(
+func Plugin() *plugin.Plugin {
+	return plugin.NewPlugin(
 		"github",
 		Version,
-		allTables,
-		client.Configure,
+		Configure,
 	)
 }

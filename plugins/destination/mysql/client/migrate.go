@@ -115,7 +115,7 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 
 	nonAutoMigrtableTables, changes := c.nonAutoMigratableTables(normalizedTablesSafeMode, mysqlTables)
 	if len(nonAutoMigrtableTables) > 0 {
-		return fmt.Errorf("tables %s with changes %v require force migration. use 'migrate_mode: forced'", strings.Join(nonAutoMigrtableTables, ","), changes)
+		return fmt.Errorf("tables %s with changes %v require migration. Migrate manually or consider using 'migrate_mode: forced'", strings.Join(nonAutoMigrtableTables, ","), changes)
 	}
 
 	for _, table := range normalizedTables {

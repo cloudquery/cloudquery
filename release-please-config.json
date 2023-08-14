@@ -97,9 +97,6 @@
     "plugins/source/firestore": {
       "component": "plugins-source-firestore"
     },
-    "plugins/source/gandi": {
-      "component": "plugins-source-gandi"
-    },
     "plugins/source/gcp": {
       "component": "plugins-source-gcp"
     },
@@ -109,17 +106,11 @@
     "plugins/source/gitlab": {
       "component": "plugins-source-gitlab"
     },
-    "plugins/source/googleads": {
-      "component": "plugins-source-googleads"
-    },
     "plugins/source/googleanalytics": {
       "component": "plugins-source-googleanalytics"
     },
     "plugins/source/hackernews": {
       "component": "plugins-source-hackernews"
-    },
-    "plugins/source/heroku": {
-      "component": "plugins-source-heroku"
     },
     "plugins/source/homebrew": {
       "component": "plugins-source-homebrew"
@@ -127,14 +118,11 @@
     "plugins/source/hubspot": {
       "component": "plugins-source-hubspot"
     },
+    "plugins/source/jira": {
+      "component": "plugins-source-jira"
+    },
     "plugins/source/k8s": {
       "component": "plugins-source-k8s"
-    },
-    "plugins/source/launchdarkly": {
-      "component": "plugins-source-launchdarkly"
-    },
-    "plugins/source/mixpanel": {
-      "component": "plugins-source-mixpanel"
     },
     "plugins/source/mysql": {
       "component": "plugins-source-mysql"
@@ -151,9 +139,6 @@
     "plugins/source/pagerduty": {
       "component": "plugins-source-pagerduty"
     },
-    "plugins/source/plausible": {
-      "component": "plugins-source-plausible"
-    },
     "plugins/source/postgresql": {
       "component": "plugins-source-postgresql"
     },
@@ -163,26 +148,31 @@
     "plugins/source/shopify": {
       "component": "plugins-source-shopify"
     },
-    "plugins/source/slack": {
-      "component": "plugins-source-slack"
-    },
     "plugins/source/snyk": {
       "component": "plugins-source-snyk"
+    },
+    "plugins/source/square": {
+      "component": "plugins-source-square",
+      "release-type": "python"
     },
     "plugins/source/stripe": {
       "component": "plugins-source-stripe"
     },
-    "plugins/source/tailscale": {
-      "component": "plugins-source-tailscale"
-    },
     "plugins/source/terraform": {
       "component": "plugins-source-terraform"
+    },
+    "plugins/source/vault": {
+      "component": "plugins-source-vault"
     },
     "plugins/source/test": {
       "component": "plugins-source-test"
     },
-    "plugins/source/vercel": {
-      "component": "plugins-source-vercel"
+    "plugins/source/typeform": {
+      "component": "plugins-source-typeform",
+      "extra-files": [
+        "plugin/plugin.py"
+      ],
+      "release-type": "python"
     },
     "scaffold": {
       "component": "scaffold"

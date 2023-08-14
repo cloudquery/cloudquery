@@ -8,15 +8,24 @@ spec:
   name: "s3"
   path: "cloudquery/s3"
   version: "VERSION_DESTINATION_S3"
-  write_mode: "append" # s3 only supports 'append' mode
-  # batch_size: 10000 # optional
-  # batch_size_bytes: 5242880 # optional
   spec:
     bucket: "bucket_name"
     region: "region-name" # Example: us-east-1
     path: "path/to/files/{{TABLE}}/{{UUID}}.parquet"
-    format: "parquet"
-    athena: false # <- set this to true for Athena compatibility
+    format: "parquet" # options: parquet, json, csv
+    format_spec:
+      # CSV-specific parameters:
+      # delimiter: ","
+      # skip_header: false
+
+    # Optional parameters
+    # compression: "" # options: gzip
+    # no_rotate: false
+    # athena: false # <- set this to true for Athena compatibility
+    # test_write: true # tests the ability to write to the bucket before processing the data
+    # batch_size: 10000 # 10K entries
+    # batch_size_bytes: 52428800 # 50 MiB
+    # batch_timeout: 30s # 30 seconds
 ```
 
 It is also possible to use `{{YEAR}}`, `{{MONTH}}`, `{{DAY}}` and `{{HOUR}}` in the path to create a directory structure based on the current time. For example:
@@ -26,3 +35,5 @@ path: "path/to/files/{{TABLE}}/dt={{YEAR}}-{{MONTH}}-{{DAY}}/{{UUID}}.parquet"
 ```
 
 Other supported formats are `json` and `csv`.
+
+Note that the S3 plugin only supports `append` write-mode. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).

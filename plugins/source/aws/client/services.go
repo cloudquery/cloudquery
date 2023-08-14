@@ -12,11 +12,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/amplify"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
+	"github.com/aws/aws-sdk-go-v2/service/appconfig"
+	"github.com/aws/aws-sdk-go-v2/service/appflow"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
+	"github.com/aws/aws-sdk-go-v2/service/appmesh"
 	"github.com/aws/aws-sdk-go-v2/service/apprunner"
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appsync"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
+	"github.com/aws/aws-sdk-go-v2/service/auditmanager"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/autoscalingplans"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
@@ -77,6 +81,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/mwaa"
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/networkfirewall"
+	"github.com/aws/aws-sdk-go-v2/service/networkmanager"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/aws/aws-sdk-go-v2/service/quicksight"
@@ -87,6 +92,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroups"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
+	"github.com/aws/aws-sdk-go-v2/service/route53recoverycontrolconfig"
+	"github.com/aws/aws-sdk-go-v2/service/route53recoveryreadiness"
 	"github.com/aws/aws-sdk-go-v2/service/route53resolver"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
@@ -127,120 +134,127 @@ func initServices(_ aws.Config, regions []string) Services {
 }
 
 type Services struct {
-	Regions                   []string
-	Accessanalyzer            services.AccessanalyzerClient
-	Account                   services.AccountClient
-	Acm                       services.AcmClient
-	Acmpca                    services.AcmpcaClient
-	Amp                       services.AmpClient
-	Amplify                   services.AmplifyClient
-	Apigateway                services.ApigatewayClient
-	Apigatewayv2              services.Apigatewayv2Client
-	Applicationautoscaling    services.ApplicationautoscalingClient
-	Apprunner                 services.ApprunnerClient
-	Appstream                 services.AppstreamClient
-	Appsync                   services.AppsyncClient
-	Athena                    services.AthenaClient
-	Autoscaling               services.AutoscalingClient
-	Autoscalingplans          services.AutoscalingplansClient
-	Backup                    services.BackupClient
-	Batch                     services.BatchClient
-	Cloudformation            services.CloudformationClient
-	Cloudfront                services.CloudfrontClient
-	Cloudhsmv2                services.Cloudhsmv2Client
-	Cloudtrail                services.CloudtrailClient
-	Cloudwatch                services.CloudwatchClient
-	Cloudwatchlogs            services.CloudwatchlogsClient
-	Codeartifact              services.CodeartifactClient
-	Codebuild                 services.CodebuildClient
-	Codecommit                services.CodecommitClient
-	Codepipeline              services.CodepipelineClient
-	Cognitoidentity           services.CognitoidentityClient
-	Cognitoidentityprovider   services.CognitoidentityproviderClient
-	Computeoptimizer          services.ComputeoptimizerClient
-	Configservice             services.ConfigserviceClient
-	Costexplorer              services.CostexplorerClient
-	Databasemigrationservice  services.DatabasemigrationserviceClient
-	Dax                       services.DaxClient
-	Detective                 services.DetectiveClient
-	Directconnect             services.DirectconnectClient
-	Docdb                     services.DocdbClient
-	Dynamodb                  services.DynamodbClient
-	Dynamodbstreams           services.DynamodbstreamsClient
-	Ec2                       services.Ec2Client
-	Ecr                       services.EcrClient
-	Ecrpublic                 services.EcrpublicClient
-	Ecs                       services.EcsClient
-	Efs                       services.EfsClient
-	Eks                       services.EksClient
-	Elasticache               services.ElasticacheClient
-	Elasticbeanstalk          services.ElasticbeanstalkClient
-	Elasticloadbalancing      services.ElasticloadbalancingClient
-	Elasticloadbalancingv2    services.Elasticloadbalancingv2Client
-	Elasticsearchservice      services.ElasticsearchserviceClient
-	Elastictranscoder         services.ElastictranscoderClient
-	Emr                       services.EmrClient
-	Eventbridge               services.EventbridgeClient
-	Firehose                  services.FirehoseClient
-	Frauddetector             services.FrauddetectorClient
-	Fsx                       services.FsxClient
-	Glacier                   services.GlacierClient
-	Glue                      services.GlueClient
-	Guardduty                 services.GuarddutyClient
-	Iam                       services.IamClient
-	Identitystore             services.IdentitystoreClient
-	Inspector                 services.InspectorClient
-	Inspector2                services.Inspector2Client
-	Iot                       services.IotClient
-	Kafka                     services.KafkaClient
-	Kinesis                   services.KinesisClient
-	Kms                       services.KmsClient
-	Lambda                    services.LambdaClient
-	Lightsail                 services.LightsailClient
-	Mq                        services.MqClient
-	Mwaa                      services.MwaaClient
-	Neptune                   services.NeptuneClient
-	Networkfirewall           services.NetworkfirewallClient
-	Organizations             services.OrganizationsClient
-	Qldb                      services.QldbClient
-	Quicksight                services.QuicksightClient
-	Ram                       services.RamClient
-	Rds                       services.RdsClient
-	Redshift                  services.RedshiftClient
-	Resourcegroups            services.ResourcegroupsClient
-	Resiliencehub             services.ResiliencehubClient
-	Route53                   services.Route53Client
-	Route53domains            services.Route53domainsClient
-	Route53resolver           services.Route53resolverClient
-	S3                        services.S3Client
-	S3control                 services.S3controlClient
-	Sagemaker                 services.SagemakerClient
-	Savingsplans              services.SavingsplansClient
-	Scheduler                 services.SchedulerClient
-	Secretsmanager            services.SecretsmanagerClient
-	Securityhub               services.SecurityhubClient
-	Servicecatalog            services.ServicecatalogClient
-	Servicecatalogappregistry services.ServicecatalogappregistryClient
-	Servicediscovery          services.ServicediscoveryClient
-	Servicequotas             services.ServicequotasClient
-	Ses                       services.SesClient
-	Sesv2                     services.Sesv2Client
-	Sfn                       services.SfnClient
-	Shield                    services.ShieldClient
-	Signer                    services.SignerClient
-	Sns                       services.SnsClient
-	Sqs                       services.SqsClient
-	Ssm                       services.SsmClient
-	Ssoadmin                  services.SsoadminClient
-	Support                   services.SupportClient
-	Timestreamwrite           services.TimestreamwriteClient
-	Transfer                  services.TransferClient
-	Waf                       services.WafClient
-	Wafregional               services.WafregionalClient
-	Wafv2                     services.Wafv2Client
-	Wellarchitected           services.WellarchitectedClient
-	Workspaces                services.WorkspacesClient
-	Xray                      services.XrayClient
+	Regions                      []string
+	Accessanalyzer               services.AccessanalyzerClient
+	Account                      services.AccountClient
+	Acm                          services.AcmClient
+	Acmpca                       services.AcmpcaClient
+	Amp                          services.AmpClient
+	Amplify                      services.AmplifyClient
+	Apigateway                   services.ApigatewayClient
+	Apigatewayv2                 services.Apigatewayv2Client
+	Appconfig                    services.AppconfigClient
+	Appflow                      services.AppflowClient
+	Applicationautoscaling       services.ApplicationautoscalingClient
+	Appmesh                      services.AppmeshClient
+	Apprunner                    services.ApprunnerClient
+	Appstream                    services.AppstreamClient
+	Appsync                      services.AppsyncClient
+	Athena                       services.AthenaClient
+	Auditmanager                 services.AuditmanagerClient
+	Autoscaling                  services.AutoscalingClient
+	Autoscalingplans             services.AutoscalingplansClient
+	Backup                       services.BackupClient
+	Batch                        services.BatchClient
+	Cloudformation               services.CloudformationClient
+	Cloudfront                   services.CloudfrontClient
+	Cloudhsmv2                   services.Cloudhsmv2Client
+	Cloudtrail                   services.CloudtrailClient
+	Cloudwatch                   services.CloudwatchClient
+	Cloudwatchlogs               services.CloudwatchlogsClient
+	Codeartifact                 services.CodeartifactClient
+	Codebuild                    services.CodebuildClient
+	Codecommit                   services.CodecommitClient
+	Codepipeline                 services.CodepipelineClient
+	Cognitoidentity              services.CognitoidentityClient
+	Cognitoidentityprovider      services.CognitoidentityproviderClient
+	Computeoptimizer             services.ComputeoptimizerClient
+	Configservice                services.ConfigserviceClient
+	Costexplorer                 services.CostexplorerClient
+	Databasemigrationservice     services.DatabasemigrationserviceClient
+	Dax                          services.DaxClient
+	Detective                    services.DetectiveClient
+	Directconnect                services.DirectconnectClient
+	Docdb                        services.DocdbClient
+	Dynamodb                     services.DynamodbClient
+	Dynamodbstreams              services.DynamodbstreamsClient
+	Ec2                          services.Ec2Client
+	Ecr                          services.EcrClient
+	Ecrpublic                    services.EcrpublicClient
+	Ecs                          services.EcsClient
+	Efs                          services.EfsClient
+	Eks                          services.EksClient
+	Elasticache                  services.ElasticacheClient
+	Elasticbeanstalk             services.ElasticbeanstalkClient
+	Elasticloadbalancing         services.ElasticloadbalancingClient
+	Elasticloadbalancingv2       services.Elasticloadbalancingv2Client
+	Elasticsearchservice         services.ElasticsearchserviceClient
+	Elastictranscoder            services.ElastictranscoderClient
+	Emr                          services.EmrClient
+	Eventbridge                  services.EventbridgeClient
+	Firehose                     services.FirehoseClient
+	Frauddetector                services.FrauddetectorClient
+	Fsx                          services.FsxClient
+	Glacier                      services.GlacierClient
+	Glue                         services.GlueClient
+	Guardduty                    services.GuarddutyClient
+	Iam                          services.IamClient
+	Identitystore                services.IdentitystoreClient
+	Inspector                    services.InspectorClient
+	Inspector2                   services.Inspector2Client
+	Iot                          services.IotClient
+	Kafka                        services.KafkaClient
+	Kinesis                      services.KinesisClient
+	Kms                          services.KmsClient
+	Lambda                       services.LambdaClient
+	Lightsail                    services.LightsailClient
+	Mq                           services.MqClient
+	Mwaa                         services.MwaaClient
+	Neptune                      services.NeptuneClient
+	Networkfirewall              services.NetworkfirewallClient
+	Networkmanager               services.NetworkmanagerClient
+	Organizations                services.OrganizationsClient
+	Qldb                         services.QldbClient
+	Quicksight                   services.QuicksightClient
+	Ram                          services.RamClient
+	Rds                          services.RdsClient
+	Redshift                     services.RedshiftClient
+	Resourcegroups               services.ResourcegroupsClient
+	Resiliencehub                services.ResiliencehubClient
+	Route53                      services.Route53Client
+	Route53domains               services.Route53domainsClient
+	Route53recoverycontrolconfig services.Route53recoverycontrolconfigClient
+	Route53recoveryreadiness     services.Route53recoveryreadinessClient
+	Route53resolver              services.Route53resolverClient
+	S3                           services.S3Client
+	S3control                    services.S3controlClient
+	Sagemaker                    services.SagemakerClient
+	Savingsplans                 services.SavingsplansClient
+	Scheduler                    services.SchedulerClient
+	Secretsmanager               services.SecretsmanagerClient
+	Securityhub                  services.SecurityhubClient
+	Servicecatalog               services.ServicecatalogClient
+	Servicecatalogappregistry    services.ServicecatalogappregistryClient
+	Servicediscovery             services.ServicediscoveryClient
+	Servicequotas                services.ServicequotasClient
+	Ses                          services.SesClient
+	Sesv2                        services.Sesv2Client
+	Sfn                          services.SfnClient
+	Shield                       services.ShieldClient
+	Signer                       services.SignerClient
+	Sns                          services.SnsClient
+	Sqs                          services.SqsClient
+	Ssm                          services.SsmClient
+	Ssoadmin                     services.SsoadminClient
+	Support                      services.SupportClient
+	Timestreamwrite              services.TimestreamwriteClient
+	Transfer                     services.TransferClient
+	Waf                          services.WafClient
+	Wafregional                  services.WafregionalClient
+	Wafv2                        services.Wafv2Client
+	Wellarchitected              services.WellarchitectedClient
+	Workspaces                   services.WorkspacesClient
+	Xray                         services.XrayClient
 }
 
 func (s *Services) InitService(awsConfig *aws.Config, service string) {

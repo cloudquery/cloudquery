@@ -5,7 +5,14 @@ spec:
   name: digitalocean
   path: cloudquery/digitalocean
   version: "VERSION_SOURCE_DIGITALOCEAN"
-  concurrency: 10000
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
+  spec:
+    # Optional parameters
+    # token: "" # will be propagated from env
+    # spaces_regions: ["nyc3", "sfo3", "ams3", "sgp1", "fra1", "syd1"]
+    # spaces_access_key: ""
+    # spaces_access_key_id: ""
+    # spaces_debug_logging: false
+    # concurrency: 10000
 ```

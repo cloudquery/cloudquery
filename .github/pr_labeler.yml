@@ -62,6 +62,8 @@ homebrew:
   - plugins/source/homebrew/**/*
 hubspot:
   - plugins/source/hubspot/**/*
+jira:
+  - plugins/source/jira/**/*
 k8s:
   - plugins/source/k8s/**/*
 kafka:
@@ -96,6 +98,8 @@ s3:
   - plugins/destination/s3/**/*
 salesforce:
   - plugins/source/salesforce/**/*
+scaffold:
+  - scaffold/**/*
 shopify:
   - plugins/source/shopify/**/*
 slack:
@@ -110,12 +114,18 @@ source-postgresql:
   - plugins/source/postgresql/**/*
 sqlite:
   - plugins/destination/sqlite/**/*
+square:
+  - plugins/source/square/**/*
 stripe:
   - plugins/source/stripe/**/*
 tailscale:
   - plugins/source/tailscale/**/*
 terraform:
   - plugins/source/terraform/**/*
+typeform:
+  - plugins/source/typeform/**/*
+vault:
+  - plugins/source/vault/**/*
 vercel:
   - plugins/source/vercel/**/*
 website:

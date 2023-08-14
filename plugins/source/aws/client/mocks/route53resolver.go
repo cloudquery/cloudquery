@@ -185,6 +185,36 @@ func (mr *MockRoute53resolverClientMockRecorder) GetFirewallRuleGroupPolicy(arg0
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetFirewallRuleGroupPolicy", reflect.TypeOf((*MockRoute53resolverClient)(nil).GetFirewallRuleGroupPolicy), varargs...)
 }
 
+// GetOutpostResolver mocks base method.
+func (m *MockRoute53resolverClient) GetOutpostResolver(arg0 context.Context, arg1 *route53resolver.GetOutpostResolverInput, arg2 ...func(*route53resolver.Options)) (*route53resolver.GetOutpostResolverOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &route53resolver.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetOutpostResolver")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetOutpostResolver", varargs...)
+	ret0, _ := ret[0].(*route53resolver.GetOutpostResolverOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetOutpostResolver indicates an expected call of GetOutpostResolver.
+func (mr *MockRoute53resolverClientMockRecorder) GetOutpostResolver(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetOutpostResolver", reflect.TypeOf((*MockRoute53resolverClient)(nil).GetOutpostResolver), varargs...)
+}
+
 // GetResolverConfig mocks base method.
 func (m *MockRoute53resolverClient) GetResolverConfig(arg0 context.Context, arg1 *route53resolver.GetResolverConfigInput, arg2 ...func(*route53resolver.Options)) (*route53resolver.GetResolverConfigOutput, error) {
 
@@ -633,6 +663,36 @@ func (mr *MockRoute53resolverClientMockRecorder) ListFirewallRules(arg0, arg1 in
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListFirewallRules", reflect.TypeOf((*MockRoute53resolverClient)(nil).ListFirewallRules), varargs...)
+}
+
+// ListOutpostResolvers mocks base method.
+func (m *MockRoute53resolverClient) ListOutpostResolvers(arg0 context.Context, arg1 *route53resolver.ListOutpostResolversInput, arg2 ...func(*route53resolver.Options)) (*route53resolver.ListOutpostResolversOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &route53resolver.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListOutpostResolvers")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListOutpostResolvers", varargs...)
+	ret0, _ := ret[0].(*route53resolver.ListOutpostResolversOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListOutpostResolvers indicates an expected call of ListOutpostResolvers.
+func (mr *MockRoute53resolverClientMockRecorder) ListOutpostResolvers(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListOutpostResolvers", reflect.TypeOf((*MockRoute53resolverClient)(nil).ListOutpostResolvers), varargs...)
 }
 
 // ListResolverConfigs mocks base method.

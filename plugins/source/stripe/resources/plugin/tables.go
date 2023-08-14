@@ -39,10 +39,10 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/resources/services/transfers"
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/resources/services/treasury"
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/resources/services/webhook_endpoints"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func tables() []*schema.Table {
+func rawTables() []*schema.Table {
 	return []*schema.Table{
 		accounts.Accounts(),
 		apple_pay_domains.ApplePayDomains(),

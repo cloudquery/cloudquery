@@ -2,8 +2,8 @@ package crm
 
 import (
 	"github.com/clarkmcc/go-hubspot/generated/v3/products"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Products() *schema.Table {

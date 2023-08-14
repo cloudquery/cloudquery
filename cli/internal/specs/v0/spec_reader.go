@@ -2,11 +2,13 @@ package specs
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"math/rand"
 	"os"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/ghodss/yaml"
@@ -35,6 +37,12 @@ func expandFileConfig(cfg []byte) ([]byte, error) {
 		if err != nil {
 			expandErr = err
 			return nil
+		}
+		if bytes.ContainsAny(content, "\n\r") && json.Valid(content) {
+			// Values that should be treated as strings in YAML have leading and trailing quotes already
+			// so we remove the one added by strconv.Quote
+			quoted := strconv.Quote(string(content))
+			return []byte(quoted[1 : len(quoted)-1])
 		}
 		return content
 	})

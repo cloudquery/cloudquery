@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/thoas/go-funk"
 )
 

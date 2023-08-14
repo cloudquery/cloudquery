@@ -19,7 +19,7 @@ func (c *Client) Read(_ context.Context, table *schema.Table, res chan<- arrow.R
 	if strings.Contains(c.spec.Path, PathVarUUID) {
 		return fmt.Errorf("reading is not supported when `path` contains UUID variable. Table: %q", table.Name)
 	}
-	name := replacePathVariables(c.spec.Path, table.Name, c.spec.Format, uuid.NewString(), time.Time{})
+	name := c.replacePathVariables(table.Name, uuid.NewString(), time.Time{})
 	f, err := os.Open(name)
 	if err != nil {
 		return err

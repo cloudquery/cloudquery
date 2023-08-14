@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/julienschmidt/httprouter"
 	"github.com/xanzy/go-gitlab"
 )

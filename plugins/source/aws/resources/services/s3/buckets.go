@@ -3,14 +3,15 @@ package s3
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3/models"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Buckets() *schema.Table {
@@ -94,6 +95,7 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *
 	if output != nil && output.LocationConstraint != "" {
 		resource.Region = string(output.LocationConstraint)
 	}
+	var errAll []error
 
 	resolvers := []func(context.Context, schema.ClientMeta, *models.WrappedBucket) error{
 		resolveBucketLogging,
@@ -107,15 +109,18 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *
 	}
 	for _, resolver := range resolvers {
 		if err := resolver(ctx, meta, resource); err != nil {
-			r.Item = resource
+			// If we received any error other than NoSuchBucketError, we return as this indicates that the bucket has been deleted
+			// and therefore no other attributes can be resolved
 			if isBucketNotFoundError(cl, err) {
-				return nil
+				r.Item = resource
+				return errors.Join(errAll...)
 			}
-			return err
+			// This enables 403 errors to be recorded, but not block subsequent resolver calls
+			errAll = append(errAll, err)
 		}
 	}
 	r.Item = resource
-	return nil
+	return errors.Join(errAll...)
 }
 
 func resolveBucketLogging(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
@@ -175,6 +180,9 @@ func resolveBucketPolicyStatus(ctx context.Context, meta schema.ClientMeta, reso
 	})
 	// check if we got an error but its access denied we can continue
 	if err != nil {
+		if client.IsAWSError(err, "NoSuchBucketPolicy") {
+			return nil
+		}
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
 			return nil
 		}
@@ -198,8 +206,8 @@ func resolveBucketVersioning(ctx context.Context, meta schema.ClientMeta, resour
 		}
 		return err
 	}
-	resource.VersioningStatus = versioningOutput.Status
-	resource.VersioningMfaDelete = versioningOutput.MFADelete
+	resource.VersioningStatus = &versioningOutput.Status
+	resource.VersioningMfaDelete = &versioningOutput.MFADelete
 	return nil
 }
 
@@ -219,10 +227,10 @@ func resolveBucketPublicAccessBlock(ctx context.Context, meta schema.ClientMeta,
 		}
 		return err
 	}
-	resource.BlockPublicAcls = publicAccessOutput.PublicAccessBlockConfiguration.BlockPublicAcls
-	resource.BlockPublicPolicy = publicAccessOutput.PublicAccessBlockConfiguration.BlockPublicPolicy
-	resource.IgnorePublicAcls = publicAccessOutput.PublicAccessBlockConfiguration.IgnorePublicAcls
-	resource.RestrictPublicBuckets = publicAccessOutput.PublicAccessBlockConfiguration.RestrictPublicBuckets
+	resource.BlockPublicAcls = &publicAccessOutput.PublicAccessBlockConfiguration.BlockPublicAcls
+	resource.BlockPublicPolicy = &publicAccessOutput.PublicAccessBlockConfiguration.BlockPublicPolicy
+	resource.IgnorePublicAcls = &publicAccessOutput.PublicAccessBlockConfiguration.IgnorePublicAcls
+	resource.RestrictPublicBuckets = &publicAccessOutput.PublicAccessBlockConfiguration.RestrictPublicBuckets
 	return nil
 }
 

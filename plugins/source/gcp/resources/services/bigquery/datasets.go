@@ -8,6 +8,11 @@ import (
 	pb "google.golang.org/api/bigquery/v2"
 )
 
+type datasetWrapper struct {
+	*pb.Dataset
+	svc *pb.Service
+}
+
 func Datasets() *schema.Table {
 	return &schema.Table{
 		Name:                "gcp_bigquery_datasets",
@@ -15,7 +20,7 @@ func Datasets() *schema.Table {
 		PreResourceResolver: datasetGet,
 		Resolver:            fetchDatasets,
 		Multiplex:           client.ProjectMultiplexEnabledServices("bigquery.googleapis.com"),
-		Transform:           client.TransformWithStruct(&pb.Dataset{}, transformers.WithPrimaryKeys("Id")),
+		Transform:           client.TransformWithStruct(&datasetWrapper{}, transformers.WithPrimaryKeys("Id"), transformers.WithUnwrapStructFields("Dataset")),
 		Columns: []schema.Column{
 			{
 				Name:       "project_id",

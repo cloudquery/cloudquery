@@ -1,6 +1,8 @@
 package plugin
 
 import (
+	"fmt"
+
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/accessanalyzer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/account"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/acm"
@@ -9,11 +11,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/amplify"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigateway"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigatewayv2"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appconfig"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appflow"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/applicationautoscaling"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appmesh"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apprunner"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appstream"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appsync"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/athena"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/auditmanager"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscaling"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscalingplans"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/backup"
@@ -73,6 +79,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/mwaa"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/neptune"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/networkfirewall"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/networkmanager"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/organizations"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/qldb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/quicksight"
@@ -82,6 +89,8 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resiliencehub"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resourcegroups"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53recoverycontrolconfig"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53recoveryreadiness"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53resolver"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sagemaker"
@@ -109,11 +118,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wellarchitected"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/workspaces"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/xray"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
-func tables() []*schema.Table {
-	return []*schema.Table{
+func getTables() schema.Tables {
+	t := []*schema.Table{
 		accessanalyzer.Analyzers(),
 		account.AlternateContacts(),
 		account.Contacts(),
@@ -130,6 +141,10 @@ func tables() []*schema.Table {
 		apigatewayv2.Apis(),
 		apigatewayv2.DomainNames(),
 		apigatewayv2.VpcLinks(),
+		appconfig.Applications(),
+		appconfig.DeploymentStrategies(),
+		appflow.Flows(),
+		appmesh.Meshes(),
 		applicationautoscaling.Policies(),
 		applicationautoscaling.ScalableTargets(),
 		applicationautoscaling.ScalingActivities(),
@@ -152,14 +167,17 @@ func tables() []*schema.Table {
 		appsync.GraphqlApis(),
 		athena.DataCatalogs(),
 		athena.WorkGroups(),
+		auditmanager.Assessments(),
 		autoscaling.Groups(),
 		autoscaling.LaunchConfigurations(),
 		autoscaling.ScheduledActions(),
 		autoscalingplans.Plans(),
 		backup.GlobalSettings(),
+		backup.Jobs(),
 		backup.Plans(),
 		backup.ProtectedResources(),
 		backup.RegionSettings(),
+		backup.ReportPlans(),
 		backup.Vaults(),
 		batch.JobQueues(),
 		batch.JobDefinitions(),
@@ -309,7 +327,9 @@ func tables() []*schema.Table {
 		elbv2.TargetGroups(),
 		emr.BlockPublicAccessConfigs(),
 		emr.Clusters(),
+		emr.ReleaseLabels(),
 		emr.SecurityConfigurations(),
+		emr.Studios(),
 		eventbridge.ApiDestinations(),
 		eventbridge.Archives(),
 		eventbridge.Connections(),
@@ -412,6 +432,7 @@ func tables() []*schema.Table {
 		networkfirewall.Firewalls(),
 		networkfirewall.RuleGroups(),
 		networkfirewall.TLSInspectionConfigurations(),
+		networkmanager.GlobalNetworks(),
 		organizations.Accounts(),
 		organizations.DelegatedAdministrators(),
 		organizations.OrganizationalUnits(),
@@ -464,6 +485,12 @@ func tables() []*schema.Table {
 		route53.HostedZones(),
 		route53.Operations(),
 		route53.TrafficPolicies(),
+		route53recoverycontrolconfig.Clusters(),
+		route53recoverycontrolconfig.ControlPanels(),
+		route53recoveryreadiness.Cells(),
+		route53recoveryreadiness.ReadinessChecks(),
+		route53recoveryreadiness.RecoveryGroups(),
+		route53recoveryreadiness.ResourceSets(),
 		route53resolver.FirewallConfigs(),
 		route53resolver.FirewallDomainLists(),
 		route53resolver.FirewallRuleGroupAssociations(),
@@ -476,6 +503,7 @@ func tables() []*schema.Table {
 		s3.AccessPoints(),
 		s3.Accounts(),
 		s3.Buckets(),
+		s3.MultiRegionAccessPoints(),
 		sagemaker.Apps(),
 		sagemaker.EndpointConfigurations(),
 		sagemaker.Models(),
@@ -549,4 +577,24 @@ func tables() []*schema.Table {
 		xray.ResourcePolicies(),
 		xray.SamplingRules(),
 	}
+	if err := transformers.TransformTables(t); err != nil {
+		panic(err)
+	}
+	for _, table := range t {
+		schema.AddCqIDs(table)
+		titleTransformer(table)
+		if err := validateTagsIsJSON(table); err != nil {
+			panic(err)
+		}
+	}
+	return t
+}
+
+func validateTagsIsJSON(table *schema.Table) error {
+	for _, col := range table.Columns {
+		if col.Name == "tags" && col.Type != types.ExtensionTypes.JSON {
+			return fmt.Errorf("column %s in table %s must be of type %s", col.Name, table.Name, types.ExtensionTypes.JSON)
+		}
+	}
+	return nil
 }

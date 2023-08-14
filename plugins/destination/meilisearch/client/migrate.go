@@ -33,7 +33,7 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 		default:
 			recreate = append(recreate, need)
 			if !messages[need.Index].MigrateForce {
-				return fmt.Errorf("index %s requires force migration. use 'migrate_mode: forced'", uid)
+				return fmt.Errorf("index %s requires force migration. Migrate manually or consider using 'migrate_mode: forced'", uid)
 			}
 		}
 	}

@@ -3,24 +3,36 @@ package client
 import (
 	"context"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 )
 
 type TestClient struct {
-}
-
-func (*TestClient) Logger() *zerolog.Logger {
-	return &log.Logger
+	Logger   zerolog.Logger
+	Spec     Spec
+	ClientID int
 }
 
 func (*TestClient) ID() string {
 	return "TestClient"
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
-	return &TestClient{}, nil
+func (c *TestClient) withClientID(i int) *TestClient {
+	t := *c
+	t.ClientID = i
+	return &t
+}
+
+func MultiplexBySpec(meta schema.ClientMeta) []schema.ClientMeta {
+	cl := meta.(*TestClient)
+	clients := make([]schema.ClientMeta, cl.Spec.NumClients)
+	for i := 0; i < cl.Spec.NumClients; i++ {
+		clients[i] = cl.withClientID(i)
+	}
+	return clients
+}
+
+func ResolveClientID(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*TestClient)
+	return resource.Set(c.Name, cl.ClientID)
 }

@@ -10,9 +10,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
-	cqtypes "github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/mitchellh/hashstructure/v2"
 )
 
@@ -33,8 +33,7 @@ To sync this table you must set the 'use_paid_apis' option to 'true' and set the
 
 Please note that this table is considered **alpha** (experimental) and may have breaking changes or be removed in the future.
 `,
-		Resolver:  fetchCloudwatchMetricStatistics,
-		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "monitoring"),
+		Resolver: fetchCloudwatchMetricStatistics,
 		Transform: transformers.TransformWithStruct(&statOutput{},
 			transformers.WithPrimaryKeys("Timestamp", "Label"),
 			transformers.WithSkipFields("ResultMetadata"),

@@ -16,8 +16,6 @@ The following tables depend on aws_resiliencehub_apps:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -29,8 +27,12 @@ The following tables depend on aws_resiliencehub_apps:
 |assessment_schedule|`utf8`|
 |compliance_status|`utf8`|
 |description|`utf8`|
+|drift_status|`utf8`|
+|event_subscriptions|`json`|
 |last_app_compliance_evaluation_time|`timestamp[us, tz=UTC]`|
+|last_drift_evaluation_time|`timestamp[us, tz=UTC]`|
 |last_resiliency_score_evaluation_time|`timestamp[us, tz=UTC]`|
+|permission_model|`json`|
 |policy_arn|`utf8`|
 |resiliency_score|`float64`|
 |status|`utf8`|

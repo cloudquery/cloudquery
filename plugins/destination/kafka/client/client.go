@@ -40,17 +40,12 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewC
 		return nil, err
 	}
 	c.spec.SetDefaults()
-	if err := c.spec.Validate(); err != nil {
-		return nil, err
-	}
+
 	if c.spec.Verbose {
 		sarama.Logger = NewSaramaLoggerAdapter(logger)
 	}
 
 	c.conf = sarama.NewConfig()
-	if c.spec.MaxMetadataRetries != 0 {
-		c.conf.Metadata.Retry.Max = c.spec.MaxMetadataRetries
-	}
 	c.conf.Metadata.Retry.Backoff = time.Millisecond * 500
 	c.conf.Producer.Retry.Max = 1
 	c.conf.Producer.RequiredAcks = sarama.WaitForAll

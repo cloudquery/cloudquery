@@ -4,15 +4,15 @@ import (
 	"context"
 	"fmt"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func DataCatalogs() *schema.Table {
@@ -116,7 +116,7 @@ func resolveAthenaDataCatalogTags(ctx context.Context, meta schema.ClientMeta, r
 func createDataCatalogArn(cl *client.Client, catalogName string) string {
 	return arn.ARN{
 		Partition: cl.Partition,
-		Service:   string(client.Athena),
+		Service:   string(client.AthenaService),
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
 		Resource:  fmt.Sprintf("datacatalog/%s", catalogName),

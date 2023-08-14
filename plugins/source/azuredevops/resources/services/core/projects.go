@@ -2,7 +2,7 @@ package core
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/azuredevops/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/microsoft/azure-devops-go-api/azuredevops/v6/core"
 )
 
