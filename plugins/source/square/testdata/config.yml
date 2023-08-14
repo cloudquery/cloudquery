@@ -1,0 +1,16 @@
+kind: source
+spec:
+  name: square
+  destinations: [test]
+  path: "square:latest"
+  registry: docker
+  tables: ["*"]
+  spec:
+    environment: "sandbox" # sandbox or production
+    access_token: "<YOUR_SECRET_ACCESS_TOKEN_HERE>"
+---
+kind: destination
+spec:
+  name: test
+  path: cloudquery/test
+  version: "v2.2.3" # latest version of test plugin

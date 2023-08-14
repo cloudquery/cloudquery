@@ -12,26 +12,26 @@ This table depends on [square_locations](square_locations).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|id (PK)|`string`|
+|id (PK)|`utf8`|
 |version|`int64`|
-|location_id|`string`|
-|order_id|`string`|
-|primary_recipient|`extension<json<JSONType>>`|
-|payment_requests|`extension<json<JSONType>>`|
-|delivery_method|`string`|
-|invoice_number|`string`|
-|title|`string`|
-|description|`string`|
-|scheduled_at|`string`|
-|public_url|`string`|
-|next_payment_amount_money|`extension<json<JSONType>>`|
-|status|`string`|
-|timezone|`string`|
-|created_at|`string`|
-|updated_at|`string`|
-|accepted_payment_methods|`extension<json<JSONType>>`|
-|custom_fields|`extension<json<JSONType>>`|
-|subscription_id|`string`|
-|sale_or_service_date|`string`|
-|payment_conditions|`string`|
+|location_id|`utf8`|
+|order_id|`utf8`|
+|primary_recipient|`json`|
+|payment_requests|`json`|
+|delivery_method|`utf8`|
+|invoice_number|`utf8`|
+|title|`utf8`|
+|description|`utf8`|
+|scheduled_at|`utf8`|
+|public_url|`utf8`|
+|next_payment_amount_money|`json`|
+|status|`utf8`|
+|timezone|`utf8`|
+|created_at|`utf8`|
+|updated_at|`utf8`|
+|accepted_payment_methods|`json`|
+|custom_fields|`json`|
+|subscription_id|`utf8`|
+|sale_or_service_date|`utf8`|
+|payment_conditions|`utf8`|
 |store_payment_method_enabled|`bool`|
