@@ -43,7 +43,7 @@ func TestSpec_Validate(t *testing.T) {
 		},
 		"An invalid URL should return an error": {
 			address:       "bad_address",
-			expectedError: errors.New("invalid vault address provided \"bad_address\""),
+			expectedError: errors.New("invalid vault address provided \"bad_address\": parse \"bad_address\": invalid URI for request"),
 		},
 		"An empty URL should return an error": {
 			address:       "",
