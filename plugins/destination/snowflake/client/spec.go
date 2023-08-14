@@ -39,9 +39,11 @@ func (s *Spec) SetDefaults() {
 }
 
 func (s Spec) DSN() (string, error) {
-	if s.ConnectionString == "" {
+	cs := s.ConnectionString
+	if cs == "" {
 		return "", fmt.Errorf("connection_string is required")
 	}
+
 	if s.PrivateKey != "" {
 		pk, err := formatPrivateKey(s.PrivateKey)
 		if err != nil {
@@ -49,12 +51,12 @@ func (s Spec) DSN() (string, error) {
 		}
 
 		sep := "?"
-		if strings.Contains(s.ConnectionString, "?") {
+		if strings.Contains(cs, "?") {
 			sep = "&"
 		}
-		s.ConnectionString += sep + "authenticator=snowflake_jwt&privateKey=" + base64.URLEncoding.EncodeToString(pk)
+		cs += sep + "authenticator=snowflake_jwt&privateKey=" + base64.URLEncoding.EncodeToString(pk)
 	}
-	return s.ConnectionString, nil
+	return cs, nil
 }
 
 var whitespace = regexp.MustCompile(`\s+`)
