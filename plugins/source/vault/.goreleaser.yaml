@@ -1,0 +1,14 @@
+variables:
+  component: source/vault
+  binary: vault
+
+project_name: plugins/source/vault
+
+monorepo:
+  tag_prefix: plugins-source-vault-
+  dir: plugins/source/vault
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml

@@ -1,4 +1,4 @@
-name: Source Plugin Oracle Workflow
+name: Source Plugin Vault Workflow
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -7,47 +7,43 @@ concurrency:
 on:
   pull_request:
     paths:
-      - "plugins/source/oracle/**"
-      - ".github/workflows/source_oracle.yml"
+      - "plugins/source/vault/**"
+      - ".github/workflows/source_vault.yml"
   push:
     branches:
       - main
     paths:
-      - "plugins/source/oracle/**"
-      - ".github/workflows/source_oracle.yml"
+      - "plugins/source/vault/**"
+      - ".github/workflows/source_vault.yml"
 
 jobs:
-  plugins-source-oracle:
+  plugins-source-vault:
     timeout-minutes: 30
-    name: "plugins/source/oracle"
+    name: "plugins/source/vault"
     runs-on: large-ubuntu-monorepo
     defaults:
       run:
-        working-directory: ./plugins/source/oracle
+        working-directory: ./plugins/source/vault
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v3
+        uses: erezrokah/setup-go@feat/add_cache_prefix
         with:
-          go-version-file: plugins/source/oracle/go.mod
+          go-version-file: plugins/source/vault/go.mod
           cache: true
-          cache-dependency-path: plugins/source/oracle/go.sum
+          cache-dependency-path: plugins/source/vault/go.sum
+          cache-key-prefix: test-cache-
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
           version: v1.52.2
-          working-directory: plugins/source/oracle
+          working-directory: plugins/source/vault
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
           skip-build-cache: true
-      - name: Setup CloudQuery
-        if: github.event_name == 'pull_request'
-        uses: cloudquery/setup-cloudquery@v3
-        with:
-          version: 'v3.13.0'
-      - name: gen-docs
+      - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
       - name: Fail if generation updated files
@@ -72,14 +68,14 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/source/oracle/go.sum') }}
+          key: ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/source/vault/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.20.5-release-cache-plugins-source-oracle
+            ${{ runner.os }}-go-1.20.5-release-cache-plugins-source-vault
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3
         with:
-          go-version-file: plugins/source/oracle/go.mod
+          go-version-file: plugins/source/vault/go.mod
       - name: Install GoReleaser
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: goreleaser/goreleaser-action@v3
@@ -89,6 +85,7 @@ jobs:
           install-only: true
       - name: Run GoReleaser Dry-Run
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        run: goreleaser release --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/source/oracle/.goreleaser.yaml
+        run: goreleaser release --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/source/vault/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+
