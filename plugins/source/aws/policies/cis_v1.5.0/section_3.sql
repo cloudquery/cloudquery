@@ -27,6 +27,8 @@
 \echo "Executing check 3.9"
 \ir ../queries/ec2/flow_logs_enabled_in_all_vpcs.sql
 \set check_id '3.10'
-    -- todo cloud_trail_event_selectors data_resources field is wrong
+\echo "Executing check 3.10"
+\ir ../queries/cloudtrail/logging_s3_object_writing_event.sql
 \set check_id '3.11'
-    -- todo cloud_trail_event_selectors data_resources field is wrong
+\echo "Executing check 3.11"
+\ir ../queries/cloudtrail/logging_s3_object_reading_event.sql
