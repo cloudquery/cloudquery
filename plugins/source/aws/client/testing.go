@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"sync"
 	"testing"
 	"time"
 
@@ -44,6 +45,7 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 		c := NewAwsClient(l, nil, &awsSpec)
 		services := builder(t, ctrl)
 		services.Regions = []string{"us-east-1"}
+		c.accountMutex["testAccount"] = &sync.Mutex{}
 		c.ServicesManager.InitServicesForPartitionAccount("aws", "testAccount", services)
 		c.Partition = "aws"
 		return &c, nil

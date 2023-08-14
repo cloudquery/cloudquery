@@ -35,6 +35,7 @@ type Client struct {
 	Backend              backend.Backend
 	specificRegions      bool
 	Spec                 *Spec
+	accountMutex         map[string]*sync.Mutex
 	// Do not rely on this field, it will be removed once https://github.com/aws/aws-sdk-go-v2/issues/2163 is resolved
 	AWSConfig *aws.Config
 }
@@ -97,8 +98,9 @@ func NewAwsClient(logger zerolog.Logger, b backend.Backend, spec *Spec) Client {
 		ServicesManager: ServicesManager{
 			services: ServicesPartitionAccountMap{},
 		},
-		logger: logger,
-		Spec:   spec,
+		logger:       logger,
+		Spec:         spec,
+		accountMutex: map[string]*sync.Mutex{},
 	}
 }
 
@@ -118,7 +120,15 @@ func (c *Client) ID() string {
 	return strings.TrimRight(strings.Join(idStrings, ":"), ":")
 }
 
-func (c *Client) Services() *Services {
+func (c *Client) Services(service_names ...string) *Services {
+	for _, service := range service_names {
+		svcConfig := funk.Get(c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID), strings.ToUpper(service[:1])+service[1:])
+		if svcConfig == nil {
+			c.accountMutex[c.AccountID].Lock()
+			c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).InitService(c.AWSConfig, service)
+			c.accountMutex[c.AccountID].Unlock()
+		}
+	}
 	return c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID)
 }
 
@@ -134,6 +144,7 @@ func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region st
 		Backend:              c.Backend,
 		Spec:                 c.Spec,
 		AWSConfig:            c.AWSConfig,
+		accountMutex:         c.accountMutex,
 	}
 }
 
@@ -148,6 +159,8 @@ func (c *Client) withPartitionAccountIDRegionAndNamespace(partition, accountID, 
 		WAFScope:             c.WAFScope,
 		Backend:              c.Backend,
 		Spec:                 c.Spec,
+		AWSConfig:            c.AWSConfig,
+		accountMutex:         c.accountMutex,
 	}
 }
 
@@ -162,6 +175,8 @@ func (c *Client) withPartitionAccountIDRegionAndScope(partition, accountID, regi
 		WAFScope:             scope,
 		Backend:              c.Backend,
 		Spec:                 c.Spec,
+		AWSConfig:            c.AWSConfig,
+		accountMutex:         c.accountMutex,
 	}
 }
 
@@ -223,6 +238,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, op
 			initLock.Lock()
 			defer initLock.Unlock()
 			client.ServicesManager.InitServices(*svcsDetail)
+			if client.accountMutex[svcsDetail.accountId] == nil {
+				client.accountMutex[svcsDetail.accountId] = &sync.Mutex{}
+			}
+
 			return nil
 		})
 	}
