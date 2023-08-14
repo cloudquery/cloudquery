@@ -812,16 +812,11 @@ export const ALL_PLUGINS: Plugin[] = [
   {
     name: "HashiCorp Vault",
     id: "hashicorp-vault",
-    href: "https://github.com/cloudquery/cloudquery/issues/6738",
     kind: "source",
-    availability: "unpublished",
+    availability: "free",
     category: "cloud-infrastructure",
     logo: "/images/logos/plugins/hashicorp-vault.svg",
     logoDark: "/images/logos/plugins/hashicorp-vault-dark.svg",
-    buyLinks: {
-      'standard': 'https://buy.stripe.com/bIY5koeetfRZh0Y14T',
-      'extended': 'https://buy.stripe.com/7sIcMQc6lbBJ6mkcNC'
-    },
   },
   {
     name: "Infoblox",
@@ -1171,16 +1166,11 @@ export const ALL_PLUGINS: Plugin[] = [
   {
     name: "Typeform",
     id: "typeform",
-    href: "https://github.com/cloudquery/cloudquery/issues/9034",
     kind: "source",
-    availability: "unpublished",
+    availability: "free",
     category: "marketing-analytics",
     logo: "/images/logos/plugins/typeform.svg",
     logoDark: "/images/logos/plugins/typeform-dark.svg",
-    buyLinks: {
-      'standard': 'https://buy.stripe.com/28o3cg5HXbBJdOM3dV',
-      'extended': 'https://buy.stripe.com/6oEeUYfixcFN8us01K'
-    },
   },
   {
     name: "Zoho Campaign",

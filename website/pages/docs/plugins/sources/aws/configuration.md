@@ -15,10 +15,9 @@ spec:
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_s3_buckets"]
   destinations: ["DESTINATION_NAME"]
-  concurrency: 10000
-  spec: 
+  spec:
     # AWS Spec section described below
-    regions: 
+    regions:
       - us-east-1
     accounts:
       - id: "account1"
@@ -39,7 +38,6 @@ spec:
   version: "VERSION_SOURCE_AWS"
   tables: ['aws_s3_buckets']
   destinations: ["DESTINATION_NAME"]
-  concurrency: 10000
   spec:
     aws_debug: false
     org:
@@ -48,7 +46,7 @@ spec:
       member_role_name: OrganizationAccountAccessRole
     regions:
       - '*'
-  ```
+```
 
 For full details, see the [Multi Account Configuration Tutorial](/docs/plugins/sources/aws/multi-account).
 
@@ -56,7 +54,7 @@ For full details, see the [Multi Account Configuration Tutorial](/docs/plugins/s
 
 This is the (nested) spec used by the AWS source plugin.
 
-- `regions` ([]string) (default: Empty. Will use all enabled regions)
+- `regions` (`[]string`) (default: `[]`. Will use all enabled regions)
 
   Regions to use.
 
@@ -68,47 +66,56 @@ This is the (nested) spec used by the AWS source plugin.
 
   In AWS organization mode, CloudQuery will source all accounts underneath automatically
 
-- `initialization_concurrency` (int) (default: 4)
+- `concurrency` (`int`) (default: `50000`):
+
+  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
+
+- `initialization_concurrency` (`int`) (default: `4`)
 
   During initialization the AWS source plugin fetches information about each account and region. This setting controls how many accounts can be initialized concurrently.
   Only configurations with many accounts (either hardcoded or discovered via Organizations) should require modifying this setting, to either lower it to avoid rate limit errors, or to increase it to speed up the initialization process.
 
-- `aws_debug` (bool) (default: false)
+- `aws_debug` (`bool`) (default: `false`)
 
   If true, will log AWS debug logs, including retries and other request/response metadata
 
-- `max_retries` (int) (default: 10)
+- `max_retries` (`int`) (default: `10`)
 
-  Defines the maximum number of times an API request will be retried 
+  Defines the maximum number of times an API request will be retried
 
-- `max_backoff` (int) (default: 30)
-  
+- `max_backoff` (`int`) (default: `30`)
+
   Defines the duration between retry attempts
 
-- `custom_endpoint_url` (string) (default: not used)
+- `custom_endpoint_url` (`string`) (default: not used)
 
   The base URL endpoint the SDK API clients will use to make API calls to. The SDK will suffix URI path and query elements to this endpoint
 
-- `custom_endpoint_hostname_immutable` (bool) (default: not used)
+- `custom_endpoint_hostname_immutable` (`bool`) (default: not used)
 
   Specifies if the endpoint's hostname can be modified by the SDK's API client. When using something like LocalStack make sure to set it equal to `True`
 
-- `custom_endpoint_partition_id` (string) (default: not used)
+- `custom_endpoint_partition_id` (`string`) (default: not used)
 
   The AWS partition the endpoint belongs to
 
-- `custom_endpoint_signing_region` (string) (default: not used)
+- `custom_endpoint_signing_region` (`string`) (default: not used)
 
   The region that should be used for signing the request to the endpoint
 
-- `use_paid_apis` (boolean) (default: false)
+- `use_paid_apis` (`bool`) (default: `false`)
 
-  When set to `true` plugin will sync data from APIs that incur a fee. Currently only `aws_costexplorer*` and `aws_alpha_cloudwatch_metric*` tables require this flag to be set to `true`.
+  When set to `true` plugin will sync data from APIs that incur a fee. 
+  Currently only `aws_costexplorer*` and `aws_alpha_cloudwatch_metric*` tables require this flag to be set to `true`.
 
-- **preview** `table_options` (map) (default: not used)
+- **preview** `table_options` (`map`) (default: not used)
 
-  This is a preview feature (for more information about `preview` features look at (Plugin Versioning)[(/docs/plugins/sources/aws/versioning)] `) that enables users to override the default options for specific tables. The root of the object takes a table name, and the next level takes an API method name. The final level is the actual input object as defined by the API. 
+  This is a preview feature (for more information about `preview` features look at [plugin versioning](/docs/plugins/sources/aws/versioning) that enables users to override the default options for specific tables.
+  The root of the object takes a table name, and the next level takes an API method name.
+  The final level is the actual input object as defined by the API. 
+
   The format of the `table_options` object is as follows:
+
   ```yaml
   table_options:
     <table_name>:
@@ -140,6 +147,7 @@ This is the (nested) spec used by the AWS source plugin.
   ```
 
   The naming for all of the fields is the same as the AWS API but in snake case. For example `EndTime` is represented as `end_time`. As of `v18.4.0` the following tables and APIs are supported:
+
   ```yaml
   table_options:
     aws_accessanalyzer_analyzer_findings:
@@ -149,7 +157,7 @@ This is the (nested) spec used by the AWS source plugin.
       - list_metrics:
           <[ListMetrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_ListMetrics.html)>
         get_metric_statistics:
-          # Namespace, MetricName and Dimensions fields cannot be set here and are derived from the result of the respective ListMetrics call 
+          # Namespace, MetricName and Dimensions fields cannot be set here and are derived from the result of the respective ListMetrics call
           - <[GetMetricStatistics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html)>
     aws_cloudtrail_events:
       lookup_events:
@@ -164,8 +172,6 @@ This is the (nested) spec used by the AWS source plugin.
       list_tasks:
         - <[ListTasks](https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ListTasks.html)>
   ```
-
-
 
 ### account
 
@@ -212,7 +218,6 @@ This is used to specify one or more accounts to extract information from. Note t
 
   Regions to use for this account. Defaults to global `regions` setting.
 
-
 ### org
 
 - `admin_account` ([Account](#account))
@@ -255,7 +260,7 @@ This is used to specify one or more accounts to extract information from. Note t
 
 ### Skip Tables
 
-AWS has tables that may contain many resources, nested information, and AWS-provided data.  These tables may cause certain syncs to be slow due to the amount of AWS-provided data and may not be needed.  We recommend only specifying syncing from necessary tables.  If `*` is necessary for tables, Below is a reference configuration of skip tables, where certain tables are skipped.  
+AWS has tables that may contain many resources, nested information, and AWS-provided data. These tables may cause certain syncs to be slow due to the amount of AWS-provided data and may not be needed. We recommend only specifying syncing from necessary tables. If `*` is necessary for tables, Below is a reference configuration of skip tables, where certain tables are skipped.
 
 ```yaml
 kind: source
@@ -270,7 +275,7 @@ spec:
     - aws_docdb_cluster_parameter_groups
     - aws_docdb_engine_versions
     - aws_ec2_instance_types
-    - aws_ec2_vpc_endpoint_services 
+    - aws_ec2_vpc_endpoint_services
     - aws_elasticache_engine_versions
     - aws_elasticache_parameter_groups
     - aws_elasticache_reserved_cache_nodes_offerings
@@ -288,7 +293,6 @@ spec:
     - aws_stepfunctions_map_run_executions
     - aws_stepfunctions_map_runs
   destinations: ["postgresql"]
-  concurrency: 10000
-  spec: 
+  spec:
     # AWS Spec section described below
 ```

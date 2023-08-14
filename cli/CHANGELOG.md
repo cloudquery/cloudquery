@@ -5,6 +5,41 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.13.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.13.0...cli-v3.13.1) (2023-08-09)
+
+
+### Bug Fixes
+
+* **main:** Don't migrate in new plugins if `--no-migrate` is used ([#12962](https://github.com/cloudquery/cloudquery/issues/12962)) ([2b3ede7](https://github.com/cloudquery/cloudquery/commit/2b3ede775abf1bb0fede9e804d2fec4f465f16da))
+
+## [3.13.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.12.4...cli-v3.13.0) (2023-08-09)
+
+
+### Features
+
+* Add protocol v3 tables command (move doc generation to CLI) ([#12758](https://github.com/cloudquery/cloudquery/issues/12758)) ([e2e8575](https://github.com/cloudquery/cloudquery/commit/e2e8575cd4fa8733ceb8c8f709dea1179aa68240))
+
+## [3.12.4](https://github.com/cloudquery/cloudquery/compare/cli-v3.12.3...cli-v3.12.4) (2023-08-08)
+
+
+### Bug Fixes
+
+* Add missing `skip_dependent_tables` to tables call ([#12861](https://github.com/cloudquery/cloudquery/issues/12861)) ([4dbc280](https://github.com/cloudquery/cloudquery/commit/4dbc28076c0518e4f534272562af242134200928))
+
+## [3.12.3](https://github.com/cloudquery/cloudquery/compare/cli-v3.12.2...cli-v3.12.3) (2023-08-08)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to f53878d ([#12778](https://github.com/cloudquery/cloudquery/issues/12778)) ([6f5d58e](https://github.com/cloudquery/cloudquery/commit/6f5d58e3b84d3c76b1d1a3d6c5a488f77995a057))
+
+## [3.12.2](https://github.com/cloudquery/cloudquery/compare/cli-v3.12.1...cli-v3.12.2) (2023-08-02)
+
+
+### Bug Fixes
+
+* Add warning on usage of top level `backend_spec`, add missing quotes ([#12685](https://github.com/cloudquery/cloudquery/issues/12685)) ([db03f33](https://github.com/cloudquery/cloudquery/commit/db03f3300e3af067791969300389899bea31bc90))
+
 ## [3.12.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.12.0...cli-v3.12.1) (2023-08-01)
 
 

@@ -46,6 +46,10 @@ jobs:
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
           skip-build-cache: true
+      - name: Setup CloudQuery
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: 'v3.13.0'
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -57,11 +61,6 @@ jobs:
       - name: Test
         run: make test
       # Sanity integration test, only for release PRs
-      - name: Setup CloudQuery
-        if: startsWith(github.head_ref, 'release-please--branches--main--components')
-        uses: cloudquery/setup-cloudquery@v3
-        with:
-          version: 'v3.9.0'
       - name: Configure AWS credentials
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
         uses: aws-actions/configure-aws-credentials@v2

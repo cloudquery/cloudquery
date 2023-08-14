@@ -4,6 +4,7 @@ stage: GA
 title: Terraform Source Plugin
 description: CloudQuery Terraform source plugin documentation
 ---
+
 # Terraform Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -22,3 +23,10 @@ The CloudQuery Terraform plugin extracts terraform state and loads it into any s
 ## Authentication for S3 backends
 
 <Authentication/>
+
+## Terraform Spec
+
+This is the (nested) spec used by the Terraform source plugin:
+
+- `concurrency` (int, optional, default: 10000):
+  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.

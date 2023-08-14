@@ -117,6 +117,7 @@ Infoblox
 Inforce
 IPs
 Jira
+jira
 json
 JSON
 jsonb

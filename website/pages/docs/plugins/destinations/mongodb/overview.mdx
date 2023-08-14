@@ -35,14 +35,18 @@ The MongoDB destination utilizes batching, and supports [`batch_size`](/docs/ref
 
 This is the (nested) spec used by the MongoDB destination Plugin.
 
-- `connection_string` (string, required)
+- `connection_string` (`string`) (required)
 
-  MongoDB URI as described in the official MongoDB [documentation](https://www.mongodb.com/docs/manual/reference/connection-string/)
+  MongoDB URI as described in the official MongoDB [documentation](https://www.mongodb.com/docs/manual/reference/connection-string/).
 
-- `database` (string, required)
+- `database` (`string`) (required)
 
-  Required database to sync the data to
+  Required database to sync the data to.
 
+- `batch_size` (`integer`) (optional) (default: `1000`)
 
+  This parameter controls the maximum amount of items may be grouped together to be written as a single write.
 
+- `batch_size_bytes` (`integer`) (optional) (default: `4194304` (= 4 MiB))
 
+  This parameter controls the maximum size of items that may be grouped together to be written as a single write.

@@ -106,13 +106,13 @@ Looking at this completed manifest, there are three key elements to pay attentio
 
 In the `args`, you'll see the arguments to be passed to cloudquery, in `envFrom` you're instructing Kubernetes to use the secret you created earlier, and in `volumes` you're telling Kubernetes where to find the config file.
 
-
 ## Step 3: Defining the ConfigMap to hold the CloudQuery Config
 
 When using Kubernetes config files are commonly stored on a special type of object called a ConfigMap.
 ConfigMaps enable you to define collections of text files that can be mounted as directories by Pods and Jobs.
 
 A ConfigMap definition is relatively simple, containing a `data` object where files are defined as key-value pairs.
+
 ```yaml
 apiVersion: v1
 kind: ConfigMap
@@ -136,7 +136,6 @@ data:
       name: digitalocean
       path: cloudquery/digitalocean
       version: "v5.0.2"
-      concurrency: 10000
       tables:
         - "digitalocean_droplets"
         - "digitalocean_databases"
@@ -160,7 +159,6 @@ data:
 
 In this example we're using the DigitalOcean source plugin and the Postgres destination plugin. But you can find out more about building config files and integrations [here](https://www.cloudquery.io/integrations).
 
-
 ## Step 4: Apply the manifest
 
 Apply the config from a terminal using `kubectl apply`
@@ -175,7 +173,7 @@ You can manually trigger the cronjob to run early using:
 
 ```bash copy
 kubectl create job --from=cronjob/<name of cronjob> <name of job>
-````
+```
 
 After which you can query your SQL database to see the results.
 

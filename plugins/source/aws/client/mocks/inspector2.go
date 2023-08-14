@@ -95,6 +95,36 @@ func (mr *MockInspector2ClientMockRecorder) BatchGetCodeSnippet(arg0, arg1 inter
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetCodeSnippet", reflect.TypeOf((*MockInspector2Client)(nil).BatchGetCodeSnippet), varargs...)
 }
 
+// BatchGetFindingDetails mocks base method.
+func (m *MockInspector2Client) BatchGetFindingDetails(arg0 context.Context, arg1 *inspector2.BatchGetFindingDetailsInput, arg2 ...func(*inspector2.Options)) (*inspector2.BatchGetFindingDetailsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &inspector2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetFindingDetails")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetFindingDetails", varargs...)
+	ret0, _ := ret[0].(*inspector2.BatchGetFindingDetailsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetFindingDetails indicates an expected call of BatchGetFindingDetails.
+func (mr *MockInspector2ClientMockRecorder) BatchGetFindingDetails(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetFindingDetails", reflect.TypeOf((*MockInspector2Client)(nil).BatchGetFindingDetails), varargs...)
+}
+
 // BatchGetFreeTrialInfo mocks base method.
 func (m *MockInspector2Client) BatchGetFreeTrialInfo(arg0 context.Context, arg1 *inspector2.BatchGetFreeTrialInfoInput, arg2 ...func(*inspector2.Options)) (*inspector2.BatchGetFreeTrialInfoOutput, error) {
 

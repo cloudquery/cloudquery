@@ -21,7 +21,7 @@ import (
 )
 
 // nolint:dupl
-func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, destinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination, uid string, _ bool) error {
+func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, destinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination, uid string, noMigrate bool) error {
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
 	tables := make(map[string]bool, 0)
@@ -197,6 +197,9 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 				}
 			}
 		case *plugin.Sync_Response_MigrateTable:
+			if noMigrate {
+				continue
+			}
 			sc, err := plugin.NewSchemaFromBytes(m.MigrateTable.Table)
 			if err != nil {
 				return err

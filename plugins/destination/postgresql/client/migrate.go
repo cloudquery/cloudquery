@@ -143,14 +143,9 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 
 // normalize the requested schema to be compatible with what Postgres supports
 func (c *Client) normalizeTables(tables schema.Tables, pgTables schema.Tables) schema.Tables {
-	var result schema.Tables
-	for _, table := range tables {
-		pgTable := pgTables.Get(table.Name)
-		if pgTable == nil {
-			result = append(result, table)
-		} else {
-			result = append(result, c.normalizeTable(table, pgTable))
-		}
+	result := make(schema.Tables, len(tables))
+	for i, table := range tables {
+		result[i] = c.normalizeTable(table, pgTables.Get(table.Name))
 	}
 	return result
 }

@@ -118,6 +118,9 @@
     "plugins/source/hubspot": {
       "component": "plugins-source-hubspot"
     },
+    "plugins/source/jira": {
+      "component": "plugins-source-jira"
+    },
     "plugins/source/k8s": {
       "component": "plugins-source-k8s"
     },
@@ -148,14 +151,28 @@
     "plugins/source/snyk": {
       "component": "plugins-source-snyk"
     },
+    "plugins/source/square": {
+      "component": "plugins-source-square",
+      "release-type": "python"
+    },
     "plugins/source/stripe": {
       "component": "plugins-source-stripe"
     },
     "plugins/source/terraform": {
       "component": "plugins-source-terraform"
     },
+    "plugins/source/vault": {
+      "component": "plugins-source-vault"
+    },
     "plugins/source/test": {
       "component": "plugins-source-test"
+    },
+    "plugins/source/typeform": {
+      "component": "plugins-source-typeform",
+      "extra-files": [
+        "plugin/plugin.py"
+      ],
+      "release-type": "python"
     },
     "scaffold": {
       "component": "scaffold"

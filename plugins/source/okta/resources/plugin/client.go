@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/okta/resources/services/applications"
 	"github.com/cloudquery/cloudquery/plugins/source/okta/resources/services/groups"
 	"github.com/cloudquery/cloudquery/plugins/source/okta/resources/services/users"
+	"github.com/cloudquery/plugin-sdk/v4/docs"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
@@ -105,6 +106,12 @@ func getTables() schema.Tables {
 		applications.Applications(),
 	}
 	if err := transformers.TransformTables(tables); err != nil {
+		panic(err)
+	}
+	if err := transformers.Apply(tables, func(t *schema.Table) error {
+		t.Title = docs.DefaultTitleTransformer(t)
+		return nil
+	}); err != nil {
 		panic(err)
 	}
 	for _, t := range tables {

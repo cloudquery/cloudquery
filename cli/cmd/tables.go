@@ -90,7 +90,9 @@ func tables(cmd *cobra.Command, args []string) error {
 		maxVersion := findMaxCommonVersion(versions, []int{2, 3})
 		switch maxVersion {
 		case 3:
-			return fmt.Errorf("the CLI tables command is not supported for sources with protocol version 3. Please upvote https://github.com/cloudquery/cloudquery/issues/12270 if you need this functionality")
+			if err := tablesV3(ctx, cl, outputPath, format); err != nil {
+				return err
+			}
 		case 2:
 			if err := tablesV2(ctx, cl, outputPath, format); err != nil {
 				return err

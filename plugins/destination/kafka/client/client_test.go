@@ -27,14 +27,11 @@ func TestPlugin(t *testing.T) {
 	ctx := context.Background()
 	p := plugin.NewPlugin("kafka", "development", New)
 	b, err := json.Marshal(&Spec{
-		Brokers:            strings.Split(getenv("CQ_DEST_KAFKA_CONNECTION_STRING", defaultConnectionString), ","),
-		SaslUsername:       getenv("CQ_DEST_KAFKA_SASL_USERNAME", ""),
-		SaslPassword:       getenv("CQ_DEST_KAFKA_SASL_PASSWORD", ""),
-		Verbose:            true,
-		MaxMetadataRetries: 15,
-		FileSpec: &filetypes.FileSpec{
-			Format: filetypes.FormatTypeJSON,
-		},
+		Brokers:      strings.Split(getenv("CQ_DEST_KAFKA_CONNECTION_STRING", defaultConnectionString), ","),
+		SaslUsername: getenv("CQ_DEST_KAFKA_SASL_USERNAME", ""),
+		SaslPassword: getenv("CQ_DEST_KAFKA_SASL_PASSWORD", ""),
+		Verbose:      true,
+		FileSpec:     &filetypes.FileSpec{Format: filetypes.FormatTypeJSON},
 	})
 	if err != nil {
 		t.Fatal(err)
