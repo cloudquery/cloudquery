@@ -30,7 +30,6 @@ jobs:
           token: ${{ secrets.GH_CQ_BOT }}
 
       - name: Setup CloudQuery
-        if: github.event_name == 'pull_request'
         uses: cloudquery/setup-cloudquery@v3
         with:
           version: 'v3.13.0'
