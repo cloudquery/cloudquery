@@ -14,7 +14,7 @@ require (
 	golang.org/x/exp v0.0.0-20230728194245-b0cb94b80691
 )
 
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230805001301-f53878dc8a89
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230813001215-e9683e1ff252
 
 require (
 	github.com/DataDog/zstd v1.5.2 // indirect
