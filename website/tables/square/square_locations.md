@@ -4,6 +4,11 @@ This table shows data for Square Locations.
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on square_locations:
+  - [square_invoices](square_invoices)
+
 ## Columns
 
 | Name          | Type          |
