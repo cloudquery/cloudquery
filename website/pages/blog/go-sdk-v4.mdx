@@ -39,7 +39,7 @@ Similar to the underlying protocol's supported messages for `Sync` and `Write`, 
 
 With this change to streaming that contains messages, we can easily extend the protocol in a backward-compatible way to support more messages like `DeleteTable`, `DeleteRecord`, to support use cases such as CDC or other use cases that require those kinds of data updates.
 
-# Migration Guide
+## Migration Guide
 
 There are a few things to consider when migrating, but for the most part, it will be just a syntactic change.
 
