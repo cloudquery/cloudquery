@@ -34,7 +34,6 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 
-
 	var awsSpec Spec
 	awsSpec.SetDefaults()
 	awsSpec.UsePaidAPIs = true
@@ -42,7 +41,7 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 	c := NewAwsClient(l, &awsSpec)
 	services := builder(t, ctrl)
 	services.Regions = []string{testOpts.Region}
-  c.accountMutex["testAccount"] = &sync.Mutex{}
+	c.accountMutex["testAccount"] = &sync.Mutex{}
 	c.ServicesManager.InitServicesForPartitionAccount("aws", "testAccount", services)
 	c.Partition = "aws"
 	tables := schema.Tables{parentTable}
