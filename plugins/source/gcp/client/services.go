@@ -20,6 +20,7 @@ var GcpServices = map[string]bool{
 	"adsense.googleapis.com":                          true,
 	"adsensehost.googleapis.com":                      true,
 	"advisorynotifications.googleapis.com":            true,
+	"aiplatform.googleapis.com":                       true,
 	"alertcenter.googleapis.com":                      true,
 	"analytics.googleapis.com":                        true,
 	"analyticsadmin.googleapis.com":                   true,
