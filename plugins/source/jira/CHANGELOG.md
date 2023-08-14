@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-jira-v1.0.0...plugins-source-jira-v1.0.1) (2023-08-10)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.4.0 ([#12930](https://github.com/cloudquery/cloudquery/issues/12930)) ([d420406](https://github.com/cloudquery/cloudquery/commit/d420406a59b5ae894cc308a69771ca7da84415a0))
+
 ## 1.0.0 (2023-08-07)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-datadog-v3.1.4...plugins-source-datadog-v3.1.5) (2023-08-10)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.4.0 ([#12850](https://github.com/cloudquery/cloudquery/issues/12850)) ([0861200](https://github.com/cloudquery/cloudquery/commit/086120054b45213947e95be954ba6164b9cf6587))
+
 ## [3.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-datadog-v3.1.3...plugins-source-datadog-v3.1.4) (2023-08-08)
 
 

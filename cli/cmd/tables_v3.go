@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/cloudquery/cloudquery/cli/internal/docs"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -19,30 +20,30 @@ func tablesV3(ctx context.Context, sourceClient *managedplugin.Client, path stri
 	if _, err := sourcePbClient.Init(ctx, &pluginPb.Init_Request{
 		NoConnection: true,
 	}); err != nil {
-		return err
+		return fmt.Errorf("failed to init source: %w", err)
 	}
 	getTablesResp, err := sourcePbClient.GetTables(ctx, &pluginPb.GetTables_Request{
 		Tables: []string{"*"},
 	})
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to get tables: %w", err)
 	}
 	name, err := sourcePbClient.GetName(ctx, &pluginPb.GetName_Request{})
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to get source name: %w", err)
 	}
 
 	schemas, err := pluginPb.NewSchemasFromBytes(getTablesResp.Tables)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to parse schemas: %w", err)
 	}
 	tables, err := schema.NewTablesFromArrowSchemas(schemas)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to convert schemas to tables: %w", err)
 	}
 	topLevelTables, err := tables.UnflattenTables()
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to unflatten tables: %w", err)
 	}
 
 	g := docs.NewGenerator(name.Name, topLevelTables)

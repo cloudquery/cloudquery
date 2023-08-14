@@ -28,6 +28,7 @@ The following tables depend on aws_elbv2_load_balancers:
 |created_time|`timestamp[us, tz=UTC]`|
 |customer_owned_ipv4_pool|`utf8`|
 |dns_name|`utf8`|
+|enforce_security_group_inbound_rules_on_private_link_traffic|`utf8`|
 |ip_address_type|`utf8`|
 |load_balancer_arn|`utf8`|
 |load_balancer_name|`utf8`|
