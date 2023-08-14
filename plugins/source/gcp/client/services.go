@@ -4,7 +4,6 @@ package client
 
 var GcpServices = map[string]bool{
 	// Non discoverable services
-	"aiplatform.googleapis.com": true,
 	"livestream.googleapis.com": true,
 	"cloudiot.googleapis.com":   true,
 	// Discoverable services
@@ -20,6 +19,7 @@ var GcpServices = map[string]bool{
 	"adsense.googleapis.com":                          true,
 	"adsensehost.googleapis.com":                      true,
 	"advisorynotifications.googleapis.com":            true,
+	"aiplatform.googleapis.com":                       true,
 	"alertcenter.googleapis.com":                      true,
 	"analytics.googleapis.com":                        true,
 	"analyticsadmin.googleapis.com":                   true,
@@ -140,7 +140,6 @@ var GcpServices = map[string]bool{
 	"games.googleapis.com":                            true,
 	"gamesConfiguration.googleapis.com":               true,
 	"gamesManagement.googleapis.com":                  true,
-	"gameservices.googleapis.com":                     true,
 	"gkebackup.googleapis.com":                        true,
 	"gkehub.googleapis.com":                           true,
 	"gkeonprem.googleapis.com":                        true,
