@@ -124,6 +124,8 @@ terraform:
   - plugins/source/terraform/**/*
 typeform:
   - plugins/source/typeform/**/*
+vault:
+  - plugins/source/vault/**/*
 vercel:
   - plugins/source/vercel/**/*
 website:
