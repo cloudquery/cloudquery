@@ -8,13 +8,13 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|id (PK)|`string`|
-|location_id|`string`|
-|transaction_id|`string`|
-|tender_id|`string`|
-|created_at|`string`|
-|reason|`string`|
-|amount_money|`extension<json<JSONType>>`|
-|status|`string`|
-|processing_fee_money|`extension<json<JSONType>>`|
-|additional_recipients|`extension<json<JSONType>>`|
+|id (PK)|`utf8`|
+|location_id|`utf8`|
+|transaction_id|`utf8`|
+|tender_id|`utf8`|
+|created_at|`utf8`|
+|reason|`utf8`|
+|amount_money|`json`|
+|status|`utf8`|
+|processing_fee_money|`json`|
+|additional_recipients|`json`|
