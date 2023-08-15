@@ -568,7 +568,7 @@ func TestMigrate(t *testing.T) {
 	}
 
 	require.Equal(t, schema.ColumnList{
-		{Name: "column1", Type: &arrow.Int32Type{}, PrimaryKey: true, Unique: false, NotNull: true},
+		{Name: "column1", Type: &arrow.Int32Type{}, PrimaryKey: true, Unique: true, NotNull: true},
 		{Name: "column2", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
 		{Name: "column3", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
 		{Name: "column4", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},

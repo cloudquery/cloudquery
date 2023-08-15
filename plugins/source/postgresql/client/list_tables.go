@@ -38,7 +38,7 @@ SELECT
 		ELSE false
 	END AS not_null,
     CASE
-		WHEN conkey IS NOT NULL AND contype = 'u' AND array_position(conkey, pg_attribute.attnum) > 0 THEN true
+		WHEN conkey IS NOT NULL AND (contype = 'p' OR contype = 'u') AND array_position(conkey, pg_attribute.attnum) > 0 THEN true
 		ELSE false
 	END AS is_unique,
 	COALESCE(pg_constraint.conname, '') AS constraint_name
