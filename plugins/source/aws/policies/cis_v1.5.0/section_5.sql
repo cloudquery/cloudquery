@@ -10,6 +10,7 @@
 \echo "Executing check 5.2"
 \ir ../queries/ec2/no_broad_public_ipv4_ingress_on_port_22_3389.sql
 \set check_id '5.3'
+\echo "Executing check 5.3"
 \ir ../queries/ec2/no_broad_public_ipv6_ingress_on_port_22_3389.sql
 \set check_id '5.4'
 \echo "Executing check 5.4"
