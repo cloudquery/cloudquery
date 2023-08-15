@@ -34,7 +34,7 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 		return err
 	}
 
-	schedulerClient := &client.TestClient{
+	schedulerClient := &client.Client{
 		Logger: c.logger,
 		Spec:   c.config,
 	}
