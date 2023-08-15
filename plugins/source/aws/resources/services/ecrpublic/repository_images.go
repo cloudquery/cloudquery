@@ -39,7 +39,7 @@ func fetchEcrpublicRepositoryImages(ctx context.Context, meta schema.ClientMeta,
 		MaxResults:     aws.Int32(1000),
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecrpublic
+	svc := cl.Services(client.AWSServiceEcrpublic).Ecrpublic
 	paginator := ecrpublic.NewDescribeImagesPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *ecrpublic.Options) {

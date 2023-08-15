@@ -26,7 +26,7 @@ func ResourcePolicies() *schema.Table {
 
 func fetchOrganizationsResourcePolicies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Organizations
+	svc := cl.Services(client.AWSServiceOrganizations).Organizations
 	o, err := svc.DescribeResourcePolicy(ctx, &organizations.DescribeResourcePolicyInput{}, func(options *organizations.Options) {
 		options.Region = cl.Region
 	})

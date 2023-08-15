@@ -51,7 +51,7 @@ func MlTransforms() *schema.Table {
 
 func fetchGlueMlTransforms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Glue
+	svc := cl.Services(client.AWSServiceGlue).Glue
 	paginator := glue.NewGetMLTransformsPaginator(svc, &glue.GetMLTransformsInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *glue.Options) {
@@ -71,7 +71,7 @@ func resolveGlueMlTransformArn(ctx context.Context, meta schema.ClientMeta, reso
 }
 func resolveGlueMlTransformTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Glue
+	svc := cl.Services(client.AWSServiceGlue).Glue
 	r := resource.Item.(types.MLTransform)
 	result, err := svc.GetTags(ctx, &glue.GetTagsInput{
 		ResourceArn: aws.String(mlTransformARN(cl, &r)),

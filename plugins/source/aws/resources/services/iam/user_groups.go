@@ -38,7 +38,7 @@ func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *sch
 	var config iam.ListGroupsForUserInput
 	p := parent.Item.(*types.User)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services(client.AWSServiceIam).Iam
 	config.UserName = p.UserName
 	paginator := iam.NewListGroupsForUserPaginator(svc, &config)
 	for paginator.HasMorePages() {

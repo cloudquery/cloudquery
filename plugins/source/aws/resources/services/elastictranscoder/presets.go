@@ -34,7 +34,7 @@ func Presets() *schema.Table {
 
 func fetchElastictranscoderPresets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elastictranscoder
+	svc := cl.Services(client.AWSServiceElastictranscoder).Elastictranscoder
 
 	p := elastictranscoder.NewListPresetsPaginator(svc, nil)
 	for p.HasMorePages() {

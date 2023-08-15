@@ -41,7 +41,7 @@ func fetchEc2ByoipCidrs(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}[cl.Region]; ok {
 		return nil
 	}
-	svc := cl.Services().Ec2
+	svc := cl.Services(client.AWSServiceEc2).Ec2
 	config := ec2.DescribeByoipCidrsInput{
 		MaxResults: aws.Int32(100),
 	}

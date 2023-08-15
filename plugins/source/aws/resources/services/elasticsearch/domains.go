@@ -48,7 +48,7 @@ func Domains() *schema.Table {
 
 func fetchElasticsearchDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticsearchservice
+	svc := cl.Services(client.AWSServiceElasticsearchservice).Elasticsearchservice
 	out, err := svc.ListDomainNames(ctx, nil, func(options *elasticsearchservice.Options) {
 		options.Region = cl.Region
 	})
@@ -63,7 +63,7 @@ func fetchElasticsearchDomains(ctx context.Context, meta schema.ClientMeta, pare
 
 func getDomain(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticsearchservice
+	svc := cl.Services(client.AWSServiceElasticsearchservice).Elasticsearchservice
 
 	out, err := svc.DescribeElasticsearchDomain(ctx,
 		&elasticsearchservice.DescribeElasticsearchDomainInput{
@@ -84,7 +84,7 @@ func getDomain(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 
 func resolveDomainTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticsearchservice
+	svc := cl.Services(client.AWSServiceElasticsearchservice).Elasticsearchservice
 
 	tagsOutput, err := svc.ListTags(ctx,
 		&elasticsearchservice.ListTagsInput{
@@ -103,7 +103,7 @@ func resolveDomainTags(ctx context.Context, meta schema.ClientMeta, resource *sc
 
 func resolveAuthorizedPrincipals(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticsearchservice
+	svc := cl.Services(client.AWSServiceElasticsearchservice).Elasticsearchservice
 
 	input := &elasticsearchservice.ListVpcEndpointAccessInput{
 		DomainName: resource.Item.(*types.ElasticsearchDomainStatus).DomainName,

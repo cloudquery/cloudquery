@@ -26,7 +26,7 @@ func ShareInvitations() *schema.Table {
 
 func fetchShareInvitations(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	service := cl.Services().Wellarchitected
+	service := cl.Services(client.AWSServiceWellarchitected).Wellarchitected
 
 	for _, shareResourceType := range types.ShareResourceType("").Values() {
 		p := wellarchitected.NewListShareInvitationsPaginator(service,

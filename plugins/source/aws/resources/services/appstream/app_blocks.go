@@ -36,7 +36,7 @@ func AppBlocks() *schema.Table {
 func fetchAppstreamAppBlocks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input appstream.DescribeAppBlocksInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Appstream
+	svc := cl.Services(client.AWSServiceAppstream).Appstream
 	// No paginator available
 	for {
 		response, err := svc.DescribeAppBlocks(ctx, &input, func(options *appstream.Options) {
