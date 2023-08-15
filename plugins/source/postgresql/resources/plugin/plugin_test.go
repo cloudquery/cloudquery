@@ -216,7 +216,9 @@ func createTableWithUniqueKeys(ctx context.Context, conn *pgxpool.Pool, tableNam
 		column13 int unique,
 		column14 int unique,
 		column15 int unique,
-		column16 int
+		column16 int,
+		column17 int,
+		unique(column16, column17)
 	 )
  `
 
@@ -584,5 +586,6 @@ func TestMigrate(t *testing.T) {
 		{Name: "column14", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
 		{Name: "column15", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
 		{Name: "column16", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: false, NotNull: false},
+		{Name: "column17", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: false, NotNull: false},
 	}, table.Columns)
 }
