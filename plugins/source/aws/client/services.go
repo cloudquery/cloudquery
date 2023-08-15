@@ -500,5 +500,7 @@ func (s *Services) InitService(awsConfig *aws.Config, service string) {
 		s.Workspaces = workspaces.NewFromConfig(c)
 	case "xray":
 		s.Xray = xray.NewFromConfig(c)
+	default:
+		panic("unknown service: " + service)
 	}
 }
