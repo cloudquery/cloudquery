@@ -41,7 +41,7 @@
   "plugins/destination/mongodb+FILLER": "0.0.0",
   "plugins/source/gitlab": "4.1.5",
   "plugins/source/gitlab+FILLER": "0.0.0",
-  "plugins/source/azuredevops": "3.0.4",
+  "plugins/source/azuredevops": "3.0.5",
   "plugins/source/azuredevops+FILLER": "0.0.0",
   "plugins/source/salesforce": "3.0.5",
   "plugins/source/salesforce+FILLER": "0.0.0",
