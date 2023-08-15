@@ -2,6 +2,7 @@ package emr
 
 import (
 	"context"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -32,7 +33,7 @@ func ReleaseLabels() *schema.Table {
 
 func fetchEmrReleaseLabels(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Emr
+	svc := cl.Services(client.AWSServiceEmr).Emr
 	paginator := emr.NewListReleaseLabelsPaginator(svc, &emr.ListReleaseLabelsInput{})
 	for paginator.HasMorePages() {
 		response, err := paginator.NextPage(ctx, func(options *emr.Options) {
@@ -48,7 +49,7 @@ func fetchEmrReleaseLabels(ctx context.Context, meta schema.ClientMeta, _ *schem
 
 func getReleaseLabel(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Emr
+	svc := cl.Services(client.AWSServiceEmr).Emr
 	releaseLabel := resource.Item.(string)
 
 	config := &emr.DescribeReleaseLabelInput{ReleaseLabel: &releaseLabel}

@@ -33,7 +33,7 @@ func Ec2InstanceRecommendations() *schema.Table {
 
 func fetchEc2InstanceRecommendations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Computeoptimizer
+	svc := cl.Services(client.AWSServiceComputeoptimizer).Computeoptimizer
 
 	input := computeoptimizer.GetEC2InstanceRecommendationsInput{
 		MaxResults: aws.Int32(1000),

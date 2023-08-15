@@ -34,8 +34,7 @@ func ResponseHeaderPolicies() *schema.Table {
 
 func fetchCloudfrontResponseHeadersPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	s := cl.Services()
-	svc := s.Cloudfront
+	svc := cl.Services(client.AWSServiceCloudfront).Cloudfront
 	var config cloudfront.ListResponseHeadersPoliciesInput
 	for {
 		response, err := svc.ListResponseHeadersPolicies(ctx, &config, func(options *cloudfront.Options) {

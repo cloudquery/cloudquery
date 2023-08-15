@@ -42,7 +42,7 @@ func Products() *schema.Table {
 
 func fetchServicecatalogProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Servicecatalog
+	svc := cl.Services(client.AWSServiceServicecatalog).Servicecatalog
 
 	listInput := new(servicecatalog.SearchProductsAsAdminInput)
 	paginator := servicecatalog.NewSearchProductsAsAdminPaginator(svc, listInput)
@@ -61,7 +61,7 @@ func fetchServicecatalogProducts(ctx context.Context, meta schema.ClientMeta, pa
 
 func getServicecatalogProduct(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Servicecatalog
+	svc := cl.Services(client.AWSServiceServicecatalog).Servicecatalog
 
 	response, err := svc.DescribeProductAsAdmin(ctx, &servicecatalog.DescribeProductAsAdminInput{
 		Id: resource.Item.(types.ProductViewDetail).ProductViewSummary.ProductId,

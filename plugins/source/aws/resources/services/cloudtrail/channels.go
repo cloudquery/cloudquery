@@ -36,7 +36,7 @@ func Channels() *schema.Table {
 
 func fetchCloudtrailChannels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudtrail
+	svc := cl.Services(client.AWSServiceCloudtrail).Cloudtrail
 	paginator := cloudtrail.NewListChannelsPaginator(svc, nil)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cloudtrail.Options) {
@@ -52,7 +52,7 @@ func fetchCloudtrailChannels(ctx context.Context, meta schema.ClientMeta, parent
 
 func getChannel(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudtrail
+	svc := cl.Services(client.AWSServiceCloudtrail).Cloudtrail
 	item := resource.Item.(types.Channel)
 
 	params := cloudtrail.GetChannelInput{

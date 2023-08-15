@@ -40,8 +40,7 @@ func CachePolicies() *schema.Table {
 func fetchCloudfrontCachePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config cloudfront.ListCachePoliciesInput
 	cl := meta.(*client.Client)
-	s := cl.Services()
-	svc := s.Cloudfront
+	svc := cl.Services(client.AWSServiceCloudfront).Cloudfront
 	for {
 		response, err := svc.ListCachePolicies(ctx, nil, func(options *cloudfront.Options) {
 			options.Region = cl.Region

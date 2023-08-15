@@ -50,7 +50,7 @@ func fetchApigatewayv2ApiStages(ctx context.Context, meta schema.ClientMeta, par
 		ApiId: r.ApiId,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigatewayv2
+	svc := cl.Services(client.AWSServiceApigatewayv2).Apigatewayv2
 	// No paginator available
 	for {
 		response, err := svc.GetStages(ctx, &config, func(options *apigatewayv2.Options) {

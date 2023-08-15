@@ -49,7 +49,7 @@ type WrappedSageMakerModel struct {
 
 func fetchSagemakerModels(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sagemaker
+	svc := cl.Services(client.AWSServiceSagemaker).Sagemaker
 	config := sagemaker.ListModelsInput{}
 	paginator := sagemaker.NewListModelsPaginator(svc, &config)
 	for paginator.HasMorePages() {
@@ -66,7 +66,7 @@ func fetchSagemakerModels(ctx context.Context, meta schema.ClientMeta, _ *schema
 
 func getModel(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sagemaker
+	svc := cl.Services(client.AWSServiceSagemaker).Sagemaker
 	n := resource.Item.(types.ModelSummary)
 
 	response, err := svc.DescribeModel(ctx, &sagemaker.DescribeModelInput{
@@ -89,7 +89,7 @@ func getModel(ctx context.Context, meta schema.ClientMeta, resource *schema.Reso
 func resolveSagemakerModelTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	r := resource.Item.(*WrappedSageMakerModel)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sagemaker
+	svc := cl.Services(client.AWSServiceSagemaker).Sagemaker
 
 	config := &sagemaker.ListTagsInput{
 		ResourceArn: r.ModelArn,
