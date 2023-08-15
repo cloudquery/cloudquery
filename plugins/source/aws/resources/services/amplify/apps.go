@@ -35,7 +35,7 @@ func Apps() *schema.Table {
 
 func fetchApps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Amplify
+	svc := cl.Services(client.AWSServiceAmplify).Amplify
 
 	config := amplify.ListAppsInput{
 		MaxResults: int32(100),

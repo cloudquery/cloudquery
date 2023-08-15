@@ -40,7 +40,7 @@ func AccessPoints() *schema.Table {
 
 func fetchAccessPoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Efs
+	svc := cl.Services(client.AWSServiceEfs).Efs
 	paginator := efs.NewDescribeAccessPointsPaginator(svc, nil)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *efs.Options) {

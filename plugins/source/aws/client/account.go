@@ -84,7 +84,6 @@ func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, aws
 		accountId: *output.Account,
 		svcs:      initServices(awsCfg, account.Regions),
 	}
-	// Do not rely on this field, it will be removed once https://github.com/aws/aws-sdk-go-v2/issues/2163 is resolved
 	c.AWSConfig = &awsCfg
 
 	return &svcsDetails, nil

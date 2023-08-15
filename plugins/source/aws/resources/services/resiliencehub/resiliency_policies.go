@@ -24,7 +24,7 @@ func ResiliencyPolicies() *schema.Table {
 
 func fetchResiliencyPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Resiliencehub
+	svc := cl.Services(client.AWSServiceResiliencehub).Resiliencehub
 	p := resiliencehub.NewListResiliencyPoliciesPaginator(svc, &resiliencehub.ListResiliencyPoliciesInput{})
 	for p.HasMorePages() {
 		out, err := p.NextPage(ctx, func(options *resiliencehub.Options) {

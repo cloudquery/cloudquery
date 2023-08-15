@@ -38,7 +38,7 @@ func fetchLambdaFunctionVersions(ctx context.Context, meta schema.ClientMeta, pa
 	}
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lambda
+	svc := cl.Services(client.AWSServiceLambda).Lambda
 	config := lambda.ListVersionsByFunctionInput{
 		FunctionName: p.Configuration.FunctionName,
 	}

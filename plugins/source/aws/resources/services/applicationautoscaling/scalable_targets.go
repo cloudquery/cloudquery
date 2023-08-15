@@ -27,7 +27,7 @@ func ScalableTargets() *schema.Table {
 
 func fetchScalableTargets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Applicationautoscaling
+	svc := cl.Services(client.AWSServiceApplicationautoscaling).Applicationautoscaling
 
 	config := applicationautoscaling.DescribeScalableTargetsInput{
 		ServiceNamespace: types.ServiceNamespace(cl.AutoscalingNamespace),

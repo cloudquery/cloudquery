@@ -33,7 +33,7 @@ func AlternateContacts() *schema.Table {
 
 func fetchAccountAlternateContacts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Account
+	svc := cl.Services(client.AWSServiceAccount).Account
 	var contactTypes types.AlternateContactType
 	for _, acType := range contactTypes.Values() {
 		var input account.GetAlternateContactInput

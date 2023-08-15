@@ -44,7 +44,7 @@ func fetchRamResourcesByOwner(ctx context.Context, meta schema.ClientMeta, share
 		MaxResults:    aws.Int32(500),
 		ResourceOwner: shareType,
 	}
-	paginator := ram.NewListResourcesPaginator(meta.(*client.Client).Services().Ram, input)
+	paginator := ram.NewListResourcesPaginator(meta.(*client.Client).Services(client.AWSServiceRam).Ram, input)
 	for paginator.HasMorePages() {
 		response, err := paginator.NextPage(ctx, func(options *ram.Options) {
 			options.Region = cl.Region

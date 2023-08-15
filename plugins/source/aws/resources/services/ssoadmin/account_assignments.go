@@ -43,7 +43,7 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 
 func fetchSsoadminAccountAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ssoadmin
+	svc := cl.Services(client.AWSServiceSsoadmin).Ssoadmin
 	configListAccountForPPS := ssoadmin.ListAccountsForProvisionedPermissionSetInput{
 		InstanceArn:      parent.Parent.Item.(types.InstanceMetadata).InstanceArn,
 		PermissionSetArn: parent.Item.(*types.PermissionSet).PermissionSetArn,

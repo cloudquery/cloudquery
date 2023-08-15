@@ -34,7 +34,7 @@ func PatchBaselines() *schema.Table {
 
 func fetchSsmPatchBaselines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ssm
+	svc := cl.Services(client.AWSServiceSsm).Ssm
 
 	paginator := ssm.NewDescribePatchBaselinesPaginator(svc, nil)
 	for paginator.HasMorePages() {

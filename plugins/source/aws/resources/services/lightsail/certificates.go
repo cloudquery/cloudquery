@@ -37,7 +37,7 @@ func fetchLightsailCertificates(ctx context.Context, meta schema.ClientMeta, par
 		IncludeCertificateDetails: true,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lightsail
+	svc := cl.Services(client.AWSServiceLightsail).Lightsail
 	response, err := svc.GetCertificates(ctx, &input, func(options *lightsail.Options) {
 		options.Region = cl.Region
 	})
