@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/mocks"
 
 	resourcemock "github.com/cloudquery/cloudquery/plugins/source/k8s/mocks/policy/v1"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 	v1 "k8s.io/api/core/v1"
 	policy "k8s.io/api/policy/v1"

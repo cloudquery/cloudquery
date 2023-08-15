@@ -17,8 +17,6 @@ The following tables depend on aws_route53_hosted_zones:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -31,6 +29,7 @@ The following tables depend on aws_route53_hosted_zones:
 |resource_record_set_count|`int64`|
 |tags|`json`|
 |delegation_set_id|`utf8`|
+|delegation_set|`json`|
 |vpcs|`json`|
 
 ## Example Queries

@@ -12,7 +12,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/cloudquery/plugin-sdk/v3/caser"
+	"github.com/cloudquery/plugin-sdk/v4/caser"
 )
 
 //go:embed templates/*.go.tpl

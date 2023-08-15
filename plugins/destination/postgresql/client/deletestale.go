@@ -4,24 +4,25 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"time"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
 )
 
-func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source string, syncTime time.Time) error {
+// DeleteStaleBatch deletes stale records from the destination table. It forms part of the writer.MixedBatchWriter interface.
+func (c *Client) DeleteStaleBatch(ctx context.Context, messages message.WriteDeleteStales) error {
 	batch := &pgx.Batch{}
-	for _, table := range tables {
+	for _, msg := range messages {
 		var sb strings.Builder
 		sb.WriteString("delete from ")
-		sb.WriteString(pgx.Identifier{table.Name}.Sanitize())
+		sb.WriteString(pgx.Identifier{msg.TableName}.Sanitize())
 		sb.WriteString(" where ")
 		sb.WriteString(schema.CqSourceNameColumn.Name)
 		sb.WriteString(" = $1 and ")
 		sb.WriteString(schema.CqSyncTimeColumn.Name)
 		sb.WriteString(" < $2")
-		batch.Queue(sb.String(), source, syncTime)
+		batch.Queue(sb.String(), msg.SourceName, msg.SyncTime)
 	}
 	br := c.conn.SendBatch(ctx, batch)
 	if err := br.Close(); err != nil {

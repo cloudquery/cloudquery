@@ -5,9 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/oracle/oci-go-sdk/v65/common"
 	"github.com/oracle/oci-go-sdk/v65/identity"
 	"github.com/oracle/oci-go-sdk/v65/objectstorage"
@@ -37,7 +35,7 @@ type Client struct {
 	logger zerolog.Logger
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, _ Spec) (schema.ClientMeta, error) {
 	configProvider := common.DefaultConfigProvider()
 
 	tenancyOcid, err := configProvider.TenancyOCID()

@@ -5,7 +5,7 @@ import (
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"github.com/cloudquery/cloudquery/plugins/source/alicloud/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 )
 
 func buildOssBucketStats(t *testing.T, mock *mocks.MockOssClient, bucketName string) {

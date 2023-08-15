@@ -20,6 +20,7 @@
   - [github_repository_branches](tables/github_repository_branches)
   - [github_repository_dependabot_alerts](tables/github_repository_dependabot_alerts)
   - [github_repository_dependabot_secrets](tables/github_repository_dependabot_secrets)
+  - [github_repository_keys](tables/github_repository_keys)
 - [github_teams](tables/github_teams)
   - [github_team_members](tables/github_team_members)
   - [github_team_repositories](tables/github_team_repositories)

@@ -17,8 +17,6 @@ The following tables depend on aws_cloudformation_stacks:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -41,6 +39,7 @@ The following tables depend on aws_cloudformation_stacks:
 |outputs|`json`|
 |parameters|`json`|
 |parent_id|`utf8`|
+|retain_except_on_create|`bool`|
 |role_arn|`utf8`|
 |rollback_configuration|`json`|
 |root_id|`utf8`|

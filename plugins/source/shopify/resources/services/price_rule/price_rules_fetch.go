@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func fetchPriceRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
@@ -19,7 +19,7 @@ func fetchPriceRules(ctx context.Context, meta schema.ClientMeta, parent *schema
 	min := time.Time{}
 
 	if cl.Backend != nil {
-		value, err := cl.Backend.Get(ctx, key, cl.ID())
+		value, err := cl.Backend.GetKey(ctx, key)
 		if err != nil {
 			return fmt.Errorf("failed to retrieve state from backend: %w", err)
 		}
@@ -56,7 +56,7 @@ func fetchPriceRules(ctx context.Context, meta schema.ClientMeta, parent *schema
 	}
 
 	if cl.Backend != nil {
-		if err := cl.Backend.Set(ctx, key, cl.ID(), min.Format(time.RFC3339)); err != nil {
+		if err := cl.Backend.SetKey(ctx, key, min.Format(time.RFC3339)); err != nil {
 			return fmt.Errorf("failed to store state to backend: %w", err)
 		}
 	}

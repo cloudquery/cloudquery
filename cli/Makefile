@@ -1,6 +1,6 @@
 .PHONY: lint
 lint:
-	golangci-lint run --timeout 10m --verbose
+	golangci-lint run --timeout 10m
 
 .PHONY: test
 test:

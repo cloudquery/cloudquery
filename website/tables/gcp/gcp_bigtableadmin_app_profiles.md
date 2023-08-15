@@ -20,3 +20,4 @@ This table depends on [gcp_bigtableadmin_instances](gcp_bigtableadmin_instances)
 |name (PK)|`utf8`|
 |etag|`utf8`|
 |description|`utf8`|
+|routing_policy|`json`|

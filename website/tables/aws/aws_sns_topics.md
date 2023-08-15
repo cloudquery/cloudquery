@@ -10,8 +10,6 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -44,6 +42,28 @@ SELECT
   arn AS resource_id,
   CASE
   WHEN kms_master_key_id IS NULL OR kms_master_key_id = '' THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_sns_topics;
+```
+
+### Logging of delivery status should be enabled for notification messages sent to a topic
+
+```sql
+SELECT
+  'Logging of delivery status should be enabled for notification messages sent to a topic'
+    AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN (unknown_fields->'HTTPSuccessFeedbackRoleArn') IS NULL
+  AND (unknown_fields->'FirehoseSuccessFeedbackRoleArn') IS NULL
+  AND (unknown_fields->'LambdaSuccessFeedbackRoleArn') IS NULL
+  AND (unknown_fields->'ApplicationSuccessFeedbackRoleArn') IS NULL
+  AND (unknown_fields->'SQSSuccessFeedbackRoleArn') IS NULL
+  THEN 'fail'
   ELSE 'pass'
   END
     AS status

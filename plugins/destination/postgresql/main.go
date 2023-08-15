@@ -1,10 +1,13 @@
 package main
 
 import (
+	"context"
+	"log"
+
 	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/client"
 	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/v3/serve"
+	pluginSDK "github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/serve"
 )
 
 const (
@@ -12,6 +15,13 @@ const (
 )
 
 func main() {
-	p := destination.NewPlugin("postgresql", plugin.Version, client.New, destination.WithDefaultBatchSize(1000))
-	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
+	p := pluginSDK.NewPlugin("postgresql", plugin.Version, client.New)
+	server := serve.Plugin(p,
+		serve.WithPluginSentryDSN(sentryDSN),
+		serve.WithDestinationV0V1Server(),
+	)
+	err := server.Serve(context.Background())
+	if err != nil {
+		log.Fatalf("failed to serve plugin: %v", err)
+	}
 }

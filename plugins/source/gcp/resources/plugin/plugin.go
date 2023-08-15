@@ -7,6 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/docs"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"golang.org/x/exp/maps"
 )
 
 var (
@@ -80,32 +81,24 @@ var gcpExceptions = map[string]string{
 	"websecurityscanner":   "Web Security Scanner",
 }
 
-func titleTransformer(table *schema.Table) {
+func titleTransformer(table *schema.Table) error {
 	if table.Title != "" {
-		return
+		return nil
 	}
-	exceptions := make(map[string]string)
-	for k, v := range docs.DefaultTitleExceptions {
-		exceptions[k] = v
-	}
+	exceptions := maps.Clone(docs.DefaultTitleExceptions)
 	for k, v := range gcpExceptions {
 		exceptions[k] = v
 	}
 	csr := caser.New(caser.WithCustomExceptions(exceptions))
 	t := csr.ToTitle(table.Name)
 	table.Title = strings.Trim(strings.ReplaceAll(t, "  ", " "), " ")
-	for _, rel := range table.Relations {
-		titleTransformer(rel)
-	}
+	return nil
 }
 
 func Plugin() *plugin.Plugin {
-	// here you can append custom non-generated tables
 	return plugin.NewPlugin(
 		"gcp",
 		Version,
-		// allTables,
 		NewClient,
-		// plugin.WithTitleTransformer(titleTransformer),
 	)
 }

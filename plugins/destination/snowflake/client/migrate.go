@@ -7,13 +7,12 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"golang.org/x/sync/errgroup"
 )
 
 const (
-	// Use ILIKE for case insensitivity
-
-	isTableExistSQL = "SELECT count(*) FROM information_schema.tables WHERE table_name ILIKE ?;"
-	sqlTableInfo    = "select column_name, data_type, is_nullable from information_schema.columns where table_name ILIKE ?;"
+	sqlTableList = "select table_name from information_schema.tables where table_schema=CURRENT_SCHEMA();"
+	sqlTableInfo = "select column_name, data_type, is_nullable from information_schema.columns where table_name ILIKE ?;"
 )
 
 type columnInfo struct {
@@ -26,72 +25,68 @@ type tableInfo struct {
 	columns []columnInfo
 }
 
-func (i *tableInfo) getColumn(name string) *columnInfo {
-	for _, col := range i.columns {
-		if col.name == name {
-			return &col
+func (i *tableInfo) getColumn(name string) []columnInfo {
+	var cols []columnInfo
+	for idx, col := range i.columns {
+		if strings.ToUpper(col.name) == name {
+			cols = append(cols, i.columns[idx])
 		}
 	}
-	return nil
+	return cols
 }
 
 func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
+	tableList, err := c.listTables(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to get list of tables: %w", err)
+	}
+
+	g, gctx := errgroup.WithContext(ctx)
+	g.SetLimit(c.spec.MigrateConcurrency)
 	for _, msg := range msgs {
 		table := msg.Table
+		migrateForce := msg.MigrateForce
 		tableName := table.Name
-		c.logger.Debug().Str("table", tableName).Msg("Migrating table")
-		tableExist, err := c.isTableExistSQL(ctx, tableName)
-		if err != nil {
-			return fmt.Errorf("failed to check if table %s exists: %w", tableName, err)
-		}
-		if tableExist {
-			c.logger.Debug().Str("table", tableName).Msg("Table exists, auto-migrating")
-			if err := c.autoMigrateTable(ctx, table); err != nil {
-				return err
+		g.Go(func() error {
+			c.logger.Debug().Str("table", tableName).Msg("Migrating table")
+			if tableExists(tableList, tableName) {
+				c.logger.Debug().Str("table", tableName).Msg("Table exists, auto-migrating")
+				if err := c.autoMigrateTable(gctx, table, migrateForce); err != nil {
+					return err
+				}
+			} else {
+				c.logger.Debug().Str("table", tableName).Msg("Table doesn't exist, creating")
+				if err := c.createTableIfNotExist(gctx, table); err != nil {
+					return err
+				}
 			}
-		} else {
-			c.logger.Debug().Str("table", tableName).Msg("Table doesn't exist, creating")
-			if err := c.createTableIfNotExist(ctx, table); err != nil {
-				return err
-			}
-		}
+			return nil
+		})
 	}
-	return nil
+	return g.Wait()
 }
 
-// This is the responsibility of the CLI of the client to lock before running migration
-func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
-	for _, table := range tables {
-		tableName := table.Name
-		c.logger.Debug().Str("table", tableName).Msg("Migrating table")
-		tableExist, err := c.isTableExistSQL(ctx, tableName)
-		if err != nil {
-			return fmt.Errorf("failed to check if table %s exists: %w", tableName, err)
-		}
-		if tableExist {
-			c.logger.Debug().Str("table", tableName).Msg("Table exists, auto-migrating")
-			if err := c.autoMigrateTable(ctx, table); err != nil {
-				return err
-			}
-		} else {
-			c.logger.Debug().Str("table", tableName).Msg("Table doesn't exist, creating")
-			if err := c.createTableIfNotExist(ctx, table); err != nil {
-				return err
-			}
-		}
+func (c *Client) listTables(ctx context.Context) ([]string, error) {
+	var tables []string
+	rows, err := c.db.QueryContext(ctx, sqlTableList)
+	if err != nil {
+		return nil, err
 	}
-	return nil
+	defer rows.Close()
+	for rows.Next() {
+		var t string
+		if err := rows.Scan(&t); err != nil {
+			return nil, err
+		}
+		tables = append(tables, t)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return tables, nil
 }
 
-func (c *Client) isTableExistSQL(ctx context.Context, table string) (bool, error) {
-	var tableExist int
-	if err := c.db.QueryRowContext(ctx, isTableExistSQL, table).Scan(&tableExist); err != nil {
-		return false, fmt.Errorf("failed to check if table %s exists: %w", table, err)
-	}
-	return tableExist == 1, nil
-}
-
-func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) error {
+func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, force bool) error {
 	var err error
 	var info *tableInfo
 	tableName := table.Name
@@ -100,19 +95,52 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 	}
 
 	for _, col := range table.Columns {
-		columnName := col.Name
+		columnName := strings.ToUpper(col.Name)
 		columnType := c.SchemaTypeToSnowflake(col.Type)
 		snowflakeColumn := info.getColumn(columnName)
 
+		if len(snowflakeColumn) == 1 && !strings.EqualFold(snowflakeColumn[0].typ, columnType) {
+			if !force {
+				return fmt.Errorf("column %s on table %s has different type than schema, expected %s got %s. migrate manually or consider using 'migrate_mode: forced'", col.Name, tableName, columnType, snowflakeColumn[0].typ)
+			}
+			c.logger.Debug().Str("table", tableName).Str("column", col.Name).Str("current_type", snowflakeColumn[0].typ).Str("want_type", columnType).Msg("Column type mismatch, dropping to recreate")
+			sql := fmt.Sprintf("alter table %s drop column %q", tableName, columnName)
+			if _, err := c.db.ExecContext(ctx, sql); err != nil {
+				return fmt.Errorf("failed to drop column %s from table %s: %w", col.Name, tableName, err)
+			}
+			snowflakeColumn = nil
+			// proceed to add column
+		}
+
 		switch {
-		case snowflakeColumn == nil:
+		case len(snowflakeColumn) == 0:
 			c.logger.Debug().Str("table", tableName).Str("column", col.Name).Msg("Column doesn't exist, creating")
-			sql := "alter table " + tableName + " add column \"" + columnName + "\"" + columnType
+			sql := fmt.Sprintf("alter table %s add column %q %s", tableName, columnName, columnType)
 			if _, err := c.db.ExecContext(ctx, sql); err != nil {
 				return fmt.Errorf("failed to add column %s on table %s: %w", col.Name, tableName, err)
 			}
-		case !strings.EqualFold(snowflakeColumn.typ, columnType):
-			return fmt.Errorf("column %s on table %s has different type than schema, expected %s got %s. Try dropping the column and re-running", col.Name, tableName, columnType, snowflakeColumn.typ)
+
+		// have multiple columns, drop all but one
+		case len(snowflakeColumn) > 1 && !force:
+			return fmt.Errorf("table %s has multiple columns for %s. migrate manually or consider using 'migrate_mode: forced'", tableName, col.Name)
+
+		case len(snowflakeColumn) > 1:
+			for _, sc := range snowflakeColumn {
+				if sc.name != columnName {
+					c.logger.Debug().Str("table", tableName).Str("column", columnName).Msg("Column exists with different name, dropping")
+					sql := fmt.Sprintf("alter table %s drop column %q", tableName, sc.name)
+					if _, err := c.db.ExecContext(ctx, sql); err != nil {
+						return fmt.Errorf("failed to drop column %s on table %s: %w", sc.name, tableName, err)
+					}
+				}
+			}
+
+		case snowflakeColumn[0].name != columnName: // case sensitivity
+			c.logger.Debug().Str("table", tableName).Str("column", columnName).Str("current_name", snowflakeColumn[0].name).Msg("Column name doesn't match, migrating")
+			sql := fmt.Sprintf("alter table %s rename column %q TO %q", tableName, snowflakeColumn[0].name, columnName)
+			if _, err := c.db.ExecContext(ctx, sql); err != nil {
+				return fmt.Errorf("failed to rename column %s on table %s: %w", snowflakeColumn[0].name, tableName, err)
+			}
 		}
 	}
 	return nil
@@ -130,8 +158,8 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 	for i, col := range table.Columns {
 		sqlType := c.SchemaTypeToSnowflake(col.Type)
 		// TODO: sanitize column name
-		fieldDef := `"` + col.Name + `" ` + sqlType
-		if col.Name == "_cq_id" {
+		fieldDef := `"` + strings.ToUpper(col.Name) + `" ` + sqlType
+		if col.Name == schema.CqIDColumn.Name {
 			// _cq_id column should always have a "unique not null" constraint
 			fieldDef += " UNIQUE NOT NULL"
 		}
@@ -193,4 +221,14 @@ func parseYesNoString(str string) (bool, error) {
 	default:
 		return false, fmt.Errorf("failed to parse yes/no string: %s", str)
 	}
+}
+
+func tableExists(list []string, table string) bool {
+	tbl := strings.ToUpper(table)
+	for _, t := range list {
+		if strings.ToUpper(t) == tbl {
+			return true
+		}
+	}
+	return false
 }

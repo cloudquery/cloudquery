@@ -90,12 +90,14 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/subscription"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/support"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/synapse"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/trafficmanager"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/windowsiot"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/workloads"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func tables() []*schema.Table {
+func getTables() schema.Tables {
 	list := []*schema.Table{
 		advisor.RecommendationMetadata(),
 		advisor.Recommendations(),
@@ -121,6 +123,7 @@ func tables() []*schema.Table {
 		authorization.ProviderOperationsMetadata(),
 		authorization.RoleAssignments(),
 		authorization.RoleDefinitions(),
+		authorization.RoleManagementPolicyAssignments(),
 		automation.Account(),
 		azurearcdata.PostgresInstances(),
 		azurearcdata.SqlManagedInstances(),
@@ -256,6 +259,7 @@ func tables() []*schema.Table {
 		network.LoadBalancers(),
 		network.NatGateways(),
 		network.PrivateLinkServices(),
+		network.PrivateEndpoints(),
 		network.Profiles(),
 		network.PublicIpAddresses(),
 		network.PublicIpPrefixes(),
@@ -350,6 +354,7 @@ func tables() []*schema.Table {
 		support.Tickets(),
 		synapse.PrivateLinkHubs(),
 		synapse.Workspaces(),
+		trafficmanager.Profiles(),
 		windowsiot.Services(),
 		workloads.Monitors(),
 	}
@@ -357,6 +362,15 @@ func tables() []*schema.Table {
 		if list[i].PostResourceResolver == nil {
 			panic("no PostResourceResolver in " + list[i].Name)
 		}
+	}
+	if err := transformers.TransformTables(list); err != nil {
+		panic(err)
+	}
+	if err := transformers.Apply(list, titleTransformer); err != nil {
+		panic(err)
+	}
+	for _, table := range list {
+		schema.AddCqIDs(table)
 	}
 	return list
 }

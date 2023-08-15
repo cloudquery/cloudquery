@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func lensReviewImprovements() *schema.Table {
@@ -19,8 +19,7 @@ func lensReviewImprovements() *schema.Table {
 		Transform: transformers.TransformWithStruct(new(types.ImprovementSummary),
 			transformers.WithPrimaryKeys("PillarId", "QuestionId"),
 		),
-		Multiplex: client.ServiceAccountRegionMultiplexer(name, "wellarchitected"),
-		Resolver:  fetchLensReviewImprovements,
+		Resolver: fetchLensReviewImprovements,
 		Columns: schema.ColumnList{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

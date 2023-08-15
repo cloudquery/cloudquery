@@ -21,6 +21,7 @@ type CostexplorerClient interface {
 	GetReservationPurchaseRecommendation(context.Context, *costexplorer.GetReservationPurchaseRecommendationInput, ...func(*costexplorer.Options)) (*costexplorer.GetReservationPurchaseRecommendationOutput, error)
 	GetReservationUtilization(context.Context, *costexplorer.GetReservationUtilizationInput, ...func(*costexplorer.Options)) (*costexplorer.GetReservationUtilizationOutput, error)
 	GetRightsizingRecommendation(context.Context, *costexplorer.GetRightsizingRecommendationInput, ...func(*costexplorer.Options)) (*costexplorer.GetRightsizingRecommendationOutput, error)
+	GetSavingsPlanPurchaseRecommendationDetails(context.Context, *costexplorer.GetSavingsPlanPurchaseRecommendationDetailsInput, ...func(*costexplorer.Options)) (*costexplorer.GetSavingsPlanPurchaseRecommendationDetailsOutput, error)
 	GetSavingsPlansCoverage(context.Context, *costexplorer.GetSavingsPlansCoverageInput, ...func(*costexplorer.Options)) (*costexplorer.GetSavingsPlansCoverageOutput, error)
 	GetSavingsPlansPurchaseRecommendation(context.Context, *costexplorer.GetSavingsPlansPurchaseRecommendationInput, ...func(*costexplorer.Options)) (*costexplorer.GetSavingsPlansPurchaseRecommendationOutput, error)
 	GetSavingsPlansUtilization(context.Context, *costexplorer.GetSavingsPlansUtilizationInput, ...func(*costexplorer.Options)) (*costexplorer.GetSavingsPlansUtilizationOutput, error)

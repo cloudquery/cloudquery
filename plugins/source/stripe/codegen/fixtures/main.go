@@ -11,8 +11,8 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/codegen/recipes"
-	"github.com/cloudquery/plugin-sdk/v3/caser"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/caser"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/stripe/stripe-go/v74"
 )
 

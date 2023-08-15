@@ -48,10 +48,6 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewC
 	}
 	c.Client = filetypesClient
 
-	if err != nil {
-		return nil, fmt.Errorf("failed to create filetype client: %w", err)
-	}
-
 	c.writer, err = streamingbatchwriter.New(c,
 		streamingbatchwriter.WithBatchSizeRows(*c.spec.BatchSize),
 		streamingbatchwriter.WithBatchSizeBytes(*c.spec.BatchSizeBytes),

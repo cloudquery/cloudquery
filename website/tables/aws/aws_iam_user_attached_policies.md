@@ -14,8 +14,6 @@ This table depends on [aws_iam_users](aws_iam_users).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id (PK)|`utf8`|
@@ -37,14 +35,18 @@ SELECT
   aws_iam_users.account_id,
   arn AS resource_id,
   CASE
-  WHEN aws_iam_user_attached_policies.user_arn IS NOT NULL THEN 'fail'
+  WHEN aws_iam_user_attached_policies.user_arn IS NOT NULL
+  OR aws_iam_user_policies.user_arn IS NOT NULL
+  THEN 'fail'
   ELSE 'pass'
   END
     AS status
 FROM
   aws_iam_users
   LEFT JOIN aws_iam_user_attached_policies ON
-      aws_iam_users.arn = aws_iam_user_attached_policies.user_arn;
+      aws_iam_users.arn = aws_iam_user_attached_policies.user_arn
+  LEFT JOIN aws_iam_user_policies ON
+      aws_iam_users.arn = aws_iam_user_policies.user_arn;
 ```
 
 

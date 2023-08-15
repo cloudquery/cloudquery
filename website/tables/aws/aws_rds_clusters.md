@@ -15,8 +15,6 @@ The following tables depend on aws_rds_clusters:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -70,6 +68,7 @@ The following tables depend on aws_rds_clusters:
 |iops|`int64`|
 |kms_key_id|`utf8`|
 |latest_restorable_time|`timestamp[us, tz=UTC]`|
+|local_write_forwarding_status|`utf8`|
 |master_user_secret|`json`|
 |master_username|`utf8`|
 |monitoring_interval|`int64`|

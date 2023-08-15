@@ -3,6 +3,8 @@
 ## Tables
 
 - [digitalocean_accounts](tables/digitalocean_accounts)
+- [digitalocean_apps](tables/digitalocean_apps)
+  - [digitalocean_apps_alerts](tables/digitalocean_apps_alerts)
 - [digitalocean_balances](tables/digitalocean_balances)
 - [digitalocean_billing_history](tables/digitalocean_billing_history)
 - [digitalocean_cdns](tables/digitalocean_cdns)
@@ -19,6 +21,7 @@
 - [digitalocean_floating_ips](tables/digitalocean_floating_ips)
 - [digitalocean_images](tables/digitalocean_images)
 - [digitalocean_keys](tables/digitalocean_keys)
+- [digitalocean_kubernetes_clusters](tables/digitalocean_kubernetes_clusters)
 - [digitalocean_load_balancers](tables/digitalocean_load_balancers)
 - [digitalocean_monitoring_alert_policies](tables/digitalocean_monitoring_alert_policies)
 - [digitalocean_projects](tables/digitalocean_projects)

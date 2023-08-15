@@ -3,8 +3,8 @@ package crm
 import (
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/clarkmcc/go-hubspot/generated/v3/owners"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Owners() *schema.Table {

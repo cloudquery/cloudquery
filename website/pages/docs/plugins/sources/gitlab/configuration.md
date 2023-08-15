@@ -13,7 +13,7 @@ spec:
   version: "VERSION_SOURCE_GITLAB"
   tables: ["*"]
   destinations: ["postgresql"]
-  
+
   # Gitlab specific configuration
   spec:
     access_token: "<YOUR_ACCESS_TOKEN_HERE>"
@@ -29,3 +29,6 @@ This is the (nested) spec used by the GitLab source plugin:
 
 - `base_url` (string, optional):
   URL for your self hosted GitLab server. Leave empty for GitLab SaaS. Not all tables are supported for GitLab SaaS.
+
+- `concurrency` (int, optional, default: 10000):
+  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.

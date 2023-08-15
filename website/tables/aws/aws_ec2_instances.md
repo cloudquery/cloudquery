@@ -10,8 +10,6 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -265,11 +263,11 @@ FROM
   aws_ec2_instances;
 ```
 
-### EC2 instances should be managed by AWS Systems Manager
+### Amazon EC2 instances should be managed by AWS Systems Manager
 
 ```sql
 SELECT
-  'EC2 instances should be managed by AWS Systems Manager' AS title,
+  'Amazon EC2 instances should be managed by AWS Systems Manager' AS title,
   aws_ec2_instances.account_id,
   aws_ec2_instances.arn AS resource_id,
   CASE

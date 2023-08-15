@@ -3,14 +3,14 @@ package codecommit
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/codecommit"
 	"github.com/aws/aws-sdk-go-v2/service/codecommit/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Repositories() *schema.Table {
@@ -36,8 +36,6 @@ func Repositories() *schema.Table {
 func fetchRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Codecommit
-	// Note: this API doesn't support limiting the number of results in a single call and the nested BatchRepositories doesn't have a listed limit
-	// So we are assuming that the number of repositories is not too large and we can fetch (`BatchGet`) all of their details in a single call
 	config := codecommit.ListRepositoriesInput{}
 	paginator := codecommit.NewListRepositoriesPaginator(svc, &config)
 	for paginator.HasMorePages() {
@@ -50,17 +48,24 @@ func fetchRepositories(ctx context.Context, meta schema.ClientMeta, parent *sche
 		if len(page.Repositories) == 0 {
 			continue
 		}
-		repoNames := make([]string, len(page.Repositories))
-		for i, repo := range page.Repositories {
-			repoNames[i] = *repo.RepositoryName
+		maxBatchGetRepositories := 100
+		for i := 0; i < len(page.Repositories); i += maxBatchGetRepositories {
+			end := i + maxBatchGetRepositories
+			if end > len(page.Repositories) {
+				end = len(page.Repositories)
+			}
+			repoNames := make([]string, len(page.Repositories[i:end]))
+			for i, repo := range page.Repositories {
+				repoNames[i] = *repo.RepositoryName
+			}
+			repositoryOutput, err := svc.BatchGetRepositories(ctx, &codecommit.BatchGetRepositoriesInput{RepositoryNames: repoNames}, func(options *codecommit.Options) {
+				options.Region = cl.Region
+			})
+			if err != nil {
+				return err
+			}
+			res <- repositoryOutput.Repositories
 		}
-		repositoryOutput, err := svc.BatchGetRepositories(ctx, &codecommit.BatchGetRepositoriesInput{RepositoryNames: repoNames}, func(options *codecommit.Options) {
-			options.Region = cl.Region
-		})
-		if err != nil {
-			return err
-		}
-		res <- repositoryOutput.Repositories
 	}
 	return nil
 }

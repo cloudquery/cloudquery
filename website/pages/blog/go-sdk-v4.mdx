@@ -1,0 +1,56 @@
+---
+title: What's new in CloudQuery Go SDK v4
+tag: product
+date: 2023/07/10
+description: >-
+  Summary of CloudQuery Go SDK v4 changes and features
+author: yevgenypats
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
+We are thrilled to announce the release of the new Go SDK v4, which brings exciting enhancements to writing CloudQuery plugins in Go!
+
+The new Go SDK v4 version utilizes the [gRPC plugin protocol version v3](https://github.com/cloudquery/plugin-pb/blob/main/plugin/v3/plugin.proto), so be sure to check [What's new in CloudQuery Plugin Protocol v3](./proto-v3).
+
+## Overview
+
+Let's begin with a high-level summary before diving deeper into each of the updates:
+
+- **Apache Arrow** - Given that the underlying protocol is all about Arrow, the Go SDK also speaks Arrow and utilizes the [Apache Arrow Go](https://github.com/apache/arrow/tree/main/go) for data and data types.
+- **Unified API for Sources and Destinations** - Similar to the underlying gRPC protocol, the Go SDK now contains only one Plugin API, which enables CloudQuery plugins to function as both a source and a destination simultaneously.
+- **Transition Sync/Write to Streaming API** - Similar to the underlying protocol, the SDK has also transitioned the `Sync` and `Write` methods to a streaming-based API, enabling new use cases like Change Data Capture (CDC).
+
+## Apache Arrow
+
+We extensively discussed this update in our previous [blog post](./adopting-apache-arrow-at-cloudquery). Now, with all our [destinations](../docs/plugins/destinations/overview) migrated to SDK V4, they support over 30 different [Apache Arrow data types](https://arrow.apache.org/docs/python/api/datatypes.html)!
+
+## Unified API
+
+Plugins can now serve as both sources and destinations, and they have a single entry point: [`plugins.NewPlugin`](https://github.com/cloudquery/plugin-sdk/tree/main/plugin). Plugin authors can choose to implement only `Sync` functionality or only `Write` functionality.
+
+Another big advantage, as mentioned in [What's new in CloudQuery Plugin Protocol v3](./proto-v3), is the ability to use any destination as a backend for incremental syncs.
+
+## Streaming API
+
+Similar to the underlying protocol's supported messages for `Sync` and `Write`, the Go SDK messages are defined in [plugin-sdk/message](https://github.com/cloudquery/plugin-sdk/tree/main/message).
+
+With this change to streaming that contains messages, we can easily extend the protocol in a backward-compatible way to support more messages like `DeleteTable`, `DeleteRecord`, to support use cases such as CDC or other use cases that require those kinds of data updates.
+
+## Migration Guide
+
+There are a few things to consider when migrating, but for the most part, it will be just a syntactic change.
+
+Go is not a great language for frameworks, so we made the Plugin SDK lightweight and moved other heavy functionality to its own sub-packages, which makes it easier to extend and test.
+
+- `schedulers` - Schedulers now live under [plugin-sdk/scheduler](https://github.com/cloudquery/plugin-sdk).
+- `writers` - Writers now live under [plugin-sdk/writers](https://github.com/cloudquery/plugin-sdk/tree/main/writers).
+- `message` - All messages for `Sync` and `Write` are under [plugin-sdk/message](https://github.com/cloudquery/plugin-sdk/tree/main/message).
+
+If you are migrating sources, take a look at our [`homebrew` plugin PR](https://github.com/cloudquery/cloudquery/pull/11646).
+
+## Summary
+
+We are thrilled about this major release! Don't hesitate to try your hand at developing a new CloudQuery plugin. Feel free to reach out to us on [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://cloudquery.io/discord) with any questions or feedback.

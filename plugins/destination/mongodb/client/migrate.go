@@ -45,7 +45,7 @@ func (c *Client) migrateTable(ctx context.Context, force bool, table *schema.Tab
 func (c *Client) migrateTableOnConflict(ctx context.Context, force bool, table *schema.Table, mdl mongo.IndexModel) error {
 	tableName := table.Name
 	if !force {
-		return fmt.Errorf("collection %s requires forced migration due to changes in unique indexes. use 'migrate_mode: forced'", tableName)
+		return fmt.Errorf("collection %s requires forced migration due to changes in unique indexes. Migrate manually or consider using 'migrate_mode: forced'", tableName)
 	}
 
 	if _, err := c.client.Database(c.spec.Database).Collection(tableName).Indexes().DropOne(ctx, *mdl.Options.Name); err != nil {

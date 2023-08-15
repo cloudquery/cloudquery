@@ -3,7 +3,7 @@ package client
 import (
 	"context"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func ResolveAccountID(_ context.Context, meta schema.ClientMeta, r *schema.Resource, col schema.Column) error {

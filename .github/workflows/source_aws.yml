@@ -1,5 +1,9 @@
 name: Source Plugin AWS Workflow
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     paths:
@@ -13,33 +17,13 @@ on:
       - ".github/workflows/source_aws.yml"
 
 jobs:
-  resolve-runner:
-    timeout-minutes: 5
-    runs-on: ubuntu-latest
-    outputs:
-      runner: ${{ steps.resolve.outputs.runner }}
-    steps:
-      - name: Check if should use large runner
-        id: large-runner
-        # We want to speed runs on the main branch which prime the cache
-        # We allow large runners only in this case to prevent forks from abusing them (it's enforced via runner groups access rules)
-        # IF YOU WANT TO USE A LARGE RUNNER YOU NEED TO ADD THE WORKFLOW TO THE `CloudQuery releases` GROUP IN https://github.com/organizations/cloudquery/settings/actions/runner-groups
-        if: github.event_name == 'push'
-        run: |
-          echo "runner=cloudquery-release-runner" >> $GITHUB_OUTPUT
-      - name: Resolve runner
-        id: resolve
-        run: |
-          RUNNER=${{ steps.large-runner.outputs.runner }}
-          echo "runner=${RUNNER:-"ubuntu-latest"}" >> $GITHUB_OUTPUT
   plugins-source-aws:
     timeout-minutes: 45
     name: "plugins/source/aws"
-    needs: [resolve-runner]
     permissions:
       id-token: write
       contents: read
-    runs-on: ${{ needs.resolve-runner.outputs.runner }}
+    runs-on: large-ubuntu-monorepo
     defaults:
       run:
         working-directory: ./plugins/source/aws
@@ -62,6 +46,10 @@ jobs:
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
           skip-build-cache: true
+      - name: Setup CloudQuery
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: 'v3.13.0'
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -73,11 +61,6 @@ jobs:
       - name: Test
         run: make test
       # Sanity integration test, only for release PRs
-      - name: Setup CloudQuery
-        if: startsWith(github.head_ref, 'release-please--branches--main--components')
-        uses: cloudquery/setup-cloudquery@v3
-        with:
-          version: 'v3.5.0'
       - name: Configure AWS credentials
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
         uses: aws-actions/configure-aws-credentials@v2
@@ -89,8 +72,7 @@ jobs:
         run: cloudquery sync test/sanity.yml --log-console
   validate-release:
     timeout-minutes: 60
-    needs: [resolve-runner]
-    runs-on: ${{ needs.resolve-runner.outputs.runner }}
+    runs-on: large-ubuntu-monorepo
     env:
       CGO_ENABLED: 0
     steps:
@@ -103,9 +85,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/source/aws/go.sum') }}
+          key: ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/source/aws/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.5-release-cache-plugins-source-aws
+            ${{ runner.os }}-go-1.20.5-release-cache-plugins-source-aws
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3
@@ -125,8 +107,7 @@ jobs:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
   test-policies:
     timeout-minutes: 30
-    needs: [resolve-runner]
-    runs-on: ${{ needs.resolve-runner.outputs.runner }}
+    runs-on: large-ubuntu-monorepo
     defaults:
       run:
         working-directory: ./plugins/source/aws
@@ -160,7 +141,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: 'v3.5.0'
+          version: 'v3.10.1'
       - name: Migrate DB
         run: cloudquery migrate test/policy_cq_config.yml
         env:

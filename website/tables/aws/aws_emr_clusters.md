@@ -12,13 +12,13 @@ The following tables depend on aws_emr_clusters:
   - [aws_emr_cluster_instance_fleets](aws_emr_cluster_instance_fleets)
   - [aws_emr_cluster_instance_groups](aws_emr_cluster_instance_groups)
   - [aws_emr_cluster_instances](aws_emr_cluster_instances)
+  - [aws_emr_notebook_executions](aws_emr_notebook_executions)
+  - [aws_emr_steps](aws_emr_steps)
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|

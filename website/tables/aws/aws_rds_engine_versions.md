@@ -15,8 +15,6 @@ The following tables depend on aws_rds_engine_versions:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id (PK)|`utf8`|
@@ -49,6 +47,7 @@ The following tables depend on aws_rds_engine_versions:
 |supports_babelfish|`bool`|
 |supports_certificate_rotation_without_restart|`bool`|
 |supports_global_databases|`bool`|
+|supports_local_write_forwarding|`bool`|
 |supports_log_exports_to_cloudwatch_logs|`bool`|
 |supports_parallel_query|`bool`|
 |supports_read_replica|`bool`|

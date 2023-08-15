@@ -2,17 +2,15 @@ package plugin
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/googleanalytics/client"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 
 var Version = "Development"
 
-func Plugin() *source.Plugin {
-	return source.NewPlugin(
+func Plugin() *plugin.Plugin {
+	return plugin.NewPlugin(
 		"googleanalytics",
 		Version,
-		nil,
 		client.Configure,
-		source.WithDynamicTableOption(client.GetTables),
 	)
 }

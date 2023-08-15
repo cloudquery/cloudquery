@@ -1,0 +1,95 @@
+name: Source Plugin Jira Workflow
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    paths:
+      - "plugins/source/jira/**"
+      - ".github/workflows/source_jira.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/source/jira/**"
+      - ".github/workflows/source_jira.yml"
+
+jobs:
+  plugins-source-jira:
+    timeout-minutes: 30
+    name: "plugins/source/jira"
+    runs-on: large-ubuntu-monorepo
+    defaults:
+      run:
+        working-directory: ./plugins/source/jira
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/source/jira/go.mod
+          cache: true
+          cache-dependency-path: plugins/source/jira/go.sum
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.52.2
+          working-directory: plugins/source/jira
+          args: "--config ../../.golangci.yml"
+          skip-pkg-cache: true
+          skip-build-cache: true
+      - name: Setup CloudQuery
+        if: github.event_name == 'pull_request'
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: 'v3.13.0'
+      - name: gen
+        if: github.event_name == 'pull_request'
+        run: make gen
+# Disabled because we make some manual changes to the table index to indicate which tables are free/premium
+#      - name: Fail if generation updated files
+#        if: github.event_name == 'pull_request'
+#        run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
+      - name: Build
+        run: go build .
+      - name: Test
+        run: make test
+  validate-release:
+    timeout-minutes: 30
+    runs-on: large-ubuntu-monorepo
+    env:
+      CGO_ENABLED: 0
+    steps:
+      - name: Checkout
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/source/jira/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.20.5-release-cache-plugins-source-jira
+      - name: Set up Go
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/source/jira/go.mod
+      - name: Install GoReleaser
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          distribution: goreleaser-pro
+          version: latest
+          install-only: true
+      - name: Run GoReleaser Dry-Run
+        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
+        run: goreleaser release --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/source/jira/.goreleaser.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

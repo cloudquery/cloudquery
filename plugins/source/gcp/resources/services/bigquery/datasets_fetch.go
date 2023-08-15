@@ -8,6 +8,11 @@ import (
 	"google.golang.org/api/bigquery/v2"
 )
 
+type datasetPreWrapper struct {
+	datasetID string
+	svc       *bigquery.Service
+}
+
 func fetchDatasets(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
@@ -20,7 +25,12 @@ func fetchDatasets(ctx context.Context, meta schema.ClientMeta, r *schema.Resour
 		if err != nil {
 			return err
 		}
-		res <- output.Datasets
+		for i := range output.Datasets {
+			res <- &datasetPreWrapper{
+				datasetID: output.Datasets[i].DatasetReference.DatasetId,
+				svc:       bigqueryService,
+			}
+		}
 
 		if output.NextPageToken == "" {
 			break
@@ -32,15 +42,14 @@ func fetchDatasets(ctx context.Context, meta schema.ClientMeta, r *schema.Resour
 
 func datasetGet(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
 	c := meta.(*client.Client)
-	datasetListDataset := r.Item.(*bigquery.DatasetListDatasets)
-	bigqueryService, err := bigquery.NewService(ctx, c.ClientOptions...)
+	wrapped := r.Item.(*datasetPreWrapper)
+	item, err := wrapped.svc.Datasets.Get(c.ProjectId, wrapped.datasetID).Context(ctx).Do()
 	if err != nil {
 		return err
 	}
-	item, err := bigqueryService.Datasets.Get(c.ProjectId, datasetListDataset.DatasetReference.DatasetId).Do()
-	if err != nil {
-		return err
-	}
-	r.SetItem(item)
+	r.SetItem(&datasetWrapper{
+		Dataset: item,
+		svc:     wrapped.svc,
+	})
 	return nil
 }

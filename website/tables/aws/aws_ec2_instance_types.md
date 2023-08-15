@@ -10,8 +10,6 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -34,6 +32,9 @@ The primary key for this table is **arn**.
 |instance_type|`utf8`|
 |memory_info|`json`|
 |network_info|`json`|
+|nitro_enclaves_support|`utf8`|
+|nitro_tpm_info|`json`|
+|nitro_tpm_support|`utf8`|
 |placement_group_info|`json`|
 |processor_info|`json`|
 |supported_boot_modes|`list<item: utf8, nullable>`|

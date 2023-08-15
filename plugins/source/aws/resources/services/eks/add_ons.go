@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eks"
 	"github.com/aws/aws-sdk-go-v2/service/eks/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func addOns() *schema.Table {
@@ -18,7 +18,6 @@ func addOns() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/eks/latest/APIReference/API_Addon.html`,
 		Resolver:            fetchAddOns,
 		PreResourceResolver: getAddOn,
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "eks"),
 		Transform:           transformers.TransformWithStruct(&types.Addon{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

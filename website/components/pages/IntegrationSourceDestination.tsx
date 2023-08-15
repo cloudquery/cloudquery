@@ -68,7 +68,7 @@ export default function Integration({
 }) {
     const sourceFilename = source.id === destination.id ? `source-${source.id}.yaml` : `${source.id}.yaml`;
     const destinationFilename = source.id === destination.id ? `destination-${destination.id}.yaml` : `${destination.id}.yaml`;
-    if (source.kind === "unpublished" || destination.kind === "unpublished") {
+    if (source.availability === "unpublished" || destination.availability === "unpublished") {
         return unpublishedPlugin({source, destination});
     }
     return <>
@@ -123,10 +123,10 @@ export default function Integration({
                     <p className="mt-4 text-lg font-medium text-gray-400 lg:max-w-3xl lg:text-xl">
                         Create a configuration file for the {source.name} plugin and set up authentication.
                     </p>
-                    {source.kind !== "official" ?
+                    {source.availability === "partner" || source.availability == "community" ?
                         <>
                             <p className="mt-4">
-                                {source.name} is a {source.kind} plugin, which means that it is maintained by the {source.kind === "community" ? "CloudQuery community" : source.name + " team"}. Create a file called <code className="text-lg nx-font-bold">{sourceFilename}</code>, then copy the example and follow the instructions in the <a target="_blank" href={source.href} className="text-blue-500 hover:text-blue-600">{source.name} Plugin Documentation ↗</a> to fit your needs.
+                                {source.name} is a {source.availability} plugin, which means that it is maintained by the {source.availability === "community" ? "CloudQuery community" : source.name + " team"}. Create a file called <code className="text-lg nx-font-bold">{sourceFilename}</code>, then copy the example and follow the instructions in the <a target="_blank" href={source.href} className="text-blue-500 hover:text-blue-600">{source.name} Plugin Documentation ↗</a> to fit your needs.
                             </p>
                         </>
                         :
@@ -153,10 +153,10 @@ export default function Integration({
                     <h2 className="nx-text-4xl font-extrabold tracking-tight lg:nx-text-5xl xl:nx-text-6xl dark:text-white">
                         Step 3. Configure the {destination.name} destination plugin
                     </h2>
-                    {destination.kind !== "official" ?
+                    {destination.availability === "partner" || destination.availability == "community" ?
                         <>
                             <p className="mt-4">
-                                {destination.name} is a {destination.kind} plugin, which means that it is maintained by the {destination.kind === "community" ? "CloudQuery community" : destination.name + " team"}. Create a file called <code className="text-lg nx-font-bold">{destinationFilename}</code>, then copy the example and follow the instructions in the <a target="_blank" href={destination.href} className="text-blue-500 hover:text-blue-600">{destination.name} Plugin Documentation ↗</a> to fit your needs.
+                                {destination.name} is a {destination.kind} plugin, which means that it is maintained by the {destination.availability === "community" ? "CloudQuery community" : destination.name + " team"}. Create a file called <code className="text-lg nx-font-bold">{destinationFilename}</code>, then copy the example and follow the instructions in the <a target="_blank" href={destination.href} className="text-blue-500 hover:text-blue-600">{destination.name} Plugin Documentation ↗</a> to fit your needs.
                             </p>
                         </>
                         :

@@ -1,23 +1,15 @@
 package plugin
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/terraform/client"
-	"github.com/cloudquery/cloudquery/plugins/source/terraform/resources/services"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 
-var (
-	Version = "development"
-)
+var Version = "development"
 
-func Plugin() *source.Plugin {
-	return source.NewPlugin(
+func Terraform() *plugin.Plugin {
+	return plugin.NewPlugin(
 		"terraform",
 		Version,
-		[]*schema.Table{
-			services.TFData(),
-		},
-		client.Configure,
+		configure,
 	)
 }

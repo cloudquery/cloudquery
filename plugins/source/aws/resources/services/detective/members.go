@@ -9,8 +9,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/detective"
 	"github.com/aws/aws-sdk-go-v2/service/detective/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func members() *schema.Table {
@@ -20,7 +20,6 @@ func members() *schema.Table {
 		Description: `https://docs.aws.amazon.com/detective/latest/APIReference/API_GetMembers.html
 The 'request_account_id' and 'request_region' columns are added to show the account and region of where the request was made from.`,
 		Resolver:  fetchMembers,
-		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "api.detective"),
 		Transform: transformers.TransformWithStruct(&types.MemberDetail{}, transformers.WithPrimaryKeys("AccountId", "GraphArn")),
 		Columns: []schema.Column{
 			{

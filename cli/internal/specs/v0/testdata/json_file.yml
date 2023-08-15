@@ -1,0 +1,15 @@
+kind: source
+spec:
+  name: gcp
+  path: cloudquery/gcp
+  version: v1.0.0
+  destinations: [bigquery]
+  tables: ["*"]
+---
+kind: destination
+spec:
+  name: bigquery
+  path: cloudquery/bigquery
+  version: "v3.1.0"
+  spec:
+    service_account_key_json: "${file:./testdata/application_default_credentials.json}"

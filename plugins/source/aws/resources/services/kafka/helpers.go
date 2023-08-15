@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/kafka"
 	"github.com/aws/aws-sdk-go-v2/service/kafka/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/thoas/go-funk"
 )
 
@@ -32,6 +32,10 @@ func describeClustersInput(resource *schema.Resource) kafka.DescribeClusterV2Inp
 
 func resolveKafkaTags(path string) schema.ColumnResolver {
 	return func(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+		if path == "OperationArn" {
+			// cluster operations do not support tags. In a future release we should remove the column from the `aws_kafka_cluster_operations` table
+			return r.Set(c.Name, map[string]string{})
+		}
 		arn := funk.Get(r.Item, path, funk.WithAllowZero()).(*string)
 		cl := meta.(*client.Client)
 		svc := cl.Services().Kafka

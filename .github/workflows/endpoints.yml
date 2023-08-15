@@ -34,8 +34,8 @@ jobs:
           token: ${{ secrets.GH_CQ_BOT }}
           branch: feat/update_aws_services_region_data
           base: main
-          title: "feat(aws-services): Support newly added regions"
-          commit-message: "feat(aws-services): Support newly added regions"
+          title: "feat(services): Support newly added regions"
+          commit-message: "feat(services): Support newly added regions"
           body: This PR was created by a scheduled workflow to update supported regions for AWS services
           labels: automerge
           author: cq-bot <cq-bot@users.noreply.github.com>

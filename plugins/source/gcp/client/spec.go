@@ -1,5 +1,9 @@
 package client
 
+import (
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
+)
+
 const (
 	defaultConcurrency = 50000
 )
@@ -19,6 +23,7 @@ type Spec struct {
 	OrganizationFilter          string             `json:"organization_filter"`
 	ServiceAccountImpersonation *CredentialsConfig `json:"service_account_impersonation"`
 	Concurrency                 int                `json:"concurrency"`
+	Scheduler                   scheduler.Strategy `json:"scheduler,omitempty"`
 }
 
 type CredentialsConfig struct {

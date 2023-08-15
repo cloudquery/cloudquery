@@ -45,19 +45,20 @@ func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, aws
 
 	awsCfg, err := configureAwsSDK(ctx, logger, awsPluginSpec, account, adminAccountSts)
 	if err != nil {
+		warningMsg := logger.Warn().Str("account", account.AccountName).Err(err)
 		if account.source == "org" {
-			logger.Warn().Msg("Unable to assume role in account")
+			warningMsg.Msg("Unable to assume role in account")
 			return nil, nil
 		}
 		var ae smithy.APIError
 		if errors.As(err, &ae) {
 			if strings.Contains(ae.ErrorCode(), "AccessDenied") {
-				logger.Warn().Str("account", account.AccountName).Err(err).Msg("Access denied for account")
+				warningMsg.Msg("Access denied for account")
 				return nil, nil
 			}
 		}
 		if errors.Is(err, errRetrievingCredentials) {
-			logger.Warn().Str("account", account.AccountName).Err(err).Msg("Could not retrieve credentials for account")
+			warningMsg.Msg("Could not retrieve credentials for account")
 			return nil, nil
 		}
 
@@ -65,7 +66,7 @@ func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, aws
 	}
 	account.Regions = findEnabledRegions(ctx, logger, account.AccountName, ec2.NewFromConfig(awsCfg), localRegions, account.DefaultRegion)
 	if len(account.Regions) == 0 {
-		logger.Warn().Str("account", account.AccountName).Err(err).Msg("No enabled regions provided in config for account")
+		logger.Warn().Str("account", account.AccountName).Msg("No enabled regions provided in config for account")
 		return nil, nil
 	}
 	awsCfg.Region = getRegion(account.Regions)

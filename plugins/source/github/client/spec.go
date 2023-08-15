@@ -8,6 +8,8 @@ type Spec struct {
 	Repos              []string            `json:"repos"`
 	AppAuth            []AppAuthSpec       `json:"app_auth"`
 	EnterpriseSettings *EnterpriseSettings `json:"enterprise"`
+
+	Concurrency int `json:"concurrency,omitempty"`
 }
 
 type EnterpriseSettings struct {
@@ -20,6 +22,12 @@ type AppAuthSpec struct {
 	AppID          string `json:"app_id"`
 	PrivateKeyPath string `json:"private_key_path"`
 	InstallationID string `json:"installation_id"`
+}
+
+func (s *Spec) SetDefaults() {
+	if s.Concurrency == 0 {
+		s.Concurrency = 10000
+	}
 }
 
 func (s *Spec) Validate() error {

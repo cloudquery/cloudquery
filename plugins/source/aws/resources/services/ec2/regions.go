@@ -8,8 +8,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Regions() *schema.Table {
@@ -21,7 +21,7 @@ func Regions() *schema.Table {
 		Multiplex:   client.AccountMultiplex(tableName),
 		Transform:   transformers.TransformWithStruct(&types.Region{}),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "enabled",
 				Type:     arrow.FixedWidthTypes.Boolean,
@@ -33,9 +33,10 @@ func Regions() *schema.Table {
 				Resolver: client.ResolveAWSPartition,
 			},
 			{
-				Name:     "region",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.PathResolver("RegionName"),
+				Name:       "region",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("RegionName"),
+				PrimaryKey: true,
 			},
 		},
 	}

@@ -11,13 +11,12 @@ The following tables depend on github_repositories:
   - [github_repository_branches](github_repository_branches)
   - [github_repository_dependabot_alerts](github_repository_dependabot_alerts)
   - [github_repository_dependabot_secrets](github_repository_dependabot_secrets)
+  - [github_repository_keys](github_repository_keys)
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |org (PK)|`utf8`|

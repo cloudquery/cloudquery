@@ -16,11 +16,12 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/pagerduty/resources/services/teams"
 	"github.com/cloudquery/cloudquery/plugins/source/pagerduty/resources/services/users"
 	"github.com/cloudquery/cloudquery/plugins/source/pagerduty/resources/services/vendors"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func AllTables() []*schema.Table {
-	return []*schema.Table{
+func getTables() []*schema.Table {
+	t := schema.Tables{
 		addons.Addons(),
 		incidents.Incidents(),
 		business_services.BusinessServices(),
@@ -37,4 +38,15 @@ func AllTables() []*schema.Table {
 		users.Users(),
 		vendors.Vendors(),
 	}
+	if err := transformers.TransformTables(t); err != nil {
+		panic(err)
+	}
+	for _, table := range t {
+		schema.AddCqIDs(table)
+	}
+	err := transformers.Apply(t, titleTransformer)
+	if err != nil {
+		panic(err)
+	}
+	return t
 }

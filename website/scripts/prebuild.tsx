@@ -1,14 +1,86 @@
+import {ALL_PREMIUM_POLICIES, Policy} from "../components/policyData";
+
 const fs = require("fs");
 const path = require("path");
 
 // Read the plugin data file
-import {Plugin, SOURCE_PLUGINS, UNPUBLISHED_SOURCE_PLUGINS, DESTINATION_PLUGINS} from "../components/pluginData";
+import {
+    Plugin,
+    ALL_SOURCE_PLUGINS, ALL_DESTINATION_PLUGINS, ALL_PLUGINS, PUBLISHED_SOURCE_PLUGINS, PUBLISHED_DESTINATION_PLUGINS
+} from "../components/pluginData";
 
 // Define the directories to write the MDX files to
 const outputDir = "./integrations";
-const metaJSONsDir = "./pages/integrations";
 const mdxSourceComponentDir = "./components/mdx/plugins/source";
 const mdxDestinationComponentDir = "./components/mdx/plugins/destination";
+
+function getPluginRedirectContent(plugin: Plugin, licenseType: string, licenseName: string) {
+   return `---
+title: Buy ${plugin.name} (${licenseName})
+---
+
+import Head from "next/head";
+
+<Head>
+  <meta httpEquiv="refresh" content="5; url='${plugin.buyLinks[licenseType]}'" />
+</Head>
+
+## Purchase ${plugin.name} (${licenseName}${(plugin.availability === "unpublished") ? " - Pre-order" : ""})
+
+You will be redirected to a Stripe checkout page to complete your purchase in 5 seconds…
+
+If the page does not redirect automatically, please click this link: [${plugin.buyLinks[licenseType]}](${plugin.buyLinks[licenseType]})
+`;
+}
+
+function createPluginBuyRedirects() {
+    const buyDir = `./pages/buy`;
+    ALL_PLUGINS.forEach((plugin) => {
+        if (plugin.buyLinks && plugin.buyLinks['standard']) {
+            const filePath = path.join(buyDir, `${plugin.id}-standard.mdx`);
+            fs.writeFileSync(filePath, getPluginRedirectContent(plugin, 'standard', "Standard License"));
+        }
+        if (plugin.buyLinks && plugin.buyLinks['extended']) {
+            const filePath = path.join(buyDir, `${plugin.id}-extended.mdx`);
+            fs.writeFileSync(filePath, getPluginRedirectContent(plugin, 'extended', "Extended License"));
+        }
+    });
+}
+
+
+function getPolicyRedirectContent(policy: Policy, licenseType: string, licenseName: string) {
+    return `---
+title: Buy ${policy.name} (${licenseName})
+---
+
+import Head from "next/head";
+
+<Head>
+  <meta httpEquiv="refresh" content="5; url='${policy.buyLinks[licenseType]}'" />
+</Head>
+
+## Purchase ${policy.name} (${licenseName})
+
+You will be redirected to a Stripe checkout page to complete your purchase in 5 seconds…
+
+If the page does not redirect automatically, please click this link: [${policy.buyLinks[licenseType]}](${policy.buyLinks[licenseType]})
+`;
+}
+
+function createPolicyBuyRedirects() {
+    const buyDir = `./pages/buy`;
+    ALL_PREMIUM_POLICIES.forEach((policy) => {
+        if (policy.buyLinks && policy.buyLinks['standard']) {
+            const filePath = path.join(buyDir, `${policy.id}-standard.mdx`);
+            fs.writeFileSync(filePath, getPolicyRedirectContent(policy, 'standard', "Standard License"));
+        }
+        if (policy.buyLinks && policy.buyLinks['extended']) {
+            const filePath = path.join(buyDir, `${policy.id}-extended.mdx`);
+            fs.writeFileSync(filePath, getPolicyRedirectContent(policy, 'extended', "Extended License"));
+        }
+    });
+}
+
 
 function recreateDirectory(dir: string) {
     if (fs.existsSync(dir)) {
@@ -40,7 +112,7 @@ function copySourceAuthenticationFile(source: Plugin) : boolean {
 function copySourceConfigurationFile(source: Plugin): boolean {
     const configFilePath = `./pages/docs/plugins/sources/${source.id}/_configuration.mdx`;
     if (fs.existsSync(configFilePath)) {
-        DESTINATION_PLUGINS.forEach((destination) => {
+        ALL_DESTINATION_PLUGINS.forEach((destination) => {
             const sourceConfigDir = mdxSourceComponentDir + `/${source.id}/${destination.id}`;
             recreateDirectory(sourceConfigDir);
             let fileContents = fs.readFileSync(configFilePath, "utf8");
@@ -103,8 +175,8 @@ function createSourceDestinationIntegrationFile(source: Plugin, destination: Plu
         `${source.id}/${destination.id}.mdx`
     );
 
-    const isOfficialSource = source.kind === "official";
-    const isOfficialDestination = destination.kind === "official";
+    const isOfficialSource = source.availability === "free";
+    const isOfficialDestination = destination.availability === "free";
 
     // Define the contents of the MDX file
     const fileContents = `---
@@ -145,16 +217,22 @@ function generateFiles() {
 
     let hasAuthFile = {};
 
+    PUBLISHED_SOURCE_PLUGINS.forEach((source) => {
+        if (source.availability === "premium") {
+            return;
+        }
+        recreateDirectory(outputDir + "/" + source.id);
+    });
+
     // Loop through each source plugin and generate or copy MDX files
-    [...SOURCE_PLUGINS, ...UNPUBLISHED_SOURCE_PLUGINS].forEach((source) => {
+    ALL_SOURCE_PLUGINS.forEach((source) => {
       if (sources.has(source.id)) {
         throw new Error("Duplicate source id: " + source.id + ". Did you forget to remove an unpublished plugin you implemented?");
       }
       sources.add(source.id);
-      recreateDirectory(outputDir + "/" + source.id);
 
       const hasConfiguration = copySourceConfigurationFile(source);
-      const isOfficial = source.kind === "official";
+      const isOfficial = source.availability === "free";
       if (isOfficial && !hasConfiguration) {
           throw new Error("No _configuration.mdx file found for source: " + source.id);
       }
@@ -164,7 +242,10 @@ function generateFiles() {
     });
 
     // Loop through each destination plugin and generate or copy MDX files
-    DESTINATION_PLUGINS.forEach((destination) => {
+    ALL_DESTINATION_PLUGINS.forEach((destination) => {
+        if (destination.availability === "premium") {
+            return;
+        }
         if (destinations.has(destination.id)) {
             throw new Error("Duplicate destination id: " + destination.id);
         }
@@ -172,7 +253,7 @@ function generateFiles() {
         recreateDirectory(mdxDestinationComponentDir + "/" + destination.id);
 
         const hasConfiguration = copyDestinationConfigurationFile(destination);
-        const isOfficial = destination.kind === "official";
+        const isOfficial = destination.availability === "free";
         if (isOfficial && !hasConfiguration && destination.id !== "more") {
             throw new Error("No _configuration.mdx file found for destination: " + destination.id);
         }
@@ -181,8 +262,14 @@ function generateFiles() {
     });
 
     // Create the source -> destination integration files
-    [...SOURCE_PLUGINS, ...UNPUBLISHED_SOURCE_PLUGINS].forEach((source: Plugin) => {
-       DESTINATION_PLUGINS.forEach((destination: Plugin) => {
+    PUBLISHED_SOURCE_PLUGINS.forEach((source: Plugin) => {
+        if (source.availability === "premium") {
+            return;
+        }
+        PUBLISHED_DESTINATION_PLUGINS.forEach((destination: Plugin) => {
+           if (destination.availability === "premium") {
+             return;
+           }
            const sourceHasAuth = hasAuthFile['source-' + source.id];
            const destHasAuth = hasAuthFile['destination-' + destination.id];
            createSourceDestinationIntegrationFile(source, destination, sourceHasAuth, destHasAuth);
@@ -192,5 +279,7 @@ function generateFiles() {
 
 
 generateFiles()
+createPluginBuyRedirects()
+createPolicyBuyRedirects()
 
 console.log("MDX files generated successfully!");

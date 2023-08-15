@@ -1,34 +1,30 @@
 package client
 
 import (
+	"context"
 	"testing"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/goccy/go-json"
+	"github.com/stretchr/testify/require"
 )
 
-const streamARN = "cq-playground-test"
-
 func TestPluginJSON(t *testing.T) {
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin("firehose", "development", New, destination.WithDefaultBatchSize(500))
-		},
-		specs.Destination{
-			Spec: &Spec{
-				NoRotate:  true,
-				StreamARN: streamARN,
-			},
-		},
-		destination.PluginTestSuiteTests{
-			SkipOverwrite:             true,
-			SkipDeleteStale:           true,
-			SkipAppend:                true,
-			SkipSecondAppend:          true,
-			SkipMigrateAppend:         true,
-			SkipMigrateAppendForce:    true,
-			SkipMigrateOverwrite:      true,
-			SkipMigrateOverwriteForce: true,
+	t.Skip("skip per invalid ARN error")
+	ctx := context.Background()
+	p := plugin.NewPlugin("firehose", "development", New)
+	const streamARN = "cq-playground-test"
+	s := &Spec{NoRotate: true, StreamARN: streamARN}
+	b, err := json.Marshal(s)
+	require.NoError(t, err)
+	require.NoError(t, p.Init(ctx, b, plugin.NewClientOptions{}))
+
+	plugin.TestWriterSuiteRunner(t,
+		p,
+		plugin.WriterTestSuiteTests{
+			SkipUpsert:      true,
+			SkipMigrate:     true,
+			SkipDeleteStale: true,
 		},
 	)
 }

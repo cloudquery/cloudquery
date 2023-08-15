@@ -4,11 +4,11 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azuredevops/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/microsoft/azure-devops-go-api/azuredevops/v6/core"
 )
 
-func fetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchProjects(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	coreClient, err := core.NewClient(ctx, cl.Connection)
 	if err != nil {

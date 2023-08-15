@@ -10,8 +10,6 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -77,6 +75,7 @@ The primary key for this table is **arn**.
 |network_type|`utf8`|
 |option_group_memberships|`json`|
 |pending_modified_values|`json`|
+|percent_progress|`utf8`|
 |performance_insights_enabled|`bool`|
 |performance_insights_kms_key_id|`utf8`|
 |performance_insights_retention_period|`int64`|

@@ -6,6 +6,8 @@ module.exports = {
   siteUrl: "https://www.cloudquery.io",
   generateRobotsTxt: true,
   exclude: [
+    "/buy/*",
+    "/landing/*",
     "/docs/plugins/sources/_*",
     "/docs/plugins/destinations/_*",
     "/docs/plugins/sources/*/_*",
@@ -17,6 +19,8 @@ module.exports = {
         userAgent: '*',
         allow: '/',
         disallow: [
+          // disallow buy redirection pages
+          '/buy/*',
           // disallow pages that start with underscores
           "/docs/plugins/sources/_*",
           "/docs/plugins/destinations/_*",

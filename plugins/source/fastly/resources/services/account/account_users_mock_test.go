@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/fastly/client"
 	"github.com/cloudquery/cloudquery/plugins/source/fastly/client/mocks"
 	"github.com/cloudquery/cloudquery/plugins/source/fastly/client/services"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/fastly/go-fastly/v7/fastly"
 	"github.com/golang/mock/gomock"
 )

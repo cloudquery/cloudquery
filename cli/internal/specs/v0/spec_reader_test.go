@@ -5,10 +5,22 @@ import (
 	"os"
 	"path"
 	"runtime"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 )
+
+const expectedApplicationDefaultCredentials = "{\n  \"type\": \"service_account\",\n  \"project_id\": \"project_id\",\n  \"private_key_id\": \"private_key_id\",\n  \"private_key\": \"-----BEGIN PRIVATE KEY-----privatekey\\n-----END PRIVATE KEY-----\\n\",\n  \"client_email\": \"client_email\",\n  \"client_id\": \"client_id\",\n  \"auth_uri\": \"https://accounts.google.com/o/oauth2/auth\",\n  \"token_uri\": \"https://oauth2.googleapis.com/token\",\n  \"auth_provider_x509_cert_url\": \"auth_provider_x509_cert_url\",\n  \"client_x509_cert_url\": \"client_x509_cert_url\",\n  \"universe_domain\": \"googleapis.com\"\n}\n"
+
+var expectedApplicationDefaultCredentialsWindows = strings.ReplaceAll(expectedApplicationDefaultCredentials, "\n", "\r\n")
+
+func getExpectedApplicationDefaultCredentials() string {
+	if runtime.GOOS == "windows" {
+		return expectedApplicationDefaultCredentialsWindows
+	}
+	return expectedApplicationDefaultCredentials
+}
 
 type specLoaderTestCase struct {
 	name         string
@@ -181,6 +193,32 @@ var specLoaderTestCases = []specLoaderTestCase{
 		},
 		envVariables: map[string]string{
 			"ACCOUNT_ID": "0123456789",
+		},
+	},
+	{
+		name: "success importing JSON file",
+		path: []string{getPath("json_file.yml")},
+		err: func() string {
+			return ""
+		},
+		sources: []*Source{
+			{Name: "gcp", Path: "cloudquery/gcp", Version: "v1.0.0", Destinations: []string{"bigquery"}, Tables: []string{"*"}},
+		},
+		destinations: []*Destination{
+			{Name: "bigquery", Path: "cloudquery/bigquery", Version: "v3.1.0", Spec: map[string]any{"service_account_key_json": getExpectedApplicationDefaultCredentials()}},
+		},
+	},
+	{
+		name: "success importing JSON file using YAML pipe operator",
+		path: []string{getPath("json_file_yaml_pipe.yml")},
+		err: func() string {
+			return ""
+		},
+		sources: []*Source{
+			{Name: "gcp", Path: "cloudquery/gcp", Version: "v1.0.0", Destinations: []string{"bigquery"}, Tables: []string{"*"}},
+		},
+		destinations: []*Destination{
+			{Name: "bigquery", Path: "cloudquery/bigquery", Version: "v3.1.0", Spec: map[string]any{"service_account_key_json": getExpectedApplicationDefaultCredentials()}},
 		},
 	},
 }

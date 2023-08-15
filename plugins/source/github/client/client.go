@@ -9,9 +9,7 @@ import (
 
 	"github.com/beatlabs/github-auth/app/inst"
 	"github.com/beatlabs/github-auth/key"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/gofri/go-github-ratelimit/github_ratelimit"
 	"github.com/google/go-github/v49/github"
 	"github.com/rs/zerolog"
@@ -73,16 +71,11 @@ func limitDetectedCallback(logger zerolog.Logger) github_ratelimit.OnLimitDetect
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
-	var spec Spec
-	if err := s.UnmarshalSpec(&spec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal GitHub spec: %w", err)
-	}
-
-	// validate plugin config
+func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMeta, error) {
 	if err := spec.Validate(); err != nil {
 		return nil, fmt.Errorf("failed to validate GitHub spec: %w", err)
 	}
+	spec.SetDefaults()
 
 	ghServices := map[string]GithubServices{}
 	for _, auth := range spec.AppAuth {

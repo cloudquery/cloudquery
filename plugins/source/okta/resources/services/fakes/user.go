@@ -3,7 +3,7 @@ package fakes
 import (
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/okta/okta-sdk-golang/v3/okta"
 )
 

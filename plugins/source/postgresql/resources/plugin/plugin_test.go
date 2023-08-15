@@ -2,6 +2,7 @@ package plugin
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -11,10 +12,13 @@ import (
 	"time"
 
 	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v13/arrow/array"
 	"github.com/cloudquery/cloudquery/plugins/source/postgresql/client"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/scalar"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/scalar"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/google/uuid"
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
 	"github.com/jackc/pgx/v5"
@@ -22,6 +26,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/jackc/pgx/v5/tracelog"
 	"github.com/rs/zerolog"
+	"github.com/stretchr/testify/require"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -193,6 +198,36 @@ func createTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string) 
 	return nil
 }
 
+func createTableWithUniqueKeys(ctx context.Context, conn *pgxpool.Pool, tableName string) error {
+	var query = `
+	create table %s (
+		column1 int primary key,
+		column2 int unique,
+		column3 int unique,
+		column4 int unique,
+		column5 int unique,
+		column6 int unique,
+		column7 int unique,
+		column8 int unique,
+		column9 int unique,
+		column10 int unique,
+		column11 int unique,
+		column12 int unique,
+		column13 int unique,
+		column14 int unique,
+		column15 int unique,
+		column16 int,
+		column17 int,
+		unique(column16, column17)
+	 )
+ `
+
+	if _, err := conn.Exec(ctx, fmt.Sprintf(query, tableName)); err != nil {
+		return err
+	}
+	return nil
+}
+
 func insertTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string, testCases []testCase) error {
 	var query = ""
 	query += "INSERT INTO " + pgx.Identifier{tableName}.Sanitize() + " ("
@@ -228,6 +263,82 @@ func insertTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string, 
 	return nil
 }
 
+func getValue(arr arrow.Array, i int) (any, error) {
+	if arr.IsNull(i) {
+		return nil, nil
+	}
+	switch a := arr.(type) {
+	case *array.Boolean:
+		return a.Value(i), nil
+	case *array.Int8:
+		return a.Value(i), nil
+	case *array.Int16:
+		return a.Value(i), nil
+	case *array.Int32:
+		return a.Value(i), nil
+	case *array.Int64:
+		return a.Value(i), nil
+	case *array.Uint8:
+		return a.Value(i), nil
+	case *array.Uint16:
+		return a.Value(i), nil
+	case *array.Uint32:
+		return a.Value(i), nil
+	case *array.Uint64:
+		return a.Value(i), nil
+	case *array.Float16:
+		return a.Value(i), nil
+	case *array.Float32:
+		return a.Value(i), nil
+	case *array.Float64:
+		return a.Value(i), nil
+	case *array.String:
+		return a.Value(i), nil
+	case *array.LargeString:
+		return a.Value(i), nil
+	case *array.Binary:
+		return a.Value(i), nil
+	case *array.LargeBinary:
+		return a.Value(i), nil
+	case *array.FixedSizeBinary:
+		return a.Value(i), nil
+	case *types.InetArray:
+		return a.Value(i), nil
+	case *array.Timestamp:
+		toTime, err := a.DataType().(*arrow.TimestampType).GetToTimeFunc()
+		if err != nil {
+			return nil, err
+		}
+		return toTime(a.Value(i)), nil
+	case *types.UUIDArray:
+		bUUID, err := a.Value(i).MarshalBinary()
+		if err != nil {
+			return nil, err
+		}
+		return bUUID, nil
+	default:
+		return a.ValueStr(i), nil
+	}
+}
+
+func assertRecord(t *testing.T, actualRecord arrow.Record, expected []testCase) {
+	if len(expected) != int(actualRecord.NumCols()) {
+		t.Fatalf("expected record to have %d columns, got %d", len(expected), actualRecord.NumCols())
+	}
+	sc := actualRecord.Schema()
+	for i, val := range expected {
+		actualScalar := scalar.NewScalar(sc.Field(i).Type)
+		actualVal, err := getValue(actualRecord.Column(i), 0)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := actualScalar.Set(actualVal); err != nil {
+			t.Fatal(err)
+		}
+		require.Equal(t, val.expect.String(), actualScalar.String(), "column %d", i)
+	}
+}
+
 func TestPlugin(t *testing.T) {
 	p := Plugin()
 	ctx := context.Background()
@@ -235,18 +346,15 @@ func TestPlugin(t *testing.T) {
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	p.SetLogger(l)
-	spec := specs.Source{
-		Name:         "test_pg_source",
-		Path:         "cloudquery/postgresql",
-		Version:      "vdevelopment",
-		Destinations: []string{"test"},
-		Tables:       []string{"test_pg_source"},
-		Spec: client.Spec{
-			ConnectionString: getTestConnectionString(),
-			PgxLogLevel:      client.LogLevelTrace,
-		},
+	spec := client.Spec{
+		ConnectionString: getTestConnectionString(),
+		PgxLogLevel:      client.LogLevelTrace,
 	}
-	conn, err := getTestConnection(ctx, l, spec.Spec.(client.Spec).ConnectionString)
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	conn, err := getTestConnection(ctx, l, spec.ConnectionString)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -278,21 +386,24 @@ func TestPlugin(t *testing.T) {
 	}
 
 	// Init the plugin so we can call migrate
-	if err := p.Init(ctx, spec); err != nil {
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
 		t.Fatal(err)
 	}
-	res := make(chan *schema.Resource, 1)
+	res := make(chan message.SyncMessage, 1)
 	g := errgroup.Group{}
-	syncTime := time.Now()
 	g.Go(func() error {
 		defer close(res)
-		return p.Sync(ctx, syncTime, res)
+		opts := plugin.SyncOptions{Tables: []string{testTable}}
+		return p.Sync(ctx, opts, res)
 	})
-	var resource *schema.Resource
+	var actualRecord arrow.Record
 	totalResources := 0
 	for r := range res {
-		resource = r
-		totalResources++
+		m, ok := r.(*message.SyncInsert)
+		if ok {
+			actualRecord = m.Record
+			totalResources++
+		}
 	}
 	err = g.Wait()
 	if err != nil {
@@ -301,13 +412,8 @@ func TestPlugin(t *testing.T) {
 	if totalResources != 1 {
 		t.Fatalf("expected 1 resource, got %d", totalResources)
 	}
-	gotData := resource.GetValues()
-	for i, got := range gotData {
-		expected := data[i].expect
-		if !got.Equal(expected) {
-			t.Fatalf("type %v: expected %v, got %v", data[i].typeName, expected, got)
-		}
-	}
+
+	assertRecord(t, actualRecord, data)
 }
 
 func TestPluginCDC(t *testing.T) {
@@ -317,17 +423,14 @@ func TestPluginCDC(t *testing.T) {
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.WarnLevel).With().Timestamp().Logger()
 	p.SetLogger(l)
-	spec := specs.Source{
-		Name:         "test_pg_source",
-		Path:         "cloudquery/postgresql",
-		Version:      "vdevelopment",
-		Destinations: []string{"test"},
-		// use a reserved keyword as table name to validate escaping
-		Tables: []string{"user"},
-		Spec: &client.Spec{
-			ConnectionString: getTestConnectionString() + "&replication=database",
-			PgxLogLevel:      client.LogLevelTrace,
-		},
+	spec := client.Spec{
+		ConnectionString: getTestConnectionString() + "&replication=database",
+		PgxLogLevel:      client.LogLevelTrace,
+		CDCId:            "test_pg_source",
+	}
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
 	}
 	conn, err := getTestConnection(ctx, l, getTestConnectionString())
 	if err != nil {
@@ -355,23 +458,24 @@ func TestPluginCDC(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	spec.Spec.(*client.Spec).CDC = true
 	// Init the plugin so we can call migrate
-	if err := p.Init(ctx, spec); err != nil {
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
 		t.Fatal(err)
 	}
-	res := make(chan *schema.Resource, 10)
+	res := make(chan message.SyncMessage, 10)
 	var wg sync.WaitGroup
 	var syncErr error
 	syncCtx, cancel := context.WithTimeout(ctx, 15*time.Second)
 	defer cancel()
 	wg.Add(1)
 
-	syncTime := time.Now()
 	go func() {
 		defer wg.Done()
 		defer close(res)
-		syncErr = p.Sync(syncCtx, syncTime, res)
+		opts := plugin.SyncOptions{
+			Tables: []string{testTable},
+		}
+		syncErr = p.Sync(syncCtx, opts, res)
 	}()
 	data2 := getTestCases(2)
 	time.AfterFunc(2*time.Second, func() {
@@ -381,33 +485,24 @@ func TestPluginCDC(t *testing.T) {
 		}
 	})
 
-	totalResources := 0
+	records := make([]arrow.Record, 0)
 	for r := range res {
-		gotData := r.GetValues()
-		if totalResources == 0 {
-			for i, got := range gotData {
-				expected := data[i].expect
-				if !got.Equal(expected) {
-					t.Fatalf("type %v: expected %v, got %v", data[i].typeName, expected, got)
-				}
-			}
-		} else {
-			for i, got := range gotData {
-				expected := data2[i].expect
-				if !got.Equal(expected) {
-					t.Fatalf("type %v: expected %v, got %v", data[i].typeName, expected, got)
-				}
-			}
+		m, ok := r.(*message.SyncInsert)
+		if ok {
+			record := m.Record
+			records = append(records, record)
 		}
-		totalResources++
 	}
 	wg.Wait()
-	if totalResources != 2 {
-		t.Fatalf("expected 2 resource, got %d", totalResources)
+	if len(records) != 2 {
+		t.Fatalf("expected 2 resource, got %d", len(records))
 	}
 	if syncErr != nil && !IsContextDeadlineExceeded(syncErr) {
 		t.Fatal(syncErr)
 	}
+
+	assertRecord(t, records[0], data)
+	assertRecord(t, records[1], data2)
 }
 
 func IsContextDeadlineExceeded(err error) bool {
@@ -420,4 +515,77 @@ func IsContextDeadlineExceeded(err error) bool {
 		err = errors.Unwrap(err)
 	}
 	return deadlineExceeded
+}
+
+func TestMigrate(t *testing.T) {
+	p := Plugin()
+	ctx := context.Background()
+	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
+		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
+	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+	p.SetLogger(l)
+	spec := client.Spec{
+		ConnectionString: getTestConnectionString(),
+		PgxLogLevel:      client.LogLevelTrace,
+	}
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	conn, err := getTestConnection(ctx, l, spec.ConnectionString)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer conn.Close()
+
+	testTable := "test_pg_migrate"
+	if _, err := conn.Exec(ctx, "DROP TABLE IF EXISTS test_pg_migrate"); err != nil {
+		t.Fatal(err)
+	}
+	if err := createTableWithUniqueKeys(ctx, conn, testTable); err != nil {
+		t.Fatal(err)
+	}
+
+	// Init the plugin so we can call migrate
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
+		t.Fatal(err)
+	}
+	res := make(chan message.SyncMessage, 1)
+	g := errgroup.Group{}
+	g.Go(func() error {
+		defer close(res)
+		opts := plugin.SyncOptions{Tables: []string{testTable}}
+		return p.Sync(ctx, opts, res)
+	})
+	var table *schema.Table
+	for r := range res {
+		m, ok := r.(*message.SyncMigrateTable)
+		if ok {
+			table = m.Table
+		}
+	}
+	err = g.Wait()
+	if err != nil {
+		t.Fatal("got unexpected error:", err)
+	}
+
+	require.Equal(t, schema.ColumnList{
+		{Name: "column1", Type: &arrow.Int32Type{}, PrimaryKey: true, Unique: true, NotNull: true},
+		{Name: "column2", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column3", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column4", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column5", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column6", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column7", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column8", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column9", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column10", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column11", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column12", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column13", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column14", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column15", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column16", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: false, NotNull: false},
+		{Name: "column17", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: false, NotNull: false},
+	}, table.Columns)
 }

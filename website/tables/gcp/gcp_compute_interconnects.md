@@ -23,6 +23,8 @@ The primary key for this table is **self_link**.
 |interconnect_attachments|`list<item: utf8, nullable>`|
 |interconnect_type|`utf8`|
 |kind|`utf8`|
+|label_fingerprint|`utf8`|
+|labels|`json`|
 |link_type|`utf8`|
 |location|`utf8`|
 |name|`utf8`|
@@ -30,6 +32,7 @@ The primary key for this table is **self_link**.
 |operational_status|`utf8`|
 |peer_ip_address|`utf8`|
 |provisioned_link_count|`int64`|
+|remote_location|`utf8`|
 |requested_link_count|`int64`|
 |satisfies_pzs|`bool`|
 |self_link (PK)|`utf8`|

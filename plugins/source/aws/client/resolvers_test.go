@@ -4,13 +4,13 @@ import (
 	"context"
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/v3/scalar"
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/scalar"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	types1 "github.com/aws/aws-sdk-go-v2/service/codepipeline/types"
 	types2 "github.com/aws/aws-sdk-go-v2/service/redshift/types"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/stretchr/testify/assert"
 )
 

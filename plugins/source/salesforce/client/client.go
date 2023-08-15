@@ -10,9 +10,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
 )
 
@@ -22,7 +20,7 @@ const defaultHTTPTimeout = 30 * time.Second
 
 type Client struct {
 	logger              zerolog.Logger
-	pluginSpec          Spec
+	spec                Spec
 	LoginResponse       LoginResponse
 	ListObjectsResponse ListObjectsResponse
 	Object              string
@@ -55,22 +53,18 @@ type ListObjectsResponse struct {
 	Sobject []Sobject `json:"sobjects"`
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMeta, error) {
 	cqClient := Client{
 		logger: logger,
 	}
-	var sfSpec Spec
-	if err := spec.UnmarshalSpec(&sfSpec); err != nil {
-		return nil, err
-	}
-	sfSpec.SetDefaults()
-	if err := sfSpec.Validate(); err != nil {
+	spec.SetDefaults()
+	if err := spec.Validate(); err != nil {
 		return nil, err
 	}
 	cqClient.Client = &http.Client{
 		Timeout: time.Duration(30) * time.Second,
 	}
-	cqClient.pluginSpec = sfSpec
+	cqClient.spec = spec
 	if err := cqClient.login(ctx); err != nil {
 		return nil, err
 	}
@@ -130,10 +124,10 @@ func (c *Client) listObjects(ctx context.Context) error {
 func (c *Client) login(ctx context.Context) error {
 	data := url.Values{
 		"grant_type":    {"password"},
-		"client_id":     {c.pluginSpec.ClientId},
-		"client_secret": {c.pluginSpec.ClientSecret},
-		"username":      {c.pluginSpec.Username},
-		"password":      {c.pluginSpec.Password},
+		"client_id":     {c.spec.ClientId},
+		"client_secret": {c.spec.ClientSecret},
+		"username":      {c.spec.Username},
+		"password":      {c.spec.Password},
 	}
 
 	request, err := http.NewRequestWithContext(ctx, "POST", "https://login.salesforce.com/services/oauth2/token", bytes.NewBufferString(data.Encode()))

@@ -1,11 +1,9 @@
 export type Category =
     "cloud-infrastructure" |
     "cloud-finops" |
-    "crm" |
     "databases" |
     "data-warehouses-lakes" |
     "engineering-analytics" |
-    "hr-software" |
     "marketing-analytics" |
     "product-analytics" |
     "project-management" |
@@ -14,10 +12,23 @@ export type Category =
     "shipment-tracking" |
     "other";
 
+export const CATEGORIES: Category[] = [
+    "cloud-infrastructure",
+    "cloud-finops",
+    "databases",
+    "data-warehouses-lakes",
+    "engineering-analytics",
+    "marketing-analytics",
+    "product-analytics",
+    "project-management",
+    "fleet-management",
+    "security",
+    "shipment-tracking",
+    "other"
+];
+
 export function CategoryTitle(cat: Category) {
     switch (cat) {
-        case "crm":
-            return "CRM Software";
         case "cloud-infrastructure":
             return "Cloud Infrastructure";
         case "databases":
@@ -30,8 +41,6 @@ export function CategoryTitle(cat: Category) {
             return "Cloud FinOps";
         case "fleet-management":
             return "Fleet Management";
-        case "hr-software":
-            return "HR Software";
         case "marketing-analytics":
             return "Marketing Analytics";
         case "product-analytics":

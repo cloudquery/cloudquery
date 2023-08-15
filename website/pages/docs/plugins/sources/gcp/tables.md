@@ -143,6 +143,7 @@
 - [gcp_projects](tables/gcp_projects)
 - [gcp_redis_instances](tables/gcp_redis_instances)
 - [gcp_resourcemanager_folders](tables/gcp_resourcemanager_folders)
+  - [gcp_resourcemanager_subfolders](tables/gcp_resourcemanager_subfolders)
 - [gcp_resourcemanager_project_policies](tables/gcp_resourcemanager_project_policies)
 - [gcp_resourcemanager_projects](tables/gcp_resourcemanager_projects)
 - [gcp_run_locations](tables/gcp_run_locations)

@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armprivatedns"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/gorilla/mux"
 )
 
@@ -34,7 +34,11 @@ func createPrivateZones(router *mux.Router) error {
 		}
 	})
 
-	return nil
+	if err := createMockRecordSets(router); err != nil {
+		return err
+	}
+
+	return createMockVirtualNetworkLinks(router)
 }
 
 func TestPrivateZones(t *testing.T) {

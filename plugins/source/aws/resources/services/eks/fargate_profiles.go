@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eks"
 	"github.com/aws/aws-sdk-go-v2/service/eks/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func fargateProfiles() *schema.Table {
@@ -18,7 +18,6 @@ func fargateProfiles() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/eks/latest/APIReference/API_FargateProfile.html`,
 		Resolver:            fetchFargateProfiles,
 		PreResourceResolver: getFargateProfile,
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "eks"),
 		Transform:           transformers.TransformWithStruct(&types.FargateProfile{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

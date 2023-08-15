@@ -3,11 +3,11 @@ package client
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
 
 	// Import the oracle driver
@@ -15,11 +15,12 @@ import (
 )
 
 type Client struct {
+	plugin.UnimplementedDestination
 	logger      zerolog.Logger
-	metrics     *source.Metrics
-	Tables      schema.Tables
+	tables      schema.Tables
+	options     plugin.NewClientOptions
 	db          *sql.DB
-	Concurrency uint64
+	concurrency int
 }
 
 var _ schema.ClientMeta = (*Client)(nil)
@@ -28,9 +29,9 @@ func (*Client) ID() string {
 	return "oracledb"
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	var oracleDBSpec Spec
-	err := spec.UnmarshalSpec(&oracleDBSpec)
+	err := json.Unmarshal(spec, &oracleDBSpec)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
@@ -52,15 +53,19 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	}
 	defer conn.Close()
 
-	c := &Client{logger: logger.With().Str("module", "oracledb-source").Logger(), db: db, Concurrency: spec.Concurrency}
-	c.Tables, err = c.listTables(ctx)
+	c := &Client{logger: logger.With().Str("module", "oracledb-source").Logger(), db: db, concurrency: oracleDBSpec.Concurrency, options: opts}
+	c.tables, err = c.listTables(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list tables: %w", err)
 	}
-	c.Tables, err = c.Tables.FilterDfs(spec.Tables, spec.SkipTables, spec.SkipDependentTables)
-	if err != nil {
-		return nil, fmt.Errorf("failed to apply config to tables: %w", err)
-	}
 
 	return c, nil
+}
+
+func (c Client) Tables(ctx context.Context, opts plugin.TableOptions) (schema.Tables, error) {
+	return c.tables.FilterDfs(opts.Tables, opts.SkipTables, opts.SkipDependentTables)
+}
+
+func (c Client) Close(_ context.Context) error {
+	return c.db.Close()
 }

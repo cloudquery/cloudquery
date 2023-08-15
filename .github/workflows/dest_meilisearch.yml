@@ -1,5 +1,9 @@
 name: Destination Plugin Meilisearch Workflow
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     paths:
@@ -15,7 +19,7 @@ on:
 jobs:
   plugins-destination-meilisearch:
     name: "plugins/destination/meilisearch"
-    runs-on:         ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     timeout-minutes: 30
     env:
       MEILI_MASTER_KEY: test
@@ -24,7 +28,7 @@ jobs:
         working-directory: plugins/destination/meilisearch
     services:
       meilisearch:
-        image:   getmeili/meilisearch:v1.1.0
+        image:   getmeili/meilisearch:v1.3.0
         env:
           MEILI_ENV:          development
           MEILI_MASTER_KEY:   ${{ env.MEILI_MASTER_KEY }}
@@ -66,7 +70,7 @@ jobs:
       run:  make test
   validate-release:
     timeout-minutes: 30
-    runs-on:         ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     env:
       CGO_ENABLED: 0
     steps:
@@ -79,9 +83,9 @@ jobs:
         path:         |
                       ~/.cache/go-build
                       ~/go/pkg/mod
-        key:          ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('plugins/destination/meilisearch/go.sum') }}
+        key:          ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/destination/meilisearch/go.sum') }}
         restore-keys: |
-                      ${{ runner.os }}-go-1.19.4-release-cache-plugins-destination-meilisearch
+                      ${{ runner.os }}-go-1.20.5-release-cache-plugins-destination-meilisearch
     - name: Set up Go
       if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
       uses: actions/setup-go@v3

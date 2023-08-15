@@ -14,30 +14,53 @@ import Configuration from "./_configuration.mdx";
 This is the (nested) spec used by the Snyk source plugin.
 
 - `api_key` (string, required):
+
   An API key to access Snyk resources.
   See [Authentication for API](https://docs.snyk.io/snyk-api-info/authentication-for-api) for more information.
 
-- `organizations`  ([]string, optional. Default: all organizations accessible via `api_key`):
+- `organizations`  (`[]string`, optional. Default: all organizations accessible via `api_key`):
+
   You can choose to limit what organizations to sync information from.
 
-- `endpoint_url` (string, optional. Default: not used):
+- `endpoint_url` (`string`, optional. Default: not used):
+
   Endpoint URL to make the API requests to.
 
-- `retries` (integer, optional. Default: 10):
+- `retries` (`integer`, optional. Default: `10`):
+
   Number of retries to make when a request fails with a retryable error code.
 
-- `retry_delay_seconds` (integer, optional. Default: 65):
+- `retry_delay_seconds` (`integer`, optional. Default: `65`):
+
   Number of seconds to wait between retries. Jitter is added to this value.
 
 - `table_options` (object, optional. Default: not used):
+
   Options to apply to specific tables. See [Table Options](#Table Options) for more information.
+
+- `concurrency` (`integer`, optional. Default: `10000`)
+
+  Amount of concurrent request that may be issued to Snyk API.
 
 ### Table Options
 
 - `snyk_reporting_issues`
-  - `period` (string, optional. Default: `30d`):
-    The period of time to use when querying for issues, relative to current time. This is always relative to current time, and cannot be used in conjunction with `from` and `to`. Examples: `30d` (30 days), `2w` (2 weeks).
-  - `from` (string, optional. Default: not used):
-    The start of the period of time to use when querying for issues. Examples: `2021-01-01`.
-  - `to` (string, optional. Default: not used):
-    The end of the period of time to use when querying for issues. Examples: `2021-01-01`.
+
+  - `period` (`string`, optional. Default: `30d`):
+
+    The period of time to use when querying for issues, relative to current time.
+    This is always relative to current time, and cannot be used in conjunction with `from` and `to`.
+
+    Examples: `30d` (30 days), `2w` (2 weeks).
+
+  - `from` (`string`, optional. Default: not used):
+
+    The start of the period of time to use when querying for issues.
+
+    Examples: `2021-01-01`.
+
+  - `to` (`string`, optional. Default: not used):
+
+    The end of the period of time to use when querying for issues.
+
+    Examples: `2021-01-01`.

@@ -425,6 +425,36 @@ func (mr *MockCostexplorerClientMockRecorder) GetRightsizingRecommendation(arg0,
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRightsizingRecommendation", reflect.TypeOf((*MockCostexplorerClient)(nil).GetRightsizingRecommendation), varargs...)
 }
 
+// GetSavingsPlanPurchaseRecommendationDetails mocks base method.
+func (m *MockCostexplorerClient) GetSavingsPlanPurchaseRecommendationDetails(arg0 context.Context, arg1 *costexplorer.GetSavingsPlanPurchaseRecommendationDetailsInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.GetSavingsPlanPurchaseRecommendationDetailsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &costexplorer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSavingsPlanPurchaseRecommendationDetails")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetSavingsPlanPurchaseRecommendationDetails", varargs...)
+	ret0, _ := ret[0].(*costexplorer.GetSavingsPlanPurchaseRecommendationDetailsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetSavingsPlanPurchaseRecommendationDetails indicates an expected call of GetSavingsPlanPurchaseRecommendationDetails.
+func (mr *MockCostexplorerClientMockRecorder) GetSavingsPlanPurchaseRecommendationDetails(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSavingsPlanPurchaseRecommendationDetails", reflect.TypeOf((*MockCostexplorerClient)(nil).GetSavingsPlanPurchaseRecommendationDetails), varargs...)
+}
+
 // GetSavingsPlansCoverage mocks base method.
 func (m *MockCostexplorerClient) GetSavingsPlansCoverage(arg0 context.Context, arg1 *costexplorer.GetSavingsPlansCoverageInput, arg2 ...func(*costexplorer.Options)) (*costexplorer.GetSavingsPlansCoverageOutput, error) {
 

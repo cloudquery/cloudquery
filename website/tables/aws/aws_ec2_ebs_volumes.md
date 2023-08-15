@@ -10,8 +10,6 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
@@ -29,6 +27,7 @@ The primary key for this table is **arn**.
 |outpost_arn|`utf8`|
 |size|`int64`|
 |snapshot_id|`utf8`|
+|sse_type|`utf8`|
 |state|`utf8`|
 |throughput|`int64`|
 |volume_id|`utf8`|
