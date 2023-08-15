@@ -8,19 +8,19 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|id (PK)|`string`|
+|id (PK)|`utf8`|
 |version|`int64`|
-|status|`string`|
-|created_at|`string`|
-|updated_at|`string`|
-|start_at|`string`|
-|location_id|`string`|
-|customer_id|`string`|
-|customer_note|`string`|
-|seller_note|`string`|
-|appointment_segments|`extension<json<JSONType>>`|
+|status|`utf8`|
+|created_at|`utf8`|
+|updated_at|`utf8`|
+|start_at|`utf8`|
+|location_id|`utf8`|
+|customer_id|`utf8`|
+|customer_note|`utf8`|
+|seller_note|`utf8`|
+|appointment_segments|`json`|
 |transition_time_minutes|`int64`|
 |all_day|`bool`|
-|location_type|`string`|
-|creator_details|`extension<json<JSONType>>`|
-|source|`string`|
+|location_type|`utf8`|
+|creator_details|`json`|
+|source|`utf8`|

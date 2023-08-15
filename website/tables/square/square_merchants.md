@@ -8,11 +8,11 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|id (PK)|`string`|
-|business_name|`string`|
-|country|`string`|
-|language_code|`string`|
-|currency|`string`|
-|status|`string`|
-|main_location_id|`string`|
-|created_at|`string`|
+|id (PK)|`utf8`|
+|business_name|`utf8`|
+|country|`utf8`|
+|language_code|`utf8`|
+|currency|`utf8`|
+|status|`utf8`|
+|main_location_id|`utf8`|
+|created_at|`utf8`|

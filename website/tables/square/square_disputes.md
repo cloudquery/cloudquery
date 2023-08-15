@@ -8,19 +8,19 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|dispute_id|`string`|
-|id (PK)|`string`|
-|amount_money|`extension<json<JSONType>>`|
-|reason|`string`|
-|state|`string`|
-|due_at|`string`|
-|disputed_payment|`extension<json<JSONType>>`|
-|evidence_ids|`extension<json<JSONType>>`|
-|card_brand|`string`|
-|created_at|`string`|
-|updated_at|`string`|
-|brand_dispute_id|`string`|
-|reported_date|`string`|
-|reported_at|`string`|
+|dispute_id|`utf8`|
+|id (PK)|`utf8`|
+|amount_money|`json`|
+|reason|`utf8`|
+|state|`utf8`|
+|due_at|`utf8`|
+|disputed_payment|`json`|
+|evidence_ids|`json`|
+|card_brand|`utf8`|
+|created_at|`utf8`|
+|updated_at|`utf8`|
+|brand_dispute_id|`utf8`|
+|reported_date|`utf8`|
+|reported_at|`utf8`|
 |version|`int64`|
-|location_id|`string`|
+|location_id|`utf8`|

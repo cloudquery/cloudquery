@@ -20,8 +20,14 @@ class SquarePlugin(plugin.Plugin):
     def set_logger(self, logger) -> None:
         self._logger = logger
 
-    def init(self, spec_bytes):
-        self._spec_json = json.loads(spec_bytes)
+    def init(self, spec_bytes, no_connection: bool = True):
+        if no_connection:
+            return
+        if spec_bytes:
+            self._spec_json = json.loads(spec_bytes)
+        else:
+            # without this, an empty spec returns an obscure error
+            self._spec_json = {}
         self._spec = Spec(**self._spec_json)
         self._spec.validate()
         self._scheduler = Scheduler(

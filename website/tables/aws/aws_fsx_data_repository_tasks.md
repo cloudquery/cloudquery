@@ -26,6 +26,7 @@ The primary key for this table is **arn**.
 |file_cache_id|`utf8`|
 |file_system_id|`utf8`|
 |paths|`list<item: utf8, nullable>`|
+|release_configuration|`json`|
 |report|`json`|
 |resource_arn|`utf8`|
 |start_time|`timestamp[us, tz=UTC]`|
