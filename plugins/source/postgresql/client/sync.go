@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"database/sql/driver"
 	"errors"
 	"fmt"
 	"strings"
@@ -146,38 +145,6 @@ func syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- m
 	}
 
 	return nil
-}
-
-func prepareValueForResourceSet(dataType arrow.DataType, v any) (any, error) {
-	switch tp := dataType.(type) {
-	case *arrow.StringType:
-		if value, ok := v.(driver.Valuer); ok {
-			if value == driver.Valuer(nil) {
-				v = nil
-			} else {
-				val, err := value.Value()
-				if err != nil {
-					return nil, err
-				}
-				if s, ok := val.(string); ok {
-					v = s
-				}
-			}
-		}
-	case *arrow.Time32Type:
-		t, err := v.(pgtype.Time).TimeValue()
-		if err != nil {
-			return nil, err
-		}
-		v = stringForTime(t, tp.Unit)
-	case *arrow.Time64Type:
-		t, err := v.(pgtype.Time).TimeValue()
-		if err != nil {
-			return nil, err
-		}
-		v = stringForTime(t, tp.Unit)
-	}
-	return v, nil
 }
 
 func stringForTime(t pgtype.Time, unit arrow.TimeUnit) string {
