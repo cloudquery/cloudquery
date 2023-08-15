@@ -21,7 +21,14 @@ SELECT
 	columns.ordinal_position AS ordinal_position,
 	pg_class.relname AS table_name,
 	pg_attribute.attname AS column_name,
-	pg_catalog.format_type(pg_attribute.atttypid, pg_attribute.atttypmod) AS data_type,
+	CASE
+	    -- This is required per the differences in pg_catalog.format_type implementations
+	    -- between PostgreSQL & CockroachDB.
+	    -- namely, numeric(20,0)[] is returned as numeric[] unless we use the typelem format + []
+	    WHEN pg_type.typcategory = 'A' AND pg_type.typelem != 0
+		THEN pg_catalog.format_type(pg_type.typelem, pg_attribute.atttypmod) || '[]'
+		ELSE pg_catalog.format_type(pg_attribute.atttypid, pg_attribute.atttypmod)
+	END AS data_type,
 	CASE 
 		WHEN conkey IS NOT NULL AND contype = 'p' AND array_position(conkey, pg_attribute.attnum) > 0 THEN true
 		ELSE false
@@ -31,12 +38,19 @@ SELECT
 		ELSE false
 	END AS not_null,
     CASE
-		WHEN conkey IS NOT NULL AND (contype = 'p' OR contype = 'u') AND array_position(conkey, pg_attribute.attnum) > 0 THEN true
+		WHEN
+		    conkey IS NOT NULL
+		    AND (contype = 'p' OR contype = 'u')
+			AND array_length(conkey, 1) = 1  -- we don't handle composite unique keys
+		    AND array_position(conkey, pg_attribute.attnum) > 0
+		    THEN true
 		ELSE false
 	END AS is_unique,
 	COALESCE(pg_constraint.conname, '') AS constraint_name
 FROM
 	pg_catalog.pg_attribute
+	INNER JOIN
+	pg_catalog.pg_type ON pg_type.oid = pg_attribute.atttypid
 	INNER JOIN
 	pg_catalog.pg_class ON pg_class.oid = pg_attribute.attrelid
 	INNER JOIN
