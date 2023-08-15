@@ -96,7 +96,7 @@ func (c *Client) syncTables(ctx context.Context, snapshotName string, filteredTa
 	}
 
 	for _, table := range filteredTables {
-		if err := syncTable(ctx, tx, table, res); err != nil {
+		if err := c.syncTable(ctx, tx, table, res); err != nil {
 			return err
 		}
 	}
@@ -106,7 +106,7 @@ func (c *Client) syncTables(ctx context.Context, snapshotName string, filteredTa
 	return nil
 }
 
-func syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- message.SyncMessage) error {
+func (c *Client) syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- message.SyncMessage) error {
 	arrowSchema := table.ToArrowSchema()
 	builder := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
 	transformers := transformersForSchema(arrowSchema)
@@ -122,6 +122,7 @@ func syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- m
 	}
 	defer rows.Close()
 
+	processed := 0
 	for rows.Next() {
 		values, err := rows.Values()
 		if err != nil {
@@ -141,7 +142,17 @@ func syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- m
 
 			scalar.AppendToBuilder(builder.Field(i), s)
 		}
-		res <- &message.SyncInsert{Record: builder.NewRecord()} // NewRecord resets the builder for reuse
+
+		processed++
+		if processed%c.pluginSpec.RowsPerRecord == 0 {
+			res <- &message.SyncInsert{Record: builder.NewRecord()} // NewRecord resets the builder for reuse
+			processed = 0
+		}
+	}
+
+	record := builder.NewRecord()
+	if record.NumRows() > 0 { // only send if there are some unsent rows
+		res <- &message.SyncInsert{Record: record}
 	}
 
 	return nil
