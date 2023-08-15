@@ -35,7 +35,7 @@ func ProtectedResources() *schema.Table {
 
 func listResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Backup
+	svc := cl.Services(client.AWSServiceBackup).Backup
 	params := backup.ListProtectedResourcesInput{MaxResults: aws.Int32(1000)} // maximum value from https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListProtectedResources.html
 	paginator := backup.NewListProtectedResourcesPaginator(svc, &params)
 	for paginator.HasMorePages() {

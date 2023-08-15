@@ -28,7 +28,7 @@ func Jobs() *schema.Table {
 
 func fetchBackupJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Backup
+	svc := cl.Services(client.AWSServiceBackup).Backup
 	params := backup.ListBackupJobsInput{ByAccountId: aws.String(cl.AccountID), MaxResults: aws.Int32(1000)} // maximum value from https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListBackupJobs.html
 	paginator := backup.NewListBackupJobsPaginator(svc, &params)
 	for paginator.HasMorePages() {

@@ -33,7 +33,7 @@ func groupAttachedPolicies() *schema.Table {
 func fetchIamGroupAttachedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(types.Group)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services(client.AWSServiceIam).Iam
 	config := iam.ListAttachedGroupPoliciesInput{
 		GroupName: p.GroupName,
 	}

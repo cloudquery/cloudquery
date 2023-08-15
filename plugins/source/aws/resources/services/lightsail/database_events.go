@@ -38,7 +38,7 @@ func fetchLightsailDatabaseEvents(ctx context.Context, meta schema.ClientMeta, p
 		DurationInMinutes:      aws.Int32(20160), // two weeks
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lightsail
+	svc := cl.Services(client.AWSServiceLightsail).Lightsail
 	// No paginator available
 	for {
 		response, err := svc.GetRelationalDatabaseEvents(ctx, &input, func(options *lightsail.Options) {

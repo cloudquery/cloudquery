@@ -41,7 +41,7 @@ func Applications() *schema.Table {
 
 func fetchApplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Appconfig
+	svc := cl.Services(client.AWSServiceAppconfig).Appconfig
 	paginator := appconfig.NewListApplicationsPaginator(svc, nil)
 	for paginator.HasMorePages() {
 		resp, err := paginator.NextPage(ctx, func(options *appconfig.Options) {

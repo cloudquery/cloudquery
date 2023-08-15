@@ -47,7 +47,7 @@ func Plans() *schema.Table {
 
 func fetchBackupPlans(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Backup
+	svc := cl.Services(client.AWSServiceBackup).Backup
 	params := backup.ListBackupPlansInput{MaxResults: aws.Int32(1000)} // maximum value from https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListBackupPlans.html
 	paginator := backup.NewListBackupPlansPaginator(svc, &params)
 	for paginator.HasMorePages() {
@@ -64,7 +64,7 @@ func fetchBackupPlans(ctx context.Context, meta schema.ClientMeta, parent *schem
 
 func getPlan(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Backup
+	svc := cl.Services(client.AWSServiceBackup).Backup
 	m := resource.Item.(types.BackupPlansListMember)
 
 	plan, err := svc.GetBackupPlan(
@@ -84,7 +84,7 @@ func getPlan(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 func resolvePlanTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	plan := resource.Item.(*backup.GetBackupPlanOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Backup
+	svc := cl.Services(client.AWSServiceBackup).Backup
 	params := backup.ListTagsInput{ResourceArn: plan.BackupPlanArn}
 	tags := make(map[string]string)
 	paginator := backup.NewListTagsPaginator(svc, &params)
