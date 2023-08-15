@@ -37,7 +37,7 @@ func configurationOptions() *schema.Table {
 func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(types.EnvironmentDescription)
 	cl := meta.(*client.Client)
-	svc := cl.Services("elasticbeanstalk").Elasticbeanstalk
+	svc := cl.Services(client.AWSServiceElasticbeanstalk).Elasticbeanstalk
 	configOptionsIn := elasticbeanstalk.DescribeConfigurationOptionsInput{
 		ApplicationName: p.ApplicationName,
 		EnvironmentName: p.EnvironmentName,

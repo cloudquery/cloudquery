@@ -53,7 +53,7 @@ func Users() *schema.Table {
 func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	config := iam.ListUsersInput{}
 	cl := meta.(*client.Client)
-	svc := cl.Services("iam").Iam
+	svc := cl.Services(client.AWSServiceIam).Iam
 	p := iam.NewListUsersPaginator(svc, &config)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *iam.Options) {
@@ -70,7 +70,7 @@ func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 func getUser(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	listUser := resource.Item.(types.User)
 	cl := meta.(*client.Client)
-	svc := cl.Services("iam").Iam
+	svc := cl.Services(client.AWSServiceIam).Iam
 	userDetail, err := svc.GetUser(ctx, &iam.GetUserInput{
 		UserName: aws.String(*listUser.UserName),
 	}, func(options *iam.Options) {

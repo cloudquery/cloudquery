@@ -27,7 +27,7 @@ func EncryptionConfigs() *schema.Table {
 
 func fetchXrayEncryptionConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("xray").Xray
+	svc := cl.Services(client.AWSServiceXray).Xray
 	input := xray.GetEncryptionConfigInput{}
 	output, err := svc.GetEncryptionConfig(ctx, &input, func(o *xray.Options) {
 		o.Region = cl.Region

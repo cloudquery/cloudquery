@@ -45,7 +45,7 @@ func restApiAuthorizers() *schema.Table {
 func fetchApigatewayRestApiAuthorizers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.RestApi)
 	cl := meta.(*client.Client)
-	svc := cl.Services("apigateway").Apigateway
+	svc := cl.Services(client.AWSServiceApigateway).Apigateway
 	config := apigateway.GetAuthorizersInput{RestApiId: r.Id, Limit: aws.Int32(500)}
 	// No paginator available
 	for {

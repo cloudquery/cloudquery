@@ -33,7 +33,7 @@ func SecurityConfigurations() *schema.Table {
 
 func fetchGlueSecurityConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("glue").Glue
+	svc := cl.Services(client.AWSServiceGlue).Glue
 	paginator := glue.NewGetSecurityConfigurationsPaginator(svc, &glue.GetSecurityConfigurationsInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *glue.Options) {

@@ -46,7 +46,7 @@ func DbSnapshots() *schema.Table {
 
 func fetchRdsDbSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("rds").Rds
+	svc := cl.Services(client.AWSServiceRds).Rds
 	var input rds.DescribeDBSnapshotsInput
 	paginator := rds.NewDescribeDBSnapshotsPaginator(svc, &input)
 	for paginator.HasMorePages() {
@@ -73,7 +73,7 @@ func resolveRDSDBSnapshotTags(ctx context.Context, meta schema.ClientMeta, resou
 func resolveRDSDBSnapshotAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
 	s := resource.Item.(types.DBSnapshot)
 	cl := meta.(*client.Client)
-	svc := cl.Services("rds").Rds
+	svc := cl.Services(client.AWSServiceRds).Rds
 	out, err := svc.DescribeDBSnapshotAttributes(
 		ctx,
 		&rds.DescribeDBSnapshotAttributesInput{DBSnapshotIdentifier: s.DBSnapshotIdentifier},

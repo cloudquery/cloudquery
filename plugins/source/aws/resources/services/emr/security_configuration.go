@@ -45,7 +45,7 @@ func SecurityConfigurations() *schema.Table {
 
 func fetchSecurityConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("emr").Emr
+	svc := cl.Services(client.AWSServiceEmr).Emr
 	paginator := emr.NewListSecurityConfigurationsPaginator(svc, &emr.ListSecurityConfigurationsInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *emr.Options) {
@@ -62,7 +62,7 @@ func fetchSecurityConfigurations(ctx context.Context, meta schema.ClientMeta, pa
 func resolveConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	cl := meta.(*client.Client)
 	item := resource.Item.(types.SecurityConfigurationSummary)
-	svc := cl.Services("emr").Emr
+	svc := cl.Services(client.AWSServiceEmr).Emr
 	response, err := svc.DescribeSecurityConfiguration(ctx, &emr.DescribeSecurityConfigurationInput{Name: item.Name}, func(options *emr.Options) {
 		options.Region = cl.Region
 	})

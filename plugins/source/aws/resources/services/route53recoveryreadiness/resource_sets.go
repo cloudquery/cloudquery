@@ -33,7 +33,7 @@ func ResourceSets() *schema.Table {
 
 func fetchResourceSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("route53recoveryreadiness").Route53recoveryreadiness
+	svc := cl.Services(client.AWSServiceRoute53recoveryreadiness).Route53recoveryreadiness
 	paginator := route53recoveryreadiness.NewListResourceSetsPaginator(svc, &route53recoveryreadiness.ListResourceSetsInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(o *route53recoveryreadiness.Options) {

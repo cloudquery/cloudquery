@@ -27,7 +27,7 @@ func Templates() *schema.Table {
 
 func fetchQuicksightTemplates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("quicksight").Quicksight
+	svc := cl.Services(client.AWSServiceQuicksight).Quicksight
 	input := quicksight.ListTemplatesInput{
 		AwsAccountId: aws.String(cl.AccountID),
 	}

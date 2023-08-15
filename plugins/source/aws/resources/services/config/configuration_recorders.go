@@ -38,7 +38,7 @@ func ConfigurationRecorders() *schema.Table {
 
 func fetchConfigConfigurationRecorders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("configservice").Configservice
+	svc := cl.Services(client.AWSServiceConfigservice).Configservice
 	resp, err := svc.DescribeConfigurationRecorders(ctx, &configservice.DescribeConfigurationRecordersInput{}, func(options *configservice.Options) {
 		options.Region = cl.Region
 	})

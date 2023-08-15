@@ -50,7 +50,7 @@ func Instances() *schema.Table {
 
 func fetchLightsailInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("lightsail").Lightsail
+	svc := cl.Services(client.AWSServiceLightsail).Lightsail
 	input := lightsail.GetInstancesInput{}
 	// No paginator available
 	for {
@@ -72,7 +72,7 @@ func fetchLightsailInstances(ctx context.Context, meta schema.ClientMeta, parent
 func resolveLightsailInstanceAccessDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Instance)
 	cli := meta.(*client.Client)
-	svc := cli.Services("lightsail").Lightsail
+	svc := cli.Services(client.AWSServiceLightsail).Lightsail
 	input := lightsail.GetInstanceAccessDetailsInput{InstanceName: r.Name}
 	output, err := svc.GetInstanceAccessDetails(ctx, &input, func(options *lightsail.Options) {
 		options.Region = cli.Region

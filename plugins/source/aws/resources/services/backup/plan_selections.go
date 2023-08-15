@@ -33,7 +33,7 @@ func planSelections() *schema.Table {
 func fetchBackupPlanSelections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	plan := parent.Item.(*backup.GetBackupPlanOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services("backup").Backup
+	svc := cl.Services(client.AWSServiceBackup).Backup
 	params := backup.ListBackupSelectionsInput{
 		BackupPlanId: plan.BackupPlanId,
 		MaxResults:   aws.Int32(1000), // maximum value from https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListBackupSelections.html

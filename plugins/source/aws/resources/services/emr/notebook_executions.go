@@ -36,7 +36,7 @@ func notebookExecutions() *schema.Table {
 func fetchNotebookExecutions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	p := parent.Item.(*types.Cluster)
-	svc := cl.Services("emr").Emr
+	svc := cl.Services(client.AWSServiceEmr).Emr
 	paginator := emr.NewListNotebookExecutionsPaginator(svc, &emr.ListNotebookExecutionsInput{ExecutionEngineId: p.Id})
 	for paginator.HasMorePages() {
 		response, err := paginator.NextPage(ctx, func(options *emr.Options) {
@@ -52,7 +52,7 @@ func fetchNotebookExecutions(ctx context.Context, meta schema.ClientMeta, parent
 
 func getNotebookExecution(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("emr").Emr
+	svc := cl.Services(client.AWSServiceEmr).Emr
 	response, err := svc.DescribeNotebookExecution(ctx, &emr.DescribeNotebookExecutionInput{NotebookExecutionId: resource.Item.(types.NotebookExecutionSummary).NotebookExecutionId}, func(options *emr.Options) {
 		options.Region = cl.Region
 	})

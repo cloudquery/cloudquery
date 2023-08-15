@@ -45,7 +45,7 @@ func fetchNeptuneClusters(ctx context.Context, meta schema.ClientMeta, parent *s
 		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services("neptune").Neptune
+	svc := cl.Services(client.AWSServiceNeptune).Neptune
 	paginator := neptune.NewDescribeDBClustersPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *neptune.Options) {
@@ -62,7 +62,7 @@ func fetchNeptuneClusters(ctx context.Context, meta schema.ClientMeta, parent *s
 func resolveNeptuneClusterTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	s := resource.Item.(types.DBCluster)
 	cl := meta.(*client.Client)
-	svc := cl.Services("neptune").Neptune
+	svc := cl.Services(client.AWSServiceNeptune).Neptune
 	out, err := svc.ListTagsForResource(ctx, &neptune.ListTagsForResourceInput{ResourceName: s.DBClusterArn}, func(options *neptune.Options) {
 		options.Region = cl.Region
 	})

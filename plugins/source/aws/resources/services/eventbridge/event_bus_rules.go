@@ -46,7 +46,7 @@ func fetchEventBusRules(ctx context.Context, meta schema.ClientMeta, parent *sch
 		EventBusName: p.Arn,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services("eventbridge").Eventbridge
+	svc := cl.Services(client.AWSServiceEventbridge).Eventbridge
 	// No paginator available
 	for {
 		response, err := svc.ListRules(ctx, &input, func(options *eventbridge.Options) {

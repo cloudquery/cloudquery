@@ -36,7 +36,7 @@ func Backups() *schema.Table {
 
 func listBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("dynamodb").Dynamodb
+	svc := cl.Services(client.AWSServiceDynamodb).Dynamodb
 
 	config := dynamodb.ListBackupsInput{}
 	// No paginator available
@@ -60,7 +60,7 @@ func listBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 
 func getBackup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("dynamodb").Dynamodb
+	svc := cl.Services(client.AWSServiceDynamodb).Dynamodb
 
 	backupSummary := resource.Item.(types.BackupSummary)
 

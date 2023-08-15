@@ -36,7 +36,7 @@ func DelegationSets() *schema.Table {
 func fetchRoute53DelegationSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config route53.ListReusableDelegationSetsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services("route53").Route53
+	svc := cl.Services(client.AWSServiceRoute53).Route53
 	// no paginator available
 	for {
 		response, err := svc.ListReusableDelegationSets(ctx, &config, func(options *route53.Options) {

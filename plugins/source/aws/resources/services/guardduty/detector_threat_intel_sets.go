@@ -34,7 +34,7 @@ func detectorThreatIntelSets() *schema.Table {
 func fetchDetectorThreatIntelSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	detector := parent.Item.(*models.DetectorWrapper)
 	cl := meta.(*client.Client)
-	svc := cl.Services("guardduty").Guardduty
+	svc := cl.Services(client.AWSServiceGuardduty).Guardduty
 	config := &guardduty.ListThreatIntelSetsInput{DetectorId: aws.String(detector.Id)}
 	paginator := guardduty.NewListThreatIntelSetsPaginator(svc, config)
 	for paginator.HasMorePages() {
@@ -51,7 +51,7 @@ func fetchDetectorThreatIntelSets(ctx context.Context, meta schema.ClientMeta, p
 
 func getDetectorThreatIntelSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("guardduty").Guardduty
+	svc := cl.Services(client.AWSServiceGuardduty).Guardduty
 	id := resource.Item.(string)
 	detector := resource.Parent.Item.(*models.DetectorWrapper)
 

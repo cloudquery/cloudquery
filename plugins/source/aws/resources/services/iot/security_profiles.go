@@ -48,7 +48,7 @@ func SecurityProfiles() *schema.Table {
 
 func fetchIotSecurityProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("iot").Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 	input := iot.ListSecurityProfilesInput{
 		MaxResults: aws.Int32(250),
 	}
@@ -67,7 +67,7 @@ func fetchIotSecurityProfiles(ctx context.Context, meta schema.ClientMeta, paren
 
 func getSecurityProfile(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("iot").Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 
 	output, err := svc.DescribeSecurityProfile(ctx, &iot.DescribeSecurityProfileInput{
 		SecurityProfileName: resource.Item.(types.SecurityProfileIdentifier).Name,
@@ -84,7 +84,7 @@ func getSecurityProfile(ctx context.Context, meta schema.ClientMeta, resource *s
 func ResolveIotSecurityProfileTargets(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeSecurityProfileOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services("iot").Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 	input := iot.ListTargetsForSecurityProfileInput{
 		SecurityProfileName: i.SecurityProfileName,
 		MaxResults:          aws.Int32(250),
@@ -109,6 +109,6 @@ func ResolveIotSecurityProfileTargets(ctx context.Context, meta schema.ClientMet
 func ResolveIotSecurityProfileTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeSecurityProfileOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services("iot").Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 	return resolveIotTags(ctx, meta, svc, resource, c, i.SecurityProfileArn)
 }

@@ -48,7 +48,7 @@ func Databases() *schema.Table {
 
 func fetchGlueDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("glue").Glue
+	svc := cl.Services(client.AWSServiceGlue).Glue
 	paginator := glue.NewGetDatabasesPaginator(svc, &glue.GetDatabasesInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *glue.Options) {
@@ -67,7 +67,7 @@ func resolveGlueDatabaseArn(ctx context.Context, meta schema.ClientMeta, resourc
 }
 func resolveGlueDatabaseTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("glue").Glue
+	svc := cl.Services(client.AWSServiceGlue).Glue
 	input := glue.GetTagsInput{
 		ResourceArn: aws.String(databaseARN(cl, aws.ToString(resource.Item.(types.Database).Name))),
 	}
@@ -83,7 +83,7 @@ func resolveGlueDatabaseTags(ctx context.Context, meta schema.ClientMeta, resour
 func fetchGlueDatabaseTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.Database)
 	cl := meta.(*client.Client)
-	svc := cl.Services("glue").Glue
+	svc := cl.Services(client.AWSServiceGlue).Glue
 	input := glue.GetTablesInput{
 		DatabaseName: r.Name,
 	}
@@ -101,7 +101,7 @@ func fetchGlueDatabaseTables(ctx context.Context, meta schema.ClientMeta, parent
 }
 func fetchGlueDatabaseTableIndexes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("glue").Glue
+	svc := cl.Services(client.AWSServiceGlue).Glue
 	d := parent.Parent.Item.(types.Database)
 	t := parent.Item.(types.Table)
 	input := glue.GetPartitionIndexesInput{DatabaseName: d.Name, CatalogId: d.CatalogId, TableName: t.Name}

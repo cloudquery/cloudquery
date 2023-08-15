@@ -36,7 +36,7 @@ func Streams() *schema.Table {
 
 func fetchIotStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("iot").Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 	paginator := iot.NewListStreamsPaginator(svc, &iot.ListStreamsInput{
 		MaxResults: aws.Int32(250),
 	})
@@ -54,7 +54,7 @@ func fetchIotStreams(ctx context.Context, meta schema.ClientMeta, parent *schema
 
 func getStream(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("iot").Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 
 	output, err := svc.DescribeStream(ctx, &iot.DescribeStreamInput{
 		StreamId: resource.Item.(types.StreamSummary).StreamId,

@@ -35,7 +35,7 @@ func Repositories() *schema.Table {
 
 func fetchRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("codecommit").Codecommit
+	svc := cl.Services(client.AWSServiceCodecommit).Codecommit
 	// Note: this API doesn't support limiting the number of results in a single call and the nested BatchRepositories doesn't have a listed limit
 	// So we are assuming that the number of repositories is not too large and we can fetch (`BatchGet`) all of their details in a single call
 	config := codecommit.ListRepositoriesInput{}
@@ -74,7 +74,7 @@ func fetchRepositories(ctx context.Context, meta schema.ClientMeta, parent *sche
 
 func resolveCodecommitTags(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("codecommit").Codecommit
+	svc := cl.Services(client.AWSServiceCodecommit).Codecommit
 	params := codecommit.ListTagsForResourceInput{ResourceArn: r.Item.(types.RepositoryMetadata).Arn}
 	tags := make(map[string]string)
 	for {

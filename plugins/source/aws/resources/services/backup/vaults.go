@@ -58,7 +58,7 @@ func Vaults() *schema.Table {
 
 func fetchBackupVaults(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("backup").Backup
+	svc := cl.Services(client.AWSServiceBackup).Backup
 	params := backup.ListBackupVaultsInput{MaxResults: aws.Int32(1000)} // maximum value from https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListBackupVaults.html
 	paginator := backup.NewListBackupVaultsPaginator(svc, &params)
 	for paginator.HasMorePages() {
@@ -76,7 +76,7 @@ func fetchBackupVaults(ctx context.Context, meta schema.ClientMeta, parent *sche
 func resolveVaultTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	vault := resource.Item.(types.BackupVaultListMember)
 	cl := meta.(*client.Client)
-	svc := cl.Services("backup").Backup
+	svc := cl.Services(client.AWSServiceBackup).Backup
 	params := backup.ListTagsInput{ResourceArn: vault.BackupVaultArn}
 	tags := make(map[string]string)
 	paginator := backup.NewListTagsPaginator(svc, &params)
@@ -98,7 +98,7 @@ func resolveVaultTags(ctx context.Context, meta schema.ClientMeta, resource *sch
 func resolveVaultAccessPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	vault := resource.Item.(types.BackupVaultListMember)
 	cl := meta.(*client.Client)
-	svc := cl.Services("backup").Backup
+	svc := cl.Services(client.AWSServiceBackup).Backup
 	result, err := svc.GetBackupVaultAccessPolicy(
 		ctx,
 		&backup.GetBackupVaultAccessPolicyInput{BackupVaultName: vault.BackupVaultName},
@@ -127,7 +127,7 @@ func resolveVaultAccessPolicy(ctx context.Context, meta schema.ClientMeta, resou
 func resolveVaultNotifications(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	vault := resource.Item.(types.BackupVaultListMember)
 	cl := meta.(*client.Client)
-	svc := cl.Services("backup").Backup
+	svc := cl.Services(client.AWSServiceBackup).Backup
 	result, err := svc.GetBackupVaultNotifications(
 		ctx,
 		&backup.GetBackupVaultNotificationsInput{BackupVaultName: vault.BackupVaultName},

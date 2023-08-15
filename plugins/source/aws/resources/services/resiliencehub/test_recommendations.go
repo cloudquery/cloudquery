@@ -23,7 +23,7 @@ func testRecommendations() *schema.Table {
 
 func fetchTestRecommendations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("resiliencehub").Resiliencehub
+	svc := cl.Services(client.AWSServiceResiliencehub).Resiliencehub
 	p := resiliencehub.NewListTestRecommendationsPaginator(svc, &resiliencehub.ListTestRecommendationsInput{AssessmentArn: parent.Item.(*types.AppAssessment).AppArn})
 	for p.HasMorePages() {
 		out, err := p.NextPage(ctx, func(options *resiliencehub.Options) {

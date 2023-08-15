@@ -33,7 +33,7 @@ func fetchTrustedAdvisorCheckResults(ctx context.Context, meta schema.ClientMeta
 	if cl.LanguageCode != "en" {
 		return nil
 	}
-	svc := cl.Services("support").Support
+	svc := cl.Services(client.AWSServiceSupport).Support
 	check := parent.Item.(types.TrustedAdvisorCheckDescription)
 	input := support.DescribeTrustedAdvisorCheckResultInput{CheckId: check.Id}
 

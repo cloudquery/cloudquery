@@ -47,7 +47,7 @@ func restApiModels() *schema.Table {
 func fetchApigatewayRestApiModels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.RestApi)
 	cl := meta.(*client.Client)
-	svc := cl.Services("apigateway").Apigateway
+	svc := cl.Services(client.AWSServiceApigateway).Apigateway
 	config := apigateway.GetModelsInput{RestApiId: r.Id, Limit: aws.Int32(500)}
 	for p := apigateway.NewGetModelsPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx, func(options *apigateway.Options) {
@@ -80,7 +80,7 @@ func resolveApigatewayRestAPIModelModelTemplate(ctx context.Context, meta schema
 	r := resource.Item.(types.Model)
 	api := resource.Parent.Item.(types.RestApi)
 	cl := meta.(*client.Client)
-	svc := cl.Services("apigateway").Apigateway
+	svc := cl.Services(client.AWSServiceApigateway).Apigateway
 
 	if api.Id == nil || r.Name == nil {
 		return nil

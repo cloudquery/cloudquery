@@ -34,7 +34,7 @@ func supportedInstanceTypes() *schema.Table {
 
 func fetchEmrSupportedInstanceTypes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("emr").Emr
+	svc := cl.Services(client.AWSServiceEmr).Emr
 	p := parent.Item.(*emr.DescribeReleaseLabelOutput)
 	paginator := emr.NewListSupportedInstanceTypesPaginator(svc, &emr.ListSupportedInstanceTypesInput{ReleaseLabel: p.ReleaseLabel})
 	for paginator.HasMorePages() {

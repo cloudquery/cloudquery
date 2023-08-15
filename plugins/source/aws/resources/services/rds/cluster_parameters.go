@@ -84,7 +84,7 @@ func clusterParameters() *schema.Table {
 
 func fetchRdsClusterParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("rds").Rds
+	svc := cl.Services(client.AWSServiceRds).Rds
 
 	parentEngineVersion := parent.Item.(types.DBEngineVersion)
 

@@ -27,7 +27,7 @@ func planResources() *schema.Table {
 
 func fetchPlanResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("autoscalingplans").Autoscalingplans
+	svc := cl.Services(client.AWSServiceAutoscalingplans).Autoscalingplans
 	p := parent.Item.(types.ScalingPlan)
 
 	config := autoscalingplans.DescribeScalingPlanResourcesInput{

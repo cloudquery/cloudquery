@@ -53,7 +53,7 @@ func StackSets() *schema.Table {
 
 func fetchCloudformationStackSets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("cloudformation").Cloudformation
+	svc := cl.Services(client.AWSServiceCloudformation).Cloudformation
 	var err error
 	var page *cloudformation.ListStackSetsOutput
 	// There is no way of determining if an account is a delegated admin or not. So just need to test it out and fail over to the other one
@@ -90,7 +90,7 @@ func getStackSet(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 
 	stack := resource.Item.(models.ExpandedSummary)
 	cl := meta.(*client.Client)
-	svc := cl.Services("cloudformation").Cloudformation
+	svc := cl.Services(client.AWSServiceCloudformation).Cloudformation
 	input := &cloudformation.DescribeStackSetInput{
 		StackSetName: stack.StackSetName,
 		CallAs:       stack.CallAs,

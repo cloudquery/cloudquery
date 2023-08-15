@@ -37,7 +37,7 @@ func detectorMembers() *schema.Table {
 func fetchDetectorMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	detector := parent.Item.(*models.DetectorWrapper)
 	cl := meta.(*client.Client)
-	svc := cl.Services("guardduty").Guardduty
+	svc := cl.Services(client.AWSServiceGuardduty).Guardduty
 	config := &guardduty.ListMembersInput{DetectorId: aws.String(detector.Id)}
 	paginator := guardduty.NewListMembersPaginator(svc, config)
 	for paginator.HasMorePages() {

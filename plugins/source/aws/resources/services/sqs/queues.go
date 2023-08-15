@@ -60,7 +60,7 @@ func Queues() *schema.Table {
 
 func fetchSqsQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("sqs").Sqs
+	svc := cl.Services(client.AWSServiceSqs).Sqs
 	var params sqs.ListQueuesInput
 	paginator := sqs.NewListQueuesPaginator(svc, &params)
 	for paginator.HasMorePages() {
@@ -77,7 +77,7 @@ func fetchSqsQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.
 
 func getQueue(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("sqs").Sqs
+	svc := cl.Services(client.AWSServiceSqs).Sqs
 	qURL := resource.Item.(string)
 
 	input := sqs.GetQueueAttributesInput{
@@ -106,7 +106,7 @@ func getQueue(ctx context.Context, meta schema.ClientMeta, resource *schema.Reso
 
 func resolveSqsQueueTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("sqs").Sqs
+	svc := cl.Services(client.AWSServiceSqs).Sqs
 	q := resource.Item.(*models.Queue)
 	result, err := svc.ListQueueTags(ctx, &sqs.ListQueueTagsInput{QueueUrl: &q.URL}, func(o *sqs.Options) {
 		o.Region = cl.Region

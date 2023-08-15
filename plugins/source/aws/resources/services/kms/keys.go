@@ -57,7 +57,7 @@ func Keys() *schema.Table {
 
 func fetchKmsKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("kms").Kms
+	svc := cl.Services(client.AWSServiceKms).Kms
 
 	config := kms.ListKeysInput{Limit: aws.Int32(1000)}
 	p := kms.NewListKeysPaginator(svc, &config)
@@ -75,7 +75,7 @@ func fetchKmsKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 
 func getKey(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("kms").Kms
+	svc := cl.Services(client.AWSServiceKms).Kms
 	item := resource.Item.(types.KeyListEntry)
 
 	d, err := svc.DescribeKey(ctx, &kms.DescribeKeyInput{KeyId: item.KeyId}, func(options *kms.Options) {
@@ -102,7 +102,7 @@ func resolveKeysTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 		return nil
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services("kms").Kms
+	svc := cl.Services(client.AWSServiceKms).Kms
 	params := kms.ListResourceTagsInput{KeyId: key.KeyId}
 	paginator := kms.NewListResourceTagsPaginator(svc, &params)
 	tags := make(map[string]string)
@@ -127,7 +127,7 @@ func resolveKeysRotationEnabled(ctx context.Context, meta schema.ClientMeta, res
 		return nil
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services("kms").Kms
+	svc := cl.Services(client.AWSServiceKms).Kms
 	result, err := svc.GetKeyRotationStatus(ctx, &kms.GetKeyRotationStatusInput{KeyId: key.KeyId}, func(options *kms.Options) {
 		options.Region = cl.Region
 	})

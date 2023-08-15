@@ -35,7 +35,7 @@ func ParameterGroups() *schema.Table {
 func fetchElasticacheParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	awsProviderClient := meta.(*client.Client)
-	svc := awsProviderClient.Services("elasticache").Elasticache
+	svc := awsProviderClient.Services(client.AWSServiceElasticache).Elasticache
 
 	var describeCacheParameterGroupsInput elasticache.DescribeCacheParameterGroupsInput
 	paginator := elasticache.NewDescribeCacheParameterGroupsPaginator(svc, &describeCacheParameterGroupsInput)

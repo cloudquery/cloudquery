@@ -42,7 +42,7 @@ func FileSystems() *schema.Table {
 
 func fetchFsxFileSystems(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("fsx").Fsx
+	svc := cl.Services(client.AWSServiceFsx).Fsx
 	input := fsx.DescribeFileSystemsInput{MaxResults: aws.Int32(1000)}
 	paginator := fsx.NewDescribeFileSystemsPaginator(svc, &input)
 	for paginator.HasMorePages() {

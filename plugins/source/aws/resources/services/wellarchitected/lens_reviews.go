@@ -47,7 +47,7 @@ func lensReviews() *schema.Table {
 
 func fetchLensReviews(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	service := cl.Services("wellarchitected").Wellarchitected
+	service := cl.Services(client.AWSServiceWellarchitected).Wellarchitected
 	milestoneNumber := int32(parent.Get("milestone_number").Get().(int64))
 	workloadID := parent.Get("workload_id").String()
 

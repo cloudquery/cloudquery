@@ -35,7 +35,7 @@ func Flows() *schema.Table {
 
 func fetchFlows(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("appflow").Appflow
+	svc := cl.Services(client.AWSServiceAppflow).Appflow
 	paginator := appflow.NewListFlowsPaginator(svc, nil)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(o *appflow.Options) {
@@ -51,7 +51,7 @@ func fetchFlows(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 
 func getFlow(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("appflow").Appflow
+	svc := cl.Services(client.AWSServiceAppflow).Appflow
 	input := appflow.DescribeFlowInput{FlowName: resource.Item.(types.FlowDefinition).FlowName}
 	output, err := svc.DescribeFlow(ctx, &input, func(o *appflow.Options) { o.Region = cl.Region })
 	if err != nil {

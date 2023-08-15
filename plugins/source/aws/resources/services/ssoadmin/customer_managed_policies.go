@@ -37,7 +37,7 @@ func customerManagedPolicies() *schema.Table {
 
 func fetchCustomerManagedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("ssoadmin").Ssoadmin
+	svc := cl.Services(client.AWSServiceSsoadmin).Ssoadmin
 
 	permissionSetARN := parent.Item.(*types.PermissionSet).PermissionSetArn
 	instanceARN := parent.Parent.Item.(types.InstanceMetadata).InstanceArn

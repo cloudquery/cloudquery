@@ -45,7 +45,7 @@ func restApiResources() *schema.Table {
 func fetchApigatewayRestApiResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.RestApi)
 	cl := meta.(*client.Client)
-	svc := cl.Services("apigateway").Apigateway
+	svc := cl.Services(client.AWSServiceApigateway).Apigateway
 	config := apigateway.GetResourcesInput{RestApiId: r.Id, Limit: aws.Int32(500)}
 	for p := apigateway.NewGetResourcesPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx, func(options *apigateway.Options) {

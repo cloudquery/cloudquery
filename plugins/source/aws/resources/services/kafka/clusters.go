@@ -40,7 +40,7 @@ func Clusters() *schema.Table {
 func fetchKafkaClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input kafka.ListClustersV2Input
 	cl := meta.(*client.Client)
-	svc := cl.Services("kafka").Kafka
+	svc := cl.Services(client.AWSServiceKafka).Kafka
 	paginator := kafka.NewListClustersV2Paginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *kafka.Options) {
@@ -56,7 +56,7 @@ func fetchKafkaClusters(ctx context.Context, meta schema.ClientMeta, parent *sch
 
 func getCluster(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("kafka").Kafka
+	svc := cl.Services(client.AWSServiceKafka).Kafka
 	var input kafka.DescribeClusterV2Input = describeClustersInput(resource)
 	output, err := svc.DescribeClusterV2(ctx, &input, func(options *kafka.Options) {
 		options.Region = cl.Region

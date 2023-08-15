@@ -48,7 +48,7 @@ func Clusters() *schema.Table {
 func fetchEcsClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config ecs.ListClustersInput
 	cl := meta.(*client.Client)
-	svc := cl.Services("ecs").Ecs
+	svc := cl.Services(client.AWSServiceEcs).Ecs
 	paginator := ecs.NewListClustersPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *ecs.Options) {

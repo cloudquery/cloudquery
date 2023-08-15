@@ -42,7 +42,7 @@ func Clusters() *schema.Table {
 
 func fetchElasticacheClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("elasticache").Elasticache
+	svc := cl.Services(client.AWSServiceElasticache).Elasticache
 	var input elasticache.DescribeCacheClustersInput
 	input.ShowCacheNodeInfo = aws.Bool(true)
 
@@ -63,7 +63,7 @@ func resolveClusterTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	cluster := resource.Item.(types.CacheCluster)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services("elasticache").Elasticache
+	svc := cl.Services(client.AWSServiceElasticache).Elasticache
 	response, err := svc.ListTagsForResource(ctx, &elasticache.ListTagsForResourceInput{
 		ResourceName: cluster.ARN,
 	}, func(options *elasticache.Options) {

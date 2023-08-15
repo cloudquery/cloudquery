@@ -33,7 +33,7 @@ func bucketAccessKeys() *schema.Table {
 func fetchLightsailBucketAccessKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.Bucket)
 	cl := meta.(*client.Client)
-	svc := cl.Services("lightsail").Lightsail
+	svc := cl.Services(client.AWSServiceLightsail).Lightsail
 	input := lightsail.GetBucketAccessKeysInput{
 		BucketName: r.Name,
 	}

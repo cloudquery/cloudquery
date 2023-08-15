@@ -45,7 +45,7 @@ func fetchBatchComputeEnvironments(ctx context.Context, meta schema.ClientMeta, 
 		MaxResults: aws.Int32(100),
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services("batch").Batch
+	svc := cl.Services(client.AWSServiceBatch).Batch
 	p := batch.NewDescribeComputeEnvironmentsPaginator(svc, &config)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *batch.Options) {
@@ -61,7 +61,7 @@ func fetchBatchComputeEnvironments(ctx context.Context, meta schema.ClientMeta, 
 
 func resolveBatchComputeEnvironmentTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("batch").Batch
+	svc := cl.Services(client.AWSServiceBatch).Batch
 	summary := resource.Item.(types.ComputeEnvironmentDetail)
 
 	input := batch.ListTagsForResourceInput{

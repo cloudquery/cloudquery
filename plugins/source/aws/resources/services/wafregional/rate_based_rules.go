@@ -44,7 +44,7 @@ func RateBasedRules() *schema.Table {
 
 func fetchWafregionalRateBasedRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("wafregional").Wafregional
+	svc := cl.Services(client.AWSServiceWafregional).Wafregional
 	var params wafregional.ListRateBasedRulesInput
 	for {
 		result, err := svc.ListRateBasedRules(ctx, &params, func(o *wafregional.Options) {
@@ -81,7 +81,7 @@ func resolveWafregionalRateBasedRuleArn(ctx context.Context, meta schema.ClientM
 }
 func resolveWafregionalRateBasedRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("wafregional").Wafregional
+	svc := cl.Services(client.AWSServiceWafregional).Wafregional
 	arnStr := rateBasedRuleARN(meta, *resource.Item.(types.RateBasedRule).RuleId)
 	params := wafregional.ListTagsForResourceInput{ResourceARN: &arnStr}
 	tags := make(map[string]string)

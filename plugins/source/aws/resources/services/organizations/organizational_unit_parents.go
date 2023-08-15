@@ -43,7 +43,7 @@ The 'request_account_id' column is added to show from where the request was made
 }
 func fetchOUParents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("organizations").Organizations
+	svc := cl.Services(client.AWSServiceOrganizations).Organizations
 
 	resp, err := svc.ListParents(ctx, &organizations.ListParentsInput{
 		ChildId: parent.Item.(*types.OrganizationalUnit).Id,

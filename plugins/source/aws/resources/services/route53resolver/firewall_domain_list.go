@@ -28,7 +28,7 @@ func FirewallDomainLists() *schema.Table {
 
 func fetchFirewallDomainList(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("route53resolver").Route53resolver
+	svc := cl.Services(client.AWSServiceRoute53resolver).Route53resolver
 	var input route53resolver.ListFirewallDomainListsInput
 	paginator := route53resolver.NewListFirewallDomainListsPaginator(svc, &input)
 	for paginator.HasMorePages() {
@@ -44,7 +44,7 @@ func fetchFirewallDomainList(ctx context.Context, meta schema.ClientMeta, parent
 }
 func getFirewallDomainList(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("route53resolver").Route53resolver
+	svc := cl.Services(client.AWSServiceRoute53resolver).Route53resolver
 	v := resource.Item.(types.FirewallDomainListMetadata)
 
 	d, err := svc.GetFirewallDomainList(ctx, &route53resolver.GetFirewallDomainListInput{FirewallDomainListId: v.Id}, func(options *route53resolver.Options) {

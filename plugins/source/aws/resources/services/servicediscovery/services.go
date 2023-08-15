@@ -38,7 +38,7 @@ func Services() *schema.Table {
 }
 func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("servicediscovery").Servicediscovery
+	svc := cl.Services(client.AWSServiceServicediscovery).Servicediscovery
 	input := servicediscovery.ListServicesInput{MaxResults: aws.Int32(100)}
 	paginator := servicediscovery.NewListServicesPaginator(svc, &input)
 	for paginator.HasMorePages() {
@@ -55,7 +55,7 @@ func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 
 func getService(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("servicediscovery").Servicediscovery
+	svc := cl.Services(client.AWSServiceServicediscovery).Servicediscovery
 	namespace := resource.Item.(types.ServiceSummary)
 
 	desc, err := svc.GetService(ctx, &servicediscovery.GetServiceInput{Id: namespace.Id}, func(o *servicediscovery.Options) {

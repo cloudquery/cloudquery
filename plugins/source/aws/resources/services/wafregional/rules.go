@@ -45,7 +45,7 @@ func Rules() *schema.Table {
 
 func fetchWafregionalRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("wafregional").Wafregional
+	svc := cl.Services(client.AWSServiceWafregional).Wafregional
 	var params wafregional.ListRulesInput
 	for {
 		result, err := svc.ListRules(ctx, &params, func(o *wafregional.Options) {
@@ -84,7 +84,7 @@ func resolveWafregionalRuleArn(ctx context.Context, meta schema.ClientMeta, reso
 
 func resolveWafregionalRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("wafregional").Wafregional
+	svc := cl.Services(client.AWSServiceWafregional).Wafregional
 	arnStr := ruleARN(meta, *resource.Item.(types.Rule).RuleId)
 	params := wafregional.ListTagsForResourceInput{ResourceARN: &arnStr}
 	tags := make(map[string]string)

@@ -37,7 +37,7 @@ func ControlPanels() *schema.Table {
 
 func fetchControlPanels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("route53recoverycontrolconfig").Route53recoverycontrolconfig
+	svc := cl.Services(client.AWSServiceRoute53recoverycontrolconfig).Route53recoverycontrolconfig
 	paginator := route53recoverycontrolconfig.NewListControlPanelsPaginator(svc, &route53recoverycontrolconfig.ListControlPanelsInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(o *route53recoverycontrolconfig.Options) {

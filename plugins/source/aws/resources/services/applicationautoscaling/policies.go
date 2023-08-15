@@ -34,7 +34,7 @@ func Policies() *schema.Table {
 
 func fetchPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("applicationautoscaling").Applicationautoscaling
+	svc := cl.Services(client.AWSServiceApplicationautoscaling).Applicationautoscaling
 
 	config := applicationautoscaling.DescribeScalingPoliciesInput{
 		ServiceNamespace: types.ServiceNamespace(cl.AutoscalingNamespace),

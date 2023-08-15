@@ -43,7 +43,7 @@ func AutoScalingConfigurations() *schema.Table {
 func fetchApprunnerAutoScalingConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apprunner.ListAutoScalingConfigurationsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services("apprunner").Apprunner
+	svc := cl.Services(client.AWSServiceApprunner).Apprunner
 	paginator := apprunner.NewListAutoScalingConfigurationsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *apprunner.Options) {
@@ -58,7 +58,7 @@ func fetchApprunnerAutoScalingConfigurations(ctx context.Context, meta schema.Cl
 }
 func getAutoScalingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("apprunner").Apprunner
+	svc := cl.Services(client.AWSServiceApprunner).Apprunner
 	asConfig := resource.Item.(types.AutoScalingConfigurationSummary)
 
 	describeTaskDefinitionOutput, err := svc.DescribeAutoScalingConfiguration(ctx, &apprunner.DescribeAutoScalingConfigurationInput{AutoScalingConfigurationArn: asConfig.AutoScalingConfigurationArn}, func(options *apprunner.Options) {

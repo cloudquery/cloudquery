@@ -48,7 +48,7 @@ func DataCatalogs() *schema.Table {
 
 func fetchAthenaDataCatalogs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("athena").Athena
+	svc := cl.Services(client.AWSServiceAthena).Athena
 	input := athena.ListDataCatalogsInput{}
 	paginator := athena.NewListDataCatalogsPaginator(svc, &input)
 	for paginator.HasMorePages() {
@@ -65,7 +65,7 @@ func fetchAthenaDataCatalogs(ctx context.Context, meta schema.ClientMeta, parent
 
 func getDataCatalog(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("athena").Athena
+	svc := cl.Services(client.AWSServiceAthena).Athena
 	catalogSummary := resource.Item.(types.DataCatalogSummary)
 	dc, err := svc.GetDataCatalog(ctx, &athena.GetDataCatalogInput{
 		Name: catalogSummary.CatalogName,
@@ -93,7 +93,7 @@ func resolveAthenaDataCatalogArn(ctx context.Context, meta schema.ClientMeta, re
 
 func resolveAthenaDataCatalogTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("athena").Athena
+	svc := cl.Services(client.AWSServiceAthena).Athena
 	dc := resource.Item.(types.DataCatalog)
 	arnStr := createDataCatalogArn(cl, *dc.Name)
 	paginator := athena.NewListTagsForResourcePaginator(svc, &athena.ListTagsForResourceInput{ResourceARN: &arnStr})

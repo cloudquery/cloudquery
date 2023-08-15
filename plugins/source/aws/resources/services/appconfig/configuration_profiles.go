@@ -50,7 +50,7 @@ func fetchConfigurationProfiles(ctx context.Context, meta schema.ClientMeta, par
 		ApplicationId: r.Id,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services("appconfig").Appconfig
+	svc := cl.Services(client.AWSServiceAppconfig).Appconfig
 
 	paginator := appconfig.NewListConfigurationProfilesPaginator(svc, &config)
 	for paginator.HasMorePages() {
@@ -68,7 +68,7 @@ func fetchConfigurationProfiles(ctx context.Context, meta schema.ClientMeta, par
 
 func getConfigurationProfiles(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("appconfig").Appconfig
+	svc := cl.Services(client.AWSServiceAppconfig).Appconfig
 	configurationProfileSummary := resource.Item.(types.ConfigurationProfileSummary)
 	input := appconfig.GetConfigurationProfileInput{
 		ApplicationId:          configurationProfileSummary.ApplicationId,

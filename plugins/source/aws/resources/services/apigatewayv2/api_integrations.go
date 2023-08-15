@@ -53,7 +53,7 @@ func fetchApigatewayv2ApiIntegrations(ctx context.Context, meta schema.ClientMet
 		ApiId: r.ApiId,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services("apigatewayv2").Apigatewayv2
+	svc := cl.Services(client.AWSServiceApigatewayv2).Apigatewayv2
 	// No paginator available
 	for {
 		response, err := svc.GetIntegrations(ctx, &config, func(options *apigatewayv2.Options) {

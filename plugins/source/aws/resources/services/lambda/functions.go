@@ -77,7 +77,7 @@ func Functions() *schema.Table {
 
 func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("lambda").Lambda
+	svc := cl.Services(client.AWSServiceLambda).Lambda
 	paginator := lambda.NewListFunctionsPaginator(svc, &lambda.ListFunctionsInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *lambda.Options) {
@@ -93,7 +93,7 @@ func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func getFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("lambda").Lambda
+	svc := cl.Services(client.AWSServiceLambda).Lambda
 	f := resource.Item.(types.FunctionConfiguration)
 
 	funcResponse, err := svc.GetFunction(ctx, &lambda.GetFunctionInput{
@@ -131,7 +131,7 @@ func resolveCodeSigningConfig(ctx context.Context, meta schema.ClientMeta, resou
 		return nil
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services("lambda").Lambda
+	svc := cl.Services(client.AWSServiceLambda).Lambda
 
 	// skip getting CodeSigningConfig since containerized lambda functions does not support this feature
 	// value can be nil if the caller doesn't have GetFunctionConfiguration permission and only has List*
@@ -177,7 +177,7 @@ func resolveResourcePolicy(ctx context.Context, meta schema.ClientMeta, resource
 	}
 
 	cl := meta.(*client.Client)
-	svc := cl.Services("lambda").Lambda
+	svc := cl.Services(client.AWSServiceLambda).Lambda
 
 	response, err := svc.GetPolicy(ctx, &lambda.GetPolicyInput{
 		FunctionName: r.Configuration.FunctionName,
@@ -211,7 +211,7 @@ func resolveRuntimeManagementConfig(ctx context.Context, meta schema.ClientMeta,
 		return nil
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services("lambda").Lambda
+	svc := cl.Services(client.AWSServiceLambda).Lambda
 
 	runtimeManagementConfig, err := svc.GetRuntimeManagementConfig(ctx, &lambda.GetRuntimeManagementConfigInput{
 		FunctionName: r.Configuration.FunctionName,

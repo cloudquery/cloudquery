@@ -74,7 +74,7 @@ func fetchCloudwatchMetricStatistics(ctx context.Context, meta schema.ClientMeta
 		return errors.New("skipping `aws_alpha_cloudwatch_metric_statistics` because `get_metric_statistics` is not specified in `table_options`")
 	}
 
-	svc := cl.Services("cloudwatch").Cloudwatch
+	svc := cl.Services(client.AWSServiceCloudwatch).Cloudwatch
 	for _, input := range item.getStatsInputs {
 		input := input
 

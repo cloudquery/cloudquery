@@ -29,7 +29,7 @@ func Accounts() *schema.Table {
 
 func fetchS3Accounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("s3control").S3control
+	svc := cl.Services(client.AWSServiceS3control).S3control
 
 	var accountConfig s3control.GetPublicAccessBlockInput
 	accountConfig.AccountId = aws.String(cl.AccountID)

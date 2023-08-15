@@ -29,7 +29,7 @@ func Cases() *schema.Table {
 
 func fetchCases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("support").Support
+	svc := cl.Services(client.AWSServiceSupport).Support
 	input := support.DescribeCasesInput{MaxResults: aws.Int32(100), IncludeResolvedCases: true}
 
 	paginator := support.NewDescribeCasesPaginator(svc, &input)

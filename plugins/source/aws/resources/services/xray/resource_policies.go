@@ -40,7 +40,7 @@ func ResourcePolicies() *schema.Table {
 
 func fetchXrayResourcePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	paginator := xray.NewListResourcePoliciesPaginator(cl.Services("xray").Xray, nil)
+	paginator := xray.NewListResourcePoliciesPaginator(cl.Services(client.AWSServiceXray).Xray, nil)
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx, func(o *xray.Options) {
 			o.Region = cl.Region

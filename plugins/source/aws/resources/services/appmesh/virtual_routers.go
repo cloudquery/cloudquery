@@ -49,7 +49,7 @@ func virtualRouters() *schema.Table {
 
 func fetchVirtualRouter(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("appmesh").Appmesh
+	svc := cl.Services(client.AWSServiceAppmesh).Appmesh
 	md := parent.Item.(*types.MeshData)
 	input := &appmesh.ListVirtualRoutersInput{
 		MeshName:  md.MeshName,
@@ -70,7 +70,7 @@ func fetchVirtualRouter(ctx context.Context, meta schema.ClientMeta, parent *sch
 
 func getVirtualRouter(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("appmesh").Appmesh
+	svc := cl.Services(client.AWSServiceAppmesh).Appmesh
 	vrr := resource.Item.(types.VirtualRouterRef)
 	input := appmesh.DescribeVirtualRouterInput{
 		MeshName:          vrr.MeshName,

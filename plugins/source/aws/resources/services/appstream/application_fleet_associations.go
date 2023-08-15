@@ -45,7 +45,7 @@ func fetchAppstreamApplicationFleetAssociations(ctx context.Context, meta schema
 	input.ApplicationArn = parentApplication.Arn
 
 	cl := meta.(*client.Client)
-	svc := cl.Services("appstream").Appstream
+	svc := cl.Services(client.AWSServiceAppstream).Appstream
 	// No paginator available
 	for {
 		response, err := svc.DescribeApplicationFleetAssociations(ctx, &input, func(options *appstream.Options) {

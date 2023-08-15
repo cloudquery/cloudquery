@@ -33,7 +33,7 @@ The  'request_region' column is added to show region of where the request was ma
 
 func fetchTransitGatewayRegistration(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("networkmanager").Networkmanager
+	svc := cl.Services(client.AWSServiceNetworkmanager).Networkmanager
 	globalNetwork := parent.Item.(types.GlobalNetwork)
 	input := &networkmanager.GetTransitGatewayRegistrationsInput{
 		GlobalNetworkId: globalNetwork.GlobalNetworkId,

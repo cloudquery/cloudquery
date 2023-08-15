@@ -46,7 +46,7 @@ func ContainerServices() *schema.Table {
 func fetchLightsailContainerServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lightsail.GetContainerServicesInput
 	cl := meta.(*client.Client)
-	svc := cl.Services("lightsail").Lightsail
+	svc := cl.Services(client.AWSServiceLightsail).Lightsail
 	response, err := svc.GetContainerServices(ctx, &input, func(options *lightsail.Options) {
 		options.Region = cl.Region
 	})

@@ -33,7 +33,7 @@ func RecoveryGroups() *schema.Table {
 
 func fetchControlPanels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("route53recoveryreadiness").Route53recoveryreadiness
+	svc := cl.Services(client.AWSServiceRoute53recoveryreadiness).Route53recoveryreadiness
 	paginator := route53recoveryreadiness.NewListRecoveryGroupsPaginator(svc, &route53recoveryreadiness.ListRecoveryGroupsInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(o *route53recoveryreadiness.Options) {

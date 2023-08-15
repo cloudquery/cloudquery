@@ -36,7 +36,7 @@ func Streams() *schema.Table {
 
 func listStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("dynamodbstreams").Dynamodbstreams
+	svc := cl.Services(client.AWSServiceDynamodbstreams).Dynamodbstreams
 
 	config := dynamodbstreams.ListStreamsInput{}
 	// No paginator available
@@ -60,7 +60,7 @@ func listStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 
 func describeStream(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("dynamodbstreams").Dynamodbstreams
+	svc := cl.Services(client.AWSServiceDynamodbstreams).Dynamodbstreams
 	stream := resource.Item.(types.Stream)
 	response, err := svc.DescribeStream(ctx, &dynamodbstreams.DescribeStreamInput{StreamArn: stream.StreamArn}, func(options *dynamodbstreams.Options) {
 		options.Region = cl.Region

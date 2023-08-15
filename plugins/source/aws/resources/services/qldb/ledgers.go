@@ -47,7 +47,7 @@ func Ledgers() *schema.Table {
 
 func fetchQldbLedgers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("qldb").Qldb
+	svc := cl.Services(client.AWSServiceQldb).Qldb
 	config := qldb.ListLedgersInput{}
 	paginator := qldb.NewListLedgersPaginator(svc, &config)
 	for paginator.HasMorePages() {
@@ -64,7 +64,7 @@ func fetchQldbLedgers(ctx context.Context, meta schema.ClientMeta, _ *schema.Res
 
 func getLedger(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("qldb").Qldb
+	svc := cl.Services(client.AWSServiceQldb).Qldb
 	l := resource.Item.(types.LedgerSummary)
 
 	response, err := svc.DescribeLedger(ctx, &qldb.DescribeLedgerInput{Name: l.Name}, func(options *qldb.Options) {
@@ -81,7 +81,7 @@ func resolveQldbLedgerTags(ctx context.Context, meta schema.ClientMeta, resource
 	ledger := resource.Item.(*qldb.DescribeLedgerOutput)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services("qldb").Qldb
+	svc := cl.Services(client.AWSServiceQldb).Qldb
 	response, err := svc.ListTagsForResource(ctx, &qldb.ListTagsForResourceInput{
 		ResourceArn: ledger.Arn,
 	}, func(options *qldb.Options) {

@@ -42,7 +42,7 @@ func fetchConfigConformancePacks(ctx context.Context, meta schema.ClientMeta, pa
 	cl := meta.(*client.Client)
 	config := configservice.DescribeConformancePacksInput{}
 	var ae smithy.APIError
-	configService := cl.Services("configservice").Configservice
+	configService := cl.Services(client.AWSServiceConfigservice).Configservice
 	paginator := configservice.NewDescribeConformancePacksPaginator(configService, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *configservice.Options) {

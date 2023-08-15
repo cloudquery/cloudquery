@@ -34,7 +34,7 @@ func OriginRequestPolicies() *schema.Table {
 
 func fetchCloudfrontOriginRequestPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("cloudfront").Cloudfront
+	svc := cl.Services(client.AWSServiceCloudfront).Cloudfront
 	var config cloudfront.ListOriginRequestPoliciesInput
 	for {
 		response, err := svc.ListOriginRequestPolicies(ctx, &config, func(options *cloudfront.Options) {

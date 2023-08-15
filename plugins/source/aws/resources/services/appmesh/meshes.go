@@ -59,7 +59,7 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 
 func fetchMeshes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("appmesh").Appmesh
+	svc := cl.Services(client.AWSServiceAppmesh).Appmesh
 
 	paginator := appmesh.NewListMeshesPaginator(svc, nil)
 	for paginator.HasMorePages() {
@@ -76,7 +76,7 @@ func fetchMeshes(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 
 func getMesh(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("appmesh").Appmesh
+	svc := cl.Services(client.AWSServiceAppmesh).Appmesh
 	mesh := resource.Item.(types.MeshRef)
 	input := appmesh.DescribeMeshInput{
 		MeshName:  mesh.MeshName,
@@ -93,7 +93,7 @@ func getMesh(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 func resolveMeshTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	mesh := resource.Item.(*types.MeshData)
 	cl := meta.(*client.Client)
-	svc := cl.Services("appmesh").Appmesh
+	svc := cl.Services(client.AWSServiceAppmesh).Appmesh
 
 	paginator := appmesh.NewListTagsForResourcePaginator(svc, &appmesh.ListTagsForResourceInput{
 		ResourceArn: mesh.Metadata.Arn,

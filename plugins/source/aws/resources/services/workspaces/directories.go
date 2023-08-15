@@ -34,7 +34,7 @@ func Directories() *schema.Table {
 
 func fetchWorkspacesDirectories(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("workspaces").Workspaces
+	svc := cl.Services(client.AWSServiceWorkspaces).Workspaces
 	input := workspaces.DescribeWorkspaceDirectoriesInput{}
 	paginator := workspaces.NewDescribeWorkspaceDirectoriesPaginator(svc, &input)
 	for paginator.HasMorePages() {

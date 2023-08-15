@@ -45,7 +45,7 @@ func DbParameterGroups() *schema.Table {
 
 func fetchRdsDbParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("rds").Rds
+	svc := cl.Services(client.AWSServiceRds).Rds
 	var input rds.DescribeDBParameterGroupsInput
 	paginator := rds.NewDescribeDBParameterGroupsPaginator(svc, &input)
 	for paginator.HasMorePages() {
@@ -62,7 +62,7 @@ func fetchRdsDbParameterGroups(ctx context.Context, meta schema.ClientMeta, pare
 
 func fetchRdsDbParameterGroupDbParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("rds").Rds
+	svc := cl.Services(client.AWSServiceRds).Rds
 	g := parent.Item.(types.DBParameterGroup)
 	input := rds.DescribeDBParametersInput{DBParameterGroupName: g.DBParameterGroupName}
 	paginator := rds.NewDescribeDBParametersPaginator(svc, &input)
@@ -85,7 +85,7 @@ func fetchRdsDbParameterGroupDbParameters(ctx context.Context, meta schema.Clien
 func resolveRdsDbParameterGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	g := resource.Item.(types.DBParameterGroup)
 	cl := meta.(*client.Client)
-	svc := cl.Services("rds").Rds
+	svc := cl.Services(client.AWSServiceRds).Rds
 	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBParameterGroupArn}, func(options *rds.Options) {
 		options.Region = cl.Region
 	})

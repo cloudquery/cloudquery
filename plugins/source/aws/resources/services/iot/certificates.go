@@ -40,7 +40,7 @@ func Certificates() *schema.Table {
 }
 func fetchIotCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("iot").Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 	input := iot.ListCertificatesInput{
 		PageSize: aws.Int32(250),
 	}
@@ -60,7 +60,7 @@ func fetchIotCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 func getCertificate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cert := resource.Item.(types.Certificate)
 	cl := meta.(*client.Client)
-	svc := cl.Services("iot").Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 	certDescription, err := svc.DescribeCertificate(ctx, &iot.DescribeCertificateInput{
 		CertificateId: cert.CertificateId,
 	}, func(options *iot.Options) {
@@ -75,7 +75,7 @@ func getCertificate(ctx context.Context, meta schema.ClientMeta, resource *schem
 
 func ResolveIotCertificatePolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("iot").Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 	input := iot.ListAttachedPoliciesInput{
 		Target:   resource.Item.(*types.CertificateDescription).CertificateArn,
 		PageSize: aws.Int32(250),

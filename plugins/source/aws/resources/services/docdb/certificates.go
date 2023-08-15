@@ -34,7 +34,7 @@ func Certificates() *schema.Table {
 
 func fetchDocdbCertificates(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("docdb").Docdb
+	svc := cl.Services(client.AWSServiceDocdb).Docdb
 
 	input := &docdb.DescribeCertificatesInput{}
 	p := docdb.NewDescribeCertificatesPaginator(svc, input)

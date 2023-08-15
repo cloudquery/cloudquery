@@ -44,7 +44,7 @@ func Projects() *schema.Table {
 
 func fetchCodebuildProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("codebuild").Codebuild
+	svc := cl.Services(client.AWSServiceCodebuild).Codebuild
 	config := codebuild.ListProjectsInput{}
 	paginator := codebuild.NewListProjectsPaginator(svc, &config)
 	for paginator.HasMorePages() {

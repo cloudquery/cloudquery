@@ -56,7 +56,7 @@ func Stacks() *schema.Table {
 func fetchCloudformationStacks(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	var config cloudformation.DescribeStacksInput
 	cl := meta.(*client.Client)
-	svc := cl.Services("cloudformation").Cloudformation
+	svc := cl.Services(client.AWSServiceCloudformation).Cloudformation
 	paginator := cloudformation.NewDescribeStacksPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cloudformation.Options) {

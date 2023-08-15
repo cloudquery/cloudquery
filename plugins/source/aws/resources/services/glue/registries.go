@@ -46,7 +46,7 @@ func Registries() *schema.Table {
 
 func fetchGlueRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("glue").Glue
+	svc := cl.Services(client.AWSServiceGlue).Glue
 	paginator := glue.NewListRegistriesPaginator(svc, &glue.ListRegistriesInput{
 		MaxResults: aws.Int32(100),
 	})
@@ -64,7 +64,7 @@ func fetchGlueRegistries(ctx context.Context, meta schema.ClientMeta, parent *sc
 
 func resolveGlueRegistryTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("glue").Glue
+	svc := cl.Services(client.AWSServiceGlue).Glue
 	r := resource.Item.(types.RegistryListItem)
 	result, err := svc.GetTags(ctx, &glue.GetTagsInput{
 		ResourceArn: r.RegistryArn,

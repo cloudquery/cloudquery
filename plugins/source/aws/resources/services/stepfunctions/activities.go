@@ -34,7 +34,7 @@ func Activities() *schema.Table {
 
 func fetchStepfunctionsActivities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("sfn").Sfn
+	svc := cl.Services(client.AWSServiceSfn).Sfn
 	config := sfn.ListActivitiesInput{
 		MaxResults: 1000,
 	}

@@ -50,7 +50,7 @@ func RuleGroups() *schema.Table {
 
 func fetchWafregionalRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("wafregional").Wafregional
+	svc := cl.Services(client.AWSServiceWafregional).Wafregional
 	var params wafregional.ListRuleGroupsInput
 	for {
 		result, err := svc.ListRuleGroups(ctx, &params, func(o *wafregional.Options) {
@@ -92,7 +92,7 @@ func resolveWafregionalRuleGroupRuleIds(ctx context.Context, meta schema.ClientM
 
 	// Resolves rule group rules
 	cl := meta.(*client.Client)
-	service := cl.Services("wafregional").Wafregional
+	service := cl.Services(client.AWSServiceWafregional).Wafregional
 	listActivatedRulesConfig := wafregional.ListActivatedRulesInRuleGroupInput{RuleGroupId: ruleGroup.RuleGroupId}
 	var ruleIDs []string
 	for {
@@ -116,7 +116,7 @@ func resolveWafregionalRuleGroupRuleIds(ctx context.Context, meta schema.ClientM
 
 func resolveWafregionalRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("wafregional").Wafregional
+	svc := cl.Services(client.AWSServiceWafregional).Wafregional
 	arnStr := ruleGroupARN(meta, *resource.Item.(types.RuleGroup).RuleGroupId)
 	params := wafregional.ListTagsForResourceInput{ResourceARN: &arnStr}
 	tags := make(map[string]string)

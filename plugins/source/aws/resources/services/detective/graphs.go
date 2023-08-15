@@ -37,7 +37,7 @@ func Graphs() *schema.Table {
 
 func fetchGraphs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("detective").Detective
+	svc := cl.Services(client.AWSServiceDetective).Detective
 	config := detective.ListGraphsInput{}
 	paginator := detective.NewListGraphsPaginator(svc, &config)
 	for paginator.HasMorePages() {
@@ -56,7 +56,7 @@ func fetchGraphs(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 func resolveGraphTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	graph := resource.Item.(types.Graph)
 	cl := meta.(*client.Client)
-	svc := cl.Services("detective").Detective
+	svc := cl.Services(client.AWSServiceDetective).Detective
 	input := &detective.ListTagsForResourceInput{
 		ResourceArn: graph.Arn,
 	}

@@ -35,7 +35,7 @@ func groupMembers() *schema.Table {
 func fetchQuicksightGroupMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	item := parent.Item.(types.Group)
 	cl := meta.(*client.Client)
-	svc := cl.Services("quicksight").Quicksight
+	svc := cl.Services(client.AWSServiceQuicksight).Quicksight
 
 	input := quicksight.ListGroupMembershipsInput{
 		AwsAccountId: aws.String(cl.AccountID),

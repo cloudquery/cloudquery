@@ -36,7 +36,7 @@ func studioSessionMapping() *schema.Table {
 func fetchEmrStudioSessionMapping(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	p := parent.Item.(*types.Studio)
-	svc := cl.Services("emr").Emr
+	svc := cl.Services(client.AWSServiceEmr).Emr
 	paginator := emr.NewListStudioSessionMappingsPaginator(svc, &emr.ListStudioSessionMappingsInput{
 		StudioId: p.StudioId,
 	})
@@ -54,7 +54,7 @@ func fetchEmrStudioSessionMapping(ctx context.Context, meta schema.ClientMeta, p
 
 func getSessionMapping(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("emr").Emr
+	svc := cl.Services(client.AWSServiceEmr).Emr
 	sms := resource.Item.(types.SessionMappingSummary)
 	response, err := svc.GetStudioSessionMapping(ctx, &emr.GetStudioSessionMappingInput{
 		StudioId:     sms.StudioId,

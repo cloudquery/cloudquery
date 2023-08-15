@@ -32,7 +32,7 @@ func analyzerArchiveRules() *schema.Table {
 func fetchAccessanalyzerAnalyzerArchiveRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	analyzer := parent.Item.(types.AnalyzerSummary)
 	cl := meta.(*client.Client)
-	svc := cl.Services("accessanalyzer").Accessanalyzer
+	svc := cl.Services(client.AWSServiceAccessanalyzer).Accessanalyzer
 	config := accessanalyzer.ListArchiveRulesInput{
 		AnalyzerName: analyzer.Name,
 	}

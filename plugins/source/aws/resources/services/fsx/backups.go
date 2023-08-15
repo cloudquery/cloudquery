@@ -41,7 +41,7 @@ func Backups() *schema.Table {
 
 func fetchFsxBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("fsx").Fsx
+	svc := cl.Services(client.AWSServiceFsx).Fsx
 	paginator := fsx.NewDescribeBackupsPaginator(svc, &fsx.DescribeBackupsInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *fsx.Options) {

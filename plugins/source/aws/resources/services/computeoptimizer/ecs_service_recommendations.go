@@ -33,7 +33,7 @@ func EcsServiceRecommendations() *schema.Table {
 
 func fetchEcsServiceRecommendations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("computeoptimizer").Computeoptimizer
+	svc := cl.Services(client.AWSServiceComputeoptimizer).Computeoptimizer
 
 	input := computeoptimizer.GetECSServiceRecommendationsInput{
 		MaxResults: aws.Int32(1000),

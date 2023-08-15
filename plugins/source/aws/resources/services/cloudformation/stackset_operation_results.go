@@ -54,7 +54,7 @@ func fetchCloudformationStackSetOperationResults(ctx context.Context, meta schem
 	}
 
 	cl := meta.(*client.Client)
-	svc := cl.Services("cloudformation").Cloudformation
+	svc := cl.Services(client.AWSServiceCloudformation).Cloudformation
 	paginator := cloudformation.NewListStackSetOperationResultsPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cloudformation.Options) {

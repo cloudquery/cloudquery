@@ -45,7 +45,7 @@ func snapshots() *schema.Table {
 
 func fetchSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("redshift").Redshift
+	svc := cl.Services(client.AWSServiceRedshift).Redshift
 	cluster := parent.Item.(types.Cluster)
 	params := redshift.DescribeClusterSnapshotsInput{
 		ClusterExists:     aws.Bool(true),

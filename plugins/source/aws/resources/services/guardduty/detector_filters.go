@@ -34,7 +34,7 @@ func fetchDetectorFilters(ctx context.Context, meta schema.ClientMeta, parent *s
 	detector := parent.Item.(*models.DetectorWrapper)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services("guardduty").Guardduty
+	svc := cl.Services(client.AWSServiceGuardduty).Guardduty
 	config := &guardduty.ListFiltersInput{
 		DetectorId: &detector.Id,
 	}
@@ -53,7 +53,7 @@ func fetchDetectorFilters(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func getDetectorFilter(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("guardduty").Guardduty
+	svc := cl.Services(client.AWSServiceGuardduty).Guardduty
 	filterName := resource.Item.(string)
 	detector := resource.Parent.Item.(*models.DetectorWrapper)
 

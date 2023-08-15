@@ -31,7 +31,7 @@ func customDomains() *schema.Table {
 
 func fetchApprunnerCustomDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	paginator := apprunner.NewDescribeCustomDomainsPaginator(meta.(*client.Client).Services("apprunner").Apprunner,
+	paginator := apprunner.NewDescribeCustomDomainsPaginator(meta.(*client.Client).Services(client.AWSServiceApprunner).Apprunner,
 		&apprunner.DescribeCustomDomainsInput{ServiceArn: parent.Item.(*types.Service).ServiceArn})
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *apprunner.Options) {

@@ -55,7 +55,7 @@ func fetchApigatewayRestApiResourceMethodIntegration(ctx context.Context, meta s
 	api := parent.Parent.Parent.Item.(types.RestApi)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services("apigateway").Apigateway
+	svc := cl.Services(client.AWSServiceApigateway).Apigateway
 	config := apigateway.GetIntegrationInput{RestApiId: api.Id, ResourceId: resource.Id, HttpMethod: method.HttpMethod}
 	resp, err := svc.GetIntegration(ctx, &config, func(options *apigateway.Options) {
 		options.Region = cl.Region

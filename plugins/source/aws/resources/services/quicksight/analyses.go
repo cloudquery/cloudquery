@@ -28,7 +28,7 @@ func Analyses() *schema.Table {
 
 func fetchQuicksightAnalyses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("quicksight").Quicksight
+	svc := cl.Services(client.AWSServiceQuicksight).Quicksight
 	input := quicksight.ListAnalysesInput{
 		AwsAccountId: aws.String(cl.AccountID),
 	}
@@ -52,7 +52,7 @@ func fetchQuicksightAnalyses(ctx context.Context, meta schema.ClientMeta, parent
 
 func getAnalysis(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("quicksight").Quicksight
+	svc := cl.Services(client.AWSServiceQuicksight).Quicksight
 	item := resource.Item.(types.AnalysisSummary)
 
 	out, err := svc.DescribeAnalysis(ctx, &quicksight.DescribeAnalysisInput{

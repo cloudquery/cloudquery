@@ -34,7 +34,7 @@ func Configurations() *schema.Table {
 func fetchKafkaConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input kafka.ListConfigurationsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services("kafka").Kafka
+	svc := cl.Services(client.AWSServiceKafka).Kafka
 	paginator := kafka.NewListConfigurationsPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *kafka.Options) {

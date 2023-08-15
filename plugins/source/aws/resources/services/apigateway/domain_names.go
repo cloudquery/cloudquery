@@ -41,7 +41,7 @@ func DomainNames() *schema.Table {
 func fetchApigatewayDomainNames(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apigateway.GetDomainNamesInput
 	cl := meta.(*client.Client)
-	svc := cl.Services("apigateway").Apigateway
+	svc := cl.Services(client.AWSServiceApigateway).Apigateway
 	for p := apigateway.NewGetDomainNamesPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx, func(options *apigateway.Options) {
 			options.Region = cl.Region

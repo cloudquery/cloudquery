@@ -32,7 +32,7 @@ func targetGroupTargetHealthDescriptions() *schema.Table {
 
 func fetchTargetGroupTargetHealthDescriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("elasticloadbalancingv2").Elasticloadbalancingv2
+	svc := cl.Services(client.AWSServiceElasticloadbalancingv2).Elasticloadbalancingv2
 	tg := parent.Item.(types.TargetGroup)
 	response, err := svc.DescribeTargetHealth(ctx, &elbv2.DescribeTargetHealthInput{
 		TargetGroupArn: tg.TargetGroupArn,

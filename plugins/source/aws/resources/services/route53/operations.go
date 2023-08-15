@@ -27,7 +27,7 @@ func Operations() *schema.Table {
 
 func fetchRoute53Operations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("route53domains").Route53domains
+	svc := cl.Services(client.AWSServiceRoute53domains).Route53domains
 	var input route53domains.ListOperationsInput
 	paginator := route53domains.NewListOperationsPaginator(svc, &input)
 	for paginator.HasMorePages() {
@@ -43,7 +43,7 @@ func fetchRoute53Operations(ctx context.Context, meta schema.ClientMeta, parent 
 }
 func getOperation(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("route53domains").Route53domains
+	svc := cl.Services(client.AWSServiceRoute53domains).Route53domains
 	v := resource.Item.(types.OperationSummary)
 
 	d, err := svc.GetOperationDetail(ctx, &route53domains.GetOperationDetailInput{OperationId: v.OperationId}, func(options *route53domains.Options) {

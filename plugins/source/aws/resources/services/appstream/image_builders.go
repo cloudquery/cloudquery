@@ -36,7 +36,7 @@ func ImageBuilders() *schema.Table {
 func fetchAppstreamImageBuilders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input appstream.DescribeImageBuildersInput
 	cl := meta.(*client.Client)
-	svc := cl.Services("appstream").Appstream
+	svc := cl.Services(client.AWSServiceAppstream).Appstream
 	// No paginator available
 	for {
 		response, err := svc.DescribeImageBuilders(ctx, &input, func(options *appstream.Options) {

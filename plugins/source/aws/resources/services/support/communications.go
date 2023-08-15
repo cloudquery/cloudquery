@@ -28,7 +28,7 @@ func communications() *schema.Table {
 
 func fetchCommunications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("support").Support
+	svc := cl.Services(client.AWSServiceSupport).Support
 	p := parent.Item.(types.CaseDetails)
 	input := support.DescribeCommunicationsInput{MaxResults: aws.Int32(100), CaseId: p.CaseId}
 

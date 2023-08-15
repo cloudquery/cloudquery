@@ -48,7 +48,7 @@ func RuleGroups() *schema.Table {
 
 func fetchWafRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	service := cl.Services("waf").Waf
+	service := cl.Services(client.AWSServiceWaf).Waf
 	config := waf.ListRuleGroupsInput{}
 	for {
 		output, err := service.ListRuleGroups(ctx, &config, func(o *waf.Options) {
@@ -90,7 +90,7 @@ func resolveWafRuleGroupRuleIds(ctx context.Context, meta schema.ClientMeta, res
 
 	// Resolves rule group rules
 	cl := meta.(*client.Client)
-	service := cl.Services("waf").Waf
+	service := cl.Services(client.AWSServiceWaf).Waf
 	listActivatedRulesConfig := waf.ListActivatedRulesInRuleGroupInput{RuleGroupId: ruleGroup.RuleGroupId}
 	var ruleIDs []string
 	for {
@@ -116,7 +116,7 @@ func resolveWafRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resour
 
 	// Resolve tags for resource
 	cl := meta.(*client.Client)
-	service := cl.Services("waf").Waf
+	service := cl.Services(client.AWSServiceWaf).Waf
 
 	// Generate arn
 	arnStr := arn.ARN{

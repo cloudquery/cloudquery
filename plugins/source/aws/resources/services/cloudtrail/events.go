@@ -47,7 +47,7 @@ func Events() *schema.Table {
 
 func fetchCloudtrailEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("cloudtrail").Cloudtrail
+	svc := cl.Services(client.AWSServiceCloudtrail).Cloudtrail
 
 	allConfigs := []tableoptions.CustomLookupEventsOpts{{}}
 	if cl.Spec.TableOptions.CloudTrailEvents != nil {

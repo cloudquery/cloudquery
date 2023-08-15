@@ -45,7 +45,7 @@ func fetchEC2SpotFleetInstances(ctx context.Context, meta schema.ClientMeta, par
 		SpotFleetRequestId: p.SpotFleetRequestId,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services("ec2").Ec2
+	svc := cl.Services(client.AWSServiceEc2).Ec2
 	// No paginator available
 	for {
 		output, err := svc.DescribeSpotFleetInstances(ctx, &config, func(options *ec2.Options) {

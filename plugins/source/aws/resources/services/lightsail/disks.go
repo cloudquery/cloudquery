@@ -46,7 +46,7 @@ func Disks() *schema.Table {
 func fetchLightsailDisks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lightsail.GetDisksInput
 	cl := meta.(*client.Client)
-	svc := cl.Services("lightsail").Lightsail
+	svc := cl.Services(client.AWSServiceLightsail).Lightsail
 	for {
 		response, err := svc.GetDisks(ctx, &input, func(options *lightsail.Options) {
 			options.Region = cl.Region

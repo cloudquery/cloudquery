@@ -27,7 +27,7 @@ func PasswordPolicies() *schema.Table {
 func fetchIamPasswordPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config iam.GetAccountPasswordPolicyInput
 	cl := meta.(*client.Client)
-	svc := cl.Services("iam").Iam
+	svc := cl.Services(client.AWSServiceIam).Iam
 	response, err := svc.GetAccountPasswordPolicy(ctx, &config, func(options *iam.Options) {
 		options.Region = cl.Region
 	})

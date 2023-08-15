@@ -33,7 +33,7 @@ func ReadinessChecks() *schema.Table {
 
 func fetchReadinessChecks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("route53recoveryreadiness").Route53recoveryreadiness
+	svc := cl.Services(client.AWSServiceRoute53recoveryreadiness).Route53recoveryreadiness
 	paginator := route53recoveryreadiness.NewListReadinessChecksPaginator(svc, &route53recoveryreadiness.ListReadinessChecksInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(o *route53recoveryreadiness.Options) {

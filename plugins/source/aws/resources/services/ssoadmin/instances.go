@@ -27,7 +27,7 @@ func Instances() *schema.Table {
 
 func fetchSsoadminInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("ssoadmin").Ssoadmin
+	svc := cl.Services(client.AWSServiceSsoadmin).Ssoadmin
 	config := ssoadmin.ListInstancesInput{}
 	paginator := ssoadmin.NewListInstancesPaginator(svc, &config)
 	for paginator.HasMorePages() {

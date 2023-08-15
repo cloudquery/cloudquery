@@ -47,7 +47,7 @@ func Roles() *schema.Table {
 func fetchIamRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config iam.ListRolesInput
 	cl := meta.(*client.Client)
-	svc := cl.Services("iam").Iam
+	svc := cl.Services(client.AWSServiceIam).Iam
 	paginator := iam.NewListRolesPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		response, err := paginator.NextPage(ctx, func(options *iam.Options) {
@@ -64,7 +64,7 @@ func fetchIamRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 func getRole(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	role := resource.Item.(types.Role)
 	cl := meta.(*client.Client)
-	svc := cl.Services("iam").Iam
+	svc := cl.Services(client.AWSServiceIam).Iam
 	roleDetails, err := svc.GetRole(ctx, &iam.GetRoleInput{
 		RoleName: role.RoleName,
 	}, func(options *iam.Options) {

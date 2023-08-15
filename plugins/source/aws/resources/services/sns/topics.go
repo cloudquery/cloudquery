@@ -59,7 +59,7 @@ func Topics() *schema.Table {
 
 func fetchSnsTopics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("sns").Sns
+	svc := cl.Services(client.AWSServiceSns).Sns
 	config := sns.ListTopicsInput{}
 	paginator := sns.NewListTopicsPaginator(svc, &config)
 	for paginator.HasMorePages() {
@@ -76,7 +76,7 @@ func fetchSnsTopics(ctx context.Context, meta schema.ClientMeta, parent *schema.
 
 func getTopic(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("sns").Sns
+	svc := cl.Services(client.AWSServiceSns).Sns
 	topic := resource.Item.(types.Topic)
 
 	attrs, err := svc.GetTopicAttributes(ctx,
@@ -105,7 +105,7 @@ func getTopic(ctx context.Context, meta schema.ClientMeta, resource *schema.Reso
 func resolveSnsTopicTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	topic := resource.Item.(*models.Topic)
 	cl := meta.(*client.Client)
-	svc := cl.Services("sns").Sns
+	svc := cl.Services(client.AWSServiceSns).Sns
 	tagParams := sns.ListTagsForResourceInput{
 		ResourceArn: topic.Arn,
 	}

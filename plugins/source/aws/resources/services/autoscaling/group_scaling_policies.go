@@ -40,7 +40,7 @@ func groupScalingPolicies() *schema.Table {
 func fetchAutoscalingGroupScalingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(models.AutoScalingGroupWrapper)
 	cl := meta.(*client.Client)
-	svc := cl.Services("autoscaling").Autoscaling
+	svc := cl.Services(client.AWSServiceAutoscaling).Autoscaling
 	paginator := autoscaling.NewDescribePoliciesPaginator(svc, &autoscaling.DescribePoliciesInput{AutoScalingGroupName: p.AutoScalingGroupName})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *autoscaling.Options) {

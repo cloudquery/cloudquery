@@ -51,7 +51,7 @@ func Workspaces() *schema.Table {
 
 func fetchAmpWorkspaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("amp").Amp
+	svc := cl.Services(client.AWSServiceAmp).Amp
 
 	p := amp.NewListWorkspacesPaginator(svc, &amp.ListWorkspacesInput{MaxResults: aws.Int32(int32(1000))})
 	for p.HasMorePages() {
@@ -70,7 +70,7 @@ func fetchAmpWorkspaces(ctx context.Context, meta schema.ClientMeta, parent *sch
 
 func describeWorkspace(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("amp").Amp
+	svc := cl.Services(client.AWSServiceAmp).Amp
 
 	out, err := svc.DescribeWorkspace(ctx,
 		&amp.DescribeWorkspaceInput{WorkspaceId: resource.Item.(types.WorkspaceSummary).WorkspaceId},
@@ -89,7 +89,7 @@ func describeWorkspace(ctx context.Context, meta schema.ClientMeta, resource *sc
 
 func describeAlertManagerDefinition(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("amp").Amp
+	svc := cl.Services(client.AWSServiceAmp).Amp
 
 	out, err := svc.DescribeAlertManagerDefinition(ctx,
 		&amp.DescribeAlertManagerDefinitionInput{WorkspaceId: resource.Item.(*types.WorkspaceDescription).WorkspaceId},
@@ -106,7 +106,7 @@ func describeAlertManagerDefinition(ctx context.Context, meta schema.ClientMeta,
 
 func describeLoggingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("amp").Amp
+	svc := cl.Services(client.AWSServiceAmp).Amp
 
 	out, err := svc.DescribeLoggingConfiguration(ctx,
 		&amp.DescribeLoggingConfigurationInput{WorkspaceId: resource.Item.(*types.WorkspaceDescription).WorkspaceId},

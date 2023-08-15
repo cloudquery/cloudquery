@@ -40,7 +40,7 @@ func ConfigRules() *schema.Table {
 
 func fetchConfigConfigRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("configservice").Configservice
+	svc := cl.Services(client.AWSServiceConfigservice).Configservice
 
 	p := configservice.NewDescribeConfigRulesPaginator(svc, nil)
 	for p.HasMorePages() {

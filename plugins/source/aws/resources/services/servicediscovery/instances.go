@@ -27,7 +27,7 @@ func instances() *schema.Table {
 
 func fetchInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("servicediscovery").Servicediscovery
+	svc := cl.Services(client.AWSServiceServicediscovery).Servicediscovery
 	service := parent.Item.(*types.Service)
 	config := servicediscovery.ListInstancesInput{
 		ServiceId:  service.Id,
@@ -48,7 +48,7 @@ func fetchInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.
 
 func getInstance(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("servicediscovery").Servicediscovery
+	svc := cl.Services(client.AWSServiceServicediscovery).Servicediscovery
 	instance := resource.Item.(types.InstanceSummary)
 	service := resource.Parent.Item.(*types.Service)
 	config := &servicediscovery.GetInstanceInput{

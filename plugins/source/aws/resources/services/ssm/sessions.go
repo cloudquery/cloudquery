@@ -29,7 +29,7 @@ Only Active sessions are fetched.`,
 
 func fetchSsmSessions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("ssm").Ssm
+	svc := cl.Services(client.AWSServiceSsm).Ssm
 
 	params := ssm.DescribeSessionsInput{
 		State:   types.SessionStateActive,

@@ -42,7 +42,7 @@ func mapRuns() *schema.Table {
 
 func fetchStepfunctionsMapRuns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("sfn").Sfn
+	svc := cl.Services(client.AWSServiceSfn).Sfn
 	config := sfn.ListMapRunsInput{
 		MaxResults:   1000,
 		ExecutionArn: parent.Item.(*sfn.DescribeExecutionOutput).ExecutionArn,
@@ -62,7 +62,7 @@ func fetchStepfunctionsMapRuns(ctx context.Context, meta schema.ClientMeta, pare
 
 func getMapRun(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("sfn").Sfn
+	svc := cl.Services(client.AWSServiceSfn).Sfn
 	config := sfn.DescribeMapRunInput{
 		MapRunArn: resource.Item.(types.MapRunListItem).MapRunArn,
 	}

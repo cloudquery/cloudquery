@@ -35,7 +35,7 @@ func VirtualGateways() *schema.Table {
 func fetchDirectconnectVirtualGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config directconnect.DescribeVirtualGatewaysInput
 	cl := meta.(*client.Client)
-	svc := cl.Services("directconnect").Directconnect
+	svc := cl.Services(client.AWSServiceDirectconnect).Directconnect
 	output, err := svc.DescribeVirtualGateways(ctx, &config, func(options *directconnect.Options) {
 		options.Region = cl.Region
 	})

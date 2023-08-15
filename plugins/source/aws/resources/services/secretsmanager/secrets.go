@@ -52,7 +52,7 @@ func Secrets() *schema.Table {
 
 func fetchSecretsmanagerSecrets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("secretsmanager").Secretsmanager
+	svc := cl.Services(client.AWSServiceSecretsmanager).Secretsmanager
 	paginator := secretsmanager.NewListSecretsPaginator(svc, &secretsmanager.ListSecretsInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(o *secretsmanager.Options) {
@@ -68,7 +68,7 @@ func fetchSecretsmanagerSecrets(ctx context.Context, meta schema.ClientMeta, _ *
 
 func getSecret(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("secretsmanager").Secretsmanager
+	svc := cl.Services(client.AWSServiceSecretsmanager).Secretsmanager
 	n := resource.Item.(types.SecretListEntry)
 
 	// get more details about the secret
@@ -88,7 +88,7 @@ func getSecret(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 func fetchSecretsmanagerSecretPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*secretsmanager.DescribeSecretOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services("secretsmanager").Secretsmanager
+	svc := cl.Services(client.AWSServiceSecretsmanager).Secretsmanager
 	cfg := secretsmanager.GetResourcePolicyInput{
 		SecretId: r.ARN,
 	}

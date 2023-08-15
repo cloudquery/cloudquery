@@ -41,7 +41,7 @@ func Webhooks() *schema.Table {
 
 func fetchCodepipelineWebhooks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("codepipeline").Codepipeline
+	svc := cl.Services(client.AWSServiceCodepipeline).Codepipeline
 	paginator := codepipeline.NewListWebhooksPaginator(svc, &codepipeline.ListWebhooksInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *codepipeline.Options) {

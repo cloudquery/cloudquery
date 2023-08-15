@@ -34,7 +34,7 @@ func ReplicationInstances() *schema.Table {
 
 func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("databasemigrationservice").Databasemigrationservice
+	svc := cl.Services(client.AWSServiceDatabasemigrationservice).Databasemigrationservice
 
 	var describeReplicationInstancesInput *databasemigrationservice.DescribeReplicationInstancesInput
 	describeReplicationInstancesOutput, err := svc.DescribeReplicationInstances(ctx, describeReplicationInstancesInput, func(options *databasemigrationservice.Options) {

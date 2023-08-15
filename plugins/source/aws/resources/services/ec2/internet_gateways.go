@@ -43,7 +43,7 @@ func InternetGateways() *schema.Table {
 
 func fetchEc2InternetGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("ec2").Ec2
+	svc := cl.Services(client.AWSServiceEc2).Ec2
 	paginator := ec2.NewDescribeInternetGatewaysPaginator(svc, &ec2.DescribeInternetGatewaysInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *ec2.Options) {

@@ -45,7 +45,7 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 	}
 
 	cl := meta.(*client.Client)
-	svc := cl.Services("lambda").Lambda
+	svc := cl.Services(client.AWSServiceLambda).Lambda
 	config := lambda.ListAliasesInput{
 		FunctionName: p.Configuration.FunctionName,
 	}
@@ -70,7 +70,7 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 
 func getFunctionAliasURLConfig(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("lambda").Lambda
+	svc := cl.Services(client.AWSServiceLambda).Lambda
 	alias := resource.Item.(types.AliasConfiguration)
 	p := resource.Parent.Item.(*lambda.GetFunctionOutput)
 

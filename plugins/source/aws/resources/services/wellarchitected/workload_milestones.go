@@ -43,7 +43,7 @@ func workloadMilestones() *schema.Table {
 
 func fetchWorkloadMilestones(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	service := cl.Services("wellarchitected").Wellarchitected
+	service := cl.Services(client.AWSServiceWellarchitected).Wellarchitected
 	workloadID := parent.Get("workload_id").String()
 
 	p := wellarchitected.NewListMilestonesPaginator(service,

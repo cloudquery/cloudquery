@@ -38,7 +38,7 @@ func Pipelines() *schema.Table {
 
 func fetchElastictranscoderPipelines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("elastictranscoder").Elastictranscoder
+	svc := cl.Services(client.AWSServiceElastictranscoder).Elastictranscoder
 
 	p := elastictranscoder.NewListPipelinesPaginator(svc, nil)
 	for p.HasMorePages() {

@@ -27,7 +27,7 @@ func SourceCredentials() *schema.Table {
 
 func fetchSourceCredentials(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("codebuild").Codebuild
+	svc := cl.Services(client.AWSServiceCodebuild).Codebuild
 	credentialsOutput, err := svc.ListSourceCredentials(ctx, nil, func(options *codebuild.Options) {
 		options.Region = cl.Region
 	})

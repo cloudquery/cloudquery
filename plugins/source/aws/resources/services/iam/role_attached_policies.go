@@ -33,7 +33,7 @@ func roleAttachedPolicies() *schema.Table {
 func fetchIamRoleAttachedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(*types.Role)
 	cl := meta.(*client.Client)
-	svc := cl.Services("iam").Iam
+	svc := cl.Services(client.AWSServiceIam).Iam
 	config := iam.ListAttachedRolePoliciesInput{
 		RoleName: p.RoleName,
 	}

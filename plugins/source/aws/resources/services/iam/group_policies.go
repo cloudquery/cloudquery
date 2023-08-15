@@ -42,7 +42,7 @@ func groupPolicies() *schema.Table {
 
 func fetchIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("iam").Iam
+	svc := cl.Services(client.AWSServiceIam).Iam
 	group := parent.Item.(types.Group)
 	config := iam.ListGroupPoliciesInput{
 		GroupName: group.GroupName,
@@ -66,7 +66,7 @@ func fetchIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, parent *
 
 func getGroupPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("iam").Iam
+	svc := cl.Services(client.AWSServiceIam).Iam
 	p := resource.Item.(string)
 	group := resource.Parent.Item.(types.Group)
 

@@ -26,7 +26,7 @@ func repositoryImageScanFindings() *schema.Table {
 }
 func fetchEcrRepositoryImageScanFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("ecr").Ecr
+	svc := cl.Services(client.AWSServiceEcr).Ecr
 	image := parent.Item.(types.ImageDetail)
 	repo := parent.Parent.Item.(types.Repository)
 	for _, tag := range image.ImageTags {

@@ -42,7 +42,7 @@ func identityProviderConfigs() *schema.Table {
 func fetchIdentityProviderConfigs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, res chan<- any) error {
 	cluster := resource.Item.(*types.Cluster)
 	cl := meta.(*client.Client)
-	svc := cl.Services("eks").Eks
+	svc := cl.Services(client.AWSServiceEks).Eks
 	paginator := eks.NewListIdentityProviderConfigsPaginator(svc, &eks.ListIdentityProviderConfigsInput{ClusterName: cluster.Name})
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *eks.Options) {
@@ -58,7 +58,7 @@ func fetchIdentityProviderConfigs(ctx context.Context, meta schema.ClientMeta, r
 
 func getIdentityProviderConfigs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("eks").Eks
+	svc := cl.Services(client.AWSServiceEks).Eks
 	ipc := resource.Item.(types.IdentityProviderConfig)
 	if aws.ToString(ipc.Type) != "oidc" {
 		return nil

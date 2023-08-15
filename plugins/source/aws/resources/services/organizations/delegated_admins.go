@@ -25,7 +25,7 @@ func DelegatedAdministrators() *schema.Table {
 }
 func fetchOrganizationsDelegatedAdmins(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("organizations").Organizations
+	svc := cl.Services(client.AWSServiceOrganizations).Organizations
 	var input organizations.ListDelegatedAdministratorsInput
 	paginator := organizations.NewListDelegatedAdministratorsPaginator(svc, &input)
 	for paginator.HasMorePages() {

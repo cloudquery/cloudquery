@@ -39,7 +39,7 @@ func configurationSetEventDestinations() *schema.Table {
 
 func fetchSesConfigurationSetEventDestinations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("sesv2").Sesv2
+	svc := cl.Services(client.AWSServiceSesv2).Sesv2
 
 	s := parent.Item.(*sesv2.GetConfigurationSetOutput)
 

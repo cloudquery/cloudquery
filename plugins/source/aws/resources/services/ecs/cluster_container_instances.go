@@ -40,7 +40,7 @@ func clusterContainerInstances() *schema.Table {
 func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cluster := parent.Item.(types.Cluster)
 	cl := meta.(*client.Client)
-	svc := cl.Services("ecs").Ecs
+	svc := cl.Services(client.AWSServiceEcs).Ecs
 	config := ecs.ListContainerInstancesInput{
 		Cluster: cluster.ClusterArn,
 	}

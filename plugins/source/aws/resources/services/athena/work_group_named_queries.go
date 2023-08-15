@@ -34,7 +34,7 @@ func workGroupNamedQueries() *schema.Table {
 
 func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("athena").Athena
+	svc := cl.Services(client.AWSServiceAthena).Athena
 	wg := parent.Item.(types.WorkGroup)
 	input := athena.ListNamedQueriesInput{WorkGroup: wg.Name}
 	paginator := athena.NewListNamedQueriesPaginator(svc, &input)
@@ -52,7 +52,7 @@ func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMet
 
 func getWorkGroupNamedQuery(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("athena").Athena
+	svc := cl.Services(client.AWSServiceAthena).Athena
 
 	d := resource.Item.(string)
 	dc, err := svc.GetNamedQuery(ctx, &athena.GetNamedQueryInput{

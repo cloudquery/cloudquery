@@ -27,7 +27,7 @@ func ResolverQueryLogConfigs() *schema.Table {
 
 func fetchQueryLogConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("route53resolver").Route53resolver
+	svc := cl.Services(client.AWSServiceRoute53resolver).Route53resolver
 	var input route53resolver.ListResolverQueryLogConfigsInput
 	paginator := route53resolver.NewListResolverQueryLogConfigsPaginator(svc, &input)
 	for paginator.HasMorePages() {

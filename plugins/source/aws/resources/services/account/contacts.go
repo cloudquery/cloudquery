@@ -26,7 +26,7 @@ func Contacts() *schema.Table {
 
 func fetchAccountContacts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("account").Account
+	svc := cl.Services(client.AWSServiceAccount).Account
 	var input account.GetContactInformationInput
 	output, err := svc.GetContactInformation(ctx, &input, func(options *account.Options) {
 		options.Region = cl.Region

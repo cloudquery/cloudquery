@@ -52,7 +52,7 @@ func keyPolicies() *schema.Table {
 
 func fetchKeyPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("kms").Kms
+	svc := cl.Services(client.AWSServiceKms).Kms
 
 	const policyName = "default"
 

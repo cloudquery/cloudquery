@@ -30,7 +30,7 @@ func DataSources() *schema.Table {
 
 func fetchQuicksightDataSources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("quicksight").Quicksight
+	svc := cl.Services(client.AWSServiceQuicksight).Quicksight
 	input := quicksight.ListDataSourcesInput{
 		AwsAccountId: aws.String(cl.AccountID),
 	}

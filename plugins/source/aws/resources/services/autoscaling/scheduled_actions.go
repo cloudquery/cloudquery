@@ -35,7 +35,7 @@ func ScheduledActions() *schema.Table {
 
 func fetchAutoscalingScheduledActions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("autoscaling").Autoscaling
+	svc := cl.Services(client.AWSServiceAutoscaling).Autoscaling
 	params := &autoscaling.DescribeScheduledActionsInput{
 		MaxRecords: aws.Int32(100),
 	}

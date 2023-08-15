@@ -51,7 +51,7 @@ func isRegionSupported(region string) bool {
 
 func fetchSesActiveReceiptRuleSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("ses").Ses
+	svc := cl.Services(client.AWSServiceSes).Ses
 
 	set, err := svc.DescribeActiveReceiptRuleSet(ctx, nil, func(o *ses.Options) {
 		o.Region = cl.Region

@@ -40,7 +40,7 @@ func Studios() *schema.Table {
 func fetchEmrStudios(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	config := emr.ListStudiosInput{}
 	cl := meta.(*client.Client)
-	svc := cl.Services("emr").Emr
+	svc := cl.Services(client.AWSServiceEmr).Emr
 	paginator := emr.NewListStudiosPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *emr.Options) {
@@ -56,7 +56,7 @@ func fetchEmrStudios(ctx context.Context, meta schema.ClientMeta, _ *schema.Reso
 
 func getStudio(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("emr").Emr
+	svc := cl.Services(client.AWSServiceEmr).Emr
 	response, err := svc.DescribeStudio(ctx, &emr.DescribeStudioInput{StudioId: resource.Item.(types.StudioSummary).StudioId}, func(options *emr.Options) {
 		options.Region = cl.Region
 	})

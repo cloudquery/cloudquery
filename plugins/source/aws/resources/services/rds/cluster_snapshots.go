@@ -46,7 +46,7 @@ func ClusterSnapshots() *schema.Table {
 
 func fetchRdsClusterSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("rds").Rds
+	svc := cl.Services(client.AWSServiceRds).Rds
 	var input rds.DescribeDBClusterSnapshotsInput
 	paginator := rds.NewDescribeDBClusterSnapshotsPaginator(svc, &input)
 	for paginator.HasMorePages() {
@@ -69,7 +69,7 @@ func resolveRDSClusterSnapshotTags(ctx context.Context, meta schema.ClientMeta, 
 func resolveRDSClusterSnapshotAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
 	s := resource.Item.(types.DBClusterSnapshot)
 	cl := meta.(*client.Client)
-	svc := cl.Services("rds").Rds
+	svc := cl.Services(client.AWSServiceRds).Rds
 	out, err := svc.DescribeDBClusterSnapshotAttributes(
 		ctx,
 		&rds.DescribeDBClusterSnapshotAttributesInput{DBClusterSnapshotIdentifier: s.DBClusterSnapshotIdentifier},

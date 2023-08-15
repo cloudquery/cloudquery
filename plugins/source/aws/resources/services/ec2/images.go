@@ -49,7 +49,7 @@ func Images() *schema.Table {
 func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 
-	svc := cl.Services("ec2").Ec2
+	svc := cl.Services(client.AWSServiceEc2).Ec2
 	g, ctx := errgroup.WithContext(ctx)
 	g.Go(func() error {
 		// fetch ec2.Images owned by this account

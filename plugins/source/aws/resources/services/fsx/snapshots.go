@@ -47,7 +47,7 @@ func Snapshots() *schema.Table {
 
 func fetchFsxSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("fsx").Fsx
+	svc := cl.Services(client.AWSServiceFsx).Fsx
 	input := fsx.DescribeSnapshotsInput{MaxResults: aws.Int32(1000)}
 	paginator := fsx.NewDescribeSnapshotsPaginator(svc, &input)
 	for paginator.HasMorePages() {

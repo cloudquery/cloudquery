@@ -33,7 +33,7 @@ func loadBalancerAttributes() *schema.Table {
 func fetchLoadBalancerAttributes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	lb := parent.Item.(types.LoadBalancer)
 	cl := meta.(*client.Client)
-	svc := cl.Services("elasticloadbalancingv2").Elasticloadbalancingv2
+	svc := cl.Services(client.AWSServiceElasticloadbalancingv2).Elasticloadbalancingv2
 	result, err := svc.DescribeLoadBalancerAttributes(ctx, &elbv2.DescribeLoadBalancerAttributesInput{LoadBalancerArn: lb.LoadBalancerArn}, func(options *elbv2.Options) {
 		options.Region = cl.Region
 	})

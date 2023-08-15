@@ -43,7 +43,7 @@ func CustomerGateways() *schema.Table {
 
 func fetchEc2CustomerGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("ec2").Ec2
+	svc := cl.Services(client.AWSServiceEc2).Ec2
 	response, err := svc.DescribeCustomerGateways(ctx, nil, func(options *ec2.Options) {
 		options.Region = cl.Region
 	})

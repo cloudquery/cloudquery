@@ -25,7 +25,7 @@ func builds() *schema.Table {
 
 func fetchBuildsForProject(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("codebuild").Codebuild
+	svc := cl.Services(client.AWSServiceCodebuild).Codebuild
 	project := parent.Item.(types.Project)
 	config := codebuild.ListBuildsForProjectInput{
 		ProjectName: project.Name,

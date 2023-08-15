@@ -38,7 +38,7 @@ func Analyzers() *schema.Table {
 
 func fetchAccessanalyzerAnalyzers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services("accessanalyzer").Accessanalyzer
+	svc := cl.Services(client.AWSServiceAccessanalyzer).Accessanalyzer
 	paginator := accessanalyzer.NewListAnalyzersPaginator(svc, &accessanalyzer.ListAnalyzersInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *accessanalyzer.Options) {
