@@ -10,7 +10,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.72
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.37.0
 	github.com/aws/aws-sdk-go-v2/service/sts v1.19.3
-	github.com/cloudquery/plugin-sdk/v4 v4.4.0
+	github.com/cloudquery/plugin-sdk/v4 v4.5.0
 	github.com/rs/zerolog v1.29.1
 	github.com/stretchr/testify v1.8.4
 )
