@@ -1,7 +1,7 @@
 \echo  "Executing CIS V1.5.0 Section 5"
 \echo "Creating view_aws_security_group_ingress_rules"
 \ir ../views/security_group_ingress_rules.sql
-\echo "Creating view_aws_nacl_allow_ingress_rules"
+\echo "Creating view_aws_nacl_ingress_rules"
 \ir ../views/networks_acls_ingress_rules.sql
 \set check_id '5.1'
 \echo "Executing check 5.1"
