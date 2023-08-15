@@ -46,7 +46,7 @@ func fetchKmsKeyGrants(ctx context.Context, meta schema.ClientMeta, parent *sche
 	}
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Kms
+	svc := cl.Services(client.AWSServiceKms).Kms
 	p := kms.NewListGrantsPaginator(svc, &config)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *kms.Options) {

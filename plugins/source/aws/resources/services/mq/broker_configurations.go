@@ -41,7 +41,7 @@ func fetchMqBrokerConfigurations(ctx context.Context, meta schema.ClientMeta, pa
 		return nil
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Mq
+	svc := cl.Services(client.AWSServiceMq).Mq
 	list := broker.Configurations.History
 	if broker.Configurations.Current != nil {
 		list = append(list, *broker.Configurations.Current)

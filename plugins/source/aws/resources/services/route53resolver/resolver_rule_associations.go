@@ -27,7 +27,7 @@ func ResolverRuleAssociations() *schema.Table {
 
 func fetchResolverRuleAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Route53resolver
+	svc := cl.Services(client.AWSServiceRoute53resolver).Route53resolver
 	var input route53resolver.ListResolverRuleAssociationsInput
 	paginator := route53resolver.NewListResolverRuleAssociationsPaginator(svc, &input)
 	for paginator.HasMorePages() {
