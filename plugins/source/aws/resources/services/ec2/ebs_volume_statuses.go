@@ -35,7 +35,7 @@ func EbsVolumesStatuses() *schema.Table {
 
 func fetchEc2EbsVolumeStatuses(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ec2
+	svc := cl.Services(client.AWSServiceEc2).Ec2
 	config := ec2.DescribeVolumeStatusInput{MaxResults: aws.Int32(1000)}
 	paginator := ec2.NewDescribeVolumeStatusPaginator(svc, &config)
 	for paginator.HasMorePages() {

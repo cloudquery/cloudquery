@@ -46,7 +46,7 @@ func fetchIotThingTypes(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}
 	cl := meta.(*client.Client)
 
-	svc := cl.Services().Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 	paginator := iot.NewListThingTypesPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
@@ -63,6 +63,6 @@ func fetchIotThingTypes(ctx context.Context, meta schema.ClientMeta, parent *sch
 func ResolveIotThingTypeTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(types.ThingTypeDefinition)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 	return resolveIotTags(ctx, meta, svc, resource, c, i.ThingTypeArn)
 }

@@ -80,7 +80,7 @@ func fetchCustom(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 		return fmt.Errorf("skipping `%s` because `get_cost_and_usage` is not specified in `table_options`", tableName)
 	}
 
-	svc := cl.Services().Costexplorer
+	svc := cl.Services(client.AWSServiceCostexplorer).Costexplorer
 	allConfigs := cl.Spec.TableOptions.CustomCostExplorer.GetCostAndUsageOpts
 	for _, input := range allConfigs {
 		hash, err := hashstructure.Hash(input, hashstructure.FormatV2, nil)

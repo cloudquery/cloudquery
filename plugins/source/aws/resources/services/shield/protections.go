@@ -40,7 +40,7 @@ func Protections() *schema.Table {
 
 func fetchShieldProtections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Shield
+	svc := cl.Services(client.AWSServiceShield).Shield
 	config := shield.ListProtectionsInput{}
 	paginator := shield.NewListProtectionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
@@ -61,7 +61,7 @@ func fetchShieldProtections(ctx context.Context, meta schema.ClientMeta, parent 
 func resolveShieldProtectionTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Protection)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Shield
+	svc := cl.Services(client.AWSServiceShield).Shield
 	config := shield.ListTagsForResourceInput{ResourceARN: r.ProtectionArn}
 
 	output, err := svc.ListTagsForResource(ctx, &config, func(o *shield.Options) {

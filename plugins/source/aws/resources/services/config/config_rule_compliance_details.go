@@ -37,7 +37,7 @@ func configRuleComplianceDetails() *schema.Table {
 func fetchConfigConfigRuleComplianceDetails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	ruleDetail := parent.Item.(types.ConfigRule)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Configservice
+	svc := cl.Services(client.AWSServiceConfigservice).Configservice
 
 	input := &configservice.GetComplianceDetailsByConfigRuleInput{
 		ConfigRuleName: ruleDetail.ConfigRuleName,

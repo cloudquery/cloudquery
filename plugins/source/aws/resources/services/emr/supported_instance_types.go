@@ -2,6 +2,7 @@ package emr
 
 import (
 	"context"
+
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/emr/types"
@@ -33,7 +34,7 @@ func supportedInstanceTypes() *schema.Table {
 
 func fetchEmrSupportedInstanceTypes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Emr
+	svc := cl.Services(client.AWSServiceEmr).Emr
 	p := parent.Item.(*emr.DescribeReleaseLabelOutput)
 	paginator := emr.NewListSupportedInstanceTypesPaginator(svc, &emr.ListSupportedInstanceTypesInput{ReleaseLabel: p.ReleaseLabel})
 	for paginator.HasMorePages() {
