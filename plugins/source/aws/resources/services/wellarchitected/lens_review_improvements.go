@@ -58,7 +58,7 @@ func fetchLensReviewImprovements(ctx context.Context, meta schema.ClientMeta, pa
 	}
 
 	cl := meta.(*client.Client)
-	service := cl.Services().Wellarchitected
+	service := cl.Services(client.AWSServiceWellarchitected).Wellarchitected
 	milestoneNumber := int32(parent.Get("milestone_number").Get().(int64))
 	workloadID := parent.Get("workload_id").String()
 

@@ -39,7 +39,7 @@ func gatewayAssociations() *schema.Table {
 func fetchDirectconnectGatewayAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	gateway := parent.Item.(types.DirectConnectGateway)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Directconnect
+	svc := cl.Services(client.AWSServiceDirectconnect).Directconnect
 	config := directconnect.DescribeDirectConnectGatewayAssociationsInput{DirectConnectGatewayId: gateway.DirectConnectGatewayId}
 	// No paginator available
 	for {

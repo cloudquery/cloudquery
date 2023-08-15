@@ -45,7 +45,7 @@ func Distributions() *schema.Table {
 func fetchLightsailDistributions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lightsail.GetDistributionsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lightsail
+	svc := cl.Services(client.AWSServiceLightsail).Lightsail
 	// No paginator available
 	for {
 		// Validate the region for this in client/data.json
@@ -80,7 +80,7 @@ func fetchLightsailDistributions(ctx context.Context, meta schema.ClientMeta, pa
 }
 
 func fetchCacheReset(ctx context.Context, res chan<- any, cl *client.Client, d types.LightsailDistribution) error {
-	svc := cl.Services().Lightsail
+	svc := cl.Services(client.AWSServiceLightsail).Lightsail
 	resetInput := lightsail.GetDistributionLatestCacheResetInput{
 		DistributionName: d.Name,
 	}

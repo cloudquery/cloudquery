@@ -52,7 +52,7 @@ func fetchApigatewayv2ApiRouteResponses(ctx context.Context, meta schema.ClientM
 		RouteId: r.RouteId,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigatewayv2
+	svc := cl.Services(client.AWSServiceApigatewayv2).Apigatewayv2
 	// No paginator available
 	for {
 		response, err := svc.GetRouteResponses(ctx, &config, func(options *apigatewayv2.Options) {

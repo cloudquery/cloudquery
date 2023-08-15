@@ -34,7 +34,7 @@ func userPoolIdentityProviders() *schema.Table {
 func fetchCognitoUserPoolIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	pool := parent.Item.(*types.UserPoolType)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cognitoidentityprovider
+	svc := cl.Services(client.AWSServiceCognitoidentityprovider).Cognitoidentityprovider
 
 	params := cognitoidentityprovider.ListIdentityProvidersInput{UserPoolId: pool.Id}
 	paginator := cognitoidentityprovider.NewListIdentityProvidersPaginator(svc, &params)
@@ -52,7 +52,7 @@ func fetchCognitoUserPoolIdentityProviders(ctx context.Context, meta schema.Clie
 
 func getUserPoolIdentityProvider(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cognitoidentityprovider
+	svc := cl.Services(client.AWSServiceCognitoidentityprovider).Cognitoidentityprovider
 	item := resource.Item.(types.ProviderDescription)
 	pool := resource.Parent.Item.(*types.UserPoolType)
 

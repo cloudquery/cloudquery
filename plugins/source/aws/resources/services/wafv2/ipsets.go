@@ -49,7 +49,7 @@ func Ipsets() *schema.Table {
 
 func fetchWafv2Ipsets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Wafv2
+	svc := cl.Services(client.AWSServiceWafv2).Wafv2
 
 	params := wafv2.ListIPSetsInput{
 		Scope: cl.WAFScope,
@@ -74,7 +74,7 @@ func fetchWafv2Ipsets(ctx context.Context, meta schema.ClientMeta, parent *schem
 
 func getIpset(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Wafv2
+	svc := cl.Services(client.AWSServiceWafv2).Wafv2
 	s := resource.Item.(types.IPSetSummary)
 	input := &wafv2.GetIPSetInput{
 		Id: s.Id, Name: s.Name, Scope: cl.WAFScope,
@@ -105,7 +105,7 @@ func resolveIpsetAddresses(ctx context.Context, meta schema.ClientMeta, resource
 
 func resolveIpsetTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Wafv2
+	svc := cl.Services(client.AWSServiceWafv2).Wafv2
 	s := resource.Item.(*types.IPSet)
 	var tagList []types.Tag
 	params := wafv2.ListTagsForResourceInput{ResourceARN: s.ARN}

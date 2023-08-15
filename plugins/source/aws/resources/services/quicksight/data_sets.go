@@ -28,7 +28,7 @@ func DataSets() *schema.Table {
 
 func fetchQuicksightDataSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Quicksight
+	svc := cl.Services(client.AWSServiceQuicksight).Quicksight
 	input := quicksight.ListDataSetsInput{
 		AwsAccountId: aws.String(cl.AccountID),
 	}
