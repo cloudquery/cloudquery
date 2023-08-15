@@ -35,7 +35,7 @@
   "plugins/source/datadog+FILLER": "0.0.0",
   "plugins/destination/bigquery": "3.2.1",
   "plugins/destination/bigquery+FILLER": "0.0.0",
-  "plugins/source/pagerduty": "3.0.4",
+  "plugins/source/pagerduty": "3.0.5",
   "plugins/source/pagerduty+FILLER": "0.0.0",
   "plugins/destination/mongodb": "2.2.6",
   "plugins/destination/mongodb+FILLER": "0.0.0",
