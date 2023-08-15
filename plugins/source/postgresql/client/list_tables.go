@@ -40,9 +40,9 @@ SELECT
     CASE
 		WHEN
 		    conkey IS NOT NULL
-		    AND contype = 'u'
+		    AND (contype = 'p' OR contype = 'u')
+			AND array_length(conkey, 1) = 1  -- we don't handle composite unique keys
 		    AND array_position(conkey, pg_attribute.attnum) > 0
-		    AND array_length(conkey, 1) = 1 -- we don't handle composite unique keys
 		    THEN true
 		ELSE false
 	END AS is_unique,
