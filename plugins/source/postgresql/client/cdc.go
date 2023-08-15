@@ -288,17 +288,21 @@ func decodeTextColumnData(mi *pgtype.Map, data []byte, dataType uint32) (any, er
 func (c *Client) resourceFromCDCValues(tableName string, values map[string]any) (message.SyncMessage, error) {
 	table := c.tables.Get(tableName)
 	arrowSchema := table.ToArrowSchema()
-	rb := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
+	builder := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
+	transformers := transformersForSchema(arrowSchema)
+
 	for i, col := range table.Columns {
-		val, err := prepareValueForResourceSet(arrowSchema.Field(i).Type, values[col.Name])
+		val, err := transformers[i](values[col.Name])
 		if err != nil {
 			return nil, err
 		}
+
 		s := scalar.NewScalar(arrowSchema.Field(i).Type)
 		if err := s.Set(val); err != nil {
 			return nil, fmt.Errorf("error setting value for column %s: %w", col.Name, err)
 		}
-		scalar.AppendToBuilder(rb.Field(i), s)
+
+		scalar.AppendToBuilder(builder.Field(i), s)
 	}
-	return &message.SyncInsert{Record: rb.NewRecord()}, nil
+	return &message.SyncInsert{Record: builder.NewRecord()}, nil
 }
