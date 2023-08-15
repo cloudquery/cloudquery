@@ -53,7 +53,7 @@ func fetchFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		allConfigs = []tableoptions.CustomGetFindingsOpts{{GetFindingsInput: securityhub.GetFindingsInput{MaxResults: 100}}}
 	}
 
-	svc := cl.Services().Securityhub
+	svc := cl.Services(client.AWSServiceSecurityhub).Securityhub
 
 	var config securityhub.GetFindingsInput
 	for _, w := range allConfigs {

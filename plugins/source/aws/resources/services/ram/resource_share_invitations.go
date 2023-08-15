@@ -42,7 +42,7 @@ func ResourceShareInvitations() *schema.Table {
 func fetchRamResourceShareInvitations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input ram.GetResourceShareInvitationsInput = getResourceShareInvitationsInput()
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ram
+	svc := cl.Services(client.AWSServiceRam).Ram
 	paginator := ram.NewGetResourceShareInvitationsPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *ram.Options) {

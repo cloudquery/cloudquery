@@ -47,7 +47,7 @@ func ClusterSnapshots() *schema.Table {
 
 func fetchNeptuneClusterSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Neptune
+	svc := cl.Services(client.AWSServiceNeptune).Neptune
 	input := neptune.DescribeDBClusterSnapshotsInput{
 		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
 	}
@@ -67,7 +67,7 @@ func fetchNeptuneClusterSnapshots(ctx context.Context, meta schema.ClientMeta, p
 func resolveNeptuneClusterSnapshotAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
 	s := resource.Item.(types.DBClusterSnapshot)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Neptune
+	svc := cl.Services(client.AWSServiceNeptune).Neptune
 	out, err := svc.DescribeDBClusterSnapshotAttributes(
 		ctx,
 		&neptune.DescribeDBClusterSnapshotAttributesInput{DBClusterSnapshotIdentifier: s.DBClusterSnapshotIdentifier},
@@ -91,7 +91,7 @@ func resolveNeptuneClusterSnapshotAttributes(ctx context.Context, meta schema.Cl
 func resolveNeptuneClusterSnapshotTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	s := resource.Item.(types.DBClusterSnapshot)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Neptune
+	svc := cl.Services(client.AWSServiceNeptune).Neptune
 	out, err := svc.ListTagsForResource(ctx, &neptune.ListTagsForResourceInput{ResourceName: s.DBClusterSnapshotArn}, func(options *neptune.Options) {
 		options.Region = cl.Region
 	})

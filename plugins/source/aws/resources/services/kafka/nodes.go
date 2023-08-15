@@ -47,7 +47,7 @@ func fetchKafkaNodes(ctx context.Context, meta schema.ClientMeta, parent *schema
 
 	var input = getListNodesInput(parent)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Kafka
+	svc := cl.Services(client.AWSServiceKafka).Kafka
 	paginator := kafka.NewListNodesPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *kafka.Options) {

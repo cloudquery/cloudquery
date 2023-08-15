@@ -34,7 +34,7 @@ func OptionGroups() *schema.Table {
 
 func fetchOptionGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Rds
+	svc := cl.Services(client.AWSServiceRds).Rds
 	config := rds.DescribeOptionGroupsInput{}
 	p := rds.NewDescribeOptionGroupsPaginator(svc, &config)
 	for p.HasMorePages() {

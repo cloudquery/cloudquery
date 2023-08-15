@@ -38,7 +38,7 @@ func VpcLinks() *schema.Table {
 func fetchApigatewayVpcLinks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apigateway.GetVpcLinksInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigateway
+	svc := cl.Services(client.AWSServiceApigateway).Apigateway
 	paginator := apigateway.NewGetVpcLinksPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		response, err := paginator.NextPage(ctx, func(options *apigateway.Options) {

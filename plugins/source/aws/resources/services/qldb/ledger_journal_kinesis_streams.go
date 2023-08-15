@@ -34,7 +34,7 @@ func ledgerJournalKinesisStreams() *schema.Table {
 func fetchQldbLedgerJournalKinesisStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	ledger := parent.Item.(*qldb.DescribeLedgerOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Qldb
+	svc := cl.Services(client.AWSServiceQldb).Qldb
 	config := &qldb.ListJournalKinesisStreamsForLedgerInput{
 		LedgerName: ledger.Name,
 		MaxResults: aws.Int32(100),

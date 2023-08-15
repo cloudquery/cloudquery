@@ -48,7 +48,7 @@ func LoadBalancers() *schema.Table {
 func fetchLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config elbv2.DescribeLoadBalancersInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticloadbalancingv2
+	svc := cl.Services(client.AWSServiceElasticloadbalancingv2).Elasticloadbalancingv2
 	paginator := elbv2.NewDescribeLoadBalancersPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *elbv2.Options) {
@@ -65,7 +65,7 @@ func fetchLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *sch
 func resolveLoadBalancerTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	region := cl.Region
-	svc := cl.Services().Elasticloadbalancingv2
+	svc := cl.Services(client.AWSServiceElasticloadbalancingv2).Elasticloadbalancingv2
 	loadBalancer := resource.Item.(types.LoadBalancer)
 	tagsOutput, err := svc.DescribeTags(ctx, &elbv2.DescribeTagsInput{
 		ResourceArns: []string{

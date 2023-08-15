@@ -36,7 +36,7 @@ func Connections() *schema.Table {
 func fetchConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input eventbridge.ListConnectionsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Eventbridge
+	svc := cl.Services(client.AWSServiceEventbridge).Eventbridge
 	// No paginator available
 	for {
 		response, err := svc.ListConnections(ctx, &input, func(options *eventbridge.Options) {
