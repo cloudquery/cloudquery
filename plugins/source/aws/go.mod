@@ -130,7 +130,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/xray v1.17.2
 	github.com/aws/smithy-go v1.14.1
 	github.com/basgys/goxml2json v1.1.0
-	github.com/cloudquery/codegen v0.2.1
+	github.com/cloudquery/codegen v0.3.1
 	github.com/cloudquery/plugin-sdk/v4 v4.5.0
 	github.com/cockroachdb/cockroachdb-parser v0.0.0-20230705064001-302c9ad52e1a
 	github.com/gertd/go-pluralize v0.2.1
@@ -209,6 +209,7 @@ require (
 	github.com/golang/geo v0.0.0-20230421003525-6adc56603217 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.0 // indirect
+	github.com/jpillora/longestcommon v0.0.0-20161227235612-adb9d91ee629 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/lib/pq v1.10.6 // indirect
@@ -228,9 +229,9 @@ require (
 	go.opentelemetry.io/otel/trace v1.16.0 // indirect
 	go.opentelemetry.io/proto/otlp v0.19.0 // indirect
 	golang.org/x/mod v0.11.0 // indirect
-	golang.org/x/net v0.10.0 // indirect
-	golang.org/x/sys v0.8.0 // indirect
-	golang.org/x/text v0.9.0 // indirect
+	golang.org/x/net v0.11.0 // indirect
+	golang.org/x/sys v0.9.0 // indirect
+	golang.org/x/text v0.10.0 // indirect
 	golang.org/x/tools v0.6.0 // indirect
 	google.golang.org/genproto v0.0.0-20230731193218-e0aa005b6bdf // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20230731193218-e0aa005b6bdf // indirect
