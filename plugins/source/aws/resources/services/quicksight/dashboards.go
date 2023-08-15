@@ -27,7 +27,7 @@ func Dashboards() *schema.Table {
 
 func fetchQuicksightDashboards(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Quicksight
+	svc := cl.Services(client.AWSServiceQuicksight).Quicksight
 	input := quicksight.ListDashboardsInput{
 		AwsAccountId: aws.String(cl.AccountID),
 	}

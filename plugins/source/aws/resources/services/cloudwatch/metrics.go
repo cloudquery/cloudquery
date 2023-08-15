@@ -71,7 +71,7 @@ func fetchCloudwatchMetrics(ctx context.Context, meta schema.ClientMeta, parent 
 		return errors.New("skipping `aws_alpha_cloudwatch_metrics` because `list_metrics` is not specified in `table_options`")
 	}
 
-	svc := cl.Services().Cloudwatch
+	svc := cl.Services(client.AWSServiceCloudwatch).Cloudwatch
 	for _, input := range cl.Spec.TableOptions.CloudwatchMetrics {
 		input := input
 

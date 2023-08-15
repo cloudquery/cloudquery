@@ -44,7 +44,7 @@ func Buckets() *schema.Table {
 
 func listS3Buckets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().S3
+	svc := cl.Services(client.AWSServiceS3).S3
 	response, err := svc.ListBuckets(ctx, nil, func(o *s3.Options) {
 		o.Region = listBucketRegion(cl)
 	})
@@ -77,7 +77,7 @@ func listBucketRegion(cl *client.Client) string {
 func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
 	resource := r.Item.(*models.WrappedBucket)
 	cl := meta.(*client.Client)
-	svc := cl.Services().S3
+	svc := cl.Services(client.AWSServiceS3).S3
 
 	output, err := svc.GetBucketLocation(ctx, &s3.GetBucketLocationInput{
 		Bucket: resource.Name,
@@ -125,7 +125,7 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *
 
 func resolveBucketLogging(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().S3
+	svc := cl.Services(client.AWSServiceS3).S3
 	loggingOutput, err := svc.GetBucketLogging(ctx, &s3.GetBucketLoggingInput{Bucket: resource.Name}, func(o *s3.Options) {
 		o.Region = resource.Region
 	})
@@ -145,7 +145,7 @@ func resolveBucketLogging(ctx context.Context, meta schema.ClientMeta, resource 
 
 func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().S3
+	svc := cl.Services(client.AWSServiceS3).S3
 	policyOutput, err := svc.GetBucketPolicy(ctx, &s3.GetBucketPolicyInput{Bucket: resource.Name}, func(o *s3.Options) {
 		o.Region = resource.Region
 	})
@@ -174,7 +174,7 @@ func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *
 
 func resolveBucketPolicyStatus(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().S3
+	svc := cl.Services(client.AWSServiceS3).S3
 	policyStatusOutput, err := svc.GetBucketPolicyStatus(ctx, &s3.GetBucketPolicyStatusInput{Bucket: resource.Name}, func(o *s3.Options) {
 		o.Region = resource.Region
 	})
@@ -196,7 +196,7 @@ func resolveBucketPolicyStatus(ctx context.Context, meta schema.ClientMeta, reso
 
 func resolveBucketVersioning(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().S3
+	svc := cl.Services(client.AWSServiceS3).S3
 	versioningOutput, err := svc.GetBucketVersioning(ctx, &s3.GetBucketVersioningInput{Bucket: resource.Name}, func(o *s3.Options) {
 		o.Region = resource.Region
 	})
@@ -213,7 +213,7 @@ func resolveBucketVersioning(ctx context.Context, meta schema.ClientMeta, resour
 
 func resolveBucketPublicAccessBlock(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().S3
+	svc := cl.Services(client.AWSServiceS3).S3
 	publicAccessOutput, err := svc.GetPublicAccessBlock(ctx, &s3.GetPublicAccessBlockInput{Bucket: resource.Name}, func(o *s3.Options) {
 		o.Region = resource.Region
 	})
@@ -236,7 +236,7 @@ func resolveBucketPublicAccessBlock(ctx context.Context, meta schema.ClientMeta,
 
 func resolveBucketReplication(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().S3
+	svc := cl.Services(client.AWSServiceS3).S3
 	replicationOutput, err := svc.GetBucketReplication(ctx, &s3.GetBucketReplicationInput{Bucket: resource.Name}, func(o *s3.Options) {
 		o.Region = resource.Region
 	})
@@ -261,7 +261,7 @@ func resolveBucketReplication(ctx context.Context, meta schema.ClientMeta, resou
 
 func resolveBucketTagging(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().S3
+	svc := cl.Services(client.AWSServiceS3).S3
 	taggingOutput, err := svc.GetBucketTagging(ctx, &s3.GetBucketTaggingInput{Bucket: resource.Name}, func(o *s3.Options) {
 		o.Region = resource.Region
 	})
@@ -288,7 +288,7 @@ func resolveBucketTagging(ctx context.Context, meta schema.ClientMeta, resource 
 
 func resolveBucketOwnershipControls(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().S3
+	svc := cl.Services(client.AWSServiceS3).S3
 
 	getBucketOwnershipControlOutput, err := svc.GetBucketOwnershipControls(ctx, &s3.GetBucketOwnershipControlsInput{Bucket: resource.Name}, func(o *s3.Options) {
 		o.Region = resource.Region
