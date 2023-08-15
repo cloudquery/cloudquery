@@ -122,7 +122,7 @@ func (c *Client) syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, 
 	}
 	defer rows.Close()
 
-	processed := 0
+	rowsInRecord := 0
 	for rows.Next() {
 		values, err := rows.Values()
 		if err != nil {
@@ -143,10 +143,10 @@ func (c *Client) syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, 
 			scalar.AppendToBuilder(builder.Field(i), s)
 		}
 
-		processed++
-		if processed%c.pluginSpec.RowsPerRecord == 0 {
+		rowsInRecord++
+		if rowsInRecord >= c.pluginSpec.RowsPerRecord {
 			res <- &message.SyncInsert{Record: builder.NewRecord()} // NewRecord resets the builder for reuse
-			processed = 0
+			rowsInRecord = 0
 		}
 	}
 
