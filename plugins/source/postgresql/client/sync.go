@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"database/sql/driver"
 	"errors"
 	"fmt"
 	"strings"
@@ -108,6 +107,10 @@ func (c *Client) syncTables(ctx context.Context, snapshotName string, filteredTa
 }
 
 func syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- message.SyncMessage) error {
+	arrowSchema := table.ToArrowSchema()
+	builder := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
+	transformers := transformersForSchema(arrowSchema)
+
 	colNames := make([]string, 0, len(table.Columns))
 	for _, col := range table.Columns {
 		colNames = append(colNames, pgx.Identifier{col.Name}.Sanitize())
@@ -118,60 +121,30 @@ func syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- m
 		return err
 	}
 	defer rows.Close()
+
 	for rows.Next() {
 		values, err := rows.Values()
 		if err != nil {
 			return err
 		}
 
-		arrowSchema := table.ToArrowSchema()
-		rb := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
-		for i := range values {
-			val, err := prepareValueForResourceSet(arrowSchema.Field(i).Type, values[i])
+		for i, value := range values {
+			val, err := transformers[i](value)
 			if err != nil {
 				return err
 			}
+
 			s := scalar.NewScalar(arrowSchema.Field(i).Type)
 			if err := s.Set(val); err != nil {
 				return err
 			}
-			scalar.AppendToBuilder(rb.Field(i), s)
-		}
-		res <- &message.SyncInsert{Record: rb.NewRecord()}
-	}
-	return nil
-}
 
-func prepareValueForResourceSet(dataType arrow.DataType, v any) (any, error) {
-	switch tp := dataType.(type) {
-	case *arrow.StringType:
-		if value, ok := v.(driver.Valuer); ok {
-			if value == driver.Valuer(nil) {
-				v = nil
-			} else {
-				val, err := value.Value()
-				if err != nil {
-					return nil, err
-				}
-				if s, ok := val.(string); ok {
-					v = s
-				}
-			}
+			scalar.AppendToBuilder(builder.Field(i), s)
 		}
-	case *arrow.Time32Type:
-		t, err := v.(pgtype.Time).TimeValue()
-		if err != nil {
-			return nil, err
-		}
-		v = stringForTime(t, tp.Unit)
-	case *arrow.Time64Type:
-		t, err := v.(pgtype.Time).TimeValue()
-		if err != nil {
-			return nil, err
-		}
-		v = stringForTime(t, tp.Unit)
+		res <- &message.SyncInsert{Record: builder.NewRecord()} // NewRecord resets the builder for reuse
 	}
-	return v, nil
+
+	return nil
 }
 
 func stringForTime(t pgtype.Time, unit arrow.TimeUnit) string {
