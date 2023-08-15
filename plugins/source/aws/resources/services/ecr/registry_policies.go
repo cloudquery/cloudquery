@@ -39,7 +39,7 @@ func RegistryPolicies() *schema.Table {
 }
 func fetchEcrRegistryPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecr
+	svc := cl.Services(client.AWSServiceEcr).Ecr
 	output, err := svc.GetRegistryPolicy(ctx, &ecr.GetRegistryPolicyInput{}, func(options *ecr.Options) {
 		options.Region = cl.Region
 	})

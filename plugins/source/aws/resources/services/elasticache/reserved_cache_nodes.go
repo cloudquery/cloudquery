@@ -34,7 +34,7 @@ func ReservedCacheNodes() *schema.Table {
 
 func fetchElasticacheReservedCacheNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	paginator := elasticache.NewDescribeReservedCacheNodesPaginator(meta.(*client.Client).Services().Elasticache, nil)
+	paginator := elasticache.NewDescribeReservedCacheNodesPaginator(meta.(*client.Client).Services(client.AWSServiceElasticache).Elasticache, nil)
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx, func(options *elasticache.Options) {
 			options.Region = cl.Region

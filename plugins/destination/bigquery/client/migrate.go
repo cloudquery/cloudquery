@@ -24,7 +24,7 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 	eg.SetLimit(concurrentMigrations)
 	for _, msg := range msgs {
 		if len(msg.Table.PrimaryKeys()) > 0 {
-			return fmt.Errorf("primary keys are not supported by the BigQuery plugin (if you are trying to use it as a state backend, this is not currently supported)")
+			return fmt.Errorf("primary keys are not supported by the BigQuery plugin. Hint: try setting `write_mode: append` in the destination spec")
 		}
 	}
 

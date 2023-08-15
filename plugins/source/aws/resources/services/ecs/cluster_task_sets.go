@@ -42,7 +42,7 @@ func fetchEcsClusterTaskSets(ctx context.Context, meta schema.ClientMeta, resour
 	service := resource.Item.(types.Service)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecs
+	svc := cl.Services(client.AWSServiceEcs).Ecs
 	config := ecs.DescribeTaskSetsInput{
 		Cluster: cluster.ClusterArn,
 		Service: service.ServiceArn,

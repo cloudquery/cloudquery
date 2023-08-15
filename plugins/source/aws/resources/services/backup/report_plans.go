@@ -41,7 +41,7 @@ func ReportPlans() *schema.Table {
 
 func fetchReportPlans(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Backup
+	svc := cl.Services(client.AWSServiceBackup).Backup
 	paginator := backup.NewListReportPlansPaginator(svc, nil)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *backup.Options) {
@@ -58,7 +58,7 @@ func fetchReportPlans(ctx context.Context, meta schema.ClientMeta, parent *schem
 func resolveReportPlanTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	plan := resource.Item.(types.ReportPlan)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Backup
+	svc := cl.Services(client.AWSServiceBackup).Backup
 	params := backup.ListTagsInput{ResourceArn: plan.ReportPlanArn}
 	tags := make(map[string]string)
 	paginator := backup.NewListTagsPaginator(svc, &params)
