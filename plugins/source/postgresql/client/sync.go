@@ -108,6 +108,10 @@ func (c *Client) syncTables(ctx context.Context, snapshotName string, filteredTa
 }
 
 func syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- message.SyncMessage) error {
+	arrowSchema := table.ToArrowSchema()
+	builder := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
+	transformers := transformersForSchema(arrowSchema)
+
 	colNames := make([]string, 0, len(table.Columns))
 	for _, col := range table.Columns {
 		colNames = append(colNames, pgx.Identifier{col.Name}.Sanitize())
@@ -118,27 +122,29 @@ func syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- m
 		return err
 	}
 	defer rows.Close()
+
 	for rows.Next() {
 		values, err := rows.Values()
 		if err != nil {
 			return err
 		}
 
-		arrowSchema := table.ToArrowSchema()
-		rb := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
-		for i := range values {
-			val, err := prepareValueForResourceSet(arrowSchema.Field(i).Type, values[i])
+		for i, value := range values {
+			val, err := transformers[i](value)
 			if err != nil {
 				return err
 			}
+
 			s := scalar.NewScalar(arrowSchema.Field(i).Type)
 			if err := s.Set(val); err != nil {
 				return err
 			}
-			scalar.AppendToBuilder(rb.Field(i), s)
+
+			scalar.AppendToBuilder(builder.Field(i), s)
 		}
-		res <- &message.SyncInsert{Record: rb.NewRecord()}
+		res <- &message.SyncInsert{Record: builder.NewRecord()} // NewRecord resets the builder for reuse
 	}
+
 	return nil
 }
 
