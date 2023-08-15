@@ -116,10 +116,9 @@ func (c *Client) ID() string {
 	return strings.TrimRight(strings.Join(idStrings, ":"), ":")
 }
 
-func (c *Client) Services(service_names ...string) *Services {
+func (c *Client) Services(service_names ...AWSServiceName) *Services {
 	for _, service := range service_names {
-		svcConfig := funk.Get(c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID), strings.ToUpper(service[:1])+service[1:])
-		if svcConfig == nil {
+		if c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).GetService(service) == nil {
 			c.accountMutex[c.AccountID].Lock()
 			c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).InitService(c.AWSConfig, service)
 			c.accountMutex[c.AccountID].Unlock()
