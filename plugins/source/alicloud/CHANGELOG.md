@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-alicloud-v4.0.4...plugins-source-alicloud-v4.0.5) (2023-08-15)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to e9683e1 ([#13015](https://github.com/cloudquery/cloudquery/issues/13015)) ([6557696](https://github.com/cloudquery/cloudquery/commit/65576966d3bd14297499a5b85d3b4fc2c7918df3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.0 ([#13068](https://github.com/cloudquery/cloudquery/issues/13068)) ([7bb0e4b](https://github.com/cloudquery/cloudquery/commit/7bb0e4ba654971726e16a6a501393e3831170307))
+
 ## [4.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-alicloud-v4.0.3...plugins-source-alicloud-v4.0.4) (2023-08-10)
 
 
