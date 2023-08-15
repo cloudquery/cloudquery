@@ -48,6 +48,8 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec []byte, opts plu
 	if err := json.Unmarshal(spec, &pluginSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
 	}
+	pluginSpec.SetDefaults()
+
 	c.pluginSpec = pluginSpec
 	logLevel, err := tracelog.LogLevelFromString(pluginSpec.PgxLogLevel.String())
 	if err != nil {
