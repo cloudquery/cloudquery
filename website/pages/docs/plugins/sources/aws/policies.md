@@ -394,7 +394,7 @@ AWS Foundational Security Best Practices performs the following checks:
   - S3 buckets should have server-side encryption enabled
   - S3 buckets should deny non-HTTPS requests
   - Amazon S3 permissions granted to other AWS accounts in bucket policies should be restricted
-  - S3 Block Public Access (bucket) setting should be enabled
+  - S3 Block Public Access setting should be enabled at the bucket-level
   - Amazon SageMaker notebook instances should not have direct internet access
   - Secrets Manager secrets should have automatic rotation enabled
   - Secrets Manager secrets configured with automatic rotation should rotate successfully
