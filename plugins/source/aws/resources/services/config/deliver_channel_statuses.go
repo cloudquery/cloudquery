@@ -28,7 +28,7 @@ func deliveryChannelStatuses() *schema.Table {
 func fetchDeliveryChannelStatuses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	ruleDetail := parent.Item.(types.DeliveryChannel)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Configservice
+	svc := cl.Services(client.AWSServiceConfigservice).Configservice
 
 	input := &configservice.DescribeDeliveryChannelStatusInput{
 		DeliveryChannelNames: []string{aws.ToString(ruleDetail.Name)},

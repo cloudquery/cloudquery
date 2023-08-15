@@ -32,7 +32,7 @@ func appVersionResourceMappings() *schema.Table {
 
 func fetchAppVersionResourceMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Resiliencehub
+	svc := cl.Services(client.AWSServiceResiliencehub).Resiliencehub
 	p := resiliencehub.NewListAppVersionResourceMappingsPaginator(svc, &resiliencehub.ListAppVersionResourceMappingsInput{
 		AppArn:     parent.Parent.Item.(*types.App).AppArn,
 		AppVersion: parent.Item.(types.AppVersionSummary).AppVersion,

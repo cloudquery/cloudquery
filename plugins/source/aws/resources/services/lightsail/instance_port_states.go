@@ -33,7 +33,7 @@ func instancePortStates() *schema.Table {
 func fetchLightsailInstancePortStates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.Instance)
 	cli := meta.(*client.Client)
-	svc := cli.Services().Lightsail
+	svc := cli.Services(client.AWSServiceLightsail).Lightsail
 	input := lightsail.GetInstancePortStatesInput{InstanceName: r.Name}
 	output, err := svc.GetInstancePortStates(ctx, &input, func(options *lightsail.Options) {
 		options.Region = cli.Region
