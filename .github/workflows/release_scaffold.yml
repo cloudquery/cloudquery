@@ -2,7 +2,7 @@ name: release-scaffold
 on:
   push:
     tags:
-      - 'scaffold-v*.*.*'
+      - "scaffold-v*.*.*"
 env:
   CGO_ENABLED: 0
 
@@ -59,7 +59,7 @@ jobs:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
           # A custom token is required for publishing to Homebrew
-          GITHUB_TOKEN: ${{ secrets.GORELEASER_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_CQ_BOT }}
 
       # Publish only to GitHub
       - name: Run GoReleaser PreRelease
@@ -69,12 +69,12 @@ jobs:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
           # A custom token is required for publishing to Homebrew
-          GITHUB_TOKEN: ${{ secrets.GORELEASER_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_CQ_BOT }}
 
       - name: Update version file
         if: steps.semver_parser.outputs.prerelease == ''
         run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./website/versions/scaffold.json'
-          
+
       - name: Create Pull Request
         if: steps.semver_parser.outputs.prerelease == ''
         uses: peter-evans/create-pull-request@v4
