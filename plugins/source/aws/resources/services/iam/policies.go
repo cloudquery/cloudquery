@@ -55,7 +55,7 @@ func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 		},
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services(client.AWSServiceIam).Iam
 	paginator := iam.NewGetAccountAuthorizationDetailsPaginator(svc, &config)
 
 	for paginator.HasMorePages() {
@@ -73,7 +73,7 @@ func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.ManagedPolicyDetail)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services(client.AWSServiceIam).Iam
 	response, err := svc.ListPolicyTags(ctx, &iam.ListPolicyTagsInput{PolicyArn: r.Arn}, func(options *iam.Options) {
 		options.Region = cl.Region
 	})

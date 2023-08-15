@@ -34,7 +34,7 @@ func fetchEc2ImageAttributeLaunchPermissions(ctx context.Context, meta schema.Cl
 	if aws.ToString(p.OwnerId) != cl.AccountID {
 		return nil
 	}
-	svc := cl.Services().Ec2
+	svc := cl.Services(client.AWSServiceEc2).Ec2
 	output, err := svc.DescribeImageAttribute(ctx, &ec2.DescribeImageAttributeInput{
 		Attribute: types.ImageAttributeNameLaunchPermission,
 		ImageId:   p.ImageId,

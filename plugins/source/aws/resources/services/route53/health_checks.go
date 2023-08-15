@@ -51,7 +51,7 @@ type Route53HealthCheckWrapper struct {
 func fetchRoute53HealthChecks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config route53.ListHealthChecksInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Route53
+	svc := cl.Services(client.AWSServiceRoute53).Route53
 
 	processHealthChecksBundle := func(healthChecks []types.HealthCheck) error {
 		tagsCfg := &route53.ListTagsForResourcesInput{ResourceType: types.TagResourceTypeHealthcheck, ResourceIds: make([]string, 0, len(healthChecks))}

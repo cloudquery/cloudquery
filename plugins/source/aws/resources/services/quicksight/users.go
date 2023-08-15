@@ -27,7 +27,7 @@ func Users() *schema.Table {
 
 func fetchQuicksightUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Quicksight
+	svc := cl.Services(client.AWSServiceQuicksight).Quicksight
 	input := quicksight.ListUsersInput{
 		AwsAccountId: aws.String(cl.AccountID),
 		Namespace:    aws.String(defaultNamespace),

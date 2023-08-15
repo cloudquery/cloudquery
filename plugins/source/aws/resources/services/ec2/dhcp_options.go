@@ -34,7 +34,7 @@ func DHCPOptions() *schema.Table {
 
 func fetchEC2DHCPOptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ec2
+	svc := cl.Services(client.AWSServiceEc2).Ec2
 	pag := ec2.NewDescribeDhcpOptionsPaginator(svc, &ec2.DescribeDhcpOptionsInput{})
 	for pag.HasMorePages() {
 		page, err := pag.NextPage(ctx, func(options *ec2.Options) {

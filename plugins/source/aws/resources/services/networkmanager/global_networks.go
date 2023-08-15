@@ -54,7 +54,7 @@ The  'request_region' column is added to show region of where the request was ma
 
 func fetchNetworks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Networkmanager
+	svc := cl.Services(client.AWSServiceNetworkmanager).Networkmanager
 	paginator := networkmanager.NewDescribeGlobalNetworksPaginator(svc, nil)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *networkmanager.Options) {

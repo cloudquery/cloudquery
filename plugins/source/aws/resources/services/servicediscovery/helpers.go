@@ -14,7 +14,7 @@ func resolveServicediscoveryTags(path string) schema.ColumnResolver {
 	return func(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 		arn := funk.Get(r.Item, path, funk.WithAllowZero()).(*string)
 		cl := meta.(*client.Client)
-		svc := cl.Services().Servicediscovery
+		svc := cl.Services(client.AWSServiceServicediscovery).Servicediscovery
 		params := servicediscovery.ListTagsForResourceInput{ResourceARN: arn}
 
 		output, err := svc.ListTagsForResource(ctx, &params, func(options *servicediscovery.Options) {
