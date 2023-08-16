@@ -10,7 +10,7 @@ from plugin import tables
 from plugin.client import Client, Spec
 
 PLUGIN_NAME = "typeform"
-PLUGIN_VERSION = "0.1.1"  # {x-release-please-version}
+PLUGIN_VERSION = "1.0.0"  # {x-release-please-version}
 
 
 class TypeformPlugin(plugin.Plugin):
