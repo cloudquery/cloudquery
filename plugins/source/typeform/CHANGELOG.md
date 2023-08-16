@@ -3,6 +3,24 @@
 ## [1.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v0.1.1...plugins-source-typeform-v1.0.0) (2023-08-16)
 
 
+### This Release has the Following Changes to Tables
+- Table `typeform_form_responses`: column type changed from `extension<json<JSONType>>` to `json` for `answers` (:warning: breaking)
+- Table `typeform_form_responses`: column type changed from `extension<json<JSONType>>` to `json` for `calculated` (:warning: breaking)
+- Table `typeform_form_responses`: column type changed from `extension<json<JSONType>>` to `json` for `hidden` (:warning: breaking)
+- Table `typeform_form_responses`: column type changed from `extension<json<JSONType>>` to `json` for `metadata` (:warning: breaking)
+- Table `typeform_form_responses`: column type changed from `extension<json<JSONType>>` to `json` for `variables` (:warning: breaking)
+- Table `typeform_form_responses`: column type changed from `string` to `utf8` for `form_id` (:warning: breaking)
+- Table `typeform_form_responses`: column type changed from `string` to `utf8` for `landing_id` (:warning: breaking)
+- Table `typeform_form_responses`: column type changed from `string` to `utf8` for `response_id` (:warning: breaking)
+- Table `typeform_form_responses`: column type changed from `string` to `utf8` for `token` (:warning: breaking)
+- Table `typeform_forms`: column type changed from `extension<json<JSONType>>` to `json` for `_links` (:warning: breaking)
+- Table `typeform_forms`: column type changed from `extension<json<JSONType>>` to `json` for `self` (:warning: breaking)
+- Table `typeform_forms`: column type changed from `extension<json<JSONType>>` to `json` for `settings` (:warning: breaking)
+- Table `typeform_forms`: column type changed from `extension<json<JSONType>>` to `json` for `theme` (:warning: breaking)
+- Table `typeform_forms`: column type changed from `string` to `utf8` for `id` (:warning: breaking)
+- Table `typeform_forms`: column type changed from `string` to `utf8` for `title` (:warning: breaking)
+- Table `typeform_forms`: column type changed from `string` to `utf8` for `type` (:warning: breaking)
+
 ### ⚠ BREAKING CHANGES
 
 * Upgrade SDK to v0.1.1 ([#13055](https://github.com/cloudquery/cloudquery/issues/13055))
