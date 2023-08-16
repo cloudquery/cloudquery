@@ -27,7 +27,7 @@ func DataRetrievalPolicies() *schema.Table {
 
 func fetchGlacierDataRetrievalPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Glacier
+	svc := cl.Services(client.AWSServiceGlacier).Glacier
 
 	response, err := svc.GetDataRetrievalPolicy(ctx, &glacier.GetDataRetrievalPolicyInput{}, func(options *glacier.Options) {
 		options.Region = cl.Region

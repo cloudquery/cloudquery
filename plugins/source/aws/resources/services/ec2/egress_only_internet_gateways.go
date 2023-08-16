@@ -43,7 +43,7 @@ func EgressOnlyInternetGateways() *schema.Table {
 
 func fetchEc2EgressOnlyInternetGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ec2
+	svc := cl.Services(client.AWSServiceEc2).Ec2
 	input := ec2.DescribeEgressOnlyInternetGatewaysInput{}
 	paginator := ec2.NewDescribeEgressOnlyInternetGatewaysPaginator(svc, &input)
 	for paginator.HasMorePages() {

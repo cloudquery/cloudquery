@@ -39,7 +39,7 @@ The 'request_account_id' column is added to show from where the request was made
 }
 func fetchOrganizationsRoots(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Organizations
+	svc := cl.Services(client.AWSServiceOrganizations).Organizations
 	var input organizations.ListRootsInput
 	paginator := organizations.NewListRootsPaginator(svc, &input)
 	for paginator.HasMorePages() {
@@ -61,7 +61,7 @@ func resolveRootTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 	input := organizations.ListTagsForResourceInput{
 		ResourceId: root.Id,
 	}
-	paginator := organizations.NewListTagsForResourcePaginator(cl.Services().Organizations, &input)
+	paginator := organizations.NewListTagsForResourcePaginator(cl.Services(client.AWSServiceOrganizations).Organizations, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *organizations.Options) {
 			options.Region = cl.Region

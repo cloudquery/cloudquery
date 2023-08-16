@@ -2,6 +2,7 @@ package emr
 
 import (
 	"context"
+
 	"github.com/apache/arrow/go/v13/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/emr/types"
@@ -34,7 +35,7 @@ func steps() *schema.Table {
 
 func fetchEmrSteps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Emr
+	svc := cl.Services(client.AWSServiceEmr).Emr
 	p := parent.Item.(*types.Cluster)
 	paginator := emr.NewListStepsPaginator(svc, &emr.ListStepsInput{ClusterId: p.Id})
 	for paginator.HasMorePages() {
@@ -51,7 +52,7 @@ func fetchEmrSteps(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 
 func getStep(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Emr
+	svc := cl.Services(client.AWSServiceEmr).Emr
 	p := resource.Parent.Item.(*types.Cluster)
 	stepSummary := resource.Item.(types.StepSummary)
 	response, err := svc.DescribeStep(ctx, &emr.DescribeStepInput{ClusterId: p.Id, StepId: stepSummary.Id}, func(options *emr.Options) {

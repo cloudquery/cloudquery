@@ -31,7 +31,7 @@ func DeliveryChannels() *schema.Table {
 
 func fetchDeliveryChannels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Configservice
+	svc := cl.Services(client.AWSServiceConfigservice).Configservice
 	response, err := svc.DescribeDeliveryChannels(ctx, &configservice.DescribeDeliveryChannelsInput{}, func(options *configservice.Options) {
 		options.Region = cl.Region
 	})

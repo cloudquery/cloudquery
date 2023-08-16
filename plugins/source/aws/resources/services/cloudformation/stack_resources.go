@@ -36,7 +36,7 @@ func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMe
 		StackName: stack.StackName,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudformation
+	svc := cl.Services(client.AWSServiceCloudformation).Cloudformation
 	paginator := cloudformation.NewListStackResourcesPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cloudformation.Options) {

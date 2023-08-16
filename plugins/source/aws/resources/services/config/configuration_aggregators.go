@@ -35,7 +35,7 @@ func ConfigurationAggregators() *schema.Table {
 
 func fetchConfigurationAggregators(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Configservice
+	svc := cl.Services(client.AWSServiceConfigservice).Configservice
 
 	p := configservice.NewDescribeConfigurationAggregatorsPaginator(svc, nil)
 	for p.HasMorePages() {

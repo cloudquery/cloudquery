@@ -42,7 +42,7 @@ func ManagedRuleGroups() *schema.Table {
 
 func fetchWafv2ManagedRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	service := cl.Services().Wafv2
+	service := cl.Services(client.AWSServiceWafv2).Wafv2
 
 	config := wafv2.ListAvailableManagedRuleGroupsInput{Scope: cl.WAFScope}
 	for {
@@ -65,7 +65,7 @@ func resolveManageRuleGroupProperties(ctx context.Context, meta schema.ClientMet
 	managedRuleGroupSum := resource.Item.(types.ManagedRuleGroupSummary)
 
 	cl := meta.(*client.Client)
-	service := cl.Services().Wafv2
+	service := cl.Services(client.AWSServiceWafv2).Wafv2
 
 	// Resolve managed rule group via describe managed rule group
 	output, err := service.DescribeManagedRuleGroup(ctx, &wafv2.DescribeManagedRuleGroupInput{

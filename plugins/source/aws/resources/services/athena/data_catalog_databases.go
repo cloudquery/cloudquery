@@ -43,7 +43,7 @@ func dataCatalogDatabases() *schema.Table {
 
 func fetchAthenaDataCatalogDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Athena
+	svc := cl.Services(client.AWSServiceAthena).Athena
 	input := athena.ListDatabasesInput{
 		CatalogName: parent.Item.(types.DataCatalog).Name,
 	}
