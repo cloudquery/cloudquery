@@ -21,7 +21,9 @@ class TypeformPlugin(plugin.Plugin):
         self._scheduler = None
         self._client = None
 
-    def init(self, spec_bytes):
+    def init(self, spec_bytes, no_connection: bool = False):
+        if no_connection:
+            return
         self._spec_json = json.loads(spec_bytes)
         self._spec = Spec(**self._spec_json)
         self._spec.validate()

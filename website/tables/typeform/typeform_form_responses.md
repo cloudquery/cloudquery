@@ -12,14 +12,14 @@ This table depends on [typeform_forms](typeform_forms).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|form_id (PK)|`string`|
-|response_id (PK)|`string`|
-|landing_id|`string`|
+|form_id (PK)|`utf8`|
+|response_id (PK)|`utf8`|
+|landing_id|`utf8`|
 |landed_at|`timestamp[s]`|
 |submitted_at|`timestamp[s]`|
-|token|`string`|
-|metadata|`extension<json<JSONType>>`|
-|answers|`extension<json<JSONType>>`|
-|hidden|`extension<json<JSONType>>`|
-|calculated|`extension<json<JSONType>>`|
-|variables|`extension<json<JSONType>>`|
+|token|`utf8`|
+|metadata|`json`|
+|answers|`json`|
+|hidden|`json`|
+|calculated|`json`|
+|variables|`json`|
