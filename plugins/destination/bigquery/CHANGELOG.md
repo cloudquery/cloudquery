@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v3.2.2...plugins-destination-bigquery-v3.3.0) (2023-08-16)
+
+
+### Features
+
+* Improve error message on table with PKs ([#13135](https://github.com/cloudquery/cloudquery/issues/13135)) ([c730052](https://github.com/cloudquery/cloudquery/commit/c7300523965570461f990fc7aa98ab4b233439c8))
+
 ## [3.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v3.2.1...plugins-destination-bigquery-v3.2.2) (2023-08-15)
 
 
