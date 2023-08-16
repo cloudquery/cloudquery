@@ -33,8 +33,8 @@ type Client struct {
 	Backend              state.Client
 	specificRegions      bool
 	Spec                 *Spec
-	// Do not rely on this field, it will be removed once https://github.com/aws/aws-sdk-go-v2/issues/2163 is resolved
-	AWSConfig *aws.Config
+	accountMutex         map[string]*sync.Mutex
+	AWSConfig            *aws.Config
 }
 
 type AwsLogger struct {
@@ -94,8 +94,9 @@ func NewAwsClient(logger zerolog.Logger, spec *Spec) Client {
 		ServicesManager: ServicesManager{
 			services: ServicesPartitionAccountMap{},
 		},
-		logger: logger,
-		Spec:   spec,
+		logger:       logger,
+		Spec:         spec,
+		accountMutex: map[string]*sync.Mutex{},
 	}
 }
 
@@ -115,7 +116,17 @@ func (c *Client) ID() string {
 	return strings.TrimRight(strings.Join(idStrings, ":"), ":")
 }
 
-func (c *Client) Services() *Services {
+func (c *Client) updateService(service AWSServiceName) {
+	c.accountMutex[c.AccountID].Lock()
+	defer c.accountMutex[c.AccountID].Unlock()
+	c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).InitService(c.AWSConfig, service)
+}
+func (c *Client) Services(service_names ...AWSServiceName) *Services {
+	for _, service := range service_names {
+		if c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).GetService(service) == nil {
+			c.updateService(service)
+		}
+	}
 	return c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID)
 }
 
@@ -136,6 +147,7 @@ func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region st
 		Backend:              c.Backend,
 		Spec:                 c.Spec,
 		AWSConfig:            c.AWSConfig,
+		accountMutex:         c.accountMutex,
 	}
 }
 
@@ -150,6 +162,8 @@ func (c *Client) withPartitionAccountIDRegionAndNamespace(partition, accountID, 
 		WAFScope:             c.WAFScope,
 		Backend:              c.Backend,
 		Spec:                 c.Spec,
+		AWSConfig:            c.AWSConfig,
+		accountMutex:         c.accountMutex,
 	}
 }
 
@@ -164,6 +178,8 @@ func (c *Client) withPartitionAccountIDRegionAndScope(partition, accountID, regi
 		WAFScope:             scope,
 		Backend:              c.Backend,
 		Spec:                 c.Spec,
+		AWSConfig:            c.AWSConfig,
+		accountMutex:         c.accountMutex,
 	}
 }
 
@@ -217,6 +233,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.Cl
 			initLock.Lock()
 			defer initLock.Unlock()
 			client.ServicesManager.InitServices(*svcsDetail)
+			if client.accountMutex[svcsDetail.accountId] == nil {
+				client.accountMutex[svcsDetail.accountId] = &sync.Mutex{}
+			}
+
 			return nil
 		})
 	}
