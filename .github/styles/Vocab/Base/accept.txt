@@ -194,6 +194,7 @@ runtime
 runtimes
 Scaleway
 schemaless
+scheduler's
 SCP
 SCPs
 sdk
