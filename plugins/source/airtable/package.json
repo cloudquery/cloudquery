@@ -72,7 +72,7 @@
     "node": ">=16.17.0"
   },
   "dependencies": {
-    "@cloudquery/plugin-sdk-javascript": "^0.0.3",
+    "@cloudquery/plugin-sdk-javascript": "^0.0.4",
     "airtable": "^0.12.1",
     "ajv": "^8.12.0",
     "camelcase-keys": "^8.0.2",
