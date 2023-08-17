@@ -5,8 +5,6 @@ import {
   Date_,
   DateUnit,
   TimeUnit,
-  Interval,
-  IntervalUnit,
   Float64,
   Bool,
   Int64,
