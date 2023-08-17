@@ -64,9 +64,17 @@ export const newAirtablePlugin = () => {
   const newClient: NewClientFunction = async (logger, spec, { noConnection }) => {
     pluginClient.spec = parseSpec(spec);
     pluginClient.client = { id: () => 'airtable' };
-    pluginClient.allTables = noConnection
-      ? []
-      : await getTables(pluginClient.spec.apiKey, pluginClient.spec.endpointUrl, pluginClient.spec.concurrency);
+    if (noConnection) {
+      pluginClient.allTables = [];
+      return pluginClient;
+    }
+    logger.info('Getting tables from Airtable');
+    pluginClient.allTables = await getTables(
+      pluginClient.spec.apiKey,
+      pluginClient.spec.endpointUrl,
+      pluginClient.spec.concurrency,
+    );
+    logger.info('Done getting tables from Airtable');
 
     return pluginClient;
   };
