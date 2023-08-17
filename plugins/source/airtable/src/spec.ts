@@ -6,17 +6,17 @@ const spec = {
   properties: {
     concurrency: { type: 'integer' },
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    api_key: { type: 'string' },
+    access_token: { type: 'string' },
     // eslint-disable-next-line @typescript-eslint/naming-convention
     endpoint_url: { type: 'string' },
   },
-  required: ['api_key'],
+  required: ['access_token'],
 };
 
 type JSONSpec = {
   concurrency: number;
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  api_key: string;
+  access_token: string;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   endpoint_url: string;
 };
@@ -36,6 +36,6 @@ export const parseSpec = (spec: string): Spec => {
   if (!valid) {
     throw new Error(`Invalid spec: ${JSON.stringify(validate.errors)}`);
   }
-  const { concurrency = 10_000, apiKey = '', endpointUrl = 'https://api.airtable.com' } = camelcaseKeys(parsed);
-  return { concurrency, apiKey, endpointUrl };
+  const { concurrency = 10_000, accessToken = '', endpointUrl = 'https://api.airtable.com' } = camelcaseKeys(parsed);
+  return { concurrency, apiKey: accessToken, endpointUrl };
 };
