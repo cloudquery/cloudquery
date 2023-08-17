@@ -165,9 +165,6 @@
     "plugins/source/terraform": {
       "component": "plugins-source-terraform"
     },
-    "plugins/source/vault": {
-      "component": "plugins-source-vault"
-    },
     "plugins/source/test": {
       "component": "plugins-source-test"
     },
@@ -177,6 +174,9 @@
         "plugin/plugin.py"
       ],
       "release-type": "python"
+    },
+    "plugins/source/vault": {
+      "component": "plugins-source-vault"
     },
     "scaffold": {
       "component": "scaffold"

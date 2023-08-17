@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.2.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.2.4...plugins-destination-gremlin-v2.2.5) (2023-08-15)
+
+
+### Bug Fixes
+
+* **deps:** Update AWS modules ([#13009](https://github.com/cloudquery/cloudquery/issues/13009)) ([b74ddde](https://github.com/cloudquery/cloudquery/commit/b74ddde8dd4239a5894dea23bcef367d0649e5e7))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to e9683e1 ([#13015](https://github.com/cloudquery/cloudquery/issues/13015)) ([6557696](https://github.com/cloudquery/cloudquery/commit/65576966d3bd14297499a5b85d3b4fc2c7918df3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.4.0 ([#12850](https://github.com/cloudquery/cloudquery/issues/12850)) ([0861200](https://github.com/cloudquery/cloudquery/commit/086120054b45213947e95be954ba6164b9cf6587))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.0 ([#13068](https://github.com/cloudquery/cloudquery/issues/13068)) ([7bb0e4b](https://github.com/cloudquery/cloudquery/commit/7bb0e4ba654971726e16a6a501393e3831170307))
+
 ## [2.2.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.2.3...plugins-destination-gremlin-v2.2.4) (2023-08-08)
 
 

@@ -28,7 +28,7 @@ func FirewallRuleGroups() *schema.Table {
 
 func fetchFirewallRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Route53resolver
+	svc := cl.Services(client.AWSServiceRoute53resolver).Route53resolver
 	var input route53resolver.ListFirewallRuleGroupsInput
 	paginator := route53resolver.NewListFirewallRuleGroupsPaginator(svc, &input)
 	for paginator.HasMorePages() {
@@ -45,7 +45,7 @@ func fetchFirewallRuleGroups(ctx context.Context, meta schema.ClientMeta, parent
 
 func getFirewallRuleGroups(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Route53resolver
+	svc := cl.Services(client.AWSServiceRoute53resolver).Route53resolver
 	v := resource.Item.(types.FirewallRuleGroupMetadata)
 
 	d, err := svc.GetFirewallRuleGroup(ctx, &route53resolver.GetFirewallRuleGroupInput{FirewallRuleGroupId: v.Id}, func(options *route53resolver.Options) {

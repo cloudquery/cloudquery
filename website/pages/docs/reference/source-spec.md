@@ -37,11 +37,12 @@ The name field may be used to uniquely identify a particular source configuratio
 
 ### registry
 
-(`string`, optional, default: `github`, available: `github`, `local`, `grpc`)
+(`string`, optional, default: `github`, available: `github`, `local`, `grpc`, `docker`)
 
 - `github`: CloudQuery will look for and download the plugin from GitHub, and then execute it.
 - `local`: CloudQuery will execute the plugin from a local path.
 - `grpc`: mostly useful in debug mode when plugin is already running in a different terminal, CloudQuery will connect to the gRPC plugin server directly without spawning the process.
+- `docker`: CloudQuery will run the plugin in a Docker container. This is most useful for plugins written in Python, as they do not support the `local` and `github` registries.
 
 ### path
 
@@ -52,12 +53,13 @@ Configures how to retrieve the plugin. The contents depend on the value of `regi
 - For plugins hosted on GitHub, `path` should be of the form `"<org>/<repository>"`. For official plugins, should be `cloudquery/<plugin-name>`.
 - For plugins that are located in the local filesystem, `path` should a filesystem path to the plugin binary.
 - To connect to a running plugin via `grpc` (mostly useful for debugging), `path` should be the host-port of the plugin (e.g. `localhost:7777`).
+- For plugins distributed via Docker, `path` should be the name of the Docker image (optionally including a tag, the same as you would use for `docker run`, e.g. `ghcr.io/cloudquery/cq-source-typeform:v1.0.0`).
 
 ### version
 
 (`string`, required)
 
-`version` must be a valid [SemVer](https://semver.org/)), e.g. `vMajor.Minor.Patch`. You can find all official plugin versions under [cloudquery/cloudquery/releases](https://github.com/cloudquery/cloudquery/releases), and for community plugins you can find it in the relevant community repository.
+`version` must be a valid [SemVer](https://semver.org/)), e.g. `vMajor.Minor.Patch`. You can find all official plugin versions under [cloudquery/cloudquery/releases](https://github.com/cloudquery/cloudquery/releases), and for community plugins you can find it in the relevant community repository. This is only relevant for plugins hosted on GitHub.
 
 ### tables
 

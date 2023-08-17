@@ -57,7 +57,7 @@ func Clusters() *schema.Table {
 func fetchClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config redshift.DescribeClustersInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Redshift
+	svc := cl.Services(client.AWSServiceRedshift).Redshift
 	paginator := redshift.NewDescribeClustersPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *redshift.Options) {
@@ -75,7 +75,7 @@ func resolveRedshiftClusterLoggingStatus(ctx context.Context, meta schema.Client
 	r := resource.Item.(types.Cluster)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Redshift
+	svc := cl.Services(client.AWSServiceRedshift).Redshift
 	cfg := redshift.DescribeLoggingStatusInput{
 		ClusterIdentifier: r.ClusterIdentifier,
 	}

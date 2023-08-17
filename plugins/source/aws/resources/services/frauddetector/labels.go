@@ -42,7 +42,7 @@ func Labels() *schema.Table {
 
 func fetchFrauddetectorLabels(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	paginator := frauddetector.NewGetLabelsPaginator(meta.(*client.Client).Services().Frauddetector, nil)
+	paginator := frauddetector.NewGetLabelsPaginator(meta.(*client.Client).Services(client.AWSServiceFrauddetector).Frauddetector, nil)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *frauddetector.Options) {
 			options.Region = cl.Region

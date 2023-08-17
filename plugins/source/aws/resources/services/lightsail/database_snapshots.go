@@ -42,7 +42,7 @@ func DatabaseSnapshots() *schema.Table {
 func fetchLightsailDatabaseSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lightsail.GetRelationalDatabaseSnapshotsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lightsail
+	svc := cl.Services(client.AWSServiceLightsail).Lightsail
 	// No paginator available
 	for {
 		response, err := svc.GetRelationalDatabaseSnapshots(ctx, &input, func(options *lightsail.Options) {
