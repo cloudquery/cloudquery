@@ -8,6 +8,9 @@ import {
   Interval,
   IntervalUnit,
   Float64,
+  Bool,
+  Int64,
+  Uint64,
 } from '@cloudquery/plugin-sdk-javascript/arrow';
 import type { ColumnResolver } from '@cloudquery/plugin-sdk-javascript/schema/column';
 import { createColumn } from '@cloudquery/plugin-sdk-javascript/schema/column';
@@ -59,8 +62,11 @@ const getBaseTables = async (apiKey: string, endpointURL: string, baseId: string
 
 const airtableFieldToArrowField = (field: APIField): DataType => {
   switch (field.type) {
+    case APIFieldType.checkbox: {
+      return new Bool();
+    }
+    case APIFieldType.barcode:
     case APIFieldType.count:
-    case APIFieldType.checkbox:
     case APIFieldType.currency:
     case APIFieldType.externalSyncSource:
     case APIFieldType.multipleAttachments:
@@ -86,24 +92,32 @@ const airtableFieldToArrowField = (field: APIField): DataType => {
         }
       }
     }
-    case APIFieldType.date: {
-      return new Date_(DateUnit.DAY);
-    }
+    // We don't use the Arrow Date type because most destinations don't support it
+    case APIFieldType.date:
     case APIFieldType.dateTime: {
       return new Timestamp(TimeUnit.NANOSECOND);
     }
+    // The duration in Airtable is saved in the format of `s.m` where `s` is the number of seconds and `m` is the number of milliseconds
+    // For example `4980.123` means 4980 seconds and 123 milliseconds which is 1 hour, 23 minutes and 0.123 seconds
     case APIFieldType.duration: {
-      return new Interval(IntervalUnit.DAY_TIME);
+      return new Float64();
     }
-    case APIFieldType.number:
+    case APIFieldType.autoNumber: {
+      return new Uint64();
+    }
+    case APIFieldType.number: {
+      if (field.options.precision === 0) {
+        return new Int64();
+      }
+      return new Float64();
+    }
     case APIFieldType.percent: {
       return new Float64();
     }
     case APIFieldType.formula: {
       const formulaField = field as APIFieldFormula;
-      if (formulaField.options.result !== null && formulaField.options.result.type !== null) {
-        const newField = { type: formulaField.options.result.type } as APIField;
-        return airtableFieldToArrowField(newField);
+      if (formulaField.options.result !== null) {
+        return airtableFieldToArrowField(formulaField.options.result);
       }
       return new Utf8();
     }
@@ -114,7 +128,7 @@ const airtableFieldToArrowField = (field: APIField): DataType => {
 };
 
 const normalizeDateFormat = (format: string) => {
-  if (format === 'l') {
+  if (format === 'l' || format === 'LL') {
     return 'YYYY-MM-DD';
   }
   return format;
@@ -170,6 +184,43 @@ const getColumnResolver = (field: APIField): ColumnResolver => {
         return Promise.resolve(resource.setColumData(column.name, formatted));
       };
       return resolver;
+    }
+    case APIFieldType.currency: {
+      const resolver: ColumnResolver = (client, resource, column) => {
+        const data = getProperty(resource.getItem(), field.name);
+        if (!data) {
+          return Promise.resolve(resource.setColumData(column.name, null));
+        }
+
+        const withCurrencySymbol = {
+          symbol: field.options.symbol,
+          value: data,
+        };
+        return Promise.resolve(resource.setColumData(column.name, withCurrencySymbol));
+      };
+      return resolver;
+    }
+    case APIFieldType.rating: {
+      const resolver: ColumnResolver = (client, resource, column) => {
+        const data = getProperty(resource.getItem(), field.name);
+        if (!data) {
+          return Promise.resolve(resource.setColumData(column.name, null));
+        }
+
+        const withMaxValue = {
+          max: field.options.max,
+          value: data,
+        };
+        return Promise.resolve(resource.setColumData(column.name, withMaxValue));
+      };
+      return resolver;
+    }
+    case APIFieldType.formula: {
+      const formulaField = field as APIFieldFormula;
+      if (formulaField.options.result !== null) {
+        return getColumnResolver({ ...field, ...formulaField.options.result });
+      }
+      return pathResolver(field.name);
     }
     default: {
       return pathResolver(field.name);

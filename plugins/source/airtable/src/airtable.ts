@@ -639,9 +639,7 @@ export type APIFieldFormula = APIBaseField & {
     isValid: boolean;
     referencedFieldIds: Array<string>;
     // `result` contains the type and field options of the evaluated field type, or null if the formula is invalid.
-    result: {
-      type: APIFieldType | null;
-    } | null;
+    result: APIField | null;
   };
 };
 
