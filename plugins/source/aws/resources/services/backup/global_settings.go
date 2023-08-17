@@ -26,7 +26,7 @@ func GlobalSettings() *schema.Table {
 
 func fetchBackupGlobalSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Backup
+	svc := cl.Services(client.AWSServiceBackup).Backup
 	input := backup.DescribeGlobalSettingsInput{}
 
 	output, err := svc.DescribeGlobalSettings(ctx, &input, func(options *backup.Options) {

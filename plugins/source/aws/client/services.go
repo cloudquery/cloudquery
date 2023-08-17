@@ -125,130 +125,9 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
 )
 
-func initServices(c aws.Config, regions []string) Services {
-	awsCfg := c.Copy()
+func initServices(_ aws.Config, regions []string) Services {
 	return Services{
-		Regions:                      regions,
-		Accessanalyzer:               accessanalyzer.NewFromConfig(awsCfg),
-		Account:                      account.NewFromConfig(awsCfg),
-		Acm:                          acm.NewFromConfig(awsCfg),
-		Acmpca:                       acmpca.NewFromConfig(awsCfg),
-		Amp:                          amp.NewFromConfig(awsCfg),
-		Amplify:                      amplify.NewFromConfig(awsCfg),
-		Apigateway:                   apigateway.NewFromConfig(awsCfg),
-		Apigatewayv2:                 apigatewayv2.NewFromConfig(awsCfg),
-		Appconfig:                    appconfig.NewFromConfig(awsCfg),
-		Appflow:                      appflow.NewFromConfig(awsCfg),
-		Applicationautoscaling:       applicationautoscaling.NewFromConfig(awsCfg),
-		Appmesh:                      appmesh.NewFromConfig(awsCfg),
-		Apprunner:                    apprunner.NewFromConfig(awsCfg),
-		Appstream:                    appstream.NewFromConfig(awsCfg),
-		Appsync:                      appsync.NewFromConfig(awsCfg),
-		Athena:                       athena.NewFromConfig(awsCfg),
-		Auditmanager:                 auditmanager.NewFromConfig(awsCfg),
-		Autoscaling:                  autoscaling.NewFromConfig(awsCfg),
-		Autoscalingplans:             autoscalingplans.NewFromConfig(awsCfg),
-		Batch:                        batch.NewFromConfig(awsCfg),
-		Backup:                       backup.NewFromConfig(awsCfg),
-		Cloudformation:               cloudformation.NewFromConfig(awsCfg),
-		Cloudfront:                   cloudfront.NewFromConfig(awsCfg),
-		Cloudhsmv2:                   cloudhsmv2.NewFromConfig(awsCfg),
-		Cloudtrail:                   cloudtrail.NewFromConfig(awsCfg),
-		Cloudwatch:                   cloudwatch.NewFromConfig(awsCfg),
-		Cloudwatchlogs:               cloudwatchlogs.NewFromConfig(awsCfg),
-		Codeartifact:                 codeartifact.NewFromConfig(awsCfg),
-		Codebuild:                    codebuild.NewFromConfig(awsCfg),
-		Codecommit:                   codecommit.NewFromConfig(awsCfg),
-		Codepipeline:                 codepipeline.NewFromConfig(awsCfg),
-		Cognitoidentity:              cognitoidentity.NewFromConfig(awsCfg),
-		Cognitoidentityprovider:      cognitoidentityprovider.NewFromConfig(awsCfg),
-		Computeoptimizer:             computeoptimizer.NewFromConfig(awsCfg),
-		Configservice:                configservice.NewFromConfig(awsCfg),
-		Costexplorer:                 costexplorer.NewFromConfig(awsCfg),
-		Databasemigrationservice:     databasemigrationservice.NewFromConfig(awsCfg),
-		Dax:                          dax.NewFromConfig(awsCfg),
-		Directconnect:                directconnect.NewFromConfig(awsCfg),
-		Detective:                    detective.NewFromConfig(awsCfg),
-		Docdb:                        docdb.NewFromConfig(awsCfg),
-		Dynamodb:                     dynamodb.NewFromConfig(awsCfg),
-		Dynamodbstreams:              dynamodbstreams.NewFromConfig(awsCfg),
-		Ec2:                          ec2.NewFromConfig(awsCfg),
-		Ecr:                          ecr.NewFromConfig(awsCfg),
-		Ecrpublic:                    ecrpublic.NewFromConfig(awsCfg),
-		Ecs:                          ecs.NewFromConfig(awsCfg),
-		Efs:                          efs.NewFromConfig(awsCfg),
-		Eks:                          eks.NewFromConfig(awsCfg),
-		Elasticache:                  elasticache.NewFromConfig(awsCfg),
-		Elasticbeanstalk:             elasticbeanstalk.NewFromConfig(awsCfg),
-		Elasticloadbalancing:         elasticloadbalancing.NewFromConfig(awsCfg),
-		Elasticloadbalancingv2:       elasticloadbalancingv2.NewFromConfig(awsCfg),
-		Elasticsearchservice:         elasticsearchservice.NewFromConfig(awsCfg),
-		Elastictranscoder:            elastictranscoder.NewFromConfig(awsCfg),
-		Emr:                          emr.NewFromConfig(awsCfg),
-		Eventbridge:                  eventbridge.NewFromConfig(awsCfg),
-		Firehose:                     firehose.NewFromConfig(awsCfg),
-		Frauddetector:                frauddetector.NewFromConfig(awsCfg),
-		Fsx:                          fsx.NewFromConfig(awsCfg),
-		Glacier:                      glacier.NewFromConfig(awsCfg),
-		Glue:                         glue.NewFromConfig(awsCfg),
-		Guardduty:                    guardduty.NewFromConfig(awsCfg),
-		Iam:                          iam.NewFromConfig(awsCfg),
-		Identitystore:                identitystore.NewFromConfig(awsCfg),
-		Inspector:                    inspector.NewFromConfig(awsCfg),
-		Inspector2:                   inspector2.NewFromConfig(awsCfg),
-		Iot:                          iot.NewFromConfig(awsCfg),
-		Kafka:                        kafka.NewFromConfig(awsCfg),
-		Kinesis:                      kinesis.NewFromConfig(awsCfg),
-		Kms:                          kms.NewFromConfig(awsCfg),
-		Lambda:                       lambda.NewFromConfig(awsCfg),
-		Lightsail:                    lightsail.NewFromConfig(awsCfg),
-		Mq:                           mq.NewFromConfig(awsCfg),
-		Mwaa:                         mwaa.NewFromConfig(awsCfg),
-		Neptune:                      neptune.NewFromConfig(awsCfg),
-		Networkfirewall:              networkfirewall.NewFromConfig(awsCfg),
-		Networkmanager:               networkmanager.NewFromConfig(awsCfg),
-		Organizations:                organizations.NewFromConfig(awsCfg),
-		Qldb:                         qldb.NewFromConfig(awsCfg),
-		Quicksight:                   quicksight.NewFromConfig(awsCfg),
-		Ram:                          ram.NewFromConfig(awsCfg),
-		Rds:                          rds.NewFromConfig(awsCfg),
-		Redshift:                     redshift.NewFromConfig(awsCfg),
-		Resiliencehub:                resiliencehub.NewFromConfig(awsCfg),
-		Resourcegroups:               resourcegroups.NewFromConfig(awsCfg),
-		Route53:                      route53.NewFromConfig(awsCfg),
-		Route53domains:               route53domains.NewFromConfig(awsCfg),
-		Route53recoverycontrolconfig: route53recoverycontrolconfig.NewFromConfig(awsCfg),
-		Route53recoveryreadiness:     route53recoveryreadiness.NewFromConfig(awsCfg),
-		Route53resolver:              route53resolver.NewFromConfig(awsCfg),
-		S3:                           s3.NewFromConfig(awsCfg),
-		S3control:                    s3control.NewFromConfig(awsCfg),
-		Sagemaker:                    sagemaker.NewFromConfig(awsCfg),
-		Savingsplans:                 savingsplans.NewFromConfig(awsCfg),
-		Scheduler:                    scheduler.NewFromConfig(awsCfg),
-		Secretsmanager:               secretsmanager.NewFromConfig(awsCfg),
-		Securityhub:                  securityhub.NewFromConfig(awsCfg),
-		Servicecatalog:               servicecatalog.NewFromConfig(awsCfg),
-		Servicecatalogappregistry:    servicecatalogappregistry.NewFromConfig(awsCfg),
-		Servicediscovery:             servicediscovery.NewFromConfig(awsCfg),
-		Servicequotas:                servicequotas.NewFromConfig(awsCfg),
-		Ses:                          ses.NewFromConfig(awsCfg),
-		Sesv2:                        sesv2.NewFromConfig(awsCfg),
-		Sfn:                          sfn.NewFromConfig(awsCfg),
-		Shield:                       shield.NewFromConfig(awsCfg),
-		Signer:                       signer.NewFromConfig(awsCfg),
-		Sns:                          sns.NewFromConfig(awsCfg),
-		Sqs:                          sqs.NewFromConfig(awsCfg),
-		Ssm:                          ssm.NewFromConfig(awsCfg),
-		Ssoadmin:                     ssoadmin.NewFromConfig(awsCfg),
-		Support:                      support.NewFromConfig(awsCfg),
-		Timestreamwrite:              timestreamwrite.NewFromConfig(awsCfg),
-		Transfer:                     transfer.NewFromConfig(awsCfg),
-		Waf:                          waf.NewFromConfig(awsCfg),
-		Wafregional:                  wafregional.NewFromConfig(awsCfg),
-		Wafv2:                        wafv2.NewFromConfig(awsCfg),
-		Wellarchitected:              wellarchitected.NewFromConfig(awsCfg),
-		Workspaces:                   workspaces.NewFromConfig(awsCfg),
-		Xray:                         xray.NewFromConfig(awsCfg),
+		Regions: regions,
 	}
 }
 
@@ -374,4 +253,499 @@ type Services struct {
 	Wellarchitected              services.WellarchitectedClient
 	Workspaces                   services.WorkspacesClient
 	Xray                         services.XrayClient
+}
+
+func (s *Services) InitService(awsConfig *aws.Config, service AWSServiceName) {
+	c := awsConfig.Copy()
+	switch service {
+	case AWSServiceAccessanalyzer:
+		s.Accessanalyzer = accessanalyzer.NewFromConfig(c)
+	case AWSServiceAccount:
+		s.Account = account.NewFromConfig(c)
+	case AWSServiceAcm:
+		s.Acm = acm.NewFromConfig(c)
+	case AWSServiceAcmpca:
+		s.Acmpca = acmpca.NewFromConfig(c)
+	case AWSServiceAmp:
+		s.Amp = amp.NewFromConfig(c)
+	case AWSServiceAmplify:
+		s.Amplify = amplify.NewFromConfig(c)
+	case AWSServiceApigateway:
+		s.Apigateway = apigateway.NewFromConfig(c)
+	case AWSServiceApigatewayv2:
+		s.Apigatewayv2 = apigatewayv2.NewFromConfig(c)
+	case AWSServiceAppconfig:
+		s.Appconfig = appconfig.NewFromConfig(c)
+	case AWSServiceAppflow:
+		s.Appflow = appflow.NewFromConfig(c)
+	case AWSServiceApplicationautoscaling:
+		s.Applicationautoscaling = applicationautoscaling.NewFromConfig(c)
+	case AWSServiceAppmesh:
+		s.Appmesh = appmesh.NewFromConfig(c)
+	case AWSServiceApprunner:
+		s.Apprunner = apprunner.NewFromConfig(c)
+	case AWSServiceAppstream:
+		s.Appstream = appstream.NewFromConfig(c)
+	case AWSServiceAppsync:
+		s.Appsync = appsync.NewFromConfig(c)
+	case AWSServiceAthena:
+		s.Athena = athena.NewFromConfig(c)
+	case AWSServiceAuditmanager:
+		s.Auditmanager = auditmanager.NewFromConfig(c)
+	case AWSServiceAutoscaling:
+		s.Autoscaling = autoscaling.NewFromConfig(c)
+	case AWSServiceAutoscalingplans:
+		s.Autoscalingplans = autoscalingplans.NewFromConfig(c)
+	case AWSServiceBackup:
+		s.Backup = backup.NewFromConfig(c)
+	case AWSServiceBatch:
+		s.Batch = batch.NewFromConfig(c)
+	case AWSServiceCloudformation:
+		s.Cloudformation = cloudformation.NewFromConfig(c)
+	case AWSServiceCloudfront:
+		s.Cloudfront = cloudfront.NewFromConfig(c)
+	case AWSServiceCloudhsmv2:
+		s.Cloudhsmv2 = cloudhsmv2.NewFromConfig(c)
+	case AWSServiceCloudtrail:
+		s.Cloudtrail = cloudtrail.NewFromConfig(c)
+	case AWSServiceCloudwatch:
+		s.Cloudwatch = cloudwatch.NewFromConfig(c)
+	case AWSServiceCloudwatchlogs:
+		s.Cloudwatchlogs = cloudwatchlogs.NewFromConfig(c)
+	case AWSServiceCodeartifact:
+		s.Codeartifact = codeartifact.NewFromConfig(c)
+	case AWSServiceCodebuild:
+		s.Codebuild = codebuild.NewFromConfig(c)
+	case AWSServiceCodecommit:
+		s.Codecommit = codecommit.NewFromConfig(c)
+	case AWSServiceCodepipeline:
+		s.Codepipeline = codepipeline.NewFromConfig(c)
+	case AWSServiceCognitoidentity:
+		s.Cognitoidentity = cognitoidentity.NewFromConfig(c)
+	case AWSServiceCognitoidentityprovider:
+		s.Cognitoidentityprovider = cognitoidentityprovider.NewFromConfig(c)
+	case AWSServiceComputeoptimizer:
+		s.Computeoptimizer = computeoptimizer.NewFromConfig(c)
+	case AWSServiceConfigservice:
+		s.Configservice = configservice.NewFromConfig(c)
+	case AWSServiceCostexplorer:
+		s.Costexplorer = costexplorer.NewFromConfig(c)
+	case AWSServiceDatabasemigrationservice:
+		s.Databasemigrationservice = databasemigrationservice.NewFromConfig(c)
+	case AWSServiceDax:
+		s.Dax = dax.NewFromConfig(c)
+	case AWSServiceDetective:
+		s.Detective = detective.NewFromConfig(c)
+	case AWSServiceDirectconnect:
+		s.Directconnect = directconnect.NewFromConfig(c)
+	case AWSServiceDocdb:
+		s.Docdb = docdb.NewFromConfig(c)
+	case AWSServiceDynamodb:
+		s.Dynamodb = dynamodb.NewFromConfig(c)
+	case AWSServiceDynamodbstreams:
+		s.Dynamodbstreams = dynamodbstreams.NewFromConfig(c)
+	case AWSServiceEc2:
+		s.Ec2 = ec2.NewFromConfig(c)
+	case AWSServiceEcr:
+		s.Ecr = ecr.NewFromConfig(c)
+	case AWSServiceEcrpublic:
+		s.Ecrpublic = ecrpublic.NewFromConfig(c)
+	case AWSServiceEcs:
+		s.Ecs = ecs.NewFromConfig(c)
+	case AWSServiceEfs:
+		s.Efs = efs.NewFromConfig(c)
+	case AWSServiceEks:
+		s.Eks = eks.NewFromConfig(c)
+	case AWSServiceElasticache:
+		s.Elasticache = elasticache.NewFromConfig(c)
+	case AWSServiceElasticbeanstalk:
+		s.Elasticbeanstalk = elasticbeanstalk.NewFromConfig(c)
+	case AWSServiceElasticloadbalancing:
+		s.Elasticloadbalancing = elasticloadbalancing.NewFromConfig(c)
+	case AWSServiceElasticloadbalancingv2:
+		s.Elasticloadbalancingv2 = elasticloadbalancingv2.NewFromConfig(c)
+	case AWSServiceElasticsearchservice:
+		s.Elasticsearchservice = elasticsearchservice.NewFromConfig(c)
+	case AWSServiceElastictranscoder:
+		s.Elastictranscoder = elastictranscoder.NewFromConfig(c)
+	case AWSServiceEmr:
+		s.Emr = emr.NewFromConfig(c)
+	case AWSServiceEventbridge:
+		s.Eventbridge = eventbridge.NewFromConfig(c)
+	case AWSServiceFirehose:
+		s.Firehose = firehose.NewFromConfig(c)
+	case AWSServiceFrauddetector:
+		s.Frauddetector = frauddetector.NewFromConfig(c)
+	case AWSServiceFsx:
+		s.Fsx = fsx.NewFromConfig(c)
+	case AWSServiceGlacier:
+		s.Glacier = glacier.NewFromConfig(c)
+	case AWSServiceGlue:
+		s.Glue = glue.NewFromConfig(c)
+	case AWSServiceGuardduty:
+		s.Guardduty = guardduty.NewFromConfig(c)
+	case AWSServiceIam:
+		s.Iam = iam.NewFromConfig(c)
+	case AWSServiceIdentitystore:
+		s.Identitystore = identitystore.NewFromConfig(c)
+	case AWSServiceInspector:
+		s.Inspector = inspector.NewFromConfig(c)
+	case AWSServiceInspector2:
+		s.Inspector2 = inspector2.NewFromConfig(c)
+	case AWSServiceIot:
+		s.Iot = iot.NewFromConfig(c)
+	case AWSServiceKafka:
+		s.Kafka = kafka.NewFromConfig(c)
+	case AWSServiceKinesis:
+		s.Kinesis = kinesis.NewFromConfig(c)
+	case AWSServiceKms:
+		s.Kms = kms.NewFromConfig(c)
+	case AWSServiceLambda:
+		s.Lambda = lambda.NewFromConfig(c)
+	case AWSServiceLightsail:
+		s.Lightsail = lightsail.NewFromConfig(c)
+	case AWSServiceMq:
+		s.Mq = mq.NewFromConfig(c)
+	case AWSServiceMwaa:
+		s.Mwaa = mwaa.NewFromConfig(c)
+	case AWSServiceNeptune:
+		s.Neptune = neptune.NewFromConfig(c)
+	case AWSServiceNetworkfirewall:
+		s.Networkfirewall = networkfirewall.NewFromConfig(c)
+	case AWSServiceNetworkmanager:
+		s.Networkmanager = networkmanager.NewFromConfig(c)
+	case AWSServiceOrganizations:
+		s.Organizations = organizations.NewFromConfig(c)
+	case AWSServiceQldb:
+		s.Qldb = qldb.NewFromConfig(c)
+	case AWSServiceQuicksight:
+		s.Quicksight = quicksight.NewFromConfig(c)
+	case AWSServiceRam:
+		s.Ram = ram.NewFromConfig(c)
+	case AWSServiceRds:
+		s.Rds = rds.NewFromConfig(c)
+	case AWSServiceRedshift:
+		s.Redshift = redshift.NewFromConfig(c)
+	case AWSServiceResiliencehub:
+		s.Resiliencehub = resiliencehub.NewFromConfig(c)
+	case AWSServiceResourcegroups:
+		s.Resourcegroups = resourcegroups.NewFromConfig(c)
+	case AWSServiceRoute53:
+		s.Route53 = route53.NewFromConfig(c)
+	case AWSServiceRoute53domains:
+		s.Route53domains = route53domains.NewFromConfig(c)
+	case AWSServiceRoute53recoverycontrolconfig:
+		s.Route53recoverycontrolconfig = route53recoverycontrolconfig.NewFromConfig(c)
+	case AWSServiceRoute53recoveryreadiness:
+		s.Route53recoveryreadiness = route53recoveryreadiness.NewFromConfig(c)
+	case AWSServiceRoute53resolver:
+		s.Route53resolver = route53resolver.NewFromConfig(c)
+	case AWSServiceS3:
+		s.S3 = s3.NewFromConfig(c)
+	case AWSServiceS3control:
+		s.S3control = s3control.NewFromConfig(c)
+	case AWSServiceSagemaker:
+		s.Sagemaker = sagemaker.NewFromConfig(c)
+	case AWSServiceSavingsplans:
+		s.Savingsplans = savingsplans.NewFromConfig(c)
+	case AWSServiceScheduler:
+		s.Scheduler = scheduler.NewFromConfig(c)
+	case AWSServiceSecretsmanager:
+		s.Secretsmanager = secretsmanager.NewFromConfig(c)
+	case AWSServiceSecurityhub:
+		s.Securityhub = securityhub.NewFromConfig(c)
+	case AWSServiceServicecatalog:
+		s.Servicecatalog = servicecatalog.NewFromConfig(c)
+	case AWSServiceServicecatalogappregistry:
+		s.Servicecatalogappregistry = servicecatalogappregistry.NewFromConfig(c)
+	case AWSServiceServicediscovery:
+		s.Servicediscovery = servicediscovery.NewFromConfig(c)
+	case AWSServiceServicequotas:
+		s.Servicequotas = servicequotas.NewFromConfig(c)
+	case AWSServiceSes:
+		s.Ses = ses.NewFromConfig(c)
+	case AWSServiceSesv2:
+		s.Sesv2 = sesv2.NewFromConfig(c)
+	case AWSServiceSfn:
+		s.Sfn = sfn.NewFromConfig(c)
+	case AWSServiceShield:
+		s.Shield = shield.NewFromConfig(c)
+	case AWSServiceSigner:
+		s.Signer = signer.NewFromConfig(c)
+	case AWSServiceSns:
+		s.Sns = sns.NewFromConfig(c)
+	case AWSServiceSqs:
+		s.Sqs = sqs.NewFromConfig(c)
+	case AWSServiceSsm:
+		s.Ssm = ssm.NewFromConfig(c)
+	case AWSServiceSsoadmin:
+		s.Ssoadmin = ssoadmin.NewFromConfig(c)
+	case AWSServiceSupport:
+		s.Support = support.NewFromConfig(c)
+	case AWSServiceTimestreamwrite:
+		s.Timestreamwrite = timestreamwrite.NewFromConfig(c)
+	case AWSServiceTransfer:
+		s.Transfer = transfer.NewFromConfig(c)
+	case AWSServiceWaf:
+		s.Waf = waf.NewFromConfig(c)
+	case AWSServiceWafv2:
+		s.Wafv2 = wafv2.NewFromConfig(c)
+	case AWSServiceWafregional:
+		s.Wafregional = wafregional.NewFromConfig(c)
+	case AWSServiceWellarchitected:
+		s.Wellarchitected = wellarchitected.NewFromConfig(c)
+	case AWSServiceWorkspaces:
+		s.Workspaces = workspaces.NewFromConfig(c)
+	case AWSServiceXray:
+		s.Xray = xray.NewFromConfig(c)
+	default:
+		panic("unknown service: " + service.String())
+	}
+}
+
+func (s *Services) GetService(service AWSServiceName) any {
+	switch service {
+	case AWSServiceAccessanalyzer:
+		return s.Accessanalyzer
+	case AWSServiceAccount:
+		return s.Account
+	case AWSServiceAcm:
+		return s.Acm
+	case AWSServiceAcmpca:
+		return s.Acmpca
+	case AWSServiceAmp:
+		return s.Amp
+	case AWSServiceAmplify:
+		return s.Amplify
+	case AWSServiceApigateway:
+		return s.Apigateway
+	case AWSServiceApigatewayv2:
+		return s.Apigatewayv2
+	case AWSServiceAppconfig:
+		return s.Appconfig
+	case AWSServiceAppflow:
+		return s.Appflow
+	case AWSServiceApplicationautoscaling:
+		return s.Applicationautoscaling
+	case AWSServiceAppmesh:
+		return s.Appmesh
+	case AWSServiceApprunner:
+		return s.Apprunner
+	case AWSServiceAppstream:
+		return s.Appstream
+	case AWSServiceAppsync:
+		return s.Appsync
+	case AWSServiceAthena:
+		return s.Athena
+	case AWSServiceAuditmanager:
+		return s.Auditmanager
+	case AWSServiceAutoscaling:
+		return s.Autoscaling
+	case AWSServiceAutoscalingplans:
+		return s.Autoscalingplans
+	case AWSServiceBackup:
+		return s.Backup
+	case AWSServiceBatch:
+		return s.Batch
+	case AWSServiceCloudformation:
+		return s.Cloudformation
+	case AWSServiceCloudfront:
+		return s.Cloudfront
+	case AWSServiceCloudhsmv2:
+		return s.Cloudhsmv2
+	case AWSServiceCloudtrail:
+		return s.Cloudtrail
+	case AWSServiceCloudwatch:
+		return s.Cloudwatch
+	case AWSServiceCloudwatchlogs:
+		return s.Cloudwatchlogs
+	case AWSServiceCodeartifact:
+		return s.Codeartifact
+	case AWSServiceCodebuild:
+		return s.Codebuild
+	case AWSServiceCodecommit:
+		return s.Codecommit
+	case AWSServiceCodepipeline:
+		return s.Codepipeline
+	case AWSServiceCognitoidentity:
+		return s.Cognitoidentity
+	case AWSServiceCognitoidentityprovider:
+		return s.Cognitoidentityprovider
+	case AWSServiceComputeoptimizer:
+		return s.Computeoptimizer
+	case AWSServiceConfigservice:
+		return s.Configservice
+	case AWSServiceCostexplorer:
+		return s.Costexplorer
+	case AWSServiceDatabasemigrationservice:
+		return s.Databasemigrationservice
+	case AWSServiceDax:
+		return s.Dax
+	case AWSServiceDetective:
+		return s.Detective
+	case AWSServiceDirectconnect:
+		return s.Directconnect
+	case AWSServiceDocdb:
+		return s.Docdb
+	case AWSServiceDynamodb:
+		return s.Dynamodb
+	case AWSServiceDynamodbstreams:
+		return s.Dynamodbstreams
+	case AWSServiceEc2:
+		return s.Ec2
+	case AWSServiceEcr:
+		return s.Ecr
+	case AWSServiceEcrpublic:
+		return s.Ecrpublic
+	case AWSServiceEcs:
+		return s.Ecs
+	case AWSServiceEfs:
+		return s.Efs
+	case AWSServiceEks:
+		return s.Eks
+	case AWSServiceElasticache:
+		return s.Elasticache
+	case AWSServiceElasticbeanstalk:
+		return s.Elasticbeanstalk
+	case AWSServiceElasticloadbalancing:
+		return s.Elasticloadbalancing
+	case AWSServiceElasticloadbalancingv2:
+		return s.Elasticloadbalancingv2
+	case AWSServiceElasticsearchservice:
+		return s.Elasticsearchservice
+	case AWSServiceElastictranscoder:
+		return s.Elastictranscoder
+	case AWSServiceEmr:
+		return s.Emr
+	case AWSServiceEventbridge:
+		return s.Eventbridge
+	case AWSServiceFirehose:
+		return s.Firehose
+	case AWSServiceFrauddetector:
+		return s.Frauddetector
+	case AWSServiceFsx:
+		return s.Fsx
+	case AWSServiceGlacier:
+		return s.Glacier
+	case AWSServiceGlue:
+		return s.Glue
+	case AWSServiceGuardduty:
+		return s.Guardduty
+	case AWSServiceIam:
+		return s.Iam
+	case AWSServiceIdentitystore:
+		return s.Identitystore
+	case AWSServiceInspector:
+		return s.Inspector
+	case AWSServiceInspector2:
+		return s.Inspector2
+	case AWSServiceIot:
+		return s.Iot
+	case AWSServiceKafka:
+		return s.Kafka
+	case AWSServiceKinesis:
+		return s.Kinesis
+	case AWSServiceKms:
+		return s.Kms
+	case AWSServiceLambda:
+		return s.Lambda
+	case AWSServiceLightsail:
+		return s.Lightsail
+	case AWSServiceMq:
+		return s.Mq
+	case AWSServiceMwaa:
+		return s.Mwaa
+	case AWSServiceNeptune:
+		return s.Neptune
+	case AWSServiceNetworkfirewall:
+		return s.Networkfirewall
+	case AWSServiceNetworkmanager:
+		return s.Networkmanager
+	case AWSServiceOrganizations:
+		return s.Organizations
+	case AWSServiceQldb:
+		return s.Qldb
+	case AWSServiceQuicksight:
+		return s.Quicksight
+	case AWSServiceRam:
+		return s.Ram
+	case AWSServiceRds:
+		return s.Rds
+	case AWSServiceRedshift:
+		return s.Redshift
+	case AWSServiceResiliencehub:
+		return s.Resiliencehub
+	case AWSServiceResourcegroups:
+		return s.Resourcegroups
+	case AWSServiceRoute53:
+		return s.Route53
+	case AWSServiceRoute53domains:
+		return s.Route53domains
+	case AWSServiceRoute53recoverycontrolconfig:
+		return s.Route53recoverycontrolconfig
+	case AWSServiceRoute53recoveryreadiness:
+		return s.Route53recoveryreadiness
+	case AWSServiceRoute53resolver:
+		return s.Route53resolver
+	case AWSServiceS3:
+		return s.S3
+	case AWSServiceS3control:
+		return s.S3control
+	case AWSServiceSagemaker:
+		return s.Sagemaker
+	case AWSServiceSavingsplans:
+		return s.Savingsplans
+	case AWSServiceScheduler:
+		return s.Scheduler
+	case AWSServiceSecretsmanager:
+		return s.Secretsmanager
+	case AWSServiceSecurityhub:
+		return s.Securityhub
+	case AWSServiceServicecatalog:
+		return s.Servicecatalog
+	case AWSServiceServicecatalogappregistry:
+		return s.Servicecatalogappregistry
+	case AWSServiceServicediscovery:
+		return s.Servicediscovery
+	case AWSServiceServicequotas:
+		return s.Servicequotas
+	case AWSServiceSes:
+		return s.Ses
+	case AWSServiceSesv2:
+		return s.Sesv2
+	case AWSServiceSfn:
+		return s.Sfn
+	case AWSServiceShield:
+		return s.Shield
+	case AWSServiceSigner:
+		return s.Signer
+	case AWSServiceSns:
+		return s.Sns
+	case AWSServiceSqs:
+		return s.Sqs
+	case AWSServiceSsm:
+		return s.Ssm
+	case AWSServiceSsoadmin:
+		return s.Ssoadmin
+	case AWSServiceSupport:
+		return s.Support
+	case AWSServiceTimestreamwrite:
+		return s.Timestreamwrite
+	case AWSServiceTransfer:
+		return s.Transfer
+	case AWSServiceWaf:
+		return s.Waf
+	case AWSServiceWafv2:
+		return s.Wafv2
+	case AWSServiceWafregional:
+		return s.Wafregional
+	case AWSServiceWellarchitected:
+		return s.Wellarchitected
+	case AWSServiceWorkspaces:
+		return s.Workspaces
+	case AWSServiceXray:
+		return s.Xray
+	default:
+		panic("unknown service: " + service.String())
+	}
 }

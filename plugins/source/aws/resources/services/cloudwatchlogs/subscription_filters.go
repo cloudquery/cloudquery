@@ -36,7 +36,7 @@ func fetchCloudwatchlogsSubscriptionFilters(ctx context.Context, meta schema.Cli
 		LogGroupName: parent.Item.(types.LogGroup).LogGroupName,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudwatchlogs
+	svc := cl.Services(client.AWSServiceCloudwatchlogs).Cloudwatchlogs
 	paginator := cloudwatchlogs.NewDescribeSubscriptionFiltersPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cloudwatchlogs.Options) {

@@ -68,6 +68,7 @@ Deregistering
 Detrack
 discoverability
 Docusaurus
+Dockerfile
 ELB
 ELBs
 Embeddable
@@ -135,6 +136,7 @@ Lucene
 Macie
 Mailchimp
 Mailgun
+makefile
 Marketo
 meilisearch
 Meilisearch
@@ -192,6 +194,7 @@ runtime
 runtimes
 Scaleway
 schemaless
+scheduler's
 SCP
 SCPs
 sdk

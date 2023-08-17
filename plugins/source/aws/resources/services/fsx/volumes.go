@@ -47,7 +47,7 @@ func Volumes() *schema.Table {
 
 func fetchFsxVolumes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Fsx
+	svc := cl.Services(client.AWSServiceFsx).Fsx
 	input := fsx.DescribeVolumesInput{MaxResults: aws.Int32(1000)}
 	paginator := fsx.NewDescribeVolumesPaginator(svc, &input)
 	for paginator.HasMorePages() {

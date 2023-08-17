@@ -1,13 +1,13 @@
 ---
-title: Creating a New Plugin
-description: Learn how to write a new CloudQuery plugin from scratch.
+title: Creating a New CloudQuery Source Plugin in Go
+description: Learn how to write a new CloudQuery source plugin from scratch in Go.
 image: "https://i3.ytimg.com/vi/3Ka_Ob8E6P8/maxresdefault.jpg"
 video: "https://youtu.be/3Ka_Ob8E6P8"
 ---
 
-# Creating a New Plugin
+# Creating a New CloudQuery Source Plugin in Go
 
-This guide will help you write your own CloudQuery source plugin. CloudQuery's modular architecture means that a source plugin can be used to fetch data from any third-party API, and then be combined with a destination plugin to insert data into any supported destination. 
+This guide will help you develop a new source or destination plugin for CloudQuery in Go. CloudQuery's modular architecture means that a source plugin can be used to fetch data from any third-party API, and then be combined with a destination plugin to insert data into any supported destination. We will cover the basics of how to get started, and then dive into some more advanced topics. We will also cover how to release your plugin for use by the wider CloudQuery community.
 
 This guide assumes that you are somewhat familiar with CloudQuery. If you are not, we recommend starting by reading the [Quickstart guide](/docs/quickstart) and playing around with the CloudQuery CLI a bit first.
 
@@ -26,7 +26,7 @@ A sync is the process that gets kicked off when a user runs `cloudquery sync`. A
 
 ### Tables and Services
 
-A **table** is the term CloudQuery uses for a collection of related data. In most databases it directly maps to an actual database table, but in some destinations it could be stored as a file, stream or other medium. Inside plugin code, tables get grouped into collections called "services". Many REST APIs are logically grouped, and services are meant to map closely to these underlying API groupings. For example, an API might expose an endpoint called `GET /v1/accounts/users`. The service in this case would be called `accounts`, and the table `users`. The final table name will be `<plugin_name>_<service_name>_<table_name>`, e.g. `myplugin_accounts_users`. 
+A **table** is the term CloudQuery uses for a collection of related data. In most databases it directly maps to an actual database table, but in some destinations it could be stored as a file, stream or other medium. Inside plugin code, tables get grouped into collections called "services". Many REST APIs are logically grouped, and services are meant to map closely to these underlying API groupings. For example, an API might expose an endpoint called `GET /v1/accounts/users`. The service in this case would be called `accounts`, and the table `users`. The final table name will be `<plugin_name>_<service_name>_<table_name>`, e.g. `myplugin_accounts_users`.
 
 Services each get their own directory under the `services` directory of your plugin. Inside a service directory, every table will typically have its own `.go` file. A table is defined as a function that returns a [`*schema.Table`](https://github.com/cloudquery/plugin-sdk/blob/a1409ac07858d9b1dca5098e430469c943bf8b63/schema/table.go#L34-L70).
 
@@ -149,7 +149,7 @@ type Comic struct {
 }
 ```
 
-We'll also rename the `SampleTable` function to `Comics`, update some properties and add the `Transformer` property: 
+We'll also rename the `SampleTable` function to `Comics`, update some properties and add the `Transformer` property:
 
 ```go
 func Comics() *schema.Table {
@@ -191,7 +191,7 @@ func fetchComics(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 In the above code, we are getting a list of Comics from the XKCD API and sending them to the CloudQuery over the `res` channel. We first need to get the latest comic, then we can iterate through all the IDs from 1 to that number. You can send items to the channel one at a time, or as a slice of items. The sooner an is dispatched over the channel, the sooner it will be written to the destination(s), so we prefer to write them as soon as they are available. And as long as the struct sent matches the one used for the table, the CloudQuery SDK will handle the rest.
 
 In the above example, we used a `Client` struct that we haven't talked about yet. The `Client` struct is used to store any data that needs to be shared between resolvers. For example, it may store the API key that we'll need to make API calls, or an SDK client that we'll use to make API calls. The `Client` struct is defined in the `client` directory, and is instantiated with a call to `client.New` in the `plugin` directory. In this case, we were using it to store an instance of the XKCD client. (We won't show the full XKCD client implementation here.)
- 
+
 ### Testing the Plugin
 
 There are two options for running a plugin before as a developer before it is released: as a gRPC server, or as a standalone binary. We will briefly summarize both options here, or you can read about them in more detail in [Running Locally](/docs/developers/running-locally).
@@ -215,7 +215,7 @@ spec:
   registry: "grpc"
   path: "localhost:7777"
   version: "v1.0.0"
-  tables: 
+  tables:
     ["*"]
   destinations:
     - "sqlite"
@@ -235,7 +235,7 @@ With the above configuration, we can now run `cloudquery sync` as normal:
 cloudquery sync config.yaml
 ```
 
-Note that when running a source plugin as a gRPC server, errors with the source plugin will be printed to the console running the gRPC server, *not* to the CloudQuery log like usual. 
+Note that when running a source plugin as a gRPC server, errors with the source plugin will be printed to the console running the gRPC server, *not* to the CloudQuery log like usual.
 
 #### Run the Plugin as a Standalone Binary
 
@@ -254,7 +254,7 @@ spec:
   registry: "local"
   path: "/path/to/cq-source-xkcd"
   version: "v1.0.0"
-  tables: 
+  tables:
     ["*"]
   destinations:
     - "sqlite"
@@ -307,11 +307,11 @@ func resolveComicIsGood(ctx context.Context, meta schema.ClientMeta, resource *s
 }
 ```
 
-As big fans of meta-jokes, we define only comics with "XKCD" in the title to be good. 
+As big fans of meta-jokes, we define only comics with "XKCD" in the title to be good.
 
 ### Adding Multiplexing
 
-For our simple XKCD plugin, multiplexing is not necessary. But let's say we were writing a plugin that can fetch from multiple accounts. In that case, we may define an `AccountMultiplex` multiplexer inside a new `multiplexers.go` file in the `client` directory: 
+For our simple XKCD plugin, multiplexing is not necessary. But let's say we were writing a plugin that can fetch from multiple accounts. In that case, we may define an `AccountMultiplex` multiplexer inside a new `multiplexers.go` file in the `client` directory:
 
 ```go
 func AccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
@@ -366,7 +366,7 @@ func fetchSampleTable(ctx context.Context, meta schema.ClientMeta, parent *schem
 	account := client.Account
 	// ...
 }
-``` 
+```
 
 The [GitHub plugin multiplexers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/client/multiplexer.go) can serve as a good example of how to implement and use multiplexing. In that case, some tables multiplex on organization, while others multiplex on organization and repository combined.
 
@@ -374,7 +374,7 @@ The [GitHub plugin multiplexers](https://github.com/cloudquery/cloudquery/blob/m
 
 Releasing a plugin for use by the wider CloudQuery community involves two steps:
 
-1. Create a public GitHub repository for your plugin named `cq-source-<plugin-name>` and push your code to it. 
+1. Create a public GitHub repository for your plugin named `cq-source-<plugin-name>` and push your code to it.
 2. Create a release in GitHub. The release name should be the version of your plugin, e.g. `v0.1.0`. More information about managing releases can be found in [GitHub's documentation](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository).
 
 Users can then import your plugin by specifying the GitHub repository path in their config file, but leaving out the `cq-source-` part, e.g.:

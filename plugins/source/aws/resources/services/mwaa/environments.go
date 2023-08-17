@@ -36,7 +36,7 @@ func Environments() *schema.Table {
 func fetchMwaaEnvironments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	config := mwaa.ListEnvironmentsInput{}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Mwaa
+	svc := cl.Services(client.AWSServiceMwaa).Mwaa
 	p := mwaa.NewListEnvironmentsPaginator(svc, &config)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *mwaa.Options) {
@@ -52,7 +52,7 @@ func fetchMwaaEnvironments(ctx context.Context, meta schema.ClientMeta, parent *
 
 func getEnvironment(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Mwaa
+	svc := cl.Services(client.AWSServiceMwaa).Mwaa
 	name := resource.Item.(string)
 
 	output, err := svc.GetEnvironment(ctx, &mwaa.GetEnvironmentInput{Name: &name}, func(options *mwaa.Options) {

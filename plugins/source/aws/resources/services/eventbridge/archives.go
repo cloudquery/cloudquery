@@ -37,7 +37,7 @@ func Archives() *schema.Table {
 func fetchArchives(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input eventbridge.ListArchivesInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Eventbridge
+	svc := cl.Services(client.AWSServiceEventbridge).Eventbridge
 	// No paginator available
 	for {
 		response, err := svc.ListArchives(ctx, &input, func(options *eventbridge.Options) {

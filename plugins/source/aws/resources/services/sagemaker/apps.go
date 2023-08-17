@@ -42,7 +42,7 @@ func Apps() *schema.Table {
 }
 func fetchSagemakerApps(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sagemaker
+	svc := cl.Services(client.AWSServiceSagemaker).Sagemaker
 	paginator := sagemaker.NewListAppsPaginator(svc, &sagemaker.ListAppsInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(o *sagemaker.Options) {
@@ -58,7 +58,7 @@ func fetchSagemakerApps(ctx context.Context, meta schema.ClientMeta, _ *schema.R
 
 func getApp(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sagemaker
+	svc := cl.Services(client.AWSServiceSagemaker).Sagemaker
 	n := resource.Item.(types.AppDetails)
 	input := &sagemaker.DescribeAppInput{
 		AppName:  n.AppName,
@@ -87,7 +87,7 @@ func getApp(ctx context.Context, meta schema.ClientMeta, resource *schema.Resour
 func resolveSagemakerAppTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	r := resource.Item.(*sagemaker.DescribeAppOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sagemaker
+	svc := cl.Services(client.AWSServiceSagemaker).Sagemaker
 
 	response, err := svc.ListTags(ctx, &sagemaker.ListTagsInput{
 		ResourceArn: r.AppArn,

@@ -29,7 +29,7 @@ func fetchElasticacheUpdateAction(ctx context.Context, meta schema.ClientMeta, p
 	var input elasticache.DescribeUpdateActionsInput
 	cl := meta.(*client.Client)
 
-	paginator := elasticache.NewDescribeUpdateActionsPaginator(meta.(*client.Client).Services().Elasticache, &input)
+	paginator := elasticache.NewDescribeUpdateActionsPaginator(meta.(*client.Client).Services(client.AWSServiceElasticache).Elasticache, &input)
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx, func(options *elasticache.Options) {
 			options.Region = cl.Region

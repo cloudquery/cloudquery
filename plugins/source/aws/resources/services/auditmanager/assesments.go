@@ -28,7 +28,7 @@ func Assessments() *schema.Table {
 
 func fetchAssessments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Auditmanager
+	svc := cl.Services(client.AWSServiceAuditmanager).Auditmanager
 	paginator := auditmanager.NewListAssessmentsPaginator(svc, nil)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *auditmanager.Options) {
@@ -44,7 +44,7 @@ func fetchAssessments(ctx context.Context, meta schema.ClientMeta, parent *schem
 
 func getAssessment(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Auditmanager
+	svc := cl.Services(client.AWSServiceAuditmanager).Auditmanager
 	input := auditmanager.GetAssessmentInput{AssessmentId: resource.Item.(types.AssessmentMetadataItem).Id}
 
 	output, err := svc.GetAssessment(ctx, &input, func(o *auditmanager.Options) { o.Region = cl.Region })
