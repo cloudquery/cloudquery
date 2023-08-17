@@ -22,7 +22,7 @@ func resolveApprunnerTags(path string) schema.ColumnResolver {
 			return nil
 		}
 		cl := meta.(*client.Client)
-		svc := cl.Services().Apprunner
+		svc := cl.Services(client.AWSServiceApprunner).Apprunner
 		params := apprunner.ListTagsForResourceInput{ResourceArn: arn}
 
 		output, err := svc.ListTagsForResource(ctx, &params, func(options *apprunner.Options) {

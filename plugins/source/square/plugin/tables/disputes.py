@@ -19,8 +19,9 @@ disputes_columns = oapi_definition_to_columns(
 class Disputes(Table):
     def __init__(self) -> None:
         super().__init__(
-            "square_disputes",
-            disputes_columns,
+            name="square_disputes",
+            title="Square Disputes",
+            columns=disputes_columns,
         )
 
     @property

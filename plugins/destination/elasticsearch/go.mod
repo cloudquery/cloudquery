@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882
 	github.com/cenkalti/backoff/v4 v4.2.1
-	github.com/cloudquery/plugin-sdk/v4 v4.2.5
+	github.com/cloudquery/plugin-sdk/v4 v4.5.0
 	github.com/elastic/go-elasticsearch/v8 v8.6.0
 	github.com/goccy/go-json v0.10.2
 	github.com/rs/zerolog v1.29.1
@@ -13,7 +13,7 @@ require (
 )
 
 require (
-	github.com/cloudquery/plugin-pb-go v1.9.1 // indirect
+	github.com/cloudquery/plugin-pb-go v1.9.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/testify v1.8.4 // indirect
@@ -33,7 +33,7 @@ require (
 	github.com/go-logr/logr v1.2.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
-	github.com/google/flatbuffers v23.1.21+incompatible // indirect
+	github.com/google/flatbuffers v23.5.26+incompatible // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3 // indirect

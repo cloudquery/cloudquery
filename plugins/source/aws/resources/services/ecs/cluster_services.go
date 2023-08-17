@@ -44,7 +44,7 @@ func clusterServices() *schema.Table {
 func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cluster := parent.Item.(types.Cluster)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecs
+	svc := cl.Services(client.AWSServiceEcs).Ecs
 	config := ecs.ListServicesInput{
 		Cluster: cluster.ClusterArn,
 	}

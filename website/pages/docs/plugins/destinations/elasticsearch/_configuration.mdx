@@ -7,9 +7,17 @@ spec:
   path: cloudquery/elasticsearch
   version: "VERSION_DESTINATION_ELASTICSEARCH"
   write_mode: "overwrite-delete-stale"
-  # batch_size: 10000 # optional
-  # batch_size_bytes: 5242880 # optional
   spec:
-    # elasticsearch plugin spec
-    addresses: ["http://localhost:9200"] # optional
+    # Optional parameters
+    # addresses: ["http://localhost:9200"]
+    # username: ""
+    # password: ""
+    # cloud_id: ""
+    # api_key: ""
+    # service_token: ""
+    # certificate_fingerprint: ""
+    # ca_cert: ""
+    # concurrency: 5 # default: number of CPUs
+    # batch_size: 1000
+    # batch_size_bytes: 5242880 # 5 MiB
 ```

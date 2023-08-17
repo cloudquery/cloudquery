@@ -19,8 +19,9 @@ invoices_columns = oapi_definition_to_columns(
 class Invoices(Table):
     def __init__(self) -> None:
         super().__init__(
-            "square_invoices",
-            invoices_columns,
+            name="square_invoices",
+            title="Square Invoices",
+            columns=invoices_columns,
         )
 
     @property

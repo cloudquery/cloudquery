@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/accounts"
+	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/apps"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/balances"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/billing_history"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/cdns"
@@ -36,6 +37,7 @@ import (
 func getTables() []*schema.Table {
 	tables := []*schema.Table{
 		accounts.Accounts(),
+		apps.Apps(),
 		cdns.Cdns(),
 		billing_history.BillingHistory(),
 		monitoring.AlertPolicies(),

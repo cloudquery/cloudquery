@@ -47,7 +47,7 @@ func Services() *schema.Table {
 func fetchApprunnerServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apprunner.ListServicesInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apprunner
+	svc := cl.Services(client.AWSServiceApprunner).Apprunner
 	paginator := apprunner.NewListServicesPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *apprunner.Options) {
@@ -63,7 +63,7 @@ func fetchApprunnerServices(ctx context.Context, meta schema.ClientMeta, parent 
 
 func getService(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apprunner
+	svc := cl.Services(client.AWSServiceApprunner).Apprunner
 	service := resource.Item.(types.ServiceSummary)
 
 	describeTaskDefinitionOutput, err := svc.DescribeService(ctx, &apprunner.DescribeServiceInput{ServiceArn: service.ServiceArn}, func(options *apprunner.Options) {

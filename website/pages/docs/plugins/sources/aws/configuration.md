@@ -110,7 +110,7 @@ This is the (nested) spec used by the AWS source plugin.
 
 - **preview** `table_options` (`map`) (default: not used)
 
-  This is a preview feature (for more information about `preview` features look at (Plugin Versioning)[(/docs/plugins/sources/aws/versioning)] ) that enables users to override the default options for specific tables.
+  This is a preview feature (for more information about `preview` features look at [plugin versioning](/docs/plugins/sources/aws/versioning) that enables users to override the default options for specific tables.
   The root of the object takes a table name, and the next level takes an API method name.
   The final level is the actual input object as defined by the API. 
 

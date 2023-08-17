@@ -45,7 +45,7 @@ func provisioningArtifact() *schema.Table {
 
 func fetchProvisioningArtifacts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Servicecatalog
+	svc := cl.Services(client.AWSServiceServicecatalog).Servicecatalog
 	p := parent.Item.(types.ProvisionedProductAttribute)
 
 	input := servicecatalog.DescribeProvisioningArtifactInput{

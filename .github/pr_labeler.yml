@@ -1,3 +1,5 @@
+airtable:
+  - plugins/source/airtable/**/*
 alicloud:
   - plugins/source/alicloud/**/*
 aws:
@@ -114,12 +116,18 @@ source-postgresql:
   - plugins/source/postgresql/**/*
 sqlite:
   - plugins/destination/sqlite/**/*
+square:
+  - plugins/source/square/**/*
 stripe:
   - plugins/source/stripe/**/*
 tailscale:
   - plugins/source/tailscale/**/*
 terraform:
   - plugins/source/terraform/**/*
+typeform:
+  - plugins/source/typeform/**/*
+vault:
+  - plugins/source/vault/**/*
 vercel:
   - plugins/source/vercel/**/*
 website:

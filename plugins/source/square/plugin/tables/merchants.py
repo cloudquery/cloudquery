@@ -9,7 +9,7 @@ from square.http.api_response import ApiResponse
 from plugin.oapi import OAPILoader
 from cloudquery.sdk.transformers.openapi import oapi_definition_to_columns
 
-columns = oapi_definition_to_columns(
+merchants_columns = oapi_definition_to_columns(
     OAPILoader.get_definition("Merchant"),
     override_columns=[Column(name="id", type=pa.string(), primary_key=True)],
 )
@@ -18,8 +18,9 @@ columns = oapi_definition_to_columns(
 class Merchants(Table):
     def __init__(self) -> None:
         super().__init__(
-            "square_merchants",
-            columns,
+            name="square_merchants",
+            title="Square Merchants",
+            columns=merchants_columns,
         )
 
     @property

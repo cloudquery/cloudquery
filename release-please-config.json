@@ -64,6 +64,10 @@
     "plugins/destination/test": {
       "component": "plugins-destination-test"
     },
+    "plugins/source/airtable": {
+      "component": "plugins-source-airtable",
+      "release-type": "node"
+    },
     "plugins/source/alicloud": {
       "component": "plugins-source-alicloud"
     },
@@ -118,6 +122,9 @@
     "plugins/source/hubspot": {
       "component": "plugins-source-hubspot"
     },
+    "plugins/source/jira": {
+      "component": "plugins-source-jira"
+    },
     "plugins/source/k8s": {
       "component": "plugins-source-k8s"
     },
@@ -160,6 +167,16 @@
     },
     "plugins/source/test": {
       "component": "plugins-source-test"
+    },
+    "plugins/source/typeform": {
+      "component": "plugins-source-typeform",
+      "extra-files": [
+        "plugin/plugin.py"
+      ],
+      "release-type": "python"
+    },
+    "plugins/source/vault": {
+      "component": "plugins-source-vault"
     },
     "scaffold": {
       "component": "scaffold"

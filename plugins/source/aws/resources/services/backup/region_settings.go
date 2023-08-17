@@ -26,7 +26,7 @@ func RegionSettings() *schema.Table {
 
 func fetchBackupRegionSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Backup
+	svc := cl.Services(client.AWSServiceBackup).Backup
 	input := backup.DescribeRegionSettingsInput{}
 
 	output, err := svc.DescribeRegionSettings(ctx, &input, func(options *backup.Options) {

@@ -5,11 +5,17 @@ spec:
   path: cloudquery/bigquery
   version: "VERSION_DESTINATION_BIGQUERY"
   write_mode: "append"
-  # batch_size: 1000 # optional
-  # batch_size_bytes: 5242880 # optional
   spec:
     project_id: ${PROJECT_ID}
     dataset_id: ${DATASET_ID}
+    # Optional parameters
+    # dataset_location: ""
+    # time_partitioning: none # options: "none", "hour", "day"
+    # service_account_key_json: ""
+    # endpoint: ""
+    # batch_size: 10000
+    # batch_size_bytes: 5242880 # 5 MiB
+    # batch_timeout: 10s
 ```
 
 This example above expects the following environment variables to be set:

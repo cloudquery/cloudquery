@@ -37,7 +37,7 @@ func fetchLambdaFunctionEventSourceMappings(ctx context.Context, meta schema.Cli
 	}
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lambda
+	svc := cl.Services(client.AWSServiceLambda).Lambda
 	config := lambda.ListEventSourceMappingsInput{
 		FunctionName: p.Configuration.FunctionName,
 	}

@@ -11,6 +11,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/repositories"
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/teams"
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/traffic"
+	"github.com/cloudquery/plugin-sdk/v4/docs"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
@@ -35,6 +36,12 @@ func getTables() []*schema.Table {
 	}
 
 	if err := transformers.TransformTables(tables); err != nil {
+		panic(err)
+	}
+	if err := transformers.Apply(tables, func(t *schema.Table) error {
+		t.Title = docs.DefaultTitleTransformer(t)
+		return nil
+	}); err != nil {
 		panic(err)
 	}
 	for _, t := range tables {

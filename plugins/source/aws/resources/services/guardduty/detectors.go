@@ -52,7 +52,7 @@ func Detectors() *schema.Table {
 
 func fetchGuarddutyDetectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Guardduty
+	svc := cl.Services(client.AWSServiceGuardduty).Guardduty
 	config := &guardduty.ListDetectorsInput{}
 	paginator := guardduty.NewListDetectorsPaginator(svc, config)
 	for paginator.HasMorePages() {
@@ -69,7 +69,7 @@ func fetchGuarddutyDetectors(ctx context.Context, meta schema.ClientMeta, parent
 
 func getDetector(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Guardduty
+	svc := cl.Services(client.AWSServiceGuardduty).Guardduty
 	dId := resource.Item.(string)
 
 	d, err := svc.GetDetector(ctx, &guardduty.GetDetectorInput{DetectorId: &dId}, func(options *guardduty.Options) {

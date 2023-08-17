@@ -25,6 +25,7 @@ This table depends on [aws_resiliencehub_app_assessments](aws_resiliencehub_app_
 |reference_id|`utf8`|
 |type|`utf8`|
 |app_component_name|`utf8`|
+|app_component_names|`list<item: utf8, nullable>`|
 |description|`utf8`|
 |items|`json`|
 |prerequisite|`utf8`|

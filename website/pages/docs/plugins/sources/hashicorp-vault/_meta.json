@@ -1,0 +1,10 @@
+{
+  "overview": "Overview",
+  "tables": "Tables",
+  "_authentication": {
+    "display": "hidden"
+  },
+  "_configuration": {
+    "display": "hidden"
+  }
+}

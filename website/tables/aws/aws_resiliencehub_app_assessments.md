@@ -36,6 +36,7 @@ The following tables depend on aws_resiliencehub_app_assessments:
 |compliance|`json`|
 |compliance_status|`utf8`|
 |cost|`json`|
+|drift_status|`utf8`|
 |end_time|`timestamp[us, tz=UTC]`|
 |message|`utf8`|
 |policy|`json`|
@@ -43,3 +44,4 @@ The following tables depend on aws_resiliencehub_app_assessments:
 |resource_errors_details|`json`|
 |start_time|`timestamp[us, tz=UTC]`|
 |tags|`json`|
+|version_name|`utf8`|

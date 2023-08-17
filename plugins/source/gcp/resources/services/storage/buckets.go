@@ -11,7 +11,7 @@ import (
 func Buckets() *schema.Table {
 	return &schema.Table{
 		Name:        "gcp_storage_buckets",
-		Description: `https://cloud.google.com/storage/docs/json_api/v1/buckets#resource`,
+		Description: `https://pkg.go.dev/cloud.google.com/go/storage#BucketAttrs`,
 		Resolver:    fetchBuckets,
 		Multiplex:   client.ProjectMultiplexEnabledServices("storage.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.BucketAttrs{}, transformers.WithPrimaryKeys("Name")),

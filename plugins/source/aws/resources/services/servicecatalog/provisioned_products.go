@@ -45,7 +45,7 @@ func ProvisionedProducts() *schema.Table {
 
 func fetchServicecatalogProvisionedProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Servicecatalog
+	svc := cl.Services(client.AWSServiceServicecatalog).Servicecatalog
 
 	listInput := new(servicecatalog.SearchProvisionedProductsInput)
 	paginator := servicecatalog.NewSearchProvisionedProductsPaginator(svc, listInput)

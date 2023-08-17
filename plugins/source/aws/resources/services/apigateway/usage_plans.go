@@ -42,7 +42,7 @@ func UsagePlans() *schema.Table {
 func fetchApigatewayUsagePlans(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apigateway.GetUsagePlansInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigateway
+	svc := cl.Services(client.AWSServiceApigateway).Apigateway
 	for p := apigateway.NewGetUsagePlansPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx, func(options *apigateway.Options) {
 			options.Region = cl.Region
@@ -68,7 +68,7 @@ func resolveApigatewayUsagePlanArn(ctx context.Context, meta schema.ClientMeta, 
 func fetchApigatewayUsagePlanKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.UsagePlan)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigateway
+	svc := cl.Services(client.AWSServiceApigateway).Apigateway
 	config := apigateway.GetUsagePlanKeysInput{UsagePlanId: r.Id, Limit: aws.Int32(500)}
 	for p := apigateway.NewGetUsagePlanKeysPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx, func(options *apigateway.Options) {

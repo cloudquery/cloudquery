@@ -20,8 +20,14 @@ class SquarePlugin(plugin.Plugin):
     def set_logger(self, logger) -> None:
         self._logger = logger
 
-    def init(self, spec_bytes):
-        self._spec_json = json.loads(spec_bytes)
+    def init(self, spec_bytes, no_connection: bool = True):
+        if no_connection:
+            return
+        if spec_bytes:
+            self._spec_json = json.loads(spec_bytes)
+        else:
+            # without this, an empty spec returns an obscure error
+            self._spec_json = {}
         self._spec = Spec(**self._spec_json)
         self._spec.validate()
         self._scheduler = Scheduler(
@@ -30,7 +36,7 @@ class SquarePlugin(plugin.Plugin):
         self._client = Client(self._spec)
 
     def get_tables(self, options: plugin.TableOptions) -> List[plugin.Table]:
-        t: List[plugin.Table] = [
+        all_tables: List[plugin.Table] = [
             tables.Bookings(),
             tables.Disputes(),
             tables.Locations(),
@@ -39,7 +45,13 @@ class SquarePlugin(plugin.Plugin):
             tables.Payouts(),
             tables.Refunds(),
         ]
-        return schema.filter_dfs(t, options.tables, options.skip_tables)
+
+        # set parent table relationships
+        for table in all_tables:
+            for relation in table.relations:
+                relation.parent = table
+
+        return schema.filter_dfs(all_tables, options.tables, options.skip_tables)
 
     def sync(
         self, options: plugin.SyncOptions
