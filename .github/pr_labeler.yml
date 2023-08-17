@@ -1,3 +1,5 @@
+airtable:
+  - plugins/source/airtable/**/*
 alicloud:
   - plugins/source/alicloud/**/*
 aws:
