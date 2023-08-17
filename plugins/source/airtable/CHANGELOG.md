@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v1.0.0...plugins-source-airtable-v1.0.1) (2023-08-17)
+
+
+### Bug Fixes
+
+* Airtable `dateTime` type handling ([#13174](https://github.com/cloudquery/cloudquery/issues/13174)) ([275a526](https://github.com/cloudquery/cloudquery/commit/275a526ea19fb166df816a22f0818188365c4a65))
+
 ## 1.0.0 (2023-08-17)
 
 
