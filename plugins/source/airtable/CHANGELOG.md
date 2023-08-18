@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v1.0.1...plugins-source-airtable-v1.1.0) (2023-08-18)
+
+
+### Features
+
+* Improve logging of discovery phase ([#13179](https://github.com/cloudquery/cloudquery/issues/13179)) ([5c7776f](https://github.com/cloudquery/cloudquery/commit/5c7776f332bc6a257f216b22a1fceefbca46357b))
+
 ## [1.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v1.0.0...plugins-source-airtable-v1.0.1) (2023-08-17)
 
 
