@@ -68,13 +68,12 @@ export const newAirtablePlugin = () => {
       pluginClient.allTables = [];
       return pluginClient;
     }
-    logger.info('Getting tables from Airtable');
     pluginClient.allTables = await getTables(
+      logger,
       pluginClient.spec.apiKey,
       pluginClient.spec.endpointUrl,
       pluginClient.spec.concurrency,
     );
-    logger.info('Done getting tables from Airtable');
 
     return pluginClient;
   };
