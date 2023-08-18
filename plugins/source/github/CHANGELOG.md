@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v7.1.4...plugins-source-github-v7.2.0) (2023-08-18)
+
+
+### Features
+
+* Add `discovery_concurrency` sync option ([#13188](https://github.com/cloudquery/cloudquery/issues/13188)) ([a2380c1](https://github.com/cloudquery/cloudquery/commit/a2380c14ee7110831777e4c216d78af9acab069c))
+
 ## [7.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v7.1.3...plugins-source-github-v7.1.4) (2023-08-18)
 
 
