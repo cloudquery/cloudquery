@@ -212,9 +212,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.Cl
 				logger.Warn().Msg("table_options is deprecated and will be removed in a future release. Please reach out to CloudQuery team if you need this feature")
 				break
 			}
-
 		}
-
 	}
 
 	client := NewAwsClient(logger, &spec)
