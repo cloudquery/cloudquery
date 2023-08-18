@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v1.0.0...plugins-source-typeform-v1.0.1) (2023-08-18)
+
+
+### Bug Fixes
+
+* Fix JSON logging ([#13185](https://github.com/cloudquery/cloudquery/issues/13185)) ([83e46a0](https://github.com/cloudquery/cloudquery/commit/83e46a070234c75b6d9b74bfad89b7cd370b5c76))
+
 ## [1.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v0.1.1...plugins-source-typeform-v1.0.0) (2023-08-16)
 
 
