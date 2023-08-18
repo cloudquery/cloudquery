@@ -16,6 +16,7 @@ import utc from 'dayjs/plugin/utc.js';
 import { getProperty } from 'dot-prop';
 import { got } from 'got';
 import pMap from 'p-map';
+import type { Logger } from 'winston';
 
 import type { APIField, APITable, APIBase, APIFieldFormula } from './airtable.js';
 import { APIFieldType } from './airtable.js';
@@ -37,8 +38,9 @@ const options = (apiKey: string) => ({
   timeout,
 });
 
-const getBases = (apiKey: string, endpointURL: string) => {
-  return got(`${endpointURL}/v0/meta/bases`, options(apiKey)).json();
+const getBases = async (apiKey: string, endpointURL: string) => {
+  const { bases } = (await got(`${endpointURL}/v0/meta/bases`, options(apiKey)).json()) as { bases: APIBase[] };
+  return bases;
 };
 
 const getBaseTables = async (apiKey: string, endpointURL: string, baseId: string) => {
@@ -251,13 +253,24 @@ const airtableToSchemaTable = (
   return createTable({ name, columns, description: table.description, resolver });
 };
 
-export const getTables = async (apiKey: string, endpointUrl: string, concurrency: number): Promise<Table[]> => {
-  const { bases } = (await getBases(apiKey, endpointUrl)) as { bases: APIBase[] };
+export const getTables = async (
+  logger: Logger,
+  apiKey: string,
+  endpointUrl: string,
+  concurrency: number,
+): Promise<Table[]> => {
+  logger.info('discovering Airtable bases');
+  const bases = await getBases(apiKey, endpointUrl);
+  logger.info(`done discovering Airtable bases. Found ${bases.length} bases`);
 
   const allTables = await pMap(
     bases,
     async ({ id: baseId, name: baseName }) => {
+      logger.info(`discovering tables from Airtable base '(${baseId}) ${baseName}'`);
       const tables = await getBaseTables(apiKey, endpointUrl, baseId);
+      logger.info(
+        `done discovering tables from Airtable base '(${baseId}) ${baseName}'. Found ${tables.length} tables`,
+      );
       return { baseId, baseName, tables };
     },
     {
