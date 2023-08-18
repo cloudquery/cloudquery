@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v7.1.3...plugins-source-github-v7.1.4) (2023-08-18)
+
+
+### Bug Fixes
+
+* Re-init `RepositoryListByOrgOptions` for each organization when listing repositories ([#13182](https://github.com/cloudquery/cloudquery/issues/13182)) ([cc08e74](https://github.com/cloudquery/cloudquery/commit/cc08e74fcf91063376f2bae1ec550164952c88e1))
+
 ## [7.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v7.1.2...plugins-source-github-v7.1.3) (2023-08-15)
 
 

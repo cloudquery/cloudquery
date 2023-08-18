@@ -130,6 +130,11 @@ func (c *Client) Services(service_names ...AWSServiceName) *Services {
 	return c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID)
 }
 
+func (s *Services) Duplicate() Services {
+	duplicateServices := *s
+	return duplicateServices
+}
+
 func (c *Client) Duplicate() *Client {
 	duplicateClient := *c
 	return &duplicateClient
