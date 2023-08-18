@@ -137,10 +137,9 @@ func servicesForClient(c *github.Client) GithubServices {
 }
 
 func (c *Client) discoverRepositories(ctx context.Context, orgs []string, repos []string) (map[string][]*github.Repository, error) {
-	opts := &github.RepositoryListByOrgOptions{ListOptions: github.ListOptions{PerPage: 100}}
-
 	orgRepos := make(map[string][]*github.Repository)
 	for _, org := range orgs {
+		opts := &github.RepositoryListByOrgOptions{ListOptions: github.ListOptions{PerPage: 100}}
 		services := c.servicesForOrg(org)
 		for {
 			repos, resp, err := services.Repositories.ListByOrg(ctx, org, opts)
