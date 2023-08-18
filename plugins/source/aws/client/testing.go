@@ -61,6 +61,32 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 	plugin.ValidateNoEmptyColumns(t, tables, messages)
 }
 
+func AwsCreateMockClient(t *testing.T, ctrl *gomock.Controller, builder func(*testing.T, *gomock.Controller) Services, testOpts TestOptions) Client {
+	if testOpts.Region == "" {
+		testOpts.Region = "us-east-1"
+	}
+
+	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
+		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
+	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+
+	var awsSpec Spec
+	awsSpec.SetDefaults()
+	awsSpec.UsePaidAPIs = true
+	awsSpec.TableOptions = &testOpts.TableOptions
+	c := NewAwsClient(l, &awsSpec)
+	if builder != nil {
+		services := builder(t, ctrl)
+		services.Regions = []string{testOpts.Region}
+		c.ServicesManager.InitServicesForPartitionAccount("aws", "testAccount", services)
+	}
+
+	c.accountMutex["testAccount"] = &sync.Mutex{}
+
+	c.Partition = "aws"
+	return c
+}
+
 func validateTagStructure(t *testing.T, tables schema.Tables) {
 	for _, table := range tables.FlattenTables() {
 		t.Run(table.Name, func(t *testing.T) {

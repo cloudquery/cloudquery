@@ -43,7 +43,7 @@ func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, aws
 		c.specificRegions = false
 	}
 
-	awsCfg, err := configureAwsSDK(ctx, logger, awsPluginSpec, account, adminAccountSts)
+	awsCfg, err := ConfigureAwsSDK(ctx, logger, awsPluginSpec, account, adminAccountSts)
 	if err != nil {
 		warningMsg := logger.Warn().Str("account", account.AccountName).Err(err)
 		if account.source == "org" {
