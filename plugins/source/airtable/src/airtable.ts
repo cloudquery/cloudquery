@@ -14,7 +14,7 @@ export enum APIFieldType {
   createdTime = 'createdTime',
   currency = 'currency',
   date = 'date',
-  dateTime = 'datetime',
+  dateTime = 'dateTime',
   duration = 'duration',
   email = 'email',
   externalSyncSource = 'externalSyncSource',
@@ -95,11 +95,11 @@ export type APIFieldCreatedTime = APIBaseField & {
   options: {
     result:
       | {
-          type: 'date';
+          type: APIFieldType.date;
           options: APIDateOptions;
         }
       | {
-          type: 'dateTime';
+          type: APIFieldType.dateTime;
           options: APIDateTimeOptions;
         };
   };
@@ -650,11 +650,11 @@ export type APILastModifiedTime = APIBaseField & {
     referencedFieldIds: Array<string>;
     result:
       | {
-          type: 'date';
+          type: APIFieldType.date;
           options: APIDateOptions;
         }
       | {
-          type: 'dateTime';
+          type: APIFieldType.dateTime;
           options: APIDateTimeOptions;
         };
   };

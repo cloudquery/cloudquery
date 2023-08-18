@@ -1,15 +1,5 @@
 import type { DataType } from '@cloudquery/plugin-sdk-javascript/arrow';
-import {
-  Utf8,
-  Timestamp,
-  Date_,
-  DateUnit,
-  TimeUnit,
-  Float64,
-  Bool,
-  Int64,
-  Uint64,
-} from '@cloudquery/plugin-sdk-javascript/arrow';
+import { Utf8, Timestamp, TimeUnit, Float64, Bool, Int64, Uint64 } from '@cloudquery/plugin-sdk-javascript/arrow';
 import type { ColumnResolver } from '@cloudquery/plugin-sdk-javascript/schema/column';
 import { createColumn } from '@cloudquery/plugin-sdk-javascript/schema/column';
 import { pathResolver } from '@cloudquery/plugin-sdk-javascript/schema/resolvers';
@@ -26,6 +16,7 @@ import utc from 'dayjs/plugin/utc.js';
 import { getProperty } from 'dot-prop';
 import { got } from 'got';
 import pMap from 'p-map';
+import type { Logger } from 'winston';
 
 import type { APIField, APITable, APIBase, APIFieldFormula } from './airtable.js';
 import { APIFieldType } from './airtable.js';
@@ -47,8 +38,9 @@ const options = (apiKey: string) => ({
   timeout,
 });
 
-const getBases = (apiKey: string, endpointURL: string) => {
-  return got(`${endpointURL}/v0/meta/bases`, options(apiKey)).json();
+const getBases = async (apiKey: string, endpointURL: string) => {
+  const { bases } = (await got(`${endpointURL}/v0/meta/bases`, options(apiKey)).json()) as { bases: APIBase[] };
+  return bases;
 };
 
 const getBaseTables = async (apiKey: string, endpointURL: string, baseId: string) => {
@@ -78,17 +70,7 @@ const airtableFieldToArrowField = (field: APIField): DataType => {
     }
     case APIFieldType.createdTime:
     case APIFieldType.lastModifiedTime: {
-      switch (field.options.result.type) {
-        case 'date': {
-          return new Date_(DateUnit.DAY);
-        }
-        case 'dateTime': {
-          return new Timestamp(TimeUnit.NANOSECOND);
-        }
-        default: {
-          throw new Error(`Unknown createdTime result: ${JSON.stringify(field.options.result)}`);
-        }
-      }
+      return airtableFieldToArrowField({ ...field, ...field.options.result });
     }
     // We don't use the Arrow Date type because most destinations don't support it
     case APIFieldType.date:
@@ -132,6 +114,14 @@ const normalizeDateFormat = (format: string) => {
   return format;
 };
 
+const normalizeTimeZone = (timeZone: string) => {
+  if (timeZone === 'client') {
+    // 'client' means Airtable uses the local timezone of the user to display the date, and stores it in UTC
+    return 'utc';
+  }
+  return timeZone;
+};
+
 const getColumnResolver = (field: APIField): ColumnResolver => {
   switch (field.type) {
     case APIFieldType.createdTime:
@@ -150,7 +140,8 @@ const getColumnResolver = (field: APIField): ColumnResolver => {
 
         const timeFormat = field.options.result.options.timeFormat.format;
         const format = `${dateFormat} ${timeFormat}`;
-        const formatted = dayjs.tz(data, format, field.options.result.options.timeZone).toDate();
+        const timezone = normalizeTimeZone(field.options.result.options.timeZone);
+        const formatted = dayjs.tz(data, format, timezone).toDate();
         return Promise.resolve(resource.setColumData(column.name, formatted));
       };
       return resolver;
@@ -178,7 +169,8 @@ const getColumnResolver = (field: APIField): ColumnResolver => {
         const dateFormat = normalizeDateFormat(field.options.dateFormat.format);
         const timeFormat = field.options.timeFormat.format;
         const format = `${dateFormat} ${timeFormat}`;
-        const formatted = dayjs.tz(data, format, field.options.timeZone).toDate();
+        const timeZone = normalizeTimeZone(field.options.timeZone);
+        const formatted = dayjs.tz(data, format, timeZone).toDate();
         return Promise.resolve(resource.setColumData(column.name, formatted));
       };
       return resolver;
@@ -261,13 +253,24 @@ const airtableToSchemaTable = (
   return createTable({ name, columns, description: table.description, resolver });
 };
 
-export const getTables = async (apiKey: string, endpointUrl: string, concurrency: number): Promise<Table[]> => {
-  const { bases } = (await getBases(apiKey, endpointUrl)) as { bases: APIBase[] };
+export const getTables = async (
+  logger: Logger,
+  apiKey: string,
+  endpointUrl: string,
+  concurrency: number,
+): Promise<Table[]> => {
+  logger.info('discovering Airtable bases');
+  const bases = await getBases(apiKey, endpointUrl);
+  logger.info(`done discovering Airtable bases. Found ${bases.length} bases`);
 
   const allTables = await pMap(
     bases,
     async ({ id: baseId, name: baseName }) => {
+      logger.info(`discovering tables from Airtable base '(${baseId}) ${baseName}'`);
       const tables = await getBaseTables(apiKey, endpointUrl, baseId);
+      logger.info(
+        `done discovering tables from Airtable base '(${baseId}) ${baseName}'. Found ${tables.length} tables`,
+      );
       return { baseId, baseName, tables };
     },
     {
