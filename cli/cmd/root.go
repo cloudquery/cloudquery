@@ -3,6 +3,8 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"os/user"
+	"runtime"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -29,6 +31,28 @@ Find more information at:
 	analyticsClient *AnalyticsClient
 	logFile         *os.File
 )
+
+func getUserConfigDir() string {
+	usr, err := user.Current()
+	if err != nil {
+		return ".cloudquery"
+	}
+
+	switch runtime.GOOS {
+	case "linux":
+		return usr.HomeDir + "/.cloudquery"
+	case "windows":
+		appData := os.Getenv("APPDATA")
+		if appData == "" {
+			return usr.HomeDir + "/.cloudquery"
+		}
+		return appData + "/.cloudquery"
+	case "darwin":
+		return usr.HomeDir + "/.cloudquery"
+	default:
+		return ".cloudquery"
+	}
+}
 
 func NewCmdRoot() *cobra.Command {
 	logLevel := enum.NewEnum([]string{"trace", "debug", "info", "warn", "error"}, "info")
@@ -94,10 +118,19 @@ func NewCmdRoot() *cobra.Command {
 				disableSentry = true
 			}
 
+			userConfigDir, err := cmd.Flags().GetString("config")
+			if err != nil {
+				return err
+			}
+			if err := os.MkdirAll(userConfigDir, 0700); err != nil {
+				return fmt.Errorf("failed to create config directory: %w", err)
+			}
+
 			return nil
 		},
 	}
-
+	userConfigDir := getUserConfigDir()
+	cmd.PersistentFlags().String("config", userConfigDir, "directory to store cloudquery global configuration such as credentials and tokens")
 	cmd.PersistentFlags().String("cq-dir", ".cq", "directory to store cloudquery files, such as downloaded plugins")
 	cmd.PersistentFlags().String("data-dir", "", "set persistent data directory")
 	err = cmd.PersistentFlags().MarkDeprecated("data-dir", "use cq-dir instead")
@@ -128,6 +161,7 @@ func NewCmdRoot() *cobra.Command {
 		NewCmdMigrate(),
 		newCmdDoc(),
 		NewCmdTables(),
+		newCmdLogin(),
 	)
 	cmd.CompletionOptions.HiddenDefaultCmd = true
 	cmd.DisableAutoGenTag = true
