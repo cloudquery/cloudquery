@@ -37,4 +37,4 @@ description: Join our small but might team to work on open-source and backend st
 
 # How to Apply
 
-Does this role sound like a good fit? Email us at [jobs@cloudquery.io](mailto:jobs@cloudquery.io)
+Does this role sound like a good fit? Apply [here](/apply_for_job).
