@@ -100,7 +100,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads v0.2.0
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue v0.1.0
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882
-	github.com/cloudquery/plugin-sdk/v4 v4.5.0
+	github.com/cloudquery/plugin-sdk/v4 v4.5.1
 	github.com/cockroachdb/cockroachdb-parser v0.0.0-20230705064001-302c9ad52e1a
 	github.com/gorilla/mux v1.8.0
 	github.com/mitchellh/hashstructure/v2 v2.0.2
@@ -121,7 +121,7 @@ require (
 	github.com/biogo/store v0.0.0-20201120204734-aad293a2328f // indirect
 	github.com/blevesearch/snowballstem v0.9.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.9.2 // indirect
+	github.com/cloudquery/plugin-pb-go v1.9.3 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/cockroachdb/apd/v3 v3.1.0 // indirect
 	github.com/cockroachdb/errors v1.9.0 // indirect
