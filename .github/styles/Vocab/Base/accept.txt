@@ -122,6 +122,7 @@ jira
 json
 JSON
 jsonb
+Kao
 Kestra
 keyless
 Kibana
