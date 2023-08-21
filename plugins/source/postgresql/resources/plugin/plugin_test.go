@@ -30,6 +30,8 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
+var replacer = strings.NewReplacer("(", "", ")", "", " ", "_")
+
 func getTestConnection(ctx context.Context, logger zerolog.Logger, connectionString string) (*pgxpool.Pool, error) {
 	pgxConfig, err := pgxpool.ParseConfig(connectionString)
 	if err != nil {
@@ -179,9 +181,10 @@ func createTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string) 
 	sb.WriteString("CREATE TABLE ")
 	sb.WriteString(pgx.Identifier{tableName}.Sanitize())
 	sb.WriteString(" (")
+
 	columns := getTestCases(0)
 	for i, col := range columns {
-		sb.WriteString(pgx.Identifier{col.typeName + "_type"}.Sanitize())
+		sb.WriteString(pgx.Identifier{replacer.Replace(col.typeName) + "_type"}.Sanitize())
 		sb.WriteString(" ")
 		sb.WriteString(col.typeName)
 		if col.typeName == "uuid" {
@@ -235,7 +238,7 @@ func insertTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string, 
 		if col.value == nil {
 			continue
 		}
-		query += pgx.Identifier{col.typeName + "_type"}.Sanitize() + ", "
+		query += pgx.Identifier{replacer.Replace(col.typeName) + "_type"}.Sanitize() + ", "
 	}
 	query = query[:len(query)-2] + ") VALUES ("
 	dataIndex := 0
