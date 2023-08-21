@@ -18,6 +18,7 @@ func TestPlugin(t *testing.T) {
 		ProjectID:        os.Getenv("BIGQUERY_PROJECT_ID"),
 		DatasetID:        os.Getenv("BIGQUERY_DATASET_ID"),
 		DatasetLocation:  os.Getenv("BIGQUERY_DATASET_LOCATION"),
+		Endpoint:         os.Getenv("BIGQUERY_ENDPOINT"),
 		TimePartitioning: "none",
 	}
 	specBytes, err := json.Marshal(spec)
