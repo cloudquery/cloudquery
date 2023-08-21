@@ -4,8 +4,8 @@ github.com/bluekeyes/go-gitdiff v0.7.1 h1:graP4ElLRshr8ecu0UtqfNTCHrtSyZd3DABQm/
 github.com/bluekeyes/go-gitdiff v0.7.1/go.mod h1:QpfYYO1E0fTVHVZAZKiRjtSGY9823iCdvGXBcEzHGbM=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0/go.mod h1:pAX6ojIW99b/Vg4CkhnsGkRIzNaVEceYMR+Bdit73ug=
-github.com/cloudquery/plugin-sdk/v4 v4.5.1 h1:V6EfHkW6kyYVMSX2S/Fn1b+62bU1jegIuv16Koo2f98=
-github.com/cloudquery/plugin-sdk/v4 v4.5.1/go.mod h1:WNTjNp8CPDDSpJHOSaho+MUzntKO6czG6E+yvVe++aA=
+github.com/cloudquery/plugin-sdk/v4 v4.5.2 h1:evRxri2pw/+Iohu7RNXcjd1PZiZkaXUP0T8CgtgtXv4=
+github.com/cloudquery/plugin-sdk/v4 v4.5.2/go.mod h1:/2/9y6iODo8jOT0mrAp8K1eogr7+228cy53jK8aUCjY=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
