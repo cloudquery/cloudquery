@@ -13,7 +13,7 @@ require (
 )
 
 // https://github.com/cloudquery/plugin-sdk/pull/1157
-replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/v4 v4.8.1-rc1.0.20230821163742-9651f9ce9910
+replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/v4 v4.8.1-rc1.0.20230821164311-099e730d34e9
 
 require (
 	github.com/andybalholm/brotli v1.0.5 // indirect
