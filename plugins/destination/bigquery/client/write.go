@@ -37,7 +37,6 @@ func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) err
 	return nil
 }
 
-// WriteTableBatch(ctx context.Context, name string, msgs []*message.Insert) error
 func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
 	inserter := c.client.Dataset(c.spec.DatasetID).Table(name).Inserter()
 	inserter.IgnoreUnknownValues = true
@@ -45,17 +44,13 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	batch := make([]*item, 0)
 	for _, msg := range msgs {
 		rec := msg.Record
-		sc := rec.Schema()
-		for r := 0; r < int(rec.NumRows()); r++ {
-			saver := &item{
-				cols: make(map[string]bigquery.Value, len(sc.Fields())),
-			}
-			for i, col := range rec.Columns() {
-				if col.IsNull(r) {
+		for i := 0; i < int(rec.NumRows()); i++ {
+			saver := &item{cols: make(map[string]bigquery.Value, rec.NumCols())}
+			for n, col := range rec.Columns() {
+				if col.IsValid(i) {
 					// save some bandwidth by not sending nil values
-					continue
+					saver.cols[rec.ColumnName(n)] = getValueForBigQuery(col, i)
 				}
-				saver.cols[sc.Fields()[i].Name] = c.getValueForBigQuery(col, r)
 			}
 			batch = append(batch, saver)
 		}
@@ -78,13 +73,13 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	return nil
 }
 
-func (c *Client) getValueForBigQuery(col arrow.Array, i int) any {
+func getValueForBigQuery(col arrow.Array, i int) any {
 	switch v := col.(type) {
 	case *array.Struct:
 		m := map[string]bigquery.Value{}
 		fields := v.DataType().(*arrow.StructType).Fields()
 		for f, field := range fields {
-			m[field.Name] = c.getValueForBigQuery(v.Field(f), i)
+			m[field.Name] = getValueForBigQuery(v.Field(f), i)
 		}
 		return m
 	case *array.Map:
@@ -92,24 +87,25 @@ func (c *Client) getValueForBigQuery(col arrow.Array, i int) any {
 		b, _ := json.Marshal(v2)
 		return string(b)
 	case array.ListLike:
-		arr := col.(array.ListLike)
-		elems := make([]any, 0, arr.Len())
-		for j := 0; j < arr.Len(); j++ {
-			if arr.IsNull(j) {
+		col := col.(array.ListLike)
+		if col.IsNull(i) {
+			return nil
+		}
+		from, to := col.ValueOffsets(i)
+		slc := array.NewSlice(col.ListValues(), from, to)
+		elems := make([]any, 0, slc.Len())
+		for j := 0; j < slc.Len(); j++ {
+			if slc.IsNull(j) {
 				continue
 			}
-			from, to := arr.ValueOffsets(j)
-			slc := array.NewSlice(arr.ListValues(), from, to)
-			for k := 0; k < slc.Len(); k++ {
-				if slc.IsNull(k) {
-					// LIMITATION: BigQuery does not support null values in repeated columns.
-					// Therefore, these get stripped out here. In the future, perhaps we should support
-					// an option to use JSON instead of repeated columns for users who need to preserve
-					// the null values.
-					continue
-				}
-				elems = append(elems, c.getValueForBigQuery(slc, k))
+			if slc.IsNull(j) {
+				// LIMITATION: BigQuery does not support null values in repeated columns.
+				// Therefore, these get stripped out here. In the future, perhaps we should support
+				// an option to use JSON instead of repeated columns for users who need to preserve
+				// the null values.
+				continue
 			}
+			elems = append(elems, getValueForBigQuery(slc, j))
 		}
 		return elems
 	case *array.MonthDayNanoInterval:
