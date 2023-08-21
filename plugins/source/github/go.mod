@@ -11,9 +11,10 @@ require (
 	github.com/google/go-github/v49 v49.0.0
 	github.com/rs/zerolog v1.29.1
 	golang.org/x/oauth2 v0.10.0
+	golang.org/x/sync v0.2.0
 )
 
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230813001215-e9683e1ff252
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230821001142-5b83d4f91697
 
 require (
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
@@ -56,7 +57,6 @@ require (
 	golang.org/x/exp v0.0.0-20230728194245-b0cb94b80691 // indirect
 	golang.org/x/mod v0.11.0 // indirect
 	golang.org/x/net v0.12.0 // indirect
-	golang.org/x/sync v0.2.0 // indirect
 	golang.org/x/sys v0.10.0 // indirect
 	golang.org/x/text v0.11.0 // indirect
 	golang.org/x/tools v0.7.0 // indirect
