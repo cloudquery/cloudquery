@@ -88,9 +88,6 @@ func getValueForBigQuery(col arrow.Array, i int) any {
 		return string(b)
 	case array.ListLike:
 		col := col.(array.ListLike)
-		if col.IsNull(i) {
-			return nil
-		}
 		from, to := col.ValueOffsets(i)
 		slc := array.NewSlice(col.ListValues(), from, to)
 		elems := make([]any, 0, slc.Len())
