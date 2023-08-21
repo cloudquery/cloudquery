@@ -1,6 +1,6 @@
 ---
 title: Senior Frontend Engineer
-description: Join our small but might team to work on open-source and frontend stuff.
+description: Join our small but mighty team to work on open-source and frontend stuff.
 ---
 
 # Senior Frontend Engineer
