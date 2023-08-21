@@ -209,7 +209,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.Cl
 		for i := 0; i < fieldNum; i++ {
 			field := structVal.Field(i)
 			if field.IsValid() && !field.IsZero() {
-				logger.Warn().Msg("table_options is deprecated and will be removed in a future release. Please reach out to CloudQuery team if you need this feature")
+				logger.Warn().Msg("table_options is deprecated and will be removed soon. Please reach out to the CloudQuery team if you require this feature")
 				break
 			}
 		}
