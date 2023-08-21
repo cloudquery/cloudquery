@@ -54,8 +54,8 @@ github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWR
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
 github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMnBNeIyt5eFwwo7qiLfzFZmjNmxjkiQlU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/arrow/go/v13 v13.0.0-20230723001421-10df4b9d1986 h1:3M6t0f+3WHgWSdd2KJXUXt7Z++zLHbHElHZQ+SCLrxI=
-github.com/cloudquery/arrow/go/v13 v13.0.0-20230723001421-10df4b9d1986/go.mod h1:W69eByFNO0ZR30q1/7Sr9d83zcVZmF2MiP3fFYAWJOc=
+github.com/cloudquery/arrow/go/v13 v13.0.0-20230821001142-5b83d4f91697 h1:D6qQZxiBMSz7YiB3nokGxg7BF+46UMEk2lPJmcifJg0=
+github.com/cloudquery/arrow/go/v13 v13.0.0-20230821001142-5b83d4f91697/go.mod h1:W69eByFNO0ZR30q1/7Sr9d83zcVZmF2MiP3fFYAWJOc=
 github.com/cloudquery/codegen v0.3.1 h1:SIKYVxSaiLkWztOd9af46WhUE3gNeXx7wgQ98/SdRzE=
 github.com/cloudquery/codegen v0.3.1/go.mod h1:TXf0NjTBegC3ea2TqnZQpl8h0e8mX384od6X+hUIau4=
 github.com/cloudquery/plugin-pb-go v1.9.2 h1:jApELKSgtyj1dKQlD2hKPMTFs1GqOdSK8u+5rEluj4M=
