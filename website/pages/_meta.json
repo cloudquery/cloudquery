@@ -111,6 +111,10 @@
       }
     }
   },
+  "Careers": {
+    "title": "Careers",
+    "href": "/docs/careers/overview"
+  },
   "how-to-guides":  {
     "title": "How-to Guides",
     "display": "hidden",
