@@ -1,3 +1,5 @@
+import { Callout } from 'nextra-theme-docs';
+
 # AWS Source Plugin Configuration Reference
 
 ## Examples
@@ -107,6 +109,11 @@ This is the (nested) spec used by the AWS source plugin.
 
   When set to `true` plugin will sync data from APIs that incur a fee. 
   Currently only `aws_costexplorer*` and `aws_alpha_cloudwatch_metric*` tables require this flag to be set to `true`.
+
+
+<Callout type="warn">
+The `table_options` parameter is deprecated and will be removed soon. Please reach out to the CloudQuery team if you require this feature
+</Callout>
 
 - **preview** `table_options` (`map`) (default: not used)
 
