@@ -14,6 +14,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
+	"github.com/google/uuid"
 	"github.com/segmentio/fasthash/fnv1a"
 )
 
@@ -67,7 +68,7 @@ func (c *Client) writeRecord(ctx context.Context, table *schema.Table, record ar
 			docID := fmt.Sprint(resourceID(record, r, pks))
 			meta = []byte(fmt.Sprintf(`{"index":{"_id":"%s"}}%s`, docID, "\n"))
 		} else {
-			meta = []byte(`{"index":{}}` + "\n")
+			meta = []byte(fmt.Sprintf(`{"index":{"_id":"%s","op_type":"create"}}%s`, generateUniqueID(), "\n"))
 		}
 		data = append(data, "\n"...)
 		buf.Grow(len(meta) + len(data))
@@ -172,6 +173,11 @@ func pkIndexes(table *schema.Table) []int {
 		inds = append(inds, table.Columns.Index(col))
 	}
 	return inds
+}
+
+func generateUniqueID() string {
+	u, _ := uuid.NewUUID()
+	return u.String()
 }
 
 // elasticsearch IDs are limited to 512 bytes, so we hash the resource PK to make sure it's within the limit

@@ -8,6 +8,7 @@ require (
 	github.com/cloudquery/plugin-sdk/v4 v4.5.3
 	github.com/elastic/go-elasticsearch/v8 v8.6.0
 	github.com/goccy/go-json v0.10.2
+	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.1
 	github.com/segmentio/fasthash v1.0.3
 )
@@ -20,6 +21,8 @@ require (
 	golang.org/x/exp v0.0.0-20230728194245-b0cb94b80691
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/v4 v4.8.1-rc1.0.20230822135648-855d76e3711c
 
 require (
 	github.com/elastic/elastic-transport-go/v8 v8.0.0-20211216131617-bbee439d559c // indirect
@@ -34,7 +37,6 @@ require (
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/flatbuffers v23.5.26+incompatible // indirect
-	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.3 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.3 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.0 // indirect
