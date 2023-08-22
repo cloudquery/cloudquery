@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882
-	github.com/cloudquery/plugin-sdk/v4 v4.5.1
+	github.com/cloudquery/plugin-sdk/v4 v4.5.2
 	github.com/gorilla/mux v1.8.0
 	github.com/rs/zerolog v1.29.1
 	golang.org/x/time v0.3.0
