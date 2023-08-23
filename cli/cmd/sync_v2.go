@@ -44,8 +44,8 @@ func getSourceV2DestV3DestinationsTransformers(sourceSpec specs.Source, destinat
 	return destinationsTransformers
 }
 
-func transformSourceV2DestV3Schemas(originalSchemas [][]byte, transformer *transformer.RecordTransformer) ([][]byte, error) {
-	if transformer == nil {
+func transformSourceV2DestV3Schemas(originalSchemas [][]byte, recordTransformer *transformer.RecordTransformer) ([][]byte, error) {
+	if recordTransformer == nil {
 		return originalSchemas, nil
 	}
 	transformedSchemasBytes := make([][]byte, 0, len(originalSchemas))
@@ -54,7 +54,7 @@ func transformSourceV2DestV3Schemas(originalSchemas [][]byte, transformer *trans
 		if err != nil {
 			return nil, err
 		}
-		transformedSchema := transformer.TransformSchema(schema)
+		transformedSchema := recordTransformer.TransformSchema(schema)
 		transformedSchemaBytes, err := pluginv3.SchemaToBytes(transformedSchema)
 		if err != nil {
 			return nil, err
@@ -64,15 +64,15 @@ func transformSourceV2DestV3Schemas(originalSchemas [][]byte, transformer *trans
 	return transformedSchemasBytes, nil
 }
 
-func transformSourceV2DestV3Resource(originalResourceBytes []byte, transformer *transformer.RecordTransformer) ([]byte, error) {
-	if transformer == nil {
+func transformSourceV2DestV3Resource(originalResourceBytes []byte, recordTransformer *transformer.RecordTransformer) ([]byte, error) {
+	if recordTransformer == nil {
 		return originalResourceBytes, nil
 	}
 	resource, err := pluginv3.NewRecordFromBytes(originalResourceBytes)
 	if err != nil {
 		return nil, err
 	}
-	transformedResource := transformer.Transform(resource)
+	transformedResource := recordTransformer.Transform(resource)
 	transformedResourceBytes, err := pluginv3.RecordToBytes(transformedResource)
 	if err != nil {
 		return nil, err
