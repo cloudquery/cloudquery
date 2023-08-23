@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	sqlTableList = "select table_name from information_schema.tables where table_schema=CURRENT_SCHEMA();"
-	sqlTableInfo = "select column_name, data_type, is_nullable from information_schema.columns where table_name ILIKE ?;"
+	sqlTableList = "select table_name from information_schema.tables where table_schema=current_schema();"
+	sqlTableInfo = "select column_name, data_type, is_nullable from information_schema.columns where table_schema=current_schema() and table_name ilike ?;"
 )
 
 type columnInfo struct {

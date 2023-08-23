@@ -7,19 +7,18 @@ The primary key for this table is **id**.
 ## Relations
 
 The following tables depend on typeform_forms:
-
   - [typeform_form_responses](typeform_form_responses)
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|id (PK)|`string`|
+|id (PK)|`utf8`|
 |created_at|`timestamp[s]`|
 |last_updated_at|`timestamp[s]`|
-|self|`extension<json<JSONType>>`|
-|type|`string`|
-|settings|`extension<json<JSONType>>`|
-|theme|`extension<json<JSONType>>`|
-|title|`string`|
-|_links|`extension<json<JSONType>>`|
+|self|`json`|
+|type|`utf8`|
+|settings|`json`|
+|theme|`json`|
+|title|`utf8`|
+|_links|`json`|

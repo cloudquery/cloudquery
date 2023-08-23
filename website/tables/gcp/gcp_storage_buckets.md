@@ -2,7 +2,7 @@
 
 This table shows data for GCP Storage Buckets.
 
-https://cloud.google.com/storage/docs/json_api/v1/buckets#resource
+https://pkg.go.dev/cloud.google.com/go/storage#BucketAttrs
 
 The primary key for this table is **name**.
 

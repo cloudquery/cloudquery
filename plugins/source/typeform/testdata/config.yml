@@ -3,8 +3,8 @@ spec:
   name: typeform
   version: v1.0.0
   destinations: [test]
-  path: ./typeform
-  registry: local
+  path: "typeform:latest"
+  registry: docker
   tables: ["*"]
   spec:
 ---

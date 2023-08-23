@@ -9,7 +9,8 @@ type Spec struct {
 	AppAuth            []AppAuthSpec       `json:"app_auth"`
 	EnterpriseSettings *EnterpriseSettings `json:"enterprise"`
 
-	Concurrency int `json:"concurrency,omitempty"`
+	Concurrency          int `json:"concurrency,omitempty"`
+	DiscoveryConcurrency int `json:"discovery_concurrency,omitempty"`
 }
 
 type EnterpriseSettings struct {
@@ -27,6 +28,9 @@ type AppAuthSpec struct {
 func (s *Spec) SetDefaults() {
 	if s.Concurrency == 0 {
 		s.Concurrency = 10000
+	}
+	if s.DiscoveryConcurrency == 0 {
+		s.DiscoveryConcurrency = 1
 	}
 }
 

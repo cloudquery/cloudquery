@@ -6,6 +6,42 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.7.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.6.0...plugins-source-aws-v22.7.0) (2023-08-21)
+
+
+### Features
+
+* Instantiate services at sync time rather than during init phase of sync ([#13059](https://github.com/cloudquery/cloudquery/issues/13059)) ([99e6889](https://github.com/cloudquery/cloudquery/commit/99e6889c49f66e66d03fbf76064d779a77281f70))
+
+
+### Bug Fixes
+
+* AWS foundational security controls for S3.8 query reference ([#13065](https://github.com/cloudquery/cloudquery/issues/13065)) ([7cde3d2](https://github.com/cloudquery/cloudquery/commit/7cde3d2d063c65c714812a9d98dfaea0f60b84d0)), closes [#13064](https://github.com/cloudquery/cloudquery/issues/13064)
+* **deps:** Update AWS modules ([#13246](https://github.com/cloudquery/cloudquery/issues/13246)) ([49ee475](https://github.com/cloudquery/cloudquery/commit/49ee4752fff1e6fc06e0b50e0450bdadd4373d16))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 5b83d4f ([#13203](https://github.com/cloudquery/cloudquery/issues/13203)) ([b0a4b8c](https://github.com/cloudquery/cloudquery/commit/b0a4b8ccf7c429bf5a6ed88866865212015b68e4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.1 ([#13195](https://github.com/cloudquery/cloudquery/issues/13195)) ([a184c37](https://github.com/cloudquery/cloudquery/commit/a184c3786ad49df8564344773e9b96f617ef87a1))
+* Panic while fetching `aws_codecommit_repositories` ([#13223](https://github.com/cloudquery/cloudquery/issues/13223)) ([4d9bcc1](https://github.com/cloudquery/cloudquery/commit/4d9bcc188723f318a794ad343dc2c2ac5b3da018))
+* Remove unused query ([#13152](https://github.com/cloudquery/cloudquery/issues/13152)) ([f050699](https://github.com/cloudquery/cloudquery/commit/f050699ba1bc229368a566764890a06ca90d53f0))
+
+## [22.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.5.1...plugins-source-aws-v22.6.0) (2023-08-15)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_elbv2_load_balancers`: column added with name `enforce_security_group_inbound_rules_on_private_link_traffic` and type `utf8`
+- Table `aws_fsx_data_repository_tasks`: column added with name `release_configuration` and type `json`
+
+### Features
+
+* **services:** Support newly added regions ([#13062](https://github.com/cloudquery/cloudquery/issues/13062)) ([cbee2c2](https://github.com/cloudquery/cloudquery/commit/cbee2c23ad3f81c042284b222b16373469cca02e))
+
+
+### Bug Fixes
+
+* **deps:** Update AWS modules ([#13012](https://github.com/cloudquery/cloudquery/issues/13012)) ([d163f2b](https://github.com/cloudquery/cloudquery/commit/d163f2b46cd7c9a0961b8bced02ae8adc9b43bb1))
+* **deps:** Update AWS modules ([#13013](https://github.com/cloudquery/cloudquery/issues/13013)) ([0a12c5b](https://github.com/cloudquery/cloudquery/commit/0a12c5bc1c44ba06c0320ae3c794ba6065ec20ea))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to e9683e1 ([#13015](https://github.com/cloudquery/cloudquery/issues/13015)) ([6557696](https://github.com/cloudquery/cloudquery/commit/65576966d3bd14297499a5b85d3b4fc2c7918df3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.0 ([#13068](https://github.com/cloudquery/cloudquery/issues/13068)) ([7bb0e4b](https://github.com/cloudquery/cloudquery/commit/7bb0e4ba654971726e16a6a501393e3831170307))
+
 ## [22.5.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.5.0...plugins-source-aws-v22.5.1) (2023-08-09)
 
 

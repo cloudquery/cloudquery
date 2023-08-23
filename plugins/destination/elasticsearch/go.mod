@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882
 	github.com/cenkalti/backoff/v4 v4.2.1
-	github.com/cloudquery/plugin-sdk/v4 v4.4.0
+	github.com/cloudquery/plugin-sdk/v4 v4.5.1
 	github.com/elastic/go-elasticsearch/v8 v8.6.0
 	github.com/goccy/go-json v0.10.2
 	github.com/rs/zerolog v1.29.1
@@ -13,7 +13,7 @@ require (
 )
 
 require (
-	github.com/cloudquery/plugin-pb-go v1.9.2 // indirect
+	github.com/cloudquery/plugin-pb-go v1.9.3 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/stretchr/testify v1.8.4 // indirect

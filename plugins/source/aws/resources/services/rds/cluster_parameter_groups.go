@@ -45,7 +45,7 @@ func ClusterParameterGroups() *schema.Table {
 
 func fetchRdsClusterParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Rds
+	svc := cl.Services(client.AWSServiceRds).Rds
 	var input rds.DescribeDBClusterParameterGroupsInput
 	paginator := rds.NewDescribeDBClusterParameterGroupsPaginator(svc, &input)
 	for paginator.HasMorePages() {
@@ -63,7 +63,7 @@ func fetchRdsClusterParameterGroups(ctx context.Context, meta schema.ClientMeta,
 func resolveRdsClusterParameterGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	g := resource.Item.(types.DBClusterParameterGroup)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Rds
+	svc := cl.Services(client.AWSServiceRds).Rds
 	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBClusterParameterGroupArn}, func(options *rds.Options) {
 		options.Region = cl.Region
 	})

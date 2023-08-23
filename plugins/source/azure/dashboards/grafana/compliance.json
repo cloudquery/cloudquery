@@ -90,7 +90,7 @@
         "type": "postgres",
         "uid": "${DS_POSTGRESQL}"
       },
-      "description": "This panel will show OK if the azure_resources view has been created and is accessible to the current Postgres user. See https://github.com/cloudquery/cloudquery/tree/main/plugins/source/azure/dashboards for more information.",
+      "description": "This panel will show OK if the azure_policy_results view has been created and is accessible to the current Postgres user. See https://github.com/cloudquery/cloudquery/tree/main/plugins/source/azure/dashboards for more information.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -188,7 +188,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT count(*) FROM information_schema.tables\n     WHERE  table_schema = 'public'\n     AND    table_name   = 'azure_policy_results'",
+          "rawSql": "SELECT count(*) FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'azure_policy_results'",
           "refId": "A"
         }
       ],
@@ -254,7 +254,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select _cq_sync_time as time, 1 from azure_compute_virtual_machines  order by time desc limit 1;",
+          "rawSql": "select _cq_sync_time as time, 1 from azure_compute_virtual_machines order by time desc limit 1;",
           "refId": "A"
         }
       ],
@@ -452,7 +452,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n  -- execution_time as time,\n  framework,\n  count(case when status = 'fail' then 1 else null end) as fail,\n  -- count(*)\n  count(case when status = 'pass' then 1 else null end) as pass\nfrom azure_policy_results where subscription_id in (${subscription_ids}) and framework in (${framework}) group by framework;",
+          "rawSql": "select framework, sum(case when status = 'fail' then 1 else 0 end) as fail, sum(case when status = 'pass' then 1 else 0 end) as pass from azure_policy_results where subscription_id in (${subscription_ids}) and framework in (${framework}) and $__timeFilter(execution_time) group by framework;",
           "refId": "A"
         }
       ],
@@ -517,7 +517,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select execution_time as time, count(*) from azure_policy_results where subscription_id in (${subscription_ids}) and framework in (${framework}) and status = 'fail' and $__timeFilter(execution_time) group by execution_time;",
+          "rawSql": "select count(*) from azure_policy_results where subscription_id in (${subscription_ids}) and framework in (${framework}) and status = 'fail' and $__timeFilter(execution_time);",
           "refId": "A"
         }
       ],
@@ -581,7 +581,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n  execution_time as time,\n  count(*)\nfrom azure_policy_results where subscription_id in (${subscription_ids}) and framework in (${framework}) and status = 'pass' and $__timeFilter(execution_time) group by execution_time;",
+          "rawSql": "select count(*) from azure_policy_results where subscription_id in (${subscription_ids}) and framework in (${framework}) and status = 'pass' and $__timeFilter(execution_time);",
           "refId": "A"
         }
       ],
@@ -680,7 +680,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select * from azure_policy_results where subscription_id in (${subscription_ids}) and framework in (${framework}) and status in (${status}) ;",
+          "rawSql": "select * from azure_policy_results where subscription_id in (${subscription_ids}) and framework in (${framework}) and status in (${status}) and $__timeFilter(execution_time);",
           "refId": "A"
         }
       ],
@@ -695,7 +695,15 @@
   "templating": {
     "list": [
       {
-        "current": {},
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": {
           "type": "postgres",
           "uid": "${DS_POSTGRESQL}"
@@ -715,7 +723,15 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": {
           "type": "postgres",
           "uid": "${DS_POSTGRESQL}"
@@ -734,7 +750,15 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": {
           "type": "postgres",
           "uid": "${DS_POSTGRESQL}"

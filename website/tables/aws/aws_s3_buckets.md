@@ -62,11 +62,12 @@ FROM
   INNER JOIN aws_s3_buckets AS b ON t.s3_bucket_name = b.name;
 ```
 
-### S3 Block Public Access (bucket) setting should be enabled
+### S3 Block Public Access setting should be enabled at the bucket-level
 
 ```sql
 SELECT
-  'S3 Block Public Access (bucket) setting should be enabled' AS title,
+  'S3 Block Public Access setting should be enabled at the bucket-level'
+    AS title,
   account_id,
   arn AS resource_id,
   CASE

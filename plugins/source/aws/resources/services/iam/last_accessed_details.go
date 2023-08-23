@@ -112,7 +112,7 @@ func fetchPolicyLastAccessedDetails(ctx context.Context, meta schema.ClientMeta,
 
 func fetchLastAccessedDetails(ctx context.Context, meta schema.ClientMeta, arn *string, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services(client.AWSServiceIam).Iam
 	generateConfig := iam.GenerateServiceLastAccessedDetailsInput{
 		Arn:         arn,
 		Granularity: types.AccessAdvisorUsageGranularityTypeActionLevel,

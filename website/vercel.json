@@ -341,6 +341,10 @@
     {
       "source": "/register_for_cloud",
       "destination": "https://cloudquery.typeform.com/to/MZ0DSN82"
+    },
+    {
+      "source": "/apply_for_job",
+      "destination": "https://cloudquery.typeform.com/to/flNY3OaO"
     }
   ]
 }

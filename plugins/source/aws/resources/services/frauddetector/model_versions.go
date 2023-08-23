@@ -32,7 +32,7 @@ func modelVersions() *schema.Table {
 
 func fetchFrauddetectorModelVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	paginator := frauddetector.NewDescribeModelVersionsPaginator(meta.(*client.Client).Services().Frauddetector,
+	paginator := frauddetector.NewDescribeModelVersionsPaginator(meta.(*client.Client).Services(client.AWSServiceFrauddetector).Frauddetector,
 		&frauddetector.DescribeModelVersionsInput{ModelId: parent.Item.(types.Model).ModelId})
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *frauddetector.Options) {
