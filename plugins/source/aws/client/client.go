@@ -22,7 +22,7 @@ import (
 type Client struct {
 	// Those are already normalized values after configure and this is why we don't want to hold
 	// config directly.
-	ServicesManager ServicesManager
+	ServicesManager *ServicesManager
 	logger          zerolog.Logger
 	// this is set by table clientList
 	AccountID            string
@@ -92,7 +92,7 @@ func (s *ServicesManager) InitServicesForPartitionAccount(partition, accountId s
 
 func NewAwsClient(logger zerolog.Logger, spec *Spec) Client {
 	return Client{
-		ServicesManager: ServicesManager{
+		ServicesManager: &ServicesManager{
 			services: ServicesPartitionAccountMap{},
 		},
 		logger:       logger,
@@ -128,6 +128,7 @@ func (c *Client) updateService(service AWSServiceName) {
 	svc = c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).GetService(service)
 	// if service is still not initialized, initialize it
 	if svc == nil {
+		c.logger.Debug().Msgf("updating service %s for: %s", service.String(), c.AccountID)
 		c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).InitService(c.AWSConfig, service)
 	}
 }
