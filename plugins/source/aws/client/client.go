@@ -22,7 +22,7 @@ import (
 type Client struct {
 	// Those are already normalized values after configure and this is why we don't want to hold
 	// config directly.
-	ServicesManager ServicesManager
+	ServicesManager *ServicesManager
 	logger          zerolog.Logger
 	// this is set by table clientList
 	AccountID            string
@@ -92,7 +92,7 @@ func (s *ServicesManager) InitServicesForPartitionAccount(partition, accountId s
 
 func NewAwsClient(logger zerolog.Logger, spec *Spec) Client {
 	return Client{
-		ServicesManager: ServicesManager{
+		ServicesManager: &ServicesManager{
 			services: ServicesPartitionAccountMap{},
 		},
 		logger:       logger,
@@ -113,20 +113,28 @@ func (c *Client) ID() string {
 		string(c.WAFScope),
 		c.LanguageCode,
 	}
-
 	return strings.TrimRight(strings.Join(idStrings, ":"), ":")
 }
 
 func (c *Client) updateService(service AWSServiceName) {
+	// Check to see if the service is already initialized
+	svc := c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).GetService(service)
+	if svc != nil {
+		return
+	}
+	// If service is not  initialized, lock the account mutex and check again
 	c.accountMutex[c.AccountID].Lock()
 	defer c.accountMutex[c.AccountID].Unlock()
-	c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).InitService(c.AWSConfig, service)
+	svc = c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).GetService(service)
+	// if service is still not initialized, initialize it
+	if svc == nil {
+		c.logger.Debug().Msgf("updating service %s for: %s", service.String(), c.AccountID)
+		c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).InitService(c.AWSConfig, service)
+	}
 }
 func (c *Client) Services(service_names ...AWSServiceName) *Services {
 	for _, service := range service_names {
-		if c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).GetService(service) == nil {
-			c.updateService(service)
-		}
+		c.updateService(service)
 	}
 	return c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID)
 }
