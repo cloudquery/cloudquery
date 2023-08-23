@@ -113,20 +113,27 @@ func (c *Client) ID() string {
 		string(c.WAFScope),
 		c.LanguageCode,
 	}
-
 	return strings.TrimRight(strings.Join(idStrings, ":"), ":")
 }
 
 func (c *Client) updateService(service AWSServiceName) {
+	// Check to see if the service is already initialized
+	svc := c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).GetService(service)
+	if svc != nil {
+		return
+	}
+	// If service is not  initialized, lock the account mutex and check again
 	c.accountMutex[c.AccountID].Lock()
 	defer c.accountMutex[c.AccountID].Unlock()
-	c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).InitService(c.AWSConfig, service)
+	svc = c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).GetService(service)
+	// if service is still not initialized, initialize it
+	if svc == nil {
+		c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).InitService(c.AWSConfig, service)
+	}
 }
 func (c *Client) Services(service_names ...AWSServiceName) *Services {
 	for _, service := range service_names {
-		if c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).GetService(service) == nil {
-			c.updateService(service)
-		}
+		c.updateService(service)
 	}
 	return c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID)
 }
