@@ -119,6 +119,7 @@ func migrate(cmd *cobra.Command, args []string) error {
 				return fmt.Errorf("failed to migrate v3 source %s: %w", cl.Name(), err)
 			}
 		case 2:
+			destinationsVersions := make([][]int, 0, len(destinationClientsForSource))
 			for _, destination := range destinationClientsForSource {
 				versions, err := destination.Versions(ctx)
 				if err != nil {
@@ -127,8 +128,9 @@ func migrate(cmd *cobra.Command, args []string) error {
 				if !slices.Contains(versions, 1) {
 					return fmt.Errorf("destination plugin %[1]s does not support CloudQuery SDK version 1. Please upgrade to a newer version of the %[1]s destination plugin", destination.Name())
 				}
+				destinationsVersions = append(destinationsVersions, versions)
 			}
-			if err := migrateConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec); err != nil {
+			if err := migrateConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, destinationsVersions); err != nil {
 				return fmt.Errorf("failed to migrate source %v@%v: %w", source.Name, source.Version, err)
 			}
 		case 1:

@@ -9,17 +9,79 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
+	"github.com/cloudquery/cloudquery/cli/internal/transformer"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/metrics"
 	"github.com/cloudquery/plugin-pb-go/pb/destination/v1"
+	pluginv3 "github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/cloudquery/plugin-pb-go/pb/source/v2"
 	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
+	"golang.org/x/exp/slices"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+func getSourceV2DestV3DestinationsTransformers(sourceSpec specs.Source, destinationSpecs []specs.Destination, syncTime time.Time, destinationsVersions [][]int) []*transformer.RecordTransformer {
+	destinationsTransformers := make([]*transformer.RecordTransformer, 0, len(destinationsVersions))
+	for i := range destinationsVersions {
+		// We only need to transform to destinations that are v3
+		if !slices.Contains(destinationsVersions[i], 3) {
+			destinationsTransformers = append(destinationsTransformers, nil)
+			continue
+		}
+		opts := []transformer.RecordTransformerOption{
+			transformer.WithSourceNameColumn(sourceSpec.Name),
+			transformer.WithSyncTimeColumn(syncTime),
+		}
+		if destinationSpecs[i].WriteMode == specs.WriteModeAppend {
+			opts = append(opts, transformer.WithRemovePKs())
+		} else if destinationSpecs[i].PKMode == specs.PKModeCQID {
+			opts = append(opts, transformer.WithRemovePKs())
+			opts = append(opts, transformer.WithCQIDPrimaryKey())
+		}
+		destinationsTransformers = append(destinationsTransformers, transformer.NewRecordTransformer(opts...))
+	}
+	return destinationsTransformers
+}
+
+func transformSourceV2DestV3Schemas(originalSchemas [][]byte, transformer *transformer.RecordTransformer) ([][]byte, error) {
+	if transformer == nil {
+		return originalSchemas, nil
+	}
+	transformedSchemasBytes := make([][]byte, 0, len(originalSchemas))
+	for _, s := range originalSchemas {
+		schema, err := pluginv3.NewSchemaFromBytes(s)
+		if err != nil {
+			return nil, err
+		}
+		transformedSchema := transformer.TransformSchema(schema)
+		transformedSchemaBytes, err := pluginv3.SchemaToBytes(transformedSchema)
+		if err != nil {
+			return nil, err
+		}
+		transformedSchemasBytes = append(transformedSchemasBytes, transformedSchemaBytes)
+	}
+	return transformedSchemasBytes, nil
+}
+
+func transformSourceV2DestV3Resource(originalResourceBytes []byte, transformer *transformer.RecordTransformer) ([]byte, error) {
+	if transformer == nil {
+		return originalResourceBytes, nil
+	}
+	resource, err := pluginv3.NewRecordFromBytes(originalResourceBytes)
+	if err != nil {
+		return nil, err
+	}
+	transformedResource := transformer.Transform(resource)
+	transformedResourceBytes, err := pluginv3.RecordToBytes(transformedResource)
+	if err != nil {
+		return nil, err
+	}
+	return transformedResourceBytes, nil
+}
+
 // nolint:dupl
-func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, destinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination, uid string, noMigrate bool) error {
+func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, destinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination, uid string, noMigrate bool, destinationsVersions [][]int) error {
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
 	defer func() {
@@ -40,6 +102,7 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, d
 
 	sourcePbClient := source.NewSourceClient(sourceClient.Conn)
 	destinationsPbClients := make([]destination.DestinationClient, len(destinationsClients))
+	destinationsTransformers := getSourceV2DestV3DestinationsTransformers(sourceSpec, destinationSpecs, syncTime, destinationsVersions)
 	for i := range destinationsClients {
 		destinationsPbClients[i] = destination.NewDestinationClient(destinationsClients[i].Conn)
 	}
@@ -69,12 +132,21 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, d
 		}
 	}
 
+	transformedSchemasBytes := make([][][]byte, 0, len(destinationsPbClients))
+	for i := range destinationsPbClients {
+		destinationSchemasBytes, err := transformSourceV2DestV3Schemas(tablesRes.Tables, destinationsTransformers[i])
+		if err != nil {
+			return err
+		}
+		transformedSchemasBytes = append(transformedSchemasBytes, destinationSchemasBytes)
+	}
+
 	if !noMigrate {
 		migrateStart := time.Now().UTC()
 		fmt.Printf("Starting migration for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
 		for i := range destinationsClients {
 			if _, err := destinationsPbClients[i].Migrate(ctx, &destination.Migrate_Request{
-				Tables: tablesRes.Tables,
+				Tables: transformedSchemasBytes[i],
 			}); err != nil {
 				return err
 			}
@@ -105,7 +177,7 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, d
 		}
 		if err := writeClients[i].Send(&destination.Write_Request{
 			Source:    sourceSpec.Name,
-			Tables:    tablesRes.Tables,
+			Tables:    transformedSchemasBytes[i],
 			Timestamp: timestamppb.New(syncTime),
 		}); err != nil {
 			return err
@@ -145,8 +217,12 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, d
 		}
 		_ = bar.Add(1)
 		for i := range destinationsPbClients {
+			transformedResourceBytes, err := transformSourceV2DestV3Resource(r.Resource, destinationsTransformers[i])
+			if err != nil {
+				return err
+			}
 			if err := writeClients[i].Send(&destination.Write_Request{
-				Resource: r.Resource,
+				Resource: transformedResourceBytes,
 			}); err != nil {
 				return err
 			}
@@ -155,7 +231,7 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, d
 	for i := range destinationsClients {
 		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
 			_, err := destinationsPbClients[i].DeleteStale(ctx, &destination.DeleteStale_Request{
-				Tables:    tablesRes.Tables,
+				Tables:    transformedSchemasBytes[i],
 				Source:    sourceSpec.Name,
 				Timestamp: timestamppb.New(syncTime),
 			})

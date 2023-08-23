@@ -13,7 +13,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func migrateConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, managedDestinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination) error {
+func migrateConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, managedDestinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination, destinationsVersions [][]int) error {
 	destinationStrings := make([]string, len(destinationSpecs))
 	for i := range destinationSpecs {
 		destinationStrings[i] = destinationSpecs[i].VersionString()
@@ -23,6 +23,7 @@ func migrateConnectionV2(ctx context.Context, sourceClient *managedplugin.Client
 	defer log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationStrings).Time("migrate_time", migrateStart).Msg("End migration")
 
 	sourcePbClient := pbSource.NewSourceClient(sourceClient.Conn)
+	destinationsTransformers := getSourceV2DestV3DestinationsTransformers(sourceSpec, destinationSpecs, migrateStart, destinationsVersions)
 	destinationsPbClients := make([]pbdestination.DestinationClient, len(managedDestinationsClients))
 	for i := range managedDestinationsClients {
 		destinationsPbClients[i] = pbdestination.NewDestinationClient(managedDestinationsClients[i].Conn)
@@ -42,6 +43,15 @@ func migrateConnectionV2(ctx context.Context, sourceClient *managedplugin.Client
 		return fmt.Errorf("failed to GetDynamicTables: %w", err)
 	}
 
+	transformedSchemasBytes := make([][][]byte, 0, len(managedDestinationsClients))
+	for i := range managedDestinationsClients {
+		destinationSchemasBytes, err := transformSourceV2DestV3Schemas(tablesRes.Tables, destinationsTransformers[i])
+		if err != nil {
+			return err
+		}
+		transformedSchemasBytes = append(transformedSchemasBytes, destinationSchemasBytes)
+	}
+
 	fmt.Printf("Starting migration with for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
 	for i := range managedDestinationsClients {
 		destSpecBytes, err := json.Marshal(CLIDestinationSpecToPbSpec(destinationSpecs[i]))
@@ -54,7 +64,7 @@ func migrateConnectionV2(ctx context.Context, sourceClient *managedplugin.Client
 			return fmt.Errorf("failed to call Migrate: %w", err)
 		}
 		if _, err := destinationsPbClients[i].Migrate(ctx, &pbdestination.Migrate_Request{
-			Tables: tablesRes.Tables,
+			Tables: transformedSchemasBytes[i],
 		}); err != nil {
 			return fmt.Errorf("failed to call Migrate: %w", err)
 		}
