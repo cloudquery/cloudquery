@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/PagerDuty/go-pagerduty v1.6.0
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882
-	github.com/cloudquery/plugin-sdk/v4 v4.5.2
+	github.com/cloudquery/plugin-sdk/v4 v4.5.5
 	github.com/rs/zerolog v1.29.1
 	golang.org/x/exp v0.0.0-20230728194245-b0cb94b80691
 	golang.org/x/time v0.3.0
