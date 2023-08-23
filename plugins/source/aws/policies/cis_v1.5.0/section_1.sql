@@ -40,7 +40,8 @@
 \echo "Executing check 1.15"
 \ir ../queries/iam/policies_attached_to_groups_roles.sql
 \set check_id '1.16'
-    -- todo svc.ListPolicies is not used (implement it and then do a check)
+\echo "Executing check 1.16"
+\ir ../queries/iam/no_star.sql
 \set check_id '1.17'
     -- todo svc.ListPolicies is not used (implement it and then do a check)
 \set check_id '1.18'
@@ -50,6 +51,6 @@
 \ir ../queries/iam/server_certificates_expired.sql
 \set check_id '1.20'
 \echo "Executing check 1.20"
--- \ir ../queries/accessanalyzer/regions_with_no_accessanalyzers.sql
+\ir ../queries/accessanalyzer/regions_with_no_accessanalyzers.sql
 \set check_id '1.21'
     -- manual

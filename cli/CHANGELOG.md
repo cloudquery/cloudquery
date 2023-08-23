@@ -5,6 +5,16 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.14.2](https://github.com/cloudquery/cloudquery/compare/cli-v3.14.1...cli-v3.14.2) (2023-08-23)
+
+
+### Bug Fixes
+
+* Apply schema and record transformations for v2 sources with v3 destinations ([#13291](https://github.com/cloudquery/cloudquery/issues/13291)) ([5fd5b59](https://github.com/cloudquery/cloudquery/commit/5fd5b59dca33b18910d7bd661eb11a514c2e6cee))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 5b83d4f ([#13203](https://github.com/cloudquery/cloudquery/issues/13203)) ([b0a4b8c](https://github.com/cloudquery/cloudquery/commit/b0a4b8ccf7c429bf5a6ed88866865212015b68e4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.1 ([#13195](https://github.com/cloudquery/cloudquery/issues/13195)) ([a184c37](https://github.com/cloudquery/cloudquery/commit/a184c3786ad49df8564344773e9b96f617ef87a1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.2 ([#13262](https://github.com/cloudquery/cloudquery/issues/13262)) ([5c55aa3](https://github.com/cloudquery/cloudquery/commit/5c55aa35282786375e8ce9493b2a4878e0fb27bc))
+
 ## [3.14.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.14.0...cli-v3.14.1) (2023-08-17)
 
 
