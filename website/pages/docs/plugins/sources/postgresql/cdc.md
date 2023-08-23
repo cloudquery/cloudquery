@@ -61,3 +61,11 @@ You will need to set the `cloudsql.logical_deconging` configuration to on. See f
 ## Azure DB (PostgreSQL)
 
 Please follow the Official Azure documentation on [how to enable logical replication](https://learn.microsoft.com/en-us/azure/postgresql/single-server/concepts-logical) via the CLI or Console (UI).
+
+
+## Current Limitations
+
+The following event types are not supported:
+- DDL changes (e.g. `CREATE TABLE`, `ALTER TABLE`, etc)
+- `TRUNCATE` statements (e.g. `TRUNCATE TABLE table_name`)
+- `DELETE` statements (e.g. `DELETE FROM table_name`)

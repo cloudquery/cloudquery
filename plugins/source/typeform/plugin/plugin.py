@@ -1,6 +1,7 @@
 import json
 from typing import List, Generator
 
+import structlog
 from cloudquery.sdk import message
 from cloudquery.sdk import plugin
 from cloudquery.sdk import schema
@@ -10,7 +11,7 @@ from plugin import tables
 from plugin.client import Client, Spec
 
 PLUGIN_NAME = "typeform"
-PLUGIN_VERSION = "0.1.1"  # {x-release-please-version}
+PLUGIN_VERSION = "1.0.1"  # {x-release-please-version}
 
 
 class TypeformPlugin(plugin.Plugin):
@@ -20,12 +21,20 @@ class TypeformPlugin(plugin.Plugin):
         self._spec = None
         self._scheduler = None
         self._client = None
+        self._logger = structlog.get_logger()
 
-    def init(self, spec_bytes):
+    def set_logger(self, logger) -> None:
+        self._logger = logger
+
+    def init(self, spec_bytes, no_connection: bool = False):
+        if no_connection:
+            return
         self._spec_json = json.loads(spec_bytes)
         self._spec = Spec(**self._spec_json)
         self._spec.validate()
-        self._scheduler = Scheduler(self._spec.concurrency, self._spec.queue_size)
+        self._scheduler = Scheduler(
+            self._spec.concurrency, self._spec.queue_size, logger=self._logger
+        )
         self._client = Client(self._spec)
 
     def get_tables(self, options: plugin.TableOptions) -> List[plugin.Table]:

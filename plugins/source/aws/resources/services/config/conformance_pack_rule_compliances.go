@@ -34,7 +34,7 @@ func conformancePackRuleCompliances() *schema.Table {
 func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	conformancePackDetail := parent.Item.(types.ConformancePackDetail)
 	cl := meta.(*client.Client)
-	cs := cl.Services().Configservice
+	cs := cl.Services(client.AWSServiceConfigservice).Configservice
 	params := configservice.DescribeConformancePackComplianceInput{
 		ConformancePackName: conformancePackDetail.ConformancePackName,
 	}

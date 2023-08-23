@@ -1,5 +1,32 @@
 # Changelog
 
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-postgresql-v2.0.6...plugins-source-postgresql-v3.0.0) (2023-08-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* Don't mark columns unique if they're part of a composite constraint ([#13134](https://github.com/cloudquery/cloudquery/issues/13134))
+
+### Features
+
+* Allow multiple rows in sync tables per sent record ([#13137](https://github.com/cloudquery/cloudquery/issues/13137)) ([5086346](https://github.com/cloudquery/cloudquery/commit/50863463e3cc72eab8fd72311fb3f312b996cb3c)), closes [#13110](https://github.com/cloudquery/cloudquery/issues/13110)
+* Simplify value transformation ([#13129](https://github.com/cloudquery/cloudquery/issues/13129)) ([09c18c3](https://github.com/cloudquery/cloudquery/commit/09c18c3ad6979e96bf732f49f1f1a090768390ff))
+
+
+### Bug Fixes
+
+* Don't mark columns unique if they're part of a composite constraint ([#13134](https://github.com/cloudquery/cloudquery/issues/13134)) ([b56d267](https://github.com/cloudquery/cloudquery/commit/b56d267c97d5503641d31cd8f4424171fdf47a55)), closes [#13131](https://github.com/cloudquery/cloudquery/issues/13131)
+* Handle differences in `format_type` implementation between PostgreSQL & CockroachDB ([#13112](https://github.com/cloudquery/cloudquery/issues/13112)) ([8c03d9e](https://github.com/cloudquery/cloudquery/commit/8c03d9ea469b6ef284dcbededac372c8af972299))
+
+## [2.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-postgresql-v2.0.5...plugins-source-postgresql-v2.0.6) (2023-08-15)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to e9683e1 ([#13015](https://github.com/cloudquery/cloudquery/issues/13015)) ([6557696](https://github.com/cloudquery/cloudquery/commit/65576966d3bd14297499a5b85d3b4fc2c7918df3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.4.0 ([#12850](https://github.com/cloudquery/cloudquery/issues/12850)) ([0861200](https://github.com/cloudquery/cloudquery/commit/086120054b45213947e95be954ba6164b9cf6587))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.0 ([#13068](https://github.com/cloudquery/cloudquery/issues/13068)) ([7bb0e4b](https://github.com/cloudquery/cloudquery/commit/7bb0e4ba654971726e16a6a501393e3831170307))
+
 ## [2.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-postgresql-v2.0.4...plugins-source-postgresql-v2.0.5) (2023-08-08)
 
 

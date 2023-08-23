@@ -36,7 +36,7 @@ func ingestions() *schema.Table {
 func fetchQuicksightIngestions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	item := parent.Item.(types.DataSetSummary)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Quicksight
+	svc := cl.Services(client.AWSServiceQuicksight).Quicksight
 	input := quicksight.ListIngestionsInput{
 		AwsAccountId: aws.String(cl.AccountID),
 		DataSetId:    item.DataSetId,

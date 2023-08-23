@@ -28,7 +28,7 @@ func EnabledStandards() *schema.Table {
 
 func fetchEnabledStandards(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Securityhub
+	svc := cl.Services(client.AWSServiceSecurityhub).Securityhub
 	config := securityhub.GetEnabledStandardsInput{MaxResults: 100}
 	p := securityhub.NewGetEnabledStandardsPaginator(svc, &config)
 	for p.HasMorePages() {
