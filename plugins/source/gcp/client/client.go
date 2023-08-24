@@ -9,8 +9,6 @@ import (
 	"sync"
 	"time"
 
-	compute "cloud.google.com/go/compute/apiv1"
-	"cloud.google.com/go/compute/apiv1/computepb"
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	serviceusage "cloud.google.com/go/serviceusage/apiv1"
@@ -36,7 +34,6 @@ const maxIdsToLog int = 100
 
 type Client struct {
 	projects  []string
-	locations map[string][]string // key = proj ID
 	orgs      []*crmv1.Organization
 	folderIds []string
 
@@ -127,6 +124,7 @@ func (c *Client) Logger() *zerolog.Logger {
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec *Spec) (schema.ClientMeta, error) {
+	var err error
 	c := Client{
 		logger:          logger,
 		EnabledServices: map[string]map[string]any{},
@@ -277,7 +275,6 @@ func New(ctx context.Context, logger zerolog.Logger, spec *Spec) (schema.ClientM
 		}
 	}
 
-	c.logger.Info().Interface("orgs", c.orgs).Msg("Retrieved organizations")
 	logProjectIds(&logger, projects)
 	logOrganizationIds(&logger, organizations)
 
@@ -288,12 +285,10 @@ func New(ctx context.Context, logger zerolog.Logger, spec *Spec) (schema.ClientM
 	c.projects = projects
 	c.folderIds = spec.FolderIDs
 	c.orgs = organizations
-
-	c.locations, err = c.fetchComputeZoneIDs(ctx)
 	if err != nil {
-		c.logger.Err(err).Msg("failed to fetch locations")
+		c.logger.Err(err).Msg("failed to get organizations")
 	}
-	c.logger.Info().Msg("Retrieved locations")
+	c.logger.Info().Interface("orgs", c.orgs).Msg("Retrieved organizations")
 
 	if len(projects) == 1 {
 		c.ProjectId = projects[0]
@@ -538,37 +533,13 @@ func (c *Client) fetchEnabledServices(ctx context.Context) (map[string]any, erro
 	it := gcpClient.ListServices(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
 		if err != nil {
-			if errors.Is(err, iterator.Done) {
-				break
-			}
 			return nil, err
 		}
 		enabled[resp.GetConfig().Name] = resp
 	}
 	return enabled, nil
-}
-
-func (c *Client) fetchComputeZoneIDs(ctx context.Context) (map[string][]string, error) {
-	client, err := compute.NewZonesRESTClient(ctx, c.ClientOptions...)
-	if err != nil {
-		return nil, err
-	}
-	locations := make(map[string][]string, len(c.projects))
-	for _, project := range c.projects {
-		var zones []string
-		it := client.List(ctx, &computepb.ListZonesRequest{Project: project}, c.CallOptions...)
-		for {
-			resp, err := it.Next()
-			if err != nil {
-				if errors.Is(err, iterator.Done) {
-					break
-				}
-				return nil, err
-			}
-			zones = append(zones, *resp.Name)
-		}
-		locations[project] = zones
-	}
-	return locations, nil
 }
