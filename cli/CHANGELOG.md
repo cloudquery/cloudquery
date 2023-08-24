@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.14.4](https://github.com/cloudquery/cloudquery/compare/cli-v3.14.3...cli-v3.14.4) (2023-08-24)
+
+
+### Bug Fixes
+
+* Send delete stale when `--no-migrate` is used ([#13310](https://github.com/cloudquery/cloudquery/issues/13310)) ([9232676](https://github.com/cloudquery/cloudquery/commit/92326761f57bedc38e217d5600a6c7125365172d))
+
 ## [3.14.3](https://github.com/cloudquery/cloudquery/compare/cli-v3.14.2...cli-v3.14.3) (2023-08-24)
 
 
