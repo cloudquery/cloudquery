@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [9.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.4.5...plugins-source-gcp-v9.5.0) (2023-08-24)
 
 
+### This Release has the Following Changes to Tables
+- Table `gcp_compute_osconfig_inventories` was added
+
 ### Features
 
 * **resources:** Add `gcp_compute_osconfig_inventories` table ([#13309](https://github.com/cloudquery/cloudquery/issues/13309)) ([08ea377](https://github.com/cloudquery/cloudquery/commit/08ea37736d4cb60be78e59b8d3a810687bd8d247))
