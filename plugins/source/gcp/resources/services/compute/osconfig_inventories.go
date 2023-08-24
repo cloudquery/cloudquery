@@ -1,9 +1,10 @@
-package osconfig
+package compute
 
 import (
 	"context"
 	"errors"
 
+	"cloud.google.com/go/compute/apiv1/computepb"
 	osconfig "cloud.google.com/go/osconfig/apiv1"
 	pb "cloud.google.com/go/osconfig/apiv1/osconfigpb"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -12,28 +13,28 @@ import (
 	"google.golang.org/api/iterator"
 )
 
-func Inventories() *schema.Table {
+func osConfigInventories() *schema.Table {
 	return &schema.Table{
-		Name:        "gcp_osconfig_inventories",
+		Name:        "gcp_compute_osconfig_inventories",
 		Description: `https://cloud.google.com/compute/docs/osconfig/rest/v1/projects.locations.instances.inventories#Inventory`,
-		Resolver:    fetchInventories,
+		Resolver:    fetchOSConfigInventories,
 		Multiplex:   client.ProjectMultiplexEnabledServices("osconfig.googleapis.com"),
 		Transform:   client.TransformWithStruct(new(pb.Inventory), transformers.WithPrimaryKeys("Name")),
 		Columns:     schema.ColumnList{client.ProjectIDColumn(false)},
 	}
 }
 
-func fetchInventories(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+func fetchOSConfigInventories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
+	zone := parent.Item.(*computepb.Zone)
 	req := &pb.ListInventoriesRequest{
-		Parent: "projects/" + c.ProjectId + "/locations/" + c.Location + "/instances/-",
+		Parent: "projects/" + c.ProjectId + "/locations/" + *zone.Name + "/instances/-",
 	}
 
 	gcpClient, err := osconfig.NewOsConfigZonalRESTClient(ctx, c.ClientOptions...)
 	if err != nil {
 		return err
 	}
-	defer gcpClient.Close()
 	it := gcpClient.ListInventories(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()

@@ -19,11 +19,6 @@ func ResolveProject(_ context.Context, meta schema.ClientMeta, r *schema.Resourc
 	return r.Set(c.Name, client.ProjectId)
 }
 
-func ResolveLocation(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
-	client := meta.(*Client)
-	return r.Set(c.Name, client.Location)
-}
-
 func ResolveOrganization(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 	client := meta.(*Client)
 	return r.Set(c.Name, client.OrgId)
