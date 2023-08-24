@@ -20,7 +20,7 @@ The following tables depend on aws_iam_policies:
 |account_id (PK)|`utf8`|
 |id (PK)|`utf8`|
 |tags|`json`|
-|policy_version_list|`json`|
+|policy_version|`json`|
 |arn|`utf8`|
 |attachment_count|`int64`|
 |create_date|`timestamp[us, tz=UTC]`|
