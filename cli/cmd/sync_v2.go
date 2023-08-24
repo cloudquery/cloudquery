@@ -29,10 +29,7 @@ func getSourceV2DestV3DestinationsTransformers(sourceSpec specs.Source, destinat
 			destinationsTransformers = append(destinationsTransformers, nil)
 			continue
 		}
-		opts := []transformer.RecordTransformerOption{
-			transformer.WithSourceNameColumn(sourceSpec.Name),
-			transformer.WithSyncTimeColumn(syncTime),
-		}
+		opts := []transformer.RecordTransformerOption{}
 		if destinationSpecs[i].WriteMode == specs.WriteModeAppend {
 			opts = append(opts, transformer.WithRemovePKs())
 		} else if destinationSpecs[i].PKMode == specs.PKModeCQID {
