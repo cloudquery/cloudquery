@@ -94,6 +94,9 @@ func (c *Client) normalizeTable(table *schema.Table, pgTable *schema.Table) *sch
 
 	if pgTable != nil && pgTable.PkConstraintName != "" {
 		normalizedTable.PkConstraintName = pgTable.PkConstraintName
+	} else {
+		// TODO: Check if this is OK
+		normalizedTable.PkConstraintName = table.Name + "_cqpk"
 	}
 
 	return &normalizedTable
