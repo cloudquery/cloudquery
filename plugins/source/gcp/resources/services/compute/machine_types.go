@@ -63,14 +63,14 @@ func fetchMachineTypes(ctx context.Context, meta schema.ClientMeta, parent *sche
 	return nil
 }
 
-func createMachineTypes(mux *httprouter.Router, zones *pb.ZoneList) error {
+func createMachineTypes(mux *httprouter.Router, zone *pb.Zone) error {
 	var machineTypes pb.MachineTypeList
 	if err := faker.FakeObject(&machineTypes); err != nil {
 		return err
 	}
 	emptyStr := ""
 	machineTypes.NextPageToken = &emptyStr
-	mux.GET("/compute/v1/projects/testProject/zones/"+*zones.Items[0].Name+"/machineTypes", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	mux.GET("/compute/v1/projects/testProject/zones/"+*zone.Name+"/machineTypes", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		b, err := json.Marshal(&machineTypes)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)

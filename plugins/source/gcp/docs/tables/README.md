@@ -118,6 +118,7 @@
 - [gcp_compute_vpn_gateways](../../../../../website/tables/gcp/gcp_compute_vpn_gateways.md)
 - [gcp_compute_zones](../../../../../website/tables/gcp/gcp_compute_zones.md)
   - [gcp_compute_machine_types](../../../../../website/tables/gcp/gcp_compute_machine_types.md)
+  - [gcp_compute_osconfig_inventories](../../../../../website/tables/gcp/gcp_compute_osconfig_inventories.md)
 - [gcp_container_clusters](../../../../../website/tables/gcp/gcp_container_clusters.md)
 - [gcp_containeranalysis_occurrences](../../../../../website/tables/gcp/gcp_containeranalysis_occurrences.md)
 - [gcp_dns_managed_zones](../../../../../website/tables/gcp/gcp_dns_managed_zones.md)
