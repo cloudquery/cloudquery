@@ -5,6 +5,14 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.14.3](https://github.com/cloudquery/cloudquery/compare/cli-v3.14.2...cli-v3.14.3) (2023-08-24)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.5 ([#13285](https://github.com/cloudquery/cloudquery/issues/13285)) ([e076abd](https://github.com/cloudquery/cloudquery/commit/e076abd9d67813a29ced0c1b7b1664fd728b9ba8))
+* Don't add source name and sync time columns for v2 sources and v3 destinations ([#13307](https://github.com/cloudquery/cloudquery/issues/13307)) ([0f6adc6](https://github.com/cloudquery/cloudquery/commit/0f6adc6e2d61a03159ab96a794a38fad0b72e0e1))
+
 ## [3.14.2](https://github.com/cloudquery/cloudquery/compare/cli-v3.14.1...cli-v3.14.2) (2023-08-23)
 
 
