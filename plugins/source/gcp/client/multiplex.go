@@ -63,6 +63,7 @@ func FolderMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	return l
 }
 
+// ProjectLocationMultiplexEnabledServices will use all compute zones as locations if the locations param is empty.
 func ProjectLocationMultiplexEnabledServices(service string, locations []string) func(schema.ClientMeta) []schema.ClientMeta {
 	if _, ok := GcpServices[service]; !ok {
 		panic("unknown service: " + service)
@@ -73,14 +74,20 @@ func ProjectLocationMultiplexEnabledServices(service string, locations []string)
 
 		l := make([]schema.ClientMeta, 0, len(cl.projects))
 		for _, projectId := range cl.projects {
+			projClient := cl.withProject(projectId)
+			locs := locations
+			if len(locs) == 0 {
+				// use all available locations
+				locs = cl.locations[projectId]
+			}
 			// This map can only be empty if user has not opted into `EnabledServicesOnly` via the spec
 			if len(cl.EnabledServices) == 0 {
-				for _, location := range locations {
-					l = append(l, cl.withProject(projectId).withLocation(location))
+				for _, location := range locs {
+					l = append(l, projClient.withLocation(location))
 				}
 			} else if cl.EnabledServices[projectId] != nil && cl.EnabledServices[projectId][service] != nil {
-				for _, location := range locations {
-					l = append(l, cl.withProject(projectId).withLocation(location))
+				for _, location := range locs {
+					l = append(l, projClient.withLocation(location))
 				}
 			}
 		}

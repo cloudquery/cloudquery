@@ -56,6 +56,7 @@ func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*g
 		logger:        l,
 		ClientOptions: clientOptions,
 		projects:      []string{"testProject"},
+		locations:     map[string][]string{"testProject": {"testLocation"}},
 		orgs:          []*crmv1.Organization{{Name: "organizations/testOrg"}},
 		folderIds:     []string{"testFolder"},
 		Backend:       &state.NoOpClient{},
@@ -107,6 +108,7 @@ func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*h
 		logger:        l,
 		ClientOptions: clientOptions,
 		projects:      []string{"testProject"},
+		locations:     map[string][]string{"testProject": {"testLocation"}},
 		orgs:          []*crmv1.Organization{{Name: "organizations/testOrg"}},
 		Backend:       &state.NoOpClient{},
 	}
