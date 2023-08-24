@@ -38,13 +38,13 @@ func TestDataTable() *schema.Table {
 	data := tg.Generate(table, schema.GenTestDataOptions{
 		MaxRows: 1,
 	})
-	if len(data) != 1 {
+	if data.NumRows() != 1 {
 		panic("Expected 1 row of data")
 	}
 
 	dataAsMap := make(map[string]any)
-	for i, col := range data[0].Columns() {
-		dataAsMap[data[0].ColumnName(i)] = col.ValueStr(0)
+	for i, col := range data.Columns() {
+		dataAsMap[data.ColumnName(i)] = col.ValueStr(0)
 	}
 
 	table.Description = "Testdata table"

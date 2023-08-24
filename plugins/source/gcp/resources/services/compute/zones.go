@@ -28,11 +28,14 @@ func Zones() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 		},
-		Relations: []*schema.Table{machineTypes()},
+		Relations: schema.Tables{
+			machineTypes(),
+			osConfigInventories(),
+		},
 	}
 }
 
-func fetchZones(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchZones(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	var maxResults = uint32(500)
 	req := &pb.ListZonesRequest{
@@ -52,7 +55,6 @@ func fetchZones(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 		if err != nil {
 			return err
 		}
-
 		res <- resp
 	}
 	return nil

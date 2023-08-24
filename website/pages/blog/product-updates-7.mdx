@@ -1,0 +1,73 @@
+---
+title: "CloudQuery Product Updates #7"
+tag: product
+date: 2023/08/21
+description: >-
+  Monthly updates on CloudQuery product and roadmap.
+author: yevgenypats
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
+Hey everyone! Our monthly round-up of CloudQuery product and roadmap updates is here!
+
+TLDR:
+
+- Open source: SDKs & plugins.
+- Premium (closed source): New plugins, policies and dashboards.
+
+## SDKs!
+
+With the recent [Adoption of Apache Arrow](https://www.cloudquery.io/blog/adopting-apache-arrow-at-cloudquery) as CloudQuery's
+in-memory data format, the CloudQuery SDK is now expanding beyond Go (which means you can write CloudQuery plugins in other languages)!
+
+The first one is, of course, the undisputed king of data engineering--Python! and the 2nd after is the undisputed king of the web--JavaScript!
+
+* Check out our [Python announcement blog](https://www.cloudquery.io/blog/announcing-cloudquery-python-sdk)!
+* Creating a [Python source](https://www.cloudquery.io/docs/developers/creating-new-plugin/python-source)
+* Creating a [JavaScript source](https://www.cloudquery.io/docs/developers/creating-new-plugin/javascript-source)
+
+## Sources
+
+### New Open Source Sources Plugins
+
+* [Airtable](https://www.cloudquery.io/docs/plugins/sources/airtable/overview) - First plugin utilizing our JavaScript SDK!
+* [Square](https://www.cloudquery.io/docs/plugins/sources/square/overview) - First plugin utilizing our Python SDK!
+* [Typeform](https://www.cloudquery.io/docs/plugins/sources/typeform/overview) - Another plugin utilizing our Python SDK!
+* [HashiCorp Vault](https://www.cloudquery.io/docs/plugins/sources/hashicorp-vault/overview).
+
+### New Premium Plugins
+
+* [Jira](https://www.cloudquery.io/integrations/jira)
+* [MongoDB Atlas](https://www.cloudquery.io/integrations/mongodb-atlas)
+* [Render](https://www.cloudquery.io/integrations/render)
+
+### AWS, GCP, Azure
+
+Check out the full changelog for [AWS](https://github.com/cloudquery/cloudquery/blob/97d86a5c282e587420c1abd714bb0218d9c86f5a/plugins/source/aws/CHANGELOG.md),
+[GCP](https://github.com/cloudquery/cloudquery/blob/97d86a5c282e587420c1abd714bb0218d9c86f5a/plugins/source/gcp/CHANGELOG.md) and [Azure](https://github.com/cloudquery/cloudquery/blob/97d86a5c282e587420c1abd714bb0218d9c86f5a/plugins/source/azure/CHANGELOG.md)
+for full updates.
+
+## Policies
+
+We've extended our [security & compliance policies](https://www.cloudquery.io/docs/core-concepts/policies#premium-policies) to Snowflake via our premium offering!
+
+## Dashboards
+
+We released a premium [AWS Cost optimization pack](https://www.cloudquery.io/docs/core-concepts/policies#aws-cost-optimization-pack) with queries and Grafana dashboards.
+
+## Other notable blogs and use-cases
+
+- [What's new in CloudQuery Go SDK V4](/blog/go-sdk-v4)
+- [Announcing the Python SDK for CloudQuery Plugin Development](/blog/announcing-cloudquery-python-sdk)
+- [Blog: How to Manage Resilience Strategy and Visibility with AWS Backup and CloudQuery](/how-to-guides/manage-resilience-with-aws-backup)
+- [Podcast: Ready, Set, Cloud! Stop Forgetting About Cloud Security With Jason Kao](https://www.readysetcloud.io/podcast/14/)
+- [Partner Blog: Building a Multi-Cloud Asset Inventory Data Lake with CloudQuery and Snowflake](https://medium.com/snowflake/building-a-multi-cloud-asset-inventory-data-lake-with-cloudquery-and-snowflake-fcd1b86f1055)
+- [Video: Build an AWS Cloud Asset Inventory with CloudQuery & Grafana](https://www.youtube.com/watch?v=H5RpX5z4H40)
+- [Twitch: AWS Let's talk about data | Ep 16 | Infrastructure Data with CloudQuery](https://www.twitch.tv/videos/1894215221)
+
+
+
+

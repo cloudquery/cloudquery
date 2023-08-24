@@ -1,0 +1,59 @@
+name: Source Plugin Airtable Workflow
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    paths:
+      - "plugins/source/airtable/**"
+      - ".github/workflows/source_airtable.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/source/airtable/**"
+      - ".github/workflows/source_airtable.yml"
+
+jobs:
+  plugins-source-airtable:
+    timeout-minutes: 30
+    name: "plugins/source/airtable"
+    runs-on: large-ubuntu-monorepo
+    defaults:
+      run:
+        working-directory: ./plugins/source/airtable
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+          cache-dependency-path: './plugins/source/airtable/package-lock.json'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: |
+          npm run lint
+
+      - name: Build
+        run: |
+          npm run build
+  validate-release:
+    timeout-minutes: 10
+    runs-on: large-ubuntu-monorepo
+    env:
+      IMAGE_NAME_PREFIX: cloudquery
+      REGISTRY: ghcr.io
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@4c0219f9ac95b02789c1075625400b2acbff50b1
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        with:
+          context: "{{defaultContext}}:plugins/source/airtable"
+          load: true

@@ -214,6 +214,7 @@ func sync(cmd *cobra.Command, args []string) error {
 				return fmt.Errorf("failed to sync v3 source %s: %w", cl.Name(), err)
 			}
 		case 2:
+			destinationsVersions := make([][]int, 0, len(destinationClientsForSource))
 			for _, destination := range destinationClientsForSource {
 				versions, err := destination.Versions(ctx)
 				if err != nil {
@@ -222,8 +223,9 @@ func sync(cmd *cobra.Command, args []string) error {
 				if !slices.Contains(versions, 1) {
 					return fmt.Errorf("destination plugin %[1]s does not support CloudQuery SDK version 1. Please upgrade to a newer version of the %[1]s destination plugin", destination.Name())
 				}
+				destinationsVersions = append(destinationsVersions, versions)
 			}
-			if err := syncConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, invocationUUID.String(), noMigrate); err != nil {
+			if err := syncConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, invocationUUID.String(), noMigrate, destinationsVersions); err != nil {
 				return fmt.Errorf("failed to sync v2 source %s: %w", cl.Name(), err)
 			}
 		case 1:

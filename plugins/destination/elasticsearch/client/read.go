@@ -27,10 +27,12 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 	_, _ = io.Copy(io.Discard, resp.Body)
 	_ = resp.Body.Close()
 
+	size := 100
 	resp, err = c.typedClient.Search().Index(index).Request(&search.Request{
 		Query: &types.Query{
 			MatchAll: &types.MatchAllQuery{},
 		},
+		Size: &size,
 	}).Do(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to read: %w", err)

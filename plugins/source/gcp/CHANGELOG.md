@@ -5,6 +5,25 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.4.5...plugins-source-gcp-v9.5.0) (2023-08-24)
+
+
+### This Release has the Following Changes to Tables
+- Table `gcp_compute_osconfig_inventories` was added
+
+### Features
+
+* **resources:** Add `gcp_compute_osconfig_inventories` table ([#13309](https://github.com/cloudquery/cloudquery/issues/13309)) ([08ea377](https://github.com/cloudquery/cloudquery/commit/08ea37736d4cb60be78e59b8d3a810687bd8d247))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 5b83d4f ([#13203](https://github.com/cloudquery/cloudquery/issues/13203)) ([b0a4b8c](https://github.com/cloudquery/cloudquery/commit/b0a4b8ccf7c429bf5a6ed88866865212015b68e4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.1 ([#13195](https://github.com/cloudquery/cloudquery/issues/13195)) ([a184c37](https://github.com/cloudquery/cloudquery/commit/a184c3786ad49df8564344773e9b96f617ef87a1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.2 ([#13262](https://github.com/cloudquery/cloudquery/issues/13262)) ([5c55aa3](https://github.com/cloudquery/cloudquery/commit/5c55aa35282786375e8ce9493b2a4878e0fb27bc))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.5 ([#13285](https://github.com/cloudquery/cloudquery/issues/13285)) ([e076abd](https://github.com/cloudquery/cloudquery/commit/e076abd9d67813a29ced0c1b7b1664fd728b9ba8))
+* **resources:** Link to Go docs in `gcp_storage_buckets` ([#13160](https://github.com/cloudquery/cloudquery/issues/13160)) ([3d40f5b](https://github.com/cloudquery/cloudquery/commit/3d40f5ba2eb6c7341f26f4cba69ba73bbfeb7c66))
+
 ## [9.4.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.4.4...plugins-source-gcp-v9.4.5) (2023-08-15)
 
 

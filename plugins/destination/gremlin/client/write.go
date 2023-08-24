@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"time"
 
 	gremlingo "github.com/apache/tinkerpop/gremlin-go/v3/driver"
 	"github.com/cenkalti/backoff/v4"
@@ -44,19 +43,21 @@ func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs mes
 	pks := table.PrimaryKeys()
 	if len(pks) == 0 {
 		// If no primary keys are defined, use all columns
-		for i := range table.Columns {
-			pks = append(pks, table.Columns[i].Name)
-		}
+		pks = table.Columns.Names()
 	}
-	nonPKs := make(map[string]struct{})
-	for _, c := range table.Columns {
-		if !c.PrimaryKey {
-			nonPKs[c.Name] = struct{}{}
+	valueColumns := make([]string, 0, len(table.Columns)-len(pks))
+	if len(table.Columns)-len(pks) > 0 {
+		// not all columns are a part of "pk", so we need to account for the values
+		for _, col := range table.Columns {
+			if !col.PrimaryKey {
+				valueColumns = append(valueColumns, col.Name)
+			}
 		}
 	}
 
 	g := gremlingo.Traversal_().WithRemote(session).V().HasLabel(tableName)
 	for i := range rows {
+		g = g.V().HasLabel(tableName)
 		for _, colName := range pks {
 			g = g.Has(colName, rows[i][colName])
 		}
@@ -71,41 +72,25 @@ func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs mes
 			ins,
 		)
 
-		for colName := range nonPKs {
+		for _, colName := range valueColumns {
 			g = g.Property(gremlingo.Cardinality.Single, colName, rows[i][colName])
 		}
 	}
 
-	bo := backoff.NewExponentialBackOff()
-	retryCount := 0
-
-	for retryCount <= c.spec.MaxRetries {
-		retryCount++
-
+	bo := backoff.WithContext(
+		backoff.WithMaxRetries(backoff.NewExponentialBackOff(), uint64(c.spec.MaxRetries)),
+		ctx,
+	)
+	return backoff.Retry(func() error {
 		err = <-g.Iterate()
 		if err == nil {
 			return nil
 		}
-
 		if !strings.Contains(err.Error(), "ConcurrentModificationException") {
-			return fmt.Errorf("Iterate: %w", err)
+			return backoff.Permanent(fmt.Errorf("Iterate: %w", err))
 		}
-
-		if retryCount > c.spec.MaxRetries {
-			break
-		}
-
-		nb := bo.NextBackOff()
-		c.logger.Debug().Err(err).Str("backoff_duration", nb.String()).Msg("Iterate failed, retrying")
-
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		case <-time.After(nb):
-		}
-	}
-
-	return fmt.Errorf("Max retries (%d) reached. Iterate: %w", c.spec.MaxRetries, err)
+		return err
+	}, bo)
 }
 
 func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {

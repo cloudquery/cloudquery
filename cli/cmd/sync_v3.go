@@ -197,15 +197,15 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 				}
 			}
 		case *plugin.Sync_Response_MigrateTable:
-			if noMigrate {
-				continue
-			}
 			sc, err := plugin.NewSchemaFromBytes(m.MigrateTable.Table)
 			if err != nil {
 				return err
 			}
 			tableName := tableNameFromSchema(sc)
 			tables[tableName] = true
+			if noMigrate {
+				continue
+			}
 			for i := range destinationsPbClients {
 				transformedSchema := destinationTransformers[i].TransformSchema(sc)
 				transformedSchemaBytes, err := plugin.SchemaToBytes(transformedSchema)
