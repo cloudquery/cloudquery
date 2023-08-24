@@ -140,6 +140,7 @@
 - [gcp_logging_metrics](tables/gcp_logging_metrics)
 - [gcp_logging_sinks](tables/gcp_logging_sinks)
 - [gcp_monitoring_alert_policies](tables/gcp_monitoring_alert_policies)
+- [gcp_osconfig_inventories](tables/gcp_osconfig_inventories)
 - [gcp_projects](tables/gcp_projects)
 - [gcp_redis_instances](tables/gcp_redis_instances)
 - [gcp_resourcemanager_folders](tables/gcp_resourcemanager_folders)

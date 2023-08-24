@@ -28,6 +28,7 @@ require (
 	cloud.google.com/go/logging v1.7.0
 	cloud.google.com/go/longrunning v0.5.1
 	cloud.google.com/go/monitoring v1.15.1
+	cloud.google.com/go/osconfig v1.12.1
 	cloud.google.com/go/redis v1.13.1
 	cloud.google.com/go/resourcemanager v1.9.1
 	cloud.google.com/go/run v1.2.0
