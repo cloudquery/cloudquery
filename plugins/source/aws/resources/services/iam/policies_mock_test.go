@@ -15,17 +15,12 @@ import (
 
 func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIamClient(ctrl)
-	g := iamTypes.ManagedPolicyDetail{}
+	g := iamTypes.Policy{}
 	require.NoError(t, faker.FakeObject(&g))
-	document := `{"stuff": 3}`
-	// generate valid json
-	for i := range g.PolicyVersionList {
-		g.PolicyVersionList[i].Document = &document
-	}
 
-	m.EXPECT().GetAccountAuthorizationDetails(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&iam.GetAccountAuthorizationDetailsOutput{
-			Policies: []iamTypes.ManagedPolicyDetail{g},
+	m.EXPECT().ListPolicies(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&iam.ListPoliciesOutput{
+			Policies: []iamTypes.Policy{g},
 		}, nil)
 
 	tag := iamTypes.Tag{}

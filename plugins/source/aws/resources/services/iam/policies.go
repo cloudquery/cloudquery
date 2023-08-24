@@ -21,7 +21,7 @@ func Policies() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ManagedPolicyDetail.html`,
 		Resolver:    fetchIamPolicies,
-		Transform:   transformers.TransformWithStruct(&types.ManagedPolicyDetail{}),
+		Transform:   transformers.TransformWithStruct(&types.Policy{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
@@ -37,9 +37,9 @@ func Policies() *schema.Table {
 				Resolver: resolveIamPolicyTags,
 			},
 			{
-				Name:     "policy_version_list",
+				Name:     "policy_version",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveIamPolicyVersionList,
+				Resolver: fetchPolicyVersion,
 			},
 		},
 		Relations: []*schema.Table{
@@ -49,14 +49,9 @@ func Policies() *schema.Table {
 }
 
 func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	config := iam.GetAccountAuthorizationDetailsInput{
-		Filter: []types.EntityType{
-			types.EntityTypeAWSManagedPolicy, types.EntityTypeLocalManagedPolicy,
-		},
-	}
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceIam).Iam
-	paginator := iam.NewGetAccountAuthorizationDetailsPaginator(svc, &config)
+	paginator := iam.NewListPoliciesPaginator(svc, nil)
 
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *iam.Options) {
@@ -71,7 +66,7 @@ func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 }
 
 func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.ManagedPolicyDetail)
+	r := resource.Item.(types.Policy)
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceIam).Iam
 	response, err := svc.ListPolicyTags(ctx, &iam.ListPolicyTagsInput{PolicyArn: r.Arn}, func(options *iam.Options) {
@@ -86,12 +81,27 @@ func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource 
 	return resource.Set("tags", client.TagsToMap(response.Tags))
 }
 
-func resolveIamPolicyVersionList(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.ManagedPolicyDetail)
-	for i := range r.PolicyVersionList {
-		if v, err := url.QueryUnescape(aws.ToString(r.PolicyVersionList[i].Document)); err == nil {
-			r.PolicyVersionList[i].Document = &v
-		}
+func fetchPolicyVersion(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceIam).Iam
+	policy := resource.Item.(types.Policy)
+	config := iam.GetPolicyVersionInput{
+		PolicyArn: policy.Arn,
+		VersionId: policy.DefaultVersionId,
 	}
-	return resource.Set(c.Name, r.PolicyVersionList)
+	policyVersion, err := svc.GetPolicyVersion(ctx, &config)
+
+	if err != nil {
+		return err
+	}
+
+	doc, err := url.QueryUnescape(aws.ToString(policyVersion.PolicyVersion.Document))
+
+	if err != nil {
+		return err
+	}
+
+	policyVersion.PolicyVersion.Document = &doc
+
+	return resource.Set("policy_version", policyVersion)
 }
