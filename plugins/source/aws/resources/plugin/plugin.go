@@ -3,8 +3,8 @@ package plugin
 import (
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v4/caser"
+	"github.com/cloudquery/plugin-sdk/v4/docs"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
@@ -93,7 +93,7 @@ var awsExceptions = map[string]string{
 func titleTransformer(table *schema.Table) {
 	if table.Title == "" {
 		exceptions := make(map[string]string)
-		for k, v := range source.DefaultTitleExceptions {
+		for k, v := range docs.DefaultTitleExceptions {
 			exceptions[k] = v
 		}
 		for k, v := range awsExceptions {
