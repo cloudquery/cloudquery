@@ -10,6 +10,9 @@ SELECT CASE
 END AS "execution_time"  \gset
 \ir ../create_aws_policy_results.sql
 
+\echo "Creating view_aws_iam_policy_statements"
+\ir ../views/iam_policy_statements.sql
+
 \set check_id 'autoscaling.1'
 \echo "Executing check autoscaling.1"
 \ir ../queries/autoscaling/autoscaling_groups_elb_check.sql

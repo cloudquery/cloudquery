@@ -1,6 +1,9 @@
+\echo "Creating view_aws_iam_policy_statements"
+\ir ../views/iam_policy_statements.sql
+
 \set check_id 'IAM.1'
 \echo "Executing check IAM.1"
-\ir ../queries/iam/policies_with_admin_rights.sql
+\ir ../queries/iam/no_star.sql
 
 \set check_id 'IAM.2'
 \echo "Executing check IAM.2"

@@ -1,3 +1,6 @@
+\echo "Creating view_aws_iam_policy_statements"
+\ir ../views/iam_policy_statements.sql
+
 \set check_id 'KMS.1'
 \echo "Executing check KMS.1"
 \ir ../queries/kms/customer_policy_blocked_kms_actions.sql
