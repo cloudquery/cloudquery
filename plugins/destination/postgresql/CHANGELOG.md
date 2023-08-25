@@ -1,5 +1,16 @@
 # Changelog
 
+## [5.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v5.0.5...plugins-destination-postgresql-v5.0.6) (2023-08-25)
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/cloudquery/plugin-sdk/v4` to v4.5.5 ([#13297](https://github.com/cloudquery/cloudquery/issues/13297)) ([38d4d59](https://github.com/cloudquery/cloudquery/commit/38d4d59e37ffb9758657e9bc460dab7de0ed010a))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 5b83d4f ([#13203](https://github.com/cloudquery/cloudquery/issues/13203)) ([b0a4b8c](https://github.com/cloudquery/cloudquery/commit/b0a4b8ccf7c429bf5a6ed88866865212015b68e4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.1 ([#13195](https://github.com/cloudquery/cloudquery/issues/13195)) ([a184c37](https://github.com/cloudquery/cloudquery/commit/a184c3786ad49df8564344773e9b96f617ef87a1))
+* Don't list Postgres tables during insert ([#13323](https://github.com/cloudquery/cloudquery/issues/13323)) ([6dee8bc](https://github.com/cloudquery/cloudquery/commit/6dee8bca0be3140940f960761bc14316ba78889e))
+* Properly handle trailing zeroes in uint64 values when reading ([38d4d59](https://github.com/cloudquery/cloudquery/commit/38d4d59e37ffb9758657e9bc460dab7de0ed010a))
+
 ## [5.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v5.0.4...plugins-destination-postgresql-v5.0.5) (2023-08-15)
 
 
