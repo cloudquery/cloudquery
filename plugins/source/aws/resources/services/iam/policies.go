@@ -2,12 +2,10 @@ package iam
 
 import (
 	"context"
-	"net/url"
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
 	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -36,14 +34,10 @@ func Policies() *schema.Table {
 				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveIamPolicyTags,
 			},
-			{
-				Name:     "policy_version",
-				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: fetchPolicyVersion,
-			},
 		},
 		Relations: []*schema.Table{
 			policyLastAccessedDetails(),
+			policyVersions(),
 		},
 	}
 }
@@ -79,29 +73,4 @@ func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource 
 		return err
 	}
 	return resource.Set("tags", client.TagsToMap(response.Tags))
-}
-
-func fetchPolicyVersion(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceIam).Iam
-	policy := resource.Item.(types.Policy)
-	config := iam.GetPolicyVersionInput{
-		PolicyArn: policy.Arn,
-		VersionId: policy.DefaultVersionId,
-	}
-	policyVersion, err := svc.GetPolicyVersion(ctx, &config)
-
-	if err != nil {
-		return err
-	}
-
-	doc, err := url.QueryUnescape(aws.ToString(policyVersion.PolicyVersion.Document))
-
-	if err != nil {
-		return err
-	}
-
-	policyVersion.PolicyVersion.Document = &doc
-
-	return resource.Set("policy_version", policyVersion)
 }
