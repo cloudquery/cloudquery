@@ -14,7 +14,6 @@ func (c *Client) getNormalizedTables(ctx context.Context, tables schema.Tables) 
 	pgTables, err := c.refreshTables(ctx, tables.TableNames())
 	if err != nil {
 		return nil, fmt.Errorf("failed listing postgres tables: %w", err)
-
 	}
 	return c.normalizeTables(tables, pgTables), nil
 }

@@ -128,13 +128,13 @@ func (c *Client) currentDatabase(ctx context.Context) (string, error) {
 }
 
 func (c *Client) currentSchema(ctx context.Context) (string, error) {
-	var schema string
-	err := c.conn.QueryRow(ctx, "select current_schema()").Scan(&schema)
+	var name string
+	err := c.conn.QueryRow(ctx, "select current_schema()").Scan(&name)
 	if err != nil {
 		return "", err
 	}
 
-	return schema, nil
+	return name, nil
 }
 
 func (c *Client) getPgType(ctx context.Context) (pgType, error) {
