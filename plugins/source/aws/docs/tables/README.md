@@ -393,6 +393,7 @@
 - [aws_iam_password_policies](../../../../../website/tables/aws/aws_iam_password_policies.md)
 - [aws_iam_policies](../../../../../website/tables/aws/aws_iam_policies.md)
   - [aws_iam_policy_last_accessed_details](../../../../../website/tables/aws/aws_iam_policy_last_accessed_details.md)
+  - [aws_iam_policy_versions](../../../../../website/tables/aws/aws_iam_policy_versions.md)
 - [aws_iam_roles](../../../../../website/tables/aws/aws_iam_roles.md)
   - [aws_iam_role_attached_policies](../../../../../website/tables/aws/aws_iam_role_attached_policies.md)
   - [aws_iam_role_last_accessed_details](../../../../../website/tables/aws/aws_iam_role_last_accessed_details.md)
