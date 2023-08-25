@@ -43,8 +43,7 @@ const (
 
 func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
-		logger:                  logger.With().Str("module", "pg-dest").Logger(),
-		pgTablesToPKConstraints: make(map[string]string),
+		logger: logger.With().Str("module", "pg-dest").Logger(),
 	}
 	if opts.NoConnection {
 		return c, nil

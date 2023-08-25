@@ -63,6 +63,7 @@ ORDER BY
 `
 
 func (c *Client) listTables(ctx context.Context, include, exclude []string) (schema.Tables, error) {
+	c.pgTablesToPKConstraints = map[string]string{}
 	var tables schema.Tables
 	whereClause := c.whereClause(include, exclude)
 	if c.pgType == pgTypeCockroachDB {
