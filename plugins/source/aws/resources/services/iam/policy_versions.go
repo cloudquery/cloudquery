@@ -46,7 +46,11 @@ func fetchPolicyVersion(ctx context.Context, meta schema.ClientMeta, parent *sch
 		PolicyArn: policy.Arn,
 		VersionId: policy.DefaultVersionId,
 	}
-	policyVersionOutput, err := svc.GetPolicyVersion(ctx, &config)
+	policyVersionOutput, err := svc.GetPolicyVersion(
+		ctx,
+		&config,
+		func(options *iam.Options) { options.Region = cl.Region },
+	)
 
 	if err != nil {
 		return err
