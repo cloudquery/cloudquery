@@ -1,30 +1,16 @@
 insert into aws_policy_results
 
-with iam_policies as (
+with violations as (
     select
-        (v->>'Document')::jsonb AS document,
-        account_id,
-        arn,
-        id
-    from aws_iam_policies, jsonb_array_elements(aws_iam_policies.policy_version_list) AS v
-),
-
-violations as (
-    select distinct id
-    from iam_policies,
-        jsonb_array_elements(
-            case jsonb_typeof(document -> 'Statement')
-                when 'string' then jsonb_build_array(document ->> 'Statement')
-                when 'array' then document -> 'Statement'
-            end
-        ) as statement
+        account_id, arn, attachment_count
+    from view_aws_iam_policy_statements
     where
         not(
             arn like 'arn:aws:iam::aws:policy%' or arn like 'arn:aws-us-gov:iam::aws:policy%'
         )
-        and statement ->> 'Effect' = 'Allow'
-        AND statement -> 'Resource'?| array['*', 'arn:aws:kms:*:' || account_id || ':key/*', 'arn:aws:kms:*:' || account_id || ':alias/*'] -- noqa
-        AND statement -> 'Action' ?| array['*', 'kms:*', 'kms:decrypt', 'kms:reencryptfrom', 'kms:reencrypt*'] -- noqa
+        and effect = 'Allow'
+        AND resources ?| array['*', 'arn:aws:kms:*:' || account_id || ':key/*', 'arn:aws:kms:*:' || account_id || ':alias/*'] -- noqa
+        AND actions ?| array['*', 'kms:*', 'kms:decrypt', 'kms:reencryptfrom', 'kms:reencrypt*'] -- noqa
 )
 
 select
@@ -34,8 +20,9 @@ select
     'IAM customer managed policies should not allow decryption and re-encryption actions on all KMS keys' AS title,
     account_id,
     arn AS resource_id,
-    case when
-        violations.id is not null
-    then 'fail' else 'pass' end as status
-from aws_iam_policies
-left join violations on violations.id = aws_iam_policies.id
+    case sum(attachment_count) 
+        when 0 then 'pass' 
+        else 'fail'
+    end as status
+from violations
+group by account_id, arn
