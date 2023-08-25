@@ -11,6 +11,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func policyVersions() *schema.Table {
@@ -19,7 +20,7 @@ func policyVersions() *schema.Table {
 		Name:        table_name,
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_PolicyVersion.html`,
 		Resolver:    fetchPolicyVersion,
-		Transform:   transformers.TransformWithStruct(&iam.GetPolicyVersionOutput{}),
+		Transform:   transformers.TransformWithStruct(&types.PolicyVersion{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
@@ -27,6 +28,11 @@ func policyVersions() *schema.Table {
 				Type:       arrow.BinaryTypes.String,
 				Resolver:   schema.ParentColumnResolver("arn"),
 				PrimaryKey: true,
+			},
+			{
+				Name:     "document",
+				Type:     sdkTypes.ExtensionTypes.JSON,
+				Resolver: resolvePolicyDocument,
 			},
 		},
 	}
@@ -40,21 +46,22 @@ func fetchPolicyVersion(ctx context.Context, meta schema.ClientMeta, parent *sch
 		PolicyArn: policy.Arn,
 		VersionId: policy.DefaultVersionId,
 	}
-	policyVersion, err := svc.GetPolicyVersion(ctx, &config)
+	policyVersionOutput, err := svc.GetPolicyVersion(ctx, &config)
 
 	if err != nil {
 		return err
 	}
 
-	doc, err := url.QueryUnescape(aws.ToString(policyVersion.PolicyVersion.Document))
-
-	if err != nil {
-		return err
-	}
-
-	policyVersion.PolicyVersion.Document = &doc
-
-	res <- policyVersion
+	res <- policyVersionOutput.PolicyVersion
 
 	return nil
+}
+
+func resolvePolicyDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	r := resource.Item.(*types.PolicyVersion)
+	doc, err := url.QueryUnescape(aws.ToString(r.Document))
+	if err != nil {
+		return err
+	}
+	return resource.Set("document", doc)
 }
