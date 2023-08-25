@@ -18,5 +18,7 @@ This table depends on [aws_iam_policies](aws_iam_policies).
 |_cq_parent_id|`uuid`|
 |account_id (PK)|`utf8`|
 |policy_arn (PK)|`utf8`|
-|policy_version|`json`|
-|result_metadata|`json`|
+|document|`json`|
+|create_date|`timestamp[us, tz=UTC]`|
+|is_default_version|`bool`|
+|version_id|`utf8`|
