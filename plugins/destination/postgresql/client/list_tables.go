@@ -89,7 +89,7 @@ func (c *Client) listTables(ctx context.Context, include, exclude []string) (sch
 		}
 		table := tables[len(tables)-1]
 		if pkName != "" {
-			table.PkConstraintName = pkName
+			c.pgTablesToPKConstraints[tableName], table.PkConstraintName = pkName, pkName
 		}
 		table.Columns = append(table.Columns, schema.Column{
 			Name:       columnName,

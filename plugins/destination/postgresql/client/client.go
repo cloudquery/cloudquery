@@ -25,6 +25,8 @@ type Client struct {
 	batchSize           int
 	writer              *mixedbatchwriter.MixedBatchWriter
 
+	pgTablesToPKConstraints map[string]string
+
 	plugin.UnimplementedSource
 }
 
@@ -41,7 +43,8 @@ const (
 
 func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
-		logger: logger.With().Str("module", "pg-dest").Logger(),
+		logger:                  logger.With().Str("module", "pg-dest").Logger(),
+		pgTablesToPKConstraints: make(map[string]string),
 	}
 	if opts.NoConnection {
 		return c, nil
