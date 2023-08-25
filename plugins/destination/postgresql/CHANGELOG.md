@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v5.0.6...plugins-destination-postgresql-v5.0.7) (2023-08-25)
+
+
+### Bug Fixes
+
+* Call list tables once on insert if `--no-migrate` was used ([#13327](https://github.com/cloudquery/cloudquery/issues/13327)) ([eda215c](https://github.com/cloudquery/cloudquery/commit/eda215c0d204becf18d406be686fde2585bc4e77))
+
 ## [5.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v5.0.5...plugins-destination-postgresql-v5.0.6) (2023-08-25)
 
 
