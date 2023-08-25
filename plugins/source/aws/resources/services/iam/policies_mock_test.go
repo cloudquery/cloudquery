@@ -2,6 +2,7 @@ package iam
 
 import (
 	"testing"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
@@ -31,6 +32,18 @@ func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 				tag,
 			},
 		}, nil)
+
+	createDate := time.Now()
+	m.EXPECT().GetPolicyVersion(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&iam.GetPolicyVersionOutput{
+			PolicyVersion: &iamTypes.PolicyVersion{
+				CreateDate: &createDate,
+				Document:   aws.String(`{}`),
+				VersionId:  aws.String("v1"),
+			},
+		},
+		nil,
+	)
 
 	m.EXPECT().GenerateServiceLastAccessedDetails(gomock.Any(), gomock.Any(), gomock.Any()).Return(&iam.GenerateServiceLastAccessedDetailsOutput{JobId: aws.String("JobId")}, nil)
 
