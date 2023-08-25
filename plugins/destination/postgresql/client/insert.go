@@ -19,17 +19,7 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 	if err != nil {
 		return err
 	}
-
-	include := make([]string, len(tables))
-	for i, table := range tables {
-		include[i] = table.Name
-	}
-	var exclude []string
-	pgTables, err := c.listTables(ctx, include, exclude)
-	if err != nil {
-		return err
-	}
-	tables = c.normalizeTables(tables, pgTables)
+	tables, err = c.getNormalizedTables(ctx, tables)
 	if err != nil {
 		return err
 	}

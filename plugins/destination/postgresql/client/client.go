@@ -8,6 +8,7 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/writers/mixedbatchwriter"
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
 	"github.com/jackc/pgx/v5"
@@ -25,6 +26,7 @@ type Client struct {
 	batchSize           int
 	writer              *mixedbatchwriter.MixedBatchWriter
 
+	pgTables schema.Tables
 	plugin.UnimplementedSource
 }
 

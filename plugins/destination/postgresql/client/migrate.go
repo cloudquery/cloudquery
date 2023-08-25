@@ -16,16 +16,10 @@ func (c *Client) MigrateTableBatch(ctx context.Context, messages message.WriteMi
 	if err != nil {
 		return err
 	}
-	include := make([]string, len(tables))
-	for i, table := range tables {
-		include[i] = table.Name
-	}
-	var exclude []string
-	pgTables, err := c.listTables(ctx, include, exclude)
+	tables, err = c.getNormalizedTables(ctx, tables)
 	if err != nil {
-		return fmt.Errorf("failed listing postgres tables: %w", err)
+		return err
 	}
-	tables = c.normalizeTables(tables, pgTables)
 
 	safeTables := map[string]bool{}
 	for _, msg := range messages {
@@ -33,7 +27,7 @@ func (c *Client) MigrateTableBatch(ctx context.Context, messages message.WriteMi
 		// in the same batch twice.
 		safeTables[msg.Table.Name] = !msg.MigrateForce
 	}
-	nonAutoMigrateableTables, changes := c.nonAutoMigrateableTables(tables, pgTables, safeTables)
+	nonAutoMigrateableTables, changes := c.nonAutoMigrateableTables(tables, c.pgTables, safeTables)
 	if len(nonAutoMigrateableTables) > 0 {
 		return fmt.Errorf("tables %s with changes %v require migration. Migrate manually or consider using 'migrate_mode: forced'", strings.Join(nonAutoMigrateableTables, ","), changes)
 	}
@@ -45,7 +39,7 @@ func (c *Client) MigrateTableBatch(ctx context.Context, messages message.WriteMi
 			c.logger.Info().Str("table", tableName).Msg("Table with no columns, skipping")
 			continue
 		}
-		pgTable := pgTables.Get(tableName)
+		pgTable := c.pgTables.Get(tableName)
 		if pgTable == nil {
 			c.logger.Debug().Str("table", tableName).Msg("Table doesn't exist, creating")
 			if err := c.createTableIfNotExist(ctx, table); err != nil {
@@ -77,7 +71,9 @@ func (c *Client) MigrateTableBatch(ctx context.Context, messages message.WriteMi
 	if err := conn.Conn().DeallocateAll(ctx); err != nil {
 		return fmt.Errorf("failed to deallocate all prepared statements: %w", err)
 	}
-	return nil
+
+	_, err = c.refreshTables(ctx, tables.TableNames())
+	return err
 }
 
 func (c *Client) normalizeTable(table *schema.Table, pgTable *schema.Table) *schema.Table {
