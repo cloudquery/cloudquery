@@ -20,6 +20,15 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 		return err
 	}
 
+	// This happens when the CLI was invoked with `sync --no-migrate`
+	if c.pgTablesToPKConstraints == nil {
+		// Passing nil for include and exclude lists all tables and populates c.pgTablesToPKConstraints
+		_, err := c.listTables(ctx, nil, nil)
+		if err != nil {
+			return err
+		}
+	}
+
 	tables = c.normalizeTables(tables)
 	if err != nil {
 		return err
