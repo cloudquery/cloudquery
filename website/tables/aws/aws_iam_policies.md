@@ -10,6 +10,7 @@ The composite primary key for this table is (**account_id**, **id**).
 
 The following tables depend on aws_iam_policies:
   - [aws_iam_policy_last_accessed_details](aws_iam_policy_last_accessed_details)
+  - [aws_iam_policy_versions](aws_iam_policy_versions)
 
 ## Columns
 
@@ -20,7 +21,6 @@ The following tables depend on aws_iam_policies:
 |account_id (PK)|`utf8`|
 |id (PK)|`utf8`|
 |tags|`json`|
-|policy_version|`json`|
 |arn|`utf8`|
 |attachment_count|`int64`|
 |create_date|`timestamp[us, tz=UTC]`|
