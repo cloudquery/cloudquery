@@ -54,7 +54,7 @@ Check out our [Airtable](https://github.com/cloudquery/cloudquery/blob/main/plug
 
 ### Managed Asynchronous Scheduler
 
-The scheduler's main responsibilities are to manage concurrent execution of requests and the order in which tables are synced to avoid dependency issues. It also places limits on the number of concurrent requests and memory usage.
+The scheduler's main responsibilities are to manage concurrent execution of requests and the order in which tables are synced to avoid dependency issues. It also supports placing limits on the number of concurrent requests and memory usage.
 
 To invoke the scheduler, the `sync` method of a plugin should pass a list of its tables and options to the scheduler. The scheduler will take care of the rest. Here is an example [from the Airtable plugin](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/typeform/plugin/plugin.py):
 
