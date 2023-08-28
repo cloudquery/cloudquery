@@ -62,9 +62,10 @@ ORDER BY
 	table_name ASC, ordinal_position ASC;
 `
 
-func (c *Client) listTables(ctx context.Context, include, exclude []string) (schema.Tables, error) {
+func (c *Client) listTables(ctx context.Context, include []string) (schema.Tables, error) {
+	c.pgTablesToPKConstraints = map[string]string{}
 	var tables schema.Tables
-	whereClause := c.whereClause(include, exclude)
+	whereClause := c.whereClause(include)
 	if c.pgType == pgTypeCockroachDB {
 		whereClause += " AND information_schema.columns.is_hidden != 'YES'"
 	}
@@ -89,7 +90,7 @@ func (c *Client) listTables(ctx context.Context, include, exclude []string) (sch
 		}
 		table := tables[len(tables)-1]
 		if pkName != "" {
-			table.PkConstraintName = pkName
+			c.pgTablesToPKConstraints[tableName], table.PkConstraintName = pkName, pkName
 		}
 		table.Columns = append(table.Columns, schema.Column{
 			Name:       columnName,
@@ -101,16 +102,13 @@ func (c *Client) listTables(ctx context.Context, include, exclude []string) (sch
 	return tables, nil
 }
 
-func (c *Client) whereClause(include, exclude []string) string {
-	if len(include) == 0 && len(exclude) == 0 {
+func (c *Client) whereClause(include []string) string {
+	if len(include) == 0 {
 		return ""
 	}
 	var where string
 	if len(include) > 0 {
 		where = fmt.Sprintf("AND pg_class.relname IN (%s)", c.inClause(include))
-	}
-	if len(exclude) > 0 {
-		where = fmt.Sprintf("AND pg_class.relname NOT IN (%s)", c.inClause(exclude))
 	}
 	return where
 }

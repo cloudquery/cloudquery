@@ -6,7 +6,7 @@ import (
 	"os"
 	"path"
 
-	"github.com/apache/arrow/go/v13/arrow/array"
+	"github.com/apache/arrow/go/v14/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/goccy/go-json"
 )

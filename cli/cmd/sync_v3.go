@@ -9,7 +9,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/cloudquery/cli/internal/transformer"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -197,15 +197,15 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 				}
 			}
 		case *plugin.Sync_Response_MigrateTable:
-			if noMigrate {
-				continue
-			}
 			sc, err := plugin.NewSchemaFromBytes(m.MigrateTable.Table)
 			if err != nil {
 				return err
 			}
 			tableName := tableNameFromSchema(sc)
 			tables[tableName] = true
+			if noMigrate {
+				continue
+			}
 			for i := range destinationsPbClients {
 				transformedSchema := destinationTransformers[i].TransformSchema(sc)
 				transformedSchemaBytes, err := plugin.SchemaToBytes(transformedSchema)

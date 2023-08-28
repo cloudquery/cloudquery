@@ -1,5 +1,34 @@
 # Changelog
 
+## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v5.0.7...plugins-destination-postgresql-v6.0.0) (2023-08-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* Increase default batch size bytes to `100000000` (100 MB) and default batch timeout to `60` seconds. We discovered a default higher batch size bytes and timeout settings provide better out of the box performance for the PostgreSQL destination. We're marking it as a breaking change as it might increase memory consumption in some environments.
+
+### Features
+
+* Increase default batch size bytes to `100000000` (100 MB) and default batch timeout to `60` seconds. ([e9c06b4](https://github.com/cloudquery/cloudquery/commit/e9c06b41b28ef3ae5ba4860a1e7b89f957a803a0))
+
+## [5.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v5.0.6...plugins-destination-postgresql-v5.0.7) (2023-08-25)
+
+
+### Bug Fixes
+
+* Call list tables once on insert if `--no-migrate` was used ([#13327](https://github.com/cloudquery/cloudquery/issues/13327)) ([eda215c](https://github.com/cloudquery/cloudquery/commit/eda215c0d204becf18d406be686fde2585bc4e77))
+
+## [5.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v5.0.5...plugins-destination-postgresql-v5.0.6) (2023-08-25)
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/cloudquery/plugin-sdk/v4` to v4.5.5 ([#13297](https://github.com/cloudquery/cloudquery/issues/13297)) ([38d4d59](https://github.com/cloudquery/cloudquery/commit/38d4d59e37ffb9758657e9bc460dab7de0ed010a))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 5b83d4f ([#13203](https://github.com/cloudquery/cloudquery/issues/13203)) ([b0a4b8c](https://github.com/cloudquery/cloudquery/commit/b0a4b8ccf7c429bf5a6ed88866865212015b68e4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.1 ([#13195](https://github.com/cloudquery/cloudquery/issues/13195)) ([a184c37](https://github.com/cloudquery/cloudquery/commit/a184c3786ad49df8564344773e9b96f617ef87a1))
+* Don't list Postgres tables during insert ([#13323](https://github.com/cloudquery/cloudquery/issues/13323)) ([6dee8bc](https://github.com/cloudquery/cloudquery/commit/6dee8bca0be3140940f960761bc14316ba78889e))
+* Properly handle trailing zeroes in uint64 values when reading ([38d4d59](https://github.com/cloudquery/cloudquery/commit/38d4d59e37ffb9758657e9bc460dab7de0ed010a))
+
 ## [5.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v5.0.4...plugins-destination-postgresql-v5.0.5) (2023-08-15)
 
 
