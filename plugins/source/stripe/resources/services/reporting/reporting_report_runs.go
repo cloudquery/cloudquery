@@ -5,11 +5,10 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	"github.com/stripe/stripe-go/v74"
 )
 
 func ReportingReportRuns() *schema.Table {

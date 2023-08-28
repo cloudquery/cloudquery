@@ -4,21 +4,22 @@ go 1.20
 
 require (
 	github.com/Shopify/sarama v1.37.2
-	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882
-	github.com/cloudquery/filetypes/v4 v4.1.5
-	github.com/cloudquery/plugin-sdk/v4 v4.5.3
+	github.com/apache/arrow/go/v14 v14.0.0-20230826001106-a069d71cc1bcd
+	github.com/cloudquery/filetypes/v4 v4.1.6
+	github.com/cloudquery/plugin-sdk/v4 v4.5.7
 	github.com/rs/zerolog v1.30.0
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230821001142-5b83d4f91697
+replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20230826001106-a069d71cc1bc
 
 require (
 	github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
+	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect
 	github.com/apache/thrift v0.18.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.9.3 // indirect
+	github.com/cloudquery/plugin-pb-go v1.9.4 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/eapache/go-resiliency v1.3.0 // indirect

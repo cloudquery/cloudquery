@@ -18,6 +18,7 @@ func createZones(mux *httprouter.Router) error {
 	}
 	emptyStr := ""
 	zones.NextPageToken = &emptyStr
+	zones.Items = zones.Items[:1] // leave only 1
 
 	mux.GET("/compute/v1/projects/testProject/zones", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		b, err := json.Marshal(&zones)
@@ -31,7 +32,11 @@ func createZones(mux *httprouter.Router) error {
 		}
 	})
 
-	return createMachineTypes(mux, &zones)
+	if err := createMachineTypes(mux, zones.Items[0]); err != nil {
+		return err
+	}
+
+	return createInventories(mux, zones.Items[0])
 }
 
 func TestZones(t *testing.T) {

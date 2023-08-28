@@ -1,7 +1,7 @@
 package crm
 
 import (
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/clarkmcc/go-hubspot/generated/v3/pipelines"
 	"github.com/cloudquery/cloudquery/plugins/source/hubspot/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
