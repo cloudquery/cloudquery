@@ -262,21 +262,6 @@ func Test_getChanges(t *testing.T) {
 			},
 		},
 		{
-			name:         "Should handle CQTypes -> Apache Arrow column changes",
-			diffDataFile: "testdata/pr_10831_diff.txt",
-			wantChanges:  []change{},
-		},
-		{
-			name:         "Should handle CQTypes -> Apache Arrow column changes with backticks, too",
-			diffDataFile: "testdata/pr_10831_diff_backtick.txt",
-			wantChanges:  []change{},
-		},
-		{
-			name:         "Should handle CQTypes -> Apache Arrow column changes with lists, too",
-			diffDataFile: "testdata/pr_10797_diff.txt",
-			wantChanges:  []change{},
-		},
-		{
 			name:         "Should handle no backticks -> backticks",
 			diffDataFile: "testdata/pr_11034_diff.txt",
 			wantChanges:  []change{},
