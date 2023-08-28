@@ -187,6 +187,7 @@ The `table_options` is an Enterprise only feature
     - [GetFindings](https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html)
     - [ListTasks](https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ListTasks.html)
 
+- **enterprise version only** `streaming_sync` (`array`) (default: empty)
 
 ### account
 
@@ -270,6 +271,28 @@ This is used to specify one or more accounts to extract information from. Note t
 - `skip_member_accounts` ([]string)
 
   List of OU member accounts to skip. This is useful in conjunction with `organization_units` if there are accounts under the selected OUs that should be ignored.
+
+### streaming_sync
+- `account` ([Account](#account)) 
+
+  Configuration for the credentials that will be used to grab records from the specified Kinesis Stream. If this is not specified the default credentials will be used
+
+- `kinesis_stream_arn` (string) (**required**)
+
+  ARN for the Kinesis stream that will hold all of the CloudTrail records
+
+- `start_time` (timestamp) 
+
+  Defines the place in the stream where record processing should begin. By default, the time at which the the sync began will be used.
+
+- `streaming_sync_only` (`bool`) (default: `false`)
+
+  By default CQ will do a full sync on the specified tables before starting to consume the events in the stream. This parameter enables users to skip the pull based sync and go straight to the streaming sync.
+
+
+	
+
+
 
 ## Advanced Configuration
 
