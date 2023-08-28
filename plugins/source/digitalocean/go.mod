@@ -17,7 +17,7 @@ require (
 	golang.org/x/exp v0.0.0-20230728194245-b0cb94b80691
 )
 
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230821001142-5b83d4f91697
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 a069d71cc1bc
 
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.13 // indirect

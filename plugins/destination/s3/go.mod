@@ -17,7 +17,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230821001142-5b83d4f91697
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 a069d71cc1bc
 
 require (
 	github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c // indirect

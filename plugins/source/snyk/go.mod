@@ -15,7 +15,7 @@ require (
 
 replace (
 	// TODO: remove once the changes are merged to upstream
-	github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230821001142-5b83d4f91697
+	github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 a069d71cc1bc
 	github.com/pavel-snyk/snyk-sdk-go => github.com/cloudquery/snyk-sdk-go v0.5.0
 )
 

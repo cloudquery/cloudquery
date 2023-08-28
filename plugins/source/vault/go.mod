@@ -12,7 +12,7 @@ require (
 	github.com/stretchr/testify v1.8.4
 )
 
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230821001142-5b83d4f91697
+replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 a069d71cc1bc
 
 require (
 	github.com/cenkalti/backoff/v3 v3.0.0 // indirect
