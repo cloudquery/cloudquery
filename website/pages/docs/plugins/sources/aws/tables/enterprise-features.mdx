@@ -1,0 +1,78 @@
+
+# Enterprise Features:
+
+
+## Resource Filtering at the API level
+
+
+
+## Streaming Sync:
+
+Cloudtrail enables users to get a near realtime audit log of events occurring within the account. By configuring Cloudtrail to push all write events (events that were triggered by a configuration change) to a Kinesis Stream, CloudQuery can consume that stream to update the impacted resources as quickly as they become available (sub 10 seconds).
+
+The following events are supported:
+
+Service | Event 
+-|-|
+ec2.amazonaws.com | AttachInternetGateway
+ec2.amazonaws.com | AuthorizeSecurityGroupEgress
+ec2.amazonaws.com | AuthorizeSecurityGroupIngress
+ec2.amazonaws.com | CreateInternetGateway
+ec2.amazonaws.com | CreateSecurityGroup
+ec2.amazonaws.com | CreateSubnet
+ec2.amazonaws.com | CreateTags
+ec2.amazonaws.com | CreateVpc
+ec2.amazonaws.com | DeleteTags
+ec2.amazonaws.com | DetachInternetGateway
+ec2.amazonaws.com | ModifySubnetAttribute
+ec2.amazonaws.com | RevokeSecurityGroupEgress
+ec2.amazonaws.com | RevokeSecurityGroupIngress
+ec2.amazonaws.com | RunInstances
+iam.amazonaws.com | CreateGroup
+iam.amazonaws.com | CreateRole
+iam.amazonaws.com | CreateUser
+rds.amazonaws.com | CreateDBInstance
+
+
+### Configuration:
+
+CloudQuery is expecting data in a single sharded Kinesis stream. The format of the data needs to be in the same form as CloudWatch Logs uses to send CloudTrail Events to a Kinesis Data stream. CloudQuery maintains a reference solution that uses CloudFormation to deploy.
+
+```
+aws cloudformation deploy --template-file ./streaming-deployment.yml --stack-name <STACK-NAME> --capabilities CAPABILITY_IAM --disable-rollback --region <DESIRED-REGION>
+```
+
+
+``` yaml
+kind: source
+spec:
+  name: "aws-streaming"
+  registry: "grpc"
+  path: localhost:7778
+  tables:
+    - aws_ec2_instances
+    - aws_ec2_internet_gateways
+    - aws_ec2_security_groups
+    - aws_ec2_subnets
+    - aws_ec2_vpcs
+    - aws_ecs_cluster_tasks
+    - aws_iam_groups
+    - aws_iam_roles
+    - aws_iam_users
+    - aws_rds_instances
+  destinations: ["postgresql"]
+  skip_tables:
+    - aws_iam_group_last_accessed_details
+    - aws_iam_role_last_accessed_details
+    - aws_iam_user_last_accessed_details
+  spec:
+    streaming_sync:
+      - account:
+          local_profile: "AdministratorAccess-615713231484"
+        kinesis_stream_arn: <OUTPUT-FROM-CLOUDFORMATION-STACK>
+```
+
+
+### Limitations:
+- Kinesis Stream can only have a single shard. (This is a limitation that we expect to remove in the future)
+- Stale records will only be deleted if the plugin stops consuming the Kinesis Stream, which only can occur if there is an error
