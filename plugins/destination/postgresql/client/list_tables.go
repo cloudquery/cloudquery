@@ -66,7 +66,7 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 	var tables schema.Tables
 	var whereClause string
 	if c.pgType == pgTypeCockroachDB {
-		whereClause += " AND information_schema.columns.is_hidden != 'YES'"
+		whereClause = " AND information_schema.columns.is_hidden != 'YES'"
 	}
 	q := fmt.Sprintf(selectTables, c.currentSchemaName, whereClause)
 	rows, err := c.conn.Query(ctx, q)
