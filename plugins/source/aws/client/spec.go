@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"regexp"
 
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
 )
 
@@ -36,6 +37,10 @@ type AwsOrg struct {
 	ChildAccountRegions         []string `json:"member_regions,omitempty"`
 }
 
+type StreamingSync struct {
+	Account          Account `json:"account"`
+	KinesisStreamARN string  `json:"kinesis_stream_arn"`
+}
 type Spec struct {
 	Regions                   []string                   `json:"regions,omitempty"`
 	Accounts                  []Account                  `json:"accounts"`
@@ -51,6 +56,7 @@ type Spec struct {
 	UsePaidAPIs               bool                       `json:"use_paid_apis"`
 	TableOptions              *tableoptions.TableOptions `json:"table_options,omitempty"`
 	Concurrency               int                        `json:"concurrency"`
+	StreamingSync             []StreamingSync            `json:"streaming_sync,omitempty"`
 }
 
 func (s *Spec) Validate() error {
@@ -83,6 +89,16 @@ func (s *Spec) Validate() error {
 	if s.TableOptions != nil {
 		if err := s.TableOptions.Validate(); err != nil {
 			return fmt.Errorf("invalid table_options: %w", err)
+		}
+	}
+
+	if len(s.StreamingSync) > 1 {
+		return fmt.Errorf("only one streaming_sync is allowed at this time")
+	}
+	if len(s.StreamingSync) == 1 {
+		_, err := arn.Parse(s.StreamingSync[0].KinesisStreamARN)
+		if err != nil {
+			return fmt.Errorf("failed to parse kinesis arn (%s): %w", s.StreamingSync[0].KinesisStreamARN, err)
 		}
 	}
 	return nil
