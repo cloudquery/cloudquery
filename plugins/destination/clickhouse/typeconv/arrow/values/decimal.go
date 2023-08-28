@@ -1,9 +1,9 @@
 package values
 
 import (
-	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/apache/arrow/go/v13/arrow/decimal128"
-	"github.com/apache/arrow/go/v13/arrow/decimal256"
+	"github.com/apache/arrow/go/v14/arrow/array"
+	"github.com/apache/arrow/go/v14/arrow/decimal128"
+	"github.com/apache/arrow/go/v14/arrow/decimal256"
 	"github.com/shopspring/decimal"
 )
 

@@ -3,19 +3,20 @@ module github.com/cloudquery/cloudquery/plugins/source/hubspot
 go 1.20
 
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882
+	github.com/apache/arrow/go/v14 v14.0.0-20230826001106-a069d71cc1bcd
 	github.com/clarkmcc/go-hubspot v0.0.0-20221010213350-20c2f9cbf936
-	github.com/cloudquery/plugin-sdk/v4 v4.5.5
+	github.com/cloudquery/plugin-sdk/v4 v4.5.7
 	github.com/rs/zerolog v1.29.1
 	golang.org/x/exp v0.0.0-20230728194245-b0cb94b80691
 	golang.org/x/time v0.3.0
 )
 
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 a069d71cc1bc
+replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20230826001106-a069d71cc1bc
 
 require (
+	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.9.3 // indirect
+	github.com/cloudquery/plugin-pb-go v1.9.4 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect

@@ -3,7 +3,7 @@ package changes
 import (
 	"strings"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	schemav2 "github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
