@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"regexp"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
@@ -38,8 +39,10 @@ type AwsOrg struct {
 }
 
 type StreamingSync struct {
-	Account          Account `json:"account"`
-	KinesisStreamARN string  `json:"kinesis_stream_arn"`
+	Account           Account    `json:"account"`
+	KinesisStreamARN  string     `json:"kinesis_stream_arn"`
+	StartTime         *time.Time `json:"start_time,omitempty"`
+	StreamingSyncOnly bool       `json:"streaming_sync_only"`
 }
 type Spec struct {
 	Regions                   []string                   `json:"regions,omitempty"`
