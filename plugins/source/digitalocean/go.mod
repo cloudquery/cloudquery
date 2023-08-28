@@ -3,13 +3,13 @@ module github.com/cloudquery/cloudquery/plugins/source/digitalocean
 go 1.20
 
 require (
-	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882
+	github.com/apache/arrow/go/v14 v14.0.0-20230826001106-a069d71cc1bcd
 	github.com/avast/retry-go/v4 v4.3.4
 	github.com/aws/aws-sdk-go-v2 v1.20.3
 	github.com/aws/aws-sdk-go-v2/config v1.18.35
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.38.4
 	github.com/aws/smithy-go v1.14.2
-	github.com/cloudquery/plugin-sdk/v4 v4.5.6
+	github.com/cloudquery/plugin-sdk/v4 v4.5.7
 	github.com/digitalocean/godo v1.99.0
 	github.com/golang/mock v1.6.0
 	github.com/pkg/errors v0.9.1
@@ -17,9 +17,10 @@ require (
 	golang.org/x/exp v0.0.0-20230728194245-b0cb94b80691
 )
 
-replace github.com/apache/arrow/go/v13 => github.com/cloudquery/arrow/go/v13 v13.0.0-20230821001142-5b83d4f91697
+replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20230826001106-a069d71cc1bc
 
 require (
+	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.13 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.34 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.13.10 // indirect
@@ -35,7 +36,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.15.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.21.4 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.9.3 // indirect
+	github.com/cloudquery/plugin-pb-go v1.9.4 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect

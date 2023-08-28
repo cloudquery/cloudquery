@@ -2,10 +2,12 @@ github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 h1:mFDZW1FQk9
 github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882/go.mod h1:W69eByFNO0ZR30q1/7Sr9d83zcVZmF2MiP3fFYAWJOc=
 github.com/bluekeyes/go-gitdiff v0.7.1 h1:graP4ElLRshr8ecu0UtqfNTCHrtSyZd3DABQm/DWesQ=
 github.com/bluekeyes/go-gitdiff v0.7.1/go.mod h1:QpfYYO1E0fTVHVZAZKiRjtSGY9823iCdvGXBcEzHGbM=
+github.com/cloudquery/arrow/go/v14 v14.0.0-20230826001106-a069d71cc1bc h1:xNEmwt8TXE+Z5YdwmXpXDk6YgFxcffdmJeGFal1Ta9k=
+github.com/cloudquery/arrow/go/v14 v14.0.0-20230826001106-a069d71cc1bc/go.mod h1:QQ18IZU2Y3BFqHtF2HyvrjEEmk8TyzzmXgUVjep3bCw=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0/go.mod h1:pAX6ojIW99b/Vg4CkhnsGkRIzNaVEceYMR+Bdit73ug=
-github.com/cloudquery/plugin-sdk/v4 v4.5.6 h1:ZrYDtxBvsLB7l7nUUVHlXt2S9Yv3KenhFEh6F5hwjzU=
-github.com/cloudquery/plugin-sdk/v4 v4.5.6/go.mod h1:/2/9y6iODo8jOT0mrAp8K1eogr7+228cy53jK8aUCjY=
+github.com/cloudquery/plugin-sdk/v4 v4.5.7 h1:eI6nZyeC46bnh3Ucfxy/h805GHPgWGFpsnfzcnHsf/o=
+github.com/cloudquery/plugin-sdk/v4 v4.5.7/go.mod h1:hbpj8OVt76uEtAbYRzgZe38Ox9IL2Zg2BB/IuNmct8w=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

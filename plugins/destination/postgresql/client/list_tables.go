@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
@@ -61,12 +62,12 @@ ORDER BY
 	table_name ASC, ordinal_position ASC;
 `
 
-func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
+func (c *Client) listTables(ctx context.Context, include []string) (schema.Tables, error) {
 	c.pgTablesToPKConstraints = map[string]string{}
 	var tables schema.Tables
-	var whereClause string
+	whereClause := c.whereClause(include)
 	if c.pgType == pgTypeCockroachDB {
-		whereClause = " AND information_schema.columns.is_hidden != 'YES'"
+		whereClause += " AND information_schema.columns.is_hidden != 'YES'"
 	}
 	q := fmt.Sprintf(selectTables, c.currentSchemaName, whereClause)
 	rows, err := c.conn.Query(ctx, q)
@@ -99,4 +100,29 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 		})
 	}
 	return tables, nil
+}
+
+func (c *Client) whereClause(include []string) string {
+	if len(include) == 0 {
+		return ""
+	}
+	var where string
+	if len(include) > 0 {
+		where = fmt.Sprintf("AND pg_class.relname IN (%s)", c.inClause(include))
+	}
+	return where
+}
+
+func (*Client) inClause(values []string) string {
+	var inClause string
+	for i, value := range values {
+		value = strings.ReplaceAll(value, "'", "")  // strip single quotes
+		value = strings.ReplaceAll(value, "*", "%") // replace * with %
+		if i == 0 {
+			inClause = fmt.Sprintf("'%s'", value)
+			continue
+		}
+		inClause += fmt.Sprintf(", '%s'", value)
+	}
+	return inClause
 }

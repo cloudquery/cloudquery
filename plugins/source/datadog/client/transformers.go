@@ -5,7 +5,7 @@ import (
 	"reflect"
 
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadog"
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/thoas/go-funk"

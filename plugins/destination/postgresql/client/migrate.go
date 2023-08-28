@@ -16,7 +16,7 @@ func (c *Client) MigrateTableBatch(ctx context.Context, messages message.WriteMi
 	if err != nil {
 		return err
 	}
-	pgTables, err := c.listTables(ctx)
+	pgTables, err := c.listTables(ctx, tables.TableNames())
 	if err != nil {
 		return fmt.Errorf("failed listing postgres tables: %w", err)
 	}
