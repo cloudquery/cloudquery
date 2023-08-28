@@ -1,5 +1,16 @@
 # Changelog
 
+## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v5.0.7...plugins-destination-postgresql-v6.0.0) (2023-08-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* Increase default batch size bytes to `100000000` (100 MB) and default batch timeout to `60` seconds. We discovered a default higher batch size bytes and timeout settings provide better out of the box performance for the PostgreSQL destination. We're marking it as a breaking change as it might increase memory consumption in some environments.
+
+### Features
+
+* Increase default batch size bytes to `100000000` (100 MB) and default batch timeout to `60` seconds. ([e9c06b4](https://github.com/cloudquery/cloudquery/commit/e9c06b41b28ef3ae5ba4860a1e7b89f957a803a0))
+
 ## [5.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v5.0.6...plugins-destination-postgresql-v5.0.7) (2023-08-25)
 
 
