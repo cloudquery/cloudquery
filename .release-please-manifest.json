@@ -97,7 +97,7 @@
   "plugins/source/facebookmarketing+FILLER": "0.0.0",
   "plugins/source/googleanalytics": "3.0.5",
   "plugins/source/googleanalytics+FILLER": "0.0.0",
-  "plugins/source/mysql": "2.0.4",
+  "plugins/source/mysql": "2.0.5",
   "plugins/source/mysql+FILLER": "0.0.0",
   "plugins/destination/gremlin": "2.2.5",
   "plugins/destination/gremlin+FILLER": "0.0.0",
