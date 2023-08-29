@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.8.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.8.0...plugins-source-aws-v22.8.1) (2023-08-29)
+
+
+### Bug Fixes
+
+* Store AWS config per account ([#13391](https://github.com/cloudquery/cloudquery/issues/13391)) ([a4245d7](https://github.com/cloudquery/cloudquery/commit/a4245d7deea76ddd5add531f4fd6d769627647a6)), closes [#13389](https://github.com/cloudquery/cloudquery/issues/13389)
+
 ## [22.8.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.7.0...plugins-source-aws-v22.8.0) (2023-08-29)
 
 
