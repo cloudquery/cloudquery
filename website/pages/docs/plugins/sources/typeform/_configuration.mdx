@@ -7,14 +7,15 @@ spec:
   name: typeform
   registry: docker
   path: ghcr.io/cloudquery/cq-source-typeform:VERSION_SOURCE_TYPEFORM
-  tables: ["*"]
+  tables: ["typeform_forms"]
   destinations: ["DESTINATION_NAME"]
   # Typeform-specific configuration
   spec:
     access_token: "<YOUR_SECRET_ACCESS_TOKEN_HERE>"
     base_url: "https://api.typeform.com" # use https://api.eu.typeform.com for EU accounts
-    concurrency: 100
-    queue_size: 10000
+    # Optional configuration
+    # concurrency: 100
+    # queue_size: 10000
 ```
 
 <Callout type="info">
