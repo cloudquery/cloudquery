@@ -49,7 +49,7 @@ func fetchTimestreamDatabases(ctx context.Context, meta schema.ClientMeta, _ *sc
 	services := cl.Services(client.AWSServiceTimestreamwrite)
 	svc := services.Timestreamwrite
 	// This should be removed once https://github.com/aws/aws-sdk-go-v2/issues/2163 is fixed
-	if len(services.AWSConfig.Region) > 0 && services.AWSConfig.Region != cl.Region {
+	if services.AWSConfig.Region != cl.Region {
 		awsCfg := services.AWSConfig.Copy()
 		awsCfg.Region = cl.Region
 		svc = timestreamwrite.NewFromConfig(awsCfg)
