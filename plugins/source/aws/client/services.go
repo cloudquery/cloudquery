@@ -125,13 +125,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
 )
 
-func initServices(_ aws.Config, regions []string) Services {
+func initServices(config aws.Config, regions []string) Services {
 	return Services{
-		Regions: regions,
+		AWSConfig: config,
+		Regions:   regions,
 	}
 }
 
 type Services struct {
+	AWSConfig                    aws.Config
 	Regions                      []string
 	Accessanalyzer               services.AccessanalyzerClient
 	Account                      services.AccountClient
@@ -255,8 +257,8 @@ type Services struct {
 	Xray                         services.XrayClient
 }
 
-func (s *Services) InitService(awsConfig *aws.Config, service AWSServiceName) {
-	c := awsConfig.Copy()
+func (s *Services) InitService(service AWSServiceName) {
+	c := s.AWSConfig.Copy()
 	switch service {
 	case AWSServiceAccessanalyzer:
 		s.Accessanalyzer = accessanalyzer.NewFromConfig(c)
