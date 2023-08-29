@@ -106,6 +106,7 @@ tables:
   - aws_iam_credential_reports
   - aws_iam_password_policies
   - aws_iam_policies
+  - aws_iam_policy_versions
   - aws_iam_user_access_keys
   - aws_iam_user_attached_policies
   - aws_iam_user_policies
@@ -186,6 +187,7 @@ AWS PCI DSS v3.2.1 performs the following checks:
 
 AWS PCI DSS v3.2.1 depends on the following views:
 
+  - view_aws_iam_policy_statements<sup>*</sup>
   - view_aws_log_metric_filter_and_alarm<sup>*</sup>
   - view_aws_security_group_ingress_rules<sup>*</sup>
 
@@ -245,6 +247,7 @@ tables:
   - aws_iam_groups
   - aws_iam_password_policies
   - aws_iam_policies
+  - aws_iam_policy_versions
   - aws_iam_role_policies
   - aws_iam_roles
   - aws_iam_user_access_keys
@@ -414,6 +417,7 @@ AWS Foundational Security Best Practices performs the following checks:
 AWS Foundational Security Best Practices depends on the following views:
 
   - view_aws_apigateway_method_settings<sup>*</sup>
+  - view_aws_iam_policy_statements<sup>*</sup>
   - view_aws_security_group_ingress_rules<sup>*</sup>
 
   <sup>*</sup> These views are automatically created or updated by this policy.
