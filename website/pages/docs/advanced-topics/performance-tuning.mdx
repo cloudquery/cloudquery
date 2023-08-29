@@ -89,14 +89,18 @@ The default CloudQuery scheduler, known as `dfs`, will sync up to `concurrency /
 
 Usually this works out fine, as long as the cloud platform's rate limits are aligned with the clients. But if rate limits are applied per-table, rather than per-project, `dfs` can be suboptimal. A better strategy in this case would be to choose the first client for every table before moving on to the next client. This is what the `round-robin` scheduler does. Note that this scheduler is currently **experimental**. 
 
-The following example config enables `round-robin` scheduling for the GCP source plugin:
+Only some plugins support this setting. The following example config enables `round-robin` scheduling for the GCP source plugin:
 
 ```yaml
 kind: source
 spec:
   name: "gcp"
   path: "cloudquery/gcp"
-  scheduler: "round-robin"  # experimental
-  ...
+  version: "VERSION_SOURCE_GCP"
+  tables: ["gcp_storage_buckets"]
+  destinations: ["postgresql"]
+  spec:
+    scheduler: "round-robin"
+    project_ids: ...
 ```
 
