@@ -6,6 +6,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.8.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.8.0...plugins-source-aws-v22.8.1) (2023-08-29)
+
+
+### Bug Fixes
+
+* Store AWS config per account ([#13391](https://github.com/cloudquery/cloudquery/issues/13391)) ([a4245d7](https://github.com/cloudquery/cloudquery/commit/a4245d7deea76ddd5add531f4fd6d769627647a6)), closes [#13389](https://github.com/cloudquery/cloudquery/issues/13389)
+
+## [22.8.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.7.0...plugins-source-aws-v22.8.0) (2023-08-29)
+
+
+### Features
+
+* Implement CIS AWS v1.5.0 Section 1.16 and 1.20 ([#13290](https://github.com/cloudquery/cloudquery/issues/13290)) ([7eb3e06](https://github.com/cloudquery/cloudquery/commit/7eb3e06f93da9678bc78ab83c5acd398cb706bdd))
+* **services:** Support newly added regions ([#13273](https://github.com/cloudquery/cloudquery/issues/13273)) ([c6727a9](https://github.com/cloudquery/cloudquery/commit/c6727a9e34b640ebad626b6ef70707ca488f562d))
+* **services:** Support newly added regions ([#13358](https://github.com/cloudquery/cloudquery/issues/13358)) ([4ed4a9a](https://github.com/cloudquery/cloudquery/commit/4ed4a9a1da0fb856556cc5fb42e0b418a95097eb))
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/cloudquery/arrow/go/v13` to `github.com/apache/arrow/go/v14` ([#13341](https://github.com/cloudquery/cloudquery/issues/13341)) ([feb8f87](https://github.com/cloudquery/cloudquery/commit/feb8f87d8d761eb9c49ce84329ad0397f730a918))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.2 ([#13262](https://github.com/cloudquery/cloudquery/issues/13262)) ([5c55aa3](https://github.com/cloudquery/cloudquery/commit/5c55aa35282786375e8ce9493b2a4878e0fb27bc))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.5 ([#13285](https://github.com/cloudquery/cloudquery/issues/13285)) ([e076abd](https://github.com/cloudquery/cloudquery/commit/e076abd9d67813a29ced0c1b7b1664fd728b9ba8))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.6 ([#13345](https://github.com/cloudquery/cloudquery/issues/13345)) ([a995a05](https://github.com/cloudquery/cloudquery/commit/a995a0598a209e0fe3ba09f4ced2a052dc14b67a))
+* Race condition in Initializing services ([#13300](https://github.com/cloudquery/cloudquery/issues/13300)) ([73a093d](https://github.com/cloudquery/cloudquery/commit/73a093dc0de33362eeb91077ddb14c9a8bacf06a))
+
 ## [22.7.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.6.0...plugins-source-aws-v22.7.0) (2023-08-21)
 
 
