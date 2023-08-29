@@ -41,6 +41,7 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 	c := NewAwsClient(l, &awsSpec)
 	services := builder(t, ctrl)
 	services.Regions = []string{testOpts.Region}
+	services.AWSConfig.Region = testOpts.Region
 	c.accountMutex["testAccount"] = &sync.Mutex{}
 	c.ServicesManager.InitServicesForPartitionAccount("aws", "testAccount", services)
 	c.Partition = "aws"

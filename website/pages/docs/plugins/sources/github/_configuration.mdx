@@ -1,5 +1,6 @@
 To configure CloudQuery to extract from GitHub, create a `.yml` file in your CloudQuery configuration directory.
-The following configuration will extract information from the `cloudquery/cloudquery` repository:
+
+The following configuration will extract all issues from the `cloudquery/cloudquery` repository:
 
 ```yaml copy
 kind: source
@@ -8,7 +9,7 @@ spec:
   name: github
   path: cloudquery/github
   version: "VERSION_SOURCE_GITHUB"
-  tables: ["*"]
+  tables: ["github_issues"]
   destinations: ["DESTINATION_NAME"]
   spec:
     access_token: <YOUR_ACCESS_TOKEN_HERE> # Personal Access Token, required if not using App Authentication.
@@ -29,7 +30,12 @@ spec:
     enterprise:
         base_url: "http(s)://[your-ghe-hostname]/api/v3/"
         upload_url: "http(s)://[your-ghe-hostname]/api/uploads/"
+    # Optional parameters
+    # concurrency: 1000 0# Optional. Number of concurrent requests to GitHub API. Default is 10000.
+    # discovery_concurrency: 1 # Optional. Number of concurrent requests to GitHub API during discovery phase. Default 1.
 ```
+
+See [tables](/docs/plugins/sources/github/tables) for a full list of available tables.
 
 You must specify either `orgs` or `repos` in the configuration. If a repository is specified in both `orgs` and `repos`, it will be extracted only once, and other repositories from that organization will be ignored.
 
