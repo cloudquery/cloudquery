@@ -3,7 +3,7 @@ package client
 import (
 	"database/sql/driver"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
