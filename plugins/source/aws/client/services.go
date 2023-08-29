@@ -127,13 +127,13 @@ import (
 
 func initServices(config aws.Config, regions []string) Services {
 	return Services{
-		config:  config,
-		Regions: regions,
+		AWSConfig: config,
+		Regions:   regions,
 	}
 }
 
 type Services struct {
-	config                       aws.Config
+	AWSConfig                    aws.Config
 	Regions                      []string
 	Accessanalyzer               services.AccessanalyzerClient
 	Account                      services.AccountClient
@@ -258,7 +258,7 @@ type Services struct {
 }
 
 func (s *Services) InitService(service AWSServiceName) {
-	c := s.config
+	c := s.AWSConfig
 	switch service {
 	case AWSServiceAccessanalyzer:
 		s.Accessanalyzer = accessanalyzer.NewFromConfig(c)
