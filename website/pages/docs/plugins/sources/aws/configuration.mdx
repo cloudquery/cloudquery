@@ -15,7 +15,7 @@ spec:
   name: aws
   path: cloudquery/aws
   version: "VERSION_SOURCE_AWS"
-  tables: ["aws_s3_buckets"]
+  tables: ["aws_ec2_instances"]
   destinations: ["DESTINATION_NAME"]
   spec:
     # AWS Spec section described below
@@ -26,6 +26,8 @@ spec:
         local_profile: "account1"
     aws_debug: false
 ```
+
+See [tables](/docs/plugins/sources/aws/tables) for a list of all available tables.
 
 ### AWS Organization Example
 
