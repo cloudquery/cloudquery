@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.4.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v3.4.2...plugins-destination-gcs-v3.4.3) (2023-08-29)
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/cloudquery/arrow/go/v13` to `github.com/apache/arrow/go/v14` ([#13341](https://github.com/cloudquery/cloudquery/issues/13341)) ([feb8f87](https://github.com/cloudquery/cloudquery/commit/feb8f87d8d761eb9c49ce84329ad0397f730a918))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 5b83d4f ([#13203](https://github.com/cloudquery/cloudquery/issues/13203)) ([b0a4b8c](https://github.com/cloudquery/cloudquery/commit/b0a4b8ccf7c429bf5a6ed88866865212015b68e4))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.1.3 ([#13119](https://github.com/cloudquery/cloudquery/issues/13119)) ([5f3e77d](https://github.com/cloudquery/cloudquery/commit/5f3e77df82d1824877b972faaab54518185b2e64))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.1.4 ([#13261](https://github.com/cloudquery/cloudquery/issues/13261)) ([38dae68](https://github.com/cloudquery/cloudquery/commit/38dae68c9bb08bc78751f9363c50d07d1504a70c))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.1.5 ([#13284](https://github.com/cloudquery/cloudquery/issues/13284)) ([9ffba02](https://github.com/cloudquery/cloudquery/commit/9ffba02b0f58744d481b7c3b4b32c00ee0f6a9f7))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.1 ([#13195](https://github.com/cloudquery/cloudquery/issues/13195)) ([a184c37](https://github.com/cloudquery/cloudquery/commit/a184c3786ad49df8564344773e9b96f617ef87a1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.5 ([#13285](https://github.com/cloudquery/cloudquery/issues/13285)) ([e076abd](https://github.com/cloudquery/cloudquery/commit/e076abd9d67813a29ced0c1b7b1664fd728b9ba8))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.6 ([#13345](https://github.com/cloudquery/cloudquery/issues/13345)) ([a995a05](https://github.com/cloudquery/cloudquery/commit/a995a0598a209e0fe3ba09f4ced2a052dc14b67a))
+
 ## [3.4.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v3.4.1...plugins-destination-gcs-v3.4.2) (2023-08-15)
 
 
