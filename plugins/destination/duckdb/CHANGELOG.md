@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v4.2.4...plugins-destination-duckdb-v4.2.5) (2023-08-29)
+
+
+### Bug Fixes
+
+* Properly handle sliced struct arrays ([#13388](https://github.com/cloudquery/cloudquery/issues/13388)) ([43ee769](https://github.com/cloudquery/cloudquery/commit/43ee769954a107b045e50c083f2e357fab383b31))
+
 ## [4.2.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v4.2.3...plugins-destination-duckdb-v4.2.4) (2023-08-29)
 
 
