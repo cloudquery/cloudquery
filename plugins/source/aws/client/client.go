@@ -8,7 +8,6 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/aws/smithy-go/logging"
@@ -35,7 +34,6 @@ type Client struct {
 	specificRegions      bool
 	Spec                 *Spec
 	accountMutex         map[string]*sync.Mutex
-	AWSConfig            *aws.Config
 }
 
 type AwsLogger struct {
@@ -129,7 +127,7 @@ func (c *Client) updateService(service AWSServiceName) {
 	// if service is still not initialized, initialize it
 	if svc == nil {
 		c.logger.Debug().Msgf("updating service %s for: %s", service.String(), c.AccountID)
-		c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).InitService(c.AWSConfig, service)
+		c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).InitService(service)
 	}
 }
 func (c *Client) Services(service_names ...AWSServiceName) *Services {
@@ -160,7 +158,6 @@ func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region st
 		WAFScope:             c.WAFScope,
 		Backend:              c.Backend,
 		Spec:                 c.Spec,
-		AWSConfig:            c.AWSConfig,
 		accountMutex:         c.accountMutex,
 	}
 }
@@ -176,7 +173,6 @@ func (c *Client) withPartitionAccountIDRegionAndNamespace(partition, accountID, 
 		WAFScope:             c.WAFScope,
 		Backend:              c.Backend,
 		Spec:                 c.Spec,
-		AWSConfig:            c.AWSConfig,
 		accountMutex:         c.accountMutex,
 	}
 }
@@ -192,7 +188,6 @@ func (c *Client) withPartitionAccountIDRegionAndScope(partition, accountID, regi
 		WAFScope:             scope,
 		Backend:              c.Backend,
 		Spec:                 c.Spec,
-		AWSConfig:            c.AWSConfig,
 		accountMutex:         c.accountMutex,
 	}
 }
