@@ -47,7 +47,7 @@
   "plugins/source/salesforce+FILLER": "0.0.0",
   "plugins/source/fastly": "2.1.6",
   "plugins/source/fastly+FILLER": "0.0.0",
-  "plugins/source/snyk": "3.1.5",
+  "plugins/source/snyk": "3.1.6",
   "plugins/source/snyk+FILLER": "0.0.0",
   "plugins/destination/gcs": "3.4.3",
   "plugins/destination/gcs+FILLER": "0.0.0",
