@@ -258,7 +258,7 @@ type Services struct {
 }
 
 func (s *Services) InitService(service AWSServiceName) {
-	c := s.AWSConfig
+	c := s.AWSConfig.Copy()
 	switch service {
 	case AWSServiceAccessanalyzer:
 		s.Accessanalyzer = accessanalyzer.NewFromConfig(c)
