@@ -98,10 +98,11 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	if err != nil {
 		return err
 	}
-	if err := c.scheduler.Sync(ctx, c, tables, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID)); err != nil {
+	err = c.scheduler.Sync(ctx, c, tables, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
+	if err != nil {
 		return fmt.Errorf("failed to sync: %w", err)
 	}
-	return nil
+	return stateClient.Flush(ctx)
 }
 
 func Configure(ctx context.Context, logger zerolog.Logger, specBytes []byte, options plugin.NewClientOptions) (plugin.Client, error) {
