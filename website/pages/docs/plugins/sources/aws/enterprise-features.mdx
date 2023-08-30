@@ -6,7 +6,7 @@
 
 
 
-## Streaming Sync:
+## Event Based Sync:
 
 Cloudtrail enables users to get a near realtime audit log of events occurring within the account. By configuring Cloudtrail to push all write events (events that were triggered by a configuration change) to a Kinesis Stream, CloudQuery can consume that stream to update the impacted resources as quickly as they become available (sub 10 seconds).
 
@@ -46,7 +46,7 @@ aws cloudformation deploy --template-file ./streaming-deployment.yml --stack-nam
 ``` yaml
 kind: source
 spec:
-  name: "aws-streaming"
+  name: "aws-event-based"
   registry: "grpc"
   path: localhost:7778
   tables:
@@ -76,3 +76,4 @@ spec:
 ### Limitations:
 - Kinesis Stream can only have a single shard. (This is a limitation that we expect to remove in the future)
 - Stale records will only be deleted if the plugin stops consuming the Kinesis Stream, which only can occur if there is an error
+- Incremental table's state is not updated by event based syncs
