@@ -34,7 +34,7 @@ type v3destination struct {
 func syncConnectionV3(ctx context.Context, source v3source, destinations []v3destination, backend *v3destination, uid string, noMigrate bool) error {
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
-	tables := make(map[string]bool, 0)
+	tablesForDeleteStale := make(map[string]bool, 0)
 
 	sourceSpec := source.spec
 	sourceClient := source.client
@@ -44,7 +44,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		destinationSpecs[i] = destinations[i].spec
 		destinationsClients[i] = destinations[i].client
 	}
-
+	
 	defer func() {
 		if analyticsClient != nil {
 			log.Info().Msg("Sending sync summary to " + analyticsClient.Host())
@@ -200,6 +200,8 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		}
 	}()
 
+	isStateBackendEnabled := sourceSpec.BackendOptions != nil && sourceSpec.BackendOptions.TableName != ""
+
 	// Read from the sync stream and write to all destinations.
 	totalResources := 0
 	for {
@@ -242,7 +244,10 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 				return err
 			}
 			tableName := tableNameFromSchema(sc)
-			tables[tableName] = true
+
+			if !isStateBackendEnabled || !tableIsIncremental(sc) {
+				tablesForDeleteStale[tableName] = true
+			}
 			if noMigrate {
 				continue
 			}
@@ -274,7 +279,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 
 	for i := range destinationsClients {
 		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
-			if err := deleteStale(writeClients[i], tables, sourceName, syncTime); err != nil {
+			if err := deleteStale(writeClients[i], tablesForDeleteStale, sourceName, syncTime); err != nil {
 				return err
 			}
 		}
@@ -311,6 +316,11 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 func tableNameFromSchema(sc *arrow.Schema) string {
 	tableName, _ := sc.Metadata().GetValue("cq:table_name")
 	return tableName
+}
+
+func tableIsIncremental(sc *arrow.Schema) bool {
+	inc, _ := sc.Metadata().GetValue("cq:extension:incremental")
+	return inc == "true"
 }
 
 func deleteStale(client plugin.Plugin_WriteClient, tables map[string]bool, sourceName string, syncTime time.Time) error {
