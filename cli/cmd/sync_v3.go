@@ -132,7 +132,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		return fmt.Errorf("failed to replace variables: %w", err)
 	}
 	if err := json.Unmarshal([]byte(specBytesExpanded), &sourceSpec); err != nil {
-		return fmt.Errorf("failed to unmarshal source spec JSON after variable replacement: %w (JSON: %v)", err, specBytesExpanded)
+		return fmt.Errorf("failed to unmarshal source spec JSON after variable replacement: %w", err)
 	}
 
 	sourceSpecBytes, err := json.Marshal(sourceSpec.Spec)
