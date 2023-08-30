@@ -155,7 +155,7 @@ The `table_options` parameter is deprecated and will be removed soon. Please rea
                 attribute_value: StopInstances
   ```
 
-  The naming for all of the fields is the same as the AWS API but in snake case. For example `EndTime` is represented as `end_time`. As of `v18.4.0` the following tables and APIs are supported:
+  The naming for all the fields is the same as the AWS API but in snake case. For example `EndTime` is represented as `end_time`. As of `v18.4.0` the following tables and APIs are supported:
 
   ```yaml
   table_options:
@@ -266,6 +266,36 @@ This is used to specify one or more accounts to extract information from. Note t
   List of OU member accounts to skip. This is useful in conjunction with `organization_units` if there are accounts under the selected OUs that should be ignored.
 
 ## Advanced Configuration
+
+### Incremental Tables
+
+Some tables, like `aws_cloudtrail_events`, support incremental syncs. When incremental syncing is enabled, CloudQuery will only fetch new data since the last sync. This is useful for tables that have a lot of data and are updated frequently. To enable incremental syncs, add a `backend_options` section to the source config:
+
+```yaml
+kind: source
+spec:
+  # Source spec section
+  name: aws
+  path: cloudquery/aws
+  version: "VERSION_SOURCE_AWS"
+  tables: ["aws_cloudtrail_events"]
+  destinations: ["postgresql"]
+  backend_options:
+    table_name: "cq_aws_state"
+    connection: "@@plugin.postgresql.connection"
+  spec:
+---
+kind: destination
+spec:
+  name: "postgresql"
+  version: "VERSION_DESTINATION_POSTGRESQL"
+  path: "cloudquery/postgresql"
+  write_mode: "overwrite-delete-stale"
+  spec:
+    connection_string: "${CONNECTION_STRING}"
+```
+
+The `connection` string can reference any destination that supports `overwrite` mode; in the example above it will use the same `postgresql` destination that the `aws_cloudtrail_events` table is written to. The `table_name` is the name of the table that will be used to store state. This table will be created automatically if it does not exist. For more information about managing state for incremental tables, see [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables).
 
 ### Skip Tables
 
