@@ -71,7 +71,7 @@
   "plugins/source/alicloud+FILLER": "0.0.0",
   "plugins/destination/mssql": "4.3.7",
   "plugins/destination/mssql+FILLER": "0.0.0",
-  "plugins/source/shopify": "3.0.6",
+  "plugins/source/shopify": "3.0.7",
   "plugins/source/shopify+FILLER": "0.0.0",
   "plugins/source/stripe": "2.1.6",
   "plugins/source/stripe+FILLER": "0.0.0",
