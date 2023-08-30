@@ -99,5 +99,9 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	// for each sync we want to create a copy of the client so they won't share state
 	awsClient = awsClient.Duplicate()
 	awsClient.Backend = stateClient
-	return c.scheduler.Sync(ctx, awsClient, tt, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
+	err = c.scheduler.Sync(ctx, awsClient, tt, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
+	if err != nil {
+		return err
+	}
+	return stateClient.Flush(ctx)
 }
