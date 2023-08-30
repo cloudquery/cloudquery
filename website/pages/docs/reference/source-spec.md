@@ -141,8 +141,8 @@ This option was deprecated in CLI `v3.6.0` in favor of plugin level scheduler, a
 
 ### backend
 
-This option was deprecated in CLI `v3.6.0` in favor of plugin level `backend_options`, as each plugin as its own backend requirements. See more in each plugin documentation.
+This option was deprecated in CLI `v3.6.0` in favor of `backend_options`. See [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables) for more information.
 
 ### backend_spec
 
-This option was deprecated in CLI `v3.6.0` in favor of plugin level `backend_options`, as each plugin as its own backend requirements. See more in each plugin documentation.
+This option was deprecated in CLI `v3.6.0` in favor of `backend_options`. See [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables) for more information.
