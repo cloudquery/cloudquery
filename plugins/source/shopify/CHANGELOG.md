@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-shopify-v3.0.6...plugins-source-shopify-v3.0.7) (2023-08-30)
+
+
+### Bug Fixes
+
+* Flush state backend so that state is persisted ([#13464](https://github.com/cloudquery/cloudquery/issues/13464)) ([eb8342a](https://github.com/cloudquery/cloudquery/commit/eb8342a4065d265be966ffc3a575025754e6663c))
+
 ## [3.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-shopify-v3.0.5...plugins-source-shopify-v3.0.6) (2023-08-29)
 
 

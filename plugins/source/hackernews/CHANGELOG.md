@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.0.7...plugins-source-hackernews-v3.0.8) (2023-08-30)
+
+
+### Bug Fixes
+
+* Flush state backend so that state is persisted ([#13462](https://github.com/cloudquery/cloudquery/issues/13462)) ([0e0d20c](https://github.com/cloudquery/cloudquery/commit/0e0d20c7cec2ef0a923d362e1601c60a2f9c51b6))
+
 ## [3.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.0.6...plugins-source-hackernews-v3.0.7) (2023-08-29)
 
 
