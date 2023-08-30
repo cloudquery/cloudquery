@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-googleanalytics-v3.0.6...plugins-source-googleanalytics-v3.0.7) (2023-08-30)
+
+
+### Bug Fixes
+
+* Flush state backend so that state is persisted ([#13463](https://github.com/cloudquery/cloudquery/issues/13463)) ([8933b1e](https://github.com/cloudquery/cloudquery/commit/8933b1ece6009cb03a963dc5da01aad4f758c2e9))
+
 ## [3.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-googleanalytics-v3.0.5...plugins-source-googleanalytics-v3.0.6) (2023-08-29)
 
 
