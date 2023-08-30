@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	gosync "sync"
 
 	"github.com/cloudquery/cloudquery/cli/internal/docs"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -11,8 +12,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
+var registerOnce = gosync.OnceValue(types.RegisterAllExtensions)
+
 func tablesV3(ctx context.Context, sourceClient *managedplugin.Client, path string, format string) error {
-	err := types.RegisterAllExtensions()
+	err := registerOnce()
 	if err != nil {
 		return err
 	}
