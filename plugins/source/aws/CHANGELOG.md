@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Bug Fixes
 
-* Flush state backend ([#13430](https://github.com/cloudquery/cloudquery/issues/13430)) ([5ed403a](https://github.com/cloudquery/cloudquery/commit/5ed403a434bd6b5cb3721eef96b860c9103e2ffe))
+* Flush state backend to fix incremental fetching of `aws_cloudtrail_events` ([#13430](https://github.com/cloudquery/cloudquery/issues/13430)) ([5ed403a](https://github.com/cloudquery/cloudquery/commit/5ed403a434bd6b5cb3721eef96b860c9103e2ffe))
 
 ## [22.8.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.8.0...plugins-source-aws-v22.8.1) (2023-08-29)
 
