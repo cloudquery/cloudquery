@@ -53,7 +53,8 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			}
 		}
 	}()
-	syncTime := time.Now().UTC()
+	// https://github.com/golang/go/issues/41087
+	syncTime := time.Now().UTC().Truncate(time.Microsecond)
 	sourceName := sourceSpec.Name
 	destinationStrings := make([]string, len(destinationsClients))
 	for i := range destinationsClients {
