@@ -16,6 +16,9 @@ require (
 // TODO: remove once all updates are merged
 replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20230826001106-a069d71cc1bc
 
+// https://github.com/cloudquery/plugin-sdk/pull/1175
+replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/v4 v4.8.1-rc1.0.20230830123521-d5b99558e1c9
+
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.6.0 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.3.0 // indirect
