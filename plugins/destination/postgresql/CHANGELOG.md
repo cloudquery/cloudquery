@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v6.0.1...plugins-destination-postgresql-v6.0.2) (2023-08-30)
+
+
+### Bug Fixes
+
+* Drop include clause from list tables ([#13429](https://github.com/cloudquery/cloudquery/issues/13429)) ([9064d8b](https://github.com/cloudquery/cloudquery/commit/9064d8bfd2c1377f39a85798ce12d880e71fb9b9))
+* Remove stale code ([#13445](https://github.com/cloudquery/cloudquery/issues/13445)) ([cc30fb0](https://github.com/cloudquery/cloudquery/commit/cc30fb09d1a039948754cbda09a1adf1b58d0c54))
+
 ## [6.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v6.0.0...plugins-destination-postgresql-v6.0.1) (2023-08-29)
 
 
