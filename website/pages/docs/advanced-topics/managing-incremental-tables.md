@@ -30,7 +30,7 @@ spec:
   destinations: ["postgresql"]
   backend_options:
     table_name: "cq_aws_state"
-    connection: "@@plugin.postgresql.connection"
+    connection: "@@plugins.postgresql.connection"
   spec:
     # AWS plugin specific configuration
     # ...
@@ -45,9 +45,9 @@ spec:
     connection_string: "${CONNECTION_STRING}"
 ```
 
-A special `@@plugin.<plugin-name>.<property-name>` syntax is used to reference a property from another plugin. In this case, the `connection` property from the PostgreSQL plugin is being referenced. Note that here the `connection` refers to the gRPC connection to the destination plugin, automatically inferred after the destination plugin is started, not the connection string to the destination database itself.
+A special `@@plugins.<plugin-name>.<property-name>` syntax is used to reference a property from another plugin. In this case, the `connection` property from the PostgreSQL plugin is being referenced. Note that here the `connection` refers to the gRPC connection to the destination plugin, automatically inferred after the destination plugin is started, not the connection string to the destination database itself.
 
-Sometimes it may be desirable to use a different state backend than the destination. For example, if the destination is a data warehouse, it may be desirable to use a separate database as the state backend. In this case, a different destination configuration can be referenced. For example, the following configuration writes AWS data to BigQuery, but stores state in a local SQLite database:
+Sometimes it may be useful to use a different state backend than the destination. For example, if the destination is a data warehouse that only supports `append` mode, a separate database can be used as the state backend. For example, the following configuration writes AWS data to BigQuery, but stores state in a local SQLite database:
 
 ```yaml
 kind: source
@@ -59,7 +59,7 @@ spec:
   destinations: ["bigquery"]
   backend_options:
     table_name: "cq_aws_state"
-    connection: "@@plugin.sqlite.connection"
+    connection: "@@plugins.sqlite.connection"
   spec:
     # AWS plugin specific configuration
     # ...

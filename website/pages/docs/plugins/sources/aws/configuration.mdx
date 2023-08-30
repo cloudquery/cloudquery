@@ -282,7 +282,7 @@ spec:
   destinations: ["postgresql"]
   backend_options:
     table_name: "cq_aws_state"
-    connection: "@@plugin.postgresql.connection"
+    connection: "@@plugins.postgresql.connection"
   spec:
 ---
 kind: destination
