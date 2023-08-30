@@ -20,11 +20,31 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+type v3source struct {
+	client *managedplugin.Client
+	spec   specs.Source
+}
+
+type v3destination struct {
+	client *managedplugin.Client
+	spec   specs.Destination
+}
+
 // nolint:dupl
-func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, destinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination, uid string, noMigrate bool) error {
+func syncConnectionV3(ctx context.Context, source v3source, destinations []v3destination, backend *v3destination, uid string, noMigrate bool) error {
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
 	tables := make(map[string]bool, 0)
+
+	sourceSpec := source.spec
+	sourceClient := source.client
+	destinationSpecs := make([]specs.Destination, len(destinations))
+	destinationsClients := make([]*managedplugin.Client, len(destinations))
+	for i := range destinations {
+		destinationSpecs[i] = destinations[i].spec
+		destinationsClients[i] = destinations[i].client
+	}
+
 	defer func() {
 		if analyticsClient != nil {
 			log.Info().Msg("Sending sync summary to " + analyticsClient.Host())
@@ -48,6 +68,7 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 	sourcePbClient := plugin.NewPluginClient(sourceClient.Conn)
 	destinationsPbClients := make([]plugin.PluginClient, len(destinationsClients))
 	destinationTransformers := make([]*transformer.RecordTransformer, len(destinationsClients))
+	backendPbClient := plugin.PluginClient(nil)
 	for i := range destinationsClients {
 		destinationsPbClients[i] = plugin.NewPluginClient(destinationsClients[i].Conn)
 		opts := []transformer.RecordTransformerOption{
@@ -66,6 +87,13 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 			Connection: connection,
 		}
 	}
+	if backend != nil {
+		backendPbClient = plugin.NewPluginClient(backend.client.Conn)
+		connection := backend.client.ConnectionString()
+		variables.Plugins[backend.spec.Name] = specs.PluginVariables{
+			Connection: connection,
+		}
+	}
 
 	// initialize destinations first, so that their connections may be used as backends by the source
 	for i := range destinationsClients {
@@ -80,19 +108,31 @@ func syncConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, d
 			return fmt.Errorf("failed to init destination %v: %w", destSpec.Name, err)
 		}
 	}
+	if backend != nil {
+		backendSpec := backend.spec
+		backendSpecBytes, err := json.Marshal(backendSpec.Spec)
+		if err != nil {
+			return err
+		}
+		if _, err := backendPbClient.Init(ctx, &plugin.Init_Request{
+			Spec: backendSpecBytes,
+		}); err != nil {
+			return fmt.Errorf("failed to init backend %v: %w", backendSpec.Name, err)
+		}
+	}
 
 	// replace @@plugins.name.connection with the actual GRPC connection string from the client
 	// NOTE: if this becomes a stable feature, it can move out of sync_v3 and into sync.go
 	specBytes, err := json.Marshal(sourceSpec)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to marshal source spec JSON before variable replacement: %w", err)
 	}
 	specBytesExpanded, err := specs.ReplaceVariables(string(specBytes), variables)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to replace variables: %w", err)
 	}
 	if err := json.Unmarshal([]byte(specBytesExpanded), &sourceSpec); err != nil {
-		return err
+		return fmt.Errorf("failed to unmarshal source spec JSON after variable replacement: %w", err)
 	}
 
 	sourceSpecBytes, err := json.Marshal(sourceSpec.Spec)
