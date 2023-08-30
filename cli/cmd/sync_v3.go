@@ -44,7 +44,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		destinationSpecs[i] = destinations[i].spec
 		destinationsClients[i] = destinations[i].client
 	}
-	
+
 	defer func() {
 		if analyticsClient != nil {
 			log.Info().Msg("Sending sync summary to " + analyticsClient.Host())
