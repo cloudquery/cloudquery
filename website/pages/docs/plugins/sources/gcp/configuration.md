@@ -33,27 +33,27 @@ This is the (nested) spec used by GCP Source Plugin
   GCP service account key content. Using service accounts is not recommended, but if it is used it is better to use [environment or file variable substitution](/docs/advanced-topics/environment-variable-substitution).
 
 - `folder_ids` ([]string) (default: empty).
-  
+
   cloudquery will `sync` from all the projects in the specified folders, recursively. `folder_ids` must be of the format
-  `folders/<folder_id>` or `organizations/<organization_id>`. This feature requires the `resourcemanager.folders.list` permission. 
+  `folders/<folder_id>` or `organizations/<organization_id>`. This feature requires the `resourcemanager.folders.list` permission.
   By default cloudquery will also `sync` from subfolders recursively (up to depth 100) - to reduce this, set `folder_recursion_depth` to a lower value (or 0 to disable recursion completely).
   Mutually exclusive with `project_filter`.
 
 - `folder_recursion_depth` (int) (default: 100).
-  
+
   the maximum depth to recurse into subfolders. 0 means no recursion (only the top-level projects in folders will be used for `sync`).
 
 - `project_filter` (string) (default: empty).
 
   A filter to determine the projects that are synced, mutually exclusive with `folder_ids`. For instance, to only sync projects where the name starts with `how-`,
-  set `project_filter` to `name:how-*`. 
-  
+  set `project_filter` to `name:how-*`.
+
   More examples:
-    - `"name:how-* OR name:test-*"` matches projects starting with `how-` or `test-`
-    - `"NOT name:test-*"` matches all projects *not* starting with `test-`
-  
+
+  - `"name:how-* OR name:test-*"` matches projects starting with `how-` or `test-`
+  - `"NOT name:test-*"` matches all projects _not_ starting with `test-`
+
   For syntax and example queries refer to API References [here](https://cloud.google.com/resource-manager/reference/rest/v1/projects/list#google.cloudresourcemanager.v1.Projects.ListProjects) and [here](https://cloud.google.com/sdk/gcloud/reference/topic/filters).
-  
 
 - `organization_ids` ([]string) (default: empty. will use all organizations available to the current authenticated account)
 
@@ -70,20 +70,45 @@ This is the (nested) spec used by GCP Source Plugin
   If specified APIs will be retried with exponential backoff if they are rate limited. This is the max number of retries.
 
 - `enabled_services_only` (bool) (default: false).
-If enabled CloudQuery will skip any resources that belong to a service that has been disabled or not been enabled. If you use this option on a large organization (with more than 500 projects) you should also set the `backoff_retries` to a value greater than `0` otherwise you may hit the API rate limits. In `v9.0.0` and greater if an error is returned then CloudQuery will assume that all services are enabled and will continue to attempt to sync all specified tables rather than just ending the sync.
+  If enabled CloudQuery will skip any resources that belong to a service that has been disabled or not been enabled. If you use this option on a large organization (with more than 500 projects) you should also set the `backoff_retries` to a value greater than `0` otherwise you may hit the API rate limits. In `v9.0.0` and greater if an error is returned then CloudQuery will assume that all services are enabled and will continue to attempt to sync all specified tables rather than just ending the sync.
+
+- `concurrency` (int) (default: 50000):
+  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
 
 - `discovery_concurrency` (int) (default: 100).
   The number of concurrent requests that CloudQuery will make to resolve enabled services. This is only used when `enabled_services_only` is set to `true`.
+
+- `scheduler` (string) (default: `dfs`):
+
+  The scheduler to use when determining the priority of resources to sync. Currently, the only supported values are `dfs` (depth-first search) and `round-robin`. This is an experimental feature, and may be removed in the future. For more information about this, see [performance tuning](/docs/advanced-topics/performance-tuning).
 
 - `service_account_impersonation` ([Service Account Impersonation](#service-account-impersonation-spec) spec, optional. Default: empty)
 
   Service Account impersonation configuration.
 
+- **preview** `backend_options` (object) (default: not used)
+
+  Allowed properties are `table_name` and `connection`. Use this configuration to enable incremental syncs for supported tables. See more [here](/blog/proto-v3#unified-protocol).
+  Example
+
+  ```yaml
+  kind: source
+  spec:
+    name: gcp
+    path: cloudquery/gcp
+    version: "VERSION_SOURCE_GCP"
+    destinations: ["postgresql"]
+    spec:
+      backend_options:
+        table_name: "test_state_table"
+        connection: "@@plugins.postgresql.connection"
+  ```
+
 ### Service Account Impersonation Spec
 
 - `target_principal` (`string`, optional. Default: empty)
 
-    The email address of the service account to impersonate
+  The email address of the service account to impersonate
 
 ## GCP + Kubernetes (GKE)
 

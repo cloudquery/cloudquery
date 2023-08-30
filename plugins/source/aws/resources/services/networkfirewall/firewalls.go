@@ -3,7 +3,7 @@ package networkfirewall
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/networkfirewall"
 	"github.com/aws/aws-sdk-go-v2/service/networkfirewall/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -46,7 +46,7 @@ func Firewalls() *schema.Table {
 func fetchFirewalls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input networkfirewall.ListFirewallsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Networkfirewall
+	svc := cl.Services(client.AWSServiceNetworkfirewall).Networkfirewall
 	p := networkfirewall.NewListFirewallsPaginator(svc, &input)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *networkfirewall.Options) {
@@ -63,7 +63,7 @@ func fetchFirewalls(ctx context.Context, meta schema.ClientMeta, parent *schema.
 
 func getFirewall(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Networkfirewall
+	svc := cl.Services(client.AWSServiceNetworkfirewall).Networkfirewall
 	metadata := resource.Item.(types.FirewallMetadata)
 
 	firewallDetails, err := svc.DescribeFirewall(ctx, &networkfirewall.DescribeFirewallInput{

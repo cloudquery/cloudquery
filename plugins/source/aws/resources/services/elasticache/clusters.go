@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache/types"
@@ -42,7 +42,7 @@ func Clusters() *schema.Table {
 
 func fetchElasticacheClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticache
+	svc := cl.Services(client.AWSServiceElasticache).Elasticache
 	var input elasticache.DescribeCacheClustersInput
 	input.ShowCacheNodeInfo = aws.Bool(true)
 
@@ -63,7 +63,7 @@ func resolveClusterTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	cluster := resource.Item.(types.CacheCluster)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticache
+	svc := cl.Services(client.AWSServiceElasticache).Elasticache
 	response, err := svc.ListTagsForResource(ctx, &elasticache.ListTagsForResourceInput{
 		ResourceName: cluster.ARN,
 	}, func(options *elasticache.Options) {

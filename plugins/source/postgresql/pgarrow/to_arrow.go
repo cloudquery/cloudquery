@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
@@ -33,18 +33,22 @@ func Pg10ToArrow(t string) arrow.DataType {
 	switch t {
 	case "boolean":
 		return arrow.FixedWidthTypes.Boolean
-	case "smallint":
-		return arrow.PrimitiveTypes.Int16
 	case "smallserial":
 		return arrow.PrimitiveTypes.Int16
 	case "serial":
 		return arrow.PrimitiveTypes.Int32
+	case "bigserial", "serial8":
+		return arrow.PrimitiveTypes.Int64
+	case "smallint", "int2":
+		return arrow.PrimitiveTypes.Int16
 	case "integer", "int", "int4":
 		return arrow.PrimitiveTypes.Int32
 	case "bigint", "int8":
 		return arrow.PrimitiveTypes.Int64
-	case "bigserial", "serial8":
-		return arrow.PrimitiveTypes.Int64
+	case "numeric(20,0)":
+		// special case.
+		// TODO: add Decimal128/256 support
+		return arrow.PrimitiveTypes.Uint64
 	case "double precision", "float8":
 		return arrow.PrimitiveTypes.Float64
 	case "real", "float4":
@@ -68,8 +72,65 @@ func Pg10ToArrow(t string) arrow.DataType {
 	}
 }
 
-func Pg10ToCockroach(t string) arrow.DataType {
-	return Pg10ToArrow(t)
+func CockroachToArrow(t string) arrow.DataType {
+	t = normalize(t)
+	if strings.HasSuffix(t, "[]") {
+		return arrow.ListOf(CockroachToArrow(t[:len(t)-2]))
+	}
+
+	parsers := []func(string) (arrow.DataType, bool){
+		parseTimestamp,
+		parseTime,
+	}
+	for _, parser := range parsers {
+		got, matched := parser(t)
+		if matched {
+			return got
+		}
+	}
+
+	switch t {
+	case "boolean":
+		return arrow.FixedWidthTypes.Boolean
+	case "serial2", "smallserial":
+		return arrow.PrimitiveTypes.Int16
+	case "serial4":
+		return arrow.PrimitiveTypes.Int32
+	case "serial8", "bigserial", "serial":
+		return arrow.PrimitiveTypes.Int64
+	case "smallint", "int2":
+		return arrow.PrimitiveTypes.Int16
+	case "int4":
+		return arrow.PrimitiveTypes.Int32
+	case "int", "bigint", "int8", "int64", "integer":
+		// Cockroach has different aliases for ints
+		return arrow.PrimitiveTypes.Int64
+	case "numeric(20,0)":
+		// special case.
+		// TODO: add Decimal128/256 support
+		return arrow.PrimitiveTypes.Uint64
+	case "double precision", "float8":
+		return arrow.PrimitiveTypes.Float64
+	case "real", "float4":
+		return arrow.PrimitiveTypes.Float32
+	case "uuid":
+		return cqtypes.ExtensionTypes.UUID
+	case "bytea":
+		return arrow.BinaryTypes.Binary
+	case "json", "jsonb":
+		return cqtypes.ExtensionTypes.JSON
+	case "cidr":
+		return cqtypes.ExtensionTypes.Inet
+	case "macaddr", "macaddr8":
+		// Cockroach lacks MAC type
+		return arrow.BinaryTypes.String
+	case "inet":
+		return cqtypes.ExtensionTypes.Inet
+	case "date":
+		return arrow.FixedWidthTypes.Date32
+	default:
+		return arrow.BinaryTypes.String
+	}
 }
 
 func normalize(t string) string {

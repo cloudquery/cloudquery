@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
@@ -43,7 +43,7 @@ func Jobs() *schema.Table {
 
 func fetchIotJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 	input := iot.ListJobsInput{
 		MaxResults: aws.Int32(250),
 	}
@@ -62,7 +62,7 @@ func fetchIotJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 
 func getJobs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 
 	output, err := svc.DescribeJob(ctx, &iot.DescribeJobInput{
 		JobId: resource.Item.(types.JobSummary).JobId,
@@ -79,6 +79,6 @@ func getJobs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 func ResolveIotJobTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*types.Job)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 	return resolveIotTags(ctx, meta, svc, resource, c, i.JobArn)
 }

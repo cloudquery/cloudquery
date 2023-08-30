@@ -3,7 +3,7 @@ package athena
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -43,7 +43,7 @@ func dataCatalogDatabases() *schema.Table {
 
 func fetchAthenaDataCatalogDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Athena
+	svc := cl.Services(client.AWSServiceAthena).Athena
 	input := athena.ListDatabasesInput{
 		CatalogName: parent.Item.(types.DataCatalog).Name,
 	}

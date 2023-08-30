@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/kafka"
 	"github.com/aws/aws-sdk-go-v2/service/kafka/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -51,7 +51,7 @@ func fetchKafkaClusterOperations(ctx context.Context, meta schema.ClientMeta, pa
 
 	var input = getListClusterOperationsInput(parent)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Kafka
+	svc := cl.Services(client.AWSServiceKafka).Kafka
 	paginator := kafka.NewListClusterOperationsPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *kafka.Options) {

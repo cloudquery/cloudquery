@@ -6,7 +6,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
@@ -45,7 +45,7 @@ func snapshots() *schema.Table {
 
 func fetchSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Redshift
+	svc := cl.Services(client.AWSServiceRedshift).Redshift
 	cluster := parent.Item.(types.Cluster)
 	params := redshift.DescribeClusterSnapshotsInput{
 		ClusterExists:     aws.Bool(true),

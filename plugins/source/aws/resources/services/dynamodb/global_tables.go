@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
@@ -45,7 +45,7 @@ This table only contains version 2017.11.29 (Legacy) Global Tables. See aws_dyna
 
 func fetchGlobalTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Dynamodb
+	svc := cl.Services(client.AWSServiceDynamodb).Dynamodb
 
 	config := dynamodb.ListGlobalTablesInput{
 		RegionName: aws.String(cl.Region),
@@ -71,7 +71,7 @@ func fetchGlobalTables(ctx context.Context, meta schema.ClientMeta, parent *sche
 
 func getGlobalTable(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Dynamodb
+	svc := cl.Services(client.AWSServiceDynamodb).Dynamodb
 
 	table := resource.Item.(types.GlobalTable)
 
@@ -90,7 +90,7 @@ func resolveDynamodbGlobalTableTags(ctx context.Context, meta schema.ClientMeta,
 	table := resource.Item.(*types.GlobalTableDescription)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Dynamodb
+	svc := cl.Services(client.AWSServiceDynamodb).Dynamodb
 	var tags []types.Tag
 	input := &dynamodb.ListTagsOfResourceInput{
 		ResourceArn: table.GlobalTableArn,

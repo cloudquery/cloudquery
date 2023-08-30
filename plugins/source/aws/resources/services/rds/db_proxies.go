@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -41,7 +41,7 @@ func DbProxies() *schema.Table {
 
 func fetchDbProxies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Rds
+	svc := cl.Services(client.AWSServiceRds).Rds
 	input := rds.DescribeDBProxiesInput{}
 	paginator := rds.NewDescribeDBProxiesPaginator(svc, &input)
 	for paginator.HasMorePages() {
@@ -59,7 +59,7 @@ func fetchDbProxies(ctx context.Context, meta schema.ClientMeta, parent *schema.
 func resolveRdsDbProxyTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	g := resource.Item.(types.DBProxy)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Rds
+	svc := cl.Services(client.AWSServiceRds).Rds
 	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBProxyArn}, func(options *rds.Options) {
 		options.Region = cl.Region
 	})

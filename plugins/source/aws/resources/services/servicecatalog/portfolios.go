@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -42,7 +42,7 @@ func Portfolios() *schema.Table {
 
 func fetchServicecatalogPortfolios(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Servicecatalog
+	svc := cl.Services(client.AWSServiceServicecatalog).Servicecatalog
 	paginator := servicecatalog.NewListPortfoliosPaginator(svc, &servicecatalog.ListPortfoliosInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(o *servicecatalog.Options) {
@@ -59,8 +59,7 @@ func fetchServicecatalogPortfolios(ctx context.Context, meta schema.ClientMeta, 
 
 func getPortfolio(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Servicecatalog
-
+	svc := cl.Services(client.AWSServiceServicecatalog).Servicecatalog
 	response, err := svc.DescribePortfolio(ctx, &servicecatalog.DescribePortfolioInput{
 		Id: resource.Item.(types.PortfolioDetail).Id,
 	}, func(o *servicecatalog.Options) {

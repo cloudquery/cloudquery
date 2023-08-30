@@ -35,6 +35,8 @@ jobs:
             resources
             services
             main
+            website
+            ci
           # Configure additional validation for the subject based on a regex.
           # This example ensures the subject starts with an uppercase character.
           subjectPattern: ^[A-Z].+$

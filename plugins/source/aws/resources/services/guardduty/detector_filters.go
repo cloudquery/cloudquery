@@ -3,7 +3,7 @@ package guardduty
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty/models"
@@ -34,7 +34,7 @@ func fetchDetectorFilters(ctx context.Context, meta schema.ClientMeta, parent *s
 	detector := parent.Item.(*models.DetectorWrapper)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Guardduty
+	svc := cl.Services(client.AWSServiceGuardduty).Guardduty
 	config := &guardduty.ListFiltersInput{
 		DetectorId: &detector.Id,
 	}
@@ -53,7 +53,7 @@ func fetchDetectorFilters(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func getDetectorFilter(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Guardduty
+	svc := cl.Services(client.AWSServiceGuardduty).Guardduty
 	filterName := resource.Item.(string)
 	detector := resource.Parent.Item.(*models.DetectorWrapper)
 

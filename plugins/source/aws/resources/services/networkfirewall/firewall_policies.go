@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/networkfirewall"
 	"github.com/aws/aws-sdk-go-v2/service/networkfirewall/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -47,7 +47,7 @@ func FirewallPolicies() *schema.Table {
 func fetchFirewallPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input networkfirewall.ListFirewallPoliciesInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Networkfirewall
+	svc := cl.Services(client.AWSServiceNetworkfirewall).Networkfirewall
 	p := networkfirewall.NewListFirewallPoliciesPaginator(svc, &input)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *networkfirewall.Options) {
@@ -63,7 +63,7 @@ func fetchFirewallPolicies(ctx context.Context, meta schema.ClientMeta, parent *
 
 func getFirewallPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Networkfirewall
+	svc := cl.Services(client.AWSServiceNetworkfirewall).Networkfirewall
 	metadata := resource.Item.(types.FirewallPolicyMetadata)
 
 	policy, err := svc.DescribeFirewallPolicy(ctx, &networkfirewall.DescribeFirewallPolicyInput{

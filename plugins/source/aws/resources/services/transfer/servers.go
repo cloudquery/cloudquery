@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/transfer"
 	"github.com/aws/aws-sdk-go-v2/service/transfer/types"
@@ -43,7 +43,7 @@ func Servers() *schema.Table {
 }
 func fetchTransferServers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Transfer
+	svc := cl.Services(client.AWSServiceTransfer).Transfer
 	input := transfer.ListServersInput{MaxResults: aws.Int32(1000)}
 	paginator := transfer.NewListServersPaginator(svc, &input)
 	for paginator.HasMorePages() {
@@ -60,7 +60,7 @@ func fetchTransferServers(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func getServer(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Transfer
+	svc := cl.Services(client.AWSServiceTransfer).Transfer
 	server := resource.Item.(types.ListedServer)
 
 	desc, err := svc.DescribeServer(ctx, &transfer.DescribeServerInput{ServerId: server.ServerId}, func(o *transfer.Options) {
@@ -75,7 +75,7 @@ func getServer(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 
 func resolveServersTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Transfer
+	svc := cl.Services(client.AWSServiceTransfer).Transfer
 	server := resource.Item.(*types.DescribedServer)
 	input := transfer.ListTagsForResourceInput{Arn: server.Arn}
 	var tags []types.Tag

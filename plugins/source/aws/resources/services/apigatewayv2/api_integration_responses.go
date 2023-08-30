@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
@@ -52,7 +52,7 @@ func fetchApigatewayv2ApiIntegrationResponses(ctx context.Context, meta schema.C
 		IntegrationId: r.IntegrationId,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigatewayv2
+	svc := cl.Services(client.AWSServiceApigatewayv2).Apigatewayv2
 	// No paginator available
 	for {
 		response, err := svc.GetIntegrationResponses(ctx, &config, func(options *apigatewayv2.Options) {

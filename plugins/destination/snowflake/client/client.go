@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/rs/zerolog"
 
-	"github.com/snowflakedb/gosnowflake"
+	_ "github.com/snowflakedb/gosnowflake" // "snowflake" database/sql driver.
 )
 
 type Client struct {
@@ -30,25 +30,15 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 		return nil, fmt.Errorf("failed to unmarshal snowflake spec: %w", err)
 	}
 	c.spec.SetDefaults()
-	if err := c.spec.Validate(); err != nil {
-		return nil, err
-	}
 	c.writer, err = batchwriter.New(c, batchwriter.WithLogger(logger), batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))
 	if err != nil {
 		return nil, err
 	}
-	cfg, err := gosnowflake.ParseDSN(c.spec.ConnectionString)
+	dsn, err := c.spec.DSN()
 	if err != nil {
 		return nil, err
 	}
-	binaryFormat := "BASE64"
-	cfg.Params["BINARY_INPUT_FORMAT"] = &binaryFormat
-	cfg.Params["BINARY_OUTPUT_FORMAT"] = &binaryFormat
-	dsn, err := gosnowflake.DSN(cfg)
-	if err != nil {
-		return nil, err
-	}
-	db, err := sql.Open("snowflake", dsn)
+	db, err := sql.Open("snowflake", dsn+"&BINARY_INPUT_FORMAT=BASE64&BINARY_OUTPUT_FORMAT=BASE64")
 	if err != nil {
 		return nil, err
 	}

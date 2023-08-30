@@ -37,7 +37,7 @@ jobs:
           cache: true
           cache-dependency-path: plugins/destination/file/go.sum
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3.4.0
+        uses: golangci/golangci-lint-action@v3.6.0
         with:
           version: v1.52.2
           working-directory: plugins/destination/file

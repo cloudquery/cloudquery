@@ -3,7 +3,7 @@ package cloudformation
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -36,7 +36,7 @@ func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMe
 		StackName: stack.StackName,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudformation
+	svc := cl.Services(client.AWSServiceCloudformation).Cloudformation
 	paginator := cloudformation.NewListStackResourcesPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cloudformation.Options) {

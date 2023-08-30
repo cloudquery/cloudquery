@@ -29,6 +29,11 @@
       "sidebar": false
     }
   },
+  "policies": {
+    "title": "Policies",
+    "href": "/docs/core-concepts/policies",
+    "route": "/docs/core-concepts/policies"
+  },
   "case-studies": {
     "title": "Case Studies",
     "display": "hidden",
@@ -46,10 +51,6 @@
     "title": "Solutions",
     "type": "menu",
     "items": {
-      "cspm": {
-        "title": "Cloud Security Posture Management",
-        "href": "/solutions/open-source-cspm"
-      },
       "policies": {
         "title": "Policies",
         "href": "/docs/core-concepts/policies"
@@ -69,6 +70,10 @@
       "glossary": {
         "title": "Glossary",
         "href": "/docs/glossary/overview"
+      },
+      "cspm": {
+        "title": "Cloud Security Posture Management",
+        "href": "/solutions/open-source-cspm"
       }
     }
   },
@@ -105,6 +110,10 @@
         "href": "/docs/reference/destination-spec"
       }
     }
+  },
+  "Careers": {
+    "title": "Careers",
+    "href": "/docs/careers/overview"
   },
   "how-to-guides":  {
     "title": "How-to Guides",

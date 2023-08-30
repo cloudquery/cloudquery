@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/apprunner"
 	"github.com/aws/aws-sdk-go-v2/service/apprunner/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -43,7 +43,7 @@ func ObservabilityConfigurations() *schema.Table {
 func fetchApprunnerObservabilityConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apprunner.ListObservabilityConfigurationsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apprunner
+	svc := cl.Services(client.AWSServiceApprunner).Apprunner
 	paginator := apprunner.NewListObservabilityConfigurationsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *apprunner.Options) {
@@ -59,7 +59,7 @@ func fetchApprunnerObservabilityConfigurations(ctx context.Context, meta schema.
 
 func getObservabilityConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apprunner
+	svc := cl.Services(client.AWSServiceApprunner).Apprunner
 	service := resource.Item.(types.ObservabilityConfigurationSummary)
 
 	describeTaskDefinitionOutput, err := svc.DescribeObservabilityConfiguration(ctx, &apprunner.DescribeObservabilityConfigurationInput{ObservabilityConfigurationArn: service.ObservabilityConfigurationArn}, func(options *apprunner.Options) {

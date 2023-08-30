@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
@@ -50,7 +50,7 @@ func fetchEc2TransitGatewayVpcAttachments(ctx context.Context, meta schema.Clien
 		},
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ec2
+	svc := cl.Services(client.AWSServiceEc2).Ec2
 	paginator := ec2.NewDescribeTransitGatewayVpcAttachmentsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *ec2.Options) {

@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/dax"
 	"github.com/aws/aws-sdk-go-v2/service/dax/types"
@@ -42,7 +42,7 @@ func Clusters() *schema.Table {
 
 func fetchDaxClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Dax
+	svc := cl.Services(client.AWSServiceDax).Dax
 	config := dax.DescribeClustersInput{}
 	// No paginator available
 	for {
@@ -67,7 +67,7 @@ func resolveClusterTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	cluster := resource.Item.(types.Cluster)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Dax
+	svc := cl.Services(client.AWSServiceDax).Dax
 	input := &dax.ListTagsInput{
 		ResourceName: cluster.ClusterArn,
 	}

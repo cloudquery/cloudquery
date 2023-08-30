@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -49,7 +49,7 @@ func ConfigurationSets() *schema.Table {
 
 func fetchSesConfigurationSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sesv2
+	svc := cl.Services(client.AWSServiceSesv2).Sesv2
 
 	p := sesv2.NewListConfigurationSetsPaginator(svc, nil)
 	for p.HasMorePages() {
@@ -67,7 +67,7 @@ func fetchSesConfigurationSets(ctx context.Context, meta schema.ClientMeta, pare
 
 func getConfigurationSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sesv2
+	svc := cl.Services(client.AWSServiceSesv2).Sesv2
 	csName := resource.Item.(string)
 
 	getOutput, err := svc.GetConfigurationSet(ctx, &sesv2.GetConfigurationSetInput{ConfigurationSetName: &csName}, func(o *sesv2.Options) {

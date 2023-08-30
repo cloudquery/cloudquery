@@ -6,7 +6,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
@@ -50,7 +50,7 @@ func WorkGroups() *schema.Table {
 
 func fetchAthenaWorkGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Athena
+	svc := cl.Services(client.AWSServiceAthena).Athena
 	input := athena.ListWorkGroupsInput{}
 	paginator := athena.NewListWorkGroupsPaginator(svc, &input)
 	for paginator.HasMorePages() {
@@ -68,7 +68,7 @@ func fetchAthenaWorkGroups(ctx context.Context, meta schema.ClientMeta, parent *
 
 func getWorkGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Athena
+	svc := cl.Services(client.AWSServiceAthena).Athena
 
 	wg := resource.Item.(types.WorkGroupSummary)
 	dc, err := svc.GetWorkGroup(ctx, &athena.GetWorkGroupInput{
@@ -91,7 +91,7 @@ func resolveAthenaWorkGroupArn(ctx context.Context, meta schema.ClientMeta, reso
 
 func resolveAthenaWorkGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Athena
+	svc := cl.Services(client.AWSServiceAthena).Athena
 	wg := resource.Item.(types.WorkGroup)
 	arnStr := createWorkGroupArn(cl, *wg.Name)
 	params := athena.ListTagsForResourceInput{ResourceARN: &arnStr}

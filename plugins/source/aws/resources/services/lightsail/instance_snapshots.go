@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
@@ -42,7 +42,7 @@ func InstanceSnapshots() *schema.Table {
 func fetchLightsailInstanceSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lightsail.GetInstanceSnapshotsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lightsail
+	svc := cl.Services(client.AWSServiceLightsail).Lightsail
 	// No paginator available
 	for {
 		response, err := svc.GetInstanceSnapshots(ctx, &input, func(options *lightsail.Options) {

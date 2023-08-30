@@ -3,7 +3,7 @@ package emr
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/emr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -41,7 +41,7 @@ func fetchClusterInstanceFleets(ctx context.Context, meta schema.ClientMeta, par
 		ClusterId: cluster.Id,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Emr
+	svc := cl.Services(client.AWSServiceEmr).Emr
 	paginator := emr.NewListInstanceFleetsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *emr.Options) {

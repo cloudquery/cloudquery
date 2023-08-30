@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/mitchellh/hashstructure/v2"
 
@@ -47,7 +47,7 @@ func Events() *schema.Table {
 
 func fetchCloudtrailEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudtrail
+	svc := cl.Services(client.AWSServiceCloudtrail).Cloudtrail
 
 	allConfigs := []tableoptions.CustomLookupEventsOpts{{}}
 	if cl.Spec.TableOptions.CloudTrailEvents != nil {

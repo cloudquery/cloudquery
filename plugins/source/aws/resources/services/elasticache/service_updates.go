@@ -3,7 +3,7 @@ package elasticache
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
@@ -36,7 +36,7 @@ func ServiceUpdates() *schema.Table {
 
 func fetchElasticacheServiceUpdates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	paginator := elasticache.NewDescribeServiceUpdatesPaginator(meta.(*client.Client).Services().Elasticache, nil)
+	paginator := elasticache.NewDescribeServiceUpdatesPaginator(meta.(*client.Client).Services(client.AWSServiceElasticache).Elasticache, nil)
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx, func(options *elasticache.Options) {
 			options.Region = cl.Region

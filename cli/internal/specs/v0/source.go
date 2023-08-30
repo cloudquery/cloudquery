@@ -76,19 +76,22 @@ type Source struct {
 func (s *Source) GetWarnings() Warnings {
 	warnings := make(map[string]string)
 	if s.Backend.String() != BackendNone.String() {
-		warnings["backend"] = "the top-level `backend` option is deprecated. Please use the plugin-level backend option instead"
+		warnings["backend"] = "the top-level `backend` option is deprecated. Please use the plugin-level `backend_options` option instead"
+	}
+	if s.BackendSpec != nil {
+		warnings["backend_spec"] = "the top-level `backend_spec` option is deprecated. Please use the plugin-level `backend_options` option instead"
 	}
 	if s.Scheduler.String() != SchedulerDFS.String() {
-		warnings["scheduler"] = "the top-level `scheduler` option is deprecated. Please use the plugin-level scheduler option instead"
+		warnings["scheduler"] = "the top-level `scheduler` option is deprecated. Please use the plugin-level `scheduler` option instead"
 	}
 	if s.Concurrency != 0 {
-		warnings["concurrency"] = "the top-level `concurrency` option is deprecated. Please use the plugin-level concurrency option instead"
+		warnings["concurrency"] = "the top-level `concurrency` option is deprecated. Please use the plugin-level `concurrency` option instead"
 	}
 	if s.TableConcurrency != 0 {
-		warnings["table_concurrency"] = "the `table_concurrency` option is deprecated. Please use the plugin-level concurrency option instead"
+		warnings["table_concurrency"] = "the `table_concurrency` option is deprecated. Please use the plugin-level `concurrency` option instead"
 	}
 	if s.ResourceConcurrency != 0 {
-		warnings["resource_concurrency"] = "the `resource_concurrency` option is deprecated. Please use the plugin-level concurrency option instead"
+		warnings["resource_concurrency"] = "the `resource_concurrency` option is deprecated. Please use the plugin-level `concurrency` option instead"
 	}
 	if s.SkipDependentTables && slices.Contains(s.Tables, "*") {
 		warnings["skip_dependent_tables"] = "the `skip_dependent_tables` option is ineffective when used with '*' `tables`"

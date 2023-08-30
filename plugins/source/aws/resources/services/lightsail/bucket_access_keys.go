@@ -3,7 +3,7 @@ package lightsail
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -33,7 +33,7 @@ func bucketAccessKeys() *schema.Table {
 func fetchLightsailBucketAccessKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.Bucket)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lightsail
+	svc := cl.Services(client.AWSServiceLightsail).Lightsail
 	input := lightsail.GetBucketAccessKeysInput{
 		BucketName: r.Name,
 	}

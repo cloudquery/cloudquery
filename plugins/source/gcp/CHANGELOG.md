@@ -5,6 +5,157 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.5.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.5.0...plugins-source-gcp-v9.5.1) (2023-08-29)
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/cloudquery/arrow/go/v13` to `github.com/apache/arrow/go/v14` ([#13341](https://github.com/cloudquery/cloudquery/issues/13341)) ([feb8f87](https://github.com/cloudquery/cloudquery/commit/feb8f87d8d761eb9c49ce84329ad0397f730a918))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.6 ([#13345](https://github.com/cloudquery/cloudquery/issues/13345)) ([a995a05](https://github.com/cloudquery/cloudquery/commit/a995a0598a209e0fe3ba09f4ced2a052dc14b67a))
+
+## [9.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.4.5...plugins-source-gcp-v9.5.0) (2023-08-24)
+
+
+### This Release has the Following Changes to Tables
+- Table `gcp_compute_osconfig_inventories` was added
+
+### Features
+
+* **resources:** Add `gcp_compute_osconfig_inventories` table ([#13309](https://github.com/cloudquery/cloudquery/issues/13309)) ([08ea377](https://github.com/cloudquery/cloudquery/commit/08ea37736d4cb60be78e59b8d3a810687bd8d247))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 5b83d4f ([#13203](https://github.com/cloudquery/cloudquery/issues/13203)) ([b0a4b8c](https://github.com/cloudquery/cloudquery/commit/b0a4b8ccf7c429bf5a6ed88866865212015b68e4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.1 ([#13195](https://github.com/cloudquery/cloudquery/issues/13195)) ([a184c37](https://github.com/cloudquery/cloudquery/commit/a184c3786ad49df8564344773e9b96f617ef87a1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.2 ([#13262](https://github.com/cloudquery/cloudquery/issues/13262)) ([5c55aa3](https://github.com/cloudquery/cloudquery/commit/5c55aa35282786375e8ce9493b2a4878e0fb27bc))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.5 ([#13285](https://github.com/cloudquery/cloudquery/issues/13285)) ([e076abd](https://github.com/cloudquery/cloudquery/commit/e076abd9d67813a29ced0c1b7b1664fd728b9ba8))
+* **resources:** Link to Go docs in `gcp_storage_buckets` ([#13160](https://github.com/cloudquery/cloudquery/issues/13160)) ([3d40f5b](https://github.com/cloudquery/cloudquery/commit/3d40f5ba2eb6c7341f26f4cba69ba73bbfeb7c66))
+
+## [9.4.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.4.4...plugins-source-gcp-v9.4.5) (2023-08-15)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to e9683e1 ([#13015](https://github.com/cloudquery/cloudquery/issues/13015)) ([6557696](https://github.com/cloudquery/cloudquery/commit/65576966d3bd14297499a5b85d3b4fc2c7918df3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.0 ([#13068](https://github.com/cloudquery/cloudquery/issues/13068)) ([7bb0e4b](https://github.com/cloudquery/cloudquery/commit/7bb0e4ba654971726e16a6a501393e3831170307))
+* **services:** Update GCP Services ([#13026](https://github.com/cloudquery/cloudquery/issues/13026)) ([f39bcb2](https://github.com/cloudquery/cloudquery/commit/f39bcb267b96ec291af2dd6c84f718a8095637b1))
+
+## [9.4.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.4.3...plugins-source-gcp-v9.4.4) (2023-08-09)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.4.0 ([#12850](https://github.com/cloudquery/cloudquery/issues/12850)) ([0861200](https://github.com/cloudquery/cloudquery/commit/086120054b45213947e95be954ba6164b9cf6587))
+
+## [9.4.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.4.2...plugins-source-gcp-v9.4.3) (2023-08-08)
+
+
+### This Release has the Following Changes to Tables
+- Table `gcp_aiplatform_datasets`: column added with name `data_item_count` and type `int64`
+- Table `gcp_aiplatform_featurestores`: column added with name `online_storage_ttl_days` and type `int64`
+- Table `gcp_aiplatform_models`: column added with name `pipeline_job` and type `utf8`
+- Table `gcp_aiplatform_operations`: column added with name `result` and type `json`
+- Table `gcp_aiplatform_pipeline_jobs`: column added with name `reserved_ip_ranges` and type `list<item: utf8, nullable>`
+- Table `gcp_aiplatform_tensorboards`: column added with name `is_default` and type `bool`
+- Table `gcp_appengine_versions`: column added with name `scaling` and type `json`
+- Table `gcp_artifactregistry_repositories`: column added with name `format_config` and type `json`
+- Table `gcp_batch_task_groups`: column added with name `scheduling_policy` and type `utf8`
+- Table `gcp_bigquery_tables`: column added with name `table_constraints` and type `json`
+- Table `gcp_bigtableadmin_app_profiles`: column added with name `routing_policy` and type `json`
+- Table `gcp_binaryauthorization_assertors`: column added with name `attestor_type` and type `json`
+- Table `gcp_certificatemanager_certificate_map_entries`: column added with name `match` and type `json`
+- Table `gcp_certificatemanager_certificates`: column added with name `type` and type `json`
+- Table `gcp_clouddeploy_delivery_pipelines`: column added with name `pipeline` and type `json`
+- Table `gcp_clouddeploy_job_runs`: column added with name `job_run` and type `json`
+- Table `gcp_clouddeploy_releases`: column added with name `deploy_parameters` and type `json`
+- Table `gcp_clouddeploy_targets`: column added with name `deploy_parameters` and type `json`
+- Table `gcp_clouddeploy_targets`: column added with name `deployment_target` and type `json`
+- Table `gcp_cloudscheduler_jobs`: column added with name `target` and type `json`
+- Table `gcp_cloudsupport_cases`: column added with name `contact_email` and type `utf8`
+- Table `gcp_compute_addresses`: column added with name `label_fingerprint` and type `utf8`
+- Table `gcp_compute_addresses`: column added with name `labels` and type `json`
+- Table `gcp_compute_backend_services`: column added with name `metadatas` and type `json`
+- Table `gcp_compute_disks`: column added with name `async_primary_disk` and type `json`
+- Table `gcp_compute_disks`: column added with name `async_secondary_disks` and type `json`
+- Table `gcp_compute_disks`: column added with name `provisioned_throughput` and type `int64`
+- Table `gcp_compute_disks`: column added with name `resource_status` and type `json`
+- Table `gcp_compute_disks`: column added with name `source_consistency_group_policy_id` and type `utf8`
+- Table `gcp_compute_disks`: column added with name `source_consistency_group_policy` and type `utf8`
+- Table `gcp_compute_forwarding_rules`: column added with name `allow_psc_global_access` and type `bool`
+- Table `gcp_compute_instances`: column added with name `instance_encryption_key` and type `json`
+- Table `gcp_compute_interconnects`: column added with name `label_fingerprint` and type `utf8`
+- Table `gcp_compute_interconnects`: column added with name `labels` and type `json`
+- Table `gcp_compute_interconnects`: column added with name `remote_location` and type `utf8`
+- Table `gcp_compute_target_http_proxies`: column added with name `http_keep_alive_timeout_sec` and type `int64`
+- Table `gcp_container_clusters`: column added with name `enable_k8s_beta_apis` and type `json`
+- Table `gcp_container_clusters`: column added with name `security_posture_config` and type `json`
+- Table `gcp_containeranalysis_occurrences`: column added with name `details` and type `json`
+- Table `gcp_functions_functions`: column added with name `source_code` and type `json`
+- Table `gcp_functions_functions`: column added with name `trigger` and type `json`
+- Table `gcp_kms_crypto_keys`: column added with name `rotation_schedule` and type `json`
+- Table `gcp_logging_sinks`: column added with name `options` and type `json`
+- Table `gcp_redis_instances`: column added with name `available_maintenance_versions` and type `list<item: utf8, nullable>`
+- Table `gcp_redis_instances`: column added with name `customer_managed_key` and type `utf8`
+- Table `gcp_redis_instances`: column added with name `maintenance_version` and type `utf8`
+- Table `gcp_redis_instances`: column added with name `persistence_config` and type `json`
+- Table `gcp_redis_instances`: column added with name `suspension_reasons` and type `list<item: int64, nullable>`
+- Table `gcp_run_services`: column added with name `custom_audiences` and type `list<item: utf8, nullable>`
+- Table `gcp_run_services`: column added with name `satisfies_pzs` and type `bool`
+- Table `gcp_secretmanager_secrets`: column added with name `expiration` and type `json`
+- Table `gcp_translate_glossaries`: column added with name `languages` and type `json`
+- Table `gcp_videotranscoder_jobs`: column added with name `batch_mode_priority` and type `int64`
+- Table `gcp_videotranscoder_jobs`: column added with name `job_config` and type `json`
+- Table `gcp_videotranscoder_jobs`: column added with name `mode` and type `utf8`
+- Table `gcp_videotranscoder_jobs`: column added with name `optimization` and type `utf8`
+- Table `gcp_vmmigration_source_migrating_vm_clone_jobs`: column added with name `target_vm_details` and type `json`
+- Table `gcp_vmmigration_source_migrating_vm_cutover_jobs`: column added with name `target_vm_details` and type `json`
+- Table `gcp_vmmigration_source_migrating_vms`: column added with name `source_vm_details` and type `json`
+- Table `gcp_vmmigration_source_migrating_vms`: column added with name `target_vm_defaults` and type `json`
+- Table `gcp_vmmigration_sources`: column added with name `source_details` and type `json`
+- Table `gcp_workflows_workflows`: column added with name `source_code` and type `json`
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to f53878d ([#12778](https://github.com/cloudquery/cloudquery/issues/12778)) ([6f5d58e](https://github.com/cloudquery/cloudquery/commit/6f5d58e3b84d3c76b1d1a3d6c5a488f77995a057))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.4 ([#12725](https://github.com/cloudquery/cloudquery/issues/12725)) ([42e472f](https://github.com/cloudquery/cloudquery/commit/42e472f6be7eacd78375ded37bea9352c8afa890))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.5 ([#12731](https://github.com/cloudquery/cloudquery/issues/12731)) ([d267239](https://github.com/cloudquery/cloudquery/commit/d267239aa3aca5f94bd36a8db1ec0d9f7dc0865f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.6 ([#12799](https://github.com/cloudquery/cloudquery/issues/12799)) ([fb0e0d7](https://github.com/cloudquery/cloudquery/commit/fb0e0d75ab010f421c834e58d93676de76fcb423))
+* **resources:** Handle previously missing interface fields ([#12768](https://github.com/cloudquery/cloudquery/issues/12768)) ([5931be3](https://github.com/cloudquery/cloudquery/commit/5931be31281b81d64fd7248d999ffb6efa2a635d))
+* **services:** Update GCP Services ([#12786](https://github.com/cloudquery/cloudquery/issues/12786)) ([a1015fa](https://github.com/cloudquery/cloudquery/commit/a1015fa0fb13b1494817c8e787812a54aeffc925))
+
+## [9.4.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.4.1...plugins-source-gcp-v9.4.2) (2023-08-02)
+
+
+### Bug Fixes
+
+* **main:** Use call options when performing the initial org/project/folder listing ([#12704](https://github.com/cloudquery/cloudquery/issues/12704)) ([a5bcd33](https://github.com/cloudquery/cloudquery/commit/a5bcd3392f9a284711016721efd1bdda54a6bfe1)), closes [#12698](https://github.com/cloudquery/cloudquery/issues/12698)
+
+## [9.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.4.0...plugins-source-gcp-v9.4.1) (2023-08-01)
+
+
+### Bug Fixes
+
+* Add and use scheduler option ([#12696](https://github.com/cloudquery/cloudquery/issues/12696)) ([343a19c](https://github.com/cloudquery/cloudquery/commit/343a19c6109826edab2601b3692307d75f7768dd))
+
+## [9.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.3.4...plugins-source-gcp-v9.4.0) (2023-08-01)
+
+
+### This Release has the Following Changes to Tables
+- Table `gcp_resourcemanager_subfolders` was added
+
+### Features
+
+* **resources:** Fetch lower level folders ([#12539](https://github.com/cloudquery/cloudquery/issues/12539)) ([431e95f](https://github.com/cloudquery/cloudquery/commit/431e95fff273c35ba6021fce9b8fcdc0e60fc64b))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v13 digest to 112f949 ([#12659](https://github.com/cloudquery/cloudquery/issues/12659)) ([48d73a9](https://github.com/cloudquery/cloudquery/commit/48d73a93e678994f43171c363f5a75c29547b0b9))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 3452eb0 ([#12595](https://github.com/cloudquery/cloudquery/issues/12595)) ([c1c0949](https://github.com/cloudquery/cloudquery/commit/c1c09490b17f2e64435e05d745890cdb8b22310d))
+* **deps:** Update github.com/cockroachdb/cockroachdb-parser digest to 302c9ad ([#12664](https://github.com/cloudquery/cloudquery/issues/12664)) ([924509c](https://github.com/cloudquery/cloudquery/commit/924509c409fcf008c93f67fc6a0c5dcf4b2bddc5))
+* **deps:** Update github.com/petermattis/goid digest to 80aa455 ([#12669](https://github.com/cloudquery/cloudquery/issues/12669)) ([a140396](https://github.com/cloudquery/cloudquery/commit/a140396153d62d3e68646d58a7749426aa2cc9fe))
+
 ## [9.3.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.3.3...plugins-source-gcp-v9.3.4) (2023-07-25)
 
 

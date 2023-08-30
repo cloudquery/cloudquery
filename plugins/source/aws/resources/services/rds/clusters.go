@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -45,7 +45,7 @@ func Clusters() *schema.Table {
 func fetchRdsClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config rds.DescribeDBClustersInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Rds
+	svc := cl.Services(client.AWSServiceRds).Rds
 	paginator := rds.NewDescribeDBClustersPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *rds.Options) {

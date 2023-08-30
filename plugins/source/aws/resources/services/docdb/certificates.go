@@ -3,7 +3,7 @@ package docdb
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/docdb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -34,7 +34,7 @@ func Certificates() *schema.Table {
 
 func fetchDocdbCertificates(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Docdb
+	svc := cl.Services(client.AWSServiceDocdb).Docdb
 
 	input := &docdb.DescribeCertificatesInput{}
 	p := docdb.NewDescribeCertificatesPaginator(svc, input)

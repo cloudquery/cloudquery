@@ -3,7 +3,7 @@ package autoscaling
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -40,7 +40,7 @@ func groupScalingPolicies() *schema.Table {
 func fetchAutoscalingGroupScalingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(models.AutoScalingGroupWrapper)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Autoscaling
+	svc := cl.Services(client.AWSServiceAutoscaling).Autoscaling
 	paginator := autoscaling.NewDescribePoliciesPaginator(svc, &autoscaling.DescribePoliciesInput{AutoScalingGroupName: p.AutoScalingGroupName})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *autoscaling.Options) {

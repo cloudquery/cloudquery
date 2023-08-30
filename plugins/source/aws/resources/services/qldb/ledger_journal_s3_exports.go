@@ -3,7 +3,7 @@ package qldb
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/aws/aws-sdk-go-v2/service/qldb/types"
@@ -34,7 +34,7 @@ func ledgerJournalS3Exports() *schema.Table {
 func fetchQldbLedgerJournalS3Exports(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	ledger := parent.Item.(*qldb.DescribeLedgerOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Qldb
+	svc := cl.Services(client.AWSServiceQldb).Qldb
 	config := &qldb.ListJournalS3ExportsForLedgerInput{
 		Name:       ledger.Name,
 		MaxResults: aws.Int32(100),

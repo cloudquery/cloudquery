@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
@@ -40,7 +40,7 @@ func fetchLightsailDatabaseLogEvents(ctx context.Context, meta schema.ClientMeta
 		RelationalDatabaseName: r.Name,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lightsail
+	svc := cl.Services(client.AWSServiceLightsail).Lightsail
 	streams, err := svc.GetRelationalDatabaseLogStreams(ctx, &input, func(options *lightsail.Options) {
 		options.Region = cl.Region
 	})
@@ -66,7 +66,7 @@ func fetchLightsailDatabaseLogEvents(ctx context.Context, meta schema.ClientMeta
 }
 
 func fetchLogEvents(ctx context.Context, res chan<- any, cl *client.Client, database, stream string, startTime, endTime time.Time) error {
-	svc := cl.Services().Lightsail
+	svc := cl.Services(client.AWSServiceLightsail).Lightsail
 	input := lightsail.GetRelationalDatabaseLogEventsInput{
 		RelationalDatabaseName: &database,
 		LogStreamName:          &stream,

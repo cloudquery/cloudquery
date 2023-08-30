@@ -4,10 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"reflect"
 	"strings"
 	"sync"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/aws/smithy-go/logging"
@@ -21,7 +21,7 @@ import (
 type Client struct {
 	// Those are already normalized values after configure and this is why we don't want to hold
 	// config directly.
-	ServicesManager ServicesManager
+	ServicesManager *ServicesManager
 	logger          zerolog.Logger
 	// this is set by table clientList
 	AccountID            string
@@ -33,8 +33,7 @@ type Client struct {
 	Backend              state.Client
 	specificRegions      bool
 	Spec                 *Spec
-	// Do not rely on this field, it will be removed once https://github.com/aws/aws-sdk-go-v2/issues/2163 is resolved
-	AWSConfig *aws.Config
+	accountMutex         map[string]*sync.Mutex
 }
 
 type AwsLogger struct {
@@ -91,11 +90,12 @@ func (s *ServicesManager) InitServicesForPartitionAccount(partition, accountId s
 
 func NewAwsClient(logger zerolog.Logger, spec *Spec) Client {
 	return Client{
-		ServicesManager: ServicesManager{
+		ServicesManager: &ServicesManager{
 			services: ServicesPartitionAccountMap{},
 		},
-		logger: logger,
-		Spec:   spec,
+		logger:       logger,
+		Spec:         spec,
+		accountMutex: map[string]*sync.Mutex{},
 	}
 }
 
@@ -111,12 +111,35 @@ func (c *Client) ID() string {
 		string(c.WAFScope),
 		c.LanguageCode,
 	}
-
 	return strings.TrimRight(strings.Join(idStrings, ":"), ":")
 }
 
-func (c *Client) Services() *Services {
+func (c *Client) updateService(service AWSServiceName) {
+	// Check to see if the service is already initialized
+	svc := c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).GetService(service)
+	if svc != nil {
+		return
+	}
+	// If service is not  initialized, lock the account mutex and check again
+	c.accountMutex[c.AccountID].Lock()
+	defer c.accountMutex[c.AccountID].Unlock()
+	svc = c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).GetService(service)
+	// if service is still not initialized, initialize it
+	if svc == nil {
+		c.logger.Debug().Msgf("updating service %s for: %s", service.String(), c.AccountID)
+		c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).InitService(service)
+	}
+}
+func (c *Client) Services(service_names ...AWSServiceName) *Services {
+	for _, service := range service_names {
+		c.updateService(service)
+	}
 	return c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID)
+}
+
+func (s *Services) Duplicate() Services {
+	duplicateServices := *s
+	return duplicateServices
 }
 
 func (c *Client) Duplicate() *Client {
@@ -135,7 +158,7 @@ func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region st
 		WAFScope:             c.WAFScope,
 		Backend:              c.Backend,
 		Spec:                 c.Spec,
-		AWSConfig:            c.AWSConfig,
+		accountMutex:         c.accountMutex,
 	}
 }
 
@@ -150,6 +173,7 @@ func (c *Client) withPartitionAccountIDRegionAndNamespace(partition, accountID, 
 		WAFScope:             c.WAFScope,
 		Backend:              c.Backend,
 		Spec:                 c.Spec,
+		accountMutex:         c.accountMutex,
 	}
 }
 
@@ -164,6 +188,7 @@ func (c *Client) withPartitionAccountIDRegionAndScope(partition, accountID, regi
 		WAFScope:             scope,
 		Backend:              c.Backend,
 		Spec:                 c.Spec,
+		accountMutex:         c.accountMutex,
 	}
 }
 
@@ -180,6 +205,18 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.Cl
 		return nil, fmt.Errorf("spec validation failed: %w", err)
 	}
 	spec.SetDefaults()
+
+	if spec.TableOptions != nil {
+		structVal := reflect.ValueOf(*spec.TableOptions)
+		fieldNum := structVal.NumField()
+		for i := 0; i < fieldNum; i++ {
+			field := structVal.Field(i)
+			if field.IsValid() && !field.IsZero() {
+				logger.Warn().Msg("table_options is deprecated and will be removed soon. Please reach out to the CloudQuery team if you require this feature")
+				break
+			}
+		}
+	}
 
 	client := NewAwsClient(logger, &spec)
 
@@ -217,6 +254,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.Cl
 			initLock.Lock()
 			defer initLock.Unlock()
 			client.ServicesManager.InitServices(*svcsDetail)
+			if client.accountMutex[svcsDetail.accountId] == nil {
+				client.accountMutex[svcsDetail.accountId] = &sync.Mutex{}
+			}
+
 			return nil
 		})
 	}

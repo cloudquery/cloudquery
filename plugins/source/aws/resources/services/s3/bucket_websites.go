@@ -3,7 +3,7 @@ package s3
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3/models"
@@ -31,7 +31,7 @@ func bucketWebsites() *schema.Table {
 func fetchS3BucketWebsites(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(*models.WrappedBucket)
 	cl := meta.(*client.Client)
-	svc := cl.Services().S3
+	svc := cl.Services(client.AWSServiceS3).S3
 	region := parent.Get("region").(*scalar.String)
 	if region == nil {
 		return nil

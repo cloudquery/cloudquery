@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
@@ -38,7 +38,7 @@ func VpcLinks() *schema.Table {
 func fetchApigatewayv2VpcLinks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config apigatewayv2.GetVpcLinksInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigatewayv2
+	svc := cl.Services(client.AWSServiceApigatewayv2).Apigatewayv2
 	// No paginator available
 	for {
 		response, err := svc.GetVpcLinks(ctx, &config, func(options *apigatewayv2.Options) {

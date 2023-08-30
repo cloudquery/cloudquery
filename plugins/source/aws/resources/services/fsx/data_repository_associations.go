@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
 	"github.com/aws/aws-sdk-go-v2/service/fsx/types"
@@ -42,7 +42,7 @@ func DataRepositoryAssociations() *schema.Table {
 
 func fetchFsxDataRepositoryAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Fsx
+	svc := cl.Services(client.AWSServiceFsx).Fsx
 	input := fsx.DescribeDataRepositoryAssociationsInput{MaxResults: aws.Int32(25)}
 	paginator := fsx.NewDescribeDataRepositoryAssociationsPaginator(svc, &input)
 	for paginator.HasMorePages() {

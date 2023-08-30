@@ -3,7 +3,7 @@ package ses
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -39,7 +39,7 @@ func CustomVerificationEmailTemplates() *schema.Table {
 
 func fetchSesCustomVerificationEmailTemplates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sesv2
+	svc := cl.Services(client.AWSServiceSesv2).Sesv2
 
 	p := sesv2.NewListCustomVerificationEmailTemplatesPaginator(svc, nil)
 	for p.HasMorePages() {
@@ -57,7 +57,7 @@ func fetchSesCustomVerificationEmailTemplates(ctx context.Context, meta schema.C
 
 func getCustomVerificationEmailTemplate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sesv2
+	svc := cl.Services(client.AWSServiceSesv2).Sesv2
 	name := resource.Item.(types.CustomVerificationEmailTemplateMetadata).TemplateName
 
 	getOutput, err := svc.GetCustomVerificationEmailTemplate(ctx,

@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
@@ -42,7 +42,7 @@ func registrySchemaVersions() *schema.Table {
 func fetchGlueRegistrySchemaVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	s := parent.Item.(*glue.GetSchemaOutput)
-	svc := cl.Services().Glue
+	svc := cl.Services(client.AWSServiceGlue).Glue
 	input := glue.ListSchemaVersionsInput{
 		SchemaId: &types.SchemaId{
 			SchemaArn: s.SchemaArn,
@@ -64,7 +64,7 @@ func fetchGlueRegistrySchemaVersions(ctx context.Context, meta schema.ClientMeta
 
 func getRegistrySchemaVersion(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Glue
+	svc := cl.Services(client.AWSServiceGlue).Glue
 	item := resource.Item.(types.SchemaVersionListItem)
 
 	s, err := svc.GetSchemaVersion(ctx, &glue.GetSchemaVersionInput{
@@ -82,7 +82,7 @@ func getRegistrySchemaVersion(ctx context.Context, meta schema.ClientMeta, resou
 
 func resolveGlueRegistrySchemaVersionMetadata(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Glue
+	svc := cl.Services(client.AWSServiceGlue).Glue
 	s := resource.Item.(*glue.GetSchemaVersionOutput)
 	input := &glue.QuerySchemaVersionMetadataInput{
 		SchemaVersionId: s.SchemaVersionId,

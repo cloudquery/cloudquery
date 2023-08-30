@@ -3,7 +3,7 @@ package route53recoverycontrolconfig
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/route53recoverycontrolconfig"
 	"github.com/aws/aws-sdk-go-v2/service/route53recoverycontrolconfig/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -33,7 +33,7 @@ func Clusters() *schema.Table {
 
 func fetchClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Route53recoverycontrolconfig
+	svc := cl.Services(client.AWSServiceRoute53recoverycontrolconfig).Route53recoverycontrolconfig
 	paginator := route53recoverycontrolconfig.NewListClustersPaginator(svc, &route53recoverycontrolconfig.ListClustersInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(o *route53recoverycontrolconfig.Options) {

@@ -3,7 +3,7 @@ package lightsail
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
@@ -37,7 +37,7 @@ func fetchLightsailDatabaseParameters(ctx context.Context, meta schema.ClientMet
 		RelationalDatabaseName: r.Name,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lightsail
+	svc := cl.Services(client.AWSServiceLightsail).Lightsail
 	// No paginator available
 	for {
 		response, err := svc.GetRelationalDatabaseParameters(ctx, &input, func(options *lightsail.Options) {

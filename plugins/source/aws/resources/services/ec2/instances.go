@@ -7,7 +7,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
@@ -52,7 +52,7 @@ var stateTransitionReasonTimeRegex = regexp.MustCompile(`\((.*)\)`)
 
 func fetchEc2Instances(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ec2
+	svc := cl.Services(client.AWSServiceEc2).Ec2
 	p := ec2.NewDescribeInstancesPaginator(svc,
 		&ec2.DescribeInstancesInput{MaxResults: aws.Int32(1000)})
 

@@ -3,7 +3,7 @@ package elasticache
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -35,7 +35,7 @@ func ParameterGroups() *schema.Table {
 func fetchElasticacheParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	awsProviderClient := meta.(*client.Client)
-	svc := awsProviderClient.Services().Elasticache
+	svc := awsProviderClient.Services(client.AWSServiceElasticache).Elasticache
 
 	var describeCacheParameterGroupsInput elasticache.DescribeCacheParameterGroupsInput
 	paginator := elasticache.NewDescribeCacheParameterGroupsPaginator(svc, &describeCacheParameterGroupsInput)

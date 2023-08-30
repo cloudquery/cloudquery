@@ -3,7 +3,7 @@ package guardduty
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty/types"
@@ -34,7 +34,7 @@ func detectorPublishingDestinations() *schema.Table {
 func fetchGuarddutyDetectorPublishingDestinations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	detector := parent.Item.(*models.DetectorWrapper)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Guardduty
+	svc := cl.Services(client.AWSServiceGuardduty).Guardduty
 	config := &guardduty.ListPublishingDestinationsInput{DetectorId: aws.String(detector.Id)}
 	paginator := guardduty.NewListPublishingDestinationsPaginator(svc, config)
 	for paginator.HasMorePages() {

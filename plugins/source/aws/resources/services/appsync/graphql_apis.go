@@ -3,7 +3,7 @@ package appsync
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/appsync"
 	"github.com/aws/aws-sdk-go-v2/service/appsync/types"
@@ -36,7 +36,7 @@ func GraphqlApis() *schema.Table {
 func fetchAppsyncGraphqlApis(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config appsync.ListGraphqlApisInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Appsync
+	svc := cl.Services(client.AWSServiceAppsync).Appsync
 	// No paginator available
 	for {
 		output, err := svc.ListGraphqlApis(ctx, &config, func(options *appsync.Options) {

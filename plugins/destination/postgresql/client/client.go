@@ -25,6 +25,8 @@ type Client struct {
 	batchSize           int
 	writer              *mixedbatchwriter.MixedBatchWriter
 
+	pgTablesToPKConstraints map[string]string
+
 	plugin.UnimplementedSource
 }
 
@@ -56,7 +58,7 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 	c.batchSize = spec.BatchSize
 	logLevel, err := tracelog.LogLevelFromString(spec.PgxLogLevel.String())
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse pgx log level %s: %w", spec.PgxLogLevel, err)
+		return nil, fmt.Errorf("failed to parse pgx log level %s: %w", spec.PgxLogLevel.String(), err)
 	}
 	c.logger.Info().Str("pgx_log_level", spec.PgxLogLevel.String()).Msg("Initializing postgresql destination")
 	pgxConfig, err := pgxpool.ParseConfig(spec.ConnectionString)
@@ -107,15 +109,13 @@ func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) err
 }
 
 func (c *Client) Close(ctx context.Context) error {
-	var err error
 	if c.conn == nil {
 		return fmt.Errorf("client already closed or not initialized")
 	}
-	if c.conn != nil {
-		c.conn.Close()
-		c.conn = nil
-	}
-	return err
+
+	c.conn.Close()
+	c.conn = nil
+	return nil
 }
 
 func (c *Client) currentDatabase(ctx context.Context) (string, error) {

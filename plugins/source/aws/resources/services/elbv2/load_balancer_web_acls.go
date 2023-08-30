@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
@@ -41,7 +41,7 @@ func resolveLoadBalancerWebACL(ctx context.Context, meta schema.ClientMeta, pare
 		return nil
 	}
 	cl := meta.(*client.Client)
-	wafClient := cl.Services().Wafv2
+	wafClient := cl.Services(client.AWSServiceWafv2).Wafv2
 	input := wafv2.GetWebACLForResourceInput{ResourceArn: p.LoadBalancerArn}
 	response, err := wafClient.GetWebACLForResource(ctx, &input, func(options *wafv2.Options) {}, func(options *wafv2.Options) {
 		options.Region = cl.Region

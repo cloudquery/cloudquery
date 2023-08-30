@@ -3,7 +3,7 @@ package neptune
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/neptune/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -34,7 +34,7 @@ func GlobalClusters() *schema.Table {
 func fetchNeptuneGlobalClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config neptune.DescribeGlobalClustersInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Neptune
+	svc := cl.Services(client.AWSServiceNeptune).Neptune
 	paginator := neptune.NewDescribeGlobalClustersPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *neptune.Options) {

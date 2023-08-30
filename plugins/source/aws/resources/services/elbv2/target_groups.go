@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -45,7 +45,7 @@ func TargetGroups() *schema.Table {
 
 func fetchTargetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticloadbalancingv2
+	svc := cl.Services(client.AWSServiceElasticloadbalancingv2).Elasticloadbalancingv2
 	paginator := elbv2.NewDescribeTargetGroupsPaginator(svc, &elbv2.DescribeTargetGroupsInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *elbv2.Options) {
@@ -62,7 +62,7 @@ func fetchTargetGroups(ctx context.Context, meta schema.ClientMeta, parent *sche
 func resolveTargetGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	region := cl.Region
-	svc := cl.Services().Elasticloadbalancingv2
+	svc := cl.Services(client.AWSServiceElasticloadbalancingv2).Elasticloadbalancingv2
 	targetGroup := resource.Item.(types.TargetGroup)
 	tagsOutput, err := svc.DescribeTags(ctx, &elbv2.DescribeTagsInput{
 		ResourceArns: []string{

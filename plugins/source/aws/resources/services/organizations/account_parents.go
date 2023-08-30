@@ -3,7 +3,7 @@ package organizations
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/organizations/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -43,7 +43,7 @@ The 'request_account_id' column is added to show from where the request was made
 }
 func fetchParents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Organizations
+	svc := cl.Services(client.AWSServiceOrganizations).Organizations
 
 	resp, err := svc.ListParents(ctx, &organizations.ListParentsInput{
 		ChildId: parent.Item.(types.Account).Id,

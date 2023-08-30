@@ -3,7 +3,7 @@ package s3
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
 	"github.com/aws/aws-sdk-go-v2/service/s3control/types"
@@ -35,7 +35,7 @@ func AccessPoints() *schema.Table {
 
 func fetchAccessPoints(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().S3control
+	svc := cl.Services(client.AWSServiceS3control).S3control
 
 	paginator := s3control.NewListAccessPointsPaginator(svc, &s3control.ListAccessPointsInput{
 		AccountId: aws.String(cl.AccountID),

@@ -26,6 +26,7 @@ The primary key for this table is **self_link**.
 |guest_accelerators|`json`|
 |hostname|`utf8`|
 |id|`int64`|
+|instance_encryption_key|`json`|
 |key_revocation_action_type|`utf8`|
 |kind|`utf8`|
 |label_fingerprint|`utf8`|

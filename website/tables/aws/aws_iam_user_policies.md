@@ -28,6 +28,29 @@ This table depends on [aws_iam_users](aws_iam_users).
 
 These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
 
+### IAM users should not have IAM policies attached
+
+```sql
+SELECT
+  DISTINCT
+  'IAM users should not have IAM policies attached' AS title,
+  aws_iam_users.account_id,
+  arn AS resource_id,
+  CASE
+  WHEN aws_iam_user_attached_policies.user_arn IS NOT NULL
+  OR aws_iam_user_policies.user_arn IS NOT NULL
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_iam_users
+  LEFT JOIN aws_iam_user_attached_policies ON
+      aws_iam_users.arn = aws_iam_user_attached_policies.user_arn
+  LEFT JOIN aws_iam_user_policies ON
+      aws_iam_users.arn = aws_iam_user_policies.user_arn;
+```
+
 ### IAM principals should not have IAM inline policies that allow decryption and re-encryption actions on all KMS keys
 
 ```sql

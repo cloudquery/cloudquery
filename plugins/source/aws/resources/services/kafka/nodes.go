@@ -3,7 +3,7 @@ package kafka
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/kafka"
 	"github.com/aws/aws-sdk-go-v2/service/kafka/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -47,7 +47,7 @@ func fetchKafkaNodes(ctx context.Context, meta schema.ClientMeta, parent *schema
 
 	var input = getListNodesInput(parent)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Kafka
+	svc := cl.Services(client.AWSServiceKafka).Kafka
 	paginator := kafka.NewListNodesPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *kafka.Options) {

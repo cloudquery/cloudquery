@@ -3,7 +3,7 @@ package workspaces
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/workspaces"
 	"github.com/aws/aws-sdk-go-v2/service/workspaces/types"
@@ -34,7 +34,7 @@ func Directories() *schema.Table {
 
 func fetchWorkspacesDirectories(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Workspaces
+	svc := cl.Services(client.AWSServiceWorkspaces).Workspaces
 	input := workspaces.DescribeWorkspaceDirectoriesInput{}
 	paginator := workspaces.NewDescribeWorkspaceDirectoriesPaginator(svc, &input)
 	for paginator.HasMorePages() {

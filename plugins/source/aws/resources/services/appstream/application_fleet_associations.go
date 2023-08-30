@@ -3,7 +3,7 @@ package appstream
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appstream/types"
@@ -45,7 +45,7 @@ func fetchAppstreamApplicationFleetAssociations(ctx context.Context, meta schema
 	input.ApplicationArn = parentApplication.Arn
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Appstream
+	svc := cl.Services(client.AWSServiceAppstream).Appstream
 	// No paginator available
 	for {
 		response, err := svc.DescribeApplicationFleetAssociations(ctx, &input, func(options *appstream.Options) {

@@ -1,6 +1,6 @@
 ---
 name: Jira
-stage: Preview (Paid)
+stage: Preview (Open Core)
 title: Jira Source Plugin
 description: CloudQuery Jira source plugin documentation
 ---
@@ -12,9 +12,11 @@ import { Callout } from 'nextra-theme-docs';
 import Configuration from "./_configuration.mdx";
 import Authentication from "./_authentication.mdx";
 
-<Badge text={"Latest: 0.0.1"}/>
+<Badge text={"Latest: " + getLatestVersion("source", "jira")}/>
 
-This is a premium plugin that you can buy [here](/integrations/jira).
+<Badge text={"Open Core"}/>
+
+This is an open-core plugin with set of free tables available and full version that you can buy [here](/integrations/jira).
 
 The CloudQuery Jira plugin extracts Jira information and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)). It is based on the [Jira API](https://developer.atlassian.com/cloud/jira/platform/rest/v3/) and the [`github.com/andygrunwald/go-jira`](https://github.com/andygrunwald/go-jira) library.
 

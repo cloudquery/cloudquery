@@ -3,7 +3,7 @@ package ec2
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
@@ -41,7 +41,7 @@ func fetchEc2ByoipCidrs(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}[cl.Region]; ok {
 		return nil
 	}
-	svc := cl.Services().Ec2
+	svc := cl.Services(client.AWSServiceEc2).Ec2
 	config := ec2.DescribeByoipCidrsInput{
 		MaxResults: aws.Int32(100),
 	}

@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
@@ -45,6 +45,10 @@ func Pg10ToArrow(t string) arrow.DataType {
 		return arrow.PrimitiveTypes.Int32
 	case "bigint", "int8":
 		return arrow.PrimitiveTypes.Int64
+	case "numeric(20,0)":
+		// special case.
+		// TODO: add Decimal128/256 support
+		return arrow.PrimitiveTypes.Uint64
 	case "double precision", "float8":
 		return arrow.PrimitiveTypes.Float64
 	case "real", "float4":
@@ -68,10 +72,10 @@ func Pg10ToArrow(t string) arrow.DataType {
 	}
 }
 
-func Pg10ToCockroach(t string) arrow.DataType {
+func CockroachToArrow(t string) arrow.DataType {
 	t = normalize(t)
 	if strings.HasSuffix(t, "[]") {
-		return arrow.ListOf(Pg10ToCockroach(t[:len(t)-2]))
+		return arrow.ListOf(CockroachToArrow(t[:len(t)-2]))
 	}
 
 	parsers := []func(string) (arrow.DataType, bool){
@@ -101,6 +105,10 @@ func Pg10ToCockroach(t string) arrow.DataType {
 	case "int", "bigint", "int8", "int64", "integer":
 		// Cockroach has different aliases for ints
 		return arrow.PrimitiveTypes.Int64
+	case "numeric(20,0)":
+		// special case.
+		// TODO: add Decimal128/256 support
+		return arrow.PrimitiveTypes.Uint64
 	case "double precision", "float8":
 		return arrow.PrimitiveTypes.Float64
 	case "real", "float4":

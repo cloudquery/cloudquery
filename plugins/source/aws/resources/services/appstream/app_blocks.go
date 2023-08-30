@@ -3,7 +3,7 @@ package appstream
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appstream/types"
@@ -36,7 +36,7 @@ func AppBlocks() *schema.Table {
 func fetchAppstreamAppBlocks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input appstream.DescribeAppBlocksInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Appstream
+	svc := cl.Services(client.AWSServiceAppstream).Appstream
 	// No paginator available
 	for {
 		response, err := svc.DescribeAppBlocks(ctx, &input, func(options *appstream.Options) {

@@ -3,7 +3,7 @@ package ses
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -36,7 +36,7 @@ func Templates() *schema.Table {
 
 func fetchSesTemplates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sesv2
+	svc := cl.Services(client.AWSServiceSesv2).Sesv2
 
 	p := sesv2.NewListEmailTemplatesPaginator(svc, nil)
 	for p.HasMorePages() {
@@ -54,7 +54,7 @@ func fetchSesTemplates(ctx context.Context, meta schema.ClientMeta, parent *sche
 
 func getTemplate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sesv2
+	svc := cl.Services(client.AWSServiceSesv2).Sesv2
 	templateMeta := resource.Item.(types.EmailTemplateMetadata)
 
 	getOutput, err := svc.GetEmailTemplate(ctx,

@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/neptune/types"
@@ -46,7 +46,7 @@ func ClusterParameterGroups() *schema.Table {
 
 func fetchNeptuneClusterParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Neptune
+	svc := cl.Services(client.AWSServiceNeptune).Neptune
 	input := neptune.DescribeDBClusterParameterGroupsInput{
 		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
 	}

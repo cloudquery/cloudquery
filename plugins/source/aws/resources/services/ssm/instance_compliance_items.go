@@ -3,7 +3,7 @@ package ssm
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -40,7 +40,7 @@ func instanceComplianceItems() *schema.Table {
 func fetchSsmInstanceComplianceItems(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	instance := parent.Item.(types.InstanceInformation)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ssm
+	svc := cl.Services(client.AWSServiceSsm).Ssm
 
 	input := ssm.ListComplianceItemsInput{
 		ResourceIds: []string{*instance.InstanceId},

@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/aws/smithy-go"
@@ -42,7 +42,7 @@ func fetchConfigConformancePacks(ctx context.Context, meta schema.ClientMeta, pa
 	cl := meta.(*client.Client)
 	config := configservice.DescribeConformancePacksInput{}
 	var ae smithy.APIError
-	configService := cl.Services().Configservice
+	configService := cl.Services(client.AWSServiceConfigservice).Configservice
 	paginator := configservice.NewDescribeConformancePacksPaginator(configService, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *configservice.Options) {

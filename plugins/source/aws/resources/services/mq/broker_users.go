@@ -3,7 +3,7 @@ package mq
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/mq"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -32,7 +32,7 @@ func brokerUsers() *schema.Table {
 func fetchMqBrokerUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	broker := parent.Item.(*mq.DescribeBrokerOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Mq
+	svc := cl.Services(client.AWSServiceMq).Mq
 	for _, us := range broker.Users {
 		input := mq.DescribeUserInput{
 			BrokerId: broker.BrokerId,

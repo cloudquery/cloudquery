@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
@@ -43,7 +43,7 @@ func EbsVolumes() *schema.Table {
 
 func fetchEc2EbsVolumes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ec2
+	svc := cl.Services(client.AWSServiceEc2).Ec2
 	config := ec2.DescribeVolumesInput{}
 	paginator := ec2.NewDescribeVolumesPaginator(svc, &config)
 	for paginator.HasMorePages() {

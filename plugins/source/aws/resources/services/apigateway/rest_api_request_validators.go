@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
@@ -42,7 +42,7 @@ func restApiRequestValidators() *schema.Table {
 func fetchApigatewayRestApiRequestValidators(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.RestApi)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigateway
+	svc := cl.Services(client.AWSServiceApigateway).Apigateway
 	config := apigateway.GetRequestValidatorsInput{RestApiId: r.Id, Limit: aws.Int32(500)}
 	// No paginator available
 	for {

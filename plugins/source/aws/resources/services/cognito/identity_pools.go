@@ -3,7 +3,7 @@ package cognito
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -48,7 +48,7 @@ func IdentityPools() *schema.Table {
 
 func fetchCognitoIdentityPools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cognitoidentity
+	svc := cl.Services(client.AWSServiceCognitoidentity).Cognitoidentity
 	params := cognitoidentity.ListIdentityPoolsInput{
 		// we want max results to reduce List calls as much as possible, services limited to less than or equal to 60"
 		MaxResults: 60,
@@ -68,7 +68,7 @@ func fetchCognitoIdentityPools(ctx context.Context, meta schema.ClientMeta, pare
 
 func getIdentityPool(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cognitoidentity
+	svc := cl.Services(client.AWSServiceCognitoidentity).Cognitoidentity
 	item := resource.Item.(types.IdentityPoolShortDescription)
 
 	ipo, err := svc.DescribeIdentityPool(ctx, &cognitoidentity.DescribeIdentityPoolInput{IdentityPoolId: item.IdentityPoolId}, func(options *cognitoidentity.Options) {

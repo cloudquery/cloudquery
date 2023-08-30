@@ -47,7 +47,7 @@ func fetchRamResourceShareAssociations(ctx context.Context, meta schema.ClientMe
 
 func fetchRamResourceShareAssociationsByType(ctx context.Context, meta schema.ClientMeta, resourceShareInput *ram.GetResourceShareAssociationsInput, res chan<- any) error {
 	cl := meta.(*client.Client)
-	paginator := ram.NewGetResourceShareAssociationsPaginator(meta.(*client.Client).Services().Ram, resourceShareInput)
+	paginator := ram.NewGetResourceShareAssociationsPaginator(meta.(*client.Client).Services(client.AWSServiceRam).Ram, resourceShareInput)
 	for paginator.HasMorePages() {
 		response, err := paginator.NextPage(ctx, func(options *ram.Options) {
 			options.Region = cl.Region

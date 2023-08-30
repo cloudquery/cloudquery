@@ -3,7 +3,7 @@ package cloudwatchlogs
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -36,7 +36,7 @@ func fetchCloudwatchlogsSubscriptionFilters(ctx context.Context, meta schema.Cli
 		LogGroupName: parent.Item.(types.LogGroup).LogGroupName,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudwatchlogs
+	svc := cl.Services(client.AWSServiceCloudwatchlogs).Cloudwatchlogs
 	paginator := cloudwatchlogs.NewDescribeSubscriptionFiltersPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cloudwatchlogs.Options) {

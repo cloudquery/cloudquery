@@ -3,7 +3,7 @@ package servicequotas
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/servicequotas"
 	"github.com/aws/aws-sdk-go-v2/service/servicequotas/types"
@@ -49,7 +49,7 @@ func fetchServicequotasServices(ctx context.Context, meta schema.ClientMeta, par
 	}
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Servicequotas
+	svc := cl.Services(client.AWSServiceServicequotas).Servicequotas
 	servicePaginator := servicequotas.NewListServicesPaginator(svc, &config)
 	for servicePaginator.HasMorePages() {
 		output, err := servicePaginator.NextPage(ctx, func(o *servicequotas.Options) {

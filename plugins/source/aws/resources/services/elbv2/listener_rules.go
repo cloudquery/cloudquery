@@ -3,7 +3,7 @@ package elbv2
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
@@ -40,7 +40,7 @@ func listenerRules() *schema.Table {
 func fetchListenerRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	region := cl.Region
-	svc := cl.Services().Elasticloadbalancingv2
+	svc := cl.Services(client.AWSServiceElasticloadbalancingv2).Elasticloadbalancingv2
 	listener := parent.Item.(types.Listener)
 	config := elbv2.DescribeRulesInput{ListenerArn: listener.ListenerArn}
 	// no paginator available

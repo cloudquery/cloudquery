@@ -22,6 +22,8 @@ Details about policies for every cloud provider can be found on its source plugi
 
 ### AWS Cost Optimization Pack
 
+![AWS Cost Optimization Dashboard Powered by CloudQuery and Grafana](/images/dashboards/aws-cost.png)
+
 This is an AWS Cost pack. It includes pre-built queries for PostgreSQL, BigQuery and Snowflake with dashboards for Grafana, Superset and Metabase.
 
 - [Standard license](/buy/aws-cost-pack-standard), for internal use in one organization: `$500`, includes 6 months of support and updates.

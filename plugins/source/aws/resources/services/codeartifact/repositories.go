@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/codeartifact"
 	"github.com/aws/aws-sdk-go-v2/service/codeartifact/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -48,7 +48,7 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 
 func fetchRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Codeartifact
+	svc := cl.Services(client.AWSServiceCodeartifact).Codeartifact
 	paginator := codeartifact.NewListRepositoriesPaginator(svc, nil)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *codeartifact.Options) {
@@ -65,7 +65,7 @@ func fetchRepositories(ctx context.Context, meta schema.ClientMeta, parent *sche
 func getRepository(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	repository := resource.Item.(types.RepositorySummary)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Codeartifact
+	svc := cl.Services(client.AWSServiceCodeartifact).Codeartifact
 	repoOut, err := svc.DescribeRepository(ctx, &codeartifact.DescribeRepositoryInput{
 		Repository:  repository.Name,
 		Domain:      repository.DomainName,

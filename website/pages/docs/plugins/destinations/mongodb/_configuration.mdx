@@ -7,9 +7,10 @@ spec:
   registry: "github"
   path: "cloudquery/mongodb"
   version: "VERSION_DESTINATION_MONGODB"
-  # batch_size: 10000 # optional
-  # batch_size_bytes: 5242880 # optional
   spec:
     connection_string: "mongodb://localhost:27017"
     database: "your_mongo_database_name"
+    # Optional parameters:
+    # batch_size: 10000 # 10K
+    # batch_size_bytes: 4194304 # 4 MiB
 ```

@@ -3,7 +3,7 @@ package emr
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/emr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -38,7 +38,7 @@ func fetchClusterInstanceGroups(ctx context.Context, meta schema.ClientMeta, par
 		return nil
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Emr
+	svc := cl.Services(client.AWSServiceEmr).Emr
 	paginator := emr.NewListInstanceGroupsPaginator(svc, &emr.ListInstanceGroupsInput{
 		ClusterId: cluster.Id,
 	})

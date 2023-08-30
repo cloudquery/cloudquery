@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -48,7 +48,7 @@ func Connections() *schema.Table {
 func fetchDirectconnectConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config directconnect.DescribeConnectionsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Directconnect
+	svc := cl.Services(client.AWSServiceDirectconnect).Directconnect
 	output, err := svc.DescribeConnections(ctx, &config, func(options *directconnect.Options) {
 		options.Region = cl.Region
 	})

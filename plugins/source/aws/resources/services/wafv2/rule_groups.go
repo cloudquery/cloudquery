@@ -7,7 +7,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
@@ -50,7 +50,7 @@ func RuleGroups() *schema.Table {
 
 func fetchWafv2RuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Wafv2
+	svc := cl.Services(client.AWSServiceWafv2).Wafv2
 
 	config := wafv2.ListRuleGroupsInput{Scope: cl.WAFScope}
 	for {
@@ -73,7 +73,7 @@ func fetchWafv2RuleGroups(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func getRuleGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Wafv2
+	svc := cl.Services(client.AWSServiceWafv2).Wafv2
 	ruleGroupOutput := resource.Item.(types.RuleGroupSummary)
 
 	// Get RuleGroup object
@@ -96,7 +96,7 @@ func resolveRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resource 
 	ruleGroup := resource.Item.(*types.RuleGroup)
 
 	cl := meta.(*client.Client)
-	service := cl.Services().Wafv2
+	service := cl.Services(client.AWSServiceWafv2).Wafv2
 
 	// Resolve tags
 	outputTags := make(map[string]*string)
@@ -122,7 +122,7 @@ func resolveWafv2ruleGroupPolicy(ctx context.Context, meta schema.ClientMeta, re
 	ruleGroup := resource.Item.(*types.RuleGroup)
 
 	cl := meta.(*client.Client)
-	service := cl.Services().Wafv2
+	service := cl.Services(client.AWSServiceWafv2).Wafv2
 
 	// Resolve rule group policy
 	policy, err := service.GetPermissionPolicy(ctx, &wafv2.GetPermissionPolicyInput{ResourceArn: ruleGroup.ARN}, func(o *wafv2.Options) {

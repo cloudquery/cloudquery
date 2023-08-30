@@ -21,6 +21,8 @@ The primary key for this table is **self_link**.
 |ip_version|`utf8`|
 |ipv6_endpoint_type|`utf8`|
 |kind|`utf8`|
+|label_fingerprint|`utf8`|
+|labels|`json`|
 |name|`utf8`|
 |network|`utf8`|
 |network_tier|`utf8`|

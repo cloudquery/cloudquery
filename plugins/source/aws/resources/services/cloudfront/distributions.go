@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -42,7 +42,7 @@ func Distributions() *schema.Table {
 func fetchCloudfrontDistributions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config cloudfront.ListDistributionsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudfront
+	svc := cl.Services(client.AWSServiceCloudfront).Cloudfront
 	paginator := cloudfront.NewListDistributionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cloudfront.Options) {
@@ -58,7 +58,7 @@ func fetchCloudfrontDistributions(ctx context.Context, meta schema.ClientMeta, p
 
 func getDistribution(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudfront
+	svc := cl.Services(client.AWSServiceCloudfront).Cloudfront
 
 	d := resource.Item.(types.DistributionSummary)
 
@@ -78,7 +78,7 @@ func resolveCloudfrontDistributionTags(ctx context.Context, meta schema.ClientMe
 	distribution := resource.Item.(*types.Distribution)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudfront
+	svc := cl.Services(client.AWSServiceCloudfront).Cloudfront
 	response, err := svc.ListTagsForResource(ctx, &cloudfront.ListTagsForResourceInput{
 		Resource: distribution.ARN,
 	}, func(options *cloudfront.Options) {

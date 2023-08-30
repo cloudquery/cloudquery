@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
@@ -35,7 +35,7 @@ func mlTransformTaskRuns() *schema.Table {
 
 func fetchGlueMlTransformTaskRuns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Glue
+	svc := cl.Services(client.AWSServiceGlue).Glue
 	paginator := glue.NewGetMLTaskRunsPaginator(svc, &glue.GetMLTaskRunsInput{
 		TransformId: parent.Item.(types.MLTransform).TransformId,
 	})

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
@@ -51,7 +51,7 @@ func fetchApigatewayRestApiResourceMethods(ctx context.Context, meta schema.Clie
 	api := parent.Parent.Item.(types.RestApi)
 	resource := parent.Item.(types.Resource)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigateway
+	svc := cl.Services(client.AWSServiceApigateway).Apigateway
 	for method := range resource.ResourceMethods {
 		config := apigateway.GetMethodInput{RestApiId: api.Id, ResourceId: resource.Id, HttpMethod: aws.String(method)}
 		resp, err := svc.GetMethod(ctx, &config, func(options *apigateway.Options) {

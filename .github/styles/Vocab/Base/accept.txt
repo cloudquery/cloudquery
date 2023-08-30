@@ -68,6 +68,7 @@ Deregistering
 Detrack
 discoverability
 Docusaurus
+Dockerfile
 ELB
 ELBs
 Embeddable
@@ -117,9 +118,11 @@ Infoblox
 Inforce
 IPs
 Jira
+jira
 json
 JSON
 jsonb
+Kao
 Kestra
 keyless
 Kibana
@@ -134,6 +137,7 @@ Lucene
 Macie
 Mailchimp
 Mailgun
+makefile
 Marketo
 meilisearch
 Meilisearch
@@ -191,6 +195,7 @@ runtime
 runtimes
 Scaleway
 schemaless
+scheduler's
 SCP
 SCPs
 sdk

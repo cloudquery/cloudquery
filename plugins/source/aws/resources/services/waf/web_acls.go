@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/waf/types"
@@ -46,7 +46,7 @@ type WebACLWrapper struct {
 
 func fetchWafWebAcls(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	service := cl.Services().Waf
+	service := cl.Services(client.AWSServiceWaf).Waf
 	config := waf.ListWebACLsInput{}
 	for {
 		output, err := service.ListWebACLs(ctx, &config, func(o *waf.Options) {
@@ -98,7 +98,7 @@ func resolveWafWebACLTags(ctx context.Context, meta schema.ClientMeta, resource 
 
 	// Resolve tags for resource
 	cl := meta.(*client.Client)
-	service := cl.Services().Waf
+	service := cl.Services(client.AWSServiceWaf).Waf
 	outputTags := make(map[string]*string)
 	tagsConfig := waf.ListTagsForResourceInput{ResourceARN: webACL.WebACLArn}
 	for {

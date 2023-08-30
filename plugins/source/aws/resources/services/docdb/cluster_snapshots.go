@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/docdb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -56,7 +56,7 @@ func clusterSnapshots() *schema.Table {
 func fetchDocdbClusterSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	item := parent.Item.(types.DBCluster)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Docdb
+	svc := cl.Services(client.AWSServiceDocdb).Docdb
 
 	input := &docdb.DescribeDBClusterSnapshotsInput{
 		DBClusterIdentifier: item.DBClusterIdentifier,
@@ -77,7 +77,7 @@ func fetchDocdbClusterSnapshots(ctx context.Context, meta schema.ClientMeta, par
 func resolveDocdbClusterSnapshotAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	item := resource.Item.(types.DBClusterSnapshot)
 	cli := meta.(*client.Client)
-	svc := cli.Services().Docdb
+	svc := cli.Services(client.AWSServiceDocdb).Docdb
 
 	input := &docdb.DescribeDBClusterSnapshotAttributesInput{
 		DBClusterSnapshotIdentifier: item.DBClusterSnapshotIdentifier,

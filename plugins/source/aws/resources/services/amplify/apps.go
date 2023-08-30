@@ -3,7 +3,7 @@ package amplify
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/amplify"
 	"github.com/aws/aws-sdk-go-v2/service/amplify/types"
@@ -35,7 +35,7 @@ func Apps() *schema.Table {
 
 func fetchApps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Amplify
+	svc := cl.Services(client.AWSServiceAmplify).Amplify
 
 	config := amplify.ListAppsInput{
 		MaxResults: int32(100),

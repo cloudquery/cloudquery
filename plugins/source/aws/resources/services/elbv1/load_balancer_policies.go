@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	elbv1 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -46,7 +46,7 @@ func loadBalancerPolicies() *schema.Table {
 func fetchElbv1LoadBalancerPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(models.ELBv1LoadBalancerWrapper)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticloadbalancing
+	svc := cl.Services(client.AWSServiceElasticloadbalancing).Elasticloadbalancing
 	response, err := svc.DescribeLoadBalancerPolicies(ctx, &elbv1.DescribeLoadBalancerPoliciesInput{LoadBalancerName: r.LoadBalancerName}, func(options *elbv1.Options) {
 		options.Region = cl.Region
 	})

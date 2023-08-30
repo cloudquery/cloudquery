@@ -39,6 +39,7 @@ The following tables depend on aws_cloudformation_stacks:
 |outputs|`json`|
 |parameters|`json`|
 |parent_id|`utf8`|
+|retain_except_on_create|`bool`|
 |role_arn|`utf8`|
 |rollback_configuration|`json`|
 |root_id|`utf8`|

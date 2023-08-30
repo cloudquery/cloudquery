@@ -3,7 +3,7 @@ package guardduty
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -38,7 +38,7 @@ func fetchDetectorFindings(ctx context.Context, meta schema.ClientMeta, parent *
 	detector := parent.Item.(*models.DetectorWrapper)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Guardduty
+	svc := cl.Services(client.AWSServiceGuardduty).Guardduty
 	config := &guardduty.ListFindingsInput{
 		DetectorId: &detector.Id,
 	}

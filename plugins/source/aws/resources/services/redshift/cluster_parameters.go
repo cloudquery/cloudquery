@@ -3,7 +3,7 @@ package redshift
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -41,7 +41,7 @@ func clusterParameters() *schema.Table {
 func fetchClusterParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	group := parent.Item.(types.ClusterParameterGroupStatus)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Redshift
+	svc := cl.Services(client.AWSServiceRedshift).Redshift
 
 	config := redshift.DescribeClusterParametersInput{
 		ParameterGroupName: group.ParameterGroupName,

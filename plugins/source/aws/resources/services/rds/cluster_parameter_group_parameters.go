@@ -3,7 +3,7 @@ package rds
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -32,7 +32,7 @@ func clusterParameterGroupParameters() *schema.Table {
 
 func fetchRdsClusterParameterGroupParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Rds
+	svc := cl.Services(client.AWSServiceRds).Rds
 	g := parent.Item.(types.DBClusterParameterGroup)
 	input := rds.DescribeDBClusterParametersInput{DBClusterParameterGroupName: g.DBClusterParameterGroupName}
 	paginator := rds.NewDescribeDBClusterParametersPaginator(svc, &input)

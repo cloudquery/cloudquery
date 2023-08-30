@@ -3,7 +3,7 @@ package ec2
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
@@ -38,7 +38,7 @@ func fetchEbsSnapshotAttributes(ctx context.Context, meta schema.ClientMeta, par
 	if aws.ToString(r.OwnerId) != cl.AccountID {
 		return nil
 	}
-	svc := cl.Services().Ec2
+	svc := cl.Services(client.AWSServiceEc2).Ec2
 	permissions, err := svc.DescribeSnapshotAttribute(ctx, &ec2.DescribeSnapshotAttributeInput{
 		Attribute:  types.SnapshotAttributeNameCreateVolumePermission,
 		SnapshotId: r.SnapshotId,

@@ -3,7 +3,7 @@ package identitystore
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/identitystore"
 	"github.com/aws/aws-sdk-go-v2/service/identitystore/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -30,7 +30,7 @@ func groupMemberships() *schema.Table {
 
 func fetchIdentitystoreGroupMemberships(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Identitystore
+	svc := cl.Services(client.AWSServiceIdentitystore).Identitystore
 	group := parent.Item.(types.Group)
 	config := identitystore.ListGroupMembershipsInput{
 		GroupId:         group.GroupId,

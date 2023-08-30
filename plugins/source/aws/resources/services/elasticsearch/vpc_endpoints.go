@@ -3,7 +3,7 @@ package elasticsearch
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice/types"
@@ -35,7 +35,7 @@ func VpcEndpoints() *schema.Table {
 
 func fetchElasticsearchVpcEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticsearchservice
+	svc := cl.Services(client.AWSServiceElasticsearchservice).Elasticsearchservice
 	// get the IDs first
 	listInput := new(elasticsearchservice.ListVpcEndpointsInput)
 	var vpcEndpointIDs []string

@@ -108,6 +108,7 @@ tables:
   - aws_iam_policies
   - aws_iam_user_access_keys
   - aws_iam_user_attached_policies
+  - aws_iam_user_policies
   - aws_iam_users
   - aws_iam_virtual_mfa_devices
   - aws_kms_keys
@@ -393,6 +394,7 @@ AWS Foundational Security Best Practices performs the following checks:
   - S3 buckets should have server-side encryption enabled
   - S3 buckets should deny non-HTTPS requests
   - Amazon S3 permissions granted to other AWS accounts in bucket policies should be restricted
+  - S3 Block Public Access setting should be enabled at the bucket-level
   - Amazon SageMaker notebook instances should not have direct internet access
   - Secrets Manager secrets should have automatic rotation enabled
   - Secrets Manager secrets configured with automatic rotation should rotate successfully

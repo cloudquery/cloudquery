@@ -3,7 +3,7 @@ package organizations
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/organizations/types"
@@ -42,7 +42,7 @@ The 'request_account_id' column is added to show from where the request was made
 
 func fetchOUs(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Organizations
+	svc := cl.Services(client.AWSServiceOrganizations).Organizations
 	var input organizations.ListRootsInput
 	paginator := organizations.NewListRootsPaginator(svc, &input)
 	var roots []types.Root
@@ -101,7 +101,7 @@ func getOUs(ctx context.Context, meta schema.ClientMeta, accountsApi services.Or
 func getOU(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
 	child := resource.Item.(types.Child)
-	svc := cl.Services().Organizations
+	svc := cl.Services(client.AWSServiceOrganizations).Organizations
 	ou, err := svc.DescribeOrganizationalUnit(ctx, &organizations.DescribeOrganizationalUnitInput{
 		OrganizationalUnitId: child.Id,
 	}, func(options *organizations.Options) {

@@ -3,7 +3,7 @@ package wellarchitected
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -58,7 +58,7 @@ func fetchLensReviewImprovements(ctx context.Context, meta schema.ClientMeta, pa
 	}
 
 	cl := meta.(*client.Client)
-	service := cl.Services().Wellarchitected
+	service := cl.Services(client.AWSServiceWellarchitected).Wellarchitected
 	milestoneNumber := int32(parent.Get("milestone_number").Get().(int64))
 	workloadID := parent.Get("workload_id").String()
 

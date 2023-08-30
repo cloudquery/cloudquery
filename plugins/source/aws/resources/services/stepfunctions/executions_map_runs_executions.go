@@ -3,7 +3,7 @@ package stepfunctions
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/sfn"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -43,7 +43,7 @@ func mapRunExecutions() *schema.Table {
 
 func fetchStepfunctionsMapRunExecutions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sfn
+	svc := cl.Services(client.AWSServiceSfn).Sfn
 	config := sfn.ListExecutionsInput{
 		MaxResults: 1000,
 		MapRunArn:  parent.Item.(*sfn.DescribeMapRunOutput).MapRunArn,

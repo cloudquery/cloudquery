@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/aws/aws-sdk-go-v2/service/shield/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -36,7 +36,7 @@ func Attacks() *schema.Table {
 
 func fetchShieldAttacks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Shield
+	svc := cl.Services(client.AWSServiceShield).Shield
 	end := time.Now()
 	start := end.Add(-time.Hour * 24)
 	config := shield.ListAttacksInput{
@@ -58,7 +58,7 @@ func fetchShieldAttacks(ctx context.Context, meta schema.ClientMeta, parent *sch
 
 func getAttack(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Shield
+	svc := cl.Services(client.AWSServiceShield).Shield
 	a := resource.Item.(types.AttackSummary)
 
 	attack, err := svc.DescribeAttack(ctx, &shield.DescribeAttackInput{AttackId: a.AttackId}, func(o *shield.Options) {

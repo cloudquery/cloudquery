@@ -3,7 +3,7 @@ package quicksight
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/quicksight"
 	"github.com/aws/aws-sdk-go-v2/service/quicksight/types"
@@ -36,7 +36,7 @@ func ingestions() *schema.Table {
 func fetchQuicksightIngestions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	item := parent.Item.(types.DataSetSummary)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Quicksight
+	svc := cl.Services(client.AWSServiceQuicksight).Quicksight
 	input := quicksight.ListIngestionsInput{
 		AwsAccountId: aws.String(cl.AccountID),
 		DataSetId:    item.DataSetId,

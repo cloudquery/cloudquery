@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"math/big"
 	"strings"
@@ -9,11 +10,11 @@ import (
 
 	"cloud.google.com/go/bigquery"
 	"cloud.google.com/go/civil"
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/apache/arrow/go/v13/arrow/decimal128"
-	"github.com/apache/arrow/go/v13/arrow/decimal256"
-	"github.com/apache/arrow/go/v13/arrow/memory"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v14/arrow/array"
+	"github.com/apache/arrow/go/v14/arrow/decimal128"
+	"github.com/apache/arrow/go/v14/arrow/decimal256"
+	"github.com/apache/arrow/go/v14/arrow/memory"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/goccy/go-json"
@@ -38,12 +39,13 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 	for {
 		values := make([]bigquery.Value, len(table.Columns))
 		err := it.Next(&values)
-		if err == iterator.Done {
-			break
-		}
 		if err != nil {
+			if errors.Is(err, iterator.Done) {
+				break
+			}
 			return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
 		}
+
 		rb := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
 		for i := range values {
 			err := appendValue(rb.Field(i), values[i])

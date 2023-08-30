@@ -6,7 +6,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
@@ -48,7 +48,7 @@ func vaultRecoveryPoints() *schema.Table {
 
 func fetchBackupVaultRecoveryPoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Backup
+	svc := cl.Services(client.AWSServiceBackup).Backup
 	vault := parent.Item.(types.BackupVaultListMember)
 	params := backup.ListRecoveryPointsByBackupVaultInput{BackupVaultName: vault.BackupVaultName, MaxResults: aws.Int32(100)}
 	paginator := backup.NewListRecoveryPointsByBackupVaultPaginator(svc, &params)
@@ -88,7 +88,7 @@ func resolveRecoveryPointTags(ctx context.Context, meta schema.ClientMeta, resou
 	}
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Backup
+	svc := cl.Services(client.AWSServiceBackup).Backup
 	params := backup.ListTagsInput{ResourceArn: rp.RecoveryPointArn}
 	tags := make(map[string]string)
 	paginator := backup.NewListTagsPaginator(svc, &params)

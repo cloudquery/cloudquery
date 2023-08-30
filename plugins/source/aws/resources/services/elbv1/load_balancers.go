@@ -3,7 +3,7 @@ package elbv1
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	elbv1 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -38,7 +38,7 @@ func LoadBalancers() *schema.Table {
 
 func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticloadbalancing
+	svc := cl.Services(client.AWSServiceElasticloadbalancing).Elasticloadbalancing
 	processLoadBalancers := func(loadBalancers []types.LoadBalancerDescription) error {
 		tagsCfg := &elbv1.DescribeTagsInput{LoadBalancerNames: make([]string, 0, len(loadBalancers))}
 		for _, lb := range loadBalancers {

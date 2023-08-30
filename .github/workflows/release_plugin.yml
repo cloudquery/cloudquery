@@ -6,15 +6,19 @@ on:
       - "!plugins-destination-duckdb-v*.*.*"
       - "!plugins-destination-sqlite-v*.*.*"
       - "!plugins-destination-snowflake-v*.*.*"
-env:
-  CGO_ENABLED: 0
+      - "!plugins-source-test-v*.*.*"
 
 jobs:
-  release-plugin-binary:
-    timeout-minutes: 60
-    runs-on: large-ubuntu-monorepo
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      plugin_name: ${{ steps.split.outputs.plugin_name }}
+      plugin_type: ${{ steps.split.outputs.plugin_type }}
+      plugin_version: ${{ steps.split.outputs.plugin_version }}
+      plugin_dir: ${{ steps.split.outputs.plugin_dir }}
+      prerelease: ${{ steps.semver_parser.outputs.prerelease }}
+      plugin_releaser: ${{ steps.set-result.outputs.result }}
     steps:
-      # Tag format is plugins-<type>-<name>-<version>
       - name: Split tag
         id: split
         run: |
@@ -25,13 +29,105 @@ jobs:
           echo "plugin_name=${plugin_name}" >> $GITHUB_OUTPUT
           echo "plugin_type=${plugin_type}" >> $GITHUB_OUTPUT
           echo "plugin_version=${plugin_version}" >> $GITHUB_OUTPUT
-          echo "plugins_dir=plugins/${plugin_type}/${plugin_name}" >> $GITHUB_OUTPUT
+          echo "plugin_dir=plugins/${plugin_type}/${plugin_name}" >> $GITHUB_OUTPUT
       # Fail if not a valid SemVer string
       - name: Parse semver string
         uses: booxmedialtd/ws-action-parse-semver@7784200024d6b3fc01253e617ec0168daf603de3
         id: semver_parser
         with:
           input_string: ${{steps.split.outputs.plugin_version}}
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: actions/github-script@v6
+        id: set-result
+        env:
+          PLUGIN_DIR: ${{steps.split.outputs.plugin_dir}}
+        with:
+          script: |
+            const fs = require('fs').promises;
+            const path = require('path');
+            const pluginFiles = await fs.readdir(process.env.PLUGIN_DIR);
+            if (pluginFiles.includes('Dockerfile')) {
+              return 'docker';
+            }
+            if (pluginFiles.includes('.goreleaser.yaml')) {
+              return 'go';
+            }
+          result-encoding: string
+
+  release-plugin-docker:
+    permissions:
+      contents: read
+      packages: write
+    timeout-minutes: 60
+    runs-on: large-ubuntu-monorepo
+    needs: prepare
+    if: needs.prepare.outputs.plugin_releaser == 'docker'
+    env:
+      IMAGE_NAME_PREFIX: cloudquery
+      REGISTRY: ghcr.io
+    steps:
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@4c0219f9ac95b02789c1075625400b2acbff50b1
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_PREFIX }}/cq-${{ needs.prepare.outputs.plugin_type }}-${{ needs.prepare.outputs.plugin_name }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        env:
+          BUILDX_NO_DEFAULT_ATTESTATIONS: 1
+        with:
+          context: "{{defaultContext}}:${{ needs.prepare.outputs.plugin_dir }}"
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_PREFIX }}/cq-${{ needs.prepare.outputs.plugin_type }}-${{ needs.prepare.outputs.plugin_name }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_PREFIX }}/cq-${{ needs.prepare.outputs.plugin_type }}-${{ needs.prepare.outputs.plugin_name }}:${{ needs.prepare.outputs.plugin_version }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Update version file
+        if: needs.prepare.outputs.prerelease == ''
+        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./website/versions/${{needs.prepare.outputs.plugin_type}}-${{needs.prepare.outputs.plugin_name}}.json'
+
+      - name: Create Pull Request
+        if: needs.prepare.outputs.prerelease == ''
+        uses: peter-evans/create-pull-request@v4
+        with:
+          # required so the PR triggers workflow runs
+          token: ${{ secrets.GH_CQ_BOT }}
+          branch: chore/update-plugin-${{needs.prepare.outputs.plugin_type}}-${{needs.prepare.outputs.plugin_name}}-version
+          base: main
+          title: "chore: Update plugin `${{needs.prepare.outputs.plugin_type}}-${{needs.prepare.outputs.plugin_name}}` version to ${{needs.prepare.outputs.plugin_version}}"
+          commit-message: "chore: Update plugin `${{needs.prepare.outputs.plugin_type}}-${{needs.prepare.outputs.plugin_name}}` version to ${{needs.prepare.outputs.plugin_version}}"
+          body: Updates the `${{needs.prepare.outputs.plugin_type}}-${{needs.prepare.outputs.plugin_name}}` plugin latest version to ${{needs.prepare.outputs.plugin_version}}
+          labels: automerge
+          author: cq-bot <cq-bot@users.noreply.github.com>
+
+  release-plugin-go:
+    timeout-minutes: 60
+    runs-on: large-ubuntu-monorepo
+    needs: prepare
+    if: needs.prepare.outputs.plugin_releaser == 'go'
+    env:
+      CGO_ENABLED: 0
+    steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -41,13 +137,13 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles(format('{0}/{1}', steps.split.outputs.plugins_dir, 'go.sum')) }}
+          key: ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles(format('{0}/{1}', needs.prepare.outputs.plugin_dir, 'go.sum')) }}
           restore-keys: |
-            ${{ runner.os }}-go-1.20.5-release-cache-plugins-${{ steps.split.outputs.plugin_type }}-${{ steps.split.outputs.plugin_name }}
+            ${{ runner.os }}-go-1.20.5-release-cache-plugins-${{ needs.prepare.outputs.plugin_type }}-${{ needs.prepare.outputs.plugin_name }}
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
-          go-version-file: ${{steps.split.outputs.plugins_dir}}/go.mod
+          go-version-file: ${{needs.prepare.outputs.plugin_dir}}/go.mod
       - name: Install GoReleaser
         uses: goreleaser/goreleaser-action@v3
         with:
@@ -55,37 +151,31 @@ jobs:
           version: latest
           install-only: true
       - name: Run GoReleaser Dry-Run
-        run: goreleaser release --timeout 50m --clean --skip-validate --skip-publish --skip-sign -f ./${{steps.split.outputs.plugins_dir}}/.goreleaser.yaml
+        run: goreleaser release --timeout 50m --clean --skip-validate --skip-publish --skip-sign -f ./${{needs.prepare.outputs.plugin_dir}}/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
-      - name: Import GPG key
-        id: import_gpg
-        uses: crazy-max/ghaction-import-gpg@v5
-        with:
-          gpg_private_key: ${{ secrets.PRIVATE_KEY }}
       - name: Run GoReleaser
-        run: goreleaser release --timeout 50m --clean -f ./${{steps.split.outputs.plugins_dir}}/.goreleaser.yaml
+        run: goreleaser release --timeout 50m --clean -f ./${{needs.prepare.outputs.plugin_dir}}/.goreleaser.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
 
       - name: Update version file
-        if: steps.semver_parser.outputs.prerelease == ''
-        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./website/versions/${{steps.split.outputs.plugin_type}}-${{steps.split.outputs.plugin_name}}.json'
+        if: needs.prepare.outputs.prerelease == ''
+        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./website/versions/${{needs.prepare.outputs.plugin_type}}-${{needs.prepare.outputs.plugin_name}}.json'
 
       - name: Create Pull Request
-        if: steps.semver_parser.outputs.prerelease == ''
+        if: needs.prepare.outputs.prerelease == ''
         uses: peter-evans/create-pull-request@v4
         with:
           # required so the PR triggers workflow runs
           token: ${{ secrets.GH_CQ_BOT }}
-          branch: chore/update-plugin-${{steps.split.outputs.plugin_type}}-${{steps.split.outputs.plugin_name}}-version
+          branch: chore/update-plugin-${{needs.prepare.outputs.plugin_type}}-${{needs.prepare.outputs.plugin_name}}-version
           base: main
-          title: "chore: Update plugin `${{steps.split.outputs.plugin_type}}-${{steps.split.outputs.plugin_name}}` version to ${{steps.split.outputs.plugin_version}}"
-          commit-message: "chore: Update plugin `${{steps.split.outputs.plugin_type}}-${{steps.split.outputs.plugin_name}}` version to ${{steps.split.outputs.plugin_version}}"
-          body: Updates the `${{steps.split.outputs.plugin_type}}-${{steps.split.outputs.plugin_name}}` plugin latest version to ${{steps.split.outputs.plugin_version}}
+          title: "chore: Update plugin `${{needs.prepare.outputs.plugin_type}}-${{needs.prepare.outputs.plugin_name}}` version to ${{needs.prepare.outputs.plugin_version}}"
+          commit-message: "chore: Update plugin `${{needs.prepare.outputs.plugin_type}}-${{needs.prepare.outputs.plugin_name}}` version to ${{needs.prepare.outputs.plugin_version}}"
+          body: Updates the `${{needs.prepare.outputs.plugin_type}}-${{needs.prepare.outputs.plugin_name}}` plugin latest version to ${{needs.prepare.outputs.plugin_version}}
           labels: automerge
           author: cq-bot <cq-bot@users.noreply.github.com>

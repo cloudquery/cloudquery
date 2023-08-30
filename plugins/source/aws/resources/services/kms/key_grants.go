@@ -3,7 +3,7 @@ package kms
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/aws/aws-sdk-go-v2/service/kms/types"
@@ -46,7 +46,7 @@ func fetchKmsKeyGrants(ctx context.Context, meta schema.ClientMeta, parent *sche
 	}
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Kms
+	svc := cl.Services(client.AWSServiceKms).Kms
 	p := kms.NewListGrantsPaginator(svc, &config)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *kms.Options) {

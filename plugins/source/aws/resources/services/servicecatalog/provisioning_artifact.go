@@ -3,7 +3,7 @@ package servicecatalog
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -45,7 +45,7 @@ func provisioningArtifact() *schema.Table {
 
 func fetchProvisioningArtifacts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Servicecatalog
+	svc := cl.Services(client.AWSServiceServicecatalog).Servicecatalog
 	p := parent.Item.(types.ProvisionedProductAttribute)
 
 	input := servicecatalog.DescribeProvisioningArtifactInput{

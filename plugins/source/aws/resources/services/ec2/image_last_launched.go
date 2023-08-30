@@ -3,7 +3,7 @@ package ec2
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
@@ -39,7 +39,7 @@ func fetchEc2ImageAttributeLastLaunchTime(ctx context.Context, meta schema.Clien
 	if aws.ToString(p.OwnerId) != cl.AccountID {
 		return nil
 	}
-	svc := cl.Services().Ec2
+	svc := cl.Services(client.AWSServiceEc2).Ec2
 	output, err := svc.DescribeImageAttribute(ctx, &ec2.DescribeImageAttributeInput{
 		Attribute: types.ImageAttributeNameLastLaunchedTime,
 		ImageId:   p.ImageId,

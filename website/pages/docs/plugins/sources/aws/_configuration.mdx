@@ -5,9 +5,22 @@ spec:
   name: aws
   path: cloudquery/aws
   version: "VERSION_SOURCE_AWS"
-  concurrency: 10000
-  tables: ["aws_s3_buckets"]
+  tables: ["aws_ec2_instances"]
   destinations: ["DESTINATION_NAME"]
   spec:
-    # AWS-specific configuration goes here
+    # Optional parameters
+    # regions: []
+    # accounts: []
+    # org: nil
+    # concurrency: 50000
+    # initialization_concurrency: 4
+    # aws_debug: false
+    # max_retries: 10
+    # max_backoff: 30
+    # custom_endpoint_url: ""
+    # custom_endpoint_hostname_immutable: nil # required when custom_endpoint_url is set
+    # custom_endpoint_partition_id: "" # required when custom_endpoint_url is set
+    # custom_endpoint_signing_region: "" # required when custom_endpoint_url is set
+    # use_paid_apis: false
+    # table_options: nil
 ```

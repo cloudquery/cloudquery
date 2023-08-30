@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/efs"
 	"github.com/aws/aws-sdk-go-v2/service/efs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -47,7 +47,7 @@ func Filesystems() *schema.Table {
 func fetchEfsFilesystems(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config efs.DescribeFileSystemsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Efs
+	svc := cl.Services(client.AWSServiceEfs).Efs
 	paginator := efs.NewDescribeFileSystemsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *efs.Options) {
@@ -67,7 +67,7 @@ func ResolveEfsFilesystemBackupPolicyStatus(ctx context.Context, meta schema.Cli
 		FileSystemId: p.FileSystemId,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Efs
+	svc := cl.Services(client.AWSServiceEfs).Efs
 	response, err := svc.DescribeBackupPolicy(ctx, &config, func(options *efs.Options) {
 		options.Region = cl.Region
 	})

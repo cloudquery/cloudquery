@@ -3,7 +3,7 @@ package applicationautoscaling
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -34,7 +34,7 @@ func Policies() *schema.Table {
 
 func fetchPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Applicationautoscaling
+	svc := cl.Services(client.AWSServiceApplicationautoscaling).Applicationautoscaling
 
 	config := applicationautoscaling.DescribeScalingPoliciesInput{
 		ServiceNamespace: types.ServiceNamespace(cl.AutoscalingNamespace),

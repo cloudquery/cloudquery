@@ -34,7 +34,7 @@ func Policies() *schema.Table {
 
 func fetchOrganizationsPolicies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Organizations
+	svc := cl.Services(client.AWSServiceOrganizations).Organizations
 	for _, policyType := range types.PolicyType("").Values() {
 		paginator := organizations.NewListPoliciesPaginator(svc, &organizations.ListPoliciesInput{
 			Filter: policyType,
@@ -56,7 +56,7 @@ func fetchOrganizationsPolicies(ctx context.Context, meta schema.ClientMeta, _ *
 func resolvePolicyContent(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.PolicySummary)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Organizations
+	svc := cl.Services(client.AWSServiceOrganizations).Organizations
 	resp, err := svc.DescribePolicy(ctx, &organizations.DescribePolicyInput{
 		PolicyId: r.Id,
 	})

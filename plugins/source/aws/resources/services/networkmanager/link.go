@@ -3,7 +3,7 @@ package networkmanager
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/networkmanager"
 	"github.com/aws/aws-sdk-go-v2/service/networkmanager/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -45,7 +45,7 @@ The  'request_region' column is added to show region of where the request was ma
 
 func fetchLinks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Networkmanager
+	svc := cl.Services(client.AWSServiceNetworkmanager).Networkmanager
 	globalNetwork := parent.Item.(types.GlobalNetwork)
 	input := &networkmanager.GetLinksInput{
 		GlobalNetworkId: globalNetwork.GlobalNetworkId,

@@ -3,7 +3,7 @@ package eks
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/eks"
 	"github.com/aws/aws-sdk-go-v2/service/eks/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -41,7 +41,7 @@ func Clusters() *schema.Table {
 
 func fetchEksClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Eks
+	svc := cl.Services(client.AWSServiceEks).Eks
 	paginator := eks.NewListClustersPaginator(svc, &eks.ListClustersInput{})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *eks.Options) {
@@ -57,7 +57,7 @@ func fetchEksClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 
 func getEksCluster(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Eks
+	svc := cl.Services(client.AWSServiceEks).Eks
 	name := resource.Item.(string)
 	output, err := svc.DescribeCluster(
 		ctx, &eks.DescribeClusterInput{Name: &name}, func(options *eks.Options) {

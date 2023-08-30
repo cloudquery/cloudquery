@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"strings"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/apache/arrow/go/v13/arrow/array"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v14/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -146,7 +146,7 @@ func transformArr(arr arrow.Array) []any {
 			nested := array.NewSlice(a.ListValues(), start, end)
 			pgArr[i] = transformArr(nested)
 		case *types.JSONArray:
-			pgArr[i] = a.Storage().(*array.Binary).Value(i)
+			pgArr[i] = stripNullsFromMarshalledJson(a.Storage().(*array.Binary).Value(i))
 		default:
 			pgArr[i] = stripNulls(arr.ValueStr(i))
 		}

@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/costexplorer"
 	"github.com/aws/aws-sdk-go-v2/service/costexplorer/types"
@@ -50,7 +50,7 @@ func fetchCost(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 		cl.Logger().Info().Msg("skipping `aws_costexplorer_cost_current_month` because `use_paid_apis` is set to false")
 		return nil
 	}
-	svc := cl.Services().Costexplorer
+	svc := cl.Services(client.AWSServiceCostexplorer).Costexplorer
 	// Only use a single `time.Now()` call to ensure that the start and end dates are the same.
 	now := time.Now()
 

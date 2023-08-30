@@ -3,7 +3,7 @@ package autoscaling
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
@@ -35,7 +35,7 @@ func ScheduledActions() *schema.Table {
 
 func fetchAutoscalingScheduledActions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Autoscaling
+	svc := cl.Services(client.AWSServiceAutoscaling).Autoscaling
 	params := &autoscaling.DescribeScheduledActionsInput{
 		MaxRecords: aws.Int32(100),
 	}

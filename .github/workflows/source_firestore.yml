@@ -27,7 +27,7 @@ jobs:
         working-directory: ./plugins/source/firestore
     services:
       firestore:
-        image: mtlynch/firestore-emulator@sha256:327f3c8cdc7d3a474e24ba183c14113e1d6883b30d0dee40da0708e532f5c3c3
+        image: mtlynch/firestore-emulator@sha256:74dc4be151bd8849117f00dfc0ff329be1919527261916893ef199a04a044137
         env:
           FIRESTORE_PROJECT_ID: cqtest-project
         ports:

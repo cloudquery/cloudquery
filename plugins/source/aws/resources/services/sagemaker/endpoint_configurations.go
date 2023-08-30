@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -43,7 +43,7 @@ func EndpointConfigurations() *schema.Table {
 
 func fetchSagemakerEndpointConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sagemaker
+	svc := cl.Services(client.AWSServiceSagemaker).Sagemaker
 	config := sagemaker.ListEndpointConfigsInput{}
 	paginator := sagemaker.NewListEndpointConfigsPaginator(svc, &config)
 	for paginator.HasMorePages() {
@@ -60,7 +60,7 @@ func fetchSagemakerEndpointConfigurations(ctx context.Context, meta schema.Clien
 
 func getEndpointConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sagemaker
+	svc := cl.Services(client.AWSServiceSagemaker).Sagemaker
 	n := resource.Item.(types.EndpointConfigSummary)
 
 	response, err := svc.DescribeEndpointConfig(ctx, &sagemaker.DescribeEndpointConfigInput{
@@ -79,7 +79,7 @@ func getEndpointConfiguration(ctx context.Context, meta schema.ClientMeta, resou
 func resolveSagemakerEndpointConfigurationTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	r := resource.Item.(*sagemaker.DescribeEndpointConfigOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sagemaker
+	svc := cl.Services(client.AWSServiceSagemaker).Sagemaker
 	config := sagemaker.ListTagsInput{
 		ResourceArn: r.EndpointConfigArn,
 	}

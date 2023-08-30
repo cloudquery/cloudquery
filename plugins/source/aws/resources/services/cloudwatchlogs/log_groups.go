@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -46,7 +46,7 @@ func LogGroups() *schema.Table {
 func fetchCloudwatchlogsLogGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config cloudwatchlogs.DescribeLogGroupsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudwatchlogs
+	svc := cl.Services(client.AWSServiceCloudwatchlogs).Cloudwatchlogs
 	paginator := cloudwatchlogs.NewDescribeLogGroupsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cloudwatchlogs.Options) {
@@ -63,7 +63,7 @@ func fetchCloudwatchlogsLogGroups(ctx context.Context, meta schema.ClientMeta, p
 func resolveLogGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	lg := resource.Item.(types.LogGroup)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudwatchlogs
+	svc := cl.Services(client.AWSServiceCloudwatchlogs).Cloudwatchlogs
 	out, err := svc.ListTagsLogGroup(ctx, &cloudwatchlogs.ListTagsLogGroupInput{LogGroupName: lg.LogGroupName}, func(options *cloudwatchlogs.Options) {
 		options.Region = cl.Region
 	})

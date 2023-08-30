@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk/types"
@@ -58,7 +58,7 @@ func Environments() *schema.Table {
 func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config elasticbeanstalk.DescribeEnvironmentsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticbeanstalk
+	svc := cl.Services(client.AWSServiceElasticbeanstalk).Elasticbeanstalk
 	// No paginator available
 	for {
 		response, err := svc.DescribeEnvironments(ctx, &config, func(options *elasticbeanstalk.Options) {
@@ -89,7 +89,7 @@ func resolveElasticbeanstalkEnvironmentListeners(ctx context.Context, meta schem
 func resolveElasticbeanstalkEnvironmentTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.EnvironmentDescription)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticbeanstalk
+	svc := cl.Services(client.AWSServiceElasticbeanstalk).Elasticbeanstalk
 	tagsOutput, err := svc.ListTagsForResource(ctx, &elasticbeanstalk.ListTagsForResourceInput{
 		ResourceArn: p.EnvironmentArn,
 	}, func(o *elasticbeanstalk.Options) {

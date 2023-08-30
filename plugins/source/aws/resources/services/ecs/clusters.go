@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -48,7 +48,7 @@ func Clusters() *schema.Table {
 func fetchEcsClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config ecs.ListClustersInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecs
+	svc := cl.Services(client.AWSServiceEcs).Ecs
 	paginator := ecs.NewListClustersPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *ecs.Options) {

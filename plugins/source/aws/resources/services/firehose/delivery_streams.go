@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
 	"github.com/aws/aws-sdk-go-v2/service/firehose/types"
@@ -43,7 +43,7 @@ func DeliveryStreams() *schema.Table {
 
 func fetchFirehoseDeliveryStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Firehose
+	svc := cl.Services(client.AWSServiceFirehose).Firehose
 	input := firehose.ListDeliveryStreamsInput{}
 	for {
 		response, err := svc.ListDeliveryStreams(ctx, &input, func(options *firehose.Options) {
@@ -64,7 +64,7 @@ func fetchFirehoseDeliveryStreams(ctx context.Context, meta schema.ClientMeta, p
 func getDeliveryStream(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
 	streamName := resource.Item.(string)
-	svc := cl.Services().Firehose
+	svc := cl.Services(client.AWSServiceFirehose).Firehose
 	streamSummary, err := svc.DescribeDeliveryStream(ctx, &firehose.DescribeDeliveryStreamInput{
 		DeliveryStreamName: aws.String(streamName),
 	}, func(options *firehose.Options) {
@@ -79,7 +79,7 @@ func getDeliveryStream(ctx context.Context, meta schema.ClientMeta, resource *sc
 
 func resolveFirehoseDeliveryStreamTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Firehose
+	svc := cl.Services(client.AWSServiceFirehose).Firehose
 	summary := resource.Item.(*types.DeliveryStreamDescription)
 	input := firehose.ListTagsForDeliveryStreamInput{
 		DeliveryStreamName: summary.DeliveryStreamName,

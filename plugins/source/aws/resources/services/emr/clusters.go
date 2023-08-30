@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/emr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -37,7 +37,13 @@ func Clusters() *schema.Table {
 				Resolver: client.ResolveTags,
 			},
 		},
-		Relations: []*schema.Table{clusterInstanceFleets(), clusterInstanceGroups(), clusterInstances()},
+		Relations: []*schema.Table{
+			clusterInstanceFleets(),
+			clusterInstanceGroups(),
+			clusterInstances(),
+			notebookExecutions(),
+			steps(),
+		},
 	}
 }
 
@@ -51,7 +57,7 @@ func fetchEmrClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 		},
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Emr
+	svc := cl.Services(client.AWSServiceEmr).Emr
 	paginator := emr.NewListClustersPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *emr.Options) {
@@ -67,7 +73,7 @@ func fetchEmrClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 
 func getCluster(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Emr
+	svc := cl.Services(client.AWSServiceEmr).Emr
 	response, err := svc.DescribeCluster(ctx, &emr.DescribeClusterInput{ClusterId: resource.Item.(types.ClusterSummary).Id}, func(options *emr.Options) {
 		options.Region = cl.Region
 	})

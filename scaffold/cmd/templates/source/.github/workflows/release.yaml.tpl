@@ -13,7 +13,7 @@ jobs:
       # This fails for invalid semver strings
       - name: Parse semver string
         id: semver_parser
-        uses: booxmedialtd/ws-action-parse-semver@966a26512c94239a00aa10b1b0c196906f7e1909
+        uses: booxmedialtd/ws-action-parse-semver@7784200024d6b3fc01253e617ec0168daf603de3
         with:
           input_string: ${{"{{"}}github.ref_name{{"}}"}}
       - name: Checkout

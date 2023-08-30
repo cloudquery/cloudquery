@@ -4,11 +4,10 @@ spec:
   name: "hackernews"
   path: "cloudquery/hackernews"
   version: "VERSION_SOURCE_HACKERNEWS"
-  concurrency: 10000
   tables: ["*"]
   backend_options:
     table_name: "cq_hackernews_state"
-    connection: "@@plugin.DESTINATION_NAME.connection"
+    connection: "@@plugins.DESTINATION_NAME.connection"
   destinations:
     - "DESTINATION_NAME"
   spec:

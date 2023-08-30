@@ -3,7 +3,7 @@ package detective
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/detective"
@@ -39,7 +39,7 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 
 func fetchMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Detective
+	svc := cl.Services(client.AWSServiceDetective).Detective
 	graph := parent.Item.(types.Graph)
 	config := detective.ListMembersInput{
 		GraphArn:   graph.Arn,

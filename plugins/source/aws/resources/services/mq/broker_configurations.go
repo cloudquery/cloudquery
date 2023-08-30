@@ -3,7 +3,7 @@ package mq
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/mq"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -41,7 +41,7 @@ func fetchMqBrokerConfigurations(ctx context.Context, meta schema.ClientMeta, pa
 		return nil
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Mq
+	svc := cl.Services(client.AWSServiceMq).Mq
 	list := broker.Configurations.History
 	if broker.Configurations.Current != nil {
 		list = append(list, *broker.Configurations.Current)

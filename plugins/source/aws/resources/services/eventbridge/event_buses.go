@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge/types"
@@ -46,7 +46,7 @@ func EventBuses() *schema.Table {
 func fetchEventBuses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input eventbridge.ListEventBusesInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Eventbridge
+	svc := cl.Services(client.AWSServiceEventbridge).Eventbridge
 	// No paginator available
 	for {
 		response, err := svc.ListEventBuses(ctx, &input, func(options *eventbridge.Options) {
@@ -71,7 +71,7 @@ func resolveEventBusTags(ctx context.Context, meta schema.ClientMeta, resource *
 
 func resolveTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column, resourceArn string) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Eventbridge
+	svc := cl.Services(client.AWSServiceEventbridge).Eventbridge
 	input := eventbridge.ListTagsForResourceInput{
 		ResourceARN: &resourceArn,
 	}

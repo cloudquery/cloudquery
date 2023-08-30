@@ -5,7 +5,7 @@ import (
 	"errors"
 	"strconv"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -74,7 +74,7 @@ func fetchCloudwatchMetricStatistics(ctx context.Context, meta schema.ClientMeta
 		return errors.New("skipping `aws_alpha_cloudwatch_metric_statistics` because `get_metric_statistics` is not specified in `table_options`")
 	}
 
-	svc := cl.Services().Cloudwatch
+	svc := cl.Services(client.AWSServiceCloudwatch).Cloudwatch
 	for _, input := range item.getStatsInputs {
 		input := input
 

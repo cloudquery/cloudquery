@@ -11,6 +11,7 @@ type Spec struct {
 	SkipSubscriptions    []string `json:"skip_subscriptions"`
 	NormalizeIDs         bool     `json:"normalize_ids"`
 	Concurrency          int      `json:"concurrency"`
+	OIDCToken            string   `json:"oidc_token"`
 }
 
 func (s *Spec) SetDefaults() {

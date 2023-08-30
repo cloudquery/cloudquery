@@ -31,24 +31,24 @@ type Client struct {
 }
 
 func newClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, options plugin.NewClientOptions) (plugin.Client, error) {
-	c := &Client{
-		options:   options,
-		allTables: getTables(),
-	}
+	c := &Client{options: options, allTables: getTables()}
 	if options.NoConnection {
 		return c, nil
 	}
+
 	spec := &client.Spec{}
 	if err := json.Unmarshal(specBytes, spec); err != nil {
 		return nil, err
 	}
+
 	clientMeta, err := client.Configure(ctx, logger, spec)
 	if err != nil {
 		return nil, err
 	}
+
 	c.client = clientMeta.(*client.Client)
 	c.scheduler = scheduler.NewScheduler(scheduler.WithLogger(logger), scheduler.WithConcurrency(spec.Concurrency))
-	return nil, nil
+	return c, nil
 }
 
 func (*Client) Close(_ context.Context) error {

@@ -3,7 +3,7 @@ package kms
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/aws/aws-sdk-go-v2/service/kms/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -35,7 +35,7 @@ func Aliases() *schema.Table {
 func fetchKmsAliases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input kms.ListAliasesInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Kms
+	svc := cl.Services(client.AWSServiceKms).Kms
 	paginator := kms.NewListAliasesPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *kms.Options) {

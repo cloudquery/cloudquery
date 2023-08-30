@@ -14,11 +14,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/appconfig"
+	"github.com/aws/aws-sdk-go-v2/service/appflow"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
+	"github.com/aws/aws-sdk-go-v2/service/appmesh"
 	"github.com/aws/aws-sdk-go-v2/service/apprunner"
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appsync"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
+	"github.com/aws/aws-sdk-go-v2/service/auditmanager"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/autoscalingplans"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
@@ -136,11 +139,14 @@ var clients = []any{
 	&apigateway.Client{},
 	&apigatewayv2.Client{},
 	&appconfig.Client{},
+	&appflow.Client{},
 	&applicationautoscaling.Client{},
 	&apprunner.Client{},
+	&appmesh.Client{},
 	&appstream.Client{},
 	&appsync.Client{},
 	&athena.Client{},
+	&auditmanager.Client{},
 	&autoscaling.Client{},
 	&autoscalingplans.Client{},
 	&backup.Client{},
@@ -162,8 +168,8 @@ var clients = []any{
 	&costexplorer.Client{},
 	&databasemigrationservice.Client{},
 	&dax.Client{},
-	&directconnect.Client{},
 	&detective.Client{},
+	&directconnect.Client{},
 	&docdb.Client{},
 	&dynamodb.Client{},
 	&dynamodbstreams.Client{},

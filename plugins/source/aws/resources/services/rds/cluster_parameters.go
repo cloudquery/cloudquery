@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
@@ -84,7 +84,7 @@ func clusterParameters() *schema.Table {
 
 func fetchRdsClusterParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Rds
+	svc := cl.Services(client.AWSServiceRds).Rds
 
 	parentEngineVersion := parent.Item.(types.DBEngineVersion)
 

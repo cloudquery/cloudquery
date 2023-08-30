@@ -15,21 +15,21 @@ import (
 
 // InsertBatch inserts records into the destination table. It forms part of the writer.MixedBatchWriter interface.
 func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts) error {
-	tables, err := tablesFromMessages[*message.WriteInsert](messages)
+	tables, err := tablesFromMessages(messages)
 	if err != nil {
 		return err
 	}
 
-	include := make([]string, len(tables))
-	for i, table := range tables {
-		include[i] = table.Name
+	// This happens when the CLI was invoked with `sync --no-migrate`
+	if c.pgTablesToPKConstraints == nil {
+		// listTables populates c.pgTablesToPKConstraints
+		_, err := c.listTables(ctx)
+		if err != nil {
+			return err
+		}
 	}
-	var exclude []string
-	pgTables, err := c.listTables(ctx, include, exclude)
-	if err != nil {
-		return err
-	}
-	tables = c.normalizeTables(tables, pgTables)
+
+	tables = c.normalizeTables(tables)
 	if err != nil {
 		return err
 	}

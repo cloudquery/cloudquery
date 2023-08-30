@@ -3,7 +3,7 @@ package ses
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -39,7 +39,7 @@ func configurationSetEventDestinations() *schema.Table {
 
 func fetchSesConfigurationSetEventDestinations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sesv2
+	svc := cl.Services(client.AWSServiceSesv2).Sesv2
 
 	s := parent.Item.(*sesv2.GetConfigurationSetOutput)
 

@@ -5,7 +5,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -106,7 +106,7 @@ func fetchIamCredentialReports(ctx context.Context, meta schema.ClientMeta, _ *s
 	var apiErr smithy.APIError
 	var reportOutput *iam.GetCredentialReportOutput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services(client.AWSServiceIam).Iam
 	for {
 		reportOutput, err = svc.GetCredentialReport(ctx, &iam.GetCredentialReportInput{}, func(options *iam.Options) {
 			options.Region = cl.Region

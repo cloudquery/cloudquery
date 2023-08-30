@@ -6,6 +6,169 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.8.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.8.1...plugins-source-aws-v22.8.2) (2023-08-30)
+
+
+### Bug Fixes
+
+* Flush state backend to fix incremental fetching of `aws_cloudtrail_events` ([#13430](https://github.com/cloudquery/cloudquery/issues/13430)) ([5ed403a](https://github.com/cloudquery/cloudquery/commit/5ed403a434bd6b5cb3721eef96b860c9103e2ffe))
+
+## [22.8.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.8.0...plugins-source-aws-v22.8.1) (2023-08-29)
+
+
+### Bug Fixes
+
+* Store AWS config per account ([#13391](https://github.com/cloudquery/cloudquery/issues/13391)) ([a4245d7](https://github.com/cloudquery/cloudquery/commit/a4245d7deea76ddd5add531f4fd6d769627647a6)), closes [#13389](https://github.com/cloudquery/cloudquery/issues/13389)
+
+## [22.8.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.7.0...plugins-source-aws-v22.8.0) (2023-08-29)
+
+
+### Features
+
+* Implement CIS AWS v1.5.0 Section 1.16 and 1.20 ([#13290](https://github.com/cloudquery/cloudquery/issues/13290)) ([7eb3e06](https://github.com/cloudquery/cloudquery/commit/7eb3e06f93da9678bc78ab83c5acd398cb706bdd))
+* **services:** Support newly added regions ([#13273](https://github.com/cloudquery/cloudquery/issues/13273)) ([c6727a9](https://github.com/cloudquery/cloudquery/commit/c6727a9e34b640ebad626b6ef70707ca488f562d))
+* **services:** Support newly added regions ([#13358](https://github.com/cloudquery/cloudquery/issues/13358)) ([4ed4a9a](https://github.com/cloudquery/cloudquery/commit/4ed4a9a1da0fb856556cc5fb42e0b418a95097eb))
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/cloudquery/arrow/go/v13` to `github.com/apache/arrow/go/v14` ([#13341](https://github.com/cloudquery/cloudquery/issues/13341)) ([feb8f87](https://github.com/cloudquery/cloudquery/commit/feb8f87d8d761eb9c49ce84329ad0397f730a918))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.2 ([#13262](https://github.com/cloudquery/cloudquery/issues/13262)) ([5c55aa3](https://github.com/cloudquery/cloudquery/commit/5c55aa35282786375e8ce9493b2a4878e0fb27bc))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.5 ([#13285](https://github.com/cloudquery/cloudquery/issues/13285)) ([e076abd](https://github.com/cloudquery/cloudquery/commit/e076abd9d67813a29ced0c1b7b1664fd728b9ba8))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.6 ([#13345](https://github.com/cloudquery/cloudquery/issues/13345)) ([a995a05](https://github.com/cloudquery/cloudquery/commit/a995a0598a209e0fe3ba09f4ced2a052dc14b67a))
+* Race condition in Initializing services ([#13300](https://github.com/cloudquery/cloudquery/issues/13300)) ([73a093d](https://github.com/cloudquery/cloudquery/commit/73a093dc0de33362eeb91077ddb14c9a8bacf06a))
+
+## [22.7.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.6.0...plugins-source-aws-v22.7.0) (2023-08-21)
+
+
+### Features
+
+* Instantiate services at sync time rather than during init phase of sync ([#13059](https://github.com/cloudquery/cloudquery/issues/13059)) ([99e6889](https://github.com/cloudquery/cloudquery/commit/99e6889c49f66e66d03fbf76064d779a77281f70))
+
+
+### Bug Fixes
+
+* AWS foundational security controls for S3.8 query reference ([#13065](https://github.com/cloudquery/cloudquery/issues/13065)) ([7cde3d2](https://github.com/cloudquery/cloudquery/commit/7cde3d2d063c65c714812a9d98dfaea0f60b84d0)), closes [#13064](https://github.com/cloudquery/cloudquery/issues/13064)
+* **deps:** Update AWS modules ([#13246](https://github.com/cloudquery/cloudquery/issues/13246)) ([49ee475](https://github.com/cloudquery/cloudquery/commit/49ee4752fff1e6fc06e0b50e0450bdadd4373d16))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 5b83d4f ([#13203](https://github.com/cloudquery/cloudquery/issues/13203)) ([b0a4b8c](https://github.com/cloudquery/cloudquery/commit/b0a4b8ccf7c429bf5a6ed88866865212015b68e4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.1 ([#13195](https://github.com/cloudquery/cloudquery/issues/13195)) ([a184c37](https://github.com/cloudquery/cloudquery/commit/a184c3786ad49df8564344773e9b96f617ef87a1))
+* Panic while fetching `aws_codecommit_repositories` ([#13223](https://github.com/cloudquery/cloudquery/issues/13223)) ([4d9bcc1](https://github.com/cloudquery/cloudquery/commit/4d9bcc188723f318a794ad343dc2c2ac5b3da018))
+* Remove unused query ([#13152](https://github.com/cloudquery/cloudquery/issues/13152)) ([f050699](https://github.com/cloudquery/cloudquery/commit/f050699ba1bc229368a566764890a06ca90d53f0))
+
+## [22.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.5.1...plugins-source-aws-v22.6.0) (2023-08-15)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_elbv2_load_balancers`: column added with name `enforce_security_group_inbound_rules_on_private_link_traffic` and type `utf8`
+- Table `aws_fsx_data_repository_tasks`: column added with name `release_configuration` and type `json`
+
+### Features
+
+* **services:** Support newly added regions ([#13062](https://github.com/cloudquery/cloudquery/issues/13062)) ([cbee2c2](https://github.com/cloudquery/cloudquery/commit/cbee2c23ad3f81c042284b222b16373469cca02e))
+
+
+### Bug Fixes
+
+* **deps:** Update AWS modules ([#13012](https://github.com/cloudquery/cloudquery/issues/13012)) ([d163f2b](https://github.com/cloudquery/cloudquery/commit/d163f2b46cd7c9a0961b8bced02ae8adc9b43bb1))
+* **deps:** Update AWS modules ([#13013](https://github.com/cloudquery/cloudquery/issues/13013)) ([0a12c5b](https://github.com/cloudquery/cloudquery/commit/0a12c5bc1c44ba06c0320ae3c794ba6065ec20ea))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to e9683e1 ([#13015](https://github.com/cloudquery/cloudquery/issues/13015)) ([6557696](https://github.com/cloudquery/cloudquery/commit/65576966d3bd14297499a5b85d3b4fc2c7918df3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.0 ([#13068](https://github.com/cloudquery/cloudquery/issues/13068)) ([7bb0e4b](https://github.com/cloudquery/cloudquery/commit/7bb0e4ba654971726e16a6a501393e3831170307))
+
+## [22.5.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.5.0...plugins-source-aws-v22.5.1) (2023-08-09)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.4.0 ([#12850](https://github.com/cloudquery/cloudquery/issues/12850)) ([0861200](https://github.com/cloudquery/cloudquery/commit/086120054b45213947e95be954ba6164b9cf6587))
+
+## [22.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.4.0...plugins-source-aws-v22.5.0) (2023-08-08)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_rds_cluster_snapshots`: column added with name `db_cluster_resource_id` and type `utf8`
+- Table `aws_rds_clusters`: column added with name `local_write_forwarding_status` and type `utf8`
+- Table `aws_rds_engine_versions`: column added with name `supports_local_write_forwarding` and type `bool`
+- Table `aws_resiliencehub_alarm_recommendations`: column added with name `app_component_names` and type `list<item: utf8, nullable>`
+- Table `aws_resiliencehub_app_assessments`: column added with name `drift_status` and type `utf8`
+- Table `aws_resiliencehub_app_assessments`: column added with name `version_name` and type `utf8`
+- Table `aws_resiliencehub_app_versions`: column added with name `creation_time` and type `timestamp[us, tz=UTC]`
+- Table `aws_resiliencehub_app_versions`: column added with name `identifier` and type `int64`
+- Table `aws_resiliencehub_app_versions`: column added with name `version_name` and type `utf8`
+- Table `aws_resiliencehub_apps`: column added with name `drift_status` and type `utf8`
+- Table `aws_resiliencehub_apps`: column added with name `event_subscriptions` and type `json`
+- Table `aws_resiliencehub_apps`: column added with name `last_drift_evaluation_time` and type `timestamp[us, tz=UTC]`
+- Table `aws_resiliencehub_apps`: column added with name `permission_model` and type `json`
+- Table `aws_route53_hosted_zones`: column added with name `delegation_set` and type `json`
+- Table `aws_scheduler_schedules`: column added with name `action_after_completion` and type `utf8`
+
+### Features
+
+* Replace DelegationSetId with full DelegationSet in aws_route53_hosted_zones ([#12737](https://github.com/cloudquery/cloudquery/issues/12737)) ([a78012d](https://github.com/cloudquery/cloudquery/commit/a78012db43ee529bb18f1dbdea9a0845ac169549))
+* **services:** Support newly added regions ([#12797](https://github.com/cloudquery/cloudquery/issues/12797)) ([a64d5a9](https://github.com/cloudquery/cloudquery/commit/a64d5a9cd6fa907f18d985e037f3d14f02ff5980))
+
+
+### Bug Fixes
+
+* **deps:** Update AWS modules ([#12775](https://github.com/cloudquery/cloudquery/issues/12775)) ([945d570](https://github.com/cloudquery/cloudquery/commit/945d570c8d73e5f91c4854de279ba23d93e0081f))
+* **deps:** Update AWS modules ([#12776](https://github.com/cloudquery/cloudquery/issues/12776)) ([91148ac](https://github.com/cloudquery/cloudquery/commit/91148ac0746c2aab49e2946f17a4c3da5cbde76c))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to f53878d ([#12778](https://github.com/cloudquery/cloudquery/issues/12778)) ([6f5d58e](https://github.com/cloudquery/cloudquery/commit/6f5d58e3b84d3c76b1d1a3d6c5a488f77995a057))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.4 ([#12718](https://github.com/cloudquery/cloudquery/issues/12718)) ([f059a15](https://github.com/cloudquery/cloudquery/commit/f059a159a2ee406ab2b0a33792c244cd217025a6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.5 ([#12731](https://github.com/cloudquery/cloudquery/issues/12731)) ([d267239](https://github.com/cloudquery/cloudquery/commit/d267239aa3aca5f94bd36a8db1ec0d9f7dc0865f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.2.6 ([#12799](https://github.com/cloudquery/cloudquery/issues/12799)) ([fb0e0d7](https://github.com/cloudquery/cloudquery/commit/fb0e0d75ab010f421c834e58d93676de76fcb423))
+
+## [22.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.3.0...plugins-source-aws-v22.4.0) (2023-08-01)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_appmesh_meshes` was added
+- Table `aws_appmesh_virtual_gateways` was added
+- Table `aws_appmesh_virtual_nodes` was added
+- Table `aws_appmesh_virtual_routers` was added
+- Table `aws_appmesh_virtual_services` was added
+- Table `aws_ecr_repository_lifecycle_policies` was added
+
+### Features
+
+* **resources:** Add Support for AWS App Mesh resources ([#12582](https://github.com/cloudquery/cloudquery/issues/12582)) ([e0ca2be](https://github.com/cloudquery/cloudquery/commit/e0ca2be01f613fc40660c9cf438a65af17028f24))
+* **resources:** Add support for ECR Lifecycle policy ([#12644](https://github.com/cloudquery/cloudquery/issues/12644)) ([344b6e6](https://github.com/cloudquery/cloudquery/commit/344b6e61d715b68c8c9bfeb75acef93e73a79790)), closes [#12594](https://github.com/cloudquery/cloudquery/issues/12594)
+
+## [22.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.2.0...plugins-source-aws-v22.3.0) (2023-08-01)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_appflow_flows` was added
+- Table `aws_auditmanager_assessments` was added
+- Table `aws_backup_report_plans` was added
+- Table `aws_cloudformation_stacks`: column added with name `retain_except_on_create` and type `bool`
+- Table `aws_ec2_ebs_snapshots`: column added with name `sse_type` and type `utf8`
+- Table `aws_ec2_ebs_volumes`: column added with name `sse_type` and type `utf8`
+- Table `aws_emr_notebook_executions` was added
+- Table `aws_emr_release_labels` was added
+- Table `aws_emr_steps` was added
+- Table `aws_emr_supported_instance_types` was added
+- Table `aws_rds_instances`: column added with name `percent_progress` and type `utf8`
+
+### Features
+
+* **resources:** Add support for Amazon Appflow Flows ([#12575](https://github.com/cloudquery/cloudquery/issues/12575)) ([43ed08e](https://github.com/cloudquery/cloudquery/commit/43ed08ee453b0043d43a3ff295b37055606fe6a5))
+* **resources:** Add Support for AWS Audit Manager Assessments ([#12573](https://github.com/cloudquery/cloudquery/issues/12573)) ([ab5a939](https://github.com/cloudquery/cloudquery/commit/ab5a9392dc3fa8a49b6c2adb679895870ddd9af6))
+* **resources:** Add support for AWS Backup Report Plan ([#12578](https://github.com/cloudquery/cloudquery/issues/12578)) ([5fa1af1](https://github.com/cloudquery/cloudquery/commit/5fa1af103a6e0e0b62d05f4d5d6f902c23a9e03e))
+* **resources:** Adding additional EMR cluster resources ([#12562](https://github.com/cloudquery/cloudquery/issues/12562)) ([4a25c5c](https://github.com/cloudquery/cloudquery/commit/4a25c5cc03465d55fae305165a5d9311f1fd9c67))
+* **services:** Support newly added regions ([#12671](https://github.com/cloudquery/cloudquery/issues/12671)) ([5af2d31](https://github.com/cloudquery/cloudquery/commit/5af2d3123635e71287c90deb54df06a83f9b3432))
+
+
+### Bug Fixes
+
+* **deps:** Update AWS modules ([#12591](https://github.com/cloudquery/cloudquery/issues/12591)) ([20eb1bf](https://github.com/cloudquery/cloudquery/commit/20eb1bf2328438a3478d667a78cc5fe03f96fa4f))
+* **deps:** Update AWS modules ([#12592](https://github.com/cloudquery/cloudquery/issues/12592)) ([80ad5c5](https://github.com/cloudquery/cloudquery/commit/80ad5c564d5928def2a14ffa6ed6e7e034b39a36))
+* **deps:** Update github.com/apache/arrow/go/v13 digest to 112f949 ([#12659](https://github.com/cloudquery/cloudquery/issues/12659)) ([48d73a9](https://github.com/cloudquery/cloudquery/commit/48d73a93e678994f43171c363f5a75c29547b0b9))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 3452eb0 ([#12595](https://github.com/cloudquery/cloudquery/issues/12595)) ([c1c0949](https://github.com/cloudquery/cloudquery/commit/c1c09490b17f2e64435e05d745890cdb8b22310d))
+* **deps:** Update github.com/cockroachdb/cockroachdb-parser digest to 302c9ad ([#12664](https://github.com/cloudquery/cloudquery/issues/12664)) ([924509c](https://github.com/cloudquery/cloudquery/commit/924509c409fcf008c93f67fc6a0c5dcf4b2bddc5))
+* **deps:** Update github.com/gocarina/gocsv digest to 99d496c ([#12667](https://github.com/cloudquery/cloudquery/issues/12667)) ([428f719](https://github.com/cloudquery/cloudquery/commit/428f71968fd0ebe8a20e99c771f647267f614894))
+* **deps:** Update github.com/petermattis/goid digest to 80aa455 ([#12669](https://github.com/cloudquery/cloudquery/issues/12669)) ([a140396](https://github.com/cloudquery/cloudquery/commit/a140396153d62d3e68646d58a7749426aa2cc9fe))
+* Detecting conditions for CIS AWS v1.5.0 Section 1 ([#12670](https://github.com/cloudquery/cloudquery/issues/12670)) ([f7bd160](https://github.com/cloudquery/cloudquery/commit/f7bd160e69fc3a222968df0c5f77ee4ed460fb51))
+* **resources:** Handle Pagination for AWS Code Commit Repositories ([#12653](https://github.com/cloudquery/cloudquery/issues/12653)) ([6f37e56](https://github.com/cloudquery/cloudquery/commit/6f37e560535357f1c0a34a5acb2d631c1785e742))
+
 ## [22.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.1.0...plugins-source-aws-v22.2.0) (2023-07-27)
 
 

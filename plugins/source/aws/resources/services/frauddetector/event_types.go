@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/frauddetector"
 	"github.com/aws/aws-sdk-go-v2/service/frauddetector/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -41,7 +41,7 @@ func EventTypes() *schema.Table {
 
 func fetchFrauddetectorEventTypes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	paginator := frauddetector.NewGetEventTypesPaginator(meta.(*client.Client).Services().Frauddetector, nil)
+	paginator := frauddetector.NewGetEventTypesPaginator(meta.(*client.Client).Services(client.AWSServiceFrauddetector).Frauddetector, nil)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *frauddetector.Options) {
 			options.Region = cl.Region

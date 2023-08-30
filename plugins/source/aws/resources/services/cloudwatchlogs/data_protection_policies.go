@@ -3,7 +3,7 @@ package cloudwatchlogs
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -41,7 +41,7 @@ func fetchDataProtectionPolicy(ctx context.Context, meta schema.ClientMeta, pare
 		LogGroupIdentifier: lg.LogGroupName,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudwatchlogs
+	svc := cl.Services(client.AWSServiceCloudwatchlogs).Cloudwatchlogs
 	resp, err := svc.GetDataProtectionPolicy(ctx, &config, func(options *cloudwatchlogs.Options) {
 		options.Region = cl.Region
 	})

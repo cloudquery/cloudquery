@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/aws/aws-sdk-go-v2/service/ecr/types"
@@ -45,12 +45,13 @@ func Repositories() *schema.Table {
 
 		Relations: []*schema.Table{
 			repositoryImages(),
+			lifeCyclePolicy(),
 		},
 	}
 }
 func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecr
+	svc := cl.Services(client.AWSServiceEcr).Ecr
 	paginator := ecr.NewDescribeRepositoriesPaginator(svc, &ecr.DescribeRepositoriesInput{
 		MaxResults: aws.Int32(1000),
 	})
@@ -69,7 +70,7 @@ func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func resolveRepositoryTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecr
+	svc := cl.Services(client.AWSServiceEcr).Ecr
 	output, err := svc.ListTagsForResource(ctx, &ecr.ListTagsForResourceInput{
 		ResourceArn: resource.Item.(types.Repository).RepositoryArn,
 	}, func(options *ecr.Options) {
@@ -83,7 +84,7 @@ func resolveRepositoryTags(ctx context.Context, meta schema.ClientMeta, resource
 
 func resolveRepositoryPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecr
+	svc := cl.Services(client.AWSServiceEcr).Ecr
 	repo := resource.Item.(types.Repository)
 	output, err := svc.GetRepositoryPolicy(ctx, &ecr.GetRepositoryPolicyInput{
 		RepositoryName: repo.RepositoryName,

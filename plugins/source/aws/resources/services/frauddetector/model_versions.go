@@ -3,7 +3,7 @@ package frauddetector
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/frauddetector"
 	"github.com/aws/aws-sdk-go-v2/service/frauddetector/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -32,7 +32,7 @@ func modelVersions() *schema.Table {
 
 func fetchFrauddetectorModelVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	paginator := frauddetector.NewDescribeModelVersionsPaginator(meta.(*client.Client).Services().Frauddetector,
+	paginator := frauddetector.NewDescribeModelVersionsPaginator(meta.(*client.Client).Services(client.AWSServiceFrauddetector).Frauddetector,
 		&frauddetector.DescribeModelVersionsInput{ModelId: parent.Item.(types.Model).ModelId})
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *frauddetector.Options) {

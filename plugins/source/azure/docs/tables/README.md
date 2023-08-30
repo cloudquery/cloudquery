@@ -254,6 +254,7 @@
 - [azure_resources_links](../../../../../website/tables/azure/azure_resources_links.md)
 - [azure_resources_resource_groups](../../../../../website/tables/azure/azure_resources_resource_groups.md)
 - [azure_resources_resources](../../../../../website/tables/azure/azure_resources_resources.md)
+- [azure_role_management_policy_assignments](../../../../../website/tables/azure/azure_role_management_policy_assignments.md)
 - [azure_saas_resources](../../../../../website/tables/azure/azure_saas_resources.md)
 - [azure_search_services](../../../../../website/tables/azure/azure_search_services.md)
 - [azure_security_alerts](../../../../../website/tables/azure/azure_security_alerts.md)

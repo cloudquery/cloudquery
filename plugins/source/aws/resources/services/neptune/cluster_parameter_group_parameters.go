@@ -3,7 +3,7 @@ package neptune
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/neptune/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -32,7 +32,7 @@ func clusterParameterGroupParameters() *schema.Table {
 
 func fetchNeptuneClusterParameterGroupParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Neptune
+	svc := cl.Services(client.AWSServiceNeptune).Neptune
 	g := parent.Item.(types.DBClusterParameterGroup)
 	input := neptune.DescribeDBClusterParametersInput{DBClusterParameterGroupName: g.DBClusterParameterGroupName}
 	paginator := neptune.NewDescribeDBClusterParametersPaginator(svc, &input)
@@ -51,7 +51,7 @@ func fetchNeptuneClusterParameterGroupParameters(ctx context.Context, meta schem
 func resolveNeptuneClusterParameterGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	g := resource.Item.(types.DBClusterParameterGroup)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Neptune
+	svc := cl.Services(client.AWSServiceNeptune).Neptune
 	out, err := svc.ListTagsForResource(ctx, &neptune.ListTagsForResourceInput{ResourceName: g.DBClusterParameterGroupArn}, func(options *neptune.Options) {
 		options.Region = cl.Region
 	})

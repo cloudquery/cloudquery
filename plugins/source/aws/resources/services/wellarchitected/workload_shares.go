@@ -3,7 +3,7 @@ package wellarchitected
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -36,7 +36,7 @@ func workloadShares() *schema.Table {
 
 func fetchWorkloadShares(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	service := cl.Services().Wellarchitected
+	service := cl.Services(client.AWSServiceWellarchitected).Wellarchitected
 	workloadID := parent.Get("workload_id").String()
 
 	p := wellarchitected.NewListWorkloadSharesPaginator(service,

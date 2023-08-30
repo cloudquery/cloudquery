@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/ram"
 	"github.com/aws/aws-sdk-go-v2/service/ram/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -42,7 +42,7 @@ func ResourceShareInvitations() *schema.Table {
 func fetchRamResourceShareInvitations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input ram.GetResourceShareInvitationsInput = getResourceShareInvitationsInput()
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ram
+	svc := cl.Services(client.AWSServiceRam).Ram
 	paginator := ram.NewGetResourceShareInvitationsPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *ram.Options) {

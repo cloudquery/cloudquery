@@ -3,7 +3,7 @@ package cloudformation
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -47,7 +47,7 @@ func templateSummaries() *schema.Table {
 
 func fetchTemplateSummary(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudformation
+	svc := cl.Services(client.AWSServiceCloudformation).Cloudformation
 
 	stack := parent.Item.(types.Stack)
 

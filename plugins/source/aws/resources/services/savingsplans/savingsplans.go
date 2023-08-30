@@ -3,7 +3,7 @@ package savingsplans
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/savingsplans"
 	"github.com/aws/aws-sdk-go-v2/service/savingsplans/types"
@@ -35,7 +35,7 @@ func Plans() *schema.Table {
 
 func fetchSavingsPlans(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Savingsplans
+	svc := cl.Services(client.AWSServiceSavingsplans).Savingsplans
 	config := savingsplans.DescribeSavingsPlansInput{
 		MaxResults: aws.Int32(1000),
 	}

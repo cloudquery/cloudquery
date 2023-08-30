@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
@@ -45,7 +45,7 @@ func fetchApigatewayv2DomainNameRestApiMappings(ctx context.Context, meta schema
 		DomainName: r.DomainName,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigatewayv2
+	svc := cl.Services(client.AWSServiceApigatewayv2).Apigatewayv2
 	for {
 		response, err := svc.GetApiMappings(ctx, &config, func(options *apigatewayv2.Options) {
 			options.Region = cl.Region

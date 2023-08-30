@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
@@ -43,7 +43,7 @@ func Policies() *schema.Table {
 
 func fetchIotPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 	input := iot.ListPoliciesInput{
 		PageSize: aws.Int32(250),
 	}
@@ -63,7 +63,7 @@ func fetchIotPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 
 func getPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 
 	output, err := svc.GetPolicy(ctx, &iot.GetPolicyInput{
 		PolicyName: resource.Item.(types.Policy).PolicyName,
@@ -80,6 +80,6 @@ func getPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 func ResolveIotPolicyTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.GetPolicyOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 	return resolveIotTags(ctx, meta, svc, resource, c, i.PolicyArn)
 }

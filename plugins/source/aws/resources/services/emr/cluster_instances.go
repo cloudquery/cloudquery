@@ -3,7 +3,7 @@ package emr
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
@@ -44,7 +44,7 @@ func clusterInstances() *schema.Table {
 func fetchClusterInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	p := parent.Item.(*types.Cluster)
-	svc := cl.Services().Emr
+	svc := cl.Services(client.AWSServiceEmr).Emr
 	paginator := emr.NewListInstancesPaginator(svc, &emr.ListInstancesInput{ClusterId: p.Id})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *emr.Options) {

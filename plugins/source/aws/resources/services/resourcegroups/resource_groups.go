@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroups"
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroups/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -43,7 +43,7 @@ func ResourceGroups() *schema.Table {
 func fetchResourcegroupsResourceGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config resourcegroups.ListGroupsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Resourcegroups
+	svc := cl.Services(client.AWSServiceResourcegroups).Resourcegroups
 	paginator := resourcegroups.NewListGroupsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *resourcegroups.Options) {
@@ -60,7 +60,7 @@ func fetchResourcegroupsResourceGroups(ctx context.Context, meta schema.ClientMe
 func getResourceGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
 	group := resource.Item.(types.GroupIdentifier)
-	svc := cl.Services().Resourcegroups
+	svc := cl.Services(client.AWSServiceResourcegroups).Resourcegroups
 	groupResponse, err := svc.GetGroup(ctx, &resourcegroups.GetGroupInput{
 		Group: group.GroupArn,
 	}, func(options *resourcegroups.Options) {
@@ -88,7 +88,7 @@ func getResourceGroup(ctx context.Context, meta schema.ClientMeta, resource *sch
 
 func resolveResourcegroupsResourceGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Resourcegroups
+	svc := cl.Services(client.AWSServiceResourcegroups).Resourcegroups
 	group := resource.Item.(models.ResourceGroupWrapper)
 	input := resourcegroups.GetTagsInput{
 		Arn: group.GroupArn,

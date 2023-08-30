@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/apache/arrow/go/v13/arrow/memory"
+	"github.com/apache/arrow/go/v14/arrow/array"
+	"github.com/apache/arrow/go/v14/arrow/memory"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/scalar"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -226,31 +226,6 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- message.SyncMessage) 
 				}
 				res <- resource
 			case *pglogrepl.DeleteMessage:
-				rel, ok := relations[logicalMsg.RelationID]
-				if !ok {
-					return fmt.Errorf("unknown relation ID %d", logicalMsg.RelationID)
-				}
-				values := map[string]any{}
-				for idx, col := range logicalMsg.OldTuple.Columns {
-					colName := rel.Columns[idx].Name
-					switch col.DataType {
-					case 'n': // null
-						values[colName] = nil
-					case 'u': // unchanged toast
-						// This TOAST value was not changed. TOAST values are not stored in the tuple, and logical replication doesn't want to spend a disk read to fetch its value for you.
-					case 't': // text
-						val, err := decodeTextColumnData(typeMap, col.Data, rel.Columns[idx].DataType)
-						if err != nil {
-							return fmt.Errorf("error decoding column data: %w", err)
-						}
-						values[colName] = val
-					}
-				}
-				resource, err := c.resourceFromCDCValues(rel.RelationName, values)
-				if err != nil {
-					return err
-				}
-				res <- resource
 			case *pglogrepl.TruncateMessage:
 			case *pglogrepl.TypeMessage:
 			case *pglogrepl.OriginMessage:
@@ -288,17 +263,21 @@ func decodeTextColumnData(mi *pgtype.Map, data []byte, dataType uint32) (any, er
 func (c *Client) resourceFromCDCValues(tableName string, values map[string]any) (message.SyncMessage, error) {
 	table := c.tables.Get(tableName)
 	arrowSchema := table.ToArrowSchema()
-	rb := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
+	builder := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
+	transformers := transformersForSchema(arrowSchema)
+
 	for i, col := range table.Columns {
-		val, err := prepareValueForResourceSet(arrowSchema.Field(i).Type, values[col.Name])
+		val, err := transformers[i](values[col.Name])
 		if err != nil {
 			return nil, err
 		}
+
 		s := scalar.NewScalar(arrowSchema.Field(i).Type)
 		if err := s.Set(val); err != nil {
 			return nil, fmt.Errorf("error setting value for column %s: %w", col.Name, err)
 		}
-		scalar.AppendToBuilder(rb.Field(i), s)
+
+		scalar.AppendToBuilder(builder.Field(i), s)
 	}
-	return &message.SyncInsert{Record: rb.NewRecord()}, nil
+	return &message.SyncInsert{Record: builder.NewRecord()}, nil
 }

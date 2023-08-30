@@ -3,7 +3,7 @@ package iam
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -44,7 +44,7 @@ func userAttachedPolicies() *schema.Table {
 func fetchIamUserAttachedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(*types.User)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services(client.AWSServiceIam).Iam
 	config := iam.ListAttachedUserPoliciesInput{
 		UserName: p.UserName,
 	}

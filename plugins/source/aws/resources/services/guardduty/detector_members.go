@@ -3,7 +3,7 @@ package guardduty
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty/types"
@@ -37,7 +37,7 @@ func detectorMembers() *schema.Table {
 func fetchDetectorMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	detector := parent.Item.(*models.DetectorWrapper)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Guardduty
+	svc := cl.Services(client.AWSServiceGuardduty).Guardduty
 	config := &guardduty.ListMembersInput{DetectorId: aws.String(detector.Id)}
 	paginator := guardduty.NewListMembersPaginator(svc, config)
 	for paginator.HasMorePages() {

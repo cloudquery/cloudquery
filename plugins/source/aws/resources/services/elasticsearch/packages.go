@@ -3,7 +3,7 @@ package elasticsearch
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -34,7 +34,7 @@ func Packages() *schema.Table {
 
 func fetchElasticsearchPackages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticsearchservice
+	svc := cl.Services(client.AWSServiceElasticsearchservice).Elasticsearchservice
 
 	p := elasticsearchservice.NewDescribePackagesPaginator(svc, nil)
 	for p.HasMorePages() {

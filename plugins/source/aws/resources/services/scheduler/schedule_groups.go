@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/scheduler"
 	"github.com/aws/aws-sdk-go-v2/service/scheduler/types"
@@ -46,7 +46,7 @@ func fetchSchedulerScheduleGroups(ctx context.Context, meta schema.ClientMeta, p
 		MaxResults: aws.Int32(100),
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Scheduler
+	svc := cl.Services(client.AWSServiceScheduler).Scheduler
 	paginator := scheduler.NewListScheduleGroupsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(o *scheduler.Options) {

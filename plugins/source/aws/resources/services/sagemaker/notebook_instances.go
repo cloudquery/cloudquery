@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -49,7 +49,7 @@ type WrappedSageMakerNotebookInstance struct {
 
 func fetchSagemakerNotebookInstances(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sagemaker
+	svc := cl.Services(client.AWSServiceSagemaker).Sagemaker
 	config := sagemaker.ListNotebookInstancesInput{}
 	paginator := sagemaker.NewListNotebookInstancesPaginator(svc, &config)
 	for paginator.HasMorePages() {
@@ -67,7 +67,7 @@ func fetchSagemakerNotebookInstances(ctx context.Context, meta schema.ClientMeta
 
 func getNotebookInstance(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sagemaker
+	svc := cl.Services(client.AWSServiceSagemaker).Sagemaker
 	n := resource.Item.(types.NotebookInstanceSummary)
 
 	// get more details about the notebook instance
@@ -91,7 +91,7 @@ func getNotebookInstance(ctx context.Context, meta schema.ClientMeta, resource *
 func resolveSagemakerNotebookInstanceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	r := resource.Item.(*WrappedSageMakerNotebookInstance)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sagemaker
+	svc := cl.Services(client.AWSServiceSagemaker).Sagemaker
 	config := sagemaker.ListTagsInput{
 		ResourceArn: &r.NotebookInstanceArn,
 	}

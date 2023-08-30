@@ -3,7 +3,7 @@ package xray
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/xray"
 	"github.com/aws/aws-sdk-go-v2/service/xray/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -40,7 +40,7 @@ func ResourcePolicies() *schema.Table {
 
 func fetchXrayResourcePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	paginator := xray.NewListResourcePoliciesPaginator(cl.Services().Xray, nil)
+	paginator := xray.NewListResourcePoliciesPaginator(cl.Services(client.AWSServiceXray).Xray, nil)
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx, func(o *xray.Options) {
 			o.Region = cl.Region

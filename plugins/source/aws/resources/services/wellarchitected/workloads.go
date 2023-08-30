@@ -3,7 +3,7 @@ package wellarchitected
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -39,7 +39,7 @@ func Workloads() *schema.Table {
 
 func fetchWorkloads(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	service := cl.Services().Wellarchitected
+	service := cl.Services(client.AWSServiceWellarchitected).Wellarchitected
 
 	p := wellarchitected.NewListWorkloadsPaginator(service, &wellarchitected.ListWorkloadsInput{MaxResults: 50})
 	for p.HasMorePages() {
@@ -57,7 +57,7 @@ func fetchWorkloads(ctx context.Context, meta schema.ClientMeta, _ *schema.Resou
 
 func getWorkload(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	service := cl.Services().Wellarchitected
+	service := cl.Services(client.AWSServiceWellarchitected).Wellarchitected
 	summary := resource.Item.(types.WorkloadSummary)
 
 	out, err := service.GetWorkload(ctx,

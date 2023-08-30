@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/facebookmarketing/client"
 	"github.com/cloudquery/cloudquery/plugins/source/facebookmarketing/rest"
 	"github.com/cloudquery/plugin-sdk/v4/schema"

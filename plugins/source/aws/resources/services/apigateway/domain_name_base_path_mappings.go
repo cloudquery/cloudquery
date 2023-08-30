@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
@@ -42,7 +42,7 @@ func domainNameBasePathMappings() *schema.Table {
 func fetchApigatewayDomainNameBasePathMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.DomainName)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigateway
+	svc := cl.Services(client.AWSServiceApigateway).Apigateway
 	config := apigateway.GetBasePathMappingsInput{DomainName: r.DomainName, Limit: aws.Int32(500)}
 	for p := apigateway.NewGetBasePathMappingsPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx, func(options *apigateway.Options) {

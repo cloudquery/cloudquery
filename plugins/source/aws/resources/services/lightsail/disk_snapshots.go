@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
@@ -41,7 +41,7 @@ func diskSnapshots() *schema.Table {
 func fetchLightsailDiskSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lightsail.GetDiskSnapshotsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lightsail
+	svc := cl.Services(client.AWSServiceLightsail).Lightsail
 	// No paginator available
 	for {
 		response, err := svc.GetDiskSnapshots(ctx, &input, func(options *lightsail.Options) {

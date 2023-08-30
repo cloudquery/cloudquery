@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -44,7 +44,7 @@ func clusterServices() *schema.Table {
 func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cluster := parent.Item.(types.Cluster)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecs
+	svc := cl.Services(client.AWSServiceEcs).Ecs
 	config := ecs.ListServicesInput{
 		Cluster: cluster.ClusterArn,
 	}

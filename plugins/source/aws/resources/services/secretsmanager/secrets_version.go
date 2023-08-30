@@ -3,7 +3,7 @@ package secretsmanager
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager/types"
@@ -35,7 +35,7 @@ func secretVersions() *schema.Table {
 func fetchSecretsmanagerSecretsVersions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, res chan<- any) error {
 	secret := resource.Item.(*secretsmanager.DescribeSecretOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Secretsmanager
+	svc := cl.Services(client.AWSServiceSecretsmanager).Secretsmanager
 	paginator := secretsmanager.NewListSecretVersionIdsPaginator(svc, &secretsmanager.ListSecretVersionIdsInput{
 		SecretId:          secret.ARN,
 		IncludeDeprecated: aws.Bool(true),

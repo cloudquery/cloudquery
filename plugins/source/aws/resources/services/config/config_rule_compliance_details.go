@@ -3,7 +3,7 @@ package config
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -37,7 +37,7 @@ func configRuleComplianceDetails() *schema.Table {
 func fetchConfigConfigRuleComplianceDetails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	ruleDetail := parent.Item.(types.ConfigRule)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Configservice
+	svc := cl.Services(client.AWSServiceConfigservice).Configservice
 
 	input := &configservice.GetComplianceDetailsByConfigRuleInput{
 		ConfigRuleName: ruleDetail.ConfigRuleName,

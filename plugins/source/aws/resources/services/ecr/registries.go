@@ -3,7 +3,7 @@ package ecr
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -33,7 +33,7 @@ func Registries() *schema.Table {
 
 func fetchEcrRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecr
+	svc := cl.Services(client.AWSServiceEcr).Ecr
 	output, err := svc.DescribeRegistry(ctx, &ecr.DescribeRegistryInput{}, func(options *ecr.Options) {
 		options.Region = cl.Region
 	})

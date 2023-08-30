@@ -3,7 +3,7 @@ package eventbridge
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge/types"
@@ -36,7 +36,7 @@ func EventSources() *schema.Table {
 func fetchEventSources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input eventbridge.ListEventSourcesInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Eventbridge
+	svc := cl.Services(client.AWSServiceEventbridge).Eventbridge
 	// No paginator available
 	for {
 		response, err := svc.ListEventSources(ctx, &input, func(options *eventbridge.Options) {

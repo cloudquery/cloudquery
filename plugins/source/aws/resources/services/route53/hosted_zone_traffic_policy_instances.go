@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
@@ -44,7 +44,7 @@ func fetchRoute53HostedZoneTrafficPolicyInstances(ctx context.Context, meta sche
 	r := parent.Item.(*models.Route53HostedZoneWrapper)
 	config := route53.ListTrafficPolicyInstancesByHostedZoneInput{HostedZoneId: r.Id}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Route53
+	svc := cl.Services(client.AWSServiceRoute53).Route53
 	// No paginator available
 	for {
 		response, err := svc.ListTrafficPolicyInstancesByHostedZone(ctx, &config, func(options *route53.Options) {

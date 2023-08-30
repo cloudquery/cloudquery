@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
@@ -49,7 +49,7 @@ func fetchApigatewayv2ApiDeployments(ctx context.Context, meta schema.ClientMeta
 		ApiId: r.ApiId,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigatewayv2
+	svc := cl.Services(client.AWSServiceApigatewayv2).Apigatewayv2
 	// No paginator available
 	for {
 		response, err := svc.GetDeployments(ctx, &config, func(options *apigatewayv2.Options) {

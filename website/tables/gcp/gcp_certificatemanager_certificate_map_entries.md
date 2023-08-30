@@ -22,5 +22,6 @@ This table depends on [gcp_certificatemanager_certificate_maps](gcp_certificatem
 |create_time|`timestamp[us, tz=UTC]`|
 |update_time|`timestamp[us, tz=UTC]`|
 |labels|`json`|
+|match|`json`|
 |certificates|`list<item: utf8, nullable>`|
 |state|`utf8`|

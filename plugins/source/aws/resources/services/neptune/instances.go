@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/neptune/types"
@@ -46,7 +46,7 @@ func fetchNeptuneInstances(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Neptune
+	svc := cl.Services(client.AWSServiceNeptune).Neptune
 	paginator := neptune.NewDescribeDBInstancesPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *neptune.Options) {
@@ -63,7 +63,7 @@ func fetchNeptuneInstances(ctx context.Context, meta schema.ClientMeta, parent *
 func resolveNeptuneInstanceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	s := resource.Item.(types.DBInstance)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Neptune
+	svc := cl.Services(client.AWSServiceNeptune).Neptune
 	out, err := svc.ListTagsForResource(ctx, &neptune.ListTagsForResourceInput{ResourceName: s.DBInstanceArn}, func(options *neptune.Options) {
 		options.Region = cl.Region
 	})

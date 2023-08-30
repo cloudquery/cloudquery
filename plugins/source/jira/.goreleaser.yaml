@@ -1,0 +1,14 @@
+variables:
+  component: source/jira
+  binary: jira
+
+project_name: plugins/source/jira
+
+monorepo:
+  tag_prefix: plugins-source-jira-
+  dir: plugins/source/jira
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml

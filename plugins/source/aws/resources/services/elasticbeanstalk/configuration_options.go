@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
@@ -37,7 +37,7 @@ func configurationOptions() *schema.Table {
 func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	p := parent.Item.(types.EnvironmentDescription)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticbeanstalk
+	svc := cl.Services(client.AWSServiceElasticbeanstalk).Elasticbeanstalk
 	configOptionsIn := elasticbeanstalk.DescribeConfigurationOptionsInput{
 		ApplicationName: p.ApplicationName,
 		EnvironmentName: p.EnvironmentName,

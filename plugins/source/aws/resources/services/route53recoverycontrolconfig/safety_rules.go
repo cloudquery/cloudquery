@@ -3,7 +3,7 @@ package route53recoverycontrolconfig
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/route53recoverycontrolconfig"
 	"github.com/aws/aws-sdk-go-v2/service/route53recoverycontrolconfig/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -32,7 +32,7 @@ func safetyRules() *schema.Table {
 
 func fetchSafetyRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Route53recoverycontrolconfig
+	svc := cl.Services(client.AWSServiceRoute53recoverycontrolconfig).Route53recoverycontrolconfig
 	controlPanel := parent.Item.(types.ControlPanel)
 	input := &route53recoverycontrolconfig.ListSafetyRulesInput{
 		ControlPanelArn: controlPanel.ControlPanelArn,

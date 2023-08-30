@@ -3,7 +3,7 @@ package lightsail
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -46,7 +46,7 @@ func Buckets() *schema.Table {
 func fetchLightsailBuckets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input lightsail.GetBucketsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lightsail
+	svc := cl.Services(client.AWSServiceLightsail).Lightsail
 	// No paginator available
 	for {
 		response, err := svc.GetBuckets(ctx, &input, func(options *lightsail.Options) {

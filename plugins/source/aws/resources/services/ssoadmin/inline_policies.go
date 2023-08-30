@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"net/url"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -45,7 +45,7 @@ func inlinePolicies() *schema.Table {
 
 func fetchInlinePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ssoadmin
+	svc := cl.Services(client.AWSServiceSsoadmin).Ssoadmin
 
 	permissionSetARN := parent.Item.(*types.PermissionSet).PermissionSetArn
 	instanceARN := parent.Parent.Item.(types.InstanceMetadata).InstanceArn

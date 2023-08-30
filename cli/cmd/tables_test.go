@@ -32,40 +32,35 @@ func TestTables(t *testing.T) {
 		name   string
 		config string
 		format string
-		err    string
 	}{
 		{
 			name:   "should generate tables in default format",
 			config: "multiple-sources.yml",
-			err:    "the CLI tables command is not supported for sources with protocol version 3. Please upvote https://github.com/cloudquery/cloudquery/issues/12270 if you need this functionality",
 		},
 		{
 			name:   "should generate tables in json format",
 			config: "multiple-sources.yml",
 			format: "json",
-			err:    "the CLI tables command is not supported for sources with protocol version 3. Please upvote https://github.com/cloudquery/cloudquery/issues/12270 if you need this functionality",
 		},
 		{
 			name:   "should generate tables in markdown format",
 			config: "multiple-sources.yml",
 			format: "markdown",
-			err:    "the CLI tables command is not supported for sources with protocol version 3. Please upvote https://github.com/cloudquery/cloudquery/issues/12270 if you need this functionality",
 		},
 	}
 
 	for _, tc := range configs {
 		t.Run(tc.name, func(t *testing.T) {
 			defer CloseLogFile()
-			cmd, _ := getTablesCommand(t, tc.config, tc.format)
+			cmd, cqDir := getTablesCommand(t, tc.config, tc.format)
 			commandError := cmd.Execute()
-			require.Error(t, commandError, tc.err)
+			require.NoError(t, commandError)
 
-			// TODO: Enabled this once https://github.com/cloudquery/cloudquery/issues/12270 is resolved
-			// if tc.format == "markdown" {
-			// 	require.FileExists(t, path.Join(cqDir, "cq-docs/test/README.md"))
-			// } else {
-			// 	require.FileExists(t, path.Join(cqDir, "cq-docs/test/__tables.json"))
-			// }
+			if tc.format == "markdown" {
+				require.FileExists(t, path.Join(cqDir, "cq-docs/test/README.md"))
+			} else {
+				require.FileExists(t, path.Join(cqDir, "cq-docs/test/__tables.json"))
+			}
 		})
 	}
 }

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
@@ -41,7 +41,7 @@ func DomainNames() *schema.Table {
 func fetchApigatewayv2DomainNames(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	var config apigatewayv2.GetDomainNamesInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigatewayv2
+	svc := cl.Services(client.AWSServiceApigatewayv2).Apigatewayv2
 	// No paginator available
 	for {
 		response, err := svc.GetDomainNames(ctx, &config, func(options *apigatewayv2.Options) {

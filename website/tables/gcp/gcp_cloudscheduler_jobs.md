@@ -19,6 +19,7 @@ This table depends on [gcp_cloudscheduler_locations](gcp_cloudscheduler_location
 |project_id (PK)|`utf8`|
 |name (PK)|`utf8`|
 |description|`utf8`|
+|target|`json`|
 |schedule|`utf8`|
 |time_zone|`utf8`|
 |user_update_time|`timestamp[us, tz=UTC]`|

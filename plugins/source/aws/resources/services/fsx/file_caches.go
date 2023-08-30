@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
 	"github.com/aws/aws-sdk-go-v2/service/fsx/types"
@@ -42,7 +42,7 @@ func FileCaches() *schema.Table {
 
 func fetchFsxFileCaches(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Fsx
+	svc := cl.Services(client.AWSServiceFsx).Fsx
 	input := fsx.DescribeFileCachesInput{MaxResults: aws.Int32(1000)}
 	paginator := fsx.NewDescribeFileCachesPaginator(svc, &input)
 	for paginator.HasMorePages() {
@@ -60,7 +60,7 @@ func fetchFsxFileCaches(ctx context.Context, meta schema.ClientMeta, parent *sch
 func resolveFileCacheTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	item := resource.Item.(types.FileCache)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Fsx
+	svc := cl.Services(client.AWSServiceFsx).Fsx
 	var tags []types.Tag
 	paginator := fsx.NewListTagsForResourcePaginator(svc, &fsx.ListTagsForResourceInput{ResourceARN: item.ResourceARN})
 	for paginator.HasMorePages() {

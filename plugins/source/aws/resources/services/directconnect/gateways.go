@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
@@ -47,7 +47,7 @@ func Gateways() *schema.Table {
 func fetchDirectconnectGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config directconnect.DescribeDirectConnectGatewaysInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Directconnect
+	svc := cl.Services(client.AWSServiceDirectconnect).Directconnect
 	// No paginator available
 	for {
 		output, err := svc.DescribeDirectConnectGateways(ctx, &config, func(options *directconnect.Options) {

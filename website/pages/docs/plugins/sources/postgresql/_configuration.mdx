@@ -5,12 +5,14 @@ spec:
   registry: "github"
   path: "cloudquery/postgresql"
   version: "VERSION_SOURCE_POSTGRESQL"
-  concurrency: 10000
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
   spec:
     connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
-    cdc_id: "postgresql" # Set to a unique string per source to enable Change Data Capture mode (logical replication, or CDC)
+    # Optional parameters:
+    # cdc_id: "postgresql" # Set to a unique string per source to enable Change Data Capture mode (logical replication, or CDC)
+    # pgx_log_level: error
+    # rows_per_record: 1
 ```
 
 This example configures a PostgreSQL source, located at `localhost:5432`. The (top level) spec section is described in the [Source Spec Reference](/docs/reference/source-spec).

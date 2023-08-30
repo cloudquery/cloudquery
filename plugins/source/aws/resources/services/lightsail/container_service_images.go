@@ -3,7 +3,7 @@ package lightsail
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -36,7 +36,7 @@ func fetchLightsailContainerServiceImages(ctx context.Context, meta schema.Clien
 		ServiceName: r.ContainerServiceName,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Lightsail
+	svc := cl.Services(client.AWSServiceLightsail).Lightsail
 	deployments, err := svc.GetContainerImages(ctx, &input, func(options *lightsail.Options) {
 		options.Region = cl.Region
 	})

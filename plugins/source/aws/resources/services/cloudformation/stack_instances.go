@@ -3,7 +3,7 @@ package cloudformation
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudformation/models"
@@ -48,7 +48,7 @@ func fetchStackInstanceSummary(ctx context.Context, meta schema.ClientMeta, pare
 	}
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudformation
+	svc := cl.Services(client.AWSServiceCloudformation).Cloudformation
 
 	paginator := cloudformation.NewListStackInstancesPaginator(svc, &input)
 	for paginator.HasMorePages() {

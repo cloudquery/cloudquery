@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/cloudhsmv2"
@@ -43,7 +43,7 @@ func Backups() *schema.Table {
 
 func fetchCloudhsmv2Backups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudhsmv2
+	svc := cl.Services(client.AWSServiceCloudhsmv2).Cloudhsmv2
 	var input cloudhsmv2.DescribeBackupsInput
 	paginator := cloudhsmv2.NewDescribeBackupsPaginator(svc, &input)
 	for paginator.HasMorePages() {

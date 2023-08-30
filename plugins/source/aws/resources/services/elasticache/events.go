@@ -3,7 +3,7 @@ package elasticache
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -35,7 +35,7 @@ func Events() *schema.Table {
 func fetchElasticacheEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input elasticache.DescribeEventsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticache
+	svc := cl.Services(client.AWSServiceElasticache).Elasticache
 
 	paginator := elasticache.NewDescribeEventsPaginator(svc, &input)
 	for paginator.HasMorePages() {

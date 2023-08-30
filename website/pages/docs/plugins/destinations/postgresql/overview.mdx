@@ -4,6 +4,7 @@ stage: GA
 title: PostgreSQL Destination Plugin
 description: CloudQuery PostgreSQL destination plugin documentation
 ---
+
 # PostgreSQL Destination Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -32,11 +33,13 @@ The (top level) spec section is described in the [Destination Spec Reference](/d
 Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
 </Callout>
 
+The PostgreSQL destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
+
 ### PostgreSQL Spec
 
 This is the (nested) spec used by the PostgreSQL destination Plugin.
 
-- `connection_string` (string, required)
+- `connection_string` (`string`) (required)
 
   Connection string to connect to the database. This can be a URL or a DSN, as per [`pgxpool`](https://pkg.go.dev/github.com/jackc/pgx/v4/pgxpool#ParseConfig)
 
@@ -47,12 +50,22 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
   - `"dbname=mydb"` _unix domain socket, just specifying the db name - useful if you want to use peer authentication_
   - `"user=jack password=jack\\'ssooper\\\\secret host=localhost port=5432 dbname=mydb sslmode=disable"` _DSN with escaped backslash and single quote_
 
-- `pgx_log_level` (string, optional. Default: "error")
+- `pgx_log_level` (`string`) (optional) (default: `error`)
 
-  Available: "error", "warn", "info", "debug", "trace"
-  define if and in which level to log [`pgx`](https://github.com/jackc/pgx) call.
+  Available: `error`, `warn`, `info`, `debug`, `trace`.
+  Defines what [`pgx`](https://github.com/jackc/pgx) call events should be logged.
 
-Note: Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
+- `batch_size` (`integer`) (optional) (default: `10000`)
+
+  This parameter controls the maximum amount of items may be grouped together to be written as a single write.
+
+- `batch_size_bytes` (`integer`) (optional) (default: `100000000` (= 100 MB))
+
+  This parameter controls the maximum size of items that may be grouped together to be written as a single write.
+
+- `batch_timeout` (`duration`) (optional) (default: `60s` (= 60 seconds))
+
+  This parameter controls the timeout for writing a single batch.
 
 ### Verbose logging for debug
 

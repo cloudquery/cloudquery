@@ -6,7 +6,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ram"
 	"github.com/aws/aws-sdk-go-v2/service/ram/types"
@@ -50,7 +50,7 @@ func fetchRamResourceSharePermissions(ctx context.Context, meta schema.ClientMet
 		MaxResults:       aws.Int32(500),
 		ResourceShareArn: resource.Item.(types.ResourceShare).ResourceShareArn,
 	}
-	paginator := ram.NewListResourceSharePermissionsPaginator(meta.(*client.Client).Services().Ram, input)
+	paginator := ram.NewListResourceSharePermissionsPaginator(meta.(*client.Client).Services(client.AWSServiceRam).Ram, input)
 	for paginator.HasMorePages() {
 		response, err := paginator.NextPage(ctx, func(options *ram.Options) {
 			options.Region = cl.Region
@@ -65,7 +65,7 @@ func fetchRamResourceSharePermissions(ctx context.Context, meta schema.ClientMet
 
 func resolveResourceSharePermissionDetailPermission(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ram
+	svc := cl.Services(client.AWSServiceRam).Ram
 	permission := resource.Item.(types.ResourceSharePermissionSummary)
 	version, err := strconv.ParseInt(aws.ToString(permission.Version), 10, 32)
 	if err != nil {

@@ -365,6 +365,66 @@ func (mr *MockQuicksightClientMockRecorder) DescribeDashboardPermissions(arg0, a
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDashboardPermissions", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeDashboardPermissions), varargs...)
 }
 
+// DescribeDashboardSnapshotJob mocks base method.
+func (m *MockQuicksightClient) DescribeDashboardSnapshotJob(arg0 context.Context, arg1 *quicksight.DescribeDashboardSnapshotJobInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeDashboardSnapshotJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDashboardSnapshotJob")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeDashboardSnapshotJob", varargs...)
+	ret0, _ := ret[0].(*quicksight.DescribeDashboardSnapshotJobOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeDashboardSnapshotJob indicates an expected call of DescribeDashboardSnapshotJob.
+func (mr *MockQuicksightClientMockRecorder) DescribeDashboardSnapshotJob(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDashboardSnapshotJob", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeDashboardSnapshotJob), varargs...)
+}
+
+// DescribeDashboardSnapshotJobResult mocks base method.
+func (m *MockQuicksightClient) DescribeDashboardSnapshotJobResult(arg0 context.Context, arg1 *quicksight.DescribeDashboardSnapshotJobResultInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeDashboardSnapshotJobResultOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDashboardSnapshotJobResult")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeDashboardSnapshotJobResult", varargs...)
+	ret0, _ := ret[0].(*quicksight.DescribeDashboardSnapshotJobResultOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeDashboardSnapshotJobResult indicates an expected call of DescribeDashboardSnapshotJobResult.
+func (mr *MockQuicksightClientMockRecorder) DescribeDashboardSnapshotJobResult(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDashboardSnapshotJobResult", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeDashboardSnapshotJobResult), varargs...)
+}
+
 // DescribeDataSet mocks base method.
 func (m *MockQuicksightClient) DescribeDataSet(arg0 context.Context, arg1 *quicksight.DescribeDataSetInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeDataSetOutput, error) {
 

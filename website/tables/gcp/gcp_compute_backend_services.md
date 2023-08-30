@@ -38,6 +38,7 @@ The primary key for this table is **self_link**.
 |locality_lb_policy|`utf8`|
 |log_config|`json`|
 |max_stream_duration|`json`|
+|metadatas|`json`|
 |name|`utf8`|
 |network|`utf8`|
 |outlier_detection|`json`|

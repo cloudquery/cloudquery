@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/appconfig"
@@ -47,7 +47,7 @@ func fetchEnvironments(ctx context.Context, meta schema.ClientMeta, parent *sche
 		ApplicationId: r.Id,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Appconfig
+	svc := cl.Services(client.AWSServiceAppconfig).Appconfig
 
 	paginator := appconfig.NewListEnvironmentsPaginator(svc, &config)
 	for paginator.HasMorePages() {

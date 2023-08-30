@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge/types"
@@ -46,7 +46,7 @@ func fetchEventBusRules(ctx context.Context, meta schema.ClientMeta, parent *sch
 		EventBusName: p.Arn,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Eventbridge
+	svc := cl.Services(client.AWSServiceEventbridge).Eventbridge
 	// No paginator available
 	for {
 		response, err := svc.ListRules(ctx, &input, func(options *eventbridge.Options) {

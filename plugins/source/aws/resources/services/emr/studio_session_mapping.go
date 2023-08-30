@@ -2,7 +2,8 @@ package emr
 
 import (
 	"context"
-	"github.com/apache/arrow/go/v13/arrow"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/emr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -35,7 +36,7 @@ func studioSessionMapping() *schema.Table {
 func fetchEmrStudioSessionMapping(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	p := parent.Item.(*types.Studio)
-	svc := cl.Services().Emr
+	svc := cl.Services(client.AWSServiceEmr).Emr
 	paginator := emr.NewListStudioSessionMappingsPaginator(svc, &emr.ListStudioSessionMappingsInput{
 		StudioId: p.StudioId,
 	})
@@ -53,7 +54,7 @@ func fetchEmrStudioSessionMapping(ctx context.Context, meta schema.ClientMeta, p
 
 func getSessionMapping(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Emr
+	svc := cl.Services(client.AWSServiceEmr).Emr
 	sms := resource.Item.(types.SessionMappingSummary)
 	response, err := svc.GetStudioSessionMapping(ctx, &emr.GetStudioSessionMappingInput{
 		StudioId:     sms.StudioId,
