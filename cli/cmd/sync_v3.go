@@ -125,14 +125,14 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	// NOTE: if this becomes a stable feature, it can move out of sync_v3 and into sync.go
 	specBytes, err := json.Marshal(sourceSpec)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to marshal source spec JSON before variable replacement: %w", err)
 	}
 	specBytesExpanded, err := specs.ReplaceVariables(string(specBytes), variables)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to replace variables: %w", err)
 	}
 	if err := json.Unmarshal([]byte(specBytesExpanded), &sourceSpec); err != nil {
-		return err
+		return fmt.Errorf("failed to unmarshal source spec JSON after variable replacement: %w", err)
 	}
 
 	sourceSpecBytes, err := json.Marshal(sourceSpec.Spec)
