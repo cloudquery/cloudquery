@@ -1,5 +1,5 @@
 {
-  "cli": "3.15.0",
+  "cli": "3.15.1",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "22.8.1",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -49,7 +49,7 @@
   "plugins/source/fastly+FILLER": "0.0.0",
   "plugins/source/snyk": "3.1.6",
   "plugins/source/snyk+FILLER": "0.0.0",
-  "plugins/destination/gcs": "3.4.3",
+  "plugins/destination/gcs": "3.4.4",
   "plugins/destination/gcs+FILLER": "0.0.0",
   "plugins/destination/s3": "4.6.4",
   "plugins/destination/s3+FILLER": "0.0.0",

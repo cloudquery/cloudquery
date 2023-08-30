@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.15.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.15.0...cli-v3.15.1) (2023-08-30)
+
+
+### Bug Fixes
+
+* Call `types.RegisterAllExtensions` only once in `tables` command ([#13411](https://github.com/cloudquery/cloudquery/issues/13411)) ([041cb8d](https://github.com/cloudquery/cloudquery/commit/041cb8d6c4c63284ec3bab8d7138d5efe0d47d68))
+
 ## [3.15.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.14.5...cli-v3.15.0) (2023-08-29)
 
 
