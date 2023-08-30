@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-stripe-v2.1.6...plugins-source-stripe-v2.1.7) (2023-08-30)
+
+
+### Bug Fixes
+
+* Flush state backend so that state is persisted ([#13465](https://github.com/cloudquery/cloudquery/issues/13465)) ([e0e9f6e](https://github.com/cloudquery/cloudquery/commit/e0e9f6e173d35a49f16c40bc0b5b5b71bbd66e05))
+
 ## [2.1.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-stripe-v2.1.5...plugins-source-stripe-v2.1.6) (2023-08-30)
 
 
