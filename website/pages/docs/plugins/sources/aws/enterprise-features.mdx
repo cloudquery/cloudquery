@@ -36,12 +36,18 @@ rds.amazonaws.com | CreateDBInstance
 
 ### Configuration:
 
-CloudQuery is expecting data in a single sharded Kinesis stream. The format of the data needs to be in the same form as CloudWatch Logs uses to send CloudTrail Events to a Kinesis Data stream. CloudQuery maintains a reference solution that uses CloudFormation to deploy.
+1. CloudQuery is expecting data in a single sharded Kinesis stream. The format of the data needs to be in the same form as CloudWatch Logs uses to send CloudTrail Events to a Kinesis Data stream. CloudQuery maintains a reference solution that uses CloudFormation to deploy.
 
 ```
 aws cloudformation deploy --template-file ./streaming-deployment.yml --stack-name <STACK-NAME> --capabilities CAPABILITY_IAM --disable-rollback --region <DESIRED-REGION>
 ```
 
+2. Copy the ARN of the Kinesis stream. If you used the Cloudformation template you can run the following command:
+```
+aws cloudformation describe-stacks --stack-name <STACK-NAME> --query "Stacks[].Outputs" --region <DESIRED-REGION>
+```
+
+3. Define a `config.yml` file like the one below
 
 ``` yaml
 kind: source
@@ -68,10 +74,14 @@ spec:
   spec:
     streaming_sync:
       - account:
-          local_profile: "AdministratorAccess-615713231484"
+          local_profile: "<ROLE-NAME>"
         kinesis_stream_arn: <OUTPUT-FROM-CLOUDFORMATION-STACK>
 ```
 
+4. Sync the data!
+```
+cloudquery sync config.yml
+```
 
 ### Limitations:
 - Kinesis Stream can only have a single shard. (This is a limitation that we expect to remove in the future)
