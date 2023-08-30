@@ -55,6 +55,17 @@ java {
     }
 }
 
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes "Main-Class": "bitbucket.MainClass"
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
 application {
     // Define the main class for the application.
     mainClass = 'bitbucket.App'
