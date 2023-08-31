@@ -8,8 +8,8 @@ import (
 
 const (
 	defaultBatchSize      = 10000
-	defaultBatchSizeBytes = 1000000
-	defaultBatchTimeout   = 10 * time.Second
+	defaultBatchSizeBytes = 100000000
+	defaultBatchTimeout   = 60 * time.Second
 )
 
 type Spec struct {

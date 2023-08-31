@@ -1,7 +1,7 @@
 package values
 
 import (
-	"github.com/apache/arrow/go/v13/arrow/array"
+	"github.com/apache/arrow/go/v14/arrow/array"
 )
 
 func buildFromString(builder array.Builder, value any) error {
