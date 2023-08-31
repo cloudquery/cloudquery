@@ -14,6 +14,8 @@ azuredevops:
   - plugins/source/azuredevops/**/*
 bigquery:
   - plugins/destination/bigquery/**/*
+bitbucket:
+  - plugins/source/bitbucket/**/*
 ci:
   - .github/workflows/**/*
 cli:
