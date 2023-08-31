@@ -82,7 +82,10 @@ func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMe
 
 	ghServices := map[string]GithubServices{}
 	for _, auth := range spec.AppAuth {
-		var k *rsa.PrivateKey
+		var (
+			k   *rsa.PrivateKey
+			err error
+		)
 		if auth.PrivateKeyPath != "" {
 			k, err = key.FromFile(auth.PrivateKeyPath)
 		} else if auth.PrivateKey != "" {
