@@ -2,16 +2,20 @@ package client
 
 import (
 	"context"
-	"time"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source string, syncTime time.Time) error {
-	for _, table := range tables {
+func (c *Client) DeleteStale(ctx context.Context, msgs message.WriteDeleteStales) error {
+	for _, msg := range msgs {
+		tableName := msg.TableName
 		// delete all records that are not in the source and are older than syncTime
-		if _, err := c.client.Database(c.pluginSpec.Database).Collection(table.Name).DeleteMany(ctx, bson.M{"_cq_source_name": source, "_cq_sync_time": bson.M{"$lt": syncTime}}); err != nil {
+		if _, err := c.client.Database(c.spec.Database).Collection(tableName).DeleteMany(ctx, bson.M{
+			schema.CqSourceNameColumn.Name: msg.SourceName,
+			schema.CqSyncTimeColumn.Name:   bson.M{"$lt": msg.SyncTime},
+		}); err != nil {
 			return err
 		}
 	}

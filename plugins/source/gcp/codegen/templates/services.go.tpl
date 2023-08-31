@@ -4,8 +4,8 @@ package client
 
 var GcpServices = map[string]bool{
     // Non discoverable services
-	"aiplatform.googleapis.com": true,
 	"livestream.googleapis.com": true,
+	"cloudiot.googleapis.com": true,
 	// Discoverable services
 	{{- range .}}
       "{{.}}": true,

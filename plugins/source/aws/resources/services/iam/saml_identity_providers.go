@@ -3,12 +3,13 @@ package iam
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam/models"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func SamlIdentityProviders() *schema.Table {
@@ -27,19 +28,20 @@ func SamlIdentityProviders() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name: "arn",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				PrimaryKey: true,
 			},
 		},
 	}
 }
 
 func fetchIamSamlIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Iam
-	response, err := svc.ListSAMLProviders(ctx, &iam.ListSAMLProvidersInput{})
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceIam).Iam
+	response, err := svc.ListSAMLProviders(ctx, &iam.ListSAMLProvidersInput{}, func(options *iam.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -49,10 +51,13 @@ func fetchIamSamlIdentityProviders(ctx context.Context, meta schema.ClientMeta, 
 }
 
 func getSamlIdentityProvider(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	svc := meta.(*client.Client).Services().Iam
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceIam).Iam
 	p := resource.Item.(types.SAMLProviderListEntry)
 
-	providerResponse, err := svc.GetSAMLProvider(ctx, &iam.GetSAMLProviderInput{SAMLProviderArn: p.Arn})
+	providerResponse, err := svc.GetSAMLProvider(ctx, &iam.GetSAMLProviderInput{SAMLProviderArn: p.Arn}, func(options *iam.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

@@ -7,17 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apprunner/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildApprunnerAutoScalingConfigurationsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockApprunnerClient(ctrl)
 	as := types.AutoScalingConfiguration{}
-	err := faker.FakeObject(&as)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&as))
 
 	m.EXPECT().ListAutoScalingConfigurations(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&apprunner.ListAutoScalingConfigurationsOutput{
@@ -31,10 +29,8 @@ func buildApprunnerAutoScalingConfigurationsMock(t *testing.T, ctrl *gomock.Cont
 			AutoScalingConfiguration: &as,
 		}, nil)
 	tags := types.Tag{}
-	err = faker.FakeObject(&tags)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tags))
+
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&apprunner.ListTagsForResourceOutput{Tags: []types.Tag{tags}}, nil)
 	return client.Services{

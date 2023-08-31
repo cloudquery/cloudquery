@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Database Replicas.
 
+https://docs.digitalocean.com/reference/api/api-reference/#operation/databases_list_replicas
+
 The primary key for this table is **_cq_id**.
 
 ## Relations
@@ -12,16 +14,14 @@ This table depends on [digitalocean_databases](digitalocean_databases).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|id|String|
-|name|String|
-|connection|JSON|
-|private_connection|JSON|
-|region|String|
-|status|String|
-|created_at|Timestamp|
-|private_network_uuid|String|
-|tags|StringArray|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|id|`utf8`|
+|name|`utf8`|
+|connection|`json`|
+|private_connection|`json`|
+|region|`utf8`|
+|status|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|private_network_uuid|`utf8`|
+|tags|`list<item: utf8, nullable>`|

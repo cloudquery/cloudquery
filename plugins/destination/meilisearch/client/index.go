@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/meilisearch/meilisearch-go"
 	"golang.org/x/exp/slices"
 )
@@ -13,6 +13,7 @@ type indexSchema struct {
 	UID        string
 	PrimaryKey string
 	Attributes []string
+	Index      int
 }
 
 func (i *indexSchema) init(index *meilisearch.Index) (*indexSchema, error) {
@@ -34,18 +35,19 @@ func (i *indexSchema) canMigrate(o *indexSchema) bool {
 	return i.UID == o.UID && i.PrimaryKey == o.PrimaryKey
 }
 
-func (c *Client) tableIndexSchema(table *schema.Table) *indexSchema {
+func tableIndexSchema(table *schema.Table) *indexSchema {
 	return &indexSchema{
 		UID:        table.Name,
-		PrimaryKey: c.pkColumn,
+		PrimaryKey: hashColumnName,
 		Attributes: table.Columns.Names(),
 	}
 }
 
-func (c *Client) tablesIndexSchemas(tables schema.Tables) map[string]*indexSchema {
+func tablesIndexSchemas(tables schema.Tables) map[string]*indexSchema {
 	res := make(map[string]*indexSchema)
-	for _, table := range tables.FlattenTables() {
-		s := c.tableIndexSchema(table)
+	for i, table := range tables {
+		s := tableIndexSchema(table)
+		s.Index = i
 		res[s.UID] = s
 	}
 	return res

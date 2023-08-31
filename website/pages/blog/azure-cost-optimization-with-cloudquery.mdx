@@ -54,8 +54,7 @@ spec:
   path: "cloudquery/azure"
   version: "VERSION_SOURCE_AZURE"
   destinations: ["postgresql"]
-  concurrency: 100 # The Azure source plugin supports many resources and can fail on small machines. Increase this if you run it on a beefy machine
-  tables: ["*"] # "azure_costmanagement_views" and "azure_costmanagement_view_queries" are required for this tutorial, but let's get them all
+  tables: ["azure_costmanagement_views", "azure_costmanagement_view_queries"]
 ---
 kind: destination
 spec:

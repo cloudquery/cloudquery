@@ -8,16 +8,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildRDSDBParameterGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockRdsClient(ctrl)
 	var g types.DBParameterGroup
-	if err := faker.FakeObject(&g); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&g))
+
 	mock.EXPECT().DescribeDBParameterGroups(
 		gomock.Any(),
 		&rds.DescribeDBParameterGroupsInput{},
@@ -39,9 +39,8 @@ func buildRDSDBParameterGroups(t *testing.T, ctrl *gomock.Controller) client.Ser
 	)
 
 	var p types.Parameter
-	if err := faker.FakeObject(&p); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&p))
+
 	mock.EXPECT().DescribeDBParameters(
 		gomock.Any(),
 		&rds.DescribeDBParametersInput{DBParameterGroupName: g.DBParameterGroupName},

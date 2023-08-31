@@ -2,73 +2,55 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
-	"time"
 
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 )
 
 type Client struct {
-	destination.DefaultReverseTransformer
 	logger zerolog.Logger
 	spec   Spec
+
+	plugin.UnimplementedSource
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
-	var testConfig Spec
-	err := spec.UnmarshalSpec(&testConfig)
-	if err != nil {
+var _ plugin.Client = (*Client)(nil)
+
+func New(_ context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
+	var spec Spec
+	if err := json.Unmarshal(specBytes, &spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
+
 	return &Client{
-		logger: log.With().Str("module", "test").Logger(),
-		spec:   testConfig,
+		logger: logger.With().Str("module", "test").Logger(),
+		spec:   spec,
 	}, nil
 }
 
-func (*Client) Metrics() destination.Metrics {
-	return destination.Metrics{}
-}
-
-func (*Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
-	return nil
-}
-
-func (*Client) Migrate(ctx context.Context, tables schema.Tables) error {
+func (*Client) Read(context.Context, *schema.Table, chan<- arrow.Record) error {
 	return nil
 }
 
 //revive:disable We need to range over the channel to clear it, but revive thinks it can be removed
-func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *destination.ClientResource) error {
+func (c *Client) Write(_ context.Context, messages <-chan message.WriteMessage) error {
 	if c.spec.ErrorOnWrite {
 		return errors.New("error_on_write is true")
 	}
-	for range res {
-		// do nothing
+	for m := range messages {
+		if m, ok := m.(*message.WriteInsert); ok {
+			m.Record.Release()
+		}
 	}
 	return nil
 }
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, res [][]any) error {
-	if c.spec.ErrorOnWrite {
-		return errors.New("error_on_write is true")
-	}
+func (*Client) Close(context.Context) error {
 	return nil
-}
-
-func (*Client) Close(ctx context.Context) error {
-	return nil
-}
-
-func (*Client) DeleteStale(ctx context.Context, tables schema.Tables, sourceName string, syncTime time.Time) error {
-	return nil
-}
-
-func (*Client) ReverseTransformValues(table *schema.Table, values []any) (schema.CQTypes, error) {
-	return nil, nil
 }

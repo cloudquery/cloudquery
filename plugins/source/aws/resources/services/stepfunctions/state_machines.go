@@ -3,11 +3,14 @@ package stepfunctions
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/sfn"
 	"github.com/aws/aws-sdk-go-v2/service/sfn/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func StateMachines() *schema.Table {
@@ -23,16 +26,14 @@ func StateMachines() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("StateMachineArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("StateMachineArn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveStepFunctionTags,
 			},
 		},
@@ -43,11 +44,14 @@ func StateMachines() *schema.Table {
 }
 
 func fetchStepfunctionsStateMachines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Sfn
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSfn).Sfn
 	config := sfn.ListStateMachinesInput{}
 	paginator := sfn.NewListStateMachinesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(o *sfn.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -57,11 +61,16 @@ func fetchStepfunctionsStateMachines(ctx context.Context, meta schema.ClientMeta
 }
 
 func getStepFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sfn
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSfn).Sfn
 	sm := resource.Item.(types.StateMachineListItem)
 
-	stateMachineDetails, err := svc.DescribeStateMachine(ctx, &sfn.DescribeStateMachineInput{StateMachineArn: sm.StateMachineArn})
+	stateMachineDetails, err := svc.DescribeStateMachine(ctx,
+		&sfn.DescribeStateMachineInput{StateMachineArn: sm.StateMachineArn},
+		func(o *sfn.Options) {
+			o.Region = cl.Region
+		},
+	)
 	if err != nil {
 		return err
 	}
@@ -73,11 +82,13 @@ func getStepFunction(ctx context.Context, meta schema.ClientMeta, resource *sche
 func resolveStepFunctionTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	sm := resource.Item.(*sfn.DescribeStateMachineOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sfn
+	svc := cl.Services(client.AWSServiceSfn).Sfn
 	tagParams := sfn.ListTagsForResourceInput{
 		ResourceArn: sm.StateMachineArn,
 	}
-	tags, err := svc.ListTagsForResource(ctx, &tagParams)
+	tags, err := svc.ListTagsForResource(ctx, &tagParams, func(o *sfn.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

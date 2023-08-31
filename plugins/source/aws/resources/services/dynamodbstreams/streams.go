@@ -3,12 +3,13 @@ package dynamodbstreams
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodbstreams"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodbstreams/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Streams() *schema.Table {
@@ -24,25 +25,25 @@ func Streams() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Resolver: schema.PathResolver("StreamArn"),
-				Type:     schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Resolver:   schema.PathResolver("StreamArn"),
+				Type:       arrow.BinaryTypes.String,
+				PrimaryKey: true,
 			},
 		},
 	}
 }
 
 func listStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Dynamodbstreams
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceDynamodbstreams).Dynamodbstreams
 
 	config := dynamodbstreams.ListStreamsInput{}
 	// No paginator available
 	for {
-		output, err := svc.ListStreams(ctx, &config)
+		output, err := svc.ListStreams(ctx, &config, func(options *dynamodbstreams.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -58,9 +59,12 @@ func listStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 }
 
 func describeStream(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	svc := meta.(*client.Client).Services().Dynamodbstreams
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceDynamodbstreams).Dynamodbstreams
 	stream := resource.Item.(types.Stream)
-	response, err := svc.DescribeStream(ctx, &dynamodbstreams.DescribeStreamInput{StreamArn: stream.StreamArn})
+	response, err := svc.DescribeStream(ctx, &dynamodbstreams.DescribeStreamInput{StreamArn: stream.StreamArn}, func(options *dynamodbstreams.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

@@ -3,12 +3,13 @@ package appstream
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appstream/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func UsageReportSubscriptions() *schema.Table {
@@ -23,12 +24,10 @@ func UsageReportSubscriptions() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:     "s3_bucket_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("S3BucketName"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "s3_bucket_name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("S3BucketName"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -36,11 +35,13 @@ func UsageReportSubscriptions() *schema.Table {
 
 func fetchAppstreamUsageReportSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input appstream.DescribeUsageReportSubscriptionsInput
-	c := meta.(*client.Client)
-	svc := c.Services().Appstream
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceAppstream).Appstream
 	// No paginator available
 	for {
-		response, err := svc.DescribeUsageReportSubscriptions(ctx, &input)
+		response, err := svc.DescribeUsageReportSubscriptions(ctx, &input, func(options *appstream.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

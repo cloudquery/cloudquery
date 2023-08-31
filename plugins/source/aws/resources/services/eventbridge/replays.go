@@ -3,12 +3,13 @@ package eventbridge
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Replays() *schema.Table {
@@ -24,12 +25,10 @@ func Replays() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ReplayArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ReplayArn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -37,11 +36,13 @@ func Replays() *schema.Table {
 
 func fetchReplays(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input eventbridge.ListReplaysInput
-	c := meta.(*client.Client)
-	svc := c.Services().Eventbridge
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceEventbridge).Eventbridge
 	// No paginator available
 	for {
-		response, err := svc.ListReplays(ctx, &input)
+		response, err := svc.ListReplays(ctx, &input, func(options *eventbridge.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -55,13 +56,15 @@ func fetchReplays(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 }
 
 func getReplay(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Eventbridge
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceEventbridge).Eventbridge
 
 	replay := resource.Item.(types.Replay)
 
 	out, err := svc.DescribeReplay(ctx, &eventbridge.DescribeReplayInput{
 		ReplayName: replay.ReplayName,
+	}, func(options *eventbridge.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

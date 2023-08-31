@@ -6,8 +6,9 @@ import (
 	"google.golang.org/api/iterator"
 
 	pb "cloud.google.com/go/billing/apiv1/billingpb"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
 
 	billing "cloud.google.com/go/billing/apiv1"
@@ -23,7 +24,7 @@ func BillingAccounts() *schema.Table {
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: client.ResolveProject,
 			},
 		},

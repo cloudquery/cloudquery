@@ -1,24 +1,23 @@
 package accounts
 
 import (
-	cloudflare "github.com/cloudflare/cloudflare-go"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudflare/cloudflare-go"
+	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func Accounts() *schema.Table {
 	return &schema.Table{
 		Name:      "cloudflare_accounts",
 		Resolver:  fetchAccounts,
-		Transform: transformers.TransformWithStruct(&cloudflare.Account{}),
+		Transform: client.TransformWithStruct(&cloudflare.Account{}),
 		Columns: []schema.Column{
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ID"),
+				PrimaryKey: true,
 			},
 		},
 

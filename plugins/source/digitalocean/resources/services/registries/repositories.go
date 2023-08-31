@@ -1,24 +1,24 @@
 package registries
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/digitalocean/godo"
 )
 
 func repositories() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_registry_repositories",
-		Resolver:  fetchRegistriesRepositories,
-		Transform: transformers.TransformWithStruct(&godo.Repository{}),
+		Name:        "digitalocean_registry_repositories",
+		Description: "Deprecated. https://docs.digitalocean.com/reference/api/api-reference/#operation/registry_list_repositories",
+		Resolver:    fetchRegistriesRepositories,
+		Transform:   transformers.TransformWithStruct(&godo.Repository{}),
 		Columns: []schema.Column{
 			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Name"),
+				PrimaryKey: true,
 			},
 		},
 	}

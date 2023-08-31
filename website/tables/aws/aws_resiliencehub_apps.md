@@ -16,22 +16,24 @@ The following tables depend on aws_resiliencehub_apps:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|app_arn|String|
-|creation_time|Timestamp|
-|name|String|
-|assessment_schedule|String|
-|compliance_status|String|
-|description|String|
-|last_app_compliance_evaluation_time|Timestamp|
-|last_resiliency_score_evaluation_time|Timestamp|
-|policy_arn|String|
-|resiliency_score|Float|
-|status|String|
-|tags|JSON|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|app_arn|`utf8`|
+|creation_time|`timestamp[us, tz=UTC]`|
+|name|`utf8`|
+|assessment_schedule|`utf8`|
+|compliance_status|`utf8`|
+|description|`utf8`|
+|drift_status|`utf8`|
+|event_subscriptions|`json`|
+|last_app_compliance_evaluation_time|`timestamp[us, tz=UTC]`|
+|last_drift_evaluation_time|`timestamp[us, tz=UTC]`|
+|last_resiliency_score_evaluation_time|`timestamp[us, tz=UTC]`|
+|permission_model|`json`|
+|policy_arn|`utf8`|
+|resiliency_score|`float64`|
+|status|`utf8`|
+|tags|`json`|

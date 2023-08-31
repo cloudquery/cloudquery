@@ -3,12 +3,15 @@ package timestream
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/timestreamwrite"
 	"github.com/aws/aws-sdk-go-v2/service/timestreamwrite/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Databases() *schema.Table {
@@ -24,16 +27,14 @@ func Databases() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: fetchDatabaseTags,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Arn"),
+				PrimaryKey: true,
 			},
 		},
 
@@ -44,10 +45,21 @@ func Databases() *schema.Table {
 }
 
 func fetchTimestreamDatabases(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
+	services := cl.Services(client.AWSServiceTimestreamwrite)
+	svc := services.Timestreamwrite
+	// This should be removed once https://github.com/aws/aws-sdk-go-v2/issues/2163 is fixed
+	if services.AWSConfig.Region != cl.Region {
+		awsCfg := services.AWSConfig.Copy()
+		awsCfg.Region = cl.Region
+		svc = timestreamwrite.NewFromConfig(awsCfg)
+	}
 	input := &timestreamwrite.ListDatabasesInput{MaxResults: aws.Int32(20)}
-	paginator := timestreamwrite.NewListDatabasesPaginator(meta.(*client.Client).Services().Timestreamwrite, input)
+	paginator := timestreamwrite.NewListDatabasesPaginator(svc, input)
 	for paginator.HasMorePages() {
-		response, err := paginator.NextPage(ctx)
+		response, err := paginator.NextPage(ctx, func(o *timestreamwrite.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -57,9 +69,15 @@ func fetchTimestreamDatabases(ctx context.Context, meta schema.ClientMeta, _ *sc
 }
 
 func fetchDatabaseTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	output, err := meta.(*client.Client).Services().Timestreamwrite.ListTagsForResource(ctx,
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceTimestreamwrite).Timestreamwrite
+
+	output, err := svc.ListTagsForResource(ctx,
 		&timestreamwrite.ListTagsForResourceInput{
 			ResourceARN: resource.Item.(types.Database).Arn,
+		},
+		func(o *timestreamwrite.Options) {
+			o.Region = cl.Region
 		},
 	)
 	if err != nil {

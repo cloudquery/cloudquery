@@ -3,7 +3,7 @@ select
     :'execution_time' as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
-    'Instances managed by Systems Manager should have an association compliance status of COMPLIANT' as title,
+    'Amazon EC2 instances managed by Systems Manager should have an association compliance status of COMPLIANT' as title,
     aws_ssm_instances.account_id,
     aws_ssm_instances.arn,
     case when

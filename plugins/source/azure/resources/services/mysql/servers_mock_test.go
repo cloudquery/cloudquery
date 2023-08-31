@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/gorilla/mux"
 )
 
@@ -29,6 +29,11 @@ func createServers(router *mux.Router) error {
 			return
 		}
 	})
+
+	if err := createDatabases(router); err != nil {
+		return err
+	}
+
 	return createServerConfigurations(router)
 }
 

@@ -3,10 +3,13 @@ package ses
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func ConfigurationSets() *schema.Table {
@@ -26,16 +29,14 @@ func ConfigurationSets() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveConfigurationSetArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveConfigurationSetArn,
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: client.ResolveTags,
 			},
 		},
@@ -47,12 +48,14 @@ func ConfigurationSets() *schema.Table {
 }
 
 func fetchSesConfigurationSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sesv2
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSesv2).Sesv2
 
 	p := sesv2.NewListConfigurationSetsPaginator(svc, nil)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(o *sesv2.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -63,11 +66,13 @@ func fetchSesConfigurationSets(ctx context.Context, meta schema.ClientMeta, pare
 }
 
 func getConfigurationSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sesv2
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSesv2).Sesv2
 	csName := resource.Item.(string)
 
-	getOutput, err := svc.GetConfigurationSet(ctx, &sesv2.GetConfigurationSetInput{ConfigurationSetName: &csName})
+	getOutput, err := svc.GetConfigurationSet(ctx, &sesv2.GetConfigurationSetInput{ConfigurationSetName: &csName}, func(o *sesv2.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

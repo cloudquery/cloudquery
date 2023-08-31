@@ -4,11 +4,12 @@ import (
 	"context"
 	"time"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/aws/aws-sdk-go-v2/service/shield/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Attacks() *schema.Table {
@@ -24,20 +25,18 @@ func Attacks() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			{
 				Name:        "id",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 				Resolver:    schema.PathResolver("AttackId"),
 				Description: `The unique identifier (ID) of the attack`,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey:  true,
 			},
 		},
 	}
 }
 
 func fetchShieldAttacks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Shield
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceShield).Shield
 	end := time.Now()
 	start := end.Add(-time.Hour * 24)
 	config := shield.ListAttacksInput{
@@ -46,7 +45,9 @@ func fetchShieldAttacks(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}
 	pagintor := shield.NewListAttacksPaginator(svc, &config)
 	for pagintor.HasMorePages() {
-		page, err := pagintor.NextPage(ctx)
+		page, err := pagintor.NextPage(ctx, func(o *shield.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -56,11 +57,13 @@ func fetchShieldAttacks(ctx context.Context, meta schema.ClientMeta, parent *sch
 }
 
 func getAttack(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Shield
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceShield).Shield
 	a := resource.Item.(types.AttackSummary)
 
-	attack, err := svc.DescribeAttack(ctx, &shield.DescribeAttackInput{AttackId: a.AttackId})
+	attack, err := svc.DescribeAttack(ctx, &shield.DescribeAttackInput{AttackId: a.AttackId}, func(o *shield.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

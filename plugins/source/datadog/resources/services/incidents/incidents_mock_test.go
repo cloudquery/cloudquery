@@ -6,7 +6,7 @@ import (
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV2"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -16,12 +16,12 @@ func buildIncidentsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogSer
 		IncidentsAPI: m,
 	}
 
-	var i datadogV2.IncidentsResponse
+	var i datadogV2.IncidentResponseData
 	err := faker.FakeObject(&i)
 	if err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListIncidents(gomock.Any()).Return(i, nil, nil)
+	m.EXPECT().ListIncidentsWithPagination(gomock.Any()).Return(client.MockPaginatedResponse(i))
 
 	var ar datadogV2.IncidentAttachmentsResponse
 	err = faker.FakeObject(&ar)

@@ -6,9 +6,10 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
-	"github.com/google/go-github/v48/github"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/types"
+	"github.com/google/go-github/v49/github"
 )
 
 func members() *schema.Table {
@@ -21,7 +22,7 @@ func members() *schema.Table {
 			teamIDColumn,
 			{
 				Name:     "membership",
-				Type:     schema.TypeJSON,
+				Type:     types.ExtensionTypes.JSON,
 				Resolver: resolveMembership,
 			},
 		},
@@ -42,10 +43,11 @@ func fetchMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 			return err
 		}
 		res <- members
-		opts.Page = resp.NextPage
-		if opts.Page == resp.LastPage {
+
+		if resp.NextPage == 0 {
 			break
 		}
+		opts.Page = resp.NextPage
 	}
 	return nil
 }

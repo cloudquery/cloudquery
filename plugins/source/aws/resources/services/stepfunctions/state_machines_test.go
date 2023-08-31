@@ -7,17 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sfn/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildStateMachines(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockSfnClient(ctrl)
 	im := types.StateMachineListItem{}
-	err := faker.FakeObject(&im)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&im))
 
 	m.EXPECT().ListStateMachines(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&sfn.ListStateMachinesOutput{
@@ -25,17 +23,12 @@ func buildStateMachines(t *testing.T, ctrl *gomock.Controller) client.Services {
 		}, nil)
 
 	out := &sfn.DescribeStateMachineOutput{}
-	err = faker.FakeObject(&out)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&out))
+
 	m.EXPECT().DescribeStateMachine(gomock.Any(), gomock.Any(), gomock.Any()).Return(out, nil)
 
 	tag := types.Tag{}
-	tagerr := faker.FakeObject(&tag)
-	if tagerr != nil {
-		t.Fatal(tagerr)
-	}
+	require.NoError(t, faker.FakeObject(&tag))
 
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&sfn.ListTagsForResourceOutput{
@@ -43,9 +36,7 @@ func buildStateMachines(t *testing.T, ctrl *gomock.Controller) client.Services {
 		}, nil)
 
 	eli := types.ExecutionListItem{}
-	if err := faker.FakeObject(&eli); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&eli))
 
 	m.EXPECT().ListExecutions(gomock.Any(), gomock.Any(), gomock.Any()).MinTimes(1).Return(
 		&sfn.ListExecutionsOutput{
@@ -53,25 +44,19 @@ func buildStateMachines(t *testing.T, ctrl *gomock.Controller) client.Services {
 		}, nil)
 
 	execOut := sfn.DescribeExecutionOutput{}
-	if err := faker.FakeObject(&execOut); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&execOut))
 
 	m.EXPECT().DescribeExecution(gomock.Any(), gomock.Any(), gomock.Any()).MinTimes(1).Return(&execOut, nil)
 
 	mrli := types.MapRunListItem{}
-	if err = faker.FakeObject(&mrli); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&mrli))
 	m.EXPECT().ListMapRuns(gomock.Any(), gomock.Any(), gomock.Any()).MinTimes(1).Return(
 		&sfn.ListMapRunsOutput{
 			MapRuns: []types.MapRunListItem{mrli},
 		}, nil)
 
 	mapRunOut := sfn.DescribeMapRunOutput{}
-	if err := faker.FakeObject(&mapRunOut); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&mapRunOut))
 
 	m.EXPECT().DescribeMapRun(gomock.Any(), gomock.Any(), gomock.Any()).Return(&mapRunOut, nil)
 	return client.Services{

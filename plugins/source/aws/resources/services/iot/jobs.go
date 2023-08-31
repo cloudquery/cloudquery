@@ -3,12 +3,15 @@ package iot
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Jobs() *schema.Table {
@@ -25,16 +28,14 @@ func Jobs() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: ResolveIotJobTags,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("JobArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("JobArn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -42,13 +43,15 @@ func Jobs() *schema.Table {
 
 func fetchIotJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 	input := iot.ListJobsInput{
 		MaxResults: aws.Int32(250),
 	}
 	paginator := iot.NewListJobsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -59,10 +62,12 @@ func fetchIotJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 
 func getJobs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 
 	output, err := svc.DescribeJob(ctx, &iot.DescribeJobInput{
 		JobId: resource.Item.(types.JobSummary).JobId,
+	}, func(options *iot.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -73,6 +78,7 @@ func getJobs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 
 func ResolveIotJobTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*types.Job)
-	svc := meta.(*client.Client).Services().Iot
-	return resolveIotTags(ctx, svc, resource, c, i.JobArn)
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceIot).Iot
+	return resolveIotTags(ctx, meta, svc, resource, c, i.JobArn)
 }

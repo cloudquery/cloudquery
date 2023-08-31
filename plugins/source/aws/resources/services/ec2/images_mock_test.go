@@ -8,8 +8,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildEc2ImagesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -18,10 +19,7 @@ func buildEc2ImagesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		Ec2: m,
 	}
 	g := types.Image{}
-	err := faker.FakeObject(&g)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&g))
 
 	creationDate := "1994-11-05T08:15:30-05:00"
 	g.OwnerId = aws.String("testAccount")
@@ -54,22 +52,19 @@ func buildEc2ImagesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	// ).Times(2)
 
 	lp := types.LaunchPermission{}
-	if err := faker.FakeObject(&lp); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&lp))
+
 	m.EXPECT().DescribeImageAttribute(
 		gomock.Any(),
-		&ec2.DescribeImageAttributeInput{
-			Attribute: types.ImageAttributeNameLaunchPermission,
-			ImageId:   g.ImageId,
-		},
+		gomock.Any(),
 		gomock.Any(),
 	).Return(
 		&ec2.DescribeImageAttributeOutput{
 			LaunchPermissions: []types.LaunchPermission{lp},
+			LastLaunchedTime:  &types.AttributeValue{Value: &creationDate},
 		},
 		nil,
-	)
+	).Times(2)
 
 	return services
 }

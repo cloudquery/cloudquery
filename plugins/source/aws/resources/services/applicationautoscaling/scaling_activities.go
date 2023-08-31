@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func ScalingActivities() *schema.Table {
@@ -26,15 +26,17 @@ func ScalingActivities() *schema.Table {
 }
 
 func fetchScalingActivities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Applicationautoscaling
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceApplicationautoscaling).Applicationautoscaling
 
 	config := applicationautoscaling.DescribeScalingActivitiesInput{
-		ServiceNamespace: types.ServiceNamespace(c.AutoscalingNamespace),
+		ServiceNamespace: types.ServiceNamespace(cl.AutoscalingNamespace),
 	}
 	paginator := applicationautoscaling.NewDescribeScalingActivitiesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *applicationautoscaling.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

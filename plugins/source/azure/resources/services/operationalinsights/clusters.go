@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Clusters() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_operationalinsights_clusters",
-		Resolver:    fetchClusters,
-		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights@v1.0.0#Cluster",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_operationalinsights_clusters", client.Namespacemicrosoft_operationalinsights),
-		Transform:   transformers.TransformWithStruct(&armoperationalinsights.Cluster{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_operationalinsights_clusters",
+		Resolver:             fetchClusters,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights@v1.0.0#Cluster",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_operationalinsights_clusters", client.Namespacemicrosoft_operationalinsights),
+		Transform:            transformers.TransformWithStruct(&armoperationalinsights.Cluster{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

@@ -3,12 +3,15 @@ package waf
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/waf/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func WebAcls() *schema.Table {
@@ -22,16 +25,14 @@ func WebAcls() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("WebACLArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("WebACLArn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveWafWebACLTags,
 			},
 		},
@@ -44,18 +45,20 @@ type WebACLWrapper struct {
 }
 
 func fetchWafWebAcls(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	service := c.Services().Waf
+	cl := meta.(*client.Client)
+	service := cl.Services(client.AWSServiceWaf).Waf
 	config := waf.ListWebACLsInput{}
 	for {
-		output, err := service.ListWebACLs(ctx, &config)
+		output, err := service.ListWebACLs(ctx, &config, func(o *waf.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
 		for _, webAcl := range output.WebACLs {
 			webAclConfig := waf.GetWebACLInput{WebACLId: webAcl.WebACLId}
-			webAclOutput, err := service.GetWebACL(ctx, &webAclConfig, func(options *waf.Options) {
-				options.Region = c.Region
+			webAclOutput, err := service.GetWebACL(ctx, &webAclConfig, func(o *waf.Options) {
+				o.Region = cl.Region
 			})
 			if err != nil {
 				return err
@@ -65,11 +68,11 @@ func fetchWafWebAcls(ctx context.Context, meta schema.ClientMeta, _ *schema.Reso
 				ResourceArn: webAclOutput.WebACL.WebACLArn,
 			}
 			// TODO: Look into refactoring this as a column resolver
-			loggingConfigurationOutput, err := service.GetLoggingConfiguration(ctx, &cfg, func(options *waf.Options) {
-				options.Region = c.Region
+			loggingConfigurationOutput, err := service.GetLoggingConfiguration(ctx, &cfg, func(o *waf.Options) {
+				o.Region = cl.Region
 			})
 			if err != nil {
-				c.Logger().Error().Err(err).Msg("GetLoggingConfiguration failed")
+				cl.Logger().Error().Err(err).Msg("GetLoggingConfiguration failed")
 			}
 
 			var webAclLoggingConfiguration *types.LoggingConfiguration
@@ -94,12 +97,14 @@ func resolveWafWebACLTags(ctx context.Context, meta schema.ClientMeta, resource 
 	webACL := resource.Item.(*WebACLWrapper)
 
 	// Resolve tags for resource
-	awsClient := meta.(*client.Client)
-	service := awsClient.Services().Waf
+	cl := meta.(*client.Client)
+	service := cl.Services(client.AWSServiceWaf).Waf
 	outputTags := make(map[string]*string)
 	tagsConfig := waf.ListTagsForResourceInput{ResourceARN: webACL.WebACLArn}
 	for {
-		tags, err := service.ListTagsForResource(ctx, &tagsConfig)
+		tags, err := service.ListTagsForResource(ctx, &tagsConfig, func(o *waf.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

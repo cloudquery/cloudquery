@@ -6,22 +6,23 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v14/arrow/array"
+	"github.com/apache/arrow/go/v14/arrow/memory"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/scalar"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
-func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *schema.Resource) error {
-	// var conn *pgconn.PgConn
+func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.SyncMessage) error {
+	if c.options.NoConnection {
+		return fmt.Errorf("no connection")
+	}
 	var err error
 	var snapshotName string
-	c.metrics = metrics
-	for _, table := range c.Tables {
-		if c.metrics.TableClient[table.Name] == nil {
-			c.metrics.TableClient[table.Name] = make(map[string]*source.TableClientMetrics)
-			c.metrics.TableClient[table.Name][c.ID()] = &source.TableClientMetrics{}
-		}
-	}
 
 	connPool, err := c.Conn.Acquire(ctx)
 	if err != nil {
@@ -32,22 +33,33 @@ func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *
 	defer connPool.Release()
 	conn := connPool.Conn().PgConn()
 
-	if c.pluginSpec.CDC {
-		snapshotName, err = c.startCDC(ctx, conn)
+	filteredTables, err := c.tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
+	if err != nil {
+		return err
+	}
+
+	for _, table := range filteredTables {
+		res <- &message.SyncMigrateTable{
+			Table: table,
+		}
+	}
+
+	if c.pluginSpec.CDCId != "" {
+		snapshotName, err = c.startCDC(ctx, filteredTables, conn)
 		if err != nil {
 			return err
 		}
 	}
 
-	if c.pluginSpec.CDC && snapshotName == "" {
+	if c.pluginSpec.CDCId != "" && snapshotName == "" {
 		c.logger.Info().Msg("cdc is enabled but replication slot already exists, skipping initial sync")
 	} else {
-		if err := c.syncTables(ctx, snapshotName, res); err != nil {
+		if err := c.syncTables(ctx, snapshotName, filteredTables, res); err != nil {
 			return err
 		}
 	}
 
-	if !c.pluginSpec.CDC {
+	if c.pluginSpec.CDCId == "" {
 		return nil
 	}
 
@@ -57,36 +69,7 @@ func (c *Client) Sync(ctx context.Context, metrics *source.Metrics, res chan<- *
 	return nil
 }
 
-func (c *Client) syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- *schema.Resource) error {
-	colNames := make([]string, len(table.Columns))
-	for i, col := range table.Columns {
-		colNames[i] = pgx.Identifier{col.Name}.Sanitize()
-	}
-	query := "SELECT " + strings.Join(colNames, ",") + " FROM " + pgx.Identifier{table.Name}.Sanitize()
-	rows, err := tx.Query(ctx, query)
-	if err != nil {
-		c.metrics.TableClient[table.Name][c.ID()].Errors++
-		return err
-	}
-	defer rows.Close()
-	for rows.Next() {
-		values, err := rows.Values()
-		if err != nil {
-			c.metrics.TableClient[table.Name][c.ID()].Errors++
-			return err
-		}
-		resource, err := c.resourceFromValues(table.Name, values)
-		if err != nil {
-			c.metrics.TableClient[table.Name][c.ID()].Errors++
-			return err
-		}
-		c.metrics.TableClient[table.Name][c.ID()].Resources++
-		res <- resource
-	}
-	return nil
-}
-
-func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<- *schema.Resource) error {
+func (c *Client) syncTables(ctx context.Context, snapshotName string, filteredTables schema.Tables, res chan<- message.SyncMessage) error {
 	tx, err := c.Conn.BeginTx(ctx, pgx.TxOptions{
 		// this transaction is needed for us to take a snapshot and we need to close it only at the end of the initial sync
 		// https://www.postgresql.org/docs/current/transaction-iso.html
@@ -112,7 +95,7 @@ func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<-
 		}
 	}
 
-	for _, table := range c.Tables {
+	for _, table := range filteredTables {
 		if err := c.syncTable(ctx, tx, table, res); err != nil {
 			return err
 		}
@@ -123,13 +106,73 @@ func (c *Client) syncTables(ctx context.Context, snapshotName string, res chan<-
 	return nil
 }
 
-func (c *Client) resourceFromValues(tableName string, values []any) (*schema.Resource, error) {
-	table := c.Tables.Get(tableName)
-	resource := schema.NewResourceData(table, nil, values)
-	for i, col := range table.Columns {
-		if err := resource.Set(col.Name, values[i]); err != nil {
-			return nil, err
+func (c *Client) syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, res chan<- message.SyncMessage) error {
+	arrowSchema := table.ToArrowSchema()
+	builder := array.NewRecordBuilder(memory.DefaultAllocator, arrowSchema)
+	transformers := transformersForSchema(arrowSchema)
+
+	colNames := make([]string, 0, len(table.Columns))
+	for _, col := range table.Columns {
+		colNames = append(colNames, pgx.Identifier{col.Name}.Sanitize())
+	}
+	query := "SELECT " + strings.Join(colNames, ",") + " FROM " + pgx.Identifier{table.Name}.Sanitize()
+	rows, err := tx.Query(ctx, query)
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	rowsInRecord := 0
+	for rows.Next() {
+		values, err := rows.Values()
+		if err != nil {
+			return err
+		}
+
+		for i, value := range values {
+			val, err := transformers[i](value)
+			if err != nil {
+				return err
+			}
+
+			s := scalar.NewScalar(arrowSchema.Field(i).Type)
+			if err := s.Set(val); err != nil {
+				return err
+			}
+
+			scalar.AppendToBuilder(builder.Field(i), s)
+		}
+
+		rowsInRecord++
+		if rowsInRecord >= c.pluginSpec.RowsPerRecord {
+			res <- &message.SyncInsert{Record: builder.NewRecord()} // NewRecord resets the builder for reuse
+			rowsInRecord = 0
 		}
 	}
-	return resource, nil
+
+	record := builder.NewRecord()
+	if record.NumRows() > 0 { // only send if there are some unsent rows
+		res <- &message.SyncInsert{Record: record}
+	}
+
+	return nil
+}
+
+func stringForTime(t pgtype.Time, unit arrow.TimeUnit) string {
+	extra := ""
+	hour := t.Microseconds / 1e6 / 60 / 60
+	minute := t.Microseconds / 1e6 / 60 % 60
+	second := t.Microseconds / 1e6 % 60
+	micros := t.Microseconds % 1e6
+	switch unit {
+	case arrow.Millisecond:
+		extra = fmt.Sprintf(".%03d", (micros)/1e3)
+	case arrow.Microsecond:
+		extra = fmt.Sprintf(".%06d", micros)
+	case arrow.Nanosecond:
+		// postgres doesn't support nanosecond precision
+		extra = fmt.Sprintf(".%06d", micros)
+	}
+
+	return fmt.Sprintf("%02d:%02d:%02d"+extra, hour, minute, second)
 }

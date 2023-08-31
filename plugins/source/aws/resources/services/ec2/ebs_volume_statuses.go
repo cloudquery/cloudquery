@@ -3,12 +3,13 @@ package ec2
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func EbsVolumesStatuses() *schema.Table {
@@ -23,24 +24,24 @@ func EbsVolumesStatuses() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "volume_arn",
-				Type:     schema.TypeString,
-				Resolver: resolveEbsVolumeStatusArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "volume_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveEbsVolumeStatusArn,
+				PrimaryKey: true,
 			},
 		},
 	}
 }
 
 func fetchEc2EbsVolumeStatuses(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Ec2
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceEc2).Ec2
 	config := ec2.DescribeVolumeStatusInput{MaxResults: aws.Int32(1000)}
 	paginator := ec2.NewDescribeVolumeStatusPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ec2.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

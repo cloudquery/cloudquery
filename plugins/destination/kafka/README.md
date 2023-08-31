@@ -1,6 +1,6 @@
 # CloudQuery Kafka Destination Plugin
 
-This destination plugin lets you sync data from a CloudQuery source to a PostgreSQL compatible database.
+This destination plugin lets you sync data from a CloudQuery source to Kafka brokers.
 
 ## Links
 

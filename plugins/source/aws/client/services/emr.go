@@ -31,4 +31,5 @@ type EmrClient interface {
 	ListSteps(context.Context, *emr.ListStepsInput, ...func(*emr.Options)) (*emr.ListStepsOutput, error)
 	ListStudioSessionMappings(context.Context, *emr.ListStudioSessionMappingsInput, ...func(*emr.Options)) (*emr.ListStudioSessionMappingsOutput, error)
 	ListStudios(context.Context, *emr.ListStudiosInput, ...func(*emr.Options)) (*emr.ListStudiosOutput, error)
+	ListSupportedInstanceTypes(context.Context, *emr.ListSupportedInstanceTypesInput, ...func(*emr.Options)) (*emr.ListSupportedInstanceTypesOutput, error)
 }

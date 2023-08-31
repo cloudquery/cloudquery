@@ -2,7 +2,7 @@
 
 This table shows data for GCP Storage Buckets.
 
-https://cloud.google.com/storage/docs/json_api/v1/buckets#resource
+https://pkg.go.dev/cloud.google.com/go/storage#BucketAttrs
 
 The primary key for this table is **name**.
 
@@ -15,36 +15,82 @@ The following tables depend on gcp_storage_buckets:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id|String|
-|name (PK)|String|
-|acl|JSON|
-|bucket_policy_only|JSON|
-|uniform_bucket_level_access|JSON|
-|public_access_prevention|Int|
-|default_object_acl|JSON|
-|default_event_based_hold|Bool|
-|predefined_acl|String|
-|predefined_default_object_acl|String|
-|location|String|
-|custom_placement_config|JSON|
-|meta_generation|Int|
-|storage_class|String|
-|created|Timestamp|
-|versioning_enabled|Bool|
-|labels|JSON|
-|requester_pays|Bool|
-|lifecycle|JSON|
-|retention_policy|JSON|
-|cors|JSON|
-|encryption|JSON|
-|logging|JSON|
-|website|JSON|
-|etag|String|
-|location_type|String|
-|project_number|Int|
-|rpo|Int|
-|autoclass|JSON|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id|`utf8`|
+|name (PK)|`utf8`|
+|acl|`json`|
+|bucket_policy_only|`json`|
+|uniform_bucket_level_access|`json`|
+|public_access_prevention|`int64`|
+|default_object_acl|`json`|
+|default_event_based_hold|`bool`|
+|predefined_acl|`utf8`|
+|predefined_default_object_acl|`utf8`|
+|location|`utf8`|
+|custom_placement_config|`json`|
+|meta_generation|`int64`|
+|storage_class|`utf8`|
+|created|`timestamp[us, tz=UTC]`|
+|versioning_enabled|`bool`|
+|labels|`json`|
+|requester_pays|`bool`|
+|lifecycle|`json`|
+|retention_policy|`json`|
+|cors|`json`|
+|encryption|`json`|
+|logging|`json`|
+|website|`json`|
+|etag|`utf8`|
+|location_type|`utf8`|
+|project_number|`int64`|
+|rpo|`int64`|
+|autoclass|`json`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Ensure that retention policies on log buckets are configured using Bucket Lock (Automated)
+
+```sql
+SELECT
+  DISTINCT
+  gsb.name AS resource_id,
+  'Ensure that retention policies on log buckets are configured using Bucket Lock (Automated)'
+    AS title,
+  gls.project_id AS project_id,
+  CASE
+  WHEN gls.destination LIKE 'storage.googleapis.com/%'
+  AND (
+      (gsb.retention_policy->>'IsLocked')::BOOL = false
+      OR (gsb.retention_policy->>'RetentionPeriod')::INT8 = 0
+    )
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  gcp_logging_sinks AS gls
+  JOIN gcp_storage_buckets AS gsb ON
+      gsb.name = replace(gls.destination, 'storage.googleapis.com/', '');
+```
+
+### Ensure that Cloud Storage buckets have uniform bucket-level access enabled (Automated)
+
+```sql
+SELECT
+  name AS resource_id,
+  'Ensure that Cloud Storage buckets have uniform bucket-level access enabled (Automated)'
+    AS title,
+  project_id AS project_id,
+  CASE
+  WHEN (uniform_bucket_level_access->>'Enabled')::BOOL = false THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  gcp_storage_buckets;
+```
+
+

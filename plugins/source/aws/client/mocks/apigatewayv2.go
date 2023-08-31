@@ -37,6 +37,16 @@ func (m *MockApigatewayv2Client) EXPECT() *MockApigatewayv2ClientMockRecorder {
 
 // GetApi mocks base method.
 func (m *MockApigatewayv2Client) GetApi(arg0 context.Context, arg1 *apigatewayv2.GetApiInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetApiOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetApi")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetApi(arg0, arg1 interface{}, arg
 
 // GetApiMapping mocks base method.
 func (m *MockApigatewayv2Client) GetApiMapping(arg0 context.Context, arg1 *apigatewayv2.GetApiMappingInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetApiMappingOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetApiMapping")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetApiMapping(arg0, arg1 interface
 
 // GetApiMappings mocks base method.
 func (m *MockApigatewayv2Client) GetApiMappings(arg0 context.Context, arg1 *apigatewayv2.GetApiMappingsInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetApiMappingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetApiMappings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetApiMappings(arg0, arg1 interfac
 
 // GetApis mocks base method.
 func (m *MockApigatewayv2Client) GetApis(arg0 context.Context, arg1 *apigatewayv2.GetApisInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetApisOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetApis")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetApis(arg0, arg1 interface{}, ar
 
 // GetAuthorizer mocks base method.
 func (m *MockApigatewayv2Client) GetAuthorizer(arg0 context.Context, arg1 *apigatewayv2.GetAuthorizerInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetAuthorizerOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAuthorizer")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetAuthorizer(arg0, arg1 interface
 
 // GetAuthorizers mocks base method.
 func (m *MockApigatewayv2Client) GetAuthorizers(arg0 context.Context, arg1 *apigatewayv2.GetAuthorizersInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetAuthorizersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAuthorizers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetAuthorizers(arg0, arg1 interfac
 
 // GetDeployment mocks base method.
 func (m *MockApigatewayv2Client) GetDeployment(arg0 context.Context, arg1 *apigatewayv2.GetDeploymentInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetDeploymentOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDeployment")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetDeployment(arg0, arg1 interface
 
 // GetDeployments mocks base method.
 func (m *MockApigatewayv2Client) GetDeployments(arg0 context.Context, arg1 *apigatewayv2.GetDeploymentsInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetDeploymentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDeployments")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetDeployments(arg0, arg1 interfac
 
 // GetDomainName mocks base method.
 func (m *MockApigatewayv2Client) GetDomainName(arg0 context.Context, arg1 *apigatewayv2.GetDomainNameInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetDomainNameOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDomainName")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetDomainName(arg0, arg1 interface
 
 // GetDomainNames mocks base method.
 func (m *MockApigatewayv2Client) GetDomainNames(arg0 context.Context, arg1 *apigatewayv2.GetDomainNamesInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetDomainNamesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDomainNames")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetDomainNames(arg0, arg1 interfac
 
 // GetIntegration mocks base method.
 func (m *MockApigatewayv2Client) GetIntegration(arg0 context.Context, arg1 *apigatewayv2.GetIntegrationInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetIntegrationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetIntegration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetIntegration(arg0, arg1 interfac
 
 // GetIntegrationResponse mocks base method.
 func (m *MockApigatewayv2Client) GetIntegrationResponse(arg0 context.Context, arg1 *apigatewayv2.GetIntegrationResponseInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetIntegrationResponseOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetIntegrationResponse")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetIntegrationResponse(arg0, arg1 
 
 // GetIntegrationResponses mocks base method.
 func (m *MockApigatewayv2Client) GetIntegrationResponses(arg0 context.Context, arg1 *apigatewayv2.GetIntegrationResponsesInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetIntegrationResponsesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetIntegrationResponses")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetIntegrationResponses(arg0, arg1
 
 // GetIntegrations mocks base method.
 func (m *MockApigatewayv2Client) GetIntegrations(arg0 context.Context, arg1 *apigatewayv2.GetIntegrationsInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetIntegrationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetIntegrations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetIntegrations(arg0, arg1 interfa
 
 // GetModel mocks base method.
 func (m *MockApigatewayv2Client) GetModel(arg0 context.Context, arg1 *apigatewayv2.GetModelInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetModelOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetModel")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetModel(arg0, arg1 interface{}, a
 
 // GetModelTemplate mocks base method.
 func (m *MockApigatewayv2Client) GetModelTemplate(arg0 context.Context, arg1 *apigatewayv2.GetModelTemplateInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetModelTemplateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetModelTemplate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetModelTemplate(arg0, arg1 interf
 
 // GetModels mocks base method.
 func (m *MockApigatewayv2Client) GetModels(arg0 context.Context, arg1 *apigatewayv2.GetModelsInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetModelsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetModels")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetModels(arg0, arg1 interface{}, 
 
 // GetRoute mocks base method.
 func (m *MockApigatewayv2Client) GetRoute(arg0 context.Context, arg1 *apigatewayv2.GetRouteInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetRouteOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRoute")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetRoute(arg0, arg1 interface{}, a
 
 // GetRouteResponse mocks base method.
 func (m *MockApigatewayv2Client) GetRouteResponse(arg0 context.Context, arg1 *apigatewayv2.GetRouteResponseInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetRouteResponseOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRouteResponse")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetRouteResponse(arg0, arg1 interf
 
 // GetRouteResponses mocks base method.
 func (m *MockApigatewayv2Client) GetRouteResponses(arg0 context.Context, arg1 *apigatewayv2.GetRouteResponsesInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetRouteResponsesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRouteResponses")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetRouteResponses(arg0, arg1 inter
 
 // GetRoutes mocks base method.
 func (m *MockApigatewayv2Client) GetRoutes(arg0 context.Context, arg1 *apigatewayv2.GetRoutesInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetRoutesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRoutes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetRoutes(arg0, arg1 interface{}, 
 
 // GetStage mocks base method.
 func (m *MockApigatewayv2Client) GetStage(arg0 context.Context, arg1 *apigatewayv2.GetStageInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetStageOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetStage")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetStage(arg0, arg1 interface{}, a
 
 // GetStages mocks base method.
 func (m *MockApigatewayv2Client) GetStages(arg0 context.Context, arg1 *apigatewayv2.GetStagesInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetStagesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetStages")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetStages(arg0, arg1 interface{}, 
 
 // GetTags mocks base method.
 func (m *MockApigatewayv2Client) GetTags(arg0 context.Context, arg1 *apigatewayv2.GetTagsInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetTags(arg0, arg1 interface{}, ar
 
 // GetVpcLink mocks base method.
 func (m *MockApigatewayv2Client) GetVpcLink(arg0 context.Context, arg1 *apigatewayv2.GetVpcLinkInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetVpcLinkOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetVpcLink")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockApigatewayv2ClientMockRecorder) GetVpcLink(arg0, arg1 interface{},
 
 // GetVpcLinks mocks base method.
 func (m *MockApigatewayv2Client) GetVpcLinks(arg0 context.Context, arg1 *apigatewayv2.GetVpcLinksInput, arg2 ...func(*apigatewayv2.Options)) (*apigatewayv2.GetVpcLinksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apigatewayv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetVpcLinks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

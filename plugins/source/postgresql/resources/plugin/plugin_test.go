@@ -2,18 +2,23 @@ package plugin
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
-	"reflect"
 	"strings"
 	"sync"
 	"testing"
 	"time"
 
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v14/arrow/array"
 	"github.com/cloudquery/cloudquery/plugins/source/postgresql/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/scalar"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/google/uuid"
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
 	"github.com/jackc/pgx/v5"
@@ -21,8 +26,11 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/jackc/pgx/v5/tracelog"
 	"github.com/rs/zerolog"
+	"github.com/stretchr/testify/require"
 	"golang.org/x/sync/errgroup"
 )
+
+var replacer = strings.NewReplacer("(", "", ")", "", " ", "_")
 
 func getTestConnection(ctx context.Context, logger zerolog.Logger, connectionString string) (*pgxpool.Pool, error) {
 	pgxConfig, err := pgxpool.ParseConfig(connectionString)
@@ -53,72 +61,130 @@ func getTestConnectionString() string {
 	return testConn
 }
 
-type pgTypeToValue struct {
+type testCase struct {
 	typeName string
 	value    any
+	expect   scalar.Scalar
 }
 
-func getPgTypesToData() []pgTypeToValue {
-	var pgTypesToData = []pgTypeToValue{
-		{"bigint", 1},
-		{"bigserial", nil},
-		{"bit", "1"},
-		{"bit(5)", "11111"},
-		{"bit varying", "1"},
-		{"bit varying(5)", "11111"},
-		{"boolean", true},
-		{"box", "((1,2),(3,4))"},
-		{"bytea", []byte("test")},
-		{"character", "a"},
-		{"character(5)", "aaaaa"},
-		{"character varying", "a"},
-		{"character varying(5)", "aaaaa"},
-		{"cidr", "10.1.2.3/32"},
-		{"circle", "<(1,2),3>"},
-		{"date", "1999-01-08"},
-		{"double precision", 1.1},
-		{"inet", "192.168.0.1/24"},
-		{"integer", 1},
-		{"interval", "1-2"},
-		{"json", `{"a":1}`},
-		{"jsonb", `{"a":1}`},
-		{"line", "{1,2,3}"},
-		{"lseg", "[(1,2),(3,4)]"},
-		{"macaddr", "08:00:2b:01:02:03"},
-		{"macaddr8", "08:00:2b:01:02:03:04:05"},
-		{"money", "$1,000.00"},
-		{"path", `[(1,2),(3,4)]`},
-		{"point", "(1,2)"},
-		{"polygon", `((1,2),(3,4))`},
-		{"real", 1.1},
-		{"smallint", 1},
-		{"smallserial", nil},
-		{"serial", nil},
-		{"text", "test"},
-		{"time without time zone", "04:05:06.789"},
-		{"time(3)", "04:05:06.789"},
-		{"time(3) without time zone", "04:05:06.789"},
-		{"timestamp", "1999-01-08 04:05:06.789"},
-		{"timestamp without time zone", "1999-01-08 04:05:06.789"},
-		{"timestamp(3)", "1999-01-08 04:05:06.789"},
-		{"timestamp(3) without time zone", "1999-01-08 04:05:06.789"},
-		{"tsquery", "a & b"},
-		{"tsvector", "'a':1 'b':2"},
-		{"uuid", uuid.New().String()},
-		{"xml", "<a>1</a>"},
+func getTestCases(serialValue int64) []testCase {
+	cidr := scalar.Inet{}
+	err := cidr.Set("10.1.2.3/32")
+	if err != nil {
+		panic(err)
 	}
-
-	return pgTypesToData
+	mac1 := scalar.Mac{}
+	err = mac1.Set("08:00:2b:01:02:03")
+	if err != nil {
+		panic(err)
+	}
+	mac2 := scalar.Mac{}
+	err = mac2.Set("08:00:2b:01:02:03:04:05")
+	if err != nil {
+		panic(err)
+	}
+	inet := scalar.Inet{}
+	err = inet.Set("192.168.0.1/24")
+	if err != nil {
+		panic(err)
+	}
+	timeMicrosecond := scalar.Time{
+		Unit: arrow.Microsecond,
+	}
+	err = timeMicrosecond.Set("04:05:06.789000")
+	if err != nil {
+		panic(err)
+	}
+	timeMillisecond := scalar.Time{
+		Int: scalar.Int{
+			BitWidth: 32,
+		},
+		Unit: arrow.Millisecond,
+	}
+	err = timeMillisecond.Set("04:05:06.789")
+	if err != nil {
+		panic(err)
+	}
+	timestamp := scalar.Timestamp{}
+	err = timestamp.Set("1999-01-08 04:05:06.789")
+	if err != nil {
+		panic(err)
+	}
+	timestampMillisecond := scalar.Timestamp{
+		Type: &arrow.TimestampType{
+			Unit:     arrow.Millisecond,
+			TimeZone: "UTC",
+		},
+	}
+	err = timestampMillisecond.Set("1999-01-08 04:05:06.789")
+	if err != nil {
+		panic(err)
+	}
+	uuidData := scalar.UUID{}
+	err = uuidData.Set(uuid.New())
+	if err != nil {
+		panic(err)
+	}
+	return []testCase{
+		{"int", 1, &scalar.Int{Value: 1, Valid: true, BitWidth: 32}},
+		{"bigint", 1, &scalar.Int{Value: 1, Valid: true, BitWidth: 64}},
+		{"bigserial", nil, &scalar.Int{Value: serialValue, Valid: true, BitWidth: 64}},
+		{"bit", "1", &scalar.String{Value: "1", Valid: true}},
+		{"bit(5)", "11111", &scalar.String{Value: "11111", Valid: true}},
+		{"bit varying", "1", &scalar.String{Value: "1", Valid: true}},
+		{"bit varying(5)", "11111", &scalar.String{Value: "11111", Valid: true}},
+		{"boolean", true, &scalar.Bool{Value: true, Valid: true}},
+		{"box", "((1,2),(3,4))", &scalar.String{Value: "(3,4),(1,2)", Valid: true}},
+		{"bytea", []byte("test"), &scalar.Binary{Value: []byte("test"), Valid: true}},
+		{"character", "a", &scalar.String{Value: "a", Valid: true}},
+		{"character(5)", "aaaaa", &scalar.String{Value: "aaaaa", Valid: true}},
+		{"character varying", "a", &scalar.String{Value: "a", Valid: true}},
+		{"character varying(5)", "aaaaa", &scalar.String{Value: "aaaaa", Valid: true}},
+		{"cidr", "10.1.2.3/32", &cidr},
+		{"circle", "<(1,2),3>", &scalar.String{Value: "<(1,2),3>", Valid: true}},
+		{"date", "1999-01-08", &scalar.Date32{Value: 10599, Valid: true}},
+		{"double precision", 1.1, &scalar.Float{Value: 1.1, Valid: true, BitWidth: 64}},
+		{"inet", "192.168.0.1/24", &inet},
+		{"integer", 1, &scalar.Int{Value: 1, Valid: true, BitWidth: 32}},
+		{"interval", "1-2", &scalar.String{Value: "14 mon 00:00:00.000000", Valid: true}},
+		{"json", `{"a":1}`, &scalar.JSON{Value: []byte(`{"a":1}`), Valid: true}},
+		{"jsonb", `{"a":1}`, &scalar.JSON{Value: []byte(`{"a":1}`), Valid: true}},
+		{"line", "{1,2,3}", &scalar.String{Value: "{1,2,3}", Valid: true}},
+		{"lseg", "[(1,2),(3,4)]", &scalar.String{Value: "[(1,2),(3,4)]", Valid: true}},
+		{"macaddr", "08:00:2b:01:02:03", &mac1},
+		{"macaddr8", "08:00:2b:01:02:03:04:05", &mac2},
+		{"money", "$1,000.00", &scalar.String{Value: "$1,000.00", Valid: true}},
+		{"path", `[(1,2),(3,4)]`, &scalar.String{Value: "[(1,2),(3,4)]", Valid: true}},
+		{"point", "(1,2)", &scalar.String{Value: "(1,2)", Valid: true}},
+		{"polygon", `((1,2),(3,4))`, &scalar.String{Value: "((1,2),(3,4))", Valid: true}},
+		{"real", 1.1, &scalar.Float{Value: 1.100000023841858, Valid: true, BitWidth: 32}},
+		{"smallint", 1, &scalar.Int{Value: 1, Valid: true, BitWidth: 16}},
+		{"smallserial", nil, &scalar.Int{Value: serialValue, Valid: true, BitWidth: 16}},
+		{"serial", nil, &scalar.Int{Value: serialValue, Valid: true, BitWidth: 32}},
+		{"text", "test", &scalar.String{Value: "test", Valid: true}},
+		{"time without time zone", "04:05:06.789", &timeMicrosecond},
+		{"time(3)", "04:05:06.789", &timeMillisecond},
+		{"time(3) without time zone", "04:05:06.789", &timeMillisecond},
+		{"timestamp", "1999-01-08 04:05:06.789", &timestamp},
+		{"timestamp without time zone", "1999-01-08 04:05:06.789", &timestamp},
+		{"timestamp(3)", "1999-01-08 04:05:06.789", &timestampMillisecond},
+		{"timestamp(3) without time zone", "1999-01-08 04:05:06.789", &timestampMillisecond},
+		{"tsquery", "a & b", &scalar.String{Value: "'a' & 'b'", Valid: true}},
+		{"tsvector", "'a':1 'b':2", &scalar.String{Value: "'a':1 'b':2", Valid: true}},
+		{"uuid", &uuidData, &uuidData},
+		{"xml", "<a>1</a>", &scalar.String{Value: "<a>1</a>", Valid: true}},
+	}
 }
 
 func createTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string) error {
 	var sb strings.Builder
 	sb.WriteString("CREATE TABLE ")
-	sb.WriteString(tableName)
+	sb.WriteString(pgx.Identifier{tableName}.Sanitize())
 	sb.WriteString(" (")
-	columns := getPgTypesToData()
+
+	columns := getTestCases(0)
 	for i, col := range columns {
-		sb.WriteString(pgx.Identifier{col.typeName + "_type"}.Sanitize())
+		sb.WriteString(pgx.Identifier{replacer.Replace(col.typeName) + "_type"}.Sanitize())
 		sb.WriteString(" ")
 		sb.WriteString(col.typeName)
 		if col.typeName == "uuid" {
@@ -135,18 +201,48 @@ func createTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string) 
 	return nil
 }
 
-func insertTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string, columns []pgTypeToValue) error {
+func createTableWithUniqueKeys(ctx context.Context, conn *pgxpool.Pool, tableName string) error {
+	var query = `
+	create table %s (
+		column1 int primary key,
+		column2 int unique,
+		column3 int unique,
+		column4 int unique,
+		column5 int unique,
+		column6 int unique,
+		column7 int unique,
+		column8 int unique,
+		column9 int unique,
+		column10 int unique,
+		column11 int unique,
+		column12 int unique,
+		column13 int unique,
+		column14 int unique,
+		column15 int unique,
+		column16 int,
+		column17 int,
+		unique(column16, column17)
+	 )
+ `
+
+	if _, err := conn.Exec(ctx, fmt.Sprintf(query, tableName)); err != nil {
+		return err
+	}
+	return nil
+}
+
+func insertTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string, testCases []testCase) error {
 	var query = ""
-	query += "INSERT INTO " + tableName + " ("
-	for _, col := range columns {
+	query += "INSERT INTO " + pgx.Identifier{tableName}.Sanitize() + " ("
+	for _, col := range testCases {
 		if col.value == nil {
 			continue
 		}
-		query += pgx.Identifier{col.typeName + "_type"}.Sanitize() + ", "
+		query += pgx.Identifier{replacer.Replace(col.typeName) + "_type"}.Sanitize() + ", "
 	}
 	query = query[:len(query)-2] + ") VALUES ("
 	dataIndex := 0
-	for _, col := range columns {
+	for _, col := range testCases {
 		if col.value == nil {
 			continue
 		}
@@ -156,7 +252,7 @@ func insertTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string, 
 	query = query[:len(query)-2] + ")"
 	pgData := make([]any, dataIndex)
 	i := 0
-	for _, col := range columns {
+	for _, col := range testCases {
 		if col.value == nil {
 			continue
 		}
@@ -170,68 +266,80 @@ func insertTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string, 
 	return nil
 }
 
-func getExpectedData(uuidValue any, serialValue int64) schema.CQTypes {
-	cidr := schema.CIDR{}
-	_ = cidr.Set("10.1.2.3/32")
-	mac1 := schema.Macaddr{}
-	_ = mac1.Set("08:00:2b:01:02:03")
-	mac2 := schema.Macaddr{}
-	_ = mac2.Set("08:00:2b:01:02:03:04:05")
-	inet := schema.Inet{}
-	_ = inet.Set("192.168.0.1/24")
-	timestamp := schema.Timestamptz{}
-	_ = timestamp.Set("1999-01-08 04:05:06.789")
-	uuidData := schema.UUID{}
-	_ = uuidData.Set(uuidValue)
-	expectedData := schema.CQTypes{
-		&schema.Int8{Int: 1, Status: schema.Present},
-		&schema.Int8{Int: serialValue, Status: schema.Present},
-		&schema.Text{Str: "1", Status: schema.Present},
-		&schema.Text{Str: "11111", Status: schema.Present},
-		&schema.Text{Str: "1", Status: schema.Present},
-		&schema.Text{Str: "11111", Status: schema.Present},
-		&schema.Bool{Bool: true, Status: schema.Present},
-		&schema.Text{Str: "(3,4),(1,2)", Status: schema.Present},
-		&schema.Bytea{Bytes: []byte("test"), Status: schema.Present},
-		&schema.Text{Str: "a", Status: schema.Present},
-		&schema.Text{Str: "aaaaa", Status: schema.Present},
-		&schema.Text{Str: "a", Status: schema.Present},
-		&schema.Text{Str: "aaaaa", Status: schema.Present},
-		&cidr,
-		&schema.Text{Str: "<(1,2),3>", Status: schema.Present},
-		&schema.Text{Str: "1999-01-08 00:00:00 +0000 UTC", Status: schema.Present},
-		&schema.Float8{Float: 1.1, Status: schema.Present},
-		&inet,
-		&schema.Int8{Int: 1, Status: schema.Present},
-		&schema.Text{Str: "14 mon 00:00:00.000000", Status: schema.Present},
-		&schema.JSON{Bytes: []byte(`{"a":1}`), Status: schema.Present},
-		&schema.JSON{Bytes: []byte(`{"a":1}`), Status: schema.Present},
-		&schema.Text{Str: "{1,2,3}", Status: schema.Present},
-		&schema.Text{Str: "[(1,2),(3,4)]", Status: schema.Present},
-		&mac1,
-		&mac2,
-		&schema.Text{Str: "$1,000.00", Status: schema.Present},
-		&schema.Text{Str: "[(1,2),(3,4)]", Status: schema.Present},
-		&schema.Text{Str: "(1,2)", Status: schema.Present},
-		&schema.Text{Str: "((1,2),(3,4))", Status: schema.Present},
-		&schema.Float8{Float: 1.100000023841858, Status: schema.Present},
-		&schema.Int8{Int: 1, Status: schema.Present},
-		&schema.Int8{Int: serialValue, Status: schema.Present},
-		&schema.Int8{Int: serialValue, Status: schema.Present},
-		&schema.Text{Str: "test", Status: schema.Present},
-		&schema.Text{Str: "04:05:06.789000", Status: schema.Present},
-		&schema.Text{Str: "04:05:06.789000", Status: schema.Present},
-		&schema.Text{Str: "04:05:06.789000", Status: schema.Present},
-		&timestamp,
-		&timestamp,
-		&timestamp,
-		&timestamp,
-		&schema.Text{Str: "'a' & 'b'", Status: schema.Present},
-		&schema.Text{Str: "'a':1 'b':2", Status: schema.Present},
-		&uuidData,
-		&schema.Text{Str: "<a>1</a>", Status: schema.Present},
+func getValue(arr arrow.Array, i int) (any, error) {
+	if arr.IsNull(i) {
+		return nil, nil
 	}
-	return expectedData
+	switch a := arr.(type) {
+	case *array.Boolean:
+		return a.Value(i), nil
+	case *array.Int8:
+		return a.Value(i), nil
+	case *array.Int16:
+		return a.Value(i), nil
+	case *array.Int32:
+		return a.Value(i), nil
+	case *array.Int64:
+		return a.Value(i), nil
+	case *array.Uint8:
+		return a.Value(i), nil
+	case *array.Uint16:
+		return a.Value(i), nil
+	case *array.Uint32:
+		return a.Value(i), nil
+	case *array.Uint64:
+		return a.Value(i), nil
+	case *array.Float16:
+		return a.Value(i), nil
+	case *array.Float32:
+		return a.Value(i), nil
+	case *array.Float64:
+		return a.Value(i), nil
+	case *array.String:
+		return a.Value(i), nil
+	case *array.LargeString:
+		return a.Value(i), nil
+	case *array.Binary:
+		return a.Value(i), nil
+	case *array.LargeBinary:
+		return a.Value(i), nil
+	case *array.FixedSizeBinary:
+		return a.Value(i), nil
+	case *types.InetArray:
+		return a.Value(i), nil
+	case *array.Timestamp:
+		toTime, err := a.DataType().(*arrow.TimestampType).GetToTimeFunc()
+		if err != nil {
+			return nil, err
+		}
+		return toTime(a.Value(i)), nil
+	case *types.UUIDArray:
+		bUUID, err := a.Value(i).MarshalBinary()
+		if err != nil {
+			return nil, err
+		}
+		return bUUID, nil
+	default:
+		return a.ValueStr(i), nil
+	}
+}
+
+func assertRecord(t *testing.T, actualRecord arrow.Record, expected []testCase) {
+	if len(expected) != int(actualRecord.NumCols()) {
+		t.Fatalf("expected record to have %d columns, got %d", len(expected), actualRecord.NumCols())
+	}
+	sc := actualRecord.Schema()
+	for i, val := range expected {
+		actualScalar := scalar.NewScalar(sc.Field(i).Type)
+		actualVal, err := getValue(actualRecord.Column(i), 0)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if err := actualScalar.Set(actualVal); err != nil {
+			t.Fatal(err)
+		}
+		require.Equal(t, val.expect.String(), actualScalar.String(), "column %d", i)
+	}
 }
 
 func TestPlugin(t *testing.T) {
@@ -241,18 +349,15 @@ func TestPlugin(t *testing.T) {
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	p.SetLogger(l)
-	spec := specs.Source{
-		Name:         "test_pg_source",
-		Path:         "cloudquery/postgresql",
-		Version:      "vdevelopment",
-		Destinations: []string{"test"},
-		Tables:       []string{"test_pg_source"},
-		Spec: client.Spec{
-			ConnectionString: getTestConnectionString(),
-			PgxLogLevel:      client.LogLevelTrace,
-		},
+	spec := client.Spec{
+		ConnectionString: getTestConnectionString(),
+		PgxLogLevel:      client.LogLevelTrace,
 	}
-	conn, err := getTestConnection(ctx, l, spec.Spec.(client.Spec).ConnectionString)
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	conn, err := getTestConnection(ctx, l, spec.ConnectionString)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -265,7 +370,7 @@ func TestPlugin(t *testing.T) {
 	if err := createTestTable(ctx, conn, testTable); err != nil {
 		t.Fatal(err)
 	}
-	data := getPgTypesToData()
+	data := getTestCases(1)
 	err = insertTestTable(ctx, conn, testTable, data)
 	if err != nil {
 		t.Fatal(err)
@@ -278,26 +383,30 @@ func TestPlugin(t *testing.T) {
 	if err := createTestTable(ctx, conn, otherTable); err != nil {
 		t.Fatal(err)
 	}
-	err = insertTestTable(ctx, conn, otherTable, getPgTypesToData())
+	err = insertTestTable(ctx, conn, otherTable, getTestCases(2))
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	// Init the plugin so we can call migrate
-	if err := p.Init(ctx, spec); err != nil {
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
 		t.Fatal(err)
 	}
-	res := make(chan *schema.Resource, 1)
+	res := make(chan message.SyncMessage, 1)
 	g := errgroup.Group{}
 	g.Go(func() error {
 		defer close(res)
-		return p.Sync(ctx, res)
+		opts := plugin.SyncOptions{Tables: []string{testTable}}
+		return p.Sync(ctx, opts, res)
 	})
-	var resource *schema.Resource
+	var actualRecord arrow.Record
 	totalResources := 0
 	for r := range res {
-		resource = r
-		totalResources++
+		m, ok := r.(*message.SyncInsert)
+		if ok {
+			actualRecord = m.Record
+			totalResources++
+		}
 	}
 	err = g.Wait()
 	if err != nil {
@@ -306,15 +415,8 @@ func TestPlugin(t *testing.T) {
 	if totalResources != 1 {
 		t.Fatalf("expected 1 resource, got %d", totalResources)
 	}
-	gotData := resource.GetValues()
-	expectedData := getExpectedData(data[44].value, 1)
 
-	for i, v := range gotData {
-		expected := expectedData[i]
-		if !reflect.DeepEqual(v, expected) {
-			t.Fatalf("expected %v, got %v", expected, v)
-		}
-	}
+	assertRecord(t, actualRecord, data)
 }
 
 func TestPluginCDC(t *testing.T) {
@@ -322,25 +424,23 @@ func TestPluginCDC(t *testing.T) {
 	ctx := context.Background()
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
-	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+	).Level(zerolog.WarnLevel).With().Timestamp().Logger()
 	p.SetLogger(l)
-	spec := specs.Source{
-		Name:         "test_pg_source",
-		Path:         "cloudquery/postgresql",
-		Version:      "vdevelopment",
-		Destinations: []string{"test"},
-		Tables:       []string{"test_pg_source"},
-		Spec: &client.Spec{
-			ConnectionString: getTestConnectionString() + "&replication=database",
-			PgxLogLevel:      client.LogLevelTrace,
-		},
+	spec := client.Spec{
+		ConnectionString: getTestConnectionString() + "&replication=database",
+		PgxLogLevel:      client.LogLevelTrace,
+		CDCId:            "test_pg_source",
+	}
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
 	}
 	conn, err := getTestConnection(ctx, l, getTestConnectionString())
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer conn.Close()
-	if _, err := conn.Exec(ctx, "DROP TABLE IF EXISTS test_pg_source"); err != nil {
+	if _, err := conn.Exec(ctx, "DROP TABLE IF EXISTS \"user\""); err != nil {
 		t.Fatal(err)
 	}
 	var pgErr *pgconn.PgError
@@ -350,23 +450,22 @@ func TestPluginCDC(t *testing.T) {
 		}
 	}
 
-	testTable := "test_pg_source"
+	testTable := "user"
 
 	if err := createTestTable(ctx, conn, testTable); err != nil {
 		t.Fatal(err)
 	}
-	data := getPgTypesToData()
+	data := getTestCases(1)
 	err = insertTestTable(ctx, conn, testTable, data)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	spec.Spec.(*client.Spec).CDC = true
 	// Init the plugin so we can call migrate
-	if err := p.Init(ctx, spec); err != nil {
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
 		t.Fatal(err)
 	}
-	res := make(chan *schema.Resource, 10)
+	res := make(chan message.SyncMessage, 10)
 	var wg sync.WaitGroup
 	var syncErr error
 	syncCtx, cancel := context.WithTimeout(ctx, 15*time.Second)
@@ -376,9 +475,12 @@ func TestPluginCDC(t *testing.T) {
 	go func() {
 		defer wg.Done()
 		defer close(res)
-		syncErr = p.Sync(syncCtx, res)
+		opts := plugin.SyncOptions{
+			Tables: []string{testTable},
+		}
+		syncErr = p.Sync(syncCtx, opts, res)
 	}()
-	data2 := getPgTypesToData()
+	data2 := getTestCases(2)
 	time.AfterFunc(2*time.Second, func() {
 		err = insertTestTable(ctx, conn, testTable, data2)
 		if err != nil {
@@ -386,35 +488,24 @@ func TestPluginCDC(t *testing.T) {
 		}
 	})
 
-	totalResources := 0
+	records := make([]arrow.Record, 0)
 	for r := range res {
-		gotData := r.GetValues()
-		if totalResources == 0 {
-			expectedData := getExpectedData(data[44].value, 1)
-			for i, v := range gotData {
-				expected := expectedData[i]
-				if !reflect.DeepEqual(v, expected) {
-					t.Fatalf("expected %v, got %v", expected, v)
-				}
-			}
-		} else {
-			expectedData := getExpectedData(data2[44].value, 2)
-			for i, v := range gotData {
-				expected := expectedData[i]
-				if !reflect.DeepEqual(v, expected) {
-					t.Fatalf("expected %v, got %v", expected, v)
-				}
-			}
+		m, ok := r.(*message.SyncInsert)
+		if ok {
+			record := m.Record
+			records = append(records, record)
 		}
-		totalResources++
 	}
 	wg.Wait()
-	if totalResources != 2 {
-		t.Fatalf("expected 2 resource, got %d", totalResources)
+	if len(records) != 2 {
+		t.Fatalf("expected 2 resource, got %d", len(records))
 	}
 	if syncErr != nil && !IsContextDeadlineExceeded(syncErr) {
 		t.Fatal(syncErr)
 	}
+
+	assertRecord(t, records[0], data)
+	assertRecord(t, records[1], data2)
 }
 
 func IsContextDeadlineExceeded(err error) bool {
@@ -427,4 +518,77 @@ func IsContextDeadlineExceeded(err error) bool {
 		err = errors.Unwrap(err)
 	}
 	return deadlineExceeded
+}
+
+func TestMigrate(t *testing.T) {
+	p := Plugin()
+	ctx := context.Background()
+	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
+		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
+	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+	p.SetLogger(l)
+	spec := client.Spec{
+		ConnectionString: getTestConnectionString(),
+		PgxLogLevel:      client.LogLevelTrace,
+	}
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	conn, err := getTestConnection(ctx, l, spec.ConnectionString)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer conn.Close()
+
+	testTable := "test_pg_migrate"
+	if _, err := conn.Exec(ctx, "DROP TABLE IF EXISTS test_pg_migrate"); err != nil {
+		t.Fatal(err)
+	}
+	if err := createTableWithUniqueKeys(ctx, conn, testTable); err != nil {
+		t.Fatal(err)
+	}
+
+	// Init the plugin so we can call migrate
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
+		t.Fatal(err)
+	}
+	res := make(chan message.SyncMessage, 1)
+	g := errgroup.Group{}
+	g.Go(func() error {
+		defer close(res)
+		opts := plugin.SyncOptions{Tables: []string{testTable}}
+		return p.Sync(ctx, opts, res)
+	})
+	var table *schema.Table
+	for r := range res {
+		m, ok := r.(*message.SyncMigrateTable)
+		if ok {
+			table = m.Table
+		}
+	}
+	err = g.Wait()
+	if err != nil {
+		t.Fatal("got unexpected error:", err)
+	}
+
+	require.Equal(t, schema.ColumnList{
+		{Name: "column1", Type: &arrow.Int32Type{}, PrimaryKey: true, Unique: true, NotNull: true},
+		{Name: "column2", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column3", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column4", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column5", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column6", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column7", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column8", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column9", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column10", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column11", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column12", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column13", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column14", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column15", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+		{Name: "column16", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: false, NotNull: false},
+		{Name: "column17", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: false, NotNull: false},
+	}, table.Columns)
 }

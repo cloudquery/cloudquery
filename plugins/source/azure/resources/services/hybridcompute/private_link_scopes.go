@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func PrivateLinkScopes() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_hybridcompute_private_link_scopes",
-		Resolver:    fetchPrivateLinkScopes,
-		Description: "https://learn.microsoft.com/en-us/rest/api/hybridcompute/private-link-scopes/list?tabs=HTTP#hybridcomputeprivatelinkscope",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_hybridcompute_private_link_scopes", client.Namespacemicrosoft_hybridcompute),
-		Transform:   transformers.TransformWithStruct(&armhybridcompute.PrivateLinkScope{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_hybridcompute_private_link_scopes",
+		Resolver:             fetchPrivateLinkScopes,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/hybridcompute/private-link-scopes/list?tabs=HTTP#hybridcomputeprivatelinkscope",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_hybridcompute_private_link_scopes", client.Namespacemicrosoft_hybridcompute),
+		Transform:            transformers.TransformWithStruct(&armhybridcompute.PrivateLinkScope{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

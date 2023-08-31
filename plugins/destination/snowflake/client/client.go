@@ -2,47 +2,43 @@ package client
 
 import (
 	"context"
+	"database/sql"
+	"encoding/json"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/rs/zerolog"
 
-	"database/sql"
-
-	"github.com/snowflakedb/gosnowflake"
+	_ "github.com/snowflakedb/gosnowflake" // "snowflake" database/sql driver.
 )
 
 type Client struct {
-	destination.UnimplementedUnmanagedWriter
-	destination.DefaultReverseTransformer
-	db      *sql.DB
-	logger  zerolog.Logger
-	spec    specs.Destination
-	metrics destination.Metrics
+	plugin.UnimplementedSource
+	db     *sql.DB
+	logger zerolog.Logger
+	spec   Spec
+	writer *batchwriter.BatchWriter
 }
 
-func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination) (destination.Client, error) {
-	if destSpec.WriteMode != specs.WriteModeAppend {
-		return nil, fmt.Errorf("snowflake destination only supports append mode")
-	}
+func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
+	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "sf-dest").Logger(),
 	}
-	var spec Spec
-	c.spec = destSpec
-	if err := destSpec.UnmarshalSpec(&spec); err != nil {
+	if err := json.Unmarshal(spec, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal snowflake spec: %w", err)
 	}
-	spec.SetDefaults()
-	if err := spec.Validate(); err != nil {
-		return nil, err
-	}
-	_, err := gosnowflake.ParseDSN(spec.ConnectionString)
+	c.spec.SetDefaults()
+	c.writer, err = batchwriter.New(c, batchwriter.WithLogger(logger), batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))
 	if err != nil {
 		return nil, err
 	}
-	db, err := sql.Open("snowflake", spec.ConnectionString)
+	dsn, err := c.spec.DSN()
+	if err != nil {
+		return nil, err
+	}
+	db, err := sql.Open("snowflake", dsn+"&BINARY_INPUT_FORMAT=BASE64&BINARY_OUTPUT_FORMAT=BASE64")
 	if err != nil {
 		return nil, err
 	}
@@ -57,11 +53,17 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 }
 
 func (c *Client) Close(ctx context.Context) error {
-	var err error
 	if c.db == nil {
 		return fmt.Errorf("client already closed or not initialized")
 	}
-	err = c.db.Close()
+
+	if err := c.writer.Close(ctx); err != nil {
+		_ = c.db.Close()
+		c.db = nil
+		return fmt.Errorf("failed to close writer: %w", err)
+	}
+
+	err := c.db.Close()
 	c.db = nil
 	return err
 }

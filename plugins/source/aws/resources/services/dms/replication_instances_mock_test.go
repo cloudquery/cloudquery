@@ -8,16 +8,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildDmsReplicationInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockDatabasemigrationserviceClient(ctrl)
 	l := types.ReplicationInstance{}
-	if err := faker.FakeObject(&l); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&l))
+
 	l.ReplicationInstancePrivateIpAddress = aws.String("1.2.3.4") //nolint
 	l.ReplicationInstancePrivateIpAddresses = []string{"1.2.3.4"}
 	l.ReplicationInstancePublicIpAddress = aws.String("1.2.3.4") //nolint
@@ -27,9 +27,8 @@ func buildDmsReplicationInstances(t *testing.T, ctrl *gomock.Controller) client.
 			ReplicationInstances: []types.ReplicationInstance{l},
 		}, nil)
 	lt := types.Tag{}
-	if err := faker.FakeObject(&lt); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&lt))
+
 	lt.ResourceArn = l.ReplicationInstanceArn
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&databasemigrationservice.ListTagsForResourceOutput{

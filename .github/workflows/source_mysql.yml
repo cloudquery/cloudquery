@@ -1,5 +1,9 @@
 name: Source Plugin MySQL Workflow
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     paths:
@@ -16,23 +20,10 @@ jobs:
   plugins-source-mysql:
     timeout-minutes: 30
     name: "plugins/source/mysql"
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     defaults:
       run:
         working-directory: ./plugins/source/mysql
-    services:
-      postgres:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: test
-          MYSQL_DATABASE: cloudquery
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd "mysqladmin ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - uses: actions/checkout@v3
         with:
@@ -51,15 +42,19 @@ jobs:
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
           skip-build-cache: true
-      - name: Get dependencies
-        run: go get -t -d ./...
       - name: Build
         run: go build .
+      # We don't use services as we need to pass additional arguments to the container
+      - name: Spin up MySQL
+        run: |
+          docker run --platform linux/amd64 -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=test -e MYSQL_DATABASE=cloudquery -d mysql:5.7 --innodb_log_file_size=512M --innodb_strict_mode=0
+          sudo apt update && sudo apt install wait-for-it -y
+          wait-for-it -h localhost -p 3306
       - name: Test mysql
         run: make test
   validate-release:
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     env:
       CGO_ENABLED: 0
     steps:
@@ -72,9 +67,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/source/mysql/go.sum') }}
+          key: ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/source/mysql/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.5-release-cache-plugins-source-mysql
+            ${{ runner.os }}-go-1.20.5-release-cache-plugins-source-mysql
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3

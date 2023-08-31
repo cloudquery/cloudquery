@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Suppressions() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_advisor_suppressions",
-		Description: "https://learn.microsoft.com/en-us/rest/api/advisor/suppressions/list?tabs=HTTP#suppressioncontractlistresult",
-		Resolver:    fetchSuppressions,
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_advisor_suppressions", client.Namespacemicrosoft_advisor),
-		Transform:   transformers.TransformWithStruct(&armadvisor.SuppressionContract{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_advisor_suppressions",
+		Description:          "https://learn.microsoft.com/en-us/rest/api/advisor/suppressions/list?tabs=HTTP#suppressioncontractlistresult",
+		Resolver:             fetchSuppressions,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_advisor_suppressions", client.Namespacemicrosoft_advisor),
+		Transform:            transformers.TransformWithStruct(&armadvisor.SuppressionContract{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

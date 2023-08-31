@@ -3,11 +3,12 @@ package xray
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/xray"
 	"github.com/aws/aws-sdk-go-v2/service/xray/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func ResourcePolicies() *schema.Table {
@@ -22,29 +23,28 @@ func ResourcePolicies() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:     "policy_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PolicyName"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "policy_name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("PolicyName"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "policy_revision_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PolicyRevisionId"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "policy_revision_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("PolicyRevisionId"),
+				PrimaryKey: true,
 			},
 		},
 	}
 }
 
 func fetchXrayResourcePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	paginator := xray.NewListResourcePoliciesPaginator(meta.(*client.Client).Services().Xray, nil)
+	cl := meta.(*client.Client)
+	paginator := xray.NewListResourcePoliciesPaginator(cl.Services(client.AWSServiceXray).Xray, nil)
 	for paginator.HasMorePages() {
-		v, err := paginator.NextPage(ctx)
+		v, err := paginator.NextPage(ctx, func(o *xray.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

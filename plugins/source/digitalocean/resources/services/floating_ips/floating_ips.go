@@ -1,24 +1,24 @@
 package floating_ips
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/digitalocean/godo"
 )
 
 func FloatingIps() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_floating_ips",
-		Resolver:  fetchFloatingIpsFloatingIps,
-		Transform: transformers.TransformWithStruct(&godo.FloatingIP{}),
+		Name:        "digitalocean_floating_ips",
+		Description: "Deprecated. https://docs.digitalocean.com/reference/api/api-reference/#tag/Floating-IPs",
+		Resolver:    fetchFloatingIpsFloatingIps,
+		Transform:   transformers.TransformWithStruct(&godo.FloatingIP{}),
 		Columns: []schema.Column{
 			{
-				Name:     "ip",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("IP"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "ip",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("IP"),
+				PrimaryKey: true,
 			},
 		},
 	}

@@ -5,15 +5,15 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/resiliencehub"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildAppAssessments(t *testing.T, mock *mocks.MockResiliencehubClient) {
 	var l resiliencehub.ListAppAssessmentsOutput
-	if err := faker.FakeObject(&l); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&l))
+
 	l.NextToken = nil
 	mock.EXPECT().ListAppAssessments(
 		gomock.Any(),
@@ -22,9 +22,7 @@ func buildAppAssessments(t *testing.T, mock *mocks.MockResiliencehubClient) {
 	).Return(&l, nil)
 
 	var d resiliencehub.DescribeAppAssessmentOutput
-	if err := faker.FakeObject(&d); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&d))
 
 	mock.EXPECT().DescribeAppAssessment(
 		gomock.Any(),

@@ -14,16 +14,14 @@ This table depends on [azure_compute_capacity_reservation_groups](azure_compute_
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|subscription_id|String|
-|location|String|
-|sku|JSON|
-|properties|JSON|
-|tags|JSON|
-|zones|StringArray|
-|id (PK)|String|
-|name|String|
-|type|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|subscription_id|`utf8`|
+|location|`utf8`|
+|sku|`json`|
+|properties|`json`|
+|tags|`json`|
+|zones|`list<item: utf8, nullable>`|
+|id (PK)|`utf8`|
+|name|`utf8`|
+|type|`utf8`|

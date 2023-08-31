@@ -1,32 +1,32 @@
 package client
 
 import (
+	"context"
+	"encoding/json"
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 
-var migrateStrategy = destination.MigrateStrategy{
-	AddColumn:           specs.MigrateModeSafe,
-	AddColumnNotNull:    specs.MigrateModeForced,
-	RemoveColumn:        specs.MigrateModeSafe,
-	RemoveColumnNotNull: specs.MigrateModeForced,
-	ChangeColumn:        specs.MigrateModeForced,
-}
-
 func TestPlugin(t *testing.T) {
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin("sqlite", "development", New)
-		},
-		specs.Destination{
-			Spec: &Spec{
-				ConnectionString: ":memory:",
+	ctx := context.Background()
+	p := plugin.NewPlugin("sqlite", "development", New)
+	spec := Spec{
+		ConnectionString: ":memory:",
+	}
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
+		t.Fatal(err)
+	}
+	plugin.TestWriterSuiteRunner(t,
+		p,
+		plugin.WriterTestSuiteTests{
+			SafeMigrations: plugin.SafeMigrations{
+				AddColumn:    true,
+				RemoveColumn: true,
 			},
-		},
-		destination.PluginTestSuiteTests{
-			MigrateStrategyOverwrite: migrateStrategy,
-			MigrateStrategyAppend:    migrateStrategy,
 		})
 }

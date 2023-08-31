@@ -4,8 +4,10 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -36,18 +38,20 @@ func replaceTransformer(field reflect.StructField) (string, error) {
 	return name, nil
 }
 
-func typeTransformer(field reflect.StructField) (schema.ValueType, error) {
+func typeTransformer(field reflect.StructField) (arrow.DataType, error) {
 	switch reflect.New(field.Type).Elem().Interface().(type) {
 	case *timestamppb.Timestamp,
 		timestamppb.Timestamp:
-		return schema.TypeTimestamp, nil
+		return arrow.FixedWidthTypes.Timestamp_us, nil
 	case *durationpb.Duration,
 		durationpb.Duration:
-		return schema.TypeInt, nil
+		return arrow.PrimitiveTypes.Int64, nil
 	case protoreflect.Enum:
-		return schema.TypeString, nil
+		return arrow.BinaryTypes.String, nil
+	case nil:
+		return cqtypes.NewJSONType(), nil
 	default:
-		return schema.TypeInvalid, nil
+		return nil, nil
 	}
 }
 

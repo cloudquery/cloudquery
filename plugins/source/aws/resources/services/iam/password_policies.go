@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam/models"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func PasswordPolicies() *schema.Table {
@@ -26,11 +26,13 @@ func PasswordPolicies() *schema.Table {
 
 func fetchIamPasswordPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config iam.GetAccountPasswordPolicyInput
-	c := meta.(*client.Client)
-	svc := c.Services().Iam
-	response, err := svc.GetAccountPasswordPolicy(ctx, &config)
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceIam).Iam
+	response, err := svc.GetAccountPasswordPolicy(ctx, &config, func(options *iam.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
+		if cl.IsNotFoundError(err) {
 			res <- models.PasswordPolicyWrapper{PolicyExists: false}
 			return nil
 		}

@@ -1,0 +1,23 @@
+kind: source
+spec:
+  name: aws
+  version: v4.6.1
+  destinations: [postgresql]
+  path: cloudquery/aws
+  tables: [test]
+---
+kind: source
+spec:
+  name: azure
+  version: v1.3.3
+  destinations: [postgresql]
+  path: cloudquery/azure
+  tables: [test]
+---
+kind: destination
+spec:
+  name: postgresql
+  path: cloudquery/postgresql
+  version: v1.6.3
+  spec:
+    connection_string: postgresql://postgres:pass@localhost:5432/postgres

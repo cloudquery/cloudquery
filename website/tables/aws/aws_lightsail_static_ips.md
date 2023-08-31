@@ -10,18 +10,36 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|attached_to|String|
-|created_at|Timestamp|
-|ip_address|String|
-|is_attached|Bool|
-|location|JSON|
-|name|String|
-|resource_type|String|
-|support_code|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|attached_to|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|ip_address|`utf8`|
+|is_attached|`bool`|
+|location|`json`|
+|name|`utf8`|
+|resource_type|`utf8`|
+|support_code|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Unused Lightsail static IPs
+
+```sql
+SELECT
+  'Unused Lightsail static IPs' AS title,
+  account_id,
+  arn AS resource_id,
+  'fail' AS status
+FROM
+  aws_lightsail_static_ips
+WHERE
+  is_attached = false;
+```
+
+

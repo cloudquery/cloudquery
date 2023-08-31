@@ -10,22 +10,26 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|additional_authentication_providers|JSON|
-|api_id|String|
-|authentication_type|String|
-|lambda_authorizer_config|JSON|
-|log_config|JSON|
-|name|String|
-|open_id_connect_config|JSON|
-|tags|JSON|
-|uris|JSON|
-|user_pool_config|JSON|
-|waf_web_acl_arn|String|
-|xray_enabled|Bool|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|additional_authentication_providers|`json`|
+|api_id|`utf8`|
+|api_type|`utf8`|
+|authentication_type|`utf8`|
+|dns|`json`|
+|lambda_authorizer_config|`json`|
+|log_config|`json`|
+|merged_api_execution_role_arn|`utf8`|
+|name|`utf8`|
+|open_id_connect_config|`json`|
+|owner|`utf8`|
+|owner_contact|`utf8`|
+|tags|`json`|
+|uris|`json`|
+|user_pool_config|`json`|
+|visibility|`utf8`|
+|waf_web_acl_arn|`utf8`|
+|xray_enabled|`bool`|

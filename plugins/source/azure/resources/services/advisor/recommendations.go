@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Recommendations() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_advisor_recommendations",
-		Description: "https://learn.microsoft.com/en-us/rest/api/advisor/recommendations/list?tabs=HTTP#resourcerecommendationbase",
-		Resolver:    fetchRecommendations,
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_advisor_recommendations", client.Namespacemicrosoft_advisor),
-		Transform:   transformers.TransformWithStruct(&armadvisor.ResourceRecommendationBase{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_advisor_recommendations",
+		Description:          "https://learn.microsoft.com/en-us/rest/api/advisor/recommendations/list?tabs=HTTP#resourcerecommendationbase",
+		Resolver:             fetchRecommendations,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_advisor_recommendations", client.Namespacemicrosoft_advisor),
+		Transform:            transformers.TransformWithStruct(&armadvisor.ResourceRecommendationBase{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

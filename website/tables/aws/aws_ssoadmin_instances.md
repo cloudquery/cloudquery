@@ -4,7 +4,7 @@ This table shows data for Ssoadmin Instances.
 
 https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_InstanceMetadata.html
 
-The primary key for this table is **_cq_id**.
+The primary key for this table is **instance_arn**.
 
 ## Relations
 
@@ -15,9 +15,7 @@ The following tables depend on aws_ssoadmin_instances:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|identity_store_id|String|
-|instance_arn|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|identity_store_id|`utf8`|
+|instance_arn (PK)|`utf8`|

@@ -7,8 +7,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildCloudWatchAlarmsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -17,10 +18,7 @@ func buildCloudWatchAlarmsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 		Cloudwatch: m,
 	}
 	a := types.MetricAlarm{}
-	err := faker.FakeObject(&a)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&a))
 
 	m.EXPECT().DescribeAlarms(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&cloudwatch.DescribeAlarmsOutput{
@@ -28,10 +26,7 @@ func buildCloudWatchAlarmsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 		}, nil)
 
 	tagResponse := cloudwatch.ListTagsForResourceOutput{}
-	err = faker.FakeObject(&tagResponse)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tagResponse))
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagResponse, nil)
 
 	return services

@@ -14,13 +14,36 @@ This table depends on [azure_subscription_subscriptions](azure_subscription_subs
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|subscription_id|String|
-|display_name|String|
-|id (PK)|String|
-|latitude|String|
-|longitude|String|
-|name|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|subscription_id|`utf8`|
+|latitude|`utf8`|
+|longitude|`utf8`|
+|metadata|`json`|
+|display_name|`utf8`|
+|id (PK)|`utf8`|
+|name|`utf8`|
+|regional_display_name|`utf8`|
+|type|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Network Watcher should be enable
+
+```sql
+SELECT
+  'Network Watcher should be enable' AS title,
+  l.subscription_id,
+  l.id,
+  CASE
+  WHEN anw._cq_id IS NULL THEN 'fail'
+  ELSE 'pass'
+  END
+FROM
+  azure_subscription_subscription_locations AS l
+  LEFT JOIN azure_network_watchers AS anw ON l.name = anw.location;
+```
+
+

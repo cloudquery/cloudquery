@@ -1,5 +1,7 @@
 ---
 name: PostgreSQL
+title: PostgreSQL Source Plugin
+description: CloudQuery PostgreSQL source plugin documentation
 ---
 # PostgreSQL Source Plugin
 
@@ -28,6 +30,7 @@ spec:
   registry: "github"
   path: "cloudquery/postgresql"
   version: "VERSION_SOURCE_POSTGRESQL"
+  tables: ["*"]
 
   spec:
     connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
@@ -41,7 +44,7 @@ Make sure you use environment variable expansion in production instead of commit
 
 This is the (nested) spec used by the PostgreSQL source Plugin.
 
-- `connection_string` (string, required)
+- `connection_string` (`string`, required)
 
   Connection string to connect to the database. This can be a URL or a DSN, as per [`pgxpool`](https://pkg.go.dev/github.com/jackc/pgx/v4/pgxpool#ParseConfig)
 
@@ -52,15 +55,20 @@ This is the (nested) spec used by the PostgreSQL source Plugin.
   - `"dbname=mydb"` _unix domain socket, just specifying the db name - useful if you want to use peer authentication_
   - `"user=jack password=jack\\'ssooper\\\\secret host=localhost port=5432 dbname=mydb sslmode=disable"` _DSN with escaped backslash and single quote_
 
-- `pgx_log_level` (string, optional. Default: "error")
+- `pgx_log_level` (`string`) (optional) (default: `error`)
 
   Available: "error", "warn", "info", "debug", "trace"
   define if and in which level to log [`pgx`](https://github.com/jackc/pgx) call.
 
-- `cdc` (bool, optional. Default: false)
+- `cdc_id` (`string`) (optional)
 
-  If enabled the source plugin will start syncing CDC via PostgreSQL logical replication in real-time.
+  If set to a non-empty string the source plugin will start syncing CDC via PostgreSQL logical replication in real-time.
+  The value should be unique across all sources.
 
+- `rows_per_record` (`integer`) (optional) (default: `1`)
+
+  Amount of rows to be packed into a single Apache Arrow record to be sent over the wire during sync (or initial sync in the CDC mode).
+  We suggest using significantly more than the default (e.g. `5000`) to sync from large databases/tables.
 
 ### Verbose logging for debug
 
@@ -74,6 +82,7 @@ spec:
   name: postgresql
   path: cloudquery/postgresql
   version: "VERSION_SOURCE_POSTGRESQL"
+  tables: ["*"]
   spec:
     connection_string: ${PG_CONNECTION_STRING}
     pgx_log_level: debug # Available: error, warn, info, debug, trace. Default: "error"

@@ -2,19 +2,19 @@
 
 This table shows data for DigitalOcean Billing History.
 
+https://docs.digitalocean.com/reference/api/api-reference/#operation/billingHistory_list
+
 The primary key for this table is **_cq_id**.
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|description|String|
-|amount|String|
-|invoice_id|String|
-|invoice_uuid|String|
-|date|Timestamp|
-|type|String|
+|_cq_id (PK)|`uuid`|
+|_cq_parent_id|`uuid`|
+|description|`utf8`|
+|amount|`utf8`|
+|invoice_id|`utf8`|
+|invoice_uuid|`utf8`|
+|date|`timestamp[us, tz=UTC]`|
+|type|`utf8`|

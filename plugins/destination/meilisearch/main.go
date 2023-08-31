@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/destination/meilisearch/client"
-	"github.com/cloudquery/cloudquery/plugins/destination/meilisearch/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/serve"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/meilisearch/resources/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/serve"
 )
 
 const (
@@ -12,14 +12,12 @@ const (
 )
 
 func main() {
-	serve.Destination(
-		destination.NewPlugin(
+	serve.Plugin(
+		plugin.NewPlugin(
 			"meilisearch",
-			plugin.Version,
+			internalPlugin.Version,
 			client.New,
-			destination.WithDefaultBatchSize(1000),
-			destination.WithManagedWriter(),
 		),
-		serve.WithDestinationSentryDSN(sentryDSN),
+		serve.WithPluginSentryDSN(sentryDSN),
 	)
 }

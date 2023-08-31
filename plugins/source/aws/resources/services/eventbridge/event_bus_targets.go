@@ -3,12 +3,13 @@ package eventbridge
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func eventBusTargets() *schema.Table {
@@ -21,20 +22,16 @@ func eventBusTargets() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "rule_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "rule_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "event_bus_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("event_bus_arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "event_bus_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("event_bus_arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -48,11 +45,13 @@ func fetchEventBusTargets(ctx context.Context, meta schema.ClientMeta, parent *s
 		EventBusName: bus.Arn,
 		Rule:         rule.Name,
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Eventbridge
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceEventbridge).Eventbridge
 	// No paginator available
 	for {
-		response, err := svc.ListTargetsByRule(ctx, &input)
+		response, err := svc.ListTargetsByRule(ctx, &input, func(options *eventbridge.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

@@ -15,18 +15,58 @@ The following tables depend on azure_containerservice_managed_clusters:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|subscription_id|String|
-|location|String|
-|extended_location|JSON|
-|identity|JSON|
-|properties|JSON|
-|sku|JSON|
-|tags|JSON|
-|id (PK)|String|
-|name|String|
-|system_data|JSON|
-|type|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|subscription_id|`utf8`|
+|location|`utf8`|
+|extended_location|`json`|
+|identity|`json`|
+|properties|`json`|
+|sku|`json`|
+|tags|`json`|
+|id (PK)|`utf8`|
+|name|`utf8`|
+|system_data|`json`|
+|type|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### External accounts with owner permissions should be removed from your subscription
+
+```sql
+SELECT
+  'External accounts with owner permissions should be removed from your subscription'
+    AS title,
+  mc.subscription_id AS subscription_id,
+  mc.id AS resource_id,
+  CASE
+  WHEN (properties->>'enableRBAC')::BOOL IS NOT true THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  azure_containerservice_managed_clusters AS mc
+  INNER JOIN azure_subscription_subscriptions AS sub ON
+      sub.id = mc.subscription_id;
+```
+
+### Role-Based Access Control (RBAC) should be used on Kubernetes Services
+
+```sql
+SELECT
+  'Role-Based Access Control (RBAC) should be used on Kubernetes Services'
+    AS title,
+  subscription_id AS subscription_id,
+  id AS resource_id,
+  CASE
+  WHEN (properties->>'enableRBAC')::BOOL IS NOT true THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  azure_containerservice_managed_clusters;
+```
+
+

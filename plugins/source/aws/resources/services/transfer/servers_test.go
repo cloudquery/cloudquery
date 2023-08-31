@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/transfer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
@@ -21,6 +21,7 @@ func buildServersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().ListServers(
 		gomock.Any(),
 		&transfer.ListServersInput{MaxResults: aws.Int32(1000)},
+		gomock.Any(),
 	).Return(
 		&transfer.ListServersOutput{Servers: []types.ListedServer{ls}},
 		nil,
@@ -33,6 +34,7 @@ func buildServersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().DescribeServer(
 		gomock.Any(),
 		&transfer.DescribeServerInput{ServerId: ls.ServerId},
+		gomock.Any(),
 	).Return(
 		&transfer.DescribeServerOutput{Server: &ds},
 		nil,
@@ -41,6 +43,7 @@ func buildServersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().ListTagsForResource(
 		gomock.Any(),
 		&transfer.ListTagsForResourceInput{Arn: ds.Arn},
+		gomock.Any(),
 	).Return(
 		&transfer.ListTagsForResourceOutput{Tags: []types.Tag{{Key: aws.String("key"), Value: aws.String("value")}}},
 		nil,

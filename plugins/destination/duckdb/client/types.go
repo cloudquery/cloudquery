@@ -3,100 +3,218 @@ package client
 import (
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/types"
+	"golang.org/x/exp/slices"
 )
 
-func (*Client) SchemaTypeToDuckDB(t schema.ValueType) string {
-	switch t {
-	case schema.TypeBool:
-		return "boolean"
-	case schema.TypeInt:
-		return "bigint"
-	case schema.TypeFloat:
-		return "real"
-	case schema.TypeUUID:
-		return "uuid"
-	case schema.TypeString:
-		return "text"
-	case schema.TypeByteArray:
-		return "blob"
-	case schema.TypeStringArray:
-		return "text[]"
-	case schema.TypeTimestamp:
-		return "timestamp"
-	case schema.TypeJSON:
-		return "text"
-	case schema.TypeUUIDArray:
-		return "uuid[]"
-	case schema.TypeCIDR:
-		return "text"
-	case schema.TypeCIDRArray:
-		return "text[]"
-	case schema.TypeMacAddr:
-		return "text"
-	case schema.TypeMacAddrArray:
-		return "text[]"
-	case schema.TypeInet:
-		return "text"
-	case schema.TypeInetArray:
-		return "text[]"
-	case schema.TypeIntArray:
-		return "int[]"
+func transformSchemaForWriting(sc *arrow.Schema) *arrow.Schema {
+	md := arrow.MetadataFrom(sc.Metadata().ToMap())
+	return arrow.NewSchema(transformFieldsForWriting(sc.Fields()), &md)
+}
+
+func transformFieldsForWriting(fields []arrow.Field) []arrow.Field {
+	for i := range fields {
+		fields[i].Type = transformTypeForWriting(fields[i].Type)
+	}
+	return fields
+}
+
+func transformTypeForWriting(dt arrow.DataType) arrow.DataType {
+	switch dt := dt.(type) {
+	case *arrow.StructType:
+		return arrow.StructOf(transformFieldsForWriting(dt.Fields())...)
+	case *arrow.MapType:
+		return arrow.MapOf(transformTypeForWriting(dt.KeyType()), transformTypeForWriting(dt.ItemType()))
+	case arrow.ListLikeType:
+		return arrow.ListOf(transformTypeForWriting(dt.Elem()))
+	case *types.UUIDType, *types.JSONType:
+		return arrow.BinaryTypes.String
 	default:
-		panic("unknown type")
+		return duckDBToArrow(arrowToDuckDB(dt))
 	}
 }
 
-func (*Client) duckdbTypeToSchema(t string) schema.ValueType {
-	isArray := strings.HasSuffix(t, "[]")
-	t = strings.TrimSuffix(t, "[]")
-	switch t {
-	case "int", "integer", "bigint", "int8", "long":
-		if isArray {
-			return schema.TypeIntArray
+func arrowToDuckDB(dt arrow.DataType) string {
+	switch dt := dt.(type) {
+	case *arrow.StructType:
+		builder := new(strings.Builder)
+		builder.WriteString("struct(")
+		for i, field := range dt.Fields() {
+			if i > 0 {
+				builder.WriteString(", ")
+			}
+			builder.WriteString(sanitizeID(field.Name) + " " + arrowToDuckDB(field.Type))
 		}
-		return schema.TypeInt
-	case "ubigint", "uinteger", "usmallint", "utinyint":
-		if isArray {
-			return schema.TypeIntArray
-		}
-		return schema.TypeInt
-	case "bit", "bitstring":
-		if isArray {
-			return schema.TypeStringArray
-		}
-		return schema.TypeString
-	case "boolean":
-		if isArray {
-			panic("unsupported type " + t + "[]")
-		}
-		return schema.TypeBool
-	case "double", "float8", "numeric", "decimal", "real", "float":
-		if isArray {
-			panic("unsupported type " + t + "[]")
-		}
-		return schema.TypeFloat
-	case "text", "varchar", "char", "bpchar", "string":
-		if isArray {
-			return schema.TypeStringArray
-		}
-		return schema.TypeString
-	case "blob":
-		if isArray {
-			panic("unsupported type " + t + "[]")
-		}
-		return schema.TypeByteArray
-	case "uuid":
-		if isArray {
-			return schema.TypeUUIDArray
-		}
-		return schema.TypeUUID
-	case "date", "timestamp":
-		if isArray {
-			panic("unsupported type " + t + "[]")
-		}
-		return schema.TypeTimestamp
+		builder.WriteString(")")
+		return builder.String()
+	case *arrow.MapType:
+		return "map(" + arrowToDuckDB(dt.KeyType()) + ", " + arrowToDuckDB(dt.ItemType()) + ")"
+	case arrow.ListLikeType:
+		return arrowToDuckDB(dt.Elem()) + "[]"
+	case *arrow.BooleanType:
+		return "boolean"
+	case *arrow.Int8Type:
+		return "tinyint"
+	case *arrow.Int16Type:
+		return "smallint"
+	case *arrow.Int32Type:
+		return "integer"
+	case *arrow.Int64Type:
+		return "bigint"
+	case *arrow.Uint8Type:
+		return "uinteger"
+	case *arrow.Uint16Type:
+		return "uinteger"
+	case *arrow.Uint32Type:
+		return "uinteger"
+	case *arrow.Uint64Type:
+		return "ubigint"
+	case *arrow.Float32Type:
+		return "float"
+	case *arrow.Float64Type:
+		return "double"
+	case *arrow.BinaryType:
+		return "blob"
+	case *arrow.LargeBinaryType:
+		return "blob"
+	case *types.UUIDType:
+		return "uuid"
+	case *types.JSONType:
+		return "json"
+	case *arrow.Date32Type, *arrow.Date64Type, *arrow.TimestampType:
+		return "timestamp"
+	case *arrow.DayTimeIntervalType:
+		return "interval"
 	default:
-		panic("unknown type: " + t)
+		return "varchar"
 	}
+}
+
+func duckDBToArrow(t string) arrow.DataType {
+	switch {
+	case strings.HasSuffix(t, "[]"):
+		return arrow.ListOf(duckDBToArrow(strings.TrimSuffix(t, "[]")))
+	case strings.HasPrefix(t, "struct"):
+		return duckDBStructToArrow(t)
+	case strings.HasPrefix(t, "map"):
+		return duckDBMapToArrow(t)
+	}
+
+	switch t {
+	case "tinyint", "int1":
+		return arrow.PrimitiveTypes.Int8
+	case "smallint", "int2", "short":
+		return arrow.PrimitiveTypes.Int16
+	case "integer", "int4", "signed", "int":
+		return arrow.PrimitiveTypes.Int32
+	case "bigint", "int8", "long":
+		return arrow.PrimitiveTypes.Int64
+	case "utinyint":
+		return arrow.PrimitiveTypes.Uint8
+	case "usmallint":
+		return arrow.PrimitiveTypes.Uint16
+	case "uinteger", "uint4":
+		return arrow.PrimitiveTypes.Uint32
+	case "ubigint":
+		return arrow.PrimitiveTypes.Uint64
+	case "boolean", "bool", "logical":
+		return arrow.FixedWidthTypes.Boolean
+	case "double", "float8", "numeric", "decimal":
+		return arrow.PrimitiveTypes.Float64
+	case "float", "float4", "real":
+		return arrow.PrimitiveTypes.Float32
+	case "blob", "bytea", "binary", "varbinary":
+		return arrow.BinaryTypes.Binary
+	case "timestamp", "datetime", "timestamp with time zone", "timestamptz":
+		return arrow.FixedWidthTypes.Timestamp_us
+	case "interval":
+		return arrow.FixedWidthTypes.DayTimeInterval
+	case "json":
+		return types.ExtensionTypes.JSON
+	case "uuid":
+		return types.ExtensionTypes.UUID
+	default:
+		return arrow.BinaryTypes.String
+	}
+}
+
+func duckDBStructToArrow(spec string) *arrow.StructType {
+	params := strings.TrimPrefix(spec, "struct")
+	params = strings.TrimSpace(params)
+	params = strings.TrimSuffix(strings.TrimPrefix(params, "("), ")")
+
+	fieldsSpec := splitParams(params)
+	if len(fieldsSpec) == 0 {
+		panic("unsupported struct spec: " + spec)
+	}
+
+	fields := make([]arrow.Field, len(fieldsSpec))
+	for i, fieldSpec := range fieldsSpec {
+		parts := strings.SplitN(fieldSpec, " ", 2)
+		if len(parts) != 2 {
+			panic("unsupported field spec: " + fieldSpec)
+		}
+
+		fields[i] = arrow.Field{
+			Name:     strings.Trim(parts[0], `"`),
+			Type:     duckDBToArrow(strings.TrimSpace(parts[1])),
+			Nullable: true, // all duckdb columns are nullable
+		}
+	}
+
+	return arrow.StructOf(fields...)
+}
+
+func duckDBMapToArrow(spec string) *arrow.MapType {
+	params := strings.TrimPrefix(spec, "map")
+	params = strings.TrimSpace(params)
+	params = strings.TrimSuffix(strings.TrimPrefix(params, "("), ")")
+
+	kv := splitParams(params)
+	if len(kv) != 2 {
+		panic("unsupported map spec: " + spec)
+	}
+
+	// these should only be types
+	return arrow.MapOf(duckDBToArrow(kv[0]), duckDBToArrow(kv[1]))
+}
+
+func splitParams(params string) []string {
+	params = strings.TrimSpace(params)
+
+	var brackets int
+	var parts []string
+	elem := make([]rune, 0, len(params))
+
+	for _, r := range params {
+		switch r {
+		case '(':
+			brackets++
+		case ')':
+			brackets--
+		case ',':
+			if brackets == 0 {
+				parts = append(parts, strings.TrimSpace(string(elem)))
+				elem = elem[:0] // cleanup
+				continue
+			}
+		}
+		elem = append(elem, r)
+	}
+	parts = append(parts, strings.TrimSpace(string(elem)))
+
+	return slices.Clip(parts)
+}
+
+func sanitizeID(id string) string {
+	return `"` + id + `"`
+}
+
+func sanitized(ids []string) []string {
+	res := make([]string, len(ids))
+	for i, id := range ids {
+		res[i] = sanitizeID(id)
+	}
+	return res
 }

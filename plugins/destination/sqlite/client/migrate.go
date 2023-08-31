@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 const (
@@ -26,10 +26,14 @@ type tableInfo struct {
 	columns []columnInfo
 }
 
+func identifier(str string) string {
+	return `"` + str + `"`
+}
+
 func (c *Client) sqliteTables(tables schema.Tables) (schema.Tables, error) {
-	allTables := tables.FlattenTables()
 	var schemaTables schema.Tables
-	for _, table := range allTables {
+	for _, table := range tables {
+		var columns []schema.Column
 		info, err := c.getTableInfo(table.Name)
 		if info == nil {
 			continue
@@ -37,41 +41,47 @@ func (c *Client) sqliteTables(tables schema.Tables) (schema.Tables, error) {
 		if err != nil {
 			return nil, err
 		}
-		schemaTable := schema.Table{
-			Name: table.Name,
-		}
 		for _, col := range info.columns {
-			schemaTable.Columns = append(schemaTable.Columns, schema.Column{
-				Name: col.name,
-				Type: c.sqliteTypeToSchema(col.typ),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: col.pk != 0,
-					NotNull:    col.notNull,
-				},
+			columns = append(columns, schema.Column{
+				Name:       col.name,
+				Type:       c.sqliteTypeToArrowType(col.typ),
+				PrimaryKey: col.pk != 0,
+				NotNull:    col.notNull,
 			})
 		}
-		schemaTables = append(schemaTables, &schemaTable)
+		schemaTables = append(schemaTables, &schema.Table{Name: table.Name, Columns: columns})
 	}
-
 	return schemaTables, nil
 }
 
-func (c *Client) normalizeColumnTypes(tables schema.Tables) schema.Tables {
-	allTables := tables.FlattenTables()
-	var normalized schema.Tables
-	for _, table := range allTables {
-		tableCopy := table.Copy(table.Parent)
-		for i := range tableCopy.Columns {
-			// Since multiple schema types can map to the same sqlite type we need to normalize them to avoid false positives when detecting schema changes
-			tableCopy.Columns[i].Type = c.sqliteTypeToSchema(c.SchemaTypeToSqlite(table.Columns[i].Type))
-		}
-		normalized = append(normalized, tableCopy)
+func (c *Client) normalizeTables(tables schema.Tables) schema.Tables {
+	flattened := tables.FlattenTables()
+	normalized := make(schema.Tables, len(flattened))
+	for i, table := range flattened {
+		normalized[i] = c.normalizeTable(table)
 	}
-
 	return normalized
 }
 
-func (c *Client) nonAutoMigrableTables(tables schema.Tables, sqliteTables schema.Tables) ([]string, [][]schema.TableColumnChange) {
+func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
+	columns := make([]schema.Column, len(table.Columns))
+	for i, col := range table.Columns {
+		normalized := c.normalizeField(col.ToArrowField())
+		columns[i] = schema.NewColumnFromArrowField(*normalized)
+	}
+	return &schema.Table{Name: table.Name, Columns: columns}
+}
+
+func (c *Client) normalizeField(field arrow.Field) *arrow.Field {
+	return &arrow.Field{
+		Name:     field.Name,
+		Type:     c.arrowTypeToSqlite(field.Type),
+		Nullable: field.Nullable,
+		Metadata: field.Metadata,
+	}
+}
+
+func (c *Client) nonAutoMigratableTables(tables schema.Tables, sqliteTables schema.Tables) ([]string, [][]schema.TableColumnChange) {
 	var result []string
 	var tableChanges [][]schema.TableColumnChange
 	for _, t := range tables {
@@ -79,7 +89,7 @@ func (c *Client) nonAutoMigrableTables(tables schema.Tables, sqliteTables schema
 		if sqliteTable == nil {
 			continue
 		}
-		changes := t.GetChanges(sqliteTable)
+		changes := sqliteTable.GetChanges(t)
 		if !c.canAutoMigrate(changes) {
 			result = append(result, t.Name)
 			tableChanges = append(tableChanges, changes)
@@ -88,10 +98,10 @@ func (c *Client) nonAutoMigrableTables(tables schema.Tables, sqliteTables schema
 	return result, tableChanges
 }
 
-func (c *Client) autoMigrateTable(table *schema.Table, changes []schema.TableColumnChange) error {
+func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, changes []schema.TableColumnChange) error {
 	for _, change := range changes {
 		if change.Type == schema.TableColumnChangeTypeAdd {
-			if err := c.addColumn(table.Name, change.Current.Name, c.SchemaTypeToSqlite(change.Current.Type)); err != nil {
+			if err := c.addColumn(ctx, table.Name, change.Current.Name, c.arrowTypeToSqliteStr(change.Current.Type)); err != nil {
 				return err
 			}
 		}
@@ -101,34 +111,36 @@ func (c *Client) autoMigrateTable(table *schema.Table, changes []schema.TableCol
 
 func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 	for _, change := range changes {
-		if change.Type == schema.TableColumnChangeTypeAdd && (change.Current.CreationOptions.PrimaryKey || change.Current.CreationOptions.NotNull) {
+		switch change.Type {
+		case schema.TableColumnChangeTypeAdd:
+			if change.Current.PrimaryKey || change.Current.NotNull {
+				return false
+			}
+		case schema.TableColumnChangeTypeRemove:
+			if change.Previous.PrimaryKey || change.Previous.NotNull {
+				return false
+			}
+		case schema.TableColumnChangeTypeUpdate:
 			return false
-		}
-
-		if change.Type == schema.TableColumnChangeTypeRemove && (change.Previous.CreationOptions.PrimaryKey || change.Previous.CreationOptions.NotNull) {
-			return false
-		}
-
-		if change.Type == schema.TableColumnChangeTypeUpdate {
-			return false
+		default:
+			panic("unknown change type")
 		}
 	}
 	return true
 }
 
 // This is the responsibility of the CLI of the client to lock before running migration
-func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
-	sqliteTables, err := c.sqliteTables(tables)
+func (c *Client) migrate(ctx context.Context, force bool, tables schema.Tables) error {
+	normalizedTables := c.normalizeTables(tables)
+	sqliteTables, err := c.sqliteTables(normalizedTables)
 	if err != nil {
 		return err
 	}
 
-	normalizedTables := c.normalizeColumnTypes(tables)
-
-	if c.spec.MigrateMode != specs.MigrateModeForced {
-		nonAutoMigrableTables, changes := c.nonAutoMigrableTables(normalizedTables, sqliteTables)
-		if len(nonAutoMigrableTables) > 0 {
-			return fmt.Errorf("tables %s with changes %v require force migration. use 'migrate_mode: forced'", strings.Join(nonAutoMigrableTables, ","), changes)
+	if !force {
+		nonAutoMigratableTables, changes := c.nonAutoMigratableTables(normalizedTables, sqliteTables)
+		if len(nonAutoMigratableTables) > 0 {
+			return fmt.Errorf("tables %s with changes %v require migration. Migrate manually or consider using 'migrate_mode: forced'", strings.Join(nonAutoMigratableTables, ","), changes)
 		}
 	}
 
@@ -138,6 +150,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 			c.logger.Info().Str("table", table.Name).Msg("Table with no columns, skipping")
 			continue
 		}
+
 		sqlite := sqliteTables.Get(table.Name)
 		if sqlite == nil {
 			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
@@ -148,12 +161,12 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 			changes := table.GetChanges(sqlite)
 			if c.canAutoMigrate(changes) {
 				c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
-				if err := c.autoMigrateTable(table, changes); err != nil {
+				if err := c.autoMigrateTable(ctx, table, changes); err != nil {
 					return err
 				}
 			} else {
 				c.logger.Info().Str("table", table.Name).Msg("Table exists, force migration required")
-				if err := c.recreateTable(table); err != nil {
+				if err := c.recreateTable(ctx, table); err != nil {
 					return err
 				}
 			}
@@ -163,17 +176,17 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	return nil
 }
 
-func (c *Client) recreateTable(table *schema.Table) error {
-	sql := "drop table if exists \"" + table.Name + "\""
-	if _, err := c.db.Exec(sql); err != nil {
+func (c *Client) recreateTable(ctx context.Context, table *schema.Table) error {
+	sql := "drop table if exists " + identifier(table.Name)
+	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to drop table %s: %w", table.Name, err)
 	}
 	return c.createTableIfNotExist(table)
 }
 
-func (c *Client) addColumn(tableName string, columnName string, columnType string) error {
-	sql := "alter table \"" + tableName + "\" add column \"" + columnName + "\" \"" + columnType + `"`
-	if _, err := c.db.Exec(sql); err != nil {
+func (c *Client) addColumn(ctx context.Context, tableName string, columnName string, columnType string) error {
+	sql := "alter table " + identifier(tableName) + " add column " + identifier(columnName) + " " + identifier(columnType)
+	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to add column %s on table %s: %w", columnName, tableName, err)
 	}
 	return nil
@@ -181,38 +194,37 @@ func (c *Client) addColumn(tableName string, columnName string, columnType strin
 
 func (c *Client) createTableIfNotExist(table *schema.Table) error {
 	var sb strings.Builder
-	// TODO sanitize tablename
+
 	sb.WriteString("CREATE TABLE IF NOT EXISTS ")
-	sb.WriteString(`"` + table.Name + `"`)
+	sb.WriteString(identifier(table.Name))
 	sb.WriteString(" (")
 	totalColumns := len(table.Columns)
 
 	primaryKeys := []string{}
 	for i, col := range table.Columns {
-		sqlType := c.SchemaTypeToSqlite(col.Type)
+		sqlType := c.arrowTypeToSqliteStr(col.Type)
 		if sqlType == "" {
 			c.logger.Warn().Str("table", table.Name).Str("column", col.Name).Msg("Column type is not supported, skipping")
 			continue
 		}
-		// TODO: sanitize column name
-		fieldDef := `"` + col.Name + `" ` + sqlType
-		if col.CreationOptions.NotNull {
+		fieldDef := identifier(col.Name) + ` ` + sqlType
+		if col.NotNull {
 			fieldDef += " NOT NULL"
 		}
 		sb.WriteString(fieldDef)
 		if i != totalColumns-1 {
 			sb.WriteString(",")
 		}
-		if c.enabledPks() && col.CreationOptions.PrimaryKey {
-			primaryKeys = append(primaryKeys, `"`+col.Name+`"`)
+		if col.PrimaryKey {
+			primaryKeys = append(primaryKeys, identifier(col.Name))
 		}
 	}
 
 	if len(primaryKeys) > 0 {
 		// add composite PK constraint on primary key columns
 		sb.WriteString(", CONSTRAINT ")
-		sb.WriteString(table.Name)
-		sb.WriteString("_cqpk PRIMARY KEY (")
+		sb.WriteString(identifier(table.Name + "_cqpk"))
+		sb.WriteString(" PRIMARY KEY (")
 		sb.WriteString(strings.Join(primaryKeys, ","))
 		sb.WriteString(")")
 	}
@@ -254,8 +266,4 @@ func (c *Client) getTableInfo(tableName string) (*tableInfo, error) {
 		return nil, nil
 	}
 	return &info, nil
-}
-
-func (c *Client) enabledPks() bool {
-	return c.spec.WriteMode == specs.WriteModeOverwrite || c.spec.WriteMode == specs.WriteModeOverwriteDeleteStale
 }

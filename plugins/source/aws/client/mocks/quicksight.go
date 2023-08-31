@@ -37,6 +37,16 @@ func (m *MockQuicksightClient) EXPECT() *MockQuicksightClientMockRecorder {
 
 // DescribeAccountCustomization mocks base method.
 func (m *MockQuicksightClient) DescribeAccountCustomization(arg0 context.Context, arg1 *quicksight.DescribeAccountCustomizationInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeAccountCustomizationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAccountCustomization")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeAccountCustomization(arg0, a
 
 // DescribeAccountSettings mocks base method.
 func (m *MockQuicksightClient) DescribeAccountSettings(arg0 context.Context, arg1 *quicksight.DescribeAccountSettingsInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeAccountSettingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAccountSettings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeAccountSettings(arg0, arg1 i
 
 // DescribeAccountSubscription mocks base method.
 func (m *MockQuicksightClient) DescribeAccountSubscription(arg0 context.Context, arg1 *quicksight.DescribeAccountSubscriptionInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeAccountSubscriptionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAccountSubscription")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeAccountSubscription(arg0, ar
 
 // DescribeAnalysis mocks base method.
 func (m *MockQuicksightClient) DescribeAnalysis(arg0 context.Context, arg1 *quicksight.DescribeAnalysisInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeAnalysisOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAnalysis")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeAnalysis(arg0, arg1 interfac
 
 // DescribeAnalysisDefinition mocks base method.
 func (m *MockQuicksightClient) DescribeAnalysisDefinition(arg0 context.Context, arg1 *quicksight.DescribeAnalysisDefinitionInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeAnalysisDefinitionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAnalysisDefinition")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeAnalysisDefinition(arg0, arg
 
 // DescribeAnalysisPermissions mocks base method.
 func (m *MockQuicksightClient) DescribeAnalysisPermissions(arg0 context.Context, arg1 *quicksight.DescribeAnalysisPermissionsInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeAnalysisPermissionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAnalysisPermissions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -155,8 +215,78 @@ func (mr *MockQuicksightClientMockRecorder) DescribeAnalysisPermissions(arg0, ar
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeAnalysisPermissions", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeAnalysisPermissions), varargs...)
 }
 
+// DescribeAssetBundleExportJob mocks base method.
+func (m *MockQuicksightClient) DescribeAssetBundleExportJob(arg0 context.Context, arg1 *quicksight.DescribeAssetBundleExportJobInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeAssetBundleExportJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAssetBundleExportJob")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeAssetBundleExportJob", varargs...)
+	ret0, _ := ret[0].(*quicksight.DescribeAssetBundleExportJobOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeAssetBundleExportJob indicates an expected call of DescribeAssetBundleExportJob.
+func (mr *MockQuicksightClientMockRecorder) DescribeAssetBundleExportJob(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeAssetBundleExportJob", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeAssetBundleExportJob), varargs...)
+}
+
+// DescribeAssetBundleImportJob mocks base method.
+func (m *MockQuicksightClient) DescribeAssetBundleImportJob(arg0 context.Context, arg1 *quicksight.DescribeAssetBundleImportJobInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeAssetBundleImportJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAssetBundleImportJob")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeAssetBundleImportJob", varargs...)
+	ret0, _ := ret[0].(*quicksight.DescribeAssetBundleImportJobOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeAssetBundleImportJob indicates an expected call of DescribeAssetBundleImportJob.
+func (mr *MockQuicksightClientMockRecorder) DescribeAssetBundleImportJob(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeAssetBundleImportJob", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeAssetBundleImportJob), varargs...)
+}
+
 // DescribeDashboard mocks base method.
 func (m *MockQuicksightClient) DescribeDashboard(arg0 context.Context, arg1 *quicksight.DescribeDashboardInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeDashboardOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDashboard")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +307,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeDashboard(arg0, arg1 interfa
 
 // DescribeDashboardDefinition mocks base method.
 func (m *MockQuicksightClient) DescribeDashboardDefinition(arg0 context.Context, arg1 *quicksight.DescribeDashboardDefinitionInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeDashboardDefinitionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDashboardDefinition")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +337,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeDashboardDefinition(arg0, ar
 
 // DescribeDashboardPermissions mocks base method.
 func (m *MockQuicksightClient) DescribeDashboardPermissions(arg0 context.Context, arg1 *quicksight.DescribeDashboardPermissionsInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeDashboardPermissionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDashboardPermissions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -215,8 +365,78 @@ func (mr *MockQuicksightClientMockRecorder) DescribeDashboardPermissions(arg0, a
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDashboardPermissions", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeDashboardPermissions), varargs...)
 }
 
+// DescribeDashboardSnapshotJob mocks base method.
+func (m *MockQuicksightClient) DescribeDashboardSnapshotJob(arg0 context.Context, arg1 *quicksight.DescribeDashboardSnapshotJobInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeDashboardSnapshotJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDashboardSnapshotJob")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeDashboardSnapshotJob", varargs...)
+	ret0, _ := ret[0].(*quicksight.DescribeDashboardSnapshotJobOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeDashboardSnapshotJob indicates an expected call of DescribeDashboardSnapshotJob.
+func (mr *MockQuicksightClientMockRecorder) DescribeDashboardSnapshotJob(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDashboardSnapshotJob", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeDashboardSnapshotJob), varargs...)
+}
+
+// DescribeDashboardSnapshotJobResult mocks base method.
+func (m *MockQuicksightClient) DescribeDashboardSnapshotJobResult(arg0 context.Context, arg1 *quicksight.DescribeDashboardSnapshotJobResultInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeDashboardSnapshotJobResultOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDashboardSnapshotJobResult")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeDashboardSnapshotJobResult", varargs...)
+	ret0, _ := ret[0].(*quicksight.DescribeDashboardSnapshotJobResultOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeDashboardSnapshotJobResult indicates an expected call of DescribeDashboardSnapshotJobResult.
+func (mr *MockQuicksightClientMockRecorder) DescribeDashboardSnapshotJobResult(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDashboardSnapshotJobResult", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeDashboardSnapshotJobResult), varargs...)
+}
+
 // DescribeDataSet mocks base method.
 func (m *MockQuicksightClient) DescribeDataSet(arg0 context.Context, arg1 *quicksight.DescribeDataSetInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeDataSetOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDataSet")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +457,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeDataSet(arg0, arg1 interface
 
 // DescribeDataSetPermissions mocks base method.
 func (m *MockQuicksightClient) DescribeDataSetPermissions(arg0 context.Context, arg1 *quicksight.DescribeDataSetPermissionsInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeDataSetPermissionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDataSetPermissions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -255,8 +485,48 @@ func (mr *MockQuicksightClientMockRecorder) DescribeDataSetPermissions(arg0, arg
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDataSetPermissions", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeDataSetPermissions), varargs...)
 }
 
+// DescribeDataSetRefreshProperties mocks base method.
+func (m *MockQuicksightClient) DescribeDataSetRefreshProperties(arg0 context.Context, arg1 *quicksight.DescribeDataSetRefreshPropertiesInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeDataSetRefreshPropertiesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDataSetRefreshProperties")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeDataSetRefreshProperties", varargs...)
+	ret0, _ := ret[0].(*quicksight.DescribeDataSetRefreshPropertiesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeDataSetRefreshProperties indicates an expected call of DescribeDataSetRefreshProperties.
+func (mr *MockQuicksightClientMockRecorder) DescribeDataSetRefreshProperties(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDataSetRefreshProperties", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeDataSetRefreshProperties), varargs...)
+}
+
 // DescribeDataSource mocks base method.
 func (m *MockQuicksightClient) DescribeDataSource(arg0 context.Context, arg1 *quicksight.DescribeDataSourceInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeDataSourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDataSource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +547,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeDataSource(arg0, arg1 interf
 
 // DescribeDataSourcePermissions mocks base method.
 func (m *MockQuicksightClient) DescribeDataSourcePermissions(arg0 context.Context, arg1 *quicksight.DescribeDataSourcePermissionsInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeDataSourcePermissionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDataSourcePermissions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +577,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeDataSourcePermissions(arg0, 
 
 // DescribeFolder mocks base method.
 func (m *MockQuicksightClient) DescribeFolder(arg0 context.Context, arg1 *quicksight.DescribeFolderInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeFolderOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFolder")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +607,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeFolder(arg0, arg1 interface{
 
 // DescribeFolderPermissions mocks base method.
 func (m *MockQuicksightClient) DescribeFolderPermissions(arg0 context.Context, arg1 *quicksight.DescribeFolderPermissionsInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeFolderPermissionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFolderPermissions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +637,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeFolderPermissions(arg0, arg1
 
 // DescribeFolderResolvedPermissions mocks base method.
 func (m *MockQuicksightClient) DescribeFolderResolvedPermissions(arg0 context.Context, arg1 *quicksight.DescribeFolderResolvedPermissionsInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeFolderResolvedPermissionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeFolderResolvedPermissions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +667,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeFolderResolvedPermissions(ar
 
 // DescribeGroup mocks base method.
 func (m *MockQuicksightClient) DescribeGroup(arg0 context.Context, arg1 *quicksight.DescribeGroupInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +697,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeGroup(arg0, arg1 interface{}
 
 // DescribeGroupMembership mocks base method.
 func (m *MockQuicksightClient) DescribeGroupMembership(arg0 context.Context, arg1 *quicksight.DescribeGroupMembershipInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeGroupMembershipOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeGroupMembership")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +727,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeGroupMembership(arg0, arg1 i
 
 // DescribeIAMPolicyAssignment mocks base method.
 func (m *MockQuicksightClient) DescribeIAMPolicyAssignment(arg0 context.Context, arg1 *quicksight.DescribeIAMPolicyAssignmentInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeIAMPolicyAssignmentOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeIAMPolicyAssignment")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +757,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeIAMPolicyAssignment(arg0, ar
 
 // DescribeIngestion mocks base method.
 func (m *MockQuicksightClient) DescribeIngestion(arg0 context.Context, arg1 *quicksight.DescribeIngestionInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeIngestionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeIngestion")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +787,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeIngestion(arg0, arg1 interfa
 
 // DescribeIpRestriction mocks base method.
 func (m *MockQuicksightClient) DescribeIpRestriction(arg0 context.Context, arg1 *quicksight.DescribeIpRestrictionInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeIpRestrictionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeIpRestriction")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +817,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeIpRestriction(arg0, arg1 int
 
 // DescribeNamespace mocks base method.
 func (m *MockQuicksightClient) DescribeNamespace(arg0 context.Context, arg1 *quicksight.DescribeNamespaceInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeNamespaceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeNamespace")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -475,8 +845,48 @@ func (mr *MockQuicksightClientMockRecorder) DescribeNamespace(arg0, arg1 interfa
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeNamespace", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeNamespace), varargs...)
 }
 
+// DescribeRefreshSchedule mocks base method.
+func (m *MockQuicksightClient) DescribeRefreshSchedule(arg0 context.Context, arg1 *quicksight.DescribeRefreshScheduleInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeRefreshScheduleOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRefreshSchedule")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeRefreshSchedule", varargs...)
+	ret0, _ := ret[0].(*quicksight.DescribeRefreshScheduleOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeRefreshSchedule indicates an expected call of DescribeRefreshSchedule.
+func (mr *MockQuicksightClientMockRecorder) DescribeRefreshSchedule(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeRefreshSchedule", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeRefreshSchedule), varargs...)
+}
+
 // DescribeTemplate mocks base method.
 func (m *MockQuicksightClient) DescribeTemplate(arg0 context.Context, arg1 *quicksight.DescribeTemplateInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeTemplateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTemplate")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +907,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeTemplate(arg0, arg1 interfac
 
 // DescribeTemplateAlias mocks base method.
 func (m *MockQuicksightClient) DescribeTemplateAlias(arg0 context.Context, arg1 *quicksight.DescribeTemplateAliasInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeTemplateAliasOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTemplateAlias")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +937,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeTemplateAlias(arg0, arg1 int
 
 // DescribeTemplateDefinition mocks base method.
 func (m *MockQuicksightClient) DescribeTemplateDefinition(arg0 context.Context, arg1 *quicksight.DescribeTemplateDefinitionInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeTemplateDefinitionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTemplateDefinition")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +967,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeTemplateDefinition(arg0, arg
 
 // DescribeTemplatePermissions mocks base method.
 func (m *MockQuicksightClient) DescribeTemplatePermissions(arg0 context.Context, arg1 *quicksight.DescribeTemplatePermissionsInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeTemplatePermissionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTemplatePermissions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +997,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeTemplatePermissions(arg0, ar
 
 // DescribeTheme mocks base method.
 func (m *MockQuicksightClient) DescribeTheme(arg0 context.Context, arg1 *quicksight.DescribeThemeInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeThemeOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTheme")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -577,6 +1027,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeTheme(arg0, arg1 interface{}
 
 // DescribeThemeAlias mocks base method.
 func (m *MockQuicksightClient) DescribeThemeAlias(arg0 context.Context, arg1 *quicksight.DescribeThemeAliasInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeThemeAliasOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeThemeAlias")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -597,6 +1057,16 @@ func (mr *MockQuicksightClientMockRecorder) DescribeThemeAlias(arg0, arg1 interf
 
 // DescribeThemePermissions mocks base method.
 func (m *MockQuicksightClient) DescribeThemePermissions(arg0 context.Context, arg1 *quicksight.DescribeThemePermissionsInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeThemePermissionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeThemePermissions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -615,8 +1085,138 @@ func (mr *MockQuicksightClientMockRecorder) DescribeThemePermissions(arg0, arg1 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeThemePermissions", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeThemePermissions), varargs...)
 }
 
+// DescribeTopic mocks base method.
+func (m *MockQuicksightClient) DescribeTopic(arg0 context.Context, arg1 *quicksight.DescribeTopicInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeTopicOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTopic")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeTopic", varargs...)
+	ret0, _ := ret[0].(*quicksight.DescribeTopicOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeTopic indicates an expected call of DescribeTopic.
+func (mr *MockQuicksightClientMockRecorder) DescribeTopic(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTopic", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeTopic), varargs...)
+}
+
+// DescribeTopicPermissions mocks base method.
+func (m *MockQuicksightClient) DescribeTopicPermissions(arg0 context.Context, arg1 *quicksight.DescribeTopicPermissionsInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeTopicPermissionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTopicPermissions")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeTopicPermissions", varargs...)
+	ret0, _ := ret[0].(*quicksight.DescribeTopicPermissionsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeTopicPermissions indicates an expected call of DescribeTopicPermissions.
+func (mr *MockQuicksightClientMockRecorder) DescribeTopicPermissions(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTopicPermissions", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeTopicPermissions), varargs...)
+}
+
+// DescribeTopicRefresh mocks base method.
+func (m *MockQuicksightClient) DescribeTopicRefresh(arg0 context.Context, arg1 *quicksight.DescribeTopicRefreshInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeTopicRefreshOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTopicRefresh")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeTopicRefresh", varargs...)
+	ret0, _ := ret[0].(*quicksight.DescribeTopicRefreshOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeTopicRefresh indicates an expected call of DescribeTopicRefresh.
+func (mr *MockQuicksightClientMockRecorder) DescribeTopicRefresh(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTopicRefresh", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeTopicRefresh), varargs...)
+}
+
+// DescribeTopicRefreshSchedule mocks base method.
+func (m *MockQuicksightClient) DescribeTopicRefreshSchedule(arg0 context.Context, arg1 *quicksight.DescribeTopicRefreshScheduleInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeTopicRefreshScheduleOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTopicRefreshSchedule")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeTopicRefreshSchedule", varargs...)
+	ret0, _ := ret[0].(*quicksight.DescribeTopicRefreshScheduleOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeTopicRefreshSchedule indicates an expected call of DescribeTopicRefreshSchedule.
+func (mr *MockQuicksightClientMockRecorder) DescribeTopicRefreshSchedule(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTopicRefreshSchedule", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeTopicRefreshSchedule), varargs...)
+}
+
 // DescribeUser mocks base method.
 func (m *MockQuicksightClient) DescribeUser(arg0 context.Context, arg1 *quicksight.DescribeUserInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeUserOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeUser")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -635,8 +1235,48 @@ func (mr *MockQuicksightClientMockRecorder) DescribeUser(arg0, arg1 interface{},
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeUser", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeUser), varargs...)
 }
 
+// DescribeVPCConnection mocks base method.
+func (m *MockQuicksightClient) DescribeVPCConnection(arg0 context.Context, arg1 *quicksight.DescribeVPCConnectionInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeVPCConnectionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVPCConnection")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeVPCConnection", varargs...)
+	ret0, _ := ret[0].(*quicksight.DescribeVPCConnectionOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeVPCConnection indicates an expected call of DescribeVPCConnection.
+func (mr *MockQuicksightClientMockRecorder) DescribeVPCConnection(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeVPCConnection", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeVPCConnection), varargs...)
+}
+
 // GetDashboardEmbedUrl mocks base method.
 func (m *MockQuicksightClient) GetDashboardEmbedUrl(arg0 context.Context, arg1 *quicksight.GetDashboardEmbedUrlInput, arg2 ...func(*quicksight.Options)) (*quicksight.GetDashboardEmbedUrlOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDashboardEmbedUrl")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -657,6 +1297,16 @@ func (mr *MockQuicksightClientMockRecorder) GetDashboardEmbedUrl(arg0, arg1 inte
 
 // GetSessionEmbedUrl mocks base method.
 func (m *MockQuicksightClient) GetSessionEmbedUrl(arg0 context.Context, arg1 *quicksight.GetSessionEmbedUrlInput, arg2 ...func(*quicksight.Options)) (*quicksight.GetSessionEmbedUrlOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSessionEmbedUrl")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -677,6 +1327,16 @@ func (mr *MockQuicksightClientMockRecorder) GetSessionEmbedUrl(arg0, arg1 interf
 
 // ListAnalyses mocks base method.
 func (m *MockQuicksightClient) ListAnalyses(arg0 context.Context, arg1 *quicksight.ListAnalysesInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListAnalysesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAnalyses")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -695,8 +1355,78 @@ func (mr *MockQuicksightClientMockRecorder) ListAnalyses(arg0, arg1 interface{},
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAnalyses", reflect.TypeOf((*MockQuicksightClient)(nil).ListAnalyses), varargs...)
 }
 
+// ListAssetBundleExportJobs mocks base method.
+func (m *MockQuicksightClient) ListAssetBundleExportJobs(arg0 context.Context, arg1 *quicksight.ListAssetBundleExportJobsInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListAssetBundleExportJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAssetBundleExportJobs")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListAssetBundleExportJobs", varargs...)
+	ret0, _ := ret[0].(*quicksight.ListAssetBundleExportJobsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListAssetBundleExportJobs indicates an expected call of ListAssetBundleExportJobs.
+func (mr *MockQuicksightClientMockRecorder) ListAssetBundleExportJobs(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAssetBundleExportJobs", reflect.TypeOf((*MockQuicksightClient)(nil).ListAssetBundleExportJobs), varargs...)
+}
+
+// ListAssetBundleImportJobs mocks base method.
+func (m *MockQuicksightClient) ListAssetBundleImportJobs(arg0 context.Context, arg1 *quicksight.ListAssetBundleImportJobsInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListAssetBundleImportJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAssetBundleImportJobs")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListAssetBundleImportJobs", varargs...)
+	ret0, _ := ret[0].(*quicksight.ListAssetBundleImportJobsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListAssetBundleImportJobs indicates an expected call of ListAssetBundleImportJobs.
+func (mr *MockQuicksightClientMockRecorder) ListAssetBundleImportJobs(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAssetBundleImportJobs", reflect.TypeOf((*MockQuicksightClient)(nil).ListAssetBundleImportJobs), varargs...)
+}
+
 // ListDashboardVersions mocks base method.
 func (m *MockQuicksightClient) ListDashboardVersions(arg0 context.Context, arg1 *quicksight.ListDashboardVersionsInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListDashboardVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDashboardVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -717,6 +1447,16 @@ func (mr *MockQuicksightClientMockRecorder) ListDashboardVersions(arg0, arg1 int
 
 // ListDashboards mocks base method.
 func (m *MockQuicksightClient) ListDashboards(arg0 context.Context, arg1 *quicksight.ListDashboardsInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListDashboardsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDashboards")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -737,6 +1477,16 @@ func (mr *MockQuicksightClientMockRecorder) ListDashboards(arg0, arg1 interface{
 
 // ListDataSets mocks base method.
 func (m *MockQuicksightClient) ListDataSets(arg0 context.Context, arg1 *quicksight.ListDataSetsInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListDataSetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDataSets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -757,6 +1507,16 @@ func (mr *MockQuicksightClientMockRecorder) ListDataSets(arg0, arg1 interface{},
 
 // ListDataSources mocks base method.
 func (m *MockQuicksightClient) ListDataSources(arg0 context.Context, arg1 *quicksight.ListDataSourcesInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListDataSourcesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDataSources")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -777,6 +1537,16 @@ func (mr *MockQuicksightClientMockRecorder) ListDataSources(arg0, arg1 interface
 
 // ListFolderMembers mocks base method.
 func (m *MockQuicksightClient) ListFolderMembers(arg0 context.Context, arg1 *quicksight.ListFolderMembersInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListFolderMembersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListFolderMembers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -797,6 +1567,16 @@ func (mr *MockQuicksightClientMockRecorder) ListFolderMembers(arg0, arg1 interfa
 
 // ListFolders mocks base method.
 func (m *MockQuicksightClient) ListFolders(arg0 context.Context, arg1 *quicksight.ListFoldersInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListFoldersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListFolders")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -817,6 +1597,16 @@ func (mr *MockQuicksightClientMockRecorder) ListFolders(arg0, arg1 interface{}, 
 
 // ListGroupMemberships mocks base method.
 func (m *MockQuicksightClient) ListGroupMemberships(arg0 context.Context, arg1 *quicksight.ListGroupMembershipsInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListGroupMembershipsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListGroupMemberships")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -837,6 +1627,16 @@ func (mr *MockQuicksightClientMockRecorder) ListGroupMemberships(arg0, arg1 inte
 
 // ListGroups mocks base method.
 func (m *MockQuicksightClient) ListGroups(arg0 context.Context, arg1 *quicksight.ListGroupsInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -857,6 +1657,16 @@ func (mr *MockQuicksightClientMockRecorder) ListGroups(arg0, arg1 interface{}, a
 
 // ListIAMPolicyAssignments mocks base method.
 func (m *MockQuicksightClient) ListIAMPolicyAssignments(arg0 context.Context, arg1 *quicksight.ListIAMPolicyAssignmentsInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListIAMPolicyAssignmentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListIAMPolicyAssignments")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -877,6 +1687,16 @@ func (mr *MockQuicksightClientMockRecorder) ListIAMPolicyAssignments(arg0, arg1 
 
 // ListIAMPolicyAssignmentsForUser mocks base method.
 func (m *MockQuicksightClient) ListIAMPolicyAssignmentsForUser(arg0 context.Context, arg1 *quicksight.ListIAMPolicyAssignmentsForUserInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListIAMPolicyAssignmentsForUserOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListIAMPolicyAssignmentsForUser")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -897,6 +1717,16 @@ func (mr *MockQuicksightClientMockRecorder) ListIAMPolicyAssignmentsForUser(arg0
 
 // ListIngestions mocks base method.
 func (m *MockQuicksightClient) ListIngestions(arg0 context.Context, arg1 *quicksight.ListIngestionsInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListIngestionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListIngestions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -917,6 +1747,16 @@ func (mr *MockQuicksightClientMockRecorder) ListIngestions(arg0, arg1 interface{
 
 // ListNamespaces mocks base method.
 func (m *MockQuicksightClient) ListNamespaces(arg0 context.Context, arg1 *quicksight.ListNamespacesInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListNamespacesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListNamespaces")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -935,8 +1775,48 @@ func (mr *MockQuicksightClientMockRecorder) ListNamespaces(arg0, arg1 interface{
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListNamespaces", reflect.TypeOf((*MockQuicksightClient)(nil).ListNamespaces), varargs...)
 }
 
+// ListRefreshSchedules mocks base method.
+func (m *MockQuicksightClient) ListRefreshSchedules(arg0 context.Context, arg1 *quicksight.ListRefreshSchedulesInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListRefreshSchedulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRefreshSchedules")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListRefreshSchedules", varargs...)
+	ret0, _ := ret[0].(*quicksight.ListRefreshSchedulesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListRefreshSchedules indicates an expected call of ListRefreshSchedules.
+func (mr *MockQuicksightClientMockRecorder) ListRefreshSchedules(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListRefreshSchedules", reflect.TypeOf((*MockQuicksightClient)(nil).ListRefreshSchedules), varargs...)
+}
+
 // ListTagsForResource mocks base method.
 func (m *MockQuicksightClient) ListTagsForResource(arg0 context.Context, arg1 *quicksight.ListTagsForResourceInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -957,6 +1837,16 @@ func (mr *MockQuicksightClientMockRecorder) ListTagsForResource(arg0, arg1 inter
 
 // ListTemplateAliases mocks base method.
 func (m *MockQuicksightClient) ListTemplateAliases(arg0 context.Context, arg1 *quicksight.ListTemplateAliasesInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListTemplateAliasesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTemplateAliases")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -977,6 +1867,16 @@ func (mr *MockQuicksightClientMockRecorder) ListTemplateAliases(arg0, arg1 inter
 
 // ListTemplateVersions mocks base method.
 func (m *MockQuicksightClient) ListTemplateVersions(arg0 context.Context, arg1 *quicksight.ListTemplateVersionsInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListTemplateVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTemplateVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -997,6 +1897,16 @@ func (mr *MockQuicksightClientMockRecorder) ListTemplateVersions(arg0, arg1 inte
 
 // ListTemplates mocks base method.
 func (m *MockQuicksightClient) ListTemplates(arg0 context.Context, arg1 *quicksight.ListTemplatesInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListTemplatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTemplates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1017,6 +1927,16 @@ func (mr *MockQuicksightClientMockRecorder) ListTemplates(arg0, arg1 interface{}
 
 // ListThemeAliases mocks base method.
 func (m *MockQuicksightClient) ListThemeAliases(arg0 context.Context, arg1 *quicksight.ListThemeAliasesInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListThemeAliasesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListThemeAliases")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1037,6 +1957,16 @@ func (mr *MockQuicksightClientMockRecorder) ListThemeAliases(arg0, arg1 interfac
 
 // ListThemeVersions mocks base method.
 func (m *MockQuicksightClient) ListThemeVersions(arg0 context.Context, arg1 *quicksight.ListThemeVersionsInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListThemeVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListThemeVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1057,6 +1987,16 @@ func (mr *MockQuicksightClientMockRecorder) ListThemeVersions(arg0, arg1 interfa
 
 // ListThemes mocks base method.
 func (m *MockQuicksightClient) ListThemes(arg0 context.Context, arg1 *quicksight.ListThemesInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListThemesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListThemes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1075,8 +2015,78 @@ func (mr *MockQuicksightClientMockRecorder) ListThemes(arg0, arg1 interface{}, a
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListThemes", reflect.TypeOf((*MockQuicksightClient)(nil).ListThemes), varargs...)
 }
 
+// ListTopicRefreshSchedules mocks base method.
+func (m *MockQuicksightClient) ListTopicRefreshSchedules(arg0 context.Context, arg1 *quicksight.ListTopicRefreshSchedulesInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListTopicRefreshSchedulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTopicRefreshSchedules")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListTopicRefreshSchedules", varargs...)
+	ret0, _ := ret[0].(*quicksight.ListTopicRefreshSchedulesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTopicRefreshSchedules indicates an expected call of ListTopicRefreshSchedules.
+func (mr *MockQuicksightClientMockRecorder) ListTopicRefreshSchedules(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTopicRefreshSchedules", reflect.TypeOf((*MockQuicksightClient)(nil).ListTopicRefreshSchedules), varargs...)
+}
+
+// ListTopics mocks base method.
+func (m *MockQuicksightClient) ListTopics(arg0 context.Context, arg1 *quicksight.ListTopicsInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListTopicsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTopics")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListTopics", varargs...)
+	ret0, _ := ret[0].(*quicksight.ListTopicsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTopics indicates an expected call of ListTopics.
+func (mr *MockQuicksightClientMockRecorder) ListTopics(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTopics", reflect.TypeOf((*MockQuicksightClient)(nil).ListTopics), varargs...)
+}
+
 // ListUserGroups mocks base method.
 func (m *MockQuicksightClient) ListUserGroups(arg0 context.Context, arg1 *quicksight.ListUserGroupsInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListUserGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListUserGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1097,6 +2107,16 @@ func (mr *MockQuicksightClientMockRecorder) ListUserGroups(arg0, arg1 interface{
 
 // ListUsers mocks base method.
 func (m *MockQuicksightClient) ListUsers(arg0 context.Context, arg1 *quicksight.ListUsersInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListUsersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListUsers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1115,8 +2135,48 @@ func (mr *MockQuicksightClientMockRecorder) ListUsers(arg0, arg1 interface{}, ar
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListUsers", reflect.TypeOf((*MockQuicksightClient)(nil).ListUsers), varargs...)
 }
 
+// ListVPCConnections mocks base method.
+func (m *MockQuicksightClient) ListVPCConnections(arg0 context.Context, arg1 *quicksight.ListVPCConnectionsInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListVPCConnectionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListVPCConnections")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListVPCConnections", varargs...)
+	ret0, _ := ret[0].(*quicksight.ListVPCConnectionsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListVPCConnections indicates an expected call of ListVPCConnections.
+func (mr *MockQuicksightClientMockRecorder) ListVPCConnections(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListVPCConnections", reflect.TypeOf((*MockQuicksightClient)(nil).ListVPCConnections), varargs...)
+}
+
 // SearchAnalyses mocks base method.
 func (m *MockQuicksightClient) SearchAnalyses(arg0 context.Context, arg1 *quicksight.SearchAnalysesInput, arg2 ...func(*quicksight.Options)) (*quicksight.SearchAnalysesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to SearchAnalyses")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1137,6 +2197,16 @@ func (mr *MockQuicksightClientMockRecorder) SearchAnalyses(arg0, arg1 interface{
 
 // SearchDashboards mocks base method.
 func (m *MockQuicksightClient) SearchDashboards(arg0 context.Context, arg1 *quicksight.SearchDashboardsInput, arg2 ...func(*quicksight.Options)) (*quicksight.SearchDashboardsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to SearchDashboards")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1157,6 +2227,16 @@ func (mr *MockQuicksightClientMockRecorder) SearchDashboards(arg0, arg1 interfac
 
 // SearchDataSets mocks base method.
 func (m *MockQuicksightClient) SearchDataSets(arg0 context.Context, arg1 *quicksight.SearchDataSetsInput, arg2 ...func(*quicksight.Options)) (*quicksight.SearchDataSetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to SearchDataSets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1177,6 +2257,16 @@ func (mr *MockQuicksightClientMockRecorder) SearchDataSets(arg0, arg1 interface{
 
 // SearchDataSources mocks base method.
 func (m *MockQuicksightClient) SearchDataSources(arg0 context.Context, arg1 *quicksight.SearchDataSourcesInput, arg2 ...func(*quicksight.Options)) (*quicksight.SearchDataSourcesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to SearchDataSources")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1197,6 +2287,16 @@ func (mr *MockQuicksightClientMockRecorder) SearchDataSources(arg0, arg1 interfa
 
 // SearchFolders mocks base method.
 func (m *MockQuicksightClient) SearchFolders(arg0 context.Context, arg1 *quicksight.SearchFoldersInput, arg2 ...func(*quicksight.Options)) (*quicksight.SearchFoldersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to SearchFolders")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1217,6 +2317,16 @@ func (mr *MockQuicksightClientMockRecorder) SearchFolders(arg0, arg1 interface{}
 
 // SearchGroups mocks base method.
 func (m *MockQuicksightClient) SearchGroups(arg0 context.Context, arg1 *quicksight.SearchGroupsInput, arg2 ...func(*quicksight.Options)) (*quicksight.SearchGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to SearchGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

@@ -3,12 +3,13 @@ package ssm
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func documentVersions() *schema.Table {
@@ -22,20 +23,18 @@ func documentVersions() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "document_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "document_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
 }
 
 func fetchSsmDocumentVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Ssm
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSsm).Ssm
 	item := parent.Item.(*types.DocumentDescription)
 
 	params := ssm.ListDocumentVersionsInput{
@@ -43,7 +42,9 @@ func fetchSsmDocumentVersions(ctx context.Context, meta schema.ClientMeta, paren
 	}
 	// No paginator
 	for {
-		output, err := svc.ListDocumentVersions(ctx, &params)
+		output, err := svc.ListDocumentVersions(ctx, &params, func(o *ssm.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

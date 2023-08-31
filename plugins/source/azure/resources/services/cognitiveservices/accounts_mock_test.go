@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/gorilla/mux"
 )
 
@@ -34,7 +34,27 @@ func createAccounts(router *mux.Router) error {
 		}
 	})
 
-	return nil
+	if err := createAccountDeployments(router); err != nil {
+		return err
+	}
+
+	if err := createAccountPrivateEndpointConnections(router); err != nil {
+		return err
+	}
+
+	if err := createAccountPrivateLinkResources(router); err != nil {
+		return err
+	}
+
+	if err := createAccountModels(router); err != nil {
+		return err
+	}
+
+	if err := createAccountUsages(router); err != nil {
+		return err
+	}
+
+	return createAccountSKUs(router)
 }
 
 func TestAccounts(t *testing.T) {

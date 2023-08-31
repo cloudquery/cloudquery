@@ -3,11 +3,12 @@ package elasticache
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Events() *schema.Table {
@@ -22,12 +23,10 @@ func Events() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "_event_hash",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveObjectHash,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "_event_hash",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveObjectHash,
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -35,10 +34,14 @@ func Events() *schema.Table {
 
 func fetchElasticacheEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input elasticache.DescribeEventsInput
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceElasticache).Elasticache
 
-	paginator := elasticache.NewDescribeEventsPaginator(meta.(*client.Client).Services().Elasticache, &input)
+	paginator := elasticache.NewDescribeEventsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		v, err := paginator.NextPage(ctx)
+		v, err := paginator.NextPage(ctx, func(options *elasticache.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

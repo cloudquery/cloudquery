@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func DataShares() *schema.Table {
@@ -27,15 +27,17 @@ func DataShares() *schema.Table {
 }
 
 func fetchDataShares(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Redshift
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceRedshift).Redshift
 
 	config := redshift.DescribeDataSharesInput{
 		MaxRecords: aws.Int32(100),
 	}
 	paginator := redshift.NewDescribeDataSharesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *redshift.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

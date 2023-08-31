@@ -1,5 +1,9 @@
 name: Destination Plugin ClickHouse Workflow
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     paths:
@@ -15,7 +19,7 @@ on:
 jobs:
   plugins-destination-clickhouse:
     name: "plugins/destination/clickhouse"
-    runs-on:         ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     timeout-minutes: 30
     env:
       DB_USER:     cq
@@ -55,13 +59,12 @@ jobs:
     - name: golangci-lint
       uses: cloudquery/golangci-lint-action@master
       with:
-        version:           v1.51.2
+        version: v1.52.2
         working-directory: plugins/destination/clickhouse
         args:              "--config ../../.golangci.yml"
         skip-pkg-cache:    true
         skip-build-cache:  true
-    - name: Get dependencies
-      run:  go get -t -d ./...
+    - run: go mod tidy
     - name: Build
       run:  go build .
     - name: Test ClickHouse
@@ -70,7 +73,7 @@ jobs:
       run:  make test
   validate-release:
     timeout-minutes: 30
-    runs-on:         ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     env:
       CGO_ENABLED: 0
     steps:
@@ -83,9 +86,9 @@ jobs:
         path:         |
                       ~/.cache/go-build
                       ~/go/pkg/mod
-        key:          ${{ runner.os }}-go-1.19.4-release-cache-${{ hashFiles('plugins/destination/clickhouse/go.sum') }}
+        key:          ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/destination/clickhouse/go.sum') }}
         restore-keys: |
-                      ${{ runner.os }}-go-1.19.4-release-cache-plugins-destination-clickhouse
+                      ${{ runner.os }}-go-1.20.5-release-cache-plugins-destination-clickhouse
     - name: Set up Go
       if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
       uses: actions/setup-go@v3

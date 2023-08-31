@@ -3,8 +3,10 @@ package services
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/salesforce/client"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func rawResolver(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
@@ -26,26 +28,22 @@ func Objects() *schema.Table {
 			{
 				Name:        "_cq_raw",
 				Description: "Raw JSON response",
-				Type:        schema.TypeJSON,
+				Type:        types.ExtensionTypes.JSON,
 				Resolver:    rawResolver,
 			},
 			{
 				Name:        "object_type",
 				Description: "Name of the object.",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 				Resolver:    objectResolver,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey:  true,
 			},
 			{
 				Name:        "id",
 				Description: "Unique identifier for the object.",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 				Resolver:    schema.PathResolver("Id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey:  true,
 			},
 		},
 	}

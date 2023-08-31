@@ -23,6 +23,7 @@ tables:
 ```
 
 ### Queries
+
 Kubernetes NSA CISA v1 performs the following checks:
   - Daemonset enforces cpu limits
   - Deployment enforces cpu limits
@@ -81,4 +82,4 @@ Kubernetes NSA CISA v1 performs the following checks:
   - Pod container runs as non-root
   - ReplicaSet containers must run as non-root
   - Pod service account tokens disabled
-  - Pod service account tokens disabled"
+  - Pod service account tokens disabled

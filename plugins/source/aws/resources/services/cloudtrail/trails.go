@@ -5,14 +5,17 @@ import (
 	"fmt"
 	"regexp"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudtrail/models"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Trails() *schema.Table {
@@ -28,20 +31,18 @@ func Trails() *schema.Table {
 			client.DefaultRegionColumn(true),
 			{
 				Name:     "cloudwatch_logs_log_group_name",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: resolveCloudtrailTrailCloudwatchLogsLogGroupName,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("TrailARN"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("TrailARN"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "status",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveCloudTrailStatus,
 			},
 		},
@@ -55,10 +56,12 @@ func Trails() *schema.Table {
 var groupNameRegex = regexp.MustCompile("arn:[a-zA-Z0-9-]+:logs:[a-z0-9-]+:[0-9]+:log-group:([a-zA-Z0-9-/]+):")
 
 func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudtrail
-	log := c.Logger()
-	response, err := svc.DescribeTrails(ctx, nil)
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceCloudtrail).Cloudtrail
+	log := cl.Logger()
+	response, err := svc.DescribeTrails(ctx, nil, func(options *cloudtrail.Options) {
+		options.Region = cl.Region
+	})
 
 	if err != nil {
 		return err
@@ -85,7 +88,7 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 				log.Warn().Str("arn", *h.TrailARN).Msg("could not parse cloudtrail ARN")
 				continue
 			}
-			if aws.ToBool(h.IsOrganizationTrail) && c.AccountID != arnParts.AccountID {
+			if aws.ToBool(h.IsOrganizationTrail) && cl.AccountID != arnParts.AccountID {
 				log.Warn().Str("arn", *h.TrailARN).Msg("the trail is an organization-level trail, could not fetch tags")
 				continue
 			}
@@ -141,8 +144,8 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 }
 
 func resolveCloudTrailStatus(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudtrail
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceCloudtrail).Cloudtrail
 	r := resource.Item.(*models.CloudTrailWrapper)
 	response, err := svc.GetTrailStatus(ctx,
 		&cloudtrail.GetTrailStatusInput{Name: r.TrailARN}, func(o *cloudtrail.Options) {

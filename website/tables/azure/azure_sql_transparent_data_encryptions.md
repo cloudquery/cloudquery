@@ -14,12 +14,37 @@ This table depends on [azure_sql_server_databases](azure_sql_server_databases).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|subscription_id|String|
-|properties|JSON|
-|id (PK)|String|
-|name|String|
-|type|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|subscription_id|`utf8`|
+|properties|`json`|
+|id (PK)|`utf8`|
+|name|`utf8`|
+|type|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Ensure that "Data encryption" is set to "On" on a SQL Database (Automated)
+
+```sql
+SELECT
+  'Ensure that "Data encryption" is set to "On" on a SQL Database (Automated)'
+    AS title,
+  s.subscription_id,
+  asd.id AS database_id,
+  CASE
+  WHEN tde.properties->>'state' IS DISTINCT FROM 'Enabled' THEN 'fail'
+  ELSE 'pass'
+  END
+FROM
+  azure_sql_servers AS s
+  LEFT JOIN azure_sql_server_databases AS asd ON s._cq_id = asd._cq_parent_id
+  LEFT JOIN azure_sql_transparent_data_encryptions AS tde ON
+      asd._cq_id = tde._cq_parent_id
+WHERE
+  asd.name != 'master';
+```
+
+

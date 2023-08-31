@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datalake-store/armdatalakestore"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Accounts() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_datalakestore_accounts",
-		Resolver:    fetchAccounts,
-		Description: "https://learn.microsoft.com/en-us/rest/api/datalakestore/accounts/list?tabs=HTTP#datalakestoreaccountbasic",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_datalakestore_accounts", client.Namespacemicrosoft_datalakestore),
-		Transform:   transformers.TransformWithStruct(&armdatalakestore.AccountBasic{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_datalakestore_accounts",
+		Resolver:             fetchAccounts,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/datalakestore/accounts/list?tabs=HTTP#datalakestoreaccountbasic",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_datalakestore_accounts", client.Namespacemicrosoft_datalakestore),
+		Transform:            transformers.TransformWithStruct(&armdatalakestore.AccountBasic{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

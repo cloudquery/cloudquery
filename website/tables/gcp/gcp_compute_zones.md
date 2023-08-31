@@ -10,24 +10,23 @@ The primary key for this table is **self_link**.
 
 The following tables depend on gcp_compute_zones:
   - [gcp_compute_machine_types](gcp_compute_machine_types)
+  - [gcp_compute_osconfig_inventories](gcp_compute_osconfig_inventories)
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id|String|
-|available_cpu_platforms|StringArray|
-|creation_timestamp|String|
-|deprecated|JSON|
-|description|String|
-|id|Int|
-|kind|String|
-|name|String|
-|region|String|
-|self_link (PK)|String|
-|status|String|
-|supports_pzs|Bool|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id|`utf8`|
+|available_cpu_platforms|`list<item: utf8, nullable>`|
+|creation_timestamp|`utf8`|
+|deprecated|`json`|
+|description|`utf8`|
+|id|`int64`|
+|kind|`utf8`|
+|name|`utf8`|
+|region|`utf8`|
+|self_link (PK)|`utf8`|
+|status|`utf8`|
+|supports_pzs|`bool`|

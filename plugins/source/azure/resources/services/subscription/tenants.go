@@ -3,25 +3,26 @@ package subscription
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Tenants() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_subscription_tenants",
-		Resolver:    fetchTenants,
-		Description: "https://learn.microsoft.com/en-us/rest/api/resources/tenants/list?tabs=HTTP#tenantiddescription",
-		Transform:   transformers.TransformWithStruct(&armsubscription.TenantIDDescription{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{},
+		Name:                 "azure_subscription_tenants",
+		Resolver:             fetchTenants,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/resources/tenants/list?tabs=HTTP#tenantiddescription",
+		Transform:            transformers.TransformWithStruct(&armsubscriptions.TenantIDDescription{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{},
 	}
 }
 
 func fetchTenants(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc, err := armsubscription.NewTenantsClient(cl.Creds, cl.Options)
+	svc, err := armsubscriptions.NewTenantsClient(cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}

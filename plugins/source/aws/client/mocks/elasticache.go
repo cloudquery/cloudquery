@@ -37,6 +37,16 @@ func (m *MockElasticacheClient) EXPECT() *MockElasticacheClientMockRecorder {
 
 // DescribeCacheClusters mocks base method.
 func (m *MockElasticacheClient) DescribeCacheClusters(arg0 context.Context, arg1 *elasticache.DescribeCacheClustersInput, arg2 ...func(*elasticache.Options)) (*elasticache.DescribeCacheClustersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticache.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCacheClusters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockElasticacheClientMockRecorder) DescribeCacheClusters(arg0, arg1 in
 
 // DescribeCacheEngineVersions mocks base method.
 func (m *MockElasticacheClient) DescribeCacheEngineVersions(arg0 context.Context, arg1 *elasticache.DescribeCacheEngineVersionsInput, arg2 ...func(*elasticache.Options)) (*elasticache.DescribeCacheEngineVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticache.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCacheEngineVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockElasticacheClientMockRecorder) DescribeCacheEngineVersions(arg0, a
 
 // DescribeCacheParameterGroups mocks base method.
 func (m *MockElasticacheClient) DescribeCacheParameterGroups(arg0 context.Context, arg1 *elasticache.DescribeCacheParameterGroupsInput, arg2 ...func(*elasticache.Options)) (*elasticache.DescribeCacheParameterGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticache.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCacheParameterGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockElasticacheClientMockRecorder) DescribeCacheParameterGroups(arg0, 
 
 // DescribeCacheParameters mocks base method.
 func (m *MockElasticacheClient) DescribeCacheParameters(arg0 context.Context, arg1 *elasticache.DescribeCacheParametersInput, arg2 ...func(*elasticache.Options)) (*elasticache.DescribeCacheParametersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticache.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCacheParameters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockElasticacheClientMockRecorder) DescribeCacheParameters(arg0, arg1 
 
 // DescribeCacheSecurityGroups mocks base method.
 func (m *MockElasticacheClient) DescribeCacheSecurityGroups(arg0 context.Context, arg1 *elasticache.DescribeCacheSecurityGroupsInput, arg2 ...func(*elasticache.Options)) (*elasticache.DescribeCacheSecurityGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticache.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCacheSecurityGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockElasticacheClientMockRecorder) DescribeCacheSecurityGroups(arg0, a
 
 // DescribeCacheSubnetGroups mocks base method.
 func (m *MockElasticacheClient) DescribeCacheSubnetGroups(arg0 context.Context, arg1 *elasticache.DescribeCacheSubnetGroupsInput, arg2 ...func(*elasticache.Options)) (*elasticache.DescribeCacheSubnetGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticache.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCacheSubnetGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockElasticacheClientMockRecorder) DescribeCacheSubnetGroups(arg0, arg
 
 // DescribeEngineDefaultParameters mocks base method.
 func (m *MockElasticacheClient) DescribeEngineDefaultParameters(arg0 context.Context, arg1 *elasticache.DescribeEngineDefaultParametersInput, arg2 ...func(*elasticache.Options)) (*elasticache.DescribeEngineDefaultParametersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticache.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEngineDefaultParameters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockElasticacheClientMockRecorder) DescribeEngineDefaultParameters(arg
 
 // DescribeEvents mocks base method.
 func (m *MockElasticacheClient) DescribeEvents(arg0 context.Context, arg1 *elasticache.DescribeEventsInput, arg2 ...func(*elasticache.Options)) (*elasticache.DescribeEventsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticache.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEvents")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockElasticacheClientMockRecorder) DescribeEvents(arg0, arg1 interface
 
 // DescribeGlobalReplicationGroups mocks base method.
 func (m *MockElasticacheClient) DescribeGlobalReplicationGroups(arg0 context.Context, arg1 *elasticache.DescribeGlobalReplicationGroupsInput, arg2 ...func(*elasticache.Options)) (*elasticache.DescribeGlobalReplicationGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticache.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeGlobalReplicationGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockElasticacheClientMockRecorder) DescribeGlobalReplicationGroups(arg
 
 // DescribeReplicationGroups mocks base method.
 func (m *MockElasticacheClient) DescribeReplicationGroups(arg0 context.Context, arg1 *elasticache.DescribeReplicationGroupsInput, arg2 ...func(*elasticache.Options)) (*elasticache.DescribeReplicationGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticache.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReplicationGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockElasticacheClientMockRecorder) DescribeReplicationGroups(arg0, arg
 
 // DescribeReservedCacheNodes mocks base method.
 func (m *MockElasticacheClient) DescribeReservedCacheNodes(arg0 context.Context, arg1 *elasticache.DescribeReservedCacheNodesInput, arg2 ...func(*elasticache.Options)) (*elasticache.DescribeReservedCacheNodesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticache.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReservedCacheNodes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockElasticacheClientMockRecorder) DescribeReservedCacheNodes(arg0, ar
 
 // DescribeReservedCacheNodesOfferings mocks base method.
 func (m *MockElasticacheClient) DescribeReservedCacheNodesOfferings(arg0 context.Context, arg1 *elasticache.DescribeReservedCacheNodesOfferingsInput, arg2 ...func(*elasticache.Options)) (*elasticache.DescribeReservedCacheNodesOfferingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticache.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReservedCacheNodesOfferings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockElasticacheClientMockRecorder) DescribeReservedCacheNodesOfferings
 
 // DescribeServiceUpdates mocks base method.
 func (m *MockElasticacheClient) DescribeServiceUpdates(arg0 context.Context, arg1 *elasticache.DescribeServiceUpdatesInput, arg2 ...func(*elasticache.Options)) (*elasticache.DescribeServiceUpdatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticache.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeServiceUpdates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockElasticacheClientMockRecorder) DescribeServiceUpdates(arg0, arg1 i
 
 // DescribeSnapshots mocks base method.
 func (m *MockElasticacheClient) DescribeSnapshots(arg0 context.Context, arg1 *elasticache.DescribeSnapshotsInput, arg2 ...func(*elasticache.Options)) (*elasticache.DescribeSnapshotsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticache.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSnapshots")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockElasticacheClientMockRecorder) DescribeSnapshots(arg0, arg1 interf
 
 // DescribeUpdateActions mocks base method.
 func (m *MockElasticacheClient) DescribeUpdateActions(arg0 context.Context, arg1 *elasticache.DescribeUpdateActionsInput, arg2 ...func(*elasticache.Options)) (*elasticache.DescribeUpdateActionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticache.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeUpdateActions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockElasticacheClientMockRecorder) DescribeUpdateActions(arg0, arg1 in
 
 // DescribeUserGroups mocks base method.
 func (m *MockElasticacheClient) DescribeUserGroups(arg0 context.Context, arg1 *elasticache.DescribeUserGroupsInput, arg2 ...func(*elasticache.Options)) (*elasticache.DescribeUserGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticache.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeUserGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockElasticacheClientMockRecorder) DescribeUserGroups(arg0, arg1 inter
 
 // DescribeUsers mocks base method.
 func (m *MockElasticacheClient) DescribeUsers(arg0 context.Context, arg1 *elasticache.DescribeUsersInput, arg2 ...func(*elasticache.Options)) (*elasticache.DescribeUsersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticache.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeUsers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockElasticacheClientMockRecorder) DescribeUsers(arg0, arg1 interface{
 
 // ListAllowedNodeTypeModifications mocks base method.
 func (m *MockElasticacheClient) ListAllowedNodeTypeModifications(arg0 context.Context, arg1 *elasticache.ListAllowedNodeTypeModificationsInput, arg2 ...func(*elasticache.Options)) (*elasticache.ListAllowedNodeTypeModificationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticache.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAllowedNodeTypeModifications")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockElasticacheClientMockRecorder) ListAllowedNodeTypeModifications(ar
 
 // ListTagsForResource mocks base method.
 func (m *MockElasticacheClient) ListTagsForResource(arg0 context.Context, arg1 *elasticache.ListTagsForResourceInput, arg2 ...func(*elasticache.Options)) (*elasticache.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticache.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Monitors() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_datadog_monitors",
-		Resolver:    fetchMonitors,
-		Description: "https://learn.microsoft.com/en-us/rest/api/datadog/monitors/list?tabs=HTTP#datadogmonitorresource",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_datadog_monitors", client.Namespacemicrosoft_datadog),
-		Transform:   transformers.TransformWithStruct(&armdatadog.MonitorResource{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_datadog_monitors",
+		Resolver:             fetchMonitors,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/datadog/monitors/list?tabs=HTTP#datadogmonitorresource",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_datadog_monitors", client.Namespacemicrosoft_datadog),
+		Transform:            transformers.TransformWithStruct(&armdatadog.MonitorResource{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

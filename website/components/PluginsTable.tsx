@@ -29,7 +29,7 @@ const TableRow = ({ type, name, id, stage, meta = () => null }) => {
         />
         {meta()}
       </Td>
-      <Td>{getLatestVersion(type, id)}</Td>
+      <Td>{stage.endsWith("(Premium)") ? "PREMIUM" : getLatestVersion(type, id)}</Td>
       <Td>
         <TableLink
           text="Changelog"

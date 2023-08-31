@@ -7,17 +7,15 @@ import (
 	elbv1Types "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildElbv1LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockElasticloadbalancingClient(ctrl)
 	l := elbv1Types.LoadBalancerDescription{}
-	err := faker.FakeObject(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&l))
 
 	m.EXPECT().DescribeLoadBalancers(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticloadbalancing.DescribeLoadBalancersOutput{
@@ -25,10 +23,7 @@ func buildElbv1LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	tag := elbv1Types.Tag{}
-	err = faker.FakeObject(&tag)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tag))
 	m.EXPECT().DescribeTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticloadbalancing.DescribeTagsOutput{
 			TagDescriptions: []elbv1Types.TagDescription{
@@ -40,20 +35,14 @@ func buildElbv1LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Servi
 		}, nil)
 
 	a := elbv1Types.LoadBalancerAttributes{}
-	err = faker.FakeObject(&a)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&a))
 	m.EXPECT().DescribeLoadBalancerAttributes(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticloadbalancing.DescribeLoadBalancerAttributesOutput{
 			LoadBalancerAttributes: &a,
 		}, nil)
 
 	p := elbv1Types.PolicyDescription{}
-	err = faker.FakeObject(&p)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&p))
 
 	m.EXPECT().DescribeLoadBalancerPolicies(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticloadbalancing.DescribeLoadBalancerPoliciesOutput{

@@ -23,23 +23,79 @@ The following tables depend on aws_apigateway_rest_apis:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|api_key_source|String|
-|binary_media_types|StringArray|
-|created_date|Timestamp|
-|description|String|
-|disable_execute_api_endpoint|Bool|
-|endpoint_configuration|JSON|
-|id|String|
-|minimum_compression_size|Int|
-|name|String|
-|policy|String|
-|tags|JSON|
-|version|String|
-|warnings|StringArray|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|api_key_source|`utf8`|
+|binary_media_types|`list<item: utf8, nullable>`|
+|created_date|`timestamp[us, tz=UTC]`|
+|description|`utf8`|
+|disable_execute_api_endpoint|`bool`|
+|endpoint_configuration|`json`|
+|id|`utf8`|
+|minimum_compression_size|`int64`|
+|name|`utf8`|
+|policy|`utf8`|
+|tags|`json`|
+|version|`utf8`|
+|warnings|`list<item: utf8, nullable>`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### API Gateway REST and WebSocket API logging should be enabled
+
+```sql
+(
+  SELECT
+    DISTINCT
+    'API Gateway REST and WebSocket API logging should be enabled' AS title,
+    r.account_id,
+    'arn:' || 'aws' || ':apigateway:' || r.region || ':/restapis/' || r.id
+      AS resource_id,
+    CASE
+    WHEN s.logging_level NOT IN ('"ERROR"', '"INFO"') THEN 'fail'
+    ELSE 'pass'
+    END
+      AS status
+  FROM
+    view_aws_apigateway_method_settings AS s
+    LEFT JOIN aws_apigateway_rest_apis AS r ON s.rest_api_arn = r.arn
+)
+UNION
+  (
+    SELECT
+      DISTINCT
+      'API Gateway REST and WebSocket API logging should be enabled' AS title,
+      a.account_id,
+      'arn:' || 'aws' || ':apigateway:' || a.region || ':/apis/' || a.id
+        AS resource_id,
+      CASE
+      WHEN s.default_route_settings->>'LoggingLevel' IN (NULL, 'OFF')
+      THEN 'fail'
+      ELSE 'pass'
+      END
+        AS status
+    FROM
+      aws_apigatewayv2_api_stages AS s
+      LEFT JOIN aws_apigatewayv2_apis AS a ON s.api_arn = a.arn
+  );
+```
+
+### Find all API Gateway instances that are publicly accessible
+
+```sql
+SELECT
+  'Find all API Gateway instances that are publicly accessible' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE WHEN NOT ('{PRIVATE}' = t) THEN 'fail' ELSE 'pass' END AS status
+FROM
+  aws_apigateway_rest_apis,
+  jsonb_array_elements_text(endpoint_configuration->'Types') AS t;
+```
+
+

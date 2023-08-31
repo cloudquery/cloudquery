@@ -3,11 +3,14 @@ package kafka
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/kafka"
 	"github.com/aws/aws-sdk-go-v2/service/kafka/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func clusterOperations() *schema.Table {
@@ -17,25 +20,23 @@ func clusterOperations() *schema.Table {
 		Description: `https://docs.aws.amazon.com/msk/1.0/apireference/clusters-clusterarn-operations.html`,
 		Resolver:    fetchKafkaClusterOperations,
 		Transform:   transformers.TransformWithStruct(&types.ClusterOperationInfo{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "kafka"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("OperationArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("OperationArn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "cluster_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
+			// TODO: This is column should be removed as the resource doesn't support tagging, but currently the column will always be empty
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveKafkaTags("OperationArn"),
 			},
 		},
@@ -49,11 +50,13 @@ func fetchKafkaClusterOperations(ctx context.Context, meta schema.ClientMeta, pa
 	}
 
 	var input = getListClusterOperationsInput(parent)
-	c := meta.(*client.Client)
-	svc := c.Services().Kafka
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceKafka).Kafka
 	paginator := kafka.NewListClusterOperationsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *kafka.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

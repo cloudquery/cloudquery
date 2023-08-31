@@ -1,29 +1,47 @@
 package client
 
 import (
-	"bytes"
 	"context"
 	"fmt"
 	"io"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/filetypes/v4"
+	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/google/uuid"
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data [][]any) error {
-	name := fmt.Sprintf("%s/%s.%s.%s", c.pluginSpec.Path, table.Name, c.pluginSpec.Format, uuid.NewString())
-	if c.pluginSpec.NoRotate {
-		name = fmt.Sprintf("%s/%s.%s", c.pluginSpec.Path, table.Name, c.pluginSpec.Format)
+func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInsert) error {
+	var s *filetypes.Stream
+
+	for msg := range msgs {
+		if s == nil {
+			table := msg.GetTable()
+
+			name := fmt.Sprintf("%s/%s.%s%s.%s", c.spec.Path, table.Name, c.spec.Format, c.spec.FileSpec.Compression.Extension(), uuid.NewString())
+			if c.spec.NoRotate {
+				name = fmt.Sprintf("%s/%s.%s%s", c.spec.Path, table.Name, c.spec.Format, c.spec.FileSpec.Compression.Extension())
+			}
+
+			var err error
+			s, err = c.Client.StartStream(table, func(r io.Reader) error {
+				_, err := c.storageClient.UploadStream(ctx, c.spec.Container, name, r, nil)
+				return err
+			})
+			if err != nil {
+				return err
+			}
+		}
+
+		if err := s.Write([]arrow.Record{msg.Record}); err != nil {
+			_ = s.FinishWithError(err)
+			return err
+		}
 	}
-	var b bytes.Buffer
-	w := io.Writer(&b)
-	if err := c.Client.WriteTableBatchFile(w, table, data); err != nil {
-		return err
-	}
-	r := io.Reader(&b)
-	_, err := c.storageClient.UploadStream(ctx, c.pluginSpec.Container, name, r, nil)
-	if err != nil {
-		return err
-	}
-	return nil
+
+	return s.Finish()
+}
+
+func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
+	return c.writer.Write(ctx, msgs)
 }

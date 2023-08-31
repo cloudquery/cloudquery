@@ -10,20 +10,44 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|name|String|
-|recording_group|JSON|
-|role_arn|String|
-|status_last_error_code|String|
-|status_last_error_message|String|
-|status_last_start_time|Timestamp|
-|status_last_status|String|
-|status_last_status_change_time|Timestamp|
-|status_last_stop_time|Timestamp|
-|status_recording|Bool|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|name|`utf8`|
+|recording_group|`json`|
+|role_arn|`utf8`|
+|status_last_error_code|`utf8`|
+|status_last_error_message|`utf8`|
+|status_last_start_time|`timestamp[us, tz=UTC]`|
+|status_last_status|`utf8`|
+|status_last_status_change_time|`timestamp[us, tz=UTC]`|
+|status_last_stop_time|`timestamp[us, tz=UTC]`|
+|status_recording|`bool`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### AWS Config should be enabled
+
+```sql
+SELECT
+  'AWS Config should be enabled' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN (recording_group->>'IncludeGlobalResourceTypes')::BOOL IS NOT true
+  OR (recording_group->>'AllSupported')::BOOL IS NOT true
+  OR status_recording IS NOT true
+  OR status_last_status IS DISTINCT FROM 'SUCCESS'
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_config_configuration_recorders;
+```
+
+

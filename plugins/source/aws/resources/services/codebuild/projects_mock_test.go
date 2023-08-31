@@ -6,17 +6,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/codebuild"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildCodebuildProjects(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockCodebuildClient(ctrl)
 
 	projectsList := codebuild.ListProjectsOutput{}
-	if err := faker.FakeObject(&projectsList); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&projectsList))
+
 	projectsList.NextToken = nil
 	m.EXPECT().ListProjects(
 		gomock.Any(),
@@ -28,9 +28,8 @@ func buildCodebuildProjects(t *testing.T, ctrl *gomock.Controller) client.Servic
 	)
 
 	projects := codebuild.BatchGetProjectsOutput{}
-	if err := faker.FakeObject(&projects); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&projects))
+
 	m.EXPECT().BatchGetProjects(
 		gomock.Any(),
 		gomock.Any(),
@@ -39,6 +38,32 @@ func buildCodebuildProjects(t *testing.T, ctrl *gomock.Controller) client.Servic
 		&projects,
 		nil,
 	)
+
+	buildID := ""
+	require.NoError(t, faker.FakeObject(&buildID))
+
+	m.EXPECT().ListBuildsForProject(
+		gomock.Any(),
+		gomock.Any(),
+		gomock.Any(),
+	).Return(
+		&codebuild.ListBuildsForProjectOutput{
+			Ids: []string{buildID},
+		},
+		nil,
+	).MinTimes(1)
+
+	build := codebuild.BatchGetBuildsOutput{}
+	require.NoError(t, faker.FakeObject(&build))
+
+	m.EXPECT().BatchGetBuilds(
+		gomock.Any(),
+		gomock.Any(),
+		gomock.Any(),
+	).Return(
+		&build,
+		nil,
+	).MinTimes(1)
 
 	return client.Services{Codebuild: m}
 }

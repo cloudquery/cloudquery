@@ -3,11 +3,12 @@ package athena
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func dataCatalogDatabases() *schema.Table {
@@ -16,26 +17,21 @@ func dataCatalogDatabases() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/athena/latest/APIReference/API_Database.html`,
 		Resolver:    fetchAthenaDataCatalogDatabases,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "athena"),
 		Transform:   transformers.TransformWithStruct(&types.Database{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "data_catalog_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "data_catalog_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Name"),
+				PrimaryKey: true,
 			},
 		},
 
@@ -46,14 +42,16 @@ func dataCatalogDatabases() *schema.Table {
 }
 
 func fetchAthenaDataCatalogDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Athena
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceAthena).Athena
 	input := athena.ListDatabasesInput{
 		CatalogName: parent.Item.(types.DataCatalog).Name,
 	}
 	paginator := athena.NewListDatabasesPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *athena.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

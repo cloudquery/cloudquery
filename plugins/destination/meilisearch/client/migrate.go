@@ -4,19 +4,23 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
+func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrateTables) error {
 	c.logger.Info().Msg("Migrate")
 
 	have, err := c.indexes()
 	if err != nil {
 		return err
 	}
+	tables := make(schema.Tables, len(messages))
+	for i, msg := range messages {
+		tables[i] = msg.Table
+	}
 
-	want := c.tablesIndexSchemas(tables)
+	want := tablesIndexSchemas(tables)
 
 	var recreate, create, update []*indexSchema
 	for uid, need := range want {
@@ -28,15 +32,10 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 			update = append(update, need)
 		default:
 			recreate = append(recreate, need)
+			if !messages[need.Index].MigrateForce {
+				return fmt.Errorf("index %s requires force migration. Migrate manually or consider using 'migrate_mode: forced'", uid)
+			}
 		}
-	}
-
-	if len(recreate) > 0 && c.dstSpec.MigrateMode != specs.MigrateModeForced {
-		names := make([]string, len(recreate))
-		for i, index := range recreate {
-			names[i] = index.UID
-		}
-		return fmt.Errorf("indexes %v require force migration. use 'migrate_mode: forced'", names)
 	}
 
 	for _, index := range create {

@@ -2,7 +2,7 @@
 
 This table shows data for Amazon API Gateway v2 API Routes.
 
-https://docs.aws.amazon.com/apigateway/latest/api/API_Route.html
+https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/apis-apiid-routes.html
 
 The composite primary key for this table is (**account_id**, **arn**).
 
@@ -17,25 +17,23 @@ The following tables depend on aws_apigatewayv2_api_routes:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region|String|
-|api_arn|String|
-|api_id|String|
-|arn (PK)|String|
-|route_key|String|
-|api_gateway_managed|Bool|
-|api_key_required|Bool|
-|authorization_scopes|StringArray|
-|authorization_type|String|
-|authorizer_id|String|
-|model_selection_expression|String|
-|operation_name|String|
-|request_models|JSON|
-|request_parameters|JSON|
-|route_id|String|
-|route_response_selection_expression|String|
-|target|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region|`utf8`|
+|api_arn|`utf8`|
+|api_id|`utf8`|
+|arn (PK)|`utf8`|
+|route_key|`utf8`|
+|api_gateway_managed|`bool`|
+|api_key_required|`bool`|
+|authorization_scopes|`list<item: utf8, nullable>`|
+|authorization_type|`utf8`|
+|authorizer_id|`utf8`|
+|model_selection_expression|`utf8`|
+|operation_name|`utf8`|
+|request_models|`json`|
+|request_parameters|`json`|
+|route_id|`utf8`|
+|route_response_selection_expression|`utf8`|
+|target|`utf8`|

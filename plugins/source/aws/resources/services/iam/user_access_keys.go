@@ -3,12 +3,13 @@ package iam
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam/models"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func userAccessKeys() *schema.Table {
@@ -19,37 +20,32 @@ func userAccessKeys() *schema.Table {
 		Resolver:             fetchIamUserAccessKeys,
 		PostResourceResolver: postIamUserAccessKeyResolver,
 		Transform:            transformers.TransformWithStruct(&models.AccessKeyWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
-		Multiplex:            client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:     "user_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "user_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "access_key_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AccessKeyId"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "access_key_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("AccessKeyId"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "user_id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("user_id"),
 			},
 			{
 				Name: "last_used",
-				Type: schema.TypeTimestamp,
+				Type: arrow.FixedWidthTypes.Timestamp_us,
 			},
 			{
 				Name: "last_used_service_name",
-				Type: schema.TypeString,
+				Type: arrow.BinaryTypes.String,
 			},
 		},
 	}
@@ -58,11 +54,14 @@ func userAccessKeys() *schema.Table {
 func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config iam.ListAccessKeysInput
 	p := parent.Item.(*types.User)
-	svc := meta.(*client.Client).Services().Iam
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceIam).Iam
 	config.UserName = p.UserName
 	paginator := iam.NewListAccessKeysPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iam.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -87,8 +86,11 @@ func postIamUserAccessKeyResolver(ctx context.Context, meta schema.ClientMeta, r
 	if r.AccessKeyId == nil {
 		return nil
 	}
-	svc := meta.(*client.Client).Services().Iam
-	output, err := svc.GetAccessKeyLastUsed(ctx, &iam.GetAccessKeyLastUsedInput{AccessKeyId: r.AccessKeyId})
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceIam).Iam
+	output, err := svc.GetAccessKeyLastUsed(ctx, &iam.GetAccessKeyLastUsedInput{AccessKeyId: r.AccessKeyId}, func(options *iam.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/autoscalingplans"
 	"github.com/aws/aws-sdk-go-v2/service/autoscalingplans/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func planResources() *schema.Table {
@@ -26,8 +26,8 @@ func planResources() *schema.Table {
 }
 
 func fetchPlanResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Autoscalingplans
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceAutoscalingplans).Autoscalingplans
 	p := parent.Item.(types.ScalingPlan)
 
 	config := autoscalingplans.DescribeScalingPlanResourcesInput{
@@ -35,7 +35,9 @@ func fetchPlanResources(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}
 	// No paginator available
 	for {
-		output, err := svc.DescribeScalingPlanResources(ctx, &config)
+		output, err := svc.DescribeScalingPlanResources(ctx, &config, func(options *autoscalingplans.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

@@ -2,8 +2,9 @@ package serviceusage
 
 import (
 	pb "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
@@ -17,7 +18,7 @@ func Services() *schema.Table {
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: client.ResolveProject,
 			},
 		},

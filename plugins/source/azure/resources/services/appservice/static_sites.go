@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func StaticSites() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_appservice_static_sites",
-		Resolver:    fetchStaticSites,
-		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/static-sites/list?tabs=HTTP#staticsitearmresource",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_static_sites", client.Namespacemicrosoft_web),
-		Transform:   transformers.TransformWithStruct(&armappservice.StaticSiteARMResource{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_appservice_static_sites",
+		Resolver:             fetchStaticSites,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/appservice/static-sites/list?tabs=HTTP#staticsitearmresource",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_static_sites", client.Namespacemicrosoft_web),
+		Transform:            transformers.TransformWithStruct(&armappservice.StaticSiteARMResource{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

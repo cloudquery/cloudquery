@@ -7,17 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildRDSClient(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockRdsClient(ctrl)
 
 	var s types.DBSnapshot
-	if err := faker.FakeObject(&s); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&s))
+
 	mock.EXPECT().DescribeDBSnapshots(
 		gomock.Any(),
 		&rds.DescribeDBSnapshotsInput{},
@@ -28,9 +28,8 @@ func buildRDSClient(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var attrs []types.DBSnapshotAttribute
-	if err := faker.FakeObject(&attrs); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&attrs))
+
 	mock.EXPECT().DescribeDBSnapshotAttributes(
 		gomock.Any(),
 		&rds.DescribeDBSnapshotAttributesInput{DBSnapshotIdentifier: s.DBSnapshotIdentifier},

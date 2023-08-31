@@ -14,17 +14,17 @@ This table depends on [googleads_campaigns](googleads_campaigns).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|customer_id (PK)|Int|
-|id (PK)|Int|
-|resource_name (PK)|String|
-|campaign (PK)|String|
-|criterion_id|Int|
-|display_name|String|
-|bid_modifier|Float|
-|negative|Bool|
-|type|String|
-|status|String|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|customer_id (PK)|`int64`|
+|id (PK)|`int64`|
+|resource_name (PK)|`utf8`|
+|campaign (PK)|`utf8`|
+|criterion_id|`int64`|
+|display_name|`utf8`|
+|bid_modifier|`float64`|
+|negative|`bool`|
+|type|`utf8`|
+|status|`utf8`|

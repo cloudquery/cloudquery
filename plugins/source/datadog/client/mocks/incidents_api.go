@@ -58,6 +58,38 @@ func (mr *MockIncidentsAPIClientMockRecorder) ListIncidentAttachments(arg0, arg1
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListIncidentAttachments", reflect.TypeOf((*MockIncidentsAPIClient)(nil).ListIncidentAttachments), varargs...)
 }
 
+// ListIncidentIntegrations mocks base method.
+func (m *MockIncidentsAPIClient) ListIncidentIntegrations(arg0 context.Context, arg1 string) (datadogV2.IncidentIntegrationMetadataListResponse, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListIncidentIntegrations", arg0, arg1)
+	ret0, _ := ret[0].(datadogV2.IncidentIntegrationMetadataListResponse)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListIncidentIntegrations indicates an expected call of ListIncidentIntegrations.
+func (mr *MockIncidentsAPIClientMockRecorder) ListIncidentIntegrations(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListIncidentIntegrations", reflect.TypeOf((*MockIncidentsAPIClient)(nil).ListIncidentIntegrations), arg0, arg1)
+}
+
+// ListIncidentTodos mocks base method.
+func (m *MockIncidentsAPIClient) ListIncidentTodos(arg0 context.Context, arg1 string) (datadogV2.IncidentTodoListResponse, *http.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListIncidentTodos", arg0, arg1)
+	ret0, _ := ret[0].(datadogV2.IncidentTodoListResponse)
+	ret1, _ := ret[1].(*http.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListIncidentTodos indicates an expected call of ListIncidentTodos.
+func (mr *MockIncidentsAPIClientMockRecorder) ListIncidentTodos(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListIncidentTodos", reflect.TypeOf((*MockIncidentsAPIClient)(nil).ListIncidentTodos), arg0, arg1)
+}
+
 // ListIncidents mocks base method.
 func (m *MockIncidentsAPIClient) ListIncidents(arg0 context.Context, arg1 ...datadogV2.ListIncidentsOptionalParameters) (datadogV2.IncidentsResponse, *http.Response, error) {
 	m.ctrl.T.Helper()

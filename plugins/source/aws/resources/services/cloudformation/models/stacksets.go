@@ -19,3 +19,7 @@ type ExpandedStackSetOperation struct {
 	types.StackSetOperation
 	types.CallAs
 }
+type ExpandedStackInstanceSummary struct {
+	types.StackInstanceSummary
+	types.CallAs
+}

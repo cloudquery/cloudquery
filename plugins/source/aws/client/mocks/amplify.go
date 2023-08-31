@@ -37,6 +37,16 @@ func (m *MockAmplifyClient) EXPECT() *MockAmplifyClientMockRecorder {
 
 // GetApp mocks base method.
 func (m *MockAmplifyClient) GetApp(arg0 context.Context, arg1 *amplify.GetAppInput, arg2 ...func(*amplify.Options)) (*amplify.GetAppOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amplify.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetApp")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockAmplifyClientMockRecorder) GetApp(arg0, arg1 interface{}, arg2 ...
 
 // GetArtifactUrl mocks base method.
 func (m *MockAmplifyClient) GetArtifactUrl(arg0 context.Context, arg1 *amplify.GetArtifactUrlInput, arg2 ...func(*amplify.Options)) (*amplify.GetArtifactUrlOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amplify.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetArtifactUrl")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockAmplifyClientMockRecorder) GetArtifactUrl(arg0, arg1 interface{}, 
 
 // GetBackendEnvironment mocks base method.
 func (m *MockAmplifyClient) GetBackendEnvironment(arg0 context.Context, arg1 *amplify.GetBackendEnvironmentInput, arg2 ...func(*amplify.Options)) (*amplify.GetBackendEnvironmentOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amplify.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBackendEnvironment")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockAmplifyClientMockRecorder) GetBackendEnvironment(arg0, arg1 interf
 
 // GetBranch mocks base method.
 func (m *MockAmplifyClient) GetBranch(arg0 context.Context, arg1 *amplify.GetBranchInput, arg2 ...func(*amplify.Options)) (*amplify.GetBranchOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amplify.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBranch")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockAmplifyClientMockRecorder) GetBranch(arg0, arg1 interface{}, arg2 
 
 // GetDomainAssociation mocks base method.
 func (m *MockAmplifyClient) GetDomainAssociation(arg0 context.Context, arg1 *amplify.GetDomainAssociationInput, arg2 ...func(*amplify.Options)) (*amplify.GetDomainAssociationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amplify.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDomainAssociation")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockAmplifyClientMockRecorder) GetDomainAssociation(arg0, arg1 interfa
 
 // GetJob mocks base method.
 func (m *MockAmplifyClient) GetJob(arg0 context.Context, arg1 *amplify.GetJobInput, arg2 ...func(*amplify.Options)) (*amplify.GetJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amplify.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetJob")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockAmplifyClientMockRecorder) GetJob(arg0, arg1 interface{}, arg2 ...
 
 // GetWebhook mocks base method.
 func (m *MockAmplifyClient) GetWebhook(arg0 context.Context, arg1 *amplify.GetWebhookInput, arg2 ...func(*amplify.Options)) (*amplify.GetWebhookOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amplify.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetWebhook")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockAmplifyClientMockRecorder) GetWebhook(arg0, arg1 interface{}, arg2
 
 // ListApps mocks base method.
 func (m *MockAmplifyClient) ListApps(arg0 context.Context, arg1 *amplify.ListAppsInput, arg2 ...func(*amplify.Options)) (*amplify.ListAppsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amplify.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListApps")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockAmplifyClientMockRecorder) ListApps(arg0, arg1 interface{}, arg2 .
 
 // ListArtifacts mocks base method.
 func (m *MockAmplifyClient) ListArtifacts(arg0 context.Context, arg1 *amplify.ListArtifactsInput, arg2 ...func(*amplify.Options)) (*amplify.ListArtifactsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amplify.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListArtifacts")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockAmplifyClientMockRecorder) ListArtifacts(arg0, arg1 interface{}, a
 
 // ListBackendEnvironments mocks base method.
 func (m *MockAmplifyClient) ListBackendEnvironments(arg0 context.Context, arg1 *amplify.ListBackendEnvironmentsInput, arg2 ...func(*amplify.Options)) (*amplify.ListBackendEnvironmentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amplify.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBackendEnvironments")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockAmplifyClientMockRecorder) ListBackendEnvironments(arg0, arg1 inte
 
 // ListBranches mocks base method.
 func (m *MockAmplifyClient) ListBranches(arg0 context.Context, arg1 *amplify.ListBranchesInput, arg2 ...func(*amplify.Options)) (*amplify.ListBranchesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amplify.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBranches")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockAmplifyClientMockRecorder) ListBranches(arg0, arg1 interface{}, ar
 
 // ListDomainAssociations mocks base method.
 func (m *MockAmplifyClient) ListDomainAssociations(arg0 context.Context, arg1 *amplify.ListDomainAssociationsInput, arg2 ...func(*amplify.Options)) (*amplify.ListDomainAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amplify.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDomainAssociations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockAmplifyClientMockRecorder) ListDomainAssociations(arg0, arg1 inter
 
 // ListJobs mocks base method.
 func (m *MockAmplifyClient) ListJobs(arg0 context.Context, arg1 *amplify.ListJobsInput, arg2 ...func(*amplify.Options)) (*amplify.ListJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amplify.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockAmplifyClientMockRecorder) ListJobs(arg0, arg1 interface{}, arg2 .
 
 // ListTagsForResource mocks base method.
 func (m *MockAmplifyClient) ListTagsForResource(arg0 context.Context, arg1 *amplify.ListTagsForResourceInput, arg2 ...func(*amplify.Options)) (*amplify.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amplify.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockAmplifyClientMockRecorder) ListTagsForResource(arg0, arg1 interfac
 
 // ListWebhooks mocks base method.
 func (m *MockAmplifyClient) ListWebhooks(arg0 context.Context, arg1 *amplify.ListWebhooksInput, arg2 ...func(*amplify.Options)) (*amplify.ListWebhooksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amplify.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListWebhooks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/stretchr/testify/require"
 )
 
@@ -17,19 +17,11 @@ func TestDeleteStale(t *testing.T) {
 		expected   = `DELETE FROM [cq].[table_name] WHERE [_cq_source_name] = @sourceName AND [_cq_sync_time] < @syncTime;`
 	)
 
-	query, params := DeleteStale(
-		schemaName,
-		&schema.Table{
-			Name: "table_name",
-			Columns: schema.ColumnList{
-				schema.CqIDColumn,
-				schema.CqParentIDColumn,
-				schema.CqSourceNameColumn,
-				schema.CqSyncTimeColumn,
-				schema.Column{Name: "extra_col", Type: schema.TypeFloat},
-			},
-		},
-		sourceName, now)
+	query, params := DeleteStale(schemaName, &message.WriteDeleteStale{
+		TableName:  "table_name",
+		SourceName: sourceName,
+		SyncTime:   now,
+	})
 
 	require.Equal(t, expected, query)
 	require.Equal(t, 2, len(params))

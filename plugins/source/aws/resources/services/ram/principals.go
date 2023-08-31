@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ram"
 	"github.com/aws/aws-sdk-go-v2/service/ram/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Principals() *schema.Table {
@@ -42,13 +42,16 @@ func fetchRamPrincipals(ctx context.Context, meta schema.ClientMeta, _ *schema.R
 }
 
 func fetchRamPrincipalsByOwner(ctx context.Context, meta schema.ClientMeta, shareType types.ResourceOwner, res chan<- any) error {
+	cl := meta.(*client.Client)
 	input := &ram.ListPrincipalsInput{
 		MaxResults:    aws.Int32(500),
 		ResourceOwner: shareType,
 	}
-	paginator := ram.NewListPrincipalsPaginator(meta.(*client.Client).Services().Ram, input)
+	paginator := ram.NewListPrincipalsPaginator(meta.(*client.Client).Services(client.AWSServiceRam).Ram, input)
 	for paginator.HasMorePages() {
-		response, err := paginator.NextPage(ctx)
+		response, err := paginator.NextPage(ctx, func(options *ram.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

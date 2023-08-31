@@ -6,8 +6,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/computeoptimizer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildEnrollmentStatuses(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -16,10 +17,7 @@ func buildEnrollmentStatuses(t *testing.T, ctrl *gomock.Controller) client.Servi
 		Computeoptimizer: m,
 	}
 	item := computeoptimizer.GetEnrollmentStatusOutput{}
-	err := faker.FakeObject(&item)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&item))
 
 	m.EXPECT().GetEnrollmentStatus(gomock.Any(), gomock.Any(), gomock.Any()).Return(&item, nil)
 

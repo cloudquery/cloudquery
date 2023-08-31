@@ -3,13 +3,16 @@ package sns
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sns/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sns/models"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/mitchellh/mapstructure"
 )
 
@@ -26,31 +29,29 @@ func Subscriptions() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SubscriptionArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("SubscriptionArn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "delivery_policy",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: schema.PathResolver("DeliveryPolicy"),
 			},
 			{
 				Name:     "effective_delivery_policy",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: schema.PathResolver("EffectiveDeliveryPolicy"),
 			},
 			{
 				Name:     "filter_policy",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: schema.PathResolver("FilterPolicy"),
 			},
 			{
 				Name:     "redrive_policy",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: schema.PathResolver("RedrivePolicy"),
 			},
 		},
@@ -58,12 +59,14 @@ func Subscriptions() *schema.Table {
 }
 
 func fetchSnsSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sns
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSns).Sns
 	config := sns.ListSubscriptionsInput{}
 	paginator := sns.NewListSubscriptionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *sns.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -73,8 +76,8 @@ func fetchSnsSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *
 }
 
 func getSnsSubscription(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sns
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSns).Sns
 	item := resource.Item.(types.Subscription)
 	s := models.Subscription{
 		SubscriptionArn: item.SubscriptionArn,
@@ -89,7 +92,12 @@ func getSnsSubscription(ctx context.Context, meta schema.ClientMeta, resource *s
 		return nil
 	}
 
-	attrs, err := svc.GetSubscriptionAttributes(ctx, &sns.GetSubscriptionAttributesInput{SubscriptionArn: item.SubscriptionArn})
+	attrs, err := svc.GetSubscriptionAttributes(ctx,
+		&sns.GetSubscriptionAttributesInput{SubscriptionArn: item.SubscriptionArn},
+		func(o *sns.Options) {
+			o.Region = cl.Region
+		},
+	)
 	if err != nil {
 		return err
 	}

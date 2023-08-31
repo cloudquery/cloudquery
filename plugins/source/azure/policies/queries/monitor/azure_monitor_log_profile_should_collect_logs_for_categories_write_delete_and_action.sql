@@ -1,4 +1,4 @@
-insert into azure_policy_results
+INSERT INTO azure_policy_results (execution_time, framework, check_id, title, subscription_id, resource_id)
 SELECT
   :'execution_time',
   :'framework',

@@ -3,13 +3,16 @@ package sqs
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/sqs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sqs/models"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/mitchellh/mapstructure"
 )
 
@@ -26,31 +29,29 @@ func Queues() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Arn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "policy",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: schema.PathResolver("Policy"),
 			},
 			{
 				Name:     "redrive_policy",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: schema.PathResolver("RedrivePolicy"),
 			},
 			{
 				Name:     "redrive_allow_policy",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: schema.PathResolver("RedriveAllowPolicy"),
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveSqsQueueTags,
 			},
 		},
@@ -58,12 +59,14 @@ func Queues() *schema.Table {
 }
 
 func fetchSqsQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sqs
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSqs).Sqs
 	var params sqs.ListQueuesInput
 	paginator := sqs.NewListQueuesPaginator(svc, &params)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *sqs.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -73,15 +76,17 @@ func fetchSqsQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.
 }
 
 func getQueue(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sqs
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSqs).Sqs
 	qURL := resource.Item.(string)
 
 	input := sqs.GetQueueAttributesInput{
 		QueueUrl:       aws.String(qURL),
 		AttributeNames: []types.QueueAttributeName{types.QueueAttributeNameAll},
 	}
-	out, err := svc.GetQueueAttributes(ctx, &input)
+	out, err := svc.GetQueueAttributes(ctx, &input, func(o *sqs.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -101,9 +106,11 @@ func getQueue(ctx context.Context, meta schema.ClientMeta, resource *schema.Reso
 
 func resolveSqsQueueTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sqs
+	svc := cl.Services(client.AWSServiceSqs).Sqs
 	q := resource.Item.(*models.Queue)
-	result, err := svc.ListQueueTags(ctx, &sqs.ListQueueTagsInput{QueueUrl: &q.URL})
+	result, err := svc.ListQueueTags(ctx, &sqs.ListQueueTagsInput{QueueUrl: &q.URL}, func(o *sqs.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

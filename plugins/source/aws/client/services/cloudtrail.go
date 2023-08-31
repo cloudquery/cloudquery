@@ -16,6 +16,7 @@ type CloudtrailClient interface {
 	GetImport(context.Context, *cloudtrail.GetImportInput, ...func(*cloudtrail.Options)) (*cloudtrail.GetImportOutput, error)
 	GetInsightSelectors(context.Context, *cloudtrail.GetInsightSelectorsInput, ...func(*cloudtrail.Options)) (*cloudtrail.GetInsightSelectorsOutput, error)
 	GetQueryResults(context.Context, *cloudtrail.GetQueryResultsInput, ...func(*cloudtrail.Options)) (*cloudtrail.GetQueryResultsOutput, error)
+	GetResourcePolicy(context.Context, *cloudtrail.GetResourcePolicyInput, ...func(*cloudtrail.Options)) (*cloudtrail.GetResourcePolicyOutput, error)
 	GetTrail(context.Context, *cloudtrail.GetTrailInput, ...func(*cloudtrail.Options)) (*cloudtrail.GetTrailOutput, error)
 	GetTrailStatus(context.Context, *cloudtrail.GetTrailStatusInput, ...func(*cloudtrail.Options)) (*cloudtrail.GetTrailStatusOutput, error)
 	ListChannels(context.Context, *cloudtrail.ListChannelsInput, ...func(*cloudtrail.Options)) (*cloudtrail.ListChannelsOutput, error)

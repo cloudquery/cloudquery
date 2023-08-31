@@ -10,12 +10,49 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|subscription_id|String|
-|properties|JSON|
-|id (PK)|String|
-|name|String|
-|type|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|subscription_id|`utf8`|
+|properties|`json`|
+|id (PK)|`utf8`|
+|name|`utf8`|
+|type|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Ensure that "Notify about alerts with the following severity" is set to "High" (Automated)
+
+```sql
+SELECT
+  'Ensure that "Notify about alerts with the following severity" is set to "High" (Automated)'
+    AS title,
+  subscription_id,
+  id,
+  CASE
+  WHEN email IS NOT NULL AND email != '' AND alert_notifications = 'On'
+  THEN 'pass'
+  ELSE 'fail'
+  END
+FROM
+  azure_security_contacts;
+```
+
+### Ensure "Additional email addresses" is configured with a security contact email (Automated)
+
+```sql
+SELECT
+  'Ensure "Additional email addresses" is configured with a security contact email (Automated)'
+    AS title,
+  subscription_id,
+  id,
+  CASE
+  WHEN email IS NOT NULL AND email != '' THEN 'pass'
+  ELSE 'fail'
+  END
+FROM
+  azure_security_contacts;
+```
+
+

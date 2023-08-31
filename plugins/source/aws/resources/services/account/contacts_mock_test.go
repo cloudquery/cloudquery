@@ -7,17 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/account/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildContacts(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockAccountClient(ctrl)
 
 	var ci types.ContactInformation
-	if err := faker.FakeObject(&ci); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ci))
+
 	mock.EXPECT().GetContactInformation(
 		gomock.Any(),
 		&account.GetContactInformationInput{},

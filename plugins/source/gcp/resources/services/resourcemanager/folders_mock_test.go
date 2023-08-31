@@ -3,9 +3,10 @@ package resourcemanager
 import (
 	"context"
 	"fmt"
+	"strings"
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/grpc"
 
@@ -22,13 +23,24 @@ type fakeFoldersServer struct {
 	pb.UnimplementedFoldersServer
 }
 
-func (*fakeFoldersServer) ListFolders(context.Context, *pb.ListFoldersRequest) (*pb.ListFoldersResponse, error) {
+func (*fakeFoldersServer) ListFolders(_ context.Context, req *pb.ListFoldersRequest) (*pb.ListFoldersResponse, error) {
 	resp := pb.ListFoldersResponse{}
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
-	for _, f := range resp.Folders {
-		f.Parent = "organizations/123"
+
+	if strings.HasPrefix(req.Parent, "organizations/") {
+		for _, f := range resp.Folders {
+			f.Name = "folder/456"
+			f.Parent = req.Parent
+		}
+	} else if req.Parent == "folder/456" {
+		for _, f := range resp.Folders {
+			f.Name = "folder/789"
+			f.Parent = req.Parent
+		}
+	} else {
+		resp.Folders = nil
 	}
 
 	resp.NextPageToken = ""

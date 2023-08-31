@@ -41,10 +41,10 @@ func Test_parseColumnChange(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotName, gotDataType, columnType := parseColumnChange(tt.args.line)
+			gotName, gotCol := parseColumnChange(tt.args.line)
 			require.Equal(t, tt.wantName, gotName)
-			require.Equal(t, tt.wantDataType, gotDataType)
-			require.Equal(t, tt.wantColumnType, columnType)
+			require.Equal(t, tt.wantDataType, gotCol.dataType)
+			require.Equal(t, tt.wantColumnType, gotCol.columnType)
 		})
 	}
 }
@@ -90,46 +90,6 @@ func Test_getChanges(t *testing.T) {
 				},
 				{
 					Text:     "Table `azure_appservice_functions`: column added with name `site_id` and type `String`",
-					Breaking: false,
-				},
-				{
-					Text:     "Table `azure_appservice_functions`: column order changed for `function_app_id`",
-					Breaking: false,
-				},
-				{
-					Text:     "Table `azure_appservice_functions`: column order changed for `href`",
-					Breaking: false,
-				},
-				{
-					Text:     "Table `azure_appservice_functions`: column order changed for `kind`",
-					Breaking: false,
-				},
-				{
-					Text:     "Table `azure_appservice_functions`: column order changed for `language`",
-					Breaking: false,
-				},
-				{
-					Text:     "Table `azure_appservice_functions`: column order changed for `script_href`",
-					Breaking: false,
-				},
-				{
-					Text:     "Table `azure_appservice_functions`: column order changed for `script_root_path_href`",
-					Breaking: false,
-				},
-				{
-					Text:     "Table `azure_appservice_functions`: column order changed for `secrets_file_href`",
-					Breaking: false,
-				},
-				{
-					Text:     "Table `azure_appservice_functions`: column order changed for `test_data_href`",
-					Breaking: false,
-				},
-				{
-					Text:     "Table `azure_appservice_functions`: column order changed for `test_data`",
-					Breaking: false,
-				},
-				{
-					Text:     "Table `azure_appservice_functions`: column order changed for `type`",
 					Breaking: false,
 				},
 				{
@@ -242,35 +202,11 @@ func Test_getChanges(t *testing.T) {
 			diffDataFile: "testdata/pr_6012_diff.txt",
 			wantChanges: []change{
 				{
-					Text:     "Table `github_external_groups`: column order changed for `updated_at`",
-					Breaking: false,
-				},
-				{
 					Text:     "Table `github_hook_deliveries`: primary key order changed from `org, id, hook_id` to `org, hook_id, id`",
 					Breaking: true,
 				},
 				{
-					Text:     "Table `github_hook_deliveries`: column order changed for `delivered_at`",
-					Breaking: false,
-				},
-				{
-					Text:     "Table `github_hook_deliveries`: column order changed for `id`",
-					Breaking: false,
-				},
-				{
-					Text:     "Table `github_hooks`: column order changed for `id`",
-					Breaking: false,
-				},
-				{
 					Text:     "Table `github_issues`: column added with name `state_reason` and type `String`",
-					Breaking: false,
-				},
-				{
-					Text:     "Table `github_organization_members`: column order changed for `id`",
-					Breaking: false,
-				},
-				{
-					Text:     "Table `github_organizations`: column order changed for `id`",
 					Breaking: false,
 				},
 				{
@@ -278,24 +214,8 @@ func Test_getChanges(t *testing.T) {
 					Breaking: false,
 				},
 				{
-					Text:     "Table `github_repositories`: column order changed for `created_at`",
-					Breaking: false,
-				},
-				{
-					Text:     "Table `github_repositories`: column order changed for `pushed_at`",
-					Breaking: false,
-				},
-				{
-					Text:     "Table `github_repositories`: column order changed for `updated_at`",
-					Breaking: false,
-				},
-				{
 					Text:     "Table `github_team_members`: primary key order changed from `org, id, team_id` to `org, team_id, id`",
 					Breaking: true,
-				},
-				{
-					Text:     "Table `github_team_members`: column order changed for `id`",
-					Breaking: false,
 				},
 				{
 					Text:     "Table `github_team_repositories`: primary key order changed from `org, id, team_id` to `org, team_id, id`",
@@ -303,26 +223,6 @@ func Test_getChanges(t *testing.T) {
 				},
 				{
 					Text:     "Table `github_team_repositories`: column added with name `has_discussions` and type `Bool`",
-					Breaking: false,
-				},
-				{
-					Text:     "Table `github_team_repositories`: column order changed for `created_at`",
-					Breaking: false,
-				},
-				{
-					Text:     "Table `github_team_repositories`: column order changed for `id`",
-					Breaking: false,
-				},
-				{
-					Text:     "Table `github_team_repositories`: column order changed for `pushed_at`",
-					Breaking: false,
-				},
-				{
-					Text:     "Table `github_team_repositories`: column order changed for `updated_at`",
-					Breaking: false,
-				},
-				{
-					Text:     "Table `github_workflows`: column order changed for `id`",
 					Breaking: false,
 				},
 			},
@@ -360,6 +260,21 @@ func Test_getChanges(t *testing.T) {
 					Breaking: true,
 				},
 			},
+		},
+		{
+			name:         "Should handle no backticks -> backticks",
+			diffDataFile: "testdata/pr_11034_diff.txt",
+			wantChanges:  []change{},
+		},
+		{
+			name:         "Should handle newlines",
+			diffDataFile: "testdata/pr_11259_diff.txt",
+			wantChanges:  []change{},
+		},
+		{
+			name:         "Should ignore removal of _cq_source_name and _cq_sync_time for SDK v4 migration",
+			diffDataFile: "testdata/pr_11855_diff.txt",
+			wantChanges:  []change{},
 		},
 	}
 	for _, tt := range tests {

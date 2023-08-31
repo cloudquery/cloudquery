@@ -15,19 +15,18 @@ The following tables depend on aws_glue_databases:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|name|String|
-|catalog_id|String|
-|create_table_default_permissions|JSON|
-|create_time|Timestamp|
-|description|String|
-|location_uri|String|
-|parameters|JSON|
-|target_database|JSON|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|name|`utf8`|
+|catalog_id|`utf8`|
+|create_table_default_permissions|`json`|
+|create_time|`timestamp[us, tz=UTC]`|
+|description|`utf8`|
+|federated_database|`json`|
+|location_uri|`utf8`|
+|parameters|`json`|
+|target_database|`json`|

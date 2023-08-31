@@ -24,6 +24,8 @@ type FrauddetectorClient interface {
 	GetExternalModels(context.Context, *frauddetector.GetExternalModelsInput, ...func(*frauddetector.Options)) (*frauddetector.GetExternalModelsOutput, error)
 	GetKMSEncryptionKey(context.Context, *frauddetector.GetKMSEncryptionKeyInput, ...func(*frauddetector.Options)) (*frauddetector.GetKMSEncryptionKeyOutput, error)
 	GetLabels(context.Context, *frauddetector.GetLabelsInput, ...func(*frauddetector.Options)) (*frauddetector.GetLabelsOutput, error)
+	GetListElements(context.Context, *frauddetector.GetListElementsInput, ...func(*frauddetector.Options)) (*frauddetector.GetListElementsOutput, error)
+	GetListsMetadata(context.Context, *frauddetector.GetListsMetadataInput, ...func(*frauddetector.Options)) (*frauddetector.GetListsMetadataOutput, error)
 	GetModelVersion(context.Context, *frauddetector.GetModelVersionInput, ...func(*frauddetector.Options)) (*frauddetector.GetModelVersionOutput, error)
 	GetModels(context.Context, *frauddetector.GetModelsInput, ...func(*frauddetector.Options)) (*frauddetector.GetModelsOutput, error)
 	GetOutcomes(context.Context, *frauddetector.GetOutcomesInput, ...func(*frauddetector.Options)) (*frauddetector.GetOutcomesOutput, error)

@@ -1,5 +1,9 @@
 name: Source Plugin Stripe Workflow
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     paths:
@@ -16,7 +20,7 @@ jobs:
   plugins-source-stripe:
     timeout-minutes: 30
     name: "plugins/source/stripe"
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     defaults:
       run:
         working-directory: ./plugins/source/stripe
@@ -38,8 +42,11 @@ jobs:
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
           skip-build-cache: true
-      - name: Get dependencies
-        run: go get -t -d ./...
+      - name: Setup CloudQuery
+        if: github.event_name == 'pull_request'
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: 'v3.13.0'
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -52,7 +59,7 @@ jobs:
         run: make test
   validate-release:
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     env:
       CGO_ENABLED: 0
     steps:
@@ -65,9 +72,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/source/stripe/go.sum') }}
+          key: ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/source/stripe/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.5-release-cache-plugins-source-stripe
+            ${{ runner.os }}-go-1.20.5-release-cache-plugins-source-stripe
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3

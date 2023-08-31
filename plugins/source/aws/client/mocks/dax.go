@@ -37,6 +37,16 @@ func (m *MockDaxClient) EXPECT() *MockDaxClientMockRecorder {
 
 // DescribeClusters mocks base method.
 func (m *MockDaxClient) DescribeClusters(arg0 context.Context, arg1 *dax.DescribeClustersInput, arg2 ...func(*dax.Options)) (*dax.DescribeClustersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dax.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClusters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockDaxClientMockRecorder) DescribeClusters(arg0, arg1 interface{}, ar
 
 // DescribeDefaultParameters mocks base method.
 func (m *MockDaxClient) DescribeDefaultParameters(arg0 context.Context, arg1 *dax.DescribeDefaultParametersInput, arg2 ...func(*dax.Options)) (*dax.DescribeDefaultParametersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dax.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDefaultParameters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockDaxClientMockRecorder) DescribeDefaultParameters(arg0, arg1 interf
 
 // DescribeEvents mocks base method.
 func (m *MockDaxClient) DescribeEvents(arg0 context.Context, arg1 *dax.DescribeEventsInput, arg2 ...func(*dax.Options)) (*dax.DescribeEventsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dax.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEvents")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockDaxClientMockRecorder) DescribeEvents(arg0, arg1 interface{}, arg2
 
 // DescribeParameterGroups mocks base method.
 func (m *MockDaxClient) DescribeParameterGroups(arg0 context.Context, arg1 *dax.DescribeParameterGroupsInput, arg2 ...func(*dax.Options)) (*dax.DescribeParameterGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dax.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeParameterGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockDaxClientMockRecorder) DescribeParameterGroups(arg0, arg1 interfac
 
 // DescribeParameters mocks base method.
 func (m *MockDaxClient) DescribeParameters(arg0 context.Context, arg1 *dax.DescribeParametersInput, arg2 ...func(*dax.Options)) (*dax.DescribeParametersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dax.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeParameters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockDaxClientMockRecorder) DescribeParameters(arg0, arg1 interface{}, 
 
 // DescribeSubnetGroups mocks base method.
 func (m *MockDaxClient) DescribeSubnetGroups(arg0 context.Context, arg1 *dax.DescribeSubnetGroupsInput, arg2 ...func(*dax.Options)) (*dax.DescribeSubnetGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dax.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSubnetGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockDaxClientMockRecorder) DescribeSubnetGroups(arg0, arg1 interface{}
 
 // ListTags mocks base method.
 func (m *MockDaxClient) ListTags(arg0 context.Context, arg1 *dax.ListTagsInput, arg2 ...func(*dax.Options)) (*dax.ListTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &dax.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

@@ -4,9 +4,10 @@ import (
 	"reflect"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/alicloud/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func BucketStats() *schema.Table {
@@ -16,29 +17,25 @@ func BucketStats() *schema.Table {
 		Resolver: fetchOssBucketStats,
 		Transform: transformers.TransformWithStruct(
 			&oss.BucketStat{},
-			transformers.WithTypeTransformer(func(f reflect.StructField) (schema.ValueType, error) {
+			transformers.WithTypeTransformer(func(f reflect.StructField) (arrow.DataType, error) {
 				if f.Name == "LastModifiedTime" {
-					return schema.TypeTimestamp, nil
+					return arrow.FixedWidthTypes.Timestamp_us, nil
 				}
-				return transformers.DefaultTypeTransformer(f)
+				return nil, nil
 			}),
 		),
 		Columns: []schema.Column{
 			{
-				Name:     "bucket_name",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "bucket_name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("name"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAccount,
+				PrimaryKey: true,
 			},
 		},
 	}

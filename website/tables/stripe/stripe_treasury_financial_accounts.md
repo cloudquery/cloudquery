@@ -2,7 +2,7 @@
 
 This table shows data for Stripe Treasury Financial Accounts.
 
-https://stripe.com/docs/api/treasury_financial_accounts
+https://stripe.com/docs/api/treasury/financial_accounts
 
 The primary key for this table is **id**.
 It supports incremental syncs based on the **created** column.
@@ -23,23 +23,21 @@ The following tables depend on stripe_treasury_financial_accounts:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|created (Incremental Key)|Timestamp|
-|active_features|StringArray|
-|balance|JSON|
-|country|String|
-|features|JSON|
-|financial_addresses|JSON|
-|livemode|Bool|
-|metadata|JSON|
-|object|String|
-|pending_features|StringArray|
-|platform_restrictions|JSON|
-|restricted_features|StringArray|
-|status|String|
-|status_details|JSON|
-|supported_currencies|StringArray|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|created (Incremental Key)|`timestamp[us, tz=UTC]`|
+|active_features|`list<item: utf8, nullable>`|
+|balance|`json`|
+|country|`utf8`|
+|features|`json`|
+|financial_addresses|`json`|
+|livemode|`bool`|
+|metadata|`json`|
+|object|`utf8`|
+|pending_features|`list<item: utf8, nullable>`|
+|platform_restrictions|`json`|
+|restricted_features|`list<item: utf8, nullable>`|
+|status|`utf8`|
+|status_details|`json`|
+|supported_currencies|`list<item: utf8, nullable>`|

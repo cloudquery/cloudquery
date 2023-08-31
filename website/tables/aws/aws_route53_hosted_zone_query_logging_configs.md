@@ -1,6 +1,6 @@
 # Table: aws_route53_hosted_zone_query_logging_configs
 
-This table shows data for Route53 Hosted Zone Query Logging Configs.
+This table shows data for Amazon Route 53 Hosted Zone Query Logging Configs.
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_QueryLoggingConfig.html
 
@@ -14,13 +14,11 @@ This table depends on [aws_route53_hosted_zones](aws_route53_hosted_zones).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|arn (PK)|String|
-|hosted_zone_arn|String|
-|cloud_watch_logs_log_group_arn|String|
-|hosted_zone_id|String|
-|id|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|arn (PK)|`utf8`|
+|hosted_zone_arn|`utf8`|
+|cloud_watch_logs_log_group_arn|`utf8`|
+|hosted_zone_id|`utf8`|
+|id|`utf8`|

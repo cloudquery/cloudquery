@@ -12,16 +12,18 @@ import (
 	"sort"
 	"strings"
 	"text/template"
+
+	"golang.org/x/exp/maps"
 )
 
 //go:embed templates/*.go.tpl
 var templatesFS embed.FS
 
-var (
-	reInline = regexp.MustCompile(`(?im)^\\ir (.+)`)
-	reTable  = regexp.MustCompile(`(?i)(?:from|join)\s+(\w+)`)
-	reTitle  = regexp.MustCompile(`(?i)\:'check_id'(?:\s+as\s+check_id\s*)?,\s+'(.+)'(?:\s+as\s+title\s*)?,`)
-)
+var reInline = regexp.MustCompile(`(?im)^\\ir (.+)`)
+var reTable = regexp.MustCompile(`(?i)(?:from|join)\s+(\w+)`)
+var reTitle = regexp.MustCompile(`(?i)\:'check_id'(?:\s+as\s+check_id\s*)?,\s+'(.+)'(?:\s+as\s+title\s*)?,`)
+var reViewName = regexp.MustCompile(`(?i)create\s+(or\s+replace\s+)view\s+(.+)\s+as`)
+var reIsPolicyQuery *regexp.Regexp
 
 type Index struct {
 	Policies []Policy `json:"policies"`
@@ -50,6 +52,10 @@ type PolicyInfo struct {
 	Name    string
 	Queries []Query
 	Tables  []string
+
+	CreatedViews   map[string]bool
+	DependentViews []string
+	UnusedViews    []string
 }
 
 func newPolicyInfo(name string, queries []Query, allTables []Table) *PolicyInfo {
@@ -63,9 +69,31 @@ func newPolicyInfo(name string, queries []Query, allTables []Table) *PolicyInfo 
 
 // Tables returns the unique set of tables needed to run all queries
 func (pi *PolicyInfo) setTables(allTables Tables) {
-	t := map[string]struct{}{}
+	t, v := map[string]struct{}{}, map[string]struct{}{}
+	pi.CreatedViews = map[string]bool{}
+
+	// Add all views detected from CREATE VIEW statements
 	for _, q := range pi.Queries {
+		if q.View {
+			pi.CreatedViews[q.ViewName] = true
+		}
+	}
+
+	// Accessed views from queries, should be a subset of the above
+	for _, q := range pi.Queries {
+		for _, vi := range q.Views {
+			v[vi] = struct{}{}
+		}
+	}
+
+	for _, q := range pi.Queries {
+		// Add all tables from queries *and* views
 		for _, table := range q.Tables {
+			if pi.CreatedViews[table] {
+				// This is a view, not a table
+				v[table] = struct{}{}
+			}
+
 			t[table] = struct{}{}
 			ancestors := allTables.FindAncestors(table)
 			for _, a := range ancestors {
@@ -73,18 +101,30 @@ func (pi *PolicyInfo) setTables(allTables Tables) {
 			}
 		}
 	}
-	var final []string
-	for k := range t {
-		final = append(final, k)
+
+	pi.Tables, pi.DependentViews = maps.Keys(t), maps.Keys(v)
+
+	unused := make(map[string]struct{}, len(pi.CreatedViews))
+	for k := range pi.CreatedViews {
+		if _, ok := v[k]; !ok {
+			unused[k] = struct{}{}
+		}
 	}
-	sort.Strings(final)
-	pi.Tables = final
+	pi.UnusedViews = maps.Keys(unused)
+
+	sort.Strings(pi.Tables)
+	sort.Strings(pi.DependentViews)
+	sort.Strings(pi.UnusedViews)
 }
 
 type Query struct {
-	Title  string
+	Title  string // Empty for views
 	Path   string
 	Tables []string
+	Views  []string
+
+	View     bool   `json:",omitempty"`
+	ViewName string `json:",omitempty"`
 }
 
 func removeDuplicates(queries []Query) []Query {
@@ -115,19 +155,23 @@ func extractQueries(prefix, sqlPath string) ([]Query, error) {
 	}
 	content := string(b)
 	var queries []Query
-	tableMatches := reTable.FindAllStringSubmatch(content, -1)
-	reIsPolicyQuery := regexp.MustCompile(`(?i)insert\s+into\s+` + prefix + `_policy_results`)
-	isPolicyQuery := reIsPolicyQuery.MatchString(content)
-	if isPolicyQuery && len(tableMatches) > 0 {
-		q := Query{}
+	q := Query{}
+	if tableMatches := reTable.FindAllStringSubmatch(content, -1); len(tableMatches) > 0 {
 		for _, m := range tableMatches {
-			if !strings.HasPrefix(m[1], prefix) {
-				continue
+			switch {
+			case strings.HasPrefix(m[1], prefix):
+				// This could be a table or still a view, will sort out later
+				q.Tables = append(q.Tables, m[1])
+				q.Path = sqlPath
+			case strings.HasPrefix(m[1], "view_"+prefix):
+				q.Views = append(q.Views, m[1])
+				q.Path = sqlPath
 			}
-			q.Tables = append(q.Tables, m[1])
-			q.Path = sqlPath
 		}
+	}
 
+	isPolicyQuery := reIsPolicyQuery.MatchString(content)
+	if isPolicyQuery && (len(q.Tables)+len(q.Views)) > 0 {
 		titleMatches := reTitle.FindAllStringSubmatch(content, -1)
 		if len(titleMatches) == 0 {
 			return nil, fmt.Errorf("failed to find title for query in %v", sqlPath)
@@ -135,6 +179,16 @@ func extractQueries(prefix, sqlPath string) ([]Query, error) {
 			q.Title = titleMatches[0][1]
 		}
 		queries = append(queries, q)
+	} else {
+		mv := reViewName.FindStringSubmatch(content)
+		if len(mv) > 0 {
+			q.View = true
+			q.ViewName = mv[2]
+			if !strings.HasPrefix(q.ViewName, prefix+"_") && !strings.HasPrefix(q.ViewName, "view_"+prefix) {
+				return nil, fmt.Errorf("view %q in %s does not start with `%s_` or `view_%s`", q.ViewName, sqlPath, prefix, prefix)
+			}
+			queries = append(queries, q)
+		}
 	}
 
 	// recurse to find queries in inlined files
@@ -151,7 +205,13 @@ func extractQueries(prefix, sqlPath string) ([]Query, error) {
 }
 
 func writePolicyDocs(info []*PolicyInfo, outputPath string) error {
-	t, err := template.New("policies.md.go.tpl").ParseFS(templatesFS, "templates/policies.md.go.tpl")
+	t, err := template.New("policies.md.go.tpl").
+		Funcs(template.FuncMap{
+			"add": func(a int, b int) int {
+				return a + b
+			},
+		}).
+		ParseFS(templatesFS, "templates/policies.md.go.tpl")
 	if err != nil {
 		return fmt.Errorf("failed to parse template for README.md: %v", err)
 	}
@@ -213,6 +273,8 @@ func main() {
 	if err != nil {
 		log.Fatalf("error reading tables JSON: %v", err)
 	}
+
+	reIsPolicyQuery = regexp.MustCompile(`(?i)insert\s+into\s+` + prefix + `_policy_results`)
 
 	var info []*PolicyInfo
 	for _, p := range index.Policies {

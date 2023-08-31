@@ -5,16 +5,17 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Views() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_costmanagement_views",
-		Resolver:    fetchViews,
-		Description: "https://learn.microsoft.com/en-us/rest/api/cost-management/views/list?tabs=HTTP#view",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_costmanagement_views", client.Namespacemicrosoft_costmanagement),
+		Name:                 "azure_costmanagement_views",
+		Resolver:             fetchViews,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/cost-management/views/list?tabs=HTTP#view",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_costmanagement_views", client.Namespacemicrosoft_costmanagement),
 		Transform: transformers.TransformWithStruct(&armcostmanagement.View{},
 			transformers.WithNameTransformer(client.ETagNameTransformer),
 			transformers.WithPrimaryKeys("ID"),

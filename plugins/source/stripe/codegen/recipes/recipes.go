@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/caser"
+	"github.com/cloudquery/plugin-sdk/v4/caser"
 	"github.com/gertd/go-pluralize"
 )
 
@@ -31,8 +31,9 @@ type Resource struct {
 
 	HasIDPK bool // has "id" column as PK, auto generated, used in template
 
-	Children []*Resource
-	Parent   *Resource // auto calculated from Children
+	Children      []*Resource
+	Parent        *Resource // auto calculated from Children
+	ExtraChildren []string
 
 	ListParams     string   // optional
 	ExpandFields   []string // optional, fields to expand in list call
@@ -63,7 +64,9 @@ func (r *Resource) Infer(parent *Resource) {
 	if ds.Kind() == reflect.Ptr {
 		ds = ds.Elem()
 	}
-	r.StructName = ds.Name()
+	if r.StructName == "" {
+		r.StructName = ds.Name()
+	}
 
 	if len(r.PKColumns) == 0 {
 		if _, ok := ds.FieldByName("ID"); ok {

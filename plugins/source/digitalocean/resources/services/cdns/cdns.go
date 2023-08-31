@@ -1,24 +1,24 @@
 package cdns
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/digitalocean/godo"
 )
 
 func Cdns() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_cdns",
-		Resolver:  fetchCdnsCdns,
-		Transform: transformers.TransformWithStruct(&godo.CDN{}),
+		Name:        "digitalocean_cdns",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#tag/CDN-Endpoints",
+		Resolver:    fetchCdnsCdns,
+		Transform:   transformers.TransformWithStruct(&godo.CDN{}),
 		Columns: []schema.Column{
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ID"),
+				PrimaryKey: true,
 			},
 		},
 	}

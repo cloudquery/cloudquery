@@ -3,11 +3,12 @@ package cognito
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func IdentityPools() *schema.Table {
@@ -18,26 +19,27 @@ func IdentityPools() *schema.Table {
 		Resolver:            fetchCognitoIdentityPools,
 		PreResourceResolver: getIdentityPool,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "cognito-identity"),
-		Transform:           transformers.TransformWithStruct(&cognitoidentity.DescribeIdentityPoolOutput{}),
+		Transform: transformers.TransformWithStruct(
+			&cognitoidentity.DescribeIdentityPoolOutput{},
+			transformers.WithNameTransformer(client.CreateReplaceTransformer(map[string]string{"ar_ns": "arns"})),
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
 				Name:     "arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: resolveIdentityPoolARN(),
 			},
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("IdentityPoolId"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("IdentityPoolId"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "saml_provider_ar_ns",
-				Type:     schema.TypeStringArray,
+				Name:     "saml_provider_arns",
+				Type:     arrow.ListOf(arrow.BinaryTypes.String),
 				Resolver: schema.PathResolver("SamlProviderARNs"),
 			},
 		},
@@ -45,15 +47,17 @@ func IdentityPools() *schema.Table {
 }
 
 func fetchCognitoIdentityPools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Cognitoidentity
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceCognitoidentity).Cognitoidentity
 	params := cognitoidentity.ListIdentityPoolsInput{
 		// we want max results to reduce List calls as much as possible, services limited to less than or equal to 60"
 		MaxResults: 60,
 	}
 	paginator := cognitoidentity.NewListIdentityPoolsPaginator(svc, &params)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *cognitoidentity.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -63,11 +67,13 @@ func fetchCognitoIdentityPools(ctx context.Context, meta schema.ClientMeta, pare
 }
 
 func getIdentityPool(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Cognitoidentity
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceCognitoidentity).Cognitoidentity
 	item := resource.Item.(types.IdentityPoolShortDescription)
 
-	ipo, err := svc.DescribeIdentityPool(ctx, &cognitoidentity.DescribeIdentityPoolInput{IdentityPoolId: item.IdentityPoolId})
+	ipo, err := svc.DescribeIdentityPool(ctx, &cognitoidentity.DescribeIdentityPoolInput{IdentityPoolId: item.IdentityPoolId}, func(options *cognitoidentity.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

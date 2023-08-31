@@ -4,12 +4,13 @@ import (
 	"context"
 	"strings"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func clusterParameters() *schema.Table {
@@ -19,63 +20,62 @@ func clusterParameters() *schema.Table {
 		Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Parameter.html",
 		Resolver:    fetchRdsClusterParameters,
 		Transform:   transformers.TransformWithStruct(&types.Parameter{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "rds"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "allowed_values",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("AllowedValues"),
 			},
 			{
 				Name:     "apply_method",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("ApplyMethod"),
 			},
 			{
 				Name:     "apply_type",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("ApplyType"),
 			},
 			{
 				Name:     "data_type",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("DataType"),
 			},
 			{
 				Name:     "description",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("Description"),
 			},
 			{
 				Name:     "is_modifiable",
-				Type:     schema.TypeBool,
+				Type:     arrow.FixedWidthTypes.Boolean,
 				Resolver: schema.PathResolver("IsModifiable"),
 			},
 			{
 				Name:     "minimum_engine_version",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("MinimumEngineVersion"),
 			},
 			{
 				Name:     "parameter_name",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("ParameterName"),
 			},
 			{
 				Name:     "parameter_value",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("ParameterValue"),
 			},
 			{
 				Name:     "source",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("Source"),
 			},
 			{
 				Name:     "supported_engine_modes",
-				Type:     schema.TypeStringArray,
+				Type:     arrow.ListOf(arrow.BinaryTypes.String),
 				Resolver: schema.PathResolver("SupportedEngineModes"),
 			},
 		},
@@ -83,8 +83,8 @@ func clusterParameters() *schema.Table {
 }
 
 func fetchRdsClusterParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Rds
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceRds).Rds
 
 	parentEngineVersion := parent.Item.(types.DBEngineVersion)
 
@@ -96,7 +96,9 @@ func fetchRdsClusterParameters(ctx context.Context, meta schema.ClientMeta, pare
 		DBParameterGroupFamily: parentEngineVersion.DBParameterGroupFamily,
 	}
 
-	output, err := svc.DescribeEngineDefaultClusterParameters(ctx, input)
+	output, err := svc.DescribeEngineDefaultClusterParameters(ctx, input, func(options *rds.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

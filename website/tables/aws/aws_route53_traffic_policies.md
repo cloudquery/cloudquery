@@ -1,6 +1,6 @@
 # Table: aws_route53_traffic_policies
 
-This table shows data for Route53 Traffic Policies.
+This table shows data for Amazon Route 53 Traffic Policies.
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicySummary.html
 
@@ -15,14 +15,12 @@ The following tables depend on aws_route53_traffic_policies:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|arn (PK)|String|
-|id|String|
-|latest_version|Int|
-|name|String|
-|traffic_policy_count|Int|
-|type|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|arn (PK)|`utf8`|
+|id|`utf8`|
+|latest_version|`int64`|
+|name|`utf8`|
+|traffic_policy_count|`int64`|
+|type|`utf8`|

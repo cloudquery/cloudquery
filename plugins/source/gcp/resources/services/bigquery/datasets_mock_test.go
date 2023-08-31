@@ -2,11 +2,10 @@ package bigquery
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 	"google.golang.org/api/bigquery/v2"
@@ -111,8 +110,6 @@ func createBigqueryDatasets(mux *httprouter.Router) error {
 	}
 
 	mux.GET("/projects/testProject/datasets/testDataset/tables/:table", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		fmt.Println("what")
-		fmt.Println(r.URL)
 		b, err := json.Marshal(&table)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)

@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/support"
 	"github.com/aws/aws-sdk-go-v2/service/support/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 var severitySupportedLanguageCodes = []string{"en", "ja"}
@@ -31,11 +31,13 @@ func SeverityLevels() *schema.Table {
 }
 
 func fetchSeverityLevels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Support
-	input := support.DescribeSeverityLevelsInput{Language: aws.String(c.LanguageCode)}
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSupport).Support
+	input := support.DescribeSeverityLevelsInput{Language: aws.String(cl.LanguageCode)}
 
-	response, err := svc.DescribeSeverityLevels(ctx, &input)
+	response, err := svc.DescribeSeverityLevels(ctx, &input, func(o *support.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

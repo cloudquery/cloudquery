@@ -1,5 +1,6 @@
 ---
 title: Rate Limiting
+description: CloudQuery provides a few options to control the rate at which resources are fetched from cloud providers.
 ---
 
 # Rate Limiting

@@ -14,12 +14,12 @@ This table depends on [mixpanel_funnels](mixpanel_funnels).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id|Int|
-|funnel_id (PK)|Int|
-|date (PK)|Timestamp|
-|steps|JSON|
-|analysis|JSON|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id|`int64`|
+|funnel_id (PK)|`int64`|
+|date (PK)|`timestamp[us, tz=UTC]`|
+|steps|`json`|
+|analysis|`json`|

@@ -6,8 +6,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildSubnetGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -16,9 +17,8 @@ func buildSubnetGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Service
 		Docdb: m,
 	}
 	var ev docdb.DescribeDBSubnetGroupsOutput
-	if err := faker.FakeObject(&ev); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ev))
+
 	ev.Marker = nil
 	m.EXPECT().DescribeDBSubnetGroups(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ev,
@@ -26,9 +26,8 @@ func buildSubnetGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Service
 	)
 
 	var tags docdb.ListTagsForResourceOutput
-	if err := faker.FakeObject(&tags); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tags))
+
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&tags,
 		nil,

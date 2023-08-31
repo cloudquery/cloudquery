@@ -4,24 +4,25 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v14/arrow/array"
+	"github.com/apache/arrow/go/v14/arrow/memory"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/meilisearch/meilisearch-go"
 )
 
-func (c *Client) Read(_ context.Context, table *schema.Table, sourceName string, res chan<- []any) error {
+func (c *Client) Read(_ context.Context, table *schema.Table, res chan<- arrow.Record) error {
+	sc := table.ToArrowSchema()
 	index, err := c.Meilisearch.GetIndex(table.Name)
 	if err != nil {
 		return err
 	}
 
 	req := &meilisearch.SearchRequest{
-		Filter:      schema.CqSourceNameColumn.Name + " = '" + sourceName + "'",
-		Sort:        []string{schema.CqSyncTimeColumn.Name + ":asc"},
 		HitsPerPage: 100, // default = 1, we want more
 		Page:        1,   // starting from 1
 	}
 
-	unwrap := unmap(table)
 	for {
 		resp, err := index.Search("", req)
 		if err != nil {
@@ -29,7 +30,11 @@ func (c *Client) Read(_ context.Context, table *schema.Table, sourceName string,
 		}
 
 		for _, hit := range resp.Hits {
-			row, err := unwrap(hit)
+			m, ok := hit.(map[string]any)
+			if !ok {
+				return fmt.Errorf("unsupported format for doc: %T", hit)
+			}
+			row, err := docToRecord(sc, m)
 			if err != nil {
 				return err
 			}
@@ -45,17 +50,14 @@ func (c *Client) Read(_ context.Context, table *schema.Table, sourceName string,
 	return nil
 }
 
-func unmap(table *schema.Table) func(hit any) ([]any, error) {
-	return func(hit any) ([]any, error) {
-		m, ok := hit.(map[string]any)
-		if !ok {
-			return nil, fmt.Errorf("unsupported format for doc: %T", hit)
-		}
+func docToRecord(sc *arrow.Schema, doc map[string]any) (arrow.Record, error) {
+	builder := array.NewRecordBuilder(memory.DefaultAllocator, sc)
 
-		res := make([]any, len(table.Columns))
-		for idx, col := range table.Columns {
-			res[idx] = m[col.Name]
+	for i, builder := range builder.Fields() {
+		if err := reverseTransform(builder, doc[sc.Field(i).Name]); err != nil {
+			return nil, err
 		}
-		return res, nil
 	}
+
+	return builder.NewRecord(), nil
 }

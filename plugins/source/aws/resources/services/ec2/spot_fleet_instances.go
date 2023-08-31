@@ -3,13 +3,14 @@ package ec2
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func spotFleetInstances() *schema.Table {
@@ -18,22 +19,19 @@ func spotFleetInstances() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ActiveInstance.html`,
 		Resolver:    fetchEC2SpotFleetInstances,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.ActiveInstance{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveActiveInstanceArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveActiveInstanceArn,
+				PrimaryKey: true,
 			},
 			{
 				Name:     "spot_fleet_request_id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("spot_fleet_request_id"),
 			},
 		},
@@ -46,11 +44,13 @@ func fetchEC2SpotFleetInstances(ctx context.Context, meta schema.ClientMeta, par
 	config := ec2.DescribeSpotFleetInstancesInput{
 		SpotFleetRequestId: p.SpotFleetRequestId,
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Ec2
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceEc2).Ec2
 	// No paginator available
 	for {
-		output, err := svc.DescribeSpotFleetInstances(ctx, &config)
+		output, err := svc.DescribeSpotFleetInstances(ctx, &config, func(options *ec2.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

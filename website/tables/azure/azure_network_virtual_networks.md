@@ -15,16 +15,59 @@ The following tables depend on azure_network_virtual_networks:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|subscription_id|String|
-|extended_location|JSON|
-|id (PK)|String|
-|location|String|
-|properties|JSON|
-|tags|JSON|
-|etag|String|
-|name|String|
-|type|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|subscription_id|`utf8`|
+|extended_location|`json`|
+|id (PK)|`utf8`|
+|location|`utf8`|
+|properties|`json`|
+|tags|`json`|
+|etag|`utf8`|
+|name|`utf8`|
+|type|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### SQL Server should use a virtual network service endpoint
+
+```sql
+WITH
+  subs
+    AS (
+      SELECT
+        subscription_id,
+        jsonb_array_elements(properties->'subnets') AS subnet,
+        properties->>'provisioningState' AS provisioning_state
+      FROM
+        azure_network_virtual_networks
+    ),
+  secured_servers
+    AS (
+      SELECT
+        s._cq_id
+      FROM
+        azure_sql_servers AS s
+        LEFT JOIN azure_sql_server_virtual_network_rules AS r ON
+            s._cq_id = r._cq_parent_id
+        LEFT JOIN subs ON
+            r.properties->>'virtualNetworkSubnetId' = subs.subnet->>'id'
+      WHERE
+        (r.properties->'virtualNetworkSubnetId') IS NOT NULL
+        AND subs.provisioning_state = 'Succeeded'
+    )
+SELECT
+  'SQL Server should use a virtual network service endpoint' AS title,
+  subscription_id,
+  id,
+  CASE
+  WHEN ss._cq_id IS NULL THEN 'fail'
+  ELSE 'pass'
+  END
+FROM
+  azure_sql_servers AS s LEFT JOIN secured_servers AS ss ON s._cq_id = ss._cq_id;
+```
+
+

@@ -3,13 +3,14 @@ package ecrpublic
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/ecrpublic"
 	"github.com/aws/aws-sdk-go-v2/service/ecrpublic/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func repositoryImages() *schema.Table {
@@ -22,12 +23,10 @@ func repositoryImages() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveImageArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveImageArn,
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -39,11 +38,13 @@ func fetchEcrpublicRepositoryImages(ctx context.Context, meta schema.ClientMeta,
 		RepositoryName: p.RepositoryName,
 		MaxResults:     aws.Int32(1000),
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Ecrpublic
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceEcrpublic).Ecrpublic
 	paginator := ecrpublic.NewDescribeImagesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ecrpublic.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

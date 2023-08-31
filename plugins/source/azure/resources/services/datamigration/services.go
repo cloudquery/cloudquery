@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datamigration/armdatamigration"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Services() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_datamigration_services",
-		Resolver:    fetchServices,
-		Description: "https://learn.microsoft.com/en-us/rest/api/datamigration/services/list?tabs=HTTP#datamigrationservice",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_datamigration_services", client.Namespacemicrosoft_datamigration),
-		Transform:   transformers.TransformWithStruct(&armdatamigration.Service{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_datamigration_services",
+		Resolver:             fetchServices,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/datamigration/services/list?tabs=HTTP#datamigrationservice",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_datamigration_services", client.Namespacemicrosoft_datamigration),
+		Transform:            transformers.TransformWithStruct(&armdatamigration.Service{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

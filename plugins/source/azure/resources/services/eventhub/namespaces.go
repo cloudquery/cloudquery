@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Namespaces() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_eventhub_namespaces",
-		Resolver:    fetchNamespaces,
-		Description: "https://learn.microsoft.com/en-us/rest/api/eventhub/stable/namespaces/list?tabs=HTTP#ehnamespace",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_eventhub_namespaces", client.Namespacemicrosoft_eventhub),
-		Transform:   transformers.TransformWithStruct(&armeventhub.EHNamespace{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_eventhub_namespaces",
+		Resolver:             fetchNamespaces,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/eventhub/stable/namespaces/list?tabs=HTTP#ehnamespace",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_eventhub_namespaces", client.Namespacemicrosoft_eventhub),
+		Transform:            transformers.TransformWithStruct(&armeventhub.EHNamespace{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 		Relations: []*schema.Table{
 			namespaceNetworkRuleSets(),
 		},

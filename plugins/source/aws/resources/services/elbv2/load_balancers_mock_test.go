@@ -9,18 +9,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildLoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockElasticloadbalancingv2Client(ctrl)
 	w := mocks.NewMockWafv2Client(ctrl)
 	l := elbv2Types.LoadBalancer{}
-	err := faker.FakeObject(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&l))
 	l.Type = elbv2Types.LoadBalancerTypeEnumApplication
 
 	m.EXPECT().DescribeLoadBalancers(gomock.Any(), gomock.Any(), gomock.Any()).Return(
@@ -35,25 +33,17 @@ func buildLoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	).Return(fakeLoadBalancerAttributes(), nil)
 
 	webAcl := types.WebACL{}
-	err = faker.FakeObject(&webAcl)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&webAcl))
 
 	w.EXPECT().GetWebACLForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&wafv2.GetWebACLForResourceOutput{WebACL: &webAcl}, nil).AnyTimes()
 
 	tags := elasticloadbalancingv2.DescribeTagsOutput{}
-	err = faker.FakeObject(&tags)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tags))
 	m.EXPECT().DescribeTags(gomock.Any(), gomock.Any(), gomock.Any()).Times(2).Return(&tags, nil)
 
 	lis := elbv2Types.Listener{}
-	if err := faker.FakeObject(&lis); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&lis))
 
 	m.EXPECT().DescribeListeners(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticloadbalancingv2.DescribeListenersOutput{
@@ -61,9 +51,8 @@ func buildLoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
 		}, nil)
 
 	c := elbv2Types.Certificate{}
-	if err := faker.FakeObject(&c); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&c))
+
 	m.EXPECT().DescribeListenerCertificates(
 		gomock.Any(),
 		&elasticloadbalancingv2.DescribeListenerCertificatesInput{ListenerArn: lis.ListenerArn},
@@ -73,9 +62,8 @@ func buildLoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}, nil)
 
 	r := elbv2Types.Rule{}
-	if err := faker.FakeObject(&r); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&r))
+
 	m.EXPECT().DescribeRules(
 		gomock.Any(),
 		&elasticloadbalancingv2.DescribeRulesInput{ListenerArn: lis.ListenerArn},

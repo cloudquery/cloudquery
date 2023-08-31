@@ -2,57 +2,59 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/elastic/go-elasticsearch/v8"
 	"github.com/rs/zerolog"
 )
 
 type Client struct {
-	destination.UnimplementedUnmanagedWriter
-	destination.DefaultReverseTransformer
+	plugin.UnimplementedSource
 	logger      zerolog.Logger
-	spec        specs.Destination
-	metrics     destination.Metrics
-	pluginSpec  Spec
+	spec        *Spec
 	client      *elasticsearch.Client
 	typedClient *elasticsearch.TypedClient
+	writer      *batchwriter.BatchWriter
 }
 
-func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination) (destination.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "elasticsearch-dest").Logger(),
-		spec:   destSpec,
+		spec:   &Spec{},
 	}
-	var spec Spec
-	if err := destSpec.UnmarshalSpec(&spec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal Elasticsearch spec: %w", err)
-	}
-	spec.SetDefaults()
-	if err := spec.Validate(); err != nil {
+	if err := json.Unmarshal(specBytes, c.spec); err != nil {
 		return nil, err
 	}
 
-	c.pluginSpec = spec
+	c.spec.SetDefaults()
+	if err := c.spec.Validate(); err != nil {
+		return nil, err
+	}
+	c.writer, err = batchwriter.New(c, batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create batch writer: %w", err)
+	}
 	retryBackoff := backoff.NewExponentialBackOff()
 	var caCert []byte
-	if len(spec.CACert) > 0 {
-		caCert = []byte(spec.CACert)
+	if len(c.spec.CACert) > 0 {
+		caCert = []byte(c.spec.CACert)
 	}
 	cfg := elasticsearch.Config{
-		Addresses:              spec.Addresses,
-		Username:               spec.Username,
-		Password:               spec.Password,
-		CloudID:                spec.CloudID,
-		APIKey:                 spec.APIKey,
-		ServiceToken:           spec.ServiceToken,
-		CertificateFingerprint: spec.CertificateFingerprint,
+		Addresses:              c.spec.Addresses,
+		Username:               c.spec.Username,
+		Password:               c.spec.Password,
+		CloudID:                c.spec.CloudID,
+		APIKey:                 c.spec.APIKey,
+		ServiceToken:           c.spec.ServiceToken,
+		CertificateFingerprint: c.spec.CertificateFingerprint,
 		CACert:                 caCert,
 		// Retry on 429 TooManyRequests statuses
 		RetryOnStatus: []int{502, 503, 504, 429},
@@ -88,32 +90,25 @@ func New(ctx context.Context, logger zerolog.Logger, destSpec specs.Destination)
 	return c, nil
 }
 
-func (*Client) Close(_ context.Context) error {
+func (c *Client) Close(ctx context.Context) error {
+	if err := c.writer.Close(ctx); err != nil {
+		return fmt.Errorf("failed to close batch writer: %w", err)
+	}
 	return nil
 }
 
-func (c *Client) getIndexNamePattern(tableName string) string {
-	switch c.spec.WriteMode {
-	case specs.WriteModeAppend:
-		return tableName + "-*"
-	case specs.WriteModeOverwrite:
-		return tableName
-	case specs.WriteModeOverwriteDeleteStale:
-		return tableName
-	default:
-		return ""
+func (*Client) getIndexNamePattern(table *schema.Table) string {
+	hasPrimaryKeys := len(table.PrimaryKeys()) > 0
+	if hasPrimaryKeys {
+		return table.Name
 	}
+	return table.Name + "-*"
 }
 
-func (c *Client) getIndexName(tableName string, t time.Time) string {
-	switch c.spec.WriteMode {
-	case specs.WriteModeAppend:
-		return tableName + "-" + t.Format("2006-01-02")
-	case specs.WriteModeOverwrite:
-		return tableName
-	case specs.WriteModeOverwriteDeleteStale:
-		return tableName
-	default:
-		return ""
+func (*Client) getIndexName(table *schema.Table, t time.Time) string {
+	hasPrimaryKeys := len(table.PrimaryKeys()) > 0
+	if hasPrimaryKeys {
+		return table.Name
 	}
+	return table.Name + "-" + t.Format("2006-01-02")
 }

@@ -3,11 +3,14 @@ package sagemaker
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func EndpointConfigurations() *schema.Table {
@@ -23,16 +26,14 @@ func EndpointConfigurations() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("EndpointConfigArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("EndpointConfigArn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:        "tags",
-				Type:        schema.TypeJSON,
+				Type:        sdkTypes.ExtensionTypes.JSON,
 				Resolver:    resolveSagemakerEndpointConfigurationTags,
 				Description: `The tags associated with the model.`,
 			},
@@ -41,12 +42,14 @@ func EndpointConfigurations() *schema.Table {
 }
 
 func fetchSagemakerEndpointConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sagemaker
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSagemaker).Sagemaker
 	config := sagemaker.ListEndpointConfigsInput{}
 	paginator := sagemaker.NewListEndpointConfigsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *sagemaker.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -56,12 +59,14 @@ func fetchSagemakerEndpointConfigurations(ctx context.Context, meta schema.Clien
 }
 
 func getEndpointConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sagemaker
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSagemaker).Sagemaker
 	n := resource.Item.(types.EndpointConfigSummary)
 
 	response, err := svc.DescribeEndpointConfig(ctx, &sagemaker.DescribeEndpointConfigInput{
 		EndpointConfigName: n.EndpointConfigName,
+	}, func(o *sagemaker.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -73,15 +78,17 @@ func getEndpointConfiguration(ctx context.Context, meta schema.ClientMeta, resou
 
 func resolveSagemakerEndpointConfigurationTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	r := resource.Item.(*sagemaker.DescribeEndpointConfigOutput)
-	c := meta.(*client.Client)
-	svc := c.Services().Sagemaker
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSagemaker).Sagemaker
 	config := sagemaker.ListTagsInput{
 		ResourceArn: r.EndpointConfigArn,
 	}
 	paginator := sagemaker.NewListTagsPaginator(svc, &config)
 	var tags []types.Tag
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *sagemaker.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

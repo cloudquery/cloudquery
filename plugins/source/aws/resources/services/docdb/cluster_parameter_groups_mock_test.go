@@ -6,8 +6,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildClusterParameterGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -16,9 +17,8 @@ func buildClusterParameterGroupsMock(t *testing.T, ctrl *gomock.Controller) clie
 		Docdb: m,
 	}
 	var parameterGroups docdb.DescribeDBClusterParameterGroupsOutput
-	if err := faker.FakeObject(&parameterGroups); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&parameterGroups))
+
 	parameterGroups.Marker = nil
 	m.EXPECT().DescribeDBClusterParameterGroups(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&parameterGroups,
@@ -26,9 +26,8 @@ func buildClusterParameterGroupsMock(t *testing.T, ctrl *gomock.Controller) clie
 	)
 
 	var parameters docdb.DescribeDBClusterParametersOutput
-	if err := faker.FakeObject(&parameters); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&parameters))
+
 	parameters.Marker = nil
 	m.EXPECT().DescribeDBClusterParameters(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&parameters,
@@ -36,9 +35,8 @@ func buildClusterParameterGroupsMock(t *testing.T, ctrl *gomock.Controller) clie
 	)
 
 	var tags docdb.ListTagsForResourceOutput
-	if err := faker.FakeObject(&tags); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tags))
+
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&tags,
 		nil,

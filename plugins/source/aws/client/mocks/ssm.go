@@ -37,6 +37,16 @@ func (m *MockSsmClient) EXPECT() *MockSsmClientMockRecorder {
 
 // DescribeActivations mocks base method.
 func (m *MockSsmClient) DescribeActivations(arg0 context.Context, arg1 *ssm.DescribeActivationsInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeActivationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeActivations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockSsmClientMockRecorder) DescribeActivations(arg0, arg1 interface{},
 
 // DescribeAssociation mocks base method.
 func (m *MockSsmClient) DescribeAssociation(arg0 context.Context, arg1 *ssm.DescribeAssociationInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeAssociationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAssociation")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockSsmClientMockRecorder) DescribeAssociation(arg0, arg1 interface{},
 
 // DescribeAssociationExecutionTargets mocks base method.
 func (m *MockSsmClient) DescribeAssociationExecutionTargets(arg0 context.Context, arg1 *ssm.DescribeAssociationExecutionTargetsInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeAssociationExecutionTargetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAssociationExecutionTargets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockSsmClientMockRecorder) DescribeAssociationExecutionTargets(arg0, a
 
 // DescribeAssociationExecutions mocks base method.
 func (m *MockSsmClient) DescribeAssociationExecutions(arg0 context.Context, arg1 *ssm.DescribeAssociationExecutionsInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeAssociationExecutionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAssociationExecutions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockSsmClientMockRecorder) DescribeAssociationExecutions(arg0, arg1 in
 
 // DescribeAutomationExecutions mocks base method.
 func (m *MockSsmClient) DescribeAutomationExecutions(arg0 context.Context, arg1 *ssm.DescribeAutomationExecutionsInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeAutomationExecutionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAutomationExecutions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockSsmClientMockRecorder) DescribeAutomationExecutions(arg0, arg1 int
 
 // DescribeAutomationStepExecutions mocks base method.
 func (m *MockSsmClient) DescribeAutomationStepExecutions(arg0 context.Context, arg1 *ssm.DescribeAutomationStepExecutionsInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeAutomationStepExecutionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAutomationStepExecutions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockSsmClientMockRecorder) DescribeAutomationStepExecutions(arg0, arg1
 
 // DescribeAvailablePatches mocks base method.
 func (m *MockSsmClient) DescribeAvailablePatches(arg0 context.Context, arg1 *ssm.DescribeAvailablePatchesInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeAvailablePatchesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAvailablePatches")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockSsmClientMockRecorder) DescribeAvailablePatches(arg0, arg1 interfa
 
 // DescribeDocument mocks base method.
 func (m *MockSsmClient) DescribeDocument(arg0 context.Context, arg1 *ssm.DescribeDocumentInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeDocumentOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDocument")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockSsmClientMockRecorder) DescribeDocument(arg0, arg1 interface{}, ar
 
 // DescribeDocumentPermission mocks base method.
 func (m *MockSsmClient) DescribeDocumentPermission(arg0 context.Context, arg1 *ssm.DescribeDocumentPermissionInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeDocumentPermissionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDocumentPermission")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockSsmClientMockRecorder) DescribeDocumentPermission(arg0, arg1 inter
 
 // DescribeEffectiveInstanceAssociations mocks base method.
 func (m *MockSsmClient) DescribeEffectiveInstanceAssociations(arg0 context.Context, arg1 *ssm.DescribeEffectiveInstanceAssociationsInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeEffectiveInstanceAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEffectiveInstanceAssociations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockSsmClientMockRecorder) DescribeEffectiveInstanceAssociations(arg0,
 
 // DescribeEffectivePatchesForPatchBaseline mocks base method.
 func (m *MockSsmClient) DescribeEffectivePatchesForPatchBaseline(arg0 context.Context, arg1 *ssm.DescribeEffectivePatchesForPatchBaselineInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeEffectivePatchesForPatchBaselineOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEffectivePatchesForPatchBaseline")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockSsmClientMockRecorder) DescribeEffectivePatchesForPatchBaseline(ar
 
 // DescribeInstanceAssociationsStatus mocks base method.
 func (m *MockSsmClient) DescribeInstanceAssociationsStatus(arg0 context.Context, arg1 *ssm.DescribeInstanceAssociationsStatusInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeInstanceAssociationsStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInstanceAssociationsStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockSsmClientMockRecorder) DescribeInstanceAssociationsStatus(arg0, ar
 
 // DescribeInstanceInformation mocks base method.
 func (m *MockSsmClient) DescribeInstanceInformation(arg0 context.Context, arg1 *ssm.DescribeInstanceInformationInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeInstanceInformationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInstanceInformation")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockSsmClientMockRecorder) DescribeInstanceInformation(arg0, arg1 inte
 
 // DescribeInstancePatchStates mocks base method.
 func (m *MockSsmClient) DescribeInstancePatchStates(arg0 context.Context, arg1 *ssm.DescribeInstancePatchStatesInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeInstancePatchStatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInstancePatchStates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockSsmClientMockRecorder) DescribeInstancePatchStates(arg0, arg1 inte
 
 // DescribeInstancePatchStatesForPatchGroup mocks base method.
 func (m *MockSsmClient) DescribeInstancePatchStatesForPatchGroup(arg0 context.Context, arg1 *ssm.DescribeInstancePatchStatesForPatchGroupInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeInstancePatchStatesForPatchGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInstancePatchStatesForPatchGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockSsmClientMockRecorder) DescribeInstancePatchStatesForPatchGroup(ar
 
 // DescribeInstancePatches mocks base method.
 func (m *MockSsmClient) DescribeInstancePatches(arg0 context.Context, arg1 *ssm.DescribeInstancePatchesInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeInstancePatchesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInstancePatches")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockSsmClientMockRecorder) DescribeInstancePatches(arg0, arg1 interfac
 
 // DescribeInventoryDeletions mocks base method.
 func (m *MockSsmClient) DescribeInventoryDeletions(arg0 context.Context, arg1 *ssm.DescribeInventoryDeletionsInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeInventoryDeletionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInventoryDeletions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockSsmClientMockRecorder) DescribeInventoryDeletions(arg0, arg1 inter
 
 // DescribeMaintenanceWindowExecutionTaskInvocations mocks base method.
 func (m *MockSsmClient) DescribeMaintenanceWindowExecutionTaskInvocations(arg0 context.Context, arg1 *ssm.DescribeMaintenanceWindowExecutionTaskInvocationsInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeMaintenanceWindowExecutionTaskInvocationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeMaintenanceWindowExecutionTaskInvocations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockSsmClientMockRecorder) DescribeMaintenanceWindowExecutionTaskInvoc
 
 // DescribeMaintenanceWindowExecutionTasks mocks base method.
 func (m *MockSsmClient) DescribeMaintenanceWindowExecutionTasks(arg0 context.Context, arg1 *ssm.DescribeMaintenanceWindowExecutionTasksInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeMaintenanceWindowExecutionTasksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeMaintenanceWindowExecutionTasks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockSsmClientMockRecorder) DescribeMaintenanceWindowExecutionTasks(arg
 
 // DescribeMaintenanceWindowExecutions mocks base method.
 func (m *MockSsmClient) DescribeMaintenanceWindowExecutions(arg0 context.Context, arg1 *ssm.DescribeMaintenanceWindowExecutionsInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeMaintenanceWindowExecutionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeMaintenanceWindowExecutions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockSsmClientMockRecorder) DescribeMaintenanceWindowExecutions(arg0, a
 
 // DescribeMaintenanceWindowSchedule mocks base method.
 func (m *MockSsmClient) DescribeMaintenanceWindowSchedule(arg0 context.Context, arg1 *ssm.DescribeMaintenanceWindowScheduleInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeMaintenanceWindowScheduleOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeMaintenanceWindowSchedule")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockSsmClientMockRecorder) DescribeMaintenanceWindowSchedule(arg0, arg
 
 // DescribeMaintenanceWindowTargets mocks base method.
 func (m *MockSsmClient) DescribeMaintenanceWindowTargets(arg0 context.Context, arg1 *ssm.DescribeMaintenanceWindowTargetsInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeMaintenanceWindowTargetsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeMaintenanceWindowTargets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockSsmClientMockRecorder) DescribeMaintenanceWindowTargets(arg0, arg1
 
 // DescribeMaintenanceWindowTasks mocks base method.
 func (m *MockSsmClient) DescribeMaintenanceWindowTasks(arg0 context.Context, arg1 *ssm.DescribeMaintenanceWindowTasksInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeMaintenanceWindowTasksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeMaintenanceWindowTasks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockSsmClientMockRecorder) DescribeMaintenanceWindowTasks(arg0, arg1 i
 
 // DescribeMaintenanceWindows mocks base method.
 func (m *MockSsmClient) DescribeMaintenanceWindows(arg0 context.Context, arg1 *ssm.DescribeMaintenanceWindowsInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeMaintenanceWindowsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeMaintenanceWindows")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockSsmClientMockRecorder) DescribeMaintenanceWindows(arg0, arg1 inter
 
 // DescribeMaintenanceWindowsForTarget mocks base method.
 func (m *MockSsmClient) DescribeMaintenanceWindowsForTarget(arg0 context.Context, arg1 *ssm.DescribeMaintenanceWindowsForTargetInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeMaintenanceWindowsForTargetOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeMaintenanceWindowsForTarget")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockSsmClientMockRecorder) DescribeMaintenanceWindowsForTarget(arg0, a
 
 // DescribeOpsItems mocks base method.
 func (m *MockSsmClient) DescribeOpsItems(arg0 context.Context, arg1 *ssm.DescribeOpsItemsInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeOpsItemsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeOpsItems")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +817,16 @@ func (mr *MockSsmClientMockRecorder) DescribeOpsItems(arg0, arg1 interface{}, ar
 
 // DescribeParameters mocks base method.
 func (m *MockSsmClient) DescribeParameters(arg0 context.Context, arg1 *ssm.DescribeParametersInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeParametersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeParameters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -577,6 +847,16 @@ func (mr *MockSsmClientMockRecorder) DescribeParameters(arg0, arg1 interface{}, 
 
 // DescribePatchBaselines mocks base method.
 func (m *MockSsmClient) DescribePatchBaselines(arg0 context.Context, arg1 *ssm.DescribePatchBaselinesInput, arg2 ...func(*ssm.Options)) (*ssm.DescribePatchBaselinesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePatchBaselines")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -597,6 +877,16 @@ func (mr *MockSsmClientMockRecorder) DescribePatchBaselines(arg0, arg1 interface
 
 // DescribePatchGroupState mocks base method.
 func (m *MockSsmClient) DescribePatchGroupState(arg0 context.Context, arg1 *ssm.DescribePatchGroupStateInput, arg2 ...func(*ssm.Options)) (*ssm.DescribePatchGroupStateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePatchGroupState")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -617,6 +907,16 @@ func (mr *MockSsmClientMockRecorder) DescribePatchGroupState(arg0, arg1 interfac
 
 // DescribePatchGroups mocks base method.
 func (m *MockSsmClient) DescribePatchGroups(arg0 context.Context, arg1 *ssm.DescribePatchGroupsInput, arg2 ...func(*ssm.Options)) (*ssm.DescribePatchGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePatchGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -637,6 +937,16 @@ func (mr *MockSsmClientMockRecorder) DescribePatchGroups(arg0, arg1 interface{},
 
 // DescribePatchProperties mocks base method.
 func (m *MockSsmClient) DescribePatchProperties(arg0 context.Context, arg1 *ssm.DescribePatchPropertiesInput, arg2 ...func(*ssm.Options)) (*ssm.DescribePatchPropertiesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePatchProperties")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -657,6 +967,16 @@ func (mr *MockSsmClientMockRecorder) DescribePatchProperties(arg0, arg1 interfac
 
 // DescribeSessions mocks base method.
 func (m *MockSsmClient) DescribeSessions(arg0 context.Context, arg1 *ssm.DescribeSessionsInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeSessionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSessions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -677,6 +997,16 @@ func (mr *MockSsmClientMockRecorder) DescribeSessions(arg0, arg1 interface{}, ar
 
 // GetAutomationExecution mocks base method.
 func (m *MockSsmClient) GetAutomationExecution(arg0 context.Context, arg1 *ssm.GetAutomationExecutionInput, arg2 ...func(*ssm.Options)) (*ssm.GetAutomationExecutionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAutomationExecution")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -697,6 +1027,16 @@ func (mr *MockSsmClientMockRecorder) GetAutomationExecution(arg0, arg1 interface
 
 // GetCalendarState mocks base method.
 func (m *MockSsmClient) GetCalendarState(arg0 context.Context, arg1 *ssm.GetCalendarStateInput, arg2 ...func(*ssm.Options)) (*ssm.GetCalendarStateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCalendarState")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -717,6 +1057,16 @@ func (mr *MockSsmClientMockRecorder) GetCalendarState(arg0, arg1 interface{}, ar
 
 // GetCommandInvocation mocks base method.
 func (m *MockSsmClient) GetCommandInvocation(arg0 context.Context, arg1 *ssm.GetCommandInvocationInput, arg2 ...func(*ssm.Options)) (*ssm.GetCommandInvocationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCommandInvocation")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -737,6 +1087,16 @@ func (mr *MockSsmClientMockRecorder) GetCommandInvocation(arg0, arg1 interface{}
 
 // GetConnectionStatus mocks base method.
 func (m *MockSsmClient) GetConnectionStatus(arg0 context.Context, arg1 *ssm.GetConnectionStatusInput, arg2 ...func(*ssm.Options)) (*ssm.GetConnectionStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetConnectionStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -757,6 +1117,16 @@ func (mr *MockSsmClientMockRecorder) GetConnectionStatus(arg0, arg1 interface{},
 
 // GetDefaultPatchBaseline mocks base method.
 func (m *MockSsmClient) GetDefaultPatchBaseline(arg0 context.Context, arg1 *ssm.GetDefaultPatchBaselineInput, arg2 ...func(*ssm.Options)) (*ssm.GetDefaultPatchBaselineOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDefaultPatchBaseline")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -777,6 +1147,16 @@ func (mr *MockSsmClientMockRecorder) GetDefaultPatchBaseline(arg0, arg1 interfac
 
 // GetDeployablePatchSnapshotForInstance mocks base method.
 func (m *MockSsmClient) GetDeployablePatchSnapshotForInstance(arg0 context.Context, arg1 *ssm.GetDeployablePatchSnapshotForInstanceInput, arg2 ...func(*ssm.Options)) (*ssm.GetDeployablePatchSnapshotForInstanceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDeployablePatchSnapshotForInstance")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -797,6 +1177,16 @@ func (mr *MockSsmClientMockRecorder) GetDeployablePatchSnapshotForInstance(arg0,
 
 // GetDocument mocks base method.
 func (m *MockSsmClient) GetDocument(arg0 context.Context, arg1 *ssm.GetDocumentInput, arg2 ...func(*ssm.Options)) (*ssm.GetDocumentOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDocument")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -817,6 +1207,16 @@ func (mr *MockSsmClientMockRecorder) GetDocument(arg0, arg1 interface{}, arg2 ..
 
 // GetInventory mocks base method.
 func (m *MockSsmClient) GetInventory(arg0 context.Context, arg1 *ssm.GetInventoryInput, arg2 ...func(*ssm.Options)) (*ssm.GetInventoryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInventory")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -837,6 +1237,16 @@ func (mr *MockSsmClientMockRecorder) GetInventory(arg0, arg1 interface{}, arg2 .
 
 // GetInventorySchema mocks base method.
 func (m *MockSsmClient) GetInventorySchema(arg0 context.Context, arg1 *ssm.GetInventorySchemaInput, arg2 ...func(*ssm.Options)) (*ssm.GetInventorySchemaOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInventorySchema")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -857,6 +1267,16 @@ func (mr *MockSsmClientMockRecorder) GetInventorySchema(arg0, arg1 interface{}, 
 
 // GetMaintenanceWindow mocks base method.
 func (m *MockSsmClient) GetMaintenanceWindow(arg0 context.Context, arg1 *ssm.GetMaintenanceWindowInput, arg2 ...func(*ssm.Options)) (*ssm.GetMaintenanceWindowOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMaintenanceWindow")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -877,6 +1297,16 @@ func (mr *MockSsmClientMockRecorder) GetMaintenanceWindow(arg0, arg1 interface{}
 
 // GetMaintenanceWindowExecution mocks base method.
 func (m *MockSsmClient) GetMaintenanceWindowExecution(arg0 context.Context, arg1 *ssm.GetMaintenanceWindowExecutionInput, arg2 ...func(*ssm.Options)) (*ssm.GetMaintenanceWindowExecutionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMaintenanceWindowExecution")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -897,6 +1327,16 @@ func (mr *MockSsmClientMockRecorder) GetMaintenanceWindowExecution(arg0, arg1 in
 
 // GetMaintenanceWindowExecutionTask mocks base method.
 func (m *MockSsmClient) GetMaintenanceWindowExecutionTask(arg0 context.Context, arg1 *ssm.GetMaintenanceWindowExecutionTaskInput, arg2 ...func(*ssm.Options)) (*ssm.GetMaintenanceWindowExecutionTaskOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMaintenanceWindowExecutionTask")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -917,6 +1357,16 @@ func (mr *MockSsmClientMockRecorder) GetMaintenanceWindowExecutionTask(arg0, arg
 
 // GetMaintenanceWindowExecutionTaskInvocation mocks base method.
 func (m *MockSsmClient) GetMaintenanceWindowExecutionTaskInvocation(arg0 context.Context, arg1 *ssm.GetMaintenanceWindowExecutionTaskInvocationInput, arg2 ...func(*ssm.Options)) (*ssm.GetMaintenanceWindowExecutionTaskInvocationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMaintenanceWindowExecutionTaskInvocation")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -937,6 +1387,16 @@ func (mr *MockSsmClientMockRecorder) GetMaintenanceWindowExecutionTaskInvocation
 
 // GetMaintenanceWindowTask mocks base method.
 func (m *MockSsmClient) GetMaintenanceWindowTask(arg0 context.Context, arg1 *ssm.GetMaintenanceWindowTaskInput, arg2 ...func(*ssm.Options)) (*ssm.GetMaintenanceWindowTaskOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMaintenanceWindowTask")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -957,6 +1417,16 @@ func (mr *MockSsmClientMockRecorder) GetMaintenanceWindowTask(arg0, arg1 interfa
 
 // GetOpsItem mocks base method.
 func (m *MockSsmClient) GetOpsItem(arg0 context.Context, arg1 *ssm.GetOpsItemInput, arg2 ...func(*ssm.Options)) (*ssm.GetOpsItemOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetOpsItem")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -977,6 +1447,16 @@ func (mr *MockSsmClientMockRecorder) GetOpsItem(arg0, arg1 interface{}, arg2 ...
 
 // GetOpsMetadata mocks base method.
 func (m *MockSsmClient) GetOpsMetadata(arg0 context.Context, arg1 *ssm.GetOpsMetadataInput, arg2 ...func(*ssm.Options)) (*ssm.GetOpsMetadataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetOpsMetadata")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -997,6 +1477,16 @@ func (mr *MockSsmClientMockRecorder) GetOpsMetadata(arg0, arg1 interface{}, arg2
 
 // GetOpsSummary mocks base method.
 func (m *MockSsmClient) GetOpsSummary(arg0 context.Context, arg1 *ssm.GetOpsSummaryInput, arg2 ...func(*ssm.Options)) (*ssm.GetOpsSummaryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetOpsSummary")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1017,6 +1507,16 @@ func (mr *MockSsmClientMockRecorder) GetOpsSummary(arg0, arg1 interface{}, arg2 
 
 // GetParameter mocks base method.
 func (m *MockSsmClient) GetParameter(arg0 context.Context, arg1 *ssm.GetParameterInput, arg2 ...func(*ssm.Options)) (*ssm.GetParameterOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetParameter")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1037,6 +1537,16 @@ func (mr *MockSsmClientMockRecorder) GetParameter(arg0, arg1 interface{}, arg2 .
 
 // GetParameterHistory mocks base method.
 func (m *MockSsmClient) GetParameterHistory(arg0 context.Context, arg1 *ssm.GetParameterHistoryInput, arg2 ...func(*ssm.Options)) (*ssm.GetParameterHistoryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetParameterHistory")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1057,6 +1567,16 @@ func (mr *MockSsmClientMockRecorder) GetParameterHistory(arg0, arg1 interface{},
 
 // GetParameters mocks base method.
 func (m *MockSsmClient) GetParameters(arg0 context.Context, arg1 *ssm.GetParametersInput, arg2 ...func(*ssm.Options)) (*ssm.GetParametersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetParameters")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1077,6 +1597,16 @@ func (mr *MockSsmClientMockRecorder) GetParameters(arg0, arg1 interface{}, arg2 
 
 // GetParametersByPath mocks base method.
 func (m *MockSsmClient) GetParametersByPath(arg0 context.Context, arg1 *ssm.GetParametersByPathInput, arg2 ...func(*ssm.Options)) (*ssm.GetParametersByPathOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetParametersByPath")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1097,6 +1627,16 @@ func (mr *MockSsmClientMockRecorder) GetParametersByPath(arg0, arg1 interface{},
 
 // GetPatchBaseline mocks base method.
 func (m *MockSsmClient) GetPatchBaseline(arg0 context.Context, arg1 *ssm.GetPatchBaselineInput, arg2 ...func(*ssm.Options)) (*ssm.GetPatchBaselineOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPatchBaseline")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1117,6 +1657,16 @@ func (mr *MockSsmClientMockRecorder) GetPatchBaseline(arg0, arg1 interface{}, ar
 
 // GetPatchBaselineForPatchGroup mocks base method.
 func (m *MockSsmClient) GetPatchBaselineForPatchGroup(arg0 context.Context, arg1 *ssm.GetPatchBaselineForPatchGroupInput, arg2 ...func(*ssm.Options)) (*ssm.GetPatchBaselineForPatchGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPatchBaselineForPatchGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1137,6 +1687,16 @@ func (mr *MockSsmClientMockRecorder) GetPatchBaselineForPatchGroup(arg0, arg1 in
 
 // GetResourcePolicies mocks base method.
 func (m *MockSsmClient) GetResourcePolicies(arg0 context.Context, arg1 *ssm.GetResourcePoliciesInput, arg2 ...func(*ssm.Options)) (*ssm.GetResourcePoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetResourcePolicies")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1157,6 +1717,16 @@ func (mr *MockSsmClientMockRecorder) GetResourcePolicies(arg0, arg1 interface{},
 
 // GetServiceSetting mocks base method.
 func (m *MockSsmClient) GetServiceSetting(arg0 context.Context, arg1 *ssm.GetServiceSettingInput, arg2 ...func(*ssm.Options)) (*ssm.GetServiceSettingOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetServiceSetting")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1177,6 +1747,16 @@ func (mr *MockSsmClientMockRecorder) GetServiceSetting(arg0, arg1 interface{}, a
 
 // ListAssociationVersions mocks base method.
 func (m *MockSsmClient) ListAssociationVersions(arg0 context.Context, arg1 *ssm.ListAssociationVersionsInput, arg2 ...func(*ssm.Options)) (*ssm.ListAssociationVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAssociationVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1197,6 +1777,16 @@ func (mr *MockSsmClientMockRecorder) ListAssociationVersions(arg0, arg1 interfac
 
 // ListAssociations mocks base method.
 func (m *MockSsmClient) ListAssociations(arg0 context.Context, arg1 *ssm.ListAssociationsInput, arg2 ...func(*ssm.Options)) (*ssm.ListAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAssociations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1217,6 +1807,16 @@ func (mr *MockSsmClientMockRecorder) ListAssociations(arg0, arg1 interface{}, ar
 
 // ListCommandInvocations mocks base method.
 func (m *MockSsmClient) ListCommandInvocations(arg0 context.Context, arg1 *ssm.ListCommandInvocationsInput, arg2 ...func(*ssm.Options)) (*ssm.ListCommandInvocationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCommandInvocations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1237,6 +1837,16 @@ func (mr *MockSsmClientMockRecorder) ListCommandInvocations(arg0, arg1 interface
 
 // ListCommands mocks base method.
 func (m *MockSsmClient) ListCommands(arg0 context.Context, arg1 *ssm.ListCommandsInput, arg2 ...func(*ssm.Options)) (*ssm.ListCommandsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCommands")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1257,6 +1867,16 @@ func (mr *MockSsmClientMockRecorder) ListCommands(arg0, arg1 interface{}, arg2 .
 
 // ListComplianceItems mocks base method.
 func (m *MockSsmClient) ListComplianceItems(arg0 context.Context, arg1 *ssm.ListComplianceItemsInput, arg2 ...func(*ssm.Options)) (*ssm.ListComplianceItemsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListComplianceItems")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1277,6 +1897,16 @@ func (mr *MockSsmClientMockRecorder) ListComplianceItems(arg0, arg1 interface{},
 
 // ListComplianceSummaries mocks base method.
 func (m *MockSsmClient) ListComplianceSummaries(arg0 context.Context, arg1 *ssm.ListComplianceSummariesInput, arg2 ...func(*ssm.Options)) (*ssm.ListComplianceSummariesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListComplianceSummaries")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1297,6 +1927,16 @@ func (mr *MockSsmClientMockRecorder) ListComplianceSummaries(arg0, arg1 interfac
 
 // ListDocumentMetadataHistory mocks base method.
 func (m *MockSsmClient) ListDocumentMetadataHistory(arg0 context.Context, arg1 *ssm.ListDocumentMetadataHistoryInput, arg2 ...func(*ssm.Options)) (*ssm.ListDocumentMetadataHistoryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDocumentMetadataHistory")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1317,6 +1957,16 @@ func (mr *MockSsmClientMockRecorder) ListDocumentMetadataHistory(arg0, arg1 inte
 
 // ListDocumentVersions mocks base method.
 func (m *MockSsmClient) ListDocumentVersions(arg0 context.Context, arg1 *ssm.ListDocumentVersionsInput, arg2 ...func(*ssm.Options)) (*ssm.ListDocumentVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDocumentVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1337,6 +1987,16 @@ func (mr *MockSsmClientMockRecorder) ListDocumentVersions(arg0, arg1 interface{}
 
 // ListDocuments mocks base method.
 func (m *MockSsmClient) ListDocuments(arg0 context.Context, arg1 *ssm.ListDocumentsInput, arg2 ...func(*ssm.Options)) (*ssm.ListDocumentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDocuments")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1357,6 +2017,16 @@ func (mr *MockSsmClientMockRecorder) ListDocuments(arg0, arg1 interface{}, arg2 
 
 // ListInventoryEntries mocks base method.
 func (m *MockSsmClient) ListInventoryEntries(arg0 context.Context, arg1 *ssm.ListInventoryEntriesInput, arg2 ...func(*ssm.Options)) (*ssm.ListInventoryEntriesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListInventoryEntries")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1377,6 +2047,16 @@ func (mr *MockSsmClientMockRecorder) ListInventoryEntries(arg0, arg1 interface{}
 
 // ListOpsItemEvents mocks base method.
 func (m *MockSsmClient) ListOpsItemEvents(arg0 context.Context, arg1 *ssm.ListOpsItemEventsInput, arg2 ...func(*ssm.Options)) (*ssm.ListOpsItemEventsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListOpsItemEvents")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1397,6 +2077,16 @@ func (mr *MockSsmClientMockRecorder) ListOpsItemEvents(arg0, arg1 interface{}, a
 
 // ListOpsItemRelatedItems mocks base method.
 func (m *MockSsmClient) ListOpsItemRelatedItems(arg0 context.Context, arg1 *ssm.ListOpsItemRelatedItemsInput, arg2 ...func(*ssm.Options)) (*ssm.ListOpsItemRelatedItemsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListOpsItemRelatedItems")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1417,6 +2107,16 @@ func (mr *MockSsmClientMockRecorder) ListOpsItemRelatedItems(arg0, arg1 interfac
 
 // ListOpsMetadata mocks base method.
 func (m *MockSsmClient) ListOpsMetadata(arg0 context.Context, arg1 *ssm.ListOpsMetadataInput, arg2 ...func(*ssm.Options)) (*ssm.ListOpsMetadataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListOpsMetadata")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1437,6 +2137,16 @@ func (mr *MockSsmClientMockRecorder) ListOpsMetadata(arg0, arg1 interface{}, arg
 
 // ListResourceComplianceSummaries mocks base method.
 func (m *MockSsmClient) ListResourceComplianceSummaries(arg0 context.Context, arg1 *ssm.ListResourceComplianceSummariesInput, arg2 ...func(*ssm.Options)) (*ssm.ListResourceComplianceSummariesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListResourceComplianceSummaries")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1457,6 +2167,16 @@ func (mr *MockSsmClientMockRecorder) ListResourceComplianceSummaries(arg0, arg1 
 
 // ListResourceDataSync mocks base method.
 func (m *MockSsmClient) ListResourceDataSync(arg0 context.Context, arg1 *ssm.ListResourceDataSyncInput, arg2 ...func(*ssm.Options)) (*ssm.ListResourceDataSyncOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListResourceDataSync")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1477,6 +2197,16 @@ func (mr *MockSsmClientMockRecorder) ListResourceDataSync(arg0, arg1 interface{}
 
 // ListTagsForResource mocks base method.
 func (m *MockSsmClient) ListTagsForResource(arg0 context.Context, arg1 *ssm.ListTagsForResourceInput, arg2 ...func(*ssm.Options)) (*ssm.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssm.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

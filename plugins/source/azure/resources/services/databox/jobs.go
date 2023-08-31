@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Jobs() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_databox_jobs",
-		Resolver:    fetchJobs,
-		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox@v1.0.0#JobResource",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_databox_jobs", client.Namespacemicrosoft_databox),
-		Transform:   transformers.TransformWithStruct(&armdatabox.JobResource{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_databox_jobs",
+		Resolver:             fetchJobs,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox@v1.0.0#JobResource",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_databox_jobs", client.Namespacemicrosoft_databox),
+		Transform:            transformers.TransformWithStruct(&armdatabox.JobResource{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

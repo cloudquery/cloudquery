@@ -3,11 +3,14 @@ package sagemaker
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Apps() *schema.Table {
@@ -23,16 +26,14 @@ func Apps() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AppArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("AppArn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:        "tags",
-				Type:        schema.TypeJSON,
+				Type:        sdkTypes.ExtensionTypes.JSON,
 				Resolver:    resolveSagemakerAppTags,
 				Description: `The tags associated with the app.`,
 			},
@@ -40,11 +41,13 @@ func Apps() *schema.Table {
 	}
 }
 func fetchSagemakerApps(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sagemaker
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSagemaker).Sagemaker
 	paginator := sagemaker.NewListAppsPaginator(svc, &sagemaker.ListAppsInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *sagemaker.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -54,8 +57,8 @@ func fetchSagemakerApps(ctx context.Context, meta schema.ClientMeta, _ *schema.R
 }
 
 func getApp(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sagemaker
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSagemaker).Sagemaker
 	n := resource.Item.(types.AppDetails)
 	input := &sagemaker.DescribeAppInput{
 		AppName:  n.AppName,
@@ -70,7 +73,9 @@ func getApp(ctx context.Context, meta schema.ClientMeta, resource *schema.Resour
 		input.SpaceName = n.SpaceName
 	}
 
-	response, err := svc.DescribeApp(ctx, input)
+	response, err := svc.DescribeApp(ctx, input, func(o *sagemaker.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -81,11 +86,13 @@ func getApp(ctx context.Context, meta schema.ClientMeta, resource *schema.Resour
 
 func resolveSagemakerAppTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	r := resource.Item.(*sagemaker.DescribeAppOutput)
-	c := meta.(*client.Client)
-	svc := c.Services().Sagemaker
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSagemaker).Sagemaker
 
 	response, err := svc.ListTags(ctx, &sagemaker.ListTagsInput{
 		ResourceArn: r.AppArn,
+	}, func(o *sagemaker.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		return err

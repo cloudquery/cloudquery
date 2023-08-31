@@ -7,8 +7,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodbstreams/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildDynamodbstreamsStreamsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -17,9 +18,7 @@ func buildDynamodbstreamsStreamsMock(t *testing.T, ctrl *gomock.Controller) clie
 		Dynamodbstreams: m,
 	}
 	stream := types.Stream{}
-	if err := faker.FakeObject(&stream); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&stream))
 
 	m.EXPECT().ListStreams(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&dynamodbstreams.ListStreamsOutput{
@@ -29,9 +28,7 @@ func buildDynamodbstreamsStreamsMock(t *testing.T, ctrl *gomock.Controller) clie
 	)
 
 	streamDescription := types.StreamDescription{}
-	if err := faker.FakeObject(&streamDescription); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&streamDescription))
 
 	m.EXPECT().DescribeStream(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&dynamodbstreams.DescribeStreamOutput{

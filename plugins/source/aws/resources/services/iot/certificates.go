@@ -3,12 +3,13 @@ package iot
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Certificates() *schema.Table {
@@ -25,28 +26,29 @@ func Certificates() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "policies",
-				Type:     schema.TypeStringArray,
+				Type:     arrow.ListOf(arrow.BinaryTypes.String),
 				Resolver: ResolveIotCertificatePolicies,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CertificateArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("CertificateArn"),
+				PrimaryKey: true,
 			},
 		},
 	}
 }
 func fetchIotCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Iot
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceIot).Iot
 	input := iot.ListCertificatesInput{
 		PageSize: aws.Int32(250),
 	}
 	paginator := iot.NewListCertificatesPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -57,9 +59,12 @@ func fetchIotCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func getCertificate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cert := resource.Item.(types.Certificate)
-	svc := meta.(*client.Client).Services().Iot
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceIot).Iot
 	certDescription, err := svc.DescribeCertificate(ctx, &iot.DescribeCertificateInput{
 		CertificateId: cert.CertificateId,
+	}, func(options *iot.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -69,7 +74,8 @@ func getCertificate(ctx context.Context, meta schema.ClientMeta, resource *schem
 }
 
 func ResolveIotCertificatePolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	svc := meta.(*client.Client).Services().Iot
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceIot).Iot
 	input := iot.ListAttachedPoliciesInput{
 		Target:   resource.Item.(*types.CertificateDescription).CertificateArn,
 		PageSize: aws.Int32(250),
@@ -77,7 +83,9 @@ func ResolveIotCertificatePolicies(ctx context.Context, meta schema.ClientMeta, 
 	paginator := iot.NewListAttachedPoliciesPaginator(svc, &input)
 	var policies []string
 	for paginator.HasMorePages() {
-		response, err := paginator.NextPage(ctx)
+		response, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

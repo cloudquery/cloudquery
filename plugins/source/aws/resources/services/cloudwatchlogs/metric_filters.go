@@ -3,13 +3,14 @@ package cloudwatchlogs
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func MetricFilters() *schema.Table {
@@ -24,12 +25,10 @@ func MetricFilters() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "log_group_arn",
-				Type:     schema.TypeString,
-				Resolver: resolveMetricFilterLogGroupArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "log_group_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveMetricFilterLogGroupArn,
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -37,11 +36,13 @@ func MetricFilters() *schema.Table {
 
 func fetchCloudwatchlogsMetricFilters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config cloudwatchlogs.DescribeMetricFiltersInput
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudwatchlogs
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceCloudwatchlogs).Cloudwatchlogs
 	paginator := cloudwatchlogs.NewDescribeMetricFiltersPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *cloudwatchlogs.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

@@ -1,19 +1,20 @@
 package client
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 var (
 	SubscriptionID = schema.Column{
 		Name:     "subscription_id",
-		Type:     schema.TypeString,
+		Type:     arrow.BinaryTypes.String,
 		Resolver: ResolveAzureSubscription,
 	}
 	SubscriptionIDPK = schema.Column{
-		Name:            "subscription_id",
-		Type:            schema.TypeString,
-		Resolver:        ResolveAzureSubscription,
-		CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+		Name:       "subscription_id",
+		Type:       arrow.BinaryTypes.String,
+		Resolver:   ResolveAzureSubscription,
+		PrimaryKey: true,
 	}
 )

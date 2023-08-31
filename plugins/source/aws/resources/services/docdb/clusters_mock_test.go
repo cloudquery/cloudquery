@@ -6,8 +6,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -16,9 +17,8 @@ func buildClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		Docdb: m,
 	}
 	var clusters docdb.DescribeDBClustersOutput
-	if err := faker.FakeObject(&clusters); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&clusters))
+
 	clusters.Marker = nil
 	m.EXPECT().DescribeDBClusters(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&clusters,
@@ -26,9 +26,8 @@ func buildClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var clusterSnapshots docdb.DescribeDBClusterSnapshotsOutput
-	if err := faker.FakeObject(&clusterSnapshots); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&clusterSnapshots))
+
 	clusterSnapshots.Marker = nil
 	m.EXPECT().DescribeDBClusterSnapshots(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&clusterSnapshots,
@@ -36,18 +35,16 @@ func buildClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var snapshotAttributes docdb.DescribeDBClusterSnapshotAttributesOutput
-	if err := faker.FakeObject(&snapshotAttributes); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&snapshotAttributes))
+
 	m.EXPECT().DescribeDBClusterSnapshotAttributes(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&snapshotAttributes,
 		nil,
 	)
 
 	var ev docdb.DescribeDBInstancesOutput
-	if err := faker.FakeObject(&ev); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ev))
+
 	ev.Marker = nil
 	m.EXPECT().DescribeDBInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ev,
@@ -55,9 +52,8 @@ func buildClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var tags docdb.ListTagsForResourceOutput
-	if err := faker.FakeObject(&tags); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tags))
+
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&tags,
 		nil,

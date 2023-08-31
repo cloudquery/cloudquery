@@ -37,6 +37,16 @@ func (m *MockShieldClient) EXPECT() *MockShieldClientMockRecorder {
 
 // DescribeAttack mocks base method.
 func (m *MockShieldClient) DescribeAttack(arg0 context.Context, arg1 *shield.DescribeAttackInput, arg2 ...func(*shield.Options)) (*shield.DescribeAttackOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &shield.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAttack")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockShieldClientMockRecorder) DescribeAttack(arg0, arg1 interface{}, a
 
 // DescribeAttackStatistics mocks base method.
 func (m *MockShieldClient) DescribeAttackStatistics(arg0 context.Context, arg1 *shield.DescribeAttackStatisticsInput, arg2 ...func(*shield.Options)) (*shield.DescribeAttackStatisticsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &shield.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAttackStatistics")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockShieldClientMockRecorder) DescribeAttackStatistics(arg0, arg1 inte
 
 // DescribeDRTAccess mocks base method.
 func (m *MockShieldClient) DescribeDRTAccess(arg0 context.Context, arg1 *shield.DescribeDRTAccessInput, arg2 ...func(*shield.Options)) (*shield.DescribeDRTAccessOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &shield.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDRTAccess")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockShieldClientMockRecorder) DescribeDRTAccess(arg0, arg1 interface{}
 
 // DescribeEmergencyContactSettings mocks base method.
 func (m *MockShieldClient) DescribeEmergencyContactSettings(arg0 context.Context, arg1 *shield.DescribeEmergencyContactSettingsInput, arg2 ...func(*shield.Options)) (*shield.DescribeEmergencyContactSettingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &shield.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEmergencyContactSettings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockShieldClientMockRecorder) DescribeEmergencyContactSettings(arg0, a
 
 // DescribeProtection mocks base method.
 func (m *MockShieldClient) DescribeProtection(arg0 context.Context, arg1 *shield.DescribeProtectionInput, arg2 ...func(*shield.Options)) (*shield.DescribeProtectionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &shield.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeProtection")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockShieldClientMockRecorder) DescribeProtection(arg0, arg1 interface{
 
 // DescribeProtectionGroup mocks base method.
 func (m *MockShieldClient) DescribeProtectionGroup(arg0 context.Context, arg1 *shield.DescribeProtectionGroupInput, arg2 ...func(*shield.Options)) (*shield.DescribeProtectionGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &shield.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeProtectionGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockShieldClientMockRecorder) DescribeProtectionGroup(arg0, arg1 inter
 
 // DescribeSubscription mocks base method.
 func (m *MockShieldClient) DescribeSubscription(arg0 context.Context, arg1 *shield.DescribeSubscriptionInput, arg2 ...func(*shield.Options)) (*shield.DescribeSubscriptionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &shield.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSubscription")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockShieldClientMockRecorder) DescribeSubscription(arg0, arg1 interfac
 
 // GetSubscriptionState mocks base method.
 func (m *MockShieldClient) GetSubscriptionState(arg0 context.Context, arg1 *shield.GetSubscriptionStateInput, arg2 ...func(*shield.Options)) (*shield.GetSubscriptionStateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &shield.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSubscriptionState")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockShieldClientMockRecorder) GetSubscriptionState(arg0, arg1 interfac
 
 // ListAttacks mocks base method.
 func (m *MockShieldClient) ListAttacks(arg0 context.Context, arg1 *shield.ListAttacksInput, arg2 ...func(*shield.Options)) (*shield.ListAttacksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &shield.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAttacks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockShieldClientMockRecorder) ListAttacks(arg0, arg1 interface{}, arg2
 
 // ListProtectionGroups mocks base method.
 func (m *MockShieldClient) ListProtectionGroups(arg0 context.Context, arg1 *shield.ListProtectionGroupsInput, arg2 ...func(*shield.Options)) (*shield.ListProtectionGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &shield.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListProtectionGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockShieldClientMockRecorder) ListProtectionGroups(arg0, arg1 interfac
 
 // ListProtections mocks base method.
 func (m *MockShieldClient) ListProtections(arg0 context.Context, arg1 *shield.ListProtectionsInput, arg2 ...func(*shield.Options)) (*shield.ListProtectionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &shield.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListProtections")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockShieldClientMockRecorder) ListProtections(arg0, arg1 interface{}, 
 
 // ListResourcesInProtectionGroup mocks base method.
 func (m *MockShieldClient) ListResourcesInProtectionGroup(arg0 context.Context, arg1 *shield.ListResourcesInProtectionGroupInput, arg2 ...func(*shield.Options)) (*shield.ListResourcesInProtectionGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &shield.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListResourcesInProtectionGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockShieldClientMockRecorder) ListResourcesInProtectionGroup(arg0, arg
 
 // ListTagsForResource mocks base method.
 func (m *MockShieldClient) ListTagsForResource(arg0 context.Context, arg1 *shield.ListTagsForResourceInput, arg2 ...func(*shield.Options)) (*shield.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &shield.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

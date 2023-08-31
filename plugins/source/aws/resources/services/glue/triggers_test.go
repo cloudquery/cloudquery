@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
@@ -21,6 +21,7 @@ func buildTriggersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().ListTriggers(
 		gomock.Any(),
 		&glue.ListTriggersInput{MaxResults: aws.Int32(200)},
+		gomock.Any(),
 	).Return(
 		&glue.ListTriggersOutput{TriggerNames: []string{name}},
 		nil,
@@ -32,6 +33,7 @@ func buildTriggersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetTrigger(
 		gomock.Any(),
 		&glue.GetTriggerInput{Name: aws.String(name)},
+		gomock.Any(),
 	).Return(
 		&glue.GetTriggerOutput{Trigger: &tr},
 		nil,
@@ -40,6 +42,7 @@ func buildTriggersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetTags(
 		gomock.Any(),
 		&glue.GetTagsInput{ResourceArn: aws.String("arn:aws:glue:us-east-1:testAccount:trigger/" + name)},
+		gomock.Any(),
 	).Return(
 		&glue.GetTagsOutput{Tags: map[string]string{"key": "value"}},
 		nil,

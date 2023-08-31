@@ -2,7 +2,7 @@
 
 This table shows data for Gitlab Project Branches.
 
-The composite primary key for this table is (**project_id**, **name**).
+The composite primary key for this table is (**base_url**, **project_id**, **name**).
 
 ## Relations
 
@@ -12,18 +12,16 @@ This table depends on [gitlab_projects](gitlab_projects).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|base_url|String|
-|project_id (PK)|Int|
-|name (PK)|String|
-|commit|JSON|
-|protected|Bool|
-|merged|Bool|
-|default|Bool|
-|can_push|Bool|
-|developers_can_push|Bool|
-|developers_can_merge|Bool|
-|web_url|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|base_url (PK)|`utf8`|
+|project_id (PK)|`int64`|
+|commit|`json`|
+|name (PK)|`utf8`|
+|protected|`bool`|
+|merged|`bool`|
+|default|`bool`|
+|can_push|`bool`|
+|developers_can_push|`bool`|
+|developers_can_merge|`bool`|
+|web_url|`utf8`|

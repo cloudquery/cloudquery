@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/docdb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func EventSubscriptions() *schema.Table {
@@ -27,8 +27,8 @@ func EventSubscriptions() *schema.Table {
 }
 
 func fetchDocdbEventSubscriptions(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Docdb
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceDocdb).Docdb
 
 	input := &docdb.DescribeEventSubscriptionsInput{
 		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"docdb"}}},
@@ -36,7 +36,9 @@ func fetchDocdbEventSubscriptions(ctx context.Context, meta schema.ClientMeta, _
 
 	p := docdb.NewDescribeEventSubscriptionsPaginator(svc, input)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *docdb.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

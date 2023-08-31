@@ -3,12 +3,15 @@ package firehose
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
 	"github.com/aws/aws-sdk-go-v2/service/firehose/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func DeliveryStreams() *schema.Table {
@@ -25,27 +28,27 @@ func DeliveryStreams() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveFirehoseDeliveryStreamTags,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DeliveryStreamARN"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("DeliveryStreamARN"),
+				PrimaryKey: true,
 			},
 		},
 	}
 }
 
 func fetchFirehoseDeliveryStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Firehose
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceFirehose).Firehose
 	input := firehose.ListDeliveryStreamsInput{}
 	for {
-		response, err := svc.ListDeliveryStreams(ctx, &input)
+		response, err := svc.ListDeliveryStreams(ctx, &input, func(options *firehose.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -59,11 +62,13 @@ func fetchFirehoseDeliveryStreams(ctx context.Context, meta schema.ClientMeta, p
 }
 
 func getDeliveryStream(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	streamName := resource.Item.(string)
-	svc := c.Services().Firehose
+	svc := cl.Services(client.AWSServiceFirehose).Firehose
 	streamSummary, err := svc.DescribeDeliveryStream(ctx, &firehose.DescribeDeliveryStreamInput{
 		DeliveryStreamName: aws.String(streamName),
+	}, func(options *firehose.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -74,14 +79,16 @@ func getDeliveryStream(ctx context.Context, meta schema.ClientMeta, resource *sc
 
 func resolveFirehoseDeliveryStreamTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Firehose
+	svc := cl.Services(client.AWSServiceFirehose).Firehose
 	summary := resource.Item.(*types.DeliveryStreamDescription)
 	input := firehose.ListTagsForDeliveryStreamInput{
 		DeliveryStreamName: summary.DeliveryStreamName,
 	}
 	var tags []types.Tag
 	for {
-		output, err := svc.ListTagsForDeliveryStream(ctx, &input)
+		output, err := svc.ListTagsForDeliveryStream(ctx, &input, func(options *firehose.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

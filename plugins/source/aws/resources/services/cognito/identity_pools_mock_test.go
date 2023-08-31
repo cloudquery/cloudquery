@@ -7,17 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildCognitoIdentityPools(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockCognitoidentityClient(ctrl)
 
 	var desc types.IdentityPoolShortDescription
-	if err := faker.FakeObject(&desc); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&desc))
+
 	m.EXPECT().ListIdentityPools(
 		gomock.Any(),
 		&cognitoidentity.ListIdentityPoolsInput{MaxResults: 60},
@@ -28,9 +28,8 @@ func buildCognitoIdentityPools(t *testing.T, ctrl *gomock.Controller) client.Ser
 	)
 
 	var ipo cognitoidentity.DescribeIdentityPoolOutput
-	if err := faker.FakeObject(&ipo); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ipo))
+
 	ipo.IdentityPoolId = desc.IdentityPoolId
 	ipo.IdentityPoolId = desc.IdentityPoolName
 	m.EXPECT().DescribeIdentityPool(

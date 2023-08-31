@@ -3,10 +3,11 @@ package hooks
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
-	"github.com/google/go-github/v48/github"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	"github.com/google/go-github/v49/github"
 )
 
 func deliveries() *schema.Table {
@@ -18,11 +19,11 @@ func deliveries() *schema.Table {
 		Columns: []schema.Column{
 			client.OrgColumn,
 			{
-				Name:            "hook_id",
-				Type:            schema.TypeInt,
-				Resolver:        schema.ParentColumnResolver("id"),
-				Description:     `Hook ID`,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+				Name:        "hook_id",
+				Type:        arrow.PrimitiveTypes.Int64,
+				Resolver:    schema.ParentColumnResolver("id"),
+				Description: `Hook ID`,
+				PrimaryKey:  true,
 			},
 		},
 	}

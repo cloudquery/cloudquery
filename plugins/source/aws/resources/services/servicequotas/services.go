@@ -3,12 +3,13 @@ package servicequotas
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/servicequotas"
 	"github.com/aws/aws-sdk-go-v2/service/servicequotas/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Services() *schema.Table {
@@ -23,20 +24,16 @@ func Services() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:     "service_code",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ServiceCode"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "service_code",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ServiceCode"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "service_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ServiceName"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "service_name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ServiceName"),
+				PrimaryKey: true,
 			},
 		},
 
@@ -51,10 +48,13 @@ func fetchServicequotasServices(ctx context.Context, meta schema.ClientMeta, par
 		MaxResults: aws.Int32(100),
 	}
 
-	svc := meta.(*client.Client).Services().Servicequotas
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceServicequotas).Servicequotas
 	servicePaginator := servicequotas.NewListServicesPaginator(svc, &config)
 	for servicePaginator.HasMorePages() {
-		output, err := servicePaginator.NextPage(ctx)
+		output, err := servicePaginator.NextPage(ctx, func(o *servicequotas.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

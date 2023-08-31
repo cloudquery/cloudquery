@@ -3,16 +3,20 @@ package plugin
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"os"
+	"sort"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/mysql/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/cloudquery/plugin-sdk/testdata"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/go-sql-driver/mysql"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
@@ -49,10 +53,10 @@ func createTable(ctx context.Context, db *sql.DB, table *schema.Table) error {
 		builder.WriteString(client.Identifier(column.Name))
 		builder.WriteString(" ")
 		builder.WriteString(client.SQLType(column.Type))
-		if column.CreationOptions.Unique {
+		if column.Unique {
 			builder.WriteString(" UNIQUE")
 		}
-		if column.CreationOptions.NotNull {
+		if column.NotNull {
 			builder.WriteString(" NOT NULL")
 		}
 		if i < len(table.Columns)-1 {
@@ -65,7 +69,7 @@ func createTable(ctx context.Context, db *sql.DB, table *schema.Table) error {
 		builder.WriteString(" PRIMARY KEY (")
 		for i, pk := range pks {
 			builder.WriteString(client.Identifier(pk))
-			if table.Columns.Get(pk).Type == schema.TypeString {
+			if arrow.TypeEqual(table.Columns.Get(pk).Type, arrow.BinaryTypes.String) {
 				// Since we use `text` for strings we need to specify the prefix length to use for the primary key
 				builder.WriteString("(64)")
 			}
@@ -80,7 +84,7 @@ func createTable(ctx context.Context, db *sql.DB, table *schema.Table) error {
 	return err
 }
 
-func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, data schema.CQTypes) error {
+func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, record arrow.Record) error {
 	sb := strings.Builder{}
 	sb.WriteString("INSERT INTO " + client.Identifier(table.Name))
 	sb.WriteString(" (")
@@ -93,11 +97,27 @@ func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, data sche
 	sb.WriteString(") VALUES (")
 	sb.WriteString(strings.TrimSuffix(strings.Repeat("?,", len(table.Columns)), ","))
 	sb.WriteString(")")
-	dbData := schema.TransformWithTransformer(&client.Transformer{}, data)
-	if _, err := db.ExecContext(ctx, sb.String(), dbData...); err != nil {
+
+	query := sb.String()
+	transformedRecords, err := client.TransformRecord(record)
+	if err != nil {
 		return err
 	}
+	for _, transformedRecord := range transformedRecords {
+		if _, err := db.ExecContext(ctx, query, transformedRecord...); err != nil {
+			return err
+		}
+	}
 	return nil
+}
+
+func sortResults(table *schema.Table, records []arrow.Record) {
+	idIndex := table.Columns.Index("id")
+	sort.Slice(records, func(i, j int) bool {
+		firstUUID := records[i].Column(idIndex).ValueStr(0)
+		secondUUID := records[j].Column(idIndex).ValueStr(0)
+		return strings.Compare(firstUUID, secondUUID) < 0
+	})
 }
 
 func TestPlugin(t *testing.T) {
@@ -107,77 +127,100 @@ func TestPlugin(t *testing.T) {
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	p.SetLogger(l)
-	spec := specs.Source{
-		Name:         "test_mysql_source",
-		Path:         "cloudquery/mysql",
-		Version:      "vDevelopment",
-		Destinations: []string{"test"},
-		Tables:       []string{"test_mysql_source"},
-		Spec: client.Spec{
-			ConnectionString: getTestConnectionString(),
-		},
+	spec := client.Spec{
+		ConnectionString: getTestConnectionString(),
 	}
-	db, err := getTestDB(spec.Spec.(client.Spec).ConnectionString)
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	db, err := getTestDB(spec.ConnectionString)
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer db.Close()
 
-	testTable := testdata.TestSourceTable("test_mysql_source")
+	testTable := schema.TestTable("test_mysql_source", schema.TestSourceOptions{})
 	if _, err := db.ExecContext(ctx, "DROP TABLE IF EXISTS test_mysql_source"); err != nil {
 		t.Fatal(err)
 	}
 	if err := createTable(ctx, db, testTable); err != nil {
 		t.Fatal(err)
 	}
-	data := testdata.GenTestData(testTable)
-	if err := insertTable(ctx, db, testTable, data); err != nil {
+	syncTime := time.Now()
+	writtenRecord := schema.NewTestDataGenerator().Generate(testTable, schema.GenTestDataOptions{MaxRows: 2, SyncTime: syncTime})
+	if err := insertTable(ctx, db, testTable, writtenRecord); err != nil {
 		t.Fatal(err)
 	}
 
-	otherTable := testdata.TestSourceTable("other_mysql_table")
+	otherTable := schema.TestTable("other_mysql_table", schema.TestSourceOptions{})
 	if _, err := db.ExecContext(ctx, "DROP TABLE IF EXISTS other_mysql_table"); err != nil {
 		t.Fatal(err)
 	}
 	if err := createTable(ctx, db, otherTable); err != nil {
 		t.Fatal(err)
 	}
-	otherData := testdata.GenTestData(otherTable)
+	otherData := schema.NewTestDataGenerator().Generate(otherTable, schema.GenTestDataOptions{MaxRows: 1, SyncTime: syncTime})
 	if err := insertTable(ctx, db, otherTable, otherData); err != nil {
 		t.Fatal(err)
 	}
 
 	// Init the plugin so we can call migrate
-	if err := p.Init(ctx, spec); err != nil {
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
 		t.Fatal(err)
 	}
-	res := make(chan *schema.Resource, 1)
+	res := make(chan message.SyncMessage, 1)
 	g := errgroup.Group{}
+
 	g.Go(func() error {
 		defer close(res)
-		return p.Sync(ctx, res)
+		opts := plugin.SyncOptions{Tables: []string{testTable.Name}, SkipTables: []string{otherTable.Name}}
+		return p.Sync(ctx, opts, res)
 	})
-	var resource *schema.Resource
-	totalResources := 0
+	actualRecords := make([]arrow.Record, 0)
 	for r := range res {
-		resource = r
-		totalResources++
+		m, ok := r.(*message.SyncInsert)
+		if ok {
+			actualRecords = append(actualRecords, m.Record)
+		}
 	}
 	err = g.Wait()
 	if err != nil {
 		t.Fatal("got unexpected error:", err)
 	}
-	if totalResources != 1 {
-		t.Fatalf("expected 1 resource, got %d", totalResources)
+	if len(actualRecords) != 2 {
+		t.Fatalf("expected 2 resource, got %d", len(actualRecords))
 	}
-	gotData := resource.GetValues()
-	actualStrings := make([]string, len(gotData))
-	for i, v := range gotData {
-		actualStrings[i] = v.String()
+
+	sortResults(testTable, actualRecords)
+
+	for recordIndex := int64(0); recordIndex < writtenRecord.NumRows(); recordIndex++ {
+		expectedRecord := writtenRecord.NewSlice(recordIndex, recordIndex+1)
+		actualRecord := actualRecords[recordIndex]
+		if expectedRecord.NumCols() != actualRecord.NumCols() {
+			t.Fatalf("expected record %d to have %d columns, got %d", recordIndex, expectedRecord.NumCols(), actualRecord.NumCols())
+		}
+		for columnIndex, col := range expectedRecord.Columns() {
+			actualColumn := actualRecord.Column(columnIndex)
+			columnName := expectedRecord.ColumnName(columnIndex)
+			if col.Len() != actualColumn.Len() {
+				t.Fatalf("expected record %d column %d (%s) to have length %d, got %d", recordIndex, columnIndex, columnName, col.Len(), actualColumn.Len())
+			}
+			for arrayIndex := 0; arrayIndex < col.Len(); arrayIndex++ {
+				var expectedValue, actualValue any
+				switch c := col.(type) {
+				case *types.JSONArray:
+					// TODO: Remove this when https://bugs.mysql.com/bug.php?id=98135 is fixed
+					// We can't do string comparison for JSON columns as MySQL saves them with extra spaces
+					expectedValue = c.Value(arrayIndex)
+					actualValue = actualColumn.(*types.JSONArray).Value(arrayIndex)
+				default:
+					expectedValue = col.ValueStr(arrayIndex)
+					actualValue = actualColumn.ValueStr(arrayIndex)
+				}
+
+				require.Equal(t, expectedValue, actualValue, "expected record %d column %d (%s) array index %d to have value %s, got %s", recordIndex, columnIndex, columnName, arrayIndex, expectedValue, actualValue)
+			}
+		}
 	}
-	expectedStrings := make([]string, len(data))
-	for i, v := range data {
-		expectedStrings[i] = v.String()
-	}
-	require.Equal(t, expectedStrings, actualStrings)
 }

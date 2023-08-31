@@ -1,9 +1,11 @@
 package loadbalancer
 
 import (
+	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/oracle/oci-go-sdk/v65/common"
 	"github.com/oracle/oci-go-sdk/v65/loadbalancer"
 )
 
@@ -12,33 +14,35 @@ func LoadBalancers() *schema.Table {
 		Name:      "oracle_loadbalancer_load_balancers",
 		Resolver:  fetchLoadBalancers,
 		Multiplex: client.RegionCompartmentMultiplex,
-		Transform: transformers.TransformWithStruct(&loadbalancer.LoadBalancer{},
-			transformers.WithTypeTransformer(client.OracleTypeTransformer)),
-		Columns: []schema.Column{
-			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveOracleRegion,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "compartment_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveCompartmentId,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-		},
+		Transform: client.TransformWithStruct(&loadbalancer.LoadBalancer{}),
+		Columns:   schema.ColumnList{client.RegionColumn, client.CompartmentIDColumn},
 	}
+}
+
+func fetchLoadBalancers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
+	cqClient := meta.(*client.Client)
+
+	var page *string
+	for {
+		request := loadbalancer.ListLoadBalancersRequest{
+			CompartmentId: common.String(cqClient.CompartmentOcid),
+			Page:          page,
+		}
+
+		response, err := cqClient.OracleClients[cqClient.Region].LoadbalancerLoadbalancerClient.ListLoadBalancers(ctx, request)
+
+		if err != nil {
+			return err
+		}
+
+		res <- response.Items
+
+		if response.OpcNextPage == nil {
+			break
+		}
+
+		page = response.OpcNextPage
+	}
+
+	return nil
 }

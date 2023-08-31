@@ -1,6 +1,6 @@
 package client
 
-import "github.com/cloudquery/plugin-sdk/schema"
+import "github.com/cloudquery/plugin-sdk/v4/schema"
 
 func RegionCompartmentMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	cqClient := meta.(*Client)
@@ -40,7 +40,7 @@ func AvailibilityDomainCompartmentMultiplex(meta schema.ClientMeta) []schema.Cli
 				multiplexedClients = append(multiplexedClients, cqClient.
 					withRegion(region).
 					withCompartment(compartmentOcid).
-					withAvailibilityDomain(availibilityDomain))
+					withAvailabilityDomain(availibilityDomain))
 			}
 		}
 	}

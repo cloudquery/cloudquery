@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/filetypes/v4"
 	"github.com/google/go-cmp/cmp"
 )
 
@@ -25,7 +26,7 @@ func TestSanitizeJSONKeys(t *testing.T) {
 			"foo-bar": &[]string{"baz"}[0],
 		},
 	}
-	sanitizeJSONKeys(m)
+	sanitizeJSONKeysForObject(m)
 	want := map[string]any{
 		"foo": "bar",
 		"bar": map[string]any{
@@ -80,6 +81,12 @@ func TestReplacePathVariables(t *testing.T) {
 			expectedPath: "test/test/FAKE-UUID.json",
 		},
 		{
+			inputPath:    "test/test/{{TABLE}}/{{UUID}}.{{FORMAT}}",
+			tableName:    "",
+			uuid:         "FAKE-UUID",
+			expectedPath: "test/test/FAKE-UUID.json",
+		},
+		{
 			inputPath:    "test/test/{{TABLE}}/year={{YEAR}}/month={{MONTH}}/day={{DAY}}/hour={{HOUR}}/minute={{MINUTE}}/{{UUID}}.json",
 			tableName:    "test-table",
 			uuid:         "FAKE-UUID",
@@ -89,7 +96,15 @@ func TestReplacePathVariables(t *testing.T) {
 
 	tm := time.Date(2021, 3, 5, 4, 1, 2, 3, time.UTC)
 	for _, tc := range cases {
-		if diff := cmp.Diff(tc.expectedPath, replacePathVariables(tc.inputPath, tc.tableName, tc.uuid, tm)); diff != "" {
+		c := &Client{
+			spec: &Spec{
+				Path: tc.inputPath,
+				FileSpec: &filetypes.FileSpec{
+					Format: filetypes.FormatTypeJSON,
+				},
+			},
+		}
+		if diff := cmp.Diff(tc.expectedPath, c.replacePathVariables(tc.tableName, tc.uuid, tm)); diff != "" {
 			t.Errorf("unexpected Path Substitution (-want +got):\n%s", diff)
 		}
 	}

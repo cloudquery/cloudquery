@@ -3,12 +3,13 @@ package ec2
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func imageAttributesLaunchPermissions() *schema.Table {
@@ -20,7 +21,7 @@ func imageAttributesLaunchPermissions() *schema.Table {
 		Columns: []schema.Column{
 			{
 				Name:     "image_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 		},
@@ -28,15 +29,17 @@ func imageAttributesLaunchPermissions() *schema.Table {
 }
 
 func fetchEc2ImageAttributeLaunchPermissions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	p := parent.Item.(types.Image)
-	if aws.ToString(p.OwnerId) != c.AccountID {
+	if aws.ToString(p.OwnerId) != cl.AccountID {
 		return nil
 	}
-	svc := c.Services().Ec2
+	svc := cl.Services(client.AWSServiceEc2).Ec2
 	output, err := svc.DescribeImageAttribute(ctx, &ec2.DescribeImageAttributeInput{
 		Attribute: types.ImageAttributeNameLaunchPermission,
 		ImageId:   p.ImageId,
+	}, func(options *ec2.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

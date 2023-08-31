@@ -3,4 +3,4 @@ IF EXISTS (
  INNER JOIN sys.schemas s ON p.schema_id = s.schema_id
  WHERE s.[name] = @schemaName AND p.[name] = @procName
 )
-DROP PROCEDURE {{.Name}};
+DROP PROCEDURE {{sanitizeID .Schema .Name}};

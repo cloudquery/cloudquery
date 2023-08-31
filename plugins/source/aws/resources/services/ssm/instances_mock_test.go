@@ -8,17 +8,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildSSMInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockSsmClient(ctrl)
 
 	var i types.InstanceInformation
-	if err := faker.FakeObject(&i); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&i))
+
 	i.IPAddress = aws.String("192.168.1.1")
 	mock.EXPECT().DescribeInstanceInformation(
 		gomock.Any(),
@@ -30,9 +30,8 @@ func buildSSMInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var c types.ComplianceItem
-	if err := faker.FakeObject(&c); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&c))
+
 	mock.EXPECT().ListComplianceItems(gomock.Any(),
 		&ssm.ListComplianceItemsInput{ResourceIds: []string{*i.InstanceId}},
 		gomock.Any(),
@@ -42,9 +41,8 @@ func buildSSMInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var p types.PatchComplianceData
-	if err := faker.FakeObject(&p); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&p))
+
 	mock.EXPECT().DescribeInstancePatches(gomock.Any(),
 		&ssm.DescribeInstancePatchesInput{InstanceId: i.InstanceId},
 		gomock.Any(),

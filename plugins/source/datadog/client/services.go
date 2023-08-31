@@ -9,29 +9,35 @@ import (
 )
 
 type DatadogServices struct {
-	DashboardListsAPI services.DashboardListsAPIClient
-	DashboardsAPI     services.DashboardsAPIClient
-	DowntimesAPI      services.DowntimesAPIClient
-	HostsAPI          services.HostsAPIClient
-	IncidentsAPI      services.IncidentsAPIClient
-	MonitorsAPI       services.MonitorsAPIClient
-	NotebooksAPI      services.NotebooksAPIClient
-	RolesAPI          services.RolesAPIClient
-	SyntheticsAPI     services.SyntheticsAPIClient
-	UsersAPI          services.UsersAPIClient
+	DashboardListsAPI                   services.DashboardListsAPIClient
+	DashboardsAPI                       services.DashboardsAPIClient
+	DowntimesAPI                        services.DowntimesAPIClient
+	HostsAPI                            services.HostsAPIClient
+	IncidentsAPI                        services.IncidentsAPIClient
+	MonitorsAPI                         services.MonitorsAPIClient
+	NotebooksAPI                        services.NotebooksAPIClient
+	RolesAPI                            services.RolesAPIClient
+	ServiceLevelObjectivesAPI           services.ServiceLevelObjectivesAPIClient
+	ServiceLevelObjectiveCorrectionsAPI services.ServiceLevelObjectiveCorrectionsAPIClient
+	SyntheticsAPI                       services.SyntheticsAPIClient
+	UsersAPI                            services.UsersAPIClient
+	RumAPI                              services.RumAPIClient
 }
 
 func NewDatadogServices(apiClient *datadog.APIClient) DatadogServices {
 	return DatadogServices{
-		DashboardListsAPI: datadogV1.NewDashboardListsApi(apiClient),
-		DashboardsAPI:     datadogV1.NewDashboardsApi(apiClient),
-		DowntimesAPI:      datadogV1.NewDowntimesApi(apiClient),
-		HostsAPI:          datadogV1.NewHostsApi(apiClient),
-		IncidentsAPI:      datadogV2.NewIncidentsApi(apiClient),
-		MonitorsAPI:       datadogV1.NewMonitorsApi(apiClient),
-		NotebooksAPI:      datadogV1.NewNotebooksApi(apiClient),
-		RolesAPI:          datadogV2.NewRolesApi(apiClient),
-		SyntheticsAPI:     datadogV1.NewSyntheticsApi(apiClient),
-		UsersAPI:          datadogV2.NewUsersApi(apiClient),
+		DashboardListsAPI:                   datadogV1.NewDashboardListsApi(apiClient),
+		DashboardsAPI:                       datadogV1.NewDashboardsApi(apiClient),
+		DowntimesAPI:                        datadogV1.NewDowntimesApi(apiClient),
+		HostsAPI:                            datadogV1.NewHostsApi(apiClient),
+		IncidentsAPI:                        datadogV2.NewIncidentsApi(apiClient),
+		MonitorsAPI:                         datadogV1.NewMonitorsApi(apiClient),
+		NotebooksAPI:                        datadogV1.NewNotebooksApi(apiClient),
+		RolesAPI:                            datadogV2.NewRolesApi(apiClient),
+		ServiceLevelObjectivesAPI:           datadogV1.NewServiceLevelObjectivesApi(apiClient),
+		ServiceLevelObjectiveCorrectionsAPI: datadogV1.NewServiceLevelObjectiveCorrectionsApi(apiClient),
+		SyntheticsAPI:                       datadogV1.NewSyntheticsApi(apiClient),
+		UsersAPI:                            datadogV2.NewUsersApi(apiClient),
+		RumAPI:                              datadogV2.NewRUMApi(apiClient),
 	}
 }

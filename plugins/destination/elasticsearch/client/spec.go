@@ -2,6 +2,11 @@ package client
 
 import "runtime"
 
+const (
+	defaultBatchSize      = 1000
+	defaultBatchSizeBytes = 5 * 1024 * 1024
+)
+
 type Spec struct {
 	Addresses []string `json:"addresses"` // A list of Elasticsearch nodes to use.
 	Username  string   `json:"username"`  // Username for HTTP Basic Authentication.
@@ -16,7 +21,9 @@ type Spec struct {
 	// When set, an empty certificate pool will be created, and the certificates will be appended to it.
 	CACert string `json:"ca_cert"`
 
-	Concurrency int `json:"concurrency"` // Number of concurrent worker goroutines to use for indexing. (Default: number of CPUs)
+	Concurrency    int `json:"concurrency"`      // Number of concurrent worker goroutines to use for indexing. (Default: number of CPUs)
+	BatchSize      int `json:"batch_size"`       // Number of documents to batch together per request. (Default: 1000)
+	BatchSizeBytes int `json:"batch_size_bytes"` // Number of bytes to batch together per request. (Default: 5 MiB)
 }
 
 func (s *Spec) SetDefaults() {
@@ -25,6 +32,12 @@ func (s *Spec) SetDefaults() {
 	}
 	if s.Concurrency == 0 {
 		s.Concurrency = runtime.NumCPU()
+	}
+	if s.BatchSize == 0 {
+		s.BatchSize = defaultBatchSize
+	}
+	if s.BatchSizeBytes == 0 {
+		s.BatchSizeBytes = defaultBatchSizeBytes
 	}
 }
 

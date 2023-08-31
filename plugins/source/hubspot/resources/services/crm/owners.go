@@ -1,9 +1,10 @@
 package crm
 
 import (
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/clarkmcc/go-hubspot/generated/v3/owners"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Owners() *schema.Table {
@@ -14,12 +15,10 @@ func Owners() *schema.Table {
 		Transform:   transformers.TransformWithStruct(owners.PublicOwner{}),
 		Columns: []schema.Column{
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Id"),
+				PrimaryKey: true,
 			},
 		},
 	}

@@ -7,7 +7,7 @@ import (
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV1"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -38,6 +38,7 @@ func buildMonitorsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogServ
 	}
 	i64val := int64(123)
 	i32val := int32(123)
+	textVal := "test string"
 	dt[0].ActiveChild.Set(datadogV1.NewDowntimeChild())
 	dt[0].Canceled.Set(&i64val)
 	dt[0].End.Set(&i64val)
@@ -45,6 +46,7 @@ func buildMonitorsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogServ
 	dt[0].ParentId.Set(&i64val)
 	dt[0].Recurrence.Set(datadogV1.NewDowntimeRecurrence())
 	dt[0].UpdaterId.Set(&i32val)
+	dt[0].Message.Set(&textVal)
 
 	d.EXPECT().ListMonitorDowntimes(gomock.Any(), gomock.Any()).Return(dt, nil, nil)
 

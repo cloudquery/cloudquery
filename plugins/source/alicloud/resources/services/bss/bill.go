@@ -2,8 +2,8 @@ package bss
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/alicloud/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Bill() *schema.Table {

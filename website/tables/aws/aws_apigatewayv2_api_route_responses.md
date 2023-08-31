@@ -2,7 +2,7 @@
 
 This table shows data for Amazon API Gateway v2 API Route Responses.
 
-https://docs.aws.amazon.com/apigateway/latest/api/API_RouteResponse.html
+https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/apis-apiid-routes-routeid-routeresponses.html
 
 The composite primary key for this table is (**account_id**, **arn**).
 
@@ -14,17 +14,15 @@ This table depends on [aws_apigatewayv2_api_routes](aws_apigatewayv2_api_routes)
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region|String|
-|api_route_arn|String|
-|route_id|String|
-|arn (PK)|String|
-|route_response_key|String|
-|model_selection_expression|String|
-|response_models|JSON|
-|response_parameters|JSON|
-|route_response_id|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region|`utf8`|
+|api_route_arn|`utf8`|
+|route_id|`utf8`|
+|arn (PK)|`utf8`|
+|route_response_key|`utf8`|
+|model_selection_expression|`utf8`|
+|response_models|`json`|
+|response_parameters|`json`|
+|route_response_id|`utf8`|

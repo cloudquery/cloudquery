@@ -2,40 +2,35 @@ package client
 
 import (
 	"context"
+	"database/sql"
+	"encoding/json"
 	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/rs/zerolog"
-
-	"database/sql"
 
 	// Import sqlite3 driver
 	_ "github.com/mattn/go-sqlite3"
 )
 
 type Client struct {
-	destination.UnimplementedManagedWriter
-	destination.DefaultReverseTransformer
-	db      *sql.DB
-	logger  zerolog.Logger
-	spec    specs.Destination
-	metrics destination.Metrics
+	plugin.UnimplementedSource
+	db     *sql.DB
+	logger zerolog.Logger
+	spec   Spec
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "sqlite-dest").Logger(),
 	}
 
-	var sqliteSpec Spec
-	c.spec = spec
-	if err := spec.UnmarshalSpec(&sqliteSpec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal sqlite spec: %w", err)
+	if err := json.Unmarshal(spec, &c.spec); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
-	sqliteSpec.SetDefaults()
+	c.spec.SetDefaults()
 
-	db, err := sql.Open("sqlite3", sqliteSpec.ConnectionString)
+	db, err := sql.Open("sqlite3", c.spec.ConnectionString)
 	if err != nil {
 		return nil, err
 	}

@@ -4,12 +4,15 @@ import (
 	"context"
 	"fmt"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func WorkGroups() *schema.Table {
@@ -25,16 +28,14 @@ func WorkGroups() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveAthenaWorkGroupArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveAthenaWorkGroupArn,
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveAthenaWorkGroupTags,
 			},
 		},
@@ -48,12 +49,14 @@ func WorkGroups() *schema.Table {
 }
 
 func fetchAthenaWorkGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Athena
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceAthena).Athena
 	input := athena.ListWorkGroupsInput{}
 	paginator := athena.NewListWorkGroupsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *athena.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -64,12 +67,14 @@ func fetchAthenaWorkGroups(ctx context.Context, meta schema.ClientMeta, parent *
 }
 
 func getWorkGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Athena
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceAthena).Athena
 
 	wg := resource.Item.(types.WorkGroupSummary)
 	dc, err := svc.GetWorkGroup(ctx, &athena.GetWorkGroupInput{
 		WorkGroup: wg.Name,
+	}, func(options *athena.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -86,14 +91,16 @@ func resolveAthenaWorkGroupArn(ctx context.Context, meta schema.ClientMeta, reso
 
 func resolveAthenaWorkGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Athena
+	svc := cl.Services(client.AWSServiceAthena).Athena
 	wg := resource.Item.(types.WorkGroup)
 	arnStr := createWorkGroupArn(cl, *wg.Name)
 	params := athena.ListTagsForResourceInput{ResourceARN: &arnStr}
 	tags := make(map[string]string)
 	paginator := athena.NewListTagsForResourcePaginator(svc, &params)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *athena.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if cl.IsNotFoundError(err) {
 				return nil
@@ -108,7 +115,7 @@ func resolveAthenaWorkGroupTags(ctx context.Context, meta schema.ClientMeta, res
 func createWorkGroupArn(cl *client.Client, groupName string) string {
 	return arn.ARN{
 		Partition: cl.Partition,
-		Service:   string(client.Athena),
+		Service:   string(client.AthenaService),
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
 		Resource:  fmt.Sprintf("workgroup/%s", groupName),

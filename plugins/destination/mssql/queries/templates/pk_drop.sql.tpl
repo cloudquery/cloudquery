@@ -1,1 +1,0 @@
-ALTER TABLE {{.Table}} DROP CONSTRAINT {{.Name}};

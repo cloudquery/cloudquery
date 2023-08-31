@@ -4,7 +4,9 @@ import (
 	"context"
 
 	"cloud.google.com/go/firestore"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	"google.golang.org/api/iterator"
 )
 
@@ -27,32 +29,21 @@ func (*Client) listTables(ctx context.Context, client *firestore.Client) (schema
 			}
 			return nil, err
 		}
-		columns := make(schema.ColumnList, 0, 4)
-		columns = append(columns, schema.Column{
-			Name: "__id",
-			Type: schema.TypeString,
-			CreationOptions: schema.ColumnCreationOptions{
-				PrimaryKey: true,
-				NotNull:    true,
-				Unique:     true,
-			},
-		})
-		columns = append(columns, schema.Column{
-			Name: "__created_at",
-			Type: schema.TypeTimestamp,
-		})
-		columns = append(columns, schema.Column{
-			Name: "__updated_at",
-			Type: schema.TypeTimestamp,
-		})
-		columns = append(columns, schema.Column{
-			Name: "data",
-			Type: schema.TypeJSON,
-		})
 
 		schemaTables = append(schemaTables, &schema.Table{
-			Name:    collection.ID,
-			Columns: columns,
+			Name: collection.ID,
+			Columns: schema.ColumnList{
+				{
+					Name:       "__id",
+					Type:       arrow.BinaryTypes.String,
+					PrimaryKey: true,
+					Unique:     true,
+					NotNull:    true,
+				},
+				{Name: "__created_at", Type: arrow.FixedWidthTypes.Timestamp_us},
+				{Name: "__updated_at", Type: arrow.FixedWidthTypes.Timestamp_us},
+				{Name: "data", Type: types.ExtensionTypes.JSON},
+			},
 		})
 	}
 	return schemaTables, nil

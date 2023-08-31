@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/clients/discovery/v0"
-	"github.com/cloudquery/plugin-sdk/registry"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
+	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"golang.org/x/exp/slices"
@@ -46,55 +45,105 @@ func migrate(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
-
-	for _, sourceSpec := range specReader.Sources {
-		if len(sourceSpec.Destinations) == 0 {
-			return fmt.Errorf("no destinations found for source %s", sourceSpec.Name)
-		}
-		var destinationsSpecs []specs.Destination
-		for _, destination := range sourceSpec.Destinations {
-			spec := specReader.GetDestinationByName(destination)
-			if spec == nil {
-				return fmt.Errorf("failed to find destination %s in source %s", destination, sourceSpec.Name)
-			}
-			destinationsSpecs = append(destinationsSpecs, *spec)
-		}
-		discoveryClient, err := discovery.NewClient(ctx, sourceSpec.Registry, registry.PluginTypeSource, sourceSpec.Path, sourceSpec.Version)
-		if err != nil {
-			return fmt.Errorf("failed to create discovery client for source %s: %w", sourceSpec.Name, err)
-		}
-		versions, err := discoveryClient.GetVersions(ctx)
-		if err != nil {
-			if discoveryErr := discoveryClient.Terminate(); discoveryErr != nil {
-				log.Error().Err(discoveryErr).Msg("failed to terminate discovery client")
-				fmt.Println("failed to terminate discovery client:", discoveryErr)
-			}
-			if err := migrateConnectionV0(ctx, cqDir, *sourceSpec, destinationsSpecs); err != nil {
-				return fmt.Errorf("failed to migrate source %s: %w", sourceSpec.Name, err)
-			}
-			continue
-		}
-
-		if err := discoveryClient.Terminate(); err != nil {
-			return fmt.Errorf("failed to terminate discovery client: %w", err)
-		}
-
-		if slices.Index(versions, "v1") != -1 {
-			if err := migrateConnectionV1(ctx, cqDir, *sourceSpec, destinationsSpecs); err != nil {
-				return fmt.Errorf("failed to migrate source %s: %w", sourceSpec.Name, err)
-			}
-			continue
-		}
-
-		if slices.Index(versions, "v0") != -1 {
-			if err := migrateConnectionV0(ctx, cqDir, *sourceSpec, destinationsSpecs); err != nil {
-				return fmt.Errorf("failed to migrate source %s: %w", sourceSpec.Name, err)
-			}
-			continue
-		}
-
-		return fmt.Errorf("failed to migrate source %s, unknown versions %v", sourceSpec.Name, versions)
+	sources := specReader.Sources
+	destinations := specReader.Destinations
+	var opts []managedplugin.Option
+	if cqDir != "" {
+		opts = append(opts, managedplugin.WithDirectory(cqDir))
+	}
+	sourcePluginConfigs := make([]managedplugin.Config, 0, len(sources))
+	for _, source := range sources {
+		sourcePluginConfigs = append(sourcePluginConfigs, managedplugin.Config{
+			Name:     source.Name,
+			Version:  source.Version,
+			Path:     source.Path,
+			Registry: SpecRegistryToPlugin(source.Registry),
+		})
+	}
+	destinationPluginConfigs := make([]managedplugin.Config, 0, len(destinations))
+	for _, destination := range destinations {
+		destinationPluginConfigs = append(destinationPluginConfigs, managedplugin.Config{
+			Name:     destination.Name,
+			Version:  destination.Version,
+			Path:     destination.Path,
+			Registry: SpecRegistryToPlugin(destination.Registry),
+		})
 	}
 
+	managedSourceClients, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, sourcePluginConfigs, opts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err := managedSourceClients.Terminate(); err != nil {
+			fmt.Println(err)
+		}
+	}()
+	destinationPluginClients, err := managedplugin.NewClients(ctx, managedplugin.PluginDestination, destinationPluginConfigs, opts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err := destinationPluginClients.Terminate(); err != nil {
+			fmt.Println(err)
+		}
+	}()
+	for _, source := range sources {
+		cl := managedSourceClients.ClientByName(source.Name)
+		versions, err := cl.Versions(ctx)
+		if err != nil {
+			return fmt.Errorf("failed to get source versions: %w", err)
+		}
+		maxVersion := findMaxCommonVersion(versions, []int{3, 2, 1, 0})
+
+		var destinationClientsForSource []*managedplugin.Client
+		var destinationForSourceSpec []specs.Destination
+		for _, destination := range destinations {
+			if slices.Contains(source.Destinations, destination.Name) {
+				destinationClientsForSource = append(destinationClientsForSource, destinationPluginClients.ClientByName(destination.Name))
+				destinationForSourceSpec = append(destinationForSourceSpec, *destination)
+			}
+		}
+		switch maxVersion {
+		case 3:
+			for _, destination := range destinationClientsForSource {
+				versions, err := destination.Versions(ctx)
+				if err != nil {
+					return fmt.Errorf("failed to get destination versions: %w", err)
+				}
+				if !slices.Contains(versions, 3) {
+					return fmt.Errorf("destination plugin %[1]s does not support CloudQuery protocol version 3, required by the %[2]s source plugin. Please upgrade to a newer version of the %[1]s destination plugin", destination.Name(), source.Name)
+				}
+			}
+			if err := migrateConnectionV3(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec); err != nil {
+				return fmt.Errorf("failed to migrate v3 source %s: %w", cl.Name(), err)
+			}
+		case 2:
+			destinationsVersions := make([][]int, 0, len(destinationClientsForSource))
+			for _, destination := range destinationClientsForSource {
+				versions, err := destination.Versions(ctx)
+				if err != nil {
+					return fmt.Errorf("failed to get destination versions: %w", err)
+				}
+				if !slices.Contains(versions, 1) {
+					return fmt.Errorf("destination plugin %[1]s does not support CloudQuery SDK version 1. Please upgrade to a newer version of the %[1]s destination plugin", destination.Name())
+				}
+				destinationsVersions = append(destinationsVersions, versions)
+			}
+			if err := migrateConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, destinationsVersions); err != nil {
+				return fmt.Errorf("failed to migrate source %v@%v: %w", source.Name, source.Version, err)
+			}
+		case 1:
+			if err := migrateConnectionV1(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec); err != nil {
+				return fmt.Errorf("failed to migrate source %v@%v: %w", source.Name, source.Version, err)
+			}
+		case 0:
+			return fmt.Errorf("please upgrade your source or use a CLI version between v3.0.1 and v3.5.3")
+		case -1:
+			return fmt.Errorf("please upgrade CLI to sync source %v@%v", source.Name, source.Version)
+		case -2:
+			return fmt.Errorf("please downgrade CLI or upgrade source to sync %v", source.Name)
+		}
+	}
 	return nil
 }

@@ -36,6 +36,7 @@ spec:
   path: "cloudquery/gcp"
   version: "VERSION_SOURCE_GCP"
   destinations: ["bigquery"]
+  tables: ["gcp_billing*"]
   spec:
     # GCP Spec section described below
     project_ids: ["<project-id>"]
@@ -79,7 +80,7 @@ Now let's join with the GCP billing data.
 SELECT sum(cost) FROM `cq-playground.costdata.gcp_billing_export_resource_v1_0183D4_4E0A4D_60E401` gcp_billing_export_resource 
   join `cq-playground.costdata.gcp_compute_disks` gcp_compute_disks on 
   gcp_billing_export_resource.resource.name = gcp_compute_disks.name 
-WHERE DATE(_PARTITIONTIME) = "2022-12-14" and gcp_compute_disks.users is null
+WHERE DATE(_PARTITIONTIME) = "2022-12-14" and ARRAY_LENGTH(gcp_compute_disks.users) = 0
 ```
 
 This query should give us total of all costs of unattached disks for a specific date, so we don't scan the whole historical table. We can also run this on a date range. 

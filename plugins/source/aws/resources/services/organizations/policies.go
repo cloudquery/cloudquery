@@ -3,11 +3,13 @@ package organizations
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/organizations/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Policies() *schema.Table {
@@ -23,7 +25,7 @@ func Policies() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "content",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolvePolicyContent,
 			},
 		},
@@ -31,14 +33,17 @@ func Policies() *schema.Table {
 }
 
 func fetchOrganizationsPolicies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceOrganizations).Organizations
 	for _, policyType := range types.PolicyType("").Values() {
-		paginator := organizations.NewListPoliciesPaginator(c.Services().Organizations, &organizations.ListPoliciesInput{
+		paginator := organizations.NewListPoliciesPaginator(svc, &organizations.ListPoliciesInput{
 			Filter: policyType,
 		})
 
 		for paginator.HasMorePages() {
-			page, err := paginator.NextPage(ctx)
+			page, err := paginator.NextPage(ctx, func(options *organizations.Options) {
+				options.Region = cl.Region
+			})
 			if err != nil {
 				return err
 			}
@@ -51,7 +56,7 @@ func fetchOrganizationsPolicies(ctx context.Context, meta schema.ClientMeta, _ *
 func resolvePolicyContent(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.PolicySummary)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Organizations
+	svc := cl.Services(client.AWSServiceOrganizations).Organizations
 	resp, err := svc.DescribePolicy(ctx, &organizations.DescribePolicyInput{
 		PolicyId: r.Id,
 	})

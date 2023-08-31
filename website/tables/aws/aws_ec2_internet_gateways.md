@@ -10,14 +10,32 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|tags|JSON|
-|attachments|JSON|
-|internet_gateway_id|String|
-|owner_id|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|attachments|`json`|
+|internet_gateway_id|`utf8`|
+|owner_id|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Unused internet gateway
+
+```sql
+SELECT
+  'Unused internet gateway' AS title,
+  account_id,
+  arn AS resource_id,
+  'fail' AS status
+FROM
+  aws_ec2_internet_gateways
+WHERE
+  COALESCE(jsonb_array_length(attachments), 0) = 0;
+```
+
+

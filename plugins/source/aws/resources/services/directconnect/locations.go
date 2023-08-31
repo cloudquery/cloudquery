@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Locations() *schema.Table {
@@ -27,9 +27,11 @@ func Locations() *schema.Table {
 
 func fetchDirectConnectLocations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config directconnect.DescribeLocationsInput
-	c := meta.(*client.Client)
-	svc := c.Services().Directconnect
-	output, err := svc.DescribeLocations(ctx, &config)
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceDirectconnect).Directconnect
+	output, err := svc.DescribeLocations(ctx, &config, func(options *directconnect.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

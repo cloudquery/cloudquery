@@ -1,5 +1,9 @@
 name: Source Plugin Azure Workflow
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     paths:
@@ -13,30 +17,10 @@ on:
       - ".github/workflows/source_azure.yml"
 
 jobs:
-  resolve-runner:
-    timeout-minutes: 5
-    runs-on: ubuntu-latest
-    outputs:
-      runner: ${{ steps.resolve.outputs.runner }}
-    steps:
-      - name: Check if should use large runner
-        id: large-runner
-        # We want to speed runs on the main branch which prime the cache
-        # We allow large runners only in this case to prevent forks from abusing them (it's enforced via runner groups access rules)
-        # IF YOU WANT TO USE A LARGE RUNNER YOU NEED TO ADD THE WORKFLOW TO THE `CloudQuery releases` GROUP IN https://github.com/organizations/cloudquery/settings/actions/runner-groups
-        if: github.event_name == 'push'
-        run: |
-          echo "runner=cloudquery-release-runner" >> $GITHUB_OUTPUT
-      - name: Resolve runner
-        id: resolve
-        run: |
-          RUNNER=${{ steps.large-runner.outputs.runner }}
-          echo "runner=${RUNNER:-"ubuntu-latest"}" >> $GITHUB_OUTPUT
   plugins-source-azure:
     timeout-minutes: 30
     name: "plugins/source/azure"
-    needs: [resolve-runner]
-    runs-on: ${{ needs.resolve-runner.outputs.runner }}
+    runs-on: large-ubuntu-monorepo
     defaults:
       run:
         working-directory: ./plugins/source/azure
@@ -59,8 +43,11 @@ jobs:
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
           skip-build-cache: true
-      - name: Get dependencies
-        run: go get -t -d ./...
+      - name: Setup CloudQuery
+        if: github.event_name == 'pull_request'
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: 'v3.13.0'
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -73,8 +60,7 @@ jobs:
         run: make test
   validate-release:
     timeout-minutes: 30
-    needs: [resolve-runner]
-    runs-on: ${{ needs.resolve-runner.outputs.runner }}
+    runs-on: large-ubuntu-monorepo
     env:
       CGO_ENABLED: 0
     steps:
@@ -87,9 +73,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/source/azure/go.sum') }}
+          key: ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/source/azure/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.5-release-cache-plugins-source-azure
+            ${{ runner.os }}-go-1.20.5-release-cache-plugins-source-azure
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3
@@ -109,8 +95,7 @@ jobs:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
   test-policies:
     timeout-minutes: 30
-    needs: [ resolve-runner ]
-    runs-on: ${{ needs.resolve-runner.outputs.runner }}
+    runs-on: large-ubuntu-monorepo
     defaults:
       run:
         working-directory: ./plugins/source/azure
@@ -144,7 +129,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: 'v2.0.22'
+          version: 'v3.10.1'
       - name: Migrate DB
         run: cloudquery migrate test/policy_cq_config.yml
         env:

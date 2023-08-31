@@ -7,17 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apprunner/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildApprunnerVpcIngressConnectionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockApprunnerClient(ctrl)
 	vc := types.VpcIngressConnection{}
-	err := faker.FakeObject(&vc)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&vc))
 
 	m.EXPECT().ListVpcIngressConnections(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&apprunner.ListVpcIngressConnectionsOutput{
@@ -27,10 +25,8 @@ func buildApprunnerVpcIngressConnectionsMock(t *testing.T, ctrl *gomock.Controll
 		&apprunner.DescribeVpcIngressConnectionOutput{VpcIngressConnection: &vc}, nil)
 
 	tags := types.Tag{}
-	err = faker.FakeObject(&tags)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tags))
+
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&apprunner.ListTagsForResourceOutput{Tags: []types.Tag{tags}}, nil)
 

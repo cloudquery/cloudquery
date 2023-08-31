@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func (c *Client) createTable(ctx context.Context, table *schema.Table) (err error) {
@@ -16,7 +16,7 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) (err erro
 		}
 	}()
 
-	_, err = c.db.ExecContext(ctx, queries.CreateTable(c.schemaName, table, c.pkEnabled()))
+	_, err = c.db.ExecContext(ctx, queries.CreateTable(c.spec.Schema, table))
 	if err != nil {
 		return fmt.Errorf("failed to create table %s: %w", table.Name, err)
 	}
@@ -32,7 +32,7 @@ func (c *Client) dropTable(ctx context.Context, table *schema.Table) (err error)
 		}
 	}()
 
-	_, err = c.db.ExecContext(ctx, queries.DropTable(c.schemaName, table))
+	_, err = c.db.ExecContext(ctx, queries.DropTable(c.spec.Schema, table))
 	if err != nil {
 		return fmt.Errorf("failed to drop table %s: %w", table.Name, err)
 	}

@@ -5,23 +5,21 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source string, syncTime time.Time) error {
-	for _, table := range tables.FlattenTables() {
-		var sb strings.Builder
-		sb.WriteString("delete from ")
-		sb.WriteString(`"` + table.Name + `"`)
-		sb.WriteString(" where ")
-		sb.WriteString(`"` + schema.CqSourceNameColumn.Name + `"`)
-		sb.WriteString(" = $1 and datetime(")
-		sb.WriteString(schema.CqSyncTimeColumn.Name)
-		sb.WriteString(") < datetime($2)")
-		sql := sb.String()
-		if _, err := c.db.Exec(sql, source, syncTime); err != nil {
-			return err
-		}
+func (c *Client) deleteStale(ctx context.Context, tableName string, source string, syncTime time.Time) error {
+	var sb strings.Builder
+	sb.WriteString("delete from ")
+	sb.WriteString(`"` + tableName + `"`)
+	sb.WriteString(" where ")
+	sb.WriteString(`"` + schema.CqSourceNameColumn.Name + `"`)
+	sb.WriteString(" = $1 and datetime(")
+	sb.WriteString(schema.CqSyncTimeColumn.Name)
+	sb.WriteString(") < datetime($2)")
+	sql := sb.String()
+	if _, err := c.db.ExecContext(ctx, sql, source, syncTime); err != nil {
+		return err
 	}
 	return nil
 }

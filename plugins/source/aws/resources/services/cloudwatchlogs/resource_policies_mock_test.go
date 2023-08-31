@@ -7,17 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildResourcePolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockCloudwatchlogsClient(ctrl)
 	rp := types.ResourcePolicy{}
-	err := faker.FakeObject(&rp)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&rp))
 	policyDocument := "{}"
 	rp.PolicyDocument = &policyDocument
 	m.EXPECT().DescribeResourcePolicies(gomock.Any(), gomock.Any(), gomock.Any()).Return(

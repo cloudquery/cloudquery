@@ -5,12 +5,15 @@ import (
 	"encoding/json"
 	"errors"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func RuleGroups() *schema.Table {
@@ -27,20 +30,18 @@ func RuleGroups() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveRuleGroupTags,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ARN"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ARN"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "policy",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveWafv2ruleGroupPolicy,
 			},
 		},
@@ -48,12 +49,14 @@ func RuleGroups() *schema.Table {
 }
 
 func fetchWafv2RuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Wafv2
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceWafv2).Wafv2
 
-	config := wafv2.ListRuleGroupsInput{Scope: c.WAFScope}
+	config := wafv2.ListRuleGroupsInput{Scope: cl.WAFScope}
 	for {
-		output, err := svc.ListRuleGroups(ctx, &config)
+		output, err := svc.ListRuleGroups(ctx, &config, func(o *wafv2.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -69,15 +72,17 @@ func fetchWafv2RuleGroups(ctx context.Context, meta schema.ClientMeta, parent *s
 }
 
 func getRuleGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Wafv2
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceWafv2).Wafv2
 	ruleGroupOutput := resource.Item.(types.RuleGroupSummary)
 
 	// Get RuleGroup object
 	ruleGroup, err := svc.GetRuleGroup(ctx, &wafv2.GetRuleGroupInput{
 		Name:  ruleGroupOutput.Name,
 		Id:    ruleGroupOutput.Id,
-		Scope: c.WAFScope,
+		Scope: cl.WAFScope,
+	}, func(o *wafv2.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -91,13 +96,15 @@ func resolveRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resource 
 	ruleGroup := resource.Item.(*types.RuleGroup)
 
 	cl := meta.(*client.Client)
-	service := cl.Services().Wafv2
+	service := cl.Services(client.AWSServiceWafv2).Wafv2
 
 	// Resolve tags
 	outputTags := make(map[string]*string)
 	tagsConfig := wafv2.ListTagsForResourceInput{ResourceARN: ruleGroup.ARN}
 	for {
-		tags, err := service.ListTagsForResource(ctx, &tagsConfig)
+		tags, err := service.ListTagsForResource(ctx, &tagsConfig, func(o *wafv2.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -115,11 +122,11 @@ func resolveWafv2ruleGroupPolicy(ctx context.Context, meta schema.ClientMeta, re
 	ruleGroup := resource.Item.(*types.RuleGroup)
 
 	cl := meta.(*client.Client)
-	service := cl.Services().Wafv2
+	service := cl.Services(client.AWSServiceWafv2).Wafv2
 
 	// Resolve rule group policy
-	policy, err := service.GetPermissionPolicy(ctx, &wafv2.GetPermissionPolicyInput{ResourceArn: ruleGroup.ARN}, func(options *wafv2.Options) {
-		options.Region = cl.Region
+	policy, err := service.GetPermissionPolicy(ctx, &wafv2.GetPermissionPolicyInput{ResourceArn: ruleGroup.ARN}, func(o *wafv2.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		// we may get WAFNonexistentItemException error until SetPermissionPolicy is called on a rule group

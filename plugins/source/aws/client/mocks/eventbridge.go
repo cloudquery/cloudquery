@@ -37,6 +37,16 @@ func (m *MockEventbridgeClient) EXPECT() *MockEventbridgeClientMockRecorder {
 
 // DescribeApiDestination mocks base method.
 func (m *MockEventbridgeClient) DescribeApiDestination(arg0 context.Context, arg1 *eventbridge.DescribeApiDestinationInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.DescribeApiDestinationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeApiDestination")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockEventbridgeClientMockRecorder) DescribeApiDestination(arg0, arg1 i
 
 // DescribeArchive mocks base method.
 func (m *MockEventbridgeClient) DescribeArchive(arg0 context.Context, arg1 *eventbridge.DescribeArchiveInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.DescribeArchiveOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeArchive")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockEventbridgeClientMockRecorder) DescribeArchive(arg0, arg1 interfac
 
 // DescribeConnection mocks base method.
 func (m *MockEventbridgeClient) DescribeConnection(arg0 context.Context, arg1 *eventbridge.DescribeConnectionInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.DescribeConnectionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConnection")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockEventbridgeClientMockRecorder) DescribeConnection(arg0, arg1 inter
 
 // DescribeEndpoint mocks base method.
 func (m *MockEventbridgeClient) DescribeEndpoint(arg0 context.Context, arg1 *eventbridge.DescribeEndpointInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.DescribeEndpointOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEndpoint")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockEventbridgeClientMockRecorder) DescribeEndpoint(arg0, arg1 interfa
 
 // DescribeEventBus mocks base method.
 func (m *MockEventbridgeClient) DescribeEventBus(arg0 context.Context, arg1 *eventbridge.DescribeEventBusInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.DescribeEventBusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEventBus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockEventbridgeClientMockRecorder) DescribeEventBus(arg0, arg1 interfa
 
 // DescribeEventSource mocks base method.
 func (m *MockEventbridgeClient) DescribeEventSource(arg0 context.Context, arg1 *eventbridge.DescribeEventSourceInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.DescribeEventSourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEventSource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockEventbridgeClientMockRecorder) DescribeEventSource(arg0, arg1 inte
 
 // DescribePartnerEventSource mocks base method.
 func (m *MockEventbridgeClient) DescribePartnerEventSource(arg0 context.Context, arg1 *eventbridge.DescribePartnerEventSourceInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.DescribePartnerEventSourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePartnerEventSource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockEventbridgeClientMockRecorder) DescribePartnerEventSource(arg0, ar
 
 // DescribeReplay mocks base method.
 func (m *MockEventbridgeClient) DescribeReplay(arg0 context.Context, arg1 *eventbridge.DescribeReplayInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.DescribeReplayOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeReplay")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockEventbridgeClientMockRecorder) DescribeReplay(arg0, arg1 interface
 
 // DescribeRule mocks base method.
 func (m *MockEventbridgeClient) DescribeRule(arg0 context.Context, arg1 *eventbridge.DescribeRuleInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.DescribeRuleOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRule")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockEventbridgeClientMockRecorder) DescribeRule(arg0, arg1 interface{}
 
 // ListApiDestinations mocks base method.
 func (m *MockEventbridgeClient) ListApiDestinations(arg0 context.Context, arg1 *eventbridge.ListApiDestinationsInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.ListApiDestinationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListApiDestinations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockEventbridgeClientMockRecorder) ListApiDestinations(arg0, arg1 inte
 
 // ListArchives mocks base method.
 func (m *MockEventbridgeClient) ListArchives(arg0 context.Context, arg1 *eventbridge.ListArchivesInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.ListArchivesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListArchives")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockEventbridgeClientMockRecorder) ListArchives(arg0, arg1 interface{}
 
 // ListConnections mocks base method.
 func (m *MockEventbridgeClient) ListConnections(arg0 context.Context, arg1 *eventbridge.ListConnectionsInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.ListConnectionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListConnections")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockEventbridgeClientMockRecorder) ListConnections(arg0, arg1 interfac
 
 // ListEndpoints mocks base method.
 func (m *MockEventbridgeClient) ListEndpoints(arg0 context.Context, arg1 *eventbridge.ListEndpointsInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.ListEndpointsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListEndpoints")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockEventbridgeClientMockRecorder) ListEndpoints(arg0, arg1 interface{
 
 // ListEventBuses mocks base method.
 func (m *MockEventbridgeClient) ListEventBuses(arg0 context.Context, arg1 *eventbridge.ListEventBusesInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.ListEventBusesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListEventBuses")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockEventbridgeClientMockRecorder) ListEventBuses(arg0, arg1 interface
 
 // ListEventSources mocks base method.
 func (m *MockEventbridgeClient) ListEventSources(arg0 context.Context, arg1 *eventbridge.ListEventSourcesInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.ListEventSourcesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListEventSources")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockEventbridgeClientMockRecorder) ListEventSources(arg0, arg1 interfa
 
 // ListPartnerEventSourceAccounts mocks base method.
 func (m *MockEventbridgeClient) ListPartnerEventSourceAccounts(arg0 context.Context, arg1 *eventbridge.ListPartnerEventSourceAccountsInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.ListPartnerEventSourceAccountsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPartnerEventSourceAccounts")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockEventbridgeClientMockRecorder) ListPartnerEventSourceAccounts(arg0
 
 // ListPartnerEventSources mocks base method.
 func (m *MockEventbridgeClient) ListPartnerEventSources(arg0 context.Context, arg1 *eventbridge.ListPartnerEventSourcesInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.ListPartnerEventSourcesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPartnerEventSources")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockEventbridgeClientMockRecorder) ListPartnerEventSources(arg0, arg1 
 
 // ListReplays mocks base method.
 func (m *MockEventbridgeClient) ListReplays(arg0 context.Context, arg1 *eventbridge.ListReplaysInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.ListReplaysOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListReplays")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockEventbridgeClientMockRecorder) ListReplays(arg0, arg1 interface{},
 
 // ListRuleNamesByTarget mocks base method.
 func (m *MockEventbridgeClient) ListRuleNamesByTarget(arg0 context.Context, arg1 *eventbridge.ListRuleNamesByTargetInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.ListRuleNamesByTargetOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRuleNamesByTarget")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockEventbridgeClientMockRecorder) ListRuleNamesByTarget(arg0, arg1 in
 
 // ListRules mocks base method.
 func (m *MockEventbridgeClient) ListRules(arg0 context.Context, arg1 *eventbridge.ListRulesInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.ListRulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRules")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockEventbridgeClientMockRecorder) ListRules(arg0, arg1 interface{}, a
 
 // ListTagsForResource mocks base method.
 func (m *MockEventbridgeClient) ListTagsForResource(arg0 context.Context, arg1 *eventbridge.ListTagsForResourceInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockEventbridgeClientMockRecorder) ListTagsForResource(arg0, arg1 inte
 
 // ListTargetsByRule mocks base method.
 func (m *MockEventbridgeClient) ListTargetsByRule(arg0 context.Context, arg1 *eventbridge.ListTargetsByRuleInput, arg2 ...func(*eventbridge.Options)) (*eventbridge.ListTargetsByRuleOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eventbridge.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTargetsByRule")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

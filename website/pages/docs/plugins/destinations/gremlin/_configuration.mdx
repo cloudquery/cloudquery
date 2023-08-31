@@ -7,11 +7,15 @@ spec:
   registry: "github"
   path: "cloudquery/gremlin"
   version: "VERSION_DESTINATION_GREMLIN"
-  # batch_size: 10000 # optional
-  # batch_size_bytes: 5242880 # optional
   spec:
     endpoint: "ws://localhost:8182"
-    auth_mode: "basic"
-    username: "${GREMLIN_USERNAME}"
-    password: "${GREMLIN_PASSWORD}"
+    # Optional parameters
+    # auth_mode: none
+    # username: ""
+    # password: ""
+    # aws_region: ""
+    # max_retries: 5
+    # max_concurrent_connections: 5 # default: number of CPUs
+    # batch_size: 200
+    # batch_size_bytes: 4194304 # 4 MiB
 ```

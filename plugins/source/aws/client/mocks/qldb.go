@@ -37,6 +37,16 @@ func (m *MockQldbClient) EXPECT() *MockQldbClientMockRecorder {
 
 // DescribeJournalKinesisStream mocks base method.
 func (m *MockQldbClient) DescribeJournalKinesisStream(arg0 context.Context, arg1 *qldb.DescribeJournalKinesisStreamInput, arg2 ...func(*qldb.Options)) (*qldb.DescribeJournalKinesisStreamOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &qldb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeJournalKinesisStream")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockQldbClientMockRecorder) DescribeJournalKinesisStream(arg0, arg1 in
 
 // DescribeJournalS3Export mocks base method.
 func (m *MockQldbClient) DescribeJournalS3Export(arg0 context.Context, arg1 *qldb.DescribeJournalS3ExportInput, arg2 ...func(*qldb.Options)) (*qldb.DescribeJournalS3ExportOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &qldb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeJournalS3Export")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockQldbClientMockRecorder) DescribeJournalS3Export(arg0, arg1 interfa
 
 // DescribeLedger mocks base method.
 func (m *MockQldbClient) DescribeLedger(arg0 context.Context, arg1 *qldb.DescribeLedgerInput, arg2 ...func(*qldb.Options)) (*qldb.DescribeLedgerOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &qldb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLedger")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockQldbClientMockRecorder) DescribeLedger(arg0, arg1 interface{}, arg
 
 // GetBlock mocks base method.
 func (m *MockQldbClient) GetBlock(arg0 context.Context, arg1 *qldb.GetBlockInput, arg2 ...func(*qldb.Options)) (*qldb.GetBlockOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &qldb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBlock")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockQldbClientMockRecorder) GetBlock(arg0, arg1 interface{}, arg2 ...i
 
 // GetDigest mocks base method.
 func (m *MockQldbClient) GetDigest(arg0 context.Context, arg1 *qldb.GetDigestInput, arg2 ...func(*qldb.Options)) (*qldb.GetDigestOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &qldb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDigest")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockQldbClientMockRecorder) GetDigest(arg0, arg1 interface{}, arg2 ...
 
 // GetRevision mocks base method.
 func (m *MockQldbClient) GetRevision(arg0 context.Context, arg1 *qldb.GetRevisionInput, arg2 ...func(*qldb.Options)) (*qldb.GetRevisionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &qldb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRevision")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockQldbClientMockRecorder) GetRevision(arg0, arg1 interface{}, arg2 .
 
 // ListJournalKinesisStreamsForLedger mocks base method.
 func (m *MockQldbClient) ListJournalKinesisStreamsForLedger(arg0 context.Context, arg1 *qldb.ListJournalKinesisStreamsForLedgerInput, arg2 ...func(*qldb.Options)) (*qldb.ListJournalKinesisStreamsForLedgerOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &qldb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListJournalKinesisStreamsForLedger")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockQldbClientMockRecorder) ListJournalKinesisStreamsForLedger(arg0, a
 
 // ListJournalS3Exports mocks base method.
 func (m *MockQldbClient) ListJournalS3Exports(arg0 context.Context, arg1 *qldb.ListJournalS3ExportsInput, arg2 ...func(*qldb.Options)) (*qldb.ListJournalS3ExportsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &qldb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListJournalS3Exports")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockQldbClientMockRecorder) ListJournalS3Exports(arg0, arg1 interface{
 
 // ListJournalS3ExportsForLedger mocks base method.
 func (m *MockQldbClient) ListJournalS3ExportsForLedger(arg0 context.Context, arg1 *qldb.ListJournalS3ExportsForLedgerInput, arg2 ...func(*qldb.Options)) (*qldb.ListJournalS3ExportsForLedgerOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &qldb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListJournalS3ExportsForLedger")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockQldbClientMockRecorder) ListJournalS3ExportsForLedger(arg0, arg1 i
 
 // ListLedgers mocks base method.
 func (m *MockQldbClient) ListLedgers(arg0 context.Context, arg1 *qldb.ListLedgersInput, arg2 ...func(*qldb.Options)) (*qldb.ListLedgersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &qldb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListLedgers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockQldbClientMockRecorder) ListLedgers(arg0, arg1 interface{}, arg2 .
 
 // ListTagsForResource mocks base method.
 func (m *MockQldbClient) ListTagsForResource(arg0 context.Context, arg1 *qldb.ListTagsForResourceInput, arg2 ...func(*qldb.Options)) (*qldb.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &qldb.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

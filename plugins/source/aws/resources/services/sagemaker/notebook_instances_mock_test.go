@@ -7,17 +7,16 @@ import (
 	types "github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildSageMakerNotebookInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockSagemakerClient(ctrl)
 
 	summ := types.NotebookInstanceSummary{}
-	if err := faker.FakeObject(&summ); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&summ))
 
 	m.EXPECT().ListNotebookInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&sagemaker.ListNotebookInstancesOutput{NotebookInstances: []types.NotebookInstanceSummary{summ}},
@@ -25,9 +24,7 @@ func buildSageMakerNotebookInstances(t *testing.T, ctrl *gomock.Controller) clie
 	)
 
 	note := sagemaker.DescribeNotebookInstanceOutput{}
-	if err := faker.FakeObject(&note); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&note))
 
 	m.EXPECT().DescribeNotebookInstance(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&note,
@@ -35,9 +32,8 @@ func buildSageMakerNotebookInstances(t *testing.T, ctrl *gomock.Controller) clie
 	)
 
 	var tagsOut sagemaker.ListTagsOutput
-	if err := faker.FakeObject(&tagsOut); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tagsOut))
+
 	tagsOut.NextToken = nil
 	m.EXPECT().ListTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&tagsOut, nil,

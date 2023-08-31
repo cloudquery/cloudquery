@@ -5,14 +5,15 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda/models"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Runtimes() *schema.Table {
 	return &schema.Table{
-		Name:     "aws_lambda_runtimes",
-		Resolver: fetchLambdaRuntimes,
+		Name:        "aws_lambda_runtimes",
+		Description: "https://docs.aws.amazon.com/lambda/latest/dg/lambda-runtimes.html",
+		Resolver:    fetchLambdaRuntimes,
 		Transform: transformers.TransformWithStruct(&models.RuntimeWrapper{},
 			transformers.WithPrimaryKeys("Name"),
 		),

@@ -5,7 +5,10 @@ spec:
   path: "cloudquery/homebrew"
   version: "VERSION_SOURCE_HOMEBREW"
   tables: ["*"]
-  backend: local
   destinations:
     - "DESTINATION_NAME"
+  spec:
+    backend_options:
+      table_name: "test_state_table"
+      connection: "@@plugins.DESTINATION_NAME.connection"
 ```

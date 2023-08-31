@@ -1,20 +1,21 @@
 package worker_meta_data
 
 import (
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/cloudflare/cloudflare-go"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func WorkersSecrets() *schema.Table {
 	return &schema.Table{
 		Name:      "cloudflare_workers_secrets",
 		Resolver:  fetchWorkersSecrets,
-		Transform: transformers.TransformWithStruct(&cloudflare.WorkersSecret{}),
+		Transform: client.TransformWithStruct(&cloudflare.WorkersSecret{}),
 		Columns: []schema.Column{
 			{
 				Name:     "worker_meta_data_id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("id"),
 			},
 		},

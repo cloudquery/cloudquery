@@ -1,14 +1,18 @@
 package client
 
+const defaultConcurrency = 1000
+
 type Spec struct {
 	// Used in API requests to filter only resources related to these team ids.
 	// Used in the tables: ["escalation_policies", "incidents", "maintenance_windows", "services", "users"]
-	TeamIds []string `yaml:"team_ids,omitempty" json:"team_ids"`
+	TeamIds []string `json:"team_ids"`
 
-	MaxRequestsPerSecond *int `yaml:"max_requests_per_second,omitempty" json:"max_requests_per_second,omitempty"`
+	MaxRequestsPerSecond *int `json:"max_requests_per_second"`
+
+	Concurrency int `json:"concurrency"`
 }
 
-func (spec *Spec) setDefaults() {
+func (spec *Spec) SetDefaults() {
 	// Calculated as 66% of 900 requests per minute.
 	// https://developer.pagerduty.com/docs/ZG9jOjExMDI5NTUz-rate-limiting#what-are-our-limits
 	// The 900 requests per minute is for the entire oragnization, so we don't actually want to come too
@@ -18,4 +22,12 @@ func (spec *Spec) setDefaults() {
 	if spec.MaxRequestsPerSecond == nil || *spec.MaxRequestsPerSecond == 0 {
 		spec.MaxRequestsPerSecond = &defaultRateLimitPerSecond
 	}
+
+	if spec.Concurrency <= 0 {
+		spec.Concurrency = defaultConcurrency
+	}
+}
+
+func (*Spec) Validate() error {
+	return nil
 }

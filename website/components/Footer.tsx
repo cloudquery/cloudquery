@@ -2,9 +2,18 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { useState, ReactNode, FormEvent } from "react";
 import CloudQueryLogo from "./logos/CloudQuery";
-import {getPagesUnderRoute} from "nextra/context";
+import { getPagesUnderRoute } from "nextra/context";
+import { optIn, optOut } from "./CookieConsent";
 
-function FooterLink({ href, children }: { href: string; children: ReactNode }) {
+function FooterLink({
+  href,
+  children,
+  onClick,
+}: {
+  href: string;
+  children: ReactNode;
+  onClick?: () => void;
+}) {
   const classes =
     "text-sm text-gray-500 no-underline betterhover:hover:text-gray-700 betterhover:hover:dark:text-white transition";
   if (href.startsWith("http")) {
@@ -14,8 +23,9 @@ function FooterLink({ href, children }: { href: string; children: ReactNode }) {
       </a>
     );
   }
+
   return (
-    <Link href={href} className={classes}>
+    <Link href={href} className={classes} onClick={onClick}>
       {children}
     </Link>
   );
@@ -28,8 +38,8 @@ function FooterHeader({ children }: { children: ReactNode }) {
 const navigation = {
   general: [
     { name: "Documentation", href: "/docs" },
-    { name: "CLI reference", href: "/docs/reference/cli/cloudquery" },
     { name: "Blog", href: "/blog" },
+    { name: "Case Studies", href: "/case-studies" },
     {
       name: "Releases",
       href: "https://github.com/cloudquery/cloudquery/releases",
@@ -37,6 +47,10 @@ const navigation = {
     { name: "FAQ", href: "/docs/faq" },
   ],
   support: [
+    {
+      name: "Support Plans",
+      href: "/pricing",
+    },
     {
       name: "GitHub",
       href: "https://github.com/cloudquery/cloudquery",
@@ -50,13 +64,23 @@ const navigation = {
     { name: "GitHub", href: "https://github.com/cloudquery/cloudquery" },
     { name: "Twitter", href: "https://twitter.com/cloudqueryio" },
     { name: "Brand Logo", href: "/logo" },
+    { name: "Careers", href: "/docs/careers/overview" },
   ],
   legal: [
     { name: "Privacy Policy", href: "/privacy" },
     { name: "Terms of Use", href: "/terms" },
+    {
+      name: "Opt out of data collection",
+      href: "#",
+      onclick: () => optOut(),
+    },
+    {
+      name: "Opt in to data collection",
+      href: "#",
+      onclick: () => optIn(),
+    },
   ],
 };
-
 
 interface Page {
   name: string;
@@ -68,8 +92,8 @@ interface Page {
 
 function sortByDate(a: Page, b: Page) {
   return (
-      new Date(b.frontMatter?.date).getTime() -
-      new Date(a.frontMatter?.date).getTime()
+    new Date(b.frontMatter?.date).getTime() -
+    new Date(a.frontMatter?.date).getTime()
   );
 }
 
@@ -120,7 +144,9 @@ export function Footer() {
                 <ul role="list" className="mt-4 space-y-1.5 list-none ml-0">
                   {navigation.legal.map((item) => (
                     <li key={item.name}>
-                      <FooterLink href={item.href}>{item.name}</FooterLink>
+                      <FooterLink href={item.href} onClick={item.onclick}>
+                        {item.name}
+                      </FooterLink>
                     </li>
                   ))}
                 </ul>
@@ -157,9 +183,13 @@ export function Footer() {
             <div className="md:text-right mt-8">
               <span>Latest from our blog</span>
               <h2 className="block font-semibold nx-text-2xl dark:nx-text-white">
-                {getPagesUnderRoute("/blog").sort(sortByDate)?.map((page: Page) => {
-                  return <a href={page.route}>{page.frontMatter?.title}</a>
-                })[0]}
+                {
+                  getPagesUnderRoute("/blog")
+                    .sort(sortByDate)
+                    ?.map((page: Page) => {
+                      return <a href={page.route}>{page.frontMatter?.title}</a>;
+                    })[0]
+                }
               </h2>
             </div>
           </div>
@@ -184,7 +214,7 @@ function SubmitForm() {
 
     await fetch(
       `https://cloudquery.us1.list-manage.com/subscribe/post-json?${params.toString()}`,
-      { mode: "no-cors" }
+      { mode: "no-cors" },
     );
 
     router.push("/confirm");

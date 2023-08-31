@@ -7,27 +7,24 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/efs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildEfsFilesystemsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEfsClient(ctrl)
 	l := types.FileSystemDescription{}
-	err := faker.FakeObject(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&l))
+
 	m.EXPECT().DescribeFileSystems(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&efs.DescribeFileSystemsOutput{
 			FileSystems: []types.FileSystemDescription{l},
 		}, nil)
 
 	b := efs.DescribeBackupPolicyOutput{}
-	err = faker.FakeObject(&b)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&b))
+
 	m.EXPECT().DescribeBackupPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&b, nil)
 

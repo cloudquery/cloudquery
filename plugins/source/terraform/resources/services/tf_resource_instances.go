@@ -5,11 +5,13 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/terraform/client"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
-func TFResourceInstances() *schema.Table {
+func tfResourceInstances() *schema.Table {
 	return &schema.Table{
 		Name:        "tf_resource_instances",
 		Description: "Terraform resource instances",
@@ -17,35 +19,35 @@ func TFResourceInstances() *schema.Table {
 		Columns: []schema.Column{
 			{
 				Name:     "resource_name",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("name"),
 			},
 			{
 				Name:        "instance_id",
 				Description: "Instance id",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 				Resolver:    resolveInstanceInternalId,
 			},
 			{
 				Name:        "schema_version",
 				Description: "Terraform schema version",
-				Type:        schema.TypeInt,
+				Type:        arrow.PrimitiveTypes.Int64,
 			},
 			{
 				Name:        "attributes",
 				Description: "Instance attributes",
-				Type:        schema.TypeJSON,
+				Type:        types.ExtensionTypes.JSON,
 				Resolver:    resolveInstanceAttributes,
 			},
 			{
 				Name:        "dependencies",
 				Description: "Instance dependencies array",
-				Type:        schema.TypeStringArray,
+				Type:        arrow.ListOf(arrow.BinaryTypes.String),
 			},
 			{
 				Name:        "create_before_destroy",
 				Description: "Should resource should be created before destroying",
-				Type:        schema.TypeBool,
+				Type:        arrow.FixedWidthTypes.Boolean,
 			},
 		},
 	}

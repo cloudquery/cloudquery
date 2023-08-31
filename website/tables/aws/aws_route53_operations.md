@@ -1,6 +1,6 @@
 # Table: aws_route53_operations
 
-This table shows data for Route53 Operations.
+This table shows data for Amazon Route 53 Operations.
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_domains_GetOperationDetail.html
 
@@ -10,16 +10,14 @@ The composite primary key for this table is (**account_id**, **operation_id**, *
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|domain_name|String|
-|last_updated_date|Timestamp|
-|message|String|
-|operation_id (PK)|String|
-|status (PK)|String|
-|status_flag|String|
-|submitted_date (PK)|Timestamp|
-|type (PK)|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|domain_name|`utf8`|
+|last_updated_date|`timestamp[us, tz=UTC]`|
+|message|`utf8`|
+|operation_id (PK)|`utf8`|
+|status (PK)|`utf8`|
+|status_flag|`utf8`|
+|submitted_date (PK)|`timestamp[us, tz=UTC]`|
+|type (PK)|`utf8`|

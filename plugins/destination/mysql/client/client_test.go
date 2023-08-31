@@ -1,21 +1,15 @@
 package client
 
 import (
+	"context"
+	"encoding/json"
 	"os"
 	"testing"
+	"time"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/mysql/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
-
-var migrateStrategy = destination.MigrateStrategy{
-	AddColumn:           specs.MigrateModeSafe,
-	AddColumnNotNull:    specs.MigrateModeForced,
-	RemoveColumn:        specs.MigrateModeSafe,
-	RemoveColumnNotNull: specs.MigrateModeForced,
-	ChangeColumn:        specs.MigrateModeForced,
-}
 
 func getConnectionString() string {
 	if testConn := os.Getenv("CQ_DEST_MYSQL_TEST_CONNECTION_STRING"); len(testConn) > 0 {
@@ -26,18 +20,39 @@ func getConnectionString() string {
 }
 
 func TestPlugin(t *testing.T) {
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin("mysql", plugin.Version, New, destination.WithManagedWriter())
+	ctx := context.Background()
+	p := plugin.NewPlugin("mysql", "development", New)
+	s := &Spec{
+		ConnectionString: getConnectionString(),
+	}
+	specBytes, err := json.Marshal(s)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
+		t.Fatal(err)
+	}
+	// We have to skip some data types each time because a single MySQL table cannot hold all the data types.
+	for _, skipOpts := range []schema.TestSourceOptions{
+		{
+			SkipMaps: true,
 		},
-		specs.Destination{
-			Spec: &Spec{
-				ConnectionString: getConnectionString(),
+		{
+			SkipLists: true,
+		},
+	} {
+		plugin.TestWriterSuiteRunner(t,
+			p,
+			plugin.WriterTestSuiteTests{
+				SafeMigrations: plugin.SafeMigrations{
+					AddColumn:    true,
+					RemoveColumn: true,
+				},
 			},
-		},
-		destination.PluginTestSuiteTests{
-			MigrateStrategyOverwrite: migrateStrategy,
-			MigrateStrategyAppend:    migrateStrategy,
-		},
-	)
+			plugin.WithTestDataOptions(skipOpts),
+		)
+		// This is necessary because tables are named based on the current time
+		// As we iterate through the tests, if we don't sleep here then tables can be created with the same name
+		time.Sleep(1 * time.Second)
+	}
 }

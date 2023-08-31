@@ -7,14 +7,17 @@ import (
 	"encoding/json"
 	"strconv"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	xj "github.com/basgys/goxml2json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/mq"
 	"github.com/aws/aws-sdk-go-v2/service/mq/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func brokerConfigurationRevisions() *schema.Table {
@@ -25,18 +28,17 @@ func brokerConfigurationRevisions() *schema.Table {
 		Resolver:            fetchMqBrokerConfigurationRevisions,
 		PreResourceResolver: getMqBrokerConfigurationRevision,
 		Transform:           transformers.TransformWithStruct(&mq.DescribeConfigurationRevisionOutput{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "mq"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "broker_configuration_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "data",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveBrokerConfigurationRevisionsData,
 			},
 		},
@@ -45,13 +47,15 @@ func brokerConfigurationRevisions() *schema.Table {
 
 func fetchMqBrokerConfigurationRevisions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cfg := parent.Item.(mq.DescribeConfigurationOutput)
-	c := meta.(*client.Client)
-	svc := c.Services().Mq
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceMq).Mq
 
 	input := mq.ListConfigurationRevisionsInput{ConfigurationId: cfg.Id}
 	// No paginator available
 	for {
-		output, err := svc.ListConfigurationRevisions(ctx, &input)
+		output, err := svc.ListConfigurationRevisions(ctx, &input, func(options *mq.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -66,13 +70,15 @@ func fetchMqBrokerConfigurationRevisions(ctx context.Context, meta schema.Client
 }
 
 func getMqBrokerConfigurationRevision(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Mq
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceMq).Mq
 	rev := resource.Item.(types.ConfigurationRevision)
 	cfg := resource.Parent.Item.(mq.DescribeConfigurationOutput)
 
 	revId := strconv.Itoa(int(rev.Revision))
-	output, err := svc.DescribeConfigurationRevision(ctx, &mq.DescribeConfigurationRevisionInput{ConfigurationId: cfg.Id, ConfigurationRevision: &revId})
+	output, err := svc.DescribeConfigurationRevision(ctx, &mq.DescribeConfigurationRevisionInput{ConfigurationId: cfg.Id, ConfigurationRevision: &revId}, func(options *mq.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

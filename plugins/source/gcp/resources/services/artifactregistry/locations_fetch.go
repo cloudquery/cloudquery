@@ -3,7 +3,7 @@ package artifactregistry
 import (
 	"context"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 
 	"google.golang.org/api/artifactregistry/v1"

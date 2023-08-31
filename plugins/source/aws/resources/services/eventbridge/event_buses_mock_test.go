@@ -7,32 +7,25 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildEventBridgeEventBusesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEventbridgeClient(ctrl)
 
 	var bus types.EventBus
-	if err := faker.FakeObject(&bus); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&bus))
 
 	var rule types.Rule
-	if err := faker.FakeObject(&rule); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&rule))
 
 	var tags eventbridge.ListTagsForResourceOutput
-	if err := faker.FakeObject(&tags); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tags))
 
 	var target types.Target
-	if err := faker.FakeObject(&target); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&target))
 
 	m.EXPECT().ListEventBuses(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&eventbridge.ListEventBusesOutput{

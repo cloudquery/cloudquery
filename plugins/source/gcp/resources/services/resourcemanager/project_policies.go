@@ -1,7 +1,8 @@
 package resourcemanager
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	pb "google.golang.org/api/cloudresourcemanager/v3"
 )
@@ -16,7 +17,7 @@ func ProjectPolicies() *schema.Table {
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: client.ResolveProject,
 			},
 		},

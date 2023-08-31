@@ -2,18 +2,18 @@
 
 This table shows data for Amazon EMR Block Public Access Configs.
 
+https://docs.aws.amazon.com/emr/latest/APIReference/API_GetBlockPublicAccessConfiguration.html
+
 The composite primary key for this table is (**account_id**, **region**).
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|block_public_access_configuration|JSON|
-|block_public_access_configuration_metadata|JSON|
-|result_metadata|JSON|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
+|block_public_access_configuration|`json`|
+|block_public_access_configuration_metadata|`json`|
+|result_metadata|`json`|

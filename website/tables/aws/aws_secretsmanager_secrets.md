@@ -15,28 +15,123 @@ The following tables depend on aws_secretsmanager_secrets:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|region|String|
-|arn (PK)|String|
-|policy|JSON|
-|tags|JSON|
-|created_date|Timestamp|
-|deleted_date|Timestamp|
-|description|String|
-|kms_key_id|String|
-|last_accessed_date|Timestamp|
-|last_changed_date|Timestamp|
-|last_rotated_date|Timestamp|
-|name|String|
-|next_rotation_date|Timestamp|
-|owning_service|String|
-|primary_region|String|
-|replication_status|JSON|
-|rotation_enabled|Bool|
-|rotation_lambda_arn|String|
-|rotation_rules|JSON|
-|version_ids_to_stages|JSON|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|policy|`json`|
+|tags|`json`|
+|created_date|`timestamp[us, tz=UTC]`|
+|deleted_date|`timestamp[us, tz=UTC]`|
+|description|`utf8`|
+|kms_key_id|`utf8`|
+|last_accessed_date|`timestamp[us, tz=UTC]`|
+|last_changed_date|`timestamp[us, tz=UTC]`|
+|last_rotated_date|`timestamp[us, tz=UTC]`|
+|name|`utf8`|
+|next_rotation_date|`timestamp[us, tz=UTC]`|
+|owning_service|`utf8`|
+|primary_region|`utf8`|
+|replication_status|`json`|
+|rotation_enabled|`bool`|
+|rotation_lambda_arn|`utf8`|
+|rotation_rules|`json`|
+|version_ids_to_stages|`json`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Remove unused Secrets Manager secrets
+
+```sql
+SELECT
+  'Remove unused Secrets Manager secrets' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN (
+    last_accessed_date IS NULL
+    AND created_date > now() - '90 days'::INTERVAL
+  )
+  OR (
+      last_accessed_date IS NOT NULL
+      AND last_accessed_date > now() - '90 days'::INTERVAL
+    )
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_secretsmanager_secrets;
+```
+
+### Secrets Manager secrets configured with automatic rotation should rotate successfully
+
+```sql
+SELECT
+  'Secrets Manager secrets configured with automatic rotation should rotate successfully'
+    AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN (
+    last_rotated_date IS NULL
+    AND created_date
+      > now()
+        - '1 day'::INTERVAL * (rotation_rules->>'AutomaticallyAfterDays')::INT8
+  )
+  OR (
+      last_rotated_date IS NOT NULL
+      AND last_rotated_date
+        > now()
+          - '1 day'::INTERVAL
+            * (rotation_rules->>'AutomaticallyAfterDays')::INT8
+    )
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_secretsmanager_secrets;
+```
+
+### Secrets Manager secrets should be rotated within a specified number of days
+
+```sql
+SELECT
+  'Secrets Manager secrets should be rotated within a specified number of days'
+    AS title,
+  account_id,
+  arn AS resource_id,
+  CASE
+  WHEN (
+    last_rotated_date IS NULL
+    AND created_date > now() - '90 days'::INTERVAL
+  )
+  OR (
+      last_rotated_date IS NOT NULL
+      AND last_rotated_date > now() - '90 days'::INTERVAL
+    )
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_secretsmanager_secrets;
+```
+
+### Secrets Manager secrets should have automatic rotation enabled
+
+```sql
+SELECT
+  'Secrets Manager secrets should have automatic rotation enabled' AS title,
+  account_id,
+  arn AS resource_id,
+  CASE WHEN rotation_enabled IS NOT true THEN 'fail' ELSE 'pass' END AS status
+FROM
+  aws_secretsmanager_secrets;
+```
+
+

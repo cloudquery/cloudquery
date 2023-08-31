@@ -6,8 +6,8 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/homebrew/client"
 	"github.com/cloudquery/cloudquery/plugins/source/homebrew/internal/homebrew"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func BuildErrors(days homebrew.Days) *schema.Table {

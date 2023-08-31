@@ -3,6 +3,8 @@
 ## Tables
 
 - [digitalocean_accounts](../../../../../website/tables/digitalocean/digitalocean_accounts.md)
+- [digitalocean_apps](../../../../../website/tables/digitalocean/digitalocean_apps.md)
+  - [digitalocean_apps_alerts](../../../../../website/tables/digitalocean/digitalocean_apps_alerts.md)
 - [digitalocean_balances](../../../../../website/tables/digitalocean/digitalocean_balances.md)
 - [digitalocean_billing_history](../../../../../website/tables/digitalocean/digitalocean_billing_history.md)
 - [digitalocean_cdns](../../../../../website/tables/digitalocean/digitalocean_cdns.md)
@@ -19,9 +21,12 @@
 - [digitalocean_floating_ips](../../../../../website/tables/digitalocean/digitalocean_floating_ips.md)
 - [digitalocean_images](../../../../../website/tables/digitalocean/digitalocean_images.md)
 - [digitalocean_keys](../../../../../website/tables/digitalocean/digitalocean_keys.md)
+- [digitalocean_kubernetes_clusters](../../../../../website/tables/digitalocean/digitalocean_kubernetes_clusters.md)
+- [digitalocean_load_balancers](../../../../../website/tables/digitalocean/digitalocean_load_balancers.md)
 - [digitalocean_monitoring_alert_policies](../../../../../website/tables/digitalocean/digitalocean_monitoring_alert_policies.md)
 - [digitalocean_projects](../../../../../website/tables/digitalocean/digitalocean_projects.md)
   - [digitalocean_project_resources](../../../../../website/tables/digitalocean/digitalocean_project_resources.md)
+- [digitalocean_regions](../../../../../website/tables/digitalocean/digitalocean_regions.md)
 - [digitalocean_registries](../../../../../website/tables/digitalocean/digitalocean_registries.md)
   - [digitalocean_registry_repositories](../../../../../website/tables/digitalocean/digitalocean_registry_repositories.md)
 - [digitalocean_sizes](../../../../../website/tables/digitalocean/digitalocean_sizes.md)

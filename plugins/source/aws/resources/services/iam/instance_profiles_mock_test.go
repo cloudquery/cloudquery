@@ -7,17 +7,15 @@ import (
 	iamTypes "github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildIamInstanceProfiles(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 	p := iamTypes.InstanceProfile{}
-	err := faker.FakeObject(&p)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&p))
 
 	m.EXPECT().ListInstanceProfiles(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.ListInstanceProfilesOutput{
@@ -25,10 +23,7 @@ func buildIamInstanceProfiles(t *testing.T, ctrl *gomock.Controller) client.Serv
 		}, nil)
 
 	tag := iamTypes.Tag{}
-	err = faker.FakeObject(&tag)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tag))
 	m.EXPECT().ListInstanceProfileTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.ListInstanceProfileTagsOutput{
 			Tags: []iamTypes.Tag{

@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func LogProfiles() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_monitor_log_profiles",
-		Resolver:    fetchLogProfiles,
-		Description: "https://learn.microsoft.com/en-us/rest/api/monitor/log-profiles/list?tabs=HTTP#logprofileresource",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_monitor_log_profiles", client.Namespacemicrosoft_insights),
-		Transform:   transformers.TransformWithStruct(&armmonitor.LogProfileResource{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_monitor_log_profiles",
+		Resolver:             fetchLogProfiles,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/monitor/log-profiles/list?tabs=HTTP#logprofileresource",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_monitor_log_profiles", client.Namespacemicrosoft_insights),
+		Transform:            transformers.TransformWithStruct(&armmonitor.LogProfileResource{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

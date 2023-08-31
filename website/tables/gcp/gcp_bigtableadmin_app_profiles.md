@@ -14,11 +14,10 @@ This table depends on [gcp_bigtableadmin_instances](gcp_bigtableadmin_instances)
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|project_id (PK)|String|
-|name (PK)|String|
-|etag|String|
-|description|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|project_id (PK)|`utf8`|
+|name (PK)|`utf8`|
+|etag|`utf8`|
+|description|`utf8`|
+|routing_policy|`json`|

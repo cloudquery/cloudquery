@@ -2,25 +2,24 @@
 
 This table shows data for Oracle Identity Cost Tracking Tags.
 
-The primary key for this table is **id**.
+The composite primary key for this table is (**region**, **id**).
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|compartment_id|String|
-|tag_namespace_id|String|
-|tag_namespace_name|String|
-|name|String|
-|description|String|
-|is_retired|Bool|
-|time_created|Timestamp|
-|freeform_tags|JSON|
-|defined_tags|JSON|
-|lifecycle_state|String|
-|is_cost_tracking|Bool|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|region (PK)|`utf8`|
+|compartment_id|`utf8`|
+|tag_namespace_id|`utf8`|
+|tag_namespace_name|`utf8`|
+|id (PK)|`utf8`|
+|name|`utf8`|
+|description|`utf8`|
+|is_retired|`bool`|
+|time_created|`timestamp[us, tz=UTC]`|
+|freeform_tags|`json`|
+|defined_tags|`json`|
+|lifecycle_state|`utf8`|
+|is_cost_tracking|`bool`|

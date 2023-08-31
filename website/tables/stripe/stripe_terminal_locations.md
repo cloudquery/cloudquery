@@ -2,7 +2,7 @@
 
 This table shows data for Stripe Terminal Locations.
 
-https://stripe.com/docs/api/terminal_locations
+https://stripe.com/docs/api/terminal/locations
 
 The primary key for this table is **id**.
 
@@ -10,15 +10,13 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|address|JSON|
-|configuration_overrides|String|
-|deleted|Bool|
-|display_name|String|
-|livemode|Bool|
-|metadata|JSON|
-|object|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|address|`json`|
+|configuration_overrides|`utf8`|
+|deleted|`bool`|
+|display_name|`utf8`|
+|livemode|`bool`|
+|metadata|`json`|
+|object|`utf8`|

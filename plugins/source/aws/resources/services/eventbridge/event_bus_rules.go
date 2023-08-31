@@ -3,12 +3,15 @@ package eventbridge
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func eventBusRules() *schema.Table {
@@ -22,12 +25,12 @@ func eventBusRules() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "event_bus_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveEventBusRuleTags,
 			},
 		},
@@ -42,11 +45,13 @@ func fetchEventBusRules(ctx context.Context, meta schema.ClientMeta, parent *sch
 	input := eventbridge.ListRulesInput{
 		EventBusName: p.Arn,
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Eventbridge
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceEventbridge).Eventbridge
 	// No paginator available
 	for {
-		response, err := svc.ListRules(ctx, &input)
+		response, err := svc.ListRules(ctx, &input, func(options *eventbridge.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

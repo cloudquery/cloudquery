@@ -3,12 +3,15 @@ package cloudformation
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudformation/models"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func StackSets() *schema.Table {
@@ -25,33 +28,32 @@ func StackSets() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("StackSetId"),
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("StackSetARN"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("StackSetARN"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: client.ResolveTags,
 			},
 		},
 
 		Relations: []*schema.Table{
 			stackSetOperations(),
+			stackInstanceSummaries(),
 		},
 	}
 }
 
 func fetchCloudformationStackSets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudformation
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceCloudformation).Cloudformation
 	var err error
 	var page *cloudformation.ListStackSetsOutput
 	// There is no way of determining if an account is a delegated admin or not. So just need to test it out and fail over to the other one
@@ -61,9 +63,11 @@ func fetchCloudformationStackSets(ctx context.Context, meta schema.ClientMeta, _
 		}
 		paginator := cloudformation.NewListStackSetsPaginator(svc, &config)
 		for paginator.HasMorePages() {
-			page, err = paginator.NextPage(ctx)
+			page, err = paginator.NextPage(ctx, func(options *cloudformation.Options) {
+				options.Region = cl.Region
+			})
 			if err != nil {
-				c.Logger().Info().Err(err).Msgf("failed to list stack sets with callAs: %s", string(callAs))
+				cl.Logger().Info().Err(err).Msgf("failed to list stack sets with callAs: %s", string(callAs))
 				break
 			}
 			for _, summary := range page.Summaries {
@@ -81,16 +85,20 @@ func fetchCloudformationStackSets(ctx context.Context, meta schema.ClientMeta, _
 }
 
 func getStackSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	stack := resource.Item.(models.ExpandedSummary)
 	var err error
 	var stackSet *cloudformation.DescribeStackSetOutput
 
+	stack := resource.Item.(models.ExpandedSummary)
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceCloudformation).Cloudformation
 	input := &cloudformation.DescribeStackSetInput{
 		StackSetName: stack.StackSetName,
 		CallAs:       stack.CallAs,
 	}
 
-	stackSet, err = meta.(*client.Client).Services().Cloudformation.DescribeStackSet(ctx, input)
+	stackSet, err = svc.DescribeStackSet(ctx, input, func(options *cloudformation.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

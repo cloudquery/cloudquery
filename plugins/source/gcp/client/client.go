@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 	"sync"
@@ -12,17 +13,15 @@ import (
 	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	serviceusage "cloud.google.com/go/serviceusage/apiv1"
 	pb "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
-	"github.com/cloudquery/plugin-sdk/backend"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/state"
 	"github.com/googleapis/gax-go/v2"
 	grpczerolog "github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2"
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	"github.com/rs/zerolog"
 	"golang.org/x/sync/errgroup"
-	"golang.org/x/sync/semaphore"
 	crmv1 "google.golang.org/api/cloudresourcemanager/v1"
+	"google.golang.org/api/impersonate"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 
@@ -54,7 +53,13 @@ type Client struct {
 	// Logger
 	logger zerolog.Logger
 
-	Backend backend.Backend
+	Backend state.Client
+}
+
+func (c *Client) WithBackend(backend state.Client) *Client {
+	newClient := *c
+	newClient.Backend = backend
+	return &newClient
 }
 
 //revive:disable:modifies-value-receiver
@@ -118,28 +123,22 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source.Options) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, spec *Spec) (schema.ClientMeta, error) {
 	var err error
 	c := Client{
 		logger:          logger,
 		EnabledServices: map[string]map[string]any{},
-		Backend:         opts.Backend,
-	}
-	var gcpSpec Spec
-	if err := s.UnmarshalSpec(&gcpSpec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal gcp spec: %w", err)
 	}
 
-	gcpSpec.setDefaults()
-	projects := gcpSpec.ProjectIDs
+	projects := spec.ProjectIDs
 	organizations := make([]*crmv1.Organization, 0)
-	if gcpSpec.BackoffRetries > 0 {
+	if spec.BackoffRetries > 0 {
 		c.CallOptions = append(c.CallOptions, gax.WithRetry(func() gax.Retryer {
 			return &Retrier{
 				backoff: gax.Backoff{
-					Max: time.Duration(gcpSpec.BackoffDelay) * time.Second,
+					Max: time.Duration(spec.BackoffDelay) * time.Second,
 				},
-				maxRetries: gcpSpec.BackoffRetries,
+				maxRetries: spec.BackoffRetries,
 				codes:      []codes.Code{codes.ResourceExhausted},
 			}
 		}))
@@ -147,7 +146,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	unaryInterceptor := grpc.WithUnaryInterceptor(logging.UnaryClientInterceptor(grpczerolog.InterceptorLogger(logger)))
 	streamInterceptor := grpc.WithStreamInterceptor(logging.StreamClientInterceptor(grpczerolog.InterceptorLogger(logger)))
 
-	serviceAccountKeyJSON := []byte(gcpSpec.ServiceAccountKeyJSON)
+	serviceAccountKeyJSON := []byte(spec.ServiceAccountKeyJSON)
 	// Add a fake request reason because it is not possible to pass nil options
 	c.ClientOptions = append(c.ClientOptions,
 		option.WithRequestReason("cloudquery resource fetch"),
@@ -165,11 +164,29 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		}
 		c.ClientOptions = append(c.ClientOptions, option.WithCredentialsJSON(serviceAccountKeyJSON))
 	}
-
-	if len(gcpSpec.ProjectFilter) > 0 && len(gcpSpec.FolderIDs) > 0 {
+	if spec.ServiceAccountImpersonation != nil && spec.ServiceAccountImpersonation.TargetPrincipal != "" {
+		// Base credentials sourced from ADC or provided client options.
+		ts, err := impersonate.CredentialsTokenSource(ctx, impersonate.CredentialsConfig{
+			TargetPrincipal: spec.ServiceAccountImpersonation.TargetPrincipal,
+			Scopes:          spec.ServiceAccountImpersonation.Scopes,
+			// Optionally supply delegates.
+			Delegates: spec.ServiceAccountImpersonation.Delegates,
+			// Specify user to impersonate
+			Subject: spec.ServiceAccountImpersonation.Subject,
+		})
+		if err != nil {
+			return nil, fmt.Errorf("failed to generate token source: %w", err)
+		}
+		c.ClientOptions = append(c.ClientOptions, option.WithTokenSource(ts))
+	}
+	if len(spec.ProjectFilter) > 0 && len(spec.FolderIDs) > 0 {
 		return nil, fmt.Errorf("project_filter and folder_ids are mutually exclusive")
 	}
 
+	orgsClient, err := resourcemanager.NewOrganizationsClient(ctx, c.ClientOptions...)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create organizations client: %w", err)
+	}
 	projectsClient, err := resourcemanager.NewProjectsClient(ctx, c.ClientOptions...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create projects client: %w", err)
@@ -180,19 +197,19 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	}
 
 	switch {
-	case len(projects) == 0 && len(gcpSpec.FolderIDs) == 0 && len(gcpSpec.ProjectFilter) == 0:
+	case len(projects) == 0 && len(spec.FolderIDs) == 0 && len(spec.ProjectFilter) == 0:
 		c.logger.Info().Msg("No project_ids, folder_ids, or project_filter specified - assuming all active projects")
-		projects, err = getProjectsV1(ctx, c.ClientOptions...)
+		projects, err = searchActiveProjects(ctx, projectsClient, "lifecycleState=ACTIVE", c.CallOptions...)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get projects: %w", err)
 		}
 
-	case len(gcpSpec.FolderIDs) > 0:
+	case len(spec.FolderIDs) > 0:
 		var folderIds []string
 
-		for _, parentFolder := range gcpSpec.FolderIDs {
+		for _, parentFolder := range spec.FolderIDs {
 			c.logger.Info().Msg("Listing folders...")
-			childFolders, err := listFolders(ctx, foldersClient, parentFolder, *gcpSpec.FolderRecursionDepth)
+			childFolders, err := listFolders(ctx, foldersClient, parentFolder, *spec.FolderRecursionDepth, c.CallOptions...)
 			if err != nil {
 				return nil, fmt.Errorf("failed to list folders: %w", err)
 			}
@@ -202,15 +219,15 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		logFolderIds(&c.logger, folderIds)
 
 		c.logger.Info().Msg("listing folder projects...")
-		folderProjects, err := listProjectsInFolders(ctx, projectsClient, folderIds)
+		folderProjects, err := listProjectsInFolders(ctx, projectsClient, folderIds, c.CallOptions...)
 		projects = setUnion(projects, folderProjects)
 		if err != nil {
 			return nil, fmt.Errorf("failed to list projects: %w", err)
 		}
 
-	case len(gcpSpec.ProjectFilter) > 0:
+	case len(spec.ProjectFilter) > 0:
 		c.logger.Info().Msg("Listing projects with filter...")
-		projectsWithFilter, err := getProjectsV1WithFilter(ctx, gcpSpec.ProjectFilter, c.ClientOptions...)
+		projectsWithFilter, err := searchActiveProjects(ctx, projectsClient, spec.ProjectFilter, c.CallOptions...)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get projects with filter: %w", err)
 		}
@@ -218,28 +235,28 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 		projects = setUnion(projects, projectsWithFilter)
 	}
 
-	if len(gcpSpec.OrganizationIDs) == 0 && len(gcpSpec.OrganizationFilter) == 0 {
+	if len(spec.OrganizationIDs) == 0 && len(spec.OrganizationFilter) == 0 {
 		c.logger.Info().Msg("No organization_ids or organization_filter specified - assuming all organizations")
 		c.logger.Info().Msg("Listing organizations...")
 
-		organizations, err = getOrganizations(ctx, "", c.ClientOptions...)
+		organizations, err = searchOrganizations(ctx, orgsClient, "", c.CallOptions...)
 		if err != nil {
 			c.logger.Err(err).Msg("failed to get organizations")
 		}
 	} else {
-		if len(gcpSpec.OrganizationIDs) > 0 {
-			for _, orgID := range gcpSpec.OrganizationIDs {
+		if len(spec.OrganizationIDs) > 0 {
+			for _, orgID := range spec.OrganizationIDs {
 				c.logger.Info().Msgf("Getting spec organization %q...", orgID)
-				org, err := getOrganization(ctx, orgID, c.ClientOptions...)
+				org, err := getOrganization(ctx, orgsClient, orgID, c.CallOptions...)
 				if err != nil {
 					return nil, fmt.Errorf("failed to get spec organization: %w", err)
 				}
 				organizations = append(organizations, org)
 			}
 		}
-		if len(gcpSpec.OrganizationFilter) > 0 {
+		if len(spec.OrganizationFilter) > 0 {
 			c.logger.Info().Msg("Listing organizations with filter...")
-			organizationsWithFilter, err := getOrganizations(ctx, gcpSpec.OrganizationFilter, c.ClientOptions...)
+			organizationsWithFilter, err := searchOrganizations(ctx, orgsClient, spec.OrganizationFilter, c.CallOptions...)
 			if err != nil {
 				return nil, fmt.Errorf("failed to get organizations with filter: %w", err)
 			}
@@ -266,7 +283,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	}
 
 	c.projects = projects
-	c.folderIds = gcpSpec.FolderIDs
+	c.folderIds = spec.FolderIDs
 	c.orgs = organizations
 	if err != nil {
 		c.logger.Err(err).Msg("failed to get organizations")
@@ -276,13 +293,8 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, opts source
 	if len(projects) == 1 {
 		c.ProjectId = projects[0]
 	}
-	if gcpSpec.EnabledServicesOnly {
-		if err := c.configureEnabledServices(ctx, s.Concurrency); err != nil {
-			if status.Code(err) == codes.ResourceExhausted {
-				c.logger.Err(err).Msg("failed to list enabled services because of rate limiting. Consider setting larger values for `backoff_retries` and `backoff_delay`")
-			} else {
-				c.logger.Err(err).Msg("failed to list enabled services")
-			}
+	if spec.EnabledServicesOnly {
+		if err := c.configureEnabledServices(ctx, *spec.DiscoveryConcurrency); err != nil {
 			return nil, err
 		}
 	}
@@ -324,61 +336,32 @@ func logOrganizationIds(logger *zerolog.Logger, organizations []*crmv1.Organizat
 	}
 }
 
-// getProjectsV1 requires the `resourcemanager.projects.get` permission to list projects
-func getProjectsV1(ctx context.Context, options ...option.ClientOption) ([]string, error) {
+// searchActiveProjects requires the `resourcemanager.projects.get` permission to list projects.
+// searchActiveProjects returns only the ACTIVE projects.
+func searchActiveProjects(ctx context.Context, client *resourcemanager.ProjectsClient, filter string, options ...gax.CallOption) ([]string, error) {
 	var projects []string
 
-	service, err := crmv1.NewService(ctx, options...)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
-	}
-
-	call := service.Projects.List().Filter("lifecycleState=ACTIVE").Context(ctx)
+	it := client.SearchProjects(ctx, &resourcemanagerpb.SearchProjectsRequest{
+		Query: filter,
+	}, options...)
 	for {
-		output, err := call.Do()
+		project, err := it.Next()
 		if err != nil {
+			if errors.Is(err, iterator.Done) {
+				break
+			}
 			return nil, err
 		}
-		for _, project := range output.Projects {
-			projects = append(projects, project.ProjectId)
+
+		if project.State != resourcemanagerpb.Project_ACTIVE {
+			continue
 		}
-		if output.NextPageToken == "" {
-			break
-		}
-		call.PageToken(output.NextPageToken)
+
+		projects = append(projects, project.ProjectId)
 	}
 
 	if len(projects) == 0 {
-		return nil, fmt.Errorf("no active projects")
-	}
-
-	return projects, nil
-}
-
-func getProjectsV1WithFilter(ctx context.Context, filter string, options ...option.ClientOption) ([]string, error) {
-	var projects []string
-
-	service, err := crmv1.NewService(ctx, options...)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
-	}
-
-	call := service.Projects.List().Filter(filter).Context(ctx)
-	for {
-		output, err := call.Do()
-		if err != nil {
-			return nil, err
-		}
-		for _, project := range output.Projects {
-			if project.LifecycleState != "ACTIVE" {
-				continue
-			}
-			projects = append(projects, project.ProjectId)
-		}
-		if output.NextPageToken == "" {
-			break
-		}
-		call.PageToken(output.NextPageToken)
+		return nil, errors.New("no active projects")
 	}
 
 	return projects, nil
@@ -386,54 +369,55 @@ func getProjectsV1WithFilter(ctx context.Context, filter string, options ...opti
 
 // listFolders recursively lists the folders in the 'parent' folder. Includes the 'parent' folder itself.
 // recursionDepth is the depth of folders to recurse - where 0 means not to recurse any folders.
-func listFolders(ctx context.Context, folderClient *resourcemanager.FoldersClient, parent string, recursionDepth int) ([]string, error) {
-	folders := []string{
-		parent,
-	}
+// listFolders returns only the ACTIVE folders
+func listFolders(ctx context.Context, client *resourcemanager.FoldersClient, parent string, recursionDepth int, options ...gax.CallOption) ([]string, error) {
+	folders := []string{parent}
 	if recursionDepth <= 0 {
 		return folders, nil
 	}
 
-	it := folderClient.ListFolders(ctx, &resourcemanagerpb.ListFoldersRequest{
-		Parent: parent,
-	})
+	it := client.ListFolders(ctx, &resourcemanagerpb.ListFoldersRequest{Parent: parent}, options...)
 
 	for {
 		child, err := it.Next()
-
-		if err == iterator.Done {
-			break
+		if err != nil {
+			if errors.Is(err, iterator.Done) {
+				break
+			}
+			return nil, err
 		}
+
+		if child.State != resourcemanagerpb.Folder_ACTIVE {
+			continue
+		}
+
+		childFolders, err := listFolders(ctx, client, child.Name, recursionDepth-1, options...)
 		if err != nil {
 			return nil, err
 		}
 
-		if child.State == resourcemanagerpb.Folder_ACTIVE {
-			childFolders, err := listFolders(ctx, folderClient, child.Name, recursionDepth-1)
-			if err != nil {
-				return nil, err
-			}
-			folders = append(folders, childFolders...)
-		}
+		folders = append(folders, childFolders...)
 	}
 
 	return folders, nil
 }
 
-func listProjectsInFolders(ctx context.Context, projectClient *resourcemanager.ProjectsClient, folders []string) ([]string, error) {
+// listProjectsInFolders returns only the ACTIVE projects
+func listProjectsInFolders(ctx context.Context, client *resourcemanager.ProjectsClient, folders []string, options ...gax.CallOption) ([]string, error) {
 	var projects []string
+
 	for _, folder := range folders {
-		it := projectClient.ListProjects(ctx, &resourcemanagerpb.ListProjectsRequest{
-			Parent: folder,
-		})
+		it := client.ListProjects(ctx,
+			&resourcemanagerpb.ListProjectsRequest{Parent: folder},
+			options...,
+		)
 
 		for {
 			project, err := it.Next()
-
-			if err == iterator.Done {
-				break
-			}
 			if err != nil {
+				if errors.Is(err, iterator.Done) {
+					break
+				}
 				return nil, err
 			}
 
@@ -446,30 +430,46 @@ func listProjectsInFolders(ctx context.Context, projectClient *resourcemanager.P
 	return projects, nil
 }
 
-func getOrganizations(ctx context.Context, filter string, options ...option.ClientOption) ([]*crmv1.Organization, error) {
-	service, err := crmv1.NewService(ctx, options...)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
-	}
-
+// searchOrganizations returns only the ACTIVE organizations
+func searchOrganizations(ctx context.Context, client *resourcemanager.OrganizationsClient, filter string, options ...gax.CallOption) ([]*crmv1.Organization, error) {
 	var orgs []*crmv1.Organization
-	if err := service.Organizations.Search(&crmv1.SearchOrganizationsRequest{Filter: filter}).Context(ctx).Pages(ctx, func(page *crmv1.SearchOrganizationsResponse) error {
-		orgs = append(orgs, page.Organizations...)
-		return nil
-	}); err != nil {
-		return nil, err
+
+	it := client.SearchOrganizations(ctx, &resourcemanagerpb.SearchOrganizationsRequest{Query: filter}, options...)
+	for {
+		org, err := it.Next()
+		if err != nil {
+			if errors.Is(err, iterator.Done) {
+				break
+			}
+			return nil, err
+		}
+
+		if org.State == resourcemanagerpb.Organization_ACTIVE {
+			orgs = append(orgs, orgPBToCRM(org))
+		}
 	}
 
 	return orgs, nil
 }
 
-func getOrganization(ctx context.Context, id string, options ...option.ClientOption) (*crmv1.Organization, error) {
-	service, err := crmv1.NewService(ctx, options...)
+func getOrganization(ctx context.Context, client *resourcemanager.OrganizationsClient, id string, options ...gax.CallOption) (*crmv1.Organization, error) {
+	org, err := client.GetOrganization(ctx, &resourcemanagerpb.GetOrganizationRequest{Name: "organizations/" + id}, options...)
 	if err != nil {
-		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
+		return nil, err
 	}
+	return orgPBToCRM(org), nil
+}
 
-	return service.Organizations.Get("organizations/" + id).Context(ctx).Do()
+func orgPBToCRM(org *resourcemanagerpb.Organization) *crmv1.Organization {
+	return &crmv1.Organization{
+		CreationTime:   org.GetCreateTime().String(),
+		DisplayName:    org.GetDisplayName(),
+		LifecycleState: org.GetState().String(),
+		Name:           org.GetName(),
+		Owner: &crmv1.OrganizationOwner{
+			DirectoryCustomerId: org.GetOwner().(*resourcemanagerpb.Organization_DirectoryCustomerId).DirectoryCustomerId,
+		},
+	}
 }
 
 func setUnion(a []string, b []string) []string {
@@ -488,19 +488,28 @@ func setUnion(a []string, b []string) []string {
 	return union
 }
 
-func (c *Client) configureEnabledServices(ctx context.Context, concurrency uint64) error {
+func (c *Client) configureEnabledServices(ctx context.Context, concurrency int) error {
 	var esLock sync.Mutex
 	g, ctx := errgroup.WithContext(ctx)
-	goroutinesSem := semaphore.NewWeighted(int64(concurrency))
+	g.SetLimit(concurrency)
 	for _, p := range c.projects {
 		project := p
-		if err := goroutinesSem.Acquire(ctx, 1); err != nil {
-			return err
-		}
 		g.Go(func() error {
-			defer goroutinesSem.Release(1)
 			cl := c.withProject(project)
 			svc, err := cl.fetchEnabledServices(ctx)
+			if err != nil {
+				switch status.Code(err) {
+				case codes.ResourceExhausted:
+					c.logger.Warn().Err(err).Msgf("failed to list enabled services because of rate limiting. Sync will continue without filtering out disabled services for this project: %s. Consider setting larger values for `backoff_retries` and `backoff_delay`", project)
+				case codes.PermissionDenied:
+					c.logger.Warn().Err(err).Msgf("failed to list enabled services because of insufficient permissions. Sync will continue without filtering out disabled services for this project: %s", project)
+				default:
+					c.logger.Err(err).Msg("failed to list enabled services")
+					return err
+				}
+				return nil
+			}
+			// Only update the enabled services if we were able to list all services successfully
 			esLock.Lock()
 			c.EnabledServices[project] = svc
 			esLock.Unlock()

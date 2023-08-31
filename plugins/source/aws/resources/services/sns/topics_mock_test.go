@@ -7,22 +7,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sns/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildSnsTopics(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockSnsClient(ctrl)
 	topic := types.Topic{}
+	require.NoError(t, faker.FakeObject(&topic))
+
 	tag := types.Tag{}
-	err := faker.FakeObject(&topic)
-	if err != nil {
-		t.Fatal(err)
-	}
-	tagerr := faker.FakeObject(&tag)
-	if tagerr != nil {
-		t.Fatal(tagerr)
-	}
+	require.NoError(t, faker.FakeObject(&tag))
 
 	m.EXPECT().ListTopics(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&sns.ListTopicsOutput{

@@ -3,12 +3,15 @@ package glue
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func registrySchemaVersions() *schema.Table {
@@ -19,18 +22,17 @@ func registrySchemaVersions() *schema.Table {
 		Resolver:            fetchGlueRegistrySchemaVersions,
 		PreResourceResolver: getRegistrySchemaVersion,
 		Transform:           transformers.TransformWithStruct(&glue.GetSchemaVersionOutput{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "registry_schema_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "metadata",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveGlueRegistrySchemaVersionMetadata,
 			},
 		},
@@ -40,7 +42,7 @@ func registrySchemaVersions() *schema.Table {
 func fetchGlueRegistrySchemaVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	s := parent.Item.(*glue.GetSchemaOutput)
-	svc := cl.Services().Glue
+	svc := cl.Services(client.AWSServiceGlue).Glue
 	input := glue.ListSchemaVersionsInput{
 		SchemaId: &types.SchemaId{
 			SchemaArn: s.SchemaArn,
@@ -49,7 +51,9 @@ func fetchGlueRegistrySchemaVersions(ctx context.Context, meta schema.ClientMeta
 	}
 	paginator := glue.NewListSchemaVersionsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		result, err := paginator.NextPage(ctx)
+		result, err := paginator.NextPage(ctx, func(options *glue.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -60,11 +64,13 @@ func fetchGlueRegistrySchemaVersions(ctx context.Context, meta schema.ClientMeta
 
 func getRegistrySchemaVersion(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Glue
+	svc := cl.Services(client.AWSServiceGlue).Glue
 	item := resource.Item.(types.SchemaVersionListItem)
 
 	s, err := svc.GetSchemaVersion(ctx, &glue.GetSchemaVersionInput{
 		SchemaVersionId: item.SchemaVersionId,
+	}, func(options *glue.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -76,7 +82,7 @@ func getRegistrySchemaVersion(ctx context.Context, meta schema.ClientMeta, resou
 
 func resolveGlueRegistrySchemaVersionMetadata(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Glue
+	svc := cl.Services(client.AWSServiceGlue).Glue
 	s := resource.Item.(*glue.GetSchemaVersionOutput)
 	input := &glue.QuerySchemaVersionMetadataInput{
 		SchemaVersionId: s.SchemaVersionId,
@@ -84,7 +90,9 @@ func resolveGlueRegistrySchemaVersionMetadata(ctx context.Context, meta schema.C
 	metadata := make(map[string]types.MetadataInfo)
 	// No paginator available
 	for {
-		result, err := svc.QuerySchemaVersionMetadata(ctx, input)
+		result, err := svc.QuerySchemaVersionMetadata(ctx, input, func(options *glue.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			if cl.IsNotFoundError(err) {
 				return nil

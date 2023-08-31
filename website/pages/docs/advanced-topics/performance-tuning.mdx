@@ -1,5 +1,6 @@
 ---
 title: Performance Tuning
+description: Tips and tricks for improving the performance of `cloudquery sync` for large cloud estates.
 ---
 
 # Performance Tuning
@@ -36,7 +37,17 @@ The CloudQuery CLI will warn if a wildcard pattern does not match any known tabl
 
 ## Improve Performance by Skipping Relations
 
-Some tables require many API calls to sync. This is especially true of tables that depend on other tables, because often multiple API calls need to be made for every row in the parent table. This can lead to thousands of API calls, increasing the time it takes to sync. If you know that some child tables are not strictly necessary, you can improve sync performance by skipping them with the `skip_tables` setting.
+Some tables require many API calls to sync. This is especially true of tables that depend on other tables, because often multiple API calls need to be made for every row in the parent table. This can lead to thousands of API calls, increasing the time it takes to sync. If you know that some child tables are not strictly necessary, you can skip them by default by setting the `skip_dependent_tables` source config option to `true`:
+
+```
+kind: source
+spec:
+  ...
+  skip_dependent_tables: true
+  ...
+```
+
+Setting `skip_dependent_tables: true` will cause tables that depend on other tables to not be synced unless they are selected by the `tables` setting. 
 
 Let's say we have three tables: `A`, `B` and `C`. `A` is the top-level table. `B` depends on it, and `C` depends on `B`:
 
@@ -46,16 +57,25 @@ A
   ↳ C
 ```
 
-We might want table `A`, but not need the information in table `B`. We can then write our source config as:
+We might want table `A`, but not need table `B` or `C`. We have two options: 
 
-```yaml copy
-tables:
- - A
-skip_tables:
- - B
-```
+ 1. Set `skip_dependent_tables: true`
+    ```yaml copy
+    tables: ["A"]
+    skip_dependent_tables: true
+    ```
 
-By skipping table `B`, we are automatically skipping its dependant table `C` as well. Likewise, by including table `A`, we are automatically including its dependant tables `B` and `C` as well, unless they are explicitly skipped in the `skip_tables` section (like in the example above).
+    This skips `B` and `C` by not syncing dependent tables unless they are explicitly included.
+    
+    OR
+    
+ 2. Use `skip_tables`:
+    ```yaml copy
+    tables: ["A"]
+    skip_tables: ["B"]
+    ```
+
+    Note how this skips both `B` and `C` by skipping `B`: `C` won't be included because it depends on `B`. You can also explicitly skip both `B` and `C`.
 
 ## Tune Concurrency
 
@@ -69,7 +89,7 @@ The default CloudQuery scheduler, known as `dfs`, will sync up to `concurrency /
 
 Usually this works out fine, as long as the cloud platform's rate limits are aligned with the clients. But if rate limits are applied per-table, rather than per-project, `dfs` can be suboptimal. A better strategy in this case would be to choose the first client for every table before moving on to the next client. This is what the `round-robin` scheduler does. Note that this scheduler is currently **experimental**. 
 
-The following example config enables `round-robin` scheduling for the GCP source plugin, with a concurrency of 100000:
+Only some plugins support this setting. The following example config enables `round-robin` scheduling for the GCP source plugin:
 
 ```yaml
 kind: source
@@ -77,8 +97,10 @@ spec:
   name: "gcp"
   path: "cloudquery/gcp"
   version: "VERSION_SOURCE_GCP"
+  tables: ["gcp_storage_buckets"]
   destinations: ["postgresql"]
-  concurrency: 100000
-  scheduler: "round-robin"  # experimental
+  spec:
+    scheduler: "round-robin"
+    project_ids: ...
 ```
 

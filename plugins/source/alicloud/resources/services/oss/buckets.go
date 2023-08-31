@@ -2,9 +2,10 @@ package oss
 
 import (
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/alicloud/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Buckets() *schema.Table {
@@ -21,12 +22,10 @@ func Buckets() *schema.Table {
 		),
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAccount,
+				PrimaryKey: true,
 			},
 		},
 		Relations: []*schema.Table{

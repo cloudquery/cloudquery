@@ -6,26 +6,27 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/thoas/go-funk"
 )
 
-func TimestampTypeTransformer(field reflect.StructField) (schema.ValueType, error) {
+func TimestampTypeTransformer(field reflect.StructField) (arrow.DataType, error) {
 	if !strings.HasSuffix(field.Name, "At") {
-		return schema.TypeInvalid, nil // fallback
+		return nil, nil // fallback
 	}
 
 	switch field.Type {
 	case reflect.TypeOf(""), reflect.TypeOf(new(string)):
-		return schema.TypeTimestamp, nil
+		return arrow.FixedWidthTypes.Timestamp_us, nil
 	default:
-		return schema.TypeInvalid, nil // fallback
+		return nil, nil // fallback
 	}
 }
 
 func TimestampResolverTransformer(field reflect.StructField, path string) schema.ColumnResolver {
-	if t, _ := TimestampTypeTransformer(field); t != schema.TypeTimestamp {
+	if t, _ := TimestampTypeTransformer(field); t != arrow.FixedWidthTypes.Timestamp_us {
 		return transformers.DefaultResolverTransformer(field, path)
 	}
 

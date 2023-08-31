@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func DdosProtectionPlans() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_ddos_protection_plans",
-		Resolver:    fetchDdosProtectionPlans,
-		Description: "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/ddos-protection-plans/list?tabs=HTTP#ddosprotectionplan",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_ddos_protection_plans", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.DdosProtectionPlan{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_ddos_protection_plans",
+		Resolver:             fetchDdosProtectionPlans,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/ddos-protection-plans/list?tabs=HTTP#ddosprotectionplan",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_network_ddos_protection_plans", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armnetwork.DdosProtectionPlan{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

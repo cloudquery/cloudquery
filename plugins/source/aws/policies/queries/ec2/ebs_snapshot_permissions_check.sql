@@ -3,9 +3,9 @@ WITH snapshot_access_groups AS (
     SELECT account_id,
            region,
            snapshot_id,
-           JSONB_ARRAY_ELEMENTS(attribute->'CreateVolumePermissions') ->> 'Group' AS "group",
-           JSONB_ARRAY_ELEMENTS(attribute->'CreateVolumePermissions') ->> 'UserId' AS user_id
-    FROM aws_ec2_ebs_snapshots
+           JSONB_ARRAY_ELEMENTS(create_volume_permissions) ->> 'Group' AS "group",
+           JSONB_ARRAY_ELEMENTS(create_volume_permissions) ->> 'UserId' AS user_id
+    FROM aws_ec2_ebs_snapshot_attributes
 )
 SELECT DISTINCT
   :'execution_time'::timestamp as execution_time,
@@ -19,7 +19,7 @@ SELECT DISTINCT
     -- this is under question because
     -- trusted accounts(user_id) do not violate this control
         OR user_id IS DISTINCT FROM ''
-    then 'pass'
-    else 'fail'
+    then 'fail'
+    else 'pass'
   end as status
 FROM snapshot_access_groups

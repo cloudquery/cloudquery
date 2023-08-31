@@ -1,10 +1,13 @@
 package main
 
 import (
+	"context"
+	"log"
+
 	"github.com/cloudquery/cloudquery/plugins/destination/neo4j/client"
-	"github.com/cloudquery/cloudquery/plugins/destination/neo4j/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/serve"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/neo4j/resources/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/serve"
 )
 
 const (
@@ -12,6 +15,8 @@ const (
 )
 
 func main() {
-	p := destination.NewPlugin("neo4j", plugin.Version, client.New, destination.WithManagedWriter(), destination.WithDefaultBatchSize(1000))
-	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
+	p := plugin.NewPlugin("neo4j", internalPlugin.Version, client.New)
+	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN), serve.WithDestinationV0V1Server()).Serve(context.Background()); err != nil {
+		log.Fatalf("failed to serve plugin: %v", err)
+	}
 }

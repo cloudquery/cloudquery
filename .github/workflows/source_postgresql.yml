@@ -1,5 +1,9 @@
 name: Source Plugin Postgresql Workflow
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   pull_request:
     paths:
@@ -16,7 +20,7 @@ jobs:
   plugins-source-postgresql:
     timeout-minutes: 30
     name: "plugins/source/postgresql"
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     defaults:
       run:
         working-directory: ./plugins/source/postgresql
@@ -38,8 +42,6 @@ jobs:
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
           skip-build-cache: true
-      - name: Get dependencies
-        run: go get -t -d ./...
       - name: Build
         run: go build .
       # github actions built-in service doesn't support logical replication yet (as far as I was able to find out)
@@ -52,7 +54,7 @@ jobs:
         run: make test
   validate-release:
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    runs-on: large-ubuntu-monorepo
     env:
       CGO_ENABLED: 0
     steps:
@@ -65,9 +67,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.5-release-cache-${{ hashFiles('plugins/source/postgresql/go.sum') }}
+          key: ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/source/postgresql/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.19.5-release-cache-plugins-source-postgresql
+            ${{ runner.os }}-go-1.20.5-release-cache-plugins-source-postgresql
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3

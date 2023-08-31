@@ -19,6 +19,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/compute"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/confluent"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/connectedvmware"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/consumption"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/containerinstance"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/containerregistry"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/containerservice"
@@ -89,13 +90,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/subscription"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/support"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/synapse"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/trafficmanager"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/windowsiot"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/workloads"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func tables() []*schema.Table {
-	return []*schema.Table{
+func getTables() schema.Tables {
+	list := []*schema.Table{
 		advisor.RecommendationMetadata(),
 		advisor.Recommendations(),
 		advisor.Suppressions(),
@@ -120,6 +123,7 @@ func tables() []*schema.Table {
 		authorization.ProviderOperationsMetadata(),
 		authorization.RoleAssignments(),
 		authorization.RoleDefinitions(),
+		authorization.RoleManagementPolicyAssignments(),
 		automation.Account(),
 		azurearcdata.PostgresInstances(),
 		azurearcdata.SqlManagedInstances(),
@@ -134,6 +138,8 @@ func tables() []*schema.Table {
 		cdn.Profiles(),
 		cognitiveservices.Accounts(),
 		cognitiveservices.DeletedAccounts(),
+		cognitiveservices.CommitmentPlans(),
+		cognitiveservices.ResourceSKUs(),
 		compute.AvailabilitySets(),
 		compute.CapacityReservationGroups(),
 		compute.CloudServices(),
@@ -165,6 +171,26 @@ func tables() []*schema.Table {
 		containerservice.Snapshots(),
 		cosmos.Locations(),
 		cosmos.RestorableDatabaseAccounts(),
+		consumption.BillingAccountBalances(),
+		consumption.BillingAccountBudgets(),
+		consumption.BillingAccountCharges(),
+		consumption.BillingAccountEvents(),
+		consumption.BillingAccountReservationRecommendations(),
+		consumption.BillingAccountLots(),
+		consumption.BillingAccountMarketplaces(),
+		consumption.BillingProfileReservationDetails(),
+		consumption.BillingProfileReservationRecommendations(),
+		consumption.BillingProfileReservationSummaries(),
+		consumption.BillingProfileReservationTransactions(),
+		consumption.BillingAccountLegacyUsageDetails(),
+		consumption.BillingAccountModernUsageDetails(),
+		consumption.BillingAccountTags(),
+		consumption.SubscriptionBudgets(),
+		consumption.SubscriptionMarketplaces(),
+		consumption.SubscriptionPriceSheets(),
+		consumption.SubscriptionReservationRecommendations(),
+		consumption.SubscriptionLegacyUsageDetails(),
+		consumption.SubscriptionTags(),
 		customerinsights.Hubs(),
 		dashboard.Grafana(),
 		databox.Jobs(),
@@ -232,6 +258,8 @@ func tables() []*schema.Table {
 		network.Interfaces(),
 		network.LoadBalancers(),
 		network.NatGateways(),
+		network.PrivateLinkServices(),
+		network.PrivateEndpoints(),
 		network.Profiles(),
 		network.PublicIpAddresses(),
 		network.PublicIpPrefixes(),
@@ -326,7 +354,23 @@ func tables() []*schema.Table {
 		support.Tickets(),
 		synapse.PrivateLinkHubs(),
 		synapse.Workspaces(),
+		trafficmanager.Profiles(),
 		windowsiot.Services(),
 		workloads.Monitors(),
 	}
+	for i := range list {
+		if list[i].PostResourceResolver == nil {
+			panic("no PostResourceResolver in " + list[i].Name)
+		}
+	}
+	if err := transformers.TransformTables(list); err != nil {
+		panic(err)
+	}
+	if err := transformers.Apply(list, titleTransformer); err != nil {
+		panic(err)
+	}
+	for _, table := range list {
+		schema.AddCqIDs(table)
+	}
+	return list
 }

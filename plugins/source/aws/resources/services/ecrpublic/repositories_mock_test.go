@@ -7,22 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecrpublic/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildEcrPublicRepositoriesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEcrpublicClient(ctrl)
 	l := types.Repository{}
-	err := faker.FakeObject(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&l))
 	i := types.ImageDetail{}
-	err = faker.FakeObject(&i)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&i))
 
 	m.EXPECT().DescribeRepositories(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ecrpublic.DescribeRepositoriesOutput{
@@ -35,10 +30,7 @@ func buildEcrPublicRepositoriesMock(t *testing.T, ctrl *gomock.Controller) clien
 		}, nil)
 
 	tagResponse := ecrpublic.ListTagsForResourceOutput{}
-	err = faker.FakeObject(&tagResponse)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tagResponse))
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagResponse, nil)
 
 	return client.Services{

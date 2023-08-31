@@ -1,3 +1,8 @@
+---
+title: How CloudQuery handles changes to existing tables
+description: A summary of potential schema changes and how they are handled by CloudQuery
+---
+
 # How CloudQuery handles changes to existing tables
 
 This section describes how CloudQuery is dealing with schema changes in plugins.

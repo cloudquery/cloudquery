@@ -6,17 +6,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildDisks(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockLightsailClient(ctrl)
 
 	var disks lightsail.GetDisksOutput
-	if err := faker.FakeObject(&disks); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&disks))
+
 	disks.NextPageToken = nil
 	mock.EXPECT().GetDisks(
 		gomock.Any(),
@@ -28,9 +28,8 @@ func buildDisks(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var diskSnapshots lightsail.GetDiskSnapshotsOutput
-	if err := faker.FakeObject(&diskSnapshots); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&diskSnapshots))
+
 	diskSnapshots.NextPageToken = nil
 	mock.EXPECT().GetDiskSnapshots(
 		gomock.Any(),

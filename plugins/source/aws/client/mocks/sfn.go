@@ -37,6 +37,16 @@ func (m *MockSfnClient) EXPECT() *MockSfnClientMockRecorder {
 
 // DescribeActivity mocks base method.
 func (m *MockSfnClient) DescribeActivity(arg0 context.Context, arg1 *sfn.DescribeActivityInput, arg2 ...func(*sfn.Options)) (*sfn.DescribeActivityOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sfn.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeActivity")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockSfnClientMockRecorder) DescribeActivity(arg0, arg1 interface{}, ar
 
 // DescribeExecution mocks base method.
 func (m *MockSfnClient) DescribeExecution(arg0 context.Context, arg1 *sfn.DescribeExecutionInput, arg2 ...func(*sfn.Options)) (*sfn.DescribeExecutionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sfn.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeExecution")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockSfnClientMockRecorder) DescribeExecution(arg0, arg1 interface{}, a
 
 // DescribeMapRun mocks base method.
 func (m *MockSfnClient) DescribeMapRun(arg0 context.Context, arg1 *sfn.DescribeMapRunInput, arg2 ...func(*sfn.Options)) (*sfn.DescribeMapRunOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sfn.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeMapRun")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockSfnClientMockRecorder) DescribeMapRun(arg0, arg1 interface{}, arg2
 
 // DescribeStateMachine mocks base method.
 func (m *MockSfnClient) DescribeStateMachine(arg0 context.Context, arg1 *sfn.DescribeStateMachineInput, arg2 ...func(*sfn.Options)) (*sfn.DescribeStateMachineOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sfn.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeStateMachine")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -115,8 +155,48 @@ func (mr *MockSfnClientMockRecorder) DescribeStateMachine(arg0, arg1 interface{}
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeStateMachine", reflect.TypeOf((*MockSfnClient)(nil).DescribeStateMachine), varargs...)
 }
 
+// DescribeStateMachineAlias mocks base method.
+func (m *MockSfnClient) DescribeStateMachineAlias(arg0 context.Context, arg1 *sfn.DescribeStateMachineAliasInput, arg2 ...func(*sfn.Options)) (*sfn.DescribeStateMachineAliasOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sfn.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeStateMachineAlias")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeStateMachineAlias", varargs...)
+	ret0, _ := ret[0].(*sfn.DescribeStateMachineAliasOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeStateMachineAlias indicates an expected call of DescribeStateMachineAlias.
+func (mr *MockSfnClientMockRecorder) DescribeStateMachineAlias(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeStateMachineAlias", reflect.TypeOf((*MockSfnClient)(nil).DescribeStateMachineAlias), varargs...)
+}
+
 // DescribeStateMachineForExecution mocks base method.
 func (m *MockSfnClient) DescribeStateMachineForExecution(arg0 context.Context, arg1 *sfn.DescribeStateMachineForExecutionInput, arg2 ...func(*sfn.Options)) (*sfn.DescribeStateMachineForExecutionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sfn.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeStateMachineForExecution")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +217,16 @@ func (mr *MockSfnClientMockRecorder) DescribeStateMachineForExecution(arg0, arg1
 
 // GetActivityTask mocks base method.
 func (m *MockSfnClient) GetActivityTask(arg0 context.Context, arg1 *sfn.GetActivityTaskInput, arg2 ...func(*sfn.Options)) (*sfn.GetActivityTaskOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sfn.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetActivityTask")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +247,16 @@ func (mr *MockSfnClientMockRecorder) GetActivityTask(arg0, arg1 interface{}, arg
 
 // GetExecutionHistory mocks base method.
 func (m *MockSfnClient) GetExecutionHistory(arg0 context.Context, arg1 *sfn.GetExecutionHistoryInput, arg2 ...func(*sfn.Options)) (*sfn.GetExecutionHistoryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sfn.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetExecutionHistory")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +277,16 @@ func (mr *MockSfnClientMockRecorder) GetExecutionHistory(arg0, arg1 interface{},
 
 // ListActivities mocks base method.
 func (m *MockSfnClient) ListActivities(arg0 context.Context, arg1 *sfn.ListActivitiesInput, arg2 ...func(*sfn.Options)) (*sfn.ListActivitiesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sfn.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListActivities")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +307,16 @@ func (mr *MockSfnClientMockRecorder) ListActivities(arg0, arg1 interface{}, arg2
 
 // ListExecutions mocks base method.
 func (m *MockSfnClient) ListExecutions(arg0 context.Context, arg1 *sfn.ListExecutionsInput, arg2 ...func(*sfn.Options)) (*sfn.ListExecutionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sfn.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListExecutions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +337,16 @@ func (mr *MockSfnClientMockRecorder) ListExecutions(arg0, arg1 interface{}, arg2
 
 // ListMapRuns mocks base method.
 func (m *MockSfnClient) ListMapRuns(arg0 context.Context, arg1 *sfn.ListMapRunsInput, arg2 ...func(*sfn.Options)) (*sfn.ListMapRunsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sfn.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListMapRuns")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -235,8 +365,78 @@ func (mr *MockSfnClientMockRecorder) ListMapRuns(arg0, arg1 interface{}, arg2 ..
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListMapRuns", reflect.TypeOf((*MockSfnClient)(nil).ListMapRuns), varargs...)
 }
 
+// ListStateMachineAliases mocks base method.
+func (m *MockSfnClient) ListStateMachineAliases(arg0 context.Context, arg1 *sfn.ListStateMachineAliasesInput, arg2 ...func(*sfn.Options)) (*sfn.ListStateMachineAliasesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sfn.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListStateMachineAliases")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListStateMachineAliases", varargs...)
+	ret0, _ := ret[0].(*sfn.ListStateMachineAliasesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListStateMachineAliases indicates an expected call of ListStateMachineAliases.
+func (mr *MockSfnClientMockRecorder) ListStateMachineAliases(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListStateMachineAliases", reflect.TypeOf((*MockSfnClient)(nil).ListStateMachineAliases), varargs...)
+}
+
+// ListStateMachineVersions mocks base method.
+func (m *MockSfnClient) ListStateMachineVersions(arg0 context.Context, arg1 *sfn.ListStateMachineVersionsInput, arg2 ...func(*sfn.Options)) (*sfn.ListStateMachineVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sfn.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListStateMachineVersions")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListStateMachineVersions", varargs...)
+	ret0, _ := ret[0].(*sfn.ListStateMachineVersionsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListStateMachineVersions indicates an expected call of ListStateMachineVersions.
+func (mr *MockSfnClientMockRecorder) ListStateMachineVersions(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListStateMachineVersions", reflect.TypeOf((*MockSfnClient)(nil).ListStateMachineVersions), varargs...)
+}
+
 // ListStateMachines mocks base method.
 func (m *MockSfnClient) ListStateMachines(arg0 context.Context, arg1 *sfn.ListStateMachinesInput, arg2 ...func(*sfn.Options)) (*sfn.ListStateMachinesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sfn.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListStateMachines")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +457,16 @@ func (mr *MockSfnClientMockRecorder) ListStateMachines(arg0, arg1 interface{}, a
 
 // ListTagsForResource mocks base method.
 func (m *MockSfnClient) ListTagsForResource(arg0 context.Context, arg1 *sfn.ListTagsForResourceInput, arg2 ...func(*sfn.Options)) (*sfn.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sfn.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

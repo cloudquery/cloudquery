@@ -1,8 +1,3 @@
--- SELECT * FROM gcp_log_metric_filters WHERE
---     enabled = TRUE
---     AND "filter" = 'protoPayload.methodName="cloudsql.instances.update"';
-
-
 INSERT INTO gcp_policy_results (resource_id, execution_time, framework, check_id, title, project_id, status)
 SELECT "filter"                                                                                                AS resource_id,
        :'execution_time'::timestamp                                                                            AS execution_time,

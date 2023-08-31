@@ -1,18 +1,25 @@
 package plugin
 
 import (
+	"fmt"
+
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/accessanalyzer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/account"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/acm"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/acmpca"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/amp"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/amplify"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigateway"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigatewayv2"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appconfig"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appflow"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/applicationautoscaling"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appmesh"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apprunner"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appstream"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appsync"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/athena"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/auditmanager"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscaling"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscalingplans"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/backup"
@@ -23,12 +30,16 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudtrail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudwatch"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudwatchlogs"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codeartifact"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codebuild"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codecommit"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/codepipeline"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cognito"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/computeoptimizer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/config"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/costexplorer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dax"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/detective"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/directconnect"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dms"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/docdb"
@@ -67,6 +78,8 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/mq"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/mwaa"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/neptune"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/networkfirewall"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/networkmanager"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/organizations"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/qldb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/quicksight"
@@ -76,6 +89,9 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resiliencehub"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resourcegroups"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53recoverycontrolconfig"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53recoveryreadiness"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53resolver"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sagemaker"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/savingsplans"
@@ -83,9 +99,11 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/secretsmanager"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/securityhub"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicecatalog"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicediscovery"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/servicequotas"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ses"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/shield"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/signer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sns"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sqs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ssm"
@@ -97,17 +115,21 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/waf"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wafregional"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wafv2"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wellarchitected"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/workspaces"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/xray"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
-func tables() []*schema.Table {
-	return []*schema.Table{
+func getTables() schema.Tables {
+	t := []*schema.Table{
 		accessanalyzer.Analyzers(),
 		account.AlternateContacts(),
 		account.Contacts(),
 		acm.Certificates(),
+		acmpca.CertificateAuthorities(),
 		amp.Workspaces(),
 		amplify.Apps(),
 		apigateway.ApiKeys(),
@@ -119,6 +141,10 @@ func tables() []*schema.Table {
 		apigatewayv2.Apis(),
 		apigatewayv2.DomainNames(),
 		apigatewayv2.VpcLinks(),
+		appconfig.Applications(),
+		appconfig.DeploymentStrategies(),
+		appflow.Flows(),
+		appmesh.Meshes(),
 		applicationautoscaling.Policies(),
 		applicationautoscaling.ScalableTargets(),
 		applicationautoscaling.ScalingActivities(),
@@ -141,13 +167,17 @@ func tables() []*schema.Table {
 		appsync.GraphqlApis(),
 		athena.DataCatalogs(),
 		athena.WorkGroups(),
+		auditmanager.Assessments(),
 		autoscaling.Groups(),
 		autoscaling.LaunchConfigurations(),
 		autoscaling.ScheduledActions(),
 		autoscalingplans.Plans(),
 		backup.GlobalSettings(),
+		backup.Jobs(),
 		backup.Plans(),
+		backup.ProtectedResources(),
 		backup.RegionSettings(),
+		backup.ReportPlans(),
 		backup.Vaults(),
 		batch.JobQueues(),
 		batch.JobDefinitions(),
@@ -155,15 +185,26 @@ func tables() []*schema.Table {
 		cloudformation.StackSets(),
 		cloudfront.CachePolicies(),
 		cloudfront.Distributions(),
+		cloudfront.Functions(),
+		cloudfront.OriginAccessIdentities(),
+		cloudfront.OriginRequestPolicies(),
+		cloudfront.ResponseHeaderPolicies(),
 		cloudhsmv2.Backups(),
 		cloudhsmv2.Clusters(),
+		cloudtrail.Channels(),
 		cloudtrail.Events(),
+		cloudtrail.Imports(),
 		cloudtrail.Trails(),
 		cloudwatch.Alarms(),
+		cloudwatch.Metrics(),
 		cloudwatchlogs.LogGroups(),
 		cloudwatchlogs.MetricFilters(),
 		cloudwatchlogs.ResourcePolicies(),
+		codeartifact.Domains(),
+		codeartifact.Repositories(),
 		codebuild.Projects(),
+		codebuild.SourceCredentials(),
+		codecommit.Repositories(),
 		codepipeline.Pipelines(),
 		codepipeline.Webhooks(),
 		cognito.IdentityPools(),
@@ -175,9 +216,16 @@ func tables() []*schema.Table {
 		computeoptimizer.EnrollmentStatuses(),
 		computeoptimizer.LambdaFunctionsRecommendations(),
 		config.ConfigRules(),
+		config.ConfigurationAggregators(),
 		config.ConfigurationRecorders(),
 		config.ConformancePacks(),
+		config.DeliveryChannels(),
+		config.RetentionConfigurations(),
+		costexplorer.CustomCost(),
+		costexplorer.ThirtyDayCost(),
+		costexplorer.ThirtyDayCostForecast(),
 		dax.Clusters(),
+		detective.Graphs(),
 		directconnect.Connections(),
 		directconnect.Gateways(),
 		directconnect.Lags(),
@@ -203,6 +251,7 @@ func tables() []*schema.Table {
 		ec2.AccountAttributes(),
 		ec2.AvailabilityZones(),
 		ec2.ByoipCidrs(),
+		ec2.CapacityReservations(),
 		ec2.CustomerGateways(),
 		ec2.DHCPOptions(),
 		ec2.EbsSnapshots(),
@@ -213,6 +262,7 @@ func tables() []*schema.Table {
 		ec2.FlowLogs(),
 		ec2.Hosts(),
 		ec2.Images(),
+		ec2.InstanceConnectEndpoints(),
 		ec2.Instances(),
 		ec2.InstanceStatuses(),
 		ec2.InstanceTypes(),
@@ -237,13 +287,16 @@ func tables() []*schema.Table {
 		ec2.VpcEndpointServices(),
 		ec2.VpcPeeringConnections(),
 		ec2.Vpcs(),
+		ec2.VpnConnections(),
 		ec2.VpnGateways(),
+		ecr.PullThroughCacheRules(),
 		ecr.Registries(),
 		ecr.RegistryPolicies(),
 		ecr.Repositories(),
 		ecrpublic.Repositories(),
 		ecs.Clusters(),
 		ecs.TaskDefinitions(),
+		efs.AccessPoints(),
 		efs.Filesystems(),
 		eks.Clusters(),
 		elasticache.Clusters(),
@@ -274,7 +327,9 @@ func tables() []*schema.Table {
 		elbv2.TargetGroups(),
 		emr.BlockPublicAccessConfigs(),
 		emr.Clusters(),
+		emr.ReleaseLabels(),
 		emr.SecurityConfigurations(),
+		emr.Studios(),
 		eventbridge.ApiDestinations(),
 		eventbridge.Archives(),
 		eventbridge.Connections(),
@@ -373,6 +428,11 @@ func tables() []*schema.Table {
 		neptune.GlobalClusters(),
 		neptune.Instances(),
 		neptune.SubnetGroups(),
+		networkfirewall.FirewallPolicies(),
+		networkfirewall.Firewalls(),
+		networkfirewall.RuleGroups(),
+		networkfirewall.TLSInspectionConfigurations(),
+		networkmanager.GlobalNetworks(),
 		organizations.Accounts(),
 		organizations.DelegatedAdministrators(),
 		organizations.OrganizationalUnits(),
@@ -425,9 +485,25 @@ func tables() []*schema.Table {
 		route53.HostedZones(),
 		route53.Operations(),
 		route53.TrafficPolicies(),
+		route53recoverycontrolconfig.Clusters(),
+		route53recoverycontrolconfig.ControlPanels(),
+		route53recoveryreadiness.Cells(),
+		route53recoveryreadiness.ReadinessChecks(),
+		route53recoveryreadiness.RecoveryGroups(),
+		route53recoveryreadiness.ResourceSets(),
+		route53resolver.FirewallConfigs(),
+		route53resolver.FirewallDomainLists(),
+		route53resolver.FirewallRuleGroupAssociations(),
+		route53resolver.FirewallRuleGroups(),
+		route53resolver.ResolverEndpoints(),
+		route53resolver.ResolverQueryLogConfigAssociations(),
+		route53resolver.ResolverQueryLogConfigs(),
+		route53resolver.ResolverRuleAssociations(),
+		route53resolver.ResolverRules(),
 		s3.AccessPoints(),
 		s3.Accounts(),
 		s3.Buckets(),
+		s3.MultiRegionAccessPoints(),
 		sagemaker.Apps(),
 		sagemaker.EndpointConfigurations(),
 		sagemaker.Models(),
@@ -437,10 +513,14 @@ func tables() []*schema.Table {
 		scheduler.ScheduleGroups(),
 		scheduler.Schedules(),
 		secretsmanager.Secrets(),
+		securityhub.EnabledStandards(),
 		securityhub.Findings(),
+		securityhub.Hubs(),
 		servicecatalog.Portfolios(),
 		servicecatalog.Products(),
 		servicecatalog.ProvisionedProducts(),
+		servicediscovery.Namespaces(),
+		servicediscovery.Services(),
 		servicequotas.Services(),
 		ses.ActiveReceiptRuleSets(),
 		ses.ConfigurationSets(),
@@ -452,6 +532,7 @@ func tables() []*schema.Table {
 		shield.ProtectionGroups(),
 		shield.Protections(),
 		shield.Subscriptions(),
+		signer.Profiles(),
 		sns.Subscriptions(),
 		sns.Topics(),
 		sqs.Queues(),
@@ -486,6 +567,9 @@ func tables() []*schema.Table {
 		wafv2.RegexPatternSets(),
 		wafv2.RuleGroups(),
 		wafv2.WebAcls(),
+		wellarchitected.Lenses(),
+		wellarchitected.ShareInvitations(),
+		wellarchitected.Workloads(),
 		workspaces.Directories(),
 		workspaces.Workspaces(),
 		xray.EncryptionConfigs(),
@@ -493,4 +577,24 @@ func tables() []*schema.Table {
 		xray.ResourcePolicies(),
 		xray.SamplingRules(),
 	}
+	if err := transformers.TransformTables(t); err != nil {
+		panic(err)
+	}
+	for _, table := range t {
+		schema.AddCqIDs(table)
+		titleTransformer(table)
+		if err := validateTagsIsJSON(table); err != nil {
+			panic(err)
+		}
+	}
+	return t
+}
+
+func validateTagsIsJSON(table *schema.Table) error {
+	for _, col := range table.Columns {
+		if col.Name == "tags" && col.Type != types.ExtensionTypes.JSON {
+			return fmt.Errorf("column %s in table %s must be of type %s", col.Name, table.Name, types.ExtensionTypes.JSON)
+		}
+	}
+	return nil
 }

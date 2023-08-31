@@ -2,7 +2,7 @@
 
 This table shows data for Amazon API Gateway v2 Domain Names.
 
-https://docs.aws.amazon.com/apigateway/latest/api/API_DomainName.html
+https://docs.aws.amazon.com/apigatewayv2/latest/api-reference/domainnames.html
 
 The composite primary key for this table is (**account_id**, **arn**).
 
@@ -15,15 +15,13 @@ The following tables depend on aws_apigatewayv2_domain_names:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region|String|
-|arn (PK)|String|
-|domain_name|String|
-|api_mapping_selection_expression|String|
-|domain_name_configurations|JSON|
-|mutual_tls_authentication|JSON|
-|tags|JSON|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|domain_name|`utf8`|
+|api_mapping_selection_expression|`utf8`|
+|domain_name_configurations|`json`|
+|mutual_tls_authentication|`json`|
+|tags|`json`|

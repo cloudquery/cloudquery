@@ -7,8 +7,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildDynamodbGlobalTablesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -17,9 +18,8 @@ func buildDynamodbGlobalTablesMock(t *testing.T, ctrl *gomock.Controller) client
 		Dynamodb: m,
 	}
 	var globalTable types.GlobalTable
-	if err := faker.FakeObject(&globalTable); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&globalTable))
+
 	listOutput := &dynamodb.ListGlobalTablesOutput{
 		GlobalTables: []types.GlobalTable{globalTable},
 	}
@@ -28,9 +28,7 @@ func buildDynamodbGlobalTablesMock(t *testing.T, ctrl *gomock.Controller) client
 		nil,
 	)
 	var gtd types.GlobalTableDescription
-	if err := faker.FakeObject(&gtd); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&gtd))
 
 	m.EXPECT().DescribeGlobalTable(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&dynamodb.DescribeGlobalTableOutput{
@@ -40,9 +38,8 @@ func buildDynamodbGlobalTablesMock(t *testing.T, ctrl *gomock.Controller) client
 	)
 
 	tags := &dynamodb.ListTagsOfResourceOutput{}
-	if err := faker.FakeObject(&tags); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tags))
+
 	tags.NextToken = nil
 	m.EXPECT().ListTagsOfResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		tags,

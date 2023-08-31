@@ -3,16 +3,15 @@ package client
 import (
 	"context"
 	"database/sql"
-	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
 )
 
-func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, sourceName string, syncTime time.Time) error {
+func (c *Client) DeleteStale(ctx context.Context, messages message.WriteDeleteStales) error {
 	return c.doInTx(ctx, func(tx *sql.Tx) error {
-		for _, table := range tables.FlattenTables() {
-			query, params := queries.DeleteStale(c.schemaName, table, sourceName, syncTime)
+		for _, m := range messages {
+			query, params := queries.DeleteStale(c.spec.Schema, m)
 			_, err := tx.ExecContext(ctx, query, params...)
 			if err != nil {
 				return err

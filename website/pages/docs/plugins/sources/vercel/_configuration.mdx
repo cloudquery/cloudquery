@@ -3,16 +3,19 @@ kind: source
 # Common source-plugin configuration
 spec:
   name: vercel
-  path: cloudquery/vercel
-  version: "VERSION_SOURCE_VERCEL"
+  path: /path/to/downloaded/plugin # Buy from here: https://cloudquery.io/integrations/vercle
+  registry: local
+  version: "PREMIUM"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
   skip_tables:
     - vercel_deployment_checks
-  backend: local
 
   # Vercel specific configuration
   spec:
+    backend_options:
+      table_name: "test_state_table"
+      connection: "@@plugins.DESTINATION_NAME.connection"
     access_token: "<YOUR_ACCESS_TOKEN_HERE>"
 ```
 

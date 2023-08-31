@@ -3,8 +3,11 @@ package {{.Service}}
 import (
 	"context"
 
-	"github.com/cloudquery/plugin-sdk/schema"
-  "github.com/cloudquery/plugin-sdk/transformers"
+{{if .HasIDPK}}
+  "github.com/apache/arrow/go/v14/arrow"
+{{end -}}
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
 	"github.com/stripe/stripe-go/v74"
 )
@@ -24,18 +27,18 @@ func {{.TableName | ToPascal}}() *schema.Table {
 		  Columns: []schema.Column{
 				 {
 								 Name:     "id",
-								 Type:     schema.TypeString,
+								 Type:     arrow.BinaryTypes.String,
 								 Resolver: schema.PathResolver("ID"),
-								 CreationOptions: schema.ColumnCreationOptions{
-												 PrimaryKey: true,
-								 },
-				 },
+								 PrimaryKey: true,
 			},
 {{end}}
-{{if .Children}}
+{{if or .Children .ExtraChildren}}
 	Relations: []*schema.Table{
 	{{- range .Children}}
 		{{.TableName | ToPascal}}(),
+	{{- end}}
+	{{- range .ExtraChildren}}
+		{{.}},
 	{{- end}}
 	},
 {{end}}

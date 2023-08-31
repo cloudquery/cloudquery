@@ -3,11 +3,13 @@ package lightsail
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Certificates() *schema.Table {
@@ -23,7 +25,7 @@ func Certificates() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: client.ResolveTags,
 			},
 		},
@@ -34,9 +36,11 @@ func fetchLightsailCertificates(ctx context.Context, meta schema.ClientMeta, par
 	input := lightsail.GetCertificatesInput{
 		IncludeCertificateDetails: true,
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Lightsail
-	response, err := svc.GetCertificates(ctx, &input)
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceLightsail).Lightsail
+	response, err := svc.GetCertificates(ctx, &input, func(options *lightsail.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

@@ -37,6 +37,16 @@ func (m *MockConfigserviceClient) EXPECT() *MockConfigserviceClientMockRecorder 
 
 // BatchGetAggregateResourceConfig mocks base method.
 func (m *MockConfigserviceClient) BatchGetAggregateResourceConfig(arg0 context.Context, arg1 *configservice.BatchGetAggregateResourceConfigInput, arg2 ...func(*configservice.Options)) (*configservice.BatchGetAggregateResourceConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetAggregateResourceConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockConfigserviceClientMockRecorder) BatchGetAggregateResourceConfig(a
 
 // BatchGetResourceConfig mocks base method.
 func (m *MockConfigserviceClient) BatchGetResourceConfig(arg0 context.Context, arg1 *configservice.BatchGetResourceConfigInput, arg2 ...func(*configservice.Options)) (*configservice.BatchGetResourceConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetResourceConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockConfigserviceClientMockRecorder) BatchGetResourceConfig(arg0, arg1
 
 // DescribeAggregateComplianceByConfigRules mocks base method.
 func (m *MockConfigserviceClient) DescribeAggregateComplianceByConfigRules(arg0 context.Context, arg1 *configservice.DescribeAggregateComplianceByConfigRulesInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeAggregateComplianceByConfigRulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAggregateComplianceByConfigRules")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeAggregateComplianceByConf
 
 // DescribeAggregateComplianceByConformancePacks mocks base method.
 func (m *MockConfigserviceClient) DescribeAggregateComplianceByConformancePacks(arg0 context.Context, arg1 *configservice.DescribeAggregateComplianceByConformancePacksInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeAggregateComplianceByConformancePacksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAggregateComplianceByConformancePacks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeAggregateComplianceByConf
 
 // DescribeAggregationAuthorizations mocks base method.
 func (m *MockConfigserviceClient) DescribeAggregationAuthorizations(arg0 context.Context, arg1 *configservice.DescribeAggregationAuthorizationsInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeAggregationAuthorizationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeAggregationAuthorizations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeAggregationAuthorizations
 
 // DescribeComplianceByConfigRule mocks base method.
 func (m *MockConfigserviceClient) DescribeComplianceByConfigRule(arg0 context.Context, arg1 *configservice.DescribeComplianceByConfigRuleInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeComplianceByConfigRuleOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeComplianceByConfigRule")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeComplianceByConfigRule(ar
 
 // DescribeComplianceByResource mocks base method.
 func (m *MockConfigserviceClient) DescribeComplianceByResource(arg0 context.Context, arg1 *configservice.DescribeComplianceByResourceInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeComplianceByResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeComplianceByResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeComplianceByResource(arg0
 
 // DescribeConfigRuleEvaluationStatus mocks base method.
 func (m *MockConfigserviceClient) DescribeConfigRuleEvaluationStatus(arg0 context.Context, arg1 *configservice.DescribeConfigRuleEvaluationStatusInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeConfigRuleEvaluationStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConfigRuleEvaluationStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeConfigRuleEvaluationStatu
 
 // DescribeConfigRules mocks base method.
 func (m *MockConfigserviceClient) DescribeConfigRules(arg0 context.Context, arg1 *configservice.DescribeConfigRulesInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeConfigRulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConfigRules")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeConfigRules(arg0, arg1 in
 
 // DescribeConfigurationAggregatorSourcesStatus mocks base method.
 func (m *MockConfigserviceClient) DescribeConfigurationAggregatorSourcesStatus(arg0 context.Context, arg1 *configservice.DescribeConfigurationAggregatorSourcesStatusInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeConfigurationAggregatorSourcesStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConfigurationAggregatorSourcesStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeConfigurationAggregatorSo
 
 // DescribeConfigurationAggregators mocks base method.
 func (m *MockConfigserviceClient) DescribeConfigurationAggregators(arg0 context.Context, arg1 *configservice.DescribeConfigurationAggregatorsInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeConfigurationAggregatorsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConfigurationAggregators")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeConfigurationAggregators(
 
 // DescribeConfigurationRecorderStatus mocks base method.
 func (m *MockConfigserviceClient) DescribeConfigurationRecorderStatus(arg0 context.Context, arg1 *configservice.DescribeConfigurationRecorderStatusInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeConfigurationRecorderStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConfigurationRecorderStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeConfigurationRecorderStat
 
 // DescribeConfigurationRecorders mocks base method.
 func (m *MockConfigserviceClient) DescribeConfigurationRecorders(arg0 context.Context, arg1 *configservice.DescribeConfigurationRecordersInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeConfigurationRecordersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConfigurationRecorders")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeConfigurationRecorders(ar
 
 // DescribeConformancePackCompliance mocks base method.
 func (m *MockConfigserviceClient) DescribeConformancePackCompliance(arg0 context.Context, arg1 *configservice.DescribeConformancePackComplianceInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeConformancePackComplianceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConformancePackCompliance")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeConformancePackCompliance
 
 // DescribeConformancePackStatus mocks base method.
 func (m *MockConfigserviceClient) DescribeConformancePackStatus(arg0 context.Context, arg1 *configservice.DescribeConformancePackStatusInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeConformancePackStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConformancePackStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeConformancePackStatus(arg
 
 // DescribeConformancePacks mocks base method.
 func (m *MockConfigserviceClient) DescribeConformancePacks(arg0 context.Context, arg1 *configservice.DescribeConformancePacksInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeConformancePacksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConformancePacks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeConformancePacks(arg0, ar
 
 // DescribeDeliveryChannelStatus mocks base method.
 func (m *MockConfigserviceClient) DescribeDeliveryChannelStatus(arg0 context.Context, arg1 *configservice.DescribeDeliveryChannelStatusInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeDeliveryChannelStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDeliveryChannelStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeDeliveryChannelStatus(arg
 
 // DescribeDeliveryChannels mocks base method.
 func (m *MockConfigserviceClient) DescribeDeliveryChannels(arg0 context.Context, arg1 *configservice.DescribeDeliveryChannelsInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeDeliveryChannelsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDeliveryChannels")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeDeliveryChannels(arg0, ar
 
 // DescribeOrganizationConfigRuleStatuses mocks base method.
 func (m *MockConfigserviceClient) DescribeOrganizationConfigRuleStatuses(arg0 context.Context, arg1 *configservice.DescribeOrganizationConfigRuleStatusesInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeOrganizationConfigRuleStatusesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeOrganizationConfigRuleStatuses")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeOrganizationConfigRuleSta
 
 // DescribeOrganizationConfigRules mocks base method.
 func (m *MockConfigserviceClient) DescribeOrganizationConfigRules(arg0 context.Context, arg1 *configservice.DescribeOrganizationConfigRulesInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeOrganizationConfigRulesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeOrganizationConfigRules")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeOrganizationConfigRules(a
 
 // DescribeOrganizationConformancePackStatuses mocks base method.
 func (m *MockConfigserviceClient) DescribeOrganizationConformancePackStatuses(arg0 context.Context, arg1 *configservice.DescribeOrganizationConformancePackStatusesInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeOrganizationConformancePackStatusesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeOrganizationConformancePackStatuses")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeOrganizationConformancePa
 
 // DescribeOrganizationConformancePacks mocks base method.
 func (m *MockConfigserviceClient) DescribeOrganizationConformancePacks(arg0 context.Context, arg1 *configservice.DescribeOrganizationConformancePacksInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeOrganizationConformancePacksOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeOrganizationConformancePacks")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeOrganizationConformancePa
 
 // DescribePendingAggregationRequests mocks base method.
 func (m *MockConfigserviceClient) DescribePendingAggregationRequests(arg0 context.Context, arg1 *configservice.DescribePendingAggregationRequestsInput, arg2 ...func(*configservice.Options)) (*configservice.DescribePendingAggregationRequestsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribePendingAggregationRequests")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribePendingAggregationRequest
 
 // DescribeRemediationConfigurations mocks base method.
 func (m *MockConfigserviceClient) DescribeRemediationConfigurations(arg0 context.Context, arg1 *configservice.DescribeRemediationConfigurationsInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeRemediationConfigurationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRemediationConfigurations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeRemediationConfigurations
 
 // DescribeRemediationExceptions mocks base method.
 func (m *MockConfigserviceClient) DescribeRemediationExceptions(arg0 context.Context, arg1 *configservice.DescribeRemediationExceptionsInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeRemediationExceptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRemediationExceptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeRemediationExceptions(arg
 
 // DescribeRemediationExecutionStatus mocks base method.
 func (m *MockConfigserviceClient) DescribeRemediationExecutionStatus(arg0 context.Context, arg1 *configservice.DescribeRemediationExecutionStatusInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeRemediationExecutionStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRemediationExecutionStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +817,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeRemediationExecutionStatu
 
 // DescribeRetentionConfigurations mocks base method.
 func (m *MockConfigserviceClient) DescribeRetentionConfigurations(arg0 context.Context, arg1 *configservice.DescribeRetentionConfigurationsInput, arg2 ...func(*configservice.Options)) (*configservice.DescribeRetentionConfigurationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRetentionConfigurations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -577,6 +847,16 @@ func (mr *MockConfigserviceClientMockRecorder) DescribeRetentionConfigurations(a
 
 // GetAggregateComplianceDetailsByConfigRule mocks base method.
 func (m *MockConfigserviceClient) GetAggregateComplianceDetailsByConfigRule(arg0 context.Context, arg1 *configservice.GetAggregateComplianceDetailsByConfigRuleInput, arg2 ...func(*configservice.Options)) (*configservice.GetAggregateComplianceDetailsByConfigRuleOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAggregateComplianceDetailsByConfigRule")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -597,6 +877,16 @@ func (mr *MockConfigserviceClientMockRecorder) GetAggregateComplianceDetailsByCo
 
 // GetAggregateConfigRuleComplianceSummary mocks base method.
 func (m *MockConfigserviceClient) GetAggregateConfigRuleComplianceSummary(arg0 context.Context, arg1 *configservice.GetAggregateConfigRuleComplianceSummaryInput, arg2 ...func(*configservice.Options)) (*configservice.GetAggregateConfigRuleComplianceSummaryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAggregateConfigRuleComplianceSummary")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -617,6 +907,16 @@ func (mr *MockConfigserviceClientMockRecorder) GetAggregateConfigRuleComplianceS
 
 // GetAggregateConformancePackComplianceSummary mocks base method.
 func (m *MockConfigserviceClient) GetAggregateConformancePackComplianceSummary(arg0 context.Context, arg1 *configservice.GetAggregateConformancePackComplianceSummaryInput, arg2 ...func(*configservice.Options)) (*configservice.GetAggregateConformancePackComplianceSummaryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAggregateConformancePackComplianceSummary")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -637,6 +937,16 @@ func (mr *MockConfigserviceClientMockRecorder) GetAggregateConformancePackCompli
 
 // GetAggregateDiscoveredResourceCounts mocks base method.
 func (m *MockConfigserviceClient) GetAggregateDiscoveredResourceCounts(arg0 context.Context, arg1 *configservice.GetAggregateDiscoveredResourceCountsInput, arg2 ...func(*configservice.Options)) (*configservice.GetAggregateDiscoveredResourceCountsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAggregateDiscoveredResourceCounts")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -657,6 +967,16 @@ func (mr *MockConfigserviceClientMockRecorder) GetAggregateDiscoveredResourceCou
 
 // GetAggregateResourceConfig mocks base method.
 func (m *MockConfigserviceClient) GetAggregateResourceConfig(arg0 context.Context, arg1 *configservice.GetAggregateResourceConfigInput, arg2 ...func(*configservice.Options)) (*configservice.GetAggregateResourceConfigOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAggregateResourceConfig")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -677,6 +997,16 @@ func (mr *MockConfigserviceClientMockRecorder) GetAggregateResourceConfig(arg0, 
 
 // GetComplianceDetailsByConfigRule mocks base method.
 func (m *MockConfigserviceClient) GetComplianceDetailsByConfigRule(arg0 context.Context, arg1 *configservice.GetComplianceDetailsByConfigRuleInput, arg2 ...func(*configservice.Options)) (*configservice.GetComplianceDetailsByConfigRuleOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetComplianceDetailsByConfigRule")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -697,6 +1027,16 @@ func (mr *MockConfigserviceClientMockRecorder) GetComplianceDetailsByConfigRule(
 
 // GetComplianceDetailsByResource mocks base method.
 func (m *MockConfigserviceClient) GetComplianceDetailsByResource(arg0 context.Context, arg1 *configservice.GetComplianceDetailsByResourceInput, arg2 ...func(*configservice.Options)) (*configservice.GetComplianceDetailsByResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetComplianceDetailsByResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -717,6 +1057,16 @@ func (mr *MockConfigserviceClientMockRecorder) GetComplianceDetailsByResource(ar
 
 // GetComplianceSummaryByConfigRule mocks base method.
 func (m *MockConfigserviceClient) GetComplianceSummaryByConfigRule(arg0 context.Context, arg1 *configservice.GetComplianceSummaryByConfigRuleInput, arg2 ...func(*configservice.Options)) (*configservice.GetComplianceSummaryByConfigRuleOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetComplianceSummaryByConfigRule")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -737,6 +1087,16 @@ func (mr *MockConfigserviceClientMockRecorder) GetComplianceSummaryByConfigRule(
 
 // GetComplianceSummaryByResourceType mocks base method.
 func (m *MockConfigserviceClient) GetComplianceSummaryByResourceType(arg0 context.Context, arg1 *configservice.GetComplianceSummaryByResourceTypeInput, arg2 ...func(*configservice.Options)) (*configservice.GetComplianceSummaryByResourceTypeOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetComplianceSummaryByResourceType")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -757,6 +1117,16 @@ func (mr *MockConfigserviceClientMockRecorder) GetComplianceSummaryByResourceTyp
 
 // GetConformancePackComplianceDetails mocks base method.
 func (m *MockConfigserviceClient) GetConformancePackComplianceDetails(arg0 context.Context, arg1 *configservice.GetConformancePackComplianceDetailsInput, arg2 ...func(*configservice.Options)) (*configservice.GetConformancePackComplianceDetailsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetConformancePackComplianceDetails")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -777,6 +1147,16 @@ func (mr *MockConfigserviceClientMockRecorder) GetConformancePackComplianceDetai
 
 // GetConformancePackComplianceSummary mocks base method.
 func (m *MockConfigserviceClient) GetConformancePackComplianceSummary(arg0 context.Context, arg1 *configservice.GetConformancePackComplianceSummaryInput, arg2 ...func(*configservice.Options)) (*configservice.GetConformancePackComplianceSummaryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetConformancePackComplianceSummary")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -797,6 +1177,16 @@ func (mr *MockConfigserviceClientMockRecorder) GetConformancePackComplianceSumma
 
 // GetCustomRulePolicy mocks base method.
 func (m *MockConfigserviceClient) GetCustomRulePolicy(arg0 context.Context, arg1 *configservice.GetCustomRulePolicyInput, arg2 ...func(*configservice.Options)) (*configservice.GetCustomRulePolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetCustomRulePolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -817,6 +1207,16 @@ func (mr *MockConfigserviceClientMockRecorder) GetCustomRulePolicy(arg0, arg1 in
 
 // GetDiscoveredResourceCounts mocks base method.
 func (m *MockConfigserviceClient) GetDiscoveredResourceCounts(arg0 context.Context, arg1 *configservice.GetDiscoveredResourceCountsInput, arg2 ...func(*configservice.Options)) (*configservice.GetDiscoveredResourceCountsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDiscoveredResourceCounts")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -837,6 +1237,16 @@ func (mr *MockConfigserviceClientMockRecorder) GetDiscoveredResourceCounts(arg0,
 
 // GetOrganizationConfigRuleDetailedStatus mocks base method.
 func (m *MockConfigserviceClient) GetOrganizationConfigRuleDetailedStatus(arg0 context.Context, arg1 *configservice.GetOrganizationConfigRuleDetailedStatusInput, arg2 ...func(*configservice.Options)) (*configservice.GetOrganizationConfigRuleDetailedStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetOrganizationConfigRuleDetailedStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -857,6 +1267,16 @@ func (mr *MockConfigserviceClientMockRecorder) GetOrganizationConfigRuleDetailed
 
 // GetOrganizationConformancePackDetailedStatus mocks base method.
 func (m *MockConfigserviceClient) GetOrganizationConformancePackDetailedStatus(arg0 context.Context, arg1 *configservice.GetOrganizationConformancePackDetailedStatusInput, arg2 ...func(*configservice.Options)) (*configservice.GetOrganizationConformancePackDetailedStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetOrganizationConformancePackDetailedStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -877,6 +1297,16 @@ func (mr *MockConfigserviceClientMockRecorder) GetOrganizationConformancePackDet
 
 // GetOrganizationCustomRulePolicy mocks base method.
 func (m *MockConfigserviceClient) GetOrganizationCustomRulePolicy(arg0 context.Context, arg1 *configservice.GetOrganizationCustomRulePolicyInput, arg2 ...func(*configservice.Options)) (*configservice.GetOrganizationCustomRulePolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetOrganizationCustomRulePolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -897,6 +1327,16 @@ func (mr *MockConfigserviceClientMockRecorder) GetOrganizationCustomRulePolicy(a
 
 // GetResourceConfigHistory mocks base method.
 func (m *MockConfigserviceClient) GetResourceConfigHistory(arg0 context.Context, arg1 *configservice.GetResourceConfigHistoryInput, arg2 ...func(*configservice.Options)) (*configservice.GetResourceConfigHistoryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetResourceConfigHistory")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -917,6 +1357,16 @@ func (mr *MockConfigserviceClientMockRecorder) GetResourceConfigHistory(arg0, ar
 
 // GetResourceEvaluationSummary mocks base method.
 func (m *MockConfigserviceClient) GetResourceEvaluationSummary(arg0 context.Context, arg1 *configservice.GetResourceEvaluationSummaryInput, arg2 ...func(*configservice.Options)) (*configservice.GetResourceEvaluationSummaryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetResourceEvaluationSummary")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -937,6 +1387,16 @@ func (mr *MockConfigserviceClientMockRecorder) GetResourceEvaluationSummary(arg0
 
 // GetStoredQuery mocks base method.
 func (m *MockConfigserviceClient) GetStoredQuery(arg0 context.Context, arg1 *configservice.GetStoredQueryInput, arg2 ...func(*configservice.Options)) (*configservice.GetStoredQueryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetStoredQuery")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -957,6 +1417,16 @@ func (mr *MockConfigserviceClientMockRecorder) GetStoredQuery(arg0, arg1 interfa
 
 // ListAggregateDiscoveredResources mocks base method.
 func (m *MockConfigserviceClient) ListAggregateDiscoveredResources(arg0 context.Context, arg1 *configservice.ListAggregateDiscoveredResourcesInput, arg2 ...func(*configservice.Options)) (*configservice.ListAggregateDiscoveredResourcesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAggregateDiscoveredResources")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -977,6 +1447,16 @@ func (mr *MockConfigserviceClientMockRecorder) ListAggregateDiscoveredResources(
 
 // ListConformancePackComplianceScores mocks base method.
 func (m *MockConfigserviceClient) ListConformancePackComplianceScores(arg0 context.Context, arg1 *configservice.ListConformancePackComplianceScoresInput, arg2 ...func(*configservice.Options)) (*configservice.ListConformancePackComplianceScoresOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListConformancePackComplianceScores")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -997,6 +1477,16 @@ func (mr *MockConfigserviceClientMockRecorder) ListConformancePackComplianceScor
 
 // ListDiscoveredResources mocks base method.
 func (m *MockConfigserviceClient) ListDiscoveredResources(arg0 context.Context, arg1 *configservice.ListDiscoveredResourcesInput, arg2 ...func(*configservice.Options)) (*configservice.ListDiscoveredResourcesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDiscoveredResources")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1017,6 +1507,16 @@ func (mr *MockConfigserviceClientMockRecorder) ListDiscoveredResources(arg0, arg
 
 // ListResourceEvaluations mocks base method.
 func (m *MockConfigserviceClient) ListResourceEvaluations(arg0 context.Context, arg1 *configservice.ListResourceEvaluationsInput, arg2 ...func(*configservice.Options)) (*configservice.ListResourceEvaluationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListResourceEvaluations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1037,6 +1537,16 @@ func (mr *MockConfigserviceClientMockRecorder) ListResourceEvaluations(arg0, arg
 
 // ListStoredQueries mocks base method.
 func (m *MockConfigserviceClient) ListStoredQueries(arg0 context.Context, arg1 *configservice.ListStoredQueriesInput, arg2 ...func(*configservice.Options)) (*configservice.ListStoredQueriesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListStoredQueries")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -1057,6 +1567,16 @@ func (mr *MockConfigserviceClientMockRecorder) ListStoredQueries(arg0, arg1 inte
 
 // ListTagsForResource mocks base method.
 func (m *MockConfigserviceClient) ListTagsForResource(arg0 context.Context, arg1 *configservice.ListTagsForResourceInput, arg2 ...func(*configservice.Options)) (*configservice.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &configservice.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

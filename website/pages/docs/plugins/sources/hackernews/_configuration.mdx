@@ -5,7 +5,9 @@ spec:
   path: "cloudquery/hackernews"
   version: "VERSION_SOURCE_HACKERNEWS"
   tables: ["*"]
-  backend: local
+  backend_options:
+    table_name: "cq_hackernews_state"
+    connection: "@@plugins.DESTINATION_NAME.connection"
   destinations:
     - "DESTINATION_NAME"
   spec:

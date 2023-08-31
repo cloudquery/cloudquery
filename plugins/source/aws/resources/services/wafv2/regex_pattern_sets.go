@@ -3,12 +3,15 @@ package wafv2
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func RegexPatternSets() *schema.Table {
@@ -25,16 +28,14 @@ func RegexPatternSets() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveRegexPatternSetTags,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ARN"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ARN"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -42,14 +43,16 @@ func RegexPatternSets() *schema.Table {
 
 func fetchWafv2RegexPatternSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Wafv2
+	svc := cl.Services(client.AWSServiceWafv2).Wafv2
 
 	params := wafv2.ListRegexPatternSetsInput{
 		Scope: cl.WAFScope,
 		Limit: aws.Int32(100), // maximum value: https://docs.aws.amazon.com/waf/latest/APIReference/API_ListRegexPatternSets.html
 	}
 	for {
-		result, err := svc.ListRegexPatternSets(ctx, &params)
+		result, err := svc.ListRegexPatternSets(ctx, &params, func(o *wafv2.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -66,7 +69,7 @@ func fetchWafv2RegexPatternSets(ctx context.Context, meta schema.ClientMeta, par
 
 func getRegexPatternSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Wafv2
+	svc := cl.Services(client.AWSServiceWafv2).Wafv2
 	s := resource.Item.(types.RegexPatternSetSummary)
 
 	info, err := svc.GetRegexPatternSet(
@@ -76,8 +79,8 @@ func getRegexPatternSet(ctx context.Context, meta schema.ClientMeta, resource *s
 			Name:  s.Name,
 			Scope: cl.WAFScope,
 		},
-		func(options *wafv2.Options) {
-			options.Region = cl.Region
+		func(o *wafv2.Options) {
+			o.Region = cl.Region
 		},
 	)
 	if err != nil {
@@ -90,13 +93,13 @@ func getRegexPatternSet(ctx context.Context, meta schema.ClientMeta, resource *s
 
 func resolveRegexPatternSetTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Wafv2
+	svc := cl.Services(client.AWSServiceWafv2).Wafv2
 	s := resource.Item.(*types.RegexPatternSet)
 	tags := make(map[string]string)
 	params := wafv2.ListTagsForResourceInput{ResourceARN: s.ARN}
 	for {
-		result, err := svc.ListTagsForResource(ctx, &params, func(options *wafv2.Options) {
-			options.Region = cl.Region
+		result, err := svc.ListTagsForResource(ctx, &params, func(o *wafv2.Options) {
+			o.Region = cl.Region
 		})
 		if err != nil {
 			return err

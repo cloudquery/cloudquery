@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/support/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -21,7 +21,7 @@ func buildSeverityLevels(t *testing.T, ctrl *gomock.Controller) client.Services 
 	}
 
 	for _, languageCode := range severitySupportedLanguageCodes {
-		m.EXPECT().DescribeSeverityLevels(gomock.Any(), &support.DescribeSeverityLevelsInput{Language: aws.String(languageCode)}).Return(&support.DescribeSeverityLevelsOutput{SeverityLevels: levels}, nil)
+		m.EXPECT().DescribeSeverityLevels(gomock.Any(), &support.DescribeSeverityLevelsInput{Language: aws.String(languageCode)}, gomock.Any()).Return(&support.DescribeSeverityLevelsOutput{SeverityLevels: levels}, nil)
 	}
 
 	return client.Services{

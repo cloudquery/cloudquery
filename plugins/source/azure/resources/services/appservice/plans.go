@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Plans() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_appservice_plans",
-		Resolver:    fetchPlans,
-		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/app-service-environments/list-app-service-plans?tabs=HTTP#appserviceplan",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_plans", client.Namespacemicrosoft_web),
-		Transform:   transformers.TransformWithStruct(&armappservice.Plan{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_appservice_plans",
+		Resolver:             fetchPlans,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/appservice/app-service-environments/list-app-service-plans?tabs=HTTP#appserviceplan",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_plans", client.Namespacemicrosoft_web),
+		Transform:            transformers.TransformWithStruct(&armappservice.Plan{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

@@ -37,6 +37,16 @@ func (m *MockSavingsplansClient) EXPECT() *MockSavingsplansClientMockRecorder {
 
 // DescribeSavingsPlanRates mocks base method.
 func (m *MockSavingsplansClient) DescribeSavingsPlanRates(arg0 context.Context, arg1 *savingsplans.DescribeSavingsPlanRatesInput, arg2 ...func(*savingsplans.Options)) (*savingsplans.DescribeSavingsPlanRatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &savingsplans.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSavingsPlanRates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockSavingsplansClientMockRecorder) DescribeSavingsPlanRates(arg0, arg
 
 // DescribeSavingsPlans mocks base method.
 func (m *MockSavingsplansClient) DescribeSavingsPlans(arg0 context.Context, arg1 *savingsplans.DescribeSavingsPlansInput, arg2 ...func(*savingsplans.Options)) (*savingsplans.DescribeSavingsPlansOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &savingsplans.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSavingsPlans")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockSavingsplansClientMockRecorder) DescribeSavingsPlans(arg0, arg1 in
 
 // DescribeSavingsPlansOfferingRates mocks base method.
 func (m *MockSavingsplansClient) DescribeSavingsPlansOfferingRates(arg0 context.Context, arg1 *savingsplans.DescribeSavingsPlansOfferingRatesInput, arg2 ...func(*savingsplans.Options)) (*savingsplans.DescribeSavingsPlansOfferingRatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &savingsplans.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSavingsPlansOfferingRates")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockSavingsplansClientMockRecorder) DescribeSavingsPlansOfferingRates(
 
 // DescribeSavingsPlansOfferings mocks base method.
 func (m *MockSavingsplansClient) DescribeSavingsPlansOfferings(arg0 context.Context, arg1 *savingsplans.DescribeSavingsPlansOfferingsInput, arg2 ...func(*savingsplans.Options)) (*savingsplans.DescribeSavingsPlansOfferingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &savingsplans.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSavingsPlansOfferings")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockSavingsplansClientMockRecorder) DescribeSavingsPlansOfferings(arg0
 
 // ListTagsForResource mocks base method.
 func (m *MockSavingsplansClient) ListTagsForResource(arg0 context.Context, arg1 *savingsplans.ListTagsForResourceInput, arg2 ...func(*savingsplans.Options)) (*savingsplans.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &savingsplans.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

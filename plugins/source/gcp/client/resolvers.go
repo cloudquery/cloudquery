@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/spf13/cast"
 	"github.com/thoas/go-funk"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -14,9 +14,9 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func ResolveProject(_ context.Context, meta schema.ClientMeta, r *schema.Resource, _ schema.Column) error {
+func ResolveProject(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 	client := meta.(*Client)
-	return r.Set("project_id", client.ProjectId)
+	return r.Set(c.Name, client.ProjectId)
 }
 
 func ResolveOrganization(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {

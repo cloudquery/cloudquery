@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Groups() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_sqlvirtualmachine_groups",
-		Resolver:    fetchGroups,
-		Description: "https://learn.microsoft.com/en-us/rest/api/sqlvm/2022-07-01-preview/sql-virtual-machine-groups/list?tabs=HTTP#sqlvirtualmachinegroup",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_sqlvirtualmachine_groups", client.Namespacemicrosoft_sqlvirtualmachine),
-		Transform:   transformers.TransformWithStruct(&armsqlvirtualmachine.Group{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_sqlvirtualmachine_groups",
+		Resolver:             fetchGroups,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/sqlvm/2022-07-01-preview/sql-virtual-machine-groups/list?tabs=HTTP#sqlvirtualmachinegroup",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_sqlvirtualmachine_groups", client.Namespacemicrosoft_sqlvirtualmachine),
+		Transform:            transformers.TransformWithStruct(&armsqlvirtualmachine.Group{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

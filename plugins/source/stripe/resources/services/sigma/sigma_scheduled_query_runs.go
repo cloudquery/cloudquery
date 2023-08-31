@@ -3,27 +3,26 @@ package sigma
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/stripe/stripe-go/v74"
 )
 
 func SigmaScheduledQueryRuns() *schema.Table {
 	return &schema.Table{
 		Name:        "stripe_sigma_scheduled_query_runs",
-		Description: `https://stripe.com/docs/api/sigma_scheduled_query_runs`,
+		Description: `https://stripe.com/docs/api/sigma/scheduled_queries`,
 		Transform:   client.TransformWithStruct(&stripe.SigmaScheduledQueryRun{}, transformers.WithSkipFields("APIResource", "ID")),
 		Resolver:    fetchSigmaScheduledQueryRuns,
 
 		Columns: []schema.Column{
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ID"),
+				PrimaryKey: true,
 			},
 		},
 	}

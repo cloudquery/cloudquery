@@ -2,7 +2,7 @@
 
 This table shows data for Amazon GuardDuty Detector IP Sets.
 
-https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetFilter.html
+https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetIPSet.html
 
 The composite primary key for this table is (**detector_arn**, **name**).
 
@@ -14,13 +14,11 @@ This table depends on [aws_guardduty_detectors](aws_guardduty_detectors).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|detector_arn (PK)|String|
-|format|String|
-|location|String|
-|name (PK)|String|
-|status|String|
-|tags|JSON|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|detector_arn (PK)|`utf8`|
+|format|`utf8`|
+|location|`utf8`|
+|name (PK)|`utf8`|
+|status|`utf8`|
+|tags|`json`|

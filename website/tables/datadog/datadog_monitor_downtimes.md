@@ -2,7 +2,7 @@
 
 This table shows data for Datadog Monitor Downtimes.
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is (**account_name**, **monitor_id**, **id**).
 
 ## Relations
 
@@ -12,26 +12,27 @@ This table depends on [datadog_monitors](datadog_monitors).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
-|account_name|String|
-|active|Bool|
-|active_child|JSON|
-|canceled|JSON|
-|creator_id|Int|
-|disabled|Bool|
-|downtime_type|Int|
-|end|JSON|
-|id|Int|
-|message|String|
-|monitor_id|JSON|
-|monitor_tags|StringArray|
-|mute_first_recovery_notification|Bool|
-|parent_id|JSON|
-|recurrence|JSON|
-|scope|StringArray|
-|start|Int|
-|timezone|String|
-|updater_id|JSON|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_name (PK)|`utf8`|
+|monitor_id (PK)|`int64`|
+|active|`bool`|
+|active_child|`json`|
+|canceled|`int64`|
+|creator_id|`int64`|
+|disabled|`bool`|
+|downtime_type|`int64`|
+|end|`int64`|
+|id (PK)|`int64`|
+|message|`utf8`|
+|monitor_tags|`list<item: utf8, nullable>`|
+|mute_first_recovery_notification|`bool`|
+|notify_end_states|`list<item: utf8, nullable>`|
+|notify_end_types|`list<item: utf8, nullable>`|
+|parent_id|`int64`|
+|recurrence|`json`|
+|scope|`list<item: utf8, nullable>`|
+|start|`int64`|
+|timezone|`utf8`|
+|updater_id|`int32`|
+|additional_properties|`json`|

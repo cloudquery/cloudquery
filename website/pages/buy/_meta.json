@@ -1,0 +1,13 @@
+{
+  "*": {
+    "display": "hidden",
+    "theme": {
+      "sidebar": false,
+      "breadcrumb": false,
+      "typesetting": "default",
+      "toc": false,
+      "footer": true,
+      "pagination": false
+    }
+  }
+}

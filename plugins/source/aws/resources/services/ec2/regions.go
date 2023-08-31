@@ -3,12 +3,13 @@ package ec2
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Regions() *schema.Table {
@@ -20,29 +21,33 @@ func Regions() *schema.Table {
 		Multiplex:   client.AccountMultiplex(tableName),
 		Transform:   transformers.TransformWithStruct(&types.Region{}),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.DefaultAccountIDColumn(true),
 			{
 				Name:     "enabled",
-				Type:     schema.TypeBool,
+				Type:     arrow.FixedWidthTypes.Boolean,
 				Resolver: resolveRegionEnabled,
 			},
 			{
 				Name:     "partition",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: client.ResolveAWSPartition,
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("RegionName"),
+				Name:       "region",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("RegionName"),
+				PrimaryKey: true,
 			},
 		},
 	}
 }
 
 func fetchEc2Regions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	output, err := c.Services().Ec2.DescribeRegions(ctx, &ec2.DescribeRegionsInput{AllRegions: aws.Bool(true)})
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceEc2).Ec2
+	output, err := svc.DescribeRegions(ctx, &ec2.DescribeRegionsInput{AllRegions: aws.Bool(true)}, func(options *ec2.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

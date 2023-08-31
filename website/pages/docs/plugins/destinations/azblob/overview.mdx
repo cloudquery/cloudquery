@@ -1,5 +1,8 @@
 ---
 name: Azure Blob Storage
+stage: GA
+title: Azure Blob Destination Plugin
+description: CloudQuery Azure Blob destination plugin documentation
 ---
 # Azure Blob Storage Destination Plugin
 
@@ -17,7 +20,7 @@ This destination plugin lets you sync data from a CloudQuery source to remote Az
 
 ## Example
 
-This example configures an Azure blob storage destination, to create CSV files in `https://cqdestinationazblob.blob.core.windows.net/test/path/to/files`. Note that the Azure blob storage plugin only supports `append` write-mode.
+This example configures an Azure blob storage destination, to create CSV files in `https://cqdestinationazblob.blob.core.windows.net/test/path/to/files`.
 
 The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
@@ -27,50 +30,67 @@ spec:
   name: "azblob"
   path: "cloudquery/azblob"
   version: "VERSION_DESTINATION_AZBLOB"
-  write_mode: "append" # this plugin only supports 'append' mode
-  # batch_size: 10000 # optional
-  # batch_size_bytes: 5242880 # optional
   spec:
     storage_account: "cqdestinationazblob"
     container: "test"
     path: "path/to/files"
+#    batch_size: 10000 # optional
+#    batch_size_bytes: 52428800 # optional
+#    batch_timeout: 30s # optional
+#    compression: gzip # optional
     format: "csv"
     format_spec:
       delimiter: ","
 ```
 
-The Azure blob destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes). 
+The Azure Blob destination utilizes batching, and supports `batch_size`, `batch_size_bytes` and `batch_timeout` options (see below).
 
 ## Azure Blob Spec
 
 This is the (nested) spec used by the Azure blob destination Plugin.
 
-- `storage_account` (string) (required)
+- `storage_account` (`string`) (required)
 
   Storage account where to sync the files.
 
-- `container` (string) (required)
+- `container` (`string`) (required)
 
   Storage container inside the storage account where to sync the files.
 
-- `path` (string) (required)
+- `path` (`string`) (required)
 
   Path to where the files will be uploaded in the above bucket.
 
-- `format` (string) (required)
+- `format` (`string`) (required)
 
   Format of the output file. Supported values are `csv`, `json` and `parquet`.
 
-- `format_spec` (map [format_spec](#format_spec)) (optional)
+- `format_spec` ([format_spec](#format_spec)) (optional)
 
-  Optional parameters to change the format of the file
+  Optional parameters to change the format of the file.
 
-## format_spec
+- `compression` (`string`) (optional) (default: empty)
 
-- `delimiter` (string) (optional) (default: `,`)
+  Compression algorithm to use. Supported values are empty or `gzip`. Not supported for `parquet` format.
 
-  Character that will be used as want to use as the delimiter if the format type is `csv`
+- `batch_size` (`integer`) (optional) (default: `10000`)
 
-- `skip_header` (bool) (optional) (default: false)
+  Number of records to write before starting a new object.
+
+- `batch_size_bytes` (`integer`) (optional) (default: `52428800` (50 MiB))
+
+  Number of bytes (as Arrow buffer size) to write before starting a new object.
+
+- `batch_timeout` (`duration`) (optional) (default: `30s` (30 seconds))
+
+  Inactivity time before starting a new object.
+
+### format_spec
+
+- `delimiter` (`string`) (optional) (default: `,`)
+
+  Character that will be used as want to use as the delimiter if the format type is `csv`.
+
+- `skip_header` (`boolean`) (optional) (default: `false`)
 
   Specifies if the first line of a file should be the headers (when format is `csv`).

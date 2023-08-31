@@ -37,6 +37,16 @@ func (m *MockComputeoptimizerClient) EXPECT() *MockComputeoptimizerClientMockRec
 
 // DescribeRecommendationExportJobs mocks base method.
 func (m *MockComputeoptimizerClient) DescribeRecommendationExportJobs(arg0 context.Context, arg1 *computeoptimizer.DescribeRecommendationExportJobsInput, arg2 ...func(*computeoptimizer.Options)) (*computeoptimizer.DescribeRecommendationExportJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &computeoptimizer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRecommendationExportJobs")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockComputeoptimizerClientMockRecorder) DescribeRecommendationExportJo
 
 // GetAutoScalingGroupRecommendations mocks base method.
 func (m *MockComputeoptimizerClient) GetAutoScalingGroupRecommendations(arg0 context.Context, arg1 *computeoptimizer.GetAutoScalingGroupRecommendationsInput, arg2 ...func(*computeoptimizer.Options)) (*computeoptimizer.GetAutoScalingGroupRecommendationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &computeoptimizer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAutoScalingGroupRecommendations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockComputeoptimizerClientMockRecorder) GetAutoScalingGroupRecommendat
 
 // GetEBSVolumeRecommendations mocks base method.
 func (m *MockComputeoptimizerClient) GetEBSVolumeRecommendations(arg0 context.Context, arg1 *computeoptimizer.GetEBSVolumeRecommendationsInput, arg2 ...func(*computeoptimizer.Options)) (*computeoptimizer.GetEBSVolumeRecommendationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &computeoptimizer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEBSVolumeRecommendations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockComputeoptimizerClientMockRecorder) GetEBSVolumeRecommendations(ar
 
 // GetEC2InstanceRecommendations mocks base method.
 func (m *MockComputeoptimizerClient) GetEC2InstanceRecommendations(arg0 context.Context, arg1 *computeoptimizer.GetEC2InstanceRecommendationsInput, arg2 ...func(*computeoptimizer.Options)) (*computeoptimizer.GetEC2InstanceRecommendationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &computeoptimizer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEC2InstanceRecommendations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockComputeoptimizerClientMockRecorder) GetEC2InstanceRecommendations(
 
 // GetEC2RecommendationProjectedMetrics mocks base method.
 func (m *MockComputeoptimizerClient) GetEC2RecommendationProjectedMetrics(arg0 context.Context, arg1 *computeoptimizer.GetEC2RecommendationProjectedMetricsInput, arg2 ...func(*computeoptimizer.Options)) (*computeoptimizer.GetEC2RecommendationProjectedMetricsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &computeoptimizer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEC2RecommendationProjectedMetrics")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockComputeoptimizerClientMockRecorder) GetEC2RecommendationProjectedM
 
 // GetECSServiceRecommendationProjectedMetrics mocks base method.
 func (m *MockComputeoptimizerClient) GetECSServiceRecommendationProjectedMetrics(arg0 context.Context, arg1 *computeoptimizer.GetECSServiceRecommendationProjectedMetricsInput, arg2 ...func(*computeoptimizer.Options)) (*computeoptimizer.GetECSServiceRecommendationProjectedMetricsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &computeoptimizer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetECSServiceRecommendationProjectedMetrics")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockComputeoptimizerClientMockRecorder) GetECSServiceRecommendationPro
 
 // GetECSServiceRecommendations mocks base method.
 func (m *MockComputeoptimizerClient) GetECSServiceRecommendations(arg0 context.Context, arg1 *computeoptimizer.GetECSServiceRecommendationsInput, arg2 ...func(*computeoptimizer.Options)) (*computeoptimizer.GetECSServiceRecommendationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &computeoptimizer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetECSServiceRecommendations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockComputeoptimizerClientMockRecorder) GetECSServiceRecommendations(a
 
 // GetEffectiveRecommendationPreferences mocks base method.
 func (m *MockComputeoptimizerClient) GetEffectiveRecommendationPreferences(arg0 context.Context, arg1 *computeoptimizer.GetEffectiveRecommendationPreferencesInput, arg2 ...func(*computeoptimizer.Options)) (*computeoptimizer.GetEffectiveRecommendationPreferencesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &computeoptimizer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEffectiveRecommendationPreferences")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockComputeoptimizerClientMockRecorder) GetEffectiveRecommendationPref
 
 // GetEnrollmentStatus mocks base method.
 func (m *MockComputeoptimizerClient) GetEnrollmentStatus(arg0 context.Context, arg1 *computeoptimizer.GetEnrollmentStatusInput, arg2 ...func(*computeoptimizer.Options)) (*computeoptimizer.GetEnrollmentStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &computeoptimizer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEnrollmentStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockComputeoptimizerClientMockRecorder) GetEnrollmentStatus(arg0, arg1
 
 // GetEnrollmentStatusesForOrganization mocks base method.
 func (m *MockComputeoptimizerClient) GetEnrollmentStatusesForOrganization(arg0 context.Context, arg1 *computeoptimizer.GetEnrollmentStatusesForOrganizationInput, arg2 ...func(*computeoptimizer.Options)) (*computeoptimizer.GetEnrollmentStatusesForOrganizationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &computeoptimizer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetEnrollmentStatusesForOrganization")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockComputeoptimizerClientMockRecorder) GetEnrollmentStatusesForOrgani
 
 // GetLambdaFunctionRecommendations mocks base method.
 func (m *MockComputeoptimizerClient) GetLambdaFunctionRecommendations(arg0 context.Context, arg1 *computeoptimizer.GetLambdaFunctionRecommendationsInput, arg2 ...func(*computeoptimizer.Options)) (*computeoptimizer.GetLambdaFunctionRecommendationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &computeoptimizer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetLambdaFunctionRecommendations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockComputeoptimizerClientMockRecorder) GetLambdaFunctionRecommendatio
 
 // GetRecommendationPreferences mocks base method.
 func (m *MockComputeoptimizerClient) GetRecommendationPreferences(arg0 context.Context, arg1 *computeoptimizer.GetRecommendationPreferencesInput, arg2 ...func(*computeoptimizer.Options)) (*computeoptimizer.GetRecommendationPreferencesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &computeoptimizer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRecommendationPreferences")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockComputeoptimizerClientMockRecorder) GetRecommendationPreferences(a
 
 // GetRecommendationSummaries mocks base method.
 func (m *MockComputeoptimizerClient) GetRecommendationSummaries(arg0 context.Context, arg1 *computeoptimizer.GetRecommendationSummariesInput, arg2 ...func(*computeoptimizer.Options)) (*computeoptimizer.GetRecommendationSummariesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &computeoptimizer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRecommendationSummaries")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

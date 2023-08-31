@@ -5,21 +5,23 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/mysql/armmysql"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Servers() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_mysql_servers",
-		Resolver:    fetchServers,
-		Description: "https://learn.microsoft.com/en-us/rest/api/mysql/singleserver/servers(2017-12-01)/list?tabs=HTTP#server",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_mysql_servers", client.Namespacemicrosoft_dbformysql),
-		Transform:   transformers.TransformWithStruct(&armmysql.Server{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_mysql_servers",
+		Resolver:             fetchServers,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/mysql/singleserver/servers(2017-12-01)/list?tabs=HTTP#server",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_mysql_servers", client.Namespacemicrosoft_dbformysql),
+		Transform:            transformers.TransformWithStruct(&armmysql.Server{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 
 		Relations: []*schema.Table{
 			server_configurations(),
+			databases(),
 		},
 	}
 }

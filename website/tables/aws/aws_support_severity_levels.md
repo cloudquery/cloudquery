@@ -10,12 +10,10 @@ The composite primary key for this table is (**account_id**, **region**, **langu
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|region (PK)|String|
-|language_code (PK)|String|
-|code (PK)|String|
-|name|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
+|language_code (PK)|`utf8`|
+|code (PK)|`utf8`|
+|name|`utf8`|

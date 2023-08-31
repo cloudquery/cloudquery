@@ -3,23 +3,24 @@ package client
 import (
 	"context"
 	"strings"
-	"time"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source string, syncTime time.Time) error {
-	for _, table := range tables.FlattenTables() {
+func (c *Client) DeleteStale(ctx context.Context, msgs message.WriteDeleteStales) error {
+	for _, msg := range msgs {
+		tableName := msg.TableName
 		var sb strings.Builder
 		sb.WriteString("delete from ")
-		sb.WriteString(table.Name)
+		sb.WriteString(tableName)
 		sb.WriteString(" where ")
-		sb.WriteString(`"` + schema.CqSourceNameColumn.Name + `"`)
+		sb.WriteString(`"` + strings.ToUpper(schema.CqSourceNameColumn.Name) + `"`)
 		sb.WriteString(" = ? and \"")
-		sb.WriteString(schema.CqSyncTimeColumn.Name)
+		sb.WriteString(strings.ToUpper(schema.CqSyncTimeColumn.Name))
 		sb.WriteString("\"::timestamp_tz < ?::timestamp_tz")
 		sql := sb.String()
-		if _, err := c.db.Exec(sql, source, syncTime); err != nil {
+		if _, err := c.db.ExecContext(ctx, sql, msg.SourceName, msg.SyncTime); err != nil {
 			return err
 		}
 	}

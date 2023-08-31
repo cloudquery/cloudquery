@@ -7,17 +7,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockLightsailClient(ctrl)
 
 	var instances []types.Instance
-	if err := faker.FakeObject(&instances); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&instances))
 
 	mock.EXPECT().GetInstances(
 		gomock.Any(),
@@ -31,9 +30,8 @@ func buildInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var p lightsail.GetInstancePortStatesOutput
-	if err := faker.FakeObject(&p); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&p))
+
 	mock.EXPECT().GetInstancePortStates(
 		gomock.Any(),
 		gomock.Any(),
@@ -41,9 +39,8 @@ func buildInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 	).Return(&p, nil)
 
 	var a lightsail.GetInstanceAccessDetailsOutput
-	if err := faker.FakeObject(&a); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&a))
+
 	mock.EXPECT().GetInstanceAccessDetails(
 		gomock.Any(),
 		gomock.Any(),

@@ -7,17 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildEventbridgeApiDestinationsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEventbridgeClient(ctrl)
 	object := types.ApiDestination{}
-	err := faker.FakeObject(&object)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&object))
 
 	m.EXPECT().ListApiDestinations(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&eventbridge.ListApiDestinationsOutput{
@@ -25,11 +23,8 @@ func buildEventbridgeApiDestinationsMock(t *testing.T, ctrl *gomock.Controller) 
 		}, nil)
 
 	tagsOutput := eventbridge.ListTagsForResourceOutput{}
-	err = faker.FakeObject(&tagsOutput)
-	if err != nil {
-		t.Fatal(err)
-	}
-	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
+	require.NoError(t, faker.FakeObject(&tagsOutput))
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
 	return client.Services{
 		Eventbridge: m,
 	}

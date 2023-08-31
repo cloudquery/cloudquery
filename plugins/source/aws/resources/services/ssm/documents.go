@@ -4,13 +4,16 @@ import (
 	"context"
 	"fmt"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Documents() *schema.Table {
@@ -26,21 +29,19 @@ func Documents() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveDocumentARN,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveDocumentARN,
+				PrimaryKey: true,
 			},
 			{
 				Name:     "permissions",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveDocumentPermission,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: client.ResolveTags,
 			},
 		},
@@ -51,15 +52,17 @@ func Documents() *schema.Table {
 }
 
 func fetchSsmDocuments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Ssm
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSsm).Ssm
 
 	params := ssm.ListDocumentsInput{
 		Filters: []types.DocumentKeyValuesFilter{{Key: aws.String("Owner"), Values: []string{"Self"}}},
 	}
 	paginator := ssm.NewListDocumentsPaginator(svc, &params)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *ssm.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -69,11 +72,13 @@ func fetchSsmDocuments(ctx context.Context, meta schema.ClientMeta, parent *sche
 }
 
 func getDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Ssm
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSsm).Ssm
 	d := resource.Item.(types.DocumentIdentifier)
 
-	dd, err := svc.DescribeDocument(ctx, &ssm.DescribeDocumentInput{Name: d.Name})
+	dd, err := svc.DescribeDocument(ctx, &ssm.DescribeDocumentInput{Name: d.Name}, func(o *ssm.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -85,7 +90,7 @@ func getDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 func resolveDocumentPermission(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) (exitErr error) {
 	d := resource.Item.(*types.DocumentDescription)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ssm
+	svc := cl.Services(client.AWSServiceSsm).Ssm
 
 	input := ssm.DescribeDocumentPermissionInput{
 		Name:           d.Name,
@@ -94,7 +99,9 @@ func resolveDocumentPermission(ctx context.Context, meta schema.ClientMeta, reso
 	var permissions []*ssm.DescribeDocumentPermissionOutput
 	// No paginator
 	for {
-		output, err := svc.DescribeDocumentPermission(ctx, &input)
+		output, err := svc.DescribeDocumentPermission(ctx, &input, func(o *ssm.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

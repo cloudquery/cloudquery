@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Monitors() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_elastic_monitors",
-		Resolver:    fetchMonitors,
-		Description: "https://learn.microsoft.com/en-us/rest/api/elastic/monitors/list?tabs=HTTP#elasticmonitorresource",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_elastic_monitors", client.Namespacemicrosoft_elastic),
-		Transform:   transformers.TransformWithStruct(&armelastic.MonitorResource{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_elastic_monitors",
+		Resolver:             fetchMonitors,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/elastic/monitors/list?tabs=HTTP#elasticmonitorresource",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_elastic_monitors", client.Namespacemicrosoft_elastic),
+		Transform:            transformers.TransformWithStruct(&armelastic.MonitorResource{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

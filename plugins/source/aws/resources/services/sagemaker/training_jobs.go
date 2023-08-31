@@ -3,11 +3,14 @@ package sagemaker
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func TrainingJobs() *schema.Table {
@@ -23,16 +26,14 @@ func TrainingJobs() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("TrainingJobArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("TrainingJobArn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:        "tags",
-				Type:        schema.TypeJSON,
+				Type:        sdkTypes.ExtensionTypes.JSON,
 				Resolver:    resolveSagemakerTrainingJobTags,
 				Description: `The tags associated with the model.`,
 			},
@@ -41,12 +42,14 @@ func TrainingJobs() *schema.Table {
 }
 
 func fetchSagemakerTrainingJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sagemaker
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSagemaker).Sagemaker
 	config := sagemaker.ListTrainingJobsInput{}
 	paginator := sagemaker.NewListTrainingJobsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *sagemaker.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -56,13 +59,15 @@ func fetchSagemakerTrainingJobs(ctx context.Context, meta schema.ClientMeta, par
 }
 
 func getTrainingJob(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Sagemaker
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSagemaker).Sagemaker
 	n := resource.Item.(types.TrainingJobSummary)
 	config := sagemaker.DescribeTrainingJobInput{
 		TrainingJobName: n.TrainingJobName,
 	}
-	response, err := svc.DescribeTrainingJob(ctx, &config)
+	response, err := svc.DescribeTrainingJob(ctx, &config, func(o *sagemaker.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -75,12 +80,15 @@ func resolveSagemakerTrainingJobTags(ctx context.Context, meta schema.ClientMeta
 	if r == nil {
 		return nil
 	}
-	svc := meta.(*client.Client).Services().Sagemaker
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSagemaker).Sagemaker
 	config := sagemaker.ListTagsInput{ResourceArn: r.TrainingJobArn}
 	paginator := sagemaker.NewListTagsPaginator(svc, &config)
 	var tags []types.Tag
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *sagemaker.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

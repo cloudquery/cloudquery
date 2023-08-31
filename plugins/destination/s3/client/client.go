@@ -3,6 +3,7 @@ package client
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -10,43 +11,45 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/writers/streamingbatchwriter"
 
-	"github.com/cloudquery/filetypes"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/filetypes/v4"
 	"github.com/rs/zerolog"
 )
 
 type Client struct {
-	destination.UnimplementedUnmanagedWriter
-	logger     zerolog.Logger
-	spec       specs.Destination
-	pluginSpec Spec
+	plugin.UnimplementedSource
+	streamingbatchwriter.IgnoreMigrateTable
+	streamingbatchwriter.UnimplementedDeleteStale
+
+	logger zerolog.Logger
+	spec   *Spec
+	*filetypes.Client
+	writer *streamingbatchwriter.StreamingBatchWriter
 
 	s3Client   *s3.Client
 	uploader   *manager.Uploader
 	downloader *manager.Downloader
-	*filetypes.Client
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
-	if spec.WriteMode != specs.WriteModeAppend {
-		return nil, fmt.Errorf("destination only supports append mode")
-	}
+func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "s3").Logger(),
-		spec:   spec,
+	}
+	if opts.NoConnection {
+		return c, nil
 	}
 
-	if err := spec.UnmarshalSpec(&c.pluginSpec); err != nil {
+	if err := json.Unmarshal(spec, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal s3 spec: %w", err)
 	}
-	if err := c.pluginSpec.Validate(); err != nil {
+	if err := c.spec.Validate(); err != nil {
 		return nil, err
 	}
-	c.pluginSpec.SetDefaults()
+	c.spec.SetDefaults()
 
-	filetypesClient, err := filetypes.NewClient(c.pluginSpec.FileSpec)
+	filetypesClient, err := filetypes.NewClient(c.spec.FileSpec)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
 	}
@@ -57,23 +60,42 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, fmt.Errorf("unable to load AWS SDK config: %w", err)
 	}
 
-	cfg.Region = c.pluginSpec.Region
-	c.s3Client = s3.NewFromConfig(cfg)
+	cfg.Region = c.spec.Region
+
+	c.s3Client = s3.NewFromConfig(cfg, func(o *s3.Options) {
+		if len(c.spec.Endpoint) > 0 {
+			baseEndpoint := c.spec.Endpoint
+			o.BaseEndpoint = &baseEndpoint
+		}
+		o.UsePathStyle = c.spec.UsePathStyle
+	})
 	c.uploader = manager.NewUploader(c.s3Client)
 	c.downloader = manager.NewDownloader(c.s3Client)
 
-	// we want to run this test because we want it to fail early if the bucket is not accessible
-	timeNow := time.Now().UTC()
-	if _, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
-		Bucket: aws.String(c.pluginSpec.Bucket),
-		Key:    aws.String(replacePathVariables(c.pluginSpec.Path, "TEST_TABLE", "TEST_UUID", timeNow)),
-		Body:   bytes.NewReader([]byte("")),
-	}); err != nil {
-		return nil, fmt.Errorf("failed to write test file to S3: %w", err)
+	if *c.spec.TestWrite {
+		// we want to run this test because we want it to fail early if the bucket is not accessible
+		timeNow := time.Now().UTC()
+		if _, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
+			Bucket: aws.String(c.spec.Bucket),
+			Key:    aws.String(c.replacePathVariables("TEST_TABLE", "TEST_UUID", timeNow)),
+			Body:   bytes.NewReader([]byte("")),
+		}); err != nil {
+			return nil, fmt.Errorf("failed to write test file to S3: %w", err)
+		}
 	}
+
+	c.writer, err = streamingbatchwriter.New(c,
+		streamingbatchwriter.WithBatchSizeRows(*c.spec.BatchSize),
+		streamingbatchwriter.WithBatchSizeBytes(*c.spec.BatchSizeBytes),
+		streamingbatchwriter.WithBatchTimeout(c.spec.BatchTimeout.Duration()),
+	)
+	if err != nil {
+		return nil, err
+	}
+
 	return c, nil
 }
 
-func (*Client) Close(ctx context.Context) error {
-	return nil
+func (c *Client) Close(ctx context.Context) error {
+	return c.writer.Close(ctx)
 }

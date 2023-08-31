@@ -7,11 +7,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/fastly/resources/services/auth"
 	"github.com/cloudquery/cloudquery/plugins/source/fastly/resources/services/services"
 	"github.com/cloudquery/cloudquery/plugins/source/fastly/resources/services/stats"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/docs"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func tables() []*schema.Table {
-	return []*schema.Table{
+func getTables() schema.Tables {
+	tables := []*schema.Table{
 		account.AccountUsers(),
 		account.AccountEvents(),
 		auth.AuthTokens(),
@@ -19,4 +21,17 @@ func tables() []*schema.Table {
 		stats.StatsRegions(),
 		stats.StatsServices(),
 	}
+	if err := transformers.TransformTables(tables); err != nil {
+		panic(err)
+	}
+	for _, table := range tables {
+		schema.AddCqIDs(table)
+	}
+	if err := transformers.Apply(tables, func(t *schema.Table) error {
+		t.Title = docs.DefaultTitleTransformer(t)
+		return nil
+	}); err != nil {
+		panic(err)
+	}
+	return tables
 }

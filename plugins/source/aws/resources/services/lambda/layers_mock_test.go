@@ -7,8 +7,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildLambdaLayersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -17,10 +18,7 @@ func buildLambdaLayersMock(t *testing.T, ctrl *gomock.Controller) client.Service
 	creationDate := "1994-11-05T08:15:30.000+0500"
 
 	l := types.LayersListItem{}
-	err := faker.FakeObject(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&l))
 	l.LatestMatchingVersion.CreatedDate = &creationDate
 	m.EXPECT().ListLayers(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&lambda.ListLayersOutput{
@@ -28,10 +26,7 @@ func buildLambdaLayersMock(t *testing.T, ctrl *gomock.Controller) client.Service
 		}, nil)
 
 	lv := types.LayerVersionsListItem{}
-	err = faker.FakeObject(&lv)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&lv))
 	arn := "arn:aws:s3:::my_corporate_bucket/test:exampleobject.png:1"
 	lv.LayerVersionArn = &arn
 	lv.CreatedDate = &creationDate
@@ -41,10 +36,7 @@ func buildLambdaLayersMock(t *testing.T, ctrl *gomock.Controller) client.Service
 		}, nil)
 
 	lvp := lambda.GetLayerVersionPolicyOutput{}
-	err = faker.FakeObject(&lvp)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&lvp))
 	m.EXPECT().GetLayerVersionPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&lvp, nil)
 

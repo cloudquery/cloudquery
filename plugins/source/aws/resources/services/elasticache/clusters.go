@@ -3,12 +3,15 @@ package elasticache
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Clusters() *schema.Table {
@@ -23,16 +26,14 @@ func Clusters() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ARN"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ARN"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveClusterTags,
 			},
 		},
@@ -40,12 +41,16 @@ func Clusters() *schema.Table {
 }
 
 func fetchElasticacheClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceElasticache).Elasticache
 	var input elasticache.DescribeCacheClustersInput
 	input.ShowCacheNodeInfo = aws.Bool(true)
 
-	paginator := elasticache.NewDescribeCacheClustersPaginator(meta.(*client.Client).Services().Elasticache, &input)
+	paginator := elasticache.NewDescribeCacheClustersPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		v, err := paginator.NextPage(ctx)
+		v, err := paginator.NextPage(ctx, func(options *elasticache.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -57,9 +62,12 @@ func fetchElasticacheClusters(ctx context.Context, meta schema.ClientMeta, paren
 func resolveClusterTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cluster := resource.Item.(types.CacheCluster)
 
-	svc := meta.(*client.Client).Services().Elasticache
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceElasticache).Elasticache
 	response, err := svc.ListTagsForResource(ctx, &elasticache.ListTagsForResourceInput{
 		ResourceName: cluster.ARN,
+	}, func(options *elasticache.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

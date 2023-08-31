@@ -3,11 +3,12 @@ package shield
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/aws/aws-sdk-go-v2/service/shield/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Subscriptions() *schema.Table {
@@ -21,24 +22,24 @@ func Subscriptions() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SubscriptionArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("SubscriptionArn"),
+				PrimaryKey: true,
 			},
 		},
 	}
 }
 
 func fetchShieldSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Shield
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceShield).Shield
 	config := shield.DescribeSubscriptionInput{}
-	output, err := svc.DescribeSubscription(ctx, &config)
+	output, err := svc.DescribeSubscription(ctx, &config, func(o *shield.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
+		if cl.IsNotFoundError(err) {
 			return nil
 		}
 		return err

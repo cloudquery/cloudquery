@@ -1,3 +1,8 @@
+---
+title: Syncs
+description: CloudQuery syncs data from cloud providers to destinations. This page describes the various modes.
+---
+
 # Syncs
 
 When you run `cloudquery sync <config>`, the CloudQuery CLI fetches data from all the source plugins matched by the config and delivers it to the matched destination plugins. This might mean fetching data from AWS, GCP and Azure and delivering it to PostgreSQL, or it could mean fetching data from AWS, Cloudflare and Datadog and delivering it to BigQuery, Kafka and Neo4j. It all depends on the configuration provided, and there is a near-endless array of possible combinations that grows every time a new source or destination is created. (Configuration is described in the [Configuration section](/docs/core-concepts/configuration).)      

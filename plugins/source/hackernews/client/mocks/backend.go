@@ -11,68 +11,68 @@ import (
 	gomock "github.com/golang/mock/gomock"
 )
 
-// MockBackend is a mock of Backend interface.
-type MockBackend struct {
+// MockBackendClient is a mock of BackendClient interface.
+type MockBackendClient struct {
 	ctrl     *gomock.Controller
-	recorder *MockBackendMockRecorder
+	recorder *MockBackendClientMockRecorder
 }
 
-// MockBackendMockRecorder is the mock recorder for MockBackend.
-type MockBackendMockRecorder struct {
-	mock *MockBackend
+// MockBackendClientMockRecorder is the mock recorder for MockBackendClient.
+type MockBackendClientMockRecorder struct {
+	mock *MockBackendClient
 }
 
-// NewMockBackend creates a new mock instance.
-func NewMockBackend(ctrl *gomock.Controller) *MockBackend {
-	mock := &MockBackend{ctrl: ctrl}
-	mock.recorder = &MockBackendMockRecorder{mock}
+// NewMockBackendClient creates a new mock instance.
+func NewMockBackendClient(ctrl *gomock.Controller) *MockBackendClient {
+	mock := &MockBackendClient{ctrl: ctrl}
+	mock.recorder = &MockBackendClientMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use.
-func (m *MockBackend) EXPECT() *MockBackendMockRecorder {
+func (m *MockBackendClient) EXPECT() *MockBackendClientMockRecorder {
 	return m.recorder
 }
 
-// Close mocks base method.
-func (m *MockBackend) Close(ctx context.Context) error {
+// Flush mocks base method.
+func (m *MockBackendClient) Flush(ctx context.Context) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Close", ctx)
+	ret := m.ctrl.Call(m, "Flush", ctx)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// Close indicates an expected call of Close.
-func (mr *MockBackendMockRecorder) Close(ctx interface{}) *gomock.Call {
+// Flush indicates an expected call of Flush.
+func (mr *MockBackendClientMockRecorder) Flush(ctx interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockBackend)(nil).Close), ctx)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Flush", reflect.TypeOf((*MockBackendClient)(nil).Flush), ctx)
 }
 
-// Get mocks base method.
-func (m *MockBackend) Get(ctx context.Context, table, clientID string) (string, error) {
+// GetKey mocks base method.
+func (m *MockBackendClient) GetKey(ctx context.Context, key string) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Get", ctx, table, clientID)
+	ret := m.ctrl.Call(m, "GetKey", ctx, key)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// Get indicates an expected call of Get.
-func (mr *MockBackendMockRecorder) Get(ctx, table, clientID interface{}) *gomock.Call {
+// GetKey indicates an expected call of GetKey.
+func (mr *MockBackendClientMockRecorder) GetKey(ctx, key interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockBackend)(nil).Get), ctx, table, clientID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetKey", reflect.TypeOf((*MockBackendClient)(nil).GetKey), ctx, key)
 }
 
-// Set mocks base method.
-func (m *MockBackend) Set(ctx context.Context, table, clientID, value string) error {
+// SetKey mocks base method.
+func (m *MockBackendClient) SetKey(ctx context.Context, key, value string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Set", ctx, table, clientID, value)
+	ret := m.ctrl.Call(m, "SetKey", ctx, key, value)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// Set indicates an expected call of Set.
-func (mr *MockBackendMockRecorder) Set(ctx, table, clientID, value interface{}) *gomock.Call {
+// SetKey indicates an expected call of SetKey.
+func (mr *MockBackendClientMockRecorder) SetKey(ctx, key, value interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Set", reflect.TypeOf((*MockBackend)(nil).Set), ctx, table, clientID, value)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetKey", reflect.TypeOf((*MockBackendClient)(nil).SetKey), ctx, key, value)
 }

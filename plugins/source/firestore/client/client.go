@@ -2,24 +2,25 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"cloud.google.com/go/firestore"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
 	"google.golang.org/api/option"
 )
 
 type Client struct {
-	logger           zerolog.Logger
-	metrics          *source.Metrics
-	Tables           schema.Tables
-	client           *firestore.Client
-	maxBatchSize     int
-	orderByField     string
-	orderByDirection string
+	plugin.UnimplementedDestination
+	logger         zerolog.Logger
+	tables         schema.Tables
+	options        plugin.NewClientOptions
+	client         *firestore.Client
+	maxBatchSize   int
+	orderBy        string
+	orderDirection string
 }
 
 var _ schema.ClientMeta = (*Client)(nil)
@@ -28,9 +29,9 @@ func (*Client) ID() string {
 	return "source-firestore"
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	var firestoreSpec Spec
-	err := spec.UnmarshalSpec(&firestoreSpec)
+	err := json.Unmarshal(spec, &firestoreSpec)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
@@ -57,22 +58,29 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	}
 	zctx := logger.With().Str("module", "firestore-source")
 	c := &Client{
-		logger:       zctx.Logger(),
-		client:       client,
-		maxBatchSize: firestoreSpec.MaxBatchSize,
+		logger:         zctx.Logger(),
+		client:         client,
+		maxBatchSize:   firestoreSpec.MaxBatchSize,
+		orderBy:        firestoreSpec.OrderBy,
+		orderDirection: firestoreSpec.OrderDirection,
+		options:        opts,
 	}
 
-	c.Tables, err = c.listTables(ctx, client)
+	c.tables, err = c.listTables(ctx, client)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list tables: %w", err)
 	}
-	if len(c.Tables) == 0 {
+	if len(c.tables) == 0 {
 		return nil, fmt.Errorf("no tables found")
-	}
-	c.Tables, err = c.Tables.FilterDfs(spec.Tables, spec.SkipTables, spec.SkipDependentTables)
-	if err != nil {
-		return nil, fmt.Errorf("failed to apply config to tables: %w", err)
 	}
 
 	return c, nil
+}
+
+func (c Client) Tables(ctx context.Context, opts plugin.TableOptions) (schema.Tables, error) {
+	return c.tables.FilterDfs(opts.Tables, opts.SkipTables, opts.SkipDependentTables)
+}
+
+func (c Client) Close(_ context.Context) error {
+	return c.client.Close()
 }

@@ -10,9 +10,7 @@ The primary key for this table is **tailnet**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|tailnet (PK)|String|
-|magic_dns|Bool|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|tailnet (PK)|`utf8`|
+|magic_dns|`bool`|

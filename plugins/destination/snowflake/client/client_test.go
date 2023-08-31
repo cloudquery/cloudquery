@@ -1,28 +1,39 @@
 package client
 
 import (
+	"context"
+	"encoding/json"
 	"os"
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func TestPlugin(t *testing.T) {
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin("snowflake", "development", New, destination.WithManagedWriter())
+	ctx := context.Background()
+	p := plugin.NewPlugin("snowflake", "development", New)
+	spec := &Spec{
+		ConnectionString: os.Getenv("SNOW_TEST_DSN"),
+	}
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
+		t.Fatal(err)
+	}
+	plugin.TestWriterSuiteRunner(t,
+		p,
+		plugin.WriterTestSuiteTests{
+			SkipUpsert:  true,
+			SkipMigrate: true,
 		},
-		specs.Destination{
-			Spec: &Spec{
-				ConnectionString: os.Getenv("SNOW_TEST_DSN"),
-			},
-		},
-		destination.PluginTestSuiteTests{
-			SkipOverwrite:             true,
-			SkipMigrateAppend:         true, // fails with `invalid identifier '"new_column"'`, maybe because delays in schema propagation?
-			SkipMigrateOverwrite:      true,
-			SkipMigrateOverwriteForce: true,
-			SkipMigrateAppendForce:    true,
-		})
+		plugin.WithTestDataOptions(schema.TestSourceOptions{
+			SkipIntervals:  true,
+			SkipMaps:       true,
+			SkipLargeTypes: true,
+			SkipLists:      true,
+		}),
+	)
 }

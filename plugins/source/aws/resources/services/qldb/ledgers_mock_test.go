@@ -7,24 +7,23 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/qldb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildLedgersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockQldbClient(ctrl)
 
 	ledger := types.LedgerSummary{}
-	if err := faker.FakeObject(&ledger); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ledger))
+
 	m.EXPECT().ListLedgers(gomock.Any(), &qldb.ListLedgersInput{}, gomock.Any()).Return(
 		&qldb.ListLedgersOutput{Ledgers: []types.LedgerSummary{ledger}}, nil)
 
 	var resource qldb.DescribeLedgerOutput
-	if err := faker.FakeObject(&resource); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&resource))
+
 	m.EXPECT().DescribeLedger(
 		gomock.Any(),
 		&qldb.DescribeLedgerInput{Name: ledger.Name},
@@ -35,27 +34,24 @@ func buildLedgersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	tags := &qldb.ListTagsForResourceOutput{}
-	if err := faker.FakeObject(&tags); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tags))
+
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		tags,
 		nil,
 	)
 
 	s3 := types.JournalS3ExportDescription{}
-	if err := faker.FakeObject(&s3); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&s3))
+
 	m.EXPECT().ListJournalS3ExportsForLedger(gomock.Any(), gomock.Any(), gomock.Any()).
 		Return(&qldb.ListJournalS3ExportsForLedgerOutput{
 			JournalS3Exports: []types.JournalS3ExportDescription{s3},
 		}, nil)
 
 	ke := types.JournalKinesisStreamDescription{}
-	if err := faker.FakeObject(&ke); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ke))
+
 	m.EXPECT().ListJournalKinesisStreamsForLedger(gomock.Any(), gomock.Any(), gomock.Any()).
 		Return(&qldb.ListJournalKinesisStreamsForLedgerOutput{
 			Streams: []types.JournalKinesisStreamDescription{ke},

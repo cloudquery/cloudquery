@@ -1,0 +1,67 @@
+---
+title: Add observability to your CloudQuery sync runs with Datadog
+tag: tutorial
+description: >-
+  Tutorial for adding observability to your CloudQuery sync jobs with Datadog
+author: erezrokah
+---
+
+import { HowToGuideHeader } from "../../components/HowToGuideHeader"
+
+<HowToGuideHeader/>
+
+In this guide we will discuss how to leverage [Datadog](https://www.datadoghq.com/) to add observability to CloudQuery sync jobs.
+A common use case for CloudQuery is to run it as a scheduled job to sync cloud resources to data warehouse, or even multiple jobs each with a different configuration.
+In order to get insights into runs of sync jobs, we can use [Datadog](https://www.datadoghq.com/) to monitor the sync jobs and get alerts when something goes wrong.
+
+## Prerequisites
+
+- A Datadog account. See [here](https://www.datadoghq.com/) for getting started
+- The Datadog agent installed in the machine(s) running the CloudQuery sync jobs. See [here](https://docs.datadoghq.com/agent/) for more information
+- Log collection enabled in the Datadog agent configuration. See [here](https://docs.datadoghq.com/agent/logs/?tab=tailfiles#activate-log-collection) for more information
+
+## Adding a Custom Log Source for CloudQuery Logs
+
+First we recommended passing the `--log-format json` flag to the CloudQuery sync command. This ensures that the logs are in a structured format that Datadog can parse.
+Datadog can collect logs in non JSON format as well, but using JSON format ensure that we can query the logs.
+
+Now, let's create the custom log source in Datadog:
+
+1. Locate the Datadog `conf.d` directory. You can find the location of the directory based on our OS in the Datadog documentation [here](https://docs.datadoghq.com/agent/guide/agent-configuration-files/?tab=agentv6v7#agent-configuration-directory).
+2. Under the `conf.d` directory create a directory named `cloudquery.d`
+3. Under the `cloudquery.d` directory create a file named `conf.yaml` with the following content:
+
+```yaml
+logs:
+  - type: "file"
+    path: "<full path to the CloudQuery log file>" # Example path: /var/log/cloudquery/cloudquery.log
+    service: "CloudQuery"
+    source: "CloudQuery"
+```
+
+4. [Restart](https://docs.datadoghq.com/agent/guide/agent-commands/?tab=agentv6v7#restart-the-agent) the Datadog agent for changes to take effect. 
+
+> You can find more information on setting up a custom log source in Datadog [here](https://docs.datadoghq.com/agent/logs/?tab=tailfiles#custom-log-collection)
+
+## Using Datadog to query CloudQuery logs
+
+Once you run a CloudQuery sync job, you should see the logs in the Datadog logs explorer:
+![Datadog logs explorer](/images/how-to-guides/datadog-observability/datadog_logs_explorer.png)
+
+If you don't see any logs you might need to chose a different time range in the Datadog logs explorer:
+![Datadog logs explorer time range](/images/how-to-guides/datadog-observability/datadog_logs_explorer_time_range.png)
+
+By using JSON format we can immediately query the logs in Datadog.
+
+For example the `@errors:>0 @table:*` query filters all tables that had errors during the sync job:
+![Datadog logs explorer query](/images/how-to-guides/datadog-observability/datadog_logs_explorer_errors_query.png)
+
+And the `@resources:>10000 @table:*` query filters all tables that had more than 10,000 resources during the sync job:
+![Datadog logs explorer query](/images/how-to-guides/datadog-observability/datadog_logs_explorer_resources_query.png)
+
+## Summary and Next Steps
+
+In this guide we created a custom log source in Datadog to collect CloudQuery logs and query them.
+
+Datadog is a powerful tool for monitoring and observability and we only scratched the surface of what you can do with it.
+We recommend reading the [Datadog documentation](https://docs.datadoghq.com/) to learn more about its capabilities, for example creating [monitors](https://docs.datadoghq.com/monitors/) and [dashboards](https://docs.datadoghq.com/dashboards/).

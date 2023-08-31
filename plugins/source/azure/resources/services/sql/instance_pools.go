@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func InstancePools() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_sql_instance_pools",
-		Resolver:    fetchInstancePools,
-		Description: "https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/instance-pools/list?tabs=HTTP#instancepool",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_sql_instance_pools", client.Namespacemicrosoft_sql),
-		Transform:   transformers.TransformWithStruct(&armsql.InstancePool{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_sql_instance_pools",
+		Resolver:             fetchInstancePools,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/instance-pools/list?tabs=HTTP#instancepool",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_sql_instance_pools", client.Namespacemicrosoft_sql),
+		Transform:            transformers.TransformWithStruct(&armsql.InstancePool{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

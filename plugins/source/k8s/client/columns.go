@@ -1,7 +1,8 @@
 package client
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-var ContextColumn = schema.Column{Name: "context", Type: schema.TypeString, Resolver: ResolveContext}
+var ContextColumn = schema.Column{Name: "context", Type: arrow.BinaryTypes.String, Resolver: ResolveContext}

@@ -3,27 +3,41 @@ package subscription
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func locations() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_subscription_subscription_locations",
-		Resolver:    fetchLocations,
-		Description: "https://learn.microsoft.com/en-us/rest/api/resources/subscriptions/list-locations?tabs=HTTP#location",
-		Transform:   transformers.TransformWithStruct(&armsubscription.Location{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_subscription_subscription_locations",
+		Resolver:             fetchLocations,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/resources/subscriptions/list-locations?tabs=HTTP#location",
+		Transform:            transformers.TransformWithStruct(&armsubscriptions.Location{}, transformers.WithPrimaryKeys("ID")),
+		Columns: schema.ColumnList{
+			client.SubscriptionID,
+			{
+				Name:     "latitude",
+				Type:     arrow.BinaryTypes.String,
+				Resolver: schema.PathResolver("Metadata.Latitude"),
+			},
+			{
+				Name:     "longitude",
+				Type:     arrow.BinaryTypes.String,
+				Resolver: schema.PathResolver("Metadata.Longitude"),
+			},
+		},
 	}
 }
 
 func fetchLocations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	p := parent.Item.(*armsubscription.Subscription)
+	p := parent.Item.(*armsubscriptions.Subscription)
 	cl := meta.(*client.Client)
 
-	svc, err := armsubscription.NewSubscriptionsClient(cl.Creds, cl.Options)
+	svc, err := armsubscriptions.NewClient(cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}

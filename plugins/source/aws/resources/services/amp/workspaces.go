@@ -3,12 +3,15 @@ package amp
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/amp"
 	"github.com/aws/aws-sdk-go-v2/service/amp/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Workspaces() *schema.Table {
@@ -25,21 +28,19 @@ func Workspaces() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "alert_manager_definition",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: describeAlertManagerDefinition,
 			},
 			{
 				Name:     "logging_configuration",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: describeLoggingConfiguration,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Arn"),
+				PrimaryKey: true,
 			},
 		},
 		Relations: []*schema.Table{
@@ -49,11 +50,14 @@ func Workspaces() *schema.Table {
 }
 
 func fetchAmpWorkspaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Amp
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceAmp).Amp
 
 	p := amp.NewListWorkspacesPaginator(svc, &amp.ListWorkspacesInput{MaxResults: aws.Int32(int32(1000))})
 	for p.HasMorePages() {
-		out, err := p.NextPage(ctx)
+		out, err := p.NextPage(ctx, func(options *amp.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -65,10 +69,14 @@ func fetchAmpWorkspaces(ctx context.Context, meta schema.ClientMeta, parent *sch
 }
 
 func describeWorkspace(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	svc := meta.(*client.Client).Services().Amp
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceAmp).Amp
 
 	out, err := svc.DescribeWorkspace(ctx,
 		&amp.DescribeWorkspaceInput{WorkspaceId: resource.Item.(types.WorkspaceSummary).WorkspaceId},
+		func(options *amp.Options) {
+			options.Region = cl.Region
+		},
 	)
 	if err != nil {
 		return err
@@ -79,28 +87,36 @@ func describeWorkspace(ctx context.Context, meta schema.ClientMeta, resource *sc
 	return nil
 }
 
-func describeAlertManagerDefinition(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	svc := meta.(*client.Client).Services().Amp
+func describeAlertManagerDefinition(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceAmp).Amp
 
 	out, err := svc.DescribeAlertManagerDefinition(ctx,
 		&amp.DescribeAlertManagerDefinitionInput{WorkspaceId: resource.Item.(*types.WorkspaceDescription).WorkspaceId},
+		func(options *amp.Options) {
+			options.Region = cl.Region
+		},
 	)
 	if err != nil {
 		return err
 	}
 
-	return resource.Set(c.Name, out.AlertManagerDefinition)
+	return resource.Set(col.Name, out.AlertManagerDefinition)
 }
 
-func describeLoggingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	svc := meta.(*client.Client).Services().Amp
+func describeLoggingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceAmp).Amp
 
 	out, err := svc.DescribeLoggingConfiguration(ctx,
 		&amp.DescribeLoggingConfigurationInput{WorkspaceId: resource.Item.(*types.WorkspaceDescription).WorkspaceId},
+		func(options *amp.Options) {
+			options.Region = cl.Region
+		},
 	)
 	if err != nil {
 		return err
 	}
 
-	return resource.Set(c.Name, out.LoggingConfiguration)
+	return resource.Set(col.Name, out.LoggingConfiguration)
 }

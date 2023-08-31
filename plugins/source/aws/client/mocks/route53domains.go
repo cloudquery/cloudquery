@@ -37,6 +37,16 @@ func (m *MockRoute53domainsClient) EXPECT() *MockRoute53domainsClientMockRecorde
 
 // GetContactReachabilityStatus mocks base method.
 func (m *MockRoute53domainsClient) GetContactReachabilityStatus(arg0 context.Context, arg1 *route53domains.GetContactReachabilityStatusInput, arg2 ...func(*route53domains.Options)) (*route53domains.GetContactReachabilityStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &route53domains.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetContactReachabilityStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockRoute53domainsClientMockRecorder) GetContactReachabilityStatus(arg
 
 // GetDomainDetail mocks base method.
 func (m *MockRoute53domainsClient) GetDomainDetail(arg0 context.Context, arg1 *route53domains.GetDomainDetailInput, arg2 ...func(*route53domains.Options)) (*route53domains.GetDomainDetailOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &route53domains.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDomainDetail")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockRoute53domainsClientMockRecorder) GetDomainDetail(arg0, arg1 inter
 
 // GetDomainSuggestions mocks base method.
 func (m *MockRoute53domainsClient) GetDomainSuggestions(arg0 context.Context, arg1 *route53domains.GetDomainSuggestionsInput, arg2 ...func(*route53domains.Options)) (*route53domains.GetDomainSuggestionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &route53domains.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDomainSuggestions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockRoute53domainsClientMockRecorder) GetDomainSuggestions(arg0, arg1 
 
 // GetOperationDetail mocks base method.
 func (m *MockRoute53domainsClient) GetOperationDetail(arg0 context.Context, arg1 *route53domains.GetOperationDetailInput, arg2 ...func(*route53domains.Options)) (*route53domains.GetOperationDetailOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &route53domains.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetOperationDetail")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockRoute53domainsClientMockRecorder) GetOperationDetail(arg0, arg1 in
 
 // ListDomains mocks base method.
 func (m *MockRoute53domainsClient) ListDomains(arg0 context.Context, arg1 *route53domains.ListDomainsInput, arg2 ...func(*route53domains.Options)) (*route53domains.ListDomainsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &route53domains.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListDomains")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockRoute53domainsClientMockRecorder) ListDomains(arg0, arg1 interface
 
 // ListOperations mocks base method.
 func (m *MockRoute53domainsClient) ListOperations(arg0 context.Context, arg1 *route53domains.ListOperationsInput, arg2 ...func(*route53domains.Options)) (*route53domains.ListOperationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &route53domains.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListOperations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockRoute53domainsClientMockRecorder) ListOperations(arg0, arg1 interf
 
 // ListPrices mocks base method.
 func (m *MockRoute53domainsClient) ListPrices(arg0 context.Context, arg1 *route53domains.ListPricesInput, arg2 ...func(*route53domains.Options)) (*route53domains.ListPricesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &route53domains.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListPrices")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockRoute53domainsClientMockRecorder) ListPrices(arg0, arg1 interface{
 
 // ListTagsForDomain mocks base method.
 func (m *MockRoute53domainsClient) ListTagsForDomain(arg0 context.Context, arg1 *route53domains.ListTagsForDomainInput, arg2 ...func(*route53domains.Options)) (*route53domains.ListTagsForDomainOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &route53domains.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForDomain")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

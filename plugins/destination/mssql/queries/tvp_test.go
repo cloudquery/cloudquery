@@ -4,7 +4,8 @@ import (
 	"database/sql"
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -66,7 +67,7 @@ func TestTVPAddType(t *testing.T) {
 	const (
 		schemaName = "cq"
 		expected   = `CREATE TYPE [cq].[cq_tbl_table_name] AS TABLE (
-  [_cq_id] uniqueidentifier UNIQUE NOT NULL,
+  [_cq_id] uniqueidentifier NOT NULL,
   [_cq_parent_id] uniqueidentifier,
   [_cq_source_name] nvarchar(4000),
   [_cq_sync_time] datetime2,
@@ -84,24 +85,10 @@ func TestTVPAddType(t *testing.T) {
 			schema.CqParentIDColumn,
 			schema.CqSourceNameColumn,
 			schema.CqSyncTimeColumn,
-			schema.Column{
-				Name:            "extra_col_pk1",
-				Type:            schema.TypeFloat,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-			schema.Column{
-				Name:            "extra_col_pk2",
-				Type:            schema.TypeBool,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-			schema.Column{
-				Name: "extra_col_not_pk1",
-				Type: schema.TypeInt,
-			},
-			schema.Column{
-				Name: "extra_col_not_pk2",
-				Type: schema.TypeByteArray,
-			},
+			schema.Column{Name: "extra_col_pk1", Type: arrow.PrimitiveTypes.Float64, PrimaryKey: true, NotNull: true},
+			schema.Column{Name: "extra_col_pk2", Type: arrow.FixedWidthTypes.Boolean, PrimaryKey: true, NotNull: true},
+			schema.Column{Name: "extra_col_not_pk1", Type: arrow.PrimitiveTypes.Int64},
+			schema.Column{Name: "extra_col_not_pk2", Type: new(arrow.BinaryType)},
 		},
 	})
 
@@ -131,7 +118,7 @@ BEGIN
   [tgt].[extra_col_pk2] = [src].[extra_col_pk2]
 ;
 
-INSERT [cq].[table_name] (
+ INSERT [cq].[table_name] (
   [_cq_id],
   [_cq_parent_id],
   [_cq_source_name],
@@ -140,7 +127,7 @@ INSERT [cq].[table_name] (
   [extra_col_pk2],
   [extra_col_not_pk1],
   [extra_col_not_pk2]
-) SELECT
+ ) SELECT
   [src].[_cq_id],
   [src].[_cq_parent_id],
   [src].[_cq_source_name],
@@ -169,24 +156,48 @@ END;`
 			schema.CqParentIDColumn,
 			schema.CqSourceNameColumn,
 			schema.CqSyncTimeColumn,
-			schema.Column{
-				Name:            "extra_col_pk1",
-				Type:            schema.TypeFloat,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-			schema.Column{
-				Name:            "extra_col_pk2",
-				Type:            schema.TypeBool,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-			schema.Column{
-				Name: "extra_col_not_pk1",
-				Type: schema.TypeInt,
-			},
-			schema.Column{
-				Name: "extra_col_not_pk2",
-				Type: schema.TypeByteArray,
-			},
+			schema.Column{Name: "extra_col_pk1", Type: arrow.PrimitiveTypes.Float64, PrimaryKey: true, NotNull: true},
+			schema.Column{Name: "extra_col_pk2", Type: arrow.FixedWidthTypes.Boolean, PrimaryKey: true, NotNull: true},
+			schema.Column{Name: "extra_col_not_pk1", Type: arrow.PrimitiveTypes.Int64},
+			schema.Column{Name: "extra_col_not_pk2", Type: new(arrow.BinaryType)},
+		},
+	})
+
+	require.Equal(t, expected, query)
+}
+
+func TestTVPAddProcInsertOnly(t *testing.T) {
+	const (
+		schemaName = "cq"
+		expected   = `CREATE PROCEDURE [cq].[cq_proc_table_name] @TVP [cq].[cq_tbl_table_name] READONLY
+AS
+BEGIN
+ SET NOCOUNT ON;
+
+ INSERT [cq].[table_name] (
+  [extra_col_pk1],
+  [extra_col_pk2]
+ ) SELECT
+  [src].[extra_col_pk1],
+  [src].[extra_col_pk2]
+ FROM @TVP AS [src]
+ LEFT JOIN [cq].[table_name] AS [tgt] ON (
+  [tgt].[extra_col_pk1] = [src].[extra_col_pk1]
+  AND
+  [tgt].[extra_col_pk2] = [src].[extra_col_pk2]
+ ) WHERE (
+  [tgt].[extra_col_pk1] IS NULL
+  AND
+  [tgt].[extra_col_pk2] IS NULL
+);
+END;`
+	)
+
+	query := TVPAddProc(schemaName, &schema.Table{
+		Name: "table_name",
+		Columns: schema.ColumnList{
+			schema.Column{Name: "extra_col_pk1", Type: arrow.PrimitiveTypes.Float64, PrimaryKey: true, NotNull: true},
+			schema.Column{Name: "extra_col_pk2", Type: arrow.FixedWidthTypes.Boolean, PrimaryKey: true, NotNull: true},
 		},
 	})
 

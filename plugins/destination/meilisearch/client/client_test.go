@@ -1,22 +1,14 @@
 package client
 
 import (
+	"context"
+	"encoding/json"
 	"os"
 	"testing"
-	"time"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/meilisearch/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/meilisearch/resources/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
-
-var migrateStrategy = destination.MigrateStrategy{
-	AddColumn:           specs.MigrateModeSafe,
-	AddColumnNotNull:    specs.MigrateModeSafe,
-	RemoveColumn:        specs.MigrateModeSafe,
-	RemoveColumnNotNull: specs.MigrateModeSafe,
-	ChangeColumn:        specs.MigrateModeSafe,
-}
 
 func getTestSpec() *Spec {
 	apiKey := os.Getenv("CQ_DEST_MEILI_TEST_API_KEY")
@@ -28,19 +20,32 @@ func getTestSpec() *Spec {
 		host = "http://localhost:7700"
 	}
 
-	return &Spec{Host: host, APIKey: apiKey, Timeout: time.Minute}
+	return &Spec{Host: host, APIKey: apiKey}
 }
 
 func TestPlugin(t *testing.T) {
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin("meilisearch", plugin.Version, New, destination.WithManagedWriter())
-		},
-		specs.Destination{Spec: getTestSpec()},
-		destination.PluginTestSuiteTests{
-			SkipDeleteStale:          true,
-			MigrateStrategyOverwrite: migrateStrategy,
-			MigrateStrategyAppend:    migrateStrategy,
+	ctx := context.Background()
+	p := plugin.NewPlugin("meilisearch", internalPlugin.Version, New)
+	spec := getTestSpec()
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
+		t.Fatal(err)
+	}
+
+	plugin.TestWriterSuiteRunner(t,
+		p,
+		plugin.WriterTestSuiteTests{
+			SkipDeleteStale: true,
+			SkipMigrate:     true,
+			SafeMigrations: plugin.SafeMigrations{
+				AddColumn:           true,
+				AddColumnNotNull:    true,
+				RemoveColumn:        true,
+				RemoveColumnNotNull: true,
+			},
 		},
 	)
 }

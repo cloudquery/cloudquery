@@ -3,9 +3,9 @@ package subscription
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func fetchSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
@@ -16,7 +16,7 @@ func fetchSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *sch
 		return nil
 	}
 
-	svc, err := armsubscription.NewSubscriptionsClient(cl.Creds, cl.Options)
+	svc, err := armsubscriptions.NewClient(cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}

@@ -3,10 +3,11 @@ package mq
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/mq"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func brokerConfigurations() *schema.Table {
@@ -16,13 +17,12 @@ func brokerConfigurations() *schema.Table {
 		Description: `https://docs.aws.amazon.com/amazon-mq/latest/api-reference/configurations-configuration-id.html`,
 		Resolver:    fetchMqBrokerConfigurations,
 		Transform:   transformers.TransformWithStruct(&mq.DescribeConfigurationOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithPrimaryKeys("Arn")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "mq"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "broker_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 		},
@@ -40,8 +40,8 @@ func fetchMqBrokerConfigurations(ctx context.Context, meta schema.ClientMeta, pa
 	if broker.Configurations == nil {
 		return nil
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Mq
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceMq).Mq
 	list := broker.Configurations.History
 	if broker.Configurations.Current != nil {
 		list = append(list, *broker.Configurations.Current)
@@ -61,7 +61,9 @@ func fetchMqBrokerConfigurations(ctx context.Context, meta schema.ClientMeta, pa
 		dupes[*cfg.Id] = struct{}{}
 
 		input := mq.DescribeConfigurationInput{ConfigurationId: cfg.Id}
-		output, err := svc.DescribeConfiguration(ctx, &input)
+		output, err := svc.DescribeConfiguration(ctx, &input, func(options *mq.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

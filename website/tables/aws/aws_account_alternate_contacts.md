@@ -10,13 +10,38 @@ The composite primary key for this table is (**account_id**, **alternate_contact
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id (PK)|String|
-|alternate_contact_type (PK)|String|
-|email_address|String|
-|name|String|
-|phone_number|String|
-|title|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|alternate_contact_type (PK)|`utf8`|
+|email_address|`utf8`|
+|name|`utf8`|
+|phone_number|`utf8`|
+|title|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### Security contact information should be provided for an AWS account
+
+```sql
+SELECT
+  'Security contact information should be provided for an AWS account' AS title,
+  aws_iam_accounts.account_id,
+  CASE WHEN alternate_contact_type IS NULL THEN 'fail' ELSE 'pass' END AS status
+FROM
+  aws_iam_accounts
+  LEFT JOIN (
+      SELECT
+        *
+      FROM
+        aws_account_alternate_contacts
+      WHERE
+        alternate_contact_type = 'SECURITY'
+    )
+      AS account_security_contacts ON
+      aws_iam_accounts.account_id = account_security_contacts.account_id;
+```
+
+

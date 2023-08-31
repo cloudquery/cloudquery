@@ -13,13 +13,11 @@ The following tables depend on datadog_users:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_name (PK)|String|
-|id (PK)|String|
-|attributes|JSON|
-|relationships|JSON|
-|type|String|
-|additional_properties|JSON|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_name (PK)|`utf8`|
+|attributes|`json`|
+|id (PK)|`utf8`|
+|relationships|`json`|
+|type|`utf8`|
+|additional_properties|`json`|

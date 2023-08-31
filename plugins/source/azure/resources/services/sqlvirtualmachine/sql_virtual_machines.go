@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func SqlVirtualMachines() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_sqlvirtualmachine_sql_virtual_machines",
-		Resolver:    fetchSqlVirtualMachines,
-		Description: "https://learn.microsoft.com/en-us/rest/api/sqlvm/2022-07-01-preview/sql-virtual-machines/list?tabs=HTTP#sqlvirtualmachine",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_sqlvirtualmachine_sql_virtual_machines", client.Namespacemicrosoft_sqlvirtualmachine),
-		Transform:   transformers.TransformWithStruct(&armsqlvirtualmachine.SQLVirtualMachine{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_sqlvirtualmachine_sql_virtual_machines",
+		Resolver:             fetchSqlVirtualMachines,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/sqlvm/2022-07-01-preview/sql-virtual-machines/list?tabs=HTTP#sqlvirtualmachine",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_sqlvirtualmachine_sql_virtual_machines", client.Namespacemicrosoft_sqlvirtualmachine),
+		Transform:            transformers.TransformWithStruct(&armsqlvirtualmachine.SQLVirtualMachine{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

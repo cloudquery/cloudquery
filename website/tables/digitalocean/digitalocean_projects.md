@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean Projects.
 
+https://docs.digitalocean.com/reference/api/api-reference/#tag/Projects
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -13,17 +15,15 @@ The following tables depend on digitalocean_projects:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|owner_uuid|String|
-|owner_id|Int|
-|name|String|
-|description|String|
-|purpose|String|
-|environment|String|
-|is_default|Bool|
-|created_at|String|
-|updated_at|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|owner_uuid|`utf8`|
+|owner_id|`int64`|
+|name|`utf8`|
+|description|`utf8`|
+|purpose|`utf8`|
+|environment|`utf8`|
+|is_default|`bool`|
+|created_at|`utf8`|
+|updated_at|`utf8`|

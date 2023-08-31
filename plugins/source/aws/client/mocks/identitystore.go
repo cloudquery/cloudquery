@@ -37,6 +37,16 @@ func (m *MockIdentitystoreClient) EXPECT() *MockIdentitystoreClientMockRecorder 
 
 // DescribeGroup mocks base method.
 func (m *MockIdentitystoreClient) DescribeGroup(arg0 context.Context, arg1 *identitystore.DescribeGroupInput, arg2 ...func(*identitystore.Options)) (*identitystore.DescribeGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &identitystore.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeGroup")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockIdentitystoreClientMockRecorder) DescribeGroup(arg0, arg1 interfac
 
 // DescribeGroupMembership mocks base method.
 func (m *MockIdentitystoreClient) DescribeGroupMembership(arg0 context.Context, arg1 *identitystore.DescribeGroupMembershipInput, arg2 ...func(*identitystore.Options)) (*identitystore.DescribeGroupMembershipOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &identitystore.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeGroupMembership")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockIdentitystoreClientMockRecorder) DescribeGroupMembership(arg0, arg
 
 // DescribeUser mocks base method.
 func (m *MockIdentitystoreClient) DescribeUser(arg0 context.Context, arg1 *identitystore.DescribeUserInput, arg2 ...func(*identitystore.Options)) (*identitystore.DescribeUserOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &identitystore.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeUser")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockIdentitystoreClientMockRecorder) DescribeUser(arg0, arg1 interface
 
 // GetGroupId mocks base method.
 func (m *MockIdentitystoreClient) GetGroupId(arg0 context.Context, arg1 *identitystore.GetGroupIdInput, arg2 ...func(*identitystore.Options)) (*identitystore.GetGroupIdOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &identitystore.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetGroupId")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockIdentitystoreClientMockRecorder) GetGroupId(arg0, arg1 interface{}
 
 // GetGroupMembershipId mocks base method.
 func (m *MockIdentitystoreClient) GetGroupMembershipId(arg0 context.Context, arg1 *identitystore.GetGroupMembershipIdInput, arg2 ...func(*identitystore.Options)) (*identitystore.GetGroupMembershipIdOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &identitystore.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetGroupMembershipId")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockIdentitystoreClientMockRecorder) GetGroupMembershipId(arg0, arg1 i
 
 // GetUserId mocks base method.
 func (m *MockIdentitystoreClient) GetUserId(arg0 context.Context, arg1 *identitystore.GetUserIdInput, arg2 ...func(*identitystore.Options)) (*identitystore.GetUserIdOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &identitystore.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetUserId")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockIdentitystoreClientMockRecorder) GetUserId(arg0, arg1 interface{},
 
 // ListGroupMemberships mocks base method.
 func (m *MockIdentitystoreClient) ListGroupMemberships(arg0 context.Context, arg1 *identitystore.ListGroupMembershipsInput, arg2 ...func(*identitystore.Options)) (*identitystore.ListGroupMembershipsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &identitystore.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListGroupMemberships")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockIdentitystoreClientMockRecorder) ListGroupMemberships(arg0, arg1 i
 
 // ListGroupMembershipsForMember mocks base method.
 func (m *MockIdentitystoreClient) ListGroupMembershipsForMember(arg0 context.Context, arg1 *identitystore.ListGroupMembershipsForMemberInput, arg2 ...func(*identitystore.Options)) (*identitystore.ListGroupMembershipsForMemberOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &identitystore.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListGroupMembershipsForMember")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockIdentitystoreClientMockRecorder) ListGroupMembershipsForMember(arg
 
 // ListGroups mocks base method.
 func (m *MockIdentitystoreClient) ListGroups(arg0 context.Context, arg1 *identitystore.ListGroupsInput, arg2 ...func(*identitystore.Options)) (*identitystore.ListGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &identitystore.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListGroups")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockIdentitystoreClientMockRecorder) ListGroups(arg0, arg1 interface{}
 
 // ListUsers mocks base method.
 func (m *MockIdentitystoreClient) ListUsers(arg0 context.Context, arg1 *identitystore.ListUsersInput, arg2 ...func(*identitystore.Options)) (*identitystore.ListUsersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &identitystore.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListUsers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

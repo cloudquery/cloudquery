@@ -1,1 +1,2 @@
-{{.Name}} {{.Type}}{{with .Constraint}} {{.}}{{end}}
+{{sanitizeID .Name}} {{.Type | sql}}
+{{- if .NotNull }} NOT NULL {{- end}}

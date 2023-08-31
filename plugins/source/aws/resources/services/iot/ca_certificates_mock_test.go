@@ -6,35 +6,27 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildIotCaCertificatesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIotClient(ctrl)
 
 	ca := iot.ListCACertificatesOutput{}
-	err := faker.FakeObject(&ca)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ca))
 	ca.NextMarker = nil
 	m.EXPECT().ListCACertificates(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ca, nil)
 
 	cd := iot.DescribeCACertificateOutput{}
-	err = faker.FakeObject(&cd)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&cd))
 	m.EXPECT().DescribeCACertificate(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&cd, nil)
 
 	ct := iot.ListCertificatesByCAOutput{}
-	err = faker.FakeObject(&ct)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ct))
 	ct.NextMarker = nil
 	m.EXPECT().ListCertificatesByCA(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ct, nil)

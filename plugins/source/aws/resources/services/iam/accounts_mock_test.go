@@ -7,8 +7,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildAccount(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -43,9 +44,8 @@ func buildAccount(t *testing.T, ctrl *gomock.Controller) client.Services {
 		GlobalEndpointTokenVersion        int32
 	}{}
 
-	if err := faker.FakeObject(&acc); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&acc))
+
 	data, err := json.Marshal(acc)
 	if err != nil {
 		t.Fatal(err)
@@ -55,8 +55,8 @@ func buildAccount(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 
-	m.EXPECT().GetAccountSummary(gomock.Any(), gomock.Any()).Return(&iam.GetAccountSummaryOutput{SummaryMap: summaryData}, nil)
-	m.EXPECT().ListAccountAliases(gomock.Any(), gomock.Any()).Return(&iam.ListAccountAliasesOutput{AccountAliases: []string{"testAccount"}}, nil)
+	m.EXPECT().GetAccountSummary(gomock.Any(), gomock.Any(), gomock.Any()).Return(&iam.GetAccountSummaryOutput{SummaryMap: summaryData}, nil)
+	m.EXPECT().ListAccountAliases(gomock.Any(), gomock.Any(), gomock.Any()).Return(&iam.ListAccountAliasesOutput{AccountAliases: []string{"testAccount"}}, nil)
 
 	return client.Services{
 		Iam: m,

@@ -2,7 +2,7 @@
 
 This table shows data for Stripe Treasury Credit Reversals.
 
-https://stripe.com/docs/api/treasury_credit_reversals
+https://stripe.com/docs/api/treasury/credit_reversals
 
 The primary key for this table is **id**.
 
@@ -14,21 +14,19 @@ This table depends on [stripe_treasury_financial_accounts](stripe_treasury_finan
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|amount|Int|
-|created|Timestamp|
-|currency|String|
-|financial_account|String|
-|hosted_regulatory_receipt_url|String|
-|livemode|Bool|
-|metadata|JSON|
-|network|String|
-|object|String|
-|received_credit|String|
-|status|String|
-|status_transitions|JSON|
-|transaction|JSON|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|amount|`int64`|
+|created|`timestamp[us, tz=UTC]`|
+|currency|`utf8`|
+|financial_account|`utf8`|
+|hosted_regulatory_receipt_url|`utf8`|
+|livemode|`bool`|
+|metadata|`json`|
+|network|`utf8`|
+|object|`utf8`|
+|received_credit|`utf8`|
+|status|`utf8`|
+|status_transitions|`json`|
+|transaction|`json`|

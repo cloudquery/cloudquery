@@ -6,12 +6,12 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/frauddetector"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func resolveResourceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Frauddetector
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceFrauddetector).Frauddetector
 
 	paginator := frauddetector.NewListTagsForResourcePaginator(svc,
 		&frauddetector.ListTagsForResourceInput{
@@ -20,7 +20,9 @@ func resolveResourceTags(ctx context.Context, meta schema.ClientMeta, resource *
 	)
 	tags := make(map[string]string)
 	for paginator.HasMorePages() {
-		data, err := paginator.NextPage(ctx)
+		data, err := paginator.NextPage(ctx, func(options *frauddetector.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

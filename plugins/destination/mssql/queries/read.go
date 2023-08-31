@@ -1,26 +1,16 @@
 package queries
 
 import (
-	"database/sql"
-
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 type readQueryBuilder struct {
-	Table            string
-	Columns          []string
-	SourceNameColumn string
-	SyncTimeColumn   string
+	Schema string
+	Table  *schema.Table
 }
 
-func Read(schemaName, sourceName string, table *schema.Table) (query string, params []any) {
+func Read(schemaName string, table *schema.Table) string {
 	return execTemplate("read.sql.tpl",
-			&readQueryBuilder{
-				Table:            SanitizedTableName(schemaName, table),
-				Columns:          sanitized(table.Columns.Names()...),
-				SourceNameColumn: sanitizeID(schema.CqSourceNameColumn.Name),
-				SyncTimeColumn:   sanitizeID(schema.CqSyncTimeColumn.Name),
-			},
-		),
-		[]any{sql.Named("sourceName", sourceName)}
+		&readQueryBuilder{Schema: schemaName, Table: table},
+	)
 }

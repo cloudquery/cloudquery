@@ -9,17 +9,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafregional/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildRulesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockWafregionalClient(ctrl)
 
 	var r types.Rule
-	if err := faker.FakeObject(&r); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&r))
+
 	m.EXPECT().ListRules(
 		gomock.Any(),
 		&wafregional.ListRulesInput{},

@@ -7,26 +7,21 @@ import (
 	elasticbeanstalkTypes "github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildElasticbeanstalkEnvironments(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockElasticbeanstalkClient(ctrl)
 
 	la := elasticbeanstalkTypes.ApplicationDescription{}
-	err := faker.FakeObject(&la)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&la))
 
 	l := elasticbeanstalkTypes.EnvironmentDescription{
 		ApplicationName: la.ApplicationName,
 	}
-	err = faker.FakeObject(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&l))
 
 	m.EXPECT().DescribeEnvironments(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticbeanstalk.DescribeEnvironmentsOutput{
@@ -34,26 +29,17 @@ func buildElasticbeanstalkEnvironments(t *testing.T, ctrl *gomock.Controller) cl
 		}, nil)
 
 	tags := elasticbeanstalk.ListTagsForResourceOutput{}
-	err = faker.FakeObject(&tags)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tags))
 
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&tags, nil)
 
 	configSettingsOutput := elasticbeanstalk.DescribeConfigurationSettingsOutput{}
-	err = faker.FakeObject(&configSettingsOutput)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&configSettingsOutput))
 	m.EXPECT().DescribeConfigurationSettings(gomock.Any(), gomock.Any(), gomock.Any()).Return(&configSettingsOutput, nil)
 
 	configOptsOutput := elasticbeanstalk.DescribeConfigurationOptionsOutput{}
-	err = faker.FakeObject(&configOptsOutput)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&configOptsOutput))
 	m.EXPECT().DescribeConfigurationOptions(gomock.Any(), gomock.Any(), gomock.Any()).Return(&configOptsOutput, nil)
 
 	return client.Services{

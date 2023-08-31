@@ -6,31 +6,36 @@ https://docs.aws.amazon.com/servicecatalog/latest/dg/API_ProvisionedProductAttri
 
 The primary key for this table is **arn**.
 
+## Relations
+
+The following tables depend on aws_servicecatalog_provisioned_products:
+  - [aws_servicecatalog_launch_paths](aws_servicecatalog_launch_paths)
+  - [aws_servicecatalog_provisioning_artifacts](aws_servicecatalog_provisioning_artifacts)
+
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|arn (PK)|String|
-|tags|JSON|
-|created_time|Timestamp|
-|id|String|
-|idempotency_token|String|
-|last_provisioning_record_id|String|
-|last_record_id|String|
-|last_successful_provisioning_record_id|String|
-|name|String|
-|physical_id|String|
-|product_id|String|
-|product_name|String|
-|provisioning_artifact_id|String|
-|provisioning_artifact_name|String|
-|status|String|
-|status_message|String|
-|type|String|
-|user_arn|String|
-|user_arn_session|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|created_time|`timestamp[us, tz=UTC]`|
+|id|`utf8`|
+|idempotency_token|`utf8`|
+|last_provisioning_record_id|`utf8`|
+|last_record_id|`utf8`|
+|last_successful_provisioning_record_id|`utf8`|
+|name|`utf8`|
+|physical_id|`utf8`|
+|product_id|`utf8`|
+|product_name|`utf8`|
+|provisioning_artifact_id|`utf8`|
+|provisioning_artifact_name|`utf8`|
+|status|`utf8`|
+|status_message|`utf8`|
+|type|`utf8`|
+|user_arn|`utf8`|
+|user_arn_session|`utf8`|

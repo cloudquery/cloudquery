@@ -6,46 +6,51 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/resources/services/networkfirewall"
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/resources/services/networkloadbalancer"
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/resources/services/virtualnetwork"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func AutogenTables() []*schema.Table {
+func Tables() []*schema.Table {
 	return []*schema.Table{
-		compute.ComputeCapacityReservations(),
+		compute.CapacityReservations(),
 		compute.ConsoleHistories(),
-		compute.DedicatedVmHosts(),
+		compute.DedicatedVMHosts(),
 		compute.Images(),
 		compute.InstanceConsoleConnections(),
 		compute.Instances(),
-		compute.VnicAttachments(),
+		compute.VNICAttachments(),
+		compute.VolumeAttachments(),
 		loadbalancer.LoadBalancers(),
-		networkfirewall.NetworkFirewallPolicies(),
+		networkfirewall.FirewallPolicies(),
 		networkfirewall.NetworkFirewalls(),
 		networkfirewall.WorkRequests(),
 		networkloadbalancer.NetworkLoadBalancers(),
 		networkloadbalancer.WorkRequests(),
-		virtualnetwork.ByoipRanges(),
+		virtualnetwork.BYOIPRanges(),
 		virtualnetwork.CaptureFilters(),
-		virtualnetwork.Cpes(),
+		virtualnetwork.CPEs(),
 		virtualnetwork.CrossConnectGroups(),
 		virtualnetwork.CrossConnects(),
-		virtualnetwork.DhcpOptions(),
-		virtualnetwork.DrgAttachments(),
-		virtualnetwork.Drgs(),
+		virtualnetwork.DHCPOptions(),
+		virtualnetwork.DRGAttachments(),
+		virtualnetwork.DRGs(),
 		virtualnetwork.FastConnectProviderServices(),
 		virtualnetwork.InternetGateways(),
-		virtualnetwork.IpSecConnections(),
+		virtualnetwork.IPSecConnections(),
 		virtualnetwork.LocalPeeringGateways(),
-		virtualnetwork.NatGateways(),
+		virtualnetwork.NATGateways(),
+		virtualnetwork.PrivateIPs(),
 		virtualnetwork.PublicIpPools(),
+		virtualnetwork.AssignedPublicIPs(),
+		virtualnetwork.EphemeralPublicIPs(),
+		virtualnetwork.ReservedPublicIPs(),
 		virtualnetwork.RemotePeeringConnections(),
 		virtualnetwork.RouteTables(),
 		virtualnetwork.SecurityLists(),
 		virtualnetwork.ServiceGateways(),
 		virtualnetwork.Subnets(),
-		virtualnetwork.Vcns(),
+		virtualnetwork.VCNs(),
 		virtualnetwork.VirtualCircuits(),
-		virtualnetwork.Vlans(),
-		virtualnetwork.Vtaps(),
+		virtualnetwork.VLANs(),
+		virtualnetwork.VTAPs(),
 	}
 }

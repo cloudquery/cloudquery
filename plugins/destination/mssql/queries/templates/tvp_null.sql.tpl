@@ -3,5 +3,5 @@
   {{- if $first}}{{$first = false}}  {{else}}
   AND
   {{end -}}
-  [tgt].{{.}} IS NULL
+  {{sanitizeID "tgt" .}} IS NULL
 {{- end -}}

@@ -10,21 +10,11 @@ archives:
       - policies/**
 checksum:
   name_template: "checksums.txt"
-  ids:
-    - default
 changelog:
   sort: asc
   filters:
     exclude:
       - "^docs:"
       - "^test:"
-signs:
-  - artifacts: checksum
-    args:
-      - "--batch"
-      - "--output"
-      - "${signature}"
-      - "--detach-sign"
-      - "${artifact}"
 release:
   prerelease: auto

@@ -8,24 +8,23 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildRoute53HostedZonesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockRoute53Client(ctrl)
 	h := types.HostedZone{}
-	if err := faker.FakeObject(&h); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&h))
+
 	m.EXPECT().ListHostedZones(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&route53.ListHostedZonesOutput{
 			HostedZones: []types.HostedZone{h},
 		}, nil)
 	tag := types.Tag{}
-	if err := faker.FakeObject(&tag); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tag))
+
 	hzId := *h.Id
 	newId := fmt.Sprintf("/%s/%s", types.TagResourceTypeHostedzone, *h.Id)
 	h.Id = &newId
@@ -39,37 +38,31 @@ func buildRoute53HostedZonesMock(t *testing.T, ctrl *gomock.Controller) client.S
 			},
 		}, nil)
 	qlc := types.QueryLoggingConfig{}
-	if err := faker.FakeObject(&qlc); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&qlc))
+
 	m.EXPECT().ListQueryLoggingConfigs(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&route53.ListQueryLoggingConfigsOutput{
 			QueryLoggingConfigs: []types.QueryLoggingConfig{qlc},
 		}, nil)
 	rrs := types.ResourceRecordSet{}
-	if err := faker.FakeObject(&rrs); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&rrs))
+
 	m.EXPECT().ListResourceRecordSets(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&route53.ListResourceRecordSetsOutput{
 			ResourceRecordSets: []types.ResourceRecordSet{rrs},
 		}, nil)
 	tpi := types.TrafficPolicyInstance{}
-	if err := faker.FakeObject(&tpi); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tpi))
+
 	m.EXPECT().ListTrafficPolicyInstancesByHostedZone(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&route53.ListTrafficPolicyInstancesByHostedZoneOutput{
 			TrafficPolicyInstances: []types.TrafficPolicyInstance{tpi},
 		}, nil)
 	vpc := types.VPC{}
-	if err := faker.FakeObject(&vpc); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&vpc))
+
 	ds := types.DelegationSet{}
-	if err := faker.FakeObject(&ds); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ds))
 
 	m.EXPECT().GetHostedZone(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&route53.GetHostedZoneOutput{

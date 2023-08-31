@@ -7,8 +7,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dax/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildDAXClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -17,9 +18,8 @@ func buildDAXClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services
 		Dax: m,
 	}
 	c := types.Cluster{}
-	if err := faker.FakeObject(&c); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&c))
+
 	daxOutput := &dax.DescribeClustersOutput{
 		Clusters: []types.Cluster{c},
 	}
@@ -29,9 +29,8 @@ func buildDAXClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services
 	)
 
 	tags := &dax.ListTagsOutput{}
-	if err := faker.FakeObject(&tags); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tags))
+
 	tags.NextToken = nil
 	m.EXPECT().ListTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		tags,

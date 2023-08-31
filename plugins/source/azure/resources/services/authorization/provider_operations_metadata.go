@@ -5,16 +5,17 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func ProviderOperationsMetadata() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_authorization_provider_operations_metadata",
-		Resolver:    fetchProviderOperationsMetadata,
-		Description: "https://learn.microsoft.com/en-us/rest/api/authorization/provider-operations-metadata/list?tabs=HTTP#provideroperationsmetadata",
-		Transform:   transformers.TransformWithStruct(&armauthorization.ProviderOperationsMetadata{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_authorization_provider_operations_metadata",
+		Resolver:             fetchProviderOperationsMetadata,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/authorization/provider-operations-metadata/list?tabs=HTTP#provideroperationsmetadata",
+		Transform:            transformers.TransformWithStruct(&armauthorization.ProviderOperationsMetadata{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

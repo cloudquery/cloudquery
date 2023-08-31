@@ -3,12 +3,15 @@ package kms
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/aws/aws-sdk-go-v2/service/kms/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Keys() *schema.Table {
@@ -25,24 +28,22 @@ func Keys() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "rotation_enabled",
-				Type:     schema.TypeBool,
+				Type:     arrow.FixedWidthTypes.Boolean,
 				Resolver: resolveKeysRotationEnabled,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveKeysTags,
 			},
 			{
-				Name: "arn",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				PrimaryKey: true,
 			},
 			{
 				Name:     "replica_keys",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveKeysReplicaKeys,
 			},
 		},
@@ -55,13 +56,15 @@ func Keys() *schema.Table {
 }
 
 func fetchKmsKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Kms
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceKms).Kms
 
 	config := kms.ListKeysInput{Limit: aws.Int32(1000)}
 	p := kms.NewListKeysPaginator(svc, &config)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *kms.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -71,11 +74,13 @@ func fetchKmsKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 }
 
 func getKey(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Kms
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceKms).Kms
 	item := resource.Item.(types.KeyListEntry)
 
-	d, err := svc.DescribeKey(ctx, &kms.DescribeKeyInput{KeyId: item.KeyId})
+	d, err := svc.DescribeKey(ctx, &kms.DescribeKeyInput{KeyId: item.KeyId}, func(options *kms.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -96,12 +101,15 @@ func resolveKeysTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 	if key.Origin == "EXTERNAL" || key.KeyManager == "AWS" {
 		return nil
 	}
-	svc := meta.(*client.Client).Services().Kms
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceKms).Kms
 	params := kms.ListResourceTagsInput{KeyId: key.KeyId}
 	paginator := kms.NewListResourceTagsPaginator(svc, &params)
 	tags := make(map[string]string)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *kms.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -118,8 +126,11 @@ func resolveKeysRotationEnabled(ctx context.Context, meta schema.ClientMeta, res
 	if key.Origin == "EXTERNAL" || key.KeyManager == "AWS" {
 		return nil
 	}
-	svc := meta.(*client.Client).Services().Kms
-	result, err := svc.GetKeyRotationStatus(ctx, &kms.GetKeyRotationStatusInput{KeyId: key.KeyId})
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceKms).Kms
+	result, err := svc.GetKeyRotationStatus(ctx, &kms.GetKeyRotationStatusInput{KeyId: key.KeyId}, func(options *kms.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

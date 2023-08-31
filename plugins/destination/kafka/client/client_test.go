@@ -1,13 +1,14 @@
 package client
 
 import (
+	"context"
+	"encoding/json"
 	"os"
 	"strings"
 	"testing"
 
-	"github.com/cloudquery/filetypes"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/filetypes/v4"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 
 const (
@@ -22,28 +23,28 @@ func getenv(key, fallback string) string {
 	return value
 }
 
-func TestPgPlugin(t *testing.T) {
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin("kafka", "development", New)
+func TestPlugin(t *testing.T) {
+	ctx := context.Background()
+	p := plugin.NewPlugin("kafka", "development", New)
+	b, err := json.Marshal(&Spec{
+		Brokers:      strings.Split(getenv("CQ_DEST_KAFKA_CONNECTION_STRING", defaultConnectionString), ","),
+		SaslUsername: getenv("CQ_DEST_KAFKA_SASL_USERNAME", ""),
+		SaslPassword: getenv("CQ_DEST_KAFKA_SASL_PASSWORD", ""),
+		Verbose:      true,
+		FileSpec:     &filetypes.FileSpec{Format: filetypes.FormatTypeJSON},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := p.Init(ctx, b, plugin.NewClientOptions{}); err != nil {
+		t.Fatal(err)
+	}
+	plugin.TestWriterSuiteRunner(t,
+		p,
+		plugin.WriterTestSuiteTests{
+			SkipUpsert:      true,
+			SkipMigrate:     true,
+			SkipDeleteStale: true,
 		},
-		specs.Destination{
-			Spec: &Spec{
-				Brokers:            strings.Split(getenv("CQ_DEST_KAFKA_CONNECTION_STRING", defaultConnectionString), ","),
-				SaslUsername:       getenv("CQ_DEST_KAFKA_SASL_USERNAME", ""),
-				SaslPassword:       getenv("CQ_DEST_KAFKA_SASL_PASSWORD", ""),
-				Verbose:            true,
-				MaxMetadataRetries: 15,
-				FileSpec: &filetypes.FileSpec{
-					Format: filetypes.FormatTypeJSON,
-				},
-			},
-		},
-		destination.PluginTestSuiteTests{
-			SkipOverwrite:             true,
-			SkipMigrateAppend:         true,
-			SkipMigrateOverwrite:      true,
-			SkipMigrateOverwriteForce: true,
-			SkipMigrateAppendForce:    true,
-		})
+	)
 }

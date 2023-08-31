@@ -8,16 +8,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/neptune/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildNeptuneDBParameterGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockNeptuneClient(ctrl)
 	var g types.DBParameterGroup
-	if err := faker.FakeObject(&g); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&g))
+
 	mock.EXPECT().DescribeDBParameterGroups(
 		gomock.Any(),
 		&neptune.DescribeDBParameterGroupsInput{
@@ -41,9 +41,8 @@ func buildNeptuneDBParameterGroups(t *testing.T, ctrl *gomock.Controller) client
 	)
 
 	var p types.Parameter
-	if err := faker.FakeObject(&p); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&p))
+
 	mock.EXPECT().DescribeDBParameters(
 		gomock.Any(),
 		&neptune.DescribeDBParametersInput{DBParameterGroupName: g.DBParameterGroupName},

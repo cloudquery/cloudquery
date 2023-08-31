@@ -1,0 +1,15 @@
+kind: source
+spec:
+  name: test
+  path: cloudquery/test
+  version: "v1"
+  destinations: [postgresql]
+  tables: [test]
+---
+kind: destination
+spec:
+  name: postgresql
+  path: cloudquery/postgresql
+  version: "v1"
+  spec:
+    custom_version: "#${VERSION}" # or ${ENV_VARIABLE}

@@ -8,27 +8,19 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockRedshiftClient(ctrl)
 	g := types.Cluster{}
-	err := faker.FakeObject(&g)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&g))
 	p := types.Parameter{}
-	err = faker.FakeObject(&p)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&p))
 	logging := redshift.DescribeLoggingStatusOutput{}
-	err = faker.FakeObject(&logging)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&logging))
 
 	m.EXPECT().DescribeClusters(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&redshift.DescribeClustersOutput{
@@ -42,9 +34,8 @@ func buildClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&logging, nil)
 
 	var snap types.Snapshot
-	if err := faker.FakeObject(&snap); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&snap))
+
 	snap.ClusterIdentifier = g.ClusterIdentifier
 	snap.ClusterCreateTime = g.ClusterCreateTime
 	m.EXPECT().DescribeClusterSnapshots(
@@ -61,9 +52,8 @@ func buildClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var eacc types.EndpointAccess
-	if err := faker.FakeObject(&eacc); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&eacc))
+
 	eacc.ClusterIdentifier = g.ClusterIdentifier
 
 	m.EXPECT().DescribeEndpointAccess(
@@ -79,9 +69,8 @@ func buildClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var eauth types.EndpointAuthorization
-	if err := faker.FakeObject(&eauth); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&eauth))
+
 	eauth.ClusterIdentifier = g.ClusterIdentifier
 
 	m.EXPECT().DescribeEndpointAuthorization(

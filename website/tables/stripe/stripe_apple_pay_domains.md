@@ -2,7 +2,7 @@
 
 This table shows data for Stripe Apple Pay Domains.
 
-https://stripe.com/docs/api/apple_pay_domains
+https://stripe.com/docs/api
 
 The primary key for this table is **id**.
 
@@ -10,13 +10,11 @@ The primary key for this table is **id**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|created|Timestamp|
-|deleted|Bool|
-|domain_name|String|
-|livemode|Bool|
-|object|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|created|`timestamp[us, tz=UTC]`|
+|deleted|`bool`|
+|domain_name|`utf8`|
+|livemode|`bool`|
+|object|`utf8`|

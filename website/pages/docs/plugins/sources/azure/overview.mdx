@@ -1,6 +1,8 @@
 ---
 name: Azure
 stage: GA
+title: Azure Source Plugin
+description: CloudQuery Azure Plugin documentation
 ---
 # Azure Source Plugin
 
@@ -111,4 +113,44 @@ SELECT * from azure_storage_accounts where enable_https_traffic_only = false;
 
 ```sql copy
 SELECT * from azure_keyvault_vault_keys where attributes_expires >= extract(epoch from now()) * 1000;
+```
+
+### List the Memory and vCPUs of all available Azure Compute VM types
+
+```sql copy
+SELECT
+ distinct(vm.name),
+ vcpus.capability_value AS "vCPUs",
+ memory.capability_value AS "Memory"
+FROM
+ azure_compute_skus vm
+ CROSS JOIN LATERAL (
+   SELECT (caps ->> 'value') AS capability_value
+   FROM jsonb_array_elements(vm.capabilities) caps
+   WHERE (caps ->> 'name') = 'vCPUs'
+ ) vcpus
+ CROSS JOIN LATERAL (
+   SELECT (caps ->> 'value') AS capability_value
+   FROM jsonb_array_elements(vm.capabilities) caps
+   WHERE (caps ->> 'name') = 'MemoryGB'
+ ) memory
+WHERE
+ vm.resource_type = 'virtualMachines' order by name;
+```
+
+Results:
+
+```
++---------------------------+-------+--------+
+| name                      | vCPUs | Memory |
+|---------------------------+-------+--------|
+| Basic_A0                  | 1     | 0.75   |
+| Basic_A1                  | 1     | 1.75   |
+| Basic_A2                  | 2     | 3.5    |
+| Basic_A3                  | 4     | 7      |
+| Basic_A4                  | 8     | 14     |
+| Standard_A0               | 1     | 0.75   |
+| Standard_A1               | 1     | 1.75   |
+| Standard_A1_v2            | 1     | 2      |
+... (truncated)
 ```

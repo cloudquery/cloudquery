@@ -1,22 +1,16 @@
 package client
 
 import (
+	"context"
 	"net/url"
 	"os"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/goccy/go-json"
+	"github.com/stretchr/testify/require"
 )
-
-var migrateStrategy = destination.MigrateStrategy{
-	AddColumn:           specs.MigrateModeSafe,
-	AddColumnNotNull:    specs.MigrateModeForced,
-	RemoveColumn:        specs.MigrateModeSafe,
-	RemoveColumnNotNull: specs.MigrateModeForced,
-	ChangeColumn:        specs.MigrateModeForced,
-}
 
 func getTestConnection() string {
 	if testConn := os.Getenv("CQ_DEST_CH_TEST_CONN"); len(testConn) > 0 {
@@ -31,27 +25,23 @@ func getTestConnection() string {
 }
 
 func TestPlugin(t *testing.T) {
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin(
-				"clickhouse",
-				plugin.Version,
-				New,
-				destination.WithManagedWriter(),
-			)
-		},
-		specs.Destination{
-			Spec: &Spec{
-				ConnectionString: getTestConnection(),
+	ctx := context.Background()
+	p := plugin.NewPlugin("clickhouse", "development", New)
+	s := &Spec{ConnectionString: getTestConnection()}
+	b, err := json.Marshal(s)
+	require.NoError(t, err)
+	require.NoError(t, p.Init(ctx, b, plugin.NewClientOptions{}))
+
+	plugin.TestWriterSuiteRunner(t,
+		p,
+		plugin.WriterTestSuiteTests{
+			SkipUpsert:      true,
+			SkipDeleteStale: true,
+			SafeMigrations: plugin.SafeMigrations{
+				AddColumn:    true,
+				RemoveColumn: true,
 			},
 		},
-		destination.PluginTestSuiteTests{
-			SkipOverwrite:             true,
-			SkipMigrateOverwrite:      true,
-			SkipMigrateOverwriteForce: true,
-
-			MigrateStrategyOverwrite: migrateStrategy,
-			MigrateStrategyAppend:    migrateStrategy,
-		},
+		plugin.WithTestSourceAllowNull(types.CanBeNullable),
 	)
 }

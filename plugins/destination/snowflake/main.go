@@ -1,10 +1,14 @@
 package main
 
 import (
+	"context"
+	"fmt"
+	"os"
+
 	"github.com/cloudquery/cloudquery/plugins/destination/snowflake/client"
-	"github.com/cloudquery/cloudquery/plugins/destination/snowflake/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/serve"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/snowflake/resources/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/serve"
 )
 
 const (
@@ -12,6 +16,9 @@ const (
 )
 
 func main() {
-	p := destination.NewPlugin("snowflake", plugin.Version, client.New, destination.WithManagedWriter())
-	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
+	p := plugin.NewPlugin("snowflake", internalPlugin.Version, client.New)
+	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN), serve.WithDestinationV0V1Server()).Serve(context.Background()); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }

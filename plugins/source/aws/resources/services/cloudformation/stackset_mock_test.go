@@ -7,22 +7,19 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildStackSet(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockCloudformationClient(ctrl)
 
 	var stack types.StackSet
-	if err := faker.FakeObject(&stack); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&stack))
 
 	var stackSummary types.StackSetSummary
-	if err := faker.FakeObject(&stackSummary); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&stackSummary))
 
 	mock.EXPECT().ListStackSets(
 		gomock.Any(),
@@ -43,9 +40,7 @@ func buildStackSet(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var stackSetOperationSummary types.StackSetOperationSummary
-	if err := faker.FakeObject(&stackSetOperationSummary); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&stackSetOperationSummary))
 
 	mock.EXPECT().ListStackSetOperations(
 		gomock.Any(),
@@ -57,9 +52,7 @@ func buildStackSet(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var stackSetOperation types.StackSetOperation
-	if err := faker.FakeObject(&stackSetOperation); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&stackSetOperation))
 
 	mock.EXPECT().DescribeStackSetOperation(
 		gomock.Any(),
@@ -71,9 +64,7 @@ func buildStackSet(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var stackSetOperationResultSummary types.StackSetOperationResultSummary
-	if err := faker.FakeObject(&stackSetOperationResultSummary); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&stackSetOperationResultSummary))
 
 	mock.EXPECT().ListStackSetOperationResults(
 		gomock.Any(),
@@ -81,6 +72,34 @@ func buildStackSet(t *testing.T, ctrl *gomock.Controller) client.Services {
 		gomock.Any(),
 	).Return(
 		&cloudformation.ListStackSetOperationResultsOutput{Summaries: []types.StackSetOperationResultSummary{stackSetOperationResultSummary}},
+		nil,
+	)
+
+	var stackInstanceSummary types.StackInstanceSummary
+	require.NoError(t, faker.FakeObject(&stackInstanceSummary))
+	mock.EXPECT().ListStackInstances(
+		gomock.Any(),
+		&cloudformation.ListStackInstancesInput{StackSetName: stackSummary.StackSetName, CallAs: types.CallAsDelegatedAdmin},
+		gomock.Any(),
+	).Return(
+		&cloudformation.ListStackInstancesOutput{Summaries: []types.StackInstanceSummary{stackInstanceSummary}},
+		nil,
+	)
+
+	var stackInstanceResourceDriftsSummary types.StackInstanceResourceDriftsSummary
+	require.NoError(t, faker.FakeObject(&stackInstanceResourceDriftsSummary))
+	mock.EXPECT().ListStackInstanceResourceDrifts(
+		gomock.Any(),
+		&cloudformation.ListStackInstanceResourceDriftsInput{
+			OperationId:          stackInstanceSummary.LastOperationId,
+			StackInstanceAccount: stackInstanceSummary.Account,
+			StackInstanceRegion:  stackInstanceSummary.Region,
+			StackSetName:         stackSummary.StackSetName,
+			CallAs:               types.CallAsDelegatedAdmin,
+		},
+		gomock.Any(),
+	).Return(
+		&cloudformation.ListStackInstanceResourceDriftsOutput{Summaries: []types.StackInstanceResourceDriftsSummary{stackInstanceResourceDriftsSummary}},
 		nil,
 	)
 

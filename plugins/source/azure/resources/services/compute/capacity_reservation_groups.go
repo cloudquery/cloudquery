@@ -6,19 +6,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func CapacityReservationGroups() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_compute_capacity_reservation_groups",
-		Resolver:    fetchCapacityReservationGroups,
-		Description: "https://learn.microsoft.com/en-us/rest/api/compute/capacity-reservation-groups/list-by-resource-group?tabs=HTTP#capacityreservationgroup",
-		Multiplex:   client.SubscriptionResourceGroupMultiplexRegisteredNamespace("azure_compute_capacity_reservation_groups", client.Namespacemicrosoft_compute),
-		Transform:   transformers.TransformWithStruct(&armcompute.CapacityReservationGroup{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
-		Relations:   []*schema.Table{capacityReservations()},
+		Name:                 "azure_compute_capacity_reservation_groups",
+		Resolver:             fetchCapacityReservationGroups,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/compute/capacity-reservation-groups/list-by-resource-group?tabs=HTTP#capacityreservationgroup",
+		Multiplex:            client.SubscriptionResourceGroupMultiplexRegisteredNamespace("azure_compute_capacity_reservation_groups", client.Namespacemicrosoft_compute),
+		Transform:            transformers.TransformWithStruct(&armcompute.CapacityReservationGroup{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
+		Relations:            []*schema.Table{capacityReservations()},
 	}
 }
 

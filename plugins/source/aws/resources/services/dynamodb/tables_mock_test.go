@@ -7,8 +7,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildDynamodbTablesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -17,9 +18,8 @@ func buildDynamodbTablesMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 		Dynamodb: m,
 	}
 	var tableName string
-	if err := faker.FakeObject(&tableName); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tableName))
+
 	listOutput := &dynamodb.ListTablesOutput{
 		TableNames: []string{tableName},
 	}
@@ -33,9 +33,7 @@ func buildDynamodbTablesMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 			TableName: &tableName,
 		},
 	}
-	if err := faker.FakeObject(descOutput.Table); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(descOutput.Table))
 
 	m.EXPECT().DescribeTable(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		descOutput,
@@ -48,9 +46,7 @@ func buildDynamodbTablesMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 			TableStatus: types.TableStatusActive,
 		},
 	}
-	if err := faker.FakeObject(&repOutput.TableAutoScalingDescription.Replicas); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&repOutput.TableAutoScalingDescription.Replicas))
 
 	m.EXPECT().DescribeTableReplicaAutoScaling(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		repOutput,
@@ -60,9 +56,7 @@ func buildDynamodbTablesMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 	cbOutput := &dynamodb.DescribeContinuousBackupsOutput{
 		ContinuousBackupsDescription: &types.ContinuousBackupsDescription{},
 	}
-	if err := faker.FakeObject(&cbOutput.ContinuousBackupsDescription); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&cbOutput.ContinuousBackupsDescription))
 
 	m.EXPECT().DescribeContinuousBackups(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		cbOutput,
@@ -70,9 +64,8 @@ func buildDynamodbTablesMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 	)
 
 	tags := &dynamodb.ListTagsOfResourceOutput{}
-	if err := faker.FakeObject(&tags); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tags))
+
 	tags.NextToken = nil
 	m.EXPECT().ListTagsOfResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		tags,

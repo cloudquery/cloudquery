@@ -2,6 +2,8 @@
 
 This table shows data for DigitalOcean VPCs.
 
+https://docs.digitalocean.com/reference/api/api-reference/#tag/VPCs
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -13,15 +15,13 @@ The following tables depend on digitalocean_vpcs:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|id (PK)|String|
-|urn|String|
-|name|String|
-|description|String|
-|ip_range|String|
-|region|String|
-|created_at|Timestamp|
-|default|Bool|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|id (PK)|`utf8`|
+|urn|`utf8`|
+|name|`utf8`|
+|description|`utf8`|
+|ip_range|`utf8`|
+|region|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|default|`bool`|

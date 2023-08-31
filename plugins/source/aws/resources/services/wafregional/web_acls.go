@@ -3,12 +3,15 @@ package wafregional
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func WebAcls() *schema.Table {
@@ -23,22 +26,20 @@ func WebAcls() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("WebACLArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("WebACLArn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:        "tags",
-				Type:        schema.TypeJSON,
+				Type:        sdkTypes.ExtensionTypes.JSON,
 				Resolver:    resolveWafregionalWebACLTags,
 				Description: `Web ACL tags.`,
 			},
 			{
 				Name:     "resources_for_web_acl",
-				Type:     schema.TypeStringArray,
+				Type:     arrow.ListOf(arrow.BinaryTypes.String),
 				Resolver: resolveWafregionalWebACLResourcesForWebACL,
 			},
 		},
@@ -47,7 +48,7 @@ func WebAcls() *schema.Table {
 
 func fetchWafregionalWebAcls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Wafregional
+	svc := cl.Services(client.AWSServiceWafregional).Wafregional
 	var params wafregional.ListWebACLsInput
 	for {
 		result, err := svc.ListWebACLs(ctx, &params, func(o *wafregional.Options) {
@@ -81,11 +82,13 @@ func fetchWafregionalWebAcls(ctx context.Context, meta schema.ClientMeta, parent
 }
 func resolveWafregionalWebACLTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Wafregional
+	svc := cl.Services(client.AWSServiceWafregional).Wafregional
 	params := wafregional.ListTagsForResourceInput{ResourceARN: resource.Item.(types.WebACL).WebACLArn}
 	tags := make(map[string]string)
 	for {
-		result, err := svc.ListTagsForResource(ctx, &params)
+		result, err := svc.ListTagsForResource(ctx, &params, func(o *wafregional.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -101,9 +104,12 @@ func resolveWafregionalWebACLTags(ctx context.Context, meta schema.ClientMeta, r
 }
 
 func resolveWafregionalWebACLResourcesForWebACL(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	service := meta.(*client.Client).Services().Wafregional
+	cl := meta.(*client.Client)
+	service := cl.Services(client.AWSServiceWafregional).Wafregional
 	output, err := service.ListResourcesForWebACL(ctx, &wafregional.ListResourcesForWebACLInput{
 		WebACLId: resource.Item.(types.WebACL).WebACLId,
+	}, func(o *wafregional.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		return err

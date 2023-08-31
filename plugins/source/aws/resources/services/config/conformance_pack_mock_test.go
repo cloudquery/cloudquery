@@ -7,25 +7,22 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildConfigConformancePack(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockConfigserviceClient(ctrl)
 
 	var cpd types.ConformancePackDetail
-	if err := faker.FakeObject(&cpd); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&cpd))
+
 	var cprc types.ConformancePackRuleCompliance
-	if err := faker.FakeObject(&cprc); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&cprc))
+
 	var cpre types.ConformancePackEvaluationResult
-	if err := faker.FakeObject(&cpre); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&cpre))
 
 	m.EXPECT().DescribeConformancePacks(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&configservice.DescribeConformancePacksOutput{

@@ -3,11 +3,14 @@ package docdb
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/docdb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func ClusterParameterGroups() *schema.Table {
@@ -23,30 +26,28 @@ func ClusterParameterGroups() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveDBClusterParameterGroupTags,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DBClusterParameterGroupArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("DBClusterParameterGroupArn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "parameters",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveDocdbClusterParameterGroupParameters,
 			},
 			{
 				Name:     "db_cluster_parameter_group_name",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("DBClusterParameterGroupName"),
 			},
 			{
 				Name:     "db_parameter_group_family",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("DBParameterGroupFamily"),
 			},
 		},
@@ -54,14 +55,16 @@ func ClusterParameterGroups() *schema.Table {
 }
 
 func fetchDocdbClusterParameterGroups(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Docdb
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceDocdb).Docdb
 
 	input := &docdb.DescribeDBClusterParameterGroupsInput{}
 
 	p := docdb.NewDescribeDBClusterParameterGroupsPaginator(svc, input)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *docdb.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -72,7 +75,8 @@ func fetchDocdbClusterParameterGroups(ctx context.Context, meta schema.ClientMet
 
 func resolveDocdbClusterParameterGroupParameters(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	item := resource.Item.(types.DBClusterParameterGroup)
-	svc := meta.(*client.Client).Services().Docdb
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceDocdb).Docdb
 
 	input := &docdb.DescribeDBClusterParametersInput{
 		DBClusterParameterGroupName: item.DBClusterParameterGroupName,
@@ -81,7 +85,9 @@ func resolveDocdbClusterParameterGroupParameters(ctx context.Context, meta schem
 	var params []types.Parameter
 	p := docdb.NewDescribeDBClusterParametersPaginator(svc, input)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *docdb.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

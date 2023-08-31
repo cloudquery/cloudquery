@@ -4,13 +4,16 @@ import (
 	"context"
 	"fmt"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/waf/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func RuleGroups() *schema.Table {
@@ -24,21 +27,19 @@ func RuleGroups() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveWafRuleGroupArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveWafRuleGroupArn,
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveWafRuleGroupTags,
 			},
 			{
 				Name:     "rule_ids",
-				Type:     schema.TypeStringArray,
+				Type:     arrow.ListOf(arrow.BinaryTypes.String),
 				Resolver: resolveWafRuleGroupRuleIds,
 			},
 		},
@@ -46,17 +47,19 @@ func RuleGroups() *schema.Table {
 }
 
 func fetchWafRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	service := c.Services().Waf
+	cl := meta.(*client.Client)
+	service := cl.Services(client.AWSServiceWaf).Waf
 	config := waf.ListRuleGroupsInput{}
 	for {
-		output, err := service.ListRuleGroups(ctx, &config)
+		output, err := service.ListRuleGroups(ctx, &config, func(o *waf.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
 		for _, rG := range output.RuleGroups {
-			ruleGroup, err := service.GetRuleGroup(ctx, &waf.GetRuleGroupInput{RuleGroupId: rG.RuleGroupId}, func(options *waf.Options) {
-				options.Region = c.Region
+			ruleGroup, err := service.GetRuleGroup(ctx, &waf.GetRuleGroupInput{RuleGroupId: rG.RuleGroupId}, func(o *waf.Options) {
+				o.Region = cl.Region
 			})
 			if err != nil {
 				return err
@@ -86,12 +89,14 @@ func resolveWafRuleGroupRuleIds(ctx context.Context, meta schema.ClientMeta, res
 	ruleGroup := resource.Item.(*types.RuleGroup)
 
 	// Resolves rule group rules
-	awsClient := meta.(*client.Client)
-	service := awsClient.Services().Waf
+	cl := meta.(*client.Client)
+	service := cl.Services(client.AWSServiceWaf).Waf
 	listActivatedRulesConfig := waf.ListActivatedRulesInRuleGroupInput{RuleGroupId: ruleGroup.RuleGroupId}
 	var ruleIDs []string
 	for {
-		rules, err := service.ListActivatedRulesInRuleGroup(ctx, &listActivatedRulesConfig)
+		rules, err := service.ListActivatedRulesInRuleGroup(ctx, &listActivatedRulesConfig, func(o *waf.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -111,7 +116,7 @@ func resolveWafRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resour
 
 	// Resolve tags for resource
 	cl := meta.(*client.Client)
-	service := cl.Services().Waf
+	service := cl.Services(client.AWSServiceWaf).Waf
 
 	// Generate arn
 	arnStr := arn.ARN{
@@ -125,7 +130,9 @@ func resolveWafRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resour
 	var outputTags []types.Tag
 	tagsConfig := waf.ListTagsForResourceInput{ResourceARN: aws.String(arnStr)}
 	for {
-		tags, err := service.ListTagsForResource(ctx, &tagsConfig)
+		tags, err := service.ListTagsForResource(ctx, &tagsConfig, func(o *waf.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

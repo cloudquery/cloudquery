@@ -7,22 +7,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildEcrRepositoriesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEcrClient(ctrl)
 	l := types.Repository{}
-	err := faker.FakeObject(&l)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&l))
+
 	i := types.ImageDetail{}
-	err = faker.FakeObject(&i)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&i))
 
 	m.EXPECT().DescribeRepositories(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ecr.DescribeRepositoriesOutput{
@@ -35,31 +31,29 @@ func buildEcrRepositoriesMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		}, nil)
 
 	tagResponse := ecr.ListTagsForResourceOutput{}
-	err = faker.FakeObject(&tagResponse)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tagResponse))
+
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagResponse, nil)
 
 	iF := ecr.DescribeImageScanFindingsOutput{}
-	err = faker.FakeObject(&iF)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&iF))
 
 	iF.NextToken = nil
 	m.EXPECT().DescribeImageScanFindings(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iF, nil)
 
 	repoResponse := ecr.GetRepositoryPolicyOutput{}
-	err = faker.FakeObject(&repoResponse)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&repoResponse))
+
 	policyText := "{}"
 	repoResponse.PolicyText = &policyText
 	m.EXPECT().GetRepositoryPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(&repoResponse, nil)
 
+	var lifeCyclePolicy ecr.GetLifecyclePolicyOutput
+	require.NoError(t, faker.FakeObject(&lifeCyclePolicy))
+	lifecyclePolicyText := `{"rules":[{"rulePriority":1,"description":"Expire images older than 14 days","selection":{"tagStatus":"untagged","countType":"sinceImagePushed","countUnit":"days","countNumber":14},"action":{"type":"expire"}}]}`
+	lifeCyclePolicy.LifecyclePolicyText = &lifecyclePolicyText
+	m.EXPECT().GetLifecyclePolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(&lifeCyclePolicy, nil)
 	return client.Services{
 		Ecr: m,
 	}

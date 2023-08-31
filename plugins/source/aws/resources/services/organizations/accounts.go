@@ -3,11 +3,14 @@ package organizations
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/organizations/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Accounts() *schema.Table {
@@ -21,30 +24,33 @@ The 'request_account_id' column is added to show from where the request was made
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "organizations"),
 		Columns: []schema.Column{
 			{
-				Name:            "request_account_id",
-				Type:            schema.TypeString,
-				Resolver:        client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+				Name:       "request_account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSAccount,
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveAccountTags,
 			},
 		},
 		Relations: []*schema.Table{
 			delegatedServices(),
+			organizationalAccountParents(),
 		},
 	}
 }
 
 func fetchOrganizationsAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Organizations
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceOrganizations).Organizations
 	var input organizations.ListAccountsInput
 	paginator := organizations.NewListAccountsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *organizations.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -59,9 +65,11 @@ func resolveAccountTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	input := organizations.ListTagsForResourceInput{
 		ResourceId: account.Id,
 	}
-	paginator := organizations.NewListTagsForResourcePaginator(cl.Services().Organizations, &input)
+	paginator := organizations.NewListTagsForResourcePaginator(cl.Services(client.AWSServiceOrganizations).Organizations, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *organizations.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

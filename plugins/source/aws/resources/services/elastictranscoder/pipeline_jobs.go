@@ -3,12 +3,13 @@ package elastictranscoder
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/elastictranscoder"
 	"github.com/aws/aws-sdk-go-v2/service/elastictranscoder/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func pipelineJobs() *schema.Table {
@@ -21,20 +22,18 @@ func pipelineJobs() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
 }
 
 func fetchElastictranscoderPipelineJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Elastictranscoder
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceElastictranscoder).Elastictranscoder
 
 	p := elastictranscoder.NewListJobsByPipelinePaginator(
 		svc,
@@ -43,7 +42,9 @@ func fetchElastictranscoderPipelineJobs(ctx context.Context, meta schema.ClientM
 		},
 	)
 	for p.HasMorePages() {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *elastictranscoder.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

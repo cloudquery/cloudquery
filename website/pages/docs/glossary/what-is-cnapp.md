@@ -1,3 +1,8 @@
+---
+title: What is CNAPP?
+description: Learn about Cloud-Native Application Protection Platforms.
+---
+
 # What is CNAPP?
 
 A CNAPP (Cloud-Native Application Protection Platform) is a cybersecurity solution that provides protection for cloud-native applications.  In recent days and with the growing adoption of cloud, more applications are designed as cloud-native applications that run on cloud infrastructure and often have complex architectures that can be difficult to secure.  A CNAPP solution detects and responds to various security threats such as vulnerabilities in containers and microservices, attacks on application programming interfaces (APIs), the underlying cloud infrastructure, and data breaches.

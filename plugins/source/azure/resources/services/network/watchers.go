@@ -5,18 +5,22 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Watchers() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_watchers",
-		Resolver:    fetchWatchers,
-		Description: "https://learn.microsoft.com/en-us/rest/api/network-watcher/network-watchers/list-all?tabs=HTTP#networkwatcher",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_network_watchers", client.Namespacemicrosoft_network),
-		Transform:   transformers.TransformWithStruct(&armnetwork.Watcher{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_watchers",
+		Resolver:             fetchWatchers,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/network-watcher/network-watchers/list-all?tabs=HTTP#networkwatcher",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_network_watchers", client.Namespacemicrosoft_network),
+		Transform:            transformers.TransformWithStruct(&armnetwork.Watcher{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
+		Relations: []*schema.Table{
+			watcherFlowLogs(),
+		},
 	}
 }
 

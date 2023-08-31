@@ -2,8 +2,9 @@ package cloudiot
 
 import (
 	pb "cloud.google.com/go/iot/apiv1/iotpb"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
@@ -16,20 +17,16 @@ func DeviceConfigs() *schema.Table {
 		Transform:   client.TransformWithStruct(&pb.DeviceConfig{}, transformers.WithPrimaryKeys("Version")),
 		Columns: []schema.Column{
 			{
-				Name:     "project_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "project_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveProject,
+				PrimaryKey: true,
 			},
 			{
-				Name:     "device_name",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "device_name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("name"),
+				PrimaryKey: true,
 			},
 		},
 	}

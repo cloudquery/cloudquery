@@ -1,20 +1,15 @@
 package client
 
 import (
+	"context"
+	"encoding/json"
 	"os"
 	"testing"
+	"time"
 
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
-
-var migrateStrategy = destination.MigrateStrategy{
-	AddColumn:           specs.MigrateModeSafe,
-	AddColumnNotNull:    specs.MigrateModeForced,
-	RemoveColumn:        specs.MigrateModeSafe,
-	RemoveColumnNotNull: specs.MigrateModeForced,
-	ChangeColumn:        specs.MigrateModeForced,
-}
 
 func getTestConnection() string {
 	testConn := os.Getenv("CQ_DEST_MONGODB_TEST_CONN")
@@ -25,21 +20,26 @@ func getTestConnection() string {
 }
 
 func TestPlugin(t *testing.T) {
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin("mongodb", "development", New, destination.WithManagedWriter())
+	ctx := context.Background()
+	p := plugin.NewPlugin("mongodb", "development", New)
+	s := &Spec{
+		ConnectionString: getTestConnection(),
+		Database:         "destination_mongodb_test",
+	}
+	b, err := json.Marshal(s)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := p.Init(ctx, b, plugin.NewClientOptions{}); err != nil {
+		t.Fatal(err)
+	}
+	plugin.TestWriterSuiteRunner(t,
+		p,
+		plugin.WriterTestSuiteTests{
+			SkipMigrate: true,
 		},
-		specs.Destination{
-			Spec: &Spec{
-				ConnectionString: getTestConnection(),
-				Database:         "destination_mongodb_test",
-			},
-		},
-		destination.PluginTestSuiteTests{
-			SkipMigrateOverwriteForce: true,
-			SkipMigrateAppendForce:    true,
-
-			MigrateStrategyOverwrite: migrateStrategy,
-			MigrateStrategyAppend:    migrateStrategy,
-		})
+		plugin.WithTestDataOptions(schema.TestSourceOptions{
+			TimePrecision: time.Millisecond,
+		}),
+	)
 }

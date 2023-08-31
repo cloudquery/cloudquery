@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glacier"
 	"github.com/aws/aws-sdk-go-v2/service/glacier/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func DataRetrievalPolicies() *schema.Table {
@@ -26,10 +26,12 @@ func DataRetrievalPolicies() *schema.Table {
 }
 
 func fetchGlacierDataRetrievalPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Glacier
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceGlacier).Glacier
 
-	response, err := svc.GetDataRetrievalPolicy(ctx, &glacier.GetDataRetrievalPolicyInput{})
+	response, err := svc.GetDataRetrievalPolicy(ctx, &glacier.GetDataRetrievalPolicyInput{}, func(options *glacier.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

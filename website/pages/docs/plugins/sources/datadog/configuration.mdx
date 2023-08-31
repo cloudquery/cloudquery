@@ -12,6 +12,27 @@ import Configuration from "./_configuration.mdx";
 
 This is the (nested) spec used by the Datadog source plugin.
 
-- `accounts` ([]struct) 
+- `accounts` ([][account](#account))
 
   Specify which accounts to sync data from.
+
+- `concurrency` (`int`, optional, default: `10000`)
+
+  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
+
+### account
+
+  This is used to specify one or more accounts to extract information from.
+  Note that it should be an array of objects, each with the following fields:
+
+- `name` (`string`)
+
+  Account name.
+
+- `api_key` (`string`)
+
+  Datadog API key.
+
+- `app_key` (`string`)
+
+  Datadog App key.

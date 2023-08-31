@@ -1,137 +1,82 @@
 package client
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v14/arrow/array"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
-// this is used for tests
-type Transformer struct{}
-
-func (*Transformer) TransformBool(v *schema.Bool) any {
-	if v.Status != schema.Present {
-		return nil
+func GetValue(arr arrow.Array, i int) (any, error) {
+	if arr.IsNull(i) {
+		return nil, nil
 	}
-	return v.Bool
+	switch a := arr.(type) {
+	case *array.Boolean:
+		return a.Value(i), nil
+	case *array.Int8:
+		return a.Value(i), nil
+	case *array.Int16:
+		return a.Value(i), nil
+	case *array.Int32:
+		return a.Value(i), nil
+	case *array.Int64:
+		return a.Value(i), nil
+	case *array.Uint8:
+		return a.Value(i), nil
+	case *array.Uint16:
+		return a.Value(i), nil
+	case *array.Uint32:
+		return a.Value(i), nil
+	case *array.Uint64:
+		return a.Value(i), nil
+	case *array.Float16:
+		return a.Value(i), nil
+	case *array.Float32:
+		return a.Value(i), nil
+	case *array.Float64:
+		return a.Value(i), nil
+	case *array.String:
+		return a.Value(i), nil
+	case *array.LargeString:
+		return a.Value(i), nil
+	case *array.Binary:
+		return a.Value(i), nil
+	case *array.LargeBinary:
+		return a.Value(i), nil
+	case *array.FixedSizeBinary:
+		return a.Value(i), nil
+	case *array.Timestamp:
+		toTime, err := a.DataType().(*arrow.TimestampType).GetToTimeFunc()
+		if err != nil {
+			return nil, err
+		}
+		return toTime(a.Value(i)), nil
+	case *types.UUIDArray:
+		bUUID, err := a.Value(i).MarshalBinary()
+		if err != nil {
+			return nil, err
+		}
+		return bUUID, nil
+	default:
+		return a.ValueStr(i), nil
+	}
 }
 
-func (*Transformer) TransformBytea(v *schema.Bytea) any {
-	if v.Status != schema.Present {
-		return nil
+// used in the tests to insert the arrow.Record
+func TransformRecord(record arrow.Record) ([][]any, error) {
+	numRows := record.NumRows()
+	res := make([][]any, numRows)
+	var err error
+	for i := int64(0); i < numRows; i++ {
+		numCols := record.NumCols()
+		row := make([]any, numCols)
+		for j := 0; int64(j) < numCols; j++ {
+			row[j], err = GetValue(record.Column(j), int(i))
+			if err != nil {
+				return nil, err
+			}
+		}
+		res[i] = row
 	}
-	return v.Bytes
-}
-
-func (*Transformer) TransformFloat8(v *schema.Float8) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-	return v.Float
-}
-
-func (*Transformer) TransformInt8(v *schema.Int8) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-	return v.Int
-}
-
-func (*Transformer) TransformTimestamptz(v *schema.Timestamptz) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-	return v.Time
-}
-
-func (*Transformer) TransformJSON(v *schema.JSON) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-
-	return string(v.Bytes)
-}
-
-func (*Transformer) TransformUUID(v *schema.UUID) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-	// We need a slice instead of a fixed sized array
-	bytes := make([]byte, 16)
-	copy(bytes, v.Bytes[:])
-	return bytes
-}
-
-func (*Transformer) TransformUUIDArray(v *schema.UUIDArray) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-
-	return v.String()
-}
-
-func (*Transformer) TransformInt8Array(v *schema.Int8Array) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-
-	return v.String()
-}
-
-func (*Transformer) TransformCIDR(v *schema.CIDR) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-	return v.String()
-}
-
-func (*Transformer) TransformInet(v *schema.Inet) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-	return v.String()
-}
-
-func (*Transformer) TransformMacaddr(v *schema.Macaddr) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-	return v.String()
-}
-
-func (*Transformer) TransformText(v *schema.Text) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-	return v.Str
-}
-
-func (*Transformer) TransformCIDRArray(v *schema.CIDRArray) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-
-	return v.String()
-}
-
-func (*Transformer) TransformInetArray(v *schema.InetArray) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-
-	return v.String()
-}
-
-func (*Transformer) TransformMacaddrArray(v *schema.MacaddrArray) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-
-	return v.String()
-}
-
-func (*Transformer) TransformTextArray(v *schema.TextArray) any {
-	if v.Status != schema.Present {
-		return nil
-	}
-
-	return v.String()
+	return res, nil
 }

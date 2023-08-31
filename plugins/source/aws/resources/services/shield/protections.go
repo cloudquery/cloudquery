@@ -3,11 +3,14 @@ package shield
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/aws/aws-sdk-go-v2/service/shield/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Protections() *schema.Table {
@@ -21,16 +24,14 @@ func Protections() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProtectionArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ProtectionArn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveShieldProtectionTags,
 			},
 		},
@@ -38,14 +39,16 @@ func Protections() *schema.Table {
 }
 
 func fetchShieldProtections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Shield
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceShield).Shield
 	config := shield.ListProtectionsInput{}
 	paginator := shield.NewListProtectionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *shield.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
-			if c.IsNotFoundError(err) {
+			if cl.IsNotFoundError(err) {
 				return nil
 			}
 			return err
@@ -57,15 +60,15 @@ func fetchShieldProtections(ctx context.Context, meta schema.ClientMeta, parent 
 
 func resolveShieldProtectionTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Protection)
-	cli := meta.(*client.Client)
-	svc := cli.Services().Shield
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceShield).Shield
 	config := shield.ListTagsForResourceInput{ResourceARN: r.ProtectionArn}
 
 	output, err := svc.ListTagsForResource(ctx, &config, func(o *shield.Options) {
-		o.Region = cli.Region
+		o.Region = cl.Region
 	})
 	if err != nil {
-		if cli.IsNotFoundError(err) {
+		if cl.IsNotFoundError(err) {
 			return nil
 		}
 		return err

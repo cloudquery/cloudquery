@@ -6,45 +6,34 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildIotSecurityProfilesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIotClient(ctrl)
 
 	sp := iot.ListSecurityProfilesOutput{}
-	err := faker.FakeObject(&sp)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&sp))
 	sp.NextToken = nil
 	m.EXPECT().ListSecurityProfiles(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&sp, nil)
 
 	profileOutput := iot.DescribeSecurityProfileOutput{}
-	err = faker.FakeObject(&profileOutput)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&profileOutput))
 	m.EXPECT().DescribeSecurityProfile(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&profileOutput, nil)
 
 	targets := iot.ListTargetsForSecurityProfileOutput{}
-	err = faker.FakeObject(&targets)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&targets))
 	targets.NextToken = nil
 
 	m.EXPECT().ListTargetsForSecurityProfile(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&targets, nil)
 
 	tags := iot.ListTagsForResourceOutput{}
-	err = faker.FakeObject(&tags)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tags))
 	tags.NextToken = nil
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&tags, nil)

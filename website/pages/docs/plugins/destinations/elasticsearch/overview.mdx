@@ -1,5 +1,7 @@
 ---
 name: Elasticsearch
+title: Elasticsearch Destination Plugin
+description: CloudQuery Elasticsearch destination plugin documentation
 ---
 # Elasticsearch Destination Plugin
 
@@ -24,41 +26,49 @@ It supports `append`, `overwrite` and `overwrite-delete-stale` write modes. The 
 
 This is the spec used by the Elasticsearch destination plugin.
 
-- `addresses` ([]string) (optional) (default: `["http://localhost:9200"]`)
+- `addresses` (`[]string`) (optional) (default: `["http://localhost:9200"]`)
 
    A list of Elasticsearch nodes to use.
 
-- `username`  (string) (optional)
+- `username` (`string`) (optional)
 
    Username for HTTP Basic Authentication.
 
-- `password`  (string) (optional)
+- `password` (`string`) (optional)
 
    Password for HTTP Basic Authentication.
 
-- `cloud_id`  (string) (optional)
+- `cloud_id` (`string`) (optional)
 
    Endpoint for the Elastic Service (https://elastic.co/cloud).
 
-- `api_key`  (string) (optional)
+- `api_key` (`string`) (optional)
 
    Base64-encoded token for authorization; if set, overrides username/password and service token.
 
-- `service_token`  (string) (optional)
+- `service_token` (`string`) (optional)
 
    Service token for authorization; if set, overrides username/password.
 
-- `certificate_fingerprint` (string) (optional)
+- `certificate_fingerprint` (`string`) (optional)
 
    SHA256 hex fingerprint given by Elasticsearch on first launch.
 
-- `ca_cert` (string) (optional)
+- `ca_cert` (`string`) (optional)
 
    PEM-encoded certificate authorities. When set, an empty certificate pool will be created, and the certificates will be appended to it. See [file variable substitution](/docs/advanced-topics/environment-variable-substitution#file-variable-substitution-example) for how to read this value from a file.
 
-- `concurrency` (string) (optional) (default: number of CPUs)
+- `concurrency` (`string`) (optional) (default: number of CPUs)
 
    Number of concurrent worker goroutines to use for indexing.
+
+- `batch_size` (`integer`) (optional) (default: `1000`)
+
+  This parameter controls the maximum amount of items may be grouped together to be written as a single write.
+
+- `batch_size_bytes` (`integer`) (optional) (default: `5242880` (5 MiB))
+
+  This parameter controls the maximum size of items that may be grouped together to be written as a single write.
 
 ## Index Template Creation
 

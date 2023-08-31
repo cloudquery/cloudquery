@@ -5,16 +5,17 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/reservations/armreservations/v3"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Reservation() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_reservations_reservation",
-		Resolver:    fetchReservation,
-		Description: "https://learn.microsoft.com/en-us/rest/api/reserved-vm-instances/reservation/list-all?tabs=HTTP#reservationresponse",
-		Transform:   transformers.TransformWithStruct(&armreservations.ReservationResponse{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_reservations_reservation",
+		Resolver:             fetchReservation,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/reserved-vm-instances/reservation/list-all?tabs=HTTP#reservationresponse",
+		Transform:            transformers.TransformWithStruct(&armreservations.ReservationResponse{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

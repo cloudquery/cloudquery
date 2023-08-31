@@ -5,16 +5,17 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v3"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Factories() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_datafactory_factories",
-		Resolver:    fetchFactories,
-		Description: "https://learn.microsoft.com/en-us/rest/api/datafactory/factories/list?tabs=HTTP#factory",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_datafactory_factories", client.Namespacemicrosoft_datafactory),
+		Name:                 "azure_datafactory_factories",
+		Resolver:             fetchFactories,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/datafactory/factories/list?tabs=HTTP#factory",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_datafactory_factories", client.Namespacemicrosoft_datafactory),
 		Transform: transformers.TransformWithStruct(&armdatafactory.Factory{},
 			transformers.WithNameTransformer(client.ETagNameTransformer),
 			transformers.WithPrimaryKeys("ID"),

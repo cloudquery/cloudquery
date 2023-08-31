@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 type LastAccessed struct {
@@ -29,12 +30,10 @@ func userLastAccessedDetails() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:     "user_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "user_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -50,12 +49,10 @@ func roleLastAccessedDetails() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:     "role_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "role_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -71,12 +68,10 @@ func groupLastAccessedDetails() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:     "group_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentColumnResolver("arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "group_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -116,12 +111,15 @@ func fetchPolicyLastAccessedDetails(ctx context.Context, meta schema.ClientMeta,
 }
 
 func fetchLastAccessedDetails(ctx context.Context, meta schema.ClientMeta, arn *string, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Iam
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceIam).Iam
 	generateConfig := iam.GenerateServiceLastAccessedDetailsInput{
 		Arn:         arn,
 		Granularity: types.AccessAdvisorUsageGranularityTypeActionLevel,
 	}
-	output, err := svc.GenerateServiceLastAccessedDetails(ctx, &generateConfig)
+	output, err := svc.GenerateServiceLastAccessedDetails(ctx, &generateConfig, func(options *iam.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}
@@ -134,7 +132,9 @@ func fetchLastAccessedDetails(ctx context.Context, meta schema.ClientMeta, arn *
 	}
 
 	for {
-		details, err := svc.GetServiceLastAccessedDetails(ctx, &config)
+		details, err := svc.GetServiceLastAccessedDetails(ctx, &config, func(options *iam.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

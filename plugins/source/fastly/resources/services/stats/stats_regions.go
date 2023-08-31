@@ -1,7 +1,8 @@
 package stats
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func StatsRegions() *schema.Table {
@@ -11,12 +12,10 @@ func StatsRegions() *schema.Table {
 		Resolver:    fetchStatsRegions,
 		Columns: []schema.Column{
 			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: setRegionName,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   setRegionName,
+				PrimaryKey: true,
 			},
 		},
 	}

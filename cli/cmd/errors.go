@@ -1,22 +1,22 @@
 package cmd
 
 import (
-	"errors"
+	"fmt"
+	"io"
 
-	"google.golang.org/grpc/codes"
+	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"google.golang.org/grpc/status"
 )
 
-// isUnimplemented returns true if an error indicates that the underlying grpc call
-// was unimplemented on the server side.
-func isUnimplemented(err error) bool {
-	if err == nil {
-		return false
+func handleSendError(err error, client plugin.Plugin_WriteClient, msgType string) error {
+	if err == io.EOF {
+		// we need to get back the original error
+		if _, err := client.CloseAndRecv(); err != nil {
+			if e, ok := status.FromError(err); ok {
+				return fmt.Errorf("write client returned error (%v): %v", msgType, e.Message())
+			}
+			return fmt.Errorf("failed to close and receive write client (%v): %v", msgType, err)
+		}
 	}
-	st, ok := status.FromError(err)
-	if ok && st.Code() == codes.Unimplemented {
-		return true
-	}
-	err = errors.Unwrap(err)
-	return isUnimplemented(err)
+	return fmt.Errorf("failed to send write request (%v): %w", msgType, err)
 }

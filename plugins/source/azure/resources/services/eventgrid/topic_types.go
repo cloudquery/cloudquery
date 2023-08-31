@@ -5,16 +5,17 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func TopicTypes() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_eventgrid_topic_types",
-		Resolver:    fetchTopicTypes,
-		Description: "https://learn.microsoft.com/en-us/rest/api/eventgrid/controlplane-version2022-06-15/topic-types/list?tabs=HTTP#topictypeinfo",
-		Transform:   transformers.TransformWithStruct(&armeventgrid.TopicTypeInfo{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_eventgrid_topic_types",
+		Resolver:             fetchTopicTypes,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/eventgrid/controlplane-version2022-06-15/topic-types/list?tabs=HTTP#topictypeinfo",
+		Transform:            transformers.TransformWithStruct(&armeventgrid.TopicTypeInfo{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

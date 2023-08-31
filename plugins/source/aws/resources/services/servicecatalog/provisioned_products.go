@@ -3,11 +3,14 @@ package servicecatalog
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func ProvisionedProducts() *schema.Table {
@@ -20,31 +23,36 @@ func ProvisionedProducts() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "servicecatalog"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Arn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveProvisionedProductTags,
+				Type:     sdkTypes.ExtensionTypes.JSON,
+				Resolver: client.ResolveTags,
 			},
+		},
+		Relations: schema.Tables{
+			provisioningArtifact(),
+			launchPaths(),
 		},
 	}
 }
 
 func fetchServicecatalogProvisionedProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Servicecatalog
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceServicecatalog).Servicecatalog
 
 	listInput := new(servicecatalog.SearchProvisionedProductsInput)
 	paginator := servicecatalog.NewSearchProvisionedProductsPaginator(svc, listInput)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *servicecatalog.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -52,9 +60,4 @@ func fetchServicecatalogProvisionedProducts(ctx context.Context, meta schema.Cli
 	}
 
 	return nil
-}
-
-func resolveProvisionedProductTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p := resource.Item.(types.ProvisionedProductAttribute)
-	return resource.Set(c.Name, client.TagsToMap(p.Tags))
 }

@@ -37,6 +37,16 @@ func (m *MockS3Client) EXPECT() *MockS3ClientMockRecorder {
 
 // GetBucketAccelerateConfiguration mocks base method.
 func (m *MockS3Client) GetBucketAccelerateConfiguration(arg0 context.Context, arg1 *s3.GetBucketAccelerateConfigurationInput, arg2 ...func(*s3.Options)) (*s3.GetBucketAccelerateConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketAccelerateConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockS3ClientMockRecorder) GetBucketAccelerateConfiguration(arg0, arg1 
 
 // GetBucketAcl mocks base method.
 func (m *MockS3Client) GetBucketAcl(arg0 context.Context, arg1 *s3.GetBucketAclInput, arg2 ...func(*s3.Options)) (*s3.GetBucketAclOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketAcl")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockS3ClientMockRecorder) GetBucketAcl(arg0, arg1 interface{}, arg2 ..
 
 // GetBucketAnalyticsConfiguration mocks base method.
 func (m *MockS3Client) GetBucketAnalyticsConfiguration(arg0 context.Context, arg1 *s3.GetBucketAnalyticsConfigurationInput, arg2 ...func(*s3.Options)) (*s3.GetBucketAnalyticsConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketAnalyticsConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockS3ClientMockRecorder) GetBucketAnalyticsConfiguration(arg0, arg1 i
 
 // GetBucketCors mocks base method.
 func (m *MockS3Client) GetBucketCors(arg0 context.Context, arg1 *s3.GetBucketCorsInput, arg2 ...func(*s3.Options)) (*s3.GetBucketCorsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketCors")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockS3ClientMockRecorder) GetBucketCors(arg0, arg1 interface{}, arg2 .
 
 // GetBucketEncryption mocks base method.
 func (m *MockS3Client) GetBucketEncryption(arg0 context.Context, arg1 *s3.GetBucketEncryptionInput, arg2 ...func(*s3.Options)) (*s3.GetBucketEncryptionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketEncryption")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockS3ClientMockRecorder) GetBucketEncryption(arg0, arg1 interface{}, 
 
 // GetBucketIntelligentTieringConfiguration mocks base method.
 func (m *MockS3Client) GetBucketIntelligentTieringConfiguration(arg0 context.Context, arg1 *s3.GetBucketIntelligentTieringConfigurationInput, arg2 ...func(*s3.Options)) (*s3.GetBucketIntelligentTieringConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketIntelligentTieringConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockS3ClientMockRecorder) GetBucketIntelligentTieringConfiguration(arg
 
 // GetBucketInventoryConfiguration mocks base method.
 func (m *MockS3Client) GetBucketInventoryConfiguration(arg0 context.Context, arg1 *s3.GetBucketInventoryConfigurationInput, arg2 ...func(*s3.Options)) (*s3.GetBucketInventoryConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketInventoryConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockS3ClientMockRecorder) GetBucketInventoryConfiguration(arg0, arg1 i
 
 // GetBucketLifecycleConfiguration mocks base method.
 func (m *MockS3Client) GetBucketLifecycleConfiguration(arg0 context.Context, arg1 *s3.GetBucketLifecycleConfigurationInput, arg2 ...func(*s3.Options)) (*s3.GetBucketLifecycleConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketLifecycleConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockS3ClientMockRecorder) GetBucketLifecycleConfiguration(arg0, arg1 i
 
 // GetBucketLocation mocks base method.
 func (m *MockS3Client) GetBucketLocation(arg0 context.Context, arg1 *s3.GetBucketLocationInput, arg2 ...func(*s3.Options)) (*s3.GetBucketLocationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketLocation")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockS3ClientMockRecorder) GetBucketLocation(arg0, arg1 interface{}, ar
 
 // GetBucketLogging mocks base method.
 func (m *MockS3Client) GetBucketLogging(arg0 context.Context, arg1 *s3.GetBucketLoggingInput, arg2 ...func(*s3.Options)) (*s3.GetBucketLoggingOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketLogging")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockS3ClientMockRecorder) GetBucketLogging(arg0, arg1 interface{}, arg
 
 // GetBucketMetricsConfiguration mocks base method.
 func (m *MockS3Client) GetBucketMetricsConfiguration(arg0 context.Context, arg1 *s3.GetBucketMetricsConfigurationInput, arg2 ...func(*s3.Options)) (*s3.GetBucketMetricsConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketMetricsConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockS3ClientMockRecorder) GetBucketMetricsConfiguration(arg0, arg1 int
 
 // GetBucketNotificationConfiguration mocks base method.
 func (m *MockS3Client) GetBucketNotificationConfiguration(arg0 context.Context, arg1 *s3.GetBucketNotificationConfigurationInput, arg2 ...func(*s3.Options)) (*s3.GetBucketNotificationConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketNotificationConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockS3ClientMockRecorder) GetBucketNotificationConfiguration(arg0, arg
 
 // GetBucketOwnershipControls mocks base method.
 func (m *MockS3Client) GetBucketOwnershipControls(arg0 context.Context, arg1 *s3.GetBucketOwnershipControlsInput, arg2 ...func(*s3.Options)) (*s3.GetBucketOwnershipControlsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketOwnershipControls")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockS3ClientMockRecorder) GetBucketOwnershipControls(arg0, arg1 interf
 
 // GetBucketPolicy mocks base method.
 func (m *MockS3Client) GetBucketPolicy(arg0 context.Context, arg1 *s3.GetBucketPolicyInput, arg2 ...func(*s3.Options)) (*s3.GetBucketPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketPolicy")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockS3ClientMockRecorder) GetBucketPolicy(arg0, arg1 interface{}, arg2
 
 // GetBucketPolicyStatus mocks base method.
 func (m *MockS3Client) GetBucketPolicyStatus(arg0 context.Context, arg1 *s3.GetBucketPolicyStatusInput, arg2 ...func(*s3.Options)) (*s3.GetBucketPolicyStatusOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketPolicyStatus")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockS3ClientMockRecorder) GetBucketPolicyStatus(arg0, arg1 interface{}
 
 // GetBucketReplication mocks base method.
 func (m *MockS3Client) GetBucketReplication(arg0 context.Context, arg1 *s3.GetBucketReplicationInput, arg2 ...func(*s3.Options)) (*s3.GetBucketReplicationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketReplication")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockS3ClientMockRecorder) GetBucketReplication(arg0, arg1 interface{},
 
 // GetBucketRequestPayment mocks base method.
 func (m *MockS3Client) GetBucketRequestPayment(arg0 context.Context, arg1 *s3.GetBucketRequestPaymentInput, arg2 ...func(*s3.Options)) (*s3.GetBucketRequestPaymentOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketRequestPayment")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockS3ClientMockRecorder) GetBucketRequestPayment(arg0, arg1 interface
 
 // GetBucketTagging mocks base method.
 func (m *MockS3Client) GetBucketTagging(arg0 context.Context, arg1 *s3.GetBucketTaggingInput, arg2 ...func(*s3.Options)) (*s3.GetBucketTaggingOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketTagging")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockS3ClientMockRecorder) GetBucketTagging(arg0, arg1 interface{}, arg
 
 // GetBucketVersioning mocks base method.
 func (m *MockS3Client) GetBucketVersioning(arg0 context.Context, arg1 *s3.GetBucketVersioningInput, arg2 ...func(*s3.Options)) (*s3.GetBucketVersioningOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketVersioning")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -417,6 +607,16 @@ func (mr *MockS3ClientMockRecorder) GetBucketVersioning(arg0, arg1 interface{}, 
 
 // GetBucketWebsite mocks base method.
 func (m *MockS3Client) GetBucketWebsite(arg0 context.Context, arg1 *s3.GetBucketWebsiteInput, arg2 ...func(*s3.Options)) (*s3.GetBucketWebsiteOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetBucketWebsite")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -437,6 +637,16 @@ func (mr *MockS3ClientMockRecorder) GetBucketWebsite(arg0, arg1 interface{}, arg
 
 // GetObject mocks base method.
 func (m *MockS3Client) GetObject(arg0 context.Context, arg1 *s3.GetObjectInput, arg2 ...func(*s3.Options)) (*s3.GetObjectOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetObject")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -457,6 +667,16 @@ func (mr *MockS3ClientMockRecorder) GetObject(arg0, arg1 interface{}, arg2 ...in
 
 // GetObjectAcl mocks base method.
 func (m *MockS3Client) GetObjectAcl(arg0 context.Context, arg1 *s3.GetObjectAclInput, arg2 ...func(*s3.Options)) (*s3.GetObjectAclOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetObjectAcl")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -477,6 +697,16 @@ func (mr *MockS3ClientMockRecorder) GetObjectAcl(arg0, arg1 interface{}, arg2 ..
 
 // GetObjectAttributes mocks base method.
 func (m *MockS3Client) GetObjectAttributes(arg0 context.Context, arg1 *s3.GetObjectAttributesInput, arg2 ...func(*s3.Options)) (*s3.GetObjectAttributesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetObjectAttributes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -497,6 +727,16 @@ func (mr *MockS3ClientMockRecorder) GetObjectAttributes(arg0, arg1 interface{}, 
 
 // GetObjectLegalHold mocks base method.
 func (m *MockS3Client) GetObjectLegalHold(arg0 context.Context, arg1 *s3.GetObjectLegalHoldInput, arg2 ...func(*s3.Options)) (*s3.GetObjectLegalHoldOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetObjectLegalHold")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -517,6 +757,16 @@ func (mr *MockS3ClientMockRecorder) GetObjectLegalHold(arg0, arg1 interface{}, a
 
 // GetObjectLockConfiguration mocks base method.
 func (m *MockS3Client) GetObjectLockConfiguration(arg0 context.Context, arg1 *s3.GetObjectLockConfigurationInput, arg2 ...func(*s3.Options)) (*s3.GetObjectLockConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetObjectLockConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -537,6 +787,16 @@ func (mr *MockS3ClientMockRecorder) GetObjectLockConfiguration(arg0, arg1 interf
 
 // GetObjectRetention mocks base method.
 func (m *MockS3Client) GetObjectRetention(arg0 context.Context, arg1 *s3.GetObjectRetentionInput, arg2 ...func(*s3.Options)) (*s3.GetObjectRetentionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetObjectRetention")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -557,6 +817,16 @@ func (mr *MockS3ClientMockRecorder) GetObjectRetention(arg0, arg1 interface{}, a
 
 // GetObjectTagging mocks base method.
 func (m *MockS3Client) GetObjectTagging(arg0 context.Context, arg1 *s3.GetObjectTaggingInput, arg2 ...func(*s3.Options)) (*s3.GetObjectTaggingOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetObjectTagging")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -577,6 +847,16 @@ func (mr *MockS3ClientMockRecorder) GetObjectTagging(arg0, arg1 interface{}, arg
 
 // GetObjectTorrent mocks base method.
 func (m *MockS3Client) GetObjectTorrent(arg0 context.Context, arg1 *s3.GetObjectTorrentInput, arg2 ...func(*s3.Options)) (*s3.GetObjectTorrentOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetObjectTorrent")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -597,6 +877,16 @@ func (mr *MockS3ClientMockRecorder) GetObjectTorrent(arg0, arg1 interface{}, arg
 
 // GetPublicAccessBlock mocks base method.
 func (m *MockS3Client) GetPublicAccessBlock(arg0 context.Context, arg1 *s3.GetPublicAccessBlockInput, arg2 ...func(*s3.Options)) (*s3.GetPublicAccessBlockOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetPublicAccessBlock")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -617,6 +907,16 @@ func (mr *MockS3ClientMockRecorder) GetPublicAccessBlock(arg0, arg1 interface{},
 
 // ListBucketAnalyticsConfigurations mocks base method.
 func (m *MockS3Client) ListBucketAnalyticsConfigurations(arg0 context.Context, arg1 *s3.ListBucketAnalyticsConfigurationsInput, arg2 ...func(*s3.Options)) (*s3.ListBucketAnalyticsConfigurationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBucketAnalyticsConfigurations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -637,6 +937,16 @@ func (mr *MockS3ClientMockRecorder) ListBucketAnalyticsConfigurations(arg0, arg1
 
 // ListBucketIntelligentTieringConfigurations mocks base method.
 func (m *MockS3Client) ListBucketIntelligentTieringConfigurations(arg0 context.Context, arg1 *s3.ListBucketIntelligentTieringConfigurationsInput, arg2 ...func(*s3.Options)) (*s3.ListBucketIntelligentTieringConfigurationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBucketIntelligentTieringConfigurations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -657,6 +967,16 @@ func (mr *MockS3ClientMockRecorder) ListBucketIntelligentTieringConfigurations(a
 
 // ListBucketInventoryConfigurations mocks base method.
 func (m *MockS3Client) ListBucketInventoryConfigurations(arg0 context.Context, arg1 *s3.ListBucketInventoryConfigurationsInput, arg2 ...func(*s3.Options)) (*s3.ListBucketInventoryConfigurationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBucketInventoryConfigurations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -677,6 +997,16 @@ func (mr *MockS3ClientMockRecorder) ListBucketInventoryConfigurations(arg0, arg1
 
 // ListBucketMetricsConfigurations mocks base method.
 func (m *MockS3Client) ListBucketMetricsConfigurations(arg0 context.Context, arg1 *s3.ListBucketMetricsConfigurationsInput, arg2 ...func(*s3.Options)) (*s3.ListBucketMetricsConfigurationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBucketMetricsConfigurations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -697,6 +1027,16 @@ func (mr *MockS3ClientMockRecorder) ListBucketMetricsConfigurations(arg0, arg1 i
 
 // ListBuckets mocks base method.
 func (m *MockS3Client) ListBuckets(arg0 context.Context, arg1 *s3.ListBucketsInput, arg2 ...func(*s3.Options)) (*s3.ListBucketsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBuckets")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -717,6 +1057,16 @@ func (mr *MockS3ClientMockRecorder) ListBuckets(arg0, arg1 interface{}, arg2 ...
 
 // ListMultipartUploads mocks base method.
 func (m *MockS3Client) ListMultipartUploads(arg0 context.Context, arg1 *s3.ListMultipartUploadsInput, arg2 ...func(*s3.Options)) (*s3.ListMultipartUploadsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListMultipartUploads")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -737,6 +1087,16 @@ func (mr *MockS3ClientMockRecorder) ListMultipartUploads(arg0, arg1 interface{},
 
 // ListObjectVersions mocks base method.
 func (m *MockS3Client) ListObjectVersions(arg0 context.Context, arg1 *s3.ListObjectVersionsInput, arg2 ...func(*s3.Options)) (*s3.ListObjectVersionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListObjectVersions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -757,6 +1117,16 @@ func (mr *MockS3ClientMockRecorder) ListObjectVersions(arg0, arg1 interface{}, a
 
 // ListObjects mocks base method.
 func (m *MockS3Client) ListObjects(arg0 context.Context, arg1 *s3.ListObjectsInput, arg2 ...func(*s3.Options)) (*s3.ListObjectsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListObjects")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -777,6 +1147,16 @@ func (mr *MockS3ClientMockRecorder) ListObjects(arg0, arg1 interface{}, arg2 ...
 
 // ListObjectsV2 mocks base method.
 func (m *MockS3Client) ListObjectsV2(arg0 context.Context, arg1 *s3.ListObjectsV2Input, arg2 ...func(*s3.Options)) (*s3.ListObjectsV2Output, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListObjectsV2")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -797,6 +1177,16 @@ func (mr *MockS3ClientMockRecorder) ListObjectsV2(arg0, arg1 interface{}, arg2 .
 
 // ListParts mocks base method.
 func (m *MockS3Client) ListParts(arg0 context.Context, arg1 *s3.ListPartsInput, arg2 ...func(*s3.Options)) (*s3.ListPartsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListParts")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

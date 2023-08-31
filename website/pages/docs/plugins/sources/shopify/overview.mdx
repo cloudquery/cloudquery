@@ -1,6 +1,10 @@
 ---
 name: Shopify
+stage: GA
+title: Shopify Source Plugin
+description: CloudQuery Shopify source plugin documentation
 ---
+
 # Shopify Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -31,10 +35,10 @@ This example syncs from Shopify to a Postgres destination. The (top level) sourc
 
 This is the (nested) spec used by the Shopify source plugin:
 
-- `api_key` (string, required*):
+- `api_key` (string, required\*):
   The API Key for your custom app in your store.
 
-- `api_secret` (string, required*):
+- `api_secret` (string, required\*):
   The API Secret for your custom app in your store.
 
 - `access_token` (string, required if api_key/secret is not used):
@@ -51,6 +55,27 @@ This is the (nested) spec used by the Shopify source plugin:
 - `page_size` (integer, optional. Default: 50):
   Maximum number of items queried each request. Find an optimum value to balance amount of data fetched and requests timing out. Maximum value 250.
 
+- `concurrency` (integer, optional. Default: 1000):
+  Maximum number of concurrent requests to the Shopify Admin API.
+
+- **preview** `backend_options` (object) (default: not used)
+
+  Allowed properties are `table_name` and `connection`. Use this configuration to enable incremental syncs for supported tables. See more [here](/blog/proto-v3#unified-protocol).
+  Example
+
+  ```yaml
+  kind: source
+  spec:
+    name: shopify
+    path: cloudquery/shopify
+    version: "VERSION_SOURCE_SHOPIFY"
+    destinations: ["postgresql"]
+    spec:
+      backend_options:
+        table_name: "test_state_table"
+        connection: "@@plugins.postgresql.connection"
+  ```
+
 # Query Examples
 
 ## Get all your active products with a specific tag
@@ -58,4 +83,3 @@ This is the (nested) spec used by the Shopify source plugin:
 ```sql copy
 SELECT * FROM shopify_products WHERE status='active' AND 'your-tag' = ANY(tags);
 ```
-

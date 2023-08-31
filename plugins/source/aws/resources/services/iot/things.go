@@ -3,12 +3,13 @@ package iot
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Things() *schema.Table {
@@ -24,16 +25,14 @@ func Things() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "principals",
-				Type:     schema.TypeStringArray,
+				Type:     arrow.ListOf(arrow.BinaryTypes.String),
 				Resolver: ResolveIotThingPrincipals,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ThingArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ThingArn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -43,12 +42,14 @@ func fetchIotThings(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	input := iot.ListThingsInput{
 		MaxResults: aws.Int32(250),
 	}
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 
-	svc := c.Services().Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 	paginator := iot.NewListThingsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -59,7 +60,7 @@ func fetchIotThings(ctx context.Context, meta schema.ClientMeta, parent *schema.
 func ResolveIotThingPrincipals(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(types.ThingAttribute)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 	input := iot.ListThingPrincipalsInput{
 		ThingName:  i.ThingName,
 		MaxResults: aws.Int32(250),
@@ -67,7 +68,9 @@ func ResolveIotThingPrincipals(ctx context.Context, meta schema.ClientMeta, reso
 	var principals []string
 	paginator := iot.NewListThingPrincipalsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 
 		if err != nil {
 			return err

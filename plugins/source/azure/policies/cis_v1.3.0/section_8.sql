@@ -13,4 +13,5 @@
 \ir ../queries/keyvault/not_recoverable.sql
 \set check_id '8.5'
 \echo "Executing check 8.5"
+\ir ../queries/container/aks_rbac_disabled.sql
 \echo "Check must be done manually"

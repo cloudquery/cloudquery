@@ -8,13 +8,13 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/gorilla/mux"
 )
 
 func createSubscriptions(router *mux.Router) error {
-	var item armsubscription.SubscriptionsClientListResponse
+	var item armsubscriptions.ClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}

@@ -3,11 +3,12 @@ package dynamodb
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Exports() *schema.Table {
@@ -23,24 +24,24 @@ func Exports() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ExportArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ExportArn"),
+				PrimaryKey: true,
 			},
 		},
 	}
 }
 
 func listExports(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Dynamodb
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceDynamodb).Dynamodb
 
 	paginator := dynamodb.NewListExportsPaginator(svc, &dynamodb.ListExportsInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *dynamodb.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -51,11 +52,14 @@ func listExports(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 }
 
 func getExport(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	svc := meta.(*client.Client).Services().Dynamodb
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceDynamodb).Dynamodb
 
 	exportSummary := resource.Item.(types.ExportSummary)
 
-	response, err := svc.DescribeExport(ctx, &dynamodb.DescribeExportInput{ExportArn: exportSummary.ExportArn})
+	response, err := svc.DescribeExport(ctx, &dynamodb.DescribeExportInput{ExportArn: exportSummary.ExportArn}, func(options *dynamodb.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

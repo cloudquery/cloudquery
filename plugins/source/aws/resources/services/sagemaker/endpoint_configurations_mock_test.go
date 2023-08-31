@@ -7,17 +7,16 @@ import (
 	types "github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildSageMakerEndpointConfigs(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockSagemakerClient(ctrl)
 
 	summ := types.EndpointConfigSummary{}
-	if err := faker.FakeObject(&summ); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&summ))
 
 	m.EXPECT().ListEndpointConfigs(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&sagemaker.ListEndpointConfigsOutput{EndpointConfigs: []types.EndpointConfigSummary{summ}},
@@ -25,9 +24,7 @@ func buildSageMakerEndpointConfigs(t *testing.T, ctrl *gomock.Controller) client
 	)
 
 	endpointConfig := sagemaker.DescribeEndpointConfigOutput{}
-	if err := faker.FakeObject(&endpointConfig); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&endpointConfig))
 
 	m.EXPECT().DescribeEndpointConfig(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&endpointConfig,
@@ -35,9 +32,8 @@ func buildSageMakerEndpointConfigs(t *testing.T, ctrl *gomock.Controller) client
 	)
 
 	var tagsOut sagemaker.ListTagsOutput
-	if err := faker.FakeObject(&tagsOut); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tagsOut))
+
 	tagsOut.NextToken = nil
 	m.EXPECT().ListTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&tagsOut, nil,

@@ -11,31 +11,71 @@ The composite primary key for this table is (**request_account_id**, **request_r
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|request_account_id (PK)|String|
-|request_region (PK)|String|
-|arn (PK)|String|
-|tags|JSON|
-|assign_ipv6_address_on_creation|Bool|
-|availability_zone|String|
-|availability_zone_id|String|
-|available_ip_address_count|Int|
-|cidr_block|String|
-|customer_owned_ipv4_pool|String|
-|default_for_az|Bool|
-|enable_dns64|Bool|
-|enable_lni_at_device_index|Int|
-|ipv6_cidr_block_association_set|JSON|
-|ipv6_native|Bool|
-|map_customer_owned_ip_on_launch|Bool|
-|map_public_ip_on_launch|Bool|
-|outpost_arn|String|
-|owner_id|String|
-|private_dns_name_options_on_launch|JSON|
-|state|String|
-|subnet_arn|String|
-|subnet_id|String|
-|vpc_id|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|request_account_id (PK)|`utf8`|
+|request_region (PK)|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|assign_ipv6_address_on_creation|`bool`|
+|availability_zone|`utf8`|
+|availability_zone_id|`utf8`|
+|available_ip_address_count|`int64`|
+|cidr_block|`utf8`|
+|customer_owned_ipv4_pool|`utf8`|
+|default_for_az|`bool`|
+|enable_dns64|`bool`|
+|enable_lni_at_device_index|`int64`|
+|ipv6_cidr_block_association_set|`json`|
+|ipv6_native|`bool`|
+|map_customer_owned_ip_on_launch|`bool`|
+|map_public_ip_on_launch|`bool`|
+|outpost_arn|`utf8`|
+|owner_id|`utf8`|
+|private_dns_name_options_on_launch|`json`|
+|state|`utf8`|
+|subnet_arn|`utf8`|
+|subnet_id|`utf8`|
+|vpc_id|`utf8`|
+
+## Example Queries
+
+These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
+
+### EC2 subnets should not automatically assign public IP addresses
+
+```sql
+SELECT
+  'EC2 subnets should not automatically assign public IP addresses' AS title,
+  owner_id AS account_id,
+  arn AS resource_id,
+  CASE
+  WHEN map_public_ip_on_launch IS true THEN 'fail'
+  ELSE 'pass'
+  END
+FROM
+  aws_ec2_subnets;
+```
+
+### EMR clusters should not have public IP addresses
+
+```sql
+SELECT
+  'EMR clusters should not have public IP addresses' AS title,
+  aws_emr_clusters.account_id,
+  aws_emr_clusters.arn AS resource_id,
+  CASE
+  WHEN aws_ec2_subnets.map_public_ip_on_launch
+  AND aws_emr_clusters.status->>'State' IN ('RUNNING', 'WAITING')
+  THEN 'fail'
+  ELSE 'pass'
+  END
+    AS status
+FROM
+  aws_emr_clusters
+  LEFT JOIN aws_ec2_subnets ON
+      aws_emr_clusters.ec2_instance_attributes->>'Ec2SubnetId'
+      = aws_ec2_subnets.subnet_id;
+```
+
+

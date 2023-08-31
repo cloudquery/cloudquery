@@ -7,7 +7,8 @@ import (
 	"io"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/elastic/go-elasticsearch/v8/typedapi/core/deletebyquery"
 	"github.com/elastic/go-elasticsearch/v8/typedapi/types"
 	"golang.org/x/sync/errgroup"
@@ -26,44 +27,44 @@ type deleteByQueryErrorResponse struct {
 const maxConcurrentDeletes = 10
 
 // DeleteStale removes entries from previous syncs
-func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source string, syncTime time.Time) error {
-	syncTimeStr := syncTime.Format(time.RFC3339)
-	dateRange := types.NewDateRangeQuery()
-	dateRange.Lt = &syncTimeStr
-	q := types.Query{
-		Bool: &types.BoolQuery{
-			Must: []types.Query{
-				{
-					MatchPhrase: map[string]types.MatchPhraseQuery{
-						schema.CqSourceNameColumn.Name: {
-							Query: source,
+func (c *Client) DeleteStale(ctx context.Context, msgs message.WriteDeleteStales) error {
+	g, gctx := errgroup.WithContext(ctx)
+	g.SetLimit(maxConcurrentDeletes)
+	for _, msg := range msgs {
+		msg := msg
+		g.Go(func() error {
+			syncTime := msg.SyncTime
+			source := msg.SourceName
+			syncTimeStr := syncTime.Format(time.RFC3339)
+			dateRange := types.NewDateRangeQuery()
+			dateRange.Lt = &syncTimeStr
+			q := types.Query{
+				Bool: &types.BoolQuery{
+					Must: []types.Query{
+						{
+							MatchPhrase: map[string]types.MatchPhraseQuery{
+								schema.CqSourceNameColumn.Name: {
+									Query: source,
+								},
+							},
+						},
+						{
+							Range: map[string]types.RangeQuery{
+								schema.CqSyncTimeColumn.Name: dateRange,
+							},
 						},
 					},
 				},
-				{
-					Range: map[string]types.RangeQuery{
-						schema.CqSyncTimeColumn.Name: dateRange,
-					},
-				},
-			},
-		},
-	}
-	req := deletebyquery.NewRequest()
-	req.Query = &q
-
-	g, gctx := errgroup.WithContext(ctx)
-	g.SetLimit(maxConcurrentDeletes)
-	for _, table := range tables {
-		table := table
-		g.Go(func() error {
-			return c.deleteStaleTable(gctx, table, req, syncTime)
+			}
+			req := deletebyquery.NewRequest()
+			req.Query = &q
+			return c.deleteStaleIndex(gctx, msg.TableName, req)
 		})
 	}
 	return g.Wait()
 }
 
-func (c *Client) deleteStaleTable(ctx context.Context, table *schema.Table, req *deletebyquery.Request, syncTime time.Time) error {
-	index := c.getIndexName(table.Name, syncTime)
+func (c *Client) deleteStaleIndex(ctx context.Context, index string, req *deletebyquery.Request) error {
 	resp, err := c.typedClient.DeleteByQuery(index).Request(req).Do(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to delete stale entries: %w", err)

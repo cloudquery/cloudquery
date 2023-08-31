@@ -4,13 +4,14 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func restApiModels() *schema.Table {
@@ -19,27 +20,24 @@ func restApiModels() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/apigateway/latest/api/API_Model.html`,
 		Resolver:    fetchApigatewayRestApiModels,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "apigateway"),
 		Transform:   transformers.TransformWithStruct(&types.Model{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "rest_api_arn",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveApigatewayRestAPIModelArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveApigatewayRestAPIModelArn,
+				PrimaryKey: true,
 			},
 			{
 				Name:     "model_template",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: resolveApigatewayRestAPIModelModelTemplate,
 			},
 		},
@@ -48,13 +46,15 @@ func restApiModels() *schema.Table {
 
 func fetchApigatewayRestApiModels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.RestApi)
-	c := meta.(*client.Client)
-	svc := c.Services().Apigateway
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceApigateway).Apigateway
 	config := apigateway.GetModelsInput{RestApiId: r.Id, Limit: aws.Int32(500)}
 	for p := apigateway.NewGetModelsPaginator(svc, &config); p.HasMorePages(); {
-		response, err := p.NextPage(ctx)
+		response, err := p.NextPage(ctx, func(options *apigateway.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
-			if c.IsNotFoundError(err) {
+			if cl.IsNotFoundError(err) {
 				return nil
 			}
 			return err
@@ -80,7 +80,7 @@ func resolveApigatewayRestAPIModelModelTemplate(ctx context.Context, meta schema
 	r := resource.Item.(types.Model)
 	api := resource.Parent.Item.(types.RestApi)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Apigateway
+	svc := cl.Services(client.AWSServiceApigateway).Apigateway
 
 	if api.Id == nil || r.Name == nil {
 		return nil
@@ -91,7 +91,9 @@ func resolveApigatewayRestAPIModelModelTemplate(ctx context.Context, meta schema
 		ModelName: r.Name,
 	}
 
-	response, err := svc.GetModelTemplate(ctx, &config)
+	response, err := svc.GetModelTemplate(ctx, &config, func(options *apigateway.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		if client.IsAWSError(err, "BadRequestException") {
 			// This is an application level error and the user has nothing to do with that.

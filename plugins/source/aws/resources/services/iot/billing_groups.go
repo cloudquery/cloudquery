@@ -3,12 +3,15 @@ package iot
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func BillingGroups() *schema.Table {
@@ -25,21 +28,19 @@ func BillingGroups() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "things_in_group",
-				Type:     schema.TypeStringArray,
+				Type:     arrow.ListOf(arrow.BinaryTypes.String),
 				Resolver: resolveIotBillingGroupThingsInGroup,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveIotBillingGroupTags,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("BillingGroupArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("BillingGroupArn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -49,12 +50,14 @@ func fetchIotBillingGroups(ctx context.Context, meta schema.ClientMeta, parent *
 	input := iot.ListBillingGroupsInput{
 		MaxResults: aws.Int32(250),
 	}
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 
-	svc := c.Services().Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 	paginator := iot.NewListBillingGroupsPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -65,10 +68,12 @@ func fetchIotBillingGroups(ctx context.Context, meta schema.ClientMeta, parent *
 
 func getBillingGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 
 	output, err := svc.DescribeBillingGroup(ctx, &iot.DescribeBillingGroupInput{
 		BillingGroupName: resource.Item.(types.GroupNameAndArn).GroupName,
+	}, func(options *iot.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -81,7 +86,7 @@ func getBillingGroup(ctx context.Context, meta schema.ClientMeta, resource *sche
 func resolveIotBillingGroupThingsInGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeBillingGroupOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 	input := iot.ListThingsInBillingGroupInput{
 		BillingGroupName: i.BillingGroupName,
 		MaxResults:       aws.Int32(250),
@@ -89,7 +94,9 @@ func resolveIotBillingGroupThingsInGroup(ctx context.Context, meta schema.Client
 	var things []string
 	paginator := iot.NewListThingsInBillingGroupPaginator(svc, &input)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -99,6 +106,7 @@ func resolveIotBillingGroupThingsInGroup(ctx context.Context, meta schema.Client
 }
 func resolveIotBillingGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeBillingGroupOutput)
-	svc := meta.(*client.Client).Services().Iot
-	return resolveIotTags(ctx, svc, resource, c, i.BillingGroupArn)
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceIot).Iot
+	return resolveIotTags(ctx, meta, svc, resource, c, i.BillingGroupArn)
 }

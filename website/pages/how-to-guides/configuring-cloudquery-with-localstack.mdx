@@ -87,11 +87,7 @@ spec:
   path: "cloudquery/aws"
   version: "VERSION_SOURCE_AWS"
   destinations: ["postgresql"]
-  skip_tables:
-    - aws_route53_delegation_sets
-    - aws_iam_policies
-  tables:
-    - "*"
+  tables: ["aws_ec2_vpcs", "aws_ec2_security_groups"]
   spec:
     regions: 
       - "us-east-1"

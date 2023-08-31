@@ -37,6 +37,16 @@ func (m *MockMqClient) EXPECT() *MockMqClientMockRecorder {
 
 // DescribeBroker mocks base method.
 func (m *MockMqClient) DescribeBroker(arg0 context.Context, arg1 *mq.DescribeBrokerInput, arg2 ...func(*mq.Options)) (*mq.DescribeBrokerOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &mq.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeBroker")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockMqClientMockRecorder) DescribeBroker(arg0, arg1 interface{}, arg2 
 
 // DescribeBrokerEngineTypes mocks base method.
 func (m *MockMqClient) DescribeBrokerEngineTypes(arg0 context.Context, arg1 *mq.DescribeBrokerEngineTypesInput, arg2 ...func(*mq.Options)) (*mq.DescribeBrokerEngineTypesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &mq.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeBrokerEngineTypes")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockMqClientMockRecorder) DescribeBrokerEngineTypes(arg0, arg1 interfa
 
 // DescribeBrokerInstanceOptions mocks base method.
 func (m *MockMqClient) DescribeBrokerInstanceOptions(arg0 context.Context, arg1 *mq.DescribeBrokerInstanceOptionsInput, arg2 ...func(*mq.Options)) (*mq.DescribeBrokerInstanceOptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &mq.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeBrokerInstanceOptions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockMqClientMockRecorder) DescribeBrokerInstanceOptions(arg0, arg1 int
 
 // DescribeConfiguration mocks base method.
 func (m *MockMqClient) DescribeConfiguration(arg0 context.Context, arg1 *mq.DescribeConfigurationInput, arg2 ...func(*mq.Options)) (*mq.DescribeConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &mq.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockMqClientMockRecorder) DescribeConfiguration(arg0, arg1 interface{}
 
 // DescribeConfigurationRevision mocks base method.
 func (m *MockMqClient) DescribeConfigurationRevision(arg0 context.Context, arg1 *mq.DescribeConfigurationRevisionInput, arg2 ...func(*mq.Options)) (*mq.DescribeConfigurationRevisionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &mq.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConfigurationRevision")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockMqClientMockRecorder) DescribeConfigurationRevision(arg0, arg1 int
 
 // DescribeUser mocks base method.
 func (m *MockMqClient) DescribeUser(arg0 context.Context, arg1 *mq.DescribeUserInput, arg2 ...func(*mq.Options)) (*mq.DescribeUserOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &mq.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeUser")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockMqClientMockRecorder) DescribeUser(arg0, arg1 interface{}, arg2 ..
 
 // ListBrokers mocks base method.
 func (m *MockMqClient) ListBrokers(arg0 context.Context, arg1 *mq.ListBrokersInput, arg2 ...func(*mq.Options)) (*mq.ListBrokersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &mq.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBrokers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockMqClientMockRecorder) ListBrokers(arg0, arg1 interface{}, arg2 ...
 
 // ListConfigurationRevisions mocks base method.
 func (m *MockMqClient) ListConfigurationRevisions(arg0 context.Context, arg1 *mq.ListConfigurationRevisionsInput, arg2 ...func(*mq.Options)) (*mq.ListConfigurationRevisionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &mq.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListConfigurationRevisions")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockMqClientMockRecorder) ListConfigurationRevisions(arg0, arg1 interf
 
 // ListConfigurations mocks base method.
 func (m *MockMqClient) ListConfigurations(arg0 context.Context, arg1 *mq.ListConfigurationsInput, arg2 ...func(*mq.Options)) (*mq.ListConfigurationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &mq.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListConfigurations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockMqClientMockRecorder) ListConfigurations(arg0, arg1 interface{}, a
 
 // ListTags mocks base method.
 func (m *MockMqClient) ListTags(arg0 context.Context, arg1 *mq.ListTagsInput, arg2 ...func(*mq.Options)) (*mq.ListTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &mq.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockMqClientMockRecorder) ListTags(arg0, arg1 interface{}, arg2 ...int
 
 // ListUsers mocks base method.
 func (m *MockMqClient) ListUsers(arg0 context.Context, arg1 *mq.ListUsersInput, arg2 ...func(*mq.Options)) (*mq.ListUsersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &mq.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListUsers")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

@@ -5,8 +5,8 @@ import (
 	"path"
 	"strings"
 
-	source "github.com/cloudquery/plugin-sdk/clients/source/v1"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
+	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
@@ -57,27 +57,51 @@ func tables(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
-
+	opts := []managedplugin.Option{
+		managedplugin.WithLogger(log.Logger),
+		managedplugin.WithDirectory(cqDir),
+	}
+	pluginConfigs := make([]managedplugin.Config, 0, len(specReader.Sources))
 	for _, sourceSpec := range specReader.Sources {
-		opts := []source.ClientOption{
-			source.WithLogger(log.Logger),
-			source.WithDirectory(cqDir),
-		}
-		sourceClient, err := source.NewClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version, opts...)
-		if err != nil {
-			return fmt.Errorf("failed to create source client. Error: %w", err)
-		}
+		pluginConfigs = append(pluginConfigs, managedplugin.Config{
+			Name:     sourceSpec.Name,
+			Path:     sourceSpec.Path,
+			Version:  sourceSpec.Version,
+			Registry: SpecRegistryToPlugin(sourceSpec.Registry),
+		})
+	}
 
-		outputPath := path.Join(outputDir, sourceSpec.Name)
-		fmt.Printf("Generating docs for: %s to %s\n", sourceSpec.VersionString(), outputPath)
-		err = sourceClient.GenDocs(ctx, outputPath, format)
-		if err != nil {
-			return fmt.Errorf("failed to generate docs. Error: %w", err)
+	sourceClients, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, pluginConfigs, opts...)
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err := sourceClients.Terminate(); err != nil {
+			fmt.Println(err)
 		}
-
-		err = sourceClient.Terminate()
+	}()
+	for _, source := range specReader.Sources {
+		cl := sourceClients.ClientByName(source.Name)
+		outputPath := path.Join(outputDir, source.Name)
+		fmt.Printf("Generating docs for %q to directory %q\n", source.Name, outputPath)
+		versions, err := cl.Versions(ctx)
 		if err != nil {
-			fmt.Println("Failed to terminate source client. Error: ", err)
+			return fmt.Errorf("failed to get versions for %s. Error: %w", source.Name, err)
+		}
+		maxVersion := findMaxCommonVersion(versions, []int{2, 3})
+		switch maxVersion {
+		case 3:
+			if err := tablesV3(ctx, cl, outputPath, format); err != nil {
+				return err
+			}
+			fmt.Printf("Done generating docs for %q to directory %q\n", source.Name, outputPath)
+		case 2:
+			if err := tablesV2(ctx, cl, outputPath, format); err != nil {
+				return err
+			}
+			fmt.Printf("Done generating docs for %q to directory %q\n", source.Name, outputPath)
+		default:
+			return fmt.Errorf("unsupported version %d for %s", maxVersion, source.Name)
 		}
 	}
 

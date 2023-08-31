@@ -4,43 +4,38 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/goccy/go-json"
 
-	"github.com/cloudquery/filetypes"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
 )
 
 type Client struct {
-	destination.UnimplementedManagedWriter
-	logger         zerolog.Logger
-	spec           specs.Destination
-	pluginSpec     Spec
-	metrics        destination.Metrics
 	firehoseClient *firehose.Client
-	*filetypes.Client
+	spec           Spec
+
+	logger zerolog.Logger
+	plugin.UnimplementedSource
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (destination.Client, error) {
-	if spec.WriteMode != specs.WriteModeAppend {
-		return nil, fmt.Errorf("destination only supports append mode")
-	}
-	c := &Client{
-		logger: logger.With().Str("module", "firehose").Logger(),
-		spec:   spec,
-	}
+var _ plugin.Client = (*Client)(nil)
 
-	if err := spec.UnmarshalSpec(&c.pluginSpec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal firehose spec: %w", err)
+func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
+	var spec Spec
+	if err := json.Unmarshal(specBytes, &spec); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
-	if err := c.pluginSpec.Validate(); err != nil {
+	spec.SetDefaults()
+	if err := spec.Validate(); err != nil {
 		return nil, err
 	}
-	c.pluginSpec.SetDefaults()
-	parsedARN, err := arn.Parse(c.pluginSpec.StreamARN)
+
+	parsedARN, err := arn.Parse(spec.StreamARN)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse firehose stream ARN: %w", err)
 	}
@@ -49,17 +44,15 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (de
 		return nil, fmt.Errorf("unable to load AWS SDK config: %w", err)
 	}
 
-	c.firehoseClient = firehose.NewFromConfig(cfg)
-
-	filetypesClient, err := filetypes.NewClient(c.pluginSpec.FileSpec)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
-	}
-	c.Client = filetypesClient
-
-	return c, nil
+	return &Client{
+		logger:         logger.With().Str("module", "firehose").Logger(),
+		spec:           spec,
+		firehoseClient: firehose.NewFromConfig(cfg),
+	}, nil
 }
 
-func (*Client) Close(ctx context.Context) error {
-	return nil
+func (*Client) Close(context.Context) error { return nil }
+
+func (*Client) Read(context.Context, *schema.Table, chan<- arrow.Record) error {
+	return plugin.ErrNotImplemented
 }

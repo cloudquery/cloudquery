@@ -1,3 +1,8 @@
+---
+title: Glossary
+description: Learn about the industry terms used in CloudQuery documentation and blogs.
+---
+
 # Overview
 
 The glossary provides a reference of industry terms and use cases that are used in other CloudQuery documentation and blogs.

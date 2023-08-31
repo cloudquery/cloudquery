@@ -1,24 +1,24 @@
 package projects
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/digitalocean/godo"
 )
 
 func Projects() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_projects",
-		Resolver:  fetchProjectsProjects,
-		Transform: transformers.TransformWithStruct(&godo.Project{}),
+		Name:        "digitalocean_projects",
+		Description: "https://docs.digitalocean.com/reference/api/api-reference/#tag/Projects",
+		Resolver:    fetchProjectsProjects,
+		Transform:   transformers.TransformWithStruct(&godo.Project{}),
 		Columns: []schema.Column{
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ID"),
+				PrimaryKey: true,
 			},
 		},
 

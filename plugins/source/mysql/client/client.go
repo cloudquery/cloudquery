@@ -3,20 +3,21 @@ package client
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/go-sql-driver/mysql"
 	"github.com/rs/zerolog"
 )
 
 type Client struct {
+	plugin.UnimplementedDestination
 	logger      zerolog.Logger
-	metrics     *source.Metrics
-	Tables      schema.Tables
+	tables      schema.Tables
+	options     plugin.NewClientOptions
 	db          *sql.DB
 	tableSchema string
 }
@@ -27,9 +28,9 @@ func (*Client) ID() string {
 	return "source-mysql"
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	var mySQLSpec Spec
-	err := spec.UnmarshalSpec(&mySQLSpec)
+	err := json.Unmarshal(spec, &mySQLSpec)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
@@ -56,15 +57,22 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	db.SetMaxOpenConns(10)
 	db.SetMaxIdleConns(10)
 
-	c := &Client{logger: logger.With().Str("module", "mysql-source").Logger(), db: db, tableSchema: dsn.DBName}
-	c.Tables, err = c.listTables(ctx)
+	c := Client{logger: logger.With().Str("module", "mysql-source").Logger(), db: db, tableSchema: dsn.DBName, options: opts}
+	c.tables, err = c.listTables(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list tables: %w", err)
 	}
-	c.Tables, err = c.Tables.FilterDfs(spec.Tables, spec.SkipTables, spec.SkipDependentTables)
 	if err != nil {
 		return nil, fmt.Errorf("failed to apply config to tables: %w", err)
 	}
 
 	return c, nil
+}
+
+func (c Client) Tables(ctx context.Context, opts plugin.TableOptions) (schema.Tables, error) {
+	return c.tables.FilterDfs(opts.Tables, opts.SkipTables, opts.SkipDependentTables)
+}
+
+func (c Client) Close(_ context.Context) error {
+	return c.db.Close()
 }

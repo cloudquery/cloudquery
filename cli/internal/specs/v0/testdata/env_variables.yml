@@ -1,0 +1,25 @@
+kind: source
+spec:
+  name: aws
+  version: ${VERSION}
+  destinations: [postgresql]
+  path: cloudquery/aws
+  tables: [test]
+---
+# comment with ${ENV_VARIABLE} that should not be expanded
+kind: source
+spec:
+  name: azure
+  version: v1.3.3
+  destinations: [${DESTINATIONS},postgresql]
+  path: cloudquery/azure
+  tables: [test]
+---
+kind: destination
+spec:
+  name: postgresql
+  path: cloudquery/postgresql
+  version: v1.6.3 # or ${ENV_VARIABLE}
+  spec:
+    connection_string: ${CONNECTION_STRING}
+    version: "#${VERSION}"

@@ -7,8 +7,11 @@ import (
 	"strconv"
 {{end}}
 
-	"github.com/cloudquery/plugin-sdk/schema"
-  "github.com/cloudquery/plugin-sdk/transformers"
+{{if or .HasIDPK .StateParamName}}
+	"github.com/apache/arrow/go/v14/arrow"
+{{end -}}
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/cloudquery/cloudquery/plugins/source/stripe/client"
 	"github.com/stripe/stripe-go/v74"
 )
@@ -27,21 +30,17 @@ func {{.TableName | ToPascal}}() *schema.Table {
 {{if .HasIDPK}}
 		  Columns: []schema.Column{
 				 {
-								 Name:     "id",
-								 Type:     schema.TypeString,
-								 Resolver: schema.PathResolver("ID"),
-								 CreationOptions: schema.ColumnCreationOptions{
-												 PrimaryKey: true,
-								 },
+								 Name:       "id",
+								 Type:       arrow.BinaryTypes.String,
+								 Resolver:   schema.PathResolver("ID"),
+								 PrimaryKey: true,
 				 },
 {{if .StateParamName -}}
 				 {
-								 Name:     "{{.StateParamName | ToSnake}}",
-								 Type:     schema.TypeTimestamp,
-								 Resolver: schema.PathResolver("{{.StateParamName}}"),
-								 CreationOptions: schema.ColumnCreationOptions{
-												 IncrementalKey: true,
-								 },
+								 Name:           "{{.StateParamName | ToSnake}}",
+								 Type:           arrow.FixedWidthTypes.Timestamp_us,
+								 Resolver:       schema.PathResolver("{{.StateParamName}}"),
+								 IncrementalKey: true,
 				 },
 {{end -}}
 			},
@@ -49,10 +48,13 @@ func {{.TableName | ToPascal}}() *schema.Table {
 			IsIncremental: true,
 {{end -}}
 {{end}}
-{{if .Children}}
+{{if or .Children .ExtraChildren}}
 	  			Relations: []*schema.Table{
 				{{- range .Children}}
 				{{.TableName | ToPascal}}(),
+				{{- end}}
+				{{- range .ExtraChildren}}
+				{{.}},
 				{{- end}}
 			},
 {{end}}
@@ -77,7 +79,7 @@ func fetch{{.TableName | ToPascal}}(ctx context.Context, meta schema.ClientMeta,
 		const key = "{{.TableName}}"
 
 		if (cl.Backend != nil) {
-			value, err := cl.Backend.Get(ctx, key, cl.ID())
+			value, err := cl.Backend.GetKey(ctx, key)
 			if err != nil {
 				return fmt.Errorf("failed to retrieve state from backend: %w", err)
 			}
@@ -105,7 +107,7 @@ func fetch{{.TableName | ToPascal}}(ctx context.Context, meta schema.ClientMeta,
 {{if .StateParamName -}}
 		err := it.Err()
 		if cl.Backend != nil && err == nil && lp.{{.StateParamName}} != nil {
-			return cl.Backend.Set(ctx, key, cl.ID(), strconv.FormatInt(*lp.{{.StateParamName}}, 10))
+			return cl.Backend.SetKey(ctx, key, strconv.FormatInt(*lp.{{.StateParamName}}, 10))
 		}
 		return err
 {{else -}}

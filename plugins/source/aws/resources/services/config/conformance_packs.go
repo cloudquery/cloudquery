@@ -4,12 +4,13 @@ import (
 	"context"
 	"errors"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func ConformancePacks() *schema.Table {
@@ -24,12 +25,10 @@ func ConformancePacks() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ConformancePackArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ConformancePackArn"),
+				PrimaryKey: true,
 			},
 		},
 
@@ -40,15 +39,17 @@ func ConformancePacks() *schema.Table {
 }
 
 func fetchConfigConformancePacks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
+	cl := meta.(*client.Client)
 	config := configservice.DescribeConformancePacksInput{}
 	var ae smithy.APIError
-	configService := c.Services().Configservice
+	configService := cl.Services(client.AWSServiceConfigservice).Configservice
 	paginator := configservice.NewDescribeConformancePacksPaginator(configService, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *configservice.Options) {
+			options.Region = cl.Region
+		})
 		// This is a workaround until this bug is fixed = https://github.com/aws/aws-sdk-go-v2/issues/1539
-		if (c.Region == "af-south-1" || c.Region == "ap-northeast-3") && errors.As(err, &ae) && ae.ErrorCode() == "AccessDeniedException" {
+		if (cl.Region == "af-south-1" || cl.Region == "ap-northeast-3") && errors.As(err, &ae) && ae.ErrorCode() == "AccessDeniedException" {
 			return nil
 		}
 		if err != nil {

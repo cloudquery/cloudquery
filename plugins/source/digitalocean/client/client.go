@@ -3,27 +3,26 @@ package client
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	awscfg "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/smithy-go/logging"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/digitalocean/godo"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 )
 
-var defaultSpacesRegions = []string{"nyc3", "sfo3", "ams3", "sgp1", "fra1"}
+const (
+	MaxItemsPerPage = 200
 
-const MaxItemsPerPage = 200
+	firstSpacesRegion = "nyc3"
+)
+
+var defaultSpacesRegions = []string{"nyc3", "sfo3", "ams3", "sgp1", "fra1", "syd1"}
 
 type Client struct {
-	// This is a client that you need to create and initialize in New
-	// It will be passed for each resource fetcher.
 	logger           zerolog.Logger
 	DoClient         *godo.Client
 	Regions          []string
@@ -48,7 +47,7 @@ type DoLogger struct {
 	l zerolog.Logger
 }
 
-func (s SpacesCredentialsProvider) Retrieve(ctx context.Context) (aws.Credentials, error) {
+func (s SpacesCredentialsProvider) Retrieve(_ context.Context) (aws.Credentials, error) {
 	return aws.Credentials{
 		AccessKeyID:     s.SpacesAccessKeyId,
 		SecretAccessKey: s.SpacesAccessKey,
@@ -72,32 +71,9 @@ func (SpacesEndpointResolver) ResolveEndpoint(_, region string, options ...any) 
 	}, nil
 }
 
-func getTokenFromEnv() string {
-	doToken := os.Getenv("DIGITALOCEAN_TOKEN")
-	doAccessToken := os.Getenv("DIGITALOCEAN_ACCESS_TOKEN")
-	if doToken != "" {
-		return doToken
-	}
-	if doAccessToken != "" {
-		return doAccessToken
-	}
-	return ""
-}
-
-func getSpacesTokenFromEnv() (string, string) {
-	spacesAccessKey := os.Getenv("SPACES_ACCESS_KEY_ID")
-	spacesSecretKey := os.Getenv("SPACES_SECRET_ACCESS_KEY")
-	if spacesAccessKey == "" {
-		return "", ""
-	}
-	if spacesSecretKey == "" {
-		return "", ""
-	}
-	return spacesAccessKey, spacesSecretKey
-}
-
 type Services struct {
 	Account        AccountService
+	Apps           AppsService
 	Cdn            CdnService
 	BillingHistory BillingHistoryService
 	Monitoring     MonitoringService
@@ -110,8 +86,10 @@ type Services struct {
 	FloatingIps    FloatingIpsService
 	Images         ImagesService
 	Keys           KeysService
+	Kubernetes     KubernetesService
 	LoadBalancers  LoadBalancersService
 	Projects       ProjectsService
+	Regions        RegionsService
 	Registry       RegistryService
 	Sizes          SizesService
 	Snapshots      SnapshotsService
@@ -131,20 +109,7 @@ func (s *ServicesManager) ServicesByRegion(region string) *Services {
 	return s.services[region]
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
-	// providerConfig := config.(*Config)
-	var doSpec Spec
-	if err := s.UnmarshalSpec(&doSpec); err != nil {
-		return nil, errors.WithStack(fmt.Errorf("failed to unmarshal digitalocean spec: %w", err))
-	}
-
-	if doSpec.Token == "" {
-		doSpec.Token = getTokenFromEnv()
-	}
-	if doSpec.Token == "" {
-		return nil, errors.WithStack(fmt.Errorf("missing API token"))
-	}
-
+func New(logger zerolog.Logger, doSpec Spec) (schema.ClientMeta, error) {
 	credStatus := DoCredentialStruct{
 		Api:    true,
 		Spaces: true,
@@ -161,7 +126,6 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 		awscfg.WithCredentialsProvider(SpacesCredentialsProvider{doSpec.SpacesAccessKey, doSpec.SpacesAccessKeyId}),
 		awscfg.WithEndpointResolverWithOptions(SpacesEndpointResolver{}),
 	)
-
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -176,16 +140,16 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 		spacesRegions = doSpec.SpacesRegions
 	}
 
-	client := godo.NewFromToken(doSpec.Token)
-	c := Client{
+	doClient := godo.NewFromToken(doSpec.Token)
+
+	return &Client{
 		logger:           logger,
-		DoClient:         godo.NewFromToken(doSpec.Token),
+		DoClient:         doClient,
 		Regions:          spacesRegions,
-		SpacesRegion:     "nyc3",
+		SpacesRegion:     firstSpacesRegion,
 		CredentialStatus: credStatus,
-		Services:         initServices(client, s3.NewFromConfig(awsCfg)),
-	}
-	return &c, nil
+		Services:         initServices(doClient, s3.NewFromConfig(awsCfg)),
+	}, nil
 }
 
 func (a DoLogger) Logf(classification logging.Classification, format string, v ...any) {
@@ -200,13 +164,14 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-func (c *Client) ID() string {
+func (c Client) ID() string {
 	return c.SpacesRegion
 }
 
 func initServices(doClient *godo.Client, spacesService SpacesService) *Services {
 	return &Services{
 		Account:        doClient.Account,
+		Apps:           doClient.Apps,
 		Cdn:            doClient.CDNs,
 		BillingHistory: doClient.BillingHistory,
 		Monitoring:     doClient.Monitoring,
@@ -219,8 +184,10 @@ func initServices(doClient *godo.Client, spacesService SpacesService) *Services 
 		FloatingIps:    doClient.FloatingIPs,
 		Images:         doClient.Images,
 		Keys:           doClient.Keys,
+		Kubernetes:     doClient.Kubernetes,
 		LoadBalancers:  doClient.LoadBalancers,
 		Projects:       doClient.Projects,
+		Regions:        doClient.Regions,
 		Registry:       doClient.Registry,
 		Sizes:          doClient.Sizes,
 		Snapshots:      doClient.Snapshots,

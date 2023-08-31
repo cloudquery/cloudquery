@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/client"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func fetchOrders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
@@ -16,10 +16,11 @@ func fetchOrders(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	const key = "orders"
 
 	p := url.Values{}
+	p.Set("status", "any")
 	min := time.Time{}
 
 	if cl.Backend != nil {
-		value, err := cl.Backend.Get(ctx, key, cl.ID())
+		value, err := cl.Backend.GetKey(ctx, key)
 		if err != nil {
 			return fmt.Errorf("failed to retrieve state from backend: %w", err)
 		}
@@ -60,7 +61,7 @@ func fetchOrders(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	}
 
 	if cl.Backend != nil {
-		if err := cl.Backend.Set(ctx, key, cl.ID(), min.Format(time.RFC3339)); err != nil {
+		if err := cl.Backend.SetKey(ctx, key, min.Format(time.RFC3339)); err != nil {
 			return fmt.Errorf("failed to store state to backend: %w", err)
 		}
 	}

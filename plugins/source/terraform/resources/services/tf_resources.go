@@ -3,11 +3,12 @@ package services
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/terraform/client"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func TFResources() *schema.Table {
+func tfResources() *schema.Table {
 	return &schema.Table{
 		Name:        "tf_resources",
 		Description: "Terraform resources",
@@ -15,43 +16,43 @@ func TFResources() *schema.Table {
 		Columns: []schema.Column{
 			{
 				Name:     "data_backend_name",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("backend_name"),
 			},
 			{
 				Name:        "module",
 				Description: "Resource module if exists",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 			},
 			{
 				Name:        "mode",
 				Description: "Resource mode, for example: data, managed, etc",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 			},
 			{
 				Name:        "type",
 				Description: "Resource type",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 			},
 			{
 				Name:        "name",
 				Description: "Resource name",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 			},
 			{
 				Name:        "provider_path",
 				Description: "Resource provider full path, for example: provider[\"registry.terraform.io/hashicorp/aws\"]",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 				Resolver:    schema.PathResolver("ProviderConfig"),
 			},
 			{
 				Name:        "provider",
 				Description: "Resource provider name, for example: aws, gcp, etc",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 				Resolver:    resolveProviderName,
 			},
 		},
-		Relations: []*schema.Table{TFResourceInstances()},
+		Relations: []*schema.Table{tfResourceInstances()},
 	}
 }
 

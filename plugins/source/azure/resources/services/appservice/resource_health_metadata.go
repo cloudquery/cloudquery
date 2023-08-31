@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appservice/armappservice/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func ResourceHealthMetadata() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_appservice_resource_health_metadata",
-		Resolver:    fetchResourceHealthMetadata,
-		Description: "https://learn.microsoft.com/en-us/rest/api/appservice/resource-health-metadata/list?tabs=HTTP#resourcehealthmetadata",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_resource_health_metadata", client.Namespacemicrosoft_web),
-		Transform:   transformers.TransformWithStruct(&armappservice.ResourceHealthMetadata{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_appservice_resource_health_metadata",
+		Resolver:             fetchResourceHealthMetadata,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/appservice/resource-health-metadata/list?tabs=HTTP#resourcehealthmetadata",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_appservice_resource_health_metadata", client.Namespacemicrosoft_web),
+		Transform:            transformers.TransformWithStruct(&armappservice.ResourceHealthMetadata{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

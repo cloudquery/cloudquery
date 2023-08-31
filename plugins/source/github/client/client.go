@@ -6,17 +6,17 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/beatlabs/github-auth/app/inst"
 	"github.com/beatlabs/github-auth/key"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/gofri/go-github-ratelimit/github_ratelimit"
-	"github.com/google/go-github/v48/github"
+	"github.com/google/go-github/v49/github"
 	"github.com/rs/zerolog"
 	"golang.org/x/oauth2"
+	"golang.org/x/sync/errgroup"
 )
 
 type Client struct {
@@ -74,18 +74,11 @@ func limitDetectedCallback(logger zerolog.Logger) github_ratelimit.OnLimitDetect
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
-	var spec Spec
-	err := s.UnmarshalSpec(&spec)
-	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal GitHub spec: %w", err)
-	}
-
-	// validate plugin config
-	err = spec.Validate()
-	if err != nil {
+func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMeta, error) {
+	if err := spec.Validate(); err != nil {
 		return nil, fmt.Errorf("failed to validate GitHub spec: %w", err)
 	}
+	spec.SetDefaults()
 
 	ghServices := map[string]GithubServices{}
 	for _, auth := range spec.AppAuth {
@@ -103,7 +96,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 			return nil, fmt.Errorf("failed to create app config: %w", err)
 		}
 		httpClient := i.Client(ctx)
-		ghc, err := githubClientForHTTPClient(httpClient, logger)
+		ghc, err := githubClientForHTTPClient(httpClient, logger, spec.EnterpriseSettings)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create GitHub client for org %v: %w", auth.Org, err)
 		}
@@ -114,7 +107,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 	if spec.AccessToken != "" {
 		ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: spec.AccessToken})
 		httpClient := oauth2.NewClient(ctx, ts)
-		ghc, err := githubClientForHTTPClient(httpClient, logger)
+		ghc, err := githubClientForHTTPClient(httpClient, logger, spec.EnterpriseSettings)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create GitHub client for access token: %w", err)
 		}
@@ -131,7 +124,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 		repos:       spec.Repos,
 	}
 	c.logger.Info().Msg("Discovering repositories")
-	orgRepositories, err := c.discoverRepositories(ctx, spec.Orgs, spec.Repos)
+	orgRepositories, err := c.discoverRepositories(ctx, spec.DiscoveryConcurrency, spec.Orgs, spec.Repos)
 	if err != nil {
 		return nil, fmt.Errorf("failed to discover repositories: %w", err)
 	}
@@ -151,24 +144,43 @@ func servicesForClient(c *github.Client) GithubServices {
 	}
 }
 
-func (c *Client) discoverRepositories(ctx context.Context, orgs []string, repos []string) (map[string][]*github.Repository, error) {
-	opts := &github.RepositoryListByOrgOptions{ListOptions: github.ListOptions{PerPage: 100}}
-
+func (c *Client) discoverRepositories(ctx context.Context, discoveryConcurrency int, orgs []string, repos []string) (map[string][]*github.Repository, error) {
 	orgRepos := make(map[string][]*github.Repository)
+	orgReposLock := sync.Mutex{}
+	errorGroup, gtx := errgroup.WithContext(ctx)
+	errorGroup.SetLimit(discoveryConcurrency)
+
 	for _, org := range orgs {
+		org := org
+		opts := &github.RepositoryListByOrgOptions{ListOptions: github.ListOptions{PerPage: 100}}
 		services := c.servicesForOrg(org)
-		for {
-			repos, resp, err := services.Repositories.ListByOrg(ctx, org, opts)
-			if err != nil {
-				return nil, err
+		errorGroup.Go(func() error {
+			orgRepositories := []*github.Repository{}
+			for {
+				repos, resp, err := services.Repositories.ListByOrg(gtx, org, opts)
+				if err != nil {
+					return err
+				}
+				orgRepositories = append(orgRepositories, repos...)
+
+				if resp.NextPage == 0 {
+					break
+				}
+				opts.Page = resp.NextPage
 			}
-			orgRepos[org] = append(orgRepos[org], repos...)
-			opts.Page = resp.NextPage
-			if opts.Page == resp.LastPage {
-				break
-			}
-		}
+
+			orgReposLock.Lock()
+			defer orgReposLock.Unlock()
+			orgRepos[org] = orgRepositories
+
+			return nil
+		})
 	}
+
+	if err := errorGroup.Wait(); err != nil {
+		return nil, err
+	}
+
 	seenOrgs := make(map[string]struct{})
 	for _, repo := range repos {
 		repoSplit := splitRepo(repo)
@@ -192,11 +204,16 @@ func (c *Client) discoverRepositories(ctx context.Context, orgs []string, repos 
 	return orgRepos, nil
 }
 
-func githubClientForHTTPClient(httpClient *http.Client, logger zerolog.Logger) (*github.Client, error) {
+func githubClientForHTTPClient(httpClient *http.Client, logger zerolog.Logger, enterpriseSettings *EnterpriseSettings) (*github.Client, error) {
 	rateLimiter, err := github_ratelimit.NewRateLimitWaiterClient(httpClient.Transport, github_ratelimit.WithLimitDetectedCallback(limitDetectedCallback(logger)))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create rate limiter: %w", err)
 	}
+
+	if enterpriseSettings != nil {
+		return github.NewEnterpriseClient(enterpriseSettings.BaseURL, enterpriseSettings.UploadURL, rateLimiter)
+	}
+
 	return github.NewClient(rateLimiter), nil
 }
 

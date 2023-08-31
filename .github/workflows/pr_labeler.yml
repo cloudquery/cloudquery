@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/labeler@v4
+        continue-on-error: true
         with:
           repo-token: ${{ secrets.GH_CQ_BOT }}
           sync-labels: true

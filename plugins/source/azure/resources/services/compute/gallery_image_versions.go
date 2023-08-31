@@ -7,20 +7,21 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v4"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/faker"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/gorilla/mux"
 )
 
 func galleryImageVersions() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_compute_gallery_image_versions",
-		Resolver:    fetchGalleryImageVersions,
-		Description: "https://learn.microsoft.com/en-us/rest/api/compute/gallery-image-versions/list-by-gallery-image?tabs=HTTP#galleryimageversion",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_compute_gallery_image_versions", client.Namespacemicrosoft_compute),
-		Transform:   transformers.TransformWithStruct(&armcompute.GalleryImageVersion{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_compute_gallery_image_versions",
+		Resolver:             fetchGalleryImageVersions,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/compute/gallery-image-versions/list-by-gallery-image?tabs=HTTP#galleryimageversion",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_compute_gallery_image_versions", client.Namespacemicrosoft_compute),
+		Transform:            transformers.TransformWithStruct(&armcompute.GalleryImageVersion{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

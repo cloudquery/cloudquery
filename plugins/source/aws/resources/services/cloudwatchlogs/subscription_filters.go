@@ -3,11 +3,12 @@ package cloudwatchlogs
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func subscriptionFilters() *schema.Table {
@@ -16,7 +17,6 @@ func subscriptionFilters() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_SubscriptionFilter.html`,
 		Resolver:    fetchCloudwatchlogsSubscriptionFilters,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "logs"),
 		Transform:   transformers.TransformWithStruct(&types.SubscriptionFilter{}, transformers.WithPrimaryKeys("FilterName", "CreationTime")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
@@ -24,11 +24,9 @@ func subscriptionFilters() *schema.Table {
 			{
 				Name:        "log_group_arn",
 				Description: "The Amazon Resource Name (ARN) of the log group.",
-				Type:        schema.TypeString,
+				Type:        arrow.BinaryTypes.String,
 				Resolver:    schema.ParentColumnResolver("arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				PrimaryKey:  true,
 			},
 		},
 	}
@@ -37,11 +35,13 @@ func fetchCloudwatchlogsSubscriptionFilters(ctx context.Context, meta schema.Cli
 	config := cloudwatchlogs.DescribeSubscriptionFiltersInput{
 		LogGroupName: parent.Item.(types.LogGroup).LogGroupName,
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Cloudwatchlogs
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceCloudwatchlogs).Cloudwatchlogs
 	paginator := cloudwatchlogs.NewDescribeSubscriptionFiltersPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *cloudwatchlogs.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

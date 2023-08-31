@@ -3,10 +3,11 @@ package ses
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/ses"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func ActiveReceiptRuleSets() *schema.Table {
@@ -21,16 +22,14 @@ func ActiveReceiptRuleSets() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Metadata.Name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "name",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Metadata.Name"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "created_timestamp",
-				Type:     schema.TypeTimestamp,
+				Type:     arrow.FixedWidthTypes.Timestamp_us,
 				Resolver: schema.PathResolver("Metadata.CreatedTimestamp"),
 			},
 		},
@@ -51,12 +50,14 @@ func isRegionSupported(region string) bool {
 }
 
 func fetchSesActiveReceiptRuleSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Ses
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSes).Ses
 
-	set, err := svc.DescribeActiveReceiptRuleSet(ctx, nil)
+	set, err := svc.DescribeActiveReceiptRuleSet(ctx, nil, func(o *ses.Options) {
+		o.Region = cl.Region
+	})
 	if err != nil {
-		if !isRegionSupported(c.Region) && client.IgnoreWithInvalidAction(err) {
+		if !isRegionSupported(cl.Region) && client.IgnoreWithInvalidAction(err) {
 			return nil
 		}
 		return err

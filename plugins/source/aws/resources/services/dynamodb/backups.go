@@ -3,12 +3,13 @@ package dynamodb
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Backups() *schema.Table {
@@ -24,25 +25,25 @@ func Backups() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("BackupDetails.BackupArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("BackupDetails.BackupArn"),
+				PrimaryKey: true,
 			},
 		},
 	}
 }
 
 func listBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Dynamodb
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceDynamodb).Dynamodb
 
 	config := dynamodb.ListBackupsInput{}
 	// No paginator available
 	for {
-		output, err := svc.ListBackups(ctx, &config)
+		output, err := svc.ListBackups(ctx, &config, func(options *dynamodb.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -58,11 +59,14 @@ func listBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 }
 
 func getBackup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	svc := meta.(*client.Client).Services().Dynamodb
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceDynamodb).Dynamodb
 
 	backupSummary := resource.Item.(types.BackupSummary)
 
-	response, err := svc.DescribeBackup(ctx, &dynamodb.DescribeBackupInput{BackupArn: backupSummary.BackupArn})
+	response, err := svc.DescribeBackup(ctx, &dynamodb.DescribeBackupInput{BackupArn: backupSummary.BackupArn}, func(options *dynamodb.Options) {
+		options.Region = cl.Region
+	})
 	if err != nil {
 		return err
 	}

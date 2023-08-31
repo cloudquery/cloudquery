@@ -2,15 +2,14 @@ package client
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"time"
 
 	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/ClickHouse/clickhouse-go/v2/lib/proto"
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
+	"github.com/goccy/go-json"
 	"github.com/rs/zerolog"
 )
 
@@ -20,30 +19,30 @@ type Client struct {
 	spec     *Spec
 
 	logger zerolog.Logger
-	mode   specs.MigrateMode
-	destination.UnimplementedUnmanagedWriter
+	writer *batchwriter.BatchWriter
+	plugin.UnimplementedSource
 }
 
-var _ destination.Client = (*Client)(nil)
+var _ plugin.Client = (*Client)(nil)
+var _ batchwriter.Client = (*Client)(nil)
 
-func (*Client) DeleteStale(context.Context, schema.Tables, string, time.Time) error {
-	return errors.New("DeleteStale is not implemented")
+func (*Client) DeleteStale(context.Context, message.WriteDeleteStales) error {
+	return plugin.ErrNotImplemented
 }
 
-func (c *Client) Close(context.Context) error {
+func (c *Client) Close(ctx context.Context) error {
+	if err := c.writer.Close(ctx); err != nil {
+		_ = c.conn.Close()
+		return err
+	}
 	return c.conn.Close()
 }
 
-func New(_ context.Context, logger zerolog.Logger, dstSpec specs.Destination) (destination.Client, error) {
-	if dstSpec.WriteMode != specs.WriteModeAppend {
-		return nil, fmt.Errorf("clickhouse destination only supports append mode")
-	}
-
+func New(_ context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	var spec Spec
-	if err := dstSpec.UnmarshalSpec(&spec); err != nil {
+	if err := json.Unmarshal(specBytes, &spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
-
 	spec.SetDefaults()
 	if err := spec.Validate(); err != nil {
 		return nil, err
@@ -77,11 +76,20 @@ func New(_ context.Context, logger zerolog.Logger, dstSpec specs.Destination) (d
 		return nil, fmt.Errorf("server version is %s, minimum version supported is %s", ver.Version, minVer)
 	}
 
-	return &Client{
+	c := &Client{
 		conn:     conn,
 		database: options.Auth.Database,
 		spec:     &spec,
 		logger:   l,
-		mode:     dstSpec.MigrateMode,
-	}, nil
+	}
+	c.writer, err = batchwriter.New(c,
+		batchwriter.WithLogger(l),
+		batchwriter.WithBatchSize(spec.BatchSize),
+		batchwriter.WithBatchSizeBytes(spec.BatchSizeBytes),
+		batchwriter.WithBatchTimeout(spec.BatchTimeout.Duration()),
+	)
+	if err != nil {
+		return nil, err
+	}
+	return c, nil
 }

@@ -3,12 +3,13 @@ package elasticsearch
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func VpcEndpoints() *schema.Table {
@@ -23,25 +24,26 @@ func VpcEndpoints() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("VpcEndpointId"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("VpcEndpointId"),
+				PrimaryKey: true,
 			},
 		},
 	}
 }
 
 func fetchElasticsearchVpcEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	svc := meta.(*client.Client).Services().Elasticsearchservice
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceElasticsearchservice).Elasticsearchservice
 	// get the IDs first
 	listInput := new(elasticsearchservice.ListVpcEndpointsInput)
 	var vpcEndpointIDs []string
 	// No paginator available
 	for {
-		out, err := svc.ListVpcEndpoints(ctx, listInput)
+		out, err := svc.ListVpcEndpoints(ctx, listInput, func(options *elasticsearchservice.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -69,6 +71,9 @@ func fetchElasticsearchVpcEndpoints(ctx context.Context, meta schema.ClientMeta,
 
 		out, err := svc.DescribeVpcEndpoints(ctx,
 			&elasticsearchservice.DescribeVpcEndpointsInput{VpcEndpointIds: part},
+			func(options *elasticsearchservice.Options) {
+				options.Region = cl.Region
+			},
 		)
 		if err != nil {
 			return err

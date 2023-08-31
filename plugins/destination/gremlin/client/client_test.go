@@ -1,22 +1,16 @@
 package client
 
 import (
+	"context"
+	"encoding/json"
 	"os"
 	"runtime"
 	"strconv"
 	"testing"
 
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/stretchr/testify/require"
 )
-
-var migrateStrategy = destination.MigrateStrategy{
-	AddColumn:           specs.MigrateModeSafe,
-	AddColumnNotNull:    specs.MigrateModeForced,
-	RemoveColumn:        specs.MigrateModeSafe,
-	RemoveColumnNotNull: specs.MigrateModeForced,
-	ChangeColumn:        specs.MigrateModeForced,
-}
 
 const (
 	defaultGremlinEndpoint = "ws://localhost:8182"
@@ -37,23 +31,31 @@ func TestPlugin(t *testing.T) {
 	}
 	insecure, _ := strconv.ParseBool(getenv("CQ_DEST_GREMLIN_INSECURE", defaultInsecure))
 
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin("gremlin", "development", New, destination.WithManagedWriter())
-		},
-		specs.Destination{
-			Spec: &Spec{
-				Endpoint: getenv("CQ_DEST_GREMLIN_ENDPOINT", defaultGremlinEndpoint),
-				Insecure: insecure,
-				Username: os.Getenv("CQ_DEST_GREMLIN_USERNAME"),
-				Password: os.Getenv("CQ_DEST_GREMLIN_PASSWORD"),
+	ctx := context.Background()
+	p := plugin.NewPlugin("gremlin", "development", New)
+	s := &Spec{
+		Endpoint: getenv("CQ_DEST_GREMLIN_ENDPOINT", defaultGremlinEndpoint),
+		Insecure: insecure,
+		Username: os.Getenv("CQ_DEST_GREMLIN_USERNAME"),
+		Password: os.Getenv("CQ_DEST_GREMLIN_PASSWORD"),
+	}
+	s.SetDefaults()
+	require.NoError(t, s.Validate())
+	b, err := json.Marshal(s)
+	require.NoError(t, err)
+
+	err = p.Init(ctx, b, plugin.NewClientOptions{})
+	require.NoError(t, err)
+
+	plugin.TestWriterSuiteRunner(t,
+		p,
+		plugin.WriterTestSuiteTests{
+			SkipInsert:  true, // we do "no PKs = all columns are PKs" in this destination
+			SkipMigrate: true,
+			SafeMigrations: plugin.SafeMigrations{
+				AddColumn:    true,
+				RemoveColumn: true,
 			},
 		},
-		destination.PluginTestSuiteTests{
-			SkipMigrateOverwriteForce: true,
-			SkipMigrateAppendForce:    true,
-
-			MigrateStrategyOverwrite: migrateStrategy,
-			MigrateStrategyAppend:    migrateStrategy,
-		})
+	)
 }

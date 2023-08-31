@@ -1,5 +1,8 @@
 {
   "macOS": "macOS",
   "linux": "Linux",
-  "windows": "Windows"
+  "windows": "Windows",
+  "index": {
+    "display": "hidden"
+  }
 }

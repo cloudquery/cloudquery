@@ -12,12 +12,12 @@ This table depends on [gandi_domains](gandi_domains).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|fqdn (PK)|String|
-|current|String|
-|nameservers|StringArray|
-|dnssec_available|Bool|
-|livednssec_available|Bool|
+|_cq_source_name|`utf8`|
+|_cq_sync_time|`timestamp[us, tz=UTC]`|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|fqdn (PK)|`utf8`|
+|current|`utf8`|
+|nameservers|`list<item: utf8, nullable>`|
+|dnssec_available|`bool`|
+|livednssec_available|`bool`|

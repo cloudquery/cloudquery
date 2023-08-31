@@ -5,17 +5,18 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v2"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func expressRouteCircuitPeerings() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_network_express_route_circuit_peerings",
-		Resolver:    fetchExpressRouteCircuitPeerings,
-		Description: "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-circuit-peerings/list?tabs=HTTP#expressroutecircuitpeering",
-		Transform:   transformers.TransformWithStruct(&armnetwork.ExpressRouteCircuitPeering{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_network_express_route_circuit_peerings",
+		Resolver:             fetchExpressRouteCircuitPeerings,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-circuit-peerings/list?tabs=HTTP#expressroutecircuitpeering",
+		Transform:            transformers.TransformWithStruct(&armnetwork.ExpressRouteCircuitPeering{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

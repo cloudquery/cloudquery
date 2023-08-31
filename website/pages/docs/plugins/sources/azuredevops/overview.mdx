@@ -1,6 +1,10 @@
 ---
 name: Azure DevOps
+stage: GA
+title: Azure DevOps Source Plugin
+description: CloudQuery Azure DevOps Plugin documentation
 ---
+
 # Azure DevOps Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -28,10 +32,14 @@ For more information on downloading, installing and running the CloudQuery CLI, 
 
 This is the (nested) spec used by the Azure DevOps source plugin.
 
-- `personal_access_token` (string, required):
-   
+- `concurrency` (`int`) (default: `10000`):
+
+  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
+
+- `personal_access_token` (`string`, required):
+
   An API token to access Azure DevOps resources. This can be obtained by [creating an API token](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows#create-a-pat). It's recommended to allow only read access to the resources you need to sync.
 
-- `organization_url` ([]string, required):
+- `organization_url` (`[]string`, required):
 
   The Azure DevOps organization URL. Should be in the format `https://dev.azure.com/{organization}`.

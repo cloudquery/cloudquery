@@ -7,17 +7,16 @@ import (
 	types "github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildSageMakerApps(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockSagemakerClient(ctrl)
 
 	appDets := types.AppDetails{}
-	if err := faker.FakeObject(&appDets); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&appDets))
 
 	m.EXPECT().ListApps(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&sagemaker.ListAppsOutput{Apps: []types.AppDetails{appDets}},
@@ -25,9 +24,7 @@ func buildSageMakerApps(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	app := sagemaker.DescribeAppOutput{}
-	if err := faker.FakeObject(&app); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&app))
 
 	m.EXPECT().DescribeApp(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&app,
@@ -35,9 +32,8 @@ func buildSageMakerApps(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var tagsOut sagemaker.ListTagsOutput
-	if err := faker.FakeObject(&tagsOut); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tagsOut))
+
 	m.EXPECT().ListTags(gomock.Any(), &sagemaker.ListTagsInput{ResourceArn: app.AppArn}, gomock.Any()).Return(
 		&tagsOut, nil,
 	)

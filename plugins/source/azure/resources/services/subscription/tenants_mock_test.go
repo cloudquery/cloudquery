@@ -5,15 +5,14 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/gorilla/mux"
 )
 
 func createTenants(router *mux.Router) error {
-	var item armsubscription.TenantsClientListResponse
+	var item armsubscriptions.TenantsClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}

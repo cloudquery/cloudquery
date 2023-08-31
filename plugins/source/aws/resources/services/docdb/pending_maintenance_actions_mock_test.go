@@ -6,8 +6,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildPendingMaintenanceActionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -16,9 +17,8 @@ func buildPendingMaintenanceActionsMock(t *testing.T, ctrl *gomock.Controller) c
 		Docdb: m,
 	}
 	var ev docdb.DescribePendingMaintenanceActionsOutput
-	if err := faker.FakeObject(&ev); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ev))
+
 	ev.Marker = nil
 	m.EXPECT().DescribePendingMaintenanceActions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ev,

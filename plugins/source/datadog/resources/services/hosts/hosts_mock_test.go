@@ -6,7 +6,7 @@ import (
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV1"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -21,6 +21,9 @@ func buildHostsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogService
 	if err != nil {
 		t.Fatal(err)
 	}
+	i64val := int64(123)
+	h.HostList[0].MuteTimeout.Set(&i64val)
+
 	m.EXPECT().ListHosts(gomock.Any()).Return(h, nil, nil)
 
 	return services

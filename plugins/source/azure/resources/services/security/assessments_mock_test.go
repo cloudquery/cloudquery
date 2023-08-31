@@ -3,13 +3,12 @@ package security
 import (
 	"encoding/json"
 	"net/http"
-
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/gorilla/mux"
 )
 
@@ -34,7 +33,7 @@ func createAssessments(router *mux.Router) error {
 		}
 	})
 
-	return nil
+	return createSubAssessments(router)
 }
 
 func TestAssessments(t *testing.T) {

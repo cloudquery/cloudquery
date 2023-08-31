@@ -8,8 +8,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildSSMDocuments(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -26,9 +27,8 @@ func buildSSMDocuments(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var d types.DocumentDescription
-	if err := faker.FakeObject(&d); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&d))
+
 	d.Name = &docName
 	mock.EXPECT().DescribeDocument(
 		gomock.Any(),
@@ -55,9 +55,8 @@ func buildSSMDocuments(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var v types.DocumentVersionInfo
-	if err := faker.FakeObject(&v); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&v))
+
 	v.Name = &docName
 	mock.EXPECT().ListDocumentVersions(
 		gomock.Any(),

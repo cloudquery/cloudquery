@@ -2,7 +2,7 @@
 
 This table shows data for AWS Service Catalog Portfolios.
 
-https://docs.aws.amazon.com/servicecatalog/latest/dg/API_PortfolioDetail.html
+https://docs.aws.amazon.com/servicecatalog/latest/dg/API_DescribePortfolio.html
 
 The primary key for this table is **arn**.
 
@@ -10,15 +10,12 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|arn (PK)|String|
-|tags|JSON|
-|created_time|Timestamp|
-|description|String|
-|display_name|String|
-|id|String|
-|provider_name|String|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|budgets|`json`|
+|portfolio_detail|`json`|
+|tag_options|`json`|

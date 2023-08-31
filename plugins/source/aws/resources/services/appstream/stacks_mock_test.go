@@ -7,27 +7,21 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/appstream/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildAppstreamStacksMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockAppstreamClient(ctrl)
 	stack := types.Stack{}
-	err := faker.FakeObject(&stack)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&stack))
 
 	stackEntitlements := types.Entitlement{}
-	if faker.FakeObject(&stackEntitlements) != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&stackEntitlements))
 
 	stackUserAssociations := types.UserStackAssociation{}
-	if faker.FakeObject(&stackUserAssociations) != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&stackUserAssociations))
 
 	m.EXPECT().DescribeStacks(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&appstream.DescribeStacksOutput{

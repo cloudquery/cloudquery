@@ -7,8 +7,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/computeoptimizer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildEbsVolumeRecommendations(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -17,10 +18,7 @@ func buildEbsVolumeRecommendations(t *testing.T, ctrl *gomock.Controller) client
 		Computeoptimizer: m,
 	}
 	item := types.VolumeRecommendation{}
-	err := faker.FakeObject(&item)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&item))
 
 	m.EXPECT().GetEBSVolumeRecommendations(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&computeoptimizer.GetEBSVolumeRecommendationsOutput{

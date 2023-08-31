@@ -6,18 +6,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armlinks"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Links() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_resources_links",
-		Resolver:    fetchLinks,
-		Description: "https://learn.microsoft.com/en-us/rest/api/resources/resource-links/list-at-subscription#resourcelink",
-		Multiplex:   client.SubscriptionMultiplex,
-		Transform:   transformers.TransformWithStruct(&armlinks.ResourceLink{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_resources_links",
+		Resolver:             fetchLinks,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/resources/resource-links/list-at-subscription#resourcelink",
+		Multiplex:            client.SubscriptionMultiplex,
+		Transform:            transformers.TransformWithStruct(&armlinks.ResourceLink{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

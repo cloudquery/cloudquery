@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func SqlManagedInstances() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_azurearcdata_sql_managed_instances",
-		Resolver:    fetchSqlManagedInstances,
-		Description: "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata@v0.5.0#SQLManagedInstance",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_azurearcdata_sql_managed_instances", client.Namespacemicrosoft_azurearcdata),
-		Transform:   transformers.TransformWithStruct(&armazurearcdata.SQLManagedInstance{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_azurearcdata_sql_managed_instances",
+		Resolver:             fetchSqlManagedInstances,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata@v0.5.0#SQLManagedInstance",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_azurearcdata_sql_managed_instances", client.Namespacemicrosoft_azurearcdata),
+		Transform:            transformers.TransformWithStruct(&armazurearcdata.SQLManagedInstance{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

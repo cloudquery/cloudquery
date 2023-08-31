@@ -37,6 +37,16 @@ func (m *MockDirectconnectClient) EXPECT() *MockDirectconnectClientMockRecorder 
 
 // DescribeConnectionLoa mocks base method.
 func (m *MockDirectconnectClient) DescribeConnectionLoa(arg0 context.Context, arg1 *directconnect.DescribeConnectionLoaInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeConnectionLoaOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &directconnect.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConnectionLoa")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -57,6 +67,16 @@ func (mr *MockDirectconnectClientMockRecorder) DescribeConnectionLoa(arg0, arg1 
 
 // DescribeConnections mocks base method.
 func (m *MockDirectconnectClient) DescribeConnections(arg0 context.Context, arg1 *directconnect.DescribeConnectionsInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeConnectionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &directconnect.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConnections")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -77,6 +97,16 @@ func (mr *MockDirectconnectClientMockRecorder) DescribeConnections(arg0, arg1 in
 
 // DescribeConnectionsOnInterconnect mocks base method.
 func (m *MockDirectconnectClient) DescribeConnectionsOnInterconnect(arg0 context.Context, arg1 *directconnect.DescribeConnectionsOnInterconnectInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeConnectionsOnInterconnectOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &directconnect.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeConnectionsOnInterconnect")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -97,6 +127,16 @@ func (mr *MockDirectconnectClientMockRecorder) DescribeConnectionsOnInterconnect
 
 // DescribeCustomerMetadata mocks base method.
 func (m *MockDirectconnectClient) DescribeCustomerMetadata(arg0 context.Context, arg1 *directconnect.DescribeCustomerMetadataInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeCustomerMetadataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &directconnect.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCustomerMetadata")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -117,6 +157,16 @@ func (mr *MockDirectconnectClientMockRecorder) DescribeCustomerMetadata(arg0, ar
 
 // DescribeDirectConnectGatewayAssociationProposals mocks base method.
 func (m *MockDirectconnectClient) DescribeDirectConnectGatewayAssociationProposals(arg0 context.Context, arg1 *directconnect.DescribeDirectConnectGatewayAssociationProposalsInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeDirectConnectGatewayAssociationProposalsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &directconnect.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDirectConnectGatewayAssociationProposals")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -137,6 +187,16 @@ func (mr *MockDirectconnectClientMockRecorder) DescribeDirectConnectGatewayAssoc
 
 // DescribeDirectConnectGatewayAssociations mocks base method.
 func (m *MockDirectconnectClient) DescribeDirectConnectGatewayAssociations(arg0 context.Context, arg1 *directconnect.DescribeDirectConnectGatewayAssociationsInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeDirectConnectGatewayAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &directconnect.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDirectConnectGatewayAssociations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -157,6 +217,16 @@ func (mr *MockDirectconnectClientMockRecorder) DescribeDirectConnectGatewayAssoc
 
 // DescribeDirectConnectGatewayAttachments mocks base method.
 func (m *MockDirectconnectClient) DescribeDirectConnectGatewayAttachments(arg0 context.Context, arg1 *directconnect.DescribeDirectConnectGatewayAttachmentsInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeDirectConnectGatewayAttachmentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &directconnect.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDirectConnectGatewayAttachments")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -177,6 +247,16 @@ func (mr *MockDirectconnectClientMockRecorder) DescribeDirectConnectGatewayAttac
 
 // DescribeDirectConnectGateways mocks base method.
 func (m *MockDirectconnectClient) DescribeDirectConnectGateways(arg0 context.Context, arg1 *directconnect.DescribeDirectConnectGatewaysInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeDirectConnectGatewaysOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &directconnect.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDirectConnectGateways")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -197,6 +277,16 @@ func (mr *MockDirectconnectClientMockRecorder) DescribeDirectConnectGateways(arg
 
 // DescribeHostedConnections mocks base method.
 func (m *MockDirectconnectClient) DescribeHostedConnections(arg0 context.Context, arg1 *directconnect.DescribeHostedConnectionsInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeHostedConnectionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &directconnect.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeHostedConnections")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -217,6 +307,16 @@ func (mr *MockDirectconnectClientMockRecorder) DescribeHostedConnections(arg0, a
 
 // DescribeInterconnectLoa mocks base method.
 func (m *MockDirectconnectClient) DescribeInterconnectLoa(arg0 context.Context, arg1 *directconnect.DescribeInterconnectLoaInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeInterconnectLoaOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &directconnect.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInterconnectLoa")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -237,6 +337,16 @@ func (mr *MockDirectconnectClientMockRecorder) DescribeInterconnectLoa(arg0, arg
 
 // DescribeInterconnects mocks base method.
 func (m *MockDirectconnectClient) DescribeInterconnects(arg0 context.Context, arg1 *directconnect.DescribeInterconnectsInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeInterconnectsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &directconnect.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInterconnects")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -257,6 +367,16 @@ func (mr *MockDirectconnectClientMockRecorder) DescribeInterconnects(arg0, arg1 
 
 // DescribeLags mocks base method.
 func (m *MockDirectconnectClient) DescribeLags(arg0 context.Context, arg1 *directconnect.DescribeLagsInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeLagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &directconnect.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -277,6 +397,16 @@ func (mr *MockDirectconnectClientMockRecorder) DescribeLags(arg0, arg1 interface
 
 // DescribeLoa mocks base method.
 func (m *MockDirectconnectClient) DescribeLoa(arg0 context.Context, arg1 *directconnect.DescribeLoaInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeLoaOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &directconnect.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLoa")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -297,6 +427,16 @@ func (mr *MockDirectconnectClientMockRecorder) DescribeLoa(arg0, arg1 interface{
 
 // DescribeLocations mocks base method.
 func (m *MockDirectconnectClient) DescribeLocations(arg0 context.Context, arg1 *directconnect.DescribeLocationsInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeLocationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &directconnect.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeLocations")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -317,6 +457,16 @@ func (mr *MockDirectconnectClientMockRecorder) DescribeLocations(arg0, arg1 inte
 
 // DescribeRouterConfiguration mocks base method.
 func (m *MockDirectconnectClient) DescribeRouterConfiguration(arg0 context.Context, arg1 *directconnect.DescribeRouterConfigurationInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeRouterConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &directconnect.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRouterConfiguration")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -337,6 +487,16 @@ func (mr *MockDirectconnectClientMockRecorder) DescribeRouterConfiguration(arg0,
 
 // DescribeTags mocks base method.
 func (m *MockDirectconnectClient) DescribeTags(arg0 context.Context, arg1 *directconnect.DescribeTagsInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeTagsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &directconnect.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTags")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -357,6 +517,16 @@ func (mr *MockDirectconnectClientMockRecorder) DescribeTags(arg0, arg1 interface
 
 // DescribeVirtualGateways mocks base method.
 func (m *MockDirectconnectClient) DescribeVirtualGateways(arg0 context.Context, arg1 *directconnect.DescribeVirtualGatewaysInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeVirtualGatewaysOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &directconnect.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVirtualGateways")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -377,6 +547,16 @@ func (mr *MockDirectconnectClientMockRecorder) DescribeVirtualGateways(arg0, arg
 
 // DescribeVirtualInterfaces mocks base method.
 func (m *MockDirectconnectClient) DescribeVirtualInterfaces(arg0 context.Context, arg1 *directconnect.DescribeVirtualInterfacesInput, arg2 ...func(*directconnect.Options)) (*directconnect.DescribeVirtualInterfacesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &directconnect.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeVirtualInterfaces")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
@@ -397,6 +577,16 @@ func (mr *MockDirectconnectClientMockRecorder) DescribeVirtualInterfaces(arg0, a
 
 // ListVirtualInterfaceTestHistory mocks base method.
 func (m *MockDirectconnectClient) ListVirtualInterfaceTestHistory(arg0 context.Context, arg1 *directconnect.ListVirtualInterfaceTestHistoryInput, arg2 ...func(*directconnect.Options)) (*directconnect.ListVirtualInterfaceTestHistoryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &directconnect.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListVirtualInterfaceTestHistory")
+	}
+
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {

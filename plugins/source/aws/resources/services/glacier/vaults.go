@@ -3,11 +3,14 @@ package glacier
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/glacier"
 	"github.com/aws/aws-sdk-go-v2/service/glacier/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Vaults() *schema.Table {
@@ -23,16 +26,14 @@ func Vaults() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveGlacierVaultTags,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("VaultARN"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("VaultARN"),
+				PrimaryKey: true,
 			},
 		},
 
@@ -45,11 +46,13 @@ func Vaults() *schema.Table {
 }
 
 func fetchGlacierVaults(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Glacier
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceGlacier).Glacier
 	paginator := glacier.NewListVaultsPaginator(svc, &glacier.ListVaultsInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *glacier.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -60,10 +63,12 @@ func fetchGlacierVaults(ctx context.Context, meta schema.ClientMeta, parent *sch
 
 func resolveGlacierVaultTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Glacier
+	svc := cl.Services(client.AWSServiceGlacier).Glacier
 	it := resource.Item.(types.DescribeVaultOutput)
 	out, err := svc.ListTagsForVault(ctx, &glacier.ListTagsForVaultInput{
 		VaultName: it.VaultName,
+	}, func(options *glacier.Options) {
+		options.Region = cl.Region
 	})
 	if err != nil {
 		return err

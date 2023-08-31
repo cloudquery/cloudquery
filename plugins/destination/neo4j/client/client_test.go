@@ -1,20 +1,16 @@
 package client
 
 import (
+	"context"
+	"encoding/json"
 	"os"
 	"testing"
+	"time"
 
-	"github.com/cloudquery/plugin-sdk/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/stretchr/testify/require"
 )
-
-var migrateStrategy = destination.MigrateStrategy{
-	AddColumn:           specs.MigrateModeSafe,
-	AddColumnNotNull:    specs.MigrateModeForced,
-	RemoveColumn:        specs.MigrateModeSafe,
-	RemoveColumnNotNull: specs.MigrateModeForced,
-	ChangeColumn:        specs.MigrateModeForced,
-}
 
 const (
 	defaultConnectionString = "bolt://localhost:7687"
@@ -31,22 +27,34 @@ func getenv(key, fallback string) string {
 }
 
 func TestPlugin(t *testing.T) {
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin("neo4j", "development", New, destination.WithManagedWriter())
-		},
-		specs.Destination{
-			Spec: &Spec{
-				Username:         getenv("CQ_DEST_NEO4J_USERNAME", defaultUsername),
-				Password:         getenv("CQ_DEST_NEO4J_PASSWORD", defaultPassword),
-				ConnectionString: getenv("CQ_DEST_NEO4J_CONNECTION_STRING", defaultConnectionString),
+	ctx := context.Background()
+	p := plugin.NewPlugin("neo4j", "development", New)
+	s := &Spec{
+		Username:         getenv("CQ_DEST_NEO4J_USERNAME", defaultUsername),
+		Password:         getenv("CQ_DEST_NEO4J_PASSWORD", defaultPassword),
+		ConnectionString: getenv("CQ_DEST_NEO4J_CONNECTION_STRING", defaultConnectionString),
+	}
+	s.SetDefaults()
+	require.NoError(t, s.Validate())
+	b, err := json.Marshal(s)
+	require.NoError(t, err)
+
+	err = p.Init(ctx, b, plugin.NewClientOptions{})
+	require.NoError(t, err)
+
+	plugin.TestWriterSuiteRunner(t,
+		p,
+		plugin.WriterTestSuiteTests{
+			SkipMigrate: true,
+			SafeMigrations: plugin.SafeMigrations{
+				AddColumn:    true,
+				RemoveColumn: true,
 			},
 		},
-		destination.PluginTestSuiteTests{
-			SkipMigrateOverwriteForce: true,
-			SkipMigrateAppendForce:    true,
-
-			MigrateStrategyOverwrite: migrateStrategy,
-			MigrateStrategyAppend:    migrateStrategy,
-		})
+		plugin.WithTestIgnoreNullsInLists(),
+		plugin.WithTestDataOptions(schema.TestSourceOptions{
+			TimePrecision: time.Microsecond,
+			SkipLists:     true,
+		}),
+	)
 }

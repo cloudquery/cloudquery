@@ -3,11 +3,14 @@ package ec2
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func ManagedPrefixLists() *schema.Table {
@@ -21,37 +24,39 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 		Transform: transformers.TransformWithStruct(&types.ManagedPrefixList{}),
 		Columns: []schema.Column{
 			{
-				Name:            "request_account_id",
-				Type:            schema.TypeString,
-				Resolver:        client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+				Name:       "request_account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSAccount,
+				PrimaryKey: true,
 			},
 			{
-				Name:            "request_region",
-				Type:            schema.TypeString,
-				Resolver:        client.ResolveAWSRegion,
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+				Name:       "request_region",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSRegion,
+				PrimaryKey: true,
 			},
 			{
-				Name:            "arn",
-				Type:            schema.TypeString,
-				Resolver:        schema.PathResolver("PrefixListArn"),
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("PrefixListArn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: client.ResolveTags,
 			},
 		},
 	}
 }
 func fetchEc2ManagedPrefixLists(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Ec2
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceEc2).Ec2
 	paginator := ec2.NewDescribeManagedPrefixListsPaginator(svc, &ec2.DescribeManagedPrefixListsInput{})
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(options *ec2.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

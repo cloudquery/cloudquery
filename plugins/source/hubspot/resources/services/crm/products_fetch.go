@@ -6,7 +6,7 @@ import (
 	"github.com/clarkmcc/go-hubspot"
 	"github.com/clarkmcc/go-hubspot/generated/v3/products"
 	"github.com/cloudquery/cloudquery/plugins/source/hubspot/client"
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func fetchProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
@@ -19,7 +19,11 @@ func fetchProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 			return nil
 		}
 
-		req := hubspotClient.BasicApi.GetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).Limit(client.DefaultPageSize)
+		req := hubspotClient.BasicApi.
+			GetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).
+			Properties(cqClient.Spec.TableOptions.ForTable("hubspot_crm_products").GetProperties()).
+			Associations(cqClient.Spec.TableOptions.ForTable("hubspot_crm_products").GetAssociations()).
+			Limit(client.DefaultPageSize)
 
 		if len(after) > 0 {
 			req = req.After(after)

@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
-	"github.com/google/go-github/v48/github"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	"github.com/google/go-github/v49/github"
 )
 
 func Groups() *schema.Table {
@@ -28,10 +28,11 @@ func fetchGroups(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 			return err
 		}
 		res <- groups.Groups
-		opts.Page = resp.NextPage
-		if opts.Page == resp.LastPage {
+
+		if resp.NextPage == 0 {
 			break
 		}
+		opts.Page = resp.NextPage
 	}
 	return nil
 }

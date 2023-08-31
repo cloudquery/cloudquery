@@ -7,17 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildInventorySchemas(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockSsmClient(ctrl)
 
 	var i types.InventoryItemSchema
-	if err := faker.FakeObject(&i); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&i))
+
 	mock.EXPECT().GetInventorySchema(
 		gomock.Any(),
 		gomock.Any(),

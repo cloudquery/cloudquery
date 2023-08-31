@@ -4,8 +4,10 @@ import (
 	"embed"
 	"fmt"
 	"go/format"
+	"io/fs"
 	"os"
 	"path"
+	"path/filepath"
 	"strings"
 	"text/template"
 
@@ -33,21 +35,6 @@ func newCmdScaffoldSource() *cobra.Command {
 	return cmd
 }
 
-var scaffoldTemplates = map[string]string{
-	"release.yaml.tpl":     ".github/workflows/release.yaml",
-	"test.yaml.tpl":        ".github/workflows/test.yaml",
-	".goreleaser.yaml.tpl": ".goreleaser.yaml",
-	"go.mod.tpl":           "go.mod",
-	"main.go.tpl":          "main.go",
-	"Makefile.tpl":         "Makefile",
-	"README.md.tpl":        "README.md",
-	"client.go.tpl":        "client/client.go",
-	"spec.go.tpl":          "client/spec.go",
-	"plugin.go.tpl":        "plugin/plugin.go",
-	"table.go.tpl":         "resources/table.go",
-	".gitignore.tpl":       ".gitignore",
-}
-
 //go:embed templates/source/*
 var sourceFS embed.FS
 
@@ -57,44 +44,47 @@ type scaffoldData struct {
 }
 
 func runScaffoldSource(org string, name string, outputDir string) error {
-	tpl, err := template.New("source").ParseFS(sourceFS,
-		"templates/source/.github/workflows/*.tpl",
-		"templates/source/*.tpl",
-		"templates/source/plugin/*.tpl",
-		"templates/source/client/*.tpl",
-		"templates/source/resources/*.tpl",
-	)
-	if err != nil {
-		return fmt.Errorf("failed to parse templates: %w", err)
-	}
-
 	data := scaffoldData{
 		Org:  org,
 		Name: name,
 	}
-	for templatePath, filePath := range scaffoldTemplates {
-		var sb strings.Builder
-		if err := tpl.ExecuteTemplate(&sb, templatePath, data); err != nil {
-			return fmt.Errorf("failed to execute template: %w", err)
+
+	return fs.WalkDir(sourceFS, "templates/source", func(templatePath string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return fmt.Errorf("failed to walk directory: %w", err)
 		}
-		content := []byte(sb.String())
-		fullPath := outputDir + "/" + filePath
-		baseDir := path.Dir(fullPath)
-		if err := os.MkdirAll(baseDir, 0755); err != nil {
-			return fmt.Errorf("failed to create directory %s: %w", baseDir, err)
+		if d.IsDir() {
+			return nil
 		}
-		if strings.HasSuffix(filePath, ".go") {
-			formattedContent, err := format.Source(content)
+		if strings.HasSuffix(templatePath, ".tpl") {
+			tpl, err := template.New(filepath.Base(templatePath)).ParseFS(sourceFS, templatePath)
 			if err != nil {
-				// we still write the file even if it's not formatted for easy debugging
-				_ = os.WriteFile(outputDir+"/"+filePath, content, 0644)
-				return fmt.Errorf("failed to format source %s: %w", filePath, err)
+				return fmt.Errorf("failed to parse template %s: %w", templatePath, err)
 			}
-			content = formattedContent
+			outputPath := strings.TrimSuffix(strings.TrimPrefix(templatePath, "templates/source"), ".tpl")
+			var sb strings.Builder
+			if err := tpl.Execute(&sb, data); err != nil {
+				return fmt.Errorf("failed to execute template: %w", err)
+			}
+			content := []byte(sb.String())
+			fullPath := outputDir + "/" + outputPath
+			baseDir := path.Dir(fullPath)
+			if err := os.MkdirAll(baseDir, 0755); err != nil {
+				return fmt.Errorf("failed to create directory %s: %w", baseDir, err)
+			}
+			if strings.HasSuffix(outputPath, ".go") {
+				formattedContent, err := format.Source(content)
+				if err != nil {
+					// we still write the file even if it's not formatted for easy debugging
+					_ = os.WriteFile(outputDir+"/"+outputPath, content, 0644)
+					return fmt.Errorf("failed to format source %s: %w", outputPath, err)
+				}
+				content = formattedContent
+			}
+			if err := os.WriteFile(outputDir+"/"+outputPath, content, 0644); err != nil {
+				return fmt.Errorf("failed to write file: %w", err)
+			}
 		}
-		if err := os.WriteFile(outputDir+"/"+filePath, content, 0644); err != nil {
-			return fmt.Errorf("failed to write file: %w", err)
-		}
-	}
-	return nil
+		return nil
+	})
 }

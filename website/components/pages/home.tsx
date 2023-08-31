@@ -1,11 +1,10 @@
-import { DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 import copy from "copy-to-clipboard";
 import Head from "next/head";
 import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
 import { Container } from "../Container";
 import Features from "../Features";
-import { Sources } from "../Sources";
+import { Plugins } from "../Plugins";
 import { LogosBlock } from "../clients/LogosBlock";
 import { QueriesExamples } from "../QueriesExamples";
 import React from "react";
@@ -73,18 +72,18 @@ export default function Home() {
               href="/docs/quickstart"
               className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white no-underline bg-black border border-transparent rounded-md dark:bg-white dark:text-black betterhover:dark:hover:bg-gray-300 betterhover:hover:bg-gray-700 md:py-3 md:text-lg md:px-10 md:leading-6">
               
-                Get Started →
-              
+                Download CLI Now →
+
             </Link>
           </div>
-          <div className="relative rounded-md fix-width-auto xl:w-auto">
-            <button
-              onClick={() => onClick('brew install cloudquery/tap/cloudquery')}
-              className="flex items-center justify-center w-full px-8 py-3 font-mono text-sm font-medium text-gray-600 bg-black border border-transparent border-gray-200 rounded-md bg-opacity-5 dark:bg-white dark:text-gray-300 dark:border-gray-700 dark:bg-opacity-5 betterhover:hover:bg-gray-50 betterhover:dark:hover:bg-gray-900 md:py-3 md:text-base md:leading-6 md:px-10"
-            >
-              brew install cloudquery/tap/cloudquery
-              <DocumentDuplicateIcon className="w-6 h-6 ml-2 -mr-3 text-gray-400" />
-            </button>
+          <div className="rounded-md fix-width-auto xl:w-auto">
+            <Link
+              href="/register_for_cloud"
+              className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white no-underline bg-black border border-transparent rounded-md dark:bg-green-400 dark:text-black betterhover:dark:hover:bg-green-500 betterhover:hover:bg-gray-700 md:py-3 md:text-lg md:px-10 md:leading-6">
+              
+                Register for CloudQuery Cloud →
+
+            </Link>
           </div>
         </div>
       </div>
@@ -145,9 +144,9 @@ export default function Home() {
           Integrations
         </h2>
         <p className="mx-auto mt-4 font-medium text-lg text-gray-400 lg:max-w-3xl lg:nx-text-xl text-center">
-          Export data from a growing list of <a className="dark:text-white" href="/docs/plugins/sources/overview">30+ cloud providers, databases and SaaS apps</a> with more than 1,000 unique tables. Sync to your <a href="/docs/plugins/destinations/overview" className="dark:text-white">favorite database, data warehouse or data lake</a>.
+          Export data from an ever-growing list of <a className="dark:text-white" href="/docs/plugins/sources/overview">cloud providers, databases and SaaS apps</a> with more than 1,000 unique tables. Sync to your <a href="/docs/plugins/destinations/overview" className="dark:text-white">favorite database, data warehouse or data lake</a>.
         </p>
-        <Sources />
+        <Plugins />
       </div>
       <Container>
         <div className="px-4 py-16 mx-auto mt-10 sm:max-w-none sm:flex sm:justify-center">
@@ -163,7 +162,7 @@ export default function Home() {
         </div>
       </Container>
       <p className="mx-auto mt-24 font-medium text-lg text-gray-400 lg:max-w-3xl lg:nx-text-xl text-center">
-        Couldn't find the source you were looking for? <a href="/new-source-plugin" className="text-blue-500 hover:text-blue-600">Request a New Source Plugin</a>
+        Couldn't find the plugin you were looking for? <a href="https://github.com/cloudquery/cloudquery/issues/new/choose" className="text-blue-500 hover:text-blue-600">Request a New Source Plugin</a>
       </p>
     </div>
     <Toaster position="bottom-right" />

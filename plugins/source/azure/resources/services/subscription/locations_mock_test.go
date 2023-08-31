@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/gorilla/mux"
 )
 
 func createLocations(router *mux.Router) error {
-	var item armsubscription.SubscriptionsClientListLocationsResponse
+	var item armsubscriptions.ClientListLocationsResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}

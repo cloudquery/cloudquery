@@ -3,49 +3,53 @@ package servicecatalog
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog"
 	"github.com/aws/aws-sdk-go-v2/service/servicecatalog/types"
-	"github.com/aws/aws-sdk-go-v2/service/servicecatalogappregistry"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Products() *schema.Table {
 	tableName := "aws_servicecatalog_products"
 	return &schema.Table{
-		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/servicecatalog/latest/dg/API_ProductViewDetail.html`,
-		Resolver:    fetchServicecatalogProducts,
-		Transform:   transformers.TransformWithStruct(&types.ProductViewDetail{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "servicecatalog"),
+		Name:                tableName,
+		Description:         `https://docs.aws.amazon.com/servicecatalog/latest/dg/API_DescribeProductAsAdmin.html`,
+		Resolver:            fetchServicecatalogProducts,
+		PreResourceResolver: getServicecatalogProduct,
+		Transform:           transformers.TransformWithStruct(&servicecatalog.DescribeProductAsAdminOutput{}, transformers.WithSkipFields("ResultMetadata")),
+		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "servicecatalog"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProductARN"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ProductViewDetail.ProductARN"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveProductTags,
+				Type:     sdkTypes.ExtensionTypes.JSON,
+				Resolver: client.ResolveTags,
 			},
 		},
 	}
 }
 
 func fetchServicecatalogProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Servicecatalog
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceServicecatalog).Servicecatalog
 
 	listInput := new(servicecatalog.SearchProductsAsAdminInput)
 	paginator := servicecatalog.NewSearchProductsAsAdminPaginator(svc, listInput)
 	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
+		page, err := paginator.NextPage(ctx, func(o *servicecatalog.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -55,13 +59,14 @@ func fetchServicecatalogProducts(ctx context.Context, meta schema.ClientMeta, pa
 	return nil
 }
 
-func resolveProductTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p := resource.Item.(types.ProductViewDetail)
-
+func getServicecatalogProduct(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Servicecatalogappregistry
-	response, err := svc.ListTagsForResource(ctx, &servicecatalogappregistry.ListTagsForResourceInput{
-		ResourceArn: p.ProductARN,
+	svc := cl.Services(client.AWSServiceServicecatalog).Servicecatalog
+
+	response, err := svc.DescribeProductAsAdmin(ctx, &servicecatalog.DescribeProductAsAdminInput{
+		Id: resource.Item.(types.ProductViewDetail).ProductViewSummary.ProductId,
+	}, func(o *servicecatalog.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {
@@ -69,5 +74,6 @@ func resolveProductTags(ctx context.Context, meta schema.ClientMeta, resource *s
 		}
 		return err
 	}
-	return resource.Set(c.Name, response.Tags)
+	resource.Item = response
+	return nil
 }

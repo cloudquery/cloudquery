@@ -5,19 +5,20 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Keyvault() *schema.Table {
 	return &schema.Table{
-		Name:                "azure_keyvault_keyvault",
-		PreResourceResolver: keyvaultGet,
-		Resolver:            fetchKeyvault,
-		Description:         "https://learn.microsoft.com/en-us/rest/api/keyvault/keyvault/vaults/get?tabs=HTTP#vault",
-		Multiplex:           client.SubscriptionMultiplex,
-		Transform:           transformers.TransformWithStruct(&armkeyvault.Vault{}, transformers.WithPrimaryKeys("ID")),
-		Columns:             schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_keyvault_keyvault",
+		PreResourceResolver:  keyvaultGet,
+		Resolver:             fetchKeyvault,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/keyvault/keyvault/vaults/get?tabs=HTTP#vault",
+		Multiplex:            client.SubscriptionMultiplex,
+		Transform:            transformers.TransformWithStruct(&armkeyvault.Vault{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 
 		Relations: []*schema.Table{
 			keyvault_keys(),

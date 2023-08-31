@@ -7,17 +7,16 @@ import (
 	types "github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildSageMakerTrainingJobs(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockSagemakerClient(ctrl)
 
 	summ := types.TrainingJobSummary{}
-	if err := faker.FakeObject(&summ); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&summ))
 
 	m.EXPECT().ListTrainingJobs(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&sagemaker.ListTrainingJobsOutput{TrainingJobSummaries: []types.TrainingJobSummary{summ}},
@@ -25,9 +24,7 @@ func buildSageMakerTrainingJobs(t *testing.T, ctrl *gomock.Controller) client.Se
 	)
 
 	note := sagemaker.DescribeTrainingJobOutput{}
-	if err := faker.FakeObject(&note); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&note))
 
 	m.EXPECT().DescribeTrainingJob(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&note,
@@ -35,9 +32,8 @@ func buildSageMakerTrainingJobs(t *testing.T, ctrl *gomock.Controller) client.Se
 	)
 
 	var tagsOut sagemaker.ListTagsOutput
-	if err := faker.FakeObject(&tagsOut); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tagsOut))
+
 	tagsOut.NextToken = nil
 	m.EXPECT().ListTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&tagsOut, nil,

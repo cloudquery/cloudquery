@@ -7,8 +7,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/autoscalingplans/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildPlans(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -17,18 +18,14 @@ func buildPlans(t *testing.T, ctrl *gomock.Controller) client.Services {
 		Autoscalingplans: m,
 	}
 	p := types.ScalingPlan{}
-	if err := faker.FakeObject(&p); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&p))
 
 	m.EXPECT().DescribeScalingPlans(gomock.Any(), gomock.Any(), gomock.Any()).Return(&autoscalingplans.DescribeScalingPlansOutput{
 		ScalingPlans: []types.ScalingPlan{p},
 	}, nil)
 
 	pr := types.ScalingPlanResource{}
-	if err := faker.FakeObject(&pr); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&pr))
 
 	m.EXPECT().DescribeScalingPlanResources(gomock.Any(), &autoscalingplans.DescribeScalingPlanResourcesInput{
 		ScalingPlanName: p.ScalingPlanName,

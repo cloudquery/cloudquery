@@ -6,27 +6,22 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildIotStreamsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIotClient(ctrl)
 
 	streams := iot.ListStreamsOutput{}
-	err := faker.FakeObject(&streams)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&streams))
 	streams.NextToken = nil
 	m.EXPECT().ListStreams(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&streams, nil)
 
 	streamOutput := iot.DescribeStreamOutput{}
-	err = faker.FakeObject(&streamOutput)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&streamOutput))
 	m.EXPECT().DescribeStream(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&streamOutput, nil)
 

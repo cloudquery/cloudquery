@@ -1,6 +1,10 @@
 ---
 name: Fastly
+stage: GA
+title: Fastly Source Plugin
+description: CloudQuery Fastly source plugin documentation
 ---
+
 # Fastly Source Plugin
 
 import { getLatestVersion } from "../../../../../utils/versions";
@@ -27,12 +31,15 @@ For more information on downloading, installing and running the CloudQuery CLI, 
 This is the (nested) spec used by the Fastly source plugin.
 
 - `fastly_api_key` (string, required):
-   
-  An API token to access Fastly resources. This can be obtained by [creating a Fastly API token](https://docs.fastly.com/en/guides/using-api-tokens). It should be a *User token* with the *Global:read* scope. Automation tokens do not allow the listing of service versions.
+
+  An API token to access Fastly resources. This can be obtained by [creating a Fastly API token](https://docs.fastly.com/en/guides/using-api-tokens). It should be a _User token_ with the _Global:read_ scope. Automation tokens do not allow the listing of service versions.
 
 - `services` ([]string, optional):
 
   A list of Fastly service IDs to sync. If not specified, all services will be used.
+
+- `concurrency` (int, optional, default: 10000):
+  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
 
 ## Example Queries
 
@@ -86,7 +93,7 @@ SELECT host,
        check_interval
 FROM   fastly_service_health_checks
 WHERE  service_id = '1234567890abcdefghijkl'
-ORDER  BY service_version DESC; 
+ORDER  BY service_version DESC;
 ```
 
 ```text copy
@@ -163,7 +170,7 @@ SELECT NAME,
        created_at,
        last_used_at,
        expires_at
-FROM   fastly_auth_tokens 
+FROM   fastly_auth_tokens
 ```
 
 ```text copy

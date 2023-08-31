@@ -3,12 +3,13 @@ package cloudfront
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func CachePolicies() *schema.Table {
@@ -23,16 +24,14 @@ func CachePolicies() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			{
 				Name:     "id",
-				Type:     schema.TypeString,
+				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.PathResolver("CachePolicy.Id"),
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveCachePolicyARN(),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   resolveCachePolicyARN(),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -40,11 +39,12 @@ func CachePolicies() *schema.Table {
 
 func fetchCloudfrontCachePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config cloudfront.ListCachePoliciesInput
-	c := meta.(*client.Client)
-	s := c.Services()
-	svc := s.Cloudfront
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceCloudfront).Cloudfront
 	for {
-		response, err := svc.ListCachePolicies(ctx, nil)
+		response, err := svc.ListCachePolicies(ctx, nil, func(options *cloudfront.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}

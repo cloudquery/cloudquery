@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/snyk/client"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
-	"github.com/cloudquery/plugin-sdk/v2/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/pavel-snyk/snyk-sdk-go/snyk"
 )
 
@@ -16,6 +16,10 @@ func Organizations() *schema.Table {
 		Resolver:    fetchOrganizations,
 		Multiplex:   client.SingleOrganization,
 		Transform:   transformers.TransformWithStruct(&snyk.Organization{}, transformers.WithPrimaryKeys("ID")),
+		Relations: []*schema.Table{
+			organizationMembers(),
+			pendingUserProvisions(),
+		},
 	}
 }
 

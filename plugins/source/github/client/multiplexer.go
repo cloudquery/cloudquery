@@ -1,7 +1,7 @@
 package client
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func OrgMultiplex(meta schema.ClientMeta) []schema.ClientMeta {

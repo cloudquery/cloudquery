@@ -4,12 +4,15 @@ import (
 	"context"
 	"net"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Ipsets() *schema.Table {
@@ -26,21 +29,19 @@ func Ipsets() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "addresses",
-				Type:     schema.TypeInetArray,
+				Type:     arrow.ListOf(sdkTypes.ExtensionTypes.Inet),
 				Resolver: resolveIpsetAddresses,
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveIpsetTags,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ARN"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ARN"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -48,14 +49,16 @@ func Ipsets() *schema.Table {
 
 func fetchWafv2Ipsets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Wafv2
+	svc := cl.Services(client.AWSServiceWafv2).Wafv2
 
 	params := wafv2.ListIPSetsInput{
 		Scope: cl.WAFScope,
 		Limit: aws.Int32(100), // maximum value: https://docs.aws.amazon.com/waf/latest/APIReference/API_ListIPSets.html
 	}
 	for {
-		result, err := svc.ListIPSets(ctx, &params)
+		result, err := svc.ListIPSets(ctx, &params, func(o *wafv2.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -71,13 +74,13 @@ func fetchWafv2Ipsets(ctx context.Context, meta schema.ClientMeta, parent *schem
 
 func getIpset(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Wafv2
+	svc := cl.Services(client.AWSServiceWafv2).Wafv2
 	s := resource.Item.(types.IPSetSummary)
 	input := &wafv2.GetIPSetInput{
 		Id: s.Id, Name: s.Name, Scope: cl.WAFScope,
 	}
-	info, err := svc.GetIPSet(ctx, input, func(options *wafv2.Options) {
-		options.Region = cl.Region
+	info, err := svc.GetIPSet(ctx, input, func(o *wafv2.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -102,14 +105,14 @@ func resolveIpsetAddresses(ctx context.Context, meta schema.ClientMeta, resource
 
 func resolveIpsetTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Wafv2
+	svc := cl.Services(client.AWSServiceWafv2).Wafv2
 	s := resource.Item.(*types.IPSet)
 	var tagList []types.Tag
 	params := wafv2.ListTagsForResourceInput{ResourceARN: s.ARN}
 
 	for {
-		result, err := svc.ListTagsForResource(ctx, &params, func(options *wafv2.Options) {
-			options.Region = cl.Region
+		result, err := svc.ListTagsForResource(ctx, &params, func(o *wafv2.Options) {
+			o.Region = cl.Region
 		})
 		if err != nil {
 			return err

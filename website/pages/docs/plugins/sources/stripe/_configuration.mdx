@@ -11,9 +11,11 @@ spec:
     - stripe_issuing*  # Needs sign-up at https://stripe.com/issuing
     - stripe_treasury* # Needs sign-up at https://stripe.com/treasury
     - stripe_sigma_scheduled_query_runs # Live keys only
-  backend: local
   # Stripe specific configuration
   spec:
+    backend_options:
+      table_name: "test_state_table"
+      connection: "@@plugins.DESTINATION_NAME.connection"
     api_key: "<YOUR_SECRET_API_KEY_HERE>"
 ```
 

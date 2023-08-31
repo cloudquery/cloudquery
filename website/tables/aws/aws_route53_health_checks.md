@@ -1,6 +1,6 @@
 # Table: aws_route53_health_checks
 
-This table shows data for Route53 Health Checks.
+This table shows data for Amazon Route 53 Health Checks.
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_HealthCheck.html
 
@@ -10,17 +10,15 @@ The primary key for this table is **arn**.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|String|
-|_cq_sync_time|Timestamp|
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
-|account_id|String|
-|arn (PK)|String|
-|tags|JSON|
-|cloud_watch_alarm_configuration_dimensions|JSON|
-|caller_reference|String|
-|health_check_config|JSON|
-|health_check_version|Int|
-|id|String|
-|cloud_watch_alarm_configuration|JSON|
-|linked_service|JSON|
+|_cq_id|`uuid`|
+|_cq_parent_id|`uuid`|
+|account_id|`utf8`|
+|arn (PK)|`utf8`|
+|tags|`json`|
+|cloud_watch_alarm_configuration_dimensions|`json`|
+|caller_reference|`utf8`|
+|health_check_config|`json`|
+|health_check_version|`int64`|
+|id|`utf8`|
+|cloud_watch_alarm_configuration|`json`|
+|linked_service|`json`|

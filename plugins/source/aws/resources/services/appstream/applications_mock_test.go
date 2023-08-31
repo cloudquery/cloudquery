@@ -7,22 +7,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/appstream/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildAppstreamApplicationsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockAppstreamClient(ctrl)
 	application := types.Application{}
-	err := faker.FakeObject(&application)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&application))
 
-	applicationFleetAssocition := types.ApplicationFleetAssociation{}
-	if faker.FakeObject(&applicationFleetAssocition) != nil {
-		t.Fatal(err)
-	}
+	applicationFleetAssociation := types.ApplicationFleetAssociation{}
+	require.NoError(t, faker.FakeObject(&applicationFleetAssociation))
 
 	m.EXPECT().DescribeApplications(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&appstream.DescribeApplicationsOutput{
@@ -31,7 +27,7 @@ func buildAppstreamApplicationsMock(t *testing.T, ctrl *gomock.Controller) clien
 
 	m.EXPECT().DescribeApplicationFleetAssociations(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&appstream.DescribeApplicationFleetAssociationsOutput{
-			ApplicationFleetAssociations: []types.ApplicationFleetAssociation{applicationFleetAssocition},
+			ApplicationFleetAssociations: []types.ApplicationFleetAssociation{applicationFleetAssociation},
 		}, nil)
 
 	return client.Services{

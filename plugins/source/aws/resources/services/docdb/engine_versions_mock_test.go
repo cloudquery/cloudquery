@@ -6,8 +6,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildEngineVersionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -16,9 +17,8 @@ func buildEngineVersionsMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 		Docdb: m,
 	}
 	var ev docdb.DescribeDBEngineVersionsOutput
-	if err := faker.FakeObject(&ev); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&ev))
+
 	ev.Marker = nil
 	m.EXPECT().DescribeDBEngineVersions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ev,
@@ -26,18 +26,16 @@ func buildEngineVersionsMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 	)
 
 	var parameters docdb.DescribeEngineDefaultClusterParametersOutput
-	if err := faker.FakeObject(&parameters); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&parameters))
+
 	m.EXPECT().DescribeEngineDefaultClusterParameters(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&parameters,
 		nil,
 	)
 
 	var instanceOptions docdb.DescribeOrderableDBInstanceOptionsOutput
-	if err := faker.FakeObject(&instanceOptions); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&instanceOptions))
+
 	instanceOptions.Marker = nil
 	m.EXPECT().DescribeOrderableDBInstanceOptions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&instanceOptions,

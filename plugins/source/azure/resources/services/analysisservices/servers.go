@@ -5,18 +5,19 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/analysisservices/armanalysisservices"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Servers() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_analysisservices_servers",
-		Resolver:    fetchServers,
-		Description: "https://learn.microsoft.com/en-us/rest/api/analysisservices/servers/list?tabs=HTTP#analysisservicesserver",
-		Multiplex:   client.SubscriptionMultiplexRegisteredNamespace("azure_analysisservices_servers", client.Namespacemicrosoft_analysisservices),
-		Transform:   transformers.TransformWithStruct(&armanalysisservices.Server{}, transformers.WithPrimaryKeys("ID")),
-		Columns:     schema.ColumnList{client.SubscriptionID},
+		Name:                 "azure_analysisservices_servers",
+		Resolver:             fetchServers,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/analysisservices/servers/list?tabs=HTTP#analysisservicesserver",
+		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_analysisservices_servers", client.Namespacemicrosoft_analysisservices),
+		Transform:            transformers.TransformWithStruct(&armanalysisservices.Server{}, transformers.WithPrimaryKeys("ID")),
+		Columns:              schema.ColumnList{client.SubscriptionID},
 	}
 }
 

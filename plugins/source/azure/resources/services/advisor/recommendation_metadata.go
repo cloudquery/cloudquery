@@ -5,16 +5,17 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func RecommendationMetadata() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_advisor_recommendation_metadata",
-		Resolver:    fetchRecommendationMetadata,
-		Description: "https://learn.microsoft.com/en-us/rest/api/advisor/recommendation-metadata/list?tabs=HTTP#metadataentity",
-		Transform:   transformers.TransformWithStruct(&armadvisor.MetadataEntity{}, transformers.WithPrimaryKeys("ID")),
+		Name:                 "azure_advisor_recommendation_metadata",
+		Resolver:             fetchRecommendationMetadata,
+		PostResourceResolver: client.LowercaseIDResolver,
+		Description:          "https://learn.microsoft.com/en-us/rest/api/advisor/recommendation-metadata/list?tabs=HTTP#metadataentity",
+		Transform:            transformers.TransformWithStruct(&armadvisor.MetadataEntity{}, transformers.WithPrimaryKeys("ID")),
 	}
 }
 

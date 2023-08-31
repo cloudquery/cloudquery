@@ -3,12 +3,15 @@ package scheduler
 import (
 	"context"
 
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/scheduler"
 	"github.com/aws/aws-sdk-go-v2/service/scheduler/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/thoas/go-funk"
 )
 
@@ -27,16 +30,14 @@ func Schedules() *schema.Table {
 			client.DefaultRegionColumn(false),
 			{
 				Name:     "tags",
-				Type:     schema.TypeJSON,
+				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveSchedulerScheduleTags(),
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("Arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -46,11 +47,13 @@ func fetchSchedulerSchedules(ctx context.Context, meta schema.ClientMeta, parent
 	config := scheduler.ListSchedulesInput{
 		MaxResults: aws.Int32(100),
 	}
-	c := meta.(*client.Client)
-	svc := c.Services().Scheduler
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceScheduler).Scheduler
 	paginator := scheduler.NewListSchedulesPaginator(svc, &config)
 	for paginator.HasMorePages() {
-		output, err := paginator.NextPage(ctx)
+		output, err := paginator.NextPage(ctx, func(o *scheduler.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return err
 		}
@@ -60,13 +63,15 @@ func fetchSchedulerSchedules(ctx context.Context, meta schema.ClientMeta, parent
 }
 
 func getSchedule(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Scheduler
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceScheduler).Scheduler
 	scheduleSummary := resource.Item.(types.ScheduleSummary)
 
 	describeTaskDefinitionOutput, err := svc.GetSchedule(ctx, &scheduler.GetScheduleInput{
 		Name:      scheduleSummary.Name,
 		GroupName: scheduleSummary.GroupName,
+	}, func(o *scheduler.Options) {
+		o.Region = cl.Region
 	})
 	if err != nil {
 		return err
@@ -80,10 +85,12 @@ func resolveSchedulerScheduleTags() schema.ColumnResolver {
 	return func(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 		arnStr := funk.Get(r.Item, "Arn", funk.WithAllowZero()).(*string)
 		cl := meta.(*client.Client)
-		svc := cl.Services().Scheduler
+		svc := cl.Services(client.AWSServiceScheduler).Scheduler
 		params := scheduler.ListTagsForResourceInput{ResourceArn: arnStr}
 
-		output, err := svc.ListTagsForResource(ctx, &params)
+		output, err := svc.ListTagsForResource(ctx, &params, func(o *scheduler.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			if cl.IsNotFoundError(err) {
 				return nil

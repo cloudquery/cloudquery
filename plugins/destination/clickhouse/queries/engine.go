@@ -17,10 +17,6 @@ type Engine struct {
 }
 
 func (e *Engine) String() string {
-	if len(e.Parameters) == 0 {
-		return e.Name
-	}
-
 	return e.Name + "(" + strings.Join(e.params(), ", ") + ")"
 }
 
@@ -56,6 +52,7 @@ func (e *Engine) params() []string {
 
 	return res
 }
+
 func (e *Engine) Validate() error {
 	if !strings.HasSuffix(e.Name, MergeTree) {
 		return fmt.Errorf("only *MergeTree table engine family is supported at the moment, got %q", e.Name)

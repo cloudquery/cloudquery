@@ -2,19 +2,15 @@ package plugin
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/postgresql/client"
-	"github.com/cloudquery/plugin-sdk/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 
 var Version = "Development"
 
-func Plugin() *source.Plugin {
-	return source.NewPlugin(
+func Plugin() *plugin.Plugin {
+	return plugin.NewPlugin(
 		"postgresql",
 		Version,
-		nil,
 		client.Configure,
-		source.WithDynamicTableOption(getDynamicTables),
-		source.WithNoInternalColumns(),
-		source.WithUnmanaged(),
 	)
 }

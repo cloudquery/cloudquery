@@ -8,17 +8,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/neptune/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildNeptuneClientForClusterSnapshots(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockNeptuneClient(ctrl)
 
 	var s types.DBClusterSnapshot
-	if err := faker.FakeObject(&s); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&s))
+
 	mock.EXPECT().DescribeDBClusterSnapshots(
 		gomock.Any(),
 		&neptune.DescribeDBClusterSnapshotsInput{
@@ -31,9 +31,8 @@ func buildNeptuneClientForClusterSnapshots(t *testing.T, ctrl *gomock.Controller
 	)
 
 	var attrs []types.DBClusterSnapshotAttribute
-	if err := faker.FakeObject(&attrs); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&attrs))
+
 	mock.EXPECT().DescribeDBClusterSnapshotAttributes(
 		gomock.Any(),
 		&neptune.DescribeDBClusterSnapshotAttributesInput{DBClusterSnapshotIdentifier: s.DBClusterSnapshotIdentifier},

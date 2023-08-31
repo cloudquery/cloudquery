@@ -1,10 +1,10 @@
-insert into azure_policy_results
+INSERT INTO azure_policy_results (execution_time, framework, check_id, title, subscription_id, resource_id, status)
 SELECT
   :'execution_time',
   :'framework',
   :'check_id',
   'Enforce SSL connection should be enabled for PostgreSQL database servers',
-  subscription_id
+  subscription_id,
   id,
   case
     when properties->>'sslEnforcement' IS DISTINCT FROM 'Enabled'

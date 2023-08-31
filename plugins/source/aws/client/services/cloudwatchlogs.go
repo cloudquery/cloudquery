@@ -8,6 +8,7 @@ import (
 
 //go:generate mockgen -package=mocks -destination=../mocks/cloudwatchlogs.go -source=cloudwatchlogs.go CloudwatchlogsClient
 type CloudwatchlogsClient interface {
+	DescribeAccountPolicies(context.Context, *cloudwatchlogs.DescribeAccountPoliciesInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.DescribeAccountPoliciesOutput, error)
 	DescribeDestinations(context.Context, *cloudwatchlogs.DescribeDestinationsInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.DescribeDestinationsOutput, error)
 	DescribeExportTasks(context.Context, *cloudwatchlogs.DescribeExportTasksInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.DescribeExportTasksOutput, error)
 	DescribeLogGroups(context.Context, *cloudwatchlogs.DescribeLogGroupsInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.DescribeLogGroupsOutput, error)

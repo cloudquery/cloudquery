@@ -2,12 +2,12 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-sdk/plugins/source"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -16,15 +16,16 @@ import (
 )
 
 type Client struct {
+	plugin.UnimplementedDestination
 	Conn                *pgxpool.Pool
 	logger              zerolog.Logger
-	spec                specs.Source
-	metrics             *source.Metrics
 	pluginSpec          Spec
 	currentDatabaseName string
 	currentSchemaName   string
 	pgType              pgType
-	Tables              schema.Tables
+	tables              schema.Tables
+	cdcId               string
+	options             plugin.NewClientOptions
 }
 
 type pgType int
@@ -35,25 +36,20 @@ const (
 	pgTypeCockroachDB
 )
 
-var _ schema.ClientMeta = (*Client)(nil)
-
 func (*Client) ID() string {
 	return "source-pg"
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ source.Options) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "pg-source").Logger(),
 	}
 	var pluginSpec Spec
-	c.spec = spec
-	if err := spec.UnmarshalSpec(&pluginSpec); err != nil {
+	if err := json.Unmarshal(spec, &pluginSpec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
 	}
 	pluginSpec.SetDefaults()
-	if err := pluginSpec.Validate(); err != nil {
-		return nil, err
-	}
+
 	c.pluginSpec = pluginSpec
 	logLevel, err := tracelog.LogLevelFromString(pluginSpec.PgxLogLevel.String())
 	if err != nil {
@@ -64,7 +60,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse connection string %w", err)
 	}
-	if c.pluginSpec.CDC {
+	if c.pluginSpec.CDCId != "" {
 		// if cdc is specified the connection must be in replication mode
 		// https://www.postgresql.org/docs/current/libpq-connect.html
 		pgxConfig.ConnConfig.RuntimeParams["replication"] = "database"
@@ -96,19 +92,12 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 	if err != nil {
 		return nil, fmt.Errorf("failed to get database type: %w", err)
 	}
-	c.Tables, err = c.listTables(ctx)
+	c.tables, err = c.listTables(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to list tables: %w", err)
 	}
-	c.Tables, err = c.Tables.FilterDfs(spec.Tables, spec.SkipTables, spec.SkipDependentTables)
-	if err != nil {
-		return nil, fmt.Errorf("failed to apply config to tables: %w", err)
-	}
 
-	if c.pluginSpec.CDC {
-		if len(c.tablesWithPks()) == 0 {
-			return nil, fmt.Errorf("cdc is enabled but no tables with primary keys were found")
-		}
+	if c.pluginSpec.CDCId != "" {
 		walLevel, err := c.walLevel(ctx)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get wal_level: %w", err)
@@ -117,6 +106,8 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source, _ 
 			return nil, fmt.Errorf("cdc is enabled but wal_level is not logical")
 		}
 	}
+	c.cdcId = pluginSpec.CDCId
+	c.options = opts
 
 	return c, nil
 }
@@ -160,6 +151,9 @@ func (c *Client) currentDatabase(ctx context.Context) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	if db == "" {
+		return "", fmt.Errorf("failed to get CURRENT_DATABASE")
+	}
 	return db, nil
 }
 
@@ -169,6 +163,18 @@ func (c *Client) currentSchema(ctx context.Context) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	if schemaName == "" {
+		return "", fmt.Errorf("failed to get CURRENT_SCHEMA")
+	}
 
 	return schemaName, nil
+}
+
+func (c Client) Tables(_ context.Context, opts plugin.TableOptions) (schema.Tables, error) {
+	return c.tables.FilterDfs(opts.Tables, opts.SkipTables, opts.SkipDependentTables)
+}
+
+func (c Client) Close(_ context.Context) error {
+	c.Conn.Close()
+	return nil
 }

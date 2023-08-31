@@ -8,33 +8,28 @@ import (
 	iamTypes "github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 )
 
 func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 	g := iamTypes.ManagedPolicyDetail{}
-	err := faker.FakeObject(&g)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&g))
 	document := `{"stuff": 3}`
 	// generate valid json
 	for i := range g.PolicyVersionList {
 		g.PolicyVersionList[i].Document = &document
 	}
 
-	m.EXPECT().GetAccountAuthorizationDetails(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().GetAccountAuthorizationDetails(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.GetAccountAuthorizationDetailsOutput{
 			Policies: []iamTypes.ManagedPolicyDetail{g},
 		}, nil)
 
 	tag := iamTypes.Tag{}
-	err = faker.FakeObject(&tag)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&tag))
 	m.EXPECT().ListPolicyTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.ListPolicyTagsOutput{
 			Tags: []iamTypes.Tag{
@@ -45,10 +40,7 @@ func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GenerateServiceLastAccessedDetails(gomock.Any(), gomock.Any(), gomock.Any()).Return(&iam.GenerateServiceLastAccessedDetailsOutput{JobId: aws.String("JobId")}, nil)
 
 	lastAccessed := []iamTypes.ServiceLastAccessed{}
-	err = faker.FakeObject(&lastAccessed)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&lastAccessed))
 	m.EXPECT().GetServiceLastAccessedDetails(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.GetServiceLastAccessedDetailsOutput{ServicesLastAccessed: lastAccessed, JobStatus: iamTypes.JobStatusTypeCompleted},
 		nil,
