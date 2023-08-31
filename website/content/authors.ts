@@ -124,6 +124,12 @@ export const CLOUDQUERY_TEAM: Map<Author> = {
         urlText: "erezrokah",
         image_url: "/images/people/erezrokah.jpeg",
     },
+    michal: {
+        name: "Michal Brutvan",
+        url: "https://twitter.com/pilvikala",
+        urlText: "pilvikala",
+        image_url: "/images/people/michal.jpg"
+    }
 };
 
 export function AuthorByName(name: string) {
