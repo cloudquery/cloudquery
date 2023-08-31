@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.16.2](https://github.com/cloudquery/cloudquery/compare/cli-v3.16.1...cli-v3.16.2) (2023-08-31)
+
+
+### Bug Fixes
+
+* **main:** Truncate sync time to microsecond ([#13484](https://github.com/cloudquery/cloudquery/issues/13484)) ([8f874b6](https://github.com/cloudquery/cloudquery/commit/8f874b63bbd1542d8d6c48f580c8f58c7e563141))
+
 ## [3.16.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.16.0...cli-v3.16.1) (2023-08-30)
 
 

@@ -67,19 +67,25 @@ This is the (nested) spec used by the CSV destination Plugin.
   If set to `true`, the plugin will write to one file per table.
   Otherwise, for every batch a new file will be created with a different `.<UUID>` suffix.
 
-- `athena` (`boolean`) (optional, default `false`)
+- `athena` (`boolean`) (optional) (default: `false`)
 
   When `athena` is set to `true`, the S3 plugin will sanitize keys in JSON columns to be compatible with the Hive Metastore / Athena.
   This allows tables to be created with a Glue Crawler and then queried via Athena, without changes to the table schema.
 
-- `test_write` (`boolean`) (optional, default `true`)
+- `test_write` (`boolean`) (optional) (default: `true`)
 
   Ensure write access to the given bucket and path by writing a test object on each sync.
   If you are sure that the bucket and path are writable, you can set this to `false` to skip the test.
 
-- `endpoint` (`string`) (optional, default empty)
+- `endpoint` (`string`) (optional) (default: empty)
 
   Endpoint to use for S3 API calls. This is useful for S3-compatible storage services such as MinIO.
+  Note: if you want to use path-style addressing, i.e., `https://s3.amazonaws.com/BUCKET/KEY`, `use_path_style` should be enabled, too.
+
+- `use_path_style` (`boolean`) (optional) (default: `false`)
+
+  Allows to use path-style addressing in the `endpoint` option, i.e., `https://s3.amazonaws.com/BUCKET/KEY`.
+  By default, the S3 client will use virtual hosted bucket addressing when possible (`https://BUCKET.s3.amazonaws.com/KEY`).
 
 - `batch_size` (`integer`) (optional) (default: `10000`)
 

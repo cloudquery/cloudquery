@@ -99,8 +99,10 @@ func getBillingCycles() []string {
 
 func getHistoryBillingCycles(history int) []string {
 	var months []string
+	year, month, _ := time.Now().UTC().Date()
+	historyMonth := time.Date(year, month, 1, 0, 0, 0, 0, time.UTC)
 	for month := 1; month <= history; month++ {
-		months = append(months, time.Now().AddDate(0, -month, 0).Format("2006-01"))
+		months = append(months, historyMonth.AddDate(0, -month, 0).Format("2006-01"))
 	}
 	return months
 }

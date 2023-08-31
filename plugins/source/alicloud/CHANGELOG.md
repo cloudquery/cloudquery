@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-alicloud-v4.0.6...plugins-source-alicloud-v4.0.7) (2023-08-31)
+
+
+### Bug Fixes
+
+* Properly account for months of different length in `HistoryBillingCycles` ([#13487](https://github.com/cloudquery/cloudquery/issues/13487)) ([56d0e45](https://github.com/cloudquery/cloudquery/commit/56d0e4572b142c883762e708cc3b5e5a2e00b03a))
+
 ## [4.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-alicloud-v4.0.5...plugins-source-alicloud-v4.0.6) (2023-08-29)
 
 
