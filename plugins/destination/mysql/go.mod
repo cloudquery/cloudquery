@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/apache/arrow/go/v14 v14.0.0-20230826001106-a069d71cc1bcd
-	github.com/cloudquery/plugin-sdk/v4 v4.5.7
+	github.com/cloudquery/plugin-sdk/v4 v4.6.0
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/google/uuid v1.3.0
 	github.com/rs/zerolog v1.29.1
