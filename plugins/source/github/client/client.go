@@ -94,8 +94,6 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 			k, err = key.FromFile(auth.PrivateKeyPath)
 		} else if auth.PrivateKey != "" {
 			k, err = key.Parse([]byte(auth.PrivateKey))
-		} else {
-			return nil, fmt.Errorf("no private key defined")
 		}
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse private key: %w", err)
