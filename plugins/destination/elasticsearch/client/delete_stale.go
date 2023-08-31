@@ -65,6 +65,11 @@ func (c *Client) DeleteStale(ctx context.Context, msgs message.WriteDeleteStales
 }
 
 func (c *Client) deleteStaleIndex(ctx context.Context, index string, req *deletebyquery.Request) error {
+	// refresh index before delete, to ensure all written data is available
+	if err := c.refreshIndex(ctx, index); err != nil {
+		return fmt.Errorf("failed to refresh index before delete: %w", err)
+	}
+
 	resp, err := c.typedClient.DeleteByQuery(index).Request(req).WaitForCompletion(true).Do(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to delete stale entries: %w", err)

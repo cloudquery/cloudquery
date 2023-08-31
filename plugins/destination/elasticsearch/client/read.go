@@ -20,20 +20,19 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 	index := c.getIndexNamePattern(table)
 
 	// refresh index before read, to ensure all written data is available
-	resp, err := c.typedClient.Indices.Refresh().Index(index).Do(ctx)
-	if err != nil {
+	if err := c.refreshIndex(ctx, index); err != nil {
 		return fmt.Errorf("failed to refresh index before read: %w", err)
 	}
-	_, _ = io.Copy(io.Discard, resp.Body)
-	_ = resp.Body.Close()
 
 	size := 100
-	resp, err = c.typedClient.Search().Index(index).Request(&search.Request{
-		Query: &types.Query{
-			MatchAll: &types.MatchAllQuery{},
-		},
-		Size: &size,
-	}).Do(ctx)
+	resp, err := c.typedClient.Search().
+		Index(index).RequestCache(false).
+		Request(&search.Request{
+			Query: &types.Query{
+				MatchAll: &types.MatchAllQuery{},
+			},
+			Size: &size,
+		}).Do(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to read: %w", err)
 	}
