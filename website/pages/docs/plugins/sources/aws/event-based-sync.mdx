@@ -4,12 +4,12 @@ import { Callout } from 'nextra-theme-docs';
 This feature is currently in a closed preview. Signup for access using this [form](https://admin.typeform.com/form/Dvdn6P2u/create?block=a48d83b4-e41c-4e1c-a980-89f769933f7e)
 </Callout>
 
-# Event Based Sync:
+# Event Based Sync
 
-Cloudtrail enables users to get an audit log of events occurring within the account. By configuring Cloudtrail to push all write events (events that were triggered by a configuration change) to a Kinesis Stream, CloudQuery can consume that stream to update the impacted resources as quickly as they become available (sub 10 seconds).
+AWS CloudTrail enables users to get an audit log of events occurring within their account. By subscribing to a stream of AWS Cloudtrail events CloudQuery can trigger selective syncs to update just the singular resource that had a configuration change.
 
-The following events are supported:
 
+## Supported Services and Events
 Service | Event 
 -|-|
 ec2.amazonaws.com | AttachInternetGateway
@@ -33,9 +33,9 @@ rds.amazonaws.com | CreateDBCluster
 rds.amazonaws.com | CreateDBInstance
 
 
-### Configuration:
+## Configuration:
 
-1. CloudQuery is expecting data in a single sharded Kinesis stream. The format of the data needs to be in the same form as CloudWatch Logs uses to send CloudTrail Events to a Kinesis Data stream. CloudQuery maintains a reference solution that uses CloudFormation to deploy.
+1. Configure a AWS CloudTrail Trail to send management events to a Kinesis Data Stream via Cloudwatch Logs. The most straight forward way to do this is to use the CloudQuery provided Cloudformation template.
 
 ```
 aws cloudformation deploy --template-file ./streaming-deployment.yml --stack-name <STACK-NAME> --capabilities CAPABILITY_IAM --disable-rollback --region <DESIRED-REGION>
@@ -52,8 +52,8 @@ aws cloudformation describe-stacks --stack-name <STACK-NAME> --query "Stacks[].O
 kind: source
 spec:
   name: "aws-event-based"
-  registry: "grpc"
-  path: localhost:7778
+  registry: "local"
+  path: <PATH/TO/BINARY>
   tables:
     - aws_ec2_instances
     - aws_ec2_internet_gateways
@@ -77,10 +77,13 @@ spec:
         kinesis_stream_arn: <OUTPUT-FROM-CLOUDFORMATION-STACK>
 ```
 
-4. Sync the data!
+4. Sync the data! 
 ```
 cloudquery sync config.yml
 ```
+
+This will start a long lived process that will only stop when there is an error or you stop the process
+
 
 ### Limitations:
 - Kinesis Stream can only have a single shard. (This is a limitation that we expect to remove in the future)
