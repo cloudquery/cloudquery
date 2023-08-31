@@ -67,6 +67,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.Ne
 			baseEndpoint := c.spec.Endpoint
 			o.BaseEndpoint = &baseEndpoint
 		}
+		o.UsePathStyle = c.spec.UsePathStyle
 	})
 	c.uploader = manager.NewUploader(c.s3Client)
 	c.downloader = manager.NewDownloader(c.s3Client)
