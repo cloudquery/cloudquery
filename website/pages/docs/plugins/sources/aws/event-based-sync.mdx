@@ -1,14 +1,12 @@
+import { Callout } from 'nextra-theme-docs';
 
-# Enterprise Features:
+<Callout type="info">
+This feature is currently in a closed preview. Signup for access using this [form](https://admin.typeform.com/form/Dvdn6P2u/create?block=a48d83b4-e41c-4e1c-a980-89f769933f7e)
+</Callout>
 
+# Event Based Sync:
 
-## Resource Filtering at the API level
-
-
-
-## Event Based Sync:
-
-Cloudtrail enables users to get a near realtime audit log of events occurring within the account. By configuring Cloudtrail to push all write events (events that were triggered by a configuration change) to a Kinesis Stream, CloudQuery can consume that stream to update the impacted resources as quickly as they become available (sub 10 seconds).
+Cloudtrail enables users to get an audit log of events occurring within the account. By configuring Cloudtrail to push all write events (events that were triggered by a configuration change) to a Kinesis Stream, CloudQuery can consume that stream to update the impacted resources as quickly as they become available (sub 10 seconds).
 
 The following events are supported:
 
@@ -31,6 +29,7 @@ ec2.amazonaws.com | RunInstances
 iam.amazonaws.com | CreateGroup
 iam.amazonaws.com | CreateRole
 iam.amazonaws.com | CreateUser
+rds.amazonaws.com | CreateDBCluster
 rds.amazonaws.com | CreateDBInstance
 
 
