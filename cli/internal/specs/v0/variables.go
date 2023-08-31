@@ -44,6 +44,13 @@ func ReplaceVariables(src string, variables Variables) (string, error) {
 			lastErr = fmt.Errorf("variable %s is not a string", variablePath)
 			return s
 		}
+		// make safe for replacement into JSON string
+		v, err := json.Marshal(resString)
+		if err != nil {
+			lastErr = err
+			return s
+		}
+		resString = string(v[1 : len(v)-1])
 		return resString
 	})
 	return result, lastErr
