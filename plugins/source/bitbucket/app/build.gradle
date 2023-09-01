@@ -68,7 +68,8 @@ jar {
 
 application {
     // Define the main class for the application.
-    mainClass = 'bitbucket.App'
+    mainClass = 'bitbucket.MainClass'
+    applicationDefaultJvmArgs = ['--add-opens=java.base/java.nio=ALL-UNNAMED']
 }
 
 tasks.named('test') {
