@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"crypto/rsa"
 	"fmt"
 	"net/http"
 	"strings"
@@ -81,7 +82,15 @@ func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMe
 
 	ghServices := map[string]GithubServices{}
 	for _, auth := range spec.AppAuth {
-		k, err := key.FromFile(auth.PrivateKeyPath)
+		var (
+			k   *rsa.PrivateKey
+			err error
+		)
+		if auth.PrivateKeyPath != "" {
+			k, err = key.FromFile(auth.PrivateKeyPath)
+		} else if auth.PrivateKey != "" {
+			k, err = key.Parse([]byte(auth.PrivateKey))
+		}
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse private key: %w", err)
 		}

@@ -22,20 +22,22 @@ func (c *Client) normalizeTables(tables schema.Tables) schema.Tables {
 func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 	columns := make([]schema.Column, len(table.Columns))
 	for i, col := range table.Columns {
-		normalized := c.normalizeField(col.ToArrowField())
-		columns[i] = schema.NewColumnFromArrowField(*normalized)
+		columns[i] = c.normalizeColumn(col)
 	}
 	return &schema.Table{Name: table.Name, Columns: columns}
 }
 
-func (*Client) normalizeField(field arrow.Field) *arrow.Field {
+func (*Client) normalizeColumn(col schema.Column) schema.Column {
+	field := col.ToArrowField()
 	normalizedType := mySQLTypeToArrowType(arrowTypeToMySqlStr(field.Type))
-	return &arrow.Field{
+	// In MySQL primary keys are implicitly not null
+	notNull := col.NotNull || col.PrimaryKey
+	return schema.NewColumnFromArrowField(arrow.Field{
 		Name:     field.Name,
 		Type:     normalizedType,
-		Nullable: field.Nullable,
+		Nullable: !notNull,
 		Metadata: field.Metadata,
-	}
+	})
 }
 
 func (c *Client) nonAutoMigratableTables(tables schema.Tables, mysqlTables schema.Tables) ([]string, [][]schema.TableColumnChange) {

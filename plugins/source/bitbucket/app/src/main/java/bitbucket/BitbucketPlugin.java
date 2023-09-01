@@ -11,6 +11,7 @@ import io.cloudquery.plugin.Plugin;
 import io.cloudquery.plugin.v3.Sync;
 import io.cloudquery.scheduler.Scheduler;
 import io.cloudquery.schema.ClientMeta;
+import io.cloudquery.schema.NullClient;
 import io.cloudquery.schema.SchemaException;
 import io.cloudquery.schema.Table;
 import io.cloudquery.transformers.Tables;
@@ -29,14 +30,18 @@ public class BitbucketPlugin extends Plugin {
 
   @Override
   public ClientMeta newClient(String spec, NewClientOptions options) throws Exception {
-    this.spec = Spec.fromJSON(spec);
-    this.spec.validate();
-
     this.allTables = getTables();
     Tables.transformTables(this.allTables);
     for (Table table : this.allTables) {
       table.addCQIDs();
     }
+
+    if (options.isNoConnection()) {
+      return new NullClient();
+    }
+
+    this.spec = Spec.fromJSON(spec);
+    this.spec.validate();
 
     return new BitbucketClient(this.spec.getUsername(), this.spec.getPassword());
   }
