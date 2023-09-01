@@ -45,10 +45,13 @@ func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs mes
 		// If no primary keys are defined, use all columns
 		pks = table.Columns.Names()
 	}
-	valueColumns := make([]string, 0, len(table.Columns))
-	for _, col := range table.Columns {
-		if !col.PrimaryKey {
-			valueColumns = append(valueColumns, col.Name)
+	valueColumns := make([]string, 0, len(table.Columns)-len(pks))
+	if len(table.Columns)-len(pks) > 0 {
+		// not all columns are a part of "pk", so we need to account for the values
+		for _, col := range table.Columns {
+			if !col.PrimaryKey {
+				valueColumns = append(valueColumns, col.Name)
+			}
 		}
 	}
 
