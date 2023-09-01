@@ -84,6 +84,7 @@ func (c *Client) writeData(ctx context.Context, table *schema.Table, buf *bytes.
 	resp, err := c.client.Bulk(bytes.NewReader(buf.Bytes()),
 		c.client.Bulk.WithContext(ctx),
 		c.client.Bulk.WithIndex(index),
+		c.client.Bulk.WithRefresh("wait_for"), // returns only once the data is written
 	)
 	if err != nil {
 		return fmt.Errorf("failed to create bulk request: %w", err)
