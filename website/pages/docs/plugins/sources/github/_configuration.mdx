@@ -16,6 +16,7 @@ spec:
     ## App Authentication (one per org):
     # app_auth:
     # - org: cloudquery
+    #   private_key: <PRIVATE_KEY> # Private key as a string
     #   private_key_path: <PATH_TO_PRIVATE_KEY> # Path to private key file
     #   app_id: <YOUR_APP_ID> # App ID, required for App Authentication.
     #   installation_id: <ORG_INSTALLATION_ID> # Installation ID for this org
@@ -38,6 +39,8 @@ spec:
 See [tables](/docs/plugins/sources/github/tables) for a full list of available tables.
 
 You must specify either `orgs` or `repos` in the configuration. If a repository is specified in both `orgs` and `repos`, it will be extracted only once, and other repositories from that organization will be ignored.
+
+You can define either `private_key` or `private_key_path` in the configuration, but not both.
 
 It is recommended that you use environment variable expansion for the access token in production. For example, if the access token is stored in an environment variable called `GITHUB_ACCESS_TOKEN`:
 
