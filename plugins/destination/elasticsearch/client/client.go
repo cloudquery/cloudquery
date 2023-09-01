@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"path"
+	"strings"
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
@@ -105,10 +107,16 @@ func (*Client) getIndexNamePattern(table *schema.Table) string {
 	return table.Name + "-*"
 }
 
-func (*Client) getIndexName(table *schema.Table, t time.Time) string {
-	hasPrimaryKeys := len(table.PrimaryKeys()) > 0
-	if hasPrimaryKeys {
-		return table.Name
-	}
-	return table.Name + "-" + t.Format(time.DateOnly)
+func (c *Client) getIndexName(tableName string, syncTime time.Time) string {
+	return replaceVariables(c.spec.IndexNameFormat, tableName, syncTime)
+}
+
+func replaceVariables(s string, tableName string, t time.Time) string {
+	name := strings.ReplaceAll(s, PathVarTable, tableName)
+	name = strings.ReplaceAll(name, YearVar, t.Format("2006"))
+	name = strings.ReplaceAll(name, MonthVar, t.Format("01"))
+	name = strings.ReplaceAll(name, DayVar, t.Format("02"))
+	name = strings.ReplaceAll(name, HourVar, t.Format("15"))
+	name = strings.ReplaceAll(name, MinuteVar, t.Format("04"))
+	return path.Clean(name)
 }

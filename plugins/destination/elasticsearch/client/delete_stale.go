@@ -35,7 +35,7 @@ func (c *Client) DeleteStale(ctx context.Context, msgs message.WriteDeleteStales
 		g.Go(func() error {
 			syncTimeStr := msg.SyncTime.Format(time.RFC3339)
 			return c.deleteStaleIndex(gctx,
-				msg.TableName,
+				c.getIndexName(msg.TableName, msg.SyncTime),
 				&deletebyquery.Request{
 					Query: &types.Query{
 						Bool: &types.BoolQuery{

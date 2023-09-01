@@ -5,12 +5,21 @@ import "runtime"
 const (
 	defaultBatchSize      = 1000
 	defaultBatchSizeBytes = 5 * 1024 * 1024
+
+	PathVarTable = "{{TABLE}}"
+	YearVar      = "{{YEAR}}"
+	MonthVar     = "{{MONTH}}"
+	DayVar       = "{{DAY}}"
+	HourVar      = "{{HOUR}}"
+	MinuteVar    = "{{MINUTE}}"
 )
 
 type Spec struct {
 	Addresses []string `json:"addresses"` // A list of Elasticsearch nodes to use.
 	Username  string   `json:"username"`  // Username for HTTP Basic Authentication.
 	Password  string   `json:"password"`  // Password for HTTP Basic Authentication.
+
+	IndexNameFormat string `json:"index_name_format"` // Name of the index to write to. Supports template variables like {{TABLE}} and {{YEAR}}.
 
 	CloudID                string `json:"cloud_id"`                // Endpoint for the Elastic Service (https://elastic.co/cloud).
 	APIKey                 string `json:"api_key"`                 // Base64-encoded token for authorization; if set, overrides username/password and service token.

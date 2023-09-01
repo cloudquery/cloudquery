@@ -80,7 +80,7 @@ func (c *Client) writeData(ctx context.Context, table *schema.Table, buf *bytes.
 	// get the sync time from the first resource in the batch (here we assume that all resources in the batch
 	// have the same sync time. At the moment this assumption holds.)
 	syncTime := time.Now()
-	index := c.getIndexName(table, syncTime)
+	index := c.getIndexName(table.Name, syncTime)
 	resp, err := c.client.Bulk(bytes.NewReader(buf.Bytes()),
 		c.client.Bulk.WithContext(ctx),
 		c.client.Bulk.WithIndex(index),

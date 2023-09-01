@@ -16,7 +16,8 @@ func TestPlugin(t *testing.T) {
 	}
 	p := plugin.NewPlugin("elasticsearch", "development", New)
 	spec := &Spec{
-		Addresses: []string{address},
+		Addresses:       []string{address},
+		IndexNameFormat: "{{TABLE}}-{{YEAR}}-{{MONTH}}-{{DAY}}",
 	}
 	specBytes, err := json.Marshal(spec)
 	if err != nil {
