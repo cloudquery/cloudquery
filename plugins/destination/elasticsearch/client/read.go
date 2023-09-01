@@ -24,7 +24,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 		return fmt.Errorf("failed to refresh index before read: %w", err)
 	}
 
-	size := 100
+	size := 1000
 	resp, err := c.typedClient.Search().
 		Index(index).RequestCache(false).
 		Request(&search.Request{

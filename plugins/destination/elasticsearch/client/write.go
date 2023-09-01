@@ -32,49 +32,23 @@ func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) er
 	return nil
 }
 
-func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
-	for _, msg := range msgs {
-		table := msg.GetTable()
-		record := msg.Record
-		err := c.writeRecord(ctx, table, record)
-		if err != nil {
+func (c *Client) WriteTableBatch(ctx context.Context, _ string, msgs message.WriteInserts) error {
+	if len(msgs) == 0 {
+		return nil
+	}
+
+	// we know the records are for the sme table
+	table := msgs[0].GetTable()
+	buf := new(bytes.Buffer)
+	for _, r := range msgs.GetRecords() {
+		if err := c.appendRecordToBuf(table, r, buf); err != nil {
 			return err
 		}
 	}
-	return nil
-}
 
-func (c *Client) writeRecord(ctx context.Context, table *schema.Table, record arrow.Record) error {
-	var buf bytes.Buffer
-	pks := pkIndexes(table) // do some work up front to avoid doing it for every resource
 	// get the sync time from the first resource in the batch (here we assume that all resources in the batch
 	// have the same sync time. At the moment this assumption holds.)
-	syncTime := time.Now()
-	for r := 0; r < int(record.NumRows()); r++ {
-		doc := map[string]any{}
-		for i, col := range record.Columns() {
-			doc[table.Columns[i].Name] = c.getValueForElasticsearch(col, r)
-		}
-		data, err := json.Marshal(doc)
-		if err != nil {
-			return fmt.Errorf("failed to marshal JSON: %w", err)
-		}
-
-		var meta []byte
-		hasPrimaryKeys := len(table.PrimaryKeys()) > 0
-
-		if hasPrimaryKeys {
-			docID := fmt.Sprint(resourceID(record, r, pks))
-			meta = []byte(fmt.Sprintf(`{"index":{"_id":"%s"}}%s`, docID, "\n"))
-		} else {
-			meta = []byte(`{"index":{}}` + "\n")
-		}
-		data = append(data, "\n"...)
-		buf.Grow(len(meta) + len(data))
-		buf.Write(meta)
-		buf.Write(data)
-	}
-	index := c.getIndexName(table, syncTime)
+	index := c.getIndexName(table, time.Now())
 	resp, err := c.client.Bulk(bytes.NewReader(buf.Bytes()),
 		c.client.Bulk.WithContext(ctx),
 		c.client.Bulk.WithIndex(index),
@@ -97,6 +71,35 @@ func (c *Client) writeRecord(ctx context.Context, table *schema.Table, record ar
 	}
 	if bulkResp.Errors {
 		return fmt.Errorf("bulk request had errors: %s", string(b))
+	}
+	return nil
+}
+
+func (c *Client) appendRecordToBuf(table *schema.Table, record arrow.Record, buf *bytes.Buffer) error {
+	pks := table.PrimaryKeysIndexes() // do some work up front to avoid doing it for every resource
+	for r := 0; r < int(record.NumRows()); r++ {
+		doc := map[string]any{}
+		for i, col := range record.Columns() {
+			doc[record.ColumnName(i)] = c.getValueForElasticsearch(col, r)
+		}
+		data, err := json.Marshal(doc)
+		if err != nil {
+			return fmt.Errorf("failed to marshal JSON: %w", err)
+		}
+
+		var meta []byte
+		hasPrimaryKeys := len(table.PrimaryKeys()) > 0
+
+		if hasPrimaryKeys {
+			docID := fmt.Sprint(resourceID(record, r, pks))
+			meta = []byte(fmt.Sprintf(`{"index":{"_id":"%s"}}%s`, docID, "\n"))
+		} else {
+			meta = []byte(`{"index":{}}` + "\n")
+		}
+		data = append(data, "\n"...)
+		buf.Grow(len(meta) + len(data))
+		buf.Write(meta)
+		buf.Write(data)
 	}
 	return nil
 }
@@ -158,21 +161,9 @@ func (c *Client) getValueForElasticsearch(col arrow.Array, i int) any {
 			return padRightWithZero(col.Value(i).ToTime(u).Format(format), len(format))
 		}
 		panic(fmt.Sprintf("unsupported time64 unit: %s", u))
+	default:
+		return col.GetOneForMarshal(i)
 	}
-	return col.GetOneForMarshal(i)
-}
-
-func pkIndexes(table *schema.Table) []int {
-	pks := table.PrimaryKeys()
-	if len(pks) == 0 {
-		// if no PK is defined, use all columns for the ID which is based on the indices returned by this function
-		pks = table.Columns.Names()
-	}
-	inds := make([]int, 0, len(pks))
-	for _, col := range pks {
-		inds = append(inds, table.Columns.Index(col))
-	}
-	return inds
 }
 
 // elasticsearch IDs are limited to 512 bytes, so we hash the resource PK to make sure it's within the limit
