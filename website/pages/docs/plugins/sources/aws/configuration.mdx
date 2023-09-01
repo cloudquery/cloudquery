@@ -183,7 +183,7 @@ This is the (nested) spec used by the AWS source plugin.
     - [GetFindings](https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html)
     - [ListTasks](https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ListTasks.html)
 
-- **enterprise version only** `streaming_sync` (`array`) (default: empty)
+- **enterprise version only** `event_based_sync` (`array`) (default: empty)
 
 ### account
 
@@ -283,7 +283,7 @@ This is used to specify one or more accounts to extract information from. Note t
 
 - `event_based_sync_only` (`bool`) (default: `false`)
 
-  By default CQ will do a full sync on the specified tables before starting to consume the events in the stream. This parameter enables users to skip the pull based sync and go straight to the streaming sync.
+  By default CQ will do a full sync on the specified tables before starting to consume the events in the stream. This parameter enables users to skip the pull-based sync and go straight to the streaming sync.
 
 
 	
