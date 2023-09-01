@@ -52,7 +52,7 @@ func (s *Spec) Validate() error {
 			return fmt.Errorf("missing private key specification in configuration. Please specify it using either `private_key` or `private_key_path`")
 		}
 		if appAuth.AppID != "" && (appAuth.PrivateKeyPath != "" && appAuth.PrivateKey != "") {
-			return fmt.Errorf("both private key and private key path specified in configuration")
+			return fmt.Errorf("both private key and private key path specified in configuration. Please remove the configuration for either `private_key_path` or `private_key`")
 		}
 		if appAuth.AppID != "" && appAuth.InstallationID == "" {
 			return fmt.Errorf("missing installation id in configuration")
