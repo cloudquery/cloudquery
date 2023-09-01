@@ -110,5 +110,5 @@ func (*Client) getIndexName(table *schema.Table, t time.Time) string {
 	if hasPrimaryKeys {
 		return table.Name
 	}
-	return table.Name + "-" + t.Format("2006-01-02")
+	return table.Name + "-" + t.Format(time.DateOnly)
 }
