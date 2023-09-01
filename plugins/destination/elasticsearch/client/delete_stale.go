@@ -33,39 +33,27 @@ func (c *Client) DeleteStale(ctx context.Context, msgs message.WriteDeleteStales
 	for _, msg := range msgs {
 		msg := msg
 		g.Go(func() error {
-			syncTime := msg.SyncTime
-			source := msg.SourceName
-			syncTimeStr := syncTime.Format(time.RFC3339)
-			dateRange := types.NewDateRangeQuery()
-			dateRange.Lt = &syncTimeStr
-			q := types.Query{
-				Bool: &types.BoolQuery{
-					Must: []types.Query{
-						{
-							MatchPhrase: map[string]types.MatchPhraseQuery{
-								schema.CqSourceNameColumn.Name: {
-									Query: source,
-								},
-							},
-						},
-						{
-							Range: map[string]types.RangeQuery{
-								schema.CqSyncTimeColumn.Name: dateRange,
+			syncTimeStr := msg.SyncTime.Format(time.RFC3339)
+			return c.deleteStaleIndex(gctx,
+				msg.TableName,
+				&deletebyquery.Request{
+					Query: &types.Query{
+						Bool: &types.BoolQuery{
+							Filter: []types.Query{
+								{MatchPhrase: map[string]types.MatchPhraseQuery{schema.CqSourceNameColumn.Name: {Query: msg.SourceName}}},
+								{Range: map[string]types.RangeQuery{schema.CqSyncTimeColumn.Name: &types.DateRangeQuery{Lt: &syncTimeStr}}},
 							},
 						},
 					},
 				},
-			}
-			req := deletebyquery.NewRequest()
-			req.Query = &q
-			return c.deleteStaleIndex(gctx, msg.TableName+"*", req)
+			)
 		})
 	}
 	return g.Wait()
 }
 
 func (c *Client) deleteStaleIndex(ctx context.Context, index string, req *deletebyquery.Request) error {
-	resp, err := c.typedClient.DeleteByQuery(index).Request(req).Do(ctx)
+	resp, err := c.typedClient.DeleteByQuery(index).Request(req).WaitForCompletion(true).Do(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to delete stale entries: %w", err)
 	}
