@@ -45,9 +45,7 @@ Like other CloudQuery SDK the Java SDK uses [Apache Arrow] as part of the underl
 
 As the Java SDK is still new, we don't yet have a plugin scaffold generator. For now, we recommend starting by copying the code from an [existing Java plugin](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/bitbucket).
 
-{/* <!-- vale off --> */}
 Before running the plugin locally, you will need to first install Gradle by following the [installation instructions](https://gradle.org/install/).
-{/* <!-- vale on --> */}
 
 In addition, you will need to setup a classic personal access token with `read:packages` scope to authenticate to GitHub Packages. See [Authenticating to GitHub Packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-gradle-registry#authenticating-to-github-packages) for more details. The username associated with the token and the token itself should be set as environment variables as follows:
 
@@ -56,9 +54,7 @@ export GITHUB_ACTOR=<your-github-username>
 export GITHUB_TOKEN=<personal-access-token>
 ```
 
-{/* <!-- vale off --> */}
 Once you have Gradle installed and have set up authentication to GitHub Packages, you can run the following command to build the plugin project:
-{/* <!-- vale on --> */}
 
 ```
 gradle build
