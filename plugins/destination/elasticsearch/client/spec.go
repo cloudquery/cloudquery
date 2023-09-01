@@ -48,6 +48,9 @@ func (s *Spec) SetDefaults() {
 	if s.BatchSizeBytes == 0 {
 		s.BatchSizeBytes = defaultBatchSizeBytes
 	}
+	if s.IndexNameFormat == "" {
+		s.IndexNameFormat = PathVarTable
+	}
 }
 
 func (*Spec) Validate() error {
