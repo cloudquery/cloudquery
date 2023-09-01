@@ -88,4 +88,3 @@ This will start a long lived process that will only stop when there is an error 
 ### Limitations
 - Kinesis Stream can only have a single shard. (This is a limitation that we expect to remove in the future)
 - Stale records will only be deleted if the plugin stops consuming the Kinesis Stream, which only can occur if there is an error
-- Incremental tables' state is not updated by event based syncs
