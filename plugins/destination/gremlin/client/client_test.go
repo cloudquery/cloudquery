@@ -7,8 +7,10 @@ import (
 	"runtime"
 	"strconv"
 	"testing"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -57,5 +59,6 @@ func TestPlugin(t *testing.T) {
 				RemoveColumn: true,
 			},
 		},
+		plugin.WithTestDataOptions(schema.TestSourceOptions{TimePrecision: time.Millisecond}),
 	)
 }
