@@ -49,7 +49,7 @@ func (s *Spec) Validate() error {
 			return fmt.Errorf("missing org in app auth configuration")
 		}
 		if appAuth.AppID != "" && (appAuth.PrivateKeyPath == "" && appAuth.PrivateKey == "") {
-			return fmt.Errorf("missing private key specification in configuration")
+			return fmt.Errorf("missing private key specification in configuration. Please specify it using either `private_key` or `private_key_path`")
 		}
 		if appAuth.AppID != "" && (appAuth.PrivateKeyPath != "" && appAuth.PrivateKey != "") {
 			return fmt.Errorf("both private key and private key path specified in configuration")
