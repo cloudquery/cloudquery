@@ -5,8 +5,8 @@ go 1.20
 require (
 	github.com/Shopify/sarama v1.37.2
 	github.com/apache/arrow/go/v14 v14.0.0-20230901024001-b6c0ea455d08
-	github.com/cloudquery/filetypes/v4 v4.1.9
-	github.com/cloudquery/plugin-sdk/v4 v4.6.1
+	github.com/cloudquery/filetypes/v4 v4.1.10
+	github.com/cloudquery/plugin-sdk/v4 v4.6.2
 	github.com/rs/zerolog v1.30.0
 )
 
