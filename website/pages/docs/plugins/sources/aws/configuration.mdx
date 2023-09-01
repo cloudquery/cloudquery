@@ -111,6 +111,10 @@ This is the (nested) spec used by the AWS source plugin.
   Currently only `aws_costexplorer*` and `aws_alpha_cloudwatch_metric*` tables require this flag to be set to `true`.
 
 
+<Callout type="warn">
+The `table_options` parameter is deprecated and will be removed soon. Please reach out to the CloudQuery team if you require this feature
+</Callout>
+
 - **preview** `table_options` (`map`) (default: not used)
 
   This is a preview feature (for more information about `preview` features look at [plugin versioning](/docs/plugins/sources/aws/versioning) that enables users to override the default options for specific tables.
@@ -267,6 +271,11 @@ This is used to specify one or more accounts to extract information from. Note t
 - `skip_member_accounts` ([]string)
 
   List of OU member accounts to skip. This is useful in conjunction with `organization_units` if there are accounts under the selected OUs that should be ignored.
+
+
+<Callout type="warn">
+Event-based syncing is only supported by the enterprise-version AWS plugin. Read more about [event-based syncs]([/docs/plugins/sources/aws/event-based-sync])
+</Callout>
 
 ### event_based_sync
 - `account` ([Account](#account)) 
