@@ -1,5 +1,19 @@
 # Changelog
 
+## [7.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v7.2.1...plugins-source-github-v7.3.0) (2023-09-01)
+
+
+### Features
+
+* Support reading private key from string ([#13556](https://github.com/cloudquery/cloudquery/issues/13556)) ([9909e24](https://github.com/cloudquery/cloudquery/commit/9909e245a6e40dbcf5ea50505e06856367638c03))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/99designs/go-keychain digest to 9cf53c8 ([#13561](https://github.com/cloudquery/cloudquery/issues/13561)) ([a170256](https://github.com/cloudquery/cloudquery/commit/a17025657e92b017fe3c8bd37abfaa2354e6e818))
+* **deps:** Update github.com/beatlabs/github-auth digest to 39adf75 ([#13563](https://github.com/cloudquery/cloudquery/issues/13563)) ([ea5f471](https://github.com/cloudquery/cloudquery/commit/ea5f4712aa07de2b25b7b9fe44c0c70a10674bc8))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.6.0 ([#13492](https://github.com/cloudquery/cloudquery/issues/13492)) ([c305876](https://github.com/cloudquery/cloudquery/commit/c305876e3d92944aa6c1a26547f786fdc5b50e23))
+
 ## [7.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v7.2.0...plugins-source-github-v7.2.1) (2023-08-29)
 
 
