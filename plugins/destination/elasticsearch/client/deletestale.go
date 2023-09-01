@@ -58,7 +58,7 @@ func (c *Client) DeleteStale(ctx context.Context, msgs message.WriteDeleteStales
 			}
 			req := deletebyquery.NewRequest()
 			req.Query = &q
-			return c.deleteStaleIndex(gctx, msg.TableName+"*", req)
+			return c.deleteStaleIndex(gctx, msg.TableName, req)
 		})
 	}
 	return g.Wait()
