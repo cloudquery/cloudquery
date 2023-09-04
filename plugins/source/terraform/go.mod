@@ -10,12 +10,12 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.79
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.38.4
 	github.com/aws/aws-sdk-go-v2/service/sts v1.21.4
-	github.com/cloudquery/plugin-sdk/v4 v4.5.7
+	github.com/cloudquery/plugin-sdk/v4 v4.6.0
 	github.com/rs/zerolog v1.29.1
 	github.com/stretchr/testify v1.8.4
 )
 
-replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20230826001106-a069d71cc1bc
+replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20230904001200-cd3d4114faa0
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect

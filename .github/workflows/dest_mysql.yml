@@ -24,19 +24,6 @@ jobs:
     defaults:
       run:
         working-directory: ./plugins/destination/mysql
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: test
-          MYSQL_DATABASE: cloudquery
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd "mysqladmin ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - uses: actions/checkout@v3
         with:
@@ -57,6 +44,12 @@ jobs:
           skip-build-cache: true
       - name: Build
         run: go build .
+      # We don't use services as we need to pass additional arguments to the container
+      - name: Spin up MySQL
+        run: |
+          docker run --platform linux/amd64 -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=test -e MYSQL_DATABASE=cloudquery -d mysql:5.7 --innodb_log_file_size=512M --innodb_strict_mode=0
+          sudo apt update && sudo apt install wait-for-it -y
+          wait-for-it -h localhost -p 3306
       - name: Test MySQL
         run: make test
   validate-release:

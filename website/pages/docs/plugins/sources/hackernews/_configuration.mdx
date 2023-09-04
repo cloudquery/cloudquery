@@ -7,7 +7,7 @@ spec:
   tables: ["*"]
   backend_options:
     table_name: "cq_hackernews_state"
-    connection: "@@plugin.DESTINATION_NAME.connection"
+    connection: "@@plugins.DESTINATION_NAME.connection"
   destinations:
     - "DESTINATION_NAME"
   spec:

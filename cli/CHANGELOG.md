@@ -5,6 +5,49 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.16.2](https://github.com/cloudquery/cloudquery/compare/cli-v3.16.1...cli-v3.16.2) (2023-08-31)
+
+
+### Bug Fixes
+
+* **main:** Truncate sync time to microsecond ([#13484](https://github.com/cloudquery/cloudquery/issues/13484)) ([8f874b6](https://github.com/cloudquery/cloudquery/commit/8f874b63bbd1542d8d6c48f580c8f58c7e563141))
+
+## [3.16.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.16.0...cli-v3.16.1) (2023-08-30)
+
+
+### Bug Fixes
+
+* Skip incremental tables when performing delete-stale ([#13482](https://github.com/cloudquery/cloudquery/issues/13482)) ([2ce7387](https://github.com/cloudquery/cloudquery/commit/2ce73877e367d8a48eefaa47abe66987cdf45a80))
+
+## [3.16.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.15.1...cli-v3.16.0) (2023-08-30)
+
+
+### Features
+
+* Allow use of backend that is not in list of destinations ([#13475](https://github.com/cloudquery/cloudquery/issues/13475)) ([1fea1f8](https://github.com/cloudquery/cloudquery/commit/1fea1f85359b9229c4210aa084db7c8e57b4ed83))
+
+## [3.15.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.15.0...cli-v3.15.1) (2023-08-30)
+
+
+### Bug Fixes
+
+* Call `types.RegisterAllExtensions` only once in `tables` command ([#13411](https://github.com/cloudquery/cloudquery/issues/13411)) ([041cb8d](https://github.com/cloudquery/cloudquery/commit/041cb8d6c4c63284ec3bab8d7138d5efe0d47d68))
+
+## [3.15.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.14.5...cli-v3.15.0) (2023-08-29)
+
+
+### Features
+
+* Add progress to tables command ([#13410](https://github.com/cloudquery/cloudquery/issues/13410)) ([9051b08](https://github.com/cloudquery/cloudquery/commit/9051b0865812fd9091d328918a472ddfff278822))
+
+## [3.14.5](https://github.com/cloudquery/cloudquery/compare/cli-v3.14.4...cli-v3.14.5) (2023-08-29)
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/cloudquery/arrow/go/v13` to `github.com/apache/arrow/go/v14` ([#13341](https://github.com/cloudquery/cloudquery/issues/13341)) ([feb8f87](https://github.com/cloudquery/cloudquery/commit/feb8f87d8d761eb9c49ce84329ad0397f730a918))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.6 ([#13345](https://github.com/cloudquery/cloudquery/issues/13345)) ([a995a05](https://github.com/cloudquery/cloudquery/commit/a995a0598a209e0fe3ba09f4ced2a052dc14b67a))
+
 ## [3.14.4](https://github.com/cloudquery/cloudquery/compare/cli-v3.14.3...cli-v3.14.4) (2023-08-24)
 
 
