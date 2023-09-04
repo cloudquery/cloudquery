@@ -5,8 +5,8 @@ go 1.20
 require (
 	cloud.google.com/go/storage v1.30.1
 	github.com/apache/arrow/go/v14 v14.0.0-20230901024001-b6c0ea455d08
-	github.com/cloudquery/filetypes/v4 v4.1.10
-	github.com/cloudquery/plugin-sdk/v4 v4.6.2
+	github.com/cloudquery/filetypes/v4 v4.1.11
+	github.com/cloudquery/plugin-sdk/v4 v4.6.3
 	github.com/google/uuid v1.3.1
 	github.com/rs/zerolog v1.30.0
 	github.com/stretchr/testify v1.8.4
