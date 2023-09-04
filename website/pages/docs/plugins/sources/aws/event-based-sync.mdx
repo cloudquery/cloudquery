@@ -78,8 +78,8 @@ spec:
   destinations: ["postgresql"]
   spec:
     event_based_sync:
-      - account:
-          local_profile: "<ROLE-NAME>"
+     ## - account:
+     ##     local_profile: "<ROLE-NAME>"
         kinesis_stream_arn: <OUTPUT-FROM-CLOUDFORMATION-STACK>
 ```
 
