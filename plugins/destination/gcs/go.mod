@@ -5,15 +5,15 @@ go 1.20
 require (
 	cloud.google.com/go/storage v1.30.1
 	github.com/apache/arrow/go/v14 v14.0.0-20230901024001-b6c0ea455d08
-	github.com/cloudquery/filetypes/v4 v4.1.9
-	github.com/cloudquery/plugin-sdk/v4 v4.6.1
+	github.com/cloudquery/filetypes/v4 v4.1.10
+	github.com/cloudquery/plugin-sdk/v4 v4.6.2
 	github.com/google/uuid v1.3.1
 	github.com/rs/zerolog v1.30.0
 	github.com/stretchr/testify v1.8.4
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20230826001106-a069d71cc1bc
+replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20230904001200-cd3d4114faa0
 
 require (
 	cloud.google.com/go v0.110.7 // indirect
