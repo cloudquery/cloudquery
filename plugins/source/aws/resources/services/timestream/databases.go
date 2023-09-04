@@ -46,10 +46,11 @@ func Databases() *schema.Table {
 
 func fetchTimestreamDatabases(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceTimestreamwrite).Timestreamwrite
+	services := cl.Services(client.AWSServiceTimestreamwrite)
+	svc := services.Timestreamwrite
 	// This should be removed once https://github.com/aws/aws-sdk-go-v2/issues/2163 is fixed
-	if cl.AWSConfig != nil && cl.AWSConfig.Region != cl.Region {
-		awsCfg := cl.AWSConfig.Copy()
+	if services.AWSConfig.Region != cl.Region {
+		awsCfg := services.AWSConfig.Copy()
 		awsCfg.Region = cl.Region
 		svc = timestreamwrite.NewFromConfig(awsCfg)
 	}
