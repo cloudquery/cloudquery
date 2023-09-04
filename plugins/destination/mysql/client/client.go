@@ -32,6 +32,8 @@ type Client struct {
 	writer        *batchwriter.BatchWriter
 	serverType    ServerType
 	serverVersion string
+
+	maxIndexLength int
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
@@ -77,6 +79,8 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 		return nil, err
 	}
 
+	c.setMaxIndexLength(ctx)
+
 	return c, nil
 }
 
@@ -116,6 +120,26 @@ func (c *Client) getVersion(ctx context.Context) error {
 		c.serverVersion = strings.Split(*versionString, "-")[0]
 	}
 	return nil
+}
+
+func (c *Client) setMaxIndexLength(ctx context.Context) {
+	const maxIndexLengthInBytes = 3072
+	row := c.db.QueryRowContext(ctx, "show variables like 'innodb_default_row_format'")
+	var varName sql.NullString
+	var rowFormat sql.NullString
+	err := row.Scan(&varName, &rowFormat)
+	if err != nil {
+		c.logger.Warn().Err(err).Msgf("failed to detect max index length, using default value of %d bytes", maxIndexLengthInBytes)
+	}
+
+	// In MySQL >= 5.7 the max PK length is 3072 bytes for dynamic or compressed row format, and 767 bytes for redundant or compact row format.
+	// We need to divide the max length in bytes by 4, since we use utf8mb4 charset, which can take up to 4 bytes per character.
+	switch rowFormat.String {
+	case "redundant", "compact":
+		c.maxIndexLength = 767 / 4
+	default:
+		c.maxIndexLength = maxIndexLengthInBytes / 4
+	}
 }
 
 func (c *Client) Close(ctx context.Context) error {
