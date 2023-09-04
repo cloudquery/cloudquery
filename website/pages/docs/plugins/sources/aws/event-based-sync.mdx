@@ -8,7 +8,6 @@ This feature is currently in a closed preview. Sign up for access using this [fo
 
 AWS CloudTrail enables users to get an audit log of events occurring within their account. By subscribing to a stream of AWS CloudTrail events in a Kinesis Data stream CloudQuery can trigger selective syncs to update just the singular resource that had a configuration change.
 
-
 ## Supported Services and Events
 Service | Event 
 -|-|
@@ -37,9 +36,15 @@ rds.amazonaws.com | CreateDBInstance
 
 1. Configure an AWS CloudTrail Trail to send management events to a Kinesis Data Stream via CloudWatch Logs. The most straight-forward way to do this is to use the CloudFormation template provided by CloudQuery.
 
+The CloudFormation template will deploy the following architecture:
+
+
+
 ```bash
 aws cloudformation deploy --template-file ./streaming-deployment.yml --stack-name <STACK-NAME> --capabilities CAPABILITY_IAM --disable-rollback --region <DESIRED-REGION>
 ```
+
+
 
 2. Copy the ARN of the Kinesis stream. If you used the CloudFormation template you can run the following command:
 ```bash
@@ -66,10 +71,6 @@ spec:
     - aws_iam_users
     - aws_rds_instances
   destinations: ["postgresql"]
-  skip_tables:
-    - aws_iam_group_last_accessed_details
-    - aws_iam_role_last_accessed_details
-    - aws_iam_user_last_accessed_details
   spec:
     event_based_sync:
       - account:
