@@ -196,6 +196,7 @@ var GcpServices = map[string]bool{
 	"places.googleapis.com":                           true,
 	"playcustomapp.googleapis.com":                    true,
 	"playdeveloperreporting.googleapis.com":           true,
+	"playgrouping.googleapis.com":                     true,
 	"playintegrity.googleapis.com":                    true,
 	"policyanalyzer.googleapis.com":                   true,
 	"policysimulator.googleapis.com":                  true,
