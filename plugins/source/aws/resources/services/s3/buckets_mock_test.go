@@ -59,6 +59,9 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 	gbnco := s3.GetBucketNotificationConfigurationOutput{}
 	require.NoError(t, faker.FakeObject(&gbnco))
 
+	golco := s3.GetObjectLockConfigurationOutput{}
+	require.NoError(t, faker.FakeObject(&golco))
+
 	m.EXPECT().ListBuckets(gomock.Any(), gomock.Any(), gomock.Any()).Return(&s3.ListBucketsOutput{Buckets: []s3Types.Bucket{b}}, nil)
 	m.EXPECT().GetBucketLogging(gomock.Any(), gomock.Any(), gomock.Any()).Return(&blog, nil)
 	m.EXPECT().GetBucketPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(&bpol, nil)
@@ -75,6 +78,7 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetBucketLocation(gomock.Any(), gomock.Any(), gomock.Any()).Return(&bloc, nil)
 	m.EXPECT().GetBucketWebsite(gomock.Any(), gomock.Any(), gomock.Any()).Return(&websiteOutput, nil)
 	m.EXPECT().GetBucketNotificationConfiguration(gomock.Any(), gomock.Any(), gomock.Any()).Return(&gbnco, nil)
+	m.EXPECT().GetObjectLockConfiguration(gomock.Any(), gomock.Any(), gomock.Any()).Return(&golco, nil)
 
 	return client.Services{S3: m}
 }

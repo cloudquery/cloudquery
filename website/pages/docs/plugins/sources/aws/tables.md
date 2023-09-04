@@ -595,6 +595,7 @@
   - [aws_s3_bucket_grants](tables/aws_s3_bucket_grants)
   - [aws_s3_bucket_lifecycles](tables/aws_s3_bucket_lifecycles)
   - [aws_s3_bucket_notification_configurations](tables/aws_s3_bucket_notification_configurations)
+  - [aws_s3_bucket_object_lock_configurations](tables/aws_s3_bucket_object_lock_configurations)
   - [aws_s3_bucket_websites](tables/aws_s3_bucket_websites)
 - [aws_s3_multi_region_access_points](tables/aws_s3_multi_region_access_points)
 - [aws_sagemaker_apps](tables/aws_sagemaker_apps)
