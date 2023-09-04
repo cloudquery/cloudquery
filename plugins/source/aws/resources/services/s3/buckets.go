@@ -14,6 +14,13 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
+var bucketARNColumn = schema.Column{
+	Name:       "bucket_arn",
+	Type:       arrow.BinaryTypes.String,
+	Resolver:   schema.ParentColumnResolver("arn"),
+	PrimaryKey: true,
+}
+
 func Buckets() *schema.Table {
 	tableName := "aws_s3_buckets"
 	return &schema.Table{
