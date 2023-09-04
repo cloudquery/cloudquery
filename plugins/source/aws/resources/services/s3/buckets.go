@@ -33,10 +33,11 @@ func Buckets() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			bucketEncryptionRules(),
-			bucketLifecycles(),
-			bucketGrants(),
 			bucketCorsRules(),
+			bucketEncryptionRules(),
+			bucketGrants(),
+			bucketLifecycles(),
+			bucketNotificationConfigurations(),
 			bucketWebsites(),
 		},
 	}

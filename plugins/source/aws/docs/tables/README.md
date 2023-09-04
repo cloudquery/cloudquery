@@ -594,6 +594,7 @@
   - [aws_s3_bucket_encryption_rules](../../../../../website/tables/aws/aws_s3_bucket_encryption_rules.md)
   - [aws_s3_bucket_grants](../../../../../website/tables/aws/aws_s3_bucket_grants.md)
   - [aws_s3_bucket_lifecycles](../../../../../website/tables/aws/aws_s3_bucket_lifecycles.md)
+  - [aws_s3_bucket_notification_configurations](../../../../../website/tables/aws/aws_s3_bucket_notification_configurations.md)
   - [aws_s3_bucket_websites](../../../../../website/tables/aws/aws_s3_bucket_websites.md)
 - [aws_s3_multi_region_access_points](../../../../../website/tables/aws/aws_s3_multi_region_access_points.md)
 - [aws_sagemaker_apps](../../../../../website/tables/aws/aws_sagemaker_apps.md)
