@@ -38,18 +38,6 @@ const getCanonicalUrl = (path: string) => {
 
 const Analytics = () => (
   <>
-    <Script>
-      {typeof window !== "undefined" &&
-        (window.sa_event =
-          window.sa_event ||
-          function () {
-            var a = [].slice.call(arguments);
-            window.sa_event.q
-              ? window.sa_event.q.push(a)
-              : (window.sa_event.q = [a]);
-          })}
-    </Script>
-    <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
     <Script
       src={`https://www.googletagmanager.com/gtag/js?id=AW-11077035012`}
     />
@@ -73,6 +61,18 @@ export default function Nextra({ Component, pageProps }) {
     <React.Fragment>
       <DefaultSeo canonical={canonicalUrl} />
       <Component {...pageProps} />
+      <Script>
+        {typeof window !== "undefined" &&
+          (window.sa_event =
+            window.sa_event ||
+            function () {
+              var a = [].slice.call(arguments);
+              window.sa_event.q
+                ? window.sa_event.q.push(a)
+                : (window.sa_event.q = [a]);
+            })}
+      </Script>
+      <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
       {consent && <Analytics />}
       <noscript>
         {/* eslint-disable @next/next/no-img-element */}
