@@ -4,7 +4,7 @@ This table shows data for S3 Bucket Lifecycles.
 
 https://docs.aws.amazon.com/AmazonS3/latest/API/API_LifecycleRule.html
 
-The primary key for this table is **bucket_arn**.
+The composite primary key for this table is (**bucket_arn**, **id**).
 
 ## Relations
 
@@ -21,7 +21,7 @@ This table depends on [aws_s3_buckets](aws_s3_buckets).
 |status|`utf8`|
 |abort_incomplete_multipart_upload|`json`|
 |expiration|`json`|
-|id|`utf8`|
+|id (PK)|`utf8`|
 |noncurrent_version_expiration|`json`|
 |noncurrent_version_transitions|`json`|
 |prefix|`utf8`|

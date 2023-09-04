@@ -18,7 +18,7 @@ func bucketLifecycles() *schema.Table {
 		Name:        "aws_s3_bucket_lifecycles",
 		Description: `https://docs.aws.amazon.com/AmazonS3/latest/API/API_LifecycleRule.html`,
 		Resolver:    fetchS3BucketLifecycles,
-		Transform:   transformers.TransformWithStruct(&types.LifecycleRule{}),
+		Transform:   transformers.TransformWithStruct(&types.LifecycleRule{}, transformers.WithPrimaryKeys("ID")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
