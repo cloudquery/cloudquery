@@ -60,16 +60,17 @@ func (c *Client) writeResources(ctx context.Context, query string, table *schema
 			return err
 		}
 
-		// log a warning that a blob or text field that is a PK has more than 191 characters
 		for _, record := range transformedRecords {
 			for _, truncatablePKIndex := range pks {
-				if len(record[truncatablePKIndex].(string)) > maxPrefixLength {
+				// log a warning that a blob or text field that is a PK has more than the limit
+				lengthPerPk := c.maxIndexLength / len(pks)
+				if len(record[truncatablePKIndex].(string)) > lengthPerPk {
 					indexes := table.PrimaryKeysIndexes()
 					pkValues := make(map[string]any, len(indexes))
 					for i, pkIndex := range indexes {
 						pkValues[table.Columns[pkIndex].Name] = record[i]
 					}
-					c.logger.Debug().Any("pk_values", pkValues).Msgf("record contains a primary key that is longer than MySQL can handle. only the first %d will be included in the index", maxPrefixLength)
+					c.logger.Debug().Any("pk_values", pkValues).Msgf("record contains a primary key that is longer than MySQL can handle. only the first %d will be included in the index", lengthPerPk)
 					tablesWithTruncation[table.Name] = true
 					break
 				}
