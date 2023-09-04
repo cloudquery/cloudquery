@@ -19,15 +19,10 @@ func bucketGrants() *schema.Table {
 		Name:        "aws_s3_bucket_grants",
 		Description: `https://docs.aws.amazon.com/AmazonS3/latest/API/API_Grant.html`,
 		Resolver:    fetchS3BucketGrants,
-		Transform:   transformers.TransformWithStruct(&types.Grant{}),
-		Columns: []schema.Column{
+		Transform:   transformers.TransformWithStruct(&types.Grant{}, transformers.WithPrimaryKeys("Permission")),
+		Columns: schema.ColumnList{
 			client.DefaultAccountIDColumn(false),
-			{
-				Name:       "bucket_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
-			},
+			bucketARNColumn,
 			{
 				Name:       "grantee_type",
 				Type:       arrow.BinaryTypes.String,
@@ -38,12 +33,6 @@ func bucketGrants() *schema.Table {
 				Name:       "grantee_id",
 				Type:       arrow.BinaryTypes.String,
 				Resolver:   resolveBucketGranteeID,
-				PrimaryKey: true,
-			},
-			{
-				Name:       "permission",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("Permission"),
 				PrimaryKey: true,
 			},
 		},

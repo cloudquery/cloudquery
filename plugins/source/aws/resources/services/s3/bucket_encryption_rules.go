@@ -3,7 +3,6 @@ package s3
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -19,15 +18,7 @@ func bucketEncryptionRules() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonS3/latest/API/API_ServerSideEncryptionRule.html`,
 		Resolver:    fetchS3BucketEncryptionRules,
 		Transform:   transformers.TransformWithStruct(&types.ServerSideEncryptionRule{}),
-		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			{
-				Name:       "bucket_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
-			},
-		},
+		Columns:     schema.ColumnList{client.DefaultAccountIDColumn(false), bucketARNColumn},
 	}
 }
 

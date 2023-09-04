@@ -3,7 +3,6 @@ package s3
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3/models"
@@ -18,15 +17,7 @@ func bucketWebsites() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonS3/latest/API/API_WebsiteConfiguration.html`,
 		Resolver:    fetchS3BucketWebsites,
 		Transform:   transformers.TransformWithStruct(&s3.GetBucketWebsiteOutput{}, transformers.WithSkipFields("ResultMetadata")),
-		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			{
-				Name:       "bucket_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
-			},
-		},
+		Columns:     schema.ColumnList{client.DefaultAccountIDColumn(false), bucketARNColumn},
 	}
 }
 func fetchS3BucketWebsites(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {

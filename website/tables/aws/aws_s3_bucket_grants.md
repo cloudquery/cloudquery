@@ -20,8 +20,8 @@ This table depends on [aws_s3_buckets](aws_s3_buckets).
 |bucket_arn (PK)|`utf8`|
 |grantee_type (PK)|`utf8`|
 |grantee_id (PK)|`utf8`|
-|permission (PK)|`utf8`|
 |grantee|`json`|
+|permission (PK)|`utf8`|
 
 ## Example Queries
 
