@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v3.0.5...plugins-destination-mysql-v4.0.0) (2023-09-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* Split max index length between PKs ([#13569](https://github.com/cloudquery/cloudquery/issues/13569))
+
+### Bug Fixes
+
+* **deps:** Update github.com/99designs/go-keychain digest to 9cf53c8 ([#13561](https://github.com/cloudquery/cloudquery/issues/13561)) ([a170256](https://github.com/cloudquery/cloudquery/commit/a17025657e92b017fe3c8bd37abfaa2354e6e818))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to cd3d411 ([#13598](https://github.com/cloudquery/cloudquery/issues/13598)) ([f22bfa6](https://github.com/cloudquery/cloudquery/commit/f22bfa6b2d4fd0caeacf0726ccd307db38f8860c))
+* Split max index length between PKs ([#13569](https://github.com/cloudquery/cloudquery/issues/13569)) ([b0ad9d4](https://github.com/cloudquery/cloudquery/commit/b0ad9d4c62d47b735836fcffb77369e964f0a31b))
+
 ## [3.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v3.0.4...plugins-destination-mysql-v3.0.5) (2023-09-01)
 
 
