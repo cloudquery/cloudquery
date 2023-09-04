@@ -1,12 +1,16 @@
+-- Extract the list of tables with columns, types and constraints. Columns with multiple constraints will be
+-- listed multiple times.
+--
 -- +----------------+-------------+-------------+------------+----------------+-----------+-----------+---------------------+
 -- | ordinal_position | table_name | column_name | data_type | is_primary_key | not_null  | is_unique | constraint_name     |
 -- +----------------+-------------+-------------+------------+----------------+-----------+-----------+---------------------+
 -- |              1 | users       | id          | bigint     | YES            | true      | true      | cq_users_pk         |
+-- |              1 | users       | id          | bigint     | NO             | true      | true      | extra_constraint    |
 -- |              2 | users       | name        | text       | NO             | false     | false     |                     |
 -- |              3 | users       | email       | text       | NO             | true      | false     | cq_users_pk         |
 -- |              1 | posts       | id          | bigint     | YES            | true      | true      | cq_posts_pk         |
 -- |              2 | posts       | title       | text       | NO             | false     | false     |                     |
-SELECT
+WITH base_query AS (SELECT
     columns.ordinal_position AS ordinal_position,
     pg_class.relname AS table_name,
     pg_attribute.attname AS column_name,
@@ -53,6 +57,35 @@ FROM
 WHERE
         pg_attribute.attnum > 0
   AND NOT pg_attribute.attisdropped
-  AND pg_catalog.pg_namespace.nspname = '%s'
+  AND pg_catalog.pg_namespace.nspname = '%s')
+
+-- This is the outer query that aggregates the results of the base query, removing duplicate rows due to multiple constraints.
+-- The constraint_name selects the primary key constraint or inserts an empty string if a column is not due to a primary key.
+SELECT
+    bq.ordinal_position as ordinal_position,
+    bq.table_name as table_name,
+    bq.column_name as column_name,
+    bq.data_type as data_type,
+    bool_or(bq.is_primary_key) as is_primary_key,
+    bool_or(bq.not_null) as not_null,
+    bool_or(bq.is_unique) as is_unique,
+    coalesce((
+        SELECT
+            constraint_name
+        FROM base_query
+        WHERE
+            ordinal_position = bq.ordinal_position
+            AND table_name = bq.table_name
+            AND column_name = bq.column_name
+            AND data_type = bq.data_type
+            AND is_primary_key = TRUE
+        ),'') AS constraint_name
+FROM
+    base_query AS bq
+GROUP BY
+    ordinal_position,
+    table_name,
+    column_name,
+    data_type
 ORDER BY
-    table_name ASC , ordinal_position ASC;
+    table_name, ordinal_position;

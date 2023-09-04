@@ -202,7 +202,7 @@ func createTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string) 
 }
 
 func createTableWithUniqueKeys(ctx context.Context, conn *pgxpool.Pool, tableName string) error {
-	var query = `
+	var createTableQuery = `
 	create table %s (
 		column1 int primary key,
 		column2 int unique,
@@ -222,10 +222,16 @@ func createTableWithUniqueKeys(ctx context.Context, conn *pgxpool.Pool, tableNam
 		column16 int,
 		column17 int,
 		unique(column16, column17)
-	 )
- `
+	);
+`
+	var addAdditionalConstraints = `
+	alter table %s add constraint additional_constraint unique(column1);
+`
 
-	if _, err := conn.Exec(ctx, fmt.Sprintf(query, tableName)); err != nil {
+	if _, err := conn.Exec(ctx, fmt.Sprintf(createTableQuery, tableName)); err != nil {
+		return err
+	}
+	if _, err := conn.Exec(ctx, fmt.Sprintf(addAdditionalConstraints, tableName)); err != nil {
 		return err
 	}
 	return nil
