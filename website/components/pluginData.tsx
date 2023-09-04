@@ -740,7 +740,7 @@ export const ALL_PLUGINS: Plugin[] = [
     id: "bitbucket",
     href: "https://github.com/cloudquery/cloudquery/issues/5510",
     kind: "source",
-    availability: "unpublished",
+    availability: "free",
     category: "engineering-analytics",
     logo: "/images/logos/plugins/bitbucket.svg",
     buyLinks: {

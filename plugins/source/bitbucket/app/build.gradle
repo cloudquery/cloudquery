@@ -45,7 +45,7 @@ dependencies {
     implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
 
     implementation "io.cloudquery:plugin-pb-java:0.0.6"
-    implementation 'io.cloudquery.plugin.sdk:lib:0.0.8'
+    implementation 'io.cloudquery.plugin.sdk:lib:0.0.9'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -68,7 +68,8 @@ jar {
 
 application {
     // Define the main class for the application.
-    mainClass = 'bitbucket.App'
+    mainClass = 'bitbucket.MainClass'
+    applicationDefaultJvmArgs = ['--add-opens=java.base/java.nio=ALL-UNNAMED']
 }
 
 tasks.named('test') {
