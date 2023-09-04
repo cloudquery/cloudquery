@@ -38,6 +38,7 @@ func Buckets() *schema.Table {
 			bucketGrants(),
 			bucketLifecycles(),
 			bucketNotificationConfigurations(),
+			bucketObjectLockConfigurations(),
 			bucketWebsites(),
 		},
 	}
