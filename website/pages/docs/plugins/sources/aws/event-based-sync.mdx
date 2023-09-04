@@ -41,7 +41,7 @@ rds.amazonaws.com | CreateDBInstance
 The CloudFormation template will deploy the following architecture:
 
 
-![Event based syncing cloud infrastructure](../event-based-sync-architecture.png)
+![Event based syncing cloud infrastructure](/docs/plugins/sources/aws/event-based-sync-architecture.png)
 ```bash
 aws cloudformation deploy --template-file ./streaming-deployment.yml --stack-name <STACK-NAME> --capabilities CAPABILITY_IAM --disable-rollback --region <DESIRED-REGION>
 ```
