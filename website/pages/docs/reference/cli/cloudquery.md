@@ -17,6 +17,7 @@ Find more information at:
 ### Options
 
 ```
+      --config string            directory to store cloudquery global configuration such as credentials and tokens (default "/Users/a-shch/.cloudquery")
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
   -h, --help                     help for cloudquery
       --log-console              enable console logging
