@@ -1,6 +1,6 @@
 import { Widget } from '@typeform/embed-react';
 
-export const TypeForm = ({
+export const Typeform = ({
                              id,
                          }: {
     id: string;
