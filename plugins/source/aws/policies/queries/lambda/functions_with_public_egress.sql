@@ -13,7 +13,7 @@ from aws_lambda_functions,
 where sns in
     --  Find all subnets that include a route table that inclues a catchall route
     (select a->>'SubnetId'
-        from public.aws_ec2_route_tables, jsonb_array_elements(associations) a, jsonb_array_elements(routes) r
+        from aws_ec2_route_tables, jsonb_array_elements(associations) a, jsonb_array_elements(routes) r
         where r->>'DestinationCidrBlock' = '0.0.0.0/0' OR r->>'DestinationIpv6CidrBlock' = '::/0'
     )
     and sgs in

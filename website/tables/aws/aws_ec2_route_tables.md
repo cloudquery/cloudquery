@@ -100,7 +100,7 @@ WHERE
       SELECT
         a->>'SubnetId'
       FROM
-        public.aws_ec2_route_tables,
+        aws_ec2_route_tables,
         jsonb_array_elements(associations) AS a,
         jsonb_array_elements(routes) AS r
       WHERE
