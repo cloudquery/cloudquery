@@ -2,6 +2,7 @@ package tableoptions
 
 import (
 	"encoding/json"
+	"strings"
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -20,7 +21,6 @@ import (
 	securityhubtypes "github.com/aws/aws-sdk-go-v2/service/securityhub/types"
 	"github.com/stretchr/testify/require"
 
-	"github.com/cloudquery/plugin-sdk/v4/caser"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
@@ -74,8 +74,7 @@ func TestTableOptionsUnmarshal(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	csr := caser.New()
-	changeCaseForObject(m, csr.ToSnake)
+	changeCaseForObject(m, strings.ToLower)
 	nb, err := json.Marshal(m)
 	if err != nil {
 		t.Fatal(err)
