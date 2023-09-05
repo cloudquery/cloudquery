@@ -63,7 +63,7 @@
   "plugins/destination/kafka+FILLER": "0.0.0",
   "plugins/source/hackernews": "3.0.8",
   "plugins/source/hackernews+FILLER": "0.0.0",
-  "scaffold": "2.1.7",
+  "scaffold": "2.1.8",
   "scaffold+FILLER": "0.0.0",
   "plugins/source/oracle": "4.0.6",
   "plugins/source/oracle+FILLER": "0.0.0",
@@ -99,7 +99,7 @@
   "plugins/source/googleanalytics+FILLER": "0.0.0",
   "plugins/source/mysql": "2.0.5",
   "plugins/source/mysql+FILLER": "0.0.0",
-  "plugins/destination/gremlin": "2.2.6",
+  "plugins/destination/gremlin": "2.2.7",
   "plugins/destination/gremlin+FILLER": "0.0.0",
   "plugins/destination/meilisearch": "2.2.5",
   "plugins/destination/meilisearch+FILLER": "1.0.0",
@@ -109,12 +109,12 @@
   "plugins/source/oracledb+FILLER": "0.0.0",
   "plugins/source/square": "1.0.0",
   "plugins/source/square+FILLER": "0.0.0",
-  "plugins/source/typeform": "1.0.1",
+  "plugins/source/typeform": "1.0.2",
   "plugins/source/typeform+FILLER": "0.0.0",
   "plugins/source/jira": "1.0.3",
   "plugins/source/jira+FILLER": "0.0.0",
   "plugins/source/vault": "1.0.1",
   "plugins/source/vault+FILLER": "0.0.0",
   "plugins/source/airtable": "1.1.0",
-  "plugins/source/bitbucket": "1.0.0"
+  "plugins/source/bitbucket": "1.0.1"
 }
