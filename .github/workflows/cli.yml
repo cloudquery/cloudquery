@@ -53,9 +53,6 @@ jobs:
       - name: gen-docs
         if: matrix.os == 'large-ubuntu-monorepo'
         run: make gen-docs
-      - name: Show the diff (debug)
-        if: matrix.os == 'large-ubuntu-monorepo'
-        run: git diff ../website/pages/docs/reference/cli/*.md
       - name: Fail if docs are changed
         if: matrix.os == 'large-ubuntu-monorepo'
         run: test "$(git status -s ../website/pages/docs/reference/cli/*.md | wc -l)" -eq 0
