@@ -4,12 +4,13 @@ import (
 	"context"
 	"database/sql/driver"
 	"fmt"
+	"math/big"
 	"strings"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/apache/arrow/go/v13/arrow/decimal128"
-	"github.com/apache/arrow/go/v13/arrow/memory"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v14/arrow/array"
+	"github.com/apache/arrow/go/v14/arrow/decimal128"
+	"github.com/apache/arrow/go/v14/arrow/memory"
 	"github.com/cloudquery/plugin-sdk/v4/scalar"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
@@ -134,12 +135,33 @@ func prepareValueForResourceSet(dataType arrow.DataType, v any) (any, error) {
 			if !vt.Valid {
 				v = nil
 			} else {
-				v = vt.Int.Uint64()
+				v = numericToUint64(vt)
 			}
 		}
 		return v, nil
 	}
 	return v, nil
+}
+
+var (
+	big10 = big.NewInt(10)
+)
+
+func numericToUint64(n pgtype.Numeric) uint64 {
+	if n.Exp < 0 {
+		panic("unsupported negative exponent")
+	}
+
+	val := n.Int.Uint64()
+	if n.Exp == 0 {
+		return val
+	}
+
+	// exp can only be positive for our use-case
+	return new(big.Int).Mul(
+		new(big.Int).SetUint64(val),
+		new(big.Int).Exp(big10, big.NewInt(int64(n.Exp)), nil),
+	).Uint64()
 }
 
 func stringForTime(t pgtype.Time, unit arrow.TimeUnit) string {

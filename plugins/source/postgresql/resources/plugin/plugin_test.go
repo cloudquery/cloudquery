@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/apache/arrow/go/v13/arrow/array"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v14/arrow/array"
 	"github.com/cloudquery/cloudquery/plugins/source/postgresql/client"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
@@ -29,6 +29,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"golang.org/x/sync/errgroup"
 )
+
+var replacer = strings.NewReplacer("(", "", ")", "", " ", "_")
 
 func getTestConnection(ctx context.Context, logger zerolog.Logger, connectionString string) (*pgxpool.Pool, error) {
 	pgxConfig, err := pgxpool.ParseConfig(connectionString)
@@ -179,9 +181,10 @@ func createTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string) 
 	sb.WriteString("CREATE TABLE ")
 	sb.WriteString(pgx.Identifier{tableName}.Sanitize())
 	sb.WriteString(" (")
+
 	columns := getTestCases(0)
 	for i, col := range columns {
-		sb.WriteString(pgx.Identifier{col.typeName + "_type"}.Sanitize())
+		sb.WriteString(pgx.Identifier{replacer.Replace(col.typeName) + "_type"}.Sanitize())
 		sb.WriteString(" ")
 		sb.WriteString(col.typeName)
 		if col.typeName == "uuid" {
@@ -199,7 +202,7 @@ func createTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string) 
 }
 
 func createTableWithUniqueKeys(ctx context.Context, conn *pgxpool.Pool, tableName string) error {
-	var query = `
+	var createTableQuery = `
 	create table %s (
 		column1 int primary key,
 		column2 int unique,
@@ -219,10 +222,16 @@ func createTableWithUniqueKeys(ctx context.Context, conn *pgxpool.Pool, tableNam
 		column16 int,
 		column17 int,
 		unique(column16, column17)
-	 )
- `
+	);
+`
+	var addAdditionalConstraints = `
+	alter table %s add constraint additional_constraint unique(column1);
+`
 
-	if _, err := conn.Exec(ctx, fmt.Sprintf(query, tableName)); err != nil {
+	if _, err := conn.Exec(ctx, fmt.Sprintf(createTableQuery, tableName)); err != nil {
+		return err
+	}
+	if _, err := conn.Exec(ctx, fmt.Sprintf(addAdditionalConstraints, tableName)); err != nil {
 		return err
 	}
 	return nil
@@ -235,7 +244,7 @@ func insertTestTable(ctx context.Context, conn *pgxpool.Pool, tableName string, 
 		if col.value == nil {
 			continue
 		}
-		query += pgx.Identifier{col.typeName + "_type"}.Sanitize() + ", "
+		query += pgx.Identifier{replacer.Replace(col.typeName) + "_type"}.Sanitize() + ", "
 	}
 	query = query[:len(query)-2] + ") VALUES ("
 	dataIndex := 0
@@ -588,4 +597,135 @@ func TestMigrate(t *testing.T) {
 		{Name: "column16", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: false, NotNull: false},
 		{Name: "column17", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: false, NotNull: false},
 	}, table.Columns)
+}
+
+func TestConstraint(t *testing.T) {
+	const tableName = "test_pg_constraint"
+
+	tests := map[string]struct {
+		dbSetup              func() string
+		expectedColumns      schema.ColumnList
+		expectedPKConstraint string
+	}{
+		"a simple primary key with default pk constraint": {
+			dbSetup: func() string {
+				return "create table test_pg_constraint (column1 int primary key);"
+			},
+			expectedColumns: schema.ColumnList{
+				{Name: "column1", Type: &arrow.Int32Type{}, PrimaryKey: true, Unique: true, NotNull: true},
+			},
+			expectedPKConstraint: "test_pg_constraint_pkey",
+		},
+		"a primary key with additional unique constraint and custom pk constraint": {
+			dbSetup: func() string {
+				return `create table test_pg_constraint (column1 int);
+						alter table test_pg_constraint add constraint my_new_private_key primary key(column1);
+						alter table test_pg_constraint add constraint my_unique_private_key unique(column1);
+						alter table test_pg_constraint alter column column1 set not null;`
+			},
+			expectedColumns: schema.ColumnList{
+				{Name: "column1", Type: &arrow.Int32Type{}, PrimaryKey: true, Unique: true, NotNull: true},
+			},
+			expectedPKConstraint: "my_new_private_key",
+		},
+		"multiple columns with no additional constraints": {
+			dbSetup: func() string {
+				return "create table test_pg_constraint (column1 int primary key, column2 int);"
+			},
+			expectedColumns: schema.ColumnList{
+				{Name: "column1", Type: &arrow.Int32Type{}, PrimaryKey: true, Unique: true, NotNull: true},
+				{Name: "column2", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: false, NotNull: false},
+			},
+			expectedPKConstraint: "test_pg_constraint_pkey",
+		},
+		"multiple columns with additional unique constraint": {
+			dbSetup: func() string {
+				return `create table test_pg_constraint (column1 int primary key, column2 int);
+						alter table test_pg_constraint add constraint new_constraint unique(column2);`
+			},
+			expectedColumns: schema.ColumnList{
+				{Name: "column1", Type: &arrow.Int32Type{}, PrimaryKey: true, Unique: true, NotNull: true},
+				{Name: "column2", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: false},
+			},
+			expectedPKConstraint: "test_pg_constraint_pkey",
+		},
+		"multiple columns with additional unique constraint and not null": {
+			dbSetup: func() string {
+				return `create table test_pg_constraint (column1 int primary key, column2 int);
+						alter table test_pg_constraint add constraint new_constraint unique(column2);
+						alter table test_pg_constraint alter column column2 set not null;`
+			},
+			expectedColumns: schema.ColumnList{
+				{Name: "column1", Type: &arrow.Int32Type{}, PrimaryKey: true, Unique: true, NotNull: true},
+				{Name: "column2", Type: &arrow.Int32Type{}, PrimaryKey: false, Unique: true, NotNull: true},
+			},
+			expectedPKConstraint: "test_pg_constraint_pkey",
+		},
+	}
+
+	for desc, tC := range tests {
+		t.Run(desc, func(t *testing.T) {
+			cleanup, table := generateTestingTable(t, tableName, tC.dbSetup)
+			defer cleanup()
+
+			require.Equal(t, tC.expectedPKConstraint, table.PkConstraintName)
+			require.Equal(t, tC.expectedColumns, table.Columns)
+		})
+	}
+}
+
+func generateTestingTable(t *testing.T, tableName string, query func() string) (func(), *schema.Table) {
+	p := Plugin()
+	ctx := context.Background()
+	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
+		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
+	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+	p.SetLogger(l)
+	spec := client.Spec{
+		ConnectionString: getTestConnectionString(),
+		PgxLogLevel:      client.LogLevelTrace,
+	}
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	conn, err := getTestConnection(ctx, l, spec.ConnectionString)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err := conn.Exec(ctx, fmt.Sprintf("DROP TABLE IF EXISTS %s", tableName)); err != nil {
+		t.Fatal(err)
+	}
+	_, err = conn.Exec(ctx, query())
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Init the plugin so we can call migrate
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
+		t.Fatal(err)
+	}
+	res := make(chan message.SyncMessage, 1)
+	g := errgroup.Group{}
+	g.Go(func() error {
+		defer close(res)
+		opts := plugin.SyncOptions{Tables: []string{tableName}}
+		return p.Sync(ctx, opts, res)
+	})
+	var table *schema.Table
+	for r := range res {
+		m, ok := r.(*message.SyncMigrateTable)
+		if ok {
+			table = m.Table
+		}
+	}
+	err = g.Wait()
+	if err != nil {
+		t.Fatal("got unexpected error:", err)
+	}
+
+	return func() {
+		conn.Close()
+	}, table
 }

@@ -5,7 +5,7 @@ import (
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
@@ -54,7 +54,8 @@ func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	g.Go(func() error {
 		// fetch ec2.Images owned by this account
 		pag := ec2.NewDescribeImagesPaginator(svc, &ec2.DescribeImagesInput{
-			Owners: []string{"self"},
+			Owners:     []string{"self"},
+			MaxResults: aws.Int32(1000),
 		})
 		for pag.HasMorePages() {
 			resp, err := pag.NextPage(ctx, func(options *ec2.Options) {
@@ -72,6 +73,7 @@ func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.
 		// fetch ec2.Images that are shared with this account
 		pag := ec2.NewDescribeImagesPaginator(svc, &ec2.DescribeImagesInput{
 			ExecutableUsers: []string{"self"},
+			MaxResults:      aws.Int32(1000),
 		})
 		for pag.HasMorePages() {
 			resp, err := pag.NextPage(ctx, func(options *ec2.Options) {

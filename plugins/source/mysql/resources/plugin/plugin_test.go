@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/mysql/client"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
@@ -84,7 +84,7 @@ func createTable(ctx context.Context, db *sql.DB, table *schema.Table) error {
 	return err
 }
 
-func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, records []arrow.Record) error {
+func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, record arrow.Record) error {
 	sb := strings.Builder{}
 	sb.WriteString("INSERT INTO " + client.Identifier(table.Name))
 	sb.WriteString(" (")
@@ -99,15 +99,13 @@ func insertTable(ctx context.Context, db *sql.DB, table *schema.Table, records [
 	sb.WriteString(")")
 
 	query := sb.String()
-	for _, record := range records {
-		transformedRecords, err := client.TransformRecord(record)
-		if err != nil {
+	transformedRecords, err := client.TransformRecord(record)
+	if err != nil {
+		return err
+	}
+	for _, transformedRecord := range transformedRecords {
+		if _, err := db.ExecContext(ctx, query, transformedRecord...); err != nil {
 			return err
-		}
-		for _, transformedRecord := range transformedRecords {
-			if _, err := db.ExecContext(ctx, query, transformedRecord...); err != nil {
-				return err
-			}
 		}
 	}
 	return nil
@@ -150,8 +148,8 @@ func TestPlugin(t *testing.T) {
 		t.Fatal(err)
 	}
 	syncTime := time.Now()
-	expectedRecords := schema.NewTestDataGenerator().Generate(testTable, schema.GenTestDataOptions{MaxRows: 2, SyncTime: syncTime})
-	if err := insertTable(ctx, db, testTable, expectedRecords); err != nil {
+	writtenRecord := schema.NewTestDataGenerator().Generate(testTable, schema.GenTestDataOptions{MaxRows: 2, SyncTime: syncTime})
+	if err := insertTable(ctx, db, testTable, writtenRecord); err != nil {
 		t.Fatal(err)
 	}
 
@@ -196,7 +194,8 @@ func TestPlugin(t *testing.T) {
 
 	sortResults(testTable, actualRecords)
 
-	for recordIndex, expectedRecord := range expectedRecords {
+	for recordIndex := int64(0); recordIndex < writtenRecord.NumRows(); recordIndex++ {
+		expectedRecord := writtenRecord.NewSlice(recordIndex, recordIndex+1)
 		actualRecord := actualRecords[recordIndex]
 		if expectedRecord.NumCols() != actualRecord.NumCols() {
 			t.Fatalf("expected record %d to have %d columns, got %d", recordIndex, expectedRecord.NumCols(), actualRecord.NumCols())

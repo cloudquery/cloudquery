@@ -50,19 +50,21 @@ func fetchRepositories(ctx context.Context, meta schema.ClientMeta, parent *sche
 		if len(page.Repositories) == 0 {
 			continue
 		}
-		maxBatchGetRepositories := 100
+		const maxBatchGetRepositories = 100
 		for i := 0; i < len(page.Repositories); i += maxBatchGetRepositories {
 			end := i + maxBatchGetRepositories
 			if end > len(page.Repositories) {
 				end = len(page.Repositories)
 			}
-			repoNames := make([]string, len(page.Repositories[i:end]))
-			for i, repo := range page.Repositories {
-				repoNames[i] = *repo.RepositoryName
+			batch := page.Repositories[i:end]
+			repoNames := make([]string, len(batch))
+			for j, repo := range batch {
+				repoNames[j] = *repo.RepositoryName
 			}
-			repositoryOutput, err := svc.BatchGetRepositories(ctx, &codecommit.BatchGetRepositoriesInput{RepositoryNames: repoNames}, func(options *codecommit.Options) {
-				options.Region = cl.Region
-			})
+			repositoryOutput, err := svc.BatchGetRepositories(ctx,
+				&codecommit.BatchGetRepositoriesInput{RepositoryNames: repoNames},
+				func(options *codecommit.Options) { options.Region = cl.Region },
+			)
 			if err != nil {
 				return err
 			}

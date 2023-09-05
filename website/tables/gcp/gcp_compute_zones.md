@@ -10,6 +10,7 @@ The primary key for this table is **self_link**.
 
 The following tables depend on gcp_compute_zones:
   - [gcp_compute_machine_types](gcp_compute_machine_types)
+  - [gcp_compute_osconfig_inventories](gcp_compute_osconfig_inventories)
 
 ## Columns
 

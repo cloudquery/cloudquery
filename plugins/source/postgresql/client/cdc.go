@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/apache/arrow/go/v13/arrow/memory"
+	"github.com/apache/arrow/go/v14/arrow/array"
+	"github.com/apache/arrow/go/v14/arrow/memory"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/scalar"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -226,31 +226,6 @@ func (c *Client) listenCDC(ctx context.Context, res chan<- message.SyncMessage) 
 				}
 				res <- resource
 			case *pglogrepl.DeleteMessage:
-				rel, ok := relations[logicalMsg.RelationID]
-				if !ok {
-					return fmt.Errorf("unknown relation ID %d", logicalMsg.RelationID)
-				}
-				values := map[string]any{}
-				for idx, col := range logicalMsg.OldTuple.Columns {
-					colName := rel.Columns[idx].Name
-					switch col.DataType {
-					case 'n': // null
-						values[colName] = nil
-					case 'u': // unchanged toast
-						// This TOAST value was not changed. TOAST values are not stored in the tuple, and logical replication doesn't want to spend a disk read to fetch its value for you.
-					case 't': // text
-						val, err := decodeTextColumnData(typeMap, col.Data, rel.Columns[idx].DataType)
-						if err != nil {
-							return fmt.Errorf("error decoding column data: %w", err)
-						}
-						values[colName] = val
-					}
-				}
-				resource, err := c.resourceFromCDCValues(rel.RelationName, values)
-				if err != nil {
-					return err
-				}
-				res <- resource
 			case *pglogrepl.TruncateMessage:
 			case *pglogrepl.TypeMessage:
 			case *pglogrepl.OriginMessage:

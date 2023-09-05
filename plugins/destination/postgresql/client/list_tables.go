@@ -3,7 +3,6 @@ package client
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
@@ -62,11 +61,12 @@ ORDER BY
 	table_name ASC, ordinal_position ASC;
 `
 
-func (c *Client) listTables(ctx context.Context, include, exclude []string) (schema.Tables, error) {
+func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
+	c.pgTablesToPKConstraints = map[string]string{}
 	var tables schema.Tables
-	whereClause := c.whereClause(include, exclude)
+	var whereClause string
 	if c.pgType == pgTypeCockroachDB {
-		whereClause += " AND information_schema.columns.is_hidden != 'YES'"
+		whereClause = " AND information_schema.columns.is_hidden != 'YES'"
 	}
 	q := fmt.Sprintf(selectTables, c.currentSchemaName, whereClause)
 	rows, err := c.conn.Query(ctx, q)
@@ -89,7 +89,7 @@ func (c *Client) listTables(ctx context.Context, include, exclude []string) (sch
 		}
 		table := tables[len(tables)-1]
 		if pkName != "" {
-			table.PkConstraintName = pkName
+			c.pgTablesToPKConstraints[tableName], table.PkConstraintName = pkName, pkName
 		}
 		table.Columns = append(table.Columns, schema.Column{
 			Name:       columnName,
@@ -99,32 +99,4 @@ func (c *Client) listTables(ctx context.Context, include, exclude []string) (sch
 		})
 	}
 	return tables, nil
-}
-
-func (c *Client) whereClause(include, exclude []string) string {
-	if len(include) == 0 && len(exclude) == 0 {
-		return ""
-	}
-	var where string
-	if len(include) > 0 {
-		where = fmt.Sprintf("AND pg_class.relname IN (%s)", c.inClause(include))
-	}
-	if len(exclude) > 0 {
-		where = fmt.Sprintf("AND pg_class.relname NOT IN (%s)", c.inClause(exclude))
-	}
-	return where
-}
-
-func (*Client) inClause(values []string) string {
-	var inClause string
-	for i, value := range values {
-		value = strings.ReplaceAll(value, "'", "")  // strip single quotes
-		value = strings.ReplaceAll(value, "*", "%") // replace * with %
-		if i == 0 {
-			inClause = fmt.Sprintf("'%s'", value)
-			continue
-		}
-		inClause += fmt.Sprintf(", '%s'", value)
-	}
-	return inClause
 }

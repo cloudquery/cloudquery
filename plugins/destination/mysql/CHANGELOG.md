@@ -1,5 +1,37 @@
 # Changelog
 
+## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v3.0.5...plugins-destination-mysql-v4.0.0) (2023-09-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* Split max index length between PKs ([#13569](https://github.com/cloudquery/cloudquery/issues/13569))
+
+### Bug Fixes
+
+* **deps:** Update github.com/99designs/go-keychain digest to 9cf53c8 ([#13561](https://github.com/cloudquery/cloudquery/issues/13561)) ([a170256](https://github.com/cloudquery/cloudquery/commit/a17025657e92b017fe3c8bd37abfaa2354e6e818))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to cd3d411 ([#13598](https://github.com/cloudquery/cloudquery/issues/13598)) ([f22bfa6](https://github.com/cloudquery/cloudquery/commit/f22bfa6b2d4fd0caeacf0726ccd307db38f8860c))
+* Split max index length between PKs ([#13569](https://github.com/cloudquery/cloudquery/issues/13569)) ([b0ad9d4](https://github.com/cloudquery/cloudquery/commit/b0ad9d4c62d47b735836fcffb77369e964f0a31b))
+
+## [3.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v3.0.4...plugins-destination-mysql-v3.0.5) (2023-09-01)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.6.0 ([#13492](https://github.com/cloudquery/cloudquery/issues/13492)) ([c305876](https://github.com/cloudquery/cloudquery/commit/c305876e3d92944aa6c1a26547f786fdc5b50e23))
+* Normalize PKs to not null ([#13557](https://github.com/cloudquery/cloudquery/issues/13557)) ([2230538](https://github.com/cloudquery/cloudquery/commit/223053850d8fd281a267d23bfd6e9262ec9cbd77))
+
+## [3.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v3.0.3...plugins-destination-mysql-v3.0.4) (2023-08-29)
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/cloudquery/arrow/go/v13` to `github.com/apache/arrow/go/v14` ([#13341](https://github.com/cloudquery/cloudquery/issues/13341)) ([feb8f87](https://github.com/cloudquery/cloudquery/commit/feb8f87d8d761eb9c49ce84329ad0397f730a918))
+* **deps:** Update `github.com/cloudquery/plugin-sdk/v4` to v4.5.5 ([#13295](https://github.com/cloudquery/cloudquery/issues/13295)) ([fce7e9e](https://github.com/cloudquery/cloudquery/commit/fce7e9e852ff6056eb0b4875f326c9ea3b81389c))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 5b83d4f ([#13203](https://github.com/cloudquery/cloudquery/issues/13203)) ([b0a4b8c](https://github.com/cloudquery/cloudquery/commit/b0a4b8ccf7c429bf5a6ed88866865212015b68e4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.1 ([#13195](https://github.com/cloudquery/cloudquery/issues/13195)) ([a184c37](https://github.com/cloudquery/cloudquery/commit/a184c3786ad49df8564344773e9b96f617ef87a1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.6 ([#13345](https://github.com/cloudquery/cloudquery/issues/13345)) ([a995a05](https://github.com/cloudquery/cloudquery/commit/a995a0598a209e0fe3ba09f4ced2a052dc14b67a))
+
 ## [3.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v3.0.2...plugins-destination-mysql-v3.0.3) (2023-08-15)
 
 
