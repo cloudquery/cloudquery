@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.1.8](https://github.com/cloudquery/cloudquery/compare/scaffold-v2.1.7...scaffold-v2.1.8) (2023-09-05)
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/cloudquery/plugin-sdk/v4` to `v4.6.1` ([#13570](https://github.com/cloudquery/cloudquery/issues/13570)) ([e0ad43b](https://github.com/cloudquery/cloudquery/commit/e0ad43bc724dc4dda6f8886c63732d955437998f))
+* **deps:** Update github.com/99designs/go-keychain digest to 9cf53c8 ([#13561](https://github.com/cloudquery/cloudquery/issues/13561)) ([a170256](https://github.com/cloudquery/cloudquery/commit/a17025657e92b017fe3c8bd37abfaa2354e6e818))
+* **deps:** Update github.com/apache/arrow/go/v14 digest to a526ba6 ([#13562](https://github.com/cloudquery/cloudquery/issues/13562)) ([248672b](https://github.com/cloudquery/cloudquery/commit/248672beb020828cde1cb608d5c1ed6d656c777b))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to cd3d411 ([#13598](https://github.com/cloudquery/cloudquery/issues/13598)) ([f22bfa6](https://github.com/cloudquery/cloudquery/commit/f22bfa6b2d4fd0caeacf0726ccd307db38f8860c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.6.4 ([#13519](https://github.com/cloudquery/cloudquery/issues/13519)) ([9d25165](https://github.com/cloudquery/cloudquery/commit/9d25165820703844c6de96688d939aa5033608ae))
+
 ## [2.1.7](https://github.com/cloudquery/cloudquery/compare/scaffold-v2.1.6...scaffold-v2.1.7) (2023-08-29)
 
 
