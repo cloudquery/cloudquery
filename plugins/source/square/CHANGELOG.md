@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.0.0...plugins-source-square-v1.0.1) (2023-09-05)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.2 ([#13571](https://github.com/cloudquery/cloudquery/issues/13571)) ([de71388](https://github.com/cloudquery/cloudquery/commit/de713889f9ccdbb963839d37edc122ff0ca7518e))
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.3 ([#13583](https://github.com/cloudquery/cloudquery/issues/13583)) ([ca673c1](https://github.com/cloudquery/cloudquery/commit/ca673c16ffa38eaab303f9502823696c85cd4d61))
+* **deps:** Update github.com/99designs/go-keychain digest to 9cf53c8 ([#13561](https://github.com/cloudquery/cloudquery/issues/13561)) ([a170256](https://github.com/cloudquery/cloudquery/commit/a17025657e92b017fe3c8bd37abfaa2354e6e818))
+
 ## [1.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v0.1.2...plugins-source-square-v1.0.0) (2023-08-14)
 
 
