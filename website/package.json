@@ -16,6 +16,8 @@
   "license": "MPL-2.0",
   "dependencies": {
     "@heroicons/react": "^2.0.14",
+    "@typeform/embed": "2.16.1",
+    "@typeform/embed-react": "2.31.0",
     "copy-to-clipboard": "3.3.3",
     "glob": "^9.0.1",
     "gray-matter": "^4.0.3",
