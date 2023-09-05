@@ -39,10 +39,10 @@ type AwsOrg struct {
 }
 
 type EventBasedSync struct {
-	Account            Account    `json:"account"`
-	KinesisStreamARN   string     `json:"kinesis_stream_arn"`
-	StartTime          *time.Time `json:"start_time,omitempty"`
-	EventBasedSyncOnly bool       `json:"event_based_sync_only"`
+	FullSync         *bool      `json:"full_sync,omitempty"`
+	Account          Account    `json:"account"`
+	KinesisStreamARN string     `json:"kinesis_stream_arn"`
+	StartTime        *time.Time `json:"start_time,omitempty"`
 }
 type Spec struct {
 	Regions                   []string                   `json:"regions,omitempty"`
@@ -59,7 +59,7 @@ type Spec struct {
 	UsePaidAPIs               bool                       `json:"use_paid_apis"`
 	TableOptions              *tableoptions.TableOptions `json:"table_options,omitempty"`
 	Concurrency               int                        `json:"concurrency"`
-	EventBasedSync            []EventBasedSync           `json:"event_based_sync,omitempty"`
+	EventBasedSync            *EventBasedSync            `json:"event_based_sync,omitempty"`
 }
 
 func (s *Spec) Validate() error {
@@ -95,13 +95,10 @@ func (s *Spec) Validate() error {
 		}
 	}
 
-	if len(s.EventBasedSync) > 1 {
-		return fmt.Errorf("only one event_based_sync is allowed at this time")
-	}
-	if len(s.EventBasedSync) == 1 {
-		_, err := arn.Parse(s.EventBasedSync[0].KinesisStreamARN)
+	if s.EventBasedSync != nil {
+		_, err := arn.Parse(s.EventBasedSync.KinesisStreamARN)
 		if err != nil {
-			return fmt.Errorf("failed to parse kinesis arn (%s): %w", s.EventBasedSync[0].KinesisStreamARN, err)
+			return fmt.Errorf("failed to parse kinesis arn (%s): %w", s.EventBasedSync.KinesisStreamARN, err)
 		}
 	}
 	return nil
@@ -126,5 +123,10 @@ func (s *Spec) SetDefaults() {
 	}
 	if s.Concurrency == 0 {
 		s.Concurrency = defaultMaxConcurrency
+	}
+
+	if s.EventBasedSync != nil && s.EventBasedSync.FullSync == nil {
+		fullSync := true
+		s.EventBasedSync.FullSync = &fullSync
 	}
 }
