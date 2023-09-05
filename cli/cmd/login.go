@@ -6,24 +6,23 @@ import (
 	"net"
 	"net/http"
 	"os"
-	"os/exec"
 	"os/signal"
 	"path"
-	"runtime"
 	"syscall"
 	"time"
 
+	"github.com/pkg/browser"
 	"github.com/spf13/cobra"
 )
 
 const (
 	loginShort = "Login to CloudQuery Hub."
 	loginLong  = `Login to CloudQuery Hub.
-	
-	This is required to download plugins from CloudQuery Hub.
 
-	Local plugins and different registries don't need login.
-	`
+This is required to download plugins from CloudQuery Hub.
+
+Local plugins and different registries don't need login.
+`
 
 	accountsURL = "https://accounts.cloudquery.io"
 )
@@ -89,26 +88,6 @@ func waitForServer(ctx context.Context, addr string) error {
 	}
 }
 
-func openBrowser(url string) error {
-	switch runtime.GOOS {
-	case "linux":
-		if err := exec.Command("xdg-open", url).Start(); err != nil {
-			return fmt.Errorf("failed to open browser with xdg-open: %w", err)
-		}
-	case "windows":
-		if err := exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start(); err != nil {
-			return fmt.Errorf("failed to open browser with rundll32: %w", err)
-		}
-	case "darwin":
-		if err := exec.Command("open", url).Start(); err != nil {
-			return fmt.Errorf("failed to open browser with open: %w", err)
-		}
-	default:
-		return fmt.Errorf("unsupported platform for browser auto-open: %s", runtime.GOOS)
-	}
-	return nil
-}
-
 func runLogin(ctx context.Context, userConfig string) error {
 	mux := http.NewServeMux()
 	refreshToken := ""
@@ -143,8 +122,9 @@ func runLogin(ctx context.Context, userConfig string) error {
 	if err := waitForServer(ctx, localServerAddr); err != nil {
 		return err
 	}
+
 	url := fmt.Sprintf("%s?returnTo=%s/callback", accountsURL, localServerAddr)
-	if err := openBrowser(url); err != nil {
+	if err := browser.OpenURL(url); err != nil {
 		fmt.Printf("Failed to open browser at %s. Please open the URL manually.\n", accountsURL)
 	} else {
 		fmt.Printf("Opened browser at %s. Waiting for authentication to complete.\n", url)
