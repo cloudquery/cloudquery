@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"io"
 	"net"
 	"net/http"
 	"os"
@@ -11,6 +12,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/cenkalti/backoff/v4"
 	"github.com/pkg/browser"
 	"github.com/spf13/cobra"
 )
@@ -57,35 +59,27 @@ func newCmdLogin() *cobra.Command {
 	return cmd
 }
 
-func waitForServer(ctx context.Context, addr string) error {
-	delay := 100 * time.Millisecond
-	totalWait := 0
-	maxWait := 3 * time.Second
-	for {
-		if ctx.Err() != nil {
-			return ctx.Err()
-		}
-		resp, err := http.Get(addr + "/health")
-		if resp != nil {
-			resp.Body.Close()
-		}
+func waitForServer(ctx context.Context, url string) error {
+	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
+	defer cancel()
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, http.NoBody)
+	if err != nil {
+		return err
+	}
+
+	return backoff.Retry(func() error {
+		resp, err := http.DefaultClient.Do(req)
 		if err != nil {
-			fmt.Println(err)
-			time.Sleep(delay)
-			totalWait += int(delay)
-			if delay > maxWait {
-				return fmt.Errorf("failed to connect to local server. timed out: %w", err)
-			}
+			return err
 		}
-		if err == nil && resp.StatusCode == http.StatusOK {
+		defer resp.Body.Close()
+		_, _ = io.Copy(io.Discard, resp.Body)
+		if resp.StatusCode == http.StatusOK {
 			return nil
 		}
-		if delay > maxWait {
-			return fmt.Errorf("failed to connect to local server. error code: %d", resp.StatusCode)
-		}
-		time.Sleep(delay)
-		totalWait += int(delay)
-	}
+		return fmt.Errorf("failed to connect to local server. error code: %d", resp.StatusCode)
+	}, backoff.WithContext(backoff.NewConstantBackOff(100*time.Millisecond), ctx))
 }
 
 func runLogin(ctx context.Context, userConfig string) error {
@@ -138,7 +132,7 @@ func runLogin(ctx context.Context, userConfig string) error {
 	}
 
 	// Create a context for the shutdown with a 5-second timeout.
-	ctx, cancel := context.WithTimeout(ctx, 2*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 	if err := server.Shutdown(ctx); err != nil {
 		return fmt.Errorf("failed to shutdown server: %w", err)
@@ -152,7 +146,7 @@ func runLogin(ctx context.Context, userConfig string) error {
 		return fmt.Errorf("failed to get refresh token")
 	}
 	tokenPath := path.Join(userConfig, "token")
-	err = os.WriteFile(tokenPath, []byte(refreshToken), 0644)
+	err = os.WriteFile(tokenPath, []byte(refreshToken), 0o644)
 	if err != nil {
 		return fmt.Errorf("failed to write token to %s: %w", tokenPath, err)
 	}
