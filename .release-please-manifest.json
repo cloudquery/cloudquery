@@ -105,7 +105,7 @@
   "plugins/destination/meilisearch+FILLER": "1.0.0",
   "plugins/source/firestore": "3.0.6",
   "plugins/source/firestore+FILLER": "0.0.0",
-  "plugins/source/oracledb": "3.0.6",
+  "plugins/source/oracledb": "3.0.7",
   "plugins/source/oracledb+FILLER": "0.0.0",
   "plugins/source/square": "1.0.1",
   "plugins/source/square+FILLER": "0.0.0",
