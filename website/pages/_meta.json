@@ -12,14 +12,13 @@
       "toc": true
     }
   },
-  "register_for_cloud": {
+  "register-for-cloud": {
     "title": "Register for CloudQuery Cloud",
     "type": "page",
     "theme": {
       "layout": "full",
       "sidebar": false
-    },
-    "href": "/register_for_cloud"
+    }
   },
   "integrations": {
     "title": "Integrations",
@@ -110,10 +109,6 @@
         "href": "/docs/reference/destination-spec"
       }
     }
-  },
-  "Careers": {
-    "title": "Careers",
-    "href": "/docs/careers/overview"
   },
   "how-to-guides":  {
     "title": "How-to Guides",
