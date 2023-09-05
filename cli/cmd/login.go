@@ -124,8 +124,8 @@ func runLogin(ctx context.Context) (err error) {
 			}
 		}
 	}()
-	localServerAddr := fmt.Sprintf("http://localhost:%d", listener.Addr().(*net.TCPAddr).Port)
-	if err := waitForServer(ctx, localServerAddr); err != nil {
+	localServerAddr := "http://" + listener.Addr().String()
+	if err := waitForServer(ctx, localServerAddr+"/health"); err != nil {
 		return err
 	}
 
