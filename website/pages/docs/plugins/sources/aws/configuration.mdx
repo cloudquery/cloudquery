@@ -161,26 +161,35 @@ The `table_options` parameter is deprecated and will be removed soon. Please rea
   table_options:
     aws_accessanalyzer_analyzer_findings:
       list_findings:
-        - <[ListFindings](https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_ListFindings.html)>
+        - <ListFindings>
     aws_alpha_cloudwatch_metrics:
       - list_metrics:
-          <[ListMetrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_ListMetrics.html)>
+          <ListMetrics>
         get_metric_statistics:
           # Namespace, MetricName and Dimensions fields cannot be set here and are derived from the result of the respective ListMetrics call
-          - <[GetMetricStatistics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html)>
+          - <GetMetricStatistics>
     aws_cloudtrail_events:
       lookup_events:
-        - <[LookupEvents](https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_LookupEvents.html)>
+        - <LookupEvents>
     aws_inspector2_findings:
       list_findings:
-        - <[ListFindings](https://docs.aws.amazon.com/inspector/v2/APIReference/API_ListFindings.html)>
+        - <ListFindings>
     aws_securityhub_findings:
       get_findings:
-        - <[GetFindings](https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html)>
+        - <GetFindings>
     aws_ecs_cluster_tasks:
       list_tasks:
-        - <[ListTasks](https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ListTasks.html)>
+        - <ListTasks>
   ```
+    - [ListFindings](https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_ListFindings.html)
+    - [ListMetrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_ListMetrics.html)
+    - [GetMetricStatistics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html)
+    - [LookupEvents](https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_LookupEvents.html)
+    - [ListFindings](https://docs.aws.amazon.com/inspector/v2/APIReference/API_ListFindings.html)
+    - [GetFindings](https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html)
+    - [ListTasks](https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ListTasks.html)
+
+- **enterprise version only** `event_based_sync` (`array`) (default: empty)
 
 ### account
 
@@ -264,6 +273,36 @@ This is used to specify one or more accounts to extract information from. Note t
 - `skip_member_accounts` ([]string)
 
   List of OU member accounts to skip. This is useful in conjunction with `organization_units` if there are accounts under the selected OUs that should be ignored.
+
+
+{/* <!-- vale off --> */}
+### event_based_sync
+{/* <!-- vale on --> */}
+
+<Callout type="info">
+Event-based syncing is only supported by the enterprise-version AWS plugin. Read more about [event-based syncs](/docs/plugins/sources/aws/event-based-sync)
+</Callout>
+
+- `account` ([Account](#account)) 
+
+  Configuration for the credentials that will be used to grab records from the specified Kinesis Stream. If this is not specified the default credentials will be used
+
+- `kinesis_stream_arn` (string) (**required**)
+
+  ARN for the Kinesis stream that will hold all of the CloudTrail records
+
+- `start_time` (timestamp) 
+
+  Defines the place in the stream where record processing should begin. By default, the time at which the sync began will be used. The value should follow the RFC 3339 format. For example `2023-09-04T19:24:14Z`
+
+- `full_sync` (`bool`) (default: `true`)
+
+  By default CQ will do a full sync on the specified tables before starting to consume the events in the stream. This parameter enables users to skip the full pull based sync and go straight to the event based sync.
+
+
+	
+
+
 
 ## Advanced Configuration
 
