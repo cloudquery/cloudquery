@@ -295,7 +295,7 @@ Event-based syncing is only supported by the enterprise-version AWS plugin. Read
 
   Defines the place in the stream where record processing should begin. By default, the time at which the sync began will be used.
 
-- `event_based_sync_only` (`bool`) (default: `false`)
+- `full_sync` (`bool`) (default: `true`)
 
   By default CQ will do a full sync on the specified tables before starting to consume the events in the stream. This parameter enables users to skip the pull-based sync and go straight to the streaming sync.
 
