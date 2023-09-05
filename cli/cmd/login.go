@@ -2,16 +2,17 @@ package cmd
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"net"
 	"net/http"
 	"os"
 	"os/signal"
-	"path"
 	"syscall"
 	"time"
 
+	"github.com/adrg/xdg"
 	"github.com/cenkalti/backoff/v4"
 	"github.com/pkg/browser"
 	"github.com/spf13/cobra"
@@ -48,12 +49,8 @@ func newCmdLogin() *cobra.Command {
 				fmt.Println("Received SIGTERM!")
 				cancel()
 			}()
-			userConfigDir, err := cmd.Flags().GetString("config")
-			if err != nil {
-				return err
-			}
 
-			return runLogin(ctx, userConfigDir)
+			return runLogin(ctx)
 		},
 	}
 	return cmd
@@ -82,7 +79,22 @@ func waitForServer(ctx context.Context, url string) error {
 	}, backoff.WithContext(backoff.NewConstantBackOff(100*time.Millisecond), ctx))
 }
 
-func runLogin(ctx context.Context, userConfig string) error {
+func runLogin(ctx context.Context) (err error) {
+	tokenFilePath, err := xdg.CacheFile("cloudquery/token")
+	if err != nil {
+		return fmt.Errorf("can't determine a proper location for token file: %w", err)
+	}
+	tokenFile, err := os.OpenFile(tokenFilePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o644)
+	if err != nil {
+		return fmt.Errorf("can't open token file %q for writing: %w", tokenFilePath, err)
+	}
+	defer func() {
+		e := tokenFile.Close()
+		if err == nil && e != nil {
+			err = fmt.Errorf("can't close token file %q after writing: %w", tokenFilePath, e)
+		}
+	}()
+
 	mux := http.NewServeMux()
 	refreshToken := ""
 	gotToken := make(chan struct{})
@@ -107,7 +119,7 @@ func runLogin(ctx context.Context, userConfig string) error {
 	var serverErr error
 	go func() {
 		if err := server.Serve(listener); err != nil {
-			if err != http.ErrServerClosed {
+			if !errors.Is(err, http.ErrServerClosed) {
 				serverErr = fmt.Errorf("failed to serve: %w", err)
 			}
 		}
@@ -145,10 +157,8 @@ func runLogin(ctx context.Context, userConfig string) error {
 	if refreshToken == "" {
 		return fmt.Errorf("failed to get refresh token")
 	}
-	tokenPath := path.Join(userConfig, "token")
-	err = os.WriteFile(tokenPath, []byte(refreshToken), 0o644)
-	if err != nil {
-		return fmt.Errorf("failed to write token to %s: %w", tokenPath, err)
+	if _, err = tokenFile.WriteString(refreshToken); err != nil {
+		return fmt.Errorf("failed to write token to %q: %w", tokenFilePath, err)
 	}
 
 	fmt.Println("CLI successfully authenticated.")

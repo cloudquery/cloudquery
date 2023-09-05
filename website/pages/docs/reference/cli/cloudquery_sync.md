@@ -33,7 +33,6 @@ cloudquery sync ./directory ./aws.yml ./pg.yml
 ### Options inherited from parent commands
 
 ```
-      --config string            directory to store cloudquery global configuration such as credentials and tokens (default "/Users/a-shch/.cloudquery")
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
       --log-console              enable console logging
       --log-file-name string     Log filename (default "cloudquery.log")
