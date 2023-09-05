@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v4.0.0...plugins-destination-mysql-v4.0.1) (2023-09-05)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v14 digest to a526ba6 ([#13562](https://github.com/cloudquery/cloudquery/issues/13562)) ([248672b](https://github.com/cloudquery/cloudquery/commit/248672beb020828cde1cb608d5c1ed6d656c777b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.6.4 ([#13519](https://github.com/cloudquery/cloudquery/issues/13519)) ([9d25165](https://github.com/cloudquery/cloudquery/commit/9d25165820703844c6de96688d939aa5033608ae))
+
 ## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v3.0.5...plugins-destination-mysql-v4.0.0) (2023-09-04)
 
 
