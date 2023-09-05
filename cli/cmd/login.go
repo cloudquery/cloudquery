@@ -80,7 +80,7 @@ func waitForServer(ctx context.Context, url string) error {
 }
 
 func runLogin(ctx context.Context) (err error) {
-	tokenFilePath, err := xdg.CacheFile("cloudquery/token")
+	tokenFilePath, err := xdg.ConfigFile("cloudquery/token")
 	if err != nil {
 		return fmt.Errorf("can't determine a proper location for token file: %w", err)
 	}
