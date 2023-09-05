@@ -12,5 +12,5 @@ SELECT
         ELSE 'fail'
     END AS status
 FROM view_aws_iam_policy_statements s
-WHERE effect = 'Allow' AND resources::text like '%"*"%' AND (actions::text LIKE '%:*%' OR not_actions::text LIKE '%:*%')
+WHERE effect = 'Allow' AND (actions::text LIKE '%:*%' OR not_actions::text LIKE '%:*%')
 GROUP BY account_id, arn
