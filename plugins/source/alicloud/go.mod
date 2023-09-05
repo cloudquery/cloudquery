@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/aliyun/alibaba-cloud-sdk-go v1.62.266
 	github.com/aliyun/aliyun-oss-go-sdk v2.2.7+incompatible
-	github.com/apache/arrow/go/v14 v14.0.0-20230826001106-a069d71cc1bcd
+	github.com/apache/arrow/go/v14 v14.0.0-20230905030402-a526ba697d4e
 	github.com/cloudquery/codegen v0.2.1
 	github.com/cloudquery/plugin-sdk/v4 v4.6.0
 	github.com/golang/mock v1.5.0

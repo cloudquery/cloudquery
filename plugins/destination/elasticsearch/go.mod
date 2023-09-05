@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/elasticsearch
 go 1.20
 
 require (
-	github.com/apache/arrow/go/v14 v14.0.0-20230901024001-b6c0ea455d08
+	github.com/apache/arrow/go/v14 v14.0.0-20230905030402-a526ba697d4e
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/cloudquery/plugin-sdk/v4 v4.6.3
 	github.com/elastic/go-elasticsearch/v8 v8.6.0
