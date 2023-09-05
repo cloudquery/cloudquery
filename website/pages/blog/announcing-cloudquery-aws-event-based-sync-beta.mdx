@@ -59,7 +59,7 @@ Here are the services and events supported at the moment:
 
 This feature is available in closed beta, [sign up for early access](https://cloudquery.typeform.com/to/Dvdn6P2u).
 
-1. Configure a AWS CloudTrail Trail to send management events to a Kinesis Data Stream via CloudWatch Logs. The most straight forward way to do this is to use the CloudQuery provided CloudFormation template.
+1. Configure an AWS CloudTrail Trail to send management events to a Kinesis Data Stream via CloudWatch Logs. The most straight forward way to do this is to use the CloudQuery provided CloudFormation template.
 
 ```bash
 aws cloudformation deploy --template-file ./streaming-deployment.yml --stack-name <STACK-NAME> --capabilities CAPABILITY_IAM --disable-rollback --region <DESIRED-REGION>
