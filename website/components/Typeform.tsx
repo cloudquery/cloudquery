@@ -9,6 +9,7 @@ export const Typeform = ({
         width: '100%',
         height: 600,
         margin: '20px auto',
+        background: 'white',
     }
     return <Widget
         id={id}
