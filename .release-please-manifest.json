@@ -105,7 +105,7 @@
   "plugins/destination/meilisearch+FILLER": "1.0.0",
   "plugins/source/firestore": "3.0.7",
   "plugins/source/firestore+FILLER": "0.0.0",
-  "plugins/source/oracledb": "3.0.7",
+  "plugins/source/oracledb": "3.0.8",
   "plugins/source/oracledb+FILLER": "0.0.0",
   "plugins/source/square": "1.0.1",
   "plugins/source/square+FILLER": "0.0.0",
@@ -115,6 +115,8 @@
   "plugins/source/jira+FILLER": "0.0.0",
   "plugins/source/vault": "1.0.2",
   "plugins/source/vault+FILLER": "0.0.0",
-  "plugins/source/airtable": "1.1.0",
-  "plugins/source/bitbucket": "1.0.1"
+  "plugins/source/airtable": "1.1.1",
+  "plugins/source/airtable+FILLER": "0.0.0",
+  "plugins/source/bitbucket": "1.0.1",
+  "plugins/source/bitbucket+FILLER": "0.0.0",
 }
