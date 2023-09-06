@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 	"time"
 
@@ -124,12 +125,12 @@ func runLogin(ctx context.Context) (err error) {
 			}
 		}
 	}()
-	localServerAddr := "http://" + listener.Addr().String()
-	if err := waitForServer(ctx, localServerAddr+"/health"); err != nil {
+	localServerURL := "http://localhost:" + strconv.Itoa(listener.Addr().(*net.TCPAddr).Port)
+	if err := waitForServer(ctx, localServerURL+"/health"); err != nil {
 		return err
 	}
 
-	url := fmt.Sprintf("%s?returnTo=%s/callback", accountsURL, localServerAddr)
+	url := accountsURL + "?returnTo=" + localServerURL + "/callback"
 	if err := browser.OpenURL(url); err != nil {
 		fmt.Printf("Failed to open browser at %s. Please open the URL manually.\n", accountsURL)
 	} else {
