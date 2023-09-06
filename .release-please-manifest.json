@@ -115,6 +115,8 @@
   "plugins/source/jira+FILLER": "0.0.0",
   "plugins/source/vault": "1.0.2",
   "plugins/source/vault+FILLER": "0.0.0",
-  "plugins/source/airtable": "1.1.0",
-  "plugins/source/bitbucket": "1.0.1"
+  "plugins/source/airtable": "1.1.1",
+  "plugins/source/airtable+FILLER": "0.0.0",
+  "plugins/source/bitbucket": "1.0.1",
+  "plugins/source/bitbucket+FILLER": "0.0.0",
 }
