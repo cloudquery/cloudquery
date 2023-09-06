@@ -1,5 +1,25 @@
 # Changelog
 
+## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.0.3...plugins-destination-elasticsearch-v3.1.0) (2023-09-05)
+
+
+### Features
+
+* Bulk all messages in a batch into a single bulk write ([#13588](https://github.com/cloudquery/cloudquery/issues/13588)) ([d03e09e](https://github.com/cloudquery/cloudquery/commit/d03e09e32cc05cb9d7778cdbd6da646c362658ab))
+* Update `github.com/cloudquery/plugin-sdk/v4` to `v4.6.1` () ([2ef2597](https://github.com/cloudquery/cloudquery/commit/2ef2597d1915329d0967a8c56a1c0650943e0759))
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/cloudquery/plugin-sdk/v4` to `v4.6.3` ([#13600](https://github.com/cloudquery/cloudquery/issues/13600)) ([508fce5](https://github.com/cloudquery/cloudquery/commit/508fce5b6c08f007915ab89fa5b82ff3fd03d9f8))
+* **deps:** Update github.com/99designs/go-keychain digest to 9cf53c8 ([#13561](https://github.com/cloudquery/cloudquery/issues/13561)) ([a170256](https://github.com/cloudquery/cloudquery/commit/a17025657e92b017fe3c8bd37abfaa2354e6e818))
+* **deps:** Update github.com/apache/arrow/go/v14 digest to a526ba6 ([#13562](https://github.com/cloudquery/cloudquery/issues/13562)) ([248672b](https://github.com/cloudquery/cloudquery/commit/248672beb020828cde1cb608d5c1ed6d656c777b))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to cd3d411 ([#13598](https://github.com/cloudquery/cloudquery/issues/13598)) ([f22bfa6](https://github.com/cloudquery/cloudquery/commit/f22bfa6b2d4fd0caeacf0726ccd307db38f8860c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.6.4 ([#13519](https://github.com/cloudquery/cloudquery/issues/13519)) ([9d25165](https://github.com/cloudquery/cloudquery/commit/9d25165820703844c6de96688d939aa5033608ae))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.7.0 ([#13625](https://github.com/cloudquery/cloudquery/issues/13625)) ([bb5463f](https://github.com/cloudquery/cloudquery/commit/bb5463fb5919f50f1327eecae884b2ab99fb8b34))
+* Perform `delete-stale` for the tables with no primary keys, too ([2ef2597](https://github.com/cloudquery/cloudquery/commit/2ef2597d1915329d0967a8c56a1c0650943e0759))
+* Revert "feat: Update `github.com/cloudquery/plugin-sdk/v4` to `v4.6.1`" ([#13589](https://github.com/cloudquery/cloudquery/issues/13589)) ([f684ab9](https://github.com/cloudquery/cloudquery/commit/f684ab9908e5b8f29708181c2a6194b9aeb8f441))
+
 ## [3.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.0.2...plugins-destination-elasticsearch-v3.0.3) (2023-08-29)
 
 
