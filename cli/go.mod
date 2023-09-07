@@ -3,14 +3,17 @@ module github.com/cloudquery/cloudquery/cli
 go 1.21.0
 
 require (
+	github.com/adrg/xdg v0.4.0
 	github.com/apache/arrow/go/v14 v14.0.0-20230905030402-a526ba697d4e
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
+	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/cloudquery/plugin-pb-go v1.9.4
-	github.com/cloudquery/plugin-sdk/v4 v4.6.4
+	github.com/cloudquery/plugin-sdk/v4 v4.7.1
 	github.com/getsentry/sentry-go v0.20.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.0
+	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/rs/zerolog v1.29.1
 	github.com/schollz/progressbar/v3 v3.13.1
 	github.com/spf13/cobra v1.6.1
