@@ -3,11 +3,11 @@ title: "migrate"
 ---
 ## cloudquery migrate
 
-Run migration for source and destination plugins specified in configuration
+Update schema of your destinations based on the latest changes in sources from your configuration
 
 ### Synopsis
 
-Run migration for source and destination plugins specified in configuration
+Update schema of your destinations based on the latest changes in sources from your configuration
 
 ```
 cloudquery migrate [files or directories] [flags]

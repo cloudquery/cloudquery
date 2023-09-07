@@ -29,7 +29,7 @@ Find more information at:
 
 ### SEE ALSO
 
-* [cloudquery migrate](/docs/reference/cli/cloudquery_migrate)	 - Run migration for source and destination plugins specified in configuration
+* [cloudquery migrate](/docs/reference/cli/cloudquery_migrate)	 - Update schema of your destinations based on the latest changes in sources from your configuration
 * [cloudquery sync](/docs/reference/cli/cloudquery_sync)	 - Sync resources from configured source plugins to destinations
 * [cloudquery tables](/docs/reference/cli/cloudquery_tables)	 - Generate documentation for all supported tables of source plugins specified in the spec(s)
 
