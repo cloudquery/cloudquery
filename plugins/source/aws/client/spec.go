@@ -130,7 +130,4 @@ func (s *Spec) SetDefaults() {
 		fullSync := true
 		s.EventBasedSync.FullSync = &fullSync
 	}
-	if string(s.Scheduler) == "" {
-		s.Scheduler = scheduler.StrategyDFS
-	}
 }
