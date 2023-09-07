@@ -8,6 +8,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 )
 
 const (
@@ -59,7 +60,11 @@ type Spec struct {
 	UsePaidAPIs               bool                       `json:"use_paid_apis"`
 	TableOptions              *tableoptions.TableOptions `json:"table_options,omitempty"`
 	Concurrency               int                        `json:"concurrency"`
+<<<<<<< Updated upstream
 	EventBasedSync            *EventBasedSync            `json:"event_based_sync,omitempty"`
+=======
+	Scheduler                 scheduler.Strategy         `json:"scheduler,omitempty"`
+>>>>>>> Stashed changes
 }
 
 func (s *Spec) Validate() error {
@@ -124,9 +129,14 @@ func (s *Spec) SetDefaults() {
 	if s.Concurrency == 0 {
 		s.Concurrency = defaultMaxConcurrency
 	}
+<<<<<<< Updated upstream
 
 	if s.EventBasedSync != nil && s.EventBasedSync.FullSync == nil {
 		fullSync := true
 		s.EventBasedSync.FullSync = &fullSync
+=======
+	if string(s.Scheduler) == "" {
+		s.Scheduler = scheduler.StrategyDFS
+>>>>>>> Stashed changes
 	}
 }
