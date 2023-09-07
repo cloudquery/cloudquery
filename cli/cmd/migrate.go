@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	migrateShort   = "Run migration for source and destination plugins specified in configuration"
+	migrateShort   = "Update schema of your destinations based on the latest changes in sources from your configuration"
 	migrateExample = `# Run migration for plugins specified in directory
 cloudquery migrate ./directory
 # Run migration for plugins specified in directory and config files
