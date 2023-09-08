@@ -4,8 +4,11 @@ import (
 	"errors"
 	"fmt"
 	"regexp"
+	"time"
 
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 )
 
 const (
@@ -36,6 +39,12 @@ type AwsOrg struct {
 	ChildAccountRegions         []string `json:"member_regions,omitempty"`
 }
 
+type EventBasedSync struct {
+	FullSync         *bool      `json:"full_sync,omitempty"`
+	Account          Account    `json:"account"`
+	KinesisStreamARN string     `json:"kinesis_stream_arn"`
+	StartTime        *time.Time `json:"start_time,omitempty"`
+}
 type Spec struct {
 	Regions                   []string                   `json:"regions,omitempty"`
 	Accounts                  []Account                  `json:"accounts"`
@@ -51,6 +60,8 @@ type Spec struct {
 	UsePaidAPIs               bool                       `json:"use_paid_apis"`
 	TableOptions              *tableoptions.TableOptions `json:"table_options,omitempty"`
 	Concurrency               int                        `json:"concurrency"`
+	EventBasedSync            *EventBasedSync            `json:"event_based_sync,omitempty"`
+	Scheduler                 scheduler.Strategy         `json:"scheduler,omitempty"`
 }
 
 func (s *Spec) Validate() error {
@@ -85,6 +96,13 @@ func (s *Spec) Validate() error {
 			return fmt.Errorf("invalid table_options: %w", err)
 		}
 	}
+
+	if s.EventBasedSync != nil {
+		_, err := arn.Parse(s.EventBasedSync.KinesisStreamARN)
+		if err != nil {
+			return fmt.Errorf("failed to parse kinesis arn (%s): %w", s.EventBasedSync.KinesisStreamARN, err)
+		}
+	}
 	return nil
 }
 
@@ -107,5 +125,9 @@ func (s *Spec) SetDefaults() {
 	}
 	if s.Concurrency == 0 {
 		s.Concurrency = defaultMaxConcurrency
+	}
+	if s.EventBasedSync != nil && s.EventBasedSync.FullSync == nil {
+		fullSync := true
+		s.EventBasedSync.FullSync = &fullSync
 	}
 }
