@@ -1,0 +1,12 @@
+version: 1
+kind: plugin
+properties:
+  source: true
+  destination: false
+targets:
+  - name: "linux_amd64"
+    os: linux
+    arch: amd64
+  - name: "windows_amd64"
+    os: windows
+    arch: amd64

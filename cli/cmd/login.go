@@ -47,7 +47,6 @@ func newCmdLogin() *cobra.Command {
 
 			go func() {
 				<-sigChan
-				fmt.Println("Received SIGTERM!")
 				cancel()
 			}()
 
