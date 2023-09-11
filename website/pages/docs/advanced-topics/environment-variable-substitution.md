@@ -36,7 +36,7 @@ spec:
 
 Local path `./path/to/secret/file` will be read and replaced with the contents of the file before processing.
 
-## Environment variables with multiline text
+## Environment variables with multiline JSON
 
 Multi-line JSON, such as those required by the service account key for the GCP plugin, can be imported by using pipe '|' operator. The substitution should be in the next line and it should be indented by a single tab before. You don't need to escape any characters while passing the variable.
 
