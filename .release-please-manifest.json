@@ -81,7 +81,7 @@
   "plugins/destination/elasticsearch+FILLER": "0.0.0",
   "plugins/destination/clickhouse": "3.3.6",
   "plugins/destination/clickhouse+FILLER": "0.0.0",
-  "plugins/source/postgresql": "3.0.3",
+  "plugins/source/postgresql": "3.0.4",
   "plugins/source/postgresql+FILLER": "0.0.0",
   "plugins/source/homebrew": "3.0.7",
   "plugins/source/homebrew+FILLER": "0.0.0",
