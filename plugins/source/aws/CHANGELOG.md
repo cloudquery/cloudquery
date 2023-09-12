@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.10.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.9.0...plugins-source-aws-v22.10.0) (2023-09-07)
+
+
+### Features
+
+* Add scheduler option to AWS ([#13757](https://github.com/cloudquery/cloudquery/issues/13757)) ([521918f](https://github.com/cloudquery/cloudquery/commit/521918f94b1783be75bb7f4e9024b95ee7be7c3a))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.7.1 ([#13713](https://github.com/cloudquery/cloudquery/issues/13713)) ([73004dc](https://github.com/cloudquery/cloudquery/commit/73004dcabd05bf474d8b5960b8c747a894b98560))
+* Issue [#13433](https://github.com/cloudquery/cloudquery/issues/13433) - match on lowercase "redirect" in aws policy  ([#13751](https://github.com/cloudquery/cloudquery/issues/13751)) ([539e029](https://github.com/cloudquery/cloudquery/commit/539e029412e17549cb4ad552ef89b1be90d58387))
+
 ## [22.9.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.8.2...plugins-source-aws-v22.9.0) (2023-09-05)
 
 
