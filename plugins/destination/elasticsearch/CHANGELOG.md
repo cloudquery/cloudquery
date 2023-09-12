@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.1.0...plugins-destination-elasticsearch-v3.1.1) (2023-09-12)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to 483f6b2 ([#13780](https://github.com/cloudquery/cloudquery/issues/13780)) ([8d31b44](https://github.com/cloudquery/cloudquery/commit/8d31b44f787f42d47f186cdcc4a5739a3a370a5f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.7.1 ([#13713](https://github.com/cloudquery/cloudquery/issues/13713)) ([73004dc](https://github.com/cloudquery/cloudquery/commit/73004dcabd05bf474d8b5960b8c747a894b98560))
+
 ## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.0.3...plugins-destination-elasticsearch-v3.1.0) (2023-09-05)
 
 
