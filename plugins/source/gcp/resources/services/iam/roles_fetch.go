@@ -25,6 +25,7 @@ func fetchRoles(ctx context.Context, meta schema.ClientMeta, r *schema.Resource,
 			PageSize:  1000,
 			PageToken: nextPageToken,
 			Parent:    fmt.Sprintf("projects/%s", c.ProjectId),
+			View:      iampb.RoleView_FULL,
 		}
 		resp, err := iamClient.ListRoles(ctx, req, c.CallOptions...)
 		if err != nil {
