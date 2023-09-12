@@ -90,16 +90,15 @@ LEFT JOIN bad_statements as b
 ### [KMS.3] AWS KMS keys should not be deleted unintentionally
 
 ```sql
-select
-  'AWS KMS keys should not be deleted unintentionally' as title,
-      account_id,
+SELECT 
+  'AWS KMS keys should not be deleted unintentionally' AS title,
+    account_id,
     arn AS resource_id,
     CASE 
-        WHEN key_state = 'PendingDeletion' AND key_manager = 'CUSTOMER' THEN 'fail'
+        WHEN key_state IN ('PendingDeletion', 'PendingReplicaDeletion') AND key_manager = 'CUSTOMER' THEN 'fail'
         ELSE 'pass'
     END AS status
-FROM    
-    aws_kms_keys;
+FROM aws_kms_keys;
 ```
 
 ### [CloudTrail.2] CloudTrail should have encryption at-rest enabled
