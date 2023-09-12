@@ -5,6 +5,27 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.17.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.17.0...cli-v3.17.1) (2023-09-12)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to 483f6b2 ([#13780](https://github.com/cloudquery/cloudquery/issues/13780)) ([8d31b44](https://github.com/cloudquery/cloudquery/commit/8d31b44f787f42d47f186cdcc4a5739a3a370a5f))
+
+## [3.17.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.16.3...cli-v3.17.0) (2023-09-07)
+
+
+### Features
+
+* Add optional login to our future registry ([#13201](https://github.com/cloudquery/cloudquery/issues/13201)) ([6a2258e](https://github.com/cloudquery/cloudquery/commit/6a2258e97ee3037a61b5dfe21e8a8211a805a623))
+* Update migrate command description ([#13752](https://github.com/cloudquery/cloudquery/issues/13752)) ([f31037e](https://github.com/cloudquery/cloudquery/commit/f31037e4788bd02455698e9900b7139f3c2542cb))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.7.0 ([#13625](https://github.com/cloudquery/cloudquery/issues/13625)) ([bb5463f](https://github.com/cloudquery/cloudquery/commit/bb5463fb5919f50f1327eecae884b2ab99fb8b34))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.7.1 ([#13713](https://github.com/cloudquery/cloudquery/issues/13713)) ([73004dc](https://github.com/cloudquery/cloudquery/commit/73004dcabd05bf474d8b5960b8c747a894b98560))
+
 ## [3.16.3](https://github.com/cloudquery/cloudquery/compare/cli-v3.16.2...cli-v3.16.3) (2023-09-05)
 
 

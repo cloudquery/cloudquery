@@ -35,10 +35,13 @@ Here are the services and events supported at the moment:
 
 | Service | Event |
 | -- | -- |
-| ec2.amazonaws.com |	AttachInternetGateway |
+| ec2.amazonaws.com | AssociateRouteTable |
+| ec2.amazonaws.com | AttachInternetGateway |
 | ec2.amazonaws.com | AuthorizeSecurityGroupEgress |
 | ec2.amazonaws.com | AuthorizeSecurityGroupIngress |
+| ec2.amazonaws.com | CreateImage |
 | ec2.amazonaws.com | CreateInternetGateway |
+| ec2.amazonaws.com | CreateNetworkInterface |
 | ec2.amazonaws.com | CreateSecurityGroup |
 | ec2.amazonaws.com | CreateSubnet |
 | ec2.amazonaws.com | CreateTags |
@@ -54,6 +57,8 @@ Here are the services and events supported at the moment:
 | iam.amazonaws.com | CreateUser |
 | rds.amazonaws.com | CreateDBCluster |
 | rds.amazonaws.com | CreateDBInstance |
+| rds.amazonaws.com | ModifyDBCluster |
+| rds.amazonaws.com | ModifyDBInstance |
 
 ## Getting Started
 
@@ -122,6 +127,6 @@ At the moment, only one Kinesis stream is supported by a running instance of Clo
 
 The current coverage of tables has been designed to provide a selection of different services. We will add more resources based on your feedback.
 
-[Read the docs](https://cloudquery.io/docs/plugins/sources/aws/event-based-sync#supported-services-and-events)
+[Read the docs](/docs/plugins/sources/aws/event-based-sync#supported-services-and-events)
 
 <div style={{marginTop:"2em"}}><a href="https://cloudquery.typeform.com/to/Dvdn6P2u" class="btn btn-blue">Sign up for early access</a></div>

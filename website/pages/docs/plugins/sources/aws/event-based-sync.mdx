@@ -15,15 +15,18 @@ Each table in the supported list is a top level table. When an event is received
 ## Supported Services and Events
 Service | Event | CloudQuery Tables
 -|-|-|
+ec2.amazonaws.com | AssociateRouteTable | `aws_ec2_route_tables`
 ec2.amazonaws.com | AttachInternetGateway | `aws_ec2_internet_gateways`
 ec2.amazonaws.com | AuthorizeSecurityGroupEgress | `aws_ec2_security_groups`
 ec2.amazonaws.com | AuthorizeSecurityGroupIngress | `aws_ec2_security_groups`
+ec2.amazonaws.com | CreateImage | `aws_ec2_images`
 ec2.amazonaws.com | CreateInternetGateway | `aws_ec2_internet_gateways`
+ec2.amazonaws.com | CreateNetworkInterface | `aws_ec2_network_interfaces`
 ec2.amazonaws.com | CreateSecurityGroup | `aws_ec2_security_groups`
 ec2.amazonaws.com | CreateSubnet | `aws_ec2_subnets`
 ec2.amazonaws.com | CreateTags | `aws_ec2_instances`
 ec2.amazonaws.com | CreateVpc | `aws_ec2_vpcs`
-ec2.amazonaws.com | DeleteTags | `aws_ec2_subnets`
+ec2.amazonaws.com | DeleteTags | `aws_ec2_instances`
 ec2.amazonaws.com | DetachInternetGateway | `aws_ec2_internet_gateways`
 ec2.amazonaws.com | ModifySubnetAttribute | `aws_ec2_subnets`
 ec2.amazonaws.com | RevokeSecurityGroupEgress | `aws_ec2_security_groups`
@@ -34,6 +37,8 @@ iam.amazonaws.com | CreateRole | `aws_iam_roles`
 iam.amazonaws.com | CreateUser | `aws_iam_users`
 rds.amazonaws.com | CreateDBCluster | `aws_rds_clusters`
 rds.amazonaws.com | CreateDBInstance | `aws_rds_instances`
+rds.amazonaws.com | ModifyDBCluster | `aws_rds_clusters`
+rds.amazonaws.com | ModifyDBInstance | `aws_rds_instances`
 
 
 ## Configuration
