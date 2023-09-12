@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.9](https://github.com/cloudquery/cloudquery/compare/plugins-source-firestore-v3.0.8...plugins-source-firestore-v3.0.9) (2023-09-12)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to 483f6b2 ([#13780](https://github.com/cloudquery/cloudquery/issues/13780)) ([8d31b44](https://github.com/cloudquery/cloudquery/commit/8d31b44f787f42d47f186cdcc4a5739a3a370a5f))
+
 ## [3.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-firestore-v3.0.7...plugins-source-firestore-v3.0.8) (2023-09-06)
 
 
