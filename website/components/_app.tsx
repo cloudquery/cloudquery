@@ -38,18 +38,6 @@ const getCanonicalUrl = (path: string) => {
 
 const Analytics = () => (
   <>
-    <Script>
-      {typeof window !== "undefined" &&
-        (window.sa_event =
-          window.sa_event ||
-          function () {
-            var a = [].slice.call(arguments);
-            window.sa_event.q
-              ? window.sa_event.q.push(a)
-              : (window.sa_event.q = [a]);
-          })}
-    </Script>
-    <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
     <Script
       src={`https://www.googletagmanager.com/gtag/js?id=AW-11077035012`}
     />
@@ -57,12 +45,29 @@ const Analytics = () => (
       {`window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-            
+          // this script only gets invoked if the user has already consented to analytics cookies
+          gtag('consent', 'default', {
+            'ad_storage': 'granted'
+          });
           gtag('config', 'AW-11077035012');`}
     </Script>
     <Script>{`window.faitracker=window.faitracker||function(){this.q=[];var t=new CustomEvent("FAITRACKER_QUEUED_EVENT");return this.init=function(t,e,a){this.TOKEN=t,this.INIT_PARAMS=e,this.INIT_CALLBACK=a,window.dispatchEvent(new CustomEvent("FAITRACKER_INIT_EVENT"))},this.call=function(){var e={k:"",a:[]};if(arguments&&arguments.length>=1){for(var a=1;a<arguments.length;a++)e.a.push(arguments[a]);e.k=arguments[0]}this.q.push(e),window.dispatchEvent(t)},this.message=function(){window.addEventListener("message",function(t){"faitracker"===t.data.origin&&this.call("message",t.data.type,t.data.message)})},this.message(),this.init("gm3eyhbta0tee4d4mmzghwgpl4wa0vsf",{host:"https://analytics.cloudquery.io"}),this}(),function(){var t=document.createElement("script");t.type="text/javascript",t.src="https://asset.dyh8ken8pc.com/dyh8ken8pc.js",t.async=!0,(d=document.getElementsByTagName("script")[0]).parentNode.insertBefore(t,d)}();`}</Script>
+
+    <Script>{`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-MNQGLJBB');`}</Script>
+
   </>
 );
+
+const AnalyticsNoScript = () => (
+    <>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MNQGLJBB"
+                height="0" width="0" style={{'display': 'none', 'visibility': 'hidden'}}></iframe>
+    </>
+)
 
 export default function Nextra({ Component, pageProps }) {
   const router = useRouter();
@@ -73,6 +78,18 @@ export default function Nextra({ Component, pageProps }) {
     <React.Fragment>
       <DefaultSeo canonical={canonicalUrl} />
       <Component {...pageProps} />
+      <Script>
+        {typeof window !== "undefined" &&
+          (window.sa_event =
+            window.sa_event ||
+            function () {
+              var a = [].slice.call(arguments);
+              window.sa_event.q
+                ? window.sa_event.q.push(a)
+                : (window.sa_event.q = [a]);
+            })}
+      </Script>
+      <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
       {consent && <Analytics />}
       <noscript>
         {/* eslint-disable @next/next/no-img-element */}
@@ -81,6 +98,7 @@ export default function Nextra({ Component, pageProps }) {
           alt=""
           referrerPolicy="no-referrer-when-downgrade"
         />
+        {consent && <AnalyticsNoScript />}
       </noscript>
       <CQCookieConsent
         onAccept={() => setConsent(true)}

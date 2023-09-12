@@ -48,7 +48,7 @@ SELECT
   CASE
   WHEN protocol = 'HTTP'
   AND (
-      da->>'Type' != 'REDIRECT'
+      da->>'Type' != 'redirect'
       OR da->'RedirectConfig'->>'Protocol' != 'HTTPS'
     )
   THEN 'fail'
