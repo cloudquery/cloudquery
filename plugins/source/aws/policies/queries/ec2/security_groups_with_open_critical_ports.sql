@@ -36,5 +36,6 @@ select
         or 9300 between from_port and to_port)
         then 'fail'
         else 'pass'
-    end
+    end as status
 from view_aws_security_group_ingress_rules
+group by account_id, resource_id, status
