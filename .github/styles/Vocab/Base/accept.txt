@@ -183,7 +183,6 @@ Promtail
 protobuf
 Pulumi
 queryable
-Quicksight
 Raasveldt
 ransform
 Reachability
