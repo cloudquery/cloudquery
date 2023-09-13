@@ -30,6 +30,7 @@ CCPA's
 Chargebee
 cis
 CIS
+Claeyssens
 CloudFormation
 Cloudinary
 cloudquery
@@ -70,6 +71,7 @@ Detrack
 discoverability
 Docusaurus
 Dockerfile
+Dunelm
 ELB
 ELBs
 Embeddable
