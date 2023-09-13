@@ -9,12 +9,14 @@ SELECT
   id as resource_id,
   case when
     (ip = '0.0.0.0/0' OR ip = '::/0')
-    AND (from_port IS NULL AND to_port IS NULL) -- all prots
+    AND ((from_port IS NULL AND to_port IS NULL) -- all prots
     OR from_port IS DISTINCT FROM 80
     OR to_port IS DISTINCT FROM 80
     OR from_port IS DISTINCT FROM 443
-    OR to_port IS DISTINCT FROM 443
+    OR to_port IS DISTINCT FROM 443)
     then 'fail'
     else 'pass'
-  end
+  end as status
 FROM view_aws_security_group_ingress_rules
+GROUP BY account_id, resource_id, status
+
