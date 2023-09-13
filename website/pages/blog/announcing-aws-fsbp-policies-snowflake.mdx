@@ -62,8 +62,7 @@ Data and Storage:
 ```sql
 with bad_statements as (
 SELECT
-    p.id,
-    1 as has_nad_statement
+    p.id
 FROM
     aws_iam_policies p
     , lateral flatten(input => p.POLICY_VERSION_LIST) as f
@@ -78,7 +77,7 @@ select
     account_id,
     arn as resource_id,
     CASE
-        WHEN b.has_nad_statement = 1 THEN 'fail'
+        WHEN b.id is not null THEN 'fail'
         ELSE 'pass'
     END as status
 from
