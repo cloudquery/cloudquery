@@ -108,11 +108,11 @@ SELECT
   CASE
   WHEN (
     last_rotated_date IS NULL
-    AND created_date > now() - '90 days'::INTERVAL
+    AND created_date < now() - '90 days'::INTERVAL
   )
   OR (
       last_rotated_date IS NOT NULL
-      AND last_rotated_date > now() - '90 days'::INTERVAL
+      AND last_rotated_date < now() - '90 days'::INTERVAL
     )
   THEN 'fail'
   ELSE 'pass'
