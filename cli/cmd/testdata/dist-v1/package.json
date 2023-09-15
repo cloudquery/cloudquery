@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "name": "test",
+  "version": "v1.2.4",
+  "protocols": [
+    3
+  ],
+  "supported_targets": [
+    {
+      "os": "linux",
+      "arch": "amd64",
+      "path": "plugin-test-v1.2.3-linux-amd64.zip"
+    },
+    {
+      "os": "darwin",
+      "arch": "amd64",
+      "path": "plugin-test-v1.2.3-darwin-amd64.zip"
+    }
+  ],
+  "package_type": "native"
+}
