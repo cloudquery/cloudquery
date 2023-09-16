@@ -1,11 +1,18 @@
 package client
 
 import (
+	_ "embed"
+
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 )
 
 const (
 	defaultConcurrency = 50000
+)
+
+var (
+	//go:embed schema.json
+	JSONSchema string
 )
 
 // Spec defines GCP source plugin Spec
