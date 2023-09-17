@@ -2,27 +2,104 @@ package services
 
 import (
 	"context"
-	"fmt"
 
-	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/notion/client"
+	"github.com/cloudquery/cloudquery/plugins/source/notion/internal/databases"
+	"github.com/cloudquery/cloudquery/plugins/source/notion/internal/pages"
+	"github.com/cloudquery/cloudquery/plugins/source/notion/internal/users"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func SampleTable() *schema.Table {
+func NotionUsersTable() *schema.Table {
 	return &schema.Table{
-		Name:     "notion_sample_table",
-		Resolver: fetchSampleTable,
-		Columns: []schema.Column{
-			{
-				Name: "column",
-				Type: arrow.BinaryTypes.String,
-			},
-		},
+		Name:      "notion_users_table",
+		Resolver:  fetchUsersTable,
+		Transform: transformers.TransformWithStruct(&users.User{}),
 	}
 }
 
-func fetchSampleTable(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
-	return fmt.Errorf("not implemented. client id: " + cl.ID())
+func NotionPagesTable() *schema.Table {
+	return &schema.Table{
+		Name:      "notion_pages_table",
+		Resolver:  fetchPagesTable,
+		Transform: transformers.TransformWithStruct(&pages.Page{}),
+	}
+}
+
+func NotionDatabasesTable() *schema.Table {
+	return &schema.Table{
+		Name:      "notion_databases_table",
+		Resolver:  fetchDatabasesTable,
+		Transform: transformers.TransformWithStruct(&databases.Database{}),
+	}
+}
+
+func fetchUsersTable(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
+	data, err := c.Notion.GetUsers("", false)
+	if err != nil {
+		return err
+	}
+	sendUserDataToChan(data.Results, res)
+	for data.HasMore {
+		data, err = c.Notion.GetUsers(data.NextCursor, data.HasMore)
+		if err != nil {
+			return nil
+		}
+		sendUserDataToChan(data.Results, res)
+	}
+	return nil
+}
+
+func sendUserDataToChan(u []users.User, res chan<- any) {
+	for _, user := range u {
+		res <- user
+	}
+}
+
+func fetchPagesTable(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
+	data, err := c.Notion.GetPages("", false)
+	if err != nil {
+		return err
+	}
+	sendPagesDataToChan(data.Results, res)
+	for data.HasMore {
+		data, err = c.Notion.GetPages(data.NextCursor, data.HasMore)
+		if err != nil {
+			return nil
+		}
+		sendPagesDataToChan(data.Results, res)
+	}
+	return nil
+}
+
+func sendPagesDataToChan(p []pages.Page, res chan<- any) {
+	for _, page := range p {
+		res <- page
+	}
+}
+
+func fetchDatabasesTable(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	c := meta.(*client.Client)
+	data, err := c.Notion.GetDatabases("", false)
+	if err != nil {
+		return err
+	}
+	sendDatabasesDataToChan(data.Results, res)
+	for data.HasMore {
+		data, err = c.Notion.GetDatabases(data.NextCursor, data.HasMore)
+		if err != nil {
+			return nil
+		}
+		sendDatabasesDataToChan(data.Results, res)
+	}
+	return nil
+}
+
+func sendDatabasesDataToChan(d []databases.Database, res chan<- any) {
+	for _, database := range d {
+		res <- database
+	}
 }
