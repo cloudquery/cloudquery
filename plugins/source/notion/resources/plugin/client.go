@@ -76,7 +76,9 @@ func (*Client) Close(_ context.Context) error {
 
 func getTables() schema.Tables {
 	tables := schema.Tables{
-		services.SampleTable(),
+		services.NotionUsersTable(),
+		services.NotionPagesTable(),
+		services.NotionDatabasesTable(),
 	}
 	if err := transformers.TransformTables(tables); err != nil {
 		panic(err)
