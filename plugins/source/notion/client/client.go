@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"os"
 
 	"github.com/rs/zerolog"
 )
@@ -9,11 +10,11 @@ import (
 type Client struct {
 	logger zerolog.Logger
 	Spec   Spec
+	Notion *NotionClient
 }
 
 func (c *Client) ID() string {
-	// TODO: Change to either your plugin name or a unique dynamic identifier
-	return "ID"
+	return "notion"
 }
 
 func (c *Client) Logger() *zerolog.Logger {
@@ -21,11 +22,17 @@ func (c *Client) Logger() *zerolog.Logger {
 }
 
 func New(ctx context.Context, logger zerolog.Logger, s *Spec) (Client, error) {
-	// TODO: Add your client initialization here
-	c := Client{
-		logger: logger,
-		Spec:   *s,
+
+	bearerToken := os.Getenv("NOTION_SECRET_KEY")
+	notionVersion := os.Getenv("NOTION_VERSION")
+	c, err := NewNotionClient(bearerToken, notionVersion)
+	if err != nil {
+		return Client{}, err
 	}
 
-	return c, nil
+	return Client{
+		logger: logger,
+		Spec:   *s,
+		Notion: c,
+	}, nil
 }
