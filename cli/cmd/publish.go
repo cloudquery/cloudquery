@@ -12,6 +12,7 @@ import (
 	"os/signal"
 	"path"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"syscall"
 
@@ -31,7 +32,7 @@ This publishes a plugin version to CloudQuery Hub from a local dist directory.
 # Publish a plugin version from a local dist directory
 cloudquery publish my_team/my_plugin`
 
-	baseURL        = "https://cloudquery.io"
+	cloudQueryAPI  = "https://api.cloudquery.io"
 	firebaseAPIKey = "AIzaSyCxsrwjABEF-dWLzUqmwiL-ct02cnG9GCs"
 	tokenURL       = "https://securetoken.googleapis.com/v1/token?key=" + firebaseAPIKey
 )
@@ -60,7 +61,8 @@ func newCmdPublish() *cobra.Command {
 		},
 	}
 	cmd.Flags().StringP("dist-dir", "D", "dist", "Path to the dist directory")
-	cmd.Flags().StringP("url", "u", "https://api.cloudquery.io", "CloudQuery API URL")
+	cmd.Flags().StringP("url", "u", cloudQueryAPI, "CloudQuery API URL")
+	cmd.Flags().BoolP("finalize", "f", false, `Finalize the plugin version after publishing. If false, the plugin version will be marked as draft=true.`)
 	return cmd
 }
 
@@ -146,9 +148,29 @@ func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 	}
 
 	// optional: mark plugin as draft=false
-	// TODO
+	finalize, err := cmd.Flags().GetBool("finalize")
+	if err != nil {
+		return err
+	}
+	if finalize {
+		fmt.Println("Finalizing plugin version...")
+		draft := false
+		resp, err := c.UpdatePluginVersionWithResponse(ctx, teamName, pluginName, pkgJSON.Version, cloudquery_api.UpdatePluginVersionJSONRequestBody{
+			Draft: &draft,
+		})
+		if err != nil {
+			return fmt.Errorf("failed to finalize plugin version: %w", err)
+		}
+		if resp.HTTPResponse.StatusCode > 299 {
+			return errorFromHTTPResponse(resp.HTTPResponse, resp)
+		}
+		fmt.Println("Success!")
+		fmt.Printf("%s/%s@%s is now available on the CloudQuery Hub.\n", teamName, pluginName, pkgJSON.Version)
+	} else {
+		fmt.Println("Success!")
+		fmt.Println("\nNote: this plugin version is marked as draft=true. You can preview and finalize it on the CloudQuery Hub, or run `cloudquery publish` with the --finalize flag.")
+	}
 
-	fmt.Println("Success!")
 	return nil
 }
 
@@ -169,16 +191,7 @@ func createNewDraftVersion(ctx context.Context, c *cloudquery_api.ClientWithResp
 		return fmt.Errorf("failed to create plugin version: %w", err)
 	}
 	if resp.HTTPResponse.StatusCode > 299 {
-		msg := fmt.Sprintf("failed to create plugin version: %s", resp.HTTPResponse.Status)
-		switch {
-		case resp.JSON422 != nil:
-			msg = fmt.Sprintf("%s: %s", msg, resp.JSON422.Message)
-		case resp.JSON403 != nil:
-			msg = fmt.Sprintf("%s: %s", msg, resp.JSON403.Message)
-		case resp.JSON401 != nil:
-			msg = fmt.Sprintf("%s: %s", msg, resp.JSON401.Message)
-		}
-		return fmt.Errorf(msg)
+		return errorFromHTTPResponse(resp.HTTPResponse, resp)
 	}
 	return nil
 }
@@ -201,18 +214,28 @@ func uploadTableSchemas(ctx context.Context, c *cloudquery_api.ClientWithRespons
 		return fmt.Errorf("failed to upload table schemas: %w", err)
 	}
 	if resp.HTTPResponse.StatusCode > 299 {
-		msg := fmt.Sprintf("failed to upload table schemas: %s", resp.HTTPResponse.Status)
-		switch {
-		case resp.JSON422 != nil:
-			msg = fmt.Sprintf("%s: %s", msg, resp.JSON422.Message)
-		case resp.JSON403 != nil:
-			msg = fmt.Sprintf("%s: %s", msg, resp.JSON403.Message)
-		case resp.JSON401 != nil:
-			msg = fmt.Sprintf("%s: %s", msg, resp.JSON401.Message)
-		}
-		return fmt.Errorf(msg)
+		return errorFromHTTPResponse(resp.HTTPResponse, resp)
 	}
 	return nil
+}
+
+func errorFromHTTPResponse(httpResp *http.Response, resp any) error {
+	fields := make(map[string]interface{})
+	el := reflect.ValueOf(resp).Elem()
+	for i := 0; i < el.NumField(); i++ {
+		f := el.Field(i)
+		fields[el.Type().Field(i).Name] = f.Interface()
+	}
+	for k, v := range fields {
+		if v == nil || reflect.ValueOf(v).Elem().Kind() != reflect.Struct {
+			continue
+		}
+		msg := reflect.ValueOf(v).Elem().FieldByName("Message")
+		if msg.IsValid() {
+			return fmt.Errorf("%s: %s", strings.TrimPrefix(k, "JSON"), msg.String())
+		}
+	}
+	return fmt.Errorf("error code: %v", httpResp.StatusCode)
 }
 
 func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginName, version, docsDir string) error {
@@ -247,16 +270,7 @@ func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, team
 		return fmt.Errorf("failed to upload docs: %w", err)
 	}
 	if resp.HTTPResponse.StatusCode > 299 {
-		msg := fmt.Sprintf("failed to upload docs: %s", resp.HTTPResponse.Status)
-		switch {
-		case resp.JSON422 != nil:
-			msg = fmt.Sprintf("%s: %s", msg, resp.JSON422.Message)
-		case resp.JSON403 != nil:
-			msg = fmt.Sprintf("%s: %s", msg, resp.JSON403.Message)
-		case resp.JSON401 != nil:
-			msg = fmt.Sprintf("%s: %s", msg, resp.JSON401.Message)
-		}
-		return fmt.Errorf(msg)
+		return errorFromHTTPResponse(resp.HTTPResponse, resp)
 	}
 	return nil
 }

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "name": "test",
-  "version": "v1.2.4",
+  "version": "v1.2.3",
   "protocols": [
     3
   ],
