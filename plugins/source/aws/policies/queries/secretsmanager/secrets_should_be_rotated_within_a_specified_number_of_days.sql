@@ -7,7 +7,7 @@ select
     account_id,
     arn as resource_id,
     case when
-        (last_rotated_date is null and created_date > now() - INTERVAL '90 days')
-        or (last_rotated_date is not null and last_rotated_date > now() - INTERVAL '90 days')
+        (last_rotated_date is null and created_date < now() - INTERVAL '90 days')
+        or (last_rotated_date is not null and last_rotated_date < now() - INTERVAL '90 days')
     then 'fail' else 'pass' end as status
 from aws_secretsmanager_secrets
