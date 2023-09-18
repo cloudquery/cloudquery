@@ -71,7 +71,7 @@ func (c *NotionClient) GetPages(nextCursor string, hasMore bool) (*pages.Pages, 
 		queryParameter = fmt.Sprintf(`, "start_cursor" : "%s"`, nextCursor)
 	}
 
-	// Define the request body as a []byte
+	// Define the request body as a []byte. Max paze_size is 100 according to notion api docs.
 	var reqBody = []byte(fmt.Sprintf(`{
 		"filter": {
 			"value": "page",
@@ -81,7 +81,7 @@ func (c *NotionClient) GetPages(nextCursor string, hasMore bool) (*pages.Pages, 
 			"direction": "ascending",
 			"timestamp": "last_edited_time"
 		},
-		"page_size": 1%s
+		"page_size": 100%s
 	}`, queryParameter))
 
 	// Create an HTTP request to path /search
@@ -121,7 +121,7 @@ func (c *NotionClient) GetDatabases(nextCursor string, hasMore bool) (*databases
 		queryParameter = fmt.Sprintf(`, "start_cursor" : "%s"`, nextCursor)
 	}
 
-	// Define the request body as a []byte
+	// Define the request body as a []byte. Max paze_size is 100 according to notion api docs.
 	var reqBody = []byte(fmt.Sprintf(`{
 		"filter": {
 			"value": "database",
@@ -131,7 +131,7 @@ func (c *NotionClient) GetDatabases(nextCursor string, hasMore bool) (*databases
 			"direction": "ascending",
 			"timestamp": "last_edited_time"
 		},
-		"page_size": 1%s
+		"page_size": 100%s
 	}`, queryParameter))
 
 	// Create an HTTP request to path /search
