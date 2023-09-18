@@ -117,9 +117,14 @@ This will start a long lived process that will only stop when there is an error 
 
 ## Deploying in production
 
-CloudQuery needs to run in a listening mode as a long-running service. In this mode, it does not support the `overwrite-delete-stale` write model. To delete stale data, you need to set up a recurrent task to run [full table syncs](https://www.cloudquery.io/docs/core-concepts/syncs#full-table-syncs). Additionally, you may need to set up another task with CloudQuery still running regular sync on tables that are currently not supported for the event-based sync. See the [AWS Plugin](https://cloudquery.io/docs/plugins/sources/aws/event-based-sync#supported-services-and-events) documentation for the list of supported tables.
+CloudQuery needs to run in a listening mode as a long-running service. In this mode, it does not support the `overwrite-delete-stale` write model. To delete stale data, you need to set up a recurrent task to run [full table syncs](https://www.cloudquery.io/docs/core-concepts/syncs#full-table-syncs). Additionally, you may need to set up another task with CloudQuery still running regular sync on tables that are currently not supported for the event-based sync. See the [AWS Plugin](/docs/plugins/sources/aws/event-based-sync#supported-services-and-events) documentation for the list of supported tables.
+
 
 Note that these are the limitations of the current beta version of the event-based sync for our AWS plugin. We plan to make configuration and management easier in the future based on user feedback.
+
+## Availability
+
+This feature is currently available in early access to everyone upon [signing up](https://cloudquery.typeform.com/to/Dvdn6P2u). When released to the public, it will be a premium (paid) feature, with the actual pricing model yet to be defined.
 
 ## Future work
 
@@ -127,6 +132,6 @@ At the moment, only one Kinesis stream is supported by a running instance of Clo
 
 The current coverage of tables has been designed to provide a selection of different services. We will add more resources based on your feedback.
 
-[Read the docs](https://cloudquery.io/docs/plugins/sources/aws/event-based-sync#supported-services-and-events)
+[Read the docs](/docs/plugins/sources/aws/event-based-sync#supported-services-and-events)
 
 <div style={{marginTop:"2em"}}><a href="https://cloudquery.typeform.com/to/Dvdn6P2u" class="btn btn-blue">Sign up for early access</a></div>
