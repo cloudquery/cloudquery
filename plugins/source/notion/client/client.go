@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"os"
 
 	"github.com/rs/zerolog"
 )
@@ -23,8 +22,9 @@ func (c *Client) Logger() *zerolog.Logger {
 
 func New(ctx context.Context, logger zerolog.Logger, s *Spec) (Client, error) {
 
-	bearerToken := os.Getenv("NOTION_SECRET_KEY")
-	notionVersion := os.Getenv("NOTION_VERSION")
+	s.SetDefaults() // Sets the default value of Notion Version.
+	bearerToken := s.BearerToken
+	notionVersion := s.NotionVersion
 	c, err := NewNotionClient(bearerToken, notionVersion)
 	if err != nil {
 		return Client{}, err
