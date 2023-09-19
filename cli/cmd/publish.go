@@ -92,6 +92,9 @@ func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("%w. Hint: You may need to run `cloudquery login` first", err)
 	}
+	if refreshToken == "" {
+		return errors.New("could not find authentication token. Hint: You may need to run `cloudquery login` first")
+	}
 	token, err := getIDToken(refreshToken)
 	if err != nil {
 		return fmt.Errorf("failed to sign in with custom token: %w", err)
@@ -197,7 +200,11 @@ func createNewDraftVersion(ctx context.Context, c *cloudquery_api.ClientWithResp
 		return fmt.Errorf("failed to create plugin version: %w", err)
 	}
 	if resp.HTTPResponse.StatusCode > 299 {
-		return errorFromHTTPResponse(resp.HTTPResponse, resp)
+		err := errorFromHTTPResponse(resp.HTTPResponse, resp)
+		if resp.HTTPResponse.StatusCode == http.StatusForbidden {
+			return fmt.Errorf("%w. Hint: You may need to create the plugin first", err)
+		}
+		return err
 	}
 	return nil
 }
