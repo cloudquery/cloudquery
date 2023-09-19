@@ -5,6 +5,24 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.5.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.5.3...plugins-source-gcp-v9.5.4) (2023-09-19)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to ffb7089 ([#13879](https://github.com/cloudquery/cloudquery/issues/13879)) ([f95ced5](https://github.com/cloudquery/cloudquery/commit/f95ced5daa2b123bd71ddff75bd76b3b008790c1))
+* Fetch all fields for `gcp_compute_osconfig_inventories` ([#13946](https://github.com/cloudquery/cloudquery/issues/13946)) ([a4e5ccb](https://github.com/cloudquery/cloudquery/commit/a4e5ccb716eb0d067d171beb36ce0d43b438790c))
+* **services:** Update GCP Services ([#13920](https://github.com/cloudquery/cloudquery/issues/13920)) ([6406cc7](https://github.com/cloudquery/cloudquery/commit/6406cc747d2d3bf295b50d1a3b0431a031adf768))
+
+## [9.5.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.5.2...plugins-source-gcp-v9.5.3) (2023-09-12)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to 483f6b2 ([#13780](https://github.com/cloudquery/cloudquery/issues/13780)) ([8d31b44](https://github.com/cloudquery/cloudquery/commit/8d31b44f787f42d47f186cdcc4a5739a3a370a5f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.7.1 ([#13713](https://github.com/cloudquery/cloudquery/issues/13713)) ([73004dc](https://github.com/cloudquery/cloudquery/commit/73004dcabd05bf474d8b5960b8c747a894b98560))
+* Include `IncludedPermissions` in `gcp_iam_roles` ([#13788](https://github.com/cloudquery/cloudquery/issues/13788)) ([7d8e73b](https://github.com/cloudquery/cloudquery/commit/7d8e73bc570cfbb0d1e31f292f94293ecf604239)), closes [#13789](https://github.com/cloudquery/cloudquery/issues/13789)
+
 ## [9.5.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.5.1...plugins-source-gcp-v9.5.2) (2023-09-05)
 
 

@@ -207,6 +207,7 @@ var GcpServices = map[string]bool{
 	"publicca.googleapis.com":                         true,
 	"pubsub.googleapis.com":                           true,
 	"pubsublite.googleapis.com":                       true,
+	"rapidmigrationassessment.googleapis.com":         true,
 	"readerrevenuesubscriptionlinking.googleapis.com": true,
 	"realtimebidding.googleapis.com":                  true,
 	"recaptchaenterprise.googleapis.com":              true,

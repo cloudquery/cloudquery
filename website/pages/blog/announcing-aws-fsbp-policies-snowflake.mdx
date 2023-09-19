@@ -1,0 +1,256 @@
+---
+title: Announcing the AWS Foundational Security Best Practices for Snowflake
+tag: announcement
+date: 2023/09/13
+description: >-
+  CloudQuery recently updated the Amazon Web Services (AWS) Foundational Security Best Practices controls and added support to layer this security framework on top of data stored in Snowflake.
+author: ronshemesh, jsonkao
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
+We are excited to announce the launch of CloudQuery’s newest security controls framework: The AWS Foundational Security Best Practices (FSBP) for Snowflake.
+
+With this release, CloudQuery customers can now run the AWS Foundational Security Best Practices controls on their AWS configuration and infrastructure data stored in Snowflake.  This release contains over 200 controls with coverage for more than 40 AWS services.
+
+## Background
+
+The AWS Foundational Security Best Practices [were first launched in 2020](https://aws.amazon.com/blogs/security/aws-foundational-security-best-practices-standard-now-available-security-hub/) by AWS with an initial set of 31 automated security controls that align with AWS Security Best Practices.  Now, there are [more than 200 controls](https://docs.aws.amazon.com/securityhub/latest/userguide/fsbp-standard.html) with coverage for more than 40 AWS services.  
+
+By using CloudQuery, customers can sync infrastructure data from multiple sources to multiple destinations.  [CloudQuery enables customers to sync infrastructure data from AWS to Snowflake](https://www.cloudquery.io/integrations/aws/snowflake), a popular data destination.
+
+## AWS Service Coverage
+
+The AWS Foundational Security Best Practices covers over 40 services, including the following AWS Services.  For a full list of services and controls, check out [AWS’s documentation](https://docs.aws.amazon.com/securityhub/latest/userguide/fsbp-standard.html) or our [policies page](https://www.cloudquery.io/docs/core-concepts/policies#aws-foundational-security-for-snowflake).
+
+Infrastructure and Management:
+
+- AWS Account
+- CloudFormation
+- EC2 Systems Manager
+
+Security:
+
+- AWS KMS
+- Secrets Manager
+- Identity and Access Management (IAM)
+- AWS WAF
+- CloudFront
+- CloudTrail
+
+Compute
+
+- AWS Lambda
+- AWS EC2 Controls
+- Amazon ECS and EKS controls
+- Auto Scaling
+- Elastic Load Balancing
+
+Data and Storage:
+
+- AWS S3
+- Amazon RDS
+- SageMaker
+- Athena
+
+## Example Queries
+
+### [IAM.1] IAM policies should not allow full "*" administrative privileges
+
+```sql
+with bad_statements as (
+SELECT
+    p.id
+FROM
+    aws_iam_policies p
+    , lateral flatten(input => p.POLICY_VERSION_LIST) as f
+    , lateral flatten(input => parse_json(f.value:Document):Statement) as s
+where f.value:IsDefaultVersion = 'true'
+    and s.value:Effect = 'Allow'
+            and (s.value:Action = '*' or s.value:Action = '*:*')
+            and s.value:Resource = '*' 
+)
+select
+    'IAM policies should not allow full * administrative privileges' as title,
+    account_id,
+    arn as resource_id,
+    CASE
+        WHEN b.id is not null THEN 'fail'
+        ELSE 'pass'
+    END as status
+from
+    aws_iam_policies as p
+LEFT JOIN bad_statements as b
+    ON p.id = b.id
+```
+
+### [KMS.3] AWS KMS keys should not be deleted unintentionally
+
+```sql
+SELECT 
+  'AWS KMS keys should not be deleted unintentionally' AS title,
+    account_id,
+    arn AS resource_id,
+    CASE 
+        WHEN key_state IN ('PendingDeletion', 'PendingReplicaDeletion') AND key_manager = 'CUSTOMER' THEN 'fail'
+        ELSE 'pass'
+    END AS status
+FROM aws_kms_keys;
+```
+
+### [CloudTrail.2] CloudTrail should have encryption at-rest enabled
+
+```sql
+select
+    'CloudTrail should have encryption at rest enabled' as title,
+    account_id,
+    arn as resource_id,
+    case
+        when kms_key_id is NULL then 'fail'
+        else 'pass'
+    end as status
+FROM aws_cloudtrail_trails
+```
+
+### [EC2.8] EC2 instances should use Instance Metadata Service Version 2
+
+```sql
+select
+  'EC2 instances should use IMDSv2' as title,
+  account_id,
+  instance_id as resource_id,
+  case when
+    metadata_options:HttpTokens is distinct from 'required'
+    then 'fail'
+    else 'pass'
+  end as status
+from aws_ec2_instances
+```
+
+### [ELB.3] Classic Load Balancer listeners should be configured with HTTPS or TLS termination
+
+```sql
+select
+  'Classic Load Balancer listeners should be configured with HTTPS or TLS termination' as title,
+  lb.account_id,
+  lb.arn as resource_id,
+  case when
+    li.value:Listener:Protocol not in ('HTTPS', 'SSL')
+    then 'fail'
+    else 'pass'
+  end as status
+from aws_elbv1_load_balancers lb, lateral flatten(input => parse_json(lb.listener_descriptions)) as li
+```
+
+### [RDS.2] RDS DB Instances should prohibit public access
+
+```sql
+select
+    'RDS DB instances should prohibit public access, determined by the PubliclyAccessible configuration' as title,
+    account_id,
+    arn AS resource_id,
+    case when publicly_accessible = TRUE then 'fail' else 'pass' end as status
+from aws_rds_instances
+```
+
+### [S3.1] S3 Block Public Access setting should be enabled
+
+```sql
+select
+    'S3 Block Public Access setting should be enabled' as title,
+    aws_iam_accounts.account_id,
+    aws_iam_accounts.account_id AS resource_id,
+    case when
+        config_exists is distinct from TRUE
+        or block_public_acls is distinct from TRUE
+        or block_public_policy is distinct from TRUE
+        or ignore_public_acls is distinct from TRUE
+        or restrict_public_buckets is distinct from TRUE
+    then 'fail' else 'pass' end as status
+from
+    aws_iam_accounts
+left join
+    aws_s3_accounts on
+        aws_iam_accounts.account_id = aws_s3_accounts.account_id
+```
+
+### [EC2.1] Amazon EBS snapshots should not be publicly restorable
+
+```sql
+WITH snapshot_access_groups AS (
+    SELECT account_id,
+           region,
+           snapshot_id,
+           create_volume_permissions.value:Group AS "group",
+           create_volume_permissions.value:UserId AS user_id
+    FROM aws_ec2_ebs_snapshot_attributes, lateral flatten(input => parse_json(aws_ec2_ebs_snapshot_attributes.create_volume_permissions)) as create_volume_permissions
+)
+SELECT DISTINCT
+  'Amazon EBS snapshots should not be public, determined by the ability to be restorable by anyone' as title,
+  account_id,
+  snapshot_id as resource_id,
+  case when
+    "group" = 'all'
+    -- this is under question because
+    -- trusted accounts(user_id) do not violate this control
+        OR user_id IS DISTINCT FROM ''
+    then 'fail'
+    else 'pass'
+  end as status
+FROM snapshot_access_groups
+```
+
+### [AutoScaling.3] Auto Scaling group launch configurations should configure EC2 instances to require Instance Metadata Service Version 2
+
+```sql
+SELECT
+  'Auto Scaling group launch configurations should configure EC2 instances to require Instance Metadata Service Version 2' AS "title",
+  account_id,
+  arn AS resource_id,
+  case
+  when METADATA_OPTIONS:HttpTokens = 'required' then 'pass'
+    else 'fail'
+  END
+    AS status
+FROM
+  aws_autoscaling_launch_configurations;
+```
+
+### [Lambda.1] Lambda function policies should prohibit public access
+
+```sql
+SELECT DISTINCT
+    'Lambda function policies should prohibit public access' AS title,
+    account_id,
+    arn AS resource_id,
+    'fail' AS status
+FROM (
+  SELECT
+    account_id,
+    arn
+  FROM
+  aws_lambda_functions,
+  table(flatten(policy_document, 'Statement')) as statement
+where
+  statement.value:Effect = 'Allow'
+  and
+    statement.value:Principal = '*'
+    or
+    statement.value:Principal:AWS = '*'
+  )
+```
+
+## Get Started
+
+To get started, [check out our documentation](https://www.cloudquery.io/docs/core-concepts/policies#aws-foundational-security-for-snowflake) and the example queries above.  We'd love to hear your feedback.  We can be reached on [GitHub](https://github.com/cloudquery/cloudquery/issues) and [Discord](https://www.cloudquery.io/discord).
+
+CloudQuery supports additional compliance frameworks and visualizations.  For more information, see our [policies](https://www.cloudquery.io/docs/core-concepts/policies) and [dashboards](https://www.cloudquery.io/docs/core-concepts/dashboards) references.
+
+## References
+
+- [AWS Foundational Security Best Practices (FSBP)](https://docs.aws.amazon.com/securityhub/latest/userguide/fsbp-standard.html)
+- [CloudQuery Policies](https://www.cloudquery.io/docs/core-concepts/policies)
+- [CloudQuery Dashboards](https://www.cloudquery.io/docs/core-concepts/dashboards)
+- [CloudQuery Support](https://www.cloudquery.io/pricing)
