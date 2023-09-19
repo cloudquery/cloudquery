@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/cloudquery/cloudquery/plugins/source/notion/internal/databases"
 	"github.com/cloudquery/cloudquery/plugins/source/notion/internal/pages"
@@ -18,6 +19,11 @@ type NotionClient struct {
 	Client        *http.Client
 	AuthToken     string
 	NotionVersion string
+}
+
+type Error struct {
+	Status  int    `json:"status"`
+	Message string `json:"message"`
 }
 
 func NewNotionClient(authToken string, notionVersion string) (*NotionClient, error) {
@@ -57,11 +63,18 @@ func (c *NotionClient) GetUsers(nextCursor string, hasMore bool) (*users.Users, 
 
 	defer r.Body.Close()
 
-	u := &users.Users{}
-	if err := json.NewDecoder(r.Body).Decode(u); err != nil {
-		return nil, err
+	// Check the HTTP status code for errors
+	if r.StatusCode == http.StatusOK {
+		u := &users.Users{}
+		if err := json.NewDecoder(r.Body).Decode(u); err != nil {
+			return nil, err
+		}
+		return u, nil
 	}
-	return u, nil
+
+	e := &Error{}
+	json.NewDecoder(r.Body).Decode(e)
+	return nil, fmt.Errorf("Status :"+strconv.Itoa(e.Status)+", Message :"+e.Message, r.StatusCode)
 }
 
 func (c *NotionClient) GetPages(nextCursor string, hasMore bool) (*pages.Pages, error) {
@@ -104,14 +117,22 @@ func (c *NotionClient) GetPages(nextCursor string, hasMore bool) (*pages.Pages, 
 	if err != nil {
 		return nil, err
 	}
+
 	defer r.Body.Close()
 
-	p := &pages.Pages{}
-	if err := json.NewDecoder(r.Body).Decode(p); err != nil {
-		return nil, err
+	// Check the HTTP status code for errors
+	if r.StatusCode == http.StatusOK {
+		p := &pages.Pages{}
+		if err := json.NewDecoder(r.Body).Decode(p); err != nil {
+			return nil, err
+		}
+
+		return p, nil
 	}
 
-	return p, nil
+	e := &Error{}
+	json.NewDecoder(r.Body).Decode(e)
+	return nil, fmt.Errorf("Status :"+strconv.Itoa(e.Status)+", Message :"+e.Message, r.StatusCode)
 }
 
 func (c *NotionClient) GetDatabases(nextCursor string, hasMore bool) (*databases.Databases, error) {
@@ -156,10 +177,17 @@ func (c *NotionClient) GetDatabases(nextCursor string, hasMore bool) (*databases
 	}
 	defer r.Body.Close()
 
-	d := &databases.Databases{}
-	if err := json.NewDecoder(r.Body).Decode(d); err != nil {
-		return nil, err
+	// Check the HTTP status code for errors
+	if r.StatusCode == http.StatusOK {
+		d := &databases.Databases{}
+		if err := json.NewDecoder(r.Body).Decode(d); err != nil {
+			return nil, err
+		}
+
+		return d, nil
 	}
 
-	return d, nil
+	e := &Error{}
+	json.NewDecoder(r.Body).Decode(e)
+	return nil, fmt.Errorf("Status :"+strconv.Itoa(e.Status)+", Message :"+e.Message, r.StatusCode)
 }
