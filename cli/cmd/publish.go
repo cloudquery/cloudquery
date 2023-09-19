@@ -115,8 +115,8 @@ func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 	name := fmt.Sprintf("%s/%s@%s", teamName, pluginName, pkgJSON.Version)
 	fmt.Printf("Publishing %s to CloudQuery Hub...\n", name)
 
-	url := cmd.Flag("url").Value.String()
-	c, err := cloudquery_api.NewClientWithResponses(url, cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
+	uri := cmd.Flag("url").Value.String()
+	c, err := cloudquery_api.NewClientWithResponses(uri, cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 		return nil
 	}))
@@ -134,6 +134,9 @@ func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 	fmt.Println("Uploading table schemas...")
 	tablesJSONPath := filepath.Join(distDir, "tables.json")
 	err = uploadTableSchemas(ctx, c, teamName, pluginName, pkgJSON.Version, tablesJSONPath)
+	if err != nil {
+		return fmt.Errorf("failed to upload table schemas: %w", err)
+	}
 
 	// upload docs
 	fmt.Println("Uploading docs...")
@@ -233,7 +236,7 @@ func uploadTableSchemas(ctx context.Context, c *cloudquery_api.ClientWithRespons
 }
 
 func errorFromHTTPResponse(httpResp *http.Response, resp any) error {
-	fields := make(map[string]interface{})
+	fields := make(map[string]any)
 	el := reflect.ValueOf(resp).Elem()
 	for i := 0; i < el.NumField(); i++ {
 		f := el.Field(i)
@@ -298,8 +301,8 @@ func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, team
 	return nil
 }
 
-func uploadBinary(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginName, version, os, arch, path string) error {
-	target := os + "_" + arch
+func uploadBinary(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginName, version, goos, goarch, localPath string) error {
+	target := goos + "_" + goarch
 	resp, err := c.UploadPluginAssetWithResponse(ctx, teamName, pluginName, version, target)
 	if err != nil {
 		return fmt.Errorf("failed to upload binary: %w", err)
@@ -322,15 +325,15 @@ func uploadBinary(ctx context.Context, c *cloudquery_api.ClientWithResponses, te
 		return fmt.Errorf("upload URL is nil, failed to upload binary")
 	}
 
-	err = uploadFile(*uploadURL, path)
+	err = uploadFile(*uploadURL, localPath)
 	if err != nil {
 		return fmt.Errorf("failed to upload file: %w", err)
 	}
 	return nil
 }
 
-func uploadFile(uploadURL, path string) error {
-	file, err := os.Open(path)
+func uploadFile(uploadURL, localPath string) error {
+	file, err := os.Open(localPath)
 	if err != nil {
 		return fmt.Errorf("failed to open file: %w", err)
 	}

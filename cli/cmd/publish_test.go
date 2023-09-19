@@ -190,7 +190,7 @@ func checkUpdateVersionRequest(t *testing.T, r *http.Request) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if got["draft"] != false {
+	if got["draft"].(bool) {
 		t.Fatalf("expected draft to be false, got %v", got["draft"])
 	}
 }
