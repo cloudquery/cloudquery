@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	APIVersion = "2022-10"
+	DefaultAPIVersion = "2023-01"
 )
 
 type Client struct {
@@ -39,6 +39,7 @@ type ClientOptions struct {
 
 	ApiKey, ApiSecret, AccessToken string
 	ShopURL                        string
+	APIVersion                     string
 }
 
 type HTTPDoer interface {
@@ -51,6 +52,9 @@ func New(opts ClientOptions) (*Client, error) {
 	}
 	if opts.ShopURL == "" {
 		return nil, fmt.Errorf("missing shop url")
+	}
+	if opts.APIVersion == "" {
+		opts.APIVersion = DefaultAPIVersion
 	}
 
 	return &Client{
@@ -195,7 +199,7 @@ func (s *Client) GetProducts(ctx context.Context, pageUrl string, params url.Val
 	var ret GetProductsResponse
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/products.json", APIVersion)
+		pageUrl = fmt.Sprintf("admin/api/%s/products.json", s.opts.APIVersion)
 	}
 
 	resp, err := s.request(ctx, pageUrl, params)
@@ -220,7 +224,7 @@ func (s *Client) GetOrders(ctx context.Context, pageUrl string, params url.Value
 	var ret GetOrdersResponse
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/orders.json", APIVersion)
+		pageUrl = fmt.Sprintf("admin/api/%s/orders.json", s.opts.APIVersion)
 	}
 
 	resp, err := s.request(ctx, pageUrl, params)
@@ -245,7 +249,7 @@ func (s *Client) GetCustomers(ctx context.Context, pageUrl string, params url.Va
 	var ret GetCustomersResponse
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/customers.json", APIVersion)
+		pageUrl = fmt.Sprintf("admin/api/%s/customers.json", s.opts.APIVersion)
 	}
 
 	resp, err := s.request(ctx, pageUrl, params)
@@ -270,7 +274,7 @@ func (s *Client) GetAbandonedCheckouts(ctx context.Context, pageUrl string, para
 	var ret GetCheckoutsResponse
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/checkouts.json", APIVersion)
+		pageUrl = fmt.Sprintf("admin/api/%s/checkouts.json", s.opts.APIVersion)
 	}
 
 	resp, err := s.request(ctx, pageUrl, params)
@@ -295,7 +299,7 @@ func (s *Client) GetPriceRules(ctx context.Context, pageUrl string, params url.V
 	var ret GetPriceRulesResponse
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/price_rules.json", APIVersion)
+		pageUrl = fmt.Sprintf("admin/api/%s/price_rules.json", s.opts.APIVersion)
 	}
 
 	resp, err := s.request(ctx, pageUrl, params)
@@ -320,7 +324,7 @@ func (s *Client) GetDiscountCodes(ctx context.Context, priceRuleID int64, pageUr
 	var ret GetDiscountCodesResponse
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/price_rules/%d/discount_codes.json", APIVersion, priceRuleID)
+		pageUrl = fmt.Sprintf("admin/api/%s/price_rules/%d/discount_codes.json", s.opts.APIVersion, priceRuleID)
 	}
 
 	resp, err := s.request(ctx, pageUrl, nil)
