@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	defaultAPIVersion = "2023-01"
+	DefaultAPIVersion = "2023-01"
 )
 
 type Client struct {
@@ -54,7 +54,7 @@ func New(opts ClientOptions) (*Client, error) {
 		return nil, fmt.Errorf("missing shop url")
 	}
 	if opts.APIVersion == "" {
-		opts.APIVersion = defaultAPIVersion
+		opts.APIVersion = DefaultAPIVersion
 	}
 
 	return &Client{
