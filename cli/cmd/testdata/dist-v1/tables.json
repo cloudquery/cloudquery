@@ -1,7 +1,7 @@
 [
   {
     "name": "test_some_table",
-    "title": "",
+    "title": "Test Some Table",
     "description": "Test description",
     "columns": [
       {

@@ -13,6 +13,7 @@ import (
 	"path"
 	"path/filepath"
 	"reflect"
+	"strconv"
 	"strings"
 	"syscall"
 
@@ -72,6 +73,7 @@ type PackageJSONVersion struct {
 
 type PackageJSONV1 struct {
 	Name             string             `json:"name"`
+	Message          string             `json:"message"`
 	Version          string             `json:"version"`
 	Protocols        []int              `json:"protocols"`
 	SupportedTargets []TargetBuild      `json:"supported_targets"`
@@ -79,9 +81,10 @@ type PackageJSONV1 struct {
 }
 
 type TargetBuild struct {
-	OS   string `json:"os"`
-	Arch string `json:"arch"`
-	Path string `json:"path"`
+	OS       string `json:"os"`
+	Arch     string `json:"arch"`
+	Path     string `json:"path"`
+	Checksum string `json:"checksum"`
 }
 
 func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
@@ -140,7 +143,7 @@ func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 	// upload binaries
 	fmt.Println("Uploading binaries...")
 	for _, t := range pkgJSON.SupportedTargets {
-		fmt.Printf("Uploading %s_%s...\n", t.OS, t.Arch)
+		fmt.Printf("- Uploading %s_%s...\n", t.OS, t.Arch)
 		err = uploadBinary(ctx, c, teamName, pluginName, pkgJSON.Version, t.OS, t.Arch, path.Join(distDir, t.Path))
 		if err != nil {
 			return fmt.Errorf("failed to upload binary: %w", err)
@@ -176,15 +179,18 @@ func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 
 func createNewDraftVersion(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginName string, pkgJSON PackageJSONV1) error {
 	targets := make([]string, len(pkgJSON.SupportedTargets))
+	checksums := make([]string, len(pkgJSON.SupportedTargets))
 	for i, t := range pkgJSON.SupportedTargets {
 		targets[i] = fmt.Sprintf("%s_%s", t.OS, t.Arch)
+		checksums[i] = strings.TrimPrefix(t.Checksum, "sha256:")
 	}
+
 	body := cloudquery_api.CreatePluginVersionJSONRequestBody{
-		Checksums:        nil,
-		Message:          "Test message", // TODO: add message to package.json
+		Message:          pkgJSON.Message,
 		PackageType:      cloudquery_api.CreatePluginVersionJSONBodyPackageType(pkgJSON.PackageType),
 		Protocols:        pkgJSON.Protocols,
 		SupportedTargets: targets,
+		Checksums:        checksums,
 	}
 	resp, err := c.CreatePluginVersionWithResponse(ctx, teamName, pluginName, pkgJSON.Version, body)
 	if err != nil {
@@ -227,7 +233,7 @@ func errorFromHTTPResponse(httpResp *http.Response, resp any) error {
 		fields[el.Type().Field(i).Name] = f.Interface()
 	}
 	for k, v := range fields {
-		if v == nil || reflect.ValueOf(v).Elem().Kind() != reflect.Struct {
+		if !strings.HasPrefix(k, "JSON") || v == nil || reflect.ValueOf(v).Elem().Kind() != reflect.Struct {
 			continue
 		}
 		msg := reflect.ValueOf(v).Elem().FieldByName("Message")
@@ -251,15 +257,25 @@ func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, team
 		if !strings.HasSuffix(dirEntry.Name(), ".md") {
 			continue
 		}
-		b, err := os.ReadFile(filepath.Join(docsDir, dirEntry.Name()))
+		content, err := os.ReadFile(filepath.Join(docsDir, dirEntry.Name()))
 		if err != nil {
 			return fmt.Errorf("failed to read docs file: %w", err)
 		}
+		contentStr := normalizeContent(string(content))
+		frontmatter := extractFrontMatter(contentStr)
+		ordinal := 0
+		ordinalStr := frontmatter["ordinal_position"]
+		if ordinalStr != "" {
+			ordinal, err = strconv.Atoi(ordinalStr)
+			if err != nil {
+				return fmt.Errorf("failed to parse ordinal_position in %s: %w", dirEntry.Name(), err)
+			}
+		}
 		pages = append(pages, cloudquery_api.PluginDocsPage{
-			Content:         string(b),
+			Content:         contentStr,
 			Name:            strings.TrimSuffix(dirEntry.Name(), ".md"),
-			OrdinalPosition: nil, // TODO: read from frontmatter
-			Title:           "",  // TODO: read from frontmatter
+			OrdinalPosition: &ordinal,
+			Title:           frontmatter["title"],
 		})
 	}
 	body := cloudquery_api.CreatePluginVersionDocsJSONRequestBody{
@@ -291,6 +307,9 @@ func uploadBinary(ctx context.Context, c *cloudquery_api.ClientWithResponses, te
 		}
 		return fmt.Errorf(msg)
 	}
+	if resp.JSON201 == nil {
+		return fmt.Errorf("upload response is nil, failed to upload binary")
+	}
 	uploadURL := resp.JSON201.Url
 	if uploadURL == nil {
 		return fmt.Errorf("upload URL is nil, failed to upload binary")
@@ -318,7 +337,7 @@ func uploadFile(uploadURL, path string) error {
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return fmt.Errorf("failed to upload file: %w", err)
+		return err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
@@ -326,7 +345,7 @@ func uploadFile(uploadURL, path string) error {
 		if readErr != nil {
 			return fmt.Errorf("failed to read response body: %w", readErr)
 		}
-		return fmt.Errorf("failed to upload file: %s: %s", resp.Status, body)
+		return fmt.Errorf("status %s: %s", resp.Status, body)
 	}
 	return nil
 }
@@ -415,4 +434,34 @@ func readPackageJSON(distDir string) (PackageJSONV1, error) {
 		return PackageJSONV1{}, err
 	}
 	return pkgJSON, nil
+}
+
+func normalizeContent(s string) string {
+	s = strings.TrimSpace(s)
+	s = strings.ReplaceAll(s, "\r\n", "\n")
+	s = strings.ReplaceAll(s, "\r", "\n")
+	return s
+}
+
+func extractFrontMatter(s string) map[string]string {
+	m := make(map[string]string)
+	lines := strings.Split(s, "\n")
+	if len(lines) == 0 {
+		return m
+	}
+	if strings.TrimSpace(lines[0]) != "---" {
+		return m
+	}
+	for i := 1; i < len(lines); i++ {
+		if strings.TrimSpace(lines[i]) == "---" {
+			break
+		}
+		parts := strings.SplitN(lines[i], ":", 2)
+		if len(parts) != 2 {
+			fmt.Println("invalid frontmatter line:", lines[i])
+			continue
+		}
+		m[strings.TrimSpace(parts[0])] = strings.TrimSpace(parts[1])
+	}
+	return m
 }
