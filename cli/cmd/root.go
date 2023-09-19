@@ -127,7 +127,7 @@ func NewCmdRoot() *cobra.Command {
 		NewCmdSync(),
 		NewCmdMigrate(),
 		newCmdDoc(),
-		newCmdDownload(),
+		newCmdInstall(),
 		NewCmdTables(),
 		newCmdLogin(),
 		newCmdPublish(),

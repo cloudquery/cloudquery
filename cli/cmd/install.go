@@ -11,27 +11,27 @@ import (
 )
 
 const (
-	downloadShort   = "Download required plugin images from your configuration"
-	downloadExample = `# Download required plugins specified in directory
-cloudquery download ./directory
-# Download required plugins specified in directory and config files
-cloudquery download ./directory ./aws.yml ./pg.yml
+	installShort   = "Install required plugin images from your configuration"
+	installExample = `# Install required plugins specified in directory
+cloudquery install ./directory
+# Install required plugins specified in directory and config files
+cloudquery install ./directory ./aws.yml ./pg.yml
 `
 )
 
-func newCmdDownload() *cobra.Command {
+func newCmdInstall() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "download [files or directories]",
-		Short:   downloadShort,
-		Long:    downloadShort,
-		Example: downloadExample,
+		Use:     "install [files or directories]",
+		Short:   installShort,
+		Long:    installShort,
+		Example: installExample,
 		Args:    cobra.MinimumNArgs(1),
-		RunE:    download,
+		RunE:    install,
 	}
 	return cmd
 }
 
-func download(cmd *cobra.Command, args []string) error {
+func install(cmd *cobra.Command, args []string) error {
 	cqDir, err := cmd.Flags().GetString("cq-dir")
 	if err != nil {
 		return err
