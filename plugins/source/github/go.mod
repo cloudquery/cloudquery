@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/apache/arrow/go/v14 v14.0.0-20230905030402-a526ba697d4e
 	github.com/beatlabs/github-auth v0.0.0-20230815180530-39adf7579a64
-	github.com/cloudquery/plugin-sdk/v4 v4.7.1
+	github.com/cloudquery/plugin-sdk/v4 v4.8.0
 	github.com/gofri/go-github-ratelimit v1.0.3
 	github.com/golang/mock v1.6.0
 	github.com/google/go-github/v49 v49.0.0
