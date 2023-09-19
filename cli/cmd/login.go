@@ -28,8 +28,7 @@ This is required to download plugins from CloudQuery Hub.
 Local plugins and different registries don't need login.
 `
 
-	accountsURL = "http://localhost:3000"
-	// accountsURL = "https://accounts.cloudquery.io"
+	accountsURL = "https://accounts.cloudquery.io"
 )
 
 func newCmdLogin() *cobra.Command {

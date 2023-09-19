@@ -161,6 +161,7 @@ func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+	
 	if finalize {
 		fmt.Println("Finalizing plugin version...")
 		draft := false
@@ -175,10 +176,11 @@ func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 		}
 		fmt.Println("Success!")
 		fmt.Printf("%s/%s@%s is now available on the CloudQuery Hub.\n", teamName, pluginName, pkgJSON.Version)
-	} else {
-		fmt.Println("Success!")
-		fmt.Println("\nNote: this plugin version is marked as draft=true. You can preview and finalize it on the CloudQuery Hub, or run `cloudquery publish` with the --finalize flag.")
+		return nil
 	}
+
+	fmt.Println("Success!")
+	fmt.Println("\nNote: this plugin version is marked as draft=true. You can preview and finalize it on the CloudQuery Hub, or run `cloudquery publish` with the --finalize flag.")
 
 	return nil
 }
