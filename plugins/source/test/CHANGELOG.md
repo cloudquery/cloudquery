@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v3.1.5...plugins-source-test-v3.1.6) (2023-09-20)
+
+
+### Bug Fixes
+
+* Save token to file ([#13965](https://github.com/cloudquery/cloudquery/issues/13965)) ([5e1f354](https://github.com/cloudquery/cloudquery/commit/5e1f35403cb7ed8b3ab2aa3b4b9d1186a61a8b3e))
+
 ## [3.1.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v3.1.4...plugins-source-test-v3.1.5) (2023-09-20)
 
 
