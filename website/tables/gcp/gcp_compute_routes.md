@@ -1,10 +1,10 @@
 # Table: gcp_compute_routes
 
-This table shows data for GCP Routes.
+This table shows data for GCP Compute Routes.
 
 https://cloud.google.com/compute/docs/reference/rest/v1/routes/list#response-body
 
-The primary key for this table is **self_link**
+The primary key for this table is **self_link**.
 
 ## Columns
 
