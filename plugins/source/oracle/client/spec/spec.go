@@ -1,4 +1,6 @@
-package client
+package spec
+
+import _ "embed"
 
 type Spec struct {
 	Concurrency int `json:"concurrency,omitempty"`
@@ -13,3 +15,6 @@ func (s *Spec) SetDefaults() {
 		s.Concurrency = 10000
 	}
 }
+
+//go:embed spec.json
+var JSONSchema string
