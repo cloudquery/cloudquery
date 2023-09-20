@@ -81,13 +81,15 @@ func TestInstall(t *testing.T) {
 	}
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)
-	cqDir := t.TempDir()
-	defer os.RemoveAll(cqDir)
 
 	for _, tc := range configs {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			defer CloseLogFile()
+			cqDir := t.TempDir()
+			t.Cleanup(func() {
+				CloseLogFile()
+				os.RemoveAll(cqDir)
+			})
 			testConfig := path.Join(currentDir, "testdata", tc.config)
 			logFileName := path.Join(cqDir, "cloudquery.log")
 			cmd := NewCmdRoot()
