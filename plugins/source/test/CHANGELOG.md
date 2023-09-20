@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v3.1.4...plugins-source-test-v3.1.5) (2023-09-20)
+
+
+### Bug Fixes
+
+* Stub docs when publishing ([#13962](https://github.com/cloudquery/cloudquery/issues/13962)) ([e90e266](https://github.com/cloudquery/cloudquery/commit/e90e2663126b1a4a6931929aeef4d2f3d70da5a5))
+
 ## [3.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v3.1.3...plugins-source-test-v3.1.4) (2023-09-20)
 
 
