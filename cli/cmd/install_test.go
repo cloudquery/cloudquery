@@ -3,9 +3,9 @@ package cmd
 import (
 	"os"
 	"path"
-	"path/filepath"
 	"runtime"
 	"sort"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -102,12 +102,16 @@ func readFiles(t *testing.T, basedir, prefix string) []string {
 	assert.NoError(t, err)
 	var justFiles []string
 	for i := range files {
+		name := files[i].Name()
+		name = strings.TrimSuffix(name, ".exe")
+		name = strings.ReplaceAll(name, ".exe.zip", ".zip")
+
 		if !files[i].IsDir() {
-			justFiles = append(justFiles, filepath.Join(prefix, files[i].Name()))
+			justFiles = append(justFiles, path.Join(prefix, name))
 			continue
 		}
 
-		justFiles = append(justFiles, readFiles(t, filepath.Join(basedir, files[i].Name()), filepath.Join(prefix, files[i].Name()))...)
+		justFiles = append(justFiles, readFiles(t, path.Join(basedir, files[i].Name()), path.Join(prefix, name))...)
 	}
 	sort.Strings(justFiles)
 	return justFiles
