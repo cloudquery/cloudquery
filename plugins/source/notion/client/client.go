@@ -12,7 +12,7 @@ type Client struct {
 	Notion *NotionClient
 }
 
-func (c *Client) ID() string {
+func (Client) ID() string {
 	return "notion"
 }
 
@@ -21,7 +21,6 @@ func (c *Client) Logger() *zerolog.Logger {
 }
 
 func New(ctx context.Context, logger zerolog.Logger, s *Spec) (Client, error) {
-
 	s.SetDefaults() // Sets the default value of Notion Version.
 	bearerToken := s.BearerToken
 	notionVersion := s.NotionVersion

@@ -171,7 +171,7 @@ func (c *NotionClient) GetDatabases(nextCursor string, hasMore bool) (*databases
 	return d, nil
 }
 
-func decodeResponse(resp *http.Response, target interface{}) error {
+func decodeResponse(resp *http.Response, target any) error {
 	if resp.StatusCode != http.StatusOK {
 		e := &Error{}
 		if err := json.NewDecoder(resp.Body).Decode(e); err != nil {
@@ -180,8 +180,6 @@ func decodeResponse(resp *http.Response, target interface{}) error {
 		return fmt.Errorf("status: %d, message: %s", resp.StatusCode, e.Message)
 	}
 
-	if err := json.NewDecoder(resp.Body).Decode(target); err != nil {
-		return err
-	}
-	return nil
+	err := json.NewDecoder(resp.Body).Decode(target)
+	return err
 }

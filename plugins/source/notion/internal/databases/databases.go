@@ -10,20 +10,20 @@ type Databases struct {
 }
 
 type Database struct {
-	Object         string                   `json:"object"`
-	Id             string                   `json:"id"`
-	CreatedTime    time.Time                `json:"created_time"`
-	LastEditedTime time.Time                `json:"last_edited_time"`
-	CreatedBy      map[string]interface{}   `json:"created_by"`
-	LastEditedBy   map[string]interface{}   `json:"last_edited_by"`
-	Title          []map[string]interface{} `json:"titile"`
-	Description    []map[string]interface{} `json:"description"`
-	IsInline       bool                     `json:"is_inline"`
-	Cover          map[string]interface{}   `json:"cover"`
-	Icon           map[string]interface{}   `json:"icon"`
-	Parent         map[string]interface{}   `json:"parent"`
-	Archived       bool                     `json:"archived"`
-	Properties     map[string]interface{}   `json:"properties"`
-	Url            string                   `json:"url"`
-	PublicUrl      string                   `json:"public_url"`
+	Object         string           `json:"object"`
+	Id             string           `json:"id"`
+	CreatedTime    time.Time        `json:"created_time"`
+	LastEditedTime time.Time        `json:"last_edited_time"`
+	CreatedBy      map[string]any   `json:"created_by"`
+	LastEditedBy   map[string]any   `json:"last_edited_by"`
+	Title          []map[string]any `json:"titile"`
+	Description    []map[string]any `json:"description"`
+	IsInline       bool             `json:"is_inline"`
+	Cover          map[string]any   `json:"cover"`
+	Icon           map[string]any   `json:"icon"`
+	Parent         map[string]any   `json:"parent"`
+	Archived       bool             `json:"archived"`
+	Properties     map[string]any   `json:"properties"`
+	Url            string           `json:"url"`
+	PublicUrl      string           `json:"public_url"`
 }
