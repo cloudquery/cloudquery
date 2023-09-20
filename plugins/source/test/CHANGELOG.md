@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v3.1.6...plugins-source-test-v3.1.7) (2023-09-20)
+
+
+### Bug Fixes
+
+* Create token directory before creating file ([#13967](https://github.com/cloudquery/cloudquery/issues/13967)) ([f1b8fbb](https://github.com/cloudquery/cloudquery/commit/f1b8fbb6987ada9a016a3d242c455f2e4ab18ffc))
+
 ## [3.1.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v3.1.5...plugins-source-test-v3.1.6) (2023-09-20)
 
 
