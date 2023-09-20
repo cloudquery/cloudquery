@@ -91,16 +91,18 @@ jobs:
       - name: Run publish package command
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         run: |
-          go run main.go package -m "${{ steps.release-notes.outputs.result }}" . ${{ needs.prepare.outputs.plugin_version }}
+          mkdir -p stubdocs
+          touch stubdocs/README.md
+          go run main.go package --docs-dir stubdocs -m "${{ steps.release-notes.outputs.result }}" . ${{ needs.prepare.outputs.plugin_version }}
 
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          # TODO: Use a CLI version that supports publishing to the hub
           version: "v3.18.0"
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         run: |
-          echo ${{ secrets.CQ_CI_CLOUDQUERY_HUB_TOKEN }} ~/.local/share/cloudquery/token
+          mkdir -p ~/.local/share/cloudquery
+          echo ${{ secrets.CQ_CI_CLOUDQUERY_HUB_TOKEN }} > ~/.local/share/cloudquery/token
           cloudquery publish cloudquery/${{ needs.prepare.outputs.plugin_name }}
