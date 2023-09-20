@@ -14,6 +14,8 @@ import (
 )
 
 func TestPublish(t *testing.T) {
+	t.Setenv("CQ_API_KEY", "testkey")
+
 	wantCalls := map[string]int{
 		"PUT /plugins/cloudquery/test/versions/v1.2.3":                      1,
 		"PUT /plugins/cloudquery/test/versions/v1.2.3/tables":               1,
@@ -29,21 +31,26 @@ func TestPublish(t *testing.T) {
 		gotCalls[r.Method+" "+r.URL.Path]++
 		switch r.URL.Path {
 		case "/plugins/cloudquery/test/versions/v1.2.3":
+			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
 			w.Write([]byte(`{"name": "v1.2.3"}`))
 			checkCreateVersionRequest(t, r)
 		case "/plugins/cloudquery/test/versions/v1.2.3/tables":
+			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
 			w.Write([]byte(`{}`))
 			checkCreateTablesRequest(t, r)
 		case "/plugins/cloudquery/test/versions/v1.2.3/docs":
+			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
 			w.Write([]byte(`{}`))
 			checkCreateDocsRequest(t, r)
 		case "/plugins/cloudquery/test/versions/v1.2.3/assets/linux_amd64":
+			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
 			w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-linux")))
 		case "/plugins/cloudquery/test/versions/v1.2.3/assets/darwin_amd64":
+			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
 			w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-darwin")))
 		case "/upload-linux":
@@ -153,6 +160,13 @@ func TestPublish_Unauthorized(t *testing.T) {
 	}
 	if !strings.Contains(err.Error(), "unauthorized") {
 		t.Fatalf("expected error to contain 'unauthorized', got %v", err)
+	}
+}
+
+func checkAuthHeader(t *testing.T, r *http.Request) {
+	wantAuth := "Bearer testkey"
+	if r.Header.Get("Authorization") != wantAuth {
+		t.Fatalf("expected Authorization header to be %q, got %q", wantAuth, r.Header.Get("Authorization"))
 	}
 }
 

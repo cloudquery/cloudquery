@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"net/url"
 	"os"
 	"os/signal"
 	"path"
@@ -17,8 +16,8 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/adrg/xdg"
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
+	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/spf13/cobra"
 )
@@ -33,9 +32,7 @@ This publishes a plugin version to CloudQuery Hub from a local dist directory.
 # Publish a plugin version from a local dist directory
 cloudquery publish my_team/my_plugin`
 
-	cloudQueryAPI  = "https://api.cloudquery.io"
-	firebaseAPIKey = "AIzaSyCxsrwjABEF-dWLzUqmwiL-ct02cnG9GCs"
-	tokenURL       = "https://securetoken.googleapis.com/v1/token?key=" + firebaseAPIKey
+	cloudQueryAPI = "https://api.cloudquery.io"
 )
 
 func newCmdPublish() *cobra.Command {
@@ -64,6 +61,7 @@ func newCmdPublish() *cobra.Command {
 	cmd.Flags().StringP("dist-dir", "D", "dist", "Path to the dist directory")
 	cmd.Flags().StringP("url", "u", cloudQueryAPI, "CloudQuery API URL")
 	cmd.Flags().BoolP("finalize", "f", false, `Finalize the plugin version after publishing. If false, the plugin version will be marked as draft=true.`)
+
 	return cmd
 }
 
@@ -88,16 +86,9 @@ type TargetBuild struct {
 }
 
 func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
-	refreshToken, err := readRefreshToken()
+	token, err := auth.GetToken()
 	if err != nil {
-		return fmt.Errorf("%w. Hint: You may need to run `cloudquery login` first", err)
-	}
-	if refreshToken == "" {
-		return errors.New("could not find authentication token. Hint: You may need to run `cloudquery login` first")
-	}
-	token, err := getIDToken(refreshToken)
-	if err != nil {
-		return fmt.Errorf("failed to sign in with custom token: %w", err)
+		return fmt.Errorf("failed to get auth token: %w", err)
 	}
 
 	distDir := cmd.Flag("dist-dir").Value.String()
@@ -161,7 +152,7 @@ func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	
+
 	if finalize {
 		fmt.Println("Finalizing plugin version...")
 		draft := false
@@ -360,71 +351,6 @@ func uploadFile(uploadURL, localPath string) error {
 		return fmt.Errorf("status %s: %s", resp.Status, body)
 	}
 	return nil
-}
-
-func getIDToken(refreshToken string) (string, error) {
-	data := url.Values{}
-	data.Set("grant_type", "refresh_token")
-	data.Set("refresh_token", refreshToken)
-
-	resp, err := http.PostForm(tokenURL, data)
-	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		body, readErr := io.ReadAll(resp.Body)
-		if readErr != nil {
-			return "", fmt.Errorf("failed to read response body: %w", readErr)
-		}
-		return "", fmt.Errorf("failed to refresh token: %s: %s", resp.Status, body)
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return "", err
-	}
-	tokenResp, err := parseToken(body)
-	if err != nil {
-		return "", err
-	}
-	err = saveRefreshToken(tokenResp.RefreshToken)
-	if err != nil {
-		return "", fmt.Errorf("failed to save refresh token: %w", err)
-	}
-
-	return tokenResp.IDToken, nil
-}
-
-type TokenResponse struct {
-	AccessToken  string `json:"access_token"`
-	ExpiresIn    string `json:"expires_in"`
-	TokenType    string `json:"token_type"`
-	RefreshToken string `json:"refresh_token"`
-	IDToken      string `json:"id_token"`
-	UserID       string `json:"user_id"`
-	ProjectID    string `json:"project_id"`
-}
-
-func parseToken(response []byte) (TokenResponse, error) {
-	var tokenResponse TokenResponse
-	err := json.Unmarshal(response, &tokenResponse)
-	if err != nil {
-		return TokenResponse{}, err
-	}
-	return tokenResponse, nil
-}
-
-func readRefreshToken() (string, error) {
-	tokenFilePath, err := xdg.DataFile("cloudquery/token")
-	if err != nil {
-		return "", fmt.Errorf("failed to get token file path: %w", err)
-	}
-	b, err := os.ReadFile(tokenFilePath)
-	if err != nil {
-		return "", fmt.Errorf("failed to read token file: %w", err)
-	}
-	return strings.TrimSpace(string(b)), nil
 }
 
 func readPackageJSON(distDir string) (PackageJSONV1, error) {
