@@ -1,30 +1,22 @@
-package client
+package spec
 
 import (
 	_ "embed"
 
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
-)
-
-const (
-	defaultConcurrency = 50000
-)
-
-var (
-	//go:embed schema.json
-	JSONSchema string
+	"google.golang.org/api/cloudresourcemanager/v1"
 )
 
 // Spec defines GCP source plugin Spec
 type Spec struct {
 	ProjectIDs                  []string           `json:"project_ids"`
-	ServiceAccountKeyJSON       string             `json:"service_account_key_json"`
 	FolderIDs                   []string           `json:"folder_ids"`
-	FolderRecursionDepth        *int               `json:"folder_recursion_depth"`
+	FolderRecursionDepth        int                `json:"folder_recursion_depth"`
 	ProjectFilter               string             `json:"project_filter"`
+	ServiceAccountKeyJSON       string             `json:"service_account_key_json"`
 	BackoffDelay                int                `json:"backoff_delay"`
 	BackoffRetries              int                `json:"backoff_retries"`
-	DiscoveryConcurrency        *int               `json:"discovery_concurrency"`
+	DiscoveryConcurrency        int                `json:"discovery_concurrency"`
 	EnabledServicesOnly         bool               `json:"enabled_services_only"`
 	OrganizationIDs             []string           `json:"organization_ids"`
 	OrganizationFilter          string             `json:"organization_filter"`
@@ -32,6 +24,37 @@ type Spec struct {
 	Concurrency                 int                `json:"concurrency"`
 	Scheduler                   scheduler.Strategy `json:"scheduler,omitempty"`
 }
+
+func (spec *Spec) SetDefaults() {
+	if spec.BackoffRetries <= 0 {
+		const defaultBackoffRetries = 3
+		spec.BackoffRetries = defaultBackoffRetries
+	}
+	if spec.BackoffDelay <= 0 {
+		const defaultBackoffDelay = 1
+		spec.BackoffDelay = defaultBackoffDelay
+	}
+
+	if spec.FolderRecursionDepth < 0 {
+		const defaultRecursionDepth = 100
+		spec.FolderRecursionDepth = defaultRecursionDepth
+	}
+
+	if spec.DiscoveryConcurrency <= 0 {
+		const defaultDiscoveryConcurrency = 100
+		spec.DiscoveryConcurrency = defaultDiscoveryConcurrency
+	}
+
+	if spec.Concurrency <= 0 {
+		const defaultConcurrency = 50000
+		spec.Concurrency = defaultConcurrency
+	}
+
+	spec.ServiceAccountImpersonation.SetDefaults()
+}
+
+//go:embed schema.json
+var JSONSchema string
 
 type CredentialsConfig struct {
 	// TargetPrincipal is the email address of the service account to
@@ -49,22 +72,14 @@ type CredentialsConfig struct {
 	Subject string `json:"subject"`
 }
 
-func (spec *Spec) SetDefaults() {
-	var defaultRecursionDepth = 100
-	if spec.FolderRecursionDepth == nil {
-		spec.FolderRecursionDepth = &defaultRecursionDepth
+func (c *CredentialsConfig) SetDefaults() {
+	if c == nil {
+		return
 	}
-
-	var defaultDiscoveryConcurrency = 100
-	if spec.DiscoveryConcurrency == nil {
-		spec.DiscoveryConcurrency = &defaultDiscoveryConcurrency
-	}
-	if spec.ServiceAccountImpersonation != nil {
-		if len(spec.ServiceAccountImpersonation.Scopes) == 0 {
-			spec.ServiceAccountImpersonation.Scopes = []string{"https://www.googleapis.com/auth/cloud-platform"}
-		}
-	}
-	if spec.Concurrency == 0 {
-		spec.Concurrency = defaultConcurrency
+	if len(c.Scopes) == 0 {
+		// `https://www.googleapis.com/auth/cloud-platform`
+		// We use this as some APIs don't utilize the read-only alternative `https://www.googleapis.com/auth/cloud-platform.read-only`
+		// See https://developers.google.com/identity/protocols/oauth2/scopes for more details.
+		c.Scopes = []string{cloudresourcemanager.CloudPlatformScope}
 	}
 }

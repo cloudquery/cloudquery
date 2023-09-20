@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Spec": {
+      "title": "CloudQuery GCP Source Plugin Spec",
+      "type": "object",
+      "properties": {
+        "project_ids": {
+          "title": "Project IDs",
+          "description": "GCP projects to connect to. By default will use all projects available to the current authenticated account",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "default": []
+        },
+        "folder_ids": {
+          "title": "Folder IDs",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(folders|organizations)/(.)+$"
+          },
+          "default": []
+        },
+        "folder_recursion_depth": {
+          "title": "Folder Recursion Depth",
+          "description": "Number of levels of folders to recurse into. 0 means no recursion, 1 means only immediate children, etc.",
+          "type": "integer",
+          "minimum": 0,
+          "default": 100
+        },
+        "project_filter": {
+          "title": "Project Filter",
+          "description": "Filter to apply to projects. See https://cloud.google.com/resource-manager/docs/creating-managing-projects#listing_projects_with_a_filter for more information.",
+          "type": "string"
+        },
+        "service_account_key_json": {
+          "type": "string",
+          "description": "GCP service account key content. Using service accounts is not recommended, but if it is used it is better to use environment or file variable substitution"
+        },
+        "backoff_delay": {
+          "title": "Backoff Delay",
+          "description": "Number of seconds to wait before retrying a failed API call",
+          "type": "integer",
+          "minimum": 1,
+          "default": 1
+        },
+        "backoff_retries": {
+          "title": "Backoff Retries",
+          "description": "Number of times to retry a failed API call",
+          "type": "integer",
+          "minimum": 1,
+          "default": 3
+        },
+        "discovery_concurrency": {
+          "title": "Discovery Concurrency",
+          "description": "Number of concurrent API discovery requests to make",
+          "type": "integer",
+          "minimum": 1,
+          "default": 100
+        },
+        "enabled_services_only": {
+          "title": "Enabled Services Only",
+          "description": "Whether only enabled services should be queried",
+          "type": "boolean",
+          "default": true
+        },
+        "organization_ids": {
+          "title": "Organization IDs",
+          "description": "List of GCP organization IDs to query. Defaults to all accessible projects",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "default": []
+        },
+        "organization_filter": {
+          "title": "Organization Filter",
+          "description": "Filter to apply to organizations. See https://cloud.google.com/resource-manager/docs/creating-managing-projects#listing_projects_with_a_filter for more information.",
+          "type": "string"
+        },
+        "concurrency": {
+          "title": "Concurrency",
+          "description": "Number of concurrent API requests to make",
+          "type": "integer",
+          "minimum": 1,
+          "default": 50000
+        },
+        "scheduler": {
+          "title": "Scheduler Strategy",
+          "description": "The scheduler strategy to use when determining the order of resources to sync",
+          "type": "string",
+          "enum": [
+            "dfs",
+            "round-robin",
+            "shuffle"
+          ],
+          "default": "dfs"
+        }
+      }
+    },
+    "CredentialsConfig": {
+      "type": "object",
+      "title": "Credentials Config",
+      "required": [
+        "properties"
+      ],
+      "properties": {
+        "target_principal": {
+          "title": "Target Principal",
+          "type": "string",
+          "description": "Email address of the service account to impersonate",
+          "pattern": "^(.)+@(.)+$"
+        },
+        "scopes": {
+          "title": "Scopes",
+          "description": "OAuth 2.0 scopes that the impersonated credential should have. See https://developers.google.com/identity/protocols/oauth2/scopes for more details.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^https://www.googleapis.com/auth/(.)+$"
+          },
+          "default": [
+            "https://www.googleapis.com/auth/cloud-platform"
+          ]
+        },
+        "delegates": {
+          "title": "Delegates",
+          "description": "Service account email addresses in a delegation chain. Each service account must be granted roles/iam.serviceAccountTokenCreator on the next service account in the chain.",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(.)+@(.)+$"
+          },
+          "default": []
+        },
+        "subject": {
+          "title": "Subject",
+          "type": "string",
+          "description": "Email address of the service account to impersonate"
+        }
+      }
+    }
+  }
+}
