@@ -129,6 +129,7 @@ func NewCmdRoot() *cobra.Command {
 		newCmdDoc(),
 		NewCmdTables(),
 		newCmdLogin(),
+		newCmdPublish(),
 	)
 	cmd.CompletionOptions.HiddenDefaultCmd = true
 	cmd.DisableAutoGenTag = true
