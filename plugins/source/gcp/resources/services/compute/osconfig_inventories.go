@@ -29,6 +29,7 @@ func fetchOSConfigInventories(ctx context.Context, meta schema.ClientMeta, paren
 	zone := parent.Item.(*computepb.Zone)
 	req := &pb.ListInventoriesRequest{
 		Parent: "projects/" + c.ProjectId + "/locations/" + *zone.Name + "/instances/-",
+		View:   pb.InventoryView_FULL,
 	}
 
 	gcpClient, err := osconfig.NewOsConfigZonalRESTClient(ctx, c.ClientOptions...)

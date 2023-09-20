@@ -11,7 +11,7 @@ test:
 lint:
 	golangci-lint run --config ../../.golangci.yml
 
-.PHONY: gen
+.PHONY: gen-docs
 gen-docs: build
 	@command -v cloudquery >/dev/null 2>&1 || { \
 		echo "Error: 'cloudquery' command not found. Please install it before running gen-docs."; \

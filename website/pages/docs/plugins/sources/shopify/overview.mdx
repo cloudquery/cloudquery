@@ -46,6 +46,9 @@ This is the (nested) spec used by the Shopify source plugin:
 
 - `shop_url` (string, required): The URL of your Shopify store. Must start with `https://` and end with `.myshopify.com`.
 
+- `api_version` (string, optional. Default: `2023-01`):
+  The Shopify Admin API version to use. See [here](https://shopify.dev/docs/api/usage/versioning) for more information.
+
 - `timeout_secs` (integer in seconds, optional. Default: 10):
   Timeout for requests against the Shopify Admin API.
 
