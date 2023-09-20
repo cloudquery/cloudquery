@@ -13,7 +13,7 @@ In Order for CloudQuery to sync resources from your Notion setup, you will need 
 How to create the notion integration key? [see here](https://developers.notion.com/docs/create-a-notion-integration#create-your-integration-in-notion). Make sure to give proper **Content Capabilities** and **User Capabilities** from Capablilities settings. Also give your integration page permissions [see here](https://developers.notion.com/docs/create-a-notion-integration#give-your-integration-page-permissions). Only pages and databases with permission will able to sync. 
 
 ```bash
-export NOTION_SERCRET_KEY=<your_notion_integration_key>
+export NOTION_SECRET_KEY=<your_notion_integration_key>
 ```
 
 ## Configuration
@@ -29,7 +29,7 @@ spec:
   destinations:
     - "postgresql"
   spec:
-    bearer_token: "${NOTION_SERCRET_KEY}"
+    bearer_token: "${NOTION_SECRET_KEY}"
 ```
 
 
