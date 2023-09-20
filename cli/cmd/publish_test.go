@@ -150,6 +150,8 @@ func TestPublishFinalize(t *testing.T) {
 }
 
 func TestPublish_Unauthorized(t *testing.T) {
+	t.Setenv("CQ_API_KEY", "badkey")
+
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusUnauthorized)
