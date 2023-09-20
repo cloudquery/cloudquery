@@ -4,8 +4,9 @@
   "type": "object",
   "properties": {
     "concurrency": {
-      "type": "integer",
+      "title": "Concurrency",
       "description": "A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.",
+      "type": "integer",
       "minimum": 1,
       "default": 10000
     }
