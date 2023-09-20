@@ -161,7 +161,7 @@ func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	
+
 	if finalize {
 		fmt.Println("Finalizing plugin version...")
 		draft := false
