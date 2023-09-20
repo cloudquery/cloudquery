@@ -4,7 +4,7 @@ This table shows data for GCP Routes.
 
 https://cloud.google.com/compute/docs/reference/rest/v1/routes/list#response-body
 
-The primary key for this table is **id**
+The primary key for this table is **self_link**
 
 ## Columns
 
