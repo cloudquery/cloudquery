@@ -2,30 +2,15 @@ package spec
 
 import (
 	"encoding/json"
-	"strings"
 	"testing"
 
-	"github.com/santhosh-tekuri/jsonschema/v5"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/stretchr/testify/require"
 )
 
-func getValidator(t *testing.T) *jsonschema.Schema {
-	t.Helper()
-
-	c := jsonschema.NewCompiler()
-	c.Draft = jsonschema.Draft2020
-	c.AssertFormat = true
-
-	require.NoError(t, c.AddResource("schema.json", strings.NewReader(JSONSchema)))
-
-	validator, err := c.Compile("schema.json")
-	require.NoError(t, err)
-
-	return validator
-}
-
 func TestSpec(t *testing.T) {
-	validator := getValidator(t)
+	validator, err := plugin.JSONSchemaValidator(JSONSchema)
+	require.NoError(t, err)
 
 	type testCase struct {
 		name string
