@@ -5,6 +5,7 @@ import (
 	"path"
 	"path/filepath"
 	"runtime"
+	"sort"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -84,6 +85,7 @@ func TestInstall(t *testing.T) {
 	defer os.RemoveAll(cqDir)
 
 	for _, tc := range configs {
+		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			defer CloseLogFile()
 			testConfig := path.Join(currentDir, "testdata", tc.config)
@@ -94,6 +96,7 @@ func TestInstall(t *testing.T) {
 			assert.NoError(t, err)
 
 			// check if all files were created
+			sort.Strings(tc.wantFiles)
 			justFiles := readFiles(t, cqDir, "")
 			assert.ElementsMatch(t, tc.wantFiles, justFiles)
 
@@ -118,5 +121,6 @@ func readFiles(t *testing.T, basedir, prefix string) []string {
 
 		justFiles = append(justFiles, readFiles(t, filepath.Join(basedir, files[i].Name()), filepath.Join(prefix, files[i].Name()))...)
 	}
+	sort.Strings(justFiles)
 	return justFiles
 }
