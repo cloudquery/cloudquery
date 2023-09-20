@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/apache/arrow/go/v14 v14.0.0-20230905030402-a526ba697d4e
-	github.com/cloudquery/plugin-sdk/v4 v4.9.0
+	github.com/cloudquery/plugin-sdk/v4 v4.10.0
 	github.com/neo4j/neo4j-go-driver/v5 v5.6.0
 	github.com/rs/zerolog v1.29.1
 	github.com/stretchr/testify v1.8.4
