@@ -114,7 +114,7 @@
           "title": "Target Principal",
           "type": "string",
           "description": "Email address of the service account to impersonate",
-          "pattern": "^(.)+@(.)+$"
+          "format": "email"
         },
         "scopes": {
           "title": "Scopes",
@@ -134,7 +134,7 @@
           "type": "array",
           "items": {
             "type": "string",
-            "pattern": "^(.)+@(.)+$"
+            "format": "email"
           },
           "default": []
         },
