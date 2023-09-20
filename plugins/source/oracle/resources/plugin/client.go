@@ -71,9 +71,6 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
 	config.SetDefaults()
-	if err := config.Validate(); err != nil {
-		return nil, fmt.Errorf("failed to validate spec: %w", err)
-	}
 
 	return &Client{
 		config: *config,
