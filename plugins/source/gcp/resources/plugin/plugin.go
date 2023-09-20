@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/docs"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/cloudquery/plugins/source/gcp/client/spec"
 	"golang.org/x/exp/maps"
 )
 
@@ -101,6 +101,6 @@ func Plugin() *plugin.Plugin {
 		"gcp",
 		Version,
 		NewClient,
-		plugin.WithJSONSchema(client.JSONSchema),
+		plugin.WithJSONSchema(spec.JSONSchema),
 	)
 }
