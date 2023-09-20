@@ -208,7 +208,7 @@ func New(ctx context.Context, logger zerolog.Logger, s *spec.Spec) (schema.Clien
 
 		for _, parentFolder := range s.FolderIDs {
 			c.logger.Info().Msg("Listing folders...")
-			childFolders, err := listFolders(ctx, foldersClient, parentFolder, s.FolderRecursionDepth, c.CallOptions...)
+			childFolders, err := listFolders(ctx, foldersClient, parentFolder, *s.FolderRecursionDepth, c.CallOptions...)
 			if err != nil {
 				return nil, fmt.Errorf("failed to list folders: %w", err)
 			}

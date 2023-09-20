@@ -11,18 +11,18 @@ import (
 type Spec struct {
 	ProjectIDs                  []string           `json:"project_ids"`
 	FolderIDs                   []string           `json:"folder_ids"`
-	FolderRecursionDepth        int                `json:"folder_recursion_depth"`
+	FolderRecursionDepth        *int               `json:"folder_recursion_depth"`
+	OrganizationIDs             []string           `json:"organization_ids"`
 	ProjectFilter               string             `json:"project_filter"`
+	OrganizationFilter          string             `json:"organization_filter"`
 	ServiceAccountKeyJSON       string             `json:"service_account_key_json"`
 	BackoffDelay                int                `json:"backoff_delay"`
 	BackoffRetries              int                `json:"backoff_retries"`
 	DiscoveryConcurrency        int                `json:"discovery_concurrency"`
 	EnabledServicesOnly         bool               `json:"enabled_services_only"`
-	OrganizationIDs             []string           `json:"organization_ids"`
-	OrganizationFilter          string             `json:"organization_filter"`
-	ServiceAccountImpersonation *CredentialsConfig `json:"service_account_impersonation"`
 	Concurrency                 int                `json:"concurrency"`
 	Scheduler                   scheduler.Strategy `json:"scheduler,omitempty"`
+	ServiceAccountImpersonation *CredentialsConfig `json:"service_account_impersonation"`
 }
 
 func (spec *Spec) SetDefaults() {
@@ -35,9 +35,10 @@ func (spec *Spec) SetDefaults() {
 		spec.BackoffDelay = defaultBackoffDelay
 	}
 
-	if spec.FolderRecursionDepth < 0 {
-		const defaultRecursionDepth = 100
-		spec.FolderRecursionDepth = defaultRecursionDepth
+	if spec.FolderRecursionDepth == nil || *spec.FolderRecursionDepth < 0 {
+		// we do allow 0 as value
+		var defaultRecursionDepth = 100
+		spec.FolderRecursionDepth = &defaultRecursionDepth
 	}
 
 	if spec.DiscoveryConcurrency <= 0 {
@@ -66,7 +67,7 @@ type CredentialsConfig struct {
 	// Each service account must be granted roles/iam.serviceAccountTokenCreator
 	// on the next service account in the chain. Optional.
 	Delegates []string `json:"delegates"`
-	// Subject is the sub field of a JWT. This field should only be set if you
+	// Subject is the subject field of a JWT (sub). This field should only be set if you
 	// wish to impersonate as a user. This feature is useful when using domain
 	// wide delegation. Optional.
 	Subject string `json:"subject"`

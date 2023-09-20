@@ -18,6 +18,7 @@
         },
         "folder_ids": {
           "title": "Folder IDs",
+          "description": "Location of the projects to sync from. Mutually exclusive with project_filter",
           "type": "array",
           "items": {
             "type": "string",
@@ -25,17 +26,32 @@
           },
           "default": []
         },
+        "organization_ids": {
+          "title": "Organization IDs",
+          "description": "List of GCP organization IDs to query. Defaults to all accessible projects",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "default": []
+        },
+        "project_filter": {
+          "title": "Project Filter",
+          "description": "Filter to apply to projects. See https://cloud.google.com/resource-manager/docs/creating-managing-projects#listing_projects_with_a_filter for more information. Mutually exclusive with folder_ids",
+          "type": "string"
+        },
+        "organization_filter": {
+          "title": "Organization Filter",
+          "description": "Filter to apply to organizations. See https://cloud.google.com/resource-manager/docs/creating-managing-projects#listing_projects_with_a_filter for more information.",
+          "type": "string"
+        },
         "folder_recursion_depth": {
           "title": "Folder Recursion Depth",
           "description": "Number of levels of folders to recurse into. 0 means no recursion, 1 means only immediate children, etc.",
           "type": "integer",
           "minimum": 0,
           "default": 100
-        },
-        "project_filter": {
-          "title": "Project Filter",
-          "description": "Filter to apply to projects. See https://cloud.google.com/resource-manager/docs/creating-managing-projects#listing_projects_with_a_filter for more information.",
-          "type": "string"
         },
         "service_account_key_json": {
           "type": "string",
@@ -68,21 +84,6 @@
           "type": "boolean",
           "default": true
         },
-        "organization_ids": {
-          "title": "Organization IDs",
-          "description": "List of GCP organization IDs to query. Defaults to all accessible projects",
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1
-          },
-          "default": []
-        },
-        "organization_filter": {
-          "title": "Organization Filter",
-          "description": "Filter to apply to organizations. See https://cloud.google.com/resource-manager/docs/creating-managing-projects#listing_projects_with_a_filter for more information.",
-          "type": "string"
-        },
         "concurrency": {
           "title": "Concurrency",
           "description": "Number of concurrent API requests to make",
@@ -101,16 +102,24 @@
           ],
           "default": "dfs"
         },
-        "credentials_config": {
+        "service_account_impersonation": {
+          "title": "Service Account Impersonation",
           "$ref": "#/$defs/CredentialsConfig"
         }
+      },
+      "not": {
+        "description": "project_filter & folder_ids are mutually exclusive",
+        "required": [
+          "project_filter",
+          "folder_ids"
+        ]
       }
     },
     "CredentialsConfig": {
       "type": "object",
       "title": "Credentials Config",
       "required": [
-        "properties"
+        "target_principal"
       ],
       "properties": {
         "target_principal": {
@@ -143,8 +152,9 @@
         },
         "subject": {
           "title": "Subject",
+          "description": "The subject field of a JWT (sub)",
           "type": "string",
-          "description": "Email address of the service account to impersonate"
+          "minLength": 1
         }
       }
     }
