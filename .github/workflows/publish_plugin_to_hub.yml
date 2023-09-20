@@ -1,0 +1,77 @@
+name: Publish plugin to hub
+on:
+  push:
+    tags:
+      - "plugins-*-*-v*.*.*"
+jobs:
+  publish-plugin-to-hub:
+    timeout-minutes: 60
+    runs-on: large-ubuntu-monorepo
+    steps:
+      - name: Split tag
+        id: split
+        run: |
+          tag=${{ github.ref_name }}
+          plugin_type=$(echo $tag | cut -d- -f2)
+          plugin_name=$(echo $tag | cut -d- -f3)
+          plugin_version=$(echo $tag | cut -d- -f4-)
+          echo "plugin_name=${plugin_name}" >> $GITHUB_OUTPUT
+          echo "plugin_type=${plugin_type}" >> $GITHUB_OUTPUT
+          echo "plugin_version=${plugin_version}" >> $GITHUB_OUTPUT
+          echo "plugin_dir=plugins/${plugin_type}/${plugin_name}" >> $GITHUB_OUTPUT
+
+      # Fail if not a valid SemVer string
+      - name: Parse semver string
+        uses: booxmedialtd/ws-action-parse-semver@7784200024d6b3fc01253e617ec0168daf603de3
+        id: semver_parser
+        with:
+          input_string: ${{ steps.split.outputs.plugin_version }}
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.20.5-publish-plugin-to-hub-cache-${{ hashFiles(format('{0}/{1}', steps.split.outputs.plugin_dir, 'go.sum')) }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.20.5-publish-plugin-to-hub-cache-plugins-${{ steps.split.outputs.plugin_type }}-${{ steps.split.outputs.plugin_name }}
+
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: ${{ steps.split.outputs.plugin_dir }}/go.mod
+
+      - name: Get Release Notes
+        id: release-notes
+        uses: actions/github-script@v6
+        with:
+          result-encoding: string
+          script: |
+            const { data } = await github.rest.repos.getReleaseByTag({
+              owner: "cloudquery",
+              repo: context.repo.repo,
+              tag: context.ref.replace('refs/tags/', ''),
+            });
+            return data.body;
+
+      - name: Run publish package command
+        working-directory: ${{ steps.split.outputs.plugin_dir }}
+        run: |
+          go run main.go package -m "${{ steps.release-notes.outputs.result }}" . ${{ steps.split.outputs.plugin_version }}
+
+      - name: Setup CloudQuery
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          # TODO: Use a CLI version that supports publishing to the hub
+          version: "3.17.1"
+
+      - name: Publish plugin to hub
+        working-directory: ${{ steps.split.outputs.plugin_dir }}
+        run: |
+          echo ${{ secrets.CQ_CI_CLOUDQUERY_HUB_TOKEN }} ~/.local/share/cloudquery/token
+          cloudquery publish cloudquery/${{ steps.split.outputs.plugin_name }}
