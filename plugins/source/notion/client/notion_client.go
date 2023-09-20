@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/cloudquery/cloudquery/plugins/source/notion/internal/databases"
 	"github.com/cloudquery/cloudquery/plugins/source/notion/internal/pages"
@@ -63,18 +62,12 @@ func (c *NotionClient) GetUsers(nextCursor string, hasMore bool) (*users.Users, 
 
 	defer r.Body.Close()
 
-	// Check the HTTP status code for errors
-	if r.StatusCode == http.StatusOK {
-		u := &users.Users{}
-		if err := json.NewDecoder(r.Body).Decode(u); err != nil {
-			return nil, err
-		}
-		return u, nil
+	u := &users.Users{}
+	if err := decodeResponse(r, u); err != nil {
+		return nil, err
 	}
 
-	e := &Error{}
-	json.NewDecoder(r.Body).Decode(e)
-	return nil, fmt.Errorf("Status :"+strconv.Itoa(e.Status)+", Message :"+e.Message, r.StatusCode)
+	return u, nil
 }
 
 func (c *NotionClient) GetPages(nextCursor string, hasMore bool) (*pages.Pages, error) {
@@ -120,19 +113,12 @@ func (c *NotionClient) GetPages(nextCursor string, hasMore bool) (*pages.Pages, 
 
 	defer r.Body.Close()
 
-	// Check the HTTP status code for errors
-	if r.StatusCode == http.StatusOK {
-		p := &pages.Pages{}
-		if err := json.NewDecoder(r.Body).Decode(p); err != nil {
-			return nil, err
-		}
-
-		return p, nil
+	p := &pages.Pages{}
+	if err := decodeResponse(r, p); err != nil {
+		return nil, err
 	}
 
-	e := &Error{}
-	json.NewDecoder(r.Body).Decode(e)
-	return nil, fmt.Errorf("Status :"+strconv.Itoa(e.Status)+", Message :"+e.Message, r.StatusCode)
+	return p, nil
 }
 
 func (c *NotionClient) GetDatabases(nextCursor string, hasMore bool) (*databases.Databases, error) {
@@ -177,17 +163,25 @@ func (c *NotionClient) GetDatabases(nextCursor string, hasMore bool) (*databases
 	}
 	defer r.Body.Close()
 
-	// Check the HTTP status code for errors
-	if r.StatusCode == http.StatusOK {
-		d := &databases.Databases{}
-		if err := json.NewDecoder(r.Body).Decode(d); err != nil {
-			return nil, err
-		}
-
-		return d, nil
+	d := &databases.Databases{}
+	if err := decodeResponse(r, d); err != nil {
+		return nil, err
 	}
 
-	e := &Error{}
-	json.NewDecoder(r.Body).Decode(e)
-	return nil, fmt.Errorf("Status :"+strconv.Itoa(e.Status)+", Message :"+e.Message, r.StatusCode)
+	return d, nil
+}
+
+func decodeResponse(resp *http.Response, target interface{}) error {
+	if resp.StatusCode != http.StatusOK {
+		e := &Error{}
+		if err := json.NewDecoder(resp.Body).Decode(e); err != nil {
+			return err
+		}
+		return fmt.Errorf("status: %d, message: %s", resp.StatusCode, e.Message)
+	}
+
+	if err := json.NewDecoder(resp.Body).Decode(target); err != nil {
+		return err
+	}
+	return nil
 }
