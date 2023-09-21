@@ -16,7 +16,7 @@ type Database struct {
 	LastEditedTime time.Time        `json:"last_edited_time"`
 	CreatedBy      map[string]any   `json:"created_by"`
 	LastEditedBy   map[string]any   `json:"last_edited_by"`
-	Title          []map[string]any `json:"titile"`
+	Title          []map[string]any `json:"title"`
 	Description    []map[string]any `json:"description"`
 	IsInline       bool             `json:"is_inline"`
 	Cover          map[string]any   `json:"cover"`

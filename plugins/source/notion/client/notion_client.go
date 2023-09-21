@@ -42,7 +42,7 @@ func (c *NotionClient) GetUsers(nextCursor string, hasMore bool) (*users.Users, 
 	}
 
 	// Create an HTTP request to path /users
-	req, err := http.NewRequest("GET", c.BaseURL+"/users"+queryParameter, nil)
+	req, err := http.NewRequest(http.MethodGet, c.BaseURL+"/users"+queryParameter, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -91,7 +91,7 @@ func (c *NotionClient) GetPages(nextCursor string, hasMore bool) (*pages.Pages, 
 	}`, queryParameter))
 
 	// Create an HTTP request to path /search
-	req, err := http.NewRequest("POST", c.BaseURL+"/search", bytes.NewBuffer(reqBody))
+	req, err := http.NewRequest(http.MethodPost, c.BaseURL+"/search", bytes.NewBuffer(reqBody))
 	if err != nil {
 		return nil, err
 	}
@@ -142,7 +142,7 @@ func (c *NotionClient) GetDatabases(nextCursor string, hasMore bool) (*databases
 	}`, queryParameter))
 
 	// Create an HTTP request to path /search
-	req, err := http.NewRequest("POST", c.BaseURL+"/search", bytes.NewBuffer(reqBody))
+	req, err := http.NewRequest(http.MethodPost, c.BaseURL+"/search", bytes.NewBuffer(reqBody))
 	if err != nil {
 		return nil, err
 	}
