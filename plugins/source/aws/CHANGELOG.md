@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.12.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.11.0...plugins-source-aws-v22.12.0) (2023-09-21)
+
+
+### Features
+
+* **services:** Support newly added regions ([#13938](https://github.com/cloudquery/cloudquery/issues/13938)) ([c4e810b](https://github.com/cloudquery/cloudquery/commit/c4e810bea14e854771bd779cb04f3e4cc2d0ee40))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to ffb7089 ([#13879](https://github.com/cloudquery/cloudquery/issues/13879)) ([f95ced5](https://github.com/cloudquery/cloudquery/commit/f95ced5daa2b123bd71ddff75bd76b3b008790c1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.10.0 ([#13978](https://github.com/cloudquery/cloudquery/issues/13978)) ([2efdf55](https://github.com/cloudquery/cloudquery/commit/2efdf55aed94a14c35c51632ff61ed454caaf5a5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.8.0 ([#13950](https://github.com/cloudquery/cloudquery/issues/13950)) ([15b0b69](https://github.com/cloudquery/cloudquery/commit/15b0b6925932613ed2915a3255b3466f21a5c7bf))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.9.0 ([#13960](https://github.com/cloudquery/cloudquery/issues/13960)) ([f074076](https://github.com/cloudquery/cloudquery/commit/f074076a21dc0b8cadfdc3adb9731473d24d28b1))
+* Flipped condition in query for SecretsManager.4 ([#13864](https://github.com/cloudquery/cloudquery/issues/13864)) ([76c21fb](https://github.com/cloudquery/cloudquery/commit/76c21fbec6dbb2ca03327a6a93024b8ecd538084))
+* Flipped condition on secrets manager policy ([#13862](https://github.com/cloudquery/cloudquery/issues/13862)) ([c604b70](https://github.com/cloudquery/cloudquery/commit/c604b707c5ac63b9814915ccffb94b84bdbf2e32))
+
 ## [22.11.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.10.0...plugins-source-aws-v22.11.0) (2023-09-12)
 
 
