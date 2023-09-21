@@ -15,7 +15,7 @@ func NotionUsersTable() *schema.Table {
 	return &schema.Table{
 		Name:      "notion_users_table",
 		Resolver:  fetchUsersTable,
-		Transform: transformers.TransformWithStruct(&users.User{}),
+		Transform: transformers.TransformWithStruct(&users.User{}, transformers.WithPrimaryKeys("Id")),
 	}
 }
 
@@ -23,7 +23,7 @@ func NotionPagesTable() *schema.Table {
 	return &schema.Table{
 		Name:      "notion_pages_table",
 		Resolver:  fetchPagesTable,
-		Transform: transformers.TransformWithStruct(&pages.Page{}),
+		Transform: transformers.TransformWithStruct(&pages.Page{}, transformers.WithPrimaryKeys("Id")),
 	}
 }
 
@@ -31,7 +31,7 @@ func NotionDatabasesTable() *schema.Table {
 	return &schema.Table{
 		Name:      "notion_databases_table",
 		Resolver:  fetchDatabasesTable,
-		Transform: transformers.TransformWithStruct(&databases.Database{}),
+		Transform: transformers.TransformWithStruct(&databases.Database{}, transformers.WithPrimaryKeys("Id")),
 	}
 }
 
