@@ -3,7 +3,7 @@ spec:
   name: notion
   version: v1.0.0
   destinations: [test]
-  path: ./notion.exe
+  path: ./notion
   registry: local
   tables: ["*"]
   spec:
