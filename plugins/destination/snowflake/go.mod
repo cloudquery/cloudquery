@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/apache/arrow/go/v14 v14.0.0-20230905030402-a526ba697d4e
-	github.com/cloudquery/plugin-sdk/v4 v4.8.0
+	github.com/cloudquery/plugin-sdk/v4 v4.10.0
 	github.com/goccy/go-json v0.10.2
 	github.com/rs/zerolog v1.29.1
 	github.com/snowflakedb/gosnowflake v1.6.19
@@ -39,7 +39,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.38.5 // indirect
 	github.com/aws/smithy-go v1.14.2 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.9.4 // indirect
+	github.com/cloudquery/plugin-pb-go v1.10.0 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/danieljoos/wincred v1.1.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -54,7 +54,7 @@ require (
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/flatbuffers v23.5.26+incompatible // indirect
-	github.com/google/uuid v1.3.0 // indirect
+	github.com/google/uuid v1.3.1 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.0 // indirect
 	github.com/gsterjov/go-libsecret v0.0.0-20161001094733-a6f4afe4910c // indirect
@@ -71,6 +71,7 @@ require (
 	github.com/pierrec/lz4/v4 v4.1.18 // indirect
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect

@@ -5,7 +5,7 @@ go 1.20
 require (
 	cloud.google.com/go/bigquery v1.53.0
 	github.com/apache/arrow/go/v14 v14.0.0-20230905030402-a526ba697d4e
-	github.com/cloudquery/plugin-sdk/v4 v4.8.0
+	github.com/cloudquery/plugin-sdk/v4 v4.10.0
 	github.com/goccy/go-json v0.10.2
 	github.com/rs/zerolog v1.29.1
 	golang.org/x/sync v0.3.0
@@ -18,7 +18,7 @@ require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect
 	github.com/apache/thrift v0.17.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.9.4 // indirect
+	github.com/cloudquery/plugin-pb-go v1.10.0 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/go-logr/logr v1.2.4 // indirect
@@ -34,6 +34,7 @@ require (
 	github.com/minio/c2goasm v0.0.0-20190812172519-36a3d3bbc4f3 // indirect
 	github.com/pierrec/lz4/v4 v4.1.18 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1 // indirect
 	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.opentelemetry.io/otel v1.16.0 // indirect
@@ -65,7 +66,7 @@ require (
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/go-cmp v0.5.9
-	github.com/google/uuid v1.3.0 // indirect
+	github.com/google/uuid v1.3.1 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.3 // indirect
 	github.com/googleapis/gax-go/v2 v2.11.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0 // indirect

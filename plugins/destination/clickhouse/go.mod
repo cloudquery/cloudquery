@@ -5,8 +5,8 @@ go 1.20
 require (
 	github.com/ClickHouse/clickhouse-go/v2 v2.10.1
 	github.com/apache/arrow/go/v14 v14.0.0-20230905030402-a526ba697d4e
-	github.com/cloudquery/plugin-sdk/v4 v4.8.0
-	github.com/google/uuid v1.3.0
+	github.com/cloudquery/plugin-sdk/v4 v4.10.0
+	github.com/google/uuid v1.3.1
 	github.com/rs/zerolog v1.29.1
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/sync v0.3.0
@@ -15,10 +15,11 @@ require (
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.9.4 // indirect
+	github.com/cloudquery/plugin-pb-go v1.10.0 // indirect
 	github.com/go-logr/logr v1.2.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.0 // indirect
+	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/internal/retry v1.16.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.16.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.16.0 // indirect

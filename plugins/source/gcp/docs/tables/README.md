@@ -109,6 +109,7 @@
 - [gcp_compute_projects](../../../../../website/tables/gcp/gcp_compute_projects.md)
 - [gcp_compute_routers](../../../../../website/tables/gcp/gcp_compute_routers.md)
   - [gcp_compute_router_nat_mapping_infos](../../../../../website/tables/gcp/gcp_compute_router_nat_mapping_infos.md)
+- [gcp_compute_routes](../../../../../website/tables/gcp/gcp_compute_routes.md)
 - [gcp_compute_ssl_certificates](../../../../../website/tables/gcp/gcp_compute_ssl_certificates.md)
 - [gcp_compute_ssl_policies](../../../../../website/tables/gcp/gcp_compute_ssl_policies.md)
 - [gcp_compute_subnetworks](../../../../../website/tables/gcp/gcp_compute_subnetworks.md)
