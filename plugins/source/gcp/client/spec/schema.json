@@ -61,15 +61,15 @@
           "title": "Backoff Delay",
           "description": "Number of seconds to wait before retrying a failed API call",
           "type": "integer",
-          "minimum": 1,
-          "default": 1
+          "minimum": 0,
+          "default": 30
         },
         "backoff_retries": {
           "title": "Backoff Retries",
           "description": "Number of times to retry a failed API call",
           "type": "integer",
-          "minimum": 1,
-          "default": 3
+          "minimum": 0,
+          "default": 0
         },
         "discovery_concurrency": {
           "title": "Discovery Concurrency",

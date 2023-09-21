@@ -26,12 +26,12 @@ type Spec struct {
 }
 
 func (spec *Spec) SetDefaults() {
-	if spec.BackoffRetries <= 0 {
-		const defaultBackoffRetries = 3
+	if spec.BackoffRetries < 0 {
+		const defaultBackoffRetries = 0
 		spec.BackoffRetries = defaultBackoffRetries
 	}
-	if spec.BackoffDelay <= 0 {
-		const defaultBackoffDelay = 1
+	if spec.BackoffDelay < 0 {
+		const defaultBackoffDelay = 30
 		spec.BackoffDelay = defaultBackoffDelay
 	}
 

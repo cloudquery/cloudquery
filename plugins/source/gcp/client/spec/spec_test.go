@@ -160,6 +160,10 @@ func TestSpec(t *testing.T) {
 			spec: `{"backoff_delay":1}`,
 		},
 		{
+			name: "zero backoff_delay",
+			spec: `{"backoff_delay":0}`,
+		},
+		{
 			name: "bad backoff_delay",
 			spec: `{"backoff_delay":-1}`,
 			err:  true,
@@ -167,6 +171,24 @@ func TestSpec(t *testing.T) {
 		{
 			name: "bad backoff_delay",
 			spec: `{"backoff_delay":true}`,
+			err:  true,
+		},
+		{
+			name: "backoff_retries",
+			spec: `{"backoff_retries":1}`,
+		},
+		{
+			name: "zero backoff_retries",
+			spec: `{"backoff_retries":0}`,
+		},
+		{
+			name: "bad backoff_retries",
+			spec: `{"backoff_retries":-1}`,
+			err:  true,
+		},
+		{
+			name: "bad backoff_retries",
+			spec: `{"backoff_retries":true}`,
 			err:  true,
 		},
 		{
