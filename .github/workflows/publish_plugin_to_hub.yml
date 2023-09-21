@@ -105,4 +105,4 @@ jobs:
         run: |
           mkdir -p ~/.local/share/cloudquery
           echo ${{ secrets.CQ_CI_CLOUDQUERY_HUB_TOKEN }} > ~/.local/share/cloudquery/token
-          cloudquery publish cloudquery/${{ needs.prepare.outputs.plugin_name }}
+          cloudquery publish cloudquery/${{ needs.prepare.outputs.plugin_name }} --finalize
