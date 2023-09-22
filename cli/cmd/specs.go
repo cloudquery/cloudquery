@@ -24,6 +24,8 @@ func CLIRegistryToPbRegistry(registry specs.Registry) pbSpecs.Registry {
 		return pbSpecs.RegistryLocal
 	case specs.RegistryGrpc:
 		return pbSpecs.RegistryGrpc
+	case specs.RegistryHub:
+		return pbSpecs.RegistryHub
 	default:
 		panic("unknown registry " + registry.String())
 	}
