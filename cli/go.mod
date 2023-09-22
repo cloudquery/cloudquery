@@ -7,7 +7,7 @@ require (
 	github.com/apache/arrow/go/v14 v14.0.0-20230905030402-a526ba697d4e
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.2.1
-	github.com/cloudquery/cloudquery-api-go v1.0.2
+	github.com/cloudquery/cloudquery-api-go v1.0.3
 	github.com/cloudquery/plugin-pb-go v1.10.0
 	github.com/cloudquery/plugin-sdk/v4 v4.10.2
 	github.com/getsentry/sentry-go v0.20.0
@@ -95,7 +95,6 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
-	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1 // indirect
 	github.com/schollz/closestmatch v2.1.0+incompatible // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect

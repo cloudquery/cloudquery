@@ -17,11 +17,11 @@ func TestPublish(t *testing.T) {
 	t.Setenv("CQ_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
-		"PUT /plugins/cloudquery/test/versions/v1.2.3":                      1,
-		"PUT /plugins/cloudquery/test/versions/v1.2.3/tables":               1,
-		"PUT /plugins/cloudquery/test/versions/v1.2.3/docs":                 1,
-		"POST /plugins/cloudquery/test/versions/v1.2.3/assets/linux_amd64":  1,
-		"POST /plugins/cloudquery/test/versions/v1.2.3/assets/darwin_amd64": 1,
+		"PUT /plugins/cloudquery/source/test/versions/v1.2.3":                      1,
+		"PUT /plugins/cloudquery/source/test/versions/v1.2.3/tables":               1,
+		"PUT /plugins/cloudquery/source/test/versions/v1.2.3/docs":                 1,
+		"POST /plugins/cloudquery/source/test/versions/v1.2.3/assets/linux_amd64":  1,
+		"POST /plugins/cloudquery/source/test/versions/v1.2.3/assets/darwin_amd64": 1,
 		"PUT /upload-linux":  1,
 		"PUT /upload-darwin": 1,
 	}
@@ -30,26 +30,26 @@ func TestPublish(t *testing.T) {
 		w.Header().Set("Content-Type", "application/json")
 		gotCalls[r.Method+" "+r.URL.Path]++
 		switch r.URL.Path {
-		case "/plugins/cloudquery/test/versions/v1.2.3":
+		case "/plugins/cloudquery/source/test/versions/v1.2.3":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
 			w.Write([]byte(`{"name": "v1.2.3"}`))
 			checkCreateVersionRequest(t, r)
-		case "/plugins/cloudquery/test/versions/v1.2.3/tables":
+		case "/plugins/cloudquery/source/test/versions/v1.2.3/tables":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
 			w.Write([]byte(`{}`))
 			checkCreateTablesRequest(t, r)
-		case "/plugins/cloudquery/test/versions/v1.2.3/docs":
+		case "/plugins/cloudquery/source/test/versions/v1.2.3/docs":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
 			w.Write([]byte(`{}`))
 			checkCreateDocsRequest(t, r)
-		case "/plugins/cloudquery/test/versions/v1.2.3/assets/linux_amd64":
+		case "/plugins/cloudquery/source/test/versions/v1.2.3/assets/linux_amd64":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
 			w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-linux")))
-		case "/plugins/cloudquery/test/versions/v1.2.3/assets/darwin_amd64":
+		case "/plugins/cloudquery/source/test/versions/v1.2.3/assets/darwin_amd64":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
 			w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-darwin")))
@@ -79,14 +79,14 @@ func TestPublishFinalize(t *testing.T) {
 	t.Setenv("CQ_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
-		"PUT /plugins/cloudquery/test/versions/v1.2.3":                      1,
-		"PUT /plugins/cloudquery/test/versions/v1.2.3/tables":               1,
-		"PUT /plugins/cloudquery/test/versions/v1.2.3/docs":                 1,
-		"POST /plugins/cloudquery/test/versions/v1.2.3/assets/linux_amd64":  1,
-		"POST /plugins/cloudquery/test/versions/v1.2.3/assets/darwin_amd64": 1,
-		"PUT /upload-linux":                              1,
-		"PUT /upload-darwin":                             1,
-		"PATCH /plugins/cloudquery/test/versions/v1.2.3": 1,
+		"PUT /plugins/cloudquery/source/test/versions/v1.2.3":                      1,
+		"PUT /plugins/cloudquery/source/test/versions/v1.2.3/tables":               1,
+		"PUT /plugins/cloudquery/source/test/versions/v1.2.3/docs":                 1,
+		"POST /plugins/cloudquery/source/test/versions/v1.2.3/assets/linux_amd64":  1,
+		"POST /plugins/cloudquery/source/test/versions/v1.2.3/assets/darwin_amd64": 1,
+		"PUT /upload-linux":  1,
+		"PUT /upload-darwin": 1,
+		"PATCH /plugins/cloudquery/source/test/versions/v1.2.3": 1,
 	}
 	gotCalls := map[string]int{}
 	gotUploads := 0
@@ -94,7 +94,7 @@ func TestPublishFinalize(t *testing.T) {
 		w.Header().Set("Content-Type", "application/json")
 		gotCalls[r.Method+" "+r.URL.Path]++
 		switch r.URL.Path {
-		case "/plugins/cloudquery/test/versions/v1.2.3":
+		case "/plugins/cloudquery/source/test/versions/v1.2.3":
 			checkAuthHeader(t, r)
 			if r.Method == "PATCH" {
 				checkUpdateVersionRequest(t, r)
@@ -108,20 +108,20 @@ func TestPublishFinalize(t *testing.T) {
 				w.Write([]byte(`{"name": "v1.2.3"}`))
 				checkCreateVersionRequest(t, r)
 			}
-		case "/plugins/cloudquery/test/versions/v1.2.3/tables":
+		case "/plugins/cloudquery/source/test/versions/v1.2.3/tables":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
 			w.Write([]byte(`{}`))
 			checkCreateTablesRequest(t, r)
-		case "/plugins/cloudquery/test/versions/v1.2.3/docs":
+		case "/plugins/cloudquery/source/test/versions/v1.2.3/docs":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
 			w.Write([]byte(`{}`))
-		case "/plugins/cloudquery/test/versions/v1.2.3/assets/linux_amd64":
+		case "/plugins/cloudquery/source/test/versions/v1.2.3/assets/linux_amd64":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
 			w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-linux")))
-		case "/plugins/cloudquery/test/versions/v1.2.3/assets/darwin_amd64":
+		case "/plugins/cloudquery/source/test/versions/v1.2.3/assets/darwin_amd64":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
 			w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-darwin")))
