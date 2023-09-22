@@ -17,7 +17,7 @@ vendor/
 
 .DS_Store
 
-cq-source-notion
+notion
 
 dist
 *.log
