@@ -3,6 +3,11 @@
 ## 1.0.0 (2023-09-22)
 
 
+### This Release has the Following Changes to Tables
+- Table `notion_databases_table` was added
+- Table `notion_pages_table` was added
+- Table `notion_users_table` was added
+
 ### Features
 
 * Added Notion Source Plugin ([#13979](https://github.com/cloudquery/cloudquery/issues/13979)) ([61bc2e4](https://github.com/cloudquery/cloudquery/commit/61bc2e49213744fac30533bec7ab999777f9c380))
