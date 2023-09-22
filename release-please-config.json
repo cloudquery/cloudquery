@@ -135,6 +135,9 @@
     "plugins/source/mysql": {
       "component": "plugins-source-mysql"
     },
+    "plugins/source/notion": {
+      "component": "plugins-source-notion"
+    },
     "plugins/source/okta": {
       "component": "plugins-source-okta"
     },
