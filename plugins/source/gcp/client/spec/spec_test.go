@@ -24,6 +24,11 @@ func TestSpec(t *testing.T) {
 			spec: `{}`,
 		},
 		{
+			name: "extra properties",
+			spec: `{"extra_field_is_not_welcome":true}`,
+			err:  true,
+		},
+		{
 			name: "project_ids",
 			spec: `{"project_ids": ["my-project-id"]}`,
 		},
@@ -258,6 +263,11 @@ func TestSpec(t *testing.T) {
 		{
 			name: "empty service_account_impersonation",
 			spec: `{"service_account_impersonation":{}}`,
+			err:  true,
+		},
+		{
+			name: "extra field in service_account_impersonation",
+			spec: `{"service_account_impersonation":{"target_principal":"a@some"},"extra_field_is_not_welcome":true}`,
 			err:  true,
 		},
 		{
