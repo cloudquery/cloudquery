@@ -123,6 +123,7 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 		ApiKey:      config.APIKey,
 		ApiSecret:   config.APISecret,
 		AccessToken: config.AccessToken,
+		APIVersion:  config.APIVersion,
 		ShopURL:     config.ShopURL,
 		MaxRetries:  config.MaxRetries,
 		PageSize:    int(config.PageSize),
