@@ -13,8 +13,7 @@
           "items": {
             "type": "string",
             "minLength": 1
-          },
-          "default": []
+          }
         },
         "folder_ids": {
           "title": "Folder IDs",
@@ -23,8 +22,7 @@
           "items": {
             "type": "string",
             "pattern": "^(folders|organizations)/(.)+$"
-          },
-          "default": []
+          }
         },
         "organization_ids": {
           "title": "Organization IDs",
@@ -33,8 +31,7 @@
           "items": {
             "type": "string",
             "minLength": 1
-          },
-          "default": []
+          }
         },
         "project_filter": {
           "title": "Project Filter",
@@ -81,8 +78,7 @@
         "enabled_services_only": {
           "title": "Enabled Services Only",
           "description": "Whether only enabled services should be queried",
-          "type": "boolean",
-          "default": true
+          "type": "boolean"
         },
         "concurrency": {
           "title": "Concurrency",
@@ -113,14 +109,12 @@
           "project_filter",
           "folder_ids"
         ]
-      }
+      },
+      "additionalProperties": false
     },
     "CredentialsConfig": {
       "type": "object",
       "title": "Credentials Config",
-      "required": [
-        "target_principal"
-      ],
       "properties": {
         "target_principal": {
           "title": "Target Principal",
@@ -147,8 +141,7 @@
           "items": {
             "type": "string",
             "format": "email"
-          },
-          "default": []
+          }
         },
         "subject": {
           "title": "Subject",
@@ -156,7 +149,11 @@
           "type": "string",
           "minLength": 1
         }
-      }
+      },
+      "additionalProperties": false,
+      "required": [
+        "target_principal"
+      ]
     }
   }
 }
