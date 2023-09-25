@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/destination/meilisearch/client"
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/meilisearch/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
