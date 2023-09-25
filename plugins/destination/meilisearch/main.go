@@ -12,12 +12,11 @@ const (
 )
 
 func main() {
-	serve.Plugin(
-		plugin.NewPlugin(
-			"meilisearch",
-			internalPlugin.Version,
-			client.New,
-		),
+	p := plugin.NewPlugin("meilisearch", internalPlugin.Version, client.New)
+	if err := serve.Plugin(p,
 		serve.WithPluginSentryDSN(sentryDSN),
-	)
+		serve.WithDestinationV0V1Server(),
+	).Serve(context.Background()); err != nil {
+		log.Fatalf("failed to serve plugin: %v", err)
+	}
 }
