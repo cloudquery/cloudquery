@@ -1,6 +1,7 @@
 {
   "schema_version": 1,
   "name": "test",
+  "kind": "source",
   "message": "## This is a subtitle\n\nThis is a paragraph.\n",
   "version": "v1.2.3",
   "protocols": [

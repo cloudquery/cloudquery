@@ -72,6 +72,7 @@ type PackageJSONVersion struct {
 type PackageJSONV1 struct {
 	Name             string             `json:"name"`
 	Message          string             `json:"message"`
+	Kind             plugin.Kind        `json:"kind"`
 	Version          string             `json:"version"`
 	Protocols        []int              `json:"protocols"`
 	SupportedTargets []TargetBuild      `json:"supported_targets"`
@@ -121,18 +122,20 @@ func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to create new draft version: %w", err)
 	}
 
-	// upload table schemas
-	fmt.Println("Uploading table schemas...")
-	tablesJSONPath := filepath.Join(distDir, "tables.json")
-	err = uploadTableSchemas(ctx, c, teamName, pluginName, pkgJSON.Version, tablesJSONPath)
-	if err != nil {
-		return fmt.Errorf("failed to upload table schemas: %w", err)
+	if pkgJSON.Kind == plugin.KindSource {
+		// upload table schemas
+		fmt.Println("Uploading table schemas...")
+		tablesJSONPath := filepath.Join(distDir, "tables.json")
+		err = uploadTableSchemas(ctx, c, teamName, pluginName, pkgJSON.Version, tablesJSONPath)
+		if err != nil {
+			return fmt.Errorf("failed to upload table schemas: %w", err)
+		}
 	}
 
 	// upload docs
 	fmt.Println("Uploading docs...")
 	docsDir := filepath.Join(distDir, "docs")
-	err = uploadDocs(ctx, c, teamName, pluginName, pkgJSON.Version, docsDir)
+	err = uploadDocs(ctx, c, teamName, string(pkgJSON.Kind), pluginName, pkgJSON.Version, docsDir)
 	if err != nil {
 		return fmt.Errorf("failed to upload docs: %w", err)
 	}
@@ -141,7 +144,7 @@ func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 	fmt.Println("Uploading binaries...")
 	for _, t := range pkgJSON.SupportedTargets {
 		fmt.Printf("- Uploading %s_%s...\n", t.OS, t.Arch)
-		err = uploadBinary(ctx, c, teamName, pluginName, pkgJSON.Version, t.OS, t.Arch, path.Join(distDir, t.Path))
+		err = uploadBinary(ctx, c, teamName, string(pkgJSON.Kind), pluginName, pkgJSON.Version, t.OS, t.Arch, path.Join(distDir, t.Path))
 		if err != nil {
 			return fmt.Errorf("failed to upload binary: %w", err)
 		}
@@ -156,7 +159,7 @@ func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 	if finalize {
 		fmt.Println("Finalizing plugin version...")
 		draft := false
-		resp, err := c.UpdatePluginVersionWithResponse(ctx, teamName, pluginName, pkgJSON.Version, cloudquery_api.UpdatePluginVersionJSONRequestBody{
+		resp, err := c.UpdatePluginVersionWithResponse(ctx, teamName, cloudquery_api.PluginKind(pkgJSON.Kind), pluginName, pkgJSON.Version, cloudquery_api.UpdatePluginVersionJSONRequestBody{
 			Draft: &draft,
 		})
 		if err != nil {
@@ -191,7 +194,7 @@ func createNewDraftVersion(ctx context.Context, c *cloudquery_api.ClientWithResp
 		SupportedTargets: targets,
 		Checksums:        checksums,
 	}
-	resp, err := c.CreatePluginVersionWithResponse(ctx, teamName, pluginName, pkgJSON.Version, body)
+	resp, err := c.CreatePluginVersionWithResponse(ctx, teamName, cloudquery_api.PluginKind(pkgJSON.Kind), pluginName, pkgJSON.Version, body)
 	if err != nil {
 		return fmt.Errorf("failed to create plugin version: %w", err)
 	}
@@ -210,7 +213,7 @@ func uploadTableSchemas(ctx context.Context, c *cloudquery_api.ClientWithRespons
 	if err != nil {
 		return fmt.Errorf("failed to read tables.json: %w", err)
 	}
-	tables := make([]cloudquery_api.PluginTable, 0)
+	tables := make([]cloudquery_api.PluginTableCreate, 0)
 	err = json.Unmarshal(b, &tables)
 	if err != nil {
 		return fmt.Errorf("failed to parse tables.json: %w", err)
@@ -218,7 +221,7 @@ func uploadTableSchemas(ctx context.Context, c *cloudquery_api.ClientWithRespons
 	body := cloudquery_api.CreatePluginVersionTablesJSONRequestBody{
 		Tables: tables,
 	}
-	resp, err := c.CreatePluginVersionTablesWithResponse(ctx, teamName, pluginName, version, body)
+	resp, err := c.CreatePluginVersionTablesWithResponse(ctx, teamName, cloudquery_api.Source, pluginName, version, body)
 	if err != nil {
 		return fmt.Errorf("failed to upload table schemas: %w", err)
 	}
@@ -247,12 +250,12 @@ func errorFromHTTPResponse(httpResp *http.Response, resp any) error {
 	return fmt.Errorf("error code: %v", httpResp.StatusCode)
 }
 
-func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginName, version, docsDir string) error {
+func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginKind, pluginName, version, docsDir string) error {
 	dirEntries, err := os.ReadDir(docsDir)
 	if err != nil {
 		return fmt.Errorf("failed to read docs directory: %w", err)
 	}
-	pages := make([]cloudquery_api.PluginDocsPage, 0, len(dirEntries))
+	pages := make([]cloudquery_api.PluginDocsPageCreate, 0, len(dirEntries))
 	for _, dirEntry := range dirEntries {
 		if dirEntry.IsDir() {
 			continue
@@ -274,7 +277,7 @@ func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, team
 				return fmt.Errorf("failed to parse ordinal_position in %s: %w", dirEntry.Name(), err)
 			}
 		}
-		pages = append(pages, cloudquery_api.PluginDocsPage{
+		pages = append(pages, cloudquery_api.PluginDocsPageCreate{
 			Content:         contentStr,
 			Name:            strings.TrimSuffix(dirEntry.Name(), ".md"),
 			OrdinalPosition: &ordinal,
@@ -284,7 +287,7 @@ func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, team
 	body := cloudquery_api.CreatePluginVersionDocsJSONRequestBody{
 		Pages: pages,
 	}
-	resp, err := c.CreatePluginVersionDocsWithResponse(ctx, teamName, pluginName, version, body)
+	resp, err := c.CreatePluginVersionDocsWithResponse(ctx, teamName, cloudquery_api.PluginKind(pluginKind), pluginName, version, body)
 	if err != nil {
 		return fmt.Errorf("failed to upload docs: %w", err)
 	}
@@ -294,9 +297,9 @@ func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, team
 	return nil
 }
 
-func uploadBinary(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginName, version, goos, goarch, localPath string) error {
+func uploadBinary(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginKind, pluginName, version, goos, goarch, localPath string) error {
 	target := goos + "_" + goarch
-	resp, err := c.UploadPluginAssetWithResponse(ctx, teamName, pluginName, version, target)
+	resp, err := c.UploadPluginAssetWithResponse(ctx, teamName, cloudquery_api.PluginKind(pluginKind), pluginName, version, target)
 	if err != nil {
 		return fmt.Errorf("failed to upload binary: %w", err)
 	}
@@ -313,12 +316,7 @@ func uploadBinary(ctx context.Context, c *cloudquery_api.ClientWithResponses, te
 	if resp.JSON201 == nil {
 		return fmt.Errorf("upload response is nil, failed to upload binary")
 	}
-	uploadURL := resp.JSON201.Url
-	if uploadURL == nil {
-		return fmt.Errorf("upload URL is nil, failed to upload binary")
-	}
-
-	err = uploadFile(*uploadURL, localPath)
+	err = uploadFile(resp.JSON201.Url, localPath)
 	if err != nil {
 		return fmt.Errorf("failed to upload file: %w", err)
 	}
