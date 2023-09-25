@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.2.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-meilisearch-v2.2.7...plugins-destination-meilisearch-v2.2.8) (2023-09-25)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to ffb7089 ([#13879](https://github.com/cloudquery/cloudquery/issues/13879)) ([f95ced5](https://github.com/cloudquery/cloudquery/commit/f95ced5daa2b123bd71ddff75bd76b3b008790c1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.10.0 ([#13978](https://github.com/cloudquery/cloudquery/issues/13978)) ([2efdf55](https://github.com/cloudquery/cloudquery/commit/2efdf55aed94a14c35c51632ff61ed454caaf5a5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.10.2 ([#13988](https://github.com/cloudquery/cloudquery/issues/13988)) ([aebaddf](https://github.com/cloudquery/cloudquery/commit/aebaddfc5ca0d7574b8cd72e9e074ec612472dbe))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.8.0 ([#13950](https://github.com/cloudquery/cloudquery/issues/13950)) ([15b0b69](https://github.com/cloudquery/cloudquery/commit/15b0b6925932613ed2915a3255b3466f21a5c7bf))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.9.0 ([#13960](https://github.com/cloudquery/cloudquery/issues/13960)) ([f074076](https://github.com/cloudquery/cloudquery/commit/f074076a21dc0b8cadfdc3adb9731473d24d28b1))
+* Serve to run sync to Meilisearch ([#14024](https://github.com/cloudquery/cloudquery/issues/14024)) ([247aaa2](https://github.com/cloudquery/cloudquery/commit/247aaa28096cb039e5a4534b18cccc863d79b4df))
+
 ## [2.2.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-meilisearch-v2.2.6...plugins-destination-meilisearch-v2.2.7) (2023-09-12)
 
 
