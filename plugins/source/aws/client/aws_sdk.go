@@ -9,10 +9,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec"
 	"github.com/rs/zerolog"
 )
 
-func ConfigureAwsSDK(ctx context.Context, logger zerolog.Logger, awsPluginSpec *Spec, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
+func ConfigureAwsSDK(ctx context.Context, logger zerolog.Logger, awsPluginSpec *spec.Spec, account spec.Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
 	var err error
 	var awsCfg aws.Config
 

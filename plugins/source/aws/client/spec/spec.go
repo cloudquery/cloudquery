@@ -1,10 +1,9 @@
-package client
+package spec
 
 import (
 	"errors"
 	"fmt"
 	"regexp"
-	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
@@ -15,40 +14,10 @@ const (
 	defaultMaxConcurrency = 50000
 )
 
-type Account struct {
-	ID              string   `json:"id"`
-	AccountName     string   `json:"account_name,omitempty"`
-	LocalProfile    string   `json:"local_profile,omitempty"`
-	RoleARN         string   `json:"role_arn,omitempty"`
-	RoleSessionName string   `json:"role_session_name,omitempty"`
-	ExternalID      string   `json:"external_id,omitempty"`
-	DefaultRegion   string   `json:"default_region,omitempty"`
-	Regions         []string `json:"regions,omitempty"`
-	source          string
-}
-
-type AwsOrg struct {
-	OrganizationUnits           []string `json:"organization_units,omitempty"`
-	SkipMemberAccounts          []string `json:"skip_member_accounts,omitempty"`
-	SkipOrganizationalUnits     []string `json:"skip_organization_units,omitempty"`
-	AdminAccount                *Account `json:"admin_account"`
-	MemberCredentials           *Account `json:"member_trusted_principal"`
-	ChildAccountRoleName        string   `json:"member_role_name,omitempty"`
-	ChildAccountRoleSessionName string   `json:"member_role_session_name,omitempty"`
-	ChildAccountExternalID      string   `json:"member_external_id,omitempty"`
-	ChildAccountRegions         []string `json:"member_regions,omitempty"`
-}
-
-type EventBasedSync struct {
-	FullSync         *bool      `json:"full_sync,omitempty"`
-	Account          Account    `json:"account"`
-	KinesisStreamARN string     `json:"kinesis_stream_arn"`
-	StartTime        *time.Time `json:"start_time,omitempty"`
-}
 type Spec struct {
 	Regions                   []string                   `json:"regions,omitempty"`
 	Accounts                  []Account                  `json:"accounts"`
-	Organization              *AwsOrg                    `json:"org"`
+	Organization              *Org                       `json:"org"`
 	AWSDebug                  bool                       `json:"aws_debug,omitempty"`
 	MaxRetries                *int                       `json:"max_retries,omitempty"`
 	MaxBackoff                *int                       `json:"max_backoff,omitempty"`
@@ -107,7 +76,7 @@ func (s *Spec) Validate() error {
 }
 
 func validateOUs(ous []string) error {
-	r := regexp.MustCompile(`^((ou\-[0-9a-z]{4,32}\-[a-z0-9]{8,32})|(r\-[0-9a-z]{4,32}))$`)
+	r := regexp.MustCompile(`^((ou-[0-9a-z]{4,32}-[a-z0-9]{8,32})|(r-[0-9a-z]{4,32}))$`)
 	for _, ou := range ous {
 		if !r.MatchString(ou) {
 			return fmt.Errorf(`invalid OU: %s (should match "ou-*-*" or "r-*" with lowercase letters or digits)`, ou)

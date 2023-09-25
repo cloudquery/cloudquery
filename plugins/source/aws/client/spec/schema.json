@@ -1,0 +1,1681 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "AccessanalyzerFindings": {
+      "properties": {
+        "list_findings": {
+          "items": {
+            "$ref": "#/$defs/CustomAccessAnalyzerListFindingsInput"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Account": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "account_name": {
+          "type": "string"
+        },
+        "local_profile": {
+          "type": "string"
+        },
+        "role_arn": {
+          "type": "string"
+        },
+        "role_session_name": {
+          "type": "string"
+        },
+        "external_id": {
+          "type": "string"
+        },
+        "default_region": {
+          "type": "string"
+        },
+        "regions": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "AwsSecurityFindingFilters": {
+      "properties": {
+        "AwsAccountId": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "CompanyName": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ComplianceAssociatedStandardsId": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ComplianceSecurityControlId": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ComplianceStatus": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "Confidence": {
+          "items": {
+            "$ref": "#/$defs/NumberFilter"
+          },
+          "type": "array"
+        },
+        "CreatedAt": {
+          "items": {
+            "$ref": "#/$defs/DateFilter"
+          },
+          "type": "array"
+        },
+        "Criticality": {
+          "items": {
+            "$ref": "#/$defs/NumberFilter"
+          },
+          "type": "array"
+        },
+        "Description": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "FindingProviderFieldsConfidence": {
+          "items": {
+            "$ref": "#/$defs/NumberFilter"
+          },
+          "type": "array"
+        },
+        "FindingProviderFieldsCriticality": {
+          "items": {
+            "$ref": "#/$defs/NumberFilter"
+          },
+          "type": "array"
+        },
+        "FindingProviderFieldsRelatedFindingsId": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "FindingProviderFieldsRelatedFindingsProductArn": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "FindingProviderFieldsSeverityLabel": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "FindingProviderFieldsSeverityOriginal": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "FindingProviderFieldsTypes": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "FirstObservedAt": {
+          "items": {
+            "$ref": "#/$defs/DateFilter"
+          },
+          "type": "array"
+        },
+        "GeneratorId": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "Id": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "Keyword": {
+          "items": {
+            "$ref": "#/$defs/KeywordFilter"
+          },
+          "type": "array"
+        },
+        "LastObservedAt": {
+          "items": {
+            "$ref": "#/$defs/DateFilter"
+          },
+          "type": "array"
+        },
+        "MalwareName": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "MalwarePath": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "MalwareState": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "MalwareType": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "NetworkDestinationDomain": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "NetworkDestinationIpV4": {
+          "items": {
+            "$ref": "#/$defs/IpFilter"
+          },
+          "type": "array"
+        },
+        "NetworkDestinationIpV6": {
+          "items": {
+            "$ref": "#/$defs/IpFilter"
+          },
+          "type": "array"
+        },
+        "NetworkDestinationPort": {
+          "items": {
+            "$ref": "#/$defs/NumberFilter"
+          },
+          "type": "array"
+        },
+        "NetworkDirection": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "NetworkProtocol": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "NetworkSourceDomain": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "NetworkSourceIpV4": {
+          "items": {
+            "$ref": "#/$defs/IpFilter"
+          },
+          "type": "array"
+        },
+        "NetworkSourceIpV6": {
+          "items": {
+            "$ref": "#/$defs/IpFilter"
+          },
+          "type": "array"
+        },
+        "NetworkSourceMac": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "NetworkSourcePort": {
+          "items": {
+            "$ref": "#/$defs/NumberFilter"
+          },
+          "type": "array"
+        },
+        "NoteText": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "NoteUpdatedAt": {
+          "items": {
+            "$ref": "#/$defs/DateFilter"
+          },
+          "type": "array"
+        },
+        "NoteUpdatedBy": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ProcessLaunchedAt": {
+          "items": {
+            "$ref": "#/$defs/DateFilter"
+          },
+          "type": "array"
+        },
+        "ProcessName": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ProcessParentPid": {
+          "items": {
+            "$ref": "#/$defs/NumberFilter"
+          },
+          "type": "array"
+        },
+        "ProcessPath": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ProcessPid": {
+          "items": {
+            "$ref": "#/$defs/NumberFilter"
+          },
+          "type": "array"
+        },
+        "ProcessTerminatedAt": {
+          "items": {
+            "$ref": "#/$defs/DateFilter"
+          },
+          "type": "array"
+        },
+        "ProductArn": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ProductFields": {
+          "items": {
+            "$ref": "#/$defs/MapFilter"
+          },
+          "type": "array"
+        },
+        "ProductName": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "RecommendationText": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "RecordState": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "Region": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "RelatedFindingsId": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "RelatedFindingsProductArn": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ResourceAwsEc2InstanceIamInstanceProfileArn": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ResourceAwsEc2InstanceImageId": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ResourceAwsEc2InstanceIpV4Addresses": {
+          "items": {
+            "$ref": "#/$defs/IpFilter"
+          },
+          "type": "array"
+        },
+        "ResourceAwsEc2InstanceIpV6Addresses": {
+          "items": {
+            "$ref": "#/$defs/IpFilter"
+          },
+          "type": "array"
+        },
+        "ResourceAwsEc2InstanceKeyName": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ResourceAwsEc2InstanceLaunchedAt": {
+          "items": {
+            "$ref": "#/$defs/DateFilter"
+          },
+          "type": "array"
+        },
+        "ResourceAwsEc2InstanceSubnetId": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ResourceAwsEc2InstanceType": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ResourceAwsEc2InstanceVpcId": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ResourceAwsIamAccessKeyCreatedAt": {
+          "items": {
+            "$ref": "#/$defs/DateFilter"
+          },
+          "type": "array"
+        },
+        "ResourceAwsIamAccessKeyPrincipalName": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ResourceAwsIamAccessKeyStatus": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ResourceAwsIamAccessKeyUserName": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ResourceAwsIamUserUserName": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ResourceAwsS3BucketOwnerId": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ResourceAwsS3BucketOwnerName": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ResourceContainerImageId": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ResourceContainerImageName": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ResourceContainerLaunchedAt": {
+          "items": {
+            "$ref": "#/$defs/DateFilter"
+          },
+          "type": "array"
+        },
+        "ResourceContainerName": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ResourceDetailsOther": {
+          "items": {
+            "$ref": "#/$defs/MapFilter"
+          },
+          "type": "array"
+        },
+        "ResourceId": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ResourcePartition": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ResourceRegion": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ResourceTags": {
+          "items": {
+            "$ref": "#/$defs/MapFilter"
+          },
+          "type": "array"
+        },
+        "ResourceType": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "Sample": {
+          "items": {
+            "$ref": "#/$defs/BooleanFilter"
+          },
+          "type": "array"
+        },
+        "SeverityLabel": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "SeverityNormalized": {
+          "items": {
+            "$ref": "#/$defs/NumberFilter"
+          },
+          "type": "array"
+        },
+        "SeverityProduct": {
+          "items": {
+            "$ref": "#/$defs/NumberFilter"
+          },
+          "type": "array"
+        },
+        "SourceUrl": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ThreatIntelIndicatorCategory": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ThreatIntelIndicatorLastObservedAt": {
+          "items": {
+            "$ref": "#/$defs/DateFilter"
+          },
+          "type": "array"
+        },
+        "ThreatIntelIndicatorSource": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ThreatIntelIndicatorSourceUrl": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ThreatIntelIndicatorType": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ThreatIntelIndicatorValue": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "Title": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "Type": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "UpdatedAt": {
+          "items": {
+            "$ref": "#/$defs/DateFilter"
+          },
+          "type": "array"
+        },
+        "UserDefinedFields": {
+          "items": {
+            "$ref": "#/$defs/MapFilter"
+          },
+          "type": "array"
+        },
+        "VerificationState": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "WorkflowState": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "WorkflowStatus": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "BooleanFilter": {
+      "properties": {
+        "Value": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "CloudtrailAPIs": {
+      "properties": {
+        "lookup_events": {
+          "items": {
+            "$ref": "#/$defs/CustomLookupEventsOpts"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "CloudwatchGetMetricStatisticsInput": {
+      "properties": {
+        "EndTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "MetricName": {
+          "type": "string"
+        },
+        "Namespace": {
+          "type": "string"
+        },
+        "Period": {
+          "type": "integer"
+        },
+        "StartTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "Dimensions": {
+          "items": {
+            "$ref": "#/$defs/Dimension"
+          },
+          "type": "array"
+        },
+        "ExtendedStatistics": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "Statistics": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "Unit": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "CloudwatchListMetricsInput": {
+      "properties": {
+        "Dimensions": {
+          "items": {
+            "$ref": "#/$defs/DimensionFilter"
+          },
+          "type": "array"
+        },
+        "IncludeLinkedAccounts": {
+          "type": "boolean"
+        },
+        "MetricName": {
+          "type": "string"
+        },
+        "Namespace": {
+          "type": "string"
+        },
+        "NextToken": {
+          "type": "string"
+        },
+        "OwningAccount": {
+          "type": "string"
+        },
+        "RecentlyActive": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "CloudwatchMetric": {
+      "properties": {
+        "list_metrics": {
+          "$ref": "#/$defs/CloudwatchListMetricsInput"
+        },
+        "get_metric_statistics": {
+          "items": {
+            "$ref": "#/$defs/CloudwatchGetMetricStatisticsInput"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "CloudwatchMetrics": {
+      "items": {
+        "$ref": "#/$defs/CloudwatchMetric"
+      },
+      "type": "array"
+    },
+    "CostCategoryValues": {
+      "properties": {
+        "Key": {
+          "type": "string"
+        },
+        "MatchOptions": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "Values": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "CostExplorerAPIs": {
+      "properties": {
+        "get_cost_and_usage": {
+          "items": {
+            "$ref": "#/$defs/CustomGetCostAndUsageInput"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Criterion": {
+      "properties": {
+        "Contains": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "Eq": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "Exists": {
+          "type": "boolean"
+        },
+        "Neq": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "CustomAccessAnalyzerListFindingsInput": {
+      "properties": {
+        "AnalyzerArn": {
+          "type": "string"
+        },
+        "Filter": {
+          "additionalProperties": {
+            "$ref": "#/$defs/Criterion"
+          },
+          "type": "object"
+        },
+        "MaxResults": {
+          "type": "integer"
+        },
+        "NextToken": {
+          "type": "string"
+        },
+        "Sort": {
+          "$ref": "#/$defs/SortCriteria"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "CustomGetCostAndUsageInput": {
+      "properties": {
+        "Granularity": {
+          "type": "string"
+        },
+        "Metrics": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "TimePeriod": {
+          "$ref": "#/$defs/DateInterval"
+        },
+        "Filter": {
+          "$ref": "#/$defs/Expression"
+        },
+        "GroupBy": {
+          "items": {
+            "$ref": "#/$defs/GroupDefinition"
+          },
+          "type": "array"
+        },
+        "NextPageToken": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "CustomGetFindingsOpts": {
+      "properties": {
+        "Filters": {
+          "$ref": "#/$defs/AwsSecurityFindingFilters"
+        },
+        "MaxResults": {
+          "type": "integer"
+        },
+        "NextToken": {
+          "type": "string"
+        },
+        "SortCriteria": {
+          "items": {
+            "$ref": "#/$defs/SortCriterion"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "CustomInspector2ListFindingsInput": {
+      "properties": {
+        "FilterCriteria": {
+          "$ref": "#/$defs/FilterCriteria"
+        },
+        "MaxResults": {
+          "type": "integer"
+        },
+        "NextToken": {
+          "type": "string"
+        },
+        "SortCriteria": {
+          "$ref": "#/$defs/SortCriteria"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "CustomListTasksOpts": {
+      "properties": {
+        "Cluster": {
+          "type": "string"
+        },
+        "ContainerInstance": {
+          "type": "string"
+        },
+        "DesiredStatus": {
+          "type": "string"
+        },
+        "Family": {
+          "type": "string"
+        },
+        "LaunchType": {
+          "type": "string"
+        },
+        "MaxResults": {
+          "type": "integer"
+        },
+        "NextToken": {
+          "type": "string"
+        },
+        "ServiceName": {
+          "type": "string"
+        },
+        "StartedBy": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "CustomLookupEventsOpts": {
+      "properties": {
+        "EndTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "EventCategory": {
+          "type": "string"
+        },
+        "LookupAttributes": {
+          "items": {
+            "$ref": "#/$defs/LookupAttribute"
+          },
+          "type": "array"
+        },
+        "MaxResults": {
+          "type": "integer"
+        },
+        "NextToken": {
+          "type": "string"
+        },
+        "StartTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "DateFilter": {
+      "properties": {
+        "EndInclusive": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "StartInclusive": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "DateInterval": {
+      "properties": {
+        "End": {
+          "type": "string"
+        },
+        "Start": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Dimension": {
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "Value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "DimensionFilter": {
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "Value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "DimensionValues": {
+      "properties": {
+        "Key": {
+          "$ref": "#/$defs/Dimension"
+        },
+        "MatchOptions": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "Values": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "ECSTaskAPIs": {
+      "properties": {
+        "list_tasks": {
+          "items": {
+            "$ref": "#/$defs/CustomListTasksOpts"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "EventBasedSync": {
+      "properties": {
+        "full_sync": {
+          "type": "boolean"
+        },
+        "account": {
+          "$ref": "#/$defs/Account"
+        },
+        "kinesis_stream_arn": {
+          "type": "string"
+        },
+        "start_time": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Expression": {
+      "properties": {
+        "And": {
+          "items": {
+            "$ref": "#/$defs/Expression"
+          },
+          "type": "array"
+        },
+        "CostCategories": {
+          "$ref": "#/$defs/CostCategoryValues"
+        },
+        "Dimensions": {
+          "$ref": "#/$defs/DimensionValues"
+        },
+        "Not": {
+          "$ref": "#/$defs/Expression"
+        },
+        "Or": {
+          "items": {
+            "$ref": "#/$defs/Expression"
+          },
+          "type": "array"
+        },
+        "Tags": {
+          "$ref": "#/$defs/TagValues"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "FilterCriteria": {
+      "properties": {
+        "AwsAccountId": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "CodeVulnerabilityDetectorName": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "CodeVulnerabilityDetectorTags": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "CodeVulnerabilityFilePath": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ComponentId": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ComponentType": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "Ec2InstanceImageId": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "Ec2InstanceSubnetId": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "Ec2InstanceVpcId": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "EcrImageArchitecture": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "EcrImageHash": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "EcrImagePushedAt": {
+          "items": {
+            "$ref": "#/$defs/DateFilter"
+          },
+          "type": "array"
+        },
+        "EcrImageRegistry": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "EcrImageRepositoryName": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "EcrImageTags": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "EpssScore": {
+          "items": {
+            "$ref": "#/$defs/NumberFilter"
+          },
+          "type": "array"
+        },
+        "ExploitAvailable": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "FindingArn": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "FindingStatus": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "FindingType": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "FirstObservedAt": {
+          "items": {
+            "$ref": "#/$defs/DateFilter"
+          },
+          "type": "array"
+        },
+        "FixAvailable": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "InspectorScore": {
+          "items": {
+            "$ref": "#/$defs/NumberFilter"
+          },
+          "type": "array"
+        },
+        "LambdaFunctionExecutionRoleArn": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "LambdaFunctionLastModifiedAt": {
+          "items": {
+            "$ref": "#/$defs/DateFilter"
+          },
+          "type": "array"
+        },
+        "LambdaFunctionLayers": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "LambdaFunctionName": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "LambdaFunctionRuntime": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "LastObservedAt": {
+          "items": {
+            "$ref": "#/$defs/DateFilter"
+          },
+          "type": "array"
+        },
+        "NetworkProtocol": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "PortRange": {
+          "items": {
+            "$ref": "#/$defs/PortRangeFilter"
+          },
+          "type": "array"
+        },
+        "RelatedVulnerabilities": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ResourceId": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "ResourceTags": {
+          "items": {
+            "$ref": "#/$defs/MapFilter"
+          },
+          "type": "array"
+        },
+        "ResourceType": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "Severity": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "Title": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "UpdatedAt": {
+          "items": {
+            "$ref": "#/$defs/DateFilter"
+          },
+          "type": "array"
+        },
+        "VendorSeverity": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "VulnerabilityId": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "VulnerabilitySource": {
+          "items": {
+            "$ref": "#/$defs/StringFilter"
+          },
+          "type": "array"
+        },
+        "VulnerablePackages": {
+          "items": {
+            "$ref": "#/$defs/PackageFilter"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "GroupDefinition": {
+      "properties": {
+        "Key": {
+          "type": "string"
+        },
+        "Type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Inspector2APIs": {
+      "properties": {
+        "list_findings": {
+          "items": {
+            "$ref": "#/$defs/CustomInspector2ListFindingsInput"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "IpFilter": {
+      "properties": {
+        "Cidr": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "KeywordFilter": {
+      "properties": {
+        "Value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "LookupAttribute": {
+      "properties": {
+        "AttributeKey": {
+          "type": "string"
+        },
+        "AttributeValue": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "MapFilter": {
+      "properties": {
+        "Comparison": {
+          "type": "string"
+        },
+        "Key": {
+          "type": "string"
+        },
+        "Value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "NumberFilter": {
+      "properties": {
+        "LowerInclusive": {
+          "type": "number"
+        },
+        "UpperInclusive": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Org": {
+      "properties": {
+        "organization_units": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "skip_member_accounts": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "skip_organization_units": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "admin_account": {
+          "$ref": "#/$defs/Account"
+        },
+        "member_trusted_principal": {
+          "$ref": "#/$defs/Account"
+        },
+        "member_role_name": {
+          "type": "string"
+        },
+        "member_role_session_name": {
+          "type": "string"
+        },
+        "member_external_id": {
+          "type": "string"
+        },
+        "member_regions": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "PackageFilter": {
+      "properties": {
+        "Architecture": {
+          "$ref": "#/$defs/StringFilter"
+        },
+        "Epoch": {
+          "$ref": "#/$defs/NumberFilter"
+        },
+        "Name": {
+          "$ref": "#/$defs/StringFilter"
+        },
+        "Release": {
+          "$ref": "#/$defs/StringFilter"
+        },
+        "SourceLambdaLayerArn": {
+          "$ref": "#/$defs/StringFilter"
+        },
+        "SourceLayerHash": {
+          "$ref": "#/$defs/StringFilter"
+        },
+        "Version": {
+          "$ref": "#/$defs/StringFilter"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "PortRangeFilter": {
+      "properties": {
+        "BeginInclusive": {
+          "type": "integer"
+        },
+        "EndInclusive": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "SecurityHubAPIs": {
+      "properties": {
+        "get_findings": {
+          "items": {
+            "$ref": "#/$defs/CustomGetFindingsOpts"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "SortCriteria": {
+      "properties": {
+        "AttributeName": {
+          "type": "string"
+        },
+        "OrderBy": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "SortCriterion": {
+      "properties": {
+        "Field": {
+          "type": "string"
+        },
+        "SortOrder": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Spec": {
+      "properties": {
+        "regions": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "accounts": {
+          "items": {
+            "$ref": "#/$defs/Account"
+          },
+          "type": "array"
+        },
+        "org": {
+          "$ref": "#/$defs/Org"
+        },
+        "aws_debug": {
+          "type": "boolean"
+        },
+        "max_retries": {
+          "type": "integer"
+        },
+        "max_backoff": {
+          "type": "integer"
+        },
+        "custom_endpoint_url": {
+          "type": "string"
+        },
+        "custom_endpoint_hostname_immutable": {
+          "type": "boolean"
+        },
+        "custom_endpoint_partition_id": {
+          "type": "string"
+        },
+        "custom_endpoint_signing_region": {
+          "type": "string"
+        },
+        "initialization_concurrency": {
+          "type": "integer"
+        },
+        "use_paid_apis": {
+          "type": "boolean"
+        },
+        "table_options": {
+          "$ref": "#/$defs/TableOptions"
+        },
+        "concurrency": {
+          "type": "integer"
+        },
+        "event_based_sync": {
+          "$ref": "#/$defs/EventBasedSync"
+        },
+        "scheduler": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "StringFilter": {
+      "properties": {
+        "Comparison": {
+          "type": "string"
+        },
+        "Value": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "TableOptions": {
+      "properties": {
+        "aws_alpha_cloudwatch_metrics": {
+          "$ref": "#/$defs/CloudwatchMetrics"
+        },
+        "aws_cloudtrail_events": {
+          "$ref": "#/$defs/CloudtrailAPIs"
+        },
+        "aws_accessanalyzer_analyzer_findings": {
+          "$ref": "#/$defs/AccessanalyzerFindings"
+        },
+        "aws_inspector2_findings": {
+          "$ref": "#/$defs/Inspector2APIs"
+        },
+        "aws_alpha_costexplorer_cost_custom": {
+          "$ref": "#/$defs/CostExplorerAPIs"
+        },
+        "aws_securityhub_findings": {
+          "$ref": "#/$defs/SecurityHubAPIs"
+        },
+        "aws_ecs_cluster_tasks": {
+          "$ref": "#/$defs/ECSTaskAPIs"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "TagValues": {
+      "properties": {
+        "Key": {
+          "type": "string"
+        },
+        "MatchOptions": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "Values": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}

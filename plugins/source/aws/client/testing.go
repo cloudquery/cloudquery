@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
@@ -34,7 +35,7 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 
-	var awsSpec Spec
+	var awsSpec spec.Spec
 	awsSpec.SetDefaults()
 	awsSpec.UsePaidAPIs = true
 	awsSpec.TableOptions = &testOpts.TableOptions
@@ -71,7 +72,7 @@ func AwsCreateMockClient(t *testing.T, ctrl *gomock.Controller, builder func(*te
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 
-	var awsSpec Spec
+	var awsSpec spec.Spec
 	awsSpec.SetDefaults()
 	awsSpec.UsePaidAPIs = true
 	awsSpec.TableOptions = &testOpts.TableOptions

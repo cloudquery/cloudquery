@@ -1,4 +1,4 @@
-package client
+package spec
 
 import "testing"
 
@@ -21,7 +21,7 @@ func TestSpecValidate(t *testing.T) {
 		{
 			name: "valid org",
 			spec: &Spec{
-				Organization: &AwsOrg{
+				Organization: &Org{
 					ChildAccountRoleName: "test",
 					OrganizationUnits:    []string{"ou-1234-12345678"},
 				},
@@ -31,7 +31,7 @@ func TestSpecValidate(t *testing.T) {
 		{
 			name: "invalid org",
 			spec: &Spec{
-				Organization: &AwsOrg{
+				Organization: &Org{
 					ChildAccountRoleName: "test",
 					OrganizationUnits:    []string{"123"},
 				},
@@ -41,14 +41,14 @@ func TestSpecValidate(t *testing.T) {
 		{
 			name: "missing member account role name",
 			spec: &Spec{
-				Organization: &AwsOrg{},
+				Organization: &Org{},
 			},
 			wantErr: true,
 		},
 		{
 			name: "valid skip ou",
 			spec: &Spec{
-				Organization: &AwsOrg{
+				Organization: &Org{
 					ChildAccountRoleName:    "test",
 					OrganizationUnits:       []string{"ou-1234-12345678"},
 					SkipOrganizationalUnits: []string{"ou-1234-45678901"},
@@ -59,7 +59,7 @@ func TestSpecValidate(t *testing.T) {
 		{
 			name: "invalid skip ou",
 			spec: &Spec{
-				Organization: &AwsOrg{
+				Organization: &Org{
 					ChildAccountRoleName:    "test",
 					OrganizationUnits:       []string{"ou-1234-12345678"},
 					SkipOrganizationalUnits: []string{"456"},
@@ -73,7 +73,7 @@ func TestSpecValidate(t *testing.T) {
 				Accounts: []Account{
 					{ID: "123456789012"},
 				},
-				Organization: &AwsOrg{
+				Organization: &Org{
 					ChildAccountRoleName: "test",
 				},
 			},
