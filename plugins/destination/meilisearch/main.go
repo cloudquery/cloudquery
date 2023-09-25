@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"log"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/meilisearch/client"
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/meilisearch/resources/plugin"
