@@ -166,7 +166,6 @@ func resolveWafv2webACLResourcesForWebACL(ctx context.Context, meta schema.Clien
 		}
 	}
 	return errs
-
 }
 func resolveWebACLTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	webACL := resource.Item.(*models.WebACLWrapper)
