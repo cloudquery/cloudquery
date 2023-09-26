@@ -1,0 +1,55 @@
+---
+title: "Creading a New JavaScript Source Plugin from Scratch"
+tag: product
+date: 2023/10/1
+author: michal
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
+In this blog post, I will walk you through the steps to create a new source plugin using CloudQuery JavaScript SDK. The purpose is to give you a basic overview of how to create tables and columns and how to sync the actual data. 
+
+## What you need to know
+
+Make sure you go over the core concepts of [CloudQuery](http://cloudquery.io/docs/core-concepts/plugins) and the [JavaScript SDK](http://cloudquery.io/docs/developers/creating-new-plugin/javascript-source).
+
+## The Plan
+
+At the high-level, this is what I would like to achieve:
+- The plugin should support reading a set of CSV files from a directory.
+- Each file will be synced as a single table in the destination.
+- The column names will be read from the first row.
+- The plugin should recognize basic types - I will start with numbers and everything else will be a string.
+
+Here's what I imagine the configuration will look like:
+
+```yaml
+kind: source
+spec:
+  name: "text-file"
+  registry: "grpc"  # for local testing only, this will change once the plugin is published
+  path: "localhost:7777" # same as above
+  version: "v1.0.0"
+  tables:
+    ["*"]
+  destinations:
+    - "sqlite"
+  spec:
+    path: "test_data/" # specify folder or a single file
+    csvDelimiter: ";"
+
+---
+kind: destination
+spec:
+  name: sqlite
+  path: cloudquery/sqlite
+  version: "v2.4.9"
+  spec:
+    connection_string: ./db.sql
+```
+
+## Getting Started
+
+TODO: prep an empty repo.
