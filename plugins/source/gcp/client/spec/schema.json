@@ -3,12 +3,9 @@
   "$ref": "#/$defs/Spec",
   "$defs": {
     "Spec": {
-      "title": "CloudQuery GCP Source Plugin Spec",
       "type": "object",
       "properties": {
         "project_ids": {
-          "title": "Project IDs",
-          "description": "GCP projects to connect to. By default will use all projects available to the current authenticated account",
           "type": "array",
           "items": {
             "type": "string",
@@ -16,8 +13,6 @@
           }
         },
         "folder_ids": {
-          "title": "Folder IDs",
-          "description": "Location of the projects to sync from. Mutually exclusive with project_filter",
           "type": "array",
           "items": {
             "type": "string",
@@ -25,8 +20,6 @@
           }
         },
         "organization_ids": {
-          "title": "Organization IDs",
-          "description": "List of GCP organization IDs to query. Defaults to all accessible projects",
           "type": "array",
           "items": {
             "type": "string",
@@ -34,62 +27,43 @@
           }
         },
         "project_filter": {
-          "title": "Project Filter",
-          "description": "Filter to apply to projects. See https://cloud.google.com/resource-manager/docs/creating-managing-projects#listing_projects_with_a_filter for more information. Mutually exclusive with folder_ids",
           "type": "string"
         },
         "organization_filter": {
-          "title": "Organization Filter",
-          "description": "Filter to apply to organizations. See https://cloud.google.com/resource-manager/docs/creating-managing-projects#listing_projects_with_a_filter for more information.",
           "type": "string"
         },
         "folder_recursion_depth": {
-          "title": "Folder Recursion Depth",
-          "description": "Number of levels of folders to recurse into. 0 means no recursion, 1 means only immediate children, etc.",
           "type": "integer",
           "minimum": 0,
           "default": 100
         },
         "service_account_key_json": {
-          "type": "string",
-          "description": "GCP service account key content. Using service accounts is not recommended, but if it is used it is better to use environment or file variable substitution"
+          "type": "string"
         },
         "backoff_delay": {
-          "title": "Backoff Delay",
-          "description": "Number of seconds to wait before retrying a failed API call",
           "type": "integer",
           "minimum": 0,
           "default": 30
         },
         "backoff_retries": {
-          "title": "Backoff Retries",
-          "description": "Number of times to retry a failed API call",
           "type": "integer",
           "minimum": 0,
           "default": 0
         },
         "discovery_concurrency": {
-          "title": "Discovery Concurrency",
-          "description": "Number of concurrent API discovery requests to make",
           "type": "integer",
           "minimum": 1,
           "default": 100
         },
         "enabled_services_only": {
-          "title": "Enabled Services Only",
-          "description": "Whether only enabled services should be queried",
           "type": "boolean"
         },
         "concurrency": {
-          "title": "Concurrency",
-          "description": "Number of concurrent API requests to make",
           "type": "integer",
           "minimum": 1,
           "default": 50000
         },
         "scheduler": {
-          "title": "Scheduler Strategy",
-          "description": "The scheduler strategy to use when determining the order of resources to sync",
           "type": "string",
           "enum": [
             "dfs",
@@ -99,12 +73,10 @@
           "default": "dfs"
         },
         "service_account_impersonation": {
-          "title": "Service Account Impersonation",
           "$ref": "#/$defs/CredentialsConfig"
         }
       },
       "not": {
-        "description": "project_filter & folder_ids are mutually exclusive",
         "required": [
           "project_filter",
           "folder_ids"
@@ -114,17 +86,12 @@
     },
     "CredentialsConfig": {
       "type": "object",
-      "title": "Credentials Config",
       "properties": {
         "target_principal": {
-          "title": "Target Principal",
           "type": "string",
-          "description": "Email address of the service account to impersonate",
           "format": "email"
         },
         "scopes": {
-          "title": "Scopes",
-          "description": "OAuth 2.0 scopes that the impersonated credential should have. See https://developers.google.com/identity/protocols/oauth2/scopes for more details.",
           "type": "array",
           "items": {
             "type": "string",
@@ -135,8 +102,6 @@
           ]
         },
         "delegates": {
-          "title": "Delegates",
-          "description": "Service account email addresses in a delegation chain. Each service account must be granted roles/iam.serviceAccountTokenCreator on the next service account in the chain.",
           "type": "array",
           "items": {
             "type": "string",
@@ -144,8 +109,6 @@
           }
         },
         "subject": {
-          "title": "Subject",
-          "description": "The subject field of a JWT (sub)",
           "type": "string",
           "minLength": 1
         }

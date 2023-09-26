@@ -2,7 +2,9 @@ package spec
 
 import (
 	_ "embed"
+	"log"
 
+	"github.com/cloudquery/codegen/jsonschema"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"google.golang.org/api/cloudresourcemanager/v1"
 )
@@ -54,9 +56,6 @@ func (spec *Spec) SetDefaults() {
 	spec.ServiceAccountImpersonation.SetDefaults()
 }
 
-//go:embed schema.json
-var JSONSchema string
-
 type CredentialsConfig struct {
 	// TargetPrincipal is the email address of the service account to
 	// impersonate. Required.
@@ -83,4 +82,18 @@ func (c *CredentialsConfig) SetDefaults() {
 		// See https://developers.google.com/identity/protocols/oauth2/scopes for more details.
 		c.Scopes = []string{cloudresourcemanager.CloudPlatformScope}
 	}
+}
+
+var jsonSchema string
+
+func init() {
+	data, err := jsonschema.Generate(new(Spec))
+	if err != nil {
+		log.Fatal(err)
+	}
+	jsonSchema = string(data)
+}
+
+func JSONSchema() string {
+	return jsonSchema
 }
