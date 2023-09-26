@@ -48,8 +48,8 @@ github.com/cloudquery/cloudquery-api-go v1.2.0 h1:rUvImNS9C5xjMP3dhjB2LbA1orOUSO
 github.com/cloudquery/cloudquery-api-go v1.2.0/go.mod h1:oyNUZZ6CKjPapxMbmE/qR2vdo9/G+tuCdF7uXT1LYuM=
 github.com/cloudquery/plugin-pb-go v1.10.0 h1:76DSubESX8HWFJZaB90J0mPDnmUoXEzyXutwL0w0TfI=
 github.com/cloudquery/plugin-pb-go v1.10.0/go.mod h1:K0L9ugyPVKBgmxhWwr7wNEE/khfJr1lTmhl6HfkhXYA=
-github.com/cloudquery/plugin-sdk/v4 v4.10.2 h1:CHu0Rri+CcGLlyQ5roSrLWon+pl1SkucOvjaUfm6Pek=
-github.com/cloudquery/plugin-sdk/v4 v4.10.2/go.mod h1:8XPSNOaTfcfN47W1QZ2iqU2CcgYrd3Z5sTlVBqefitc=
+github.com/cloudquery/plugin-sdk/v4 v4.11.0 h1:w1qnYMLLusQN59gVr5wXs5jBhewFZKVAKpRt9QswLlE=
+github.com/cloudquery/plugin-sdk/v4 v4.11.0/go.mod h1:1D7ej/AEgHhCRHYcsuo8p+D2T23/7J2NOs1LUCYnZQ8=
 github.com/coreos/go-systemd/v22 v22.5.0/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/cpuguy83/go-md2man/v2 v2.0.2 h1:p1EgwI/C7NhT0JmVkwCD2ZBK8j4aeHQX2pMHHBfMQ6w=
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
@@ -104,8 +104,8 @@ github.com/golang/protobuf v1.5.3 h1:KhyjKVUg7Usr/dYsdSqoFveMYd5ko72D+zANwlG1mmg
 github.com/golang/protobuf v1.5.3/go.mod h1:XVQd3VNwM+JqD3oG2Ue2ip4fOMUkwXdXDdiuN0vRsmY=
 github.com/golang/snappy v0.0.4 h1:yAGX7huGHXlcLOEtBnF4w7FQwA26wojNCwOYAEhLjQM=
 github.com/golang/snappy v0.0.4/go.mod h1:/XxbfmMg8lxefKM7IXC3fBNl/7bRcc72aCRzEWrmP2Q=
-github.com/gomarkdown/markdown v0.0.0-20230912175223-14b07df9d538 h1:ePDpFu7l0QUV46/9A7icfL2wvIOzTJLCWh4RO2NECzE=
-github.com/gomarkdown/markdown v0.0.0-20230912175223-14b07df9d538/go.mod h1:JDGcbDT52eL4fju3sZ4TeHGsQwhG9nbDV21aMyhwPoA=
+github.com/gomarkdown/markdown v0.0.0-20230922112808-5421fefb8386 h1:EcQR3gusLHN46TAD+G+EbaaqJArt5vHhNpXAa12PQf4=
+github.com/gomarkdown/markdown v0.0.0-20230922112808-5421fefb8386/go.mod h1:JDGcbDT52eL4fju3sZ4TeHGsQwhG9nbDV21aMyhwPoA=
 github.com/google/flatbuffers v23.5.26+incompatible h1:M9dgRyhJemaM4Sw8+66GHBu8ioaQmyPLg1b8VwK5WJg=
 github.com/google/flatbuffers v23.5.26+incompatible/go.mod h1:1AeVuKshWv4vARoZatz6mlQ0JxURH0Kv5+zNeJKJCa8=
 github.com/google/go-cmp v0.5.5/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
