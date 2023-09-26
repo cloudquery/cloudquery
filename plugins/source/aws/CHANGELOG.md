@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [22.13.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.12.0...plugins-source-aws-v22.13.0) (2023-09-26)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_ec2_vpc_endpoint_connections` was added
+
 ### Features
 
 * Add support for AWS EC2 VPC Endpoint Connections ([#14044](https://github.com/cloudquery/cloudquery/issues/14044)) ([0fa640e](https://github.com/cloudquery/cloudquery/commit/0fa640e1ca458358bc497064c33d4b74ec67656d)), closes [#14030](https://github.com/cloudquery/cloudquery/issues/14030)
