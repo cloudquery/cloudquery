@@ -2,6 +2,7 @@ package wafv2
 
 import (
 	"context"
+	"errors"
 
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
@@ -115,6 +116,7 @@ func getWebAcl(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 }
 
 func resolveWafv2webACLResourcesForWebACL(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	var errs error
 	webACL := resource.Item.(*models.WebACLWrapper)
 
 	cl := meta.(*client.Client)
@@ -153,12 +155,18 @@ func resolveWafv2webACLResourcesForWebACL(ctx context.Context, meta schema.Clien
 					o.Region = cl.Region
 				})
 			if err != nil {
-				return err
+				errs = errors.Join(err, errs)
 			}
 			resourceArns = append(resourceArns, output.ResourceArns...)
 		}
 	}
-	return resource.Set(c.Name, resourceArns)
+	if len(resourceArns) > 0 {
+		if err := resource.Set(c.Name, resourceArns); err != nil {
+			errs = errors.Join(err, errs)
+		}
+	}
+	return errs
+
 }
 func resolveWebACLTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	webACL := resource.Item.(*models.WebACLWrapper)
