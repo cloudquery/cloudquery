@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/notion
 go 1.20
 
 require (
-	github.com/cloudquery/plugin-sdk/v4 v4.10.2
+	github.com/cloudquery/plugin-sdk/v4 v4.11.0
 	github.com/rs/zerolog v1.30.0
 )
 
