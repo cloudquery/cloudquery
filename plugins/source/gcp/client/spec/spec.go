@@ -59,17 +59,17 @@ func (spec *Spec) SetDefaults() {
 type CredentialsConfig struct {
 	// TargetPrincipal is the email address of the service account to
 	// impersonate. Required.
-	TargetPrincipal string `json:"target_principal"`
+	TargetPrincipal string `json:"target_principal" jsonschema:"required,format=email"`
 	// Scopes that the impersonated credential should have. Required.
-	Scopes []string `json:"scopes"`
+	Scopes []string `json:"scopes" jsonschema:"pattern=^https://www.googleapis.com/auth/(.)+$,default=https://www.googleapis.com/auth/cloud-platform"`
 	// Delegates are the service account email addresses in a delegation chain.
 	// Each service account must be granted roles/iam.serviceAccountTokenCreator
 	// on the next service account in the chain. Optional.
-	Delegates []string `json:"delegates"`
+	Delegates []string `json:"delegates" jsonschema:"format=email"`
 	// Subject is the subject field of a JWT (sub). This field should only be set if you
 	// wish to impersonate as a user. This feature is useful when using domain
 	// wide delegation. Optional.
-	Subject string `json:"subject"`
+	Subject string `json:"subject" jsonschema:"minLength=1"`
 }
 
 func (c *CredentialsConfig) SetDefaults() {

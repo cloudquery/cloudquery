@@ -3,6 +3,40 @@
   "$id": "https://github.com/cloudquery/plugins/source/gcp/client/spec/spec",
   "$ref": "#/$defs/Spec",
   "$defs": {
+    "CredentialsConfig": {
+      "properties": {
+        "target_principal": {
+          "type": "string",
+          "format": "email"
+        },
+        "scopes": {
+          "items": {
+            "type": "string",
+            "pattern": "^https://www.googleapis.com/auth/(.)+$"
+          },
+          "type": "array",
+          "default": [
+            "https://www.googleapis.com/auth/cloud-platform"
+          ]
+        },
+        "delegates": {
+          "items": {
+            "type": "string",
+            "format": "email"
+          },
+          "type": "array"
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "target_principal"
+      ]
+    },
     "Spec": {
       "type": "object",
       "properties": {
@@ -84,40 +118,6 @@
         ]
       },
       "additionalProperties": false
-    },
-    "CredentialsConfig": {
-      "type": "object",
-      "properties": {
-        "target_principal": {
-          "type": "string",
-          "format": "email"
-        },
-        "scopes": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "pattern": "^https://www.googleapis.com/auth/(.)+$"
-          },
-          "default": [
-            "https://www.googleapis.com/auth/cloud-platform"
-          ]
-        },
-        "delegates": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "format": "email"
-          }
-        },
-        "subject": {
-          "type": "string",
-          "minLength": 1
-        }
-      },
-      "additionalProperties": false,
-      "required": [
-        "target_principal"
-      ]
     }
   }
 }
