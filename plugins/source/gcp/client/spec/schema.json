@@ -38,39 +38,38 @@
       ]
     },
     "Spec": {
-      "type": "object",
       "properties": {
         "project_ids": {
-          "type": "array",
           "items": {
             "type": "string",
             "minLength": 1
-          }
+          },
+          "type": "array"
         },
         "folder_ids": {
-          "type": "array",
           "items": {
             "type": "string",
             "pattern": "^(folders|organizations)/(.)+$"
-          }
+          },
+          "type": "array"
+        },
+        "folder_recursion_depth": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 100
         },
         "organization_ids": {
-          "type": "array",
           "items": {
             "type": "string",
             "minLength": 1
-          }
+          },
+          "type": "array"
         },
         "project_filter": {
           "type": "string"
         },
         "organization_filter": {
           "type": "string"
-        },
-        "folder_recursion_depth": {
-          "type": "integer",
-          "minimum": 0,
-          "default": 100
         },
         "service_account_key_json": {
           "type": "string"
@@ -117,7 +116,8 @@
           "folder_ids"
         ]
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "type": "object"
     }
   }
 }

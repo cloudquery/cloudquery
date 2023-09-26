@@ -11,19 +11,19 @@ import (
 
 // Spec defines GCP source plugin Spec
 type Spec struct {
-	ProjectIDs                  []string           `json:"project_ids"`
-	FolderIDs                   []string           `json:"folder_ids"`
-	FolderRecursionDepth        *int               `json:"folder_recursion_depth"`
+	ProjectIDs                  []string           `json:"project_ids" jsonschema:"minLength=1"`
+	FolderIDs                   []string           `json:"folder_ids" jsonschema:"minLength=1,pattern=^(folders|organizations)/(.)+$"`
+	FolderRecursionDepth        *int               `json:"folder_recursion_depth" jsonschema:"minimum=0,default=100"`
 	OrganizationIDs             []string           `json:"organization_ids"`
 	ProjectFilter               string             `json:"project_filter"`
 	OrganizationFilter          string             `json:"organization_filter"`
 	ServiceAccountKeyJSON       string             `json:"service_account_key_json"`
-	BackoffDelay                int                `json:"backoff_delay"`
-	BackoffRetries              int                `json:"backoff_retries"`
-	DiscoveryConcurrency        int                `json:"discovery_concurrency"`
+	BackoffDelay                int                `json:"backoff_delay" jsonschema:"minimum=0,default=30"`
+	BackoffRetries              int                `json:"backoff_retries" jsonschema:"minimum=0,default=0"`
+	DiscoveryConcurrency        int                `json:"discovery_concurrency" jsonschema:"minimum=1,default=100"`
 	EnabledServicesOnly         bool               `json:"enabled_services_only"`
-	Concurrency                 int                `json:"concurrency"`
-	Scheduler                   scheduler.Strategy `json:"scheduler,omitempty"`
+	Concurrency                 int                `json:"concurrency" jsonschema:"minimum=1,default=50000"`
+	Scheduler                   scheduler.Strategy `json:"scheduler,omitempty" jsonschema:"type=string,default=dfs,enum=dfs,enum=round-robin,enum=shuffle"`
 	ServiceAccountImpersonation *CredentialsConfig `json:"service_account_impersonation"`
 }
 
