@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/apache/arrow/go/v14 v14.0.0-20230905030402-a526ba697d4e
-	github.com/cloudquery/filetypes/v4 v4.1.12
+	github.com/cloudquery/filetypes/v4 v4.1.13
 	github.com/cloudquery/plugin-sdk/v4 v4.11.0
 	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.1
