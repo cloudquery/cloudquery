@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.13.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.12.0...plugins-source-aws-v22.13.0) (2023-09-26)
+
+
+### Features
+
+* Add support for AWS EC2 VPC Endpoint Connections ([#14044](https://github.com/cloudquery/cloudquery/issues/14044)) ([0fa640e](https://github.com/cloudquery/cloudquery/commit/0fa640e1ca458358bc497064c33d4b74ec67656d)), closes [#14030](https://github.com/cloudquery/cloudquery/issues/14030)
+* **services:** Support newly added regions ([#14032](https://github.com/cloudquery/cloudquery/issues/14032)) ([c11bfce](https://github.com/cloudquery/cloudquery/commit/c11bfcefd472526f106c245ac4077f7a4bec0ca0))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.10.2 ([#13988](https://github.com/cloudquery/cloudquery/issues/13988)) ([aebaddf](https://github.com/cloudquery/cloudquery/commit/aebaddfc5ca0d7574b8cd72e9e074ec612472dbe))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.11.0 ([#14031](https://github.com/cloudquery/cloudquery/issues/14031)) ([ac7cdc4](https://github.com/cloudquery/cloudquery/commit/ac7cdc4f7d71599dad89b3170bb7bda676984228))
+
 ## [22.12.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.11.0...plugins-source-aws-v22.12.0) (2023-09-21)
 
 
