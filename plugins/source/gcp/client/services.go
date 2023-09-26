@@ -39,6 +39,7 @@ var GcpServices = map[string]bool{
 	"artifactregistry.googleapis.com":                 true,
 	"assuredworkloads.googleapis.com":                 true,
 	"authorizedbuyersmarketplace.googleapis.com":      true,
+	"backupdr.googleapis.com":                         true,
 	"baremetalsolution.googleapis.com":                true,
 	"batch.googleapis.com":                            true,
 	"beyondcorp.googleapis.com":                       true,
