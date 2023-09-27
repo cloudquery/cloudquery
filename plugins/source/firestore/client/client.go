@@ -30,6 +30,13 @@ func (*Client) ID() string {
 }
 
 func Configure(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
+	if opts.NoConnection {
+		return &Client{
+			logger:  logger,
+			options: opts,
+			tables:  schema.Tables{},
+		}, nil
+	}
 	var firestoreSpec Spec
 	err := json.Unmarshal(spec, &firestoreSpec)
 	if err != nil {
