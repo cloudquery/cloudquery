@@ -2,6 +2,7 @@
 
 ## [5.0.9](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v5.0.8...plugins-source-k8s-v5.0.9) (2023-09-27)
 
+
 ### Bug Fixes
 
 * **deps:** Update github.com/cloudquery/arrow/go/v14 digest to ffb7089 ([#13879](https://github.com/cloudquery/cloudquery/issues/13879)) ([f95ced5](https://github.com/cloudquery/cloudquery/commit/f95ced5daa2b123bd71ddff75bd76b3b008790c1))
