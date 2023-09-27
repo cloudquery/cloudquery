@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [9.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.5.4...plugins-source-gcp-v9.6.0) (2023-09-27)
 
 
+### This Release has the Following Changes to Tables
+- Table `gcp_compute_routes` was added
+
 ### Features
 
 * Add `gcp_compute_routes` tables ([#13957](https://github.com/cloudquery/cloudquery/issues/13957)) ([d6bb094](https://github.com/cloudquery/cloudquery/commit/d6bb0944657948cc7bf25b85a4df9405c44c6bfa))
