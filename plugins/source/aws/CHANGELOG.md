@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.13.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.13.0...plugins-source-aws-v22.13.1) (2023-09-27)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.11.1 ([#14063](https://github.com/cloudquery/cloudquery/issues/14063)) ([5a0ff7b](https://github.com/cloudquery/cloudquery/commit/5a0ff7b67890478c371385b379e0a8ef0c2f4865))
+* Don't stop on error for Regional WebACL Resources ([#14045](https://github.com/cloudquery/cloudquery/issues/14045)) ([33ab5b0](https://github.com/cloudquery/cloudquery/commit/33ab5b0f86a2e7bef9d1f71d01d4481d7af0445d))
+
 ## [22.13.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.12.0...plugins-source-aws-v22.13.0) (2023-09-26)
 
 
