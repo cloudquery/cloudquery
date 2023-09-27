@@ -255,6 +255,7 @@ func checkCreateDocsRequest(t *testing.T, r *http.Request) {
 	}
 
 	overviewContent := readFile("testdata/dist-v1/docs/overview.md")
+	customDocContent := readFile("testdata/dist-v1/docs/Custom-Doc.md")
 	configurationContent := readFile("testdata/dist-v1/docs/configuration.md")
 
 	want := map[string]any{
@@ -264,6 +265,12 @@ func checkCreateDocsRequest(t *testing.T, r *http.Request) {
 				"name":             "configuration",
 				"title":            "Configuration",
 				"ordinal_position": float64(2),
+			},
+			map[string]any{
+				"content":          customDocContent,
+				"name":             "custom-doc",
+				"title":            "Custom Doc",
+				"ordinal_position": float64(3),
 			},
 			map[string]any{
 				"content":          overviewContent,
