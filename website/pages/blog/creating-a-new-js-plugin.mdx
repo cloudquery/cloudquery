@@ -15,6 +15,13 @@ In this blog post, I will walk you through the steps to create a new source plug
 
 Make sure you go over the core concepts of [CloudQuery](http://cloudquery.io/docs/core-concepts/plugins) and the [JavaScript SDK](http://cloudquery.io/docs/developers/creating-new-plugin/javascript-source).
 
+I will be using typescript mainly for the benefit of the type hinting.
+
+### Prerequisites
+
+- [NodeJS v18](https://nodejs.org/en/download)
+- [CloudQuery](http://cloudquery.io/docs/quickstart)
+
 ## The Plan
 
 At the high-level, this is what I would like to achieve:
@@ -52,4 +59,154 @@ spec:
 
 ## Getting Started
 
-TODO: prep an empty repo.
+We not start completely from scratch but rather use a template that just needs filling in the blanks. I have published a starter [repository](https://github.com/cloudquery/cq-js-plugin-template) that you can clone.
+
+To install all dependencies and test whether it is running, run the following commands:
+
+```shell
+npm install 
+npm run dev # this will run the plugin in dev mode as a server listening on localhost:7777
+cloudquery sync sync.yml #run this in a new terminal tab
+```
+
+This will create a new Sqlite database file named `db.sql` with table `Names` and two records.
+
+## What's inside
+
+The main content is in the `src` folder:
+
+- main.ts - The main wrapper for the plugin. It's responsibility is to start the plugin the CLI will communicate with when running the sync. 
+- plugin.ts - The body of the plugin. The main responsiblity of this module is to return an initialized instance of the plugin to serve.
+- spec.ts - This module is responsible for handling and validating plugin configuration.
+- tables.ts - This is the module where the main work happens and the one we'll be working with the most.
+- tables.test.ts - Sample unit tests for the module above.
+
+### How it all works
+
+When CloudQuery runs a sync, it will call the plugin clients' `sync` function and expect the plugin to load the tables. We will be implementing the functions to return the tables back to the plugin client. 
+
+There are other functions that the The SDK provides a basic implementation for the plugins so we will not need to implement anything else and we will rely on the implementation returned by the `newPlugin` function. 
+
+The code below (see `plugin.ts`) takes care of creating a `newClient` function that will be called by the SDK and it will connect the plugin configuration passed in `spec` with the `getTables` where the actual implementation will happen.
+
+```typescript
+const newClient: NewClientFunction = async (
+    logger,
+    spec,
+    { noConnection },
+  ) => {
+    pluginClient.spec = parseSpec(spec);
+    pluginClient.client = { id: () => "cq-js-sample" };
+    if (noConnection) {
+      pluginClient.allTables = [];
+      return pluginClient;
+    }
+    pluginClient.allTables = await getTables();
+
+    return pluginClient;
+  };
+
+  pluginClient.plugin = newPlugin("cq-js-sample", version, newClient);
+```
+
+The `getTables` is a function exported from the `tables` module. It is an asynchronous function returning an array of tables that will be passed to the destination plugin. In this sample plugin, it only returns one table.
+
+```typescript
+// tables.ts
+
+export const getTables = async (
+): Promise<Table[]> => {
+ 
+  const table = await getTable();
+  return [table];
+};
+```
+
+The table returned is specified by a definition of columns and a tableResolver, which takes care of writing to a stream provided by the SDK. 
+
+```typescript
+
+  const columnNames = ["First Name", "Last Name"];
+  const tableRecords = [{"First Name": "Jack", "Last Name": "Bauer"}, {"First Name": "Thomas", "Last Name": "Kirkman"}]
+  
+  // ...
+
+  const tableResolver: TableResolver = (clientMeta, parent, stream) => {
+    for (const r of tableRecords) stream.write(r)
+    return Promise.resolve();
+  };
+  return createTable({ name: "Names", columns: columnDefinitions, resolver: tableResolver });
+```
+
+We will need to change this to get the `tableRecords` from a csv file.
+
+## Let's Code!
+
+### Plugin configuration
+
+We will start with the plugin configuration. To parse a set of CSV files, we'll need the following:
+- a path to where the files are; mandatory
+- a CSV delimiter; defaults to ","
+
+This is what the spec will look like in the yaml for CloudQuery CLI:
+
+```yaml
+  spec:
+    path: "test_data/"
+    csvDelimiter: ";"
+```
+
+We will define the spec in the `spec.ts` file:
+
+```diff
+const spec = {
+  type: "object",
+  properties: {
+    concurrency: { type: "integer" },
++    path: { type: "string" },
++    csvDelimiter: {type: "string" },
+  },
+  required: ["path"],
+};
+
+const ajv = new Ajv.default();
+const validate = ajv.compile(spec);
+
+export type Spec = {
+  concurrency: number;
++  path: string;
++  csvDelimiter: string;
+};
+
+export const parseSpec = (spec: string): Spec => {
+  const parsed = JSON.parse(spec) as Partial<Spec>;
+  const valid = validate(parsed);
+  if (!valid) {
+    throw new Error(`Invalid spec: ${JSON.stringify(validate.errors)}`);
+  }
+  const {
+    concurrency = 10_000,
++    path = "",
++    csvDelimiter = ",",
+  } = camelcaseKeys(parsed);
+! return { concurrency, path, csvDelimiter };
+};
+```
+
+This will now get passed to our `getTables` function in `tables.ts`, so we can add it as an argument there:
+
+```diff
+export const getTables = async (
++  spec: Spec
+): Promise<Table[]> => {
+  const table = await getTable();
+  return [table];
+};
+```
+
+### Reading the CSV files
+
+## Other JavaScript Source Plugin Examples
+
+[Airtable Plugin](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/airtable) is another (a bit more advanced) example of a plugin using our JavaScript SDK.
+
