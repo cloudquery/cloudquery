@@ -1,6 +1,5 @@
 ---
 title: Overview
-slug: overview
 description: Overview of the simple_plugin example.
 ordinal_position: 1
 ---

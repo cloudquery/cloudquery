@@ -1,19 +1,20 @@
 module github.com/cloudquery/cloudquery/cli
 
-go 1.21.0
+go 1.21.1
 
 require (
 	github.com/adrg/xdg v0.4.0
 	github.com/apache/arrow/go/v14 v14.0.0-20230905030402-a526ba697d4e
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.2.1
-	github.com/cloudquery/cloudquery-api-go v1.2.0
-	github.com/cloudquery/plugin-pb-go v1.10.0
-	github.com/cloudquery/plugin-sdk/v4 v4.11.0
+	github.com/cloudquery/cloudquery-api-go v1.2.1
+	github.com/cloudquery/plugin-pb-go v1.11.0
+	github.com/cloudquery/plugin-sdk/v4 v4.11.1
 	github.com/getsentry/sentry-go v0.20.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.1
+	github.com/gosimple/slug v1.13.1
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/rs/zerolog v1.29.1
 	github.com/schollz/progressbar/v3 v3.13.1
@@ -63,6 +64,7 @@ require (
 	github.com/gomarkdown/markdown v0.0.0-20230922112808-5421fefb8386 // indirect
 	github.com/google/flatbuffers v23.5.26+incompatible // indirect
 	github.com/gorilla/css v1.0.0 // indirect
+	github.com/gosimple/unidecode v1.0.1 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/iris-contrib/schema v0.0.6 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
