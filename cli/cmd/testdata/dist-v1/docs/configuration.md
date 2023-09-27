@@ -1,6 +1,5 @@
 ---
 title: Configuration
-slug: configuration
 description: How to configure the simple_plugin example.
 ordinal_position: 2
 ---

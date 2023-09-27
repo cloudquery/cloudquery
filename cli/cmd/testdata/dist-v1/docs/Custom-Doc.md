@@ -1,6 +1,5 @@
 ---
 title: Custom Documentation
-slug: custom-documentation
 description: Custom Documentation
 ordinal_position: 3
 ---
