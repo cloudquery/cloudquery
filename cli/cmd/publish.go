@@ -18,6 +18,7 @@ import (
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery/cli/internal/auth"
+	"github.com/gosimple/slug"
 	"github.com/spf13/cobra"
 )
 
@@ -261,7 +262,8 @@ func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, team
 		if dirEntry.IsDir() {
 			continue
 		}
-		if !strings.HasSuffix(dirEntry.Name(), ".md") {
+		fileExt := filepath.Ext(dirEntry.Name())
+		if fileExt != ".md" {
 			continue
 		}
 		content, err := os.ReadFile(filepath.Join(docsDir, dirEntry.Name()))
@@ -278,9 +280,12 @@ func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, team
 				return fmt.Errorf("failed to parse ordinal_position in %s: %w", dirEntry.Name(), err)
 			}
 		}
+		slug.CustomRuneSub = map[rune]string{
+			'_': "-",
+		}
 		pages = append(pages, cloudquery_api.PluginDocsPageCreate{
 			Content:         contentStr,
-			Name:            strings.TrimSuffix(dirEntry.Name(), ".md"),
+			Name:            slug.Make(strings.TrimSuffix(dirEntry.Name(), fileExt)),
 			OrdinalPosition: &ordinal,
 			Title:           frontmatter["title"],
 		})
