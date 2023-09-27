@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.20.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.19.4...cli-v3.20.0) (2023-09-27)
+
+
+### Features
+
+* Add Registry Hub ([#14015](https://github.com/cloudquery/cloudquery/issues/14015)) ([6fe52a5](https://github.com/cloudquery/cloudquery/commit/6fe52a56f188d75b6abafe03ce5399d32274bab2))
+
 ## [3.19.4](https://github.com/cloudquery/cloudquery/compare/cli-v3.19.3...cli-v3.19.4) (2023-09-27)
 
 
