@@ -93,7 +93,7 @@
   "plugins/source/awspricing+FILLER": "0.0.0",
   "plugins/destination/duckdb": "4.2.7",
   "plugins/destination/duckdb+FILLER": "0.0.0",
-  "plugins/source/facebookmarketing": "3.0.8",
+  "plugins/source/facebookmarketing": "3.0.9",
   "plugins/source/facebookmarketing+FILLER": "0.0.0",
   "plugins/source/googleanalytics": "3.0.9",
   "plugins/source/googleanalytics+FILLER": "0.0.0",
