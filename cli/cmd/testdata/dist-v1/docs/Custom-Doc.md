@@ -1,7 +1,7 @@
 ---
-title: Custom Doc
-slug: custom-doc
-description: Custom Doc
+title: Custom Documentation
+slug: custom-documentation
+description: Custom Documentation
 ordinal_position: 3
 ---
 

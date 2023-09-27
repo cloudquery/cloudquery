@@ -261,16 +261,16 @@ func checkCreateDocsRequest(t *testing.T, r *http.Request) {
 	want := map[string]any{
 		"pages": []any{
 			map[string]any{
-				"content":          configurationContent,
-				"name":             "configuration",
-				"title":            "Configuration",
-				"ordinal_position": float64(2),
-			},
-			map[string]any{
 				"content":          customDocContent,
 				"name":             "custom-doc",
 				"title":            "Custom Doc",
 				"ordinal_position": float64(3),
+			},
+			map[string]any{
+				"content":          configurationContent,
+				"name":             "configuration",
+				"title":            "Configuration",
+				"ordinal_position": float64(2),
 			},
 			map[string]any{
 				"content":          overviewContent,
