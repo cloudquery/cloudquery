@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.1.11](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v3.1.10...plugins-source-test-v3.1.11) (2023-09-27)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.11.1 ([#14063](https://github.com/cloudquery/cloudquery/issues/14063)) ([5a0ff7b](https://github.com/cloudquery/cloudquery/commit/5a0ff7b67890478c371385b379e0a8ef0c2f4865))
+* Tidy go.mod ([#14061](https://github.com/cloudquery/cloudquery/issues/14061)) ([11bd971](https://github.com/cloudquery/cloudquery/commit/11bd971f6a0089c92e47af6be24f552b2d920f21))
+
 ## [3.1.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v3.1.9...plugins-source-test-v3.1.10) (2023-09-26)
 
 

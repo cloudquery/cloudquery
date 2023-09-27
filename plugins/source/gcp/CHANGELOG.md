@@ -5,6 +5,27 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.5.4...plugins-source-gcp-v9.6.0) (2023-09-27)
+
+
+### This Release has the Following Changes to Tables
+- Table `gcp_compute_routes` was added
+
+### Features
+
+* Add `gcp_compute_routes` tables ([#13957](https://github.com/cloudquery/cloudquery/issues/13957)) ([d6bb094](https://github.com/cloudquery/cloudquery/commit/d6bb0944657948cc7bf25b85a4df9405c44c6bfa))
+* **main:** Add JSON schema for spec ([#13876](https://github.com/cloudquery/cloudquery/issues/13876)) ([bda21fc](https://github.com/cloudquery/cloudquery/commit/bda21fc7d69412dc93cbf6f5e1c44989f602b191))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.10.0 ([#13978](https://github.com/cloudquery/cloudquery/issues/13978)) ([2efdf55](https://github.com/cloudquery/cloudquery/commit/2efdf55aed94a14c35c51632ff61ed454caaf5a5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.10.2 ([#13988](https://github.com/cloudquery/cloudquery/issues/13988)) ([aebaddf](https://github.com/cloudquery/cloudquery/commit/aebaddfc5ca0d7574b8cd72e9e074ec612472dbe))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.11.0 ([#14031](https://github.com/cloudquery/cloudquery/issues/14031)) ([ac7cdc4](https://github.com/cloudquery/cloudquery/commit/ac7cdc4f7d71599dad89b3170bb7bda676984228))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.8.0 ([#13950](https://github.com/cloudquery/cloudquery/issues/13950)) ([15b0b69](https://github.com/cloudquery/cloudquery/commit/15b0b6925932613ed2915a3255b3466f21a5c7bf))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.9.0 ([#13960](https://github.com/cloudquery/cloudquery/issues/13960)) ([f074076](https://github.com/cloudquery/cloudquery/commit/f074076a21dc0b8cadfdc3adb9731473d24d28b1))
+* **services:** Update GCP Services ([#14023](https://github.com/cloudquery/cloudquery/issues/14023)) ([97961dd](https://github.com/cloudquery/cloudquery/commit/97961dda5f890b0df65ba5ba2ee3c424217e550e))
+
 ## [9.5.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.5.3...plugins-source-gcp-v9.5.4) (2023-09-19)
 
 
