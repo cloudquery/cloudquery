@@ -8,7 +8,7 @@ require (
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/cloudquery/cloudquery-api-go v1.2.1
-	github.com/cloudquery/plugin-pb-go v1.10.1-0.20230927115928-379bdabeb0b3
+	github.com/cloudquery/plugin-pb-go v1.11.0
 	github.com/cloudquery/plugin-sdk/v4 v4.11.1
 	github.com/getsentry/sentry-go v0.20.0
 	github.com/ghodss/yaml v1.0.0
