@@ -57,7 +57,6 @@ jobs:
       image: ghcr.io/cloudquery/golang-cross:v10.0.0
       env:
         CGO_ENABLED: 1
-        GO111MODULE: on
         CC: /usr/bin/gencc.sh
         CXX: /usr/bin/gencpp.sh
         GOAMD64: v1
