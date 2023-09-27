@@ -1,11 +1,8 @@
-name: Publish plugin to hub
+name: Publish plugin to Snowflake to hub
 on:
   push:
     tags:
-      - "plugins-*-*-v*.*.*"
-      - "!plugins-destination-duckdb-v*.*.*"
-      - "!plugins-destination-sqlite-v*.*.*"
-      - "!plugins-destination-snowflake-v*.*.*"
+      - "plugins-destination-snowflake-v*.*.*"
 jobs:
   prepare:
     runs-on: ubuntu-latest
@@ -56,6 +53,14 @@ jobs:
   publish-plugin-to-hub:
     timeout-minutes: 60
     runs-on: large-ubuntu-monorepo
+    container:
+      image: ghcr.io/cloudquery/golang-cross:v10.0.0
+      env:
+        CGO_ENABLED: 1
+        GO111MODULE: on
+        CC: /usr/bin/gencc.sh
+        CXX: /usr/bin/gencpp.sh
+        GOAMD64: v1
     needs: prepare
     if: needs.prepare.outputs.plugin_releaser == 'go'
     steps:
