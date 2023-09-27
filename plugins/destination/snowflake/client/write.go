@@ -56,14 +56,19 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 		return fmt.Errorf("failed to close temp file with last resource %s: %w", f.Name(), err)
 	}
 
-	sql := fmt.Sprintf(putFileIntoStage, strings.ReplaceAll(f.Name(), "\\", "\\\\"))
+	sql := fmt.Sprintf(putFileIntoStage, escapePath(f.Name()))
 
 	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to put file into stage with last resource %s: %w", sql, err)
 	}
-	sql = fmt.Sprintf(copyIntoTable, tableName, strings.ReplaceAll(path.Base(f.Name()), "\\", "\\\\"))
+	sql = fmt.Sprintf(copyIntoTable, tableName, escapePath(path.Base(f.Name())))
 	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to copy file into table with last resource %s: %w", sql, err)
 	}
 	return err
+}
+
+// escapePath properly escapes the `\` character in window's file paths.
+func escapePath(p string) string {
+	return strings.ReplaceAll(p, "\\", "\\\\")
 }
