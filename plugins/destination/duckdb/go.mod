@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/apache/arrow/go/v14 v14.0.0-20230905030402-a526ba697d4e
 	github.com/cenkalti/backoff/v4 v4.2.1
-	github.com/cloudquery/plugin-sdk/v4 v4.9.0
+	github.com/cloudquery/plugin-sdk/v4 v4.11.1
 	github.com/google/uuid v1.3.1
 	github.com/marcboeker/go-duckdb v1.4.4
 	github.com/rs/zerolog v1.29.1

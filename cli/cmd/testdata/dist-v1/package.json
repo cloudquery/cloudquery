@@ -3,6 +3,7 @@
   "name": "test",
   "message": "## This is a subtitle\n\nThis is a paragraph.\n",
   "version": "v1.2.3",
+  "kind": "source",
   "protocols": [
     3
   ],

@@ -87,7 +87,7 @@ By default, CloudQuery syncs will fetch all tables in parallel, writing data to 
 
 The default CloudQuery scheduler, known as `dfs`, will sync up to `concurrency / 100` table-clients at a time (we are ignoring child relations for the purposes of this discussion). Let's take an example GCP cloud estate with 5000 projects, syncing 100 tables. This makes for approximately 500,000 table-client pairs, and a concurrency of 10,000 will allow 100 table-client pairs to be synced at a time. The `dfs` scheduler will start with the first table and its first 100 projects, and then move on to finish all projects for that table before moving on to the next table. This means, in practice, only one table is really being synced at a time!
 
-Usually this works out fine, as long as the cloud platform's rate limits are aligned with the clients. But if rate limits are applied per-table, rather than per-project, `dfs` can be suboptimal. A better strategy in this case would be to choose the first client for every table before moving on to the next client. This is what the `round-robin` scheduler does. Note that this scheduler is currently **experimental**. 
+Usually this works out fine, as long as the cloud platform's rate limits are aligned with the clients. But if rate limits are applied per-table, rather than per-project, `dfs` can be suboptimal. A better strategy in this case would be to choose the first client for every table before moving on to the next client. This is what the `round-robin` scheduler does.
 
 Only some plugins support this setting. The following example config enables `round-robin` scheduling for the GCP source plugin:
 
@@ -97,10 +97,24 @@ spec:
   name: "gcp"
   path: "cloudquery/gcp"
   version: "VERSION_SOURCE_GCP"
-  tables: ["gcp_storage_buckets"]
+  tables: ["gcp_storage_*", "gcp_compute_*"]
   destinations: ["postgresql"]
   spec:
     scheduler: "round-robin"
     project_ids: ...
 ```
 
+Finally, the `shuffle` strategy aims to provide a balance between `dfs` and `round-robin` by randomizing the order in which table-client pairs are chosen. The following example enables `shuffle` for the AWS plugin, which can help reduce the likelihood of hitting rate limits by randomly mixing the underlying services to which API calls that are made concurrently, rather than hitting a single API with all calls at once:
+
+```yaml
+kind: source
+spec:
+  name: "aws"
+  path: "cloudquery/aws"
+  version: "VERSION_SOURCE_AWS"
+  tables: ["aws_account_*", "aws_s3_*", "aws_ec2_*"]
+  destinations: ["postgresql"]
+  spec:
+    scheduler: "shuffle"
+    # ...
+```

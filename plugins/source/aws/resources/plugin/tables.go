@@ -282,6 +282,7 @@ func getTables() schema.Tables {
 		ec2.SpotInstanceRequests(),
 		ec2.Subnets(),
 		ec2.TransitGateways(),
+		ec2.VpcEndpointConnections(),
 		ec2.VpcEndpoints(),
 		ec2.VpcEndpointServiceConfigurations(),
 		ec2.VpcEndpointServices(),
