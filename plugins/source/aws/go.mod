@@ -152,6 +152,12 @@ require (
 // TODO: remove once all updates are merged
 replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd
 
+// https://github.com/invopop/jsonschema/pull/103
+replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20230926171440-9c0d982c4f4f
+
+// https://github.com/cloudquery/codegen/pull/29
+replace github.com/cloudquery/codegen => github.com/cloudquery/codegen v0.3.3-0.20230928065241-2c7e0070ce1e
+
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.12 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.13.8 // indirect
