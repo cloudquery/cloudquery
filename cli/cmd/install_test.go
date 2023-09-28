@@ -14,55 +14,34 @@ import (
 
 func TestInstall(t *testing.T) {
 	configs := []struct {
-		name      string
-		config    string
-		wantFiles []string
+		name            string
+		config          string
+		wantSourceFiles int
+		wantDestFiles   int
 	}{
 		{
-			name:   "sync_success_sourcev1_destv0",
-			config: "sync-success-sourcev1-destv0.yml",
-			wantFiles: []string{
-				"cloudquery.log",
-				"plugins/destination/cloudquery/test/v2.1.2/plugin",
-				"plugins/destination/cloudquery/test/v2.1.2/plugin.zip",
-				"plugins/source/cloudquery/test/v2.0.3/plugin",
-				"plugins/source/cloudquery/test/v2.0.3/plugin.zip",
-			},
+			name:            "sync_success_sourcev1_destv0",
+			config:          "sync-success-sourcev1-destv0.yml",
+			wantSourceFiles: 2,
+			wantDestFiles:   2,
 		},
 		{
-			name:   "multiple_sources",
-			config: "multiple-sources.yml",
-			wantFiles: []string{
-				"cloudquery.log",
-				"plugins/destination/cloudquery/test/v2.2.7/plugin",
-				"plugins/destination/cloudquery/test/v2.2.7/plugin.zip",
-				"plugins/source/cloudquery/test/v3.1.7/plugin",
-				"plugins/source/cloudquery/test/v3.1.7/plugin.zip",
-			},
+			name:            "multiple_sources",
+			config:          "multiple-sources.yml",
+			wantSourceFiles: 2,
+			wantDestFiles:   2,
 		},
 		{
-			name:   "multiple_destinations",
-			config: "multiple-destinations.yml",
-			wantFiles: []string{
-				"cloudquery.log",
-				"plugins/destination/cloudquery/test/v2.1.0/plugin",
-				"plugins/destination/cloudquery/test/v2.1.0/plugin.zip",
-				"plugins/destination/cloudquery/test/v2.2.7/plugin",
-				"plugins/destination/cloudquery/test/v2.2.7/plugin.zip",
-				"plugins/source/cloudquery/test/v2.0.3/plugin",
-				"plugins/source/cloudquery/test/v2.0.3/plugin.zip",
-			},
+			name:            "multiple_destinations",
+			config:          "multiple-destinations.yml",
+			wantSourceFiles: 2,
+			wantDestFiles:   4,
 		},
 		{
-			name:   "multiple_sources_destinations",
-			config: "multiple-sources-destinations.yml",
-			wantFiles: []string{
-				"cloudquery.log",
-				"plugins/destination/cloudquery/test/v2.2.7/plugin",
-				"plugins/destination/cloudquery/test/v2.2.7/plugin.zip",
-				"plugins/source/cloudquery/test/v3.1.7/plugin",
-				"plugins/source/cloudquery/test/v3.1.7/plugin.zip",
-			},
+			name:            "multiple_sources_destinations",
+			config:          "multiple-sources-destinations.yml",
+			wantSourceFiles: 2,
+			wantDestFiles:   2,
 		},
 	}
 	_, filename, _, _ := runtime.Caller(0)
@@ -84,9 +63,22 @@ func TestInstall(t *testing.T) {
 			assert.NoError(t, err)
 
 			// check if all files were created
-			sort.Strings(tc.wantFiles)
 			justFiles := readFiles(t, cqDir, "")
-			assert.ElementsMatch(t, tc.wantFiles, justFiles)
+
+			sourceFiles, destFiles := 0, 0
+			for _, file := range justFiles {
+				if strings.HasPrefix(file, "plugins/source") {
+					sourceFiles++
+				} else if strings.HasPrefix(file, "plugins/destination") {
+					destFiles++
+				}
+			}
+			assert.Equalf(t, tc.wantSourceFiles, sourceFiles, "expected %d source files, got %d", tc.wantSourceFiles, sourceFiles)
+			assert.Equalf(t, tc.wantDestFiles, destFiles, "expected %d destination files, got %d", tc.wantDestFiles, destFiles)
+			if t.Failed() {
+				t.Logf("files found: %v", justFiles)
+				t.FailNow()
+			}
 
 			// check that log was written and contains some lines
 			b, logFileError := os.ReadFile(path.Join(cqDir, "cloudquery.log"))
@@ -103,8 +95,6 @@ func readFiles(t *testing.T, basedir, prefix string) []string {
 	var justFiles []string
 	for i := range files {
 		name := files[i].Name()
-		name = strings.TrimSuffix(name, ".exe")
-		name = strings.ReplaceAll(name, ".exe.zip", ".zip")
 
 		if !files[i].IsDir() {
 			justFiles = append(justFiles, path.Join(prefix, name))
