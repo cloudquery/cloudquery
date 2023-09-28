@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.12](https://github.com/cloudquery/cloudquery/compare/plugins-source-firestore-v3.0.11...plugins-source-firestore-v3.0.12) (2023-09-28)
+
+
+### Bug Fixes
+
+* Handle NoConnection ([#14112](https://github.com/cloudquery/cloudquery/issues/14112)) ([691ddd4](https://github.com/cloudquery/cloudquery/commit/691ddd4b069e53926be7523e3353ac8be519d8ae))
+
 ## [3.0.11](https://github.com/cloudquery/cloudquery/compare/plugins-source-firestore-v3.0.10...plugins-source-firestore-v3.0.11) (2023-09-27)
 
 
