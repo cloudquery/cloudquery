@@ -1053,21 +1053,27 @@
     "EventBasedSync": {
       "properties": {
         "full_sync": {
-          "type": "boolean"
+          "type": "boolean",
+          "default": true
         },
         "account": {
           "$ref": "#/$defs/Account"
         },
         "kinesis_stream_arn": {
-          "type": "string"
+          "type": "string",
+          "pattern": "^arn(:[^:\n]*){5,}([:/].*)?$"
         },
         "start_time": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "default": "now"
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "required": [
+        "kinesis_stream_arn"
+      ]
     },
     "Expression": {
       "properties": {
