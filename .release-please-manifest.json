@@ -119,5 +119,5 @@
   "plugins/source/airtable+FILLER": "0.0.0",
   "plugins/source/bitbucket": "1.0.1",
   "plugins/source/bitbucket+FILLER": "0.0.0",
-  "plugins/source/notion": "1.0.0"
+  "plugins/source/notion": "1.0.1"
 }
