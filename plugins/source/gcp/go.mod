@@ -1,4 +1,4 @@
-module github.com/cloudquery/plugins/source/gcp
+module github.com/cloudquery/cloudquery/plugins/source/gcp
 
 go 1.20
 
