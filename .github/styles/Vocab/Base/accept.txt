@@ -95,6 +95,8 @@ Firestore
 Fivetran
 format_spec
 Gandi
+Gagan
+Gaurav
 gcp
 GCP
 gists
