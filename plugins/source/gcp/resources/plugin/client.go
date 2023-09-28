@@ -5,13 +5,13 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/state"
-	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/plugins/source/gcp/client/spec"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
