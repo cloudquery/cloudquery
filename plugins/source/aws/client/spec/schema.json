@@ -18,7 +18,8 @@
     "Account": {
       "properties": {
         "id": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         },
         "account_name": {
           "type": "string"
@@ -27,7 +28,8 @@
           "type": "string"
         },
         "role_arn": {
-          "type": "string"
+          "type": "string",
+          "pattern": "^arn(:[^:\n]*){5,}([:/].*)?$"
         },
         "role_session_name": {
           "type": "string"
@@ -36,7 +38,8 @@
           "type": "string"
         },
         "default_region": {
-          "type": "string"
+          "type": "string",
+          "default": "us-east-1"
         },
         "regions": {
           "items": {
@@ -46,7 +49,10 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "required": [
+        "id"
+      ]
     },
     "AwsSecurityFindingFilters": {
       "properties": {
