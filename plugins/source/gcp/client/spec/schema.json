@@ -38,6 +38,12 @@
       ]
     },
     "Spec": {
+      "not": {
+        "required": [
+          "project_filter",
+          "folder_ids"
+        ]
+      },
       "properties": {
         "project_ids": {
           "items": {
@@ -109,12 +115,6 @@
         "service_account_impersonation": {
           "$ref": "#/$defs/CredentialsConfig"
         }
-      },
-      "not": {
-        "required": [
-          "project_filter",
-          "folder_ids"
-        ]
       },
       "additionalProperties": false,
       "type": "object"

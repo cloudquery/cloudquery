@@ -4,8 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	cupaloy "github.com/bradleyjkemp/cupaloy/v2"
-
+	"github.com/bradleyjkemp/cupaloy/v2"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/stretchr/testify/require"
 )
@@ -380,7 +379,7 @@ func TestSpec(t *testing.T) {
 	}
 }
 
-func TestSchemaJSON(t *testing.T) {
+func TestJSONSchema(t *testing.T) {
 	snap := cupaloy.New(
 		cupaloy.SnapshotFileExtension(".json"),
 		cupaloy.SnapshotSubdirectory(""),

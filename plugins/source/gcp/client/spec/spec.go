@@ -2,19 +2,18 @@ package spec
 
 import (
 	_ "embed"
-	"log"
 
-	"github.com/cloudquery/codegen/jsonschema"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
+	"github.com/invopop/jsonschema"
 	"google.golang.org/api/cloudresourcemanager/v1"
 )
 
 // Spec defines GCP source plugin Spec
 type Spec struct {
 	ProjectIDs                  []string           `json:"project_ids" jsonschema:"minLength=1"`
-	FolderIDs                   []string           `json:"folder_ids" jsonschema:"minLength=1,pattern=^(folders|organizations)/(.)+$"`
+	FolderIDs                   []string           `json:"folder_ids" jsonschema:"pattern=^(folders|organizations)/(.)+$"`
 	FolderRecursionDepth        *int               `json:"folder_recursion_depth" jsonschema:"minimum=0,default=100"`
-	OrganizationIDs             []string           `json:"organization_ids"`
+	OrganizationIDs             []string           `json:"organization_ids" jsonschema:"minLength=1"`
 	ProjectFilter               string             `json:"project_filter"`
 	OrganizationFilter          string             `json:"organization_filter"`
 	ServiceAccountKeyJSON       string             `json:"service_account_key_json"`
@@ -56,6 +55,12 @@ func (spec *Spec) SetDefaults() {
 	spec.ServiceAccountImpersonation.SetDefaults()
 }
 
+// JSONSchemaExtend is required to add `not` section for `project_filter` & `folder_ids` being mutually exclusive.
+// We use value receiver because of https://github.com/invopop/jsonschema/issues/102
+func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.Not = &jsonschema.Schema{Required: []string{"project_filter", "folder_ids"}}
+}
+
 type CredentialsConfig struct {
 	// TargetPrincipal is the email address of the service account to
 	// impersonate. Required.
@@ -82,18 +87,4 @@ func (c *CredentialsConfig) SetDefaults() {
 		// See https://developers.google.com/identity/protocols/oauth2/scopes for more details.
 		c.Scopes = []string{cloudresourcemanager.CloudPlatformScope}
 	}
-}
-
-var jsonSchema string
-
-func init() {
-	data, err := jsonschema.Generate(new(Spec))
-	if err != nil {
-		log.Fatal(err)
-	}
-	jsonSchema = string(data)
-}
-
-func JSONSchema() string {
-	return jsonSchema
 }

@@ -53,6 +53,7 @@ require (
 	github.com/googleapis/gax-go/v2 v2.12.0
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.1
 	github.com/iancoleman/strcase v0.2.0
+	github.com/invopop/jsonschema v0.11.0
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/mjibson/sqlfmt v0.5.0
 	github.com/rs/zerolog v1.29.1
@@ -111,7 +112,6 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.11.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/invopop/jsonschema v0.11.0 // indirect
 	github.com/klauspost/compress v1.16.7 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.5 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
