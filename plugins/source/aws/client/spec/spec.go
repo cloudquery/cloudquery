@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"regexp"
 
-	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 )
@@ -68,9 +67,8 @@ func (s *Spec) Validate() error {
 	}
 
 	if s.EventBasedSync != nil {
-		_, err := arn.Parse(s.EventBasedSync.KinesisStreamARN)
-		if err != nil {
-			return fmt.Errorf("failed to parse kinesis arn (%s): %w", s.EventBasedSync.KinesisStreamARN, err)
+		if err := s.EventBasedSync.Validate(); err != nil {
+			return fmt.Errorf("invalid event_based_sync: %w", err)
 		}
 	}
 	return nil

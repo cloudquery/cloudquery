@@ -1,9 +1,11 @@
 package spec
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/cloudquery/codegen/jsonschema"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/stretchr/testify/require"
 )
 
@@ -89,6 +91,30 @@ func TestSpecValidate(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if err := tt.spec.Validate(); (err != nil) != tt.wantErr {
 				t.Errorf("Spec.Validate() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestJSONSchema(t *testing.T) {
+	validator, err := plugin.JSONSchemaValidator(JSONSchema)
+	require.NoError(t, err)
+
+	type testCase struct {
+		name string
+		spec string
+		err  bool
+	}
+
+	for _, tc := range []testCase{} {
+		t.Run(tc.name, func(t *testing.T) {
+			var v any
+			require.NoError(t, json.Unmarshal([]byte(tc.spec), &v))
+			err := validator.Validate(v)
+			if tc.err {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
 			}
 		})
 	}
