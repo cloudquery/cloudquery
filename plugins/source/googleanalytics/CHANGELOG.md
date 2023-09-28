@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.11](https://github.com/cloudquery/cloudquery/compare/plugins-source-googleanalytics-v3.0.10...plugins-source-googleanalytics-v3.0.11) (2023-09-28)
+
+
+### Bug Fixes
+
+* Handle NoConnection ([#14120](https://github.com/cloudquery/cloudquery/issues/14120)) ([69d8535](https://github.com/cloudquery/cloudquery/commit/69d8535966fc22a125ac76f70d6fe46684c6222f))
+
 ## [3.0.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-googleanalytics-v3.0.9...plugins-source-googleanalytics-v3.0.10) (2023-09-28)
 
 
