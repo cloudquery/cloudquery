@@ -235,6 +235,10 @@
       "destination": "https://cloudquery.typeform.com/to/UrgOydHV"
     },
     {
+      "source": "/contact-policies",
+      "destination": "https://cloudquery.typeform.com/to/TTBdFOfe"
+    },
+    {
       "source": "/docs/support",
       "destination": "/pricing"
     },
