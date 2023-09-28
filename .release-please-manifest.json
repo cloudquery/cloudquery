@@ -103,7 +103,7 @@
   "plugins/destination/gremlin+FILLER": "0.0.0",
   "plugins/destination/meilisearch": "2.2.8",
   "plugins/destination/meilisearch+FILLER": "1.0.0",
-  "plugins/source/firestore": "3.0.11",
+  "plugins/source/firestore": "3.0.12",
   "plugins/source/firestore+FILLER": "0.0.0",
   "plugins/source/oracledb": "3.0.9",
   "plugins/source/oracledb+FILLER": "0.0.0",
@@ -111,7 +111,7 @@
   "plugins/source/square+FILLER": "0.0.0",
   "plugins/source/typeform": "1.0.2",
   "plugins/source/typeform+FILLER": "0.0.0",
-  "plugins/source/jira": "1.0.5",
+  "plugins/source/jira": "1.0.6",
   "plugins/source/jira+FILLER": "0.0.0",
   "plugins/source/vault": "1.0.3",
   "plugins/source/vault+FILLER": "0.0.0",
@@ -119,5 +119,5 @@
   "plugins/source/airtable+FILLER": "0.0.0",
   "plugins/source/bitbucket": "1.0.1",
   "plugins/source/bitbucket+FILLER": "0.0.0",
-  "plugins/source/notion": "1.0.0"
+  "plugins/source/notion": "1.0.1"
 }
