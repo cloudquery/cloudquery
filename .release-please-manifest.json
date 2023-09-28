@@ -73,7 +73,7 @@
   "plugins/destination/mssql+FILLER": "0.0.0",
   "plugins/source/shopify": "3.1.0",
   "plugins/source/shopify+FILLER": "0.0.0",
-  "plugins/source/stripe": "2.1.9",
+  "plugins/source/stripe": "2.1.10",
   "plugins/source/stripe+FILLER": "0.0.0",
   "plugins/source/hubspot": "3.0.8",
   "plugins/source/hubspot+FILLER": "0.0.0",
