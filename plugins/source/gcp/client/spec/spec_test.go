@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/bradleyjkemp/cupaloy/v2"
+	"github.com/cloudquery/codegen/jsonschema"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/stretchr/testify/require"
 )
 
-func TestSpec(t *testing.T) {
-	validator, err := plugin.JSONSchemaValidator(JSONSchema())
+func TestJSONSchema(t *testing.T) {
+	validator, err := plugin.JSONSchemaValidator(JSONSchema)
 	require.NoError(t, err)
 
 	type testCase struct {
@@ -379,10 +379,8 @@ func TestSpec(t *testing.T) {
 	}
 }
 
-func TestJSONSchema(t *testing.T) {
-	snap := cupaloy.New(
-		cupaloy.SnapshotFileExtension(".json"),
-		cupaloy.SnapshotSubdirectory(""),
-	)
-	require.NoError(t, snap.SnapshotWithName("schema", jsonSchema))
+func TestEnsureJSONSchema(t *testing.T) {
+	data, err := jsonschema.Generate(new(Spec))
+	require.NoError(t, err)
+	require.JSONEq(t, string(data), JSONSchema)
 }

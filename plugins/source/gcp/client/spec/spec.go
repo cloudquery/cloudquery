@@ -61,6 +61,9 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 	sc.Not = &jsonschema.Schema{Required: []string{"project_filter", "folder_ids"}}
 }
 
+//go:embed schema.json
+var JSONSchema string
+
 type CredentialsConfig struct {
 	// TargetPrincipal is the email address of the service account to
 	// impersonate. Required.

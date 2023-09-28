@@ -101,6 +101,6 @@ func Plugin() *plugin.Plugin {
 		"gcp",
 		Version,
 		NewClient,
-		plugin.WithJSONSchema(spec.JSONSchema()),
+		plugin.WithJSONSchema(spec.JSONSchema),
 	)
 }
