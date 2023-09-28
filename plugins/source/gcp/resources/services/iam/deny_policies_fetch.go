@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/cloudquery/plugins/source/gcp/client"
 
 	policies "cloud.google.com/go/iam/apiv2"
 	policiespb "cloud.google.com/go/iam/apiv2/iampb"

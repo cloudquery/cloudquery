@@ -80,7 +80,7 @@ func addQueriesToTable(t table, qs []query) error {
 		}
 		smp, err := q.Simplify()
 		if err != nil {
-			log.Println("Skipping query due to error:", err)
+			log.Printf("Skipping query %q due to error: %v\n", q.title, err)
 			continue
 		}
 		add += fmt.Sprintf("### %s\n\n", q.title)
