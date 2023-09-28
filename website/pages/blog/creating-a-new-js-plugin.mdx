@@ -71,14 +71,14 @@ npm run dev # this will run the plugin in dev mode as a server listening on loca
 cloudquery sync sync.yml #run this in a new terminal tab
 ```
 
-This will create a new Sqlite database file named `db.sql` with table `Names` and two records. You can open this file using [DB Browser for SQLite](https://sqlitebrowser.org/) or any other SQLite client.
+This will create a new SQLite database file named `db.sql` with table `Names` and two records. You can open this file using [DB Browser for SQLite](https://sqlitebrowser.org/) or any other SQLite client.
 
 ## What's inside
 
 The main content is in the `src` folder:
 
 - main.ts - The main wrapper for the plugin. It's responsibility is to start the plugin the CLI will communicate with when running the sync. 
-- plugin.ts - The body of the plugin. The main responsiblity of this module is to return an initialized instance of the plugin to serve.
+- plugin.ts - The body of the plugin. The main responsibility of this module is to return an initialized instance of the plugin to serve.
 - spec.ts - This module is responsible for handling and validating plugin configuration.
 - tables.ts - This is the module where the main work happens and the one we'll be working with the most.
 - tables.test.ts - Sample unit tests for the module above.
@@ -124,7 +124,7 @@ export const getTables = async (
 };
 ```
 
-The table returned is specified by a definition of columns and a tableResolver, which takes care of writing to a stream provided by the SDK. 
+The table returned is specified by a definition of columns and a `tableResolver`, which takes care of writing to a stream provided by the SDK. 
 
 ```typescript
 
@@ -140,7 +140,7 @@ The table returned is specified by a definition of columns and a tableResolver, 
   return createTable({ name: "Names", columns: columnDefinitions, resolver: tableResolver });
 ```
 
-We will need to change this to get the `tableRecords` from a csv file.
+We will need to change this to get the `tableRecords` from a CSV file.
 
 ## Let's Code!
 
@@ -150,7 +150,7 @@ We will start with the plugin configuration. To parse a set of CSV files, we'll 
 - a path to where the files are; mandatory
 - a CSV delimiter; defaults to ","
 
-This is what the spec will look like in the yaml for CloudQuery CLI:
+This is what the spec will look like in the YAML for CloudQuery CLI:
 
 ```yaml
   spec:
@@ -209,7 +209,7 @@ export const getTables = async (
 
 ### Reading the CSV files
 
-This should be fairly straightforward. We will use the `fs` module to get the list of files in the provided `path` and then load the files using `csv-parse`. We will add a function to get the csv file paths and another one to parse a file.
+This should be fairly straightforward. We will use the `fs` module to get the list of files in the provided `path` and then load the files using `csv-parse`. We will add a function to get the CSV file paths and another one to parse a file.
 
 Note: Install the `csv-parse` package using `npm install csv-parse`.
 
@@ -312,7 +312,7 @@ const getTable = async (
 
 ### Connecting it all together
 
-We now have all the pieces in place. We just need to modify the `getTables` function to load the CSV files and convert them to tables. This is the place where I will use pmap to use the concurrency provided in the spec. It is probably not necessary in this case but it is a good practice to use it when you are doing any IO operations.
+We now have all the pieces in place. We just need to modify the `getTables` function to load the CSV files and convert them to tables. This is the place where I will use `pMap` to use the concurrency provided in the spec. It is probably not necessary in this case but it is a good practice to use it when you are doing any IO operations.
 
 ```typescript
 //import a pMap
@@ -383,7 +383,7 @@ spec:
 ---
 #...
 ```
-Make sure you specify a path to a directory with some csv files. Here's an example CSV file you can use:
+Make sure you specify a path to a directory with some CSV files. Here's an example CSV file you can use:
 
 ```csv
 Name,Count,Age
