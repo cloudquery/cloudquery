@@ -51,6 +51,9 @@ func (*Client) Close(_ context.Context) error {
 }
 
 func (c *Client) Tables(_ context.Context, options plugin.TableOptions) (schema.Tables, error) {
+	if c.options.NoConnection {
+		return schema.Tables{}, nil
+	}
 	tables := make(schema.Tables, len(c.reports))
 	for i, r := range c.reports {
 		tables[i] = r.table(c.PropertyID)
@@ -106,6 +109,12 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 }
 
 func Configure(ctx context.Context, logger zerolog.Logger, specBytes []byte, options plugin.NewClientOptions) (plugin.Client, error) {
+	if options.NoConnection {
+		return &Client{
+			logger:  logger,
+			options: options,
+		}, nil
+	}
 	spec := new(Spec)
 	if err := json.Unmarshal(specBytes, spec); err != nil {
 		return nil, err

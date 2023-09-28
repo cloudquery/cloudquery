@@ -3,11 +3,11 @@ package plugin
 import (
 	"strings"
 
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/caser"
 	"github.com/cloudquery/plugin-sdk/v4/docs"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/cloudquery/plugins/source/gcp/client/spec"
 	"golang.org/x/exp/maps"
 )
 
