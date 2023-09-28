@@ -3,6 +3,7 @@ package plugin
 import (
 	"strings"
 
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec"
 	"github.com/cloudquery/plugin-sdk/plugins/source"
 	"github.com/cloudquery/plugin-sdk/v4/caser"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
@@ -113,5 +114,6 @@ func AWS() *plugin.Plugin {
 		"aws",
 		Version,
 		New,
+		plugin.WithJSONSchema(spec.JSONSchema),
 	)
 }

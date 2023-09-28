@@ -1,6 +1,7 @@
 package spec
 
 import (
+	_ "embed"
 	"errors"
 	"fmt"
 	"regexp"
@@ -100,3 +101,6 @@ func (s *Spec) SetDefaults() {
 		s.EventBasedSync.FullSync = &fullSync
 	}
 }
+
+//go:embed schema.json
+var JSONSchema string
