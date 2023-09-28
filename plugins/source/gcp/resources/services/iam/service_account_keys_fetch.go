@@ -5,8 +5,8 @@ import (
 
 	iamadmin "cloud.google.com/go/iam/admin/apiv1"
 	iampb "cloud.google.com/go/iam/admin/apiv1/adminpb"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
 func fetchServiceAccountKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
