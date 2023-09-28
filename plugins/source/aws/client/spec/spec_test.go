@@ -1,6 +1,11 @@
 package spec
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/cloudquery/codegen/jsonschema"
+	"github.com/stretchr/testify/require"
+)
 
 func TestSpecValidate(t *testing.T) {
 	tests := []struct {
@@ -87,4 +92,10 @@ func TestSpecValidate(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestEnsureJSONSchema(t *testing.T) {
+	data, err := jsonschema.Generate(new(Spec))
+	require.NoError(t, err)
+	require.JSONEq(t, string(data), JSONSchema)
 }
