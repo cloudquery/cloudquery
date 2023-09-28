@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.2.4...plugins-destination-snowflake-v3.2.5) (2023-09-28)
+
+
+### Bug Fixes
+
+* Properly handle file paths for Windows ([#14107](https://github.com/cloudquery/cloudquery/issues/14107)) ([57ff5dc](https://github.com/cloudquery/cloudquery/commit/57ff5dc5fc27a1a074d93f7e35d1894f42da4608))
+
 ## [3.2.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.2.3...plugins-destination-snowflake-v3.2.4) (2023-09-28)
 
 
