@@ -315,7 +315,6 @@ const getTable = async (
 We now have all the pieces in place. We just need to modify the `getTables` function to load the CSV files and convert them to tables. This is the place where I will use `pMap` to use the concurrency provided in the spec. It is probably not necessary in this case but it is a good practice to use it when you are doing any IO operations.
 
 ```typescript
-//import a pMap
 import pMap from "p-map";
 
 // ...
