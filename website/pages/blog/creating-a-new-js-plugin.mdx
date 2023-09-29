@@ -77,7 +77,7 @@ This will create a new SQLite database file named `db.sql` with table `Names` an
 
 The main content is in the `src` folder:
 
-- main.ts - The main wrapper for the plugin. It's responsibility is to start the plugin the CLI will communicate with when running the sync. 
+- `main.ts` - The main wrapper for the plugin. It's responsibility is to start the plugin the CLI will communicate with when running the sync. 
 - plugin.ts - The body of the plugin. The main responsibility of this module is to return an initialized instance of the plugin to serve.
 - spec.ts - This module is responsible for handling and validating plugin configuration.
 - tables.ts - This is the module where the main work happens and the one we'll be working with the most.
