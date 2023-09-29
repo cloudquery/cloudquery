@@ -104,13 +104,7 @@
           "default": 50000
         },
         "scheduler": {
-          "type": "string",
-          "enum": [
-            "dfs",
-            "round-robin",
-            "shuffle"
-          ],
-          "default": "dfs"
+          "$ref": "#/$defs/Strategy"
         },
         "service_account_impersonation": {
           "$ref": "#/$defs/CredentialsConfig"
@@ -118,6 +112,16 @@
       },
       "additionalProperties": false,
       "type": "object"
+    },
+    "Strategy": {
+      "type": "string",
+      "enum": [
+        "dfs",
+        "round-robin",
+        "shuffle"
+      ],
+      "title": "CloudQuery scheduling strategy",
+      "default": "dfs"
     }
   }
 }

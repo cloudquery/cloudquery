@@ -22,7 +22,7 @@ type Spec struct {
 	DiscoveryConcurrency        int                `json:"discovery_concurrency" jsonschema:"minimum=1,default=100"`
 	EnabledServicesOnly         bool               `json:"enabled_services_only"`
 	Concurrency                 int                `json:"concurrency" jsonschema:"minimum=1,default=50000"`
-	Scheduler                   scheduler.Strategy `json:"scheduler,omitempty" jsonschema:"type=string,default=dfs,enum=dfs,enum=round-robin,enum=shuffle"`
+	Scheduler                   scheduler.Strategy `json:"scheduler,omitempty"`
 	ServiceAccountImpersonation *CredentialsConfig `json:"service_account_impersonation"`
 }
 
