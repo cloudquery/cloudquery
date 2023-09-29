@@ -1624,11 +1624,21 @@
           "$ref": "#/$defs/EventBasedSync"
         },
         "scheduler": {
-          "type": "integer"
+          "$ref": "#/$defs/Strategy"
         }
       },
       "additionalProperties": false,
       "type": "object"
+    },
+    "Strategy": {
+      "type": "string",
+      "enum": [
+        "dfs",
+        "round-robin",
+        "shuffle"
+      ],
+      "title": "CloudQuery scheduling strategy",
+      "default": "dfs"
     },
     "StringFilter": {
       "properties": {
