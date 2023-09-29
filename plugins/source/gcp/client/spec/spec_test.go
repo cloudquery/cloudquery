@@ -382,5 +382,5 @@ func TestJSONSchema(t *testing.T) {
 func TestEnsureJSONSchema(t *testing.T) {
 	data, err := jsonschema.Generate(new(Spec))
 	require.NoError(t, err)
-	require.JSONEq(t, string(data), JSONSchema)
+	require.JSONEqf(t, string(data), JSONSchema, "new schema should be:\n%s\n", string(data))
 }
