@@ -669,24 +669,12 @@
           "type": "string",
           "format": "date-time"
         },
-        "MetricName": {
-          "type": "string"
-        },
-        "Namespace": {
-          "type": "string"
-        },
         "Period": {
           "type": "integer"
         },
         "StartTime": {
           "type": "string",
           "format": "date-time"
-        },
-        "Dimensions": {
-          "items": {
-            "$ref": "#/$defs/Dimension"
-          },
-          "type": "array"
         },
         "ExtendedStatistics": {
           "items": {
@@ -722,9 +710,6 @@
           "type": "string"
         },
         "Namespace": {
-          "type": "string"
-        },
-        "NextToken": {
           "type": "string"
         },
         "OwningAccount": {

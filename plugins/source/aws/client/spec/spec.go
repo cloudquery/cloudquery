@@ -4,7 +4,6 @@ import (
 	_ "embed"
 	"errors"
 	"fmt"
-	"regexp"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
@@ -69,16 +68,6 @@ func (s *Spec) Validate() error {
 	return nil
 }
 
-func validateOUs(ous []string) error {
-	r := regexp.MustCompile(`^((ou-[0-9a-z]{4,32}-[a-z0-9]{8,32})|(r-[0-9a-z]{4,32}))$`)
-	for _, ou := range ous {
-		if !r.MatchString(ou) {
-			return fmt.Errorf(`invalid OU: %s (should match "ou-*-*" or "r-*" with lowercase letters or digits)`, ou)
-		}
-	}
-	return nil
-}
-
 func (s *Spec) SetDefaults() {
 	if s.InitializationConcurrency <= 0 {
 		s.InitializationConcurrency = 4
@@ -94,6 +83,11 @@ func (s *Spec) SetDefaults() {
 		s.EventBasedSync.FullSync = &fullSync
 	}
 }
+
+// JSONSchemaExtend is required to remove stale definitions`.
+// We use value receiver because of https://github.com/invopop/jsonschema/issues/102
+//func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
+//}
 
 //go:embed schema.json
 var JSONSchema string

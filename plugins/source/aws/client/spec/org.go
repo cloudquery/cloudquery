@@ -1,6 +1,9 @@
 package spec
 
-import "fmt"
+import (
+	"fmt"
+	"regexp"
+)
 
 type Org struct {
 	AdminAccount                *Account `json:"admin_account"`
@@ -23,6 +26,16 @@ func (o *Org) Validate() error {
 	}
 	if err := validateOUs(o.SkipOrganizationalUnits); err != nil {
 		return fmt.Errorf("invalid skip_organization_units: %w", err)
+	}
+	return nil
+}
+
+func validateOUs(ous []string) error {
+	r := regexp.MustCompile(`^((ou-[0-9a-z]{4,32}-[a-z0-9]{8,32})|(r-[0-9a-z]{4,32}))$`)
+	for _, ou := range ous {
+		if !r.MatchString(ou) {
+			return fmt.Errorf(`invalid OU: %s (should match "ou-*-*" or "r-*" with lowercase letters or digits)`, ou)
+		}
 	}
 	return nil
 }
