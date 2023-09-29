@@ -9,6 +9,7 @@ import (
 	http "net/http"
 	reflect "reflect"
 
+	datadog "github.com/DataDog/datadog-api-client-go/v2/api/datadog"
 	datadogV1 "github.com/DataDog/datadog-api-client-go/v2/api/datadogV1"
 	gomock "github.com/golang/mock/gomock"
 )
@@ -55,4 +56,24 @@ func (mr *MockServiceLevelObjectiveCorrectionsAPIClientMockRecorder) ListSLOCorr
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0}, arg1...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSLOCorrection", reflect.TypeOf((*MockServiceLevelObjectiveCorrectionsAPIClient)(nil).ListSLOCorrection), varargs...)
+}
+
+// ListSLOCorrectionWithPagination mocks base method.
+func (m *MockServiceLevelObjectiveCorrectionsAPIClient) ListSLOCorrectionWithPagination(arg0 context.Context, arg1 ...datadogV1.ListSLOCorrectionOptionalParameters) (<-chan datadog.PaginationResult[datadogV1.SLOCorrection], func()) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0}
+	for _, a := range arg1 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListSLOCorrectionWithPagination", varargs...)
+	ret0, _ := ret[0].(<-chan datadog.PaginationResult[datadogV1.SLOCorrection])
+	ret1, _ := ret[1].(func())
+	return ret0, ret1
+}
+
+// ListSLOCorrectionWithPagination indicates an expected call of ListSLOCorrectionWithPagination.
+func (mr *MockServiceLevelObjectiveCorrectionsAPIClientMockRecorder) ListSLOCorrectionWithPagination(arg0 interface{}, arg1 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0}, arg1...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSLOCorrectionWithPagination", reflect.TypeOf((*MockServiceLevelObjectiveCorrectionsAPIClient)(nil).ListSLOCorrectionWithPagination), varargs...)
 }
