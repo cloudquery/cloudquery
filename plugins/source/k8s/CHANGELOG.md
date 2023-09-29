@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.11](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v5.0.10...plugins-source-k8s-v5.0.11) (2023-09-29)
+
+
+### Bug Fixes
+
+* Fix for `example_queries` skip on error message ([#14122](https://github.com/cloudquery/cloudquery/issues/14122)) ([95b3641](https://github.com/cloudquery/cloudquery/commit/95b3641a1483a6dc9054023b1b8f0512c2a810cc))
+
 ## [5.0.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v5.0.9...plugins-source-k8s-v5.0.10) (2023-09-27)
 
 
