@@ -355,7 +355,7 @@ We also need to go back to `plugin.ts` and update the call to `getTables` to pas
       pluginClient.allTables = [];
       return pluginClient;
     }
-!    pluginClient.allTables = await getTables(logger, pluginClient.spec);
+     pluginClient.allTables = await getTables(logger, pluginClient.spec);
 
     return pluginClient;
   };
