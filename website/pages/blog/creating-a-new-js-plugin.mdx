@@ -160,13 +160,13 @@ This is what the spec will look like in the YAML for CloudQuery CLI:
 
 We will define the spec in the `spec.ts` file:
 
-```diff
+```typescript
 const spec = {
   type: "object",
   properties: {
     concurrency: { type: "integer" },
-+    path: { type: "string" },
-+    csvDelimiter: {type: "string" },
+    path: { type: "string" },
+    csvDelimiter: {type: "string" },
   },
   required: ["path"],
 };
@@ -176,8 +176,8 @@ const validate = ajv.compile(spec);
 
 export type Spec = {
   concurrency: number;
-+  path: string;
-+  csvDelimiter: string;
+  path: string;
+  csvDelimiter: string;
 };
 
 export const parseSpec = (spec: string): Spec => {
@@ -188,8 +188,8 @@ export const parseSpec = (spec: string): Spec => {
   }
   const {
     concurrency = 10_000,
-+    path = "",
-+    csvDelimiter = ",",
+    path = "",
+    csvDelimiter = ",",
   } = camelcaseKeys(parsed);
 ! return { concurrency, path, csvDelimiter };
 };
@@ -197,10 +197,10 @@ export const parseSpec = (spec: string): Spec => {
 
 This will now get passed to our `getTables` function in `tables.ts`, so we can add it as an argument there. We'll also add a logger and pass it from the plugin initialization.
 
-```diff
+```typescript
 export const getTables = async (
-+  logger: Logger,
-+  spec: Spec
+  logger: Logger,
+  spec: Spec
 ): Promise<Table[]> => {
   const table = await getTable();
   return [table];
@@ -271,24 +271,24 @@ We will use the first row of the CSV file to get the column names. We will use t
 The starter project already contains a function `getTable` that serves as an example so let's modify it to write the data from the CSV file into the stream:
 
 
-```diff
+```typescript
 const getTable = async (
-+    rows: string[][],
-+    tableName: string,
+    rows: string[][],
+    tableName: string,
 ): Promise<Table> => {
-+  if (rows.length === 0) {
-+    throw new Error("No rows found");
-+  }
-+  const getRecordObjectFromRow = (row: string[]) => {
-+    const record: Record<string, string> = {};
-+    for (const [index, element] of row.entries()) {
-+      record[columnNames[index]] = element;
-+    }
-+    return record;
-+  };
-!  const columnNames = rows[0];
-+  // convert all rows except column definitions to an array of Record<string, string> objects
-!  const tableRecords = rows.filter((_, index) => index > 0).map((r)=>getRecordObjectFromRow(r));
+  if (rows.length === 0) {
+    throw new Error("No rows found");
+  }
+  const getRecordObjectFromRow = (row: string[]) => {
+    const record: Record<string, string> = {};
+    for (const [index, element] of row.entries()) {
+      record[columnNames[index]] = element;
+    }
+    return record;
+  };
+  const columnNames = rows[0];
+  // convert all rows except column definitions to an array of Record<string, string> objects
+  const tableRecords = rows.filter((_, index) => index > 0).map((r)=>getRecordObjectFromRow(r));
 
   const columnDefinitions: Column[] = columnNames.map((c) => ({
     name: c,
@@ -343,7 +343,7 @@ export const getTables = async (
 
 We also need to go back to `plugin.ts` and update the call to `getTables` to pass the spec:
 
-```diff
+```typescript
   const newClient: NewClientFunction = async (
     logger,
     spec,
@@ -365,7 +365,7 @@ We also need to go back to `plugin.ts` and update the call to `getTables` to pas
 
 Let's see if this all works. First, we need to modify our `sync.yml` to add the required configuration:
 
-```diff
+```yaml
 kind: source
 spec:
   name: "text-file"
@@ -377,11 +377,12 @@ spec:
   destinations:
     - "sqlite"
   spec:
-+    path: "test_data"
-+    csvDelimiter: ","
----
+    path: "test_data"
+    csvDelimiter: ","
+
 #...
 ```
+
 Make sure you specify a path to a directory with some CSV files. Here's an example CSV file you can use:
 
 ```csv
@@ -445,8 +446,7 @@ const getColumnTypes = (row: string[]): DataType[] => {
 
 Then we will update the `getTable` function to use the `getColumnTypes` and to determine the proper type for the data records:
 
-```diff
-// ...
+```typescript
 
 const getTable = async (
   rows: string[][],
@@ -457,18 +457,18 @@ const getTable = async (
   }
   const columnNames = rows[0];
   const getRecordObjectFromRow = (row: string[]) => {
-!    const record: Record<string, string | number> = {};
+    const record: Record<string, string | number> = {};
     for (const [index, element] of row.entries()) {
-!      record[columnNames[index]] = Number.isNaN(Number(element)) ? element : Number(element);
+      record[columnNames[index]] = Number.isNaN(Number(element)) ? element : Number(element);
     }
     return record;
   };
-+  const columnTypes = rows.length > 1 ? getColumnTypes(rows[1]) : rows[0].map(()=>new Utf8());
+  const columnTypes = rows.length > 1 ? getColumnTypes(rows[1]) : rows[0].map(()=>new Utf8());
   // convert all rows except column definitions to an array of Record<string, string> objects
   const tableRecords = rows.filter((_, index) => index > 0).map((r)=>getRecordObjectFromRow(r));
-!  const columnDefinitions: Column[] = columnNames.map((c, index) => ({
+  const columnDefinitions: Column[] = columnNames.map((c, index) => ({
     name: c,
-!    type: columnTypes[index],
+    type: columnTypes[index],
     description: "",
     primaryKey: false,
     notNull: false,
@@ -477,8 +477,6 @@ const getTable = async (
     ignoreInTests: false,
     resolver: getColumnResolver(c),
   }));
-
-// ...
 ```
 
 That's it! Now delete the `db.sql` file, restart the plugin, and test the sync again. This time, the `db.sql` file should contain the right type for your number columns: `TEXT`, `INTEGER`, and `REAL`.
@@ -489,16 +487,16 @@ JavaScript plugins are published and executed using Docker containers. Our start
 
 To point CloudQuery to the plugin container, make the following changes to the `sync.yml` file:
 
-```diff
+```yaml
 spec:
-!  name: "cq-js-sample"
-!  registry: "docker"
-!  path: "cq-js-sample:latest" # this is the name and tag of the docker image to be pulled.
+  name: "cq-js-sample"
+  registry: "docker"
+  path: "cq-js-sample:latest" # this is the name and tag of the docker image to be pulled.
   version: "v1.0.0"
   tables:
     ["*"]
 
-# ...
+// ...
 ```
 
 To find out how to release your plugin for use by a wider CloudQuery community, see [Releasing and Deploying your Plugin](https://www.cloudquery.io/docs/developers/creating-new-plugin/javascript-source#releasing-and-deploying-your-plugin) in our documentation.
