@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.13.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.13.1...plugins-source-aws-v22.13.2) (2023-09-29)
+
+
+### Bug Fixes
+
+* Fix for `example_queries` skip on error message ([#14122](https://github.com/cloudquery/cloudquery/issues/14122)) ([95b3641](https://github.com/cloudquery/cloudquery/commit/95b3641a1483a6dc9054023b1b8f0512c2a810cc))
+* Fix query for finding unused target groups for AWS ([#13616](https://github.com/cloudquery/cloudquery/issues/13616)) ([58b07cd](https://github.com/cloudquery/cloudquery/commit/58b07cd5b94889965bfbb8ffc8c9bf66a6579593))
+
 ## [22.13.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.13.0...plugins-source-aws-v22.13.1) (2023-09-27)
 
 
