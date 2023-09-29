@@ -12,7 +12,6 @@ jobs:
       plugin_version: ${{ steps.split.outputs.plugin_version }}
       plugin_dir: ${{ steps.split.outputs.plugin_dir }}
       prerelease: ${{ steps.semver_parser.outputs.prerelease }}
-      plugin_releaser: ${{ steps.set-result.outputs.result }}
     steps:
       - name: Split tag
         id: split
@@ -31,25 +30,6 @@ jobs:
         id: semver_parser
         with:
           input_string: ${{steps.split.outputs.plugin_version}}
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - uses: actions/github-script@v6
-        id: set-result
-        env:
-          PLUGIN_DIR: ${{steps.split.outputs.plugin_dir}}
-        with:
-          script: |
-            const fs = require('fs').promises;
-            const path = require('path');
-            const pluginFiles = await fs.readdir(process.env.PLUGIN_DIR);
-            if (pluginFiles.includes('Dockerfile')) {
-              return 'docker';
-            }
-            if (pluginFiles.includes('.goreleaser.yaml')) {
-              return 'go';
-            }
-          result-encoding: string
   publish-plugin-to-hub:
     timeout-minutes: 60
     runs-on: large-ubuntu-monorepo
@@ -60,7 +40,6 @@ jobs:
         CC: /usr/bin/gencc.sh
         CXX: /usr/bin/gencpp.sh
     needs: prepare
-    if: needs.prepare.outputs.plugin_releaser == 'go'
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -94,7 +73,7 @@ jobs:
             });
             return data.body;
 
-      - name: Run publish package command
+      - name: Run package command
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         run: |
           mkdir -p stubdocs
