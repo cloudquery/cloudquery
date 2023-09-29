@@ -3,11 +3,14 @@ package client
 import (
 	"bytes"
 	"context"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	awshttp "github.com/aws/aws-sdk-go-v2/aws/transport/http"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -62,6 +65,12 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.Ne
 
 	cfg.Region = c.spec.Region
 
+	cfg.HTTPClient = awshttp.NewBuildableClient().WithTransportOptions(func(tr *http.Transport) {
+		if tr.TLSClientConfig == nil {
+			tr.TLSClientConfig = &tls.Config{}
+		}
+		tr.TLSClientConfig.InsecureSkipVerify = *c.spec.EndpointSkipTLSVerify
+	})
 	c.s3Client = s3.NewFromConfig(cfg, func(o *s3.Options) {
 		if len(c.spec.Endpoint) > 0 {
 			baseEndpoint := c.spec.Endpoint
