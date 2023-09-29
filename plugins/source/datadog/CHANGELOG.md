@@ -1,5 +1,19 @@
 # Changelog
 
+## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-datadog-v3.1.10...plugins-source-datadog-v4.0.0) (2023-09-29)
+
+
+### This Release has the Following Changes to Tables
+- Table `datadog_monitors`: column type changed from `list<item: utf8, nullable>` to `json` for `restricted_roles` (:warning: breaking)
+
+### ⚠ BREAKING CHANGES
+
+* Add pagination support for list users ([#14188](https://github.com/cloudquery/cloudquery/issues/14188))
+
+### Bug Fixes
+
+* Add pagination support for list users ([#14188](https://github.com/cloudquery/cloudquery/issues/14188)) ([b5360bb](https://github.com/cloudquery/cloudquery/commit/b5360bbdc160f2efff4f88bbb8325bbc6c1413ec))
+
 ## [3.1.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-datadog-v3.1.9...plugins-source-datadog-v3.1.10) (2023-09-27)
 
 
