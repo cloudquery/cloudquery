@@ -12,7 +12,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/cloudquery/plugins/source/gcp/codegen/client"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/codegen/client"
 	"github.com/iancoleman/strcase"
 )
 

@@ -3,6 +3,9 @@ on:
   push:
     tags:
       - "plugins-*-*-v*.*.*"
+      - "!plugins-destination-duckdb-v*.*.*"
+      - "!plugins-destination-sqlite-v*.*.*"
+      - "!plugins-destination-snowflake-v*.*.*"
 jobs:
   prepare:
     runs-on: ubuntu-latest
@@ -88,7 +91,7 @@ jobs:
             });
             return data.body;
 
-      - name: Run publish package command
+      - name: Run package command
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         run: |
           mkdir -p stubdocs
@@ -97,7 +100,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: "v3.19.0"
+          version: "v3.19.3"
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}

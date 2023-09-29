@@ -3,9 +3,9 @@ module github.com/cloudquery/cloudquery/plugins/source/datadog
 go 1.20
 
 require (
-	github.com/DataDog/datadog-api-client-go/v2 v2.13.0
+	github.com/DataDog/datadog-api-client-go/v2 v2.17.0
 	github.com/apache/arrow/go/v14 v14.0.0-20230905030402-a526ba697d4e
-	github.com/cloudquery/plugin-sdk/v4 v4.11.0
+	github.com/cloudquery/plugin-sdk/v4 v4.11.1
 	github.com/golang/mock v1.6.0
 	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.29.1
@@ -54,7 +54,7 @@ require (
 	go.opentelemetry.io/proto/otlp v0.19.0 // indirect
 	golang.org/x/mod v0.12.0 // indirect
 	golang.org/x/net v0.15.0 // indirect
-	golang.org/x/oauth2 v0.7.0 // indirect
+	golang.org/x/oauth2 v0.10.0 // indirect
 	golang.org/x/sync v0.3.0 // indirect
 	golang.org/x/sys v0.12.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
