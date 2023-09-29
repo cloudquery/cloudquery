@@ -1452,24 +1452,6 @@
     },
     "Org": {
       "properties": {
-        "organization_units": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
-        "skip_member_accounts": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
-        "skip_organization_units": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
-        },
         "admin_account": {
           "$ref": "#/$defs/Account"
         },
@@ -1477,7 +1459,8 @@
           "$ref": "#/$defs/Account"
         },
         "member_role_name": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         },
         "member_role_session_name": {
           "type": "string"
@@ -1490,10 +1473,33 @@
             "type": "string"
           },
           "type": "array"
+        },
+        "organization_units": {
+          "items": {
+            "type": "string",
+            "pattern": "^((ou-[0-9a-z]{4,32}-[a-z0-9]{8,32})|(r-[0-9a-z]{4,32}))$"
+          },
+          "type": "array"
+        },
+        "skip_organization_units": {
+          "items": {
+            "type": "string",
+            "pattern": "^((ou-[0-9a-z]{4,32}-[a-z0-9]{8,32})|(r-[0-9a-z]{4,32}))$"
+          },
+          "type": "array"
+        },
+        "skip_member_accounts": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "required": [
+        "member_role_name"
+      ]
     },
     "PackageFilter": {
       "properties": {

@@ -50,16 +50,11 @@ func (s *Spec) Validate() error {
 		return errors.New("specifying accounts via both the Accounts and Org properties is not supported. To achieve both, use multiple source configurations")
 	}
 	if s.Organization != nil {
-		if s.Organization.ChildAccountRoleName == "" {
-			return fmt.Errorf("member_role_name is required when using org configuration")
-		}
-		if err := validateOUs(s.Organization.OrganizationUnits); err != nil {
-			return fmt.Errorf("invalid organization_units: %w", err)
-		}
-		if err := validateOUs(s.Organization.SkipOrganizationalUnits); err != nil {
-			return fmt.Errorf("invalid skip_organization_units: %w", err)
+		if err := s.Organization.Validate(); err != nil {
+			return fmt.Errorf("invalid org: %w", err)
 		}
 	}
+
 	if s.TableOptions != nil {
 		if err := s.TableOptions.Validate(); err != nil {
 			return fmt.Errorf("invalid table_options: %w", err)
