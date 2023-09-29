@@ -306,7 +306,7 @@ const getTable = async (
     for (const r of tableRecords) stream.write(r)
     return Promise.resolve();
   };
-!  return createTable({ name: tableName, columns: columnDefinitions, resolver: tableResolver });
+   return createTable({ name: tableName, columns: columnDefinitions, resolver: tableResolver });
 };
 ```
 
