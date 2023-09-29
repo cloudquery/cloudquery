@@ -63,7 +63,7 @@
   "plugins/destination/kafka+FILLER": "0.0.0",
   "plugins/source/hackernews": "3.0.11",
   "plugins/source/hackernews+FILLER": "0.0.0",
-  "scaffold": "2.1.9",
+  "scaffold": "2.1.10",
   "scaffold+FILLER": "0.0.0",
   "plugins/source/oracle": "4.1.0",
   "plugins/source/oracle+FILLER": "0.0.0",
