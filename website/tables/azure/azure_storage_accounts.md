@@ -106,8 +106,8 @@ SELECT
   azsc.subscription_id AS subscription_id,
   azsc.id AS resrouce_id,
   CASE
-  WHEN (asa.properties->>'allowBlobPublicAccess')::BOOLEAN = true 
-  AND (azsc.properties->>'publicAccess') <> 'None' 
+  WHEN (asa.properties->>'allowBlobPublicAccess')::BOOL = true
+  AND (azsc.properties->>'publicAccess') != 'None'
   THEN 'fail'
   ELSE 'pass'
   END
