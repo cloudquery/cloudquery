@@ -16,14 +16,14 @@ func buildDashboardsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogSe
 		DashboardsAPI: m,
 	}
 
-	var d datadogV1.DashboardSummary
+	var d datadogV1.DashboardSummaryDefinition
 	err := faker.FakeObject(&d)
 	if err != nil {
 		t.Fatal(err)
 	}
 	desc := "test string"
-	d.Dashboards[0].Description.Set(&desc)
-	m.EXPECT().ListDashboards(gomock.Any()).Return(d, nil, nil)
+	d.Description.Set(&desc)
+	m.EXPECT().ListDashboardsWithPagination(gomock.Any()).Return(client.MockPaginatedResponse(d))
 
 	return services
 }
