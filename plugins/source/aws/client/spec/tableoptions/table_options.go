@@ -1,6 +1,9 @@
 package tableoptions
 
-import "reflect"
+import (
+	_ "embed"
+	"reflect"
+)
 
 type customInputValidation interface {
 	Validate() error
@@ -30,3 +33,6 @@ func (t TableOptions) Validate() error {
 	}
 	return nil
 }
+
+//go:embed schema.json
+var JSONSchema string

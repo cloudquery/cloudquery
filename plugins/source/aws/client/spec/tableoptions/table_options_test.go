@@ -19,6 +19,8 @@ import (
 	inspector2types "github.com/aws/aws-sdk-go-v2/service/inspector2/types"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	securityhubtypes "github.com/aws/aws-sdk-go-v2/service/securityhub/types"
+	"github.com/cloudquery/codegen/jsonschema"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/stretchr/testify/require"
 
 	"github.com/cloudquery/plugin-sdk/v4/faker"
@@ -124,4 +126,34 @@ func TestTableOptionsUnmarshal(t *testing.T) {
 	)); diff != "" {
 		t.Fatalf("mismatch between objects after loading from snake case json: %v", diff)
 	}
+}
+
+func TestJSONSchema(t *testing.T) {
+	validator, err := plugin.JSONSchemaValidator(JSONSchema)
+	require.NoError(t, err)
+
+	type testCase struct {
+		name string
+		spec string
+		err  bool
+	}
+
+	for _, tc := range []testCase{} {
+		t.Run(tc.name, func(t *testing.T) {
+			var v any
+			require.NoError(t, json.Unmarshal([]byte(tc.spec), &v))
+			err := validator.Validate(v)
+			if tc.err {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+			}
+		})
+	}
+}
+
+func TestEnsureJSONSchema(t *testing.T) {
+	data, err := jsonschema.Generate(new(TableOptions))
+	require.NoError(t, err)
+	require.JSONEqf(t, string(data), JSONSchema, "new schema should be:\n%s\n", string(data))
 }
