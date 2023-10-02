@@ -16,6 +16,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/internal/httperror"
 	"github.com/rs/zerolog"
+	"golang.org/x/net/http2"
 	"golang.org/x/time/rate"
 )
 
@@ -97,7 +98,7 @@ func (s *Client) request(ctx context.Context, edge string, params url.Values) (r
 		}
 
 		temporary := false
-		if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+		if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) || isErrH2GoAway(err) {
 			temporary = true
 		} else if he, ok := err.(httperror.Error); ok {
 			temporary = he.Temporary()
@@ -360,4 +361,13 @@ func getNextPage(hdr http.Header) string {
 	}
 
 	return ""
+}
+
+func isErrH2GoAway(err error) bool {
+	var he http2.GoAwayError
+	if errors.As(err, &he) {
+		return true
+	}
+	var he2 *http2.GoAwayError
+	return errors.As(err, &he2)
 }

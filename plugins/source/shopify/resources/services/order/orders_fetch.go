@@ -37,7 +37,7 @@ func fetchOrders(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	for {
 		ret, cur, err := cl.Services.GetOrders(ctx, cursor, p)
 		if err != nil {
-			return err
+			return fmt.Errorf("GetOrders failed: %w", err)
 		}
 
 		for i := range ret.Orders {
