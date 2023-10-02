@@ -137,6 +137,7 @@ require (
 	github.com/gocarina/gocsv v0.0.0-20230616125104-99d496ca653d
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
+	github.com/invopop/jsonschema v0.11.0
 	github.com/mitchellh/hashstructure/v2 v2.0.2
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/mjibson/sqlfmt v0.5.0
@@ -152,8 +153,8 @@ require (
 // TODO: remove once all updates are merged
 replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd
 
-// https://github.com/invopop/jsonschema/pull/103
-replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20230926171440-9c0d982c4f4f
+// https://github.com/invopop/jsonschema/pull/106
+replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20231002084722-d10980697d18
 
 // https://github.com/cloudquery/codegen/pull/29
 replace github.com/cloudquery/codegen => github.com/cloudquery/codegen v0.3.3-0.20230928065241-2c7e0070ce1e
@@ -220,7 +221,6 @@ require (
 	github.com/golang/geo v0.0.0-20230421003525-6adc56603217 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.0 // indirect
-	github.com/invopop/jsonschema v0.11.0 // indirect
 	github.com/jpillora/longestcommon v0.0.0-20161227235612-adb9d91ee629 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
