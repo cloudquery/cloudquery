@@ -22,10 +22,6 @@ func Synthetics() *schema.Table {
 func fetchSynthetics(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	ctx = c.BuildContextV1(ctx)
-	resp, _, err := c.DDServices.SyntheticsAPI.ListTests(ctx)
-	if err != nil {
-		return err
-	}
-	res <- resp.GetTests()
-	return nil
+	resp, cancel := c.DDServices.SyntheticsAPI.ListTestsWithPagination(ctx)
+	return client.ConsumePaginatedResponse(resp, cancel, res)
 }
