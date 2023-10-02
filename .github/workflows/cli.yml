@@ -42,7 +42,7 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         if: matrix.os == 'large-ubuntu-monorepo'
         with:
-          version: v1.52.2
+          version: v1.54.2
           working-directory: cli
           skip-pkg-cache: true
           skip-build-cache: true
