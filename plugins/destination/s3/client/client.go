@@ -69,7 +69,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.Ne
 		if tr.TLSClientConfig == nil {
 			tr.TLSClientConfig = &tls.Config{}
 		}
-		tr.TLSClientConfig.InsecureSkipVerify = *c.spec.EndpointSkipTLSVerify
+		tr.TLSClientConfig.InsecureSkipVerify = c.spec.EndpointSkipTLSVerify
 	})
 	c.s3Client = s3.NewFromConfig(cfg, func(o *s3.Options) {
 		if len(c.spec.Endpoint) > 0 {

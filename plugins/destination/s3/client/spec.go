@@ -21,7 +21,7 @@ type Spec struct {
 
 	Endpoint              string               `json:"endpoint,omitempty"`
 	UsePathStyle          bool                 `json:"use_path_style,omitempty"`
-	EndpointSkipTLSVerify *bool                `json:"endpoint_skip_tls_verify,omitempty"`
+	EndpointSkipTLSVerify bool                 `json:"endpoint_skip_tls_verify,omitempty"`
 	BatchSize             *int64               `json:"batch_size"`
 	BatchSizeBytes        *int64               `json:"batch_size_bytes"`
 	BatchTimeout          *configtype.Duration `json:"batch_timeout"`
@@ -39,10 +39,6 @@ func (s *Spec) SetDefaults() {
 	if s.TestWrite == nil {
 		b := true
 		s.TestWrite = &b
-	}
-	if s.EndpointSkipTLSVerify == nil {
-		b := false
-		s.EndpointSkipTLSVerify = &b
 	}
 	if s.BatchSize == nil {
 		if s.NoRotate {
