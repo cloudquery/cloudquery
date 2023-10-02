@@ -78,7 +78,7 @@ require (
 	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/cloudquery/plugin-pb-go v1.10.0 // indirect
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
+	github.com/cloudquery/plugin-sdk/v4 v4.11.1 // indirect
 	github.com/cncf/udpa/go v0.0.0-20220112060539-c52dc94e7fbe // indirect
 	github.com/cncf/xds/go v0.0.0-20230607035331-e9ce68804cb4 // indirect
 	github.com/cockroachdb/apd/v3 v3.1.0 // indirect

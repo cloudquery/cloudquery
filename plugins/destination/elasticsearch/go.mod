@@ -20,7 +20,7 @@ replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect
 	github.com/cloudquery/plugin-pb-go v1.10.0 // indirect
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
+	github.com/cloudquery/plugin-sdk/v4 v4.11.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/elastic/elastic-transport-go/v8 v8.0.0-20211216131617-bbee439d559c // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect

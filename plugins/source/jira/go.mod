@@ -16,7 +16,7 @@ require (
 	github.com/apache/arrow/go/v14 v14.0.0-20230929201650-00efb06dc0de // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/cloudquery/plugin-pb-go v1.10.0 // indirect
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
+	github.com/cloudquery/plugin-sdk/v4 v4.11.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect

@@ -29,7 +29,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.22.0 // indirect
 	github.com/aws/smithy-go v1.14.2 // indirect
 	github.com/cloudquery/plugin-pb-go v1.10.0 // indirect
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
+	github.com/cloudquery/plugin-sdk/v4 v4.11.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.20.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect

@@ -27,7 +27,7 @@ require (
 	github.com/blevesearch/snowballstem v0.9.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/cloudquery/plugin-pb-go v1.10.0 // indirect
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
+	github.com/cloudquery/plugin-sdk/v4 v4.11.1 // indirect
 	github.com/cockroachdb/apd/v3 v3.1.0 // indirect
 	github.com/cockroachdb/errors v1.9.0 // indirect
 	github.com/cockroachdb/logtags v0.0.0-20230118201751-21c54148d20b // indirect
