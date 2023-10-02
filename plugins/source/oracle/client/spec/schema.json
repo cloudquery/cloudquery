@@ -1,14 +1,17 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "CloudQuery Oracle Source Plugin Spec",
-  "type": "object",
-  "properties": {
-    "concurrency": {
-      "title": "Concurrency",
-      "description": "A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.",
-      "type": "integer",
-      "minimum": 1,
-      "default": 10000
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/source/oracle/client/spec/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Spec": {
+      "properties": {
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
     }
   }
 }
