@@ -22,9 +22,13 @@ The composite primary key for this table is (**project_id**, **name**).
 |hyperthreading_enabled|`bool`|
 |labels|`json`|
 |luns|`json`|
+|volumes|`json`|
 |networks|`json`|
 |interactive_serial_console_enabled|`bool`|
 |os_image|`utf8`|
 |pod|`utf8`|
 |network_template|`utf8`|
 |logical_interfaces|`json`|
+|login_info|`utf8`|
+|workload_profile|`utf8`|
+|firmware_version|`utf8`|
