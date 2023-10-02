@@ -41,7 +41,7 @@ func (s *Spec) SetDefaults() {
 		s.TestWrite = &b
 	}
 	if s.EndpointSkipTLSVerify == nil {
-		b := true
+		b := false
 		s.EndpointSkipTLSVerify = &b
 	}
 	if s.BatchSize == nil {
