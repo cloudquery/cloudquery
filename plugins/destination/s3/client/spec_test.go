@@ -14,6 +14,7 @@ import (
 
 func TestSpec_SetDefaults(t *testing.T) {
 	dur0, dur30 := configtype.NewDuration(0), configtype.NewDuration(30*time.Second)
+
 	cases := []struct {
 		Give Spec
 		Want Spec
