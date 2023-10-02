@@ -8,13 +8,12 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
-
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/golang/mock/gomock"
 	"github.com/rs/zerolog"
 )

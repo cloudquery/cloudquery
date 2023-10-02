@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 )
 
