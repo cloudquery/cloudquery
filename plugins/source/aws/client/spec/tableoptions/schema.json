@@ -902,9 +902,6 @@
         "MaxResults": {
           "type": "integer"
         },
-        "NextToken": {
-          "type": "string"
-        },
         "StartTime": {
           "type": "string",
           "format": "date-time"

@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/cloudquery/plugin-sdk/v4/caser"
+	"github.com/invopop/jsonschema"
 )
 
 type CloudtrailAPIs struct {
@@ -29,6 +30,12 @@ func (c *CustomLookupEventsOpts) UnmarshalJSON(data []byte) error {
 	changeCaseForObject(m, csr.ToPascal)
 	b, _ := json.Marshal(m)
 	return json.Unmarshal(b, &c.LookupEventsInput)
+}
+
+// JSONSchemaExtend is required to remove `NextToken`.
+// We use value receiver because of https://github.com/invopop/jsonschema/issues/102
+func (CustomLookupEventsOpts) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.Properties.Delete("NextToken")
 }
 
 func (c *CloudtrailAPIs) validateLookupEvents() error {
