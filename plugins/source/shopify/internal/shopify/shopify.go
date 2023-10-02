@@ -16,6 +16,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/internal/httperror"
 	"github.com/rs/zerolog"
+	"golang.org/x/net/http2"
 	"golang.org/x/time/rate"
 )
 
@@ -363,5 +364,10 @@ func getNextPage(hdr http.Header) string {
 }
 
 func isErrH2GoAway(err error) bool {
-	return strings.Contains(err.Error(), "http2: server sent GOAWAY and closed the connection;")
+	var he http2.GoAwayError
+	if errors.As(err, &he) {
+		return true
+	}
+	var he2 *http2.GoAwayError
+	return errors.As(err, &he2)
 }
