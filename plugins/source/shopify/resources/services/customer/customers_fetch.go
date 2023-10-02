@@ -36,7 +36,7 @@ func fetchCustomers(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	for {
 		ret, cur, err := cl.Services.GetCustomers(ctx, cursor, p)
 		if err != nil {
-			return err
+			return fmt.Errorf("GetCustomers failed: %w", err)
 		}
 		for i := range ret.Customers {
 			if ret.Customers[i].UpdatedAt.After(min) {

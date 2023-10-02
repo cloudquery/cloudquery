@@ -36,7 +36,7 @@ func fetchPriceRules(ctx context.Context, meta schema.ClientMeta, parent *schema
 	for {
 		ret, cur, err := cl.Services.GetPriceRules(ctx, cursor, p)
 		if err != nil {
-			return err
+			return fmt.Errorf("GetPriceRules failed: %w", err)
 		}
 
 		for i := range ret.PriceRules {
