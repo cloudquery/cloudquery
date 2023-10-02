@@ -14,7 +14,7 @@ import (
 
 func TestSpec_SetDefaults(t *testing.T) {
 	dur0, dur30 := configtype.NewDuration(0), configtype.NewDuration(30*time.Second)
-	boolTrue := true
+	boolFalse := false
 	cases := []struct {
 		Give Spec
 		Want Spec
@@ -22,15 +22,15 @@ func TestSpec_SetDefaults(t *testing.T) {
 
 		{
 			Give: Spec{Path: "test/path", FileSpec: &filetypes.FileSpec{Format: "json"}},
-			Want: Spec{Path: "test/path/{{TABLE}}.json.{{UUID}}", FileSpec: &filetypes.FileSpec{Format: "json"}, TestWrite: boolPtr(true), BatchSize: int64Ptr(10000), BatchSizeBytes: int64Ptr(50 * 1024 * 1024), BatchTimeout: &dur30, EndpointSkipTLSVerify: &boolTrue},
+			Want: Spec{Path: "test/path/{{TABLE}}.json.{{UUID}}", FileSpec: &filetypes.FileSpec{Format: "json"}, TestWrite: boolPtr(true), BatchSize: int64Ptr(10000), BatchSizeBytes: int64Ptr(50 * 1024 * 1024), BatchTimeout: &dur30, EndpointSkipTLSVerify: &boolFalse},
 		},
 		{
 			Give: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: &filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ","}}, TestWrite: boolPtr(false)},
-			Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: &filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ","}}, TestWrite: boolPtr(false), BatchSize: int64Ptr(10000), BatchSizeBytes: int64Ptr(50 * 1024 * 1024), BatchTimeout: &dur30, EndpointSkipTLSVerify: &boolTrue},
+			Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: &filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ","}}, TestWrite: boolPtr(false), BatchSize: int64Ptr(10000), BatchSizeBytes: int64Ptr(50 * 1024 * 1024), BatchTimeout: &dur30, EndpointSkipTLSVerify: &boolFalse},
 		},
 		{
 			Give: Spec{Path: "test/path", FileSpec: &filetypes.FileSpec{Format: "json"}, NoRotate: true},
-			Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: &filetypes.FileSpec{Format: "json"}, TestWrite: boolPtr(true), NoRotate: true, BatchSize: int64Ptr(0), BatchSizeBytes: int64Ptr(0), BatchTimeout: &dur0, EndpointSkipTLSVerify: &boolTrue},
+			Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: &filetypes.FileSpec{Format: "json"}, TestWrite: boolPtr(true), NoRotate: true, BatchSize: int64Ptr(0), BatchSizeBytes: int64Ptr(0), BatchTimeout: &dur0, EndpointSkipTLSVerify: &boolFalse},
 		},
 	}
 	for _, tc := range cases {
