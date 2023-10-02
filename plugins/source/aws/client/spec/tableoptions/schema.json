@@ -766,9 +766,6 @@
     },
     "CustomAccessAnalyzerListFindingsInput": {
       "properties": {
-        "AnalyzerArn": {
-          "type": "string"
-        },
         "Filter": {
           "additionalProperties": {
             "$ref": "#/$defs/Criterion"
@@ -777,9 +774,6 @@
         },
         "MaxResults": {
           "type": "integer"
-        },
-        "NextToken": {
-          "type": "string"
         },
         "Sort": {
           "$ref": "#/$defs/SortCriteria"

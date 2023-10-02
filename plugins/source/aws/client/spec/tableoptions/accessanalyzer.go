@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/cloudquery/plugin-sdk/v4/caser"
+	"github.com/invopop/jsonschema"
 )
 
 type AccessanalyzerFindings struct {
@@ -30,6 +31,13 @@ func (c *CustomAccessAnalyzerListFindingsInput) UnmarshalJSON(data []byte) error
 	changeCaseForObject(m, csr.ToPascal, skipFields...)
 	b, _ := json.Marshal(m)
 	return json.Unmarshal(b, &c.ListFindingsInput)
+}
+
+// JSONSchemaExtend is required to remove `AnalyzerArn` & `NextToken`.
+// We use value receiver because of https://github.com/invopop/jsonschema/issues/102
+func (CustomAccessAnalyzerListFindingsInput) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.Properties.Delete("AnalyzerArn")
+	sc.Properties.Delete("NextToken")
 }
 
 func (c *AccessanalyzerFindings) validateListFindings() error {

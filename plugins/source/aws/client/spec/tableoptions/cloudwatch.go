@@ -57,12 +57,12 @@ type CloudwatchGetMetricStatisticsInput struct {
 	cloudwatch.GetMetricStatisticsInput
 }
 
-// JSONSchemaExtend is required to remove `namespace`, `metric_name` & `dimensions`.
+// JSONSchemaExtend is required to remove `Namespace`, `MetricName` & `Dimensions`.
 // We use value receiver because of https://github.com/invopop/jsonschema/issues/102
 func (CloudwatchGetMetricStatisticsInput) JSONSchemaExtend(sc *jsonschema.Schema) {
-	sc.Properties.Delete("Namespace")  // we don't allow `namespace`
-	sc.Properties.Delete("MetricName") // we don't allow `metric_name`
-	sc.Properties.Delete("Dimensions") // we don't allow `dimensions`
+	sc.Properties.Delete("Namespace")
+	sc.Properties.Delete("MetricName")
+	sc.Properties.Delete("Dimensions")
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface for the CloudwatchGetMetricStatisticsInput type.
@@ -95,8 +95,8 @@ func (c *CloudwatchListMetricsInput) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(b, &c.ListMetricsInput)
 }
 
-// JSONSchemaExtend is required to remove `next_token`.
+// JSONSchemaExtend is required to remove `NextToken`.
 // We use value receiver because of https://github.com/invopop/jsonschema/issues/102
 func (CloudwatchListMetricsInput) JSONSchemaExtend(sc *jsonschema.Schema) {
-	sc.Properties.Delete("NextToken") // we don't allow `next_token`
+	sc.Properties.Delete("NextToken")
 }
