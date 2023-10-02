@@ -37,8 +37,8 @@ github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAE
 github.com/antihax/optional v1.0.0/go.mod h1:uupD/76wgC+ih3iEmQUL+0Ugr19nfwCT1kdvxnR2qWY=
 github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 h1:mFDZW1FQk9yndPvxScp7RpcOpdSHaqcgBWO7sDlx4S8=
 github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882/go.mod h1:W69eByFNO0ZR30q1/7Sr9d83zcVZmF2MiP3fFYAWJOc=
-github.com/beatlabs/github-auth v0.0.0-20230815180530-39adf7579a64 h1:UoJ7IUFfvNxeMmIWHZUhGk73dx4kuqvEFRBC0Jn+v/8=
-github.com/beatlabs/github-auth v0.0.0-20230815180530-39adf7579a64/go.mod h1:lm3G9bprUwDWQYA8x6JpduzC220cIWd1Nvm/+wwfsug=
+github.com/beatlabs/github-auth v0.0.0-20230912161003-cdaa33aa0d65 h1:udIR2eWf2tdvbv3u71qk9SzSF84ElP7zPSRkmVWtly0=
+github.com/beatlabs/github-auth v0.0.0-20230912161003-cdaa33aa0d65/go.mod h1:d9yXEW0y9xCWkDh9NUD3QwJJr+J+fRC44nkwoNhNt6s=
 github.com/bradleyjkemp/cupaloy/v2 v2.8.0 h1:any4BmKE+jGIaMpnU8YgH/I2LPiLBufr6oMMlVBbn9M=
 github.com/cenkalti/backoff/v4 v4.2.1 h1:y4OZtCnogmCPw98Zjyt5a6+QwPLGkiQsYW5oUqylYbM=
 github.com/cenkalti/backoff/v4 v4.2.1/go.mod h1:Y3VNntkOUPxTVeUxJ/G5vcM//AlwfmyYozVcomhLiZE=
@@ -49,8 +49,8 @@ github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWR
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
 github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMnBNeIyt5eFwwo7qiLfzFZmjNmxjkiQlU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/arrow/go/v14 v14.0.0-20230916001126-ffb7089245ac h1:Krr/L41tEYCxdUZfck3QI0mPSOuiMxUfZGWGlQymZ+U=
-github.com/cloudquery/arrow/go/v14 v14.0.0-20230916001126-ffb7089245ac/go.mod h1:/SqmdO2dsWqFHqQQeupnsr0ollL8C91n3x0I72rArY8=
+github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd h1:LtWC4oaOh0kI5Xhgl0U4w04vm9qdux/H1E0XBv/Lyio=
+github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd/go.mod h1:/SqmdO2dsWqFHqQQeupnsr0ollL8C91n3x0I72rArY8=
 github.com/cloudquery/plugin-pb-go v1.10.0 h1:76DSubESX8HWFJZaB90J0mPDnmUoXEzyXutwL0w0TfI=
 github.com/cloudquery/plugin-pb-go v1.10.0/go.mod h1:K0L9ugyPVKBgmxhWwr7wNEE/khfJr1lTmhl6HfkhXYA=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
@@ -328,8 +328,8 @@ golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45/go.mod h1:gOpvHmFTYa4Iltr
 golang.org/x/oauth2 v0.0.0-20191202225959-858c2ad4c8b6/go.mod h1:gOpvHmFTYa4IltrdGE7lF6nIHvwfUNPOp7c8zoXwtLw=
 golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d/go.mod h1:gOpvHmFTYa4IltrdGE7lF6nIHvwfUNPOp7c8zoXwtLw=
 golang.org/x/oauth2 v0.0.0-20211104180415-d3ed0bb246c8/go.mod h1:KelEdhl1UZF7XfJ4dDtk6s++YSgaE7mD/BuKKDLBl4A=
-golang.org/x/oauth2 v0.11.0 h1:vPL4xzxBM4niKCW6g9whtaWVXTJf1U5e4aZxxFx/gbU=
-golang.org/x/oauth2 v0.11.0/go.mod h1:LdF7O/8bLR/qWK9DrpXmbHLTouvRHK0SgJl0GmDBchk=
+golang.org/x/oauth2 v0.12.0 h1:smVPGxink+n1ZI5pkQa8y6fZT0RW0MgCO5bFpepy4B4=
+golang.org/x/oauth2 v0.12.0/go.mod h1:A74bZ3aGXgCY0qaIC9Ahg6Lglin4AMAco8cIv9baba4=
 golang.org/x/sync v0.0.0-20180314180146-1d60e4601c6f/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sync v0.0.0-20181108010431-42b317875d0f/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sync v0.0.0-20181221193216-37e7f081c4d4/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=

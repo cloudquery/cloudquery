@@ -46,11 +46,11 @@ github.com/cespare/xxhash/v2 v2.1.1/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XL
 github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWRnGsAI=
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
 github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMnBNeIyt5eFwwo7qiLfzFZmjNmxjkiQlU=
-github.com/clarkmcc/go-hubspot v0.0.0-20221010213350-20c2f9cbf936 h1:desYZwMJiFjI4ugPg+elPXygJeVJnTCdlxXF3KX+KuE=
-github.com/clarkmcc/go-hubspot v0.0.0-20221010213350-20c2f9cbf936/go.mod h1:hedWyunNqr3OeTCQPjIMBjrJq/RImLOkIj37puh6oIE=
+github.com/clarkmcc/go-hubspot v0.0.0-20230906123538-bec7cb6c0126 h1:pjhz1KktkBAqkDsEucv4vbJicT6V5yGbFsStfR3seio=
+github.com/clarkmcc/go-hubspot v0.0.0-20230906123538-bec7cb6c0126/go.mod h1:hedWyunNqr3OeTCQPjIMBjrJq/RImLOkIj37puh6oIE=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/arrow/go/v14 v14.0.0-20230916001126-ffb7089245ac h1:Krr/L41tEYCxdUZfck3QI0mPSOuiMxUfZGWGlQymZ+U=
-github.com/cloudquery/arrow/go/v14 v14.0.0-20230916001126-ffb7089245ac/go.mod h1:/SqmdO2dsWqFHqQQeupnsr0ollL8C91n3x0I72rArY8=
+github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd h1:LtWC4oaOh0kI5Xhgl0U4w04vm9qdux/H1E0XBv/Lyio=
+github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd/go.mod h1:/SqmdO2dsWqFHqQQeupnsr0ollL8C91n3x0I72rArY8=
 github.com/cloudquery/plugin-pb-go v1.10.0 h1:76DSubESX8HWFJZaB90J0mPDnmUoXEzyXutwL0w0TfI=
 github.com/cloudquery/plugin-pb-go v1.10.0/go.mod h1:K0L9ugyPVKBgmxhWwr7wNEE/khfJr1lTmhl6HfkhXYA=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=

@@ -7,11 +7,11 @@ require (
 	github.com/rs/zerolog v1.30.0
 )
 
-replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20230904001200-cd3d4114faa0
+replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect
-	github.com/apache/arrow/go/v14 v14.0.0-20230905030402-a526ba697d4e // indirect
+	github.com/apache/arrow/go/v14 v14.0.0-20230929201650-00efb06dc0de // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/cloudquery/plugin-pb-go v1.10.0 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect

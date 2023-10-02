@@ -3,15 +3,15 @@ module github.com/cloudquery/cloudquery/plugins/source/hubspot
 go 1.20
 
 require (
-	github.com/apache/arrow/go/v14 v14.0.0-20230905030402-a526ba697d4e
-	github.com/clarkmcc/go-hubspot v0.0.0-20221010213350-20c2f9cbf936
+	github.com/apache/arrow/go/v14 v14.0.0-20230929201650-00efb06dc0de
+	github.com/clarkmcc/go-hubspot v0.0.0-20230906123538-bec7cb6c0126
 	github.com/cloudquery/plugin-sdk/v4 v4.11.1
 	github.com/rs/zerolog v1.29.1
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9
 	golang.org/x/time v0.3.0
 )
 
-replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20230916001126-ffb7089245ac
+replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect

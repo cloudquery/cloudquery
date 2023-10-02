@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/snyk
 go 1.20
 
 require (
-	github.com/apache/arrow/go/v14 v14.0.0-20230905030402-a526ba697d4e
+	github.com/apache/arrow/go/v14 v14.0.0-20230929201650-00efb06dc0de
 	github.com/cloudquery/plugin-sdk/v4 v4.11.1
 	github.com/google/uuid v1.3.1
 	github.com/julienschmidt/httprouter v1.3.0
@@ -15,7 +15,7 @@ require (
 
 replace (
 	// TODO: remove once the changes are merged to upstream
-	github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20230916001126-ffb7089245ac
+	github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd
 	github.com/pavel-snyk/snyk-sdk-go => github.com/cloudquery/snyk-sdk-go v0.5.0
 )
 

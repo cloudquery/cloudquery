@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/file
 go 1.20
 
 require (
-	github.com/apache/arrow/go/v14 v14.0.0-20230905030402-a526ba697d4e
+	github.com/apache/arrow/go/v14 v14.0.0-20230929201650-00efb06dc0de
 	github.com/cloudquery/filetypes/v4 v4.1.13
 	github.com/cloudquery/plugin-sdk/v4 v4.11.1
 	github.com/google/go-cmp v0.5.9
@@ -13,7 +13,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20230916001126-ffb7089245ac
+replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd
 
 //replace github.com/cloudquery/filetypes/v4 => ../../../../filetypes
 

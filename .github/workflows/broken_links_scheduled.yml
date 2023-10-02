@@ -31,6 +31,7 @@ jobs:
             --exclude "${{ steps.vercel.outputs.url }}/integrations/*" \
             --exclude "${{ steps.vercel.outputs.url }}/buy/*" \
             --exclude "${{ steps.vercel.outputs.url }}/contact" \
+            --exclude "${{ steps.vercel.outputs.url }}/contact-policies" \
             --exclude "${{ steps.vercel.outputs.url }}/register_for_cloud" \
             --exclude "${{ steps.vercel.outputs.url }}/apply_for_job" \
             --exclude "${{ steps.vercel.outputs.url }}/careers" \
