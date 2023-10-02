@@ -31,6 +31,11 @@ cloud.google.com/go/storage v1.6.0/go.mod h1:N7U0C8pVQ/+NIKOBQyamJIeKQKkZ+mxpohl
 cloud.google.com/go/storage v1.8.0/go.mod h1:Wv1Oy7z6Yz3DshWRJFhqM/UCfaWIRTdp0RXyy7KQOVs=
 cloud.google.com/go/storage v1.10.0/go.mod h1:FLPqc6j+Ki4BU591ie1oL6qBQGu2Bl/tZ9ullr3+Kg0=
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
+github.com/Azure/azure-sdk-for-go/sdk/azcore v1.7.2 h1:t5+QXLCK9SVi0PPdaY0PrFvYUo24KwA0QwxnaHRSVd4=
+github.com/Azure/azure-sdk-for-go/sdk/internal v1.3.0 h1:sXr+ck84g/ZlZUOZiNELInmMgOsuGwdjjVkEIde0OtY=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration/v2 v2.0.0 h1:PWMXyUvMZxxu+7nMMEQUvhkChyyL5QHZS09l0pFFNy0=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armmanagedapplications v1.1.1 h1:/tJ5Wpv4WJMWhrvQ4efhm+DlBPdohOSSOWaJkp4QjWw=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/solutions/armmanagedapplications v1.1.1 h1:hioFVSo4plF3RHTlGiTW9NSwdS8lN34yRT1QDpTgDsw=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
@@ -53,12 +58,10 @@ github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMn
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd h1:LtWC4oaOh0kI5Xhgl0U4w04vm9qdux/H1E0XBv/Lyio=
 github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd/go.mod h1:/SqmdO2dsWqFHqQQeupnsr0ollL8C91n3x0I72rArY8=
-github.com/cloudquery/codegen v0.2.1 h1:AWpGNKIFUyzI7vulYADXi/3SoksUaNXgTgIMuSrTHZk=
-github.com/cloudquery/codegen v0.2.1/go.mod h1:oJxzUuOC79fP36vBPU1BJ7n+jgQemS33y/mbgNq6vfM=
+github.com/cloudquery/codegen v0.3.3 h1:riM+5GVXcjNJ8gmgRocSY+QiZedmmjvM9TwEBTfzBr4=
+github.com/cloudquery/codegen v0.3.3/go.mod h1:+UAJNPydpAJfMwYKhJgzogwebKdY4sJolH/LuQoTDC0=
 github.com/cloudquery/plugin-pb-go v1.10.0 h1:76DSubESX8HWFJZaB90J0mPDnmUoXEzyXutwL0w0TfI=
 github.com/cloudquery/plugin-pb-go v1.10.0/go.mod h1:K0L9ugyPVKBgmxhWwr7wNEE/khfJr1lTmhl6HfkhXYA=
-github.com/cloudquery/plugin-sdk v1.45.0 h1:5vrfQZtaO1dp6ebKt8ouXDmPC7eeLuOB3JMd+FTRSYk=
-github.com/cloudquery/plugin-sdk v1.45.0/go.mod h1:9KGuuTGjTCKgh9amKwS+7Zrrqq7/M6lormteOyqoKwg=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0/go.mod h1:pAX6ojIW99b/Vg4CkhnsGkRIzNaVEceYMR+Bdit73ug=
 github.com/cloudquery/plugin-sdk/v4 v4.11.1 h1:sdQN3mcw4h3L2mx8dn7mWUPBW9mPV8KtA9xonqg3AtU=
@@ -178,6 +181,8 @@ github.com/jmespath/go-jmespath v0.4.0 h1:BEgLn5cpjn8UN1mAw4NjwDrS35OdebyEtFe+9Y
 github.com/jmespath/go-jmespath v0.4.0/go.mod h1:T8mJZnbsbmF+m6zOOFylbeCJqk5+pHWvzYPziyZiYoo=
 github.com/jmespath/go-jmespath/internal/testify v1.5.1 h1:shLQSRRSCCPj3f2gpwzGwWFoC7ycTf1rcQZHOlsJ6N8=
 github.com/jmespath/go-jmespath/internal/testify v1.5.1/go.mod h1:L3OGu8Wl2/fWfCI6z80xFu9LTZmf1ZRjMHUOPmWr69U=
+github.com/jpillora/longestcommon v0.0.0-20161227235612-adb9d91ee629 h1:1dSBUfGlorLAua2CRx0zFN7kQsTpE2DQSmr7rrTNgY8=
+github.com/jpillora/longestcommon v0.0.0-20161227235612-adb9d91ee629/go.mod h1:mb5nS4uRANwOJSZj8rlCWAfAcGi72GGMIXx+xGOjA7M=
 github.com/json-iterator/go v1.1.5/go.mod h1:+SdeFBvtyEkXs7REEP0seUULqWtbJapLOCVDaaPEHmU=
 github.com/json-iterator/go v1.1.12 h1:PV8peI4a0ysnczrg+LtxykD8LfKY9ML6u2jnxaEnrnM=
 github.com/json-iterator/go v1.1.12/go.mod h1:e30LSqwooZae/UwlEbR2852Gd8hjQvJoHmT4TnhNGBo=
