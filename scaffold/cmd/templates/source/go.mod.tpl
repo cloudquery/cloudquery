@@ -1,6 +1,6 @@
 module github.com/{{.Org}}/cq-source-{{.Name}}
 
-go 1.20
+go 1.21
 
 require (
 	github.com/apache/arrow/go/v14 a526ba697d4e
