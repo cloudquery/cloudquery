@@ -19,17 +19,17 @@ func buildMonitorsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogServ
 		DowntimesAPI: d,
 	}
 
-	var monitors []datadogV1.Monitor
-	err := faker.FakeObject(&monitors)
+	var monitor datadogV1.Monitor
+	err := faker.FakeObject(&monitor)
 	if err != nil {
 		t.Fatal(err)
 	}
 	now := time.Now()
-	monitors[0].Deleted.Set(&now)
+	monitor.Deleted.Set(&now)
 	priority := int64(123)
-	monitors[0].Priority.Set(&priority)
+	monitor.Priority.Set(&priority)
 
-	m.EXPECT().ListMonitors(gomock.Any()).Return(monitors, nil, nil)
+	m.EXPECT().ListMonitorsWithPagination(gomock.Any()).Return(client.MockPaginatedResponse(monitor))
 
 	var dt []datadogV1.Downtime
 	err = faker.FakeObject(&dt)
