@@ -177,6 +177,8 @@ github.com/cilium/ebpf v0.7.0/go.mod h1:/oI2+1shJiTGAMgl6/RgJr36Eo1jzrRcAWbcXO2u
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd h1:LtWC4oaOh0kI5Xhgl0U4w04vm9qdux/H1E0XBv/Lyio=
 github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd/go.mod h1:/SqmdO2dsWqFHqQQeupnsr0ollL8C91n3x0I72rArY8=
+github.com/cloudquery/codegen v0.3.3 h1:riM+5GVXcjNJ8gmgRocSY+QiZedmmjvM9TwEBTfzBr4=
+github.com/cloudquery/codegen v0.3.3/go.mod h1:+UAJNPydpAJfMwYKhJgzogwebKdY4sJolH/LuQoTDC0=
 github.com/cloudquery/plugin-pb-go v1.11.0 h1:fmuFFI0+R4gH4w/ehWOEZW1ajK6XFj3xGEyJEYoD3DI=
 github.com/cloudquery/plugin-pb-go v1.11.0/go.mod h1:QbDGHLlQ2+Gp9OltuKvhQ9Bmn7OaR1kE35voGFfvpXI=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=

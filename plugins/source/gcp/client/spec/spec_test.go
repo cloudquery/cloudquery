@@ -4,11 +4,12 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/cloudquery/codegen/jsonschema"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/stretchr/testify/require"
 )
 
-func TestSpec(t *testing.T) {
+func TestJSONSchema(t *testing.T) {
 	validator, err := plugin.JSONSchemaValidator(JSONSchema)
 	require.NoError(t, err)
 
@@ -376,4 +377,10 @@ func TestSpec(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestEnsureJSONSchema(t *testing.T) {
+	data, err := jsonschema.Generate(new(Spec))
+	require.NoError(t, err)
+	require.JSONEqf(t, string(data), JSONSchema, "new schema should be:\n%s\n", string(data))
 }

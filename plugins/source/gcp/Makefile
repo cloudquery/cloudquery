@@ -40,6 +40,10 @@ gen-docs: build
 gen-services:
 	go run codegen/main.go
 
+.PHONY: gen-spec-schema
+gen-spec-schema:
+	go run client/spec/gen/main.go
+
 # All gen targets
 .PHONY: gen
-gen: gen-docs
+gen: gen-spec-schema gen-docs
