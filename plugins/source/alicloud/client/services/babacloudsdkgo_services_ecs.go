@@ -5,7 +5,7 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/ecs.go -source=ecs.go EcsClient
+//go:generate mockgen -package=mocks -destination=../mocks/babacloudsdkgo_services_ecs.go -source=babacloudsdkgo_services_ecs.go EcsClient
 type EcsClient interface {
 	DescribeAccessPoints(*ecs.DescribeAccessPointsRequest) (*ecs.DescribeAccessPointsResponse, error)
 	DescribeAccessPointsWithCallback(*ecs.DescribeAccessPointsRequest, func(*ecs.DescribeAccessPointsResponse, error)) <-chan int

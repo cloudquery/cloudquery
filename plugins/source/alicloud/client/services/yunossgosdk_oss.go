@@ -5,7 +5,7 @@ import (
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/oss.go -source=oss.go OssClient
+//go:generate mockgen -package=mocks -destination=../mocks/yunossgosdk_oss.go -source=yunossgosdk_oss.go OssClient
 type OssClient interface {
 	GetBucketACL(string, ...oss.Option) (oss.GetBucketACLResult, error)
 	GetBucketAccessMonitor(string, ...oss.Option) (oss.GetBucketAccessMonitorResult, error)

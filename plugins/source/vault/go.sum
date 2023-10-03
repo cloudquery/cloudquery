@@ -31,7 +31,7 @@ cloud.google.com/go/storage v1.6.0/go.mod h1:N7U0C8pVQ/+NIKOBQyamJIeKQKkZ+mxpohl
 cloud.google.com/go/storage v1.8.0/go.mod h1:Wv1Oy7z6Yz3DshWRJFhqM/UCfaWIRTdp0RXyy7KQOVs=
 cloud.google.com/go/storage v1.10.0/go.mod h1:FLPqc6j+Ki4BU591ie1oL6qBQGu2Bl/tZ9ullr3+Kg0=
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
-github.com/Azure/azure-sdk-for-go/sdk/azcore v1.6.1 h1:SEy2xmstIphdPwNBUi7uhvjyjhVKISfwjfOJmuy7kg4=
+github.com/Azure/azure-sdk-for-go/sdk/azcore v1.7.2 h1:t5+QXLCK9SVi0PPdaY0PrFvYUo24KwA0QwxnaHRSVd4=
 github.com/Azure/azure-sdk-for-go/sdk/internal v1.3.0 h1:sXr+ck84g/ZlZUOZiNELInmMgOsuGwdjjVkEIde0OtY=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appconfiguration/armappconfiguration/v2 v2.0.0 h1:PWMXyUvMZxxu+7nMMEQUvhkChyyL5QHZS09l0pFFNy0=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armmanagedapplications v1.1.1 h1:/tJ5Wpv4WJMWhrvQ4efhm+DlBPdohOSSOWaJkp4QjWw=
@@ -58,8 +58,8 @@ github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMn
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd h1:LtWC4oaOh0kI5Xhgl0U4w04vm9qdux/H1E0XBv/Lyio=
 github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd/go.mod h1:/SqmdO2dsWqFHqQQeupnsr0ollL8C91n3x0I72rArY8=
-github.com/cloudquery/codegen v0.3.1 h1:SIKYVxSaiLkWztOd9af46WhUE3gNeXx7wgQ98/SdRzE=
-github.com/cloudquery/codegen v0.3.1/go.mod h1:TXf0NjTBegC3ea2TqnZQpl8h0e8mX384od6X+hUIau4=
+github.com/cloudquery/codegen v0.3.3 h1:riM+5GVXcjNJ8gmgRocSY+QiZedmmjvM9TwEBTfzBr4=
+github.com/cloudquery/codegen v0.3.3/go.mod h1:+UAJNPydpAJfMwYKhJgzogwebKdY4sJolH/LuQoTDC0=
 github.com/cloudquery/plugin-pb-go v1.10.0 h1:76DSubESX8HWFJZaB90J0mPDnmUoXEzyXutwL0w0TfI=
 github.com/cloudquery/plugin-pb-go v1.10.0/go.mod h1:K0L9ugyPVKBgmxhWwr7wNEE/khfJr1lTmhl6HfkhXYA=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
