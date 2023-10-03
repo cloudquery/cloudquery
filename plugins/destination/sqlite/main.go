@@ -16,17 +16,17 @@ const (
 )
 
 func main() {
-	p := plugin.NewPlugin("sqlite", internalPlugin.Version, client.New)
-	if err := serve.Plugin(p,
-		serve.WithPluginSentryDSN(sentryDSN),
-		serve.WithDestinationV0V1Server(),
-		serve.WithBuildTargets([]plugin.BuildTarget{
+	p := plugin.NewPlugin(
+		"sqlite",
+		internalPlugin.Version,
+		client.New,
+		plugin.WithBuildTargets([]plugin.BuildTarget{
 			{plugin.GoOSLinux, plugin.GoArchAmd64},
 			{plugin.GoOSWindows, plugin.GoArchAmd64},
 			{plugin.GoOSDarwin, plugin.GoArchAmd64},
 			{plugin.GoOSDarwin, plugin.GoArchArm64},
-		}),
-	).Serve(context.Background()); err != nil {
+		}))
+	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN), serve.WithDestinationV0V1Server()).Serve(context.Background()); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
