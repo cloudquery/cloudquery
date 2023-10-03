@@ -22,10 +22,6 @@ func Notebooks() *schema.Table {
 func fetchNotebooks(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	ctx = c.BuildContextV1(ctx)
-	resp, _, err := c.DDServices.NotebooksAPI.ListNotebooks(ctx)
-	if err != nil {
-		return err
-	}
-	res <- resp.GetData()
-	return nil
+	resp, cancel := c.DDServices.NotebooksAPI.ListNotebooksWithPagination(ctx)
+	return client.ConsumePaginatedResponse(resp, cancel, res)
 }

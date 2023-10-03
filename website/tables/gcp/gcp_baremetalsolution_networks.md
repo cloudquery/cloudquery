@@ -25,3 +25,7 @@ The composite primary key for this table is (**project_id**, **name**).
 |labels|`json`|
 |services_cidr|`utf8`|
 |reservations|`json`|
+|pod|`utf8`|
+|mount_points|`json`|
+|jumbo_frames_enabled|`bool`|
+|gateway_ip|`utf8`|

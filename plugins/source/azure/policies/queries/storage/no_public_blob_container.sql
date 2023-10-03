@@ -7,10 +7,10 @@ SELECT
     azsc.subscription_id                                                        AS subscription_id,
     azsc.id                                                                     AS resrouce_id,
     CASE
-        WHEN azsc.properties->>'publicAccess' = 'None'
-         AND NOT (asa.properties->>'allowBlobPublicAccess')::boolean
-        THEN 'pass'
-        ELSE 'fail'
+        WHEN (asa.properties->>'allowBlobPublicAccess')::BOOLEAN = true 
+        AND (azsc.properties->>'publicAccess') <> 'None' 
+        THEN 'fail'
+        ELSE 'pass'
     END                                                                         AS status
 FROM azure_storage_containers azsc
     JOIN azure_storage_accounts asa on azsc._cq_parent_id = asa._cq_id

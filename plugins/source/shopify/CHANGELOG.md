@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-shopify-v3.1.1...plugins-source-shopify-v3.1.2) (2023-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v14 digest to 00efb06 ([#14202](https://github.com/cloudquery/cloudquery/issues/14202)) ([fc8cc62](https://github.com/cloudquery/cloudquery/commit/fc8cc62ed70db157612e88678c123ba6a34b3b3c))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to 7ded38b ([#14246](https://github.com/cloudquery/cloudquery/issues/14246)) ([005891e](https://github.com/cloudquery/cloudquery/commit/005891e1892b41235ddb3b102f4bb6dafd48949a))
+* Retry on http2 GOAWAY error ([#14273](https://github.com/cloudquery/cloudquery/issues/14273)) ([5d5471c](https://github.com/cloudquery/cloudquery/commit/5d5471ca5f5565c251cddff42e81d8eab54cb85e))
+
 ## [3.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-shopify-v3.1.0...plugins-source-shopify-v3.1.1) (2023-09-28)
 
 

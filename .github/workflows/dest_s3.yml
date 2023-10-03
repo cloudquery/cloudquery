@@ -47,7 +47,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.52.2
+          version: v1.54.2
           working-directory: plugins/destination/s3
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
@@ -71,9 +71,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/destination/s3/go.sum') }}
+          key: ${{ runner.os }}-go-1.21.0-release-cache-${{ hashFiles('plugins/destination/s3/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.20.5-release-cache-plugins-destination-s3
+            ${{ runner.os }}-go-1.21.0-release-cache-plugins-destination-s3
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3

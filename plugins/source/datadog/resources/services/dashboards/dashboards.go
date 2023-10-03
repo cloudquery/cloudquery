@@ -22,10 +22,6 @@ func Dashboards() *schema.Table {
 func fetchDashboards(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	ctx = c.BuildContextV1(ctx)
-	resp, _, err := c.DDServices.DashboardsAPI.ListDashboards(ctx)
-	if err != nil {
-		return err
-	}
-	res <- resp.GetDashboards()
-	return nil
+	resp, cancel := c.DDServices.DashboardsAPI.ListDashboardsWithPagination(ctx)
+	return client.ConsumePaginatedResponse(resp, cancel, res)
 }

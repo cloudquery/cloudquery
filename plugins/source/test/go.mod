@@ -1,14 +1,14 @@
 module github.com/cloudquery/cloudquery/plugins/source/test
 
-go 1.20
+go 1.21
 
 require (
-	github.com/apache/arrow/go/v14 v14.0.0-20230905030402-a526ba697d4e
+	github.com/apache/arrow/go/v14 v14.0.0-20230929201650-00efb06dc0de
 	github.com/cloudquery/plugin-sdk/v4 v4.11.1
 	github.com/rs/zerolog v1.29.1
 )
 
-replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20230916001126-ffb7089245ac
+replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect

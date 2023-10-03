@@ -1,17 +1,18 @@
 module github.com/cloudquery/cloudquery/plugins/source/shopify
 
-go 1.20
+go 1.21
 
 require (
-	github.com/apache/arrow/go/v14 v14.0.0-20230905030402-a526ba697d4e
+	github.com/apache/arrow/go/v14 v14.0.0-20230929201650-00efb06dc0de
 	github.com/cloudquery/plugin-sdk/v4 v4.11.1
 	github.com/gorilla/mux v1.8.0
 	github.com/rs/zerolog v1.29.1
+	golang.org/x/net v0.15.0
 	golang.org/x/time v0.3.0
 	google.golang.org/grpc v1.57.0
 )
 
-replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20230916001126-ffb7089245ac
+replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect
@@ -52,7 +53,6 @@ require (
 	go.opentelemetry.io/proto/otlp v0.19.0 // indirect
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
 	golang.org/x/mod v0.12.0 // indirect
-	golang.org/x/net v0.15.0 // indirect
 	golang.org/x/sync v0.3.0 // indirect
 	golang.org/x/sys v0.12.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
