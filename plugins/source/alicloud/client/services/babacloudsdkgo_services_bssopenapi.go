@@ -5,7 +5,7 @@ import (
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/bssopenapi"
 )
 
-//go:generate mockgen -package=mocks -destination=../mocks/bssopenapi.go -source=bssopenapi.go BssopenapiClient
+//go:generate mockgen -package=mocks -destination=../mocks/babacloudsdkgo_services_bssopenapi.go -source=babacloudsdkgo_services_bssopenapi.go BssopenapiClient
 type BssopenapiClient interface {
 	DescribeCostBudgetsSummary(*bssopenapi.DescribeCostBudgetsSummaryRequest) (*bssopenapi.DescribeCostBudgetsSummaryResponse, error)
 	DescribeCostBudgetsSummaryWithCallback(*bssopenapi.DescribeCostBudgetsSummaryRequest, func(*bssopenapi.DescribeCostBudgetsSummaryResponse, error)) <-chan int
