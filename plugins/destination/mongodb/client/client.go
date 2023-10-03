@@ -31,11 +31,8 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 	if err := c.spec.Validate(); err != nil {
 		return nil, err
 	}
-	c.client, err = mongo.NewClient(options.Client().ApplyURI(c.spec.ConnectionString).SetRegistry(getRegistry()))
+	c.client, err = mongo.Connect(context.Background(), options.Client().ApplyURI(c.spec.ConnectionString).SetRegistry(getRegistry()))
 	if err != nil {
-		return nil, err
-	}
-	if err := c.client.Connect(context.Background()); err != nil {
 		return nil, err
 	}
 	c.writer, err = batchwriter.New(c, batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))

@@ -13,14 +13,10 @@ type CustomUnit64 uint64
 // See https://stackoverflow.com/questions/60520865/will-mongodb-go-driver-automatically-convert-uint64-to-bson-type-overflows-er
 // Please note don't need the decoder part from the above link, as we already cast back to uint64 when we pass the MongoDB saved value to arrow Uint64Builder
 func getRegistry() *bsoncodec.Registry {
-	rb := bsoncodec.NewRegistryBuilder()
-	var primitiveCodecs bson.PrimitiveCodecs
-	bsoncodec.DefaultValueEncoders{}.RegisterDefaultEncoders(rb)
-	bsoncodec.DefaultValueDecoders{}.RegisterDefaultDecoders(rb)
-	primitiveCodecs.RegisterPrimitiveCodecs(rb)
+	reg := bson.NewRegistry()
 
 	customUnit64 := reflect.TypeOf(CustomUnit64(0))
-	rb.RegisterTypeEncoder(
+	reg.RegisterTypeEncoder(
 		customUnit64,
 		bsoncodec.ValueEncoderFunc(func(_ bsoncodec.EncodeContext, vw bsonrw.ValueWriter, val reflect.Value) error {
 			if !val.IsValid() || val.Type() != customUnit64 {
@@ -35,6 +31,5 @@ func getRegistry() *bsoncodec.Registry {
 		}),
 	)
 
-	reg := rb.Build()
 	return reg
 }

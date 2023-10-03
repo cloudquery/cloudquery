@@ -1,13 +1,13 @@
 module github.com/cloudquery/cloudquery/plugins/destination/mongodb
 
-go 1.20
+go 1.21
 
 require (
 	github.com/apache/arrow/go/v14 v14.0.0-20230929201650-00efb06dc0de
 	github.com/cloudquery/plugin-sdk/v4 v4.11.1
 	github.com/goccy/go-json v0.10.2
 	github.com/rs/zerolog v1.29.1
-	go.mongodb.org/mongo-driver v1.11.2
+	go.mongodb.org/mongo-driver v1.12.1
 )
 
 // TODO: remove once all updates are merged
@@ -36,7 +36,6 @@ require (
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe // indirect
 	github.com/pierrec/lz4/v4 v4.1.18 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect

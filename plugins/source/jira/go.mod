@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/source/jira
 
-go 1.20
+go 1.21
 
 require (
 	github.com/andygrunwald/go-jira v1.16.0
