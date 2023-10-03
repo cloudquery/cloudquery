@@ -3,7 +3,7 @@ package spec
 import _ "embed"
 
 type Spec struct {
-	Concurrency int `json:"concurrency,omitempty"`
+	Concurrency int `json:"concurrency,omitempty" jsonschema:"minimum=1,default=10000"`
 }
 
 func (s *Spec) SetDefaults() {
