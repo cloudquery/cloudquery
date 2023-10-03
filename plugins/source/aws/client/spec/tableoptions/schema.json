@@ -6,10 +6,17 @@
     "AccessanalyzerFindings": {
       "properties": {
         "list_findings": {
-          "items": {
-            "$ref": "#/$defs/CustomAccessAnalyzerListFindingsInput"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/CustomAccessAnalyzerListFindingsInput"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -18,586 +25,1265 @@
     "AwsSecurityFindingFilters": {
       "properties": {
         "AwsAccountId": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "CompanyName": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ComplianceAssociatedStandardsId": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ComplianceSecurityControlId": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ComplianceStatus": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Confidence": {
-          "items": {
-            "$ref": "#/$defs/NumberFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "CreatedAt": {
-          "items": {
-            "$ref": "#/$defs/DateFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Criticality": {
-          "items": {
-            "$ref": "#/$defs/NumberFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Description": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "FindingProviderFieldsConfidence": {
-          "items": {
-            "$ref": "#/$defs/NumberFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "FindingProviderFieldsCriticality": {
-          "items": {
-            "$ref": "#/$defs/NumberFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "FindingProviderFieldsRelatedFindingsId": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "FindingProviderFieldsRelatedFindingsProductArn": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "FindingProviderFieldsSeverityLabel": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "FindingProviderFieldsSeverityOriginal": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "FindingProviderFieldsTypes": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "FirstObservedAt": {
-          "items": {
-            "$ref": "#/$defs/DateFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "GeneratorId": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Id": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Keyword": {
-          "items": {
-            "$ref": "#/$defs/KeywordFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/KeywordFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "LastObservedAt": {
-          "items": {
-            "$ref": "#/$defs/DateFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "MalwareName": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "MalwarePath": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "MalwareState": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "MalwareType": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "NetworkDestinationDomain": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "NetworkDestinationIpV4": {
-          "items": {
-            "$ref": "#/$defs/IpFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/IpFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "NetworkDestinationIpV6": {
-          "items": {
-            "$ref": "#/$defs/IpFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/IpFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "NetworkDestinationPort": {
-          "items": {
-            "$ref": "#/$defs/NumberFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "NetworkDirection": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "NetworkProtocol": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "NetworkSourceDomain": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "NetworkSourceIpV4": {
-          "items": {
-            "$ref": "#/$defs/IpFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/IpFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "NetworkSourceIpV6": {
-          "items": {
-            "$ref": "#/$defs/IpFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/IpFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "NetworkSourceMac": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "NetworkSourcePort": {
-          "items": {
-            "$ref": "#/$defs/NumberFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "NoteText": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "NoteUpdatedAt": {
-          "items": {
-            "$ref": "#/$defs/DateFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "NoteUpdatedBy": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ProcessLaunchedAt": {
-          "items": {
-            "$ref": "#/$defs/DateFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ProcessName": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ProcessParentPid": {
-          "items": {
-            "$ref": "#/$defs/NumberFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ProcessPath": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ProcessPid": {
-          "items": {
-            "$ref": "#/$defs/NumberFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ProcessTerminatedAt": {
-          "items": {
-            "$ref": "#/$defs/DateFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ProductArn": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ProductFields": {
-          "items": {
-            "$ref": "#/$defs/MapFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/MapFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ProductName": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "RecommendationText": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "RecordState": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Region": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "RelatedFindingsId": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "RelatedFindingsProductArn": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceAwsEc2InstanceIamInstanceProfileArn": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceAwsEc2InstanceImageId": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceAwsEc2InstanceIpV4Addresses": {
-          "items": {
-            "$ref": "#/$defs/IpFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/IpFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceAwsEc2InstanceIpV6Addresses": {
-          "items": {
-            "$ref": "#/$defs/IpFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/IpFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceAwsEc2InstanceKeyName": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceAwsEc2InstanceLaunchedAt": {
-          "items": {
-            "$ref": "#/$defs/DateFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceAwsEc2InstanceSubnetId": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceAwsEc2InstanceType": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceAwsEc2InstanceVpcId": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceAwsIamAccessKeyCreatedAt": {
-          "items": {
-            "$ref": "#/$defs/DateFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceAwsIamAccessKeyPrincipalName": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceAwsIamAccessKeyStatus": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceAwsIamAccessKeyUserName": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceAwsIamUserUserName": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceAwsS3BucketOwnerId": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceAwsS3BucketOwnerName": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceContainerImageId": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceContainerImageName": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceContainerLaunchedAt": {
-          "items": {
-            "$ref": "#/$defs/DateFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceContainerName": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceDetailsOther": {
-          "items": {
-            "$ref": "#/$defs/MapFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/MapFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceId": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourcePartition": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceRegion": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceTags": {
-          "items": {
-            "$ref": "#/$defs/MapFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/MapFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceType": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Sample": {
-          "items": {
-            "$ref": "#/$defs/BooleanFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/BooleanFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "SeverityLabel": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "SeverityNormalized": {
-          "items": {
-            "$ref": "#/$defs/NumberFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "SeverityProduct": {
-          "items": {
-            "$ref": "#/$defs/NumberFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "SourceUrl": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ThreatIntelIndicatorCategory": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ThreatIntelIndicatorLastObservedAt": {
-          "items": {
-            "$ref": "#/$defs/DateFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ThreatIntelIndicatorSource": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ThreatIntelIndicatorSourceUrl": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ThreatIntelIndicatorType": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ThreatIntelIndicatorValue": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Title": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Type": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "UpdatedAt": {
-          "items": {
-            "$ref": "#/$defs/DateFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "UserDefinedFields": {
-          "items": {
-            "$ref": "#/$defs/MapFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/MapFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "VerificationState": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "WorkflowState": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "WorkflowStatus": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -615,10 +1301,17 @@
     "CloudtrailAPIs": {
       "properties": {
         "lookup_events": {
-          "items": {
-            "$ref": "#/$defs/CustomLookupEventsOpts"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/CustomLookupEventsOpts"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -627,27 +1320,62 @@
     "CloudwatchGetMetricStatisticsInput": {
       "properties": {
         "EndTime": {
-          "type": "string",
-          "format": "date-time"
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Period": {
-          "type": "integer"
+          "oneOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "StartTime": {
-          "type": "string",
-          "format": "date-time"
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ExtendedStatistics": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Statistics": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Unit": {
           "type": "string"
@@ -659,22 +1387,50 @@
     "CloudwatchListMetricsInput": {
       "properties": {
         "Dimensions": {
-          "items": {
-            "$ref": "#/$defs/DimensionFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/DimensionFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "IncludeLinkedAccounts": {
           "type": "boolean"
         },
         "MetricName": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Namespace": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "OwningAccount": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "RecentlyActive": {
           "type": "string"
@@ -689,10 +1445,17 @@
           "$ref": "#/$defs/CloudwatchListMetricsInput"
         },
         "get_metric_statistics": {
-          "items": {
-            "$ref": "#/$defs/CloudwatchGetMetricStatisticsInput"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/CloudwatchGetMetricStatisticsInput"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -707,19 +1470,40 @@
     "CostCategoryValues": {
       "properties": {
         "Key": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "MatchOptions": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Values": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -728,10 +1512,17 @@
     "CostExplorerAPIs": {
       "properties": {
         "get_cost_and_usage": {
-          "items": {
-            "$ref": "#/$defs/CustomGetCostAndUsageInput"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/CustomGetCostAndUsageInput"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -740,25 +1531,53 @@
     "Criterion": {
       "properties": {
         "Contains": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Eq": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Exists": {
-          "type": "boolean"
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Neq": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -767,16 +1586,37 @@
     "CustomAccessAnalyzerListFindingsInput": {
       "properties": {
         "Filter": {
-          "additionalProperties": {
-            "$ref": "#/$defs/Criterion"
-          },
-          "type": "object"
+          "oneOf": [
+            {
+              "additionalProperties": {
+                "$ref": "#/$defs/Criterion"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "MaxResults": {
-          "type": "integer"
+          "oneOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Sort": {
-          "$ref": "#/$defs/SortCriteria"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/SortCriteria"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -788,22 +1628,50 @@
           "type": "string"
         },
         "Metrics": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "TimePeriod": {
-          "$ref": "#/$defs/DateInterval"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/DateInterval"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Filter": {
-          "$ref": "#/$defs/Expression"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Expression"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "GroupBy": {
-          "items": {
-            "$ref": "#/$defs/GroupDefinition"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/GroupDefinition"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -812,19 +1680,40 @@
     "CustomGetFindingsOpts": {
       "properties": {
         "Filters": {
-          "$ref": "#/$defs/AwsSecurityFindingFilters"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/AwsSecurityFindingFilters"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "MaxResults": {
           "type": "integer"
         },
         "NextToken": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "SortCriteria": {
-          "items": {
-            "$ref": "#/$defs/SortCriterion"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/SortCriterion"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -833,16 +1722,44 @@
     "CustomInspector2ListFindingsInput": {
       "properties": {
         "FilterCriteria": {
-          "$ref": "#/$defs/FilterCriteria"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/FilterCriteria"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "MaxResults": {
-          "type": "integer"
+          "oneOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "NextToken": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "SortCriteria": {
-          "$ref": "#/$defs/SortCriteria"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/SortCriteria"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -851,31 +1768,80 @@
     "CustomListTasksOpts": {
       "properties": {
         "Cluster": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ContainerInstance": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "DesiredStatus": {
           "type": "string"
         },
         "Family": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "LaunchType": {
           "type": "string"
         },
         "MaxResults": {
-          "type": "integer"
+          "oneOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "NextToken": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ServiceName": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "StartedBy": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -884,24 +1850,52 @@
     "CustomLookupEventsOpts": {
       "properties": {
         "EndTime": {
-          "type": "string",
-          "format": "date-time"
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "EventCategory": {
           "type": "string"
         },
         "LookupAttributes": {
-          "items": {
-            "$ref": "#/$defs/LookupAttribute"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/LookupAttribute"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "MaxResults": {
-          "type": "integer"
+          "oneOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "StartTime": {
-          "type": "string",
-          "format": "date-time"
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -910,12 +1904,26 @@
     "DateFilter": {
       "properties": {
         "EndInclusive": {
-          "type": "string",
-          "format": "date-time"
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "StartInclusive": {
-          "type": "string",
-          "format": "date-time"
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -924,10 +1932,24 @@
     "DateInterval": {
       "properties": {
         "End": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Start": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -936,10 +1958,24 @@
     "Dimension": {
       "properties": {
         "Name": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Value": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -948,10 +1984,24 @@
     "DimensionFilter": {
       "properties": {
         "Name": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Value": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -963,16 +2013,30 @@
           "$ref": "#/$defs/Dimension"
         },
         "MatchOptions": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Values": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -981,10 +2045,17 @@
     "ECSTaskAPIs": {
       "properties": {
         "list_tasks": {
-          "items": {
-            "$ref": "#/$defs/CustomListTasksOpts"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/CustomListTasksOpts"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -993,28 +2064,70 @@
     "Expression": {
       "properties": {
         "And": {
-          "items": {
-            "$ref": "#/$defs/Expression"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/Expression"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "CostCategories": {
-          "$ref": "#/$defs/CostCategoryValues"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/CostCategoryValues"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Dimensions": {
-          "$ref": "#/$defs/DimensionValues"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/DimensionValues"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Not": {
-          "$ref": "#/$defs/Expression"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Expression"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Or": {
-          "items": {
-            "$ref": "#/$defs/Expression"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/Expression"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Tags": {
-          "$ref": "#/$defs/TagValues"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/TagValues"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -1023,256 +2136,550 @@
     "FilterCriteria": {
       "properties": {
         "AwsAccountId": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "CodeVulnerabilityDetectorName": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "CodeVulnerabilityDetectorTags": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "CodeVulnerabilityFilePath": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ComponentId": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ComponentType": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Ec2InstanceImageId": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Ec2InstanceSubnetId": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Ec2InstanceVpcId": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "EcrImageArchitecture": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "EcrImageHash": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "EcrImagePushedAt": {
-          "items": {
-            "$ref": "#/$defs/DateFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "EcrImageRegistry": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "EcrImageRepositoryName": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "EcrImageTags": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "EpssScore": {
-          "items": {
-            "$ref": "#/$defs/NumberFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ExploitAvailable": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "FindingArn": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "FindingStatus": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "FindingType": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "FirstObservedAt": {
-          "items": {
-            "$ref": "#/$defs/DateFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "FixAvailable": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "InspectorScore": {
-          "items": {
-            "$ref": "#/$defs/NumberFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "LambdaFunctionExecutionRoleArn": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "LambdaFunctionLastModifiedAt": {
-          "items": {
-            "$ref": "#/$defs/DateFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "LambdaFunctionLayers": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "LambdaFunctionName": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "LambdaFunctionRuntime": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "LastObservedAt": {
-          "items": {
-            "$ref": "#/$defs/DateFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "NetworkProtocol": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "PortRange": {
-          "items": {
-            "$ref": "#/$defs/PortRangeFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/PortRangeFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "RelatedVulnerabilities": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceId": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceTags": {
-          "items": {
-            "$ref": "#/$defs/MapFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/MapFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "ResourceType": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Severity": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Title": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "UpdatedAt": {
-          "items": {
-            "$ref": "#/$defs/DateFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "VendorSeverity": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "VulnerabilityId": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "VulnerabilitySource": {
-          "items": {
-            "$ref": "#/$defs/StringFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "VulnerablePackages": {
-          "items": {
-            "$ref": "#/$defs/PackageFilter"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/PackageFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -1281,7 +2688,14 @@
     "GroupDefinition": {
       "properties": {
         "Key": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Type": {
           "type": "string"
@@ -1293,10 +2707,17 @@
     "Inspector2APIs": {
       "properties": {
         "list_findings": {
-          "items": {
-            "$ref": "#/$defs/CustomInspector2ListFindingsInput"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/CustomInspector2ListFindingsInput"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -1305,7 +2726,14 @@
     "IpFilter": {
       "properties": {
         "Cidr": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -1314,7 +2742,14 @@
     "KeywordFilter": {
       "properties": {
         "Value": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -1326,7 +2761,14 @@
           "type": "string"
         },
         "AttributeValue": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -1338,10 +2780,24 @@
           "type": "string"
         },
         "Key": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Value": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -1350,10 +2806,24 @@
     "NumberFilter": {
       "properties": {
         "LowerInclusive": {
-          "type": "number"
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "UpperInclusive": {
-          "type": "number"
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -1362,25 +2832,74 @@
     "PackageFilter": {
       "properties": {
         "Architecture": {
-          "$ref": "#/$defs/StringFilter"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/StringFilter"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Epoch": {
-          "$ref": "#/$defs/NumberFilter"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/NumberFilter"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Name": {
-          "$ref": "#/$defs/StringFilter"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/StringFilter"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Release": {
-          "$ref": "#/$defs/StringFilter"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/StringFilter"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "SourceLambdaLayerArn": {
-          "$ref": "#/$defs/StringFilter"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/StringFilter"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "SourceLayerHash": {
-          "$ref": "#/$defs/StringFilter"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/StringFilter"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Version": {
-          "$ref": "#/$defs/StringFilter"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/StringFilter"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -1389,10 +2908,24 @@
     "PortRangeFilter": {
       "properties": {
         "BeginInclusive": {
-          "type": "integer"
+          "oneOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "EndInclusive": {
-          "type": "integer"
+          "oneOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -1401,10 +2934,17 @@
     "SecurityHubAPIs": {
       "properties": {
         "get_findings": {
-          "items": {
-            "$ref": "#/$defs/CustomGetFindingsOpts"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/CustomGetFindingsOpts"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -1413,7 +2953,14 @@
     "SortCriteria": {
       "properties": {
         "AttributeName": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "OrderBy": {
           "type": "string"
@@ -1425,7 +2972,14 @@
     "SortCriterion": {
       "properties": {
         "Field": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "SortOrder": {
           "type": "string"
@@ -1440,7 +2994,14 @@
           "type": "string"
         },
         "Value": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -1449,25 +3010,74 @@
     "TableOptions": {
       "properties": {
         "aws_alpha_cloudwatch_metrics": {
-          "$ref": "#/$defs/CloudwatchMetrics"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/CloudwatchMetrics"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "aws_cloudtrail_events": {
-          "$ref": "#/$defs/CloudtrailAPIs"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/CloudtrailAPIs"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "aws_accessanalyzer_analyzer_findings": {
-          "$ref": "#/$defs/AccessanalyzerFindings"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/AccessanalyzerFindings"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "aws_inspector2_findings": {
-          "$ref": "#/$defs/Inspector2APIs"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Inspector2APIs"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "aws_alpha_costexplorer_cost_custom": {
-          "$ref": "#/$defs/CostExplorerAPIs"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/CostExplorerAPIs"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "aws_securityhub_findings": {
-          "$ref": "#/$defs/SecurityHubAPIs"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/SecurityHubAPIs"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "aws_ecs_cluster_tasks": {
-          "$ref": "#/$defs/ECSTaskAPIs"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ECSTaskAPIs"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -1476,19 +3086,40 @@
     "TagValues": {
       "properties": {
         "Key": {
-          "type": "string"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "MatchOptions": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Values": {
-          "items": {
-            "type": "string"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,

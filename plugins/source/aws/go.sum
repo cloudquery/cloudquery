@@ -410,6 +410,8 @@ github.com/cloudquery/cloudquery-api-go v1.2.4 h1:IFu1PajNJEVj1IRN6bYa4fW10gDVfu
 github.com/cloudquery/cloudquery-api-go v1.2.4/go.mod h1:oyNUZZ6CKjPapxMbmE/qR2vdo9/G+tuCdF7uXT1LYuM=
 github.com/cloudquery/codegen v0.3.4 h1:i3iz/JoZonnxpTJpUW6W11yFft+9L74cXC/Y/juvtCI=
 github.com/cloudquery/codegen v0.3.4/go.mod h1:yBakGbEKNMMPBmLK2IS4r59rTOmVQqB46ueRvTxW1jc=
+github.com/cloudquery/jsonschema v0.0.0-20231004102900-26eed64ef87a h1:nMaPG7Hlvt5c90scdRoyUpOhkkgkP8v+nlq3bBuWi4E=
+github.com/cloudquery/jsonschema v0.0.0-20231004102900-26eed64ef87a/go.mod h1:ffZ5Km5SWWRAIN6wbDXItl95euhFz2uON45H2qjYt+0=
 github.com/cloudquery/plugin-pb-go v1.12.1 h1:lxCe/ovcbmY4i0N5ko1fH5PIllosIwbXTvrRqZ/UBeg=
 github.com/cloudquery/plugin-pb-go v1.12.1/go.mod h1:+20GGdx/k9ApU56ix5QrPIGfzn0WA7VJlExgaHnNGzc=
 github.com/cloudquery/plugin-sdk v1.45.0 h1:5vrfQZtaO1dp6ebKt8ouXDmPC7eeLuOB3JMd+FTRSYk=
@@ -669,8 +671,6 @@ github.com/inconshreveable/mousetrap v1.0.0/go.mod h1:PxqpIevigyE2G7u3NXJIT2ANyt
 github.com/inconshreveable/mousetrap v1.0.1/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=
 github.com/inconshreveable/mousetrap v1.1.0 h1:wN+x4NVGpMsO7ErUn/mUI3vEoE6Jt13X2s0bqwp9tc8=
 github.com/inconshreveable/mousetrap v1.1.0/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=
-github.com/invopop/jsonschema v0.11.0 h1:tdAVvos5ttrsYLyEuVymkVVK31EFpwnTu5hWiyYLGWA=
-github.com/invopop/jsonschema v0.11.0/go.mod h1:ffZ5Km5SWWRAIN6wbDXItl95euhFz2uON45H2qjYt+0=
 github.com/iris-contrib/blackfriday v2.0.0+incompatible/go.mod h1:UzZ2bDEoaSGPbkg6SAB4att1aAwTmVIx/5gCVqeyUdI=
 github.com/iris-contrib/go.uuid v2.0.0+incompatible/go.mod h1:iz2lgM/1UnEf1kP0L/+fafWORmlnuysV2EMP8MW+qe0=
 github.com/iris-contrib/httpexpect/v2 v2.15.2 h1:T9THsdP1woyAqKHwjkEsbCnMefsAFvk8iJJKokcJ3Go=
