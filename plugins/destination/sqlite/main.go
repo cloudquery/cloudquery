@@ -21,10 +21,10 @@ func main() {
 		internalPlugin.Version,
 		client.New,
 		plugin.WithBuildTargets([]plugin.BuildTarget{
-			{plugin.GoOSLinux, plugin.GoArchAmd64},
-			{plugin.GoOSWindows, plugin.GoArchAmd64},
-			{plugin.GoOSDarwin, plugin.GoArchAmd64},
-			{plugin.GoOSDarwin, plugin.GoArchArm64},
+			{OS: plugin.GoOSLinux, Arch: plugin.GoArchAmd64},
+			{OS: plugin.GoOSWindows, Arch: plugin.GoArchAmd64},
+			{OS: plugin.GoOSDarwin, Arch: plugin.GoArchAmd64},
+			{OS: plugin.GoOSDarwin, Arch: plugin.GoArchArm64},
 		}))
 	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN), serve.WithDestinationV0V1Server()).Serve(context.Background()); err != nil {
 		fmt.Println(err)
