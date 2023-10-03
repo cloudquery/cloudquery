@@ -7,7 +7,7 @@ require (
 	github.com/cloudquery/plugin-sdk/v4 v4.11.1
 	github.com/goccy/go-json v0.10.2
 	github.com/rs/zerolog v1.29.1
-	go.mongodb.org/mongo-driver v1.11.2
+	go.mongodb.org/mongo-driver v1.12.1
 )
 
 // TODO: remove once all updates are merged
