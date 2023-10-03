@@ -1,8 +1,6 @@
 package tableoptions
 
 import (
-	"encoding/json"
-	"strings"
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/v4/faker"
@@ -36,32 +34,20 @@ func TestLookupEventsJSONSchema(t *testing.T) {
 		{
 			name: "proper",
 			spec: func() string {
-				var apis CloudtrailAPIs
-				require.NoError(t, faker.FakeObject(&apis))
-				require.Len(t, apis.LookupEventsOpts, 1)
-
-				// remove prohibited fields
-				apis.LookupEventsOpts[0].NextToken = nil
-
-				data, err := json.MarshalIndent(TableOptions{CloudTrailEvents: &apis}, "", "  ")
-				require.NoError(t, err)
-				result := string(data)
-				result = strings.Replace(result, "\"NextToken\": null,\n", ``, 1)
-				return result
+				var input CustomLookupEventsOpts
+				require.NoError(t, faker.FakeObject(&input))
+				return `{"aws_cloudtrail_events":{"lookup_events":[` +
+					jsonWithRemovedKeys(t, &input, "NextToken") + `]}}`
 			}(),
 		},
 		{
 			name: "NextToken is present",
 			err:  true,
 			spec: func() string {
-				var apis CloudtrailAPIs
-				require.NoError(t, faker.FakeObject(&apis))
-				require.Len(t, apis.LookupEventsOpts, 1)
-
-				data, err := json.MarshalIndent(TableOptions{CloudTrailEvents: &apis}, "", "  ")
-				require.NoError(t, err)
-
-				return string(data)
+				var input CustomLookupEventsOpts
+				require.NoError(t, faker.FakeObject(&input))
+				return `{"aws_cloudtrail_events":{"lookup_events":[` +
+					jsonWithRemovedKeys(t, &input) + `]}}`
 			}(),
 		},
 	})

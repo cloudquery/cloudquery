@@ -1,8 +1,6 @@
 package tableoptions
 
 import (
-	"encoding/json"
-	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -41,56 +39,30 @@ func TestAccessAnalyzerJSONSchema(t *testing.T) {
 		{
 			name: "proper",
 			spec: func() string {
-				var findings AccessanalyzerFindings
-				require.NoError(t, faker.FakeObject(&findings))
-				require.Len(t, findings.ListFindingOpts, 1)
-
-				// remove prohibited fields
-				findings.ListFindingOpts[0].AnalyzerArn = nil
-				findings.ListFindingOpts[0].NextToken = nil
-
-				data, err := json.MarshalIndent(TableOptions{AccessAnalyzerFindings: &findings}, "", "  ")
-				require.NoError(t, err)
-				result := string(data)
-				result = strings.Replace(result, "\"NextToken\": null,\n", ``, 1)
-				result = strings.Replace(result, "\"AnalyzerArn\": null,\n", ``, 1)
-				return result
+				var input CustomAccessAnalyzerListFindingsInput
+				require.NoError(t, faker.FakeObject(&input))
+				return `{"aws_accessanalyzer_analyzer_findings":{"list_findings":[` +
+					jsonWithRemovedKeys(t, &input, "NextToken", "AnalyzerArn") + `]}}`
 			}(),
 		},
 		{
 			name: "AnalyzerArn is present",
 			err:  true,
 			spec: func() string {
-				var findings AccessanalyzerFindings
-				require.NoError(t, faker.FakeObject(&findings))
-				require.Len(t, findings.ListFindingOpts, 1)
-
-				// remove prohibited fields
-				findings.ListFindingOpts[0].NextToken = nil
-
-				data, err := json.MarshalIndent(TableOptions{AccessAnalyzerFindings: &findings}, "", "  ")
-				require.NoError(t, err)
-				result := string(data)
-				result = strings.Replace(result, "\"NextToken\": null,\n", ``, 1)
-				return result
+				var input CustomAccessAnalyzerListFindingsInput
+				require.NoError(t, faker.FakeObject(&input))
+				return `{"aws_accessanalyzer_analyzer_findings":{"list_findings":[` +
+					jsonWithRemovedKeys(t, &input, "AnalyzerArn") + `]}}`
 			}(),
 		},
 		{
 			name: "NextToken is present",
 			err:  true,
 			spec: func() string {
-				var findings AccessanalyzerFindings
-				require.NoError(t, faker.FakeObject(&findings))
-				require.Len(t, findings.ListFindingOpts, 1)
-
-				// remove prohibited fields
-				findings.ListFindingOpts[0].AnalyzerArn = nil
-
-				data, err := json.MarshalIndent(TableOptions{AccessAnalyzerFindings: &findings}, "", "  ")
-				require.NoError(t, err)
-				result := string(data)
-				result = strings.Replace(result, "\"NextToken\": null,\n", ``, 1)
-				return result
+				var input CustomAccessAnalyzerListFindingsInput
+				require.NoError(t, faker.FakeObject(&input))
+				return `{"aws_accessanalyzer_analyzer_findings":{"list_findings":[` +
+					jsonWithRemovedKeys(t, &input, "NextToken") + `]}}`
 			}(),
 		},
 	})

@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/costexplorer"
 	"github.com/cloudquery/plugin-sdk/v4/caser"
+	"github.com/invopop/jsonschema"
 )
 
 type CostExplorerAPIs struct {
@@ -15,6 +16,12 @@ type CostExplorerAPIs struct {
 
 type CustomGetCostAndUsageInput struct {
 	costexplorer.GetCostAndUsageInput
+}
+
+// JSONSchemaExtend is required to remove `NextPageToken`.
+// We use value receiver because of https://github.com/invopop/jsonschema/issues/102
+func (CustomGetCostAndUsageInput) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.Properties.Delete("NextPageToken")
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface for the CustomLookupEventsOpts type.

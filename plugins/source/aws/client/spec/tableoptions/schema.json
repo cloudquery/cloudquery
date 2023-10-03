@@ -804,9 +804,6 @@
             "$ref": "#/$defs/GroupDefinition"
           },
           "type": "array"
-        },
-        "NextPageToken": {
-          "type": "string"
         }
       },
       "additionalProperties": false,

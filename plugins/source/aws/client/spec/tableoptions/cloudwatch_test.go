@@ -1,8 +1,6 @@
 package tableoptions
 
 import (
-	"encoding/json"
-	"strings"
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/v4/faker"
@@ -18,112 +16,65 @@ func TestCloudwatchMetricsJSONSchema(t *testing.T) {
 		{
 			name: "proper",
 			spec: func() string {
-				var metrics CloudwatchMetric
-				require.NoError(t, faker.FakeObject(&metrics))
-
-				// remove prohibited fields
-				metrics.ListMetricsOpts.NextToken = nil
-				require.Len(t, metrics.GetMetricStatisticsOpts, 1)
-				metrics.GetMetricStatisticsOpts[0].Dimensions = nil
-				metrics.GetMetricStatisticsOpts[0].MetricName = nil
-				metrics.GetMetricStatisticsOpts[0].Namespace = nil
-
-				data, err := json.MarshalIndent(TableOptions{CloudwatchMetrics: CloudwatchMetrics{metrics}}, "", "  ")
-				require.NoError(t, err)
-				result := string(data)
-				result = strings.Replace(result, "\"NextToken\": null,\n", ``, 1)
-				result = strings.Replace(result, "\"Namespace\": null,\n", ``, 1)
-				result = strings.Replace(result, "\"MetricName\": null,\n", ``, 1)
-				result = strings.Replace(result, "\"Dimensions\": null,\n", ``, 1)
-				return result
+				var listInput CloudwatchListMetricsInput
+				require.NoError(t, faker.FakeObject(&listInput))
+				var getInput CloudwatchGetMetricStatisticsInput
+				require.NoError(t, faker.FakeObject(&getInput))
+				return `{"aws_alpha_cloudwatch_metrics":[{"list_metrics":` +
+					jsonWithRemovedKeys(t, &listInput, "NextToken") + `,` +
+					`"get_metric_statistics":[` + jsonWithRemovedKeys(t, &getInput, "Dimensions", "MetricName", "Namespace") + `]}]}`
 			}(),
 		},
 		{
 			name: "list_metrics.NextToken present",
 			err:  true,
 			spec: func() string {
-				var metrics CloudwatchMetric
-				require.NoError(t, faker.FakeObject(&metrics))
-
-				// remove prohibited fields
-				require.Len(t, metrics.GetMetricStatisticsOpts, 1)
-				metrics.GetMetricStatisticsOpts[0].Dimensions = nil
-				metrics.GetMetricStatisticsOpts[0].MetricName = nil
-				metrics.GetMetricStatisticsOpts[0].Namespace = nil
-
-				data, err := json.MarshalIndent(TableOptions{CloudwatchMetrics: CloudwatchMetrics{metrics}}, "", "  ")
-				require.NoError(t, err)
-				result := string(data)
-				result = strings.Replace(result, "\"Namespace\": null,\n", ``, 1)
-				result = strings.Replace(result, "\"MetricName\": null,\n", ``, 1)
-				result = strings.Replace(result, "\"Dimensions\": null,\n", ``, 1)
-				return result
+				var listInput CloudwatchListMetricsInput
+				require.NoError(t, faker.FakeObject(&listInput))
+				var getInput CloudwatchGetMetricStatisticsInput
+				require.NoError(t, faker.FakeObject(&getInput))
+				return `{"aws_alpha_cloudwatch_metrics":[{"list_metrics":` +
+					jsonWithRemovedKeys(t, &listInput) + `,` +
+					`"get_metric_statistics":[` + jsonWithRemovedKeys(t, &getInput, "Dimensions", "MetricName", "Namespace") + `]}]}`
 			}(),
 		},
 		{
 			name: "get_metric_statistics.Dimensions present",
 			err:  true,
 			spec: func() string {
-				var metrics CloudwatchMetric
-				require.NoError(t, faker.FakeObject(&metrics))
-
-				// remove prohibited fields
-				metrics.ListMetricsOpts.NextToken = nil
-				require.Len(t, metrics.GetMetricStatisticsOpts, 1)
-				metrics.GetMetricStatisticsOpts[0].MetricName = nil
-				metrics.GetMetricStatisticsOpts[0].Namespace = nil
-
-				data, err := json.MarshalIndent(TableOptions{CloudwatchMetrics: CloudwatchMetrics{metrics}}, "", "  ")
-				require.NoError(t, err)
-				result := string(data)
-				result = strings.Replace(result, "\"NextToken\": null,\n", ``, 1)
-				result = strings.Replace(result, "\"Namespace\": null,\n", ``, 1)
-				result = strings.Replace(result, "\"MetricName\": null,\n", ``, 1)
-				return result
+				var listInput CloudwatchListMetricsInput
+				require.NoError(t, faker.FakeObject(&listInput))
+				var getInput CloudwatchGetMetricStatisticsInput
+				require.NoError(t, faker.FakeObject(&getInput))
+				return `{"aws_alpha_cloudwatch_metrics":[{"list_metrics":` +
+					jsonWithRemovedKeys(t, &listInput, "NextToken") + `,` +
+					`"get_metric_statistics":[` + jsonWithRemovedKeys(t, &getInput, "MetricName", "Namespace") + `]}]}`
 			}(),
 		},
 		{
 			name: "get_metric_statistics.MetricName present",
 			err:  true,
 			spec: func() string {
-				var metrics CloudwatchMetric
-				require.NoError(t, faker.FakeObject(&metrics))
-
-				// remove prohibited fields
-				metrics.ListMetricsOpts.NextToken = nil
-				require.Len(t, metrics.GetMetricStatisticsOpts, 1)
-				metrics.GetMetricStatisticsOpts[0].Dimensions = nil
-				metrics.GetMetricStatisticsOpts[0].Namespace = nil
-
-				data, err := json.MarshalIndent(TableOptions{CloudwatchMetrics: CloudwatchMetrics{metrics}}, "", "  ")
-				require.NoError(t, err)
-				result := string(data)
-				result = strings.Replace(result, "\"NextToken\": null,\n", ``, 1)
-				result = strings.Replace(result, "\"Namespace\": null,\n", ``, 1)
-				result = strings.Replace(result, "\"Dimensions\": null,\n", ``, 1)
-				return result
+				var listInput CloudwatchListMetricsInput
+				require.NoError(t, faker.FakeObject(&listInput))
+				var getInput CloudwatchGetMetricStatisticsInput
+				require.NoError(t, faker.FakeObject(&getInput))
+				return `{"aws_alpha_cloudwatch_metrics":[{"list_metrics":` +
+					jsonWithRemovedKeys(t, &listInput, "NextToken") + `,` +
+					`"get_metric_statistics":[` + jsonWithRemovedKeys(t, &getInput, "Dimensions", "Namespace") + `]}]}`
 			}(),
 		},
 		{
 			name: "get_metric_statistics.Namespace present",
 			err:  true,
 			spec: func() string {
-				var metrics CloudwatchMetric
-				require.NoError(t, faker.FakeObject(&metrics))
-
-				// remove prohibited fields
-				metrics.ListMetricsOpts.NextToken = nil
-				require.Len(t, metrics.GetMetricStatisticsOpts, 1)
-				metrics.GetMetricStatisticsOpts[0].Dimensions = nil
-				metrics.GetMetricStatisticsOpts[0].MetricName = nil
-
-				data, err := json.MarshalIndent(TableOptions{CloudwatchMetrics: CloudwatchMetrics{metrics}}, "", "  ")
-				require.NoError(t, err)
-				result := string(data)
-				result = strings.Replace(result, "\"NextToken\": null,\n", ``, 1)
-				result = strings.Replace(result, "\"MetricName\": null,\n", ``, 1)
-				result = strings.Replace(result, "\"Dimensions\": null,\n", ``, 1)
-				return result
+				var listInput CloudwatchListMetricsInput
+				require.NoError(t, faker.FakeObject(&listInput))
+				var getInput CloudwatchGetMetricStatisticsInput
+				require.NoError(t, faker.FakeObject(&getInput))
+				return `{"aws_alpha_cloudwatch_metrics":[{"list_metrics":` +
+					jsonWithRemovedKeys(t, &listInput, "NextToken") + `,` +
+					`"get_metric_statistics":[` + jsonWithRemovedKeys(t, &getInput, "Dimensions", "MetricName") + `]}]}`
 			}(),
 		},
 	})

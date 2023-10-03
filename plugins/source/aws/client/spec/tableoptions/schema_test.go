@@ -21,13 +21,34 @@ func testJSONSchema(t *testing.T, cases []jsonSchemaTestCase) {
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
 			var v any
-			require.NoError(t, json.Unmarshal([]byte(tc.spec), &v))
+			require.NoErrorf(t, json.Unmarshal([]byte(tc.spec), &v), "failed input:\n%s\n", tc.spec)
 			err := validator.Validate(v)
 			if tc.err {
-				require.Error(t, err)
+				require.Errorf(t, err, "failed input:\n%s\n", tc.spec)
 			} else {
-				require.NoError(t, err)
+				require.NoErrorf(t, err, "failed input:\n%s\n", tc.spec)
 			}
 		})
 	}
+}
+
+func jsonWithRemovedKeys(t *testing.T, val any, keys ...string) string {
+	data, err := json.Marshal(val)
+	require.NoError(t, err)
+
+	var m any
+	require.NoError(t, json.Unmarshal(data, &m))
+
+	switch m := m.(type) {
+	case map[string]any:
+		for _, k := range keys {
+			delete(m, k)
+		}
+	default:
+		t.Fatalf("failed to remove JSON keys from value of type %T", m)
+	}
+
+	data, err = json.MarshalIndent(m, "", "  ")
+	require.NoError(t, err)
+	return string(data)
 }
