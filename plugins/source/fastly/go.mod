@@ -4,7 +4,7 @@ go 1.21.1
 
 require (
 	github.com/apache/arrow/go/v14 v14.0.0-20230929201650-00efb06dc0de
-	github.com/cloudquery/codegen v0.3.3
+	github.com/cloudquery/codegen v0.3.4
 	github.com/cloudquery/plugin-sdk/v4 v4.12.0
 	github.com/fastly/go-fastly/v7 v7.0.0
 	github.com/golang/mock v1.6.0
@@ -14,9 +14,6 @@ require (
 
 // TODO: remove once all updates are merged
 replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd
-
-// https://github.com/cloudquery/codegen/pull/37
-replace github.com/cloudquery/codegen => github.com/cloudquery/codegen v0.3.4-0.20231003072544-170fc60469b0
 
 require (
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect

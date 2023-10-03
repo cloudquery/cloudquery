@@ -130,7 +130,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/xray v1.17.2
 	github.com/aws/smithy-go v1.14.1
 	github.com/basgys/goxml2json v1.1.0
-	github.com/cloudquery/codegen v0.3.3
+	github.com/cloudquery/codegen v0.3.4
 	github.com/cloudquery/plugin-sdk/v4 v4.12.0
 	github.com/cockroachdb/cockroachdb-parser v0.0.0-20230705064001-302c9ad52e1a
 	github.com/gertd/go-pluralize v0.2.1
@@ -151,9 +151,6 @@ require (
 
 // TODO: remove once all updates are merged
 replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd
-
-// https://github.com/cloudquery/codegen/pull/37
-replace github.com/cloudquery/codegen => github.com/cloudquery/codegen v0.3.4-0.20231003072544-170fc60469b0
 
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.12 // indirect
