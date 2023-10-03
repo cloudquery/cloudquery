@@ -9,7 +9,6 @@ require (
 	github.com/google/uuid v1.3.1
 	github.com/marcboeker/go-duckdb v1.4.4
 	github.com/rs/zerolog v1.29.1
-	golang.org/x/exp v0.0.0-20230905200255-921286631fa9
 )
 
 // TODO: remove once all updates are merged
@@ -58,6 +57,7 @@ require (
 	go.opentelemetry.io/otel/sdk v1.16.0 // indirect
 	go.opentelemetry.io/otel/trace v1.16.0 // indirect
 	go.opentelemetry.io/proto/otlp v0.19.0 // indirect
+	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
 	golang.org/x/mod v0.12.0 // indirect
 	golang.org/x/net v0.15.0 // indirect
 	golang.org/x/sync v0.3.0 // indirect
