@@ -37,6 +37,7 @@ type ClientOptions struct {
 	HC         HTTPDoer
 	MaxRetries int64
 	PageSize   int
+	Timeout    time.Duration
 
 	ApiKey, ApiSecret, AccessToken string
 	ShopURL                        string
@@ -91,8 +92,10 @@ func (s *Client) request(ctx context.Context, edge string, params url.Values) (r
 			}
 			log.Debug().Msg("wait complete")
 		}
+		timeoutContext, canceler := context.WithTimeout(ctx, s.opts.Timeout)
 
-		r, wait, err := s.retryableRequest(ctx, edge, params)
+		r, wait, err := s.retryableRequest(timeoutContext, edge, params)
+		canceler()
 		if err == nil {
 			return r, nil
 		}
