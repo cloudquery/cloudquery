@@ -45,7 +45,7 @@
   "plugins/source/azuredevops+FILLER": "0.0.0",
   "plugins/source/salesforce": "3.0.10",
   "plugins/source/salesforce+FILLER": "0.0.0",
-  "plugins/source/fastly": "2.1.9",
+  "plugins/source/fastly": "2.1.10",
   "plugins/source/fastly+FILLER": "0.0.0",
   "plugins/source/snyk": "3.1.9",
   "plugins/source/snyk+FILLER": "0.0.0",
