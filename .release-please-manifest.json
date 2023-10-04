@@ -95,7 +95,7 @@
   "plugins/destination/duckdb+FILLER": "0.0.0",
   "plugins/source/facebookmarketing": "3.0.9",
   "plugins/source/facebookmarketing+FILLER": "0.0.0",
-  "plugins/source/googleanalytics": "3.0.11",
+  "plugins/source/googleanalytics": "3.0.12",
   "plugins/source/googleanalytics+FILLER": "0.0.0",
   "plugins/source/mysql": "2.0.9",
   "plugins/source/mysql+FILLER": "0.0.0",
