@@ -69,7 +69,7 @@
   "plugins/source/oracle+FILLER": "0.0.0",
   "plugins/source/alicloud": "4.0.10",
   "plugins/source/alicloud+FILLER": "0.0.0",
-  "plugins/destination/mssql": "4.3.10",
+  "plugins/destination/mssql": "4.3.11",
   "plugins/destination/mssql+FILLER": "0.0.0",
   "plugins/source/shopify": "3.1.4",
   "plugins/source/shopify+FILLER": "0.0.0",
