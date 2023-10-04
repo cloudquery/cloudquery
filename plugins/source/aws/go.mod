@@ -157,7 +157,7 @@ replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14
 replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20231004102900-26eed64ef87a
 
 // https://github.com/cloudquery/codegen/pull/39
-replace github.com/cloudquery/codegen => github.com/cloudquery/codegen v0.3.5-0.20231004120249-071a80fb7c44
+replace github.com/cloudquery/codegen => github.com/cloudquery/codegen v0.3.5-0.20231004170413-e4a080eede1c
 
 require (
 	github.com/BurntSushi/toml v1.3.2 // indirect

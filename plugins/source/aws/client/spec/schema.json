@@ -96,32 +96,6 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "github.com/aws/aws-sdk-go-v2/service/cloudwatch/types/Dimension": {
-      "properties": {
-        "Name": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Value": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
     "github.com/aws/aws-sdk-go-v2/service/cloudwatch/types/DimensionFilter": {
       "properties": {
         "Name": {

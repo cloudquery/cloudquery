@@ -88,10 +88,5 @@ func (s *Spec) SetDefaults() {
 	}
 }
 
-// JSONSchemaExtend is required to remove stale definitions`.
-// We use value receiver because of https://github.com/invopop/jsonschema/issues/102
-//func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
-//}
-
 //go:embed schema.json
 var JSONSchema string
