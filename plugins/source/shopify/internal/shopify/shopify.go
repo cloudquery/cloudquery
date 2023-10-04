@@ -66,7 +66,7 @@ func New(opts ClientOptions) (*Client, error) {
 	}, nil
 }
 
-func (s *Client) request(ctx context.Context, edge string, params url.Values) (retResp *http.Response, retErr error) {
+func (s *Client) request(ctx context.Context, edge string, params url.Values) (retResp *http.Response, closer func(), retErr error) {
 	if params == nil {
 		params = url.Values{}
 	}
@@ -88,31 +88,34 @@ func (s *Client) request(ctx context.Context, edge string, params url.Values) (r
 		if !s.lim.Allow() {
 			log.Debug().Msg("waiting for rate limiter...")
 			if err := s.lim.Wait(ctx); err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 			log.Debug().Msg("wait complete")
 		}
-		timeoutContext, canceler := context.WithTimeout(ctx, s.opts.Timeout)
 
+		timeoutContext, canceler := context.WithTimeout(ctx, s.opts.Timeout)
 		r, wait, err := s.retryableRequest(timeoutContext, edge, params)
-		canceler()
 		if err == nil {
-			return r, nil
+			return r, func() {
+				_ = r.Body.Close()
+				canceler()
+			}, nil
 		}
 
+		canceler()
 		temporary := false
-		if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) || isErrH2GoAway(err) {
+		if isErrCanceled(err) || isErrH2GoAway(err) {
 			temporary = true
 		} else if he, ok := err.(httperror.Error); ok {
 			temporary = he.Temporary()
 		}
 		if !temporary {
-			return nil, fmt.Errorf("request failed with error: %w", err)
+			return nil, nil, fmt.Errorf("request failed with error: %w", err)
 		}
 
 		tries++
 		if tries >= s.opts.MaxRetries {
-			return nil, fmt.Errorf("exceeded max retries (%d): %w", s.opts.MaxRetries, err)
+			return nil, nil, fmt.Errorf("exceeded max retries (%d): %w", s.opts.MaxRetries, err)
 		}
 
 		if wait == nil { // no retry-after returned, linear backoff
@@ -124,7 +127,7 @@ func (s *Client) request(ctx context.Context, edge string, params url.Values) (r
 
 		select {
 		case <-ctx.Done():
-			return nil, ctx.Err()
+			return nil, nil, ctx.Err()
 		case <-time.After(*wait):
 		}
 	}
@@ -206,11 +209,12 @@ func (s *Client) GetProducts(ctx context.Context, pageUrl string, params url.Val
 		pageUrl = fmt.Sprintf("admin/api/%s/products.json", s.opts.APIVersion)
 	}
 
-	resp, err := s.request(ctx, pageUrl, params)
+	//nolint:bodyclose
+	resp, closer, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
 	}
-	defer resp.Body.Close()
+	defer closer()
 
 	nextPage := getNextPage(resp.Header)
 
@@ -231,11 +235,12 @@ func (s *Client) GetOrders(ctx context.Context, pageUrl string, params url.Value
 		pageUrl = fmt.Sprintf("admin/api/%s/orders.json", s.opts.APIVersion)
 	}
 
-	resp, err := s.request(ctx, pageUrl, params)
+	//nolint:bodyclose
+	resp, closer, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
 	}
-	defer resp.Body.Close()
+	defer closer()
 
 	nextPage := getNextPage(resp.Header)
 
@@ -256,11 +261,12 @@ func (s *Client) GetCustomers(ctx context.Context, pageUrl string, params url.Va
 		pageUrl = fmt.Sprintf("admin/api/%s/customers.json", s.opts.APIVersion)
 	}
 
-	resp, err := s.request(ctx, pageUrl, params)
+	//nolint:bodyclose
+	resp, closer, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
 	}
-	defer resp.Body.Close()
+	defer closer()
 
 	nextPage := getNextPage(resp.Header)
 
@@ -281,11 +287,12 @@ func (s *Client) GetAbandonedCheckouts(ctx context.Context, pageUrl string, para
 		pageUrl = fmt.Sprintf("admin/api/%s/checkouts.json", s.opts.APIVersion)
 	}
 
-	resp, err := s.request(ctx, pageUrl, params)
+	//nolint:bodyclose
+	resp, closer, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
 	}
-	defer resp.Body.Close()
+	defer closer()
 
 	nextPage := getNextPage(resp.Header)
 
@@ -306,11 +313,12 @@ func (s *Client) GetPriceRules(ctx context.Context, pageUrl string, params url.V
 		pageUrl = fmt.Sprintf("admin/api/%s/price_rules.json", s.opts.APIVersion)
 	}
 
-	resp, err := s.request(ctx, pageUrl, params)
+	//nolint:bodyclose
+	resp, closer, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
 	}
-	defer resp.Body.Close()
+	defer closer()
 
 	nextPage := getNextPage(resp.Header)
 
@@ -331,11 +339,12 @@ func (s *Client) GetDiscountCodes(ctx context.Context, priceRuleID int64, pageUr
 		pageUrl = fmt.Sprintf("admin/api/%s/price_rules/%d/discount_codes.json", s.opts.APIVersion, priceRuleID)
 	}
 
-	resp, err := s.request(ctx, pageUrl, nil)
+	//nolint:bodyclose
+	resp, closer, err := s.request(ctx, pageUrl, nil)
 	if err != nil {
 		return nil, "", err
 	}
-	defer resp.Body.Close()
+	defer closer()
 
 	nextPage := getNextPage(resp.Header)
 
@@ -373,4 +382,9 @@ func isErrH2GoAway(err error) bool {
 	}
 	var he2 *http2.GoAwayError
 	return errors.As(err, &he2)
+}
+
+func isErrCanceled(err error) bool {
+	// errors.Is(err, context.Canceled) isn't enough as of Go 1.21, if the context times out during json.Decode for example
+	return strings.Contains(err.Error(), context.Canceled.Error()) || strings.Contains(err.Error(), context.DeadlineExceeded.Error())
 }
