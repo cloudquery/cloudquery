@@ -45,7 +45,7 @@ func (s *SecurityHubAPIs) validateGetFindingEvent() error {
 	return nil
 }
 
-func (s *SecurityHubAPIs) setDefaults() {
+func (s *SecurityHubAPIs) SetDefaults() {
 	for i := 0; i < len(s.GetFindingsOpts); i++ {
 		if s.GetFindingsOpts[i].MaxResults == 0 {
 			s.GetFindingsOpts[i].MaxResults = 100
@@ -54,6 +54,5 @@ func (s *SecurityHubAPIs) setDefaults() {
 }
 
 func (s *SecurityHubAPIs) Validate() error {
-	s.setDefaults()
 	return s.validateGetFindingEvent()
 }

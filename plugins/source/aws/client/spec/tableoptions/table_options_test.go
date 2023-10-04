@@ -27,7 +27,7 @@ import (
 	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
-func TestTableOptionsValidate(t *testing.T) {
+func TestTableOptions_Validate(t *testing.T) {
 	tOpts := TableOptions{}
 	err := tOpts.Validate()
 	if err != nil {
@@ -59,6 +59,26 @@ func TestTableOptionsValidate(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected error validating cloud_trail_events, got nil")
 	}
+}
+
+func TestTableOptions_SetDefaults(t *testing.T) {
+	opts := &TableOptions{
+		SecurityHubFindings: &SecurityHubAPIs{
+			GetFindingsOpts: []CustomGetFindingsOpts{{}},
+		},
+		ECSTasks: &ECSTaskAPIs{
+			ListTasksOpts: []CustomListTasksOpts{{}},
+		},
+	}
+	data, err := json.Marshal(opts)
+	require.NoError(t, err)
+
+	require.NotPanics(t, opts.SetDefaults)
+
+	// check something did change
+	dataWithDefaults, err := json.Marshal(opts)
+	require.NoError(t, err)
+	require.NotEqual(t, string(data), string(dataWithDefaults))
 }
 
 // TestTableOptionsUnmarshal tests that the TableOptions struct can be unmarshaled from JSON using

@@ -2981,16 +2981,6 @@
     },
     "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions/CustomListTasksOpts": {
       "properties": {
-        "Cluster": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
         "ContainerInstance": {
           "oneOf": [
             {
@@ -3025,17 +3015,8 @@
             {
               "type": "null"
             }
-          ]
-        },
-        "NextToken": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
+          ],
+          "default": 100
         },
         "ServiceName": {
           "oneOf": [

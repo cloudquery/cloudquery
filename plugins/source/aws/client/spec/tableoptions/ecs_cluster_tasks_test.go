@@ -23,3 +23,41 @@ func TestListTasks(t *testing.T) {
 	err = api.Validate()
 	assert.EqualError(t, err, "invalid input: cannot set Cluster in ListTasks")
 }
+
+func TestCustomListTasksOptsJSONSchema(t *testing.T) {
+	testJSONSchema(t, []jsonSchemaTestCase{
+		{
+			name: "empty",
+			spec: `{"aws_ecs_cluster_tasks":{}}`,
+		},
+		{
+			name: "proper",
+			spec: func() string {
+				var input CustomListTasksOpts
+				require.NoError(t, faker.FakeObject(&input))
+				return `{"aws_ecs_cluster_tasks":{"list_tasks":[` +
+					jsonWithRemovedKeys(t, &input, "NextToken", "Cluster") + `]}}`
+			}(),
+		},
+		{
+			name: "NextToken is present",
+			err:  true,
+			spec: func() string {
+				var input CustomListTasksOpts
+				require.NoError(t, faker.FakeObject(&input))
+				return `{"aws_ecs_cluster_tasks":{"list_tasks":[` +
+					jsonWithRemovedKeys(t, &input, "Cluster") + `]}}`
+			}(),
+		},
+		{
+			name: "Cluster is present",
+			err:  true,
+			spec: func() string {
+				var input CustomListTasksOpts
+				require.NoError(t, faker.FakeObject(&input))
+				return `{"aws_ecs_cluster_tasks":{"list_tasks":[` +
+					jsonWithRemovedKeys(t, &input, "NextToken") + `]}}`
+			}(),
+		},
+	})
+}

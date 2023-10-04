@@ -72,9 +72,13 @@ func (s *Spec) SetDefaults() {
 	if s.InitializationConcurrency <= 0 {
 		s.InitializationConcurrency = 4
 	}
+
 	if s.TableOptions == nil {
 		s.TableOptions = &tableoptions.TableOptions{}
 	}
+	// also call set defaults
+	s.TableOptions.SetDefaults()
+
 	if s.Concurrency == 0 {
 		s.Concurrency = defaultMaxConcurrency
 	}

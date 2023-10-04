@@ -5,9 +5,14 @@ import (
 	"reflect"
 )
 
-type customInputValidation interface {
-	Validate() error
-}
+type (
+	customInputValidation interface {
+		Validate() error
+	}
+	defaultsSetter interface {
+		SetDefaults()
+	}
+)
 
 type TableOptions struct {
 	CloudwatchMetrics      CloudwatchMetrics       `json:"aws_alpha_cloudwatch_metrics,omitempty"`
@@ -19,8 +24,21 @@ type TableOptions struct {
 	ECSTasks               *ECSTaskAPIs            `json:"aws_ecs_cluster_tasks,omitempty"`
 }
 
-func (t TableOptions) Validate() error {
-	v := reflect.ValueOf(t)
+func (t *TableOptions) SetDefaults() {
+	v := reflect.ValueOf(*t)
+	for i := 0; i < v.NumField(); i++ {
+		table := v.Field(i).Interface()
+		if !reflect.ValueOf(table).IsNil() {
+			tableInput, ok := table.(defaultsSetter)
+			if ok {
+				tableInput.SetDefaults()
+			}
+		}
+	}
+}
+
+func (t *TableOptions) Validate() error {
+	v := reflect.ValueOf(*t)
 	for i := 0; i < v.NumField(); i++ {
 		table := v.Field(i).Interface()
 		if !reflect.ValueOf(table).IsNil() {
