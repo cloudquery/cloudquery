@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	"github.com/cloudquery/plugin-sdk/v4/caser"
+	"github.com/invopop/jsonschema"
 )
 
 type SecurityHubAPIs struct {
@@ -29,6 +30,16 @@ func (s *CustomGetFindingsOpts) UnmarshalJSON(data []byte) error {
 	changeCaseForObject(m, csr.ToPascal)
 	b, _ := json.Marshal(m)
 	return json.Unmarshal(b, &s.GetFindingsInput)
+}
+
+// JSONSchemaExtend is required to remove `NextToken` as well as add min & max for `MaxResults`.
+// We use value receiver because of https://github.com/invopop/jsonschema/issues/102
+func (CustomGetFindingsOpts) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.Properties.Delete("NextToken")
+
+	maxResults := sc.Properties.Value("MaxResults")
+	maxResults.Minimum = json.Number("1")
+	maxResults.Maximum = json.Number("100")
 }
 
 func (s *SecurityHubAPIs) validateGetFindingEvent() error {

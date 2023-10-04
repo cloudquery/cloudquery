@@ -3198,17 +3198,9 @@
           ]
         },
         "MaxResults": {
-          "type": "integer"
-        },
-        "NextToken": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "type": "integer",
+          "maximum": 100,
+          "minimum": 1
         },
         "SortCriteria": {
           "oneOf": [
