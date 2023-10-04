@@ -67,9 +67,25 @@ If the page does not redirect automatically, please click this link: [${policy.b
 `;
 }
 
+function getPolicySignupContent(policy: Policy, licenseName: string) {
+    return `---
+title: Buy ${policy.name} (${licenseName})
+---
+
+## Purchase ${policy.name} (${licenseName})
+
+This policy is available for in early access only. [Get it](/contact-policies).
+`;
+}
+
 function createPolicyBuyRedirects() {
     const buyDir = `./pages/buy`;
     ALL_PREMIUM_POLICIES.forEach((policy) => {
+        if (!policy.availableForPurchase) {
+            fs.writeFileSync(path.join(buyDir, `${policy.id}-standard.mdx`), getPolicySignupContent(policy, "Standard License"));
+            fs.writeFileSync(path.join(buyDir, `${policy.id}-extended.mdx`), getPolicySignupContent(policy, "Extended License"));
+            return;
+        }
         if (policy.buyLinks && policy.buyLinks['standard']) {
             const filePath = path.join(buyDir, `${policy.id}-standard.mdx`);
             fs.writeFileSync(filePath, getPolicyRedirectContent(policy, 'standard', "Standard License"));
