@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.4.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v3.4.7...plugins-destination-gcs-v3.4.8) (2023-10-04)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v14 digest to 00efb06 ([#14202](https://github.com/cloudquery/cloudquery/issues/14202)) ([fc8cc62](https://github.com/cloudquery/cloudquery/commit/fc8cc62ed70db157612e88678c123ba6a34b3b3c))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to 7ded38b ([#14246](https://github.com/cloudquery/cloudquery/issues/14246)) ([005891e](https://github.com/cloudquery/cloudquery/commit/005891e1892b41235ddb3b102f4bb6dafd48949a))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.1.15 ([#14269](https://github.com/cloudquery/cloudquery/issues/14269)) ([b05bb30](https://github.com/cloudquery/cloudquery/commit/b05bb30bf9b359d199856e67a420be86851e44ff))
+
 ## [3.4.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v3.4.6...plugins-destination-gcs-v3.4.7) (2023-09-28)
 
 
