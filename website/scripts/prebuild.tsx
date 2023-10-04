@@ -74,7 +74,7 @@ title: Buy ${policy.name} (${licenseName})
 
 ## Purchase ${policy.name} (${licenseName})
 
-This policy is available for in early access only. [Get it](/contact-policies).
+This policy is currently only accessible through our early access program. [Get in touch](/contact-policies).
 `;
 }
 
