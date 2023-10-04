@@ -8,6 +8,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [9.7.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.6.2...plugins-source-gcp-v9.7.0) (2023-10-04)
 
 
+### This Release has the Following Changes to Tables
+- Table `gcp_aiplatform_index_endpoints`: column added with name `encryption_spec` and type `json`
+- Table `gcp_aiplatform_indexes`: column added with name `encryption_spec` and type `json`
+- Table `gcp_aiplatform_pipeline_jobs`: column added with name `schedule_name` and type `utf8`
+- Table `gcp_baremetalsolution_instances`: column added with name `firmware_version` and type `utf8`
+- Table `gcp_baremetalsolution_instances`: column added with name `login_info` and type `utf8`
+- Table `gcp_baremetalsolution_instances`: column added with name `volumes` and type `json`
+- Table `gcp_baremetalsolution_instances`: column added with name `workload_profile` and type `utf8`
+- Table `gcp_baremetalsolution_networks`: column added with name `gateway_ip` and type `utf8`
+- Table `gcp_baremetalsolution_networks`: column added with name `jumbo_frames_enabled` and type `bool`
+- Table `gcp_baremetalsolution_networks`: column added with name `mount_points` and type `json`
+- Table `gcp_baremetalsolution_networks`: column added with name `pod` and type `utf8`
+- Table `gcp_baremetalsolution_nfs_shares`: column added with name `id` and type `utf8`
+- Table `gcp_baremetalsolution_nfs_shares`: column added with name `requested_size_gib` and type `int64`
+- Table `gcp_baremetalsolution_nfs_shares`: column added with name `storage_type` and type `utf8`
+- Table `gcp_baremetalsolution_volume_luns`: column added with name `expire_time` and type `timestamp[us, tz=UTC]`
+- Table `gcp_baremetalsolution_volume_luns`: column added with name `instances` and type `list<item: utf8, nullable>`
+- Table `gcp_baremetalsolution_volumes`: column added with name `attached` and type `bool`
+- Table `gcp_baremetalsolution_volumes`: column added with name `boot_volume` and type `bool`
+- Table `gcp_baremetalsolution_volumes`: column added with name `expire_time` and type `timestamp[us, tz=UTC]`
+- Table `gcp_baremetalsolution_volumes`: column added with name `instances` and type `list<item: utf8, nullable>`
+- Table `gcp_baremetalsolution_volumes`: column added with name `max_size_gib` and type `int64`
+- Table `gcp_baremetalsolution_volumes`: column added with name `notes` and type `utf8`
+- Table `gcp_baremetalsolution_volumes`: column added with name `originally_requested_size_gib` and type `int64`
+- Table `gcp_baremetalsolution_volumes`: column added with name `performance_tier` and type `utf8`
+- Table `gcp_baremetalsolution_volumes`: column added with name `protocol` and type `utf8`
+- Table `gcp_baremetalsolution_volumes`: column added with name `workload_profile` and type `utf8`
+- Table `gcp_logging_metrics`: column added with name `bucket_name` and type `utf8`
+- Table `gcp_workflows_workflows`: column added with name `call_log_level` and type `utf8`
+- Table `gcp_workflows_workflows`: column added with name `crypto_key_name` and type `utf8`
+- Table `gcp_workflows_workflows`: column added with name `state_error` and type `json`
+- Table `gcp_workflows_workflows`: column added with name `user_env_vars` and type `json`
+
 ### Features
 
 * Update GCP libraries ([#14274](https://github.com/cloudquery/cloudquery/issues/14274)) ([aecb60e](https://github.com/cloudquery/cloudquery/commit/aecb60ecfd1c004c240e844374335cc73f64854c))
