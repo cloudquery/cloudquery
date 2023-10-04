@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-shopify-v3.1.3...plugins-source-shopify-v3.1.4) (2023-10-04)
+
+
+### Bug Fixes
+
+* Premature context cancelation ([#14314](https://github.com/cloudquery/cloudquery/issues/14314)) ([069a5cc](https://github.com/cloudquery/cloudquery/commit/069a5cc3bb36e6944c8d062863529b5fc55dcc10))
+
 ## [3.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-shopify-v3.1.2...plugins-source-shopify-v3.1.3) (2023-10-04)
 
 
