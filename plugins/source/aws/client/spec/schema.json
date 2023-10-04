@@ -3249,16 +3249,6 @@
             }
           ]
         },
-        "NextToken": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
         "SortCriteria": {
           "oneOf": [
             {

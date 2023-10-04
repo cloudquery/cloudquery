@@ -25,7 +25,7 @@ func TestLookupEvents(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func TestLookupEventsJSONSchema(t *testing.T) {
+func TestCustomLookupEventsOpts_JSONSchemaExtend(t *testing.T) {
 	testJSONSchema(t, []jsonSchemaTestCase{
 		{
 			name: "empty",

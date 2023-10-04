@@ -30,7 +30,7 @@ func TestAAListFindings(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func TestAccessAnalyzerJSONSchema(t *testing.T) {
+func TestCustomAccessAnalyzerListFindingsInput_JSONSchemaExtend(t *testing.T) {
 	testJSONSchema(t, []jsonSchemaTestCase{
 		{
 			name: "empty",

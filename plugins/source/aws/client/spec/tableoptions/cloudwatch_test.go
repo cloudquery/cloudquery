@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestCloudwatchMetricsJSONSchema(t *testing.T) {
+func TestCloudwatchListMetricsInput_JSONSchemaExtend(t *testing.T) {
 	testJSONSchema(t, []jsonSchemaTestCase{
 		{
 			name: "empty",
@@ -18,63 +18,66 @@ func TestCloudwatchMetricsJSONSchema(t *testing.T) {
 			spec: func() string {
 				var listInput CloudwatchListMetricsInput
 				require.NoError(t, faker.FakeObject(&listInput))
-				var getInput CloudwatchGetMetricStatisticsInput
-				require.NoError(t, faker.FakeObject(&getInput))
 				return `{"aws_alpha_cloudwatch_metrics":[{"list_metrics":` +
-					jsonWithRemovedKeys(t, &listInput, "NextToken") + `,` +
-					`"get_metric_statistics":[` + jsonWithRemovedKeys(t, &getInput, "Dimensions", "MetricName", "Namespace") + `]}]}`
+					jsonWithRemovedKeys(t, &listInput, "NextToken") + `}]}`
 			}(),
 		},
 		{
-			name: "list_metrics.NextToken present",
+			name: "NextToken present",
 			err:  true,
 			spec: func() string {
 				var listInput CloudwatchListMetricsInput
 				require.NoError(t, faker.FakeObject(&listInput))
+				return `{"aws_alpha_cloudwatch_metrics":[{"list_metrics":` +
+					jsonWithRemovedKeys(t, &listInput) + `}]}`
+			}(),
+		},
+	})
+}
+
+func TestCloudwatchGetMetricStatisticsInput_JSONSchemaExtend(t *testing.T) {
+	testJSONSchema(t, []jsonSchemaTestCase{
+		{
+			name: "empty",
+			spec: `{"aws_alpha_cloudwatch_metrics":[]}`,
+		},
+		{
+			name: "proper",
+			spec: func() string {
 				var getInput CloudwatchGetMetricStatisticsInput
 				require.NoError(t, faker.FakeObject(&getInput))
-				return `{"aws_alpha_cloudwatch_metrics":[{"list_metrics":` +
-					jsonWithRemovedKeys(t, &listInput) + `,` +
-					`"get_metric_statistics":[` + jsonWithRemovedKeys(t, &getInput, "Dimensions", "MetricName", "Namespace") + `]}]}`
+				return `{"aws_alpha_cloudwatch_metrics":[{"get_metric_statistics":[` +
+					jsonWithRemovedKeys(t, &getInput, "Dimensions", "MetricName", "Namespace") + `]}]}`
 			}(),
 		},
 		{
-			name: "get_metric_statistics.Dimensions present",
+			name: "Dimensions present",
 			err:  true,
 			spec: func() string {
-				var listInput CloudwatchListMetricsInput
-				require.NoError(t, faker.FakeObject(&listInput))
 				var getInput CloudwatchGetMetricStatisticsInput
 				require.NoError(t, faker.FakeObject(&getInput))
-				return `{"aws_alpha_cloudwatch_metrics":[{"list_metrics":` +
-					jsonWithRemovedKeys(t, &listInput, "NextToken") + `,` +
-					`"get_metric_statistics":[` + jsonWithRemovedKeys(t, &getInput, "MetricName", "Namespace") + `]}]}`
+				return `{"aws_alpha_cloudwatch_metrics":[{"get_metric_statistics":[` +
+					jsonWithRemovedKeys(t, &getInput, "MetricName", "Namespace") + `]}]}`
 			}(),
 		},
 		{
-			name: "get_metric_statistics.MetricName present",
+			name: "MetricName present",
 			err:  true,
 			spec: func() string {
-				var listInput CloudwatchListMetricsInput
-				require.NoError(t, faker.FakeObject(&listInput))
 				var getInput CloudwatchGetMetricStatisticsInput
 				require.NoError(t, faker.FakeObject(&getInput))
-				return `{"aws_alpha_cloudwatch_metrics":[{"list_metrics":` +
-					jsonWithRemovedKeys(t, &listInput, "NextToken") + `,` +
-					`"get_metric_statistics":[` + jsonWithRemovedKeys(t, &getInput, "Dimensions", "Namespace") + `]}]}`
+				return `{"aws_alpha_cloudwatch_metrics":[{"get_metric_statistics":[` +
+					jsonWithRemovedKeys(t, &getInput, "Dimensions", "Namespace") + `]}]}`
 			}(),
 		},
 		{
-			name: "get_metric_statistics.Namespace present",
+			name: "Namespace present",
 			err:  true,
 			spec: func() string {
-				var listInput CloudwatchListMetricsInput
-				require.NoError(t, faker.FakeObject(&listInput))
 				var getInput CloudwatchGetMetricStatisticsInput
 				require.NoError(t, faker.FakeObject(&getInput))
-				return `{"aws_alpha_cloudwatch_metrics":[{"list_metrics":` +
-					jsonWithRemovedKeys(t, &listInput, "NextToken") + `,` +
-					`"get_metric_statistics":[` + jsonWithRemovedKeys(t, &getInput, "Dimensions", "MetricName") + `]}]}`
+				return `{"aws_alpha_cloudwatch_metrics":[{"get_metric_statistics":[` +
+					jsonWithRemovedKeys(t, &getInput, "Dimensions", "MetricName") + `]}]}`
 			}(),
 		},
 	})

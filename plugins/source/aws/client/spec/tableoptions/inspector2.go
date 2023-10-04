@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	"github.com/cloudquery/plugin-sdk/v4/caser"
+	"github.com/invopop/jsonschema"
 )
 
 type Inspector2APIs struct {
@@ -15,6 +16,12 @@ type Inspector2APIs struct {
 
 type CustomInspector2ListFindingsInput struct {
 	inspector2.ListFindingsInput
+}
+
+// JSONSchemaExtend is required to remove `NextToken`.
+// We use value receiver because of https://github.com/invopop/jsonschema/issues/102
+func (CustomInspector2ListFindingsInput) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.Properties.Delete("NextToken")
 }
 
 // UnmarshalJSON implements the json.Unmarshaler interface for the CustomLookupEventsOpts type.

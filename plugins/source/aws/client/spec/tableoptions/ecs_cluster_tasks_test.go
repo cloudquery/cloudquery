@@ -24,7 +24,7 @@ func TestListTasks(t *testing.T) {
 	assert.EqualError(t, err, "invalid input: cannot set Cluster in ListTasks")
 }
 
-func TestCustomListTasksOptsJSONSchema(t *testing.T) {
+func TestCustomListTasksOpts_JSONSchemaExtend(t *testing.T) {
 	testJSONSchema(t, []jsonSchemaTestCase{
 		{
 			name: "empty",

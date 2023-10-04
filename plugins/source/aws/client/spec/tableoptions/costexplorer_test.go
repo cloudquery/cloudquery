@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestGetCostAndUsageJSONSchema(t *testing.T) {
+func TestCustomGetCostAndUsageInput_JSONSchemaExtend(t *testing.T) {
 	testJSONSchema(t, []jsonSchemaTestCase{
 		{
 			name: "empty",

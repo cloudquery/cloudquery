@@ -26,3 +26,31 @@ func TestInspector2ListFindings(t *testing.T) {
 
 	assert.Nil(t, err)
 }
+
+func TestCustomInspector2ListFindingsInput_JSONSchemaExtend(t *testing.T) {
+	testJSONSchema(t, []jsonSchemaTestCase{
+		{
+			name: "empty",
+			spec: `{"aws_inspector2_findings":{}}`,
+		},
+		{
+			name: "proper",
+			spec: func() string {
+				var input CustomInspector2ListFindingsInput
+				require.NoError(t, faker.FakeObject(&input))
+				return `{"aws_inspector2_findings":{"list_findings":[` +
+					jsonWithRemovedKeys(t, &input, "NextToken") + `]}}`
+			}(),
+		},
+		{
+			name: "NextToken is present",
+			err:  true,
+			spec: func() string {
+				var input CustomInspector2ListFindingsInput
+				require.NoError(t, faker.FakeObject(&input))
+				return `{"aws_inspector2_findings":{"list_findings":[` +
+					jsonWithRemovedKeys(t, &input) + `]}}`
+			}(),
+		},
+	})
+}
