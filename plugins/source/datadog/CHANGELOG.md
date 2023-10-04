@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-datadog-v4.1.0...plugins-source-datadog-v4.2.0) (2023-10-04)
+
+
+### Features
+
+* Add pagination support for endpoints ([#14264](https://github.com/cloudquery/cloudquery/issues/14264)) ([3030d79](https://github.com/cloudquery/cloudquery/commit/3030d79d25966df0495fb43d284f0b236a36af35))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.0 ([#14281](https://github.com/cloudquery/cloudquery/issues/14281)) ([85835a9](https://github.com/cloudquery/cloudquery/commit/85835a938bfa58d1b0d320ae17aff5fe7f6cfef2))
+
 ## [4.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-datadog-v4.0.0...plugins-source-datadog-v4.1.0) (2023-10-02)
 
 
