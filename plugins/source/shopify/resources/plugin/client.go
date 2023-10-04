@@ -116,10 +116,8 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 	}
 
 	services, err := shopify.New(shopify.ClientOptions{
-		Log: logger.With().Str("source", "shopify-client").Logger(),
-		HC: &http.Client{
-			Timeout: time.Duration(config.Timeout) * time.Second,
-		},
+		Log:         logger.With().Str("source", "shopify-client").Logger(),
+		HC:          http.DefaultClient,
 		ApiKey:      config.APIKey,
 		ApiSecret:   config.APISecret,
 		AccessToken: config.AccessToken,
@@ -127,6 +125,7 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 		ShopURL:     config.ShopURL,
 		MaxRetries:  config.MaxRetries,
 		PageSize:    int(config.PageSize),
+		Timeout:     time.Duration(config.Timeout) * time.Second,
 	})
 	if err != nil {
 		return nil, err

@@ -96,6 +96,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 		ShopURL:     h.URL,
 		MaxRetries:  1,
 		PageSize:    50,
+		Timeout:     time.Duration(spec.Timeout) * time.Second,
 	})
 	if err != nil {
 		t.Fatalf("failed to create client: %v", err)
