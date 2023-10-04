@@ -209,6 +209,7 @@ func (s *Client) GetProducts(ctx context.Context, pageUrl string, params url.Val
 		pageUrl = fmt.Sprintf("admin/api/%s/products.json", s.opts.APIVersion)
 	}
 
+	//nolint:bodyclose
 	resp, closer, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
@@ -234,6 +235,7 @@ func (s *Client) GetOrders(ctx context.Context, pageUrl string, params url.Value
 		pageUrl = fmt.Sprintf("admin/api/%s/orders.json", s.opts.APIVersion)
 	}
 
+	//nolint:bodyclose
 	resp, closer, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
@@ -259,6 +261,7 @@ func (s *Client) GetCustomers(ctx context.Context, pageUrl string, params url.Va
 		pageUrl = fmt.Sprintf("admin/api/%s/customers.json", s.opts.APIVersion)
 	}
 
+	//nolint:bodyclose
 	resp, closer, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
@@ -284,6 +287,7 @@ func (s *Client) GetAbandonedCheckouts(ctx context.Context, pageUrl string, para
 		pageUrl = fmt.Sprintf("admin/api/%s/checkouts.json", s.opts.APIVersion)
 	}
 
+	//nolint:bodyclose
 	resp, closer, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
@@ -309,6 +313,7 @@ func (s *Client) GetPriceRules(ctx context.Context, pageUrl string, params url.V
 		pageUrl = fmt.Sprintf("admin/api/%s/price_rules.json", s.opts.APIVersion)
 	}
 
+	//nolint:bodyclose
 	resp, closer, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
@@ -334,6 +339,7 @@ func (s *Client) GetDiscountCodes(ctx context.Context, priceRuleID int64, pageUr
 		pageUrl = fmt.Sprintf("admin/api/%s/price_rules/%d/discount_codes.json", s.opts.APIVersion, priceRuleID)
 	}
 
+	//nolint:bodyclose
 	resp, closer, err := s.request(ctx, pageUrl, nil)
 	if err != nil {
 		return nil, "", err
