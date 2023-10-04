@@ -1,15 +1,51 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/spec",
-  "$ref": "#/$defs/Spec",
+  "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1Spec",
   "$defs": {
-    "AccessanalyzerFindings": {
+    "github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types/Criterion": {
       "properties": {
-        "list_findings": {
+        "Contains": {
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/CustomAccessAnalyzerListFindingsInput"
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Eq": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Exists": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Neq": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
               },
               "type": "array"
             },
@@ -22,7 +58,2539 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "Account": {
+    "github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types/SortCriteria": {
+      "properties": {
+        "AttributeName": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "OrderBy": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/cloudtrail/types/LookupAttribute": {
+      "properties": {
+        "AttributeKey": {
+          "type": "string"
+        },
+        "AttributeValue": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/cloudwatch/types/Dimension": {
+      "properties": {
+        "Name": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Value": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/cloudwatch/types/DimensionFilter": {
+      "properties": {
+        "Name": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Value": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/costexplorer/types/CostCategoryValues": {
+      "properties": {
+        "Key": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "MatchOptions": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Values": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/costexplorer/types/DateInterval": {
+      "properties": {
+        "End": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Start": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/costexplorer/types/DimensionValues": {
+      "properties": {
+        "Key": {
+          "type": "string"
+        },
+        "MatchOptions": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Values": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/costexplorer/types/Expression": {
+      "properties": {
+        "And": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1costexplorer~1types~1Expression"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "CostCategories": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1costexplorer~1types~1CostCategoryValues"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Dimensions": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1costexplorer~1types~1DimensionValues"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Not": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1costexplorer~1types~1Expression"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Or": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1costexplorer~1types~1Expression"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Tags": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1costexplorer~1types~1TagValues"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/costexplorer/types/GroupDefinition": {
+      "properties": {
+        "Key": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/costexplorer/types/TagValues": {
+      "properties": {
+        "Key": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "MatchOptions": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Values": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/inspector2/types/DateFilter": {
+      "properties": {
+        "EndInclusive": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "StartInclusive": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/inspector2/types/FilterCriteria": {
+      "properties": {
+        "AwsAccountId": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "CodeVulnerabilityDetectorName": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "CodeVulnerabilityDetectorTags": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "CodeVulnerabilityFilePath": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ComponentId": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ComponentType": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Ec2InstanceImageId": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Ec2InstanceSubnetId": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Ec2InstanceVpcId": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "EcrImageArchitecture": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "EcrImageHash": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "EcrImagePushedAt": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "EcrImageRegistry": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "EcrImageRepositoryName": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "EcrImageTags": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "EpssScore": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ExploitAvailable": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "FindingArn": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "FindingStatus": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "FindingType": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "FirstObservedAt": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "FixAvailable": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "InspectorScore": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "LambdaFunctionExecutionRoleArn": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "LambdaFunctionLastModifiedAt": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "LambdaFunctionLayers": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "LambdaFunctionName": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "LambdaFunctionRuntime": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "LastObservedAt": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "NetworkProtocol": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "PortRange": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1PortRangeFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "RelatedVulnerabilities": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceId": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceTags": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1MapFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceType": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Severity": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Title": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "UpdatedAt": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "VendorSeverity": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "VulnerabilityId": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "VulnerabilitySource": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "VulnerablePackages": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1PackageFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/inspector2/types/MapFilter": {
+      "properties": {
+        "Comparison": {
+          "type": "string"
+        },
+        "Key": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Value": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/inspector2/types/NumberFilter": {
+      "properties": {
+        "LowerInclusive": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "UpperInclusive": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/inspector2/types/PackageFilter": {
+      "properties": {
+        "Architecture": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Epoch": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1NumberFilter"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Name": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Release": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "SourceLambdaLayerArn": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "SourceLayerHash": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Version": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1StringFilter"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/inspector2/types/PortRangeFilter": {
+      "properties": {
+        "BeginInclusive": {
+          "oneOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "EndInclusive": {
+          "oneOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/inspector2/types/SortCriteria": {
+      "properties": {
+        "Field": {
+          "type": "string"
+        },
+        "SortOrder": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/inspector2/types/StringFilter": {
+      "properties": {
+        "Comparison": {
+          "type": "string"
+        },
+        "Value": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/securityhub/types/AwsSecurityFindingFilters": {
+      "properties": {
+        "AwsAccountId": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "CompanyName": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ComplianceAssociatedStandardsId": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ComplianceSecurityControlId": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ComplianceStatus": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Confidence": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "CreatedAt": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Criticality": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Description": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "FindingProviderFieldsConfidence": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "FindingProviderFieldsCriticality": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "FindingProviderFieldsRelatedFindingsId": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "FindingProviderFieldsRelatedFindingsProductArn": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "FindingProviderFieldsSeverityLabel": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "FindingProviderFieldsSeverityOriginal": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "FindingProviderFieldsTypes": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "FirstObservedAt": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "GeneratorId": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Id": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Keyword": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1KeywordFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "LastObservedAt": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "MalwareName": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "MalwarePath": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "MalwareState": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "MalwareType": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "NetworkDestinationDomain": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "NetworkDestinationIpV4": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1IpFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "NetworkDestinationIpV6": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1IpFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "NetworkDestinationPort": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "NetworkDirection": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "NetworkProtocol": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "NetworkSourceDomain": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "NetworkSourceIpV4": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1IpFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "NetworkSourceIpV6": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1IpFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "NetworkSourceMac": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "NetworkSourcePort": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "NoteText": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "NoteUpdatedAt": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "NoteUpdatedBy": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ProcessLaunchedAt": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ProcessName": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ProcessParentPid": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ProcessPath": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ProcessPid": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ProcessTerminatedAt": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ProductArn": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ProductFields": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1MapFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ProductName": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "RecommendationText": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "RecordState": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Region": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "RelatedFindingsId": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "RelatedFindingsProductArn": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceAwsEc2InstanceIamInstanceProfileArn": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceAwsEc2InstanceImageId": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceAwsEc2InstanceIpV4Addresses": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1IpFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceAwsEc2InstanceIpV6Addresses": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1IpFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceAwsEc2InstanceKeyName": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceAwsEc2InstanceLaunchedAt": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceAwsEc2InstanceSubnetId": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceAwsEc2InstanceType": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceAwsEc2InstanceVpcId": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceAwsIamAccessKeyCreatedAt": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceAwsIamAccessKeyPrincipalName": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceAwsIamAccessKeyStatus": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceAwsIamAccessKeyUserName": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceAwsIamUserUserName": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceAwsS3BucketOwnerId": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceAwsS3BucketOwnerName": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceContainerImageId": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceContainerImageName": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceContainerLaunchedAt": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceContainerName": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceDetailsOther": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1MapFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceId": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourcePartition": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceRegion": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceTags": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1MapFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ResourceType": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Sample": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1BooleanFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "SeverityLabel": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "SeverityNormalized": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "SeverityProduct": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1NumberFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "SourceUrl": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ThreatIntelIndicatorCategory": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ThreatIntelIndicatorLastObservedAt": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ThreatIntelIndicatorSource": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ThreatIntelIndicatorSourceUrl": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ThreatIntelIndicatorType": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ThreatIntelIndicatorValue": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Title": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Type": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "UpdatedAt": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1DateFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "UserDefinedFields": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1MapFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "VerificationState": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "WorkflowState": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "WorkflowStatus": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1StringFilter"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/securityhub/types/BooleanFilter": {
+      "properties": {
+        "Value": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/securityhub/types/DateFilter": {
+      "properties": {
+        "DateRange": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1DateRange"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "End": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Start": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/securityhub/types/DateRange": {
+      "properties": {
+        "Unit": {
+          "type": "string"
+        },
+        "Value": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/securityhub/types/IpFilter": {
+      "properties": {
+        "Cidr": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/securityhub/types/KeywordFilter": {
+      "properties": {
+        "Value": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/securityhub/types/MapFilter": {
+      "properties": {
+        "Comparison": {
+          "type": "string"
+        },
+        "Key": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "Value": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/securityhub/types/NumberFilter": {
+      "properties": {
+        "Eq": {
+          "type": "number"
+        },
+        "Gte": {
+          "type": "number"
+        },
+        "Lte": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/securityhub/types/SortCriterion": {
+      "properties": {
+        "Field": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "SortOrder": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/aws/aws-sdk-go-v2/service/securityhub/types/StringFilter": {
+      "properties": {
+        "Comparison": {
+          "type": "string"
+        },
+        "Value": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/Account": {
       "properties": {
         "id": {
           "type": "string",
@@ -68,1222 +2636,82 @@
         "id"
       ]
     },
-    "AwsSecurityFindingFilters": {
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/EventBasedSync": {
       "properties": {
-        "AwsAccountId": {
+        "full_sync": {
           "oneOf": [
             {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "CompanyName": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ComplianceAssociatedStandardsId": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ComplianceSecurityControlId": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ComplianceStatus": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Confidence": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/NumberFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "CreatedAt": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/DateFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Criticality": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/NumberFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Description": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "FindingProviderFieldsConfidence": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/NumberFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "FindingProviderFieldsCriticality": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/NumberFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "FindingProviderFieldsRelatedFindingsId": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "FindingProviderFieldsRelatedFindingsProductArn": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "FindingProviderFieldsSeverityLabel": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "FindingProviderFieldsSeverityOriginal": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "FindingProviderFieldsTypes": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "FirstObservedAt": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/DateFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "GeneratorId": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Id": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Keyword": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/KeywordFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "LastObservedAt": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/DateFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "MalwareName": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "MalwarePath": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "MalwareState": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "MalwareType": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "NetworkDestinationDomain": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "NetworkDestinationIpV4": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/IpFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "NetworkDestinationIpV6": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/IpFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "NetworkDestinationPort": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/NumberFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "NetworkDirection": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "NetworkProtocol": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "NetworkSourceDomain": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "NetworkSourceIpV4": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/IpFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "NetworkSourceIpV6": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/IpFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "NetworkSourceMac": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "NetworkSourcePort": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/NumberFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "NoteText": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "NoteUpdatedAt": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/DateFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "NoteUpdatedBy": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ProcessLaunchedAt": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/DateFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ProcessName": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ProcessParentPid": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/NumberFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ProcessPath": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ProcessPid": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/NumberFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ProcessTerminatedAt": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/DateFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ProductArn": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ProductFields": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/MapFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ProductName": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "RecommendationText": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "RecordState": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Region": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "RelatedFindingsId": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "RelatedFindingsProductArn": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceAwsEc2InstanceIamInstanceProfileArn": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceAwsEc2InstanceImageId": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceAwsEc2InstanceIpV4Addresses": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/IpFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceAwsEc2InstanceIpV6Addresses": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/IpFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceAwsEc2InstanceKeyName": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceAwsEc2InstanceLaunchedAt": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/DateFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceAwsEc2InstanceSubnetId": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceAwsEc2InstanceType": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceAwsEc2InstanceVpcId": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceAwsIamAccessKeyCreatedAt": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/DateFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceAwsIamAccessKeyPrincipalName": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceAwsIamAccessKeyStatus": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceAwsIamAccessKeyUserName": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceAwsIamUserUserName": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceAwsS3BucketOwnerId": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceAwsS3BucketOwnerName": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceContainerImageId": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceContainerImageName": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceContainerLaunchedAt": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/DateFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceContainerName": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceDetailsOther": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/MapFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceId": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourcePartition": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceRegion": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceTags": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/MapFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceType": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Sample": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/BooleanFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "SeverityLabel": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "SeverityNormalized": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/NumberFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "SeverityProduct": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/NumberFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "SourceUrl": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ThreatIntelIndicatorCategory": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
+              "type": "boolean",
+              "default": true
             },
             {
               "type": "null"
             }
           ]
         },
-        "ThreatIntelIndicatorLastObservedAt": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/DateFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
+        "account": {
+          "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1Account"
         },
-        "ThreatIntelIndicatorSource": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
+        "kinesis_stream_arn": {
+          "type": "string",
+          "pattern": "^arn(:[^:\n]*){5,}([:/].*)?$"
         },
-        "ThreatIntelIndicatorSourceUrl": {
+        "start_time": {
           "oneOf": [
             {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
+              "type": "string",
+              "format": "date-time",
+              "default": "now"
             },
             {
               "type": "null"
             }
           ]
-        },
-        "ThreatIntelIndicatorType": {
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "kinesis_stream_arn"
+      ]
+    },
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/Org": {
+      "properties": {
+        "admin_account": {
           "oneOf": [
             {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
+              "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1Account"
             },
             {
               "type": "null"
             }
           ]
         },
-        "ThreatIntelIndicatorValue": {
+        "member_trusted_principal": {
           "oneOf": [
             {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
+              "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1Account"
             },
             {
               "type": "null"
             }
           ]
         },
-        "Title": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
+        "member_role_name": {
+          "type": "string",
+          "minLength": 1
         },
-        "Type": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
+        "member_role_session_name": {
+          "type": "string"
         },
-        "UpdatedAt": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/DateFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
+        "member_external_id": {
+          "type": "string"
         },
-        "UserDefinedFields": {
+        "member_regions": {
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/MapFilter"
+                "type": "string"
               },
               "type": "array"
             },
@@ -1292,11 +2720,12 @@
             }
           ]
         },
-        "VerificationState": {
+        "organization_units": {
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter"
+                "type": "string",
+                "pattern": "^((ou-[0-9a-z]{4,32}-[a-z0-9]{8,32})|(r-[0-9a-z]{4,32}))$"
               },
               "type": "array"
             },
@@ -1305,11 +2734,12 @@
             }
           ]
         },
-        "WorkflowState": {
+        "skip_organization_units": {
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter"
+                "type": "string",
+                "pattern": "^((ou-[0-9a-z]{4,32}-[a-z0-9]{8,32})|(r-[0-9a-z]{4,32}))$"
               },
               "type": "array"
             },
@@ -1318,11 +2748,11 @@
             }
           ]
         },
-        "WorkflowStatus": {
+        "skip_member_accounts": {
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter"
+                "type": "string"
               },
               "type": "array"
             },
@@ -1333,24 +2763,153 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "required": [
+        "member_role_name"
+      ]
     },
-    "BooleanFilter": {
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/Spec": {
       "properties": {
-        "Value": {
+        "regions": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "accounts": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1Account"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "org": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1Org"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "aws_debug": {
           "type": "boolean"
+        },
+        "max_retries": {
+          "oneOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "max_backoff": {
+          "oneOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "custom_endpoint_url": {
+          "type": "string"
+        },
+        "custom_endpoint_hostname_immutable": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "custom_endpoint_partition_id": {
+          "type": "string"
+        },
+        "custom_endpoint_signing_region": {
+          "type": "string"
+        },
+        "initialization_concurrency": {
+          "type": "integer"
+        },
+        "use_paid_apis": {
+          "type": "boolean"
+        },
+        "table_options": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1tableoptions~1TableOptions"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "concurrency": {
+          "type": "integer"
+        },
+        "event_based_sync": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1EventBasedSync"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scheduler": {
+          "$ref": "#/$defs/github.com~1cloudquery~1plugin-sdk~1v4~1scheduler~1Strategy"
         }
       },
       "additionalProperties": false,
       "type": "object"
     },
-    "CloudtrailAPIs": {
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions/AccessanalyzerFindings": {
+      "properties": {
+        "list_findings": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1tableoptions~1CustomAccessAnalyzerListFindingsInput"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions/CloudtrailAPIs": {
       "properties": {
         "lookup_events": {
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/CustomLookupEventsOpts"
+                "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1tableoptions~1CustomLookupEventsOpts"
               },
               "type": "array"
             },
@@ -1363,7 +2922,7 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "CloudwatchGetMetricStatisticsInput": {
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions/CloudwatchGetMetricStatisticsInput": {
       "properties": {
         "EndTime": {
           "oneOf": [
@@ -1430,13 +2989,13 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "CloudwatchListMetricsInput": {
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions/CloudwatchListMetricsInput": {
       "properties": {
         "Dimensions": {
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/DimensionFilter"
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1cloudwatch~1types~1DimensionFilter"
               },
               "type": "array"
             },
@@ -1485,16 +3044,16 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "CloudwatchMetric": {
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions/CloudwatchMetric": {
       "properties": {
         "list_metrics": {
-          "$ref": "#/$defs/CloudwatchListMetricsInput"
+          "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1tableoptions~1CloudwatchListMetricsInput"
         },
         "get_metric_statistics": {
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/CloudwatchGetMetricStatisticsInput"
+                "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1tableoptions~1CloudwatchGetMetricStatisticsInput"
               },
               "type": "array"
             },
@@ -1507,61 +3066,19 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "CloudwatchMetrics": {
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions/CloudwatchMetrics": {
       "items": {
-        "$ref": "#/$defs/CloudwatchMetric"
+        "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1tableoptions~1CloudwatchMetric"
       },
       "type": "array"
     },
-    "CostCategoryValues": {
-      "properties": {
-        "Key": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "MatchOptions": {
-          "oneOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Values": {
-          "oneOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "CostExplorerAPIs": {
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions/CostExplorerAPIs": {
       "properties": {
         "get_cost_and_usage": {
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/CustomGetCostAndUsageInput"
+                "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1tableoptions~1CustomGetCostAndUsageInput"
               },
               "type": "array"
             },
@@ -1574,68 +3091,13 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "Criterion": {
-      "properties": {
-        "Contains": {
-          "oneOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Eq": {
-          "oneOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Exists": {
-          "oneOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Neq": {
-          "oneOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "CustomAccessAnalyzerListFindingsInput": {
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions/CustomAccessAnalyzerListFindingsInput": {
       "properties": {
         "Filter": {
           "oneOf": [
             {
               "additionalProperties": {
-                "$ref": "#/$defs/Criterion"
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1accessanalyzer~1types~1Criterion"
               },
               "type": "object"
             },
@@ -1657,7 +3119,7 @@
         "Sort": {
           "oneOf": [
             {
-              "$ref": "#/$defs/SortCriteria"
+              "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1accessanalyzer~1types~1SortCriteria"
             },
             {
               "type": "null"
@@ -1668,7 +3130,7 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "CustomGetCostAndUsageInput": {
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions/CustomGetCostAndUsageInput": {
       "properties": {
         "Granularity": {
           "type": "string"
@@ -1689,7 +3151,7 @@
         "TimePeriod": {
           "oneOf": [
             {
-              "$ref": "#/$defs/DateInterval"
+              "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1costexplorer~1types~1DateInterval"
             },
             {
               "type": "null"
@@ -1699,7 +3161,7 @@
         "Filter": {
           "oneOf": [
             {
-              "$ref": "#/$defs/Expression"
+              "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1costexplorer~1types~1Expression"
             },
             {
               "type": "null"
@@ -1710,7 +3172,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/GroupDefinition"
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1costexplorer~1types~1GroupDefinition"
               },
               "type": "array"
             },
@@ -1723,12 +3185,12 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "CustomGetFindingsOpts": {
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions/CustomGetFindingsOpts": {
       "properties": {
         "Filters": {
           "oneOf": [
             {
-              "$ref": "#/$defs/AwsSecurityFindingFilters"
+              "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1AwsSecurityFindingFilters"
             },
             {
               "type": "null"
@@ -1752,7 +3214,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/SortCriterion"
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1securityhub~1types~1SortCriterion"
               },
               "type": "array"
             },
@@ -1765,12 +3227,12 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "CustomInspector2ListFindingsInput": {
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions/CustomInspector2ListFindingsInput": {
       "properties": {
         "FilterCriteria": {
           "oneOf": [
             {
-              "$ref": "#/$defs/FilterCriteria"
+              "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1FilterCriteria"
             },
             {
               "type": "null"
@@ -1800,7 +3262,7 @@
         "SortCriteria": {
           "oneOf": [
             {
-              "$ref": "#/$defs/SortCriteria"
+              "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1inspector2~1types~1SortCriteria"
             },
             {
               "type": "null"
@@ -1811,7 +3273,7 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "CustomListTasksOpts": {
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions/CustomListTasksOpts": {
       "properties": {
         "Cluster": {
           "oneOf": [
@@ -1893,7 +3355,7 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "CustomLookupEventsOpts": {
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions/CustomLookupEventsOpts": {
       "properties": {
         "EndTime": {
           "oneOf": [
@@ -1913,7 +3375,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/LookupAttribute"
+                "$ref": "#/$defs/github.com~1aws~1aws-sdk-go-v2~1service~1cloudtrail~1types~1LookupAttribute"
               },
               "type": "array"
             },
@@ -1947,154 +3409,13 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "DateFilter": {
-      "properties": {
-        "EndInclusive": {
-          "oneOf": [
-            {
-              "type": "string",
-              "format": "date-time"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "StartInclusive": {
-          "oneOf": [
-            {
-              "type": "string",
-              "format": "date-time"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "DateInterval": {
-      "properties": {
-        "End": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Start": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "Dimension": {
-      "properties": {
-        "Name": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Value": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "DimensionFilter": {
-      "properties": {
-        "Name": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Value": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "DimensionValues": {
-      "properties": {
-        "Key": {
-          "$ref": "#/$defs/Dimension"
-        },
-        "MatchOptions": {
-          "oneOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Values": {
-          "oneOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "ECSTaskAPIs": {
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions/ECSTaskAPIs": {
       "properties": {
         "list_tasks": {
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/CustomListTasksOpts"
+                "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1tableoptions~1CustomListTasksOpts"
               },
               "type": "array"
             },
@@ -2107,695 +3428,13 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "EventBasedSync": {
-      "properties": {
-        "full_sync": {
-          "oneOf": [
-            {
-              "type": "boolean",
-              "default": true
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "account": {
-          "$ref": "#/$defs/Account"
-        },
-        "kinesis_stream_arn": {
-          "type": "string",
-          "pattern": "^arn(:[^:\n]*){5,}([:/].*)?$"
-        },
-        "start_time": {
-          "oneOf": [
-            {
-              "type": "string",
-              "format": "date-time",
-              "default": "now"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object",
-      "required": [
-        "kinesis_stream_arn"
-      ]
-    },
-    "Expression": {
-      "properties": {
-        "And": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/Expression"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "CostCategories": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/CostCategoryValues"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Dimensions": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/DimensionValues"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Not": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/Expression"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Or": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/Expression"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Tags": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/TagValues"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "FilterCriteria": {
-      "properties": {
-        "AwsAccountId": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "CodeVulnerabilityDetectorName": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "CodeVulnerabilityDetectorTags": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "CodeVulnerabilityFilePath": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ComponentId": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ComponentType": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Ec2InstanceImageId": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Ec2InstanceSubnetId": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Ec2InstanceVpcId": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "EcrImageArchitecture": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "EcrImageHash": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "EcrImagePushedAt": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/DateFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "EcrImageRegistry": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "EcrImageRepositoryName": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "EcrImageTags": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "EpssScore": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/NumberFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ExploitAvailable": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "FindingArn": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "FindingStatus": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "FindingType": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "FirstObservedAt": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/DateFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "FixAvailable": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "InspectorScore": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/NumberFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "LambdaFunctionExecutionRoleArn": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "LambdaFunctionLastModifiedAt": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/DateFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "LambdaFunctionLayers": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "LambdaFunctionName": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "LambdaFunctionRuntime": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "LastObservedAt": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/DateFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "NetworkProtocol": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "PortRange": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/PortRangeFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "RelatedVulnerabilities": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceId": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceTags": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/MapFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "ResourceType": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Severity": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Title": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "UpdatedAt": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/DateFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "VendorSeverity": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "VulnerabilityId": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "VulnerabilitySource": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/StringFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "VulnerablePackages": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/PackageFilter"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "GroupDefinition": {
-      "properties": {
-        "Key": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Type": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "Inspector2APIs": {
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions/Inspector2APIs": {
       "properties": {
         "list_findings": {
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/CustomInspector2ListFindingsInput"
+                "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1tableoptions~1CustomInspector2ListFindingsInput"
               },
               "type": "array"
             },
@@ -2808,314 +3447,13 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "IpFilter": {
-      "properties": {
-        "Cidr": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "KeywordFilter": {
-      "properties": {
-        "Value": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "LookupAttribute": {
-      "properties": {
-        "AttributeKey": {
-          "type": "string"
-        },
-        "AttributeValue": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "MapFilter": {
-      "properties": {
-        "Comparison": {
-          "type": "string"
-        },
-        "Key": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Value": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "NumberFilter": {
-      "properties": {
-        "LowerInclusive": {
-          "oneOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "UpperInclusive": {
-          "oneOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "Org": {
-      "properties": {
-        "admin_account": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/Account"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "member_trusted_principal": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/Account"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "member_role_name": {
-          "type": "string",
-          "minLength": 1
-        },
-        "member_role_session_name": {
-          "type": "string"
-        },
-        "member_external_id": {
-          "type": "string"
-        },
-        "member_regions": {
-          "oneOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "organization_units": {
-          "oneOf": [
-            {
-              "items": {
-                "type": "string",
-                "pattern": "^((ou-[0-9a-z]{4,32}-[a-z0-9]{8,32})|(r-[0-9a-z]{4,32}))$"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "skip_organization_units": {
-          "oneOf": [
-            {
-              "items": {
-                "type": "string",
-                "pattern": "^((ou-[0-9a-z]{4,32}-[a-z0-9]{8,32})|(r-[0-9a-z]{4,32}))$"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "skip_member_accounts": {
-          "oneOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object",
-      "required": [
-        "member_role_name"
-      ]
-    },
-    "PackageFilter": {
-      "properties": {
-        "Architecture": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/StringFilter"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Epoch": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/NumberFilter"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Name": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/StringFilter"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Release": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/StringFilter"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "SourceLambdaLayerArn": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/StringFilter"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "SourceLayerHash": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/StringFilter"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Version": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/StringFilter"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "PortRangeFilter": {
-      "properties": {
-        "BeginInclusive": {
-          "oneOf": [
-            {
-              "type": "integer"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "EndInclusive": {
-          "oneOf": [
-            {
-              "type": "integer"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "SecurityHubAPIs": {
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions/SecurityHubAPIs": {
       "properties": {
         "get_findings": {
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/CustomGetFindingsOpts"
+                "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1tableoptions~1CustomGetFindingsOpts"
               },
               "type": "array"
             },
@@ -3128,195 +3466,12 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "SortCriteria": {
-      "properties": {
-        "AttributeName": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "OrderBy": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "SortCriterion": {
-      "properties": {
-        "Field": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "SortOrder": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "Spec": {
-      "properties": {
-        "regions": {
-          "oneOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "accounts": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/Account"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "org": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/Org"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "aws_debug": {
-          "type": "boolean"
-        },
-        "max_retries": {
-          "oneOf": [
-            {
-              "type": "integer"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "max_backoff": {
-          "oneOf": [
-            {
-              "type": "integer"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "custom_endpoint_url": {
-          "type": "string"
-        },
-        "custom_endpoint_hostname_immutable": {
-          "oneOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "custom_endpoint_partition_id": {
-          "type": "string"
-        },
-        "custom_endpoint_signing_region": {
-          "type": "string"
-        },
-        "initialization_concurrency": {
-          "type": "integer"
-        },
-        "use_paid_apis": {
-          "type": "boolean"
-        },
-        "table_options": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/TableOptions"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "concurrency": {
-          "type": "integer"
-        },
-        "event_based_sync": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/EventBasedSync"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "scheduler": {
-          "$ref": "#/$defs/Strategy"
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "Strategy": {
-      "type": "string",
-      "enum": [
-        "dfs",
-        "round-robin",
-        "shuffle"
-      ],
-      "title": "CloudQuery scheduling strategy",
-      "default": "dfs"
-    },
-    "StringFilter": {
-      "properties": {
-        "Comparison": {
-          "type": "string"
-        },
-        "Value": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "TableOptions": {
+    "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions/TableOptions": {
       "properties": {
         "aws_alpha_cloudwatch_metrics": {
           "oneOf": [
             {
-              "$ref": "#/$defs/CloudwatchMetrics"
+              "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1tableoptions~1CloudwatchMetrics"
             },
             {
               "type": "null"
@@ -3326,7 +3481,7 @@
         "aws_cloudtrail_events": {
           "oneOf": [
             {
-              "$ref": "#/$defs/CloudtrailAPIs"
+              "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1tableoptions~1CloudtrailAPIs"
             },
             {
               "type": "null"
@@ -3336,7 +3491,7 @@
         "aws_accessanalyzer_analyzer_findings": {
           "oneOf": [
             {
-              "$ref": "#/$defs/AccessanalyzerFindings"
+              "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1tableoptions~1AccessanalyzerFindings"
             },
             {
               "type": "null"
@@ -3346,7 +3501,7 @@
         "aws_inspector2_findings": {
           "oneOf": [
             {
-              "$ref": "#/$defs/Inspector2APIs"
+              "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1tableoptions~1Inspector2APIs"
             },
             {
               "type": "null"
@@ -3356,7 +3511,7 @@
         "aws_alpha_costexplorer_cost_custom": {
           "oneOf": [
             {
-              "$ref": "#/$defs/CostExplorerAPIs"
+              "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1tableoptions~1CostExplorerAPIs"
             },
             {
               "type": "null"
@@ -3366,7 +3521,7 @@
         "aws_securityhub_findings": {
           "oneOf": [
             {
-              "$ref": "#/$defs/SecurityHubAPIs"
+              "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1tableoptions~1SecurityHubAPIs"
             },
             {
               "type": "null"
@@ -3376,7 +3531,7 @@
         "aws_ecs_cluster_tasks": {
           "oneOf": [
             {
-              "$ref": "#/$defs/ECSTaskAPIs"
+              "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1tableoptions~1ECSTaskAPIs"
             },
             {
               "type": "null"
@@ -3387,47 +3542,15 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "TagValues": {
-      "properties": {
-        "Key": {
-          "oneOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "MatchOptions": {
-          "oneOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Values": {
-          "oneOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
+    "github.com/cloudquery/plugin-sdk/v4/scheduler/Strategy": {
+      "type": "string",
+      "enum": [
+        "dfs",
+        "round-robin",
+        "shuffle"
+      ],
+      "title": "CloudQuery scheduling strategy",
+      "default": "dfs"
     }
   }
 }
