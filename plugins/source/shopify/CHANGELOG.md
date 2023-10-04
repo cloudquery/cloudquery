@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-shopify-v3.1.2...plugins-source-shopify-v3.1.3) (2023-10-04)
+
+
+### Bug Fixes
+
+* Better timeout handling, fix nullable column ([#14298](https://github.com/cloudquery/cloudquery/issues/14298)) ([3881fa1](https://github.com/cloudquery/cloudquery/commit/3881fa15319d7e7ba985ae1f4f838a329841b3d5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.0 ([#14281](https://github.com/cloudquery/cloudquery/issues/14281)) ([85835a9](https://github.com/cloudquery/cloudquery/commit/85835a938bfa58d1b0d320ae17aff5fe7f6cfef2))
+
 ## [3.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-shopify-v3.1.1...plugins-source-shopify-v3.1.2) (2023-10-02)
 
 
