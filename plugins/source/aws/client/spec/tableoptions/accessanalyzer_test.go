@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/cloudquery/codegen/jsonschema"
-	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

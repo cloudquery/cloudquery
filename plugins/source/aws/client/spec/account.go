@@ -8,7 +8,7 @@ type Account struct {
 	RoleSessionName string   `json:"role_session_name,omitempty"`
 	ExternalID      string   `json:"external_id,omitempty"`
 	DefaultRegion   string   `json:"default_region,omitempty" jsonschema:"default=us-east-1"`
-	Regions         []string `json:"regions,omitempty" jsonschema:"minLength=1,default=us-east-1"`
+	Regions         []string `json:"regions,omitempty" jsonschema:"minLength=1"`
 
 	// explicitly ignore in JSON parsing, as this is filled in later
 	Source AccountSource `json:"-"`

@@ -13,7 +13,7 @@ import (
 )
 
 type Spec struct {
-	Regions                   []string                   `json:"regions,omitempty" jsonschema:"minLength=1,default=us-east-1"`
+	Regions                   []string                   `json:"regions,omitempty" jsonschema:"minLength=1"`
 	Accounts                  []Account                  `json:"accounts"`
 	Organization              *Org                       `json:"org"`
 	AWSDebug                  bool                       `json:"aws_debug,omitempty"`
