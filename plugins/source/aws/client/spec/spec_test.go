@@ -523,6 +523,15 @@ func TestJSONSchema(t *testing.T) {
 			Err:  true,
 			Spec: `{"scheduler":null}`,
 		},
+		// detailed table_options cases are tested separately
+		{
+			Name: "null table_options",
+			Spec: `{"table_options":null}`,
+		},
+		{
+			Name: "empty table_options",
+			Spec: `{"table_options":null}`,
+		},
 	})
 }
 
