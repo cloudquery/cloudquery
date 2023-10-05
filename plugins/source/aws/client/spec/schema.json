@@ -2893,7 +2893,8 @@
           "default": 4
         },
         "use_paid_apis": {
-          "type": "boolean"
+          "type": "boolean",
+          "default": false
         },
         "table_options": {
           "oneOf": [
@@ -2906,7 +2907,9 @@
           ]
         },
         "concurrency": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1,
+          "default": 50000
         },
         "event_based_sync": {
           "oneOf": [

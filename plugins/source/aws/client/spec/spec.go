@@ -12,10 +12,6 @@ import (
 	orderedmap "github.com/wk8/go-ordered-map/v2"
 )
 
-const (
-	defaultMaxConcurrency = 50000
-)
-
 type Spec struct {
 	Regions                   []string                   `json:"regions,omitempty" jsonschema:"minLength=1,default=us-east-1"`
 	Accounts                  []Account                  `json:"accounts"`
@@ -28,9 +24,9 @@ type Spec struct {
 	PartitionID               string                     `json:"custom_endpoint_partition_id,omitempty"`
 	SigningRegion             string                     `json:"custom_endpoint_signing_region,omitempty"`
 	InitializationConcurrency int                        `json:"initialization_concurrency" jsonschema:"minimum=1,default=4"`
-	UsePaidAPIs               bool                       `json:"use_paid_apis"`
+	UsePaidAPIs               bool                       `json:"use_paid_apis" jsonschema:"default=false"`
 	TableOptions              *tableoptions.TableOptions `json:"table_options,omitempty"`
-	Concurrency               int                        `json:"concurrency"`
+	Concurrency               int                        `json:"concurrency" jsonschema:"minimum=1,default=50000"`
 	EventBasedSync            *EventBasedSync            `json:"event_based_sync,omitempty"`
 	Scheduler                 scheduler.Strategy         `json:"scheduler,omitempty"`
 }
@@ -131,19 +127,22 @@ func (s *Spec) Validate() error {
 }
 
 func (s *Spec) SetDefaults() {
-	if s.InitializationConcurrency <= 0 {
-		s.InitializationConcurrency = 4
-	}
-
 	if s.TableOptions == nil {
 		s.TableOptions = &tableoptions.TableOptions{}
 	}
 	// also call set defaults
 	s.TableOptions.SetDefaults()
 
-	if s.Concurrency == 0 {
+	if s.InitializationConcurrency <= 0 {
+		const defaultInitializationConcurrency = 4
+		s.InitializationConcurrency = defaultInitializationConcurrency
+	}
+
+	if s.Concurrency <= 0 {
+		const defaultMaxConcurrency = 50000
 		s.Concurrency = defaultMaxConcurrency
 	}
+
 	if s.EventBasedSync != nil && s.EventBasedSync.FullSync == nil {
 		fullSync := true
 		s.EventBasedSync.FullSync = &fullSync

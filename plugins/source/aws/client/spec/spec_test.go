@@ -318,6 +318,132 @@ func TestJSONSchema(t *testing.T) {
 }
 `,
 		},
+		{
+			Name: "empty custom_endpoint_url",
+			Spec: `
+{
+  "custom_endpoint_url":                "",
+  "custom_endpoint_partition_id":       "id",
+  "custom_endpoint_signing_region":     "region",
+  "custom_endpoint_hostname_immutable": true
+}
+`,
+		},
+		{
+			Name: "empty custom_endpoint_url without custom_endpoint_partition_id",
+			Spec: `
+{
+  "custom_endpoint_url":                "",
+  "custom_endpoint_signing_region":     "region",
+  "custom_endpoint_hostname_immutable": true
+}
+`,
+		},
+		{
+			Name: "empty custom_endpoint_url without custom_endpoint_signing_region",
+			Spec: `
+{
+  "custom_endpoint_url":                "",
+  "custom_endpoint_partition_id":       "id",
+  "custom_endpoint_hostname_immutable": true
+}
+`,
+		},
+		{
+			Name: "empty custom_endpoint_url without custom_endpoint_hostname_immutable",
+			Spec: `
+{
+  "custom_endpoint_url":                "",
+  "custom_endpoint_partition_id":       "id",
+  "custom_endpoint_signing_region":     "region"
+}
+`,
+		},
+		{
+			Name: "no custom_endpoint_url",
+			Spec: `
+{
+  "custom_endpoint_partition_id":       "id",
+  "custom_endpoint_signing_region":     "region",
+  "custom_endpoint_hostname_immutable": true
+}
+`,
+		},
+		{
+			Name: "no custom_endpoint_url without custom_endpoint_partition_id",
+			Spec: `
+{
+  "custom_endpoint_signing_region":     "region",
+  "custom_endpoint_hostname_immutable": true
+}
+`,
+		},
+		{
+			Name: "no custom_endpoint_url without custom_endpoint_signing_region",
+			Spec: `
+{
+  "custom_endpoint_partition_id":       "id",
+  "custom_endpoint_hostname_immutable": true
+}
+`,
+		},
+		{
+			Name: "no custom_endpoint_url without custom_endpoint_hostname_immutable",
+			Spec: `
+{
+  "custom_endpoint_partition_id":       "id",
+  "custom_endpoint_signing_region":     "region"
+}
+`,
+		},
+		{
+			Name: "proper initialization_concurrency",
+			Spec: `{"initialization_concurrency":123}`,
+		},
+		{
+			Name: "zero initialization_concurrency",
+			Err:  true,
+			Spec: `{"initialization_concurrency":0}`,
+		},
+		{
+			Name: "bad initialization_concurrency",
+			Err:  true,
+			Spec: `{"initialization_concurrency":-1}`,
+		},
+		{
+			Name: "float initialization_concurrency",
+			Err:  true,
+			Spec: `{"initialization_concurrency":4.5}`,
+		},
+		{
+			Name: "null initialization_concurrency",
+			Err:  true,
+			Spec: `{"initialization_concurrency":null}`,
+		},
+		{
+			Name: "proper concurrency",
+			Spec: `{"concurrency":123}`,
+		},
+		{
+			Name: "zero concurrency",
+			Err:  true,
+			Spec: `{"concurrency":0}`,
+		},
+		{
+			Name: "bad concurrency",
+			Err:  true,
+			Spec: `{"concurrency":-1}`,
+		},
+		{
+			Name: "float concurrency",
+			Err:  true,
+			Spec: `{"concurrency":4.5}`,
+		},
+		{
+			Name: "null concurrency",
+			Err:  true,
+			Spec: `{"concurrency":null}`,
+		},
 	})
 }
 
