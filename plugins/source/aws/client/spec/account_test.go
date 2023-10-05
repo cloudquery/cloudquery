@@ -12,15 +12,35 @@ import (
 func TestAccountJSONSchema(t *testing.T) {
 	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
 		{
-			Name: "empty",
+			Name: "empty accounts",
 			Spec: `{"accounts":[]}`,
 		},
 		{
-			Name: "null",
+			Name: "null accounts",
 			Spec: `{"accounts":null}`,
 		},
 		{
-			Name: "proper",
+			Name: "bad accounts",
+			Err:  true,
+			Spec: `{"accounts":[123]}`,
+		},
+		{
+			Name: "empty account",
+			Err:  true,
+			Spec: `{"accounts":[{}]}`,
+		},
+		{
+			Name: "null account",
+			Err:  true,
+			Spec: `{"accounts":[null]}`,
+		},
+		{
+			Name: "bad account",
+			Err:  true,
+			Spec: `{"accounts":[123]}`,
+		},
+		{
+			Name: "proper account",
 			Spec: func() string {
 				var input Account
 				require.NoError(t, faker.FakeObject(&input))
@@ -33,7 +53,7 @@ func TestAccountJSONSchema(t *testing.T) {
 			}(),
 		},
 		{
-			Name: "bad role_arn",
+			Name: "bad account.role_arn",
 			Err:  true,
 			Spec: func() string {
 				var input Account
@@ -42,7 +62,7 @@ func TestAccountJSONSchema(t *testing.T) {
 			}(),
 		},
 		{
-			Name: "id missing",
+			Name: "missing account.id",
 			Err:  true,
 			Spec: func() string {
 				var input Account
@@ -56,7 +76,7 @@ func TestAccountJSONSchema(t *testing.T) {
 			}(),
 		},
 		{
-			Name: "empty region",
+			Name: "empty account.region",
 			Err:  true,
 			Spec: func() string {
 				var input Account
@@ -71,7 +91,7 @@ func TestAccountJSONSchema(t *testing.T) {
 			}(),
 		},
 		{
-			Name: "accounts with null org",
+			Name: "filled in accounts with null org",
 			Spec: func() string {
 				var account Account
 				require.NoError(t, faker.FakeObject(&account))

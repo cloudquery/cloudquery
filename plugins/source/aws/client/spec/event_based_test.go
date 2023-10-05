@@ -21,6 +21,11 @@ func TestEventBasedSyncJSONSchema(t *testing.T) {
 			Spec: `{"event_based_sync":null}`,
 		},
 		{
+			Name: "bad",
+			Err:  true,
+			Spec: `{"event_based_sync":123}`,
+		},
+		{
 			Name: "proper",
 			Spec: func() string {
 				var input EventBasedSync
@@ -45,7 +50,7 @@ func TestEventBasedSyncJSONSchema(t *testing.T) {
 			}(),
 		},
 		{
-			Name: "kinesis_stream_arn missing",
+			Name: "missing kinesis_stream_arn",
 			Err:  true,
 			Spec: func() string {
 				var input EventBasedSync

@@ -21,6 +21,11 @@ func TestOrgJSONSchema(t *testing.T) {
 			Spec: `{"org":null}`,
 		},
 		{
+			Name: "bad",
+			Err:  true,
+			Spec: `{"org":123}`,
+		},
+		{
 			Name: "proper",
 			Spec: func() string {
 				var input Org
@@ -39,7 +44,7 @@ func TestOrgJSONSchema(t *testing.T) {
 			}(),
 		},
 		{
-			Name: "member_role_name missing",
+			Name: "missing member_role_name",
 			Err:  true,
 			Spec: func() string {
 				var input Org
