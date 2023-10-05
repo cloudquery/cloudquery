@@ -156,7 +156,7 @@ func (s *Spec) SetDefaults() {
 	}
 
 	if s.MaxBackoff == nil {
-		maxBackoff := 10
+		maxBackoff := 30
 		s.MaxBackoff = &maxBackoff
 	}
 }
