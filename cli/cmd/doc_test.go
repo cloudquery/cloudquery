@@ -11,6 +11,7 @@ var docFiles = []string{
 	"cloudquery_sync.md",
 	"cloudquery_migrate.md",
 	"cloudquery_tables.md",
+	"cloudquery_install.md",
 }
 
 func TestDoc(t *testing.T) {
