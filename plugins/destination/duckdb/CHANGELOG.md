@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v4.2.9...plugins-destination-duckdb-v4.2.10) (2023-10-05)
+
+
+### Bug Fixes
+
+* Disable Windows publishing ([#14372](https://github.com/cloudquery/cloudquery/issues/14372)) ([1dce3b6](https://github.com/cloudquery/cloudquery/commit/1dce3b6a2b201978c469f4e32b8614d7e106c5af))
+
 ## [4.2.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v4.2.8...plugins-destination-duckdb-v4.2.9) (2023-10-04)
 
 
