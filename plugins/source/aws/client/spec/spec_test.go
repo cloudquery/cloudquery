@@ -95,6 +95,7 @@ func TestSpecValidate(t *testing.T) {
 }
 
 func TestJSONSchema(t *testing.T) {
+	// Accounts, TableOptions & EventBasedSync are tested separately
 	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
 		{
 			Name: "empty",
