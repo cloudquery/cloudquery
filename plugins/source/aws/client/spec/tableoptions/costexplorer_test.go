@@ -18,7 +18,34 @@ func TestCustomGetCostAndUsageInput_JSONSchemaExtend(t *testing.T) {
 			Spec: `{}`,
 		},
 		{
-			Name: "proper",
+			Name: "empty get_cost_and_usage",
+			Spec: `{"get_cost_and_usage":[]}`,
+		},
+		{
+			Name: "null get_cost_and_usage",
+			Spec: `{"get_cost_and_usage":null}`,
+		},
+		{
+			Name: "bad get_cost_and_usage",
+			Err:  true,
+			Spec: `{"get_cost_and_usage":123}`,
+		},
+		{
+			Name: "empty get_cost_and_usage entry",
+			Spec: `{"get_cost_and_usage":[{}]}`,
+		},
+		{
+			Name: "null get_cost_and_usage entry",
+			Err:  true,
+			Spec: `{"get_cost_and_usage":[null]}`,
+		},
+		{
+			Name: "bad get_cost_and_usage entry",
+			Err:  true,
+			Spec: `{"get_cost_and_usage":[123]}`,
+		},
+		{
+			Name: "proper get_cost_and_usage",
 			Spec: func() string {
 				var input CustomGetCostAndUsageInput
 				require.NoError(t, faker.FakeObject(&input))
@@ -26,7 +53,7 @@ func TestCustomGetCostAndUsageInput_JSONSchemaExtend(t *testing.T) {
 			}(),
 		},
 		{
-			Name: "NextPageToken is present",
+			Name: "get_cost_and_usage.NextPageToken is present",
 			Err:  true,
 			Spec: func() string {
 				var input CustomGetCostAndUsageInput

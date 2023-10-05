@@ -40,7 +40,34 @@ func TestCustomAccessAnalyzerListFindingsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: `{}`,
 		},
 		{
-			Name: "proper",
+			Name: "empty list_findings",
+			Spec: `{"list_findings":[]}`,
+		},
+		{
+			Name: "null list_findings",
+			Spec: `{"list_findings":null}`,
+		},
+		{
+			Name: "bad list_findings",
+			Err:  true,
+			Spec: `{"list_findings":123}`,
+		},
+		{
+			Name: "empty list_findings entry",
+			Spec: `{"list_findings":[{}]}`,
+		},
+		{
+			Name: "null list_findings",
+			Err:  true,
+			Spec: `{"list_findings":[null]}`,
+		},
+		{
+			Name: "bad list_findings entry",
+			Err:  true,
+			Spec: `{"list_findings":[123]}`,
+		},
+		{
+			Name: "proper list_findings",
 			Spec: func() string {
 				var input CustomAccessAnalyzerListFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
@@ -48,7 +75,7 @@ func TestCustomAccessAnalyzerListFindingsInput_JSONSchemaExtend(t *testing.T) {
 			}(),
 		},
 		{
-			Name: "AnalyzerArn is present",
+			Name: "list_findings.AnalyzerArn is present",
 			Err:  true,
 			Spec: func() string {
 				var input CustomAccessAnalyzerListFindingsInput
@@ -57,7 +84,7 @@ func TestCustomAccessAnalyzerListFindingsInput_JSONSchemaExtend(t *testing.T) {
 			}(),
 		},
 		{
-			Name: "NextToken is present",
+			Name: "list_findings.NextToken is present",
 			Err:  true,
 			Spec: func() string {
 				var input CustomAccessAnalyzerListFindingsInput

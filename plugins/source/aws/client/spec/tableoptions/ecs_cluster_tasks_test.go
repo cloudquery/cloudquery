@@ -35,7 +35,34 @@ func TestCustomListTasksOpts_JSONSchemaExtend(t *testing.T) {
 			Spec: `{}`,
 		},
 		{
-			Name: "proper",
+			Name: "empty list_tasks",
+			Spec: `{"list_tasks":[]}`,
+		},
+		{
+			Name: "null list_tasks",
+			Spec: `{"list_tasks":null}`,
+		},
+		{
+			Name: "bad list_tasks",
+			Err:  true,
+			Spec: `{"list_tasks":123}`,
+		},
+		{
+			Name: "empty list_tasks entry",
+			Spec: `{"list_tasks":[{}]}`,
+		},
+		{
+			Name: "null list_tasks entry",
+			Err:  true,
+			Spec: `{"list_tasks":[null]}`,
+		},
+		{
+			Name: "bad list_tasks entry",
+			Err:  true,
+			Spec: `{"list_tasks":123}`,
+		},
+		{
+			Name: "proper list_tasks",
 			Spec: func() string {
 				var input CustomListTasksOpts
 				require.NoError(t, faker.FakeObject(&input))
@@ -43,7 +70,7 @@ func TestCustomListTasksOpts_JSONSchemaExtend(t *testing.T) {
 			}(),
 		},
 		{
-			Name: "NextToken is present",
+			Name: "list_tasks.NextToken is present",
 			Err:  true,
 			Spec: func() string {
 				var input CustomListTasksOpts
@@ -52,7 +79,7 @@ func TestCustomListTasksOpts_JSONSchemaExtend(t *testing.T) {
 			}(),
 		},
 		{
-			Name: "Cluster is present",
+			Name: "list_tasks.Cluster is present",
 			Err:  true,
 			Spec: func() string {
 				var input CustomListTasksOpts

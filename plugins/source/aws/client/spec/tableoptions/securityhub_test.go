@@ -35,7 +35,34 @@ func TestCustomGetFindingsOpts_JSONSchemaExtend(t *testing.T) {
 			Spec: `{}`,
 		},
 		{
-			Name: "proper",
+			Name: "empty get_findings",
+			Spec: `{"get_findings":[]}`,
+		},
+		{
+			Name: "null get_findings",
+			Spec: `{"get_findings":null}`,
+		},
+		{
+			Name: "bad get_findings",
+			Err:  true,
+			Spec: `{"get_findings":123}`,
+		},
+		{
+			Name: "empty get_findings entry",
+			Spec: `{"get_findings":[{}]}`,
+		},
+		{
+			Name: "null get_findings entry",
+			Err:  true,
+			Spec: `{"get_findings":[null]}`,
+		},
+		{
+			Name: "bad get_findings entry",
+			Err:  true,
+			Spec: `{"get_findings":[123]}`,
+		},
+		{
+			Name: "proper get_findings",
 			Spec: func() string {
 				var input CustomGetFindingsOpts
 				require.NoError(t, faker.FakeObject(&input))
@@ -44,7 +71,7 @@ func TestCustomGetFindingsOpts_JSONSchemaExtend(t *testing.T) {
 			}(),
 		},
 		{
-			Name: "NextToken is present",
+			Name: "get_findings.NextToken is present",
 			Err:  true,
 			Spec: func() string {
 				var input CustomGetFindingsOpts
@@ -54,7 +81,7 @@ func TestCustomGetFindingsOpts_JSONSchemaExtend(t *testing.T) {
 			}(),
 		},
 		{
-			Name: "MaxResults > 100",
+			Name: "get_findings.MaxResults > 100",
 			Err:  true,
 			Spec: func() string {
 				var input CustomGetFindingsOpts
@@ -64,7 +91,7 @@ func TestCustomGetFindingsOpts_JSONSchemaExtend(t *testing.T) {
 			}(),
 		},
 		{
-			Name: "MaxResults < 1",
+			Name: "get_findings.MaxResults < 1",
 			Err:  true,
 			Spec: func() string {
 				var input CustomGetFindingsOpts

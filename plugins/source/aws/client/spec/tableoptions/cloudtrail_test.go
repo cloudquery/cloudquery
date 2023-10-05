@@ -36,7 +36,34 @@ func TestCustomLookupEventsOpts_JSONSchemaExtend(t *testing.T) {
 			Spec: `{}`,
 		},
 		{
-			Name: "proper",
+			Name: "empty lookup_events",
+			Spec: `{"lookup_events":[]}`,
+		},
+		{
+			Name: "null lookup_events",
+			Spec: `{"lookup_events":null}`,
+		},
+		{
+			Name: "bad lookup_events",
+			Err:  true,
+			Spec: `{"lookup_events":123}`,
+		},
+		{
+			Name: "empty lookup_events entry",
+			Spec: `{"lookup_events":[{}]}`,
+		},
+		{
+			Name: "null lookup_events entry",
+			Err:  true,
+			Spec: `{"lookup_events":[null]}`,
+		},
+		{
+			Name: "bad lookup_events entry",
+			Err:  true,
+			Spec: `{"lookup_events":[123]}`,
+		},
+		{
+			Name: "proper lookup_events",
 			Spec: func() string {
 				var input CustomLookupEventsOpts
 				require.NoError(t, faker.FakeObject(&input))
@@ -44,7 +71,7 @@ func TestCustomLookupEventsOpts_JSONSchemaExtend(t *testing.T) {
 			}(),
 		},
 		{
-			Name: "NextToken is present",
+			Name: "lookup_events.NextToken is present",
 			Err:  true,
 			Spec: func() string {
 				var input CustomLookupEventsOpts
