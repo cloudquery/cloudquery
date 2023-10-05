@@ -61,25 +61,35 @@ jobs:
         with:
           go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
 
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+
+      - name: Install shell escape
+        run: |
+          npm install shell-escape@0.2.0
+
       - name: Get Release Notes
         id: release-notes
         uses: actions/github-script@v6
         with:
           result-encoding: string
           script: |
+            const shellescape = require('shell-escape');
             const { data } = await github.rest.repos.getReleaseByTag({
               owner: "cloudquery",
               repo: context.repo.repo,
               tag: context.ref.replace('refs/tags/', ''),
             });
-            return data.body;
+            return shellescape([data.body]);
 
       - name: Run package command
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         run: |
           mkdir -p stubdocs
           touch stubdocs/README.md
-          go run main.go package --docs-dir stubdocs -m "${{ steps.release-notes.outputs.result }}" ${{ needs.prepare.outputs.plugin_kind }} ${{ needs.prepare.outputs.plugin_version }} .
+          go run main.go package --docs-dir stubdocs -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_kind }} ${{ needs.prepare.outputs.plugin_version }} .
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
