@@ -85,6 +85,8 @@ func (s *Client) request(ctx context.Context, edge string, params url.Values) (r
 	}()
 
 	for {
+		t, st := ctx.Deadline()
+		log.Debug().Msgf("%s, %t", t, st)
 		if !s.lim.Allow() {
 			log.Debug().Msg("waiting for rate limiter...")
 			if err := s.lim.Wait(ctx); err != nil {
