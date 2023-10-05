@@ -134,6 +134,7 @@ require (
 	github.com/cloudquery/plugin-sdk/v4 v4.12.3
 	github.com/cockroachdb/cockroachdb-parser v0.0.0-20230705064001-302c9ad52e1a
 	github.com/gertd/go-pluralize v0.2.1
+	github.com/ghodss/yaml v1.0.0
 	github.com/gocarina/gocsv v0.0.0-20230616125104-99d496ca653d
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
@@ -207,7 +208,6 @@ require (
 	github.com/flosch/pongo2/v4 v4.0.2 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect
 	github.com/getsentry/sentry-go v0.24.1 // indirect
-	github.com/ghodss/yaml v1.0.0
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/gin v1.9.1 // indirect
 	github.com/go-logr/logr v1.2.4 // indirect
