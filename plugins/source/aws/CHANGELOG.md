@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.14.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.13.2...plugins-source-aws-v22.14.0) (2023-10-04)
+
+
+### Features
+
+* **services:** Support newly added regions ([#14283](https://github.com/cloudquery/cloudquery/issues/14283)) ([ea54163](https://github.com/cloudquery/cloudquery/commit/ea5416383cbc9ef14bcaf68b7112527a63f60ae3))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v14 digest to 00efb06 ([#14202](https://github.com/cloudquery/cloudquery/issues/14202)) ([fc8cc62](https://github.com/cloudquery/cloudquery/commit/fc8cc62ed70db157612e88678c123ba6a34b3b3c))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to 7ded38b ([#14246](https://github.com/cloudquery/cloudquery/issues/14246)) ([005891e](https://github.com/cloudquery/cloudquery/commit/005891e1892b41235ddb3b102f4bb6dafd48949a))
+* **deps:** Update github.com/petermattis/goid digest to 1876fd5 ([#14234](https://github.com/cloudquery/cloudquery/issues/14234)) ([3b56924](https://github.com/cloudquery/cloudquery/commit/3b56924bc734b1e6d49c6fa55da928f92d7291a0))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.4 ([#14043](https://github.com/cloudquery/cloudquery/issues/14043)) ([be4911a](https://github.com/cloudquery/cloudquery/commit/be4911af9abef43896e78dd69698b989558a9e1a))
+
 ## [22.13.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.13.1...plugins-source-aws-v22.13.2) (2023-09-29)
 
 
