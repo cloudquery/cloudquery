@@ -18,8 +18,8 @@ type Spec struct {
 	Accounts                  []Account                  `json:"accounts"`
 	Organization              *Org                       `json:"org"`
 	AWSDebug                  bool                       `json:"aws_debug,omitempty"`
-	MaxRetries                *int                       `json:"max_retries,omitempty"`
-	MaxBackoff                *int                       `json:"max_backoff,omitempty"`
+	MaxRetries                *int                       `json:"max_retries,omitempty" jsonschema:"default=10"`
+	MaxBackoff                *int                       `json:"max_backoff,omitempty" jsonschema:"default=30"`
 	EndpointURL               string                     `json:"custom_endpoint_url,omitempty"`
 	HostnameImmutable         *bool                      `json:"custom_endpoint_hostname_immutable,omitempty"`
 	PartitionID               string                     `json:"custom_endpoint_partition_id,omitempty"`
@@ -85,6 +85,16 @@ func (s *Spec) SetDefaults() {
 	if s.EventBasedSync != nil && s.EventBasedSync.FullSync == nil {
 		fullSync := true
 		s.EventBasedSync.FullSync = &fullSync
+	}
+
+	if s.MaxRetries == nil {
+		maxRetries := 10
+		s.MaxRetries = &maxRetries
+	}
+
+	if s.MaxBackoff == nil {
+		maxBackoff := 10
+		s.MaxBackoff = &maxBackoff
 	}
 }
 

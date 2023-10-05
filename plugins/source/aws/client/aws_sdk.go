@@ -17,22 +17,16 @@ func ConfigureAwsSDK(ctx context.Context, logger zerolog.Logger, awsPluginSpec *
 	var err error
 	var awsCfg aws.Config
 
-	maxAttempts := 10
-	if awsPluginSpec.MaxRetries != nil {
-		maxAttempts = *awsPluginSpec.MaxRetries
-	}
-	maxBackoff := 30
-	if awsPluginSpec.MaxBackoff != nil {
-		maxBackoff = *awsPluginSpec.MaxBackoff
-	}
+	// This sets MaxRetries & MaxBackoff, too
+	awsPluginSpec.SetDefaults()
 
 	configFns := []func(*config.LoadOptions) error{
 		config.WithDefaultRegion(defaultRegion),
 		// https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/retries-timeouts/
 		config.WithRetryer(func() aws.Retryer {
 			return retry.NewStandard(func(so *retry.StandardOptions) {
-				so.MaxAttempts = maxAttempts
-				so.MaxBackoff = time.Duration(maxBackoff) * time.Second
+				so.MaxAttempts = *awsPluginSpec.MaxRetries
+				so.MaxBackoff = time.Duration(*awsPluginSpec.MaxBackoff) * time.Second
 				so.RateLimiter = &NoRateLimiter{}
 			})
 		}),

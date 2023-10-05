@@ -128,6 +128,46 @@ func TestJSONSchema(t *testing.T) {
 			Name: "proper regions",
 			Spec: `{"regions":["a","b","c"]}`,
 		},
+		{
+			Name: "proper aws_debug",
+			Spec: `{"aws_debug":true}`,
+		},
+		{
+			Name: "bad aws_debug",
+			Err:  true,
+			Spec: `{"aws_debug":123}`,
+		},
+		{
+			Name: "null aws_debug",
+			Err:  true,
+			Spec: `{"aws_debug":null}`,
+		},
+		{
+			Name: "proper max_retries",
+			Spec: `{"max_retries":123}`,
+		},
+		{
+			Name: "bad max_retries",
+			Err:  true,
+			Spec: `{"max_retries":true}`,
+		},
+		{
+			Name: "null max_retries",
+			Spec: `{"max_retries":null}`,
+		},
+		{
+			Name: "proper max_backoff",
+			Spec: `{"max_backoff":123}`,
+		},
+		{
+			Name: "bad max_backoff",
+			Err:  true,
+			Spec: `{"max_backoff":true}`,
+		},
+		{
+			Name: "null max_backoff",
+			Spec: `{"max_backoff":null}`,
+		},
 	})
 }
 

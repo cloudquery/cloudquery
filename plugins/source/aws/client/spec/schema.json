@@ -2794,7 +2794,8 @@
         "max_retries": {
           "oneOf": [
             {
-              "type": "integer"
+              "type": "integer",
+              "default": 10
             },
             {
               "type": "null"
@@ -2804,7 +2805,8 @@
         "max_backoff": {
           "oneOf": [
             {
-              "type": "integer"
+              "type": "integer",
+              "default": 30
             },
             {
               "type": "null"
