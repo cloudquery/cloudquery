@@ -14,7 +14,7 @@ const (
 )
 
 type Spec struct {
-	Regions                   []string                   `json:"regions,omitempty"`
+	Regions                   []string                   `json:"regions,omitempty" jsonschema:"minLength=1"`
 	Accounts                  []Account                  `json:"accounts"`
 	Organization              *Org                       `json:"org"`
 	AWSDebug                  bool                       `json:"aws_debug,omitempty"`
@@ -24,7 +24,7 @@ type Spec struct {
 	HostnameImmutable         *bool                      `json:"custom_endpoint_hostname_immutable,omitempty"`
 	PartitionID               string                     `json:"custom_endpoint_partition_id,omitempty"`
 	SigningRegion             string                     `json:"custom_endpoint_signing_region,omitempty"`
-	InitializationConcurrency int                        `json:"initialization_concurrency"`
+	InitializationConcurrency int                        `json:"initialization_concurrency" jsonschema:"minimum=1,default=4"`
 	UsePaidAPIs               bool                       `json:"use_paid_apis"`
 	TableOptions              *tableoptions.TableOptions `json:"table_options,omitempty"`
 	Concurrency               int                        `json:"concurrency"`

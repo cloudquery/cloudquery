@@ -2594,7 +2594,8 @@
           "oneOf": [
             {
               "items": {
-                "type": "string"
+                "type": "string",
+                "minLength": 1
               },
               "type": "array"
             },
@@ -2748,7 +2749,8 @@
           "oneOf": [
             {
               "items": {
-                "type": "string"
+                "type": "string",
+                "minLength": 1
               },
               "type": "array"
             },
@@ -2823,7 +2825,9 @@
           "type": "string"
         },
         "initialization_concurrency": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1,
+          "default": 4
         },
         "use_paid_apis": {
           "type": "boolean"

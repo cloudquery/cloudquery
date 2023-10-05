@@ -24,9 +24,11 @@ func TestAccountJSONSchema(t *testing.T) {
 			Spec: func() string {
 				var input Account
 				require.NoError(t, faker.FakeObject(&input))
+
 				var randomARN arn.ARN
 				require.NoError(t, faker.FakeObject(&randomARN))
 				input.RoleARN = randomARN.String()
+
 				return `{"accounts":[` + jsonschema.WithRemovedKeys(t, &input) + `]}`
 			}(),
 		},
@@ -45,10 +47,27 @@ func TestAccountJSONSchema(t *testing.T) {
 			Spec: func() string {
 				var input Account
 				require.NoError(t, faker.FakeObject(&input))
+
 				var randomARN arn.ARN
 				require.NoError(t, faker.FakeObject(&randomARN))
 				input.RoleARN = randomARN.String()
+
 				return `{"accounts":[` + jsonschema.WithRemovedKeys(t, &input, "id") + `]}`
+			}(),
+		},
+		{
+			Name: "empty region",
+			Err:  true,
+			Spec: func() string {
+				var input Account
+				require.NoError(t, faker.FakeObject(&input))
+
+				var randomARN arn.ARN
+				require.NoError(t, faker.FakeObject(&randomARN))
+				input.RoleARN = randomARN.String()
+
+				input.Regions = []string{""}
+				return `{"accounts":[` + jsonschema.WithRemovedKeys(t, &input) + `]}`
 			}(),
 		},
 	})

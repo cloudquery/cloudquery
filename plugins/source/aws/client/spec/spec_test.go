@@ -1,11 +1,9 @@
 package spec
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/cloudquery/codegen/jsonschema"
-	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/stretchr/testify/require"
 )
 
@@ -97,27 +95,39 @@ func TestSpecValidate(t *testing.T) {
 }
 
 func TestJSONSchema(t *testing.T) {
-	validator, err := plugin.JSONSchemaValidator(JSONSchema)
-	require.NoError(t, err)
-
-	type testCase struct {
-		name string
-		spec string
-		err  bool
-	}
-
-	for _, tc := range []testCase{} {
-		t.Run(tc.name, func(t *testing.T) {
-			var v any
-			require.NoError(t, json.Unmarshal([]byte(tc.spec), &v))
-			err := validator.Validate(v)
-			if tc.err {
-				require.Error(t, err)
-			} else {
-				require.NoError(t, err)
-			}
-		})
-	}
+	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
+		{
+			Name: "empty",
+			Spec: `{}`,
+		},
+		{
+			Name: "null regions",
+			Spec: `{"regions":null}`,
+		},
+		{
+			Name: "empty regions",
+			Spec: `{"regions":[]}`,
+		},
+		{
+			Name: "bad regions type",
+			Err:  true,
+			Spec: `{"regions":123}`,
+		},
+		{
+			Name: "bad region type",
+			Err:  true,
+			Spec: `{"regions":[1,2,3]}`,
+		},
+		{
+			Name: "empty region",
+			Err:  true,
+			Spec: `{"regions":["a","b",""]}`,
+		},
+		{
+			Name: "proper regions",
+			Spec: `{"regions":["a","b","c"]}`,
+		},
+	})
 }
 
 func TestEnsureJSONSchema(t *testing.T) {
