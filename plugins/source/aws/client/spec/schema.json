@@ -2587,8 +2587,7 @@
           "type": "string"
         },
         "default_region": {
-          "type": "string",
-          "default": "us-east-1"
+          "type": "string"
         },
         "regions": {
           "oneOf": [
