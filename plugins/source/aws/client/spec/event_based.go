@@ -10,7 +10,7 @@ import (
 type EventBasedSync struct {
 	FullSync         *bool      `json:"full_sync,omitempty" jsonschema:"default=true"`
 	Account          Account    `json:"account"`
-	KinesisStreamARN string     `json:"kinesis_stream_arn" jsonschema:"required,pattern=^arn(:[^:\n]*){5\\,}([:/].*)?$"`
+	KinesisStreamARN string     `json:"kinesis_stream_arn" jsonschema:"required,pattern=^arn(:[^:\n]*){5}([:/].*)?$"`
 	StartTime        *time.Time `json:"start_time,omitempty" jsonschema:"default=now"`
 }
 

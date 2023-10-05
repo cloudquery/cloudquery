@@ -2578,7 +2578,7 @@
         },
         "role_arn": {
           "type": "string",
-          "pattern": "^arn(:[^:\n]*){5,}([:/].*)?$"
+          "pattern": "^arn(:[^:\n]*){5}([:/].*)?$"
         },
         "role_session_name": {
           "type": "string"
@@ -2628,7 +2628,7 @@
         },
         "kinesis_stream_arn": {
           "type": "string",
-          "pattern": "^arn(:[^:\n]*){5,}([:/].*)?$"
+          "pattern": "^arn(:[^:\n]*){5}([:/].*)?$"
         },
         "start_time": {
           "oneOf": [
