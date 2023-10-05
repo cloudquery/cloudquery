@@ -3,33 +3,34 @@ package tableoptions
 import (
 	"testing"
 
+	"github.com/cloudquery/codegen/jsonschema"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/stretchr/testify/require"
 )
 
 func TestCustomGetCostAndUsageInput_JSONSchemaExtend(t *testing.T) {
-	testJSONSchema(t, []jsonSchemaTestCase{
+	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
 		{
-			name: "empty",
-			spec: `{"aws_alpha_costexplorer_cost_custom":{}}`,
+			Name: "empty",
+			Spec: `{"aws_alpha_costexplorer_cost_custom":{}}`,
 		},
 		{
-			name: "proper",
-			spec: func() string {
+			Name: "proper",
+			Spec: func() string {
 				var input CustomGetCostAndUsageInput
 				require.NoError(t, faker.FakeObject(&input))
 				return `{"aws_alpha_costexplorer_cost_custom":{"get_cost_and_usage":[` +
-					jsonWithRemovedKeys(t, &input, "NextPageToken") + `]}}`
+					jsonschema.WithRemovedKeys(t, &input, "NextPageToken") + `]}}`
 			}(),
 		},
 		{
-			name: "NextPageToken is present",
-			err:  true,
-			spec: func() string {
+			Name: "NextPageToken is present",
+			Err:  true,
+			Spec: func() string {
 				var input CustomGetCostAndUsageInput
 				require.NoError(t, faker.FakeObject(&input))
 				return `{"aws_alpha_costexplorer_cost_custom":{"get_cost_and_usage":[` +
-					jsonWithRemovedKeys(t, &input) + `]}}`
+					jsonschema.WithRemovedKeys(t, &input) + `]}}`
 			}(),
 		},
 	})

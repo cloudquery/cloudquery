@@ -3,10 +3,10 @@ package tableoptions
 import (
 	"testing"
 
+	"github.com/cloudquery/codegen/jsonschema"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-
-	"github.com/cloudquery/plugin-sdk/faker"
 )
 
 func TestAAListFindings(t *testing.T) {
@@ -31,38 +31,38 @@ func TestAAListFindings(t *testing.T) {
 }
 
 func TestCustomAccessAnalyzerListFindingsInput_JSONSchemaExtend(t *testing.T) {
-	testJSONSchema(t, []jsonSchemaTestCase{
+	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
 		{
-			name: "empty",
-			spec: `{"aws_accessanalyzer_analyzer_findings":{}}`,
+			Name: "empty",
+			Spec: `{"aws_accessanalyzer_analyzer_findings":{}}`,
 		},
 		{
-			name: "proper",
-			spec: func() string {
+			Name: "proper",
+			Spec: func() string {
 				var input CustomAccessAnalyzerListFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
 				return `{"aws_accessanalyzer_analyzer_findings":{"list_findings":[` +
-					jsonWithRemovedKeys(t, &input, "NextToken", "AnalyzerArn") + `]}}`
+					jsonschema.WithRemovedKeys(t, &input, "NextToken", "AnalyzerArn") + `]}}`
 			}(),
 		},
 		{
-			name: "AnalyzerArn is present",
-			err:  true,
-			spec: func() string {
+			Name: "AnalyzerArn is present",
+			Err:  true,
+			Spec: func() string {
 				var input CustomAccessAnalyzerListFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
 				return `{"aws_accessanalyzer_analyzer_findings":{"list_findings":[` +
-					jsonWithRemovedKeys(t, &input, "AnalyzerArn") + `]}}`
+					jsonschema.WithRemovedKeys(t, &input, "AnalyzerArn") + `]}}`
 			}(),
 		},
 		{
-			name: "NextToken is present",
-			err:  true,
-			spec: func() string {
+			Name: "NextToken is present",
+			Err:  true,
+			Spec: func() string {
 				var input CustomAccessAnalyzerListFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
 				return `{"aws_accessanalyzer_analyzer_findings":{"list_findings":[` +
-					jsonWithRemovedKeys(t, &input, "NextToken") + `]}}`
+					jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}}`
 			}(),
 		},
 	})

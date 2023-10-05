@@ -3,6 +3,7 @@ package tableoptions
 import (
 	"testing"
 
+	"github.com/cloudquery/codegen/jsonschema"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -26,28 +27,28 @@ func TestLookupEvents(t *testing.T) {
 }
 
 func TestCustomLookupEventsOpts_JSONSchemaExtend(t *testing.T) {
-	testJSONSchema(t, []jsonSchemaTestCase{
+	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
 		{
-			name: "empty",
-			spec: `{"aws_cloudtrail_events":{}}`,
+			Name: "empty",
+			Spec: `{"aws_cloudtrail_events":{}}`,
 		},
 		{
-			name: "proper",
-			spec: func() string {
+			Name: "proper",
+			Spec: func() string {
 				var input CustomLookupEventsOpts
 				require.NoError(t, faker.FakeObject(&input))
 				return `{"aws_cloudtrail_events":{"lookup_events":[` +
-					jsonWithRemovedKeys(t, &input, "NextToken") + `]}}`
+					jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}}`
 			}(),
 		},
 		{
-			name: "NextToken is present",
-			err:  true,
-			spec: func() string {
+			Name: "NextToken is present",
+			Err:  true,
+			Spec: func() string {
 				var input CustomLookupEventsOpts
 				require.NoError(t, faker.FakeObject(&input))
 				return `{"aws_cloudtrail_events":{"lookup_events":[` +
-					jsonWithRemovedKeys(t, &input) + `]}}`
+					jsonschema.WithRemovedKeys(t, &input) + `]}}`
 			}(),
 		},
 	})

@@ -3,6 +3,7 @@ package tableoptions
 import (
 	"testing"
 
+	"github.com/cloudquery/codegen/jsonschema"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -25,38 +26,38 @@ func TestListTasks(t *testing.T) {
 }
 
 func TestCustomListTasksOpts_JSONSchemaExtend(t *testing.T) {
-	testJSONSchema(t, []jsonSchemaTestCase{
+	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
 		{
-			name: "empty",
-			spec: `{"aws_ecs_cluster_tasks":{}}`,
+			Name: "empty",
+			Spec: `{"aws_ecs_cluster_tasks":{}}`,
 		},
 		{
-			name: "proper",
-			spec: func() string {
+			Name: "proper",
+			Spec: func() string {
 				var input CustomListTasksOpts
 				require.NoError(t, faker.FakeObject(&input))
 				return `{"aws_ecs_cluster_tasks":{"list_tasks":[` +
-					jsonWithRemovedKeys(t, &input, "NextToken", "Cluster") + `]}}`
+					jsonschema.WithRemovedKeys(t, &input, "NextToken", "Cluster") + `]}}`
 			}(),
 		},
 		{
-			name: "NextToken is present",
-			err:  true,
-			spec: func() string {
+			Name: "NextToken is present",
+			Err:  true,
+			Spec: func() string {
 				var input CustomListTasksOpts
 				require.NoError(t, faker.FakeObject(&input))
 				return `{"aws_ecs_cluster_tasks":{"list_tasks":[` +
-					jsonWithRemovedKeys(t, &input, "Cluster") + `]}}`
+					jsonschema.WithRemovedKeys(t, &input, "Cluster") + `]}}`
 			}(),
 		},
 		{
-			name: "Cluster is present",
-			err:  true,
-			spec: func() string {
+			Name: "Cluster is present",
+			Err:  true,
+			Spec: func() string {
 				var input CustomListTasksOpts
 				require.NoError(t, faker.FakeObject(&input))
 				return `{"aws_ecs_cluster_tasks":{"list_tasks":[` +
-					jsonWithRemovedKeys(t, &input, "NextToken") + `]}}`
+					jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}}`
 			}(),
 		},
 	})

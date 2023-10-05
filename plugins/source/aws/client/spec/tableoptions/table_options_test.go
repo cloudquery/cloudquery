@@ -148,12 +148,7 @@ func TestTableOptionsUnmarshal(t *testing.T) {
 }
 
 func TestJSONSchema(t *testing.T) {
-	testJSONSchema(t, []jsonSchemaTestCase{
-		{
-			name: "empty",
-			spec: `{}`,
-		},
-	})
+	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{{Name: "empty", Spec: `{}`}})
 }
 
 func TestEnsureJSONSchema(t *testing.T) {

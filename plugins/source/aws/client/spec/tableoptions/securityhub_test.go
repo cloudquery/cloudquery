@@ -3,6 +3,7 @@ package tableoptions
 import (
 	"testing"
 
+	"github.com/cloudquery/codegen/jsonschema"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -25,52 +26,52 @@ func TestGetFindings(t *testing.T) {
 }
 
 func TestCustomGetFindingsOpts_JSONSchemaExtend(t *testing.T) {
-	testJSONSchema(t, []jsonSchemaTestCase{
+	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
 		{
-			name: "empty",
-			spec: `{"aws_securityhub_findings":{}}`,
+			Name: "empty",
+			Spec: `{"aws_securityhub_findings":{}}`,
 		},
 		{
-			name: "proper",
-			spec: func() string {
+			Name: "proper",
+			Spec: func() string {
 				var input CustomGetFindingsOpts
 				require.NoError(t, faker.FakeObject(&input))
 				input.MaxResults = 10 // range 1-100
 				return `{"aws_securityhub_findings":{"get_findings":[` +
-					jsonWithRemovedKeys(t, &input, "NextToken") + `]}}`
+					jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}}`
 			}(),
 		},
 		{
-			name: "NextToken is present",
-			err:  true,
-			spec: func() string {
+			Name: "NextToken is present",
+			Err:  true,
+			Spec: func() string {
 				var input CustomGetFindingsOpts
 				require.NoError(t, faker.FakeObject(&input))
 				input.MaxResults = 10 // range 1-100
 				return `{"aws_securityhub_findings":{"get_findings":[` +
-					jsonWithRemovedKeys(t, &input) + `]}}`
+					jsonschema.WithRemovedKeys(t, &input) + `]}}`
 			}(),
 		},
 		{
-			name: "MaxResults > 100",
-			err:  true,
-			spec: func() string {
+			Name: "MaxResults > 100",
+			Err:  true,
+			Spec: func() string {
 				var input CustomGetFindingsOpts
 				require.NoError(t, faker.FakeObject(&input))
 				input.MaxResults = 1000 // range 1-100
 				return `{"aws_securityhub_findings":{"get_findings":[` +
-					jsonWithRemovedKeys(t, &input, "NextToken") + `]}}`
+					jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}}`
 			}(),
 		},
 		{
-			name: "MaxResults < 1",
-			err:  true,
-			spec: func() string {
+			Name: "MaxResults < 1",
+			Err:  true,
+			Spec: func() string {
 				var input CustomGetFindingsOpts
 				require.NoError(t, faker.FakeObject(&input))
 				input.MaxResults = 0 // range 1-100
 				return `{"aws_securityhub_findings":{"get_findings":[` +
-					jsonWithRemovedKeys(t, &input, "NextToken") + `]}}`
+					jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}}`
 			}(),
 		},
 	})

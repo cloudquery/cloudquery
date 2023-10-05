@@ -3,6 +3,7 @@ package tableoptions
 import (
 	"testing"
 
+	"github.com/cloudquery/codegen/jsonschema"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -28,28 +29,28 @@ func TestInspector2ListFindings(t *testing.T) {
 }
 
 func TestCustomInspector2ListFindingsInput_JSONSchemaExtend(t *testing.T) {
-	testJSONSchema(t, []jsonSchemaTestCase{
+	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
 		{
-			name: "empty",
-			spec: `{"aws_inspector2_findings":{}}`,
+			Name: "empty",
+			Spec: `{"aws_inspector2_findings":{}}`,
 		},
 		{
-			name: "proper",
-			spec: func() string {
+			Name: "proper",
+			Spec: func() string {
 				var input CustomInspector2ListFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
 				return `{"aws_inspector2_findings":{"list_findings":[` +
-					jsonWithRemovedKeys(t, &input, "NextToken") + `]}}`
+					jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}}`
 			}(),
 		},
 		{
-			name: "NextToken is present",
-			err:  true,
-			spec: func() string {
+			Name: "NextToken is present",
+			Err:  true,
+			Spec: func() string {
 				var input CustomInspector2ListFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
 				return `{"aws_inspector2_findings":{"list_findings":[` +
-					jsonWithRemovedKeys(t, &input) + `]}}`
+					jsonschema.WithRemovedKeys(t, &input) + `]}}`
 			}(),
 		},
 	})
