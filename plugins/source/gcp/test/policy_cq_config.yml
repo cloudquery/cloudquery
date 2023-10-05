@@ -11,6 +11,6 @@ kind: destination
 spec:
   name: postgresql
   path: cloudquery/postgresql
-  version: "v6.0.7" # latest version of postgresql plugin
+  version: "v6.0.8" # latest version of postgresql plugin
   spec:
     connection_string: ${CQ_DSN}

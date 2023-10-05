@@ -13,10 +13,10 @@ kind: "destination"
 spec:
   name: "test1"
   path: "cloudquery/test"
-  version: "v2.2.9" # latest version of destination test plugin
+  version: "v2.2.10" # latest version of destination test plugin
 ---
 kind: "destination"
 spec:
   name: "test2"
   path: "cloudquery/test"
-  version: "v2.2.9" # latest version of destination test plugin
+  version: "v2.2.10" # latest version of destination test plugin
