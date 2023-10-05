@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.0.12](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v5.0.11...plugins-source-k8s-v5.0.12) (2023-10-04)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v14 digest to 00efb06 ([#14202](https://github.com/cloudquery/cloudquery/issues/14202)) ([fc8cc62](https://github.com/cloudquery/cloudquery/commit/fc8cc62ed70db157612e88678c123ba6a34b3b3c))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to 7ded38b ([#14246](https://github.com/cloudquery/cloudquery/issues/14246)) ([005891e](https://github.com/cloudquery/cloudquery/commit/005891e1892b41235ddb3b102f4bb6dafd48949a))
+* **deps:** Update github.com/petermattis/goid digest to 1876fd5 ([#14234](https://github.com/cloudquery/cloudquery/issues/14234)) ([3b56924](https://github.com/cloudquery/cloudquery/commit/3b56924bc734b1e6d49c6fa55da928f92d7291a0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.0 ([#14281](https://github.com/cloudquery/cloudquery/issues/14281)) ([85835a9](https://github.com/cloudquery/cloudquery/commit/85835a938bfa58d1b0d320ae17aff5fe7f6cfef2))
+
 ## [5.0.11](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v5.0.10...plugins-source-k8s-v5.0.11) (2023-09-29)
 
 
