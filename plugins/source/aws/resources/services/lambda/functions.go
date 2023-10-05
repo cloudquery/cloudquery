@@ -10,6 +10,7 @@ import (
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
+	"github.com/aws/aws-sdk-go/aws"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
@@ -120,7 +121,9 @@ func getFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 
 		return err
 	}
-
+	if funcResponse.Code != nil {
+		funcResponse.Code.Location = aws.String("REDACTED_FOR_SECURITY_PURPOSES")
+	}
 	resource.Item = funcResponse
 	return nil
 }
