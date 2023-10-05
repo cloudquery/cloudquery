@@ -24,9 +24,9 @@ type Spec struct {
 	PartitionID               string                     `json:"custom_endpoint_partition_id,omitempty"`
 	SigningRegion             string                     `json:"custom_endpoint_signing_region,omitempty"`
 	InitializationConcurrency int                        `json:"initialization_concurrency" jsonschema:"minimum=1,default=4"`
+	Concurrency               int                        `json:"concurrency" jsonschema:"minimum=1,default=50000"`
 	UsePaidAPIs               bool                       `json:"use_paid_apis" jsonschema:"default=false"`
 	TableOptions              *tableoptions.TableOptions `json:"table_options,omitempty"`
-	Concurrency               int                        `json:"concurrency" jsonschema:"minimum=1,default=50000"`
 	EventBasedSync            *EventBasedSync            `json:"event_based_sync,omitempty"`
 	Scheduler                 scheduler.Strategy         `json:"scheduler,omitempty"`
 }

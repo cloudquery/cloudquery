@@ -444,6 +444,57 @@ func TestJSONSchema(t *testing.T) {
 			Err:  true,
 			Spec: `{"concurrency":null}`,
 		},
+		{
+			Name: "false use_paid_apis",
+			Spec: `{"use_paid_apis":false}`,
+		},
+		{
+			Name: "true use_paid_apis",
+			Spec: `{"use_paid_apis":true}`,
+		},
+		{
+			Name: "null use_paid_apis",
+			Err:  true,
+			Spec: `{"use_paid_apis":null}`,
+		},
+		{
+			Name: "bad use_paid_apis type",
+			Err:  true,
+			Spec: `{"use_paid_apis":123}`,
+		},
+		// Scheduler tests are included for completeness’s sake, but should be done in scheduler package instead
+		{
+			Name: "dfs scheduler",
+			Spec: `{"scheduler":"dfs"}`,
+		},
+		{
+			Name: "round-robin scheduler",
+			Spec: `{"scheduler":"round-robin"}`,
+		},
+		{
+			Name: "shuffle scheduler",
+			Spec: `{"scheduler":"shuffle"}`,
+		},
+		{
+			Name: "empty scheduler",
+			Err:  true,
+			Spec: `{"scheduler":""}`,
+		},
+		{
+			Name: "bad scheduler",
+			Err:  true,
+			Spec: `{"scheduler":"bad"}`,
+		},
+		{
+			Name: "bad scheduler type",
+			Err:  true,
+			Spec: `{"scheduler":123}`,
+		},
+		{
+			Name: "null scheduler type",
+			Err:  true,
+			Spec: `{"scheduler":null}`,
+		},
 	})
 }
 

@@ -2892,6 +2892,11 @@
           "minimum": 1,
           "default": 4
         },
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 50000
+        },
         "use_paid_apis": {
           "type": "boolean",
           "default": false
@@ -2905,11 +2910,6 @@
               "type": "null"
             }
           ]
-        },
-        "concurrency": {
-          "type": "integer",
-          "minimum": 1,
-          "default": 50000
         },
         "event_based_sync": {
           "oneOf": [
