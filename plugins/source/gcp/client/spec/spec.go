@@ -56,6 +56,7 @@ func (spec *Spec) SetDefaults() {
 }
 
 // JSONSchemaExtend is required to add `not` section for `project_filter` & `folder_ids` being mutually exclusive.
+// We use value receiver because of https://github.com/invopop/jsonschema/issues/102
 func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 	sc.Not = &jsonschema.Schema{Required: []string{"project_filter", "folder_ids"}}
 }
