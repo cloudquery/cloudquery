@@ -74,18 +74,20 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 			},
 		},
 		{
-			// org & accounts are mutually exclusive
-			Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
-				properties := jsonschema.NewProperties()
-				properties.Set("org", sc.Properties.Value("org").OneOf[0]) // spec is 0, null is 1st
+			Not: &jsonschema.Schema{
+				// org & accounts are mutually exclusive
+				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+					properties := jsonschema.NewProperties()
+					properties.Set("org", sc.Properties.Value("org").OneOf[0]) // spec is 0, null is 1st
 
-				// we take a value because we'll be updating the items spec
-				accounts := *sc.Properties.Value("accounts").OneOf[0] // spec is 0, null is 1st
-				accounts.MinLength = aws.Uint64(1)
-				properties.Set("accounts", &accounts)
-				return properties
-			}(),
-			Not: &jsonschema.Schema{Required: []string{"org", "accounts"}},
+					// we take a value because we'll be updating the items spec
+					accounts := *sc.Properties.Value("accounts").OneOf[0] // spec is 0, null is 1st
+					accounts.MinItems = aws.Uint64(1)
+					properties.Set("accounts", &accounts)
+					return properties
+				}(),
+				Required: []string{"org", "accounts"},
+			},
 		},
 	}
 }

@@ -70,5 +70,18 @@ func TestAccountJSONSchema(t *testing.T) {
 				return `{"accounts":[` + jsonschema.WithRemovedKeys(t, &input) + `]}`
 			}(),
 		},
+		{
+			Name: "accounts with null org",
+			Spec: func() string {
+				var account Account
+				require.NoError(t, faker.FakeObject(&account))
+
+				var randomARN arn.ARN
+				require.NoError(t, faker.FakeObject(&randomARN))
+				account.RoleARN = randomARN.String()
+
+				return `{"org":null,"accounts":[` + jsonschema.WithRemovedKeys(t, &account) + `]}`
+			}(),
+		},
 	})
 }

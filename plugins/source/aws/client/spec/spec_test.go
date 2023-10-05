@@ -3,7 +3,9 @@ package spec
 import (
 	"testing"
 
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/cloudquery/codegen/jsonschema"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/stretchr/testify/require"
 )
 
@@ -95,11 +97,37 @@ func TestSpecValidate(t *testing.T) {
 }
 
 func TestJSONSchema(t *testing.T) {
-	// Accounts, TableOptions & EventBasedSync are tested separately
+	// Accounts, Org, TableOptions & EventBasedSync are tested separately
 	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
 		{
 			Name: "empty",
 			Spec: `{}`,
+		},
+		// We check that accounts aren't present together with org, though
+		{
+			Name: "accounts with org",
+			Err:  true,
+			Spec: func() string {
+				var account Account
+				require.NoError(t, faker.FakeObject(&account))
+
+				var randomARN arn.ARN
+				require.NoError(t, faker.FakeObject(&randomARN))
+				account.RoleARN = randomARN.String()
+
+				var org Org
+				require.NoError(t, faker.FakeObject(&org))
+
+				ou := []string{"ou-abcdefg123-qwerty789", "r-qwerty789"}
+				org.OrganizationUnits = ou
+				org.SkipOrganizationalUnits = ou
+
+				org.AdminAccount.RoleARN = randomARN.String()
+				org.MemberCredentials.RoleARN = randomARN.String()
+
+				return `{"org":` + jsonschema.WithRemovedKeys(t, &org) +
+					`,"accounts":[` + jsonschema.WithRemovedKeys(t, &account) + `]}`
+			}(),
 		},
 		{
 			Name: "null regions",

@@ -2783,22 +2783,22 @@
         },
         {
           "not": {
+            "properties": {
+              "org": {
+                "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1Org"
+              },
+              "accounts": {
+                "items": {
+                  "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1Account"
+                },
+                "type": "array",
+                "minItems": 1
+              }
+            },
             "required": [
               "org",
               "accounts"
             ]
-          },
-          "properties": {
-            "org": {
-              "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1Org"
-            },
-            "accounts": {
-              "items": {
-                "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1Account"
-              },
-              "type": "array",
-              "minLength": 1
-            }
           }
         }
       ],

@@ -186,5 +186,41 @@ func TestOrgJSONSchema(t *testing.T) {
 				return `{"org":` + jsonschema.WithRemovedKeys(t, &input) + `}`
 			}(),
 		},
+		{
+			Name: "org with null accounts",
+			Spec: func() string {
+				var org Org
+				require.NoError(t, faker.FakeObject(&org))
+
+				ou := []string{"ou-abcdefg123-qwerty789", "r-qwerty789"}
+				org.OrganizationUnits = ou
+				org.SkipOrganizationalUnits = ou
+
+				var randomARN arn.ARN
+				require.NoError(t, faker.FakeObject(&randomARN))
+				org.AdminAccount.RoleARN = randomARN.String()
+				org.MemberCredentials.RoleARN = randomARN.String()
+
+				return `{"accounts":null,"org":` + jsonschema.WithRemovedKeys(t, &org) + `}`
+			}(),
+		},
+		{
+			Name: "org with empty accounts",
+			Spec: func() string {
+				var org Org
+				require.NoError(t, faker.FakeObject(&org))
+
+				ou := []string{"ou-abcdefg123-qwerty789", "r-qwerty789"}
+				org.OrganizationUnits = ou
+				org.SkipOrganizationalUnits = ou
+
+				var randomARN arn.ARN
+				require.NoError(t, faker.FakeObject(&randomARN))
+				org.AdminAccount.RoleARN = randomARN.String()
+				org.MemberCredentials.RoleARN = randomARN.String()
+
+				return `{"accounts":[],"org":` + jsonschema.WithRemovedKeys(t, &org) + `}`
+			}(),
+		},
 	})
 }
