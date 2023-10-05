@@ -19,7 +19,6 @@ type CustomGetCostAndUsageInput struct {
 }
 
 // JSONSchemaExtend is required to remove `NextPageToken`.
-// We use value receiver because of https://github.com/invopop/jsonschema/issues/102
 func (CustomGetCostAndUsageInput) JSONSchemaExtend(sc *jsonschema.Schema) {
 	sc.Properties.Delete("NextPageToken")
 }

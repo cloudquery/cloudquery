@@ -33,7 +33,6 @@ func (c *CustomLookupEventsOpts) UnmarshalJSON(data []byte) error {
 }
 
 // JSONSchemaExtend is required to remove `NextToken`.
-// We use value receiver because of https://github.com/invopop/jsonschema/issues/102
 func (CustomLookupEventsOpts) JSONSchemaExtend(sc *jsonschema.Schema) {
 	sc.Properties.Delete("NextToken")
 }

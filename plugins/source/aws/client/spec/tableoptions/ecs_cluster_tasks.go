@@ -33,7 +33,6 @@ func (s *CustomListTasksOpts) UnmarshalJSON(data []byte) error {
 }
 
 // JSONSchemaExtend is required to remove `NextToken` & `Cluster`, as well as add default for `MaxResults`.
-// We use value receiver because of https://github.com/invopop/jsonschema/issues/102
 func (CustomListTasksOpts) JSONSchemaExtend(sc *jsonschema.Schema) {
 	sc.Properties.Delete("NextToken")
 	sc.Properties.Delete("Cluster")

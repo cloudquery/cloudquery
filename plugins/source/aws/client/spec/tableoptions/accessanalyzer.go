@@ -34,7 +34,6 @@ func (c *CustomAccessAnalyzerListFindingsInput) UnmarshalJSON(data []byte) error
 }
 
 // JSONSchemaExtend is required to remove `AnalyzerArn` & `NextToken`.
-// We use value receiver because of https://github.com/invopop/jsonschema/issues/102
 func (CustomAccessAnalyzerListFindingsInput) JSONSchemaExtend(sc *jsonschema.Schema) {
 	sc.Properties.Delete("AnalyzerArn")
 	sc.Properties.Delete("NextToken")

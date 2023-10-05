@@ -5,8 +5,11 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
+	"github.com/invopop/jsonschema"
+	orderedmap "github.com/wk8/go-ordered-map/v2"
 )
 
 const (
@@ -30,6 +33,65 @@ type Spec struct {
 	Concurrency               int                        `json:"concurrency"`
 	EventBasedSync            *EventBasedSync            `json:"event_based_sync,omitempty"`
 	Scheduler                 scheduler.Strategy         `json:"scheduler,omitempty"`
+}
+
+// JSONSchemaExtend is required to verify:
+// 1.if `custom_endpoint_url` is present then the following fields are required:
+// * `custom_endpoint_partition_id`
+// * `custom_endpoint_signing_region`
+// * `custom_endpoint_hostname_immutable`
+// 2. Make `org` & `accounts` mutually exclusive
+func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.AllOf = []*jsonschema.Schema{
+		{
+			// custom_endpoint_url => custom_endpoint_partition_id, custom_endpoint_signing_region, custom_endpoint_hostname_immutable
+			If: &jsonschema.Schema{
+				// We also need to make sure that `custom_endpoint_url` isn't ""
+				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+					properties := jsonschema.NewProperties()
+					url := *sc.Properties.Value("custom_endpoint_url")
+					url.MinLength = aws.Uint64(1)
+					properties.Set("custom_endpoint_url", &url)
+					return properties
+				}(),
+				Required: []string{"custom_endpoint_url"},
+			},
+			Then: &jsonschema.Schema{
+				// require properties not to be empty or null
+				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+					properties := jsonschema.NewProperties()
+
+					partitionID := *sc.Properties.Value("custom_endpoint_partition_id")
+					partitionID.MinLength = aws.Uint64(1)
+					properties.Set("custom_endpoint_partition_id", &partitionID)
+
+					signingRegion := *sc.Properties.Value("custom_endpoint_signing_region")
+					signingRegion.MinLength = aws.Uint64(1)
+					properties.Set("custom_endpoint_signing_region", &signingRegion)
+
+					hostnameImmutable := *sc.Properties.Value("custom_endpoint_hostname_immutable").OneOf[0] // spec is 0, null is 1st
+					properties.Set("custom_endpoint_hostname_immutable", &hostnameImmutable)
+
+					return properties
+				}(),
+				Required: []string{"custom_endpoint_partition_id", "custom_endpoint_signing_region", "custom_endpoint_hostname_immutable"},
+			},
+		},
+		{
+			// org & accounts are mutually exclusive
+			Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+				properties := jsonschema.NewProperties()
+				properties.Set("org", sc.Properties.Value("org").OneOf[0]) // spec is 0, null is 1st
+
+				// we take a value because we'll be updating the items spec
+				accounts := *sc.Properties.Value("accounts").OneOf[0] // spec is 0, null is 1st
+				accounts.MinLength = aws.Uint64(1)
+				properties.Set("accounts", &accounts)
+				return properties
+			}(),
+			Not: &jsonschema.Schema{Required: []string{"org", "accounts"}},
+		},
+	}
 }
 
 func (s *Spec) Validate() error {

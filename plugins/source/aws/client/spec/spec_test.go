@@ -168,6 +168,156 @@ func TestJSONSchema(t *testing.T) {
 			Name: "null max_backoff",
 			Spec: `{"max_backoff":null}`,
 		},
+		{
+			Name: "null custom_endpoint_url",
+			Err:  true,
+			Spec: `{"custom_endpoint_url":null}`,
+		},
+		{
+			Name: "bad custom_endpoint_url",
+			Err:  true,
+			Spec: `{"custom_endpoint_url":123}`,
+		},
+		{
+			Name: "proper custom_endpoint_url & dependent",
+			Spec: `
+{
+  "custom_endpoint_url":                "url",
+  "custom_endpoint_partition_id":       "id",
+  "custom_endpoint_signing_region":     "region",
+  "custom_endpoint_hostname_immutable": true
+}
+`,
+		},
+		{
+			Name: "custom_endpoint_url without custom_endpoint_partition_id",
+			Err:  true,
+			Spec: `
+{
+  "custom_endpoint_url":                "url",
+  "custom_endpoint_signing_region":     "region",
+  "custom_endpoint_hostname_immutable": true
+}
+`,
+		},
+		{
+			Name: "custom_endpoint_url with empty custom_endpoint_partition_id",
+			Err:  true,
+			Spec: `
+{
+  "custom_endpoint_url":                "url",
+  "custom_endpoint_partition_id":       "",
+  "custom_endpoint_signing_region":     "region",
+  "custom_endpoint_hostname_immutable": true
+}
+`,
+		},
+		{
+			Name: "custom_endpoint_url with null custom_endpoint_partition_id",
+			Err:  true,
+			Spec: `
+{
+  "custom_endpoint_url":                "url",
+  "custom_endpoint_partition_id":       null,
+  "custom_endpoint_signing_region":     "region",
+  "custom_endpoint_hostname_immutable": true
+}
+`,
+		},
+		{
+			Name: "custom_endpoint_url with bad custom_endpoint_partition_id",
+			Err:  true,
+			Spec: `
+{
+  "custom_endpoint_url":                "url",
+  "custom_endpoint_partition_id":       123,
+  "custom_endpoint_signing_region":     "region",
+  "custom_endpoint_hostname_immutable": true
+}
+`,
+		},
+		{
+			Name: "custom_endpoint_url without custom_endpoint_signing_region",
+			Err:  true,
+			Spec: `
+{
+  "custom_endpoint_url":                "url",
+  "custom_endpoint_partition_id":       "id",
+  "custom_endpoint_hostname_immutable": true
+}
+`,
+		},
+		{
+			Name: "custom_endpoint_url with empty custom_endpoint_signing_region",
+			Err:  true,
+			Spec: `
+{
+  "custom_endpoint_url":                "url",
+  "custom_endpoint_partition_id":       "id",
+  "custom_endpoint_signing_region":     "",    
+  "custom_endpoint_hostname_immutable": true
+}
+`,
+		},
+		{
+			Name: "custom_endpoint_url with null custom_endpoint_signing_region",
+			Err:  true,
+			Spec: `
+{
+  "custom_endpoint_url":                "url",
+  "custom_endpoint_partition_id":       "id",
+  "custom_endpoint_signing_region":     null,    
+  "custom_endpoint_hostname_immutable": true
+}
+`,
+		},
+		{
+			Name: "custom_endpoint_url with bad custom_endpoint_signing_region",
+			Err:  true,
+			Spec: `
+{
+  "custom_endpoint_url":                "url",
+  "custom_endpoint_partition_id":       "id",
+  "custom_endpoint_signing_region":     123,    
+  "custom_endpoint_hostname_immutable": true
+}
+`,
+		},
+		{
+			Name: "custom_endpoint_url without custom_endpoint_hostname_immutable",
+			Err:  true,
+			Spec: `
+{
+  "custom_endpoint_url":                "url",
+  "custom_endpoint_partition_id":       "id",
+  "custom_endpoint_signing_region":     "region"
+}
+`,
+		},
+		{
+			Name: "custom_endpoint_url with null custom_endpoint_hostname_immutable",
+			Err:  true,
+			Spec: `
+{
+  "custom_endpoint_url":                "url",
+  "custom_endpoint_partition_id":       "id",
+  "custom_endpoint_signing_region":     "region",
+  "custom_endpoint_hostname_immutable": null
+}
+`,
+		},
+		{
+			Name: "custom_endpoint_url with bad custom_endpoint_hostname_immutable",
+			Err:  true,
+			Spec: `
+{
+  "custom_endpoint_url":                "url",
+  "custom_endpoint_partition_id":       "id",
+  "custom_endpoint_signing_region":     "region",
+  "custom_endpoint_hostname_immutable": 123
+}
+`,
+		},
 	})
 }
 

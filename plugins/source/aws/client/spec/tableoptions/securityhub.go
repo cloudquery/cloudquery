@@ -33,7 +33,6 @@ func (s *CustomGetFindingsOpts) UnmarshalJSON(data []byte) error {
 }
 
 // JSONSchemaExtend is required to remove `NextToken` as well as add min & max for `MaxResults`.
-// We use value receiver because of https://github.com/invopop/jsonschema/issues/102
 func (CustomGetFindingsOpts) JSONSchemaExtend(sc *jsonschema.Schema) {
 	sc.Properties.Delete("NextToken")
 

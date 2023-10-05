@@ -19,7 +19,6 @@ type CustomInspector2ListFindingsInput struct {
 }
 
 // JSONSchemaExtend is required to remove `NextToken`.
-// We use value receiver because of https://github.com/invopop/jsonschema/issues/102
 func (CustomInspector2ListFindingsInput) JSONSchemaExtend(sc *jsonschema.Schema) {
 	sc.Properties.Delete("NextToken")
 }

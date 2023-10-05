@@ -2747,6 +2747,61 @@
       ]
     },
     "github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/Spec": {
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "custom_endpoint_url": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "custom_endpoint_url"
+            ]
+          },
+          "then": {
+            "properties": {
+              "custom_endpoint_partition_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "custom_endpoint_signing_region": {
+                "type": "string",
+                "minLength": 1
+              },
+              "custom_endpoint_hostname_immutable": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "custom_endpoint_partition_id",
+              "custom_endpoint_signing_region",
+              "custom_endpoint_hostname_immutable"
+            ]
+          }
+        },
+        {
+          "not": {
+            "required": [
+              "org",
+              "accounts"
+            ]
+          },
+          "properties": {
+            "org": {
+              "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1Org"
+            },
+            "accounts": {
+              "items": {
+                "$ref": "#/$defs/github.com~1cloudquery~1cloudquery~1plugins~1source~1aws~1client~1spec~1Account"
+              },
+              "type": "array",
+              "minLength": 1
+            }
+          }
+        }
+      ],
       "properties": {
         "regions": {
           "oneOf": [
