@@ -82,6 +82,10 @@ This is the (nested) spec used by the CSV destination Plugin.
   Endpoint to use for S3 API calls. This is useful for S3-compatible storage services such as MinIO.
   Note: if you want to use path-style addressing, i.e., `https://s3.amazonaws.com/BUCKET/KEY`, `use_path_style` should be enabled, too.
 
+- `endpoint_skip_tls_verify` (`boolean`) (optional) (default: `false`)
+  
+  Disable TLS verification for requests to your S3 endpoint. This option is intended to be used when using a custom endpoint using the `endpoint` option.
+
 - `use_path_style` (`boolean`) (optional) (default: `false`)
 
   Allows to use path-style addressing in the `endpoint` option, i.e., `https://s3.amazonaws.com/BUCKET/KEY`.
