@@ -194,7 +194,6 @@ require (
 	github.com/chenzhuoyu/iasm v0.9.0 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.2.4 // indirect
 	github.com/cloudquery/plugin-pb-go v1.12.1 // indirect
-	github.com/cloudquery/plugin-sdk v1.45.0
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/cockroachdb/apd/v3 v3.1.0 // indirect
 	github.com/cockroachdb/errors v1.9.0 // indirect
@@ -266,7 +265,6 @@ require (
 	github.com/sasha-s/go-deadlock v0.3.1 // indirect
 	github.com/schollz/closestmatch v2.1.0+incompatible // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
-	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/tdewolff/minify/v2 v2.12.9 // indirect
