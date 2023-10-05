@@ -2597,7 +2597,10 @@
                 "type": "string",
                 "minLength": 1
               },
-              "type": "array"
+              "type": "array",
+              "default": [
+                "us-east-1"
+              ]
             },
             {
               "type": "null"
@@ -2752,7 +2755,10 @@
                 "type": "string",
                 "minLength": 1
               },
-              "type": "array"
+              "type": "array",
+              "default": [
+                "us-east-1"
+              ]
             },
             {
               "type": "null"
