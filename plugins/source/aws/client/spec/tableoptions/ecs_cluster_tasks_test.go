@@ -26,18 +26,20 @@ func TestListTasks(t *testing.T) {
 }
 
 func TestCustomListTasksOpts_JSONSchemaExtend(t *testing.T) {
-	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
+	schema, err := jsonschema.Generate(ECSTaskAPIs{})
+	require.NoError(t, err)
+
+	jsonschema.TestJSONSchema(t, string(schema), []jsonschema.TestCase{
 		{
 			Name: "empty",
-			Spec: `{"aws_ecs_cluster_tasks":{}}`,
+			Spec: `{}`,
 		},
 		{
 			Name: "proper",
 			Spec: func() string {
 				var input CustomListTasksOpts
 				require.NoError(t, faker.FakeObject(&input))
-				return `{"aws_ecs_cluster_tasks":{"list_tasks":[` +
-					jsonschema.WithRemovedKeys(t, &input, "NextToken", "Cluster") + `]}}`
+				return `{"list_tasks":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken", "Cluster") + `]}`
 			}(),
 		},
 		{
@@ -46,8 +48,7 @@ func TestCustomListTasksOpts_JSONSchemaExtend(t *testing.T) {
 			Spec: func() string {
 				var input CustomListTasksOpts
 				require.NoError(t, faker.FakeObject(&input))
-				return `{"aws_ecs_cluster_tasks":{"list_tasks":[` +
-					jsonschema.WithRemovedKeys(t, &input, "Cluster") + `]}}`
+				return `{"list_tasks":[` + jsonschema.WithRemovedKeys(t, &input, "Cluster") + `]}`
 			}(),
 		},
 		{
@@ -56,8 +57,7 @@ func TestCustomListTasksOpts_JSONSchemaExtend(t *testing.T) {
 			Spec: func() string {
 				var input CustomListTasksOpts
 				require.NoError(t, faker.FakeObject(&input))
-				return `{"aws_ecs_cluster_tasks":{"list_tasks":[` +
-					jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}}`
+				return `{"list_tasks":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}`
 			}(),
 		},
 	})

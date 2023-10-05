@@ -9,18 +9,20 @@ import (
 )
 
 func TestCloudwatchListMetricsInput_JSONSchemaExtend(t *testing.T) {
-	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
+	schema, err := jsonschema.Generate(CloudwatchMetrics{})
+	require.NoError(t, err)
+
+	jsonschema.TestJSONSchema(t, string(schema), []jsonschema.TestCase{
 		{
 			Name: "empty",
-			Spec: `{"aws_alpha_cloudwatch_metrics":[]}`,
+			Spec: `[]`,
 		},
 		{
 			Name: "proper",
 			Spec: func() string {
 				var listInput CloudwatchListMetricsInput
 				require.NoError(t, faker.FakeObject(&listInput))
-				return `{"aws_alpha_cloudwatch_metrics":[{"list_metrics":` +
-					jsonschema.WithRemovedKeys(t, &listInput, "NextToken") + `}]}`
+				return `[{"list_metrics":` + jsonschema.WithRemovedKeys(t, &listInput, "NextToken") + `}]`
 			}(),
 		},
 		{
@@ -29,26 +31,27 @@ func TestCloudwatchListMetricsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: func() string {
 				var listInput CloudwatchListMetricsInput
 				require.NoError(t, faker.FakeObject(&listInput))
-				return `{"aws_alpha_cloudwatch_metrics":[{"list_metrics":` +
-					jsonschema.WithRemovedKeys(t, &listInput) + `}]}`
+				return `[{"list_metrics":` + jsonschema.WithRemovedKeys(t, &listInput) + `}]`
 			}(),
 		},
 	})
 }
 
 func TestCloudwatchGetMetricStatisticsInput_JSONSchemaExtend(t *testing.T) {
-	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
+	schema, err := jsonschema.Generate(CloudwatchMetrics{})
+	require.NoError(t, err)
+
+	jsonschema.TestJSONSchema(t, string(schema), []jsonschema.TestCase{
 		{
 			Name: "empty",
-			Spec: `{"aws_alpha_cloudwatch_metrics":[]}`,
+			Spec: `[]`,
 		},
 		{
 			Name: "proper",
 			Spec: func() string {
 				var getInput CloudwatchGetMetricStatisticsInput
 				require.NoError(t, faker.FakeObject(&getInput))
-				return `{"aws_alpha_cloudwatch_metrics":[{"get_metric_statistics":[` +
-					jsonschema.WithRemovedKeys(t, &getInput, "Dimensions", "MetricName", "Namespace") + `]}]}`
+				return `[{"get_metric_statistics":[` + jsonschema.WithRemovedKeys(t, &getInput, "Dimensions", "MetricName", "Namespace") + `]}]`
 			}(),
 		},
 		{
@@ -57,8 +60,7 @@ func TestCloudwatchGetMetricStatisticsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: func() string {
 				var getInput CloudwatchGetMetricStatisticsInput
 				require.NoError(t, faker.FakeObject(&getInput))
-				return `{"aws_alpha_cloudwatch_metrics":[{"get_metric_statistics":[` +
-					jsonschema.WithRemovedKeys(t, &getInput, "MetricName", "Namespace") + `]}]}`
+				return `[{"get_metric_statistics":[` + jsonschema.WithRemovedKeys(t, &getInput, "MetricName", "Namespace") + `]}]`
 			}(),
 		},
 		{
@@ -67,8 +69,7 @@ func TestCloudwatchGetMetricStatisticsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: func() string {
 				var getInput CloudwatchGetMetricStatisticsInput
 				require.NoError(t, faker.FakeObject(&getInput))
-				return `{"aws_alpha_cloudwatch_metrics":[{"get_metric_statistics":[` +
-					jsonschema.WithRemovedKeys(t, &getInput, "Dimensions", "Namespace") + `]}]}`
+				return `[{"get_metric_statistics":[` + jsonschema.WithRemovedKeys(t, &getInput, "Dimensions", "Namespace") + `]}]`
 			}(),
 		},
 		{
@@ -77,8 +78,7 @@ func TestCloudwatchGetMetricStatisticsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: func() string {
 				var getInput CloudwatchGetMetricStatisticsInput
 				require.NoError(t, faker.FakeObject(&getInput))
-				return `{"aws_alpha_cloudwatch_metrics":[{"get_metric_statistics":[` +
-					jsonschema.WithRemovedKeys(t, &getInput, "Dimensions", "MetricName") + `]}]}`
+				return `[{"get_metric_statistics":[` + jsonschema.WithRemovedKeys(t, &getInput, "Dimensions", "MetricName") + `]}]`
 			}(),
 		},
 	})

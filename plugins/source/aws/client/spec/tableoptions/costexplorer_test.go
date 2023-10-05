@@ -9,18 +9,20 @@ import (
 )
 
 func TestCustomGetCostAndUsageInput_JSONSchemaExtend(t *testing.T) {
-	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
+	schema, err := jsonschema.Generate(CostExplorerAPIs{})
+	require.NoError(t, err)
+
+	jsonschema.TestJSONSchema(t, string(schema), []jsonschema.TestCase{
 		{
 			Name: "empty",
-			Spec: `{"aws_alpha_costexplorer_cost_custom":{}}`,
+			Spec: `{}`,
 		},
 		{
 			Name: "proper",
 			Spec: func() string {
 				var input CustomGetCostAndUsageInput
 				require.NoError(t, faker.FakeObject(&input))
-				return `{"aws_alpha_costexplorer_cost_custom":{"get_cost_and_usage":[` +
-					jsonschema.WithRemovedKeys(t, &input, "NextPageToken") + `]}}`
+				return `{"get_cost_and_usage":[` + jsonschema.WithRemovedKeys(t, &input, "NextPageToken") + `]}`
 			}(),
 		},
 		{
@@ -29,8 +31,7 @@ func TestCustomGetCostAndUsageInput_JSONSchemaExtend(t *testing.T) {
 			Spec: func() string {
 				var input CustomGetCostAndUsageInput
 				require.NoError(t, faker.FakeObject(&input))
-				return `{"aws_alpha_costexplorer_cost_custom":{"get_cost_and_usage":[` +
-					jsonschema.WithRemovedKeys(t, &input) + `]}}`
+				return `{"get_cost_and_usage":[` + jsonschema.WithRemovedKeys(t, &input) + `]}`
 			}(),
 		},
 	})

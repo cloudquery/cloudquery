@@ -27,18 +27,20 @@ func TestLookupEvents(t *testing.T) {
 }
 
 func TestCustomLookupEventsOpts_JSONSchemaExtend(t *testing.T) {
-	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
+	schema, err := jsonschema.Generate(CloudtrailAPIs{})
+	require.NoError(t, err)
+
+	jsonschema.TestJSONSchema(t, string(schema), []jsonschema.TestCase{
 		{
 			Name: "empty",
-			Spec: `{"aws_cloudtrail_events":{}}`,
+			Spec: `{}`,
 		},
 		{
 			Name: "proper",
 			Spec: func() string {
 				var input CustomLookupEventsOpts
 				require.NoError(t, faker.FakeObject(&input))
-				return `{"aws_cloudtrail_events":{"lookup_events":[` +
-					jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}}`
+				return `{"lookup_events":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}`
 			}(),
 		},
 		{
@@ -47,8 +49,7 @@ func TestCustomLookupEventsOpts_JSONSchemaExtend(t *testing.T) {
 			Spec: func() string {
 				var input CustomLookupEventsOpts
 				require.NoError(t, faker.FakeObject(&input))
-				return `{"aws_cloudtrail_events":{"lookup_events":[` +
-					jsonschema.WithRemovedKeys(t, &input) + `]}}`
+				return `{"lookup_events":[` + jsonschema.WithRemovedKeys(t, &input) + `]}`
 			}(),
 		},
 	})

@@ -1,7 +1,6 @@
 package tableoptions
 
 import (
-	_ "embed"
 	"reflect"
 )
 
@@ -51,6 +50,3 @@ func (t *TableOptions) Validate() error {
 	}
 	return nil
 }
-
-//go:embed schema.json
-var JSONSchema string

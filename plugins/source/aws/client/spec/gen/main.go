@@ -7,14 +7,12 @@ import (
 	"runtime"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions"
 	"github.com/cloudquery/codegen/jsonschema"
 )
 
 func main() {
 	fmt.Println("Generating JSON schema for plugin spec")
 	jsonschema.GenerateIntoFile(new(spec.Spec), path.Join(currDir(), "..", "schema.json"))
-	jsonschema.GenerateIntoFile(new(tableoptions.TableOptions), path.Join(currDir(), "../tableoptions", "schema.json"))
 }
 
 func currDir() string {

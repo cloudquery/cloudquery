@@ -26,10 +26,13 @@ func TestGetFindings(t *testing.T) {
 }
 
 func TestCustomGetFindingsOpts_JSONSchemaExtend(t *testing.T) {
-	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
+	schema, err := jsonschema.Generate(SecurityHubAPIs{})
+	require.NoError(t, err)
+
+	jsonschema.TestJSONSchema(t, string(schema), []jsonschema.TestCase{
 		{
 			Name: "empty",
-			Spec: `{"aws_securityhub_findings":{}}`,
+			Spec: `{}`,
 		},
 		{
 			Name: "proper",
@@ -37,8 +40,7 @@ func TestCustomGetFindingsOpts_JSONSchemaExtend(t *testing.T) {
 				var input CustomGetFindingsOpts
 				require.NoError(t, faker.FakeObject(&input))
 				input.MaxResults = 10 // range 1-100
-				return `{"aws_securityhub_findings":{"get_findings":[` +
-					jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}}`
+				return `{"get_findings":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}`
 			}(),
 		},
 		{
@@ -48,8 +50,7 @@ func TestCustomGetFindingsOpts_JSONSchemaExtend(t *testing.T) {
 				var input CustomGetFindingsOpts
 				require.NoError(t, faker.FakeObject(&input))
 				input.MaxResults = 10 // range 1-100
-				return `{"aws_securityhub_findings":{"get_findings":[` +
-					jsonschema.WithRemovedKeys(t, &input) + `]}}`
+				return `{"get_findings":[` + jsonschema.WithRemovedKeys(t, &input) + `]}`
 			}(),
 		},
 		{
@@ -59,8 +60,7 @@ func TestCustomGetFindingsOpts_JSONSchemaExtend(t *testing.T) {
 				var input CustomGetFindingsOpts
 				require.NoError(t, faker.FakeObject(&input))
 				input.MaxResults = 1000 // range 1-100
-				return `{"aws_securityhub_findings":{"get_findings":[` +
-					jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}}`
+				return `{"get_findings":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}`
 			}(),
 		},
 		{
@@ -70,8 +70,7 @@ func TestCustomGetFindingsOpts_JSONSchemaExtend(t *testing.T) {
 				var input CustomGetFindingsOpts
 				require.NoError(t, faker.FakeObject(&input))
 				input.MaxResults = 0 // range 1-100
-				return `{"aws_securityhub_findings":{"get_findings":[` +
-					jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}}`
+				return `{"get_findings":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}`
 			}(),
 		},
 	})

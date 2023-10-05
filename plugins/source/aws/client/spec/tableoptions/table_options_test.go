@@ -148,11 +148,25 @@ func TestTableOptionsUnmarshal(t *testing.T) {
 }
 
 func TestJSONSchema(t *testing.T) {
-	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{{Name: "empty", Spec: `{}`}})
-}
-
-func TestEnsureJSONSchema(t *testing.T) {
-	data, err := jsonschema.Generate(new(TableOptions))
+	schema, err := jsonschema.Generate(TableOptions{})
 	require.NoError(t, err)
-	require.JSONEqf(t, string(data), JSONSchema, "new schema should be:\n%s\n", string(data))
+
+	jsonschema.TestJSONSchema(t, string(schema), []jsonschema.TestCase{
+		{
+			Name: "empty",
+			Spec: `{}`,
+		},
+		{
+			Name: "all null",
+			Spec: `{
+  "aws_alpha_cloudwatch_metrics": null,
+  "aws_cloudtrail_events": null,
+  "aws_accessanalyzer_analyzer_findings": null,
+  "aws_inspector2_findings": null,
+  "aws_alpha_costexplorer_cost_custom": null,
+  "aws_securityhub_findings": null,
+  "aws_ecs_cluster_tasks": null
+}`,
+		},
+	})
 }

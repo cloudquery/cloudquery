@@ -31,18 +31,20 @@ func TestAAListFindings(t *testing.T) {
 }
 
 func TestCustomAccessAnalyzerListFindingsInput_JSONSchemaExtend(t *testing.T) {
-	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
+	schema, err := jsonschema.Generate(AccessanalyzerFindings{})
+	require.NoError(t, err)
+
+	jsonschema.TestJSONSchema(t, string(schema), []jsonschema.TestCase{
 		{
 			Name: "empty",
-			Spec: `{"aws_accessanalyzer_analyzer_findings":{}}`,
+			Spec: `{}`,
 		},
 		{
 			Name: "proper",
 			Spec: func() string {
 				var input CustomAccessAnalyzerListFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
-				return `{"aws_accessanalyzer_analyzer_findings":{"list_findings":[` +
-					jsonschema.WithRemovedKeys(t, &input, "NextToken", "AnalyzerArn") + `]}}`
+				return `{"list_findings":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken", "AnalyzerArn") + `]}`
 			}(),
 		},
 		{
@@ -51,8 +53,7 @@ func TestCustomAccessAnalyzerListFindingsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: func() string {
 				var input CustomAccessAnalyzerListFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
-				return `{"aws_accessanalyzer_analyzer_findings":{"list_findings":[` +
-					jsonschema.WithRemovedKeys(t, &input, "AnalyzerArn") + `]}}`
+				return `{"list_findings":[` + jsonschema.WithRemovedKeys(t, &input, "AnalyzerArn") + `]}`
 			}(),
 		},
 		{
@@ -61,8 +62,7 @@ func TestCustomAccessAnalyzerListFindingsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: func() string {
 				var input CustomAccessAnalyzerListFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
-				return `{"aws_accessanalyzer_analyzer_findings":{"list_findings":[` +
-					jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}}`
+				return `{"list_findings":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}`
 			}(),
 		},
 	})
