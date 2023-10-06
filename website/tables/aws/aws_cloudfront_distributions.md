@@ -105,26 +105,6 @@ WHERE
   (distribution_config->>'Enabled')::BOOL IS NOT true;
 ```
 
-### CloudFront distributions should have origin access identity enabled
-
-```sql
-SELECT
-  'CloudFront distributions should have origin access identity enabled'
-    AS title,
-  account_id,
-  arn AS resource_id,
-  CASE
-  WHEN o->>'DomainName' LIKE '%s3.amazonaws.com'
-  AND o->'S3OriginConfig'->>'OriginAccessIdentity' = ''
-  THEN 'fail'
-  ELSE 'pass'
-  END
-    AS status
-FROM
-  aws_cloudfront_distributions,
-  jsonb_array_elements(distribution_config->'Origins'->'Items') AS o;
-```
-
 ### CloudFront distributions should have origin failover configured
 
 ```sql
