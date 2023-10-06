@@ -13,8 +13,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/adrg/xdg"
 	"github.com/cenkalti/backoff/v4"
+	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/pkg/browser"
 	"github.com/spf13/cobra"
 )
@@ -47,7 +47,6 @@ func newCmdLogin() *cobra.Command {
 
 			go func() {
 				<-sigChan
-				fmt.Println("Received SIGTERM!")
 				cancel()
 			}()
 
@@ -81,21 +80,6 @@ func waitForServer(ctx context.Context, url string) error {
 }
 
 func runLogin(ctx context.Context) (err error) {
-	tokenFilePath, err := xdg.DataFile("cloudquery/token")
-	if err != nil {
-		return fmt.Errorf("can't determine a proper location for token file: %w", err)
-	}
-	tokenFile, err := os.OpenFile(tokenFilePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o644)
-	if err != nil {
-		return fmt.Errorf("can't open token file %q for writing: %w", tokenFilePath, err)
-	}
-	defer func() {
-		e := tokenFile.Close()
-		if err == nil && e != nil {
-			err = fmt.Errorf("can't close token file %q after writing: %w", tokenFilePath, e)
-		}
-	}()
-
 	mux := http.NewServeMux()
 	refreshToken := ""
 	gotToken := make(chan struct{})
@@ -158,8 +142,9 @@ func runLogin(ctx context.Context) (err error) {
 	if refreshToken == "" {
 		return fmt.Errorf("failed to get refresh token")
 	}
-	if _, err = tokenFile.WriteString(refreshToken); err != nil {
-		return fmt.Errorf("failed to write token to %q: %w", tokenFilePath, err)
+	err = auth.SaveRefreshToken(refreshToken)
+	if err != nil {
+		return fmt.Errorf("failed to save refresh token: %w", err)
 	}
 
 	fmt.Println("CLI successfully authenticated.")

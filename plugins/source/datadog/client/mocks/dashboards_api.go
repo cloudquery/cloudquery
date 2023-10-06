@@ -9,6 +9,7 @@ import (
 	http "net/http"
 	reflect "reflect"
 
+	datadog "github.com/DataDog/datadog-api-client-go/v2/api/datadog"
 	datadogV1 "github.com/DataDog/datadog-api-client-go/v2/api/datadogV1"
 	gomock "github.com/golang/mock/gomock"
 )
@@ -55,4 +56,24 @@ func (mr *MockDashboardsAPIClientMockRecorder) ListDashboards(arg0 interface{}, 
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0}, arg1...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDashboards", reflect.TypeOf((*MockDashboardsAPIClient)(nil).ListDashboards), varargs...)
+}
+
+// ListDashboardsWithPagination mocks base method.
+func (m *MockDashboardsAPIClient) ListDashboardsWithPagination(arg0 context.Context, arg1 ...datadogV1.ListDashboardsOptionalParameters) (<-chan datadog.PaginationResult[datadogV1.DashboardSummaryDefinition], func()) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0}
+	for _, a := range arg1 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListDashboardsWithPagination", varargs...)
+	ret0, _ := ret[0].(<-chan datadog.PaginationResult[datadogV1.DashboardSummaryDefinition])
+	ret1, _ := ret[1].(func())
+	return ret0, ret1
+}
+
+// ListDashboardsWithPagination indicates an expected call of ListDashboardsWithPagination.
+func (mr *MockDashboardsAPIClientMockRecorder) ListDashboardsWithPagination(arg0 interface{}, arg1 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0}, arg1...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDashboardsWithPagination", reflect.TypeOf((*MockDashboardsAPIClient)(nil).ListDashboardsWithPagination), varargs...)
 }
