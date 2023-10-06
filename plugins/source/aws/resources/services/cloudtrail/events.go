@@ -6,15 +6,14 @@ import (
 	"time"
 
 	"github.com/apache/arrow/go/v14/arrow"
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
-	"github.com/mitchellh/hashstructure/v2"
-
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+	"github.com/mitchellh/hashstructure/v2"
 )
 
 const tableName = "aws_cloudtrail_events"

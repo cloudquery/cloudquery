@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	"github.com/cloudquery/plugin-sdk/v4/caser"
+	"github.com/invopop/jsonschema"
 )
 
 type SecurityHubAPIs struct {
@@ -31,6 +32,15 @@ func (s *CustomGetFindingsOpts) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(b, &s.GetFindingsInput)
 }
 
+// JSONSchemaExtend is required to remove `NextToken` as well as add min & max for `MaxResults`.
+func (CustomGetFindingsOpts) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.Properties.Delete("NextToken")
+
+	maxResults := sc.Properties.Value("MaxResults")
+	maxResults.Minimum = json.Number("1")
+	maxResults.Maximum = json.Number("100")
+}
+
 func (s *SecurityHubAPIs) validateGetFindingEvent() error {
 	for _, opt := range s.GetFindingsOpts {
 		if aws.ToString(opt.NextToken) != "" {
@@ -45,7 +55,7 @@ func (s *SecurityHubAPIs) validateGetFindingEvent() error {
 	return nil
 }
 
-func (s *SecurityHubAPIs) setDefaults() {
+func (s *SecurityHubAPIs) SetDefaults() {
 	for i := 0; i < len(s.GetFindingsOpts); i++ {
 		if s.GetFindingsOpts[i].MaxResults == 0 {
 			s.GetFindingsOpts[i].MaxResults = 100
@@ -54,6 +64,5 @@ func (s *SecurityHubAPIs) setDefaults() {
 }
 
 func (s *SecurityHubAPIs) Validate() error {
-	s.setDefaults()
 	return s.validateGetFindingEvent()
 }

@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )

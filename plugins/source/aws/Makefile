@@ -46,6 +46,10 @@ gen-docs: build
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/aws/*.md
 	rm -rf ../../../website/tables/aws/*.bak
 
+.PHONY: gen-spec-schema
+gen-spec-schema:
+	go run client/spec/gen/main.go
+
 # All gen targets
 .PHONY: gen
-gen: gen-mocks gen-docs
+gen: gen-spec-schema gen-mocks gen-docs
