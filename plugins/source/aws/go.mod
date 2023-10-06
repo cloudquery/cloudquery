@@ -155,11 +155,11 @@ require (
 // TODO: remove once all updates are merged
 replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd
 
-// https://github.com/invopop/jsonschema/pull/106
-replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20231004102900-26eed64ef87a
+// https://github.com/cloudquery/jsonschema@cqmain
+replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20231006094144-b42fc04b92bb
 
 // https://github.com/cloudquery/codegen/pull/39
-replace github.com/cloudquery/codegen => github.com/cloudquery/codegen v0.3.5-0.20231005111747-c3cbcac00693
+replace github.com/cloudquery/codegen => github.com/cloudquery/codegen v0.3.5-0.20231006094558-6ff050b9156e
 
 require (
 	github.com/BurntSushi/toml v1.3.2 // indirect
