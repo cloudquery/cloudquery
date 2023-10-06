@@ -65,9 +65,17 @@ func Functions() *schema.Table {
 				Resolver: resolveRuntimeManagementConfig,
 			},
 			{
+				Name: "code",
+				Type: sdkTypes.ExtensionTypes.JSON,
+			},
+			{
 				Name:     "concurrency",
 				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveConcurrency,
+			},
+			{
+				Name: "configuration",
+				Type: sdkTypes.ExtensionTypes.JSON,
 			},
 			{
 				Name:     "tags",
