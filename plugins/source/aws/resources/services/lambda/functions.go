@@ -255,9 +255,14 @@ func resolveRuntimeManagementConfig(ctx context.Context, meta schema.ClientMeta,
 
 func resolveConcurrency(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	r := resource.Item.(*lambda.GetFunctionOutput)
-	// skip getting concurrency because it was already resolved from GetFunction
-	if r.Configuration == nil || r.Code != nil {
+	// No way of getting functionName
+	if r.Configuration == nil {
 		return nil
+	}
+
+	// setting concurrency value from GetFunction call
+	if r.Code != nil {
+		return resource.Set(col.Name, r.Concurrency)
 	}
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceLambda).Lambda
@@ -292,9 +297,14 @@ func resolveConcurrency(ctx context.Context, meta schema.ClientMeta, resource *s
 
 func resolveTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	r := resource.Item.(*lambda.GetFunctionOutput)
-	// skip getting tags because it was already resolved from GetFunction
-	if r.Configuration == nil || r.Code != nil {
+	// No way of getting functionName
+	if r.Configuration == nil {
 		return nil
+	}
+
+	// setting tags value from GetFunction call
+	if r.Code != nil {
+		return resource.Set(col.Name, r.Concurrency)
 	}
 
 	cl := meta.(*client.Client)
