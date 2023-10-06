@@ -23,6 +23,7 @@ jobs:
         env:
           FILES: ${{ steps.changed-files.outputs.all }}
         with:
+          github-token: ${{ secrets.GH_CQ_BOT }}
           script: |
             const script = require('./scripts/workflows/wait_for_required_workflows.js')
             await script({github, context})
