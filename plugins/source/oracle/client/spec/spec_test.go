@@ -1,50 +1,43 @@
 package spec
 
 import (
-	"encoding/json"
 	"testing"
 
 	"github.com/cloudquery/codegen/jsonschema"
-	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/stretchr/testify/require"
 )
 
 func TestSpec(t *testing.T) {
-	validator, err := plugin.JSONSchemaValidator(JSONSchema)
-	require.NoError(t, err)
-
-	type testCase struct {
-		name string
-		spec string
-		err  bool
-	}
-
-	for _, tc := range []testCase{
+	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
 		{
-			name: "empty",
-			spec: `{}`,
+			Name: "empty",
+			Spec: `{}`,
 		},
 		{
-			name: "proper",
-			spec: `{"concurrency": 2}`,
+			Name: "extra field",
+			Err:  true,
+			Spec: `{"extra": 0}`,
 		},
 		{
-			name: "bad",
-			spec: `{"concurrency": 0}`,
-			err:  true,
+			Name: "zero concurrency",
+			Err:  true,
+			Spec: `{"concurrency": 0}`,
 		},
-	} {
-		t.Run(tc.name, func(t *testing.T) {
-			var v any
-			require.NoError(t, json.Unmarshal([]byte(tc.spec), &v))
-			err := validator.Validate(v)
-			if tc.err {
-				require.Error(t, err)
-			} else {
-				require.NoError(t, err)
-			}
-		})
-	}
+		{
+			Name: "null concurrency",
+			Err:  true,
+			Spec: `{"concurrency": 0}`,
+		},
+		{
+			Name: "bad concurrency",
+			Err:  true,
+			Spec: `{"concurrency": "abc"}`,
+		},
+		{
+			Name: "proper concurrency",
+			Spec: `{"concurrency": 123}`,
+		},
+	})
 }
 
 func TestEnsureJSONSchema(t *testing.T) {
