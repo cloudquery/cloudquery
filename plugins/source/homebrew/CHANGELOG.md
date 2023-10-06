@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.11](https://github.com/cloudquery/cloudquery/compare/plugins-source-homebrew-v3.0.10...plugins-source-homebrew-v3.0.11) (2023-10-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.2 ([#14378](https://github.com/cloudquery/cloudquery/issues/14378)) ([a2e0c46](https://github.com/cloudquery/cloudquery/commit/a2e0c4615af4aa205fa082d3f196ea2dc5ce2445))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.3 ([#14436](https://github.com/cloudquery/cloudquery/issues/14436)) ([d529e2d](https://github.com/cloudquery/cloudquery/commit/d529e2d22da93a234492c4165e7eed1257c5767f))
+
 ## [3.0.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-homebrew-v3.0.9...plugins-source-homebrew-v3.0.10) (2023-10-04)
 
 
