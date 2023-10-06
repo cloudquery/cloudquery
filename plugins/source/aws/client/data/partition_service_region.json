@@ -961,6 +961,13 @@
             "us-west-2": {}
           }
         },
+        "bedrock": {
+          "regions": {
+            "ap-southeast-1": {},
+            "us-east-1": {},
+            "us-west-2": {}
+          }
+        },
         "billingconductor": {
           "regions": {
             "us-east-1": {}
@@ -1664,17 +1671,21 @@
             "ap-northeast-2": {},
             "ap-northeast-3": {},
             "ap-south-1": {},
+            "ap-south-2": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
             "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
+            "eu-central-2": {},
             "eu-north-1": {},
             "eu-south-1": {},
+            "eu-south-2": {},
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
             "il-central-1": {},
+            "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
@@ -2045,6 +2056,7 @@
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
+            "il-central-1": {},
             "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
@@ -3005,14 +3017,18 @@
         },
         "inspector2": {
           "regions": {
+            "af-south-1": {},
             "ap-east-1": {},
             "ap-northeast-1": {},
             "ap-northeast-2": {},
+            "ap-northeast-3": {},
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
+            "eu-central-2": {},
             "eu-north-1": {},
             "eu-south-1": {},
             "eu-west-1": {},
@@ -3584,11 +3600,14 @@
             "ap-northeast-2": {},
             "ap-northeast-3": {},
             "ap-south-1": {},
+            "ap-south-2": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
             "ap-southeast-3": {},
+            "ap-southeast-4": {},
             "ca-central-1": {},
             "eu-central-1": {},
+            "eu-central-2": {},
             "eu-north-1": {},
             "eu-south-1": {},
             "eu-west-1": {},
@@ -3756,6 +3775,11 @@
             "us-east-1": {}
           }
         },
+        "managedblockchain-query": {
+          "regions": {
+            "us-east-1": {}
+          }
+        },
         "marketplacecommerceanalytics": {
           "regions": {
             "us-east-1": {}
@@ -3908,8 +3932,14 @@
         },
         "meetings-chime": {
           "regions": {
+            "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-south-1": {},
             "ap-southeast-1": {},
+            "ap-southeast-2": {},
+            "ca-central-1": {},
             "eu-central-1": {},
+            "eu-west-2": {},
             "il-central-1": {},
             "us-east-1": {},
             "us-west-2": {}
@@ -4217,6 +4247,7 @@
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
+            "il-central-1": {},
             "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
@@ -4291,6 +4322,7 @@
             "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
+            "eu-central-2": {},
             "eu-north-1": {},
             "eu-south-1": {},
             "eu-west-1": {},
@@ -4311,6 +4343,7 @@
             "eu-central-1": {},
             "eu-west-1": {},
             "eu-west-2": {},
+            "il-central-1": {},
             "us-east-1": {},
             "us-west-2": {}
           }
@@ -4479,13 +4512,16 @@
             "ap-northeast-2": {},
             "ap-northeast-3": {},
             "ap-south-1": {},
+            "ap-south-2": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
             "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
+            "eu-central-2": {},
             "eu-north-1": {},
             "eu-south-1": {},
+            "eu-south-2": {},
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
@@ -4535,6 +4571,7 @@
             "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
+            "eu-central-2": {},
             "eu-north-1": {},
             "eu-south-1": {},
             "eu-west-1": {},
@@ -4839,6 +4876,7 @@
             "ap-south-2": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ap-southeast-3": {},
             "ap-southeast-4": {},
             "ca-central-1": {},
             "eu-central-1": {},
@@ -4848,6 +4886,7 @@
             "eu-west-2": {},
             "eu-west-3": {},
             "il-central-1": {},
+            "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
             "us-east-2": {},
@@ -5717,6 +5756,7 @@
             "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
+            "eu-central-2": {},
             "eu-north-1": {},
             "eu-south-1": {},
             "eu-west-1": {},
@@ -5986,9 +6026,14 @@
         },
         "tnb": {
           "regions": {
+            "ap-northeast-2": {},
             "ap-southeast-2": {},
+            "ca-central-1": {},
             "eu-central-1": {},
+            "eu-north-1": {},
+            "eu-south-2": {},
             "eu-west-3": {},
+            "sa-east-1": {},
             "us-east-1": {},
             "us-west-2": {}
           }
@@ -6378,6 +6423,11 @@
         "api.ecr": {
           "regions": {
             "cn-north-1": {},
+            "cn-northwest-1": {}
+          }
+        },
+        "api.pricing": {
+          "regions": {
             "cn-northwest-1": {}
           }
         },
@@ -6918,6 +6968,12 @@
             "cn-northwest-1": {}
           }
         },
+        "oidc": {
+          "regions": {
+            "cn-north-1": {},
+            "cn-northwest-1": {}
+          }
+        },
         "organizations": {
           "regions": {
             "cn-northwest-1": {}
@@ -6936,6 +6992,12 @@
         },
         "polly": {
           "regions": {
+            "cn-northwest-1": {}
+          }
+        },
+        "portal.sso": {
+          "regions": {
+            "cn-north-1": {},
             "cn-northwest-1": {}
           }
         },
@@ -7088,6 +7150,12 @@
           }
         },
         "ssm": {
+          "regions": {
+            "cn-north-1": {},
+            "cn-northwest-1": {}
+          }
+        },
+        "sso": {
           "regions": {
             "cn-north-1": {},
             "cn-northwest-1": {}
@@ -8614,6 +8682,12 @@
         },
         "robomaker": {
           "regions": {
+            "us-gov-west-1": {}
+          }
+        },
+        "rolesanywhere": {
+          "regions": {
+            "us-gov-east-1": {},
             "us-gov-west-1": {}
           }
         },

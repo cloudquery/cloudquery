@@ -235,6 +235,10 @@
       "destination": "https://cloudquery.typeform.com/to/UrgOydHV"
     },
     {
+      "source": "/contact-policies",
+      "destination": "https://cloudquery.typeform.com/to/TTBdFOfe"
+    },
+    {
       "source": "/docs/support",
       "destination": "/pricing"
     },
@@ -344,7 +348,15 @@
     },
     {
       "source": "/apply_for_job",
-      "destination": "https://cloudquery.typeform.com/to/flNY3OaO"
+      "destination": "https://apply.workable.com/cloudquery/"
+    },
+    {
+      "source": "/careers",
+      "destination": "https://apply.workable.com/cloudquery/"
+    },
+    {
+      "source": "/careers/overview",
+      "destination": "https://apply.workable.com/cloudquery/"
     }
   ]
 }

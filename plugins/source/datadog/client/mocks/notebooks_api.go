@@ -9,6 +9,7 @@ import (
 	http "net/http"
 	reflect "reflect"
 
+	datadog "github.com/DataDog/datadog-api-client-go/v2/api/datadog"
 	datadogV1 "github.com/DataDog/datadog-api-client-go/v2/api/datadogV1"
 	gomock "github.com/golang/mock/gomock"
 )
@@ -55,4 +56,24 @@ func (mr *MockNotebooksAPIClientMockRecorder) ListNotebooks(arg0 interface{}, ar
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0}, arg1...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListNotebooks", reflect.TypeOf((*MockNotebooksAPIClient)(nil).ListNotebooks), varargs...)
+}
+
+// ListNotebooksWithPagination mocks base method.
+func (m *MockNotebooksAPIClient) ListNotebooksWithPagination(arg0 context.Context, arg1 ...datadogV1.ListNotebooksOptionalParameters) (<-chan datadog.PaginationResult[datadogV1.NotebooksResponseData], func()) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0}
+	for _, a := range arg1 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListNotebooksWithPagination", varargs...)
+	ret0, _ := ret[0].(<-chan datadog.PaginationResult[datadogV1.NotebooksResponseData])
+	ret1, _ := ret[1].(func())
+	return ret0, ret1
+}
+
+// ListNotebooksWithPagination indicates an expected call of ListNotebooksWithPagination.
+func (mr *MockNotebooksAPIClientMockRecorder) ListNotebooksWithPagination(arg0 interface{}, arg1 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0}, arg1...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListNotebooksWithPagination", reflect.TypeOf((*MockNotebooksAPIClient)(nil).ListNotebooksWithPagination), varargs...)
 }

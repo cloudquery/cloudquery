@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"slices"
 	"strings"
 	"time"
 
@@ -14,7 +15,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/google/uuid"
-	"golang.org/x/exp/slices"
 )
 
 func nonPkIndices(sc *schema.Table) []int {

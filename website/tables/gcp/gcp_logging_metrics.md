@@ -16,6 +16,7 @@ The composite primary key for this table is (**project_id**, **name**).
 |name (PK)|`utf8`|
 |description|`utf8`|
 |filter|`utf8`|
+|bucket_name|`utf8`|
 |disabled|`bool`|
 |metric_descriptor|`json`|
 |value_extractor|`utf8`|

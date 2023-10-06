@@ -1,0 +1,57 @@
+[
+  {
+    "name": "test_some_table",
+    "title": "Test Some Table",
+    "description": "Test description",
+    "columns": [
+      {
+        "name": "_cq_id",
+        "type": "uuid",
+        "description": "Internal CQ ID of the row",
+        "primary_key": false,
+        "not_null": true,
+        "unique": true,
+        "incremental_key": false
+      },
+      {
+        "name": "_cq_parent_id",
+        "type": "uuid",
+        "description": "Internal CQ ID of the parent row",
+        "primary_key": false,
+        "not_null": false,
+        "unique": false,
+        "incremental_key": false
+      },
+      {
+        "name": "column1",
+        "type": "utf8",
+        "description": "Test Column 1",
+        "primary_key": true,
+        "not_null": false,
+        "unique": false,
+        "incremental_key": false
+      },
+      {
+        "name": "column2",
+        "type": "int64",
+        "description": "Test Column 2",
+        "primary_key": false,
+        "not_null": false,
+        "unique": false,
+        "incremental_key": false
+      },
+      {
+        "name": "client_id",
+        "type": "int64",
+        "description": "ID of client",
+        "primary_key": true,
+        "not_null": false,
+        "unique": false,
+        "incremental_key": false
+      }
+    ],
+    "relations": [],
+    "is_incremental": false,
+    "pk_constraint_name": ""
+  }
+]
