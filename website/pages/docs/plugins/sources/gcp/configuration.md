@@ -80,7 +80,7 @@ This is the (nested) spec used by GCP Source Plugin
 
 - `scheduler` (string) (default: `dfs`):
 
-  The scheduler to use when determining the priority of resources to sync. Currently, the only supported values are `dfs` (depth-first search) and `round-robin`. This is an experimental feature, and may be removed in the future. For more information about this, see [performance tuning](/docs/advanced-topics/performance-tuning).
+  The scheduler to use when determining the priority of resources to sync. Currently, the only supported values are `dfs` (depth-first search), `round-robin` and `shuffle`. For more information about this, see [performance tuning](/docs/advanced-topics/performance-tuning).
 
 - `service_account_impersonation` ([Service Account Impersonation](#service-account-impersonation-spec) spec, optional. Default: empty)
 

@@ -1,5 +1,28 @@
 # Changelog
 
+## [3.4.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v3.4.7...plugins-destination-azblob-v3.4.8) (2023-10-04)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v14 digest to 00efb06 ([#14202](https://github.com/cloudquery/cloudquery/issues/14202)) ([fc8cc62](https://github.com/cloudquery/cloudquery/commit/fc8cc62ed70db157612e88678c123ba6a34b3b3c))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to 7ded38b ([#14246](https://github.com/cloudquery/cloudquery/issues/14246)) ([005891e](https://github.com/cloudquery/cloudquery/commit/005891e1892b41235ddb3b102f4bb6dafd48949a))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.1.15 ([#14269](https://github.com/cloudquery/cloudquery/issues/14269)) ([b05bb30](https://github.com/cloudquery/cloudquery/commit/b05bb30bf9b359d199856e67a420be86851e44ff))
+
+## [3.4.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v3.4.6...plugins-destination-azblob-v3.4.7) (2023-09-28)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to ffb7089 ([#13879](https://github.com/cloudquery/cloudquery/issues/13879)) ([f95ced5](https://github.com/cloudquery/cloudquery/commit/f95ced5daa2b123bd71ddff75bd76b3b008790c1))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.1.12 ([#13949](https://github.com/cloudquery/cloudquery/issues/13949)) ([7bbe086](https://github.com/cloudquery/cloudquery/commit/7bbe086c926223ef499757e6cf196cda21cc8c44))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.1.13 ([#14037](https://github.com/cloudquery/cloudquery/issues/14037)) ([ca1baf0](https://github.com/cloudquery/cloudquery/commit/ca1baf0d7b653e95ce7dfcc1d15a1a7255bb6630))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.10.0 ([#13978](https://github.com/cloudquery/cloudquery/issues/13978)) ([2efdf55](https://github.com/cloudquery/cloudquery/commit/2efdf55aed94a14c35c51632ff61ed454caaf5a5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.10.2 ([#13988](https://github.com/cloudquery/cloudquery/issues/13988)) ([aebaddf](https://github.com/cloudquery/cloudquery/commit/aebaddfc5ca0d7574b8cd72e9e074ec612472dbe))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.11.0 ([#14031](https://github.com/cloudquery/cloudquery/issues/14031)) ([ac7cdc4](https://github.com/cloudquery/cloudquery/commit/ac7cdc4f7d71599dad89b3170bb7bda676984228))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.11.1 ([#14063](https://github.com/cloudquery/cloudquery/issues/14063)) ([5a0ff7b](https://github.com/cloudquery/cloudquery/commit/5a0ff7b67890478c371385b379e0a8ef0c2f4865))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.9.0 ([#13960](https://github.com/cloudquery/cloudquery/issues/13960)) ([f074076](https://github.com/cloudquery/cloudquery/commit/f074076a21dc0b8cadfdc3adb9731473d24d28b1))
+
 ## [3.4.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v3.4.5...plugins-destination-azblob-v3.4.6) (2023-09-12)
 
 

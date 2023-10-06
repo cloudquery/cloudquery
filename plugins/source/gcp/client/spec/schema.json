@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/source/gcp/client/spec/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "CredentialsConfig": {
+      "properties": {
+        "target_principal": {
+          "type": "string",
+          "format": "email"
+        },
+        "scopes": {
+          "items": {
+            "type": "string",
+            "pattern": "^https://www.googleapis.com/auth/(.)+$"
+          },
+          "type": "array",
+          "default": [
+            "https://www.googleapis.com/auth/cloud-platform"
+          ]
+        },
+        "delegates": {
+          "items": {
+            "type": "string",
+            "format": "email"
+          },
+          "type": "array"
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "target_principal"
+      ]
+    },
+    "Spec": {
+      "not": {
+        "required": [
+          "project_filter",
+          "folder_ids"
+        ]
+      },
+      "properties": {
+        "project_ids": {
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": "array"
+        },
+        "folder_ids": {
+          "items": {
+            "type": "string",
+            "pattern": "^(folders|organizations)/(.)+$"
+          },
+          "type": "array"
+        },
+        "folder_recursion_depth": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 100
+        },
+        "organization_ids": {
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": "array"
+        },
+        "project_filter": {
+          "type": "string"
+        },
+        "organization_filter": {
+          "type": "string"
+        },
+        "service_account_key_json": {
+          "type": "string"
+        },
+        "backoff_delay": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 30
+        },
+        "backoff_retries": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0
+        },
+        "discovery_concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 100
+        },
+        "enabled_services_only": {
+          "type": "boolean"
+        },
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 50000
+        },
+        "scheduler": {
+          "$ref": "#/$defs/Strategy"
+        },
+        "service_account_impersonation": {
+          "$ref": "#/$defs/CredentialsConfig"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Strategy": {
+      "type": "string",
+      "enum": [
+        "dfs",
+        "round-robin",
+        "shuffle"
+      ],
+      "title": "CloudQuery scheduling strategy",
+      "default": "dfs"
+    }
+  }
+}

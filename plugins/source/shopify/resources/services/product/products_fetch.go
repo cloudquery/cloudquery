@@ -36,7 +36,7 @@ func fetchProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	for {
 		ret, cur, err := cl.Services.GetProducts(ctx, cursor, p)
 		if err != nil {
-			return err
+			return fmt.Errorf("GetProducts failed: %w", err)
 		}
 
 		for i := range ret.Products {

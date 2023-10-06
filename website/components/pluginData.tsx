@@ -299,6 +299,15 @@ export const ALL_PLUGINS: Plugin[] = [
     category: "databases",
   },
   {
+    name: "Notion",
+    logo: "/images/logos/plugins/notion.svg",
+    logoDark: "/images/logos/plugins/notion.svg",
+    id: "notion",
+    kind: "source",
+    availability: "free",
+    category: "other",
+  },
+  {
     name: "Okta",
     logo: "/images/logos/plugins/okta.svg",
     id: "okta",

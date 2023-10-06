@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/source/oracle/client/spec/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Spec": {
+      "properties": {
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 10000
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}

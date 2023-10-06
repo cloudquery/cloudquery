@@ -29,3 +29,4 @@ This table depends on [gcp_aiplatform_index_locations](gcp_aiplatform_index_loca
 |update_time|`timestamp[us, tz=UTC]`|
 |index_stats|`json`|
 |index_update_method|`utf8`|
+|encryption_spec|`json`|
