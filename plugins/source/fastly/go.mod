@@ -4,7 +4,7 @@ go 1.21.1
 
 require (
 	github.com/apache/arrow/go/v14 v14.0.0-20230929201650-00efb06dc0de
-	github.com/cloudquery/codegen v0.3.4
+	github.com/cloudquery/codegen v0.3.5
 	github.com/cloudquery/plugin-sdk/v4 v4.12.3
 	github.com/fastly/go-fastly/v7 v7.0.0
 	github.com/golang/mock v1.6.0
