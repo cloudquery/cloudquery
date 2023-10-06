@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec"
 	"github.com/thoas/go-funk"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -15,10 +16,10 @@ import (
 )
 
 // Parses org configuration and grabs the appropriate accounts
-func loadOrgAccounts(ctx context.Context, logger zerolog.Logger, awsPluginSpec *Spec) ([]Account, AssumeRoleAPIClient, error) {
+func loadOrgAccounts(ctx context.Context, logger zerolog.Logger, awsPluginSpec *spec.Spec) ([]spec.Account, AssumeRoleAPIClient, error) {
 	// If user doesn't specify any configs for admin account instantiate default values
 	if awsPluginSpec.Organization.AdminAccount == nil {
-		awsPluginSpec.Organization.AdminAccount = &Account{
+		awsPluginSpec.Organization.AdminAccount = &spec.Account{
 			AccountName:  "Default-Admin-Account",
 			LocalProfile: "",
 		}
@@ -46,7 +47,7 @@ func loadOrgAccounts(ctx context.Context, logger zerolog.Logger, awsPluginSpec *
 }
 
 // Load accounts from the appropriate endpoint as well as normalizing response
-func loadAccounts(ctx context.Context, awsPluginSpec *Spec, accountsApi services.OrganizationsClient, region string) ([]Account, error) {
+func loadAccounts(ctx context.Context, awsPluginSpec *spec.Spec, accountsApi services.OrganizationsClient, region string) ([]spec.Account, error) {
 	var rawAccounts []orgTypes.Account
 	var err error
 	if len(awsPluginSpec.Organization.OrganizationUnits) > 0 {
@@ -56,10 +57,10 @@ func loadAccounts(ctx context.Context, awsPluginSpec *Spec, accountsApi services
 	}
 
 	if err != nil {
-		return []Account{}, err
+		return []spec.Account{}, err
 	}
 	seen := map[string]struct{}{}
-	accounts := make([]Account, 0)
+	accounts := make([]spec.Account, 0)
 	for _, account := range rawAccounts {
 		// Only load Active accounts
 		if account.Status != orgTypes.AccountStatusActive || account.Id == nil {
@@ -83,21 +84,21 @@ func loadAccounts(ctx context.Context, awsPluginSpec *Spec, accountsApi services
 			roleArn.Partition = parsed.Partition
 		}
 
-		accounts = append(accounts, Account{
+		accounts = append(accounts, spec.Account{
 			ID:              *account.Id,
 			RoleARN:         roleArn.String(),
 			RoleSessionName: awsPluginSpec.Organization.ChildAccountRoleSessionName,
 			ExternalID:      awsPluginSpec.Organization.ChildAccountExternalID,
 			LocalProfile:    awsPluginSpec.Organization.AdminAccount.LocalProfile,
 			Regions:         awsPluginSpec.Organization.ChildAccountRegions,
-			source:          "org",
+			Source:          spec.AccountSourceOrg,
 		})
 	}
 	return accounts, err
 }
 
 // Get Accounts for specific Organizational Units
-func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient, awsOrg *AwsOrg, region string) ([]orgTypes.Account, error) {
+func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient, awsOrg *spec.Org, region string) ([]orgTypes.Account, error) {
 	q := awsOrg.OrganizationUnits
 	var ou string
 	var rawAccounts []orgTypes.Account
@@ -158,7 +159,7 @@ func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient
 }
 
 // Get All accounts in a specific organization
-func getAllAccounts(ctx context.Context, accountsApi services.OrganizationsClient, org *AwsOrg, region string) ([]orgTypes.Account, error) {
+func getAllAccounts(ctx context.Context, accountsApi services.OrganizationsClient, org *spec.Org, region string) ([]orgTypes.Account, error) {
 	var rawAccounts []orgTypes.Account
 	accountsPaginator := organizations.NewListAccountsPaginator(accountsApi, &organizations.ListAccountsInput{})
 	for accountsPaginator.HasMorePages() {
