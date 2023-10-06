@@ -6,7 +6,7 @@ spec:
   backend_options:
     table_name: "test_backend"
     connection: "@@plugins.test2.connection"
-  version: "v3.1.12" # latest version of source test plugin
+  version: "v3.1.13" # latest version of source test plugin
   tables: ["*"]
 ---
 kind: "destination"
