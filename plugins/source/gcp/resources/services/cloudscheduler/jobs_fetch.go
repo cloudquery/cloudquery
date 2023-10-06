@@ -3,8 +3,8 @@ package cloudscheduler
 import (
 	"context"
 
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/api/iterator"
 
 	scheduler "cloud.google.com/go/scheduler/apiv1"
