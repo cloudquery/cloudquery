@@ -6,6 +6,71 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.14.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.13.2...plugins-source-aws-v22.14.0) (2023-10-04)
+
+
+### Features
+
+* **services:** Support newly added regions ([#14283](https://github.com/cloudquery/cloudquery/issues/14283)) ([ea54163](https://github.com/cloudquery/cloudquery/commit/ea5416383cbc9ef14bcaf68b7112527a63f60ae3))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v14 digest to 00efb06 ([#14202](https://github.com/cloudquery/cloudquery/issues/14202)) ([fc8cc62](https://github.com/cloudquery/cloudquery/commit/fc8cc62ed70db157612e88678c123ba6a34b3b3c))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to 7ded38b ([#14246](https://github.com/cloudquery/cloudquery/issues/14246)) ([005891e](https://github.com/cloudquery/cloudquery/commit/005891e1892b41235ddb3b102f4bb6dafd48949a))
+* **deps:** Update github.com/petermattis/goid digest to 1876fd5 ([#14234](https://github.com/cloudquery/cloudquery/issues/14234)) ([3b56924](https://github.com/cloudquery/cloudquery/commit/3b56924bc734b1e6d49c6fa55da928f92d7291a0))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.4 ([#14043](https://github.com/cloudquery/cloudquery/issues/14043)) ([be4911a](https://github.com/cloudquery/cloudquery/commit/be4911af9abef43896e78dd69698b989558a9e1a))
+
+## [22.13.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.13.1...plugins-source-aws-v22.13.2) (2023-09-29)
+
+
+### Bug Fixes
+
+* Fix for `example_queries` skip on error message ([#14122](https://github.com/cloudquery/cloudquery/issues/14122)) ([95b3641](https://github.com/cloudquery/cloudquery/commit/95b3641a1483a6dc9054023b1b8f0512c2a810cc))
+* Fix query for finding unused target groups for AWS ([#13616](https://github.com/cloudquery/cloudquery/issues/13616)) ([58b07cd](https://github.com/cloudquery/cloudquery/commit/58b07cd5b94889965bfbb8ffc8c9bf66a6579593))
+
+## [22.13.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.13.0...plugins-source-aws-v22.13.1) (2023-09-27)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.11.1 ([#14063](https://github.com/cloudquery/cloudquery/issues/14063)) ([5a0ff7b](https://github.com/cloudquery/cloudquery/commit/5a0ff7b67890478c371385b379e0a8ef0c2f4865))
+* Don't stop on error for Regional WebACL Resources ([#14045](https://github.com/cloudquery/cloudquery/issues/14045)) ([33ab5b0](https://github.com/cloudquery/cloudquery/commit/33ab5b0f86a2e7bef9d1f71d01d4481d7af0445d))
+
+## [22.13.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.12.0...plugins-source-aws-v22.13.0) (2023-09-26)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_ec2_vpc_endpoint_connections` was added
+
+### Features
+
+* Add support for AWS EC2 VPC Endpoint Connections ([#14044](https://github.com/cloudquery/cloudquery/issues/14044)) ([0fa640e](https://github.com/cloudquery/cloudquery/commit/0fa640e1ca458358bc497064c33d4b74ec67656d)), closes [#14030](https://github.com/cloudquery/cloudquery/issues/14030)
+* **services:** Support newly added regions ([#14032](https://github.com/cloudquery/cloudquery/issues/14032)) ([c11bfce](https://github.com/cloudquery/cloudquery/commit/c11bfcefd472526f106c245ac4077f7a4bec0ca0))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.10.2 ([#13988](https://github.com/cloudquery/cloudquery/issues/13988)) ([aebaddf](https://github.com/cloudquery/cloudquery/commit/aebaddfc5ca0d7574b8cd72e9e074ec612472dbe))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.11.0 ([#14031](https://github.com/cloudquery/cloudquery/issues/14031)) ([ac7cdc4](https://github.com/cloudquery/cloudquery/commit/ac7cdc4f7d71599dad89b3170bb7bda676984228))
+
+## [22.12.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.11.0...plugins-source-aws-v22.12.0) (2023-09-21)
+
+
+### Features
+
+* **services:** Support newly added regions ([#13938](https://github.com/cloudquery/cloudquery/issues/13938)) ([c4e810b](https://github.com/cloudquery/cloudquery/commit/c4e810bea14e854771bd779cb04f3e4cc2d0ee40))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to ffb7089 ([#13879](https://github.com/cloudquery/cloudquery/issues/13879)) ([f95ced5](https://github.com/cloudquery/cloudquery/commit/f95ced5daa2b123bd71ddff75bd76b3b008790c1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.10.0 ([#13978](https://github.com/cloudquery/cloudquery/issues/13978)) ([2efdf55](https://github.com/cloudquery/cloudquery/commit/2efdf55aed94a14c35c51632ff61ed454caaf5a5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.8.0 ([#13950](https://github.com/cloudquery/cloudquery/issues/13950)) ([15b0b69](https://github.com/cloudquery/cloudquery/commit/15b0b6925932613ed2915a3255b3466f21a5c7bf))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.9.0 ([#13960](https://github.com/cloudquery/cloudquery/issues/13960)) ([f074076](https://github.com/cloudquery/cloudquery/commit/f074076a21dc0b8cadfdc3adb9731473d24d28b1))
+* Flipped condition in query for SecretsManager.4 ([#13864](https://github.com/cloudquery/cloudquery/issues/13864)) ([76c21fb](https://github.com/cloudquery/cloudquery/commit/76c21fbec6dbb2ca03327a6a93024b8ecd538084))
+* Flipped condition on secrets manager policy ([#13862](https://github.com/cloudquery/cloudquery/issues/13862)) ([c604b70](https://github.com/cloudquery/cloudquery/commit/c604b707c5ac63b9814915ccffb94b84bdbf2e32))
+
 ## [22.11.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.10.0...plugins-source-aws-v22.11.0) (2023-09-12)
 
 

@@ -3,6 +3,7 @@ package plugin
 import (
 	"sort"
 
+	"github.com/cloudquery/cloudquery/plugins/source/oracle/client/spec"
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/resources/services/blockstorage"
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/resources/services/database"
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/resources/services/filestorage"
@@ -122,5 +123,6 @@ func Plugin() *plugin.Plugin {
 		"oracle",
 		Version,
 		Configure,
+		plugin.WithJSONSchema(spec.JSONSchema),
 	)
 }

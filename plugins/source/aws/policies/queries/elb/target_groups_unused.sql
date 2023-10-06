@@ -7,4 +7,4 @@ select :'execution_time'         as execution_time,
        arn                       as resource_id,
        'fail'                    as status
 from aws_elbv2_target_groups
-where array_length(load_balancer_arns, 1) = 0
+where COALESCE(array_length(load_balancer_arns, 1), 0) = 0

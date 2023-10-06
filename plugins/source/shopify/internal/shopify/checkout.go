@@ -19,7 +19,7 @@ type Checkout struct {
 	TaxesIncluded            bool       `json:"taxes_included"`
 	TotalWeight              int        `json:"total_weight"`
 	Currency                 string     `json:"currency"`
-	CompletedAt              time.Time  `json:"completed_at"`
+	CompletedAt              *time.Time `json:"completed_at"`
 	ClosedAt                 *time.Time `json:"closed_at"`
 	UserID                   *int64     `json:"user_id"`
 	LocationID               any        `json:"location_id"`

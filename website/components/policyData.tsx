@@ -2,9 +2,20 @@ export type Policy = {
     id: string;
     name: string;
     buyLinks?: any;
+    availableForPurchase?: boolean;
 };
 
 export const ALL_PREMIUM_POLICIES: Policy[] = [
+    {
+        id: "aws-cost-pack",
+        name: "AWS Cost Optimization Pack",
+        buyLinks: {
+            standard: "https://buy.stripe.com/14kbIMdapgW35ig4kj",
+            extended: "https://buy.stripe.com/fZe9AE0nD7lt1207wu",
+        },
+        availableForPurchase: true
+    },
+
     {
         id: "aws_cis_v1_5_0_bigquery",
         name: "AWS CIS V1.5.0 for BigQuery",
@@ -39,6 +50,7 @@ export const ALL_PREMIUM_POLICIES: Policy[] = [
             standard: "https://buy.stripe.com/fZe6os8U9dJR8us9Eo",
             extended: "https://buy.stripe.com/6oEdQUdap8pxaCAeYJ",
         },
+        availableForPurchase: true,
     },
 
     {
@@ -56,6 +68,15 @@ export const ALL_PREMIUM_POLICIES: Policy[] = [
         buyLinks: {
             standard: "https://buy.stripe.com/3cseUY0nDeNVh0Y7ws",
             extended: "https://buy.stripe.com/eVa28c3zP35ddOMbMJ",
+        },
+    },
+
+    {
+        id: "azure-cost-pack",
+        name: "Azure Cost Optimization Pack",
+        buyLinks: {
+            standard: "https://buy.stripe.com/14k8wA8U97lt264eYZ",
+            extended: "https://buy.stripe.com/7sI8wAfix5dldOMaII",
         },
     },
 
@@ -96,6 +117,15 @@ export const ALL_PREMIUM_POLICIES: Policy[] = [
     },
 
     {
+        id: "gcp-cost-pack",
+        name: "GCP Cost Optimization Pack",
+        buyLinks: {
+            standard: "https://buy.stripe.com/28ocMQ2vL49hh0Y2ce",
+            extended: "https://buy.stripe.com/3cs3cgfixbBJ4ecaIL",
+        },
+    },
+
+    {
         id: "k8s_nsa_cisa_v1_bigquery",
         name: "K8S NSA CISA V1 for BigQuery",
         buyLinks: {
@@ -106,7 +136,7 @@ export const ALL_PREMIUM_POLICIES: Policy[] = [
 
     {
         id: "k8s_nsa_cisa_v1_snowflake",
-        name: "K8S NSA CISA V1 for snowflake",
+        name: "K8S NSA CISA V1 for Snowflake",
         buyLinks: {
             standard: "https://buy.stripe.com/00g9AE5HXdJRbGEeYA",
             extended: "https://buy.stripe.com/cN27sw1rH9tBfWU7w9",

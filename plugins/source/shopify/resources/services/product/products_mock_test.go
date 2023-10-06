@@ -18,7 +18,7 @@ func createProducts(router *mux.Router) error {
 	}
 	sp.Tags = shopify.Tags{"tag1", "tag2"}
 
-	router.HandleFunc("/admin/api/"+shopify.APIVersion+"/products.json", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/admin/api/"+shopify.DefaultAPIVersion+"/products.json", func(w http.ResponseWriter, r *http.Request) {
 		list := shopify.GetProductsResponse{
 			Products: []shopify.Product{sp},
 			PageSize: 1,

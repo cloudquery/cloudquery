@@ -23,10 +23,6 @@ func Monitors() *schema.Table {
 func fetchMonitors(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	ctx = c.BuildContextV1(ctx)
-	resp, _, err := c.DDServices.MonitorsAPI.ListMonitors(ctx)
-	if err != nil {
-		return err
-	}
-	res <- resp
-	return nil
+	resp, cancel := c.DDServices.MonitorsAPI.ListMonitorsWithPagination(ctx)
+	return client.ConsumePaginatedResponse(resp, cancel, res)
 }
