@@ -64,6 +64,16 @@ func Functions() *schema.Table {
 				Type:     arrow.BinaryTypes.String,
 				Resolver: resolveRuntimeManagementConfig,
 			},
+			{
+				Name:     "concurrency",
+				Type:     sdkTypes.ExtensionTypes.JSON,
+				Resolver: resolveConcurrency,
+			},
+			{
+				Name:     "tags",
+				Type:     sdkTypes.ExtensionTypes.JSON,
+				Resolver: resolveTags,
+			},
 		},
 
 		Relations: []*schema.Table{
@@ -96,7 +106,6 @@ func getFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceLambda).Lambda
 	f := resource.Item.(types.FunctionConfiguration)
-
 	funcResponse, err := svc.GetFunction(ctx, &lambda.GetFunctionInput{
 		FunctionName: f.FunctionName,
 	}, func(options *lambda.Options) {
@@ -118,10 +127,10 @@ func getFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 			cl.Logger().Warn().Err(err).Msg("configuration data retrieved from ListFunctions will still be persisted")
 			return nil
 		}
-
 		return err
 	}
 	if funcResponse.Code != nil {
+		cl.Logger().Warn().Msg("location of lambda function redacted for security purposes")
 		funcResponse.Code.Location = aws.String("REDACTED_FOR_SECURITY_PURPOSES")
 	}
 	resource.Item = funcResponse
@@ -234,4 +243,66 @@ func resolveRuntimeManagementConfig(ctx context.Context, meta schema.ClientMeta,
 	}
 
 	return resource.Set("update_runtime_on", runtimeManagementConfig.UpdateRuntimeOn)
+}
+
+func resolveConcurrency(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
+	r := resource.Item.(*lambda.GetFunctionOutput)
+	// skip getting concurrency because it was already resolved from GetFunction
+	if r.Configuration == nil || r.Code != nil {
+		return nil
+	}
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceLambda).Lambda
+
+	functionConcurrency, err := svc.GetFunctionConcurrency(ctx, &lambda.GetFunctionConcurrencyInput{
+		FunctionName: r.Configuration.FunctionName,
+	}, func(options *lambda.Options) {
+		options.Region = cl.Region
+	})
+
+	if err != nil {
+		if cl.IsNotFoundError(err) {
+			return nil
+		}
+		return err
+	}
+
+	// convert from lambda.GetFunctionConcurrencyOutput to types.Concurrency
+
+	data, err := json.Marshal(functionConcurrency)
+	if err != nil {
+		return err
+	}
+	var funcConcurrency types.Concurrency
+	err = json.Unmarshal(data, &funcConcurrency)
+	if err != nil {
+		return err
+	}
+
+	return resource.Set(col.Name, functionConcurrency)
+}
+
+func resolveTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
+	r := resource.Item.(*lambda.GetFunctionOutput)
+	// skip getting tags because it was already resolved from GetFunction
+	if r.Configuration == nil || r.Code != nil {
+		return nil
+	}
+
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceLambda).Lambda
+
+	funcTags, err := svc.ListTags(ctx, &lambda.ListTagsInput{
+		Resource: r.Configuration.FunctionArn,
+	}, func(options *lambda.Options) {
+		options.Region = cl.Region
+	})
+
+	if err != nil {
+		if cl.IsNotFoundError(err) {
+			return nil
+		}
+		return err
+	}
+	return resource.Set(col.Name, funcTags.Tags)
 }
