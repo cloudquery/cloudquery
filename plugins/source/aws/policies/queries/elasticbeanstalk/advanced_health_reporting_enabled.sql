@@ -8,6 +8,7 @@ select
     arn as resource_id,
     case when
         health_status is null
+        or health_status = ''
         or health is null
         then 'fail'
         else 'pass'
