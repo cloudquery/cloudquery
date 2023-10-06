@@ -10,21 +10,35 @@
           "format": "email"
         },
         "scopes": {
-          "items": {
-            "type": "string",
-            "pattern": "^https://www.googleapis.com/auth/(.)+$"
-          },
-          "type": "array",
-          "default": [
-            "https://www.googleapis.com/auth/cloud-platform"
+          "oneOf": [
+            {
+              "items": {
+                "type": "string",
+                "pattern": "^https://www.googleapis.com/auth/(.)+$"
+              },
+              "type": "array",
+              "default": [
+                "https://www.googleapis.com/auth/cloud-platform"
+              ]
+            },
+            {
+              "type": "null"
+            }
           ]
         },
         "delegates": {
-          "items": {
-            "type": "string",
-            "format": "email"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "type": "string",
+                "format": "email"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "subject": {
           "type": "string",
@@ -39,6 +53,20 @@
     },
     "Spec": {
       "not": {
+        "properties": {
+          "project_filter": {
+            "type": "string",
+            "minLength": 1
+          },
+          "folder_ids": {
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "type": "array",
+            "minItems": 1
+          }
+        },
         "required": [
           "project_filter",
           "folder_ids"
@@ -46,30 +74,58 @@
       },
       "properties": {
         "project_ids": {
-          "items": {
-            "type": "string",
-            "minLength": 1
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "folder_ids": {
-          "items": {
-            "type": "string",
-            "pattern": "^(folders|organizations)/(.)+$"
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "type": "string",
+                "pattern": "^(folders|organizations)/(.)+$"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "folder_recursion_depth": {
-          "type": "integer",
-          "minimum": 0,
-          "default": 100
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "default": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "organization_ids": {
-          "items": {
-            "type": "string",
-            "minLength": 1
-          },
-          "type": "array"
+          "oneOf": [
+            {
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "project_filter": {
           "type": "string"
@@ -107,7 +163,14 @@
           "$ref": "#/$defs/Strategy"
         },
         "service_account_impersonation": {
-          "$ref": "#/$defs/CredentialsConfig"
+          "oneOf": [
+            {
+              "$ref": "#/$defs/CredentialsConfig"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
