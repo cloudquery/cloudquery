@@ -173,11 +173,11 @@ UNION
       CASE
       WHEN (
         engine IN ('aurora', 'aurora-mysql', 'mariadb', 'mysql')
-        AND db_instance_port = 3306
+        AND (endpoint->>'Port')::INT8 = 3306
       )
-      OR (engine LIKE '%postgres%' AND db_instance_port = 5432)
-      OR (engine LIKE '%oracle%' AND db_instance_port = 1521)
-      OR (engine LIKE '%sqlserver%' AND db_instance_port = 1433)
+      OR (engine LIKE '%postgres%' AND (endpoint->>'Port')::INT8 = 5432)
+      OR (engine LIKE '%oracle%' AND (endpoint->>'Port')::INT8 = 1521)
+      OR (engine LIKE '%sqlserver%' AND (endpoint->>'Port')::INT8 = 1433)
       THEN 'fail'
       ELSE 'pass'
       END
