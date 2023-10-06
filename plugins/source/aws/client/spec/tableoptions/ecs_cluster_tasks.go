@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/cloudquery/plugin-sdk/v4/caser"
+	"github.com/invopop/jsonschema"
 )
 
 type ECSTaskAPIs struct {
@@ -31,6 +32,14 @@ func (s *CustomListTasksOpts) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(b, &s.ListTasksInput)
 }
 
+// JSONSchemaExtend is required to remove `NextToken` & `Cluster`, as well as add default for `MaxResults`.
+func (CustomListTasksOpts) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.Properties.Delete("NextToken")
+	sc.Properties.Delete("Cluster")
+
+	sc.Properties.Value("MaxResults").Default = 100
+}
+
 func (s *ECSTaskAPIs) validateListTasks() error {
 	for _, opt := range s.ListTasksOpts {
 		if aws.ToString(opt.NextToken) != "" {
@@ -44,7 +53,7 @@ func (s *ECSTaskAPIs) validateListTasks() error {
 	return nil
 }
 
-func (s *ECSTaskAPIs) setDefaults() {
+func (s *ECSTaskAPIs) SetDefaults() {
 	for i := 0; i < len(s.ListTasksOpts); i++ {
 		if aws.ToInt32(s.ListTasksOpts[i].MaxResults) == 0 {
 			s.ListTasksOpts[i].MaxResults = aws.Int32(100)
@@ -53,6 +62,5 @@ func (s *ECSTaskAPIs) setDefaults() {
 }
 
 func (s *ECSTaskAPIs) Validate() error {
-	s.setDefaults()
 	return s.validateListTasks()
 }

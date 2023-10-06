@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
@@ -28,7 +29,7 @@ type Client struct {
 }
 
 func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, options plugin.NewClientOptions) (plugin.Client, error) {
-	var spec client.Spec
+	var s spec.Spec
 	c := &Client{
 		options:   options,
 		logger:    logger,
@@ -38,22 +39,22 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, options p
 		return c, nil
 	}
 	var err error
-	if err := json.Unmarshal(specBytes, &spec); err != nil {
+	if err := json.Unmarshal(specBytes, &s); err != nil {
 		return nil, err
 	}
-	spec.SetDefaults()
-	if err := spec.Validate(); err != nil {
+	s.SetDefaults()
+	if err := s.Validate(); err != nil {
 		return nil, err
 	}
-	c.client, err = client.Configure(ctx, logger, spec)
+	c.client, err = client.Configure(ctx, logger, s)
 	if err != nil {
 		return nil, err
 	}
 
 	c.scheduler = scheduler.NewScheduler(
-		scheduler.WithConcurrency(spec.Concurrency),
+		scheduler.WithConcurrency(s.Concurrency),
 		scheduler.WithLogger(logger),
-		scheduler.WithStrategy(spec.Scheduler),
+		scheduler.WithStrategy(s.Scheduler),
 	)
 	return c, nil
 }
