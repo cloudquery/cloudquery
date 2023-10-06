@@ -86,6 +86,8 @@ mysql:
   - plugins/destination/mysql/**/*
 neo4j:
   - plugins/destination/neo4j/**/*
+notion:
+  - plugins/source/notion/**/*
 okta:
   - plugins/source/okta/**/*
 oracle:

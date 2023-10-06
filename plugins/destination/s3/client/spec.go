@@ -19,12 +19,12 @@ type Spec struct {
 	Athena    bool   `json:"athena,omitempty"`
 	TestWrite *bool  `json:"test_write,omitempty"`
 
-	Endpoint     string `json:"endpoint,omitempty"`
-	UsePathStyle bool   `json:"use_path_style,omitempty"`
-
-	BatchSize      *int64               `json:"batch_size"`
-	BatchSizeBytes *int64               `json:"batch_size_bytes"`
-	BatchTimeout   *configtype.Duration `json:"batch_timeout"`
+	Endpoint              string               `json:"endpoint,omitempty"`
+	UsePathStyle          bool                 `json:"use_path_style,omitempty"`
+	EndpointSkipTLSVerify bool                 `json:"endpoint_skip_tls_verify,omitempty"`
+	BatchSize             *int64               `json:"batch_size"`
+	BatchSizeBytes        *int64               `json:"batch_size_bytes"`
+	BatchTimeout          *configtype.Duration `json:"batch_timeout"`
 }
 
 func (s *Spec) SetDefaults() {
