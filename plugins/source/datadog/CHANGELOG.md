@@ -1,5 +1,57 @@
 # Changelog
 
+## [4.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-datadog-v4.1.0...plugins-source-datadog-v4.2.0) (2023-10-04)
+
+
+### Features
+
+* Add pagination support for endpoints ([#14264](https://github.com/cloudquery/cloudquery/issues/14264)) ([3030d79](https://github.com/cloudquery/cloudquery/commit/3030d79d25966df0495fb43d284f0b236a36af35))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.0 ([#14281](https://github.com/cloudquery/cloudquery/issues/14281)) ([85835a9](https://github.com/cloudquery/cloudquery/commit/85835a938bfa58d1b0d320ae17aff5fe7f6cfef2))
+
+## [4.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-datadog-v4.0.0...plugins-source-datadog-v4.1.0) (2023-10-02)
+
+
+### Features
+
+* Add configurable site ([#14266](https://github.com/cloudquery/cloudquery/issues/14266)) ([2c80f91](https://github.com/cloudquery/cloudquery/commit/2c80f91525459045a8d9b82a4cc635b5b381cf50))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v14 digest to 00efb06 ([#14202](https://github.com/cloudquery/cloudquery/issues/14202)) ([fc8cc62](https://github.com/cloudquery/cloudquery/commit/fc8cc62ed70db157612e88678c123ba6a34b3b3c))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to 7ded38b ([#14246](https://github.com/cloudquery/cloudquery/issues/14246)) ([005891e](https://github.com/cloudquery/cloudquery/commit/005891e1892b41235ddb3b102f4bb6dafd48949a))
+
+## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-datadog-v3.1.10...plugins-source-datadog-v4.0.0) (2023-09-29)
+
+
+### This Release has the Following Changes to Tables
+- Table `datadog_monitors`: column type changed from `list<item: utf8, nullable>` to `json` for `restricted_roles` (:warning: breaking)
+
+### ⚠ BREAKING CHANGES
+
+* Add pagination support for list users ([#14188](https://github.com/cloudquery/cloudquery/issues/14188))
+
+### Bug Fixes
+
+* Add pagination support for list users ([#14188](https://github.com/cloudquery/cloudquery/issues/14188)) ([b5360bb](https://github.com/cloudquery/cloudquery/commit/b5360bbdc160f2efff4f88bbb8325bbc6c1413ec))
+
+## [3.1.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-datadog-v3.1.9...plugins-source-datadog-v3.1.10) (2023-09-27)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to ffb7089 ([#13879](https://github.com/cloudquery/cloudquery/issues/13879)) ([f95ced5](https://github.com/cloudquery/cloudquery/commit/f95ced5daa2b123bd71ddff75bd76b3b008790c1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.10.0 ([#13978](https://github.com/cloudquery/cloudquery/issues/13978)) ([2efdf55](https://github.com/cloudquery/cloudquery/commit/2efdf55aed94a14c35c51632ff61ed454caaf5a5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.10.2 ([#13988](https://github.com/cloudquery/cloudquery/issues/13988)) ([aebaddf](https://github.com/cloudquery/cloudquery/commit/aebaddfc5ca0d7574b8cd72e9e074ec612472dbe))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.11.0 ([#14031](https://github.com/cloudquery/cloudquery/issues/14031)) ([ac7cdc4](https://github.com/cloudquery/cloudquery/commit/ac7cdc4f7d71599dad89b3170bb7bda676984228))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.11.1 ([#14063](https://github.com/cloudquery/cloudquery/issues/14063)) ([5a0ff7b](https://github.com/cloudquery/cloudquery/commit/5a0ff7b67890478c371385b379e0a8ef0c2f4865))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.8.0 ([#13950](https://github.com/cloudquery/cloudquery/issues/13950)) ([15b0b69](https://github.com/cloudquery/cloudquery/commit/15b0b6925932613ed2915a3255b3466f21a5c7bf))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.9.0 ([#13960](https://github.com/cloudquery/cloudquery/issues/13960)) ([f074076](https://github.com/cloudquery/cloudquery/commit/f074076a21dc0b8cadfdc3adb9731473d24d28b1))
+
 ## [3.1.9](https://github.com/cloudquery/cloudquery/compare/plugins-source-datadog-v3.1.8...plugins-source-datadog-v3.1.9) (2023-09-12)
 
 
