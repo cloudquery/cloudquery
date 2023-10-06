@@ -178,9 +178,6 @@ func New(ctx context.Context, logger zerolog.Logger, s *spec.Spec) (schema.Clien
 		}
 		c.ClientOptions = append(c.ClientOptions, option.WithTokenSource(ts))
 	}
-	if len(s.ProjectFilter) > 0 && len(s.FolderIDs) > 0 {
-		return nil, fmt.Errorf("project_filter and folder_ids are mutually exclusive")
-	}
 
 	orgsClient, err := resourcemanager.NewOrganizationsClient(ctx, c.ClientOptions...)
 	if err != nil {

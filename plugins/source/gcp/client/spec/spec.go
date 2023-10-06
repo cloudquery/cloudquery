@@ -2,9 +2,11 @@ package spec
 
 import (
 	_ "embed"
+	"fmt"
 
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/invopop/jsonschema"
+	orderedmap "github.com/wk8/go-ordered-map/v2"
 	"google.golang.org/api/cloudresourcemanager/v1"
 )
 
@@ -26,38 +28,66 @@ type Spec struct {
 	ServiceAccountImpersonation *CredentialsConfig `json:"service_account_impersonation"`
 }
 
-func (spec *Spec) SetDefaults() {
-	if spec.BackoffRetries < 0 {
-		const defaultBackoffRetries = 0
-		spec.BackoffRetries = defaultBackoffRetries
+func (s *Spec) Validate() error {
+	if len(s.ProjectFilter) > 0 && len(s.FolderIDs) > 0 {
+		return fmt.Errorf("project_filter and folder_ids are mutually exclusive")
 	}
-	if spec.BackoffDelay < 0 {
+	return nil
+}
+
+func (s *Spec) SetDefaults() {
+	if s.BackoffRetries < 0 {
+		const defaultBackoffRetries = 0
+		s.BackoffRetries = defaultBackoffRetries
+	}
+	if s.BackoffDelay < 0 {
 		const defaultBackoffDelay = 30
-		spec.BackoffDelay = defaultBackoffDelay
+		s.BackoffDelay = defaultBackoffDelay
 	}
 
-	if spec.FolderRecursionDepth == nil || *spec.FolderRecursionDepth < 0 {
+	if s.FolderRecursionDepth == nil || *s.FolderRecursionDepth < 0 {
 		// we do allow 0 as value
 		var defaultRecursionDepth = 100
-		spec.FolderRecursionDepth = &defaultRecursionDepth
+		s.FolderRecursionDepth = &defaultRecursionDepth
 	}
 
-	if spec.DiscoveryConcurrency <= 0 {
+	if s.DiscoveryConcurrency <= 0 {
 		const defaultDiscoveryConcurrency = 100
-		spec.DiscoveryConcurrency = defaultDiscoveryConcurrency
+		s.DiscoveryConcurrency = defaultDiscoveryConcurrency
 	}
 
-	if spec.Concurrency <= 0 {
+	if s.Concurrency <= 0 {
 		const defaultConcurrency = 50000
-		spec.Concurrency = defaultConcurrency
+		s.Concurrency = defaultConcurrency
 	}
 
-	spec.ServiceAccountImpersonation.SetDefaults()
+	s.ServiceAccountImpersonation.SetDefaults()
 }
 
 // JSONSchemaExtend is required to add `not` section for `project_filter` & `folder_ids` being mutually exclusive.
 func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
-	sc.Not = &jsonschema.Schema{Required: []string{"project_filter", "folder_ids"}}
+	sc.Not = &jsonschema.Schema{
+		Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+			one := uint64(1)
+			properties := jsonschema.NewProperties()
+
+			projectFilter := *sc.Properties.Value("project_filter")
+			projectFilter.MinLength = &one
+			properties.Set("project_filter", &projectFilter)
+
+			folderIDs := *sc.Properties.Value("folder_ids").OneOf[0] // 0 is spec, 1 is null
+			folderIDs.MinItems = &one
+			items := *folderIDs.Items
+			items.MinLength = &one
+			items.Pattern = ""
+			folderIDs.Items = &items
+
+			properties.Set("folder_ids", &folderIDs)
+
+			return properties
+		}(),
+		Required: []string{"project_filter", "folder_ids"},
+	}
 }
 
 //go:embed schema.json
