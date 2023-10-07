@@ -3,7 +3,7 @@ package tableoptions
 import (
 	"reflect"
 
-	"golang.org/x/exp/slices"
+	"slices"
 )
 
 type changeCaseFunc func(string) string
