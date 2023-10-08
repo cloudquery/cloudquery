@@ -13,13 +13,14 @@ import (
 	"testing"
 	"time"
 
+	"slices"
+
 	"github.com/PagerDuty/go-pagerduty"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/rs/zerolog"
-	"golang.org/x/exp/slices"
 )
 
 type MockHttpClient struct {

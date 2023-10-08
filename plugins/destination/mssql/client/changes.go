@@ -3,8 +3,9 @@ package client
 import (
 	"strings"
 
+	"slices"
+
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"golang.org/x/exp/slices"
 )
 
 func prettifyChanges(name string, changes []schema.TableColumnChange) string {

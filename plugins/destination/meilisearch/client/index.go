@@ -4,9 +4,10 @@ import (
 	"context"
 	"fmt"
 
+	"slices"
+
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/meilisearch/meilisearch-go"
-	"golang.org/x/exp/slices"
 )
 
 type indexSchema struct {

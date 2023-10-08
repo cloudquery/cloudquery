@@ -4,13 +4,14 @@ import (
 	"context"
 	"fmt"
 
+	"slices"
+
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/pkg/errors"
-	"golang.org/x/exp/slices"
 	"golang.org/x/sync/errgroup"
 )
 
