@@ -97,6 +97,9 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *
 	if output != nil && output.LocationConstraint != "" {
 		resource.Region = string(output.LocationConstraint)
 	}
+	if output != nil && output.LocationConstraint == "EU" {
+		resource.Region = "eu-west-1"
+	}
 	var errAll []error
 
 	resolvers := []func(context.Context, schema.ClientMeta, *models.WrappedBucket) error{
