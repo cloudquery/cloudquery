@@ -2,7 +2,15 @@
 
 ## Overview
 
-## dbt Installation
+### Requirements
+
+- [dbt](https://docs.getdbt.com/docs/installation)
+- [PostgreSQL](https://www.postgresql.org/download/) or any other mutually supported destination
+- [CloudQuery](https://www.cloudquery.io/docs/quickstart) with [GCP](https://www.cloudquery.io/docs/plugins/sources/gcp/overview) and [PostgreSQL](https://www.cloudquery.io/docs/plugins/destinations/postgresql/overview)
+
+[Quick guide](https://www.cloudquery.io/integrations/gcp/postgresql) for GCP-Postgres integration.
+
+#### dbt Installation
 
 An example of how to install dbt to work with Postgres.
 
@@ -45,7 +53,7 @@ dbt debug
 
 This command will tell you if dbt can successfully connect to your PostgreSQL instance.
 
-# Running Your dbt Project
+#### Running Your dbt Project
 
 Navigate to your dbt project directory, where your `dbt_project.yml` resides.
 
@@ -62,3 +70,9 @@ dbt run
 ```
 
 This command will run your `dbt` models and create tables/views in your PostgreSQL database as defined in your models.
+
+### Usage
+
+- Sync your data from GCP: `cloudquery sync gcp.yml postgres.yml`
+
+- Run DBT: `dbt run`
