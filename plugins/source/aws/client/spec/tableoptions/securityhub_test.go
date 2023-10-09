@@ -12,7 +12,7 @@ import (
 func TestGetFindings(t *testing.T) {
 	u := CustomGetFindingsOpts{}
 	require.NoError(t, faker.FakeObject(&u))
-	api := SecurityHubAPIs{
+	api := SecurityHubFindings{
 		GetFindingsOpts: []CustomGetFindingsOpts{u},
 	}
 	// Ensure that the validation works as expected
@@ -26,7 +26,7 @@ func TestGetFindings(t *testing.T) {
 }
 
 func TestCustomGetFindingsOpts_JSONSchemaExtend(t *testing.T) {
-	schema, err := jsonschema.Generate(SecurityHubAPIs{})
+	schema, err := jsonschema.Generate(SecurityHubFindings{})
 	require.NoError(t, err)
 
 	jsonschema.TestJSONSchema(t, string(schema), []jsonschema.TestCase{
