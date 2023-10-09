@@ -5,8 +5,6 @@ import (
 	"regexp"
 	"time"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
-
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
@@ -15,6 +13,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Instances() *schema.Table {
