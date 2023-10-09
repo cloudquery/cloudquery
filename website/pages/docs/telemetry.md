@@ -5,7 +5,7 @@ description: Information about telemetry data collected by the CloudQuery CLI.
 
 # Telemetry
 
-By default, the CloudQuery CLI collects some anonymous usage data. There are two types of data we collect: **errors** and **stats**. These are described below. The [Controlling what is sent](#controlling-what-is-sent) section describes how to control what you send to CloudQuery.
+By default, the CloudQuery CLI collects some anonymous usage data. There are two types of data we collect: **errors** and **stats**. These are described below. The [Controlling what is sent](#controlling-what-is-sent) section describes how to control what you send to CloudQuery. 
  
 ## Errors
 
