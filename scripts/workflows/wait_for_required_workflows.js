@@ -78,7 +78,7 @@ module.exports = async ({github, context}) => {
         }
         pendingActions = actions.filter(action => !runs.some(({name}) => name === action))
         console.log(`Waiting for ${pendingActions.join(", ")}`)
-        await new Promise(r => setTimeout(r, 5000));
+        await new Promise(r => setTimeout(r, 15000));
         now = new Date().getTime()
     }
     throw new Error(`Timed out waiting for ${pendingActions.join(', ')}`)
