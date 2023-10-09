@@ -35,7 +35,7 @@ func TestTableOptions_Validate(t *testing.T) {
 	}
 
 	tOpts.CloudTrailEvents = &CloudtrailEvents{
-		LookupEventsOpts: []CustomLookupEventsOpts{
+		LookupEventsOpts: []CustomCloudtrailLookupEventsInput{
 			{
 				LookupEventsInput: cloudtrail.LookupEventsInput{
 					EndTime:          nil,
@@ -64,10 +64,10 @@ func TestTableOptions_Validate(t *testing.T) {
 func TestTableOptions_SetDefaults(t *testing.T) {
 	opts := &TableOptions{
 		SecurityHubFindings: &SecurityHubFindings{
-			GetFindingsOpts: []CustomGetFindingsOpts{{}},
+			GetFindingsOpts: []CustomSecurityHubGetFindingsInput{{}},
 		},
 		ECSTasks: &ECSTasks{
-			ListTasksOpts: []CustomListTasksOpts{{}},
+			ListTasksOpts: []CustomECSListTasksInput{{}},
 		},
 	}
 	data, err := json.Marshal(opts)

@@ -23,7 +23,7 @@ func (CustomInspector2ListFindingsInput) JSONSchemaExtend(sc *jsonschema.Schema)
 	sc.Properties.Delete("NextToken")
 }
 
-// UnmarshalJSON implements the json.Unmarshaler interface for the CustomLookupEventsOpts type.
+// UnmarshalJSON implements the json.Unmarshaler interface for the CustomInspector2ListFindingsInput type.
 // It is the same as default, but allows the use of underscore in the JSON field names.
 func (c *CustomInspector2ListFindingsInput) UnmarshalJSON(data []byte) error {
 	m := map[string]any{}

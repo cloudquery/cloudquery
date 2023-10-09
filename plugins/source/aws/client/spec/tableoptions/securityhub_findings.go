@@ -11,16 +11,16 @@ import (
 )
 
 type SecurityHubFindings struct {
-	GetFindingsOpts []CustomGetFindingsOpts `json:"get_findings,omitempty"`
+	GetFindingsOpts []CustomSecurityHubGetFindingsInput `json:"get_findings,omitempty"`
 }
 
-type CustomGetFindingsOpts struct {
+type CustomSecurityHubGetFindingsInput struct {
 	securityhub.GetFindingsInput
 }
 
-// UnmarshalJSON implements the json.Unmarshaler interface for the CustomGetFindingsOpts type.
+// UnmarshalJSON implements the json.Unmarshaler interface for the CustomSecurityHubGetFindingsInput type.
 // It is the same as default, but allows the use of underscore in the JSON field names.
-func (s *CustomGetFindingsOpts) UnmarshalJSON(data []byte) error {
+func (s *CustomSecurityHubGetFindingsInput) UnmarshalJSON(data []byte) error {
 	m := map[string]any{}
 	err := json.Unmarshal(data, &m)
 	if err != nil {
@@ -33,7 +33,7 @@ func (s *CustomGetFindingsOpts) UnmarshalJSON(data []byte) error {
 }
 
 // JSONSchemaExtend is required to remove `NextToken` as well as add min & max for `MaxResults`.
-func (CustomGetFindingsOpts) JSONSchemaExtend(sc *jsonschema.Schema) {
+func (CustomSecurityHubGetFindingsInput) JSONSchemaExtend(sc *jsonschema.Schema) {
 	sc.Properties.Delete("NextToken")
 
 	maxResults := sc.Properties.Value("MaxResults")

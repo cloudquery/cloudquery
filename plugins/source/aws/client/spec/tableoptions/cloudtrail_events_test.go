@@ -10,11 +10,11 @@ import (
 )
 
 func TestLookupEvents(t *testing.T) {
-	u := CustomLookupEventsOpts{}
+	u := CustomCloudtrailLookupEventsInput{}
 	require.NoError(t, faker.FakeObject(&u))
 
 	api := CloudtrailEvents{
-		LookupEventsOpts: []CustomLookupEventsOpts{u},
+		LookupEventsOpts: []CustomCloudtrailLookupEventsInput{u},
 	}
 	// Ensure that the validation works as expected
 	err := api.Validate()
@@ -26,7 +26,7 @@ func TestLookupEvents(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func TestCustomLookupEventsOpts_JSONSchemaExtend(t *testing.T) {
+func TestCustomCloudtrailLookupEventsInput_JSONSchemaExtend(t *testing.T) {
 	schema, err := jsonschema.Generate(CloudtrailEvents{})
 	require.NoError(t, err)
 
@@ -65,7 +65,7 @@ func TestCustomLookupEventsOpts_JSONSchemaExtend(t *testing.T) {
 		{
 			Name: "proper lookup_events",
 			Spec: func() string {
-				var input CustomLookupEventsOpts
+				var input CustomCloudtrailLookupEventsInput
 				require.NoError(t, faker.FakeObject(&input))
 				return `{"lookup_events":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}`
 			}(),
@@ -74,7 +74,7 @@ func TestCustomLookupEventsOpts_JSONSchemaExtend(t *testing.T) {
 			Name: "lookup_events.NextToken is present",
 			Err:  true,
 			Spec: func() string {
-				var input CustomLookupEventsOpts
+				var input CustomCloudtrailLookupEventsInput
 				require.NoError(t, faker.FakeObject(&input))
 				return `{"lookup_events":[` + jsonschema.WithRemovedKeys(t, &input) + `]}`
 			}(),

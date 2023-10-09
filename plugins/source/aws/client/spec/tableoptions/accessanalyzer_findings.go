@@ -11,14 +11,14 @@ import (
 )
 
 type AccessAnalyzerFindings struct {
-	ListFindingOpts []CustomAccessAnalyzerListFindingsInput `json:"list_findings,omitempty"`
+	ListFindingsOpts []CustomAccessAnalyzerListFindingsInput `json:"list_findings,omitempty"`
 }
 
 type CustomAccessAnalyzerListFindingsInput struct {
 	accessanalyzer.ListFindingsInput
 }
 
-// UnmarshalJSON implements the json.Unmarshaler interface for the CustomLookupEventsOpts type.
+// UnmarshalJSON implements the json.Unmarshaler interface for the CustomAccessAnalyzerListFindingsInput type.
 // It is the same as default, but allows the use of underscore in the JSON field names.
 func (c *CustomAccessAnalyzerListFindingsInput) UnmarshalJSON(data []byte) error {
 	m := map[string]any{}
@@ -40,7 +40,7 @@ func (CustomAccessAnalyzerListFindingsInput) JSONSchemaExtend(sc *jsonschema.Sch
 }
 
 func (c *AccessAnalyzerFindings) validateListFindings() error {
-	for _, opt := range c.ListFindingOpts {
+	for _, opt := range c.ListFindingsOpts {
 		if aws.ToString(opt.NextToken) != "" {
 			return errors.New("invalid input: cannot set NextToken in ListFindings")
 		}
