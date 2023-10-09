@@ -17,9 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          persist-credentials: false
           fetch-depth: 0
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v39
