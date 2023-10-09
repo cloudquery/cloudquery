@@ -1,16 +1,16 @@
 {% macro kms_publicly_accessible(framework, check_id) %}
-SELECT member                                                                                    AS resource_id,
-       _cq_sync_time                                                              AS sync_time,
-       '{{framework}}'                                                                              AS framework,
-       '{{check_id}}'                                                                               AS check_id,
-       'Ensure that Cloud KMS cryptokeys are not anonymously or publicly accessible (Automated)' AS title,
-       project_id                                                                                AS project_id,
-       CASE
-           WHEN
-                       "member" LIKE '%allUsers%'
-                   OR "member" LIKE '%allAuthenticatedUsers%'
-               THEN 'fail'
-           ELSE 'pass'
-           END                                                                                   AS status
-FROM {{ ref('gcp_compliance__project_policy_members') }}
+    select
+        member as resource_id,
+        _cq_sync_time as sync_time,
+        '{{framework}}' as framework,
+        '{{check_id}}' as check_id,
+        'Ensure that Cloud KMS cryptokeys are not anonymously or publicly accessible (Automated)'
+        as title,
+        project_id as project_id,
+        case
+            when "member" like '%allUsers%' or "member" like '%allAuthenticatedUsers%'
+            then 'fail'
+            else 'pass'
+        end as status
+    from {{ ref('gcp_compliance__project_policy_members') }}
 {% endmacro %}

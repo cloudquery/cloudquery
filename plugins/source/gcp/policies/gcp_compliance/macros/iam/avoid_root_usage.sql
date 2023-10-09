@@ -1,15 +1,12 @@
 {% macro iam_avoid_root_usage(framework, check_id) %}
-  SELECT "name"                                                                   AS resource_id,
-        "_cq_sync_time"                                                           AS sync_time,
-        '{{ framework }}'                                                           AS framework,
-        '{{ check_id }}'                                                            AS check_id,
-        'Ensure that the default network does not exist in a project (Automated)' AS title,
-        project_id                                                                AS project_id,
-        CASE
-            WHEN
-                "name" = 'default'
-                THEN 'fail'
-            ELSE 'pass'
-            END                                                                   AS status
-  FROM gcp_compute_networks
+    select
+        "name" as resource_id,
+        "_cq_sync_time" as sync_time,
+        '{{ framework }}' as framework,
+        '{{ check_id }}' as check_id,
+        'Ensure that the default network does not exist in a project (Automated)'
+        as title,
+        project_id as project_id,
+        case when "name" = 'default' then 'fail' else 'pass' end as status
+    from gcp_compute_networks
 {% endmacro %}
