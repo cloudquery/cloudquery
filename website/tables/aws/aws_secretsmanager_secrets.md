@@ -79,13 +79,13 @@ SELECT
   WHEN (
     last_rotated_date IS NULL
     AND created_date
-      > now()
+      < now()
         - '1 day'::INTERVAL * (rotation_rules->>'AutomaticallyAfterDays')::INT8
   )
   OR (
       last_rotated_date IS NOT NULL
       AND last_rotated_date
-        > now()
+        < now()
           - '1 day'::INTERVAL
             * (rotation_rules->>'AutomaticallyAfterDays')::INT8
     )

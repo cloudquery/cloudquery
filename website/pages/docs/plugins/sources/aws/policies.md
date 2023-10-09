@@ -294,7 +294,6 @@ AWS Foundational Security Best Practices performs the following checks:
   - Auto Scaling groups associated with a load balancer should use health checks
   - AWS Config should be enabled
   - CloudFront distributions should have a default root object configured
-  - CloudFront distributions should have origin access identity enabled
   - CloudFront distributions should require encryption in transit
   - CloudFront distributions should have origin failover configured
   - CloudFront distributions should have logging enabled

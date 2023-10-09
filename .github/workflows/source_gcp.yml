@@ -38,7 +38,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.52.2
+          version: v1.54.2
           working-directory: plugins/source/gcp
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
@@ -47,7 +47,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: 'v3.13.0'
+          version: v3.21.3
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -73,9 +73,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/source/gcp/go.sum') }}
+          key: ${{ runner.os }}-go-1.21.0-release-cache-${{ hashFiles('plugins/source/gcp/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.20.5-release-cache-plugins-source-gcp
+            ${{ runner.os }}-go-1.21.0-release-cache-plugins-source-gcp
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v3
@@ -129,7 +129,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: 'v3.10.1'
+          version: v3.21.3
       - name: Migrate DB
         run: cloudquery migrate test/policy_cq_config.yml
         env:

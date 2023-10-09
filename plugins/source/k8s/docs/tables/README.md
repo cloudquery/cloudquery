@@ -20,6 +20,7 @@
 - [k8s_core_limit_ranges](../../../../../website/tables/k8s/k8s_core_limit_ranges.md)
 - [k8s_core_namespaces](../../../../../website/tables/k8s/k8s_core_namespaces.md)
 - [k8s_core_nodes](../../../../../website/tables/k8s/k8s_core_nodes.md)
+- [k8s_core_pod_templates](../../../../../website/tables/k8s/k8s_core_pod_templates.md)
 - [k8s_core_pods](../../../../../website/tables/k8s/k8s_core_pods.md)
 - [k8s_core_pvcs](../../../../../website/tables/k8s/k8s_core_pvcs.md)
 - [k8s_core_pvs](../../../../../website/tables/k8s/k8s_core_pvs.md)

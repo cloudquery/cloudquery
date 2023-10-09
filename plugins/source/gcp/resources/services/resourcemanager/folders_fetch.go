@@ -8,8 +8,8 @@ import (
 
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
 func fetchFolders(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {

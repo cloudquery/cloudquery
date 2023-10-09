@@ -55,7 +55,7 @@ jobs:
     - name: golangci-lint
       uses: cloudquery/golangci-lint-action@master
       with:
-        version: v1.52.2
+        version: v1.54.2
         working-directory: plugins/destination/meilisearch
         args:              "--config ../../.golangci.yml"
         skip-pkg-cache:    true
@@ -83,9 +83,9 @@ jobs:
         path:         |
                       ~/.cache/go-build
                       ~/go/pkg/mod
-        key:          ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/destination/meilisearch/go.sum') }}
+        key:          ${{ runner.os }}-go-1.21.0-release-cache-${{ hashFiles('plugins/destination/meilisearch/go.sum') }}
         restore-keys: |
-                      ${{ runner.os }}-go-1.20.5-release-cache-plugins-destination-meilisearch
+                      ${{ runner.os }}-go-1.21.0-release-cache-plugins-destination-meilisearch
     - name: Set up Go
       if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
       uses: actions/setup-go@v3

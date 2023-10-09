@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.0.1...plugins-source-bitbucket-v1.0.2) (2023-09-27)
+
+
+### Bug Fixes
+
+* Tidy go.mod ([#14061](https://github.com/cloudquery/cloudquery/issues/14061)) ([11bd971](https://github.com/cloudquery/cloudquery/commit/11bd971f6a0089c92e47af6be24f552b2d920f21))
+
 ## [1.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.0.0...plugins-source-bitbucket-v1.0.1) (2023-09-05)
 
 
