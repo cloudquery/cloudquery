@@ -130,7 +130,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/xray v1.17.2
 	github.com/aws/smithy-go v1.14.1
 	github.com/basgys/goxml2json v1.1.0
-	github.com/cloudquery/codegen v0.3.5
+	github.com/cloudquery/codegen v0.3.6
 	github.com/cloudquery/plugin-sdk/v4 v4.12.3
 	github.com/cockroachdb/cockroachdb-parser v0.0.0-20230705064001-302c9ad52e1a
 	github.com/gertd/go-pluralize v0.2.1
