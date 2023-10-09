@@ -12,7 +12,7 @@ import (
 func TestListTasks(t *testing.T) {
 	u := CustomListTasksOpts{}
 	require.NoError(t, faker.FakeObject(&u))
-	api := ECSTaskAPIs{
+	api := ECSTasks{
 		ListTasksOpts: []CustomListTasksOpts{u},
 	}
 	// Ensure that the validation works as expected
@@ -26,7 +26,7 @@ func TestListTasks(t *testing.T) {
 }
 
 func TestCustomListTasksOpts_JSONSchemaExtend(t *testing.T) {
-	schema, err := jsonschema.Generate(ECSTaskAPIs{})
+	schema, err := jsonschema.Generate(ECSTasks{})
 	require.NoError(t, err)
 
 	jsonschema.TestJSONSchema(t, string(schema), []jsonschema.TestCase{

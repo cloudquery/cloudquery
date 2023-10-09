@@ -10,7 +10,7 @@ import (
 	"github.com/invopop/jsonschema"
 )
 
-type ECSTaskAPIs struct {
+type ECSTasks struct {
 	ListTasksOpts []CustomListTasksOpts `json:"list_tasks,omitempty"`
 }
 
@@ -40,7 +40,7 @@ func (CustomListTasksOpts) JSONSchemaExtend(sc *jsonschema.Schema) {
 	sc.Properties.Value("MaxResults").Default = 100
 }
 
-func (s *ECSTaskAPIs) validateListTasks() error {
+func (s *ECSTasks) validateListTasks() error {
 	for _, opt := range s.ListTasksOpts {
 		if aws.ToString(opt.NextToken) != "" {
 			return errors.New("invalid input: cannot set NextToken in ListTasks")
@@ -53,7 +53,7 @@ func (s *ECSTaskAPIs) validateListTasks() error {
 	return nil
 }
 
-func (s *ECSTaskAPIs) SetDefaults() {
+func (s *ECSTasks) SetDefaults() {
 	for i := 0; i < len(s.ListTasksOpts); i++ {
 		if aws.ToInt32(s.ListTasksOpts[i].MaxResults) == 0 {
 			s.ListTasksOpts[i].MaxResults = aws.Int32(100)
@@ -61,6 +61,6 @@ func (s *ECSTaskAPIs) SetDefaults() {
 	}
 }
 
-func (s *ECSTaskAPIs) Validate() error {
+func (s *ECSTasks) Validate() error {
 	return s.validateListTasks()
 }
