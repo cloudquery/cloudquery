@@ -2,6 +2,10 @@ module github.com/cloudquery/cloudquery/plugins/destination/postgresql
 
 go 1.21.1
 
+replace github.com/cloudquery/plugin-sdk/v4 => /Users/benbernays/Documents/GitHub/plugin-sdk
+replace github.com/cloudquery/plugin-pb-go => /Users/benbernays/Documents/GitHub/plugin-pb-go
+
+
 require (
 	github.com/apache/arrow/go/v14 v14.0.0-20230929201650-00efb06dc0de
 	github.com/cloudquery/plugin-sdk/v4 v4.12.3
