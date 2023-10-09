@@ -13,7 +13,7 @@ func TestInspector2ListFindings(t *testing.T) {
 	u := CustomInspector2ListFindingsInput{}
 	require.NoError(t, faker.FakeObject(&u))
 
-	api := Inspector2APIs{
+	api := Inspector2Findings{
 		ListFindingsOpts: []CustomInspector2ListFindingsInput{u},
 	}
 	// Ensure that the validation works as expected
@@ -28,7 +28,7 @@ func TestInspector2ListFindings(t *testing.T) {
 }
 
 func TestCustomInspector2ListFindingsInput_JSONSchemaExtend(t *testing.T) {
-	schema, err := jsonschema.Generate(Inspector2APIs{})
+	schema, err := jsonschema.Generate(Inspector2Findings{})
 	require.NoError(t, err)
 
 	jsonschema.TestJSONSchema(t, string(schema), []jsonschema.TestCase{

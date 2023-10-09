@@ -13,7 +13,7 @@ func TestLookupEvents(t *testing.T) {
 	u := CustomLookupEventsOpts{}
 	require.NoError(t, faker.FakeObject(&u))
 
-	api := CloudtrailAPIs{
+	api := CloudtrailEvents{
 		LookupEventsOpts: []CustomLookupEventsOpts{u},
 	}
 	// Ensure that the validation works as expected
@@ -27,7 +27,7 @@ func TestLookupEvents(t *testing.T) {
 }
 
 func TestCustomLookupEventsOpts_JSONSchemaExtend(t *testing.T) {
-	schema, err := jsonschema.Generate(CloudtrailAPIs{})
+	schema, err := jsonschema.Generate(CloudtrailEvents{})
 	require.NoError(t, err)
 
 	jsonschema.TestJSONSchema(t, string(schema), []jsonschema.TestCase{

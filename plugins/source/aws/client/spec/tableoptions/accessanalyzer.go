@@ -10,7 +10,7 @@ import (
 	"github.com/invopop/jsonschema"
 )
 
-type AccessanalyzerFindings struct {
+type AccessAnalyzerFindings struct {
 	ListFindingOpts []CustomAccessAnalyzerListFindingsInput `json:"list_findings,omitempty"`
 }
 
@@ -39,7 +39,7 @@ func (CustomAccessAnalyzerListFindingsInput) JSONSchemaExtend(sc *jsonschema.Sch
 	sc.Properties.Delete("NextToken")
 }
 
-func (c *AccessanalyzerFindings) validateListFindings() error {
+func (c *AccessAnalyzerFindings) validateListFindings() error {
 	for _, opt := range c.ListFindingOpts {
 		if aws.ToString(opt.NextToken) != "" {
 			return errors.New("invalid input: cannot set NextToken in ListFindings")
@@ -51,6 +51,6 @@ func (c *AccessanalyzerFindings) validateListFindings() error {
 	return nil
 }
 
-func (c *AccessanalyzerFindings) Validate() error {
+func (c *AccessAnalyzerFindings) Validate() error {
 	return c.validateListFindings()
 }

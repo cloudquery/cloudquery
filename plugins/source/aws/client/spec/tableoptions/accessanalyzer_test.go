@@ -13,7 +13,7 @@ func TestAAListFindings(t *testing.T) {
 	u := CustomAccessAnalyzerListFindingsInput{}
 	require.NoError(t, faker.FakeObject(&u))
 
-	api := AccessanalyzerFindings{
+	api := AccessAnalyzerFindings{
 		ListFindingOpts: []CustomAccessAnalyzerListFindingsInput{u},
 	}
 	// Ensure that the validation works as expected
@@ -31,7 +31,7 @@ func TestAAListFindings(t *testing.T) {
 }
 
 func TestCustomAccessAnalyzerListFindingsInput_JSONSchemaExtend(t *testing.T) {
-	schema, err := jsonschema.Generate(AccessanalyzerFindings{})
+	schema, err := jsonschema.Generate(AccessAnalyzerFindings{})
 	require.NoError(t, err)
 
 	jsonschema.TestJSONSchema(t, string(schema), []jsonschema.TestCase{

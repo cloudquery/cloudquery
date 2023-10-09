@@ -34,7 +34,7 @@ func TestTableOptions_Validate(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	tOpts.CloudTrailEvents = &CloudtrailAPIs{
+	tOpts.CloudTrailEvents = &CloudtrailEvents{
 		LookupEventsOpts: []CustomLookupEventsOpts{
 			{
 				LookupEventsInput: cloudtrail.LookupEventsInput{
@@ -63,10 +63,10 @@ func TestTableOptions_Validate(t *testing.T) {
 
 func TestTableOptions_SetDefaults(t *testing.T) {
 	opts := &TableOptions{
-		SecurityHubFindings: &SecurityHubAPIs{
+		SecurityHubFindings: &SecurityHubFindings{
 			GetFindingsOpts: []CustomGetFindingsOpts{{}},
 		},
-		ECSTasks: &ECSTaskAPIs{
+		ECSTasks: &ECSTasks{
 			ListTasksOpts: []CustomListTasksOpts{{}},
 		},
 	}

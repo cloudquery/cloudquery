@@ -14,13 +14,13 @@ type (
 )
 
 type TableOptions struct {
+	AccessAnalyzerFindings *AccessAnalyzerFindings `json:"aws_accessanalyzer_analyzer_findings,omitempty"`
+	CloudTrailEvents       *CloudtrailEvents       `json:"aws_cloudtrail_events,omitempty"`
 	CloudwatchMetrics      CloudwatchMetrics       `json:"aws_alpha_cloudwatch_metrics,omitempty"`
-	CloudTrailEvents       *CloudtrailAPIs         `json:"aws_cloudtrail_events,omitempty"`
-	AccessAnalyzerFindings *AccessanalyzerFindings `json:"aws_accessanalyzer_analyzer_findings,omitempty"`
-	Inspector2Findings     *Inspector2APIs         `json:"aws_inspector2_findings,omitempty"`
 	CustomCostExplorer     *CostExplorerAPIs       `json:"aws_alpha_costexplorer_cost_custom,omitempty"`
-	SecurityHubFindings    *SecurityHubAPIs        `json:"aws_securityhub_findings,omitempty"`
-	ECSTasks               *ECSTaskAPIs            `json:"aws_ecs_cluster_tasks,omitempty"`
+	ECSTasks               *ECSTasks               `json:"aws_ecs_cluster_tasks,omitempty"`
+	Inspector2Findings     *Inspector2Findings     `json:"aws_inspector2_findings,omitempty"`
+	SecurityHubFindings    *SecurityHubFindings    `json:"aws_securityhub_findings,omitempty"`
 }
 
 func (t *TableOptions) SetDefaults() {

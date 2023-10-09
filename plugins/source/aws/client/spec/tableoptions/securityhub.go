@@ -10,7 +10,7 @@ import (
 	"github.com/invopop/jsonschema"
 )
 
-type SecurityHubAPIs struct {
+type SecurityHubFindings struct {
 	GetFindingsOpts []CustomGetFindingsOpts `json:"get_findings,omitempty"`
 }
 
@@ -41,7 +41,7 @@ func (CustomGetFindingsOpts) JSONSchemaExtend(sc *jsonschema.Schema) {
 	maxResults.Maximum = json.Number("100")
 }
 
-func (s *SecurityHubAPIs) validateGetFindingEvent() error {
+func (s *SecurityHubFindings) validateGetFindingEvent() error {
 	for _, opt := range s.GetFindingsOpts {
 		if aws.ToString(opt.NextToken) != "" {
 			return errors.New("invalid input: cannot set NextToken in GetFindings")
@@ -55,7 +55,7 @@ func (s *SecurityHubAPIs) validateGetFindingEvent() error {
 	return nil
 }
 
-func (s *SecurityHubAPIs) SetDefaults() {
+func (s *SecurityHubFindings) SetDefaults() {
 	for i := 0; i < len(s.GetFindingsOpts); i++ {
 		if s.GetFindingsOpts[i].MaxResults == 0 {
 			s.GetFindingsOpts[i].MaxResults = 100
@@ -63,6 +63,6 @@ func (s *SecurityHubAPIs) SetDefaults() {
 	}
 }
 
-func (s *SecurityHubAPIs) Validate() error {
+func (s *SecurityHubFindings) Validate() error {
 	return s.validateGetFindingEvent()
 }
