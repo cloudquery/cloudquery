@@ -1,12 +1,12 @@
-# CloudQuery &times; DBT: GCP Compliance Package
+# CloudQuery &times; dbt: GCP Compliance Package
 
 ## Overview
 
-## DBT Installation
+## dbt Installation
 
 An example of how to install dbt to work with Postgres.
 
-First, install DBT:
+First, install `dbt`:
 
 ```bash
 pip install dbt-postgres
