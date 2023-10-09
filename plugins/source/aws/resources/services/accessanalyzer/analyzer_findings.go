@@ -44,7 +44,7 @@ func fetchAccessanalyzerAnalyzerFindings(ctx context.Context, meta schema.Client
 	svc := cl.Services(client.AWSServiceAccessanalyzer).Accessanalyzer
 	allConfigs := []tableoptions.CustomAccessAnalyzerListFindingsInput{{}}
 	if cl.Spec.TableOptions.AccessAnalyzerFindings != nil {
-		allConfigs = cl.Spec.TableOptions.AccessAnalyzerFindings.ListFindingOpts
+		allConfigs = cl.Spec.TableOptions.AccessAnalyzerFindings.ListFindingsOpts
 	}
 	for _, cfg := range allConfigs {
 		cfg.AnalyzerArn = analyzer.Arn

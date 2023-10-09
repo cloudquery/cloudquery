@@ -48,7 +48,7 @@ func fetchCloudtrailEvents(ctx context.Context, meta schema.ClientMeta, parent *
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceCloudtrail).Cloudtrail
 
-	allConfigs := []tableoptions.CustomLookupEventsOpts{{}}
+	allConfigs := []tableoptions.CustomCloudtrailLookupEventsInput{{}}
 	if cl.Spec.TableOptions.CloudTrailEvents != nil {
 		allConfigs = cl.Spec.TableOptions.CloudTrailEvents.LookupEventsOpts
 	}
