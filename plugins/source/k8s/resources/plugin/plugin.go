@@ -132,6 +132,7 @@ func getTables() schema.Tables {
 		core.Pvs(),
 		core.Pvcs(),
 		core.Pods(),
+		core.PodTemplates(),
 		core.ReplicationControllers(),
 		core.ResourceQuotas(),
 		core.Secrets(),

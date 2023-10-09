@@ -20,6 +20,7 @@
 - [k8s_core_limit_ranges](tables/k8s_core_limit_ranges)
 - [k8s_core_namespaces](tables/k8s_core_namespaces)
 - [k8s_core_nodes](tables/k8s_core_nodes)
+- [k8s_core_pod_templates](tables/k8s_core_pod_templates)
 - [k8s_core_pods](tables/k8s_core_pods)
 - [k8s_core_pvcs](tables/k8s_core_pvcs)
 - [k8s_core_pvs](tables/k8s_core_pvs)
