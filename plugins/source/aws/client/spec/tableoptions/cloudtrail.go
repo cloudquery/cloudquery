@@ -10,7 +10,7 @@ import (
 	"github.com/invopop/jsonschema"
 )
 
-type CloudtrailAPIs struct {
+type CloudtrailEvents struct {
 	LookupEventsOpts []CustomLookupEventsOpts `json:"lookup_events,omitempty"`
 }
 
@@ -37,7 +37,7 @@ func (CustomLookupEventsOpts) JSONSchemaExtend(sc *jsonschema.Schema) {
 	sc.Properties.Delete("NextToken")
 }
 
-func (c *CloudtrailAPIs) validateLookupEvents() error {
+func (c *CloudtrailEvents) validateLookupEvents() error {
 	for _, opt := range c.LookupEventsOpts {
 		if aws.ToString(opt.NextToken) != "" {
 			return errors.New("invalid input: cannot set NextToken in LookupEvents")
@@ -46,6 +46,6 @@ func (c *CloudtrailAPIs) validateLookupEvents() error {
 	return nil
 }
 
-func (c *CloudtrailAPIs) Validate() error {
+func (c *CloudtrailEvents) Validate() error {
 	return c.validateLookupEvents()
 }
