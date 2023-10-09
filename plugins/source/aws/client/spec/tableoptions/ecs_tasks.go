@@ -11,16 +11,16 @@ import (
 )
 
 type ECSTasks struct {
-	ListTasksOpts []CustomListTasksOpts `json:"list_tasks,omitempty"`
+	ListTasksOpts []CustomECSListTasksInput `json:"list_tasks,omitempty"`
 }
 
-type CustomListTasksOpts struct {
+type CustomECSListTasksInput struct {
 	ecs.ListTasksInput
 }
 
-// UnmarshalJSON implements the json.Unmarshaler interface for the CustomGetFindingsOpts type.
+// UnmarshalJSON implements the json.Unmarshaler interface for the CustomECSListTasksInput type.
 // It is the same as default, but allows the use of underscore in the JSON field names.
-func (s *CustomListTasksOpts) UnmarshalJSON(data []byte) error {
+func (s *CustomECSListTasksInput) UnmarshalJSON(data []byte) error {
 	m := map[string]any{}
 	err := json.Unmarshal(data, &m)
 	if err != nil {
@@ -33,7 +33,7 @@ func (s *CustomListTasksOpts) UnmarshalJSON(data []byte) error {
 }
 
 // JSONSchemaExtend is required to remove `NextToken` & `Cluster`, as well as add default for `MaxResults`.
-func (CustomListTasksOpts) JSONSchemaExtend(sc *jsonschema.Schema) {
+func (CustomECSListTasksInput) JSONSchemaExtend(sc *jsonschema.Schema) {
 	sc.Properties.Delete("NextToken")
 	sc.Properties.Delete("Cluster")
 
