@@ -1,15 +1,64 @@
-Welcome to your new dbt project!
+# CloudQuery &times; DBT: GCP Compliance Package
 
-### Using the starter project
+## Overview
 
-Try running the following commands:
-- dbt run
-- dbt test
+## DBT Installation
 
+An example of how to install dbt to work with Postgres.
 
-### Resources:
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+First, install DBT:
+
+```bash
+pip install dbt-postgres
+```
+
+Create the profile directory:
+
+```bash
+mkdir -p ~/.dbt
+```
+
+Create a `profiles.yml` file in your profile directory (e.g. `~/.dbt/profiles.yml`):
+
+```yaml
+gcp_compliance: # This should match the name in your dbt_project.yml
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: 127.0.0.1
+      user: postgres
+      pass: pass
+      port: 5432
+      dbname: postgres
+      schema: public # default schema where dbt will build the models
+      threads: 1 # number of threads to use when running in parallel
+```
+
+Test the Connection:
+
+After setting up your `profiles.yml`, you should test the connection to ensure everything is configured correctly:
+
+```bash
+dbt debug
+```
+
+This command will tell you if dbt can successfully connect to your PostgreSQL instance.
+
+# Running Your dbt Project
+
+Navigate to your dbt project directory, where your `dbt_project.yml` resides.
+
+Before executing the `dbt run` command, it might be useful to check for any potential issues:
+
+```bash
+dbt compile
+```
+
+If everything compiles without errors, you can then execute:
+
+```bash
+dbt run
+```
+
+This command will run your `dbt` models and create tables/views in your PostgreSQL database as defined in your models.
