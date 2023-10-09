@@ -49,11 +49,11 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceEcs).Ecs
-	var allConfigs []tableoptions.CustomListTasksOpts
+	var allConfigs []tableoptions.CustomECSListTasksInput
 	if cl.Spec.TableOptions.ECSTasks != nil && cl.Spec.TableOptions.ECSTasks.ListTasksOpts != nil {
 		allConfigs = cl.Spec.TableOptions.ECSTasks.ListTasksOpts
 	} else {
-		allConfigs = []tableoptions.CustomListTasksOpts{{ListTasksInput: ecs.ListTasksInput{MaxResults: aws.Int32(100)}}}
+		allConfigs = []tableoptions.CustomECSListTasksInput{{ListTasksInput: ecs.ListTasksInput{MaxResults: aws.Int32(100)}}}
 	}
 	for _, config := range allConfigs {
 		config.Cluster = cluster.ClusterArn
