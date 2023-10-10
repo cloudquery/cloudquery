@@ -822,7 +822,7 @@ export const ALL_PLUGINS: Plugin[] = [
   },
   {
     name: "HashiCorp Vault",
-    id: "hashicorp-vault",
+    id: "vault",
     kind: "source",
     availability: "free",
     category: "cloud-infrastructure",
