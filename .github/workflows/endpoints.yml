@@ -19,7 +19,7 @@ jobs:
         with:
           ref: ${{ github.ref }}
       - name: Set up Go 1.x
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: plugins/source/aws/go.mod
           cache: true
