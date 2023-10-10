@@ -47,6 +47,17 @@ func GetToken() (string, error) {
 	return token, nil
 }
 
+func removeRefreshToken() error {
+	tokenFilePath, err := xdg.DataFile("cloudquery/token")
+	if err != nil {
+		return fmt.Errorf("can't determine a proper location for token file: %w", err)
+	}
+	if err := os.RemoveAll(tokenFilePath); err != nil {
+		return fmt.Errorf("failed to remove token file %q: %w", tokenFilePath, err)
+	}
+	return nil
+}
+
 func SaveRefreshToken(refreshToken string) error {
 	tokenFilePath, err := xdg.DataFile("cloudquery/token")
 	if err != nil {

@@ -64,7 +64,8 @@ func TestPublish(t *testing.T) {
 	defer ts.Close()
 
 	cmd := NewCmdRoot()
-	args := []string{"publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1", "--url", ts.URL}
+	t.Setenv("CLOUDQUERY_API_URL", ts.URL)
+	args := []string{"publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1"}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {
@@ -137,8 +138,10 @@ func TestPublishFinalize(t *testing.T) {
 	}))
 	defer ts.Close()
 
+	t.Setenv("CLOUDQUERY_API_URL", ts.URL)
+
 	cmd := NewCmdRoot()
-	args := []string{"publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1", "--url", ts.URL, "--finalize"}
+	args := []string{"publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1", "--finalize"}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {
@@ -159,8 +162,10 @@ func TestPublish_Unauthorized(t *testing.T) {
 	}))
 	defer ts.Close()
 
+	t.Setenv("CLOUDQUERY_API_URL", ts.URL)
+
 	cmd := NewCmdRoot()
-	args := []string{"publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1", "--url", ts.URL, "--finalize"}
+	args := []string{"publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1", "--finalize"}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err == nil {
