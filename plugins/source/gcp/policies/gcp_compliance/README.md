@@ -75,4 +75,4 @@ This command will run your `dbt` models and create tables/views in your PostgreS
 
 - Sync your data from GCP: `cloudquery sync gcp.yml postgres.yml`
 
-- Run DBT: `dbt run`
+- Run dbt: `dbt run`
