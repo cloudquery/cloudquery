@@ -19,6 +19,7 @@ import (
 	inspector2types "github.com/aws/aws-sdk-go-v2/service/inspector2/types"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	securityhubtypes "github.com/aws/aws-sdk-go-v2/service/securityhub/types"
+	"github.com/cloudquery/codegen/jsonschema"
 	"github.com/stretchr/testify/require"
 
 	"github.com/cloudquery/plugin-sdk/v4/faker"
@@ -26,15 +27,15 @@ import (
 	"github.com/google/go-cmp/cmp/cmpopts"
 )
 
-func TestTableOptionsValidate(t *testing.T) {
+func TestTableOptions_Validate(t *testing.T) {
 	tOpts := TableOptions{}
 	err := tOpts.Validate()
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	tOpts.CloudTrailEvents = &CloudtrailAPIs{
-		LookupEventsOpts: []CustomLookupEventsOpts{
+	tOpts.CloudTrailEvents = &CloudtrailEvents{
+		LookupEventsOpts: []CustomCloudtrailLookupEventsInput{
 			{
 				LookupEventsInput: cloudtrail.LookupEventsInput{
 					EndTime:          nil,
@@ -58,6 +59,26 @@ func TestTableOptionsValidate(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected error validating cloud_trail_events, got nil")
 	}
+}
+
+func TestTableOptions_SetDefaults(t *testing.T) {
+	opts := &TableOptions{
+		SecurityHubFindings: &SecurityHubFindings{
+			GetFindingsOpts: []CustomSecurityHubGetFindingsInput{{}},
+		},
+		ECSTasks: &ECSTasks{
+			ListTasksOpts: []CustomECSListTasksInput{{}},
+		},
+	}
+	data, err := json.Marshal(opts)
+	require.NoError(t, err)
+
+	require.NotPanics(t, opts.SetDefaults)
+
+	// check something did change
+	dataWithDefaults, err := json.Marshal(opts)
+	require.NoError(t, err)
+	require.NotEqual(t, string(data), string(dataWithDefaults))
 }
 
 // TestTableOptionsUnmarshal tests that the TableOptions struct can be unmarshaled from JSON using
@@ -124,4 +145,28 @@ func TestTableOptionsUnmarshal(t *testing.T) {
 	)); diff != "" {
 		t.Fatalf("mismatch between objects after loading from snake case json: %v", diff)
 	}
+}
+
+func TestJSONSchema(t *testing.T) {
+	schema, err := jsonschema.Generate(TableOptions{})
+	require.NoError(t, err)
+
+	jsonschema.TestJSONSchema(t, string(schema), []jsonschema.TestCase{
+		{
+			Name: "empty",
+			Spec: `{}`,
+		},
+		{
+			Name: "all null",
+			Spec: `{
+  "aws_alpha_cloudwatch_metrics": null,
+  "aws_cloudtrail_events": null,
+  "aws_accessanalyzer_analyzer_findings": null,
+  "aws_inspector2_findings": null,
+  "aws_alpha_costexplorer_cost_custom": null,
+  "aws_securityhub_findings": null,
+  "aws_ecs_cluster_tasks": null
+}`,
+		},
+	})
 }

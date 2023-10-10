@@ -90,10 +90,10 @@ github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWR
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
 github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMnBNeIyt5eFwwo7qiLfzFZmjNmxjkiQlU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd h1:LtWC4oaOh0kI5Xhgl0U4w04vm9qdux/H1E0XBv/Lyio=
-github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd/go.mod h1:/SqmdO2dsWqFHqQQeupnsr0ollL8C91n3x0I72rArY8=
-github.com/cloudquery/cloudquery-api-go v1.2.4 h1:IFu1PajNJEVj1IRN6bYa4fW10gDVfuqvr4HbQACpI7Q=
-github.com/cloudquery/cloudquery-api-go v1.2.4/go.mod h1:oyNUZZ6CKjPapxMbmE/qR2vdo9/G+tuCdF7uXT1LYuM=
+github.com/cloudquery/arrow/go/v14 v14.0.0-20231009001222-d4016862d2dd h1:w0lNQ0/+my9RqY7kA26MTeD8sHXYc3epsxdCaXza6pc=
+github.com/cloudquery/arrow/go/v14 v14.0.0-20231009001222-d4016862d2dd/go.mod h1:/SqmdO2dsWqFHqQQeupnsr0ollL8C91n3x0I72rArY8=
+github.com/cloudquery/cloudquery-api-go v1.2.6 h1:eq3qPgz813NDdCpipxdo33ko+kiqHld3+x6X2W1lVH4=
+github.com/cloudquery/cloudquery-api-go v1.2.6/go.mod h1:oyNUZZ6CKjPapxMbmE/qR2vdo9/G+tuCdF7uXT1LYuM=
 github.com/cloudquery/plugin-pb-go v1.12.1 h1:lxCe/ovcbmY4i0N5ko1fH5PIllosIwbXTvrRqZ/UBeg=
 github.com/cloudquery/plugin-pb-go v1.12.1/go.mod h1:+20GGdx/k9ApU56ix5QrPIGfzn0WA7VJlExgaHnNGzc=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=

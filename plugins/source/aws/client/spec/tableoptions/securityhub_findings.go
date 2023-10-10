@@ -7,19 +7,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	"github.com/cloudquery/plugin-sdk/v4/caser"
+	"github.com/invopop/jsonschema"
 )
 
-type SecurityHubAPIs struct {
-	GetFindingsOpts []CustomGetFindingsOpts `json:"get_findings,omitempty"`
+type SecurityHubFindings struct {
+	GetFindingsOpts []CustomSecurityHubGetFindingsInput `json:"get_findings,omitempty"`
 }
 
-type CustomGetFindingsOpts struct {
+type CustomSecurityHubGetFindingsInput struct {
 	securityhub.GetFindingsInput
 }
 
-// UnmarshalJSON implements the json.Unmarshaler interface for the CustomGetFindingsOpts type.
+// UnmarshalJSON implements the json.Unmarshaler interface for the CustomSecurityHubGetFindingsInput type.
 // It is the same as default, but allows the use of underscore in the JSON field names.
-func (s *CustomGetFindingsOpts) UnmarshalJSON(data []byte) error {
+func (s *CustomSecurityHubGetFindingsInput) UnmarshalJSON(data []byte) error {
 	m := map[string]any{}
 	err := json.Unmarshal(data, &m)
 	if err != nil {
@@ -31,7 +32,16 @@ func (s *CustomGetFindingsOpts) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(b, &s.GetFindingsInput)
 }
 
-func (s *SecurityHubAPIs) validateGetFindingEvent() error {
+// JSONSchemaExtend is required to remove `NextToken` as well as add min & max for `MaxResults`.
+func (CustomSecurityHubGetFindingsInput) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.Properties.Delete("NextToken")
+
+	maxResults := sc.Properties.Value("MaxResults")
+	maxResults.Minimum = json.Number("1")
+	maxResults.Maximum = json.Number("100")
+}
+
+func (s *SecurityHubFindings) validateGetFindingEvent() error {
 	for _, opt := range s.GetFindingsOpts {
 		if aws.ToString(opt.NextToken) != "" {
 			return errors.New("invalid input: cannot set NextToken in GetFindings")
@@ -45,7 +55,7 @@ func (s *SecurityHubAPIs) validateGetFindingEvent() error {
 	return nil
 }
 
-func (s *SecurityHubAPIs) setDefaults() {
+func (s *SecurityHubFindings) SetDefaults() {
 	for i := 0; i < len(s.GetFindingsOpts); i++ {
 		if s.GetFindingsOpts[i].MaxResults == 0 {
 			s.GetFindingsOpts[i].MaxResults = 100
@@ -53,7 +63,6 @@ func (s *SecurityHubAPIs) setDefaults() {
 	}
 }
 
-func (s *SecurityHubAPIs) Validate() error {
-	s.setDefaults()
+func (s *SecurityHubFindings) Validate() error {
 	return s.validateGetFindingEvent()
 }

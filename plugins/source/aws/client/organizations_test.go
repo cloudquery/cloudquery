@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec"
 	"github.com/golang/mock/gomock"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -111,24 +112,24 @@ func Test_loadAccounts(t *testing.T) {
 	ctx := context.Background()
 	tests := []struct {
 		name    string
-		spec    *Spec
+		spec    *spec.Spec
 		want    []string
 		wantErr error
 	}{
 		{
 			name: "all_accounts",
-			spec: &Spec{
-				Organization: &AwsOrg{
-					AdminAccount: &Account{},
+			spec: &spec.Spec{
+				Organization: &spec.Org{
+					AdminAccount: &spec.Account{},
 				},
 			},
 			want: []string{"id-child1-account", "id-child2-account", "id-parent1-account", "id-parent2-account", "id-top-level-account"},
 		},
 		{
 			name: "all_accounts_with_skip_member_accounts",
-			spec: &Spec{
-				Organization: &AwsOrg{
-					AdminAccount:       &Account{},
+			spec: &spec.Spec{
+				Organization: &spec.Org{
+					AdminAccount:       &spec.Account{},
 					SkipMemberAccounts: []string{"id-child2-account", "id-parent1-account", "id-parent2-account", "id-top-level-account"},
 				},
 			},
@@ -136,74 +137,74 @@ func Test_loadAccounts(t *testing.T) {
 		},
 		{
 			name: "org_root",
-			spec: &Spec{
-				Organization: &AwsOrg{
+			spec: &spec.Spec{
+				Organization: &spec.Org{
 					OrganizationUnits: []string{"root"},
-					AdminAccount:      &Account{},
+					AdminAccount:      &spec.Account{},
 				},
 			},
 			want: []string{"id-top-level-account", "id-child1-account", "id-parent1-account", "id-child2-account", "id-parent2-account"},
 		},
 		{
 			name: "ou_parent1",
-			spec: &Spec{
-				Organization: &AwsOrg{
+			spec: &spec.Spec{
+				Organization: &spec.Org{
 					OrganizationUnits: []string{"ou-parent1"},
-					AdminAccount:      &Account{},
+					AdminAccount:      &spec.Account{},
 				},
 			},
 			want: []string{"id-parent1-account", "id-child1-account"},
 		},
 		{
 			name: "ou_parent1_and_parent2",
-			spec: &Spec{
-				Organization: &AwsOrg{
+			spec: &spec.Spec{
+				Organization: &spec.Org{
 					OrganizationUnits: []string{"ou-parent1", "ou-parent2"},
-					AdminAccount:      &Account{},
+					AdminAccount:      &spec.Account{},
 				},
 			},
 			want: []string{"id-parent1-account", "id-child1-account", "id-parent2-account", "id-child2-account"},
 		},
 		{
 			name: "ou_parent1_skip_child1",
-			spec: &Spec{
-				Organization: &AwsOrg{
+			spec: &spec.Spec{
+				Organization: &spec.Org{
 					OrganizationUnits:  []string{"ou-parent1"},
 					SkipMemberAccounts: []string{"id-child1-account"},
-					AdminAccount:       &Account{},
+					AdminAccount:       &spec.Account{},
 				},
 			},
 			want: []string{"id-parent1-account"},
 		},
 		{
 			name: "ou_root_skip_parent1",
-			spec: &Spec{
-				Organization: &AwsOrg{
+			spec: &spec.Spec{
+				Organization: &spec.Org{
 					OrganizationUnits:       []string{"root"},
 					SkipOrganizationalUnits: []string{"ou-parent1"},
-					AdminAccount:            &Account{},
+					AdminAccount:            &spec.Account{},
 				},
 			},
 			want: []string{"id-top-level-account", "id-parent2-account", "id-child2-account"},
 		},
 		{
 			name: "ou_root_skip_parent1",
-			spec: &Spec{
-				Organization: &AwsOrg{
+			spec: &spec.Spec{
+				Organization: &spec.Org{
 					OrganizationUnits:       []string{"root"},
 					SkipOrganizationalUnits: []string{"ou-parent1"},
-					AdminAccount:            &Account{},
+					AdminAccount:            &spec.Account{},
 				},
 			},
 			want: []string{"id-top-level-account", "id-parent2-account", "id-child2-account"},
 		},
 		{
 			name: "ou_root_and_parent1",
-			spec: &Spec{
-				Organization: &AwsOrg{
+			spec: &spec.Spec{
+				Organization: &spec.Org{
 					OrganizationUnits:       []string{"root", "ou-parent1"},
 					SkipOrganizationalUnits: []string{},
-					AdminAccount:            &Account{},
+					AdminAccount:            &spec.Account{},
 				},
 			},
 			want: []string{"id-top-level-account", "id-parent1-account", "id-child1-account", "id-parent2-account", "id-child2-account"},
