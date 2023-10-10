@@ -37,7 +37,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-1.21.0-release-cache-plugins-source-test
       - name: Set up Go 1.x
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: plugins/source/test/go.mod
       - name: Login to Docker Registry
