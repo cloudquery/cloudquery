@@ -1,7 +1,7 @@
+import {locatePathSync} from 'locate-path';
 import {ALL_PREMIUM_POLICIES, Policy} from "../components/policyData";
-
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
 
 // Read the plugin data file
 import {
@@ -112,11 +112,9 @@ function recreateDirectory(dir: string) {
 // Copy the source authentication file if it exists
 function copySourceAuthenticationFile(source: Plugin) : boolean {
     const sourceDir = `./pages/docs/plugins/sources/${source.id}`;
-
     // Copy the authentication and configuration files if they exist
-    const authFilePath = path.join(sourceDir, "_authentication.mdx");
-
-    if (fs.existsSync(authFilePath)) {
+    const authFilePath = locatePathSync([`${sourceDir}/_authentication.mdx`, `${sourceDir}/_authentication.md`]);
+    if (authFilePath) {
         const outputFilePath = path.join(mdxSourceComponentDir, `${source.id}/_authentication.mdx`);
         fs.copyFileSync(authFilePath, outputFilePath);
         return true;
@@ -126,8 +124,9 @@ function copySourceAuthenticationFile(source: Plugin) : boolean {
 
 // Copy the source configuration file if it exists and replace the destination name
 function copySourceConfigurationFile(source: Plugin): boolean {
-    const configFilePath = `./pages/docs/plugins/sources/${source.id}/_configuration.mdx`;
-    if (fs.existsSync(configFilePath)) {
+    const sourceDir = `./pages/docs/plugins/sources/${source.id}`;
+    const configFilePath = locatePathSync([`${sourceDir}/_configuration.mdx`, `${sourceDir}/_configuration.md`]);
+    if (configFilePath) {
         ALL_DESTINATION_PLUGINS.forEach((destination) => {
             const sourceConfigDir = mdxSourceComponentDir + `/${source.id}/${destination.id}`;
             recreateDirectory(sourceConfigDir);
@@ -143,11 +142,10 @@ function copySourceConfigurationFile(source: Plugin): boolean {
 
 // Copy the destination authentication file if it exists
 function copyDestinationAuthenticationFile(destination: Plugin) : boolean {
-    const destinationPluginDir = `./pages/docs/plugins/destinations/${destination.id}`;
-
+    const destinationDir = `./pages/docs/plugins/destinations/${destination.id}`;
     // Copy the authentication and configuration files if they exist
-    const authFilePath = path.join(destinationPluginDir, "_authentication.mdx");
-    if (fs.existsSync(authFilePath)) {
+    const authFilePath = locatePathSync([`${destinationDir}/_authentication.mdx`, `${destinationDir}/_authentication.md`]);
+    if (authFilePath) {
         const outputFilePath = path.join(mdxDestinationComponentDir, `${destination.id}/_authentication.mdx`);
         fs.copyFileSync(authFilePath, outputFilePath);
         return true;
@@ -158,9 +156,8 @@ function copyDestinationAuthenticationFile(destination: Plugin) : boolean {
 // Copy the destination configuration file if it exists
 function copyDestinationConfigurationFile(destination: Plugin) : boolean {
     const destinationDir = `./pages/docs/plugins/destinations/${destination.id}`;
-    const authFilePath = path.join(destinationDir, "_configuration.mdx");
-
-    if (fs.existsSync(authFilePath)) {
+    const authFilePath = locatePathSync([`${destinationDir}/_configuration.mdx`, `${destinationDir}/_configuration.md`]);
+    if (authFilePath) {
         const outputFilePath = path.join(mdxDestinationComponentDir, `${destination.id}/_configuration.mdx`);
         fs.copyFileSync(authFilePath, outputFilePath);
         return true;

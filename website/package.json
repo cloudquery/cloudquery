@@ -22,6 +22,7 @@
     "glob": "^9.0.1",
     "gray-matter": "^4.0.3",
     "hastscript": "^8.0.0",
+    "locate-path": "^7.2.0",
     "next": "^13.1.5",
     "next-seo": "^5.15.0",
     "next-sitemap": "^4.0.0",
