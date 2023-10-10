@@ -1,0 +1,12 @@
+gcp_compliance:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('DBT_POSTGRES_HOST') }}"
+      user: "{{ env_var('DBT_POSTGRES_USER') }}"
+      pass: "{{ env_var('DBT_POSTGRES_PASS') }}"
+      port: "{{ env_var('DBT_POSTGRES_PORT') }}"
+      dbname: "{{ env_var('DBT_POSTGRES_DBNAME') }}"
+      schema: public # default schema where dbt will build the models
+      threads: 1 # number of threads to use when running in parallel
