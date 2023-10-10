@@ -4,7 +4,7 @@ gcp_compliance:
     dev:
       type: postgres
       host: "{{ env_var('CQ_DBT_HOST') }}"
-      port: "{{ env_var('CQ_DBT_PORT') }}"
+      port: "{{ env_var('CQ_DBT_PORT') | as_number }}"
       user: "{{ env_var('CQ_DBT_USER') }}"
       pass: "{{ env_var('CQ_DBT_PASSWORD') }}"
       dbname: "{{ env_var('CQ_DBT_DBNAME') }}"
