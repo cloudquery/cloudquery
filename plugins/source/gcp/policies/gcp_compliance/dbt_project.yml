@@ -32,8 +32,8 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   gcp_compliance:
     # Config indicated by + and applies to all files under models/example/
-    example:
-      +materialized: view
+    # example:
+    #   +materialized: view
 
 
 
