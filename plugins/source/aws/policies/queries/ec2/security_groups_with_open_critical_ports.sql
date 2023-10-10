@@ -1,13 +1,10 @@
 -- uses view which uses aws_security_group_ingress_rules.sql query
 insert into aws_policy_results
-select
-    :'execution_time' as execution_time,
-    :'framework' as framework,
-    :'check_id' as check_id,
-    'Security groups should not allow unrestricted access to ports with high risk' as title,
-    account_id,
+WITH IndividualRuleStatus AS (
+  SELECT
+      account_id,
     id as resource_id,
-    case when
+     case when
         (ip = '0.0.0.0/0' or ip = '::/0')
         and ((from_port is null and to_port is null) -- all ports
         or 20 between from_port and to_port
@@ -37,5 +34,19 @@ select
         then 'fail'
         else 'pass'
     end as status
-from view_aws_security_group_ingress_rules
-group by account_id, resource_id, status
+  FROM view_aws_security_group_ingress_rules
+)
+
+SELECT
+	:'execution_time' as execution_time,
+	:'framework' as framework,
+	:'check_id' as check_id,
+	'Aggregates rules of security groups with ports and IPs including ipv6' as title,	
+    account_id,
+    resource_id,
+    CASE
+      WHEN SUM(CASE WHEN status = 'fail' THEN 1 ELSE 0 END) > 0 THEN 'fail'
+      ELSE 'pass'
+    END as status
+  FROM IndividualRuleStatus
+  GROUP BY account_id, resource_id
