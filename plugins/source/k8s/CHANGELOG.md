@@ -3,6 +3,9 @@
 ## [5.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v5.0.12...plugins-source-k8s-v5.1.0) (2023-10-10)
 
 
+### This Release has the Following Changes to Tables
+- Table `k8s_core_pod_templates` was added
+
 ### Features
 
 * Add a table for pod templates in k8s plugin ([#14457](https://github.com/cloudquery/cloudquery/issues/14457)) ([65977c6](https://github.com/cloudquery/cloudquery/commit/65977c62f594bd7beea0b9f950698025e034187d))
