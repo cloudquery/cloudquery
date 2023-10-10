@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/cloudquery/cloudquery/cli/internal/auth"
@@ -47,7 +49,7 @@ func runSwitch(cmd *cobra.Command, args []string) error {
 	if len(args) == 0 {
 		// Print the current team context
 		currentTeam, err := config.GetValue("team")
-		if err != nil {
+		if err != nil && !errors.Is(err, os.ErrNotExist) {
 			return fmt.Errorf("failed to get current team: %w", err)
 		}
 
@@ -56,9 +58,16 @@ func runSwitch(cmd *cobra.Command, args []string) error {
 			return fmt.Errorf("failed to list all teams: %w", err)
 		}
 
-		cmd.Printf("Your current team is set to %v.\n\n", currentTeam)
-		cmd.Println("Teams available to you:", strings.Join(allTeams, ", "))
-		cmd.Println("(To switch teams, run `cloudquery switch <team>`).")
+		if currentTeam == "" {
+			cmd.Println("Your team is not set.")
+			if len(allTeams) == 1 {
+				cmd.Println("As you are currently a member of only one team, this will be used as your default team.")
+			}
+		} else {
+			cmd.Printf("Your current team is set to %v.\n\n", currentTeam)
+		}
+		cmd.Println("Teams available to you:", strings.Join(allTeams, ", "), "\n")
+		cmd.Println("To switch teams, run `cloudquery switch <team>`")
 		return nil
 	}
 	team := args[0]

@@ -12,6 +12,7 @@ import (
 	"github.com/adrg/xdg"
 	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSwitch(t *testing.T) {
@@ -40,27 +41,41 @@ func TestSwitch(t *testing.T) {
 	t.Setenv("XDG_CONFIG_HOME", configDir)
 	xdg.Reload()
 
+	// calling switch before a team is set should not result in an error
 	cmd := NewCmdRoot()
-	cmd.SetArgs([]string{"switch", "my-team"})
-	err := cmd.Execute()
-	assert.NoError(t, err)
-
-	cmd = NewCmdRoot()
 	cmd.SetArgs([]string{"switch"})
 	buf := new(bytes.Buffer)
 	cmd.SetOut(buf)
-	err = cmd.Execute()
-	assert.NoError(t, err)
+	err := cmd.Execute()
+	require.NoError(t, err)
 	out, err := io.ReadAll(buf)
 	if err != nil {
 		t.Fatal(err)
 	}
-	assert.NoError(t, err)
+	require.NoError(t, err)
+
+	// now set the team
+	cmd = NewCmdRoot()
+	cmd.SetArgs([]string{"switch", "my-team"})
+	err = cmd.Execute()
+	require.NoError(t, err)
+
+	cmd = NewCmdRoot()
+	cmd.SetArgs([]string{"switch"})
+	buf = new(bytes.Buffer)
+	cmd.SetOut(buf)
+	err = cmd.Execute()
+	require.NoError(t, err)
+	out, err = io.ReadAll(buf)
+	if err != nil {
+		t.Fatal(err)
+	}
+	require.NoError(t, err)
 	assert.Contains(t, string(out), "Your current team is set to my-team")
 	assert.Contains(t, string(out), "Teams available to you: my-team")
 
 	// check that the config file was created in the temporary directory,
 	// not somewhere else
 	_, err = os.Stat(path.Join(configDir, "cloudquery", "config.json"))
-	assert.NoError(t, err)
+	require.NoError(t, err)
 }
