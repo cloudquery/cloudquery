@@ -29,7 +29,7 @@ jobs:
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: plugins/source/salesforce/go.mod
           cache: true
@@ -72,12 +72,12 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.21.0-release-cache-${{ hashFiles('plugins/source/salesforce/go.sum') }}
+          key: ${{ runner.os }}-go-1.21.1-release-cache-${{ hashFiles('plugins/source/salesforce/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.21.0-release-cache-plugins-source-salesforce
+            ${{ runner.os }}-go-1.21.1-release-cache-plugins-source-salesforce
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: plugins/source/salesforce/go.mod
       - name: Install GoReleaser
