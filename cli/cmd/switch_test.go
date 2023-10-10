@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"github.com/adrg/xdg"
+	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -28,6 +29,7 @@ func TestSwitch(t *testing.T) {
 	}))
 	defer ts.Close()
 
+	t.Setenv(auth.EnvVarCloudQueryAPIKey, "test-api-key")
 	t.Setenv("CLOUDQUERY_ACCOUNTS_URL", ts.URL)
 	t.Setenv("CLOUDQUERY_API_URL", ts.URL)
 	t.Cleanup(func() {

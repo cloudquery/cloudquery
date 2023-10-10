@@ -14,7 +14,7 @@ import (
 )
 
 func TestPublish(t *testing.T) {
-	t.Setenv("CQ_API_KEY", "testkey")
+	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
 		"PUT /plugins/cloudquery/source/test/versions/v1.2.3":                      1,
@@ -77,7 +77,7 @@ func TestPublish(t *testing.T) {
 }
 
 func TestPublishFinalize(t *testing.T) {
-	t.Setenv("CQ_API_KEY", "testkey")
+	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
 		"PUT /plugins/cloudquery/source/test/versions/v1.2.3":                      1,
@@ -153,7 +153,7 @@ func TestPublishFinalize(t *testing.T) {
 }
 
 func TestPublish_Unauthorized(t *testing.T) {
-	t.Setenv("CQ_API_KEY", "badkey")
+	t.Setenv("CLOUDQUERY_API_KEY", "badkey")
 
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
