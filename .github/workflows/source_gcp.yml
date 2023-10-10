@@ -138,3 +138,17 @@ jobs:
         run: cd policies && psql -h localhost -p 5432 -U postgres -d postgres -w -f ./policy.sql
         env:
           PGPASSWORD: pass
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install dbt-postgres
+        run: pip install dbt-postgres
+      - name: Run dbt policies
+        run: cd policies/gcp_compliance && dbt run --profiles-dir ../../test/dbt/
+        env:
+          CQ_DBT_HOST: localhost
+          CQ_DBT_PORT: 5432
+          CQ_DBT_USER: postgres
+          CQ_DBT_PASSWORD: pass
+          CQ_DBT_DBNAME: postgres
