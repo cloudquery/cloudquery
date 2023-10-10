@@ -64,7 +64,8 @@ func generateInitialDelete(tableName string, deleteKeys map[string]arrow.Record)
 	}
 
 	// TODO: This column is not guaranteed to exist
-	sb.WriteString(" RETURNING _cq_id")
+	sb.WriteString(" RETURNING ")
+	sb.WriteString(pgx.Identifier{schema.CqIDColumn.Name}.Sanitize())
 
 	// DELETE FROM table_name where _cq_parent_id in (select _cq_id from CTE_PARENT)
 
@@ -76,9 +77,9 @@ func generateRelationsDelete(tableRelation message.TableRelation) string {
 	sb.WriteString("DELETE from ")
 	sb.WriteString(pgx.Identifier{tableRelation.TableName}.Sanitize())
 	sb.WriteString(" where ")
-	sb.WriteString(pgx.Identifier{"_cq_parent_id"}.Sanitize())
+	sb.WriteString(pgx.Identifier{schema.CqParentIDColumn.Name}.Sanitize())
 	sb.WriteString(" in (select ")
-	sb.WriteString(pgx.Identifier{"_cq_id"}.Sanitize())
+	sb.WriteString(pgx.Identifier{schema.CqIDColumn.Name}.Sanitize())
 	sb.WriteString(" from ")
 	sb.WriteString(pgx.Identifier{tableRelation.ParentTable + "_CTE"}.Sanitize())
 	sb.WriteString(")")
@@ -100,7 +101,8 @@ func generateDeleteCTE(deleteRecord message.DeleteRecord) string {
 		sb.WriteString(pgx.Identifier{tableRelation.TableName + "_CTE"}.Sanitize())
 		sb.WriteString(" AS (")
 		sb.WriteString(generateRelationsDelete(tableRelation))
-		sb.WriteString(") RETURNING _cq_id")
+		sb.WriteString(") RETURNING ")
+		sb.WriteString(pgx.Identifier{schema.CqIDColumn.Name}.Sanitize())
 		tables[i] = tableRelation.TableName
 	}
 	for _, table := range tables {
