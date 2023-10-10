@@ -9,26 +9,29 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestInspector2ListFindings(t *testing.T) {
-	u := CustomInspector2ListFindingsInput{}
+func TestAAListFindings(t *testing.T) {
+	u := CustomAccessAnalyzerListFindingsInput{}
 	require.NoError(t, faker.FakeObject(&u))
 
-	api := Inspector2APIs{
-		ListFindingsOpts: []CustomInspector2ListFindingsInput{u},
+	api := AccessAnalyzerFindings{
+		ListFindingsOpts: []CustomAccessAnalyzerListFindingsInput{u},
 	}
 	// Ensure that the validation works as expected
 	err := api.Validate()
 	assert.EqualError(t, err, "invalid input: cannot set NextToken in ListFindings")
+	api.ListFindingsOpts[0].NextToken = nil
+
+	err = api.Validate()
+	assert.EqualError(t, err, "invalid input: cannot set AnalyzerARN in ListFindings")
+	api.ListFindingsOpts[0].AnalyzerArn = nil
 
 	// Ensure that as soon as the validation passes that there are no unexpected empty or nil fields
-	api.ListFindingsOpts[0].NextToken = nil
 	err = api.Validate()
-
 	assert.Nil(t, err)
 }
 
-func TestCustomInspector2ListFindingsInput_JSONSchemaExtend(t *testing.T) {
-	schema, err := jsonschema.Generate(Inspector2APIs{})
+func TestCustomAccessAnalyzerListFindingsInput_JSONSchemaExtend(t *testing.T) {
+	schema, err := jsonschema.Generate(AccessAnalyzerFindings{})
 	require.NoError(t, err)
 
 	jsonschema.TestJSONSchema(t, string(schema), []jsonschema.TestCase{
@@ -54,7 +57,7 @@ func TestCustomInspector2ListFindingsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: `{"list_findings":[{}]}`,
 		},
 		{
-			Name: "null list_findings entry",
+			Name: "null list_findings",
 			Err:  true,
 			Spec: `{"list_findings":[null]}`,
 		},
@@ -66,18 +69,27 @@ func TestCustomInspector2ListFindingsInput_JSONSchemaExtend(t *testing.T) {
 		{
 			Name: "proper list_findings",
 			Spec: func() string {
-				var input CustomInspector2ListFindingsInput
+				var input CustomAccessAnalyzerListFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
-				return `{"list_findings":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}`
+				return `{"list_findings":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken", "AnalyzerArn") + `]}`
+			}(),
+		},
+		{
+			Name: "list_findings.AnalyzerArn is present",
+			Err:  true,
+			Spec: func() string {
+				var input CustomAccessAnalyzerListFindingsInput
+				require.NoError(t, faker.FakeObject(&input))
+				return `{"list_findings":[` + jsonschema.WithRemovedKeys(t, &input, "AnalyzerArn") + `]}`
 			}(),
 		},
 		{
 			Name: "list_findings.NextToken is present",
 			Err:  true,
 			Spec: func() string {
-				var input CustomInspector2ListFindingsInput
+				var input CustomAccessAnalyzerListFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
-				return `{"list_findings":[` + jsonschema.WithRemovedKeys(t, &input) + `]}`
+				return `{"list_findings":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}`
 			}(),
 		},
 	})

@@ -10,15 +10,15 @@ import (
 	"github.com/invopop/jsonschema"
 )
 
-type AccessanalyzerFindings struct {
-	ListFindingOpts []CustomAccessAnalyzerListFindingsInput `json:"list_findings,omitempty"`
+type AccessAnalyzerFindings struct {
+	ListFindingsOpts []CustomAccessAnalyzerListFindingsInput `json:"list_findings,omitempty"`
 }
 
 type CustomAccessAnalyzerListFindingsInput struct {
 	accessanalyzer.ListFindingsInput
 }
 
-// UnmarshalJSON implements the json.Unmarshaler interface for the CustomLookupEventsOpts type.
+// UnmarshalJSON implements the json.Unmarshaler interface for the CustomAccessAnalyzerListFindingsInput type.
 // It is the same as default, but allows the use of underscore in the JSON field names.
 func (c *CustomAccessAnalyzerListFindingsInput) UnmarshalJSON(data []byte) error {
 	m := map[string]any{}
@@ -39,8 +39,8 @@ func (CustomAccessAnalyzerListFindingsInput) JSONSchemaExtend(sc *jsonschema.Sch
 	sc.Properties.Delete("NextToken")
 }
 
-func (c *AccessanalyzerFindings) validateListFindings() error {
-	for _, opt := range c.ListFindingOpts {
+func (c *AccessAnalyzerFindings) validateListFindings() error {
+	for _, opt := range c.ListFindingsOpts {
 		if aws.ToString(opt.NextToken) != "" {
 			return errors.New("invalid input: cannot set NextToken in ListFindings")
 		}
@@ -51,6 +51,6 @@ func (c *AccessanalyzerFindings) validateListFindings() error {
 	return nil
 }
 
-func (c *AccessanalyzerFindings) Validate() error {
+func (c *AccessAnalyzerFindings) Validate() error {
 	return c.validateListFindings()
 }

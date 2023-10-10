@@ -10,10 +10,10 @@ import (
 )
 
 func TestListTasks(t *testing.T) {
-	u := CustomListTasksOpts{}
+	u := CustomECSListTasksInput{}
 	require.NoError(t, faker.FakeObject(&u))
-	api := ECSTaskAPIs{
-		ListTasksOpts: []CustomListTasksOpts{u},
+	api := ECSTasks{
+		ListTasksOpts: []CustomECSListTasksInput{u},
 	}
 	// Ensure that the validation works as expected
 	err := api.Validate()
@@ -25,8 +25,8 @@ func TestListTasks(t *testing.T) {
 	assert.EqualError(t, err, "invalid input: cannot set Cluster in ListTasks")
 }
 
-func TestCustomListTasksOpts_JSONSchemaExtend(t *testing.T) {
-	schema, err := jsonschema.Generate(ECSTaskAPIs{})
+func TestCustomECSListTasksInput_JSONSchemaExtend(t *testing.T) {
+	schema, err := jsonschema.Generate(ECSTasks{})
 	require.NoError(t, err)
 
 	jsonschema.TestJSONSchema(t, string(schema), []jsonschema.TestCase{
@@ -64,7 +64,7 @@ func TestCustomListTasksOpts_JSONSchemaExtend(t *testing.T) {
 		{
 			Name: "proper list_tasks",
 			Spec: func() string {
-				var input CustomListTasksOpts
+				var input CustomECSListTasksInput
 				require.NoError(t, faker.FakeObject(&input))
 				return `{"list_tasks":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken", "Cluster") + `]}`
 			}(),
@@ -73,7 +73,7 @@ func TestCustomListTasksOpts_JSONSchemaExtend(t *testing.T) {
 			Name: "list_tasks.NextToken is present",
 			Err:  true,
 			Spec: func() string {
-				var input CustomListTasksOpts
+				var input CustomECSListTasksInput
 				require.NoError(t, faker.FakeObject(&input))
 				return `{"list_tasks":[` + jsonschema.WithRemovedKeys(t, &input, "Cluster") + `]}`
 			}(),
@@ -82,7 +82,7 @@ func TestCustomListTasksOpts_JSONSchemaExtend(t *testing.T) {
 			Name: "list_tasks.Cluster is present",
 			Err:  true,
 			Spec: func() string {
-				var input CustomListTasksOpts
+				var input CustomECSListTasksInput
 				require.NoError(t, faker.FakeObject(&input))
 				return `{"list_tasks":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}`
 			}(),

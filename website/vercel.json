@@ -156,7 +156,7 @@
     },
     {
       "source": "/blog/cloud-asset-inventory-cloudquery-apache-superset",
-      "destination":"/how-to-guides/cloud-asset-inventory-cloudquery-apache-superset"
+      "destination": "/how-to-guides/cloud-asset-inventory-cloudquery-apache-superset"
     },
     {
       "source": "/blog/cloud-asset-inventory-cloudquery-aws-quicksight",
@@ -357,6 +357,10 @@
     {
       "source": "/careers/overview",
       "destination": "https://apply.workable.com/cloudquery/"
+    },
+    {
+      "source": "/docs/plugins/sources/hashicorp-vault/:path*",
+      "destination": "/docs/plugins/sources/vault/:path*"
     }
   ]
 }

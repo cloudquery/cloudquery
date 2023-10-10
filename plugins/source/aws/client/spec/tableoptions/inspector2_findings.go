@@ -10,7 +10,7 @@ import (
 	"github.com/invopop/jsonschema"
 )
 
-type Inspector2APIs struct {
+type Inspector2Findings struct {
 	ListFindingsOpts []CustomInspector2ListFindingsInput `json:"list_findings,omitempty"`
 }
 
@@ -23,7 +23,7 @@ func (CustomInspector2ListFindingsInput) JSONSchemaExtend(sc *jsonschema.Schema)
 	sc.Properties.Delete("NextToken")
 }
 
-// UnmarshalJSON implements the json.Unmarshaler interface for the CustomLookupEventsOpts type.
+// UnmarshalJSON implements the json.Unmarshaler interface for the CustomInspector2ListFindingsInput type.
 // It is the same as default, but allows the use of underscore in the JSON field names.
 func (c *CustomInspector2ListFindingsInput) UnmarshalJSON(data []byte) error {
 	m := map[string]any{}
@@ -37,7 +37,7 @@ func (c *CustomInspector2ListFindingsInput) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(b, &c.ListFindingsInput)
 }
 
-func (c *Inspector2APIs) validateListFindings() error {
+func (c *Inspector2Findings) validateListFindings() error {
 	for _, opt := range c.ListFindingsOpts {
 		if aws.ToString(opt.NextToken) != "" {
 			return errors.New("invalid input: cannot set NextToken in ListFindings")
@@ -46,6 +46,6 @@ func (c *Inspector2APIs) validateListFindings() error {
 	return nil
 }
 
-func (c *Inspector2APIs) Validate() error {
+func (c *Inspector2Findings) Validate() error {
 	return c.validateListFindings()
 }

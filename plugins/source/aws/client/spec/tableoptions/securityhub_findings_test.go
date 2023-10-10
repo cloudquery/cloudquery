@@ -10,10 +10,10 @@ import (
 )
 
 func TestGetFindings(t *testing.T) {
-	u := CustomGetFindingsOpts{}
+	u := CustomSecurityHubGetFindingsInput{}
 	require.NoError(t, faker.FakeObject(&u))
-	api := SecurityHubAPIs{
-		GetFindingsOpts: []CustomGetFindingsOpts{u},
+	api := SecurityHubFindings{
+		GetFindingsOpts: []CustomSecurityHubGetFindingsInput{u},
 	}
 	// Ensure that the validation works as expected
 	err := api.Validate()
@@ -25,8 +25,8 @@ func TestGetFindings(t *testing.T) {
 	assert.EqualError(t, err, "invalid range: MaxResults must be within range [1-100]")
 }
 
-func TestCustomGetFindingsOpts_JSONSchemaExtend(t *testing.T) {
-	schema, err := jsonschema.Generate(SecurityHubAPIs{})
+func TestCustomSecurityHubGetFindingsInput_JSONSchemaExtend(t *testing.T) {
+	schema, err := jsonschema.Generate(SecurityHubFindings{})
 	require.NoError(t, err)
 
 	jsonschema.TestJSONSchema(t, string(schema), []jsonschema.TestCase{
@@ -64,7 +64,7 @@ func TestCustomGetFindingsOpts_JSONSchemaExtend(t *testing.T) {
 		{
 			Name: "proper get_findings",
 			Spec: func() string {
-				var input CustomGetFindingsOpts
+				var input CustomSecurityHubGetFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
 				input.MaxResults = 10 // range 1-100
 				return `{"get_findings":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}`
@@ -74,7 +74,7 @@ func TestCustomGetFindingsOpts_JSONSchemaExtend(t *testing.T) {
 			Name: "get_findings.NextToken is present",
 			Err:  true,
 			Spec: func() string {
-				var input CustomGetFindingsOpts
+				var input CustomSecurityHubGetFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
 				input.MaxResults = 10 // range 1-100
 				return `{"get_findings":[` + jsonschema.WithRemovedKeys(t, &input) + `]}`
@@ -84,7 +84,7 @@ func TestCustomGetFindingsOpts_JSONSchemaExtend(t *testing.T) {
 			Name: "get_findings.MaxResults > 100",
 			Err:  true,
 			Spec: func() string {
-				var input CustomGetFindingsOpts
+				var input CustomSecurityHubGetFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
 				input.MaxResults = 1000 // range 1-100
 				return `{"get_findings":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}`
@@ -94,7 +94,7 @@ func TestCustomGetFindingsOpts_JSONSchemaExtend(t *testing.T) {
 			Name: "get_findings.MaxResults < 1",
 			Err:  true,
 			Spec: func() string {
-				var input CustomGetFindingsOpts
+				var input CustomSecurityHubGetFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
 				input.MaxResults = 0 // range 1-100
 				return `{"get_findings":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}`
