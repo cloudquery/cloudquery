@@ -57,7 +57,7 @@ jobs:
               -P "$DB_PASSWORD" \
               -Q "CREATE DATABASE $DB_NAME;"
     - name: Set up Go 1.x
-      uses: actions/setup-go@v3
+      uses: actions/setup-go@v4
       with:
         go-version-file:       plugins/destination/mssql/go.mod
         cache:                 true
@@ -95,7 +95,7 @@ jobs:
                       ${{ runner.os }}-go-1.21.0-release-cache-plugins-destination-mssql
     - name: Set up Go
       if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-      uses: actions/setup-go@v3
+      uses: actions/setup-go@v4
       with:
         go-version-file: plugins/destination/mssql/go.mod
     - name: Install GoReleaser

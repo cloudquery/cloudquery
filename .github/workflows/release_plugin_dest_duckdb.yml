@@ -38,7 +38,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-1.21.0-release-cache-plugins-destination-duckdb
       - name: Set up Go 1.x
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: plugins/destination/duckdb/go.mod
       - name: Install GoReleaser

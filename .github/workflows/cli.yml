@@ -33,7 +33,7 @@ jobs:
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: cli/go.mod
           cache: true
@@ -76,7 +76,7 @@ jobs:
             ubuntu-go-1.21.0-release-cache-cli
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: cli/go.mod
       - name: Install GoReleaser
