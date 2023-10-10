@@ -91,6 +91,9 @@ const customPlugin = () => {
         const data = node.data || (node.data = {});
         const hast = h(node.name, node.attributes || {});
         data.hName = hast.tagName;
+        if (!['badge', 'configuration', 'authentication'].includes(data.hName)) {
+          return;
+        }
         data.hProperties = hast.properties;
 
         const { kind, name } = getKindAndName(file);
