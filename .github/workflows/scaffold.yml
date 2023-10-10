@@ -70,7 +70,7 @@ jobs:
           go-version-file: scaffold/go.mod
       - name: Install GoReleaser
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: goreleaser/goreleaser-action@v3
+        uses: goreleaser/goreleaser-action@v5
         with:
           distribution: goreleaser-pro
           version: latest
