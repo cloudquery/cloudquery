@@ -145,7 +145,7 @@ jobs:
       - name: Install dbt-postgres
         run: pip install dbt-postgres
       - name: Run dbt policies
-        run: cd policies/gcp_compliance && dbt run --profiles-dir test/dbt/
+        run: cd policies/gcp_compliance && dbt run --profiles-dir ../../test/dbt/
         env:
           CQ_DBT_HOST: localhost
           CQ_DBT_PORT: 5432
