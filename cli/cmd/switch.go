@@ -66,7 +66,7 @@ func runSwitch(cmd *cobra.Command, args []string) error {
 		} else {
 			cmd.Printf("Your current team is set to %v.\n\n", currentTeam)
 		}
-		cmd.Println("Teams available to you:", strings.Join(allTeams, ", "), "\n")
+		cmd.Println("Teams available to you:", strings.Join(allTeams, ", ")+"\n")
 		cmd.Println("To switch teams, run `cloudquery switch <team>`")
 		return nil
 	}

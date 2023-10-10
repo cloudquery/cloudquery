@@ -44,14 +44,7 @@ func TestSwitch(t *testing.T) {
 	// calling switch before a team is set should not result in an error
 	cmd := NewCmdRoot()
 	cmd.SetArgs([]string{"switch"})
-	buf := new(bytes.Buffer)
-	cmd.SetOut(buf)
 	err := cmd.Execute()
-	require.NoError(t, err)
-	out, err := io.ReadAll(buf)
-	if err != nil {
-		t.Fatal(err)
-	}
 	require.NoError(t, err)
 
 	// now set the team
@@ -62,11 +55,11 @@ func TestSwitch(t *testing.T) {
 
 	cmd = NewCmdRoot()
 	cmd.SetArgs([]string{"switch"})
-	buf = new(bytes.Buffer)
+	buf := new(bytes.Buffer)
 	cmd.SetOut(buf)
 	err = cmd.Execute()
 	require.NoError(t, err)
-	out, err = io.ReadAll(buf)
+	out, err := io.ReadAll(buf)
 	if err != nil {
 		t.Fatal(err)
 	}
