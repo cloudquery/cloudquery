@@ -6,8 +6,9 @@ import (
 	"fmt"
 	"strings"
 
+	"slices"
+
 	"github.com/thoas/go-funk"
-	"golang.org/x/exp/slices"
 )
 
 const (

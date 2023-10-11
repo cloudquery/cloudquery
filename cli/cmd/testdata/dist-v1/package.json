@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "name": "test",
+  "message": "## This is a subtitle\n\nThis is a paragraph.\n",
+  "version": "v1.2.3",
+  "kind": "source",
+  "protocols": [
+    3
+  ],
+  "supported_targets": [
+    {
+      "os": "linux",
+      "arch": "amd64",
+      "path": "plugin-test-v1.2.3-linux-amd64.zip",
+      "checksum": "sha256:1234567890"
+    },
+    {
+      "os": "darwin",
+      "arch": "amd64",
+      "path": "plugin-test-v1.2.3-darwin-amd64.zip",
+      "checksum": "sha256:1234567890"
+    }
+  ],
+  "package_type": "native"
+}

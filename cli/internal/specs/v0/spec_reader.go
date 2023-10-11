@@ -11,8 +11,9 @@ import (
 	"strconv"
 	"strings"
 
+	"slices"
+
 	"github.com/ghodss/yaml"
-	"golang.org/x/exp/slices"
 )
 
 type SpecReader struct {

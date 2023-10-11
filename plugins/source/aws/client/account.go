@@ -12,6 +12,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec"
 	"github.com/rs/zerolog"
 )
 
@@ -21,7 +22,7 @@ type svcsDetail struct {
 	svcs      Services
 }
 
-func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, awsPluginSpec *Spec, adminAccountSts AssumeRoleAPIClient, account Account) (*svcsDetail, error) {
+func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, awsPluginSpec *spec.Spec, adminAccountSts AssumeRoleAPIClient, account spec.Account) (*svcsDetail, error) {
 	if account.AccountName == "" {
 		account.AccountName = account.ID
 	}
@@ -46,7 +47,7 @@ func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, aws
 	awsCfg, err := ConfigureAwsSDK(ctx, logger, awsPluginSpec, account, adminAccountSts)
 	if err != nil {
 		warningMsg := logger.Warn().Str("account", account.AccountName).Err(err)
-		if account.source == "org" {
+		if account.Source == spec.AccountSourceOrg {
 			warningMsg.Msg("Unable to assume role in account")
 			return nil, nil
 		}

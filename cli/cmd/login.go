@@ -13,13 +13,15 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/adrg/xdg"
 	"github.com/cenkalti/backoff/v4"
+	"github.com/cloudquery/cloudquery/cli/internal/auth"
+	"github.com/cloudquery/cloudquery/cli/internal/config"
 	"github.com/pkg/browser"
 	"github.com/spf13/cobra"
 )
 
 const (
+	// login command
 	loginShort = "Login to CloudQuery Hub."
 	loginLong  = `Login to CloudQuery Hub.
 
@@ -27,17 +29,23 @@ This is required to download plugins from CloudQuery Hub.
 
 Local plugins and different registries don't need login.
 `
+	loginExample = `
+# Log in to CloudQuery Hub
+cloudquery login
 
-	accountsURL = "https://accounts.cloudquery.io"
+# Log in to a specific team
+cloudquery login --team my-team
+`
 )
 
 func newCmdLogin() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:    "login",
-		Short:  loginShort,
-		Long:   loginLong,
-		Hidden: true,
-		Args:   cobra.MatchAll(cobra.ExactArgs(0), cobra.OnlyValidArgs),
+	loginCmd := &cobra.Command{
+		Use:     "login",
+		Short:   loginShort,
+		Long:    loginLong,
+		Example: loginExample,
+		Hidden:  true,
+		Args:    cobra.MatchAll(cobra.ExactArgs(0), cobra.OnlyValidArgs),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// Set up a channel to listen for OS signals for graceful shutdown.
 			ctx, cancel := context.WithCancel(cmd.Context())
@@ -47,14 +55,14 @@ func newCmdLogin() *cobra.Command {
 
 			go func() {
 				<-sigChan
-				fmt.Println("Received SIGTERM!")
 				cancel()
 			}()
 
-			return runLogin(ctx)
+			return runLogin(ctx, cmd)
 		},
 	}
-	return cmd
+	loginCmd.Flags().StringP("team", "t", "", "Team to login to. Specify the team name, e.g. 'my-team' (not the display name)")
+	return loginCmd
 }
 
 func waitForServer(ctx context.Context, url string) error {
@@ -80,21 +88,9 @@ func waitForServer(ctx context.Context, url string) error {
 	}, backoff.WithContext(backoff.NewConstantBackOff(100*time.Millisecond), ctx))
 }
 
-func runLogin(ctx context.Context) (err error) {
-	tokenFilePath, err := xdg.DataFile("cloudquery/token")
-	if err != nil {
-		return fmt.Errorf("can't determine a proper location for token file: %w", err)
-	}
-	tokenFile, err := os.OpenFile(tokenFilePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o644)
-	if err != nil {
-		return fmt.Errorf("can't open token file %q for writing: %w", tokenFilePath, err)
-	}
-	defer func() {
-		e := tokenFile.Close()
-		if err == nil && e != nil {
-			err = fmt.Errorf("can't close token file %q after writing: %w", tokenFilePath, e)
-		}
-	}()
+func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
+	accountsURL := getEnvOrDefault("CLOUDQUERY_ACCOUNTS_URL", defaultAccountsURL)
+	apiURL := getEnvOrDefault("CLOUDQUERY_API_URL", defaultAPIURL)
 
 	mux := http.NewServeMux()
 	refreshToken := ""
@@ -158,11 +154,32 @@ func runLogin(ctx context.Context) (err error) {
 	if refreshToken == "" {
 		return fmt.Errorf("failed to get refresh token")
 	}
-	if _, err = tokenFile.WriteString(refreshToken); err != nil {
-		return fmt.Errorf("failed to write token to %q: %w", tokenFilePath, err)
+	err = auth.SaveRefreshToken(refreshToken)
+	if err != nil {
+		return fmt.Errorf("failed to save refresh token: %w", err)
 	}
 
-	fmt.Println("CLI successfully authenticated.")
+	if cmd.Flags().Changed("team") {
+		team := cmd.Flag("team").Value.String()
+		token, err := auth.GetToken()
+		if err != nil {
+			return fmt.Errorf("failed to get auth token: %w", err)
+		}
+		cl, err := auth.NewClient(apiURL, token)
+		if err != nil {
+			return fmt.Errorf("failed to create API client: %w", err)
+		}
+		err = cl.ValidateTeam(ctx, team)
+		if err != nil {
+			return fmt.Errorf("failed to set team: %w", err)
+		}
+		err = config.SetValue("team", team)
+		if err != nil {
+			return fmt.Errorf("failed to set team: %w", err)
+		}
+	}
+
+	cmd.Println("CLI successfully authenticated.")
 
 	return nil
 }

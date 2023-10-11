@@ -244,6 +244,7 @@
   - [aws_ec2_transit_gateway_peering_attachments](../../../../../website/tables/aws/aws_ec2_transit_gateway_peering_attachments.md)
   - [aws_ec2_transit_gateway_route_tables](../../../../../website/tables/aws/aws_ec2_transit_gateway_route_tables.md)
   - [aws_ec2_transit_gateway_vpc_attachments](../../../../../website/tables/aws/aws_ec2_transit_gateway_vpc_attachments.md)
+- [aws_ec2_vpc_endpoint_connections](../../../../../website/tables/aws/aws_ec2_vpc_endpoint_connections.md)
 - [aws_ec2_vpc_endpoint_service_configurations](../../../../../website/tables/aws/aws_ec2_vpc_endpoint_service_configurations.md)
 - [aws_ec2_vpc_endpoint_services](../../../../../website/tables/aws/aws_ec2_vpc_endpoint_services.md)
   - [aws_ec2_vpc_endpoint_service_permissions](../../../../../website/tables/aws/aws_ec2_vpc_endpoint_service_permissions.md)

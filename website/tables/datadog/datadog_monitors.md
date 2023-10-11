@@ -29,7 +29,7 @@ The following tables depend on datadog_monitors:
 |overall_state|`utf8`|
 |priority|`int64`|
 |query|`utf8`|
-|restricted_roles|`list<item: utf8, nullable>`|
+|restricted_roles|`json`|
 |state|`json`|
 |tags|`list<item: utf8, nullable>`|
 |type|`utf8`|

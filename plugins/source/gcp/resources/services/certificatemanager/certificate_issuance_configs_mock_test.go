@@ -6,8 +6,8 @@ import (
 	"testing"
 
 	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
-	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/grpc"
 )
 

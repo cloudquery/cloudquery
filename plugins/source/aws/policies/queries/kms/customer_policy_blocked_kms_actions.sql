@@ -23,8 +23,8 @@ violations as (
             arn like 'arn:aws:iam::aws:policy%' or arn like 'arn:aws-us-gov:iam::aws:policy%'
         )
         and statement ->> 'Effect' = 'Allow'
-        AND statement -> 'Resource'?| array['*', 'arn:aws:kms:*:' || account_id || ':key/*', 'arn:aws:kms:*:' || account_id || ':alias/*'] -- noqa
-        AND statement -> 'Action' ?| array['*', 'kms:*', 'kms:decrypt', 'kms:reencryptfrom', 'kms:reencrypt*'] -- noqa
+        AND lower(statement::TEXT)::JSONB -> 'resource'?| array['*', 'arn:aws:kms:*:' || account_id || ':key/*', 'arn:aws:kms:*:' || account_id || ':alias/*'] -- noqa
+        AND lower(statement::TEXT)::JSONB -> 'action' ?| array['*', 'kms:*', 'kms:decrypt', 'kms:reencryptfrom', 'kms:reencrypt*'] -- noqa
 )
 
 select
