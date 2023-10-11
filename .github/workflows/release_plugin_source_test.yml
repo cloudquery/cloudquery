@@ -25,7 +25,7 @@ jobs:
         with:
           input_string: ${{steps.split.outputs.plugin_version}}
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
       - uses: actions/cache@v3
@@ -45,7 +45,7 @@ jobs:
           echo "${{ secrets.GITHUB_TOKEN }}" | \
           docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
       - name: Install GoReleaser
-        uses: goreleaser/goreleaser-action@v3
+        uses: goreleaser/goreleaser-action@v5
         with:
           distribution: goreleaser-pro
           version: latest

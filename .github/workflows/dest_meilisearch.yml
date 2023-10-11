@@ -43,7 +43,7 @@ jobs:
                  --health-start-period 20s
                  --health-retries 5
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 2
     - name: Set up Go 1.x
@@ -76,7 +76,7 @@ jobs:
     steps:
     - name: Checkout
       if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - uses: actions/cache@v3
       if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
       with:
@@ -93,7 +93,7 @@ jobs:
         go-version-file: plugins/destination/meilisearch/go.mod
     - name: Install GoReleaser
       if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-      uses: goreleaser/goreleaser-action@v3
+      uses: goreleaser/goreleaser-action@v5
       with:
         distribution: goreleaser-pro
         version:      latest
