@@ -4,9 +4,10 @@ import (
 	"context"
 	"database/sql"
 
+	"slices"
+
 	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"golang.org/x/exp/slices"
 )
 
 func (c *Client) getTableColumns(ctx context.Context, tableName string, pks []string) (schema.ColumnList, error) {

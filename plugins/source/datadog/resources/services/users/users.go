@@ -23,10 +23,6 @@ func Users() *schema.Table {
 func fetchUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	ctx = c.BuildContextV2(ctx)
-	resp, _, err := c.DDServices.UsersAPI.ListUsers(ctx)
-	if err != nil {
-		return err
-	}
-	res <- resp.GetData()
-	return nil
+	resp, cancel := c.DDServices.UsersAPI.ListUsersWithPagination(ctx)
+	return client.ConsumePaginatedResponse(resp, cancel, res)
 }

@@ -13,10 +13,11 @@ const (
 	RegistryLocal
 	RegistryGrpc
 	RegistryDocker
+	RegistryCloudQuery
 )
 
 func (r Registry) String() string {
-	return [...]string{"github", "local", "grpc", "docker"}[r]
+	return [...]string{"github", "local", "grpc", "docker", "cloudquery"}[r]
 }
 
 func (r Registry) MarshalJSON() ([]byte, error) {
@@ -47,6 +48,8 @@ func RegistryFromString(s string) (Registry, error) {
 		return RegistryGrpc, nil
 	case "docker":
 		return RegistryDocker, nil
+	case "cloudquery":
+		return RegistryCloudQuery, nil
 	default:
 		return RegistryGithub, fmt.Errorf("unknown registry %s", s)
 	}

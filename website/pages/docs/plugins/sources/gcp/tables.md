@@ -109,6 +109,7 @@
 - [gcp_compute_projects](tables/gcp_compute_projects)
 - [gcp_compute_routers](tables/gcp_compute_routers)
   - [gcp_compute_router_nat_mapping_infos](tables/gcp_compute_router_nat_mapping_infos)
+- [gcp_compute_routes](tables/gcp_compute_routes)
 - [gcp_compute_ssl_certificates](tables/gcp_compute_ssl_certificates)
 - [gcp_compute_ssl_policies](tables/gcp_compute_ssl_policies)
 - [gcp_compute_subnetworks](tables/gcp_compute_subnetworks)

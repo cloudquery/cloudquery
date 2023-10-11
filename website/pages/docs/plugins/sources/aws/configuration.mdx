@@ -81,7 +81,7 @@ This is the (nested) spec used by the AWS source plugin.
 
 - `scheduler` (string) (default: `dfs`):
 
-  The scheduler to use when determining the priority of resources to sync. Currently, the only supported values are `dfs` (depth-first search) and `round-robin`. This is an experimental feature, and may be removed in the future. For more information about this, see [performance tuning](/docs/advanced-topics/performance-tuning).
+  The scheduler to use when determining the priority of resources to sync. Currently, the only supported values are `dfs` (depth-first search), `round-robin` and `shuffle`. For more information about this, see [performance tuning](/docs/advanced-topics/performance-tuning).
 
 - `aws_debug` (`bool`) (default: `false`)
 
@@ -123,7 +123,7 @@ The `table_options` parameter is deprecated and will be removed soon. Please rea
 
 - **preview** `table_options` (`map`) (default: not used)
 
-  This is a preview feature (for more information about `preview` features look at [plugin versioning](/docs/plugins/sources/aws/versioning) that enables users to override the default options for specific tables.
+  This is a preview feature (for more information about `preview` features look at [plugin versioning](/docs/plugins/sources/aws/versioning)) that enables users to override the default options for specific tables.
   The root of the object takes a table name, and the next level takes an API method name.
   The final level is the actual input object as defined by the API. 
 

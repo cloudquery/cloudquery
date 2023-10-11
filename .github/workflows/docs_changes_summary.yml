@@ -21,12 +21,12 @@ jobs:
       breaking: ${{ steps.breaking.outputs.status }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Get PR diff
         run: |
           curl -L ${{ github.event.pull_request.diff_url }} > pr.diff
       - name: Set up Go 1.x
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: scripts/table_diff/go.mod
           cache: true
@@ -58,13 +58,15 @@ jobs:
         uses: peter-evans/find-comment@5cea877144f86ac1aacfe5240ff2390f7135b563
         id: find-comment
         with:
+          token: ${{ secrets.GH_CQ_BOT }}
           issue-number: ${{ github.event.pull_request.number }}
-          comment-author: 'github-actions[bot]'
-          body-includes: '### This PR has the following changes to source plugin(s) tables:'
+          comment-author: "github-actions[bot]"
+          body-includes: "### This PR has the following changes to source plugin(s) tables:"
       - name: Create or update comment
         uses: peter-evans/create-or-update-comment@716151b9579b05352dbf244d48e968d211889bbc
         if: steps.get-changes.outputs.result != ''
         with:
+          token: ${{ secrets.GH_CQ_BOT }}
           comment-id: ${{ steps.find-comment.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
@@ -77,6 +79,7 @@ jobs:
         uses: actions/github-script@v6
         name: Delete existing comment if there are no changes
         with:
+          github-token: ${{ secrets.GH_CQ_BOT }}
           script: |
             github.rest.issues.deleteComment({
               owner: context.repo.owner,
