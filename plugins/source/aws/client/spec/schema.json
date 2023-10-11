@@ -3,7 +3,7 @@
   "$id": "https://github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/spec",
   "$ref": "#/$defs/Spec",
   "$defs": {
-    "AccessanalyzerFindings": {
+    "AccessAnalyzerFindings": {
       "properties": {
         "list_findings": {
           "oneOf": [
@@ -1344,13 +1344,13 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "CloudtrailAPIs": {
+    "CloudtrailEvents": {
       "properties": {
         "lookup_events": {
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/CustomLookupEventsOpts"
+                "$ref": "#/$defs/CustomCloudtrailLookupEventsInput"
               },
               "type": "array"
             },
@@ -1668,101 +1668,29 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "CustomGetCostAndUsageInput": {
+    "CustomCloudtrailLookupEventsInput": {
       "properties": {
-        "Granularity": {
+        "EndTime": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "EventCategory": {
           "type": "string"
         },
-        "Metrics": {
+        "LookupAttributes": {
           "oneOf": [
             {
               "items": {
-                "type": "string"
+                "$ref": "#/$defs/LookupAttribute"
               },
               "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "TimePeriod": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/DateInterval"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Filter": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/Expression"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "GroupBy": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/GroupDefinition"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "CustomGetFindingsOpts": {
-      "properties": {
-        "Filters": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/AwsSecurityFindingFilters"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "MaxResults": {
-          "type": "integer",
-          "maximum": 100,
-          "minimum": 1
-        },
-        "SortCriteria": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/SortCriterion"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object"
-    },
-    "CustomInspector2ListFindingsInput": {
-      "properties": {
-        "FilterCriteria": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/FilterCriteria"
             },
             {
               "type": "null"
@@ -1779,10 +1707,11 @@
             }
           ]
         },
-        "SortCriteria": {
+        "StartTime": {
           "oneOf": [
             {
-              "$ref": "#/$defs/SortCriteria_1"
+              "type": "string",
+              "format": "date-time"
             },
             {
               "type": "null"
@@ -1793,7 +1722,7 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "CustomListTasksOpts": {
+    "CustomECSListTasksInput": {
       "properties": {
         "ContainerInstance": {
           "oneOf": [
@@ -1856,29 +1785,67 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "CustomLookupEventsOpts": {
+    "CustomGetCostAndUsageInput": {
       "properties": {
-        "EndTime": {
+        "Granularity": {
+          "type": "string"
+        },
+        "Metrics": {
           "oneOf": [
             {
-              "type": "string",
-              "format": "date-time"
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
             },
             {
               "type": "null"
             }
           ]
         },
-        "EventCategory": {
-          "type": "string"
+        "TimePeriod": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/DateInterval"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
-        "LookupAttributes": {
+        "Filter": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Expression"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "GroupBy": {
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/LookupAttribute"
+                "$ref": "#/$defs/GroupDefinition"
               },
               "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "CustomInspector2ListFindingsInput": {
+      "properties": {
+        "FilterCriteria": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/FilterCriteria"
             },
             {
               "type": "null"
@@ -1895,11 +1862,44 @@
             }
           ]
         },
-        "StartTime": {
+        "SortCriteria": {
           "oneOf": [
             {
-              "type": "string",
-              "format": "date-time"
+              "$ref": "#/$defs/SortCriteria_1"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "CustomSecurityHubGetFindingsInput": {
+      "properties": {
+        "Filters": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/AwsSecurityFindingFilters"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "MaxResults": {
+          "type": "integer",
+          "maximum": 100,
+          "minimum": 1
+        },
+        "SortCriteria": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/SortCriterion"
+              },
+              "type": "array"
             },
             {
               "type": "null"
@@ -2073,13 +2073,13 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "ECSTaskAPIs": {
+    "ECSTasks": {
       "properties": {
         "list_tasks": {
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/CustomListTasksOpts"
+                "$ref": "#/$defs/CustomECSListTasksInput"
               },
               "type": "array"
             },
@@ -2774,7 +2774,7 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "Inspector2APIs": {
+    "Inspector2Findings": {
       "properties": {
         "list_findings": {
           "oneOf": [
@@ -3138,13 +3138,13 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "SecurityHubAPIs": {
+    "SecurityHubFindings": {
       "properties": {
         "get_findings": {
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/CustomGetFindingsOpts"
+                "$ref": "#/$defs/CustomSecurityHubGetFindingsInput"
               },
               "type": "array"
             },
@@ -3436,10 +3436,10 @@
     },
     "TableOptions": {
       "properties": {
-        "aws_alpha_cloudwatch_metrics": {
+        "aws_accessanalyzer_analyzer_findings": {
           "oneOf": [
             {
-              "$ref": "#/$defs/CloudwatchMetrics"
+              "$ref": "#/$defs/AccessAnalyzerFindings"
             },
             {
               "type": "null"
@@ -3449,27 +3449,17 @@
         "aws_cloudtrail_events": {
           "oneOf": [
             {
-              "$ref": "#/$defs/CloudtrailAPIs"
+              "$ref": "#/$defs/CloudtrailEvents"
             },
             {
               "type": "null"
             }
           ]
         },
-        "aws_accessanalyzer_analyzer_findings": {
+        "aws_alpha_cloudwatch_metrics": {
           "oneOf": [
             {
-              "$ref": "#/$defs/AccessanalyzerFindings"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "aws_inspector2_findings": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/Inspector2APIs"
+              "$ref": "#/$defs/CloudwatchMetrics"
             },
             {
               "type": "null"
@@ -3486,20 +3476,30 @@
             }
           ]
         },
-        "aws_securityhub_findings": {
+        "aws_ecs_cluster_tasks": {
           "oneOf": [
             {
-              "$ref": "#/$defs/SecurityHubAPIs"
+              "$ref": "#/$defs/ECSTasks"
             },
             {
               "type": "null"
             }
           ]
         },
-        "aws_ecs_cluster_tasks": {
+        "aws_inspector2_findings": {
           "oneOf": [
             {
-              "$ref": "#/$defs/ECSTaskAPIs"
+              "$ref": "#/$defs/Inspector2Findings"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "aws_securityhub_findings": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/SecurityHubFindings"
             },
             {
               "type": "null"

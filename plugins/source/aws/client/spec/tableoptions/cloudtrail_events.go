@@ -10,17 +10,17 @@ import (
 	"github.com/invopop/jsonschema"
 )
 
-type CloudtrailAPIs struct {
-	LookupEventsOpts []CustomLookupEventsOpts `json:"lookup_events,omitempty"`
+type CloudtrailEvents struct {
+	LookupEventsOpts []CustomCloudtrailLookupEventsInput `json:"lookup_events,omitempty"`
 }
 
-type CustomLookupEventsOpts struct {
+type CustomCloudtrailLookupEventsInput struct {
 	cloudtrail.LookupEventsInput
 }
 
-// UnmarshalJSON implements the json.Unmarshaler interface for the CustomLookupEventsOpts type.
+// UnmarshalJSON implements the json.Unmarshaler interface for the CustomCloudtrailLookupEventsInput type.
 // It is the same as default, but allows the use of underscore in the JSON field names.
-func (c *CustomLookupEventsOpts) UnmarshalJSON(data []byte) error {
+func (c *CustomCloudtrailLookupEventsInput) UnmarshalJSON(data []byte) error {
 	m := map[string]any{}
 	err := json.Unmarshal(data, &m)
 	if err != nil {
@@ -33,11 +33,11 @@ func (c *CustomLookupEventsOpts) UnmarshalJSON(data []byte) error {
 }
 
 // JSONSchemaExtend is required to remove `NextToken`.
-func (CustomLookupEventsOpts) JSONSchemaExtend(sc *jsonschema.Schema) {
+func (CustomCloudtrailLookupEventsInput) JSONSchemaExtend(sc *jsonschema.Schema) {
 	sc.Properties.Delete("NextToken")
 }
 
-func (c *CloudtrailAPIs) validateLookupEvents() error {
+func (c *CloudtrailEvents) validateLookupEvents() error {
 	for _, opt := range c.LookupEventsOpts {
 		if aws.ToString(opt.NextToken) != "" {
 			return errors.New("invalid input: cannot set NextToken in LookupEvents")
@@ -46,6 +46,6 @@ func (c *CloudtrailAPIs) validateLookupEvents() error {
 	return nil
 }
 
-func (c *CloudtrailAPIs) Validate() error {
+func (c *CloudtrailEvents) Validate() error {
 	return c.validateLookupEvents()
 }

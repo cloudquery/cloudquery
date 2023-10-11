@@ -45,12 +45,12 @@ This is useful when multi region and account aggregation is enabled.`,
 
 func fetchFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	var allConfigs []tableoptions.CustomGetFindingsOpts
+	var allConfigs []tableoptions.CustomSecurityHubGetFindingsInput
 
 	if cl.Spec.TableOptions.SecurityHubFindings != nil && cl.Spec.TableOptions.SecurityHubFindings.GetFindingsOpts != nil {
 		allConfigs = cl.Spec.TableOptions.SecurityHubFindings.GetFindingsOpts
 	} else {
-		allConfigs = []tableoptions.CustomGetFindingsOpts{{GetFindingsInput: securityhub.GetFindingsInput{MaxResults: 100}}}
+		allConfigs = []tableoptions.CustomSecurityHubGetFindingsInput{{GetFindingsInput: securityhub.GetFindingsInput{MaxResults: 100}}}
 	}
 
 	svc := cl.Services(client.AWSServiceSecurityhub).Securityhub

@@ -130,8 +130,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/xray v1.17.2
 	github.com/aws/smithy-go v1.14.1
 	github.com/basgys/goxml2json v1.1.0
-	github.com/cloudquery/codegen v0.3.5
-	github.com/cloudquery/plugin-sdk/v4 v4.12.3
+	github.com/cloudquery/codegen v0.3.6
+	github.com/cloudquery/plugin-sdk/v4 v4.12.4
 	github.com/cockroachdb/cockroachdb-parser v0.0.0-20230705064001-302c9ad52e1a
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/ghodss/yaml v1.0.0
@@ -153,10 +153,10 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd
+replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231009001222-d4016862d2dd
 
 // https://github.com/cloudquery/jsonschema@cqmain
-replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20231006094144-b42fc04b92bb
+replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20231008093019-d7c8940339dc
 
 require (
 	github.com/BurntSushi/toml v1.3.2 // indirect
@@ -190,7 +190,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.0 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.2.4 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.2.6 // indirect
 	github.com/cloudquery/plugin-pb-go v1.12.1 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/cockroachdb/apd/v3 v3.1.0 // indirect

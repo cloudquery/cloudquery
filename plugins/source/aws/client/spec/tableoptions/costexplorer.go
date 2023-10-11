@@ -23,7 +23,7 @@ func (CustomGetCostAndUsageInput) JSONSchemaExtend(sc *jsonschema.Schema) {
 	sc.Properties.Delete("NextPageToken")
 }
 
-// UnmarshalJSON implements the json.Unmarshaler interface for the CustomLookupEventsOpts type.
+// UnmarshalJSON implements the json.Unmarshaler interface for the CustomGetCostAndUsageInput type.
 // It is the same as default, but allows the use of underscore in the JSON field names.
 func (c *CustomGetCostAndUsageInput) UnmarshalJSON(data []byte) error {
 	m := map[string]any{}

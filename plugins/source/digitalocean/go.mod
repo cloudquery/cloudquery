@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.18.35
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.38.4
 	github.com/aws/smithy-go v1.14.2
-	github.com/cloudquery/plugin-sdk/v4 v4.12.3
+	github.com/cloudquery/plugin-sdk/v4 v4.12.4
 	github.com/digitalocean/godo v1.99.0
 	github.com/golang/mock v1.6.0
 	github.com/pkg/errors v0.9.1
@@ -17,7 +17,7 @@ require (
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9
 )
 
-replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231002001222-7ded38b478cd
+replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231009001222-d4016862d2dd
 
 require (
 	github.com/BurntSushi/toml v1.3.2 // indirect
@@ -49,7 +49,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.0 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.2.4 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.2.6 // indirect
 	github.com/cloudquery/plugin-pb-go v1.12.1 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
