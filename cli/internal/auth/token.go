@@ -16,7 +16,7 @@ const (
 	firebaseAPIKey = "AIzaSyCxsrwjABEF-dWLzUqmwiL-ct02cnG9GCs"
 	tokenURL       = "https://securetoken.googleapis.com/v1/token?key=" + firebaseAPIKey
 
-	EnvVarCQAPIKey = "CQ_API_KEY"
+	EnvVarCloudQueryAPIKey = "CLOUDQUERY_API_KEY"
 )
 
 type tokenResponse struct {
@@ -30,14 +30,14 @@ type tokenResponse struct {
 }
 
 func GetToken() (string, error) {
-	token := os.Getenv(EnvVarCQAPIKey)
+	token := os.Getenv(EnvVarCloudQueryAPIKey)
 	if token == "" {
 		refreshToken, err := readRefreshToken()
 		if err != nil {
-			return "", fmt.Errorf("%w. Hint: You may need to run `cloudquery login` or set %s", err, EnvVarCQAPIKey)
+			return "", fmt.Errorf("%w. Hint: You may need to run `cloudquery login` or set %s", err, EnvVarCloudQueryAPIKey)
 		}
 		if refreshToken == "" {
-			return "", fmt.Errorf("could not find authentication token. Hint: You may need to run `cloudquery login` or set %s", EnvVarCQAPIKey)
+			return "", fmt.Errorf("could not find authentication token. Hint: You may need to run `cloudquery login` or set %s", EnvVarCloudQueryAPIKey)
 		}
 		token, err = getIDToken(refreshToken)
 		if err != nil {
@@ -45,6 +45,17 @@ func GetToken() (string, error) {
 		}
 	}
 	return token, nil
+}
+
+func removeRefreshToken() error {
+	tokenFilePath, err := xdg.DataFile("cloudquery/token")
+	if err != nil {
+		return fmt.Errorf("can't determine a proper location for token file: %w", err)
+	}
+	if err := os.RemoveAll(tokenFilePath); err != nil {
+		return fmt.Errorf("failed to remove token file %q: %w", tokenFilePath, err)
+	}
+	return nil
 }
 
 func SaveRefreshToken(refreshToken string) error {
