@@ -21,12 +21,12 @@ jobs:
       breaking: ${{ steps.breaking.outputs.status }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Get PR diff
         run: |
           curl -L ${{ github.event.pull_request.diff_url }} > pr.diff
       - name: Set up Go 1.x
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: scripts/table_diff/go.mod
           cache: true
