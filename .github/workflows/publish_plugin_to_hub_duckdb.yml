@@ -12,7 +12,6 @@ jobs:
       plugin_version: ${{ steps.split.outputs.plugin_version }}
       plugin_dir: ${{ steps.split.outputs.plugin_dir }}
       prerelease: ${{ steps.semver_parser.outputs.prerelease }}
-      plugin_releaser: ${{ steps.set-result.outputs.result }}
     steps:
       - name: Split tag
         id: split
@@ -31,25 +30,6 @@ jobs:
         id: semver_parser
         with:
           input_string: ${{steps.split.outputs.plugin_version}}
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - uses: actions/github-script@v6
-        id: set-result
-        env:
-          PLUGIN_DIR: ${{steps.split.outputs.plugin_dir}}
-        with:
-          script: |
-            const fs = require('fs').promises;
-            const path = require('path');
-            const pluginFiles = await fs.readdir(process.env.PLUGIN_DIR);
-            if (pluginFiles.includes('Dockerfile')) {
-              return 'docker';
-            }
-            if (pluginFiles.includes('.goreleaser.yaml')) {
-              return 'go';
-            }
-          result-encoding: string
   publish-plugin-to-hub:
     timeout-minutes: 60
     runs-on: large-ubuntu-monorepo
@@ -60,10 +40,9 @@ jobs:
         CC: /usr/bin/gencc.sh
         CXX: /usr/bin/gencpp.sh
     needs: prepare
-    if: needs.prepare.outputs.plugin_releaser == 'go'
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -72,14 +51,23 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.20.5-publish-plugin-to-hub-cache-${{ hashFiles(format('{0}/{1}', needs.prepare.outputs.plugin_dir, 'go.sum')) }}
+          key: ${{ runner.os }}-go-1.21.1-publish-plugin-to-hub-cache-${{ hashFiles(format('{0}/{1}', needs.prepare.outputs.plugin_dir, 'go.sum')) }}
           restore-keys: |
-            ${{ runner.os }}-go-1.20.5-publish-plugin-to-hub-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}
+            ${{ runner.os }}-go-1.21.1-publish-plugin-to-hub-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}
 
       - name: Set up Go 1.x
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
+
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
+
+      - name: Install shell escape
+        run: |
+          npm install shell-escape@0.2.0
 
       - name: Get Release Notes
         id: release-notes
@@ -87,23 +75,24 @@ jobs:
         with:
           result-encoding: string
           script: |
+            const shellescape = require('shell-escape');
             const { data } = await github.rest.repos.getReleaseByTag({
               owner: "cloudquery",
               repo: context.repo.repo,
               tag: context.ref.replace('refs/tags/', ''),
             });
-            return data.body;
+            return shellescape([data.body]);
 
       - name: Run package command
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         run: |
           mkdir -p stubdocs
           touch stubdocs/README.md
-          go run main.go package --docs-dir stubdocs -m "${{ steps.release-notes.outputs.result }}" ${{ needs.prepare.outputs.plugin_kind }} ${{ needs.prepare.outputs.plugin_version }} .
+          go run main.go package --docs-dir stubdocs -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_kind }} ${{ needs.prepare.outputs.plugin_version }} .
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: "v3.19.3"
+          version: v3.21.3
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}

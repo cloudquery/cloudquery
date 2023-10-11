@@ -13,10 +13,10 @@ import (
 	"cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	serviceusage "cloud.google.com/go/serviceusage/apiv1"
 	pb "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/helpers/grpczerolog"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/state"
-	"github.com/cloudquery/plugins/source/gcp/client/spec"
 	"github.com/googleapis/gax-go/v2"
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	"github.com/rs/zerolog"
@@ -177,9 +177,6 @@ func New(ctx context.Context, logger zerolog.Logger, s *spec.Spec) (schema.Clien
 			return nil, fmt.Errorf("failed to generate token source: %w", err)
 		}
 		c.ClientOptions = append(c.ClientOptions, option.WithTokenSource(ts))
-	}
-	if len(s.ProjectFilter) > 0 && len(s.FolderIDs) > 0 {
-		return nil, fmt.Errorf("project_filter and folder_ids are mutually exclusive")
 	}
 
 	orgsClient, err := resourcemanager.NewOrganizationsClient(ctx, c.ClientOptions...)

@@ -293,7 +293,6 @@ AWS Foundational Security Best Practices performs the following checks:
   - Auto Scaling groups associated with a load balancer should use health checks
   - AWS Config should be enabled
   - CloudFront distributions should have a default root object configured
-  - CloudFront distributions should have origin access identity enabled
   - CloudFront distributions should require encryption in transit
   - CloudFront distributions should have origin failover configured
   - CloudFront distributions should have logging enabled
@@ -321,7 +320,7 @@ AWS Foundational Security Best Practices performs the following checks:
   - Unused network access control lists should be removed
   - EC2 instances should not use multiple ENIs
   - Aggregates rules of security groups with ports and IPs including ipv6
-  - Security groups should not allow unrestricted access to ports with high risk
+  - Aggregates rules of security groups with ports and IPs including ipv6
   - Amazon ECS task definitions should have secure networking modes and user definitions
   - Amazon ECS services should not have public IP addresses assigned to them automatically
   - Amazon EFS should be configured to encrypt file data at rest using AWS KMS

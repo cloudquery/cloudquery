@@ -41,11 +41,11 @@ jobs:
           --health-timeout 120s
           --health-retries 20
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: plugins/source/oracledb/go.mod
           cache: true
@@ -53,7 +53,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.52.2
+          version: v1.54.2
           working-directory: plugins/source/oracledb
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
@@ -70,24 +70,24 @@ jobs:
     steps:
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - uses: actions/cache@v3
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         with:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/source/oracledb/go.sum') }}
+          key: ${{ runner.os }}-go-1.21.1-release-cache-${{ hashFiles('plugins/source/oracledb/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.20.5-release-cache-plugins-source-oracledb
+            ${{ runner.os }}-go-1.21.1-release-cache-plugins-source-oracledb
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: plugins/source/oracledb/go.mod
       - name: Install GoReleaser
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: goreleaser/goreleaser-action@v3
+        uses: goreleaser/goreleaser-action@v5
         with:
           distribution: goreleaser-pro
           version: latest

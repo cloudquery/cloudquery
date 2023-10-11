@@ -1,5 +1,44 @@
 # Changelog
 
+## [4.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-datadog-v4.1.0...plugins-source-datadog-v4.2.0) (2023-10-04)
+
+
+### Features
+
+* Add pagination support for endpoints ([#14264](https://github.com/cloudquery/cloudquery/issues/14264)) ([3030d79](https://github.com/cloudquery/cloudquery/commit/3030d79d25966df0495fb43d284f0b236a36af35))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.0 ([#14281](https://github.com/cloudquery/cloudquery/issues/14281)) ([85835a9](https://github.com/cloudquery/cloudquery/commit/85835a938bfa58d1b0d320ae17aff5fe7f6cfef2))
+
+## [4.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-datadog-v4.0.0...plugins-source-datadog-v4.1.0) (2023-10-02)
+
+
+### Features
+
+* Add configurable site ([#14266](https://github.com/cloudquery/cloudquery/issues/14266)) ([2c80f91](https://github.com/cloudquery/cloudquery/commit/2c80f91525459045a8d9b82a4cc635b5b381cf50))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v14 digest to 00efb06 ([#14202](https://github.com/cloudquery/cloudquery/issues/14202)) ([fc8cc62](https://github.com/cloudquery/cloudquery/commit/fc8cc62ed70db157612e88678c123ba6a34b3b3c))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to 7ded38b ([#14246](https://github.com/cloudquery/cloudquery/issues/14246)) ([005891e](https://github.com/cloudquery/cloudquery/commit/005891e1892b41235ddb3b102f4bb6dafd48949a))
+
+## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-datadog-v3.1.10...plugins-source-datadog-v4.0.0) (2023-09-29)
+
+
+### This Release has the Following Changes to Tables
+- Table `datadog_monitors`: column type changed from `list<item: utf8, nullable>` to `json` for `restricted_roles` (:warning: breaking)
+
+### ⚠ BREAKING CHANGES
+
+* Add pagination support for list users ([#14188](https://github.com/cloudquery/cloudquery/issues/14188))
+
+### Bug Fixes
+
+* Add pagination support for list users ([#14188](https://github.com/cloudquery/cloudquery/issues/14188)) ([b5360bb](https://github.com/cloudquery/cloudquery/commit/b5360bbdc160f2efff4f88bbb8325bbc6c1413ec))
+
 ## [3.1.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-datadog-v3.1.9...plugins-source-datadog-v3.1.10) (2023-09-27)
 
 

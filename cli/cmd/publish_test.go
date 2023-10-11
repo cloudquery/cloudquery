@@ -14,7 +14,7 @@ import (
 )
 
 func TestPublish(t *testing.T) {
-	t.Setenv("CQ_API_KEY", "testkey")
+	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
 		"PUT /plugins/cloudquery/source/test/versions/v1.2.3":                      1,
@@ -64,7 +64,8 @@ func TestPublish(t *testing.T) {
 	defer ts.Close()
 
 	cmd := NewCmdRoot()
-	args := []string{"publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1", "--url", ts.URL}
+	t.Setenv("CLOUDQUERY_API_URL", ts.URL)
+	args := []string{"publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1"}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {
@@ -76,7 +77,7 @@ func TestPublish(t *testing.T) {
 }
 
 func TestPublishFinalize(t *testing.T) {
-	t.Setenv("CQ_API_KEY", "testkey")
+	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
 		"PUT /plugins/cloudquery/source/test/versions/v1.2.3":                      1,
@@ -137,8 +138,10 @@ func TestPublishFinalize(t *testing.T) {
 	}))
 	defer ts.Close()
 
+	t.Setenv("CLOUDQUERY_API_URL", ts.URL)
+
 	cmd := NewCmdRoot()
-	args := []string{"publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1", "--url", ts.URL, "--finalize"}
+	args := []string{"publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1", "--finalize"}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {
@@ -150,7 +153,7 @@ func TestPublishFinalize(t *testing.T) {
 }
 
 func TestPublish_Unauthorized(t *testing.T) {
-	t.Setenv("CQ_API_KEY", "badkey")
+	t.Setenv("CLOUDQUERY_API_KEY", "badkey")
 
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
@@ -159,8 +162,10 @@ func TestPublish_Unauthorized(t *testing.T) {
 	}))
 	defer ts.Close()
 
+	t.Setenv("CLOUDQUERY_API_URL", ts.URL)
+
 	cmd := NewCmdRoot()
-	args := []string{"publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1", "--url", ts.URL, "--finalize"}
+	args := []string{"publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1", "--finalize"}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err == nil {
@@ -235,6 +240,53 @@ func checkCreateTablesRequest(t *testing.T, r *http.Request) {
 				"name":           "test_some_table",
 				"relations":      []any{},
 				"title":          "Test Some Table",
+				"columns": []any{
+					map[string]any{
+						"name":            "_cq_id",
+						"type":            "uuid",
+						"description":     "Internal CQ ID of the row",
+						"primary_key":     false,
+						"not_null":        true,
+						"unique":          true,
+						"incremental_key": false,
+					},
+					map[string]any{
+						"name":            "_cq_parent_id",
+						"type":            "uuid",
+						"description":     "Internal CQ ID of the parent row",
+						"primary_key":     false,
+						"not_null":        false,
+						"unique":          false,
+						"incremental_key": false,
+					},
+					map[string]any{
+						"name":            "column1",
+						"type":            "utf8",
+						"description":     "Test Column 1",
+						"primary_key":     true,
+						"not_null":        false,
+						"unique":          false,
+						"incremental_key": false,
+					},
+					map[string]any{
+						"name":            "column2",
+						"type":            "int64",
+						"description":     "Test Column 2",
+						"primary_key":     false,
+						"not_null":        false,
+						"unique":          false,
+						"incremental_key": false,
+					},
+					map[string]any{
+						"name":            "client_id",
+						"type":            "int64",
+						"description":     "ID of client",
+						"primary_key":     true,
+						"not_null":        false,
+						"unique":          false,
+						"incremental_key": false,
+					},
+				},
 			},
 		},
 	}

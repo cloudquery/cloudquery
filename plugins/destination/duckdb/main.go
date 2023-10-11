@@ -15,7 +15,16 @@ const (
 )
 
 func main() {
-	p := plugin.NewPlugin("duckdb", internalPlugin.Version, client.New)
+	p := plugin.NewPlugin(
+		"duckdb",
+		internalPlugin.Version,
+		client.New,
+		plugin.WithBuildTargets([]plugin.BuildTarget{
+			{OS: plugin.GoOSLinux, Arch: plugin.GoArchAmd64},
+			{OS: plugin.GoOSDarwin, Arch: plugin.GoArchAmd64},
+			{OS: plugin.GoOSDarwin, Arch: plugin.GoArchArm64},
+		}),
+	)
 	server := serve.Plugin(p,
 		serve.WithPluginSentryDSN(sentryDSN),
 		serve.WithDestinationV0V1Server(),

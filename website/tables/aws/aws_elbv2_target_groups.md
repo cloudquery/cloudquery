@@ -80,7 +80,7 @@ SELECT
 FROM
   aws_elbv2_target_groups
 WHERE
-  array_length(load_balancer_arns, 1) = 0;
+  COALESCE(array_length(load_balancer_arns, 1), 0) = 0;
 ```
 
 

@@ -25,11 +25,11 @@ jobs:
       run:
         working-directory: ./plugins/destination/azblob
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: plugins/destination/azblob/go.mod
           cache: true
@@ -37,7 +37,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.52.2
+          version: v1.54.2
           working-directory: plugins/destination/azblob
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
@@ -58,24 +58,24 @@ jobs:
     steps:
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - uses: actions/cache@v3
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         with:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/destination/azblob/go.sum') }}
+          key: ${{ runner.os }}-go-1.21.1-release-cache-${{ hashFiles('plugins/destination/azblob/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.20.5-release-cache-plugins-destination-azblob
+            ${{ runner.os }}-go-1.21.1-release-cache-plugins-destination-azblob
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: plugins/destination/azblob/go.mod
       - name: Install GoReleaser
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: goreleaser/goreleaser-action@v3
+        uses: goreleaser/goreleaser-action@v5
         with:
           distribution: goreleaser-pro
           version: latest

@@ -5,6 +5,24 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.3.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v9.3.7...plugins-source-azure-v9.3.8) (2023-10-04)
+
+
+### Bug Fixes
+
+* Azure query "Ensure that Public access level is set to Privat… ([#14195](https://github.com/cloudquery/cloudquery/issues/14195)) ([c4f9ae2](https://github.com/cloudquery/cloudquery/commit/c4f9ae2400c6bab38e845c2bd78fb9d104c3ae41))
+* **deps:** Update github.com/apache/arrow/go/v14 digest to 00efb06 ([#14202](https://github.com/cloudquery/cloudquery/issues/14202)) ([fc8cc62](https://github.com/cloudquery/cloudquery/commit/fc8cc62ed70db157612e88678c123ba6a34b3b3c))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to 7ded38b ([#14246](https://github.com/cloudquery/cloudquery/issues/14246)) ([005891e](https://github.com/cloudquery/cloudquery/commit/005891e1892b41235ddb3b102f4bb6dafd48949a))
+* **deps:** Update github.com/petermattis/goid digest to 1876fd5 ([#14234](https://github.com/cloudquery/cloudquery/issues/14234)) ([3b56924](https://github.com/cloudquery/cloudquery/commit/3b56924bc734b1e6d49c6fa55da928f92d7291a0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.0 ([#14281](https://github.com/cloudquery/cloudquery/issues/14281)) ([85835a9](https://github.com/cloudquery/cloudquery/commit/85835a938bfa58d1b0d320ae17aff5fe7f6cfef2))
+
+## [9.3.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v9.3.6...plugins-source-azure-v9.3.7) (2023-09-29)
+
+
+### Bug Fixes
+
+* Fix for `example_queries` skip on error message ([#14122](https://github.com/cloudquery/cloudquery/issues/14122)) ([95b3641](https://github.com/cloudquery/cloudquery/commit/95b3641a1483a6dc9054023b1b8f0512c2a810cc))
+
 ## [9.3.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v9.3.5...plugins-source-azure-v9.3.6) (2023-09-27)
 
 

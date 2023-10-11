@@ -31,13 +31,11 @@ This publishes a plugin version to CloudQuery Hub from a local dist directory.
 	publishExample = `
 # Publish a plugin version from a local dist directory
 cloudquery publish my_team/my_plugin`
-
-	cloudQueryAPI = "https://api.cloudquery.io"
 )
 
 func newCmdPublish() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "publish <team_name>/<plugin_name> [-D dist] [-u <url>]",
+		Use:     "publish <team_name>/<plugin_name> [-D dist]",
 		Short:   publishShort,
 		Long:    publishLong,
 		Example: publishExample,
@@ -59,7 +57,6 @@ func newCmdPublish() *cobra.Command {
 		},
 	}
 	cmd.Flags().StringP("dist-dir", "D", "dist", "Path to the dist directory")
-	cmd.Flags().StringP("url", "u", cloudQueryAPI, "CloudQuery API URL")
 	cmd.Flags().BoolP("finalize", "f", false, `Finalize the plugin version after publishing. If false, the plugin version will be marked as draft=true.`)
 
 	return cmd
@@ -109,11 +106,11 @@ func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 	name := fmt.Sprintf("%s/%s@%s", teamName, pluginName, pkgJSON.Version)
 	fmt.Printf("Publishing %s to CloudQuery Hub...\n", name)
 
-	uri := cmd.Flag("url").Value.String()
-	c, err := cloudquery_api.NewClientWithResponses(uri, cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
-		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
-		return nil
-	}))
+	c, err := cloudquery_api.NewClientWithResponses(getEnvOrDefault("CLOUDQUERY_API_URL", defaultAPIURL),
+		cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
+			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
+			return nil
+		}))
 	if err != nil {
 		return fmt.Errorf("failed to create hub client: %w", err)
 	}

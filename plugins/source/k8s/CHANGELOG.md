@@ -1,5 +1,40 @@
 # Changelog
 
+## [5.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v5.0.12...plugins-source-k8s-v5.1.0) (2023-10-10)
+
+
+### This Release has the Following Changes to Tables
+- Table `k8s_core_pod_templates` was added
+
+### Features
+
+* Add a table for pod templates in k8s plugin ([#14457](https://github.com/cloudquery/cloudquery/issues/14457)) ([65977c6](https://github.com/cloudquery/cloudquery/commit/65977c62f594bd7beea0b9f950698025e034187d))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to d401686 ([#14459](https://github.com/cloudquery/cloudquery/issues/14459)) ([7ce40f8](https://github.com/cloudquery/cloudquery/commit/7ce40f8dcb1e408c385e877e56b5bb78906b10d2))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.2.6 ([#14475](https://github.com/cloudquery/cloudquery/issues/14475)) ([83fe7ca](https://github.com/cloudquery/cloudquery/commit/83fe7ca2f5fa83bd3219ddde8fe44fcf1d447480))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.2 ([#14378](https://github.com/cloudquery/cloudquery/issues/14378)) ([a2e0c46](https://github.com/cloudquery/cloudquery/commit/a2e0c4615af4aa205fa082d3f196ea2dc5ce2445))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.3 ([#14436](https://github.com/cloudquery/cloudquery/issues/14436)) ([d529e2d](https://github.com/cloudquery/cloudquery/commit/d529e2d22da93a234492c4165e7eed1257c5767f))
+
+## [5.0.12](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v5.0.11...plugins-source-k8s-v5.0.12) (2023-10-04)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v14 digest to 00efb06 ([#14202](https://github.com/cloudquery/cloudquery/issues/14202)) ([fc8cc62](https://github.com/cloudquery/cloudquery/commit/fc8cc62ed70db157612e88678c123ba6a34b3b3c))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to 7ded38b ([#14246](https://github.com/cloudquery/cloudquery/issues/14246)) ([005891e](https://github.com/cloudquery/cloudquery/commit/005891e1892b41235ddb3b102f4bb6dafd48949a))
+* **deps:** Update github.com/petermattis/goid digest to 1876fd5 ([#14234](https://github.com/cloudquery/cloudquery/issues/14234)) ([3b56924](https://github.com/cloudquery/cloudquery/commit/3b56924bc734b1e6d49c6fa55da928f92d7291a0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.0 ([#14281](https://github.com/cloudquery/cloudquery/issues/14281)) ([85835a9](https://github.com/cloudquery/cloudquery/commit/85835a938bfa58d1b0d320ae17aff5fe7f6cfef2))
+
+## [5.0.11](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v5.0.10...plugins-source-k8s-v5.0.11) (2023-09-29)
+
+
+### Bug Fixes
+
+* Fix for `example_queries` skip on error message ([#14122](https://github.com/cloudquery/cloudquery/issues/14122)) ([95b3641](https://github.com/cloudquery/cloudquery/commit/95b3641a1483a6dc9054023b1b8f0512c2a810cc))
+
 ## [5.0.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v5.0.9...plugins-source-k8s-v5.0.10) (2023-09-27)
 
 

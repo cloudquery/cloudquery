@@ -20,9 +20,9 @@ jobs:
       run:
         working-directory: ./scripts/table_diff
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Go 1.x
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: scripts/table_diff/go.mod
           cache: true
@@ -30,7 +30,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.52.2
+          version: v1.54.2
           working-directory: scripts/table_diff
       - name: Test
         run: go test ./...

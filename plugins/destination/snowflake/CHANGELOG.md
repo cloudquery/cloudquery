@@ -1,5 +1,37 @@
 # Changelog
 
+## [3.2.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.2.5...plugins-destination-snowflake-v3.2.6) (2023-10-04)
+
+
+### Bug Fixes
+
+* **deps:** Update AWS modules ([#14197](https://github.com/cloudquery/cloudquery/issues/14197)) ([7fb94ca](https://github.com/cloudquery/cloudquery/commit/7fb94ca1bb7b283628736e46fd71138dee9bc1fb))
+* **deps:** Update github.com/apache/arrow/go/v14 digest to 00efb06 ([#14202](https://github.com/cloudquery/cloudquery/issues/14202)) ([fc8cc62](https://github.com/cloudquery/cloudquery/commit/fc8cc62ed70db157612e88678c123ba6a34b3b3c))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to 7ded38b ([#14246](https://github.com/cloudquery/cloudquery/issues/14246)) ([005891e](https://github.com/cloudquery/cloudquery/commit/005891e1892b41235ddb3b102f4bb6dafd48949a))
+
+## [3.2.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.2.4...plugins-destination-snowflake-v3.2.5) (2023-09-28)
+
+
+### Bug Fixes
+
+* Properly handle file paths for Windows ([#14107](https://github.com/cloudquery/cloudquery/issues/14107)) ([57ff5dc](https://github.com/cloudquery/cloudquery/commit/57ff5dc5fc27a1a074d93f7e35d1894f42da4608))
+
+## [3.2.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.2.3...plugins-destination-snowflake-v3.2.4) (2023-09-28)
+
+
+### Bug Fixes
+
+* **deps:** Update AWS modules ([#13873](https://github.com/cloudquery/cloudquery/issues/13873)) ([9d06ede](https://github.com/cloudquery/cloudquery/commit/9d06edee4cab1360975717f37e547bc660ad99e2))
+* **deps:** Update AWS modules ([#14020](https://github.com/cloudquery/cloudquery/issues/14020)) ([3cd58a3](https://github.com/cloudquery/cloudquery/commit/3cd58a3cf45ce9dca955e8cb73f699994253e71d))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to ffb7089 ([#13879](https://github.com/cloudquery/cloudquery/issues/13879)) ([f95ced5](https://github.com/cloudquery/cloudquery/commit/f95ced5daa2b123bd71ddff75bd76b3b008790c1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.10.0 ([#13978](https://github.com/cloudquery/cloudquery/issues/13978)) ([2efdf55](https://github.com/cloudquery/cloudquery/commit/2efdf55aed94a14c35c51632ff61ed454caaf5a5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.10.2 ([#13988](https://github.com/cloudquery/cloudquery/issues/13988)) ([aebaddf](https://github.com/cloudquery/cloudquery/commit/aebaddfc5ca0d7574b8cd72e9e074ec612472dbe))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.11.0 ([#14031](https://github.com/cloudquery/cloudquery/issues/14031)) ([ac7cdc4](https://github.com/cloudquery/cloudquery/commit/ac7cdc4f7d71599dad89b3170bb7bda676984228))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.11.1 ([#14063](https://github.com/cloudquery/cloudquery/issues/14063)) ([5a0ff7b](https://github.com/cloudquery/cloudquery/commit/5a0ff7b67890478c371385b379e0a8ef0c2f4865))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.8.0 ([#13950](https://github.com/cloudquery/cloudquery/issues/13950)) ([15b0b69](https://github.com/cloudquery/cloudquery/commit/15b0b6925932613ed2915a3255b3466f21a5c7bf))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.9.0 ([#13960](https://github.com/cloudquery/cloudquery/issues/13960)) ([f074076](https://github.com/cloudquery/cloudquery/commit/f074076a21dc0b8cadfdc3adb9731473d24d28b1))
+* Use correct timezones for `delete`  query for Snowflake Destination ([#14097](https://github.com/cloudquery/cloudquery/issues/14097)) ([91da647](https://github.com/cloudquery/cloudquery/commit/91da6470f2ca0a268011aed40e361c02fe7e1467))
+
 ## [3.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.2.2...plugins-destination-snowflake-v3.2.3) (2023-09-12)
 
 

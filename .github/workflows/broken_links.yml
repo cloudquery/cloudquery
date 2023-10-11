@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         if: github.event_name == 'pull_request'
         with:
           # By default actions/checkout puts us in detached HEAD state. We need to checkout the branch so git log works
@@ -75,6 +75,7 @@ jobs:
             --exclude "${{ steps.vercel.outputs.url }}/integrations/*" \
             --exclude "${{ steps.vercel.outputs.url }}/buy/*" \
             --exclude "${{ steps.vercel.outputs.url }}/contact" \
+            --exclude "${{ steps.vercel.outputs.url }}/contact-policies" \
             --exclude "${{ steps.vercel.outputs.url }}/register_for_cloud" \
             --exclude "${{ steps.vercel.outputs.url }}/apply_for_job" \
             --exclude "${{ steps.vercel.outputs.url }}/careers" \

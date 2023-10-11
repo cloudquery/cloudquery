@@ -26,6 +26,10 @@ gen-docs: build
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/oracle/*.md
 	rm -rf ../../../website/tables/oracle/*.bak
 
+.PHONY: gen-spec-schema
+gen-spec-schema:
+	go run client/spec/gen/main.go
+
 # All gen targets
 .PHONY: gen
-gen: gen-docs
+gen: gen-spec-schema gen-docs
