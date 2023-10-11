@@ -46,7 +46,7 @@ jobs:
                  --health-start-period 20s
                  --health-retries 5
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 2
     - name: Create Database
@@ -83,7 +83,7 @@ jobs:
     steps:
     - name: Checkout
       if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - uses: actions/cache@v3
       if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
       with:

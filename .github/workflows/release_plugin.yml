@@ -37,7 +37,7 @@ jobs:
         with:
           input_string: ${{steps.split.outputs.plugin_version}}
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - uses: actions/github-script@v6
         id: set-result
@@ -103,7 +103,7 @@ jobs:
             GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Update version file
         if: needs.prepare.outputs.prerelease == ''
@@ -132,7 +132,7 @@ jobs:
       CGO_ENABLED: 0
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
       - uses: actions/cache@v3
