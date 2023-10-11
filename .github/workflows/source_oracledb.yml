@@ -45,7 +45,7 @@ jobs:
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: plugins/source/oracledb/go.mod
           cache: true
@@ -77,12 +77,12 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.21.0-release-cache-${{ hashFiles('plugins/source/oracledb/go.sum') }}
+          key: ${{ runner.os }}-go-1.21.1-release-cache-${{ hashFiles('plugins/source/oracledb/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.21.0-release-cache-plugins-source-oracledb
+            ${{ runner.os }}-go-1.21.1-release-cache-plugins-source-oracledb
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: plugins/source/oracledb/go.mod
       - name: Install GoReleaser
