@@ -5,7 +5,7 @@ go 1.21.1
 require (
 	github.com/PagerDuty/go-pagerduty v1.6.0
 	github.com/apache/arrow/go/v14 v14.0.0-20230929201650-00efb06dc0de
-	github.com/cloudquery/plugin-sdk/v4 v4.12.3
+	github.com/cloudquery/plugin-sdk/v4 v4.12.4
 	github.com/rs/zerolog v1.29.1
 	golang.org/x/time v0.3.0
 	gopkg.in/yaml.v3 v3.0.1
