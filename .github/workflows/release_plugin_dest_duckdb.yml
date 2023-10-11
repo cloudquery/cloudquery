@@ -42,7 +42,7 @@ jobs:
         with:
           go-version-file: plugins/destination/duckdb/go.mod
       - name: Install GoReleaser
-        uses: goreleaser/goreleaser-action@v3
+        uses: goreleaser/goreleaser-action@v5
         with:
           distribution: goreleaser-pro
           version: latest

@@ -148,7 +148,7 @@ jobs:
         with:
           go-version-file: ${{needs.prepare.outputs.plugin_dir}}/go.mod
       - name: Install GoReleaser
-        uses: goreleaser/goreleaser-action@v3
+        uses: goreleaser/goreleaser-action@v5
         with:
           distribution: goreleaser-pro
           version: latest
