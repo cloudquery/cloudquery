@@ -45,24 +45,29 @@ func (c *Client) DeleteRecordsBatch(ctx context.Context, messages message.WriteD
 	return nil
 }
 
-func generateInitialDelete(tableName string, whereClause message.WhereClause) string {
+func generateInitialDelete(tableName string, whereClause message.PredicateGroups) string {
 	var sb strings.Builder
 	sb.WriteString("DELETE from ")
 	sb.WriteString(pgx.Identifier{tableName}.Sanitize())
-	sb.WriteString(" where ")
-
-	counter := 1
-	for _, predicate := range whereClause.And {
-		if counter > 1 {
-			sb.WriteString(" AND ")
+	if len(whereClause) > 0 {
+		sb.WriteString(" where ")
+		counter := 1
+		for i, predicateGroup := range whereClause {
+			for _, predicate := range predicateGroup.Predicates {
+				if counter > 1 {
+					sb.WriteString(fmt.Sprintf(" %s ", predicateGroup.GroupingType))
+				}
+				sb.WriteString(pgx.Identifier{predicate.Column}.Sanitize())
+				sb.WriteString(fmt.Sprintf(" = $%d", counter))
+				counter++
+			}
+			if i < len(whereClause)-1 {
+				sb.WriteString(" AND ")
+			}
 		}
-		sb.WriteString(pgx.Identifier{predicate.Column}.Sanitize())
-		sb.WriteString(fmt.Sprintf(" = $%d", counter))
-		counter++
 	}
 
 	sb.WriteString(" RETURNING ")
-	// TODO: This column is not guaranteed to exist
 	sb.WriteString(pgx.Identifier{schema.CqIDColumn.Name}.Sanitize())
 	return sb.String()
 }
@@ -83,7 +88,7 @@ func generateRelationsDelete(tableRelation message.TableRelation) string {
 
 func generateDeleteCTE(deleteRecord message.DeleteRecord) string {
 	tables := make([]string, len(deleteRecord.TableRelations))
-	initialDelete := generateInitialDelete(deleteRecord.TableName, deleteRecord.WhereClauses)
+	initialDelete := generateInitialDelete(deleteRecord.TableName, deleteRecord.WhereClause)
 	var sb strings.Builder
 	sb.WriteString("WITH ")
 	sb.WriteString(pgx.Identifier{deleteRecord.TableName + "_CTE"}.Sanitize())
@@ -111,14 +116,20 @@ func generateDeleteCTE(deleteRecord message.DeleteRecord) string {
 	return sb.String()
 }
 
-func extractPredicateValues(where message.WhereClause) []any {
-	totalPredicates := append(where.And, where.Or...)
-	results := make([]any, len(totalPredicates))
-	for i, predicate := range totalPredicates {
-		col := predicate.Record.Column(0)
-		transformed := transformArr(col)
-		results[i] = transformed[0]
-
+func extractPredicateValues(where message.PredicateGroups) []any {
+	predicateCount := 0
+	for _, predicateGroup := range where {
+		predicateCount += len(predicateGroup.Predicates)
+	}
+	results := make([]any, predicateCount)
+	counter := 0
+	for _, predicateGroup := range where {
+		for _, predicate := range predicateGroup.Predicates {
+			col := predicate.Record.Column(0)
+			transformed := transformArr(col)
+			results[counter] = transformed[0]
+			counter++
+		}
 	}
 	return results
 }
