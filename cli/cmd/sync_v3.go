@@ -247,7 +247,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 					DeleteRecord: &plugin.Write_MessageDeleteRecord{
 						TableName:      m.DeleteRecord.TableName,
 						TableRelations: m.DeleteRecord.TableRelations,
-						WhereClauses:   m.DeleteRecord.WhereClauses,
+						WhereClause:    m.DeleteRecord.WhereClause,
 					},
 				}
 				if err := writeClients[i].Send(wr); err != nil {
