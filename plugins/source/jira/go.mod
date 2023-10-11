@@ -4,7 +4,7 @@ go 1.21.1
 
 require (
 	github.com/andygrunwald/go-jira v1.16.0
-	github.com/cloudquery/plugin-sdk/v4 v4.12.3
+	github.com/cloudquery/plugin-sdk/v4 v4.12.4
 	github.com/rs/zerolog v1.30.0
 )
 
