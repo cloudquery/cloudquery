@@ -1,5 +1,35 @@
 # Changelog
 
+## [1.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.0.3...plugins-source-square-v1.0.4) (2023-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.5 ([#14478](https://github.com/cloudquery/cloudquery/issues/14478)) ([83f686a](https://github.com/cloudquery/cloudquery/commit/83f686a85a7ed419f482d596ca0c90c1ef908646))
+
+## [1.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.0.2...plugins-source-square-v1.0.3) (2023-10-04)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.4 ([#14268](https://github.com/cloudquery/cloudquery/issues/14268)) ([8f4c911](https://github.com/cloudquery/cloudquery/commit/8f4c91104d43862df4bb5a775624d9a4a5130b34))
+
+## [1.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.0.1...plugins-source-square-v1.0.2) (2023-09-27)
+
+
+### Bug Fixes
+
+* Tidy go.mod ([#14061](https://github.com/cloudquery/cloudquery/issues/14061)) ([11bd971](https://github.com/cloudquery/cloudquery/commit/11bd971f6a0089c92e47af6be24f552b2d920f21))
+
+## [1.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.0.0...plugins-source-square-v1.0.1) (2023-09-05)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.2 ([#13571](https://github.com/cloudquery/cloudquery/issues/13571)) ([de71388](https://github.com/cloudquery/cloudquery/commit/de713889f9ccdbb963839d37edc122ff0ca7518e))
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.3 ([#13583](https://github.com/cloudquery/cloudquery/issues/13583)) ([ca673c1](https://github.com/cloudquery/cloudquery/commit/ca673c16ffa38eaab303f9502823696c85cd4d61))
+* **deps:** Update github.com/99designs/go-keychain digest to 9cf53c8 ([#13561](https://github.com/cloudquery/cloudquery/issues/13561)) ([a170256](https://github.com/cloudquery/cloudquery/commit/a17025657e92b017fe3c8bd37abfaa2354e6e818))
+
 ## [1.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v0.1.2...plugins-source-square-v1.0.0) (2023-08-14)
 
 

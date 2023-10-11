@@ -76,7 +76,11 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	}
 
 	schedulerClient := client.New(c.logger, c.config, c.services, stateClient)
-	return c.scheduler.Sync(ctx, schedulerClient, tt, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
+	err = c.scheduler.Sync(ctx, schedulerClient, tt, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
+	if err != nil {
+		return fmt.Errorf("failed to sync: %w", err)
+	}
+	return stateClient.Flush(ctx)
 }
 
 func (c *Client) Tables(_ context.Context, options plugin.TableOptions) (schema.Tables, error) {
@@ -112,16 +116,16 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 	}
 
 	services, err := shopify.New(shopify.ClientOptions{
-		Log: logger.With().Str("source", "shopify-client").Logger(),
-		HC: &http.Client{
-			Timeout: time.Duration(config.Timeout) * time.Second,
-		},
+		Log:         logger.With().Str("source", "shopify-client").Logger(),
+		HC:          http.DefaultClient,
 		ApiKey:      config.APIKey,
 		ApiSecret:   config.APISecret,
 		AccessToken: config.AccessToken,
+		APIVersion:  config.APIVersion,
 		ShopURL:     config.ShopURL,
 		MaxRetries:  config.MaxRetries,
 		PageSize:    int(config.PageSize),
+		Timeout:     time.Duration(config.Timeout) * time.Second,
 	})
 	if err != nil {
 		return nil, err

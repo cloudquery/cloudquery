@@ -26,7 +26,7 @@ jobs:
         with:
           input_string: ${{steps.split.outputs.plugin_version}}
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
       - uses: actions/cache@v3
@@ -34,15 +34,15 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/destination/snowflake/go.sum') }}
+          key: ${{ runner.os }}-go-1.21.1-release-cache-${{ hashFiles('plugins/destination/snowflake/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.20.5-release-cache-plugins-destination-snowflake
+            ${{ runner.os }}-go-1.21.1-release-cache-plugins-destination-snowflake
       - name: Set up Go 1.x
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: plugins/destination/snowflake/go.mod
       - name: Install GoReleaser
-        uses: goreleaser/goreleaser-action@v3
+        uses: goreleaser/goreleaser-action@v5
         with:
           distribution: goreleaser-pro
           version: latest
@@ -52,16 +52,10 @@ jobs:
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
-      - name: Import GPG key
-        id: import_gpg
-        uses: crazy-max/ghaction-import-gpg@v5
-        with:
-          gpg_private_key: ${{ secrets.PRIVATE_KEY }}
       - name: Run GoReleaser
         run: goreleaser release --clean -f ./plugins/destination/snowflake/.goreleaser.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
 

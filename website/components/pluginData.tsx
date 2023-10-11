@@ -299,6 +299,15 @@ export const ALL_PLUGINS: Plugin[] = [
     category: "databases",
   },
   {
+    name: "Notion",
+    logo: "/images/logos/plugins/notion.svg",
+    logoDark: "/images/logos/plugins/notion.svg",
+    id: "notion",
+    kind: "source",
+    availability: "free",
+    category: "other",
+  },
+  {
     name: "Okta",
     logo: "/images/logos/plugins/okta.svg",
     id: "okta",
@@ -740,7 +749,7 @@ export const ALL_PLUGINS: Plugin[] = [
     id: "bitbucket",
     href: "https://github.com/cloudquery/cloudquery/issues/5510",
     kind: "source",
-    availability: "unpublished",
+    availability: "free",
     category: "engineering-analytics",
     logo: "/images/logos/plugins/bitbucket.svg",
     buyLinks: {
@@ -813,7 +822,7 @@ export const ALL_PLUGINS: Plugin[] = [
   },
   {
     name: "HashiCorp Vault",
-    id: "hashicorp-vault",
+    id: "vault",
     kind: "source",
     availability: "free",
     category: "cloud-infrastructure",

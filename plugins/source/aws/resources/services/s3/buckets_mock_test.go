@@ -47,56 +47,40 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 	bownershipcontrols := s3.GetBucketOwnershipControlsOutput{}
 	require.NoError(t, faker.FakeObject(&bownershipcontrols))
 
-	m.EXPECT().ListBuckets(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&s3.ListBucketsOutput{
-			Buckets: []s3Types.Bucket{b},
-		}, nil)
-	m.EXPECT().GetBucketLogging(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&blog, nil)
-	m.EXPECT().GetBucketPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&bpol, nil)
-	m.EXPECT().GetBucketPolicyStatus(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&bpols, nil)
-	m.EXPECT().GetBucketVersioning(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&bver, nil)
-	m.EXPECT().GetBucketAcl(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&s3.GetBucketAclOutput{
-			Grants: []s3Types.Grant{bgrant},
-		}, nil)
-	m.EXPECT().GetBucketCors(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&s3.GetBucketCorsOutput{
-			CORSRules: []s3Types.CORSRule{bcors},
-		}, nil)
-	m.EXPECT().GetBucketEncryption(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&bencryption, nil)
-
-	m.EXPECT().GetPublicAccessBlock(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&bpba, nil)
-	m.EXPECT().GetBucketOwnershipControls(gomock.Any(), gomock.Any(), gomock.Any()).Return(&bownershipcontrols, nil)
-
 	ro := s3.GetBucketReplicationOutput{}
 	require.NoError(t, faker.FakeObject(&ro))
-
-	m.EXPECT().GetBucketReplication(gomock.Any(), gomock.Any(), gomock.Any()).Return(&ro, nil)
-	m.EXPECT().GetBucketTagging(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&btag, nil)
-	tt := s3Types.Transition{}
-	require.NoError(t, faker.FakeObject(&tt))
 
 	glco := s3.GetBucketLifecycleConfigurationOutput{}
 	require.NoError(t, faker.FakeObject(&glco))
 
-	m.EXPECT().GetBucketLifecycleConfiguration(gomock.Any(), gomock.Any(), gomock.Any()).Return(&glco, nil)
-	m.EXPECT().GetBucketLocation(gomock.Any(), gomock.Any(), gomock.Any()).Return(&bloc, nil)
-
 	websiteOutput := s3.GetBucketWebsiteOutput{}
 	require.NoError(t, faker.FakeObject(&websiteOutput))
 
-	m.EXPECT().GetBucketWebsite(gomock.Any(), gomock.Any(), gomock.Any()).Return(&websiteOutput, nil)
+	gbnco := s3.GetBucketNotificationConfigurationOutput{}
+	require.NoError(t, faker.FakeObject(&gbnco))
 
-	return client.Services{
-		S3: m,
-	}
+	golco := s3.GetObjectLockConfigurationOutput{}
+	require.NoError(t, faker.FakeObject(&golco))
+
+	m.EXPECT().ListBuckets(gomock.Any(), gomock.Any(), gomock.Any()).Return(&s3.ListBucketsOutput{Buckets: []s3Types.Bucket{b}}, nil)
+	m.EXPECT().GetBucketLogging(gomock.Any(), gomock.Any(), gomock.Any()).Return(&blog, nil)
+	m.EXPECT().GetBucketPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(&bpol, nil)
+	m.EXPECT().GetBucketPolicyStatus(gomock.Any(), gomock.Any(), gomock.Any()).Return(&bpols, nil)
+	m.EXPECT().GetBucketVersioning(gomock.Any(), gomock.Any(), gomock.Any()).Return(&bver, nil)
+	m.EXPECT().GetBucketAcl(gomock.Any(), gomock.Any(), gomock.Any()).Return(&s3.GetBucketAclOutput{Grants: []s3Types.Grant{bgrant}}, nil)
+	m.EXPECT().GetBucketCors(gomock.Any(), gomock.Any(), gomock.Any()).Return(&s3.GetBucketCorsOutput{CORSRules: []s3Types.CORSRule{bcors}}, nil)
+	m.EXPECT().GetBucketEncryption(gomock.Any(), gomock.Any(), gomock.Any()).Return(&bencryption, nil)
+	m.EXPECT().GetPublicAccessBlock(gomock.Any(), gomock.Any(), gomock.Any()).Return(&bpba, nil)
+	m.EXPECT().GetBucketOwnershipControls(gomock.Any(), gomock.Any(), gomock.Any()).Return(&bownershipcontrols, nil)
+	m.EXPECT().GetBucketReplication(gomock.Any(), gomock.Any(), gomock.Any()).Return(&ro, nil)
+	m.EXPECT().GetBucketTagging(gomock.Any(), gomock.Any(), gomock.Any()).Return(&btag, nil)
+	m.EXPECT().GetBucketLifecycleConfiguration(gomock.Any(), gomock.Any(), gomock.Any()).Return(&glco, nil)
+	m.EXPECT().GetBucketLocation(gomock.Any(), gomock.Any(), gomock.Any()).Return(&bloc, nil)
+	m.EXPECT().GetBucketWebsite(gomock.Any(), gomock.Any(), gomock.Any()).Return(&websiteOutput, nil)
+	m.EXPECT().GetBucketNotificationConfiguration(gomock.Any(), gomock.Any(), gomock.Any()).Return(&gbnco, nil)
+	m.EXPECT().GetObjectLockConfiguration(gomock.Any(), gomock.Any(), gomock.Any()).Return(&golco, nil)
+
+	return client.Services{S3: m}
 }
 
 func TestS3Buckets(t *testing.T) {

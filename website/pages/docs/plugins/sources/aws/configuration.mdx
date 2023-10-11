@@ -15,7 +15,7 @@ spec:
   name: aws
   path: cloudquery/aws
   version: "VERSION_SOURCE_AWS"
-  tables: ["aws_s3_buckets"]
+  tables: ["aws_ec2_instances"]
   destinations: ["DESTINATION_NAME"]
   spec:
     # AWS Spec section described below
@@ -26,6 +26,8 @@ spec:
         local_profile: "account1"
     aws_debug: false
 ```
+
+See [tables](/docs/plugins/sources/aws/tables) for a list of all available tables.
 
 ### AWS Organization Example
 
@@ -77,6 +79,10 @@ This is the (nested) spec used by the AWS source plugin.
   During initialization the AWS source plugin fetches information about each account and region. This setting controls how many accounts can be initialized concurrently.
   Only configurations with many accounts (either hardcoded or discovered via Organizations) should require modifying this setting, to either lower it to avoid rate limit errors, or to increase it to speed up the initialization process.
 
+- `scheduler` (string) (default: `dfs`):
+
+  The scheduler to use when determining the priority of resources to sync. Currently, the only supported values are `dfs` (depth-first search), `round-robin` and `shuffle`. For more information about this, see [performance tuning](/docs/advanced-topics/performance-tuning).
+
 - `aws_debug` (`bool`) (default: `false`)
 
   If true, will log AWS debug logs, including retries and other request/response metadata
@@ -117,7 +123,7 @@ The `table_options` parameter is deprecated and will be removed soon. Please rea
 
 - **preview** `table_options` (`map`) (default: not used)
 
-  This is a preview feature (for more information about `preview` features look at [plugin versioning](/docs/plugins/sources/aws/versioning) that enables users to override the default options for specific tables.
+  This is a preview feature (for more information about `preview` features look at [plugin versioning](/docs/plugins/sources/aws/versioning)) that enables users to override the default options for specific tables.
   The root of the object takes a table name, and the next level takes an API method name.
   The final level is the actual input object as defined by the API. 
 
@@ -153,32 +159,41 @@ The `table_options` parameter is deprecated and will be removed soon. Please rea
                 attribute_value: StopInstances
   ```
 
-  The naming for all of the fields is the same as the AWS API but in snake case. For example `EndTime` is represented as `end_time`. As of `v18.4.0` the following tables and APIs are supported:
+  The naming for all the fields is the same as the AWS API but in snake case. For example `EndTime` is represented as `end_time`. As of `v18.4.0` the following tables and APIs are supported:
 
   ```yaml
   table_options:
     aws_accessanalyzer_analyzer_findings:
       list_findings:
-        - <[ListFindings](https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_ListFindings.html)>
+        - <ListFindings>
     aws_alpha_cloudwatch_metrics:
       - list_metrics:
-          <[ListMetrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_ListMetrics.html)>
+          <ListMetrics>
         get_metric_statistics:
           # Namespace, MetricName and Dimensions fields cannot be set here and are derived from the result of the respective ListMetrics call
-          - <[GetMetricStatistics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html)>
+          - <GetMetricStatistics>
     aws_cloudtrail_events:
       lookup_events:
-        - <[LookupEvents](https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_LookupEvents.html)>
+        - <LookupEvents>
     aws_inspector2_findings:
       list_findings:
-        - <[ListFindings](https://docs.aws.amazon.com/inspector/v2/APIReference/API_ListFindings.html)>
+        - <ListFindings>
     aws_securityhub_findings:
       get_findings:
-        - <[GetFindings](https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html)>
+        - <GetFindings>
     aws_ecs_cluster_tasks:
       list_tasks:
-        - <[ListTasks](https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ListTasks.html)>
+        - <ListTasks>
   ```
+    - [ListFindings](https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_ListFindings.html)
+    - [ListMetrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_ListMetrics.html)
+    - [GetMetricStatistics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html)
+    - [LookupEvents](https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_LookupEvents.html)
+    - [ListFindings](https://docs.aws.amazon.com/inspector/v2/APIReference/API_ListFindings.html)
+    - [GetFindings](https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html)
+    - [ListTasks](https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ListTasks.html)
+
+- **enterprise version only** `event_based_sync` (`array`) (default: empty)
 
 ### account
 
@@ -263,7 +278,67 @@ This is used to specify one or more accounts to extract information from. Note t
 
   List of OU member accounts to skip. This is useful in conjunction with `organization_units` if there are accounts under the selected OUs that should be ignored.
 
+
+{/* <!-- vale off --> */}
+### event_based_sync
+{/* <!-- vale on --> */}
+
+<Callout type="info">
+Event-based syncing is only supported by the enterprise-version AWS plugin. Read more about [event-based syncs](/docs/plugins/sources/aws/event-based-sync)
+</Callout>
+
+- `account` ([Account](#account)) 
+
+  Configuration for the credentials that will be used to grab records from the specified Kinesis Stream. If this is not specified the default credentials will be used
+
+- `kinesis_stream_arn` (string) (**required**)
+
+  ARN for the Kinesis stream that will hold all of the CloudTrail records
+
+- `start_time` (timestamp) 
+
+  Defines the place in the stream where record processing should begin. By default, the time at which the sync began will be used. The value should follow the RFC 3339 format. For example `2023-09-04T19:24:14Z`
+
+- `full_sync` (`bool`) (default: `true`)
+
+  By default CQ will do a full sync on the specified tables before starting to consume the events in the stream. This parameter enables users to skip the full pull based sync and go straight to the event based sync.
+
+
+	
+
+
+
 ## Advanced Configuration
+
+### Incremental Tables
+
+Some tables, like `aws_cloudtrail_events`, support incremental syncs. When incremental syncing is enabled, CloudQuery will only fetch new data since the last sync. This is useful for tables that have a lot of data and are updated frequently. To enable incremental syncs, add a `backend_options` section to the source config:
+
+```yaml
+kind: source
+spec:
+  # Source spec section
+  name: aws
+  path: cloudquery/aws
+  version: "VERSION_SOURCE_AWS"
+  tables: ["aws_cloudtrail_events"]
+  destinations: ["postgresql"]
+  backend_options:
+    table_name: "cq_aws_state"
+    connection: "@@plugins.postgresql.connection"
+  spec:
+---
+kind: destination
+spec:
+  name: "postgresql"
+  version: "VERSION_DESTINATION_POSTGRESQL"
+  path: "cloudquery/postgresql"
+  write_mode: "overwrite-delete-stale"
+  spec:
+    connection_string: "${CONNECTION_STRING}"
+```
+
+The `connection` string can reference any destination that supports `overwrite` mode; in the example above it will use the same `postgresql` destination that the `aws_cloudtrail_events` table is written to. The `table_name` is the name of the table that will be used to store state. This table will be created automatically if it does not exist. For more information about managing state for incremental tables, see [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables).
 
 ### Skip Tables
 

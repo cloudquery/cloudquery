@@ -1,0 +1,137 @@
+---
+title: Announcing Closed Beta of CloudQuery AWS Plugin with Event-based Sync
+tag: announcement
+date: 2023/09/06
+description:
+author: michal
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
+We are excited to announce the preview of an event-based sync for our AWS Plugin!
+
+## What is it?
+
+CloudQuery was initially designed to sync all data on demand, giving the user full control over what to sync, when, and how often. This approach makes CloudQuery easy to set up and use.
+
+However, regular sync, even if it runs every hour, is sometimes just not enough to get the accurate picture of what is happening in your environment. Cloud environments are ephemeral - they come and go in just a few minutes and it is really hard to track them and get your costs right. An IP address gets spammed by bots the moment you make it public. User accounts get created with broad permissions and can get misused in a brief moment.
+
+This is where our new event-based sync comes to the rescue.
+
+<div style={{marginTop:"2em", align: "center"}}><a href="https://cloudquery.typeform.com/to/Dvdn6P2u" class="btn btn-blue">Sign up for early access</a></div>
+
+## How it works
+
+All events are aggregated by AWS CloudTrail. You can configure a Trail to send management events to a Kinesis Data Stream via CloudWatch Logs. By subscribing to a stream of AWS CloudTrail events in the Kinesis Data stream, CloudQuery can then trigger selective syncs to update just the singular resource that had a configuration change.
+
+![Configuring CloudQuery AWS Plugin for event-based sync](/images/blog/announcing-aws-event-based-sync/diagram.png)
+*Configuring CloudQuery AWS Plugin for event-based sync*
+
+With this setup, you get the fresh data within a few seconds of it becoming available in CloudTrail. 
+
+Here are the services and events supported at the moment:
+
+| Service | Event |
+| -- | -- |
+| ec2.amazonaws.com | AssociateRouteTable |
+| ec2.amazonaws.com | AttachInternetGateway |
+| ec2.amazonaws.com | AuthorizeSecurityGroupEgress |
+| ec2.amazonaws.com | AuthorizeSecurityGroupIngress |
+| ec2.amazonaws.com | CreateImage |
+| ec2.amazonaws.com | CreateInternetGateway |
+| ec2.amazonaws.com | CreateNetworkInterface |
+| ec2.amazonaws.com | CreateSecurityGroup |
+| ec2.amazonaws.com | CreateSubnet |
+| ec2.amazonaws.com | CreateTags |
+| ec2.amazonaws.com | CreateVpc |
+| ec2.amazonaws.com | DeleteTags |
+| ec2.amazonaws.com | DetachInternetGateway |
+| ec2.amazonaws.com | ModifySubnetAttribute |
+| ec2.amazonaws.com | RevokeSecurityGroupEgress |
+| ec2.amazonaws.com | RevokeSecurityGroupIngress |
+| ec2.amazonaws.com | RunInstances |
+| iam.amazonaws.com | CreateGroup |
+| iam.amazonaws.com | CreateRole |
+| iam.amazonaws.com | CreateUser |
+| rds.amazonaws.com | CreateDBCluster |
+| rds.amazonaws.com | CreateDBInstance |
+| rds.amazonaws.com | ModifyDBCluster |
+| rds.amazonaws.com | ModifyDBInstance |
+
+## Getting Started
+
+This feature is available in closed beta, [sign up for early access](https://cloudquery.typeform.com/to/Dvdn6P2u).
+
+1. Configure an AWS CloudTrail Trail to send management events to a Kinesis Data Stream via CloudWatch Logs. The most straight forward way to do this is to use the CloudQuery provided CloudFormation template.
+
+```bash
+aws cloudformation deploy --template-file ./streaming-deployment.yml --stack-name <STACK-NAME> --capabilities CAPABILITY_IAM --disable-rollback --region <DESIRED-REGION>
+```
+
+2. Copy the ARN of the Kinesis stream. If you used the CloudFormation template you can run the following command:
+
+```bash
+aws cloudformation describe-stacks --stack-name <STACK-NAME> --query "Stacks[].Outputs" --region <DESIRED-REGION>
+```
+
+3. Define a `config.yml` file like the one below
+
+```yaml
+kind: source
+spec:  
+	name: "aws-event-based"  
+	registry: "local"  
+	path: <PATH/TO/BINARY>
+	tables:
+		- aws_ec2_instances
+		- aws_ec2_internet_gateways
+		- aws_ec2_security_groups
+		- aws_ec2_subnets
+		- aws_ec2_vpcs
+		- aws_ecs_cluster_tasks
+		- aws_iam_groups
+		- aws_iam_roles
+		- aws_iam_users
+		- aws_rds_instances
+destinations: ["postgresql"]  
+	skip_tables:    
+		- aws_iam_group_last_accessed_details    
+		- aws_iam_role_last_accessed_details    
+		- aws_iam_user_last_accessed_details  
+	spec:    
+		event_based_sync:      
+			- account:          
+					local_profile: "<ROLE-NAME>"
+				kinesis_stream_arn: "<OUTPUT-FROM-CLOUDFORMATION-STACK>"
+```
+
+4. Sync the data!
+
+```bash
+cloudquery sync config.yml
+```
+
+This will start a long lived process that will only stop when there is an error or you stop the process.
+
+## Deploying in production
+
+CloudQuery needs to run in a listening mode as a long-running service. In this mode, it does not support the `overwrite-delete-stale` write model. To delete stale data, you need to set up a recurrent task to run [full table syncs](https://www.cloudquery.io/docs/core-concepts/syncs#full-table-syncs). Additionally, you may need to set up another task with CloudQuery still running regular sync on tables that are currently not supported for the event-based sync. See the [AWS Plugin](/docs/plugins/sources/aws/event-based-sync#supported-services-and-events) documentation for the list of supported tables.
+
+
+Note that these are the limitations of the current beta version of the event-based sync for our AWS plugin. We plan to make configuration and management easier in the future based on user feedback.
+
+## Availability
+
+This feature is currently available in early access to everyone upon [signing up](https://cloudquery.typeform.com/to/Dvdn6P2u). When released to the public, it will be a premium (paid) feature, with the actual pricing model yet to be defined.
+
+## Future work
+
+At the moment, only one Kinesis stream is supported by a running instance of CloudQuery. We will consider adding support for multiple streams based on the feedback we receive.
+
+The current coverage of tables has been designed to provide a selection of different services. We will add more resources based on your feedback.
+
+[Read the docs](/docs/plugins/sources/aws/event-based-sync#supported-services-and-events)
+
+<div style={{marginTop:"2em"}}><a href="https://cloudquery.typeform.com/to/Dvdn6P2u" class="btn btn-blue">Sign up for early access</a></div>

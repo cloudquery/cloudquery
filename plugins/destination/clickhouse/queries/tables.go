@@ -3,10 +3,11 @@ package queries
 import (
 	"strings"
 
+	"slices"
+
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"golang.org/x/exp/slices"
 )
 
 func sortKeys(table *schema.Table) []string {

@@ -3,11 +3,11 @@ package securityhub
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
@@ -45,12 +45,12 @@ This is useful when multi region and account aggregation is enabled.`,
 
 func fetchFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	var allConfigs []tableoptions.CustomGetFindingsOpts
+	var allConfigs []tableoptions.CustomSecurityHubGetFindingsInput
 
 	if cl.Spec.TableOptions.SecurityHubFindings != nil && cl.Spec.TableOptions.SecurityHubFindings.GetFindingsOpts != nil {
 		allConfigs = cl.Spec.TableOptions.SecurityHubFindings.GetFindingsOpts
 	} else {
-		allConfigs = []tableoptions.CustomGetFindingsOpts{{GetFindingsInput: securityhub.GetFindingsInput{MaxResults: 100}}}
+		allConfigs = []tableoptions.CustomSecurityHubGetFindingsInput{{GetFindingsInput: securityhub.GetFindingsInput{MaxResults: 100}}}
 	}
 
 	svc := cl.Services(client.AWSServiceSecurityhub).Securityhub

@@ -9,29 +9,24 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec"
 	"github.com/rs/zerolog"
 )
 
-func ConfigureAwsSDK(ctx context.Context, logger zerolog.Logger, awsPluginSpec *Spec, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
+func ConfigureAwsSDK(ctx context.Context, logger zerolog.Logger, awsPluginSpec *spec.Spec, account spec.Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
 	var err error
 	var awsCfg aws.Config
 
-	maxAttempts := 10
-	if awsPluginSpec.MaxRetries != nil {
-		maxAttempts = *awsPluginSpec.MaxRetries
-	}
-	maxBackoff := 30
-	if awsPluginSpec.MaxBackoff != nil {
-		maxBackoff = *awsPluginSpec.MaxBackoff
-	}
+	// This sets MaxRetries & MaxBackoff, too
+	awsPluginSpec.SetDefaults()
 
 	configFns := []func(*config.LoadOptions) error{
 		config.WithDefaultRegion(defaultRegion),
 		// https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/retries-timeouts/
 		config.WithRetryer(func() aws.Retryer {
 			return retry.NewStandard(func(so *retry.StandardOptions) {
-				so.MaxAttempts = maxAttempts
-				so.MaxBackoff = time.Duration(maxBackoff) * time.Second
+				so.MaxAttempts = *awsPluginSpec.MaxRetries
+				so.MaxBackoff = time.Duration(*awsPluginSpec.MaxBackoff) * time.Second
 				so.RateLimiter = &NoRateLimiter{}
 			})
 		}),

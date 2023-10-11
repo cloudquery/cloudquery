@@ -5,7 +5,7 @@ spec:
   name: aws
   path: cloudquery/aws
   version: "VERSION_SOURCE_AWS"
-  tables: ["aws_s3_buckets"]
+  tables: ["aws_ec2_instances"]
   destinations: ["DESTINATION_NAME"]
   spec:
     # Optional parameters
@@ -23,4 +23,5 @@ spec:
     # custom_endpoint_signing_region: "" # required when custom_endpoint_url is set
     # use_paid_apis: false
     # table_options: nil
+    # scheduler: dfs # options are: dfs, round-robin or shuffle
 ```

@@ -128,8 +128,7 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 			continue
 		}
 
-		dtEqual, _ := dataTypesEqual(deleted.dataType, added.dataType)
-		if !dtEqual {
+		if deleted.dataType != added.dataType {
 			changes = append(changes, change{
 				Text:     fmt.Sprintf("Table %s: column type changed from %s to %s for %s", backtickStrings(table, deleted.dataType, added.dataType, name)...),
 				Breaking: true,

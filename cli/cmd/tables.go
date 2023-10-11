@@ -83,6 +83,7 @@ func tables(cmd *cobra.Command, args []string) error {
 	for _, source := range specReader.Sources {
 		cl := sourceClients.ClientByName(source.Name)
 		outputPath := path.Join(outputDir, source.Name)
+		fmt.Printf("Generating docs for %q to directory %q\n", source.Name, outputPath)
 		versions, err := cl.Versions(ctx)
 		if err != nil {
 			return fmt.Errorf("failed to get versions for %s. Error: %w", source.Name, err)
@@ -93,10 +94,12 @@ func tables(cmd *cobra.Command, args []string) error {
 			if err := tablesV3(ctx, cl, outputPath, format); err != nil {
 				return err
 			}
+			fmt.Printf("Done generating docs for %q to directory %q\n", source.Name, outputPath)
 		case 2:
 			if err := tablesV2(ctx, cl, outputPath, format); err != nil {
 				return err
 			}
+			fmt.Printf("Done generating docs for %q to directory %q\n", source.Name, outputPath)
 		default:
 			return fmt.Errorf("unsupported version %d for %s", maxVersion, source.Name)
 		}

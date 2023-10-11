@@ -33,7 +33,8 @@ func syncConnectionV1(ctx context.Context, sourceClient *managedplugin.Client, d
 			}
 		}
 	}()
-	syncTime := time.Now().UTC()
+	// https://github.com/golang/go/issues/41087
+	syncTime := time.Now().UTC().Truncate(time.Microsecond)
 	destinationStrings := make([]string, len(destinationsClients))
 	for i := range destinationsClients {
 		destinationStrings[i] = destinationSpecs[i].VersionString()

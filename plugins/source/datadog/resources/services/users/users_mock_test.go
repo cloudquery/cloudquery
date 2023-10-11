@@ -15,13 +15,12 @@ func buildUsersMock(t *testing.T, ctrl *gomock.Controller) client.DatadogService
 	services := client.DatadogServices{
 		UsersAPI: m,
 	}
-
-	var users datadogV2.UsersResponse
-	err := faker.FakeObject(&users)
+	var i datadogV2.User
+	err := faker.FakeObject(&i)
 	if err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListUsers(gomock.Any()).Return(users, nil, nil)
+	m.EXPECT().ListUsersWithPagination(gomock.Any()).Return(client.MockPaginatedResponse(i))
 
 	var permissions datadogV2.PermissionsResponse
 	err = faker.FakeObject(&permissions)

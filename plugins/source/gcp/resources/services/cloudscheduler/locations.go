@@ -1,10 +1,10 @@
 package cloudscheduler
 
 import (
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	"github.com/cloudquery/plugins/source/gcp/client"
 	pb "google.golang.org/api/cloudscheduler/v1"
 )
 

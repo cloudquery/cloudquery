@@ -3,13 +3,13 @@ package accessanalyzer
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
@@ -44,7 +44,7 @@ func fetchAccessanalyzerAnalyzerFindings(ctx context.Context, meta schema.Client
 	svc := cl.Services(client.AWSServiceAccessanalyzer).Accessanalyzer
 	allConfigs := []tableoptions.CustomAccessAnalyzerListFindingsInput{{}}
 	if cl.Spec.TableOptions.AccessAnalyzerFindings != nil {
-		allConfigs = cl.Spec.TableOptions.AccessAnalyzerFindings.ListFindingOpts
+		allConfigs = cl.Spec.TableOptions.AccessAnalyzerFindings.ListFindingsOpts
 	}
 	for _, cfg := range allConfigs {
 		cfg.AnalyzerArn = analyzer.Arn

@@ -13,11 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Vale
-        uses: errata-ai/vale-action@v2
+        uses: errata-ai/vale-action@1edf87ba97278a700ba88ed9619172912ffaac25
         with:
-          vale_flags: "--glob=!{website/pages/blog/podcast-software-engineer-daily.md,*CHANGELOG.md,*/docs/tables/README.md,plugins/source/test/docs/tables/*.md,.github/styles/proselint/README.md,**/v1-migration.md,website/pages/docs/plugins/sources/*/tables.md,website/pages/docs/plugins/sources/*/policies.md,website/tables/**/*,website/pages/case-studies/*.mdx,cli/internal/docs/testdata/*.md}"
+          vale_flags: "--glob=!{website/pages/blog/podcast-software-engineer-daily.md,**/CHANGELOG.md,**/docs/tables/README.md,plugins/source/test/docs/tables/*.md,.github/styles/proselint/README.md,**/v1-migration.md,website/pages/docs/plugins/sources/*/tables.md,website/pages/docs/plugins/sources/*/policies.md,website/tables/**/*,website/pages/case-studies/*.mdx,cli/internal/docs/testdata/*.md}"
           filter_mode: nofilter
           fail_on_error: true
         env:
@@ -26,10 +26,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: markdownlint-cli
         uses: nosborn/github-action-markdown-cli@v3.3.0
         with:
           files: .
           config_file: .markdownlint.yaml
-          ignore_files: '{website/pages/blog/podcast-software-engineer-daily.md,**/CHANGELOG.md,**/docs/tables/README.md,plugins/source/test/docs/tables/*.md,website/pages/docs/reference/cli/**,website/tables/**/*}'
+          ignore_files: "{website/pages/blog/podcast-software-engineer-daily.md,**/CHANGELOG.md,**/docs/tables/README.md,plugins/source/test/docs/tables/*.md,website/pages/docs/reference/cli/**,website/tables/**/*}"

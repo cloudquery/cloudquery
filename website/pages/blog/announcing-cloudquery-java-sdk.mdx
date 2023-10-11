@@ -1,0 +1,98 @@
+---
+title: Announcing the Java SDK for CloudQuery Plugin Development
+tag: announcement
+date: 2023/09/05
+description:
+author: michal
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
+We're excited to announce the first release of a Java SDK for CloudQuery plugin development! This SDK provides a high-level toolkit for developing CloudQuery plugins in Java.
+
+## Background
+
+CloudQuery is designed with a pluggable architecture and uses [Apache Arrow](https://arrow.apache.org/) over [gRPC](https://grpc.io/) for communication between plugins. Source and destination plugins are independent of one another, and this architecture allows plugins to be written in different languages but still communicate with one another.
+
+Originally, we only provided SDK for writing plugins in Go only, but that is changing now. Recently, we released [SDK for Python](https://www.cloudquery.io/blog/announcing-cloudquery-python-sdk), [JavaScript](https://www.cloudquery.io/blog/announcing-cloudquery-javascript-sdk), and now we are excited for the next language in line: Java!
+
+## Features
+
+### Plugin Server
+
+The most basic functionality provided by the Java SDK is to start a gRPC plugin server that supports all the flags expected by the CloudQuery CLI. This allows you to write a plugin in Java and run it using the same command line interface as any other plugin.
+
+The following example shows how to create a plugin server that runs a plugin called `MyPlugin`:
+
+```java
+import io.cloudquery.server.PluginServe;
+
+public class MainClass {
+
+  public static void main(String[] args) {
+    MyPlugin plugin = new MyPlugin();
+    PluginServe pluginServe = PluginServe.builder().args(args).plugin(plugin).build();
+    int exitCode = pluginServe.Serve();
+    System.exit(exitCode);
+  }
+}
+```
+
+### Plugin Class
+
+A CloudQuery Java source plugin, such as the `MyPlugin` above, should extend the  `io.cloudquery.plugin.Plugin` and needs to implement the following three methods: `newClient`, `tables` and `sync`. 
+
+The `newClient` method is called when the plugin is started, and is where you can do any initialization work. 
+
+The `tables` method should return a list of tables that the plugin supports. 
+
+The `sync` method is called when a table needs to be synced. This is where the SDK scheduler can be used to manage the syncing of all the supported tables.
+
+Check out our [Bitbucket](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/bitbucket/app/src/main/java/bitbucket/BitbucketPlugin.java) plugin for an example implementation.
+
+### Multi-threaded Scheduler
+
+The scheduler's main responsibilities are to manage concurrent execution of requests and the order in which tables are synced to avoid dependency issues. It also places limits on the number of concurrent requests and memory usage.
+
+To invoke the scheduler, the `sync` method of a plugin should pass a list of its tables and options to the scheduler. The scheduler will take care of the rest. Here is an example from the [Bitbucket plugin](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/bitbucket/app/src/main/java/bitbucket/BitbucketPlugin.java#L60):
+
+```java
+@Override
+  public void sync(
+      List<String> includeList,
+      List<String> skipList,
+      boolean skipDependentTables,
+      boolean deterministicCqId,
+      BackendOptions backendOptions,
+      StreamObserver<Sync.Response> syncStream)
+      throws SchemaException, ClientNotInitializedException {
+    if (this.client == null) {
+      throw new ClientNotInitializedException();
+    }
+
+    List<Table> filtered = Table.filterDFS(allTables, includeList, skipList, skipDependentTables);
+    Scheduler.builder()
+        .client(client)
+        .tables(filtered)
+        .syncStream(syncStream)
+        .deterministicCqId(deterministicCqId)
+        .logger(getLogger())
+        .concurrency(spec.getConcurrency())
+        .build()
+        .sync();
+  }
+```
+
+## Docker for Cross-Platform Distribution
+
+To support cross-platform packaging of Java plugins, we introduced a new `docker` registry type to the CloudQuery CLI in `v3.12.0`. Where Go-based plugins are downloaded as binaries from GitHub releases, Java plugins are downloaded as Docker images from the specified Docker registry. This allows CloudQuery to support multiple platforms, and also makes it easier to distribute plugins that have dependencies on external libraries.
+
+## Start Creating Your Own Plugin
+
+Want to start writing your own plugin? Here is our guide to get you started: https://www.cloudquery.io/docs/developers/creating-new-plugin/java-source.
+
+## Feedback
+
+We'd love to hear your feedback on the Java SDK. If you have any questions, comments, or suggestions, please feel free to reach out to us on [Discord](https://cloudquery.io/discord) or [GitHub](https://github.com/cloudquery/plugin-sdk-java).

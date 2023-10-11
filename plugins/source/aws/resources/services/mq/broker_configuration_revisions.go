@@ -7,10 +7,9 @@ import (
 	"encoding/json"
 	"strconv"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	xj "github.com/basgys/goxml2json"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/mq"

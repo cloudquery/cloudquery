@@ -5,8 +5,9 @@ import (
 	"math"
 	"strings"
 
+	"slices"
+
 	"github.com/google/uuid"
-	"golang.org/x/exp/slices"
 
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -172,10 +173,19 @@ func sync(cmd *cobra.Command, args []string) error {
 
 		var destinationClientsForSource []*managedplugin.Client
 		var destinationForSourceSpec []specs.Destination
+		var backendClientForSource *managedplugin.Client
+		var destinationForSourceBackendSpec *specs.Destination
 		for _, destination := range destinations {
 			if slices.Contains(source.Destinations, destination.Name) {
 				destinationClientsForSource = append(destinationClientsForSource, destinationPluginClients.ClientByName(destination.Name))
 				destinationForSourceSpec = append(destinationForSourceSpec, *destination)
+				continue
+			}
+
+			// if the destination is specified as a backend, but not used as a destination, then we initialize it separately
+			if source.BackendOptions != nil && strings.Contains(source.BackendOptions.Connection, "@@plugins."+destination.Name+".") {
+				backendClientForSource = destinationPluginClients.ClientByName(destination.Name)
+				destinationForSourceBackendSpec = destination
 			}
 		}
 		switch maxVersion {
@@ -210,10 +220,30 @@ func sync(cmd *cobra.Command, args []string) error {
 					destinationForSourceSpec[i].Spec["batch_size_bytes"] = destinationForSourceSpec[i].BatchSizeBytes // nolint:staticcheck // use of deprecated field
 				}
 			}
-			if err := syncConnectionV3(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, invocationUUID.String(), noMigrate); err != nil {
+
+			src := v3source{
+				client: cl,
+				spec:   *source,
+			}
+			dests := make([]v3destination, 0, len(destinationClientsForSource))
+			for i, destination := range destinationClientsForSource {
+				dests = append(dests, v3destination{
+					client: destination,
+					spec:   destinationForSourceSpec[i],
+				})
+			}
+			var backend *v3destination
+			if backendClientForSource != nil && destinationForSourceBackendSpec != nil {
+				backend = &v3destination{
+					client: backendClientForSource,
+					spec:   *destinationForSourceBackendSpec,
+				}
+			}
+			if err := syncConnectionV3(ctx, src, dests, backend, invocationUUID.String(), noMigrate); err != nil {
 				return fmt.Errorf("failed to sync v3 source %s: %w", cl.Name(), err)
 			}
 		case 2:
+			destinationsVersions := make([][]int, 0, len(destinationClientsForSource))
 			for _, destination := range destinationClientsForSource {
 				versions, err := destination.Versions(ctx)
 				if err != nil {
@@ -222,8 +252,9 @@ func sync(cmd *cobra.Command, args []string) error {
 				if !slices.Contains(versions, 1) {
 					return fmt.Errorf("destination plugin %[1]s does not support CloudQuery SDK version 1. Please upgrade to a newer version of the %[1]s destination plugin", destination.Name())
 				}
+				destinationsVersions = append(destinationsVersions, versions)
 			}
-			if err := syncConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, invocationUUID.String(), noMigrate); err != nil {
+			if err := syncConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, invocationUUID.String(), noMigrate, destinationsVersions); err != nil {
 				return fmt.Errorf("failed to sync v2 source %s: %w", cl.Name(), err)
 			}
 		case 1:

@@ -4,15 +4,15 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/cloudquery/plugin-sdk/v4/scalar"
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/plugin-sdk/v4/scalar"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Functions() *schema.Table {
@@ -63,6 +63,24 @@ func Functions() *schema.Table {
 				Type:     arrow.BinaryTypes.String,
 				Resolver: resolveRuntimeManagementConfig,
 			},
+			{
+				Name: "code",
+				Type: sdkTypes.ExtensionTypes.JSON,
+			},
+			{
+				Name:     "concurrency",
+				Type:     sdkTypes.ExtensionTypes.JSON,
+				Resolver: resolveConcurrency,
+			},
+			{
+				Name: "configuration",
+				Type: sdkTypes.ExtensionTypes.JSON,
+			},
+			{
+				Name:     "tags",
+				Type:     sdkTypes.ExtensionTypes.JSON,
+				Resolver: resolveTags,
+			},
 		},
 
 		Relations: []*schema.Table{
@@ -95,7 +113,6 @@ func getFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceLambda).Lambda
 	f := resource.Item.(types.FunctionConfiguration)
-
 	funcResponse, err := svc.GetFunction(ctx, &lambda.GetFunctionInput{
 		FunctionName: f.FunctionName,
 	}, func(options *lambda.Options) {
@@ -117,10 +134,12 @@ func getFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 			cl.Logger().Warn().Err(err).Msg("configuration data retrieved from ListFunctions will still be persisted")
 			return nil
 		}
-
 		return err
 	}
-
+	if funcResponse.Code != nil {
+		cl.Logger().Warn().Msg("location of lambda function redacted for security purposes")
+		funcResponse.Code.Location = aws.String("REDACTED_FOR_SECURITY_PURPOSES")
+	}
 	resource.Item = funcResponse
 	return nil
 }
@@ -231,4 +250,76 @@ func resolveRuntimeManagementConfig(ctx context.Context, meta schema.ClientMeta,
 	}
 
 	return resource.Set("update_runtime_on", runtimeManagementConfig.UpdateRuntimeOn)
+}
+
+func resolveConcurrency(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
+	r := resource.Item.(*lambda.GetFunctionOutput)
+	// No way of getting functionName
+	if r.Configuration == nil {
+		return nil
+	}
+
+	// setting concurrency value from GetFunction call
+	if r.Code != nil {
+		return resource.Set(col.Name, r.Concurrency)
+	}
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceLambda).Lambda
+
+	functionConcurrency, err := svc.GetFunctionConcurrency(ctx, &lambda.GetFunctionConcurrencyInput{
+		FunctionName: r.Configuration.FunctionName,
+	}, func(options *lambda.Options) {
+		options.Region = cl.Region
+	})
+
+	if err != nil {
+		if cl.IsNotFoundError(err) {
+			return nil
+		}
+		return err
+	}
+
+	// convert from lambda.GetFunctionConcurrencyOutput to types.Concurrency
+
+	data, err := json.Marshal(functionConcurrency)
+	if err != nil {
+		return err
+	}
+	var funcConcurrency types.Concurrency
+	err = json.Unmarshal(data, &funcConcurrency)
+	if err != nil {
+		return err
+	}
+
+	return resource.Set(col.Name, functionConcurrency)
+}
+
+func resolveTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
+	r := resource.Item.(*lambda.GetFunctionOutput)
+	// No way of getting functionName
+	if r.Configuration == nil {
+		return nil
+	}
+
+	// setting tags value from GetFunction call
+	if r.Code != nil {
+		return resource.Set(col.Name, r.Concurrency)
+	}
+
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceLambda).Lambda
+
+	funcTags, err := svc.ListTags(ctx, &lambda.ListTagsInput{
+		Resource: r.Configuration.FunctionArn,
+	}, func(options *lambda.Options) {
+		options.Region = cl.Region
+	})
+
+	if err != nil {
+		if cl.IsNotFoundError(err) {
+			return nil
+		}
+		return err
+	}
+	return resource.Set(col.Name, funcTags.Tags)
 }

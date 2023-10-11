@@ -5,9 +5,7 @@ import (
 	"fmt"
 	"regexp"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
@@ -16,6 +14,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudtrail/models"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Trails() *schema.Table {

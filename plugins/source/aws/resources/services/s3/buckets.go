@@ -6,7 +6,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3/models"
@@ -33,10 +33,12 @@ func Buckets() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			bucketEncryptionRules(),
-			bucketLifecycles(),
-			bucketGrants(),
 			bucketCorsRules(),
+			bucketEncryptionRules(),
+			bucketGrants(),
+			bucketLifecycles(),
+			bucketNotificationConfigurations(),
+			bucketObjectLockConfigurations(),
 			bucketWebsites(),
 		},
 	}
@@ -94,6 +96,9 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *
 	resource.Region = "us-east-1"
 	if output != nil && output.LocationConstraint != "" {
 		resource.Region = string(output.LocationConstraint)
+	}
+	if output != nil && output.LocationConstraint == "EU" {
+		resource.Region = "eu-west-1"
 	}
 	var errAll []error
 

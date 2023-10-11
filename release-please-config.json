@@ -83,6 +83,10 @@
     "plugins/source/azuredevops": {
       "component": "plugins-source-azuredevops"
     },
+    "plugins/source/bitbucket": {
+      "component": "plugins-source-bitbucket",
+      "release-type": "simple"
+    },
     "plugins/source/cloudflare": {
       "component": "plugins-source-cloudflare"
     },
@@ -130,6 +134,9 @@
     },
     "plugins/source/mysql": {
       "component": "plugins-source-mysql"
+    },
+    "plugins/source/notion": {
+      "component": "plugins-source-notion"
     },
     "plugins/source/okta": {
       "component": "plugins-source-okta"

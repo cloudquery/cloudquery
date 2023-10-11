@@ -33,6 +33,10 @@ func TestSync(t *testing.T) {
 			config: "multiple-sources-destinations.yml",
 		},
 		{
+			name:   "different_backend_from_destination",
+			config: "different-backend-from-destination.yml",
+		},
+		{
 			name:   "should fail with missing path error when path is missing",
 			config: "sync-missing-path-error.yml",
 			err:    "Error: failed to validate destination test: path is required",

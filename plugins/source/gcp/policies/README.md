@@ -37,6 +37,6 @@ psql ${DSN} -c "select * from gcp_policy_results where status='fail'"
 
 Currently we have pre-built dashboards on top of `gcp_policy_results` table which is available [here](../dashboards/grafana/compliance.json).
 
-<img alt="Azure Asset Inventory Grafana Dashboard" src="../dashboards/grafana/compliance.png" width=50% height=50%>
+<img alt="GCP Asset Inventory Grafana Dashboard" src="../dashboards/grafana/compliance.png" width=50% height=50%>
 
 See [installation instructions](../dashboards/README.md#gcp-compliance-and-cspm-cloud-security-posture-management-dashboard)

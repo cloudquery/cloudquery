@@ -1,5 +1,105 @@
 # Changelog
 
+## [6.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v6.0.7...plugins-destination-postgresql-v6.0.8) (2023-10-04)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v14 digest to 00efb06 ([#14202](https://github.com/cloudquery/cloudquery/issues/14202)) ([fc8cc62](https://github.com/cloudquery/cloudquery/commit/fc8cc62ed70db157612e88678c123ba6a34b3b3c))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to 7ded38b ([#14246](https://github.com/cloudquery/cloudquery/issues/14246)) ([005891e](https://github.com/cloudquery/cloudquery/commit/005891e1892b41235ddb3b102f4bb6dafd48949a))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.0 ([#14281](https://github.com/cloudquery/cloudquery/issues/14281)) ([85835a9](https://github.com/cloudquery/cloudquery/commit/85835a938bfa58d1b0d320ae17aff5fe7f6cfef2))
+
+## [6.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v6.0.6...plugins-destination-postgresql-v6.0.7) (2023-09-28)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.11.0 ([#14031](https://github.com/cloudquery/cloudquery/issues/14031)) ([ac7cdc4](https://github.com/cloudquery/cloudquery/commit/ac7cdc4f7d71599dad89b3170bb7bda676984228))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.11.1 ([#14063](https://github.com/cloudquery/cloudquery/issues/14063)) ([5a0ff7b](https://github.com/cloudquery/cloudquery/commit/5a0ff7b67890478c371385b379e0a8ef0c2f4865))
+
+## [6.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v6.0.5...plugins-destination-postgresql-v6.0.6) (2023-09-22)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.10.2 ([#13988](https://github.com/cloudquery/cloudquery/issues/13988)) ([aebaddf](https://github.com/cloudquery/cloudquery/commit/aebaddfc5ca0d7574b8cd72e9e074ec612472dbe))
+
+## [6.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v6.0.4...plugins-destination-postgresql-v6.0.5) (2023-09-21)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to ffb7089 ([#13879](https://github.com/cloudquery/cloudquery/issues/13879)) ([f95ced5](https://github.com/cloudquery/cloudquery/commit/f95ced5daa2b123bd71ddff75bd76b3b008790c1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.10.0 ([#13978](https://github.com/cloudquery/cloudquery/issues/13978)) ([2efdf55](https://github.com/cloudquery/cloudquery/commit/2efdf55aed94a14c35c51632ff61ed454caaf5a5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.8.0 ([#13950](https://github.com/cloudquery/cloudquery/issues/13950)) ([15b0b69](https://github.com/cloudquery/cloudquery/commit/15b0b6925932613ed2915a3255b3466f21a5c7bf))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.9.0 ([#13960](https://github.com/cloudquery/cloudquery/issues/13960)) ([f074076](https://github.com/cloudquery/cloudquery/commit/f074076a21dc0b8cadfdc3adb9731473d24d28b1))
+
+## [6.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v6.0.3...plugins-destination-postgresql-v6.0.4) (2023-09-12)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to 483f6b2 ([#13780](https://github.com/cloudquery/cloudquery/issues/13780)) ([8d31b44](https://github.com/cloudquery/cloudquery/commit/8d31b44f787f42d47f186cdcc4a5739a3a370a5f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.7.0 ([#13625](https://github.com/cloudquery/cloudquery/issues/13625)) ([bb5463f](https://github.com/cloudquery/cloudquery/commit/bb5463fb5919f50f1327eecae884b2ab99fb8b34))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.7.1 ([#13713](https://github.com/cloudquery/cloudquery/issues/13713)) ([73004dc](https://github.com/cloudquery/cloudquery/commit/73004dcabd05bf474d8b5960b8c747a894b98560))
+
+## [6.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v6.0.2...plugins-destination-postgresql-v6.0.3) (2023-09-05)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/99designs/go-keychain digest to 9cf53c8 ([#13561](https://github.com/cloudquery/cloudquery/issues/13561)) ([a170256](https://github.com/cloudquery/cloudquery/commit/a17025657e92b017fe3c8bd37abfaa2354e6e818))
+* **deps:** Update github.com/apache/arrow/go/v14 digest to a526ba6 ([#13562](https://github.com/cloudquery/cloudquery/issues/13562)) ([248672b](https://github.com/cloudquery/cloudquery/commit/248672beb020828cde1cb608d5c1ed6d656c777b))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to cd3d411 ([#13598](https://github.com/cloudquery/cloudquery/issues/13598)) ([f22bfa6](https://github.com/cloudquery/cloudquery/commit/f22bfa6b2d4fd0caeacf0726ccd307db38f8860c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.6.0 ([#13492](https://github.com/cloudquery/cloudquery/issues/13492)) ([c305876](https://github.com/cloudquery/cloudquery/commit/c305876e3d92944aa6c1a26547f786fdc5b50e23))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.6.4 ([#13519](https://github.com/cloudquery/cloudquery/issues/13519)) ([9d25165](https://github.com/cloudquery/cloudquery/commit/9d25165820703844c6de96688d939aa5033608ae))
+
+## [6.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v6.0.1...plugins-destination-postgresql-v6.0.2) (2023-08-30)
+
+
+### Bug Fixes
+
+* Drop include clause from list tables ([#13429](https://github.com/cloudquery/cloudquery/issues/13429)) ([9064d8b](https://github.com/cloudquery/cloudquery/commit/9064d8bfd2c1377f39a85798ce12d880e71fb9b9))
+* Remove stale code ([#13445](https://github.com/cloudquery/cloudquery/issues/13445)) ([cc30fb0](https://github.com/cloudquery/cloudquery/commit/cc30fb09d1a039948754cbda09a1adf1b58d0c54))
+
+## [6.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v6.0.0...plugins-destination-postgresql-v6.0.1) (2023-08-29)
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/cloudquery/arrow/go/v13` to `github.com/apache/arrow/go/v14` ([#13341](https://github.com/cloudquery/cloudquery/issues/13341)) ([feb8f87](https://github.com/cloudquery/cloudquery/commit/feb8f87d8d761eb9c49ce84329ad0397f730a918))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.6 ([#13345](https://github.com/cloudquery/cloudquery/issues/13345)) ([a995a05](https://github.com/cloudquery/cloudquery/commit/a995a0598a209e0fe3ba09f4ced2a052dc14b67a))
+* Drop include clause from list tables ([#13332](https://github.com/cloudquery/cloudquery/issues/13332)) ([7b6369e](https://github.com/cloudquery/cloudquery/commit/7b6369e96b27ec6aaa3791a4144af979b0641285))
+
+## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v5.0.7...plugins-destination-postgresql-v6.0.0) (2023-08-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* Increase default batch size bytes to `100000000` (100 MB) and default batch timeout to `60` seconds. We discovered a default higher batch size bytes and timeout settings provide better out of the box performance for the PostgreSQL destination. We're marking it as a breaking change as it might increase memory consumption in some environments.
+
+### Features
+
+* Increase default batch size bytes to `100000000` (100 MB) and default batch timeout to `60` seconds. ([e9c06b4](https://github.com/cloudquery/cloudquery/commit/e9c06b41b28ef3ae5ba4860a1e7b89f957a803a0))
+
+## [5.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v5.0.6...plugins-destination-postgresql-v5.0.7) (2023-08-25)
+
+
+### Bug Fixes
+
+* Call list tables once on insert if `--no-migrate` was used ([#13327](https://github.com/cloudquery/cloudquery/issues/13327)) ([eda215c](https://github.com/cloudquery/cloudquery/commit/eda215c0d204becf18d406be686fde2585bc4e77))
+
+## [5.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v5.0.5...plugins-destination-postgresql-v5.0.6) (2023-08-25)
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/cloudquery/plugin-sdk/v4` to v4.5.5 ([#13297](https://github.com/cloudquery/cloudquery/issues/13297)) ([38d4d59](https://github.com/cloudquery/cloudquery/commit/38d4d59e37ffb9758657e9bc460dab7de0ed010a))
+* **deps:** Update github.com/cloudquery/arrow/go/v13 digest to 5b83d4f ([#13203](https://github.com/cloudquery/cloudquery/issues/13203)) ([b0a4b8c](https://github.com/cloudquery/cloudquery/commit/b0a4b8ccf7c429bf5a6ed88866865212015b68e4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.5.1 ([#13195](https://github.com/cloudquery/cloudquery/issues/13195)) ([a184c37](https://github.com/cloudquery/cloudquery/commit/a184c3786ad49df8564344773e9b96f617ef87a1))
+* Don't list Postgres tables during insert ([#13323](https://github.com/cloudquery/cloudquery/issues/13323)) ([6dee8bc](https://github.com/cloudquery/cloudquery/commit/6dee8bca0be3140940f960761bc14316ba78889e))
+* Properly handle trailing zeroes in uint64 values when reading ([38d4d59](https://github.com/cloudquery/cloudquery/commit/38d4d59e37ffb9758657e9bc460dab7de0ed010a))
+
 ## [5.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v5.0.4...plugins-destination-postgresql-v5.0.5) (2023-08-15)
 
 

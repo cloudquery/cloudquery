@@ -25,7 +25,7 @@ jobs:
       run:
         working-directory: ./plugins/source/gcp
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
@@ -38,7 +38,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.52.2
+          version: v1.54.2
           working-directory: plugins/source/gcp
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
@@ -47,7 +47,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: 'v3.13.0'
+          version: v3.21.3
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -66,24 +66,24 @@ jobs:
     steps:
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - uses: actions/cache@v3
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         with:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.20.5-release-cache-${{ hashFiles('plugins/source/gcp/go.sum') }}
+          key: ${{ runner.os }}-go-1.21.1-release-cache-${{ hashFiles('plugins/source/gcp/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.20.5-release-cache-plugins-source-gcp
+            ${{ runner.os }}-go-1.21.1-release-cache-plugins-source-gcp
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: plugins/source/gcp/go.mod
       - name: Install GoReleaser
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: goreleaser/goreleaser-action@v3
+        uses: goreleaser/goreleaser-action@v5
         with:
           distribution: goreleaser-pro
           version: latest
@@ -116,7 +116,7 @@ jobs:
           --health-retries 5
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Go 1.x
         uses: erezrokah/setup-go@feat/add_cache_prefix
         with:
@@ -129,7 +129,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: 'v3.10.1'
+          version: v3.21.3
       - name: Migrate DB
         run: cloudquery migrate test/policy_cq_config.yml
         env:
@@ -138,3 +138,17 @@ jobs:
         run: cd policies && psql -h localhost -p 5432 -U postgres -d postgres -w -f ./policy.sql
         env:
           PGPASSWORD: pass
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install dbt-postgres
+        run: pip install dbt-postgres
+      - name: Run dbt policies
+        run: cd policies/gcp_compliance && dbt run --profiles-dir ../../test/dbt/
+        env:
+          CQ_DBT_HOST: localhost
+          CQ_DBT_PORT: 5432
+          CQ_DBT_USER: postgres
+          CQ_DBT_PASSWORD: pass
+          CQ_DBT_DBNAME: postgres

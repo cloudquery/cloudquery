@@ -8,9 +8,9 @@ import (
 
 	"github.com/goccy/go-json"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/apache/arrow/go/v13/arrow/memory"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v14/arrow/array"
+	"github.com/apache/arrow/go/v14/arrow/memory"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/elastic/go-elasticsearch/v8/typedapi/core/search"
 	"github.com/elastic/go-elasticsearch/v8/typedapi/types"
@@ -27,10 +27,12 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 	_, _ = io.Copy(io.Discard, resp.Body)
 	_ = resp.Body.Close()
 
+	size := 100
 	resp, err = c.typedClient.Search().Index(index).Request(&search.Request{
 		Query: &types.Query{
 			MatchAll: &types.MatchAllQuery{},
 		},
+		Size: &size,
 	}).Do(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to read: %w", err)

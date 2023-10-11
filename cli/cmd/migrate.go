@@ -4,15 +4,16 @@ import (
 	"fmt"
 	"strings"
 
+	"slices"
+
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"golang.org/x/exp/slices"
 )
 
 const (
-	migrateShort   = "Run migration for source and destination plugins specified in configuration"
+	migrateShort   = "Update schema of your destinations based on the latest changes in sources from your configuration"
 	migrateExample = `# Run migration for plugins specified in directory
 cloudquery migrate ./directory
 # Run migration for plugins specified in directory and config files
@@ -119,6 +120,7 @@ func migrate(cmd *cobra.Command, args []string) error {
 				return fmt.Errorf("failed to migrate v3 source %s: %w", cl.Name(), err)
 			}
 		case 2:
+			destinationsVersions := make([][]int, 0, len(destinationClientsForSource))
 			for _, destination := range destinationClientsForSource {
 				versions, err := destination.Versions(ctx)
 				if err != nil {
@@ -127,8 +129,9 @@ func migrate(cmd *cobra.Command, args []string) error {
 				if !slices.Contains(versions, 1) {
 					return fmt.Errorf("destination plugin %[1]s does not support CloudQuery SDK version 1. Please upgrade to a newer version of the %[1]s destination plugin", destination.Name())
 				}
+				destinationsVersions = append(destinationsVersions, versions)
 			}
-			if err := migrateConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec); err != nil {
+			if err := migrateConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, destinationsVersions); err != nil {
 				return fmt.Errorf("failed to migrate source %v@%v: %w", source.Name, source.Version, err)
 			}
 		case 1:

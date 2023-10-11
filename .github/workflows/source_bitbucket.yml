@@ -1,0 +1,66 @@
+name: Source Plugin Bitbucket Workflow
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    paths:
+      - "plugins/source/bitbucket/**"
+      - ".github/workflows/source_bitbucket.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/source/bitbucket/**"
+      - ".github/workflows/source_bitbucket.yml"
+
+jobs:
+  plugins-source-bitbucket:
+    timeout-minutes: 30
+    name: "plugins/source/bitbucket"
+    runs-on: large-ubuntu-monorepo
+    defaults:
+      run:
+        working-directory: ./plugins/source/bitbucket
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "18"
+          cache: "gradle"
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@56b90f209b02bf6d1deae490e9ef18b21a389cd4
+      - name: Build package
+        run: ./gradlew build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v3
+        if: success() || failure() # always run even if the previous step fails
+        with:
+          report_paths: "**/build/test-results/test/TEST-*.xml"
+          require_passed_tests: true
+          fail_on_failure: true
+  validate-release:
+    timeout-minutes: 10
+    runs-on: large-ubuntu-monorepo
+    env:
+      IMAGE_NAME_PREFIX: cloudquery
+      REGISTRY: ghcr.io
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@4c0219f9ac95b02789c1075625400b2acbff50b1
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        with:
+          context: "{{defaultContext}}:plugins/source/bitbucket"
+          load: true
+          build-args: |
+            GITHUB_ACTOR=${{ github.actor }}
+            GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
