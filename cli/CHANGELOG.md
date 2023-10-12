@@ -5,6 +5,22 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.22.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.21.3...cli-v3.22.0) (2023-10-12)
+
+
+### Features
+
+* Add team context selection via `switch` ([#14493](https://github.com/cloudquery/cloudquery/issues/14493)) ([d5a7cde](https://github.com/cloudquery/cloudquery/commit/d5a7cde2e4a2fe43afbe78329fa6d88cdf0682fb))
+* Update CloudQuery Go API client, remove docs title, ordinal position ([#14498](https://github.com/cloudquery/cloudquery/issues/14498)) ([f91786b](https://github.com/cloudquery/cloudquery/commit/f91786b39eb439ca5e31b0eed53ae630b9c7012b))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to d401686 ([#14459](https://github.com/cloudquery/cloudquery/issues/14459)) ([7ce40f8](https://github.com/cloudquery/cloudquery/commit/7ce40f8dcb1e408c385e877e56b5bb78906b10d2))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.2.6 ([#14475](https://github.com/cloudquery/cloudquery/issues/14475)) ([83fe7ca](https://github.com/cloudquery/cloudquery/commit/83fe7ca2f5fa83bd3219ddde8fe44fcf1d447480))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.4 ([#14489](https://github.com/cloudquery/cloudquery/issues/14489)) ([9bb45dc](https://github.com/cloudquery/cloudquery/commit/9bb45dc2dacc2c7a6fbd47538b954f731741809b))
+* **deps:** Update module golang.org/x/net to v0.17.0 [SECURITY] ([#14500](https://github.com/cloudquery/cloudquery/issues/14500)) ([9e603d5](https://github.com/cloudquery/cloudquery/commit/9e603d50d28033ed5bf451e569abc7c25014dbfb))
+
 ## [3.21.3](https://github.com/cloudquery/cloudquery/compare/cli-v3.21.2...cli-v3.21.3) (2023-10-06)
 
 
