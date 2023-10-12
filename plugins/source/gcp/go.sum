@@ -208,10 +208,10 @@ github.com/cloudquery/arrow/go/v14 v14.0.0-20231009001222-d4016862d2dd h1:w0lNQ0
 github.com/cloudquery/arrow/go/v14 v14.0.0-20231009001222-d4016862d2dd/go.mod h1:/SqmdO2dsWqFHqQQeupnsr0ollL8C91n3x0I72rArY8=
 github.com/cloudquery/cloudquery-api-go v1.2.6 h1:eq3qPgz813NDdCpipxdo33ko+kiqHld3+x6X2W1lVH4=
 github.com/cloudquery/cloudquery-api-go v1.2.6/go.mod h1:oyNUZZ6CKjPapxMbmE/qR2vdo9/G+tuCdF7uXT1LYuM=
-github.com/cloudquery/codegen v0.3.6 h1:MGqUI6urebY76o8li1B7IH2szRpn8VRkkkrP15f2sT8=
-github.com/cloudquery/codegen v0.3.6/go.mod h1:5zZbdu4LBJmGC/6vPahTjWVZjtiuLc2K0/VNxx9N7uY=
-github.com/cloudquery/jsonschema v0.0.0-20231006094144-b42fc04b92bb h1:W3y1G8XTh5NrFloojJqv8oFfAPbzdWlt5i0ik3rU2Pk=
-github.com/cloudquery/jsonschema v0.0.0-20231006094144-b42fc04b92bb/go.mod h1:ffZ5Km5SWWRAIN6wbDXItl95euhFz2uON45H2qjYt+0=
+github.com/cloudquery/codegen v0.3.7 h1:d/dboLSyGx5IEe7w2zWpOKZPft+LliIGK+ZqtgEQFYI=
+github.com/cloudquery/codegen v0.3.7/go.mod h1:0IPvH6SNxWm2A8vpPCqIRI6cfh63hqq314XEIi/3Jj8=
+github.com/cloudquery/jsonschema v0.0.0-20231012111802-b28735982a93 h1:Rgtj0YMsk5BGD76Y38xCAHEtfOguxntnJO/q+oCAry4=
+github.com/cloudquery/jsonschema v0.0.0-20231012111802-b28735982a93/go.mod h1:ffZ5Km5SWWRAIN6wbDXItl95euhFz2uON45H2qjYt+0=
 github.com/cloudquery/plugin-pb-go v1.12.1 h1:lxCe/ovcbmY4i0N5ko1fH5PIllosIwbXTvrRqZ/UBeg=
 github.com/cloudquery/plugin-pb-go v1.12.1/go.mod h1:+20GGdx/k9ApU56ix5QrPIGfzn0WA7VJlExgaHnNGzc=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
