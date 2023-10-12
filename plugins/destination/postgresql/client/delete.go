@@ -106,8 +106,9 @@ func generateDeleteCTE(deleteRecord message.DeleteRecord) string {
 		sb.WriteString(pgx.Identifier{tableRelation.TableName + "_CTE"}.Sanitize())
 		sb.WriteString(" AS (")
 		sb.WriteString(generateRelationsDelete(tableRelation))
-		sb.WriteString(") RETURNING ")
+		sb.WriteString(" RETURNING ")
 		sb.WriteString(pgx.Identifier{schema.CqIDColumn.Name}.Sanitize())
+		sb.WriteString(") ")
 		tables[i] = tableRelation.TableName
 	}
 	for _, table := range tables {
