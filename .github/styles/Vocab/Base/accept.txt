@@ -26,6 +26,7 @@ bool
 browsable
 bugfix
 Callout
+callout
 CCPA's
 Chargebee
 cis
