@@ -115,3 +115,70 @@ func TestGenerateInitialDelete(t *testing.T) {
 		})
 	}
 }
+
+func TestGenerateRelationsDelete(t *testing.T) {
+	tests := []struct {
+		tableRelation message.TableRelation
+		want          string
+	}{
+		{
+			tableRelation: message.TableRelation{
+				TableName:   "relation_table1",
+				ParentTable: "parent_table",
+			},
+			want: `DELETE from "relation_table1" where "_cq_parent_id" in (select "_cq_id" from "parent_table_CTE")`,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.tableRelation.TableName, func(t *testing.T) {
+			got := generateRelationsDelete(tt.tableRelation)
+			diff := cmp.Diff(got, tt.want)
+			if diff != "" {
+				t.Errorf("%s", diff)
+			}
+
+		})
+	}
+}
+
+func TestGenerateDeleteCTE(t *testing.T) {
+	tests := []struct {
+		name         string
+		deleteRecord message.DeleteRecord
+		want         string
+	}{
+		{
+			deleteRecord: message.DeleteRecord{
+				TableName: "table1",
+				WhereClause: message.PredicateGroups{
+					{
+						GroupingType: "AND",
+						Predicates: []message.Predicate{
+							{
+								Operator: "eq",
+								Column:   "id",
+							},
+						},
+					},
+				},
+				TableRelations: []message.TableRelation{
+					{
+						TableName:   "relation_table1",
+						ParentTable: "table1",
+					},
+				},
+			},
+			want: `WITH "table1_CTE" AS (DELETE from "table1" where ( "id" = $1 ) RETURNING "_cq_id") , "relation_table1_CTE" AS (DELETE from "relation_table1" where "_cq_parent_id" in (select "_cq_id" from "table1_CTE") RETURNING "_cq_id") Select count(*) from "relation_table1_CTE" UNION ALL Select count(*) from "table1_CTE"`,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := generateDeleteCTE(tt.deleteRecord)
+			diff := cmp.Diff(got, tt.want)
+			if diff != "" {
+				t.Errorf("%s", diff)
+			}
+
+		})
+	}
+}
