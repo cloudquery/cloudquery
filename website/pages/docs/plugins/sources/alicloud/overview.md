@@ -7,12 +7,7 @@ description: Documentation for the Alibaba Cloud source plugin for CloudQuery
 
 # Alibaba Cloud Source Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Configuration from "./_configuration.mdx";
-import Authentication from "./_authentication.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("source", `alicloud`)}/>
+:badge
 
 The Alibaba Cloud source plugin for CloudQuery extracts configuration from the [Alibaba Cloud (阿里云) API](https://www.alibabacloud.com/product/openapiexplorer) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
@@ -20,7 +15,7 @@ The Alibaba Cloud source plugin for CloudQuery extracts configuration from the [
 
 The following configuration syncs from Alibaba Cloud to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec). The config for the `postgresql` destination is not shown here. See our [Quickstart](/docs/quickstart) if you need help setting up the destination.
 
-<Configuration />
+:configuration
 
 - `concurrency` (`int`, optional, default: `50000`):
 
@@ -43,7 +38,7 @@ See the [Alibaba documentation](https://www.alibabacloud.com/help/en/basics-for-
 
 ## Authentication
 
-<Authentication />
+:authentication
 
 ## Example Queries
 
