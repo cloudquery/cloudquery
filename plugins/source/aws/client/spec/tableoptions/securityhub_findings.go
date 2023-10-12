@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	"github.com/cloudquery/plugin-sdk/v4/caser"
 	"github.com/invopop/jsonschema"
@@ -32,22 +31,24 @@ func (s *CustomSecurityHubGetFindingsInput) UnmarshalJSON(data []byte) error {
 	return json.Unmarshal(b, &s.GetFindingsInput)
 }
 
-// JSONSchemaExtend is required to remove `NextToken` as well as add min & max for `MaxResults`.
 func (CustomSecurityHubGetFindingsInput) JSONSchemaExtend(sc *jsonschema.Schema) {
+	// The following properties are prohibited in spec
 	sc.Properties.Delete("NextToken")
-
-	maxResults := sc.Properties.Value("MaxResults")
-	maxResults.Minimum = json.Number("1")
-	maxResults.Maximum = json.Number("100")
+	// The following properties have additional constraints
+	propertyMaxResults := sc.Properties.Value("MaxResults")
+	if len(propertyMaxResults.OneOf) == 2 {
+		propertyMaxResults = propertyMaxResults.OneOf[0] // 0 = value, 1 = null
+	}
+	propertyMaxResults.Minimum = json.Number("1")
+	propertyMaxResults.Maximum = json.Number("100")
+	propertyMaxResults.Default = 100
 }
 
-func (s *SecurityHubFindings) validateGetFindingEvent() error {
+func (s *SecurityHubFindings) validateGetFindings() error {
 	for _, opt := range s.GetFindingsOpts {
-		if aws.ToString(opt.NextToken) != "" {
+		if opt.NextToken != nil {
 			return errors.New("invalid input: cannot set NextToken in GetFindings")
 		}
-
-		// As per https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html#API_GetFindings_RequestSyntax
 		if opt.MaxResults < 1 || opt.MaxResults > 100 {
 			return errors.New("invalid range: MaxResults must be within range [1-100]")
 		}
@@ -55,14 +56,30 @@ func (s *SecurityHubFindings) validateGetFindingEvent() error {
 	return nil
 }
 
-func (s *SecurityHubFindings) SetDefaults() {
-	for i := 0; i < len(s.GetFindingsOpts); i++ {
-		if s.GetFindingsOpts[i].MaxResults == 0 {
-			s.GetFindingsOpts[i].MaxResults = 100
+func (s *SecurityHubFindings) sanitized() *SecurityHubFindings {
+	var result SecurityHubFindings
+	if s != nil {
+		result = *s
+	}
+
+	if len(result.GetFindingsOpts) == 0 {
+		result.GetFindingsOpts = []CustomSecurityHubGetFindingsInput{{GetFindingsInput: securityhub.GetFindingsInput{}}}
+	}
+	for i, opt := range result.GetFindingsOpts {
+		if opt.MaxResults == 0 {
+			result.GetFindingsOpts[i].MaxResults = 100
 		}
 	}
+	return &result
 }
 
 func (s *SecurityHubFindings) Validate() error {
-	return s.validateGetFindingEvent()
+	return s.sanitized().validateGetFindings()
+}
+
+func (s *SecurityHubFindings) Filters() []CustomSecurityHubGetFindingsInput {
+	if s != nil && s.GetFindingsOpts != nil {
+		return s.GetFindingsOpts
+	}
+	return s.sanitized().GetFindingsOpts
 }

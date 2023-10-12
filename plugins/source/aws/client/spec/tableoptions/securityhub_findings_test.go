@@ -35,6 +35,11 @@ func TestCustomSecurityHubGetFindingsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: `{}`,
 		},
 		{
+			Name: "extra keyword",
+			Err:  true,
+			Spec: `{"extra":123}`,
+		},
+		{
 			Name: "empty get_findings",
 			Spec: `{"get_findings":[]}`,
 		},
@@ -52,6 +57,11 @@ func TestCustomSecurityHubGetFindingsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: `{"get_findings":[{}]}`,
 		},
 		{
+			Name: "get_findings entry with extra keyword",
+			Err:  true,
+			Spec: `{"get_findings":[{"extra":123}]}`,
+		},
+		{
 			Name: "null get_findings entry",
 			Err:  true,
 			Spec: `{"get_findings":[null]}`,
@@ -66,7 +76,7 @@ func TestCustomSecurityHubGetFindingsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: func() string {
 				var input CustomSecurityHubGetFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
-				input.MaxResults = 10 // range 1-100
+				input.MaxResults = int32(100) // 1-100
 				return `{"get_findings":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}`
 			}(),
 		},
@@ -76,8 +86,26 @@ func TestCustomSecurityHubGetFindingsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: func() string {
 				var input CustomSecurityHubGetFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
-				input.MaxResults = 10 // range 1-100
+				input.MaxResults = int32(100) // 1-100
 				return `{"get_findings":[` + jsonschema.WithRemovedKeys(t, &input) + `]}`
+			}(),
+		},
+		{
+			Name: "missing get_findings.MaxResults",
+			Spec: func() string {
+				var input CustomSecurityHubGetFindingsInput
+				require.NoError(t, faker.FakeObject(&input))
+				return `{"get_findings":[` + jsonschema.WithRemovedKeys(t, &input, "MaxResults", "NextToken") + `]}`
+			}(),
+		},
+		{
+			Name: "zero get_findings.MaxResults",
+			Err:  true,
+			Spec: func() string {
+				var input CustomSecurityHubGetFindingsInput
+				require.NoError(t, faker.FakeObject(&input))
+				input.MaxResults = int32(0)
+				return `{"get_findings":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}`
 			}(),
 		},
 		{
@@ -86,17 +114,7 @@ func TestCustomSecurityHubGetFindingsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: func() string {
 				var input CustomSecurityHubGetFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
-				input.MaxResults = 1000 // range 1-100
-				return `{"get_findings":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}`
-			}(),
-		},
-		{
-			Name: "get_findings.MaxResults < 1",
-			Err:  true,
-			Spec: func() string {
-				var input CustomSecurityHubGetFindingsInput
-				require.NoError(t, faker.FakeObject(&input))
-				input.MaxResults = 0 // range 1-100
+				input.MaxResults = int32(1000)
 				return `{"get_findings":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}`
 			}(),
 		},

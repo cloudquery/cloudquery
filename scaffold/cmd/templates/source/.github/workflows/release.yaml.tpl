@@ -17,7 +17,7 @@ jobs:
         with:
           input_string: ${{"{{"}}github.ref_name{{"}}"}}
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Set up Go
@@ -25,12 +25,12 @@ jobs:
         with:
           go-version-file: go.mod
       - name: Run GoReleaser Dry-Run
-        uses: goreleaser/goreleaser-action@v4
+        uses: goreleaser/goreleaser-action@v5
         with:
           version: latest
           args: release --clean --skip-validate --skip-publish --skip-sign
       - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v4
+        uses: goreleaser/goreleaser-action@v5
         with:
           version: latest
           args: release --clean --skip-sign
