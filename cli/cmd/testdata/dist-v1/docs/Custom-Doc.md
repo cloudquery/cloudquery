@@ -1,7 +1,6 @@
 ---
 title: Custom Documentation
 description: Custom Documentation
-ordinal_position: 3
 ---
 
 # Custom Doc
