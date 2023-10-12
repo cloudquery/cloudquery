@@ -46,8 +46,8 @@ github.com/cloudquery/arrow/go/v14 v14.0.0-20231009001222-d4016862d2dd h1:w0lNQ0
 github.com/cloudquery/arrow/go/v14 v14.0.0-20231009001222-d4016862d2dd/go.mod h1:/SqmdO2dsWqFHqQQeupnsr0ollL8C91n3x0I72rArY8=
 github.com/cloudquery/cloudquery-api-go v1.2.8 h1:kzTuHxA/CwNFiCeg+rUZN+pe7lIi4w6FgbG2T+abGlI=
 github.com/cloudquery/cloudquery-api-go v1.2.8/go.mod h1:oyNUZZ6CKjPapxMbmE/qR2vdo9/G+tuCdF7uXT1LYuM=
-github.com/cloudquery/plugin-pb-go v1.12.1 h1:lxCe/ovcbmY4i0N5ko1fH5PIllosIwbXTvrRqZ/UBeg=
-github.com/cloudquery/plugin-pb-go v1.12.1/go.mod h1:+20GGdx/k9ApU56ix5QrPIGfzn0WA7VJlExgaHnNGzc=
+github.com/cloudquery/plugin-pb-go v1.12.3 h1:rLK3/RR70/BX8tj2QzTnrjkxQhzfAT7SXEEEGuKr7Rk=
+github.com/cloudquery/plugin-pb-go v1.12.3/go.mod h1:CYorX3zCHF9ByoOgdBOuwLX/2vVCDH6/FoREOE3oH+w=
 github.com/cloudquery/plugin-sdk/v4 v4.12.4 h1:kdaUD7qNktq8yNXUG+wRlyMCbCaT8RTD7CQ8m2Q2p3w=
 github.com/cloudquery/plugin-sdk/v4 v4.12.4/go.mod h1:3KXAk8+ZvrjUUPrl0ozbJCwsFJMwvC9ODPzY7UJOqb8=
 github.com/coreos/go-systemd/v22 v22.5.0/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
