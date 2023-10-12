@@ -4,19 +4,16 @@ stage: GA
 title: AWS Source Plugin
 description: CloudQuery AWS Source Plugin documentation
 ---
+
 # AWS Source Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Authentication from "./_authentication.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("source", "aws")}/>
+:badge
 
 The AWS Source plugin extracts information from many of the supported services by Amazon Web Services (AWS) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
 ## Authentication
 
-<Authentication />
+:authentication
 
 ## Query Examples
 

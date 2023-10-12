@@ -92,7 +92,7 @@ const customPlugin = () => {
         const hast = h(node.name, node.attributes || {});
         data.hName = hast.tagName;
         data.hProperties = hast.properties;
-        if (!['badge', 'configuration', 'authentication'].includes(data.hName)) {
+        if (!['badge', 'configuration', 'authentication', 'callout'].includes(data.hName)) {
           return;
         }
 
@@ -104,7 +104,7 @@ const customPlugin = () => {
           };
           return;
         }
-        if (data.hName === "configuration" || data.hName === "authentication") {
+        if (data.hName === "configuration" || data.hName === "authentication" || data.hName === "callout") {
           data.hProperties = {
             ...data.hProperties,
             kind,

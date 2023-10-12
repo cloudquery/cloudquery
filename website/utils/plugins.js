@@ -4,12 +4,24 @@ const matter = require("gray-matter");
 const title = require("title");
 const pluginTitle = (plugin) => title(plugin.replace(/-/g, " "));
 
-const getData = (pluginsDir, plugin) => {
+const readPluginOverview = (pluginsDir, plugin) => {
+  // We try both mdx and md extensions
   try {
-    const overviewFile = fs.readFileSync(
+    return fs.readFileSync(
       `${pluginsDir}/${plugin}/overview.mdx`,
       "utf-8"
     );
+  } catch (e) {
+    return fs.readFileSync(
+      `${pluginsDir}/${plugin}/overview.md`,
+      "utf-8"
+    ); 
+  }
+}
+
+const getData = (pluginsDir, plugin) => {
+  try {
+    const overviewFile = readPluginOverview(pluginsDir, plugin);
     return {
       id: plugin,
       name: pluginTitle(plugin),

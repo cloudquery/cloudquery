@@ -1,5 +1,3 @@
-import { Callout } from 'nextra-theme-docs';
-
 # AWS Source Plugin Configuration Reference
 
 ## Examples
@@ -117,9 +115,9 @@ This is the (nested) spec used by the AWS source plugin.
   Currently only `aws_costexplorer*` and `aws_alpha_cloudwatch_metric*` tables require this flag to be set to `true`.
 
 
-<Callout type="warn">
+:::callout{type="warning"}
 The `table_options` parameter is deprecated and will be removed soon. Please reach out to the CloudQuery team if you require this feature
-</Callout>
+:::
 
 - **preview** `table_options` (`map`) (default: not used)
 
@@ -283,9 +281,9 @@ This is used to specify one or more accounts to extract information from. Note t
 ### event_based_sync
 {/* <!-- vale on --> */}
 
-<Callout type="info">
+:::callout{type="info"}
 Event-based syncing is only supported by the enterprise-version AWS plugin. Read more about [event-based syncs](/docs/plugins/sources/aws/event-based-sync)
-</Callout>
+:::
 
 - `account` ([Account](#account)) 
 

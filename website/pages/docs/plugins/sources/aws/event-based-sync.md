@@ -1,10 +1,6 @@
-import { Callout } from 'nextra-theme-docs';
-
-<Callout type="info">
-
+:::callout{type="info"}
 This feature is currently in a closed preview. Sign up for access using this [form](https://cloudquery.typeform.com/to/Dvdn6P2u)
-
-</Callout>
+:::
 
 # Event-Based Sync
 
