@@ -37,6 +37,11 @@ func TestCustomInspector2ListFindingsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: `{}`,
 		},
 		{
+			Name: "extra keyword",
+			Err:  true,
+			Spec: `{"extra":123}`,
+		},
+		{
 			Name: "empty list_findings",
 			Spec: `{"list_findings":[]}`,
 		},
@@ -52,6 +57,11 @@ func TestCustomInspector2ListFindingsInput_JSONSchemaExtend(t *testing.T) {
 		{
 			Name: "empty list_findings entry",
 			Spec: `{"list_findings":[{}]}`,
+		},
+		{
+			Name: "list_findings entry with extra keyword",
+			Err:  true,
+			Spec: `{"list_findings":[{"extra":123}]}`,
 		},
 		{
 			Name: "null list_findings entry",
