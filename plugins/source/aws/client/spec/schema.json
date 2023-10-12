@@ -1753,13 +1753,15 @@
         "MaxResults": {
           "oneOf": [
             {
-              "type": "integer"
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 100
             },
             {
               "type": "null"
             }
-          ],
-          "default": 100
+          ]
         },
         "ServiceName": {
           "oneOf": [
@@ -1891,7 +1893,8 @@
         "MaxResults": {
           "type": "integer",
           "maximum": 100,
-          "minimum": 1
+          "minimum": 1,
+          "default": 100
         },
         "SortCriteria": {
           "oneOf": [

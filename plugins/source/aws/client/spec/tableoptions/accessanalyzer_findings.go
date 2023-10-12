@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/cloudquery/plugin-sdk/v4/caser"
 	"github.com/invopop/jsonschema"
@@ -33,24 +32,43 @@ func (c *CustomAccessAnalyzerListFindingsInput) UnmarshalJSON(data []byte) error
 	return json.Unmarshal(b, &c.ListFindingsInput)
 }
 
-// JSONSchemaExtend is required to remove `AnalyzerArn` & `NextToken`.
 func (CustomAccessAnalyzerListFindingsInput) JSONSchemaExtend(sc *jsonschema.Schema) {
-	sc.Properties.Delete("AnalyzerArn")
+	// The following properties are prohibited in spec
 	sc.Properties.Delete("NextToken")
+	sc.Properties.Delete("AnalyzerArn")
 }
 
-func (c *AccessAnalyzerFindings) validateListFindings() error {
-	for _, opt := range c.ListFindingsOpts {
-		if aws.ToString(opt.NextToken) != "" {
+func (s *AccessAnalyzerFindings) validateListFindings() error {
+	for _, opt := range s.ListFindingsOpts {
+		if opt.NextToken != nil {
 			return errors.New("invalid input: cannot set NextToken in ListFindings")
 		}
-		if aws.ToString(opt.AnalyzerArn) != "" {
-			return errors.New("invalid input: cannot set AnalyzerARN in ListFindings")
+		if opt.AnalyzerArn != nil {
+			return errors.New("invalid input: cannot set AnalyzerArn in ListFindings")
 		}
 	}
 	return nil
 }
 
-func (c *AccessAnalyzerFindings) Validate() error {
-	return c.validateListFindings()
+func (s *AccessAnalyzerFindings) sanitized() *AccessAnalyzerFindings {
+	var result AccessAnalyzerFindings
+	if s != nil {
+		result = *s
+	}
+
+	if len(result.ListFindingsOpts) == 0 {
+		result.ListFindingsOpts = []CustomAccessAnalyzerListFindingsInput{{ListFindingsInput: accessanalyzer.ListFindingsInput{}}}
+	}
+	return &result
+}
+
+func (s *AccessAnalyzerFindings) Validate() error {
+	return s.sanitized().validateListFindings()
+}
+
+func (s *AccessAnalyzerFindings) Filters() []CustomAccessAnalyzerListFindingsInput {
+	if s != nil && s.ListFindingsOpts != nil {
+		return s.ListFindingsOpts
+	}
+	return s.sanitized().ListFindingsOpts
 }

@@ -22,6 +22,11 @@ func TestCloudwatchListMetricsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: `[{"list_metrics":{}}]`,
 		},
 		{
+			Name: "extra keyword",
+			Err:  true,
+			Spec: `[{"extra":123}]`,
+		},
+		{
 			Name: "null list_metrics",
 			Err:  true,
 			Spec: `[{"list_metrics":null}]`,
@@ -65,6 +70,11 @@ func TestCloudwatchGetMetricStatisticsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: `[{"get_metric_statistics":[]}]`,
 		},
 		{
+			Name: "extra keyword",
+			Err:  true,
+			Spec: `[{"extra":123}]`,
+		},
+		{
 			Name: "null get_metric_statistics",
 			Spec: `[{"get_metric_statistics":null}]`,
 		},
@@ -76,6 +86,11 @@ func TestCloudwatchGetMetricStatisticsInput_JSONSchemaExtend(t *testing.T) {
 		{
 			Name: "empty get_metric_statistics entry",
 			Spec: `[{"get_metric_statistics":[{}]}]`,
+		},
+		{
+			Name: "get_metric_statistics entry with extra keyword",
+			Err:  true,
+			Spec: `{"get_metric_statistics":[{"extra":123}]}`,
 		},
 		{
 			Name: "null get_metric_statistics entry",

@@ -22,7 +22,7 @@ func TestAAListFindings(t *testing.T) {
 	api.ListFindingsOpts[0].NextToken = nil
 
 	err = api.Validate()
-	assert.EqualError(t, err, "invalid input: cannot set AnalyzerARN in ListFindings")
+	assert.EqualError(t, err, "invalid input: cannot set AnalyzerArn in ListFindings")
 	api.ListFindingsOpts[0].AnalyzerArn = nil
 
 	// Ensure that as soon as the validation passes that there are no unexpected empty or nil fields
@@ -40,6 +40,11 @@ func TestCustomAccessAnalyzerListFindingsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: `{}`,
 		},
 		{
+			Name: "extra keyword",
+			Err:  true,
+			Spec: `{"extra":123}`,
+		},
+		{
 			Name: "empty list_findings",
 			Spec: `{"list_findings":[]}`,
 		},
@@ -55,6 +60,11 @@ func TestCustomAccessAnalyzerListFindingsInput_JSONSchemaExtend(t *testing.T) {
 		{
 			Name: "empty list_findings entry",
 			Spec: `{"list_findings":[{}]}`,
+		},
+		{
+			Name: "list_findings entry with extra keyword",
+			Err:  true,
+			Spec: `{"list_findings":[{"extra":123}]}`,
 		},
 		{
 			Name: "null list_findings",

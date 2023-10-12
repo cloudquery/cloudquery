@@ -9,7 +9,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
@@ -48,11 +47,7 @@ func fetchCloudtrailEvents(ctx context.Context, meta schema.ClientMeta, parent *
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceCloudtrail).Cloudtrail
 
-	allConfigs := []tableoptions.CustomCloudtrailLookupEventsInput{{}}
-	if cl.Spec.TableOptions.CloudTrailEvents != nil {
-		allConfigs = cl.Spec.TableOptions.CloudTrailEvents.LookupEventsOpts
-	}
-	for _, w := range allConfigs {
+	for _, w := range cl.Spec.TableOptions.CloudTrailEvents.Filters() {
 		le := w.LookupEventsInput
 
 		var backendKey string

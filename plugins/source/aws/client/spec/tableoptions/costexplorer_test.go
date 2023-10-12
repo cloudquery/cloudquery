@@ -18,6 +18,11 @@ func TestCustomGetCostAndUsageInput_JSONSchemaExtend(t *testing.T) {
 			Spec: `{}`,
 		},
 		{
+			Name: "extra keyword",
+			Err:  true,
+			Spec: `{"extra":123}`,
+		},
+		{
 			Name: "empty get_cost_and_usage",
 			Spec: `{"get_cost_and_usage":[]}`,
 		},
@@ -33,6 +38,11 @@ func TestCustomGetCostAndUsageInput_JSONSchemaExtend(t *testing.T) {
 		{
 			Name: "empty get_cost_and_usage entry",
 			Spec: `{"get_cost_and_usage":[{}]}`,
+		},
+		{
+			Name: "get_cost_and_usage entry with extra keyword",
+			Err:  true,
+			Spec: `{"get_cost_and_usage":[{"extra":123}]}`,
 		},
 		{
 			Name: "null get_cost_and_usage entry",

@@ -36,6 +36,11 @@ func TestCustomCloudtrailLookupEventsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: `{}`,
 		},
 		{
+			Name: "extra keyword",
+			Err:  true,
+			Spec: `{"extra":123}`,
+		},
+		{
 			Name: "empty lookup_events",
 			Spec: `{"lookup_events":[]}`,
 		},
@@ -51,6 +56,11 @@ func TestCustomCloudtrailLookupEventsInput_JSONSchemaExtend(t *testing.T) {
 		{
 			Name: "empty lookup_events entry",
 			Spec: `{"lookup_events":[{}]}`,
+		},
+		{
+			Name: "lookup_events entry with extra keyword",
+			Err:  true,
+			Spec: `{"lookup_events":[{"extra":123}]}`,
 		},
 		{
 			Name: "null lookup_events entry",
