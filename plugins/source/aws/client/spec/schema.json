@@ -74,7 +74,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -87,7 +87,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -100,7 +100,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -113,7 +113,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -126,7 +126,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -139,7 +139,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/NumberFilter_1"
+                "$ref": "#/$defs/NumberFilter-1"
               },
               "type": "array"
             },
@@ -152,7 +152,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/DateFilter_1"
+                "$ref": "#/$defs/DateFilter-1"
               },
               "type": "array"
             },
@@ -165,7 +165,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/NumberFilter_1"
+                "$ref": "#/$defs/NumberFilter-1"
               },
               "type": "array"
             },
@@ -178,7 +178,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -191,7 +191,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/NumberFilter_1"
+                "$ref": "#/$defs/NumberFilter-1"
               },
               "type": "array"
             },
@@ -204,7 +204,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/NumberFilter_1"
+                "$ref": "#/$defs/NumberFilter-1"
               },
               "type": "array"
             },
@@ -217,7 +217,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -230,7 +230,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -243,7 +243,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -256,7 +256,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -269,7 +269,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -282,7 +282,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/DateFilter_1"
+                "$ref": "#/$defs/DateFilter-1"
               },
               "type": "array"
             },
@@ -295,7 +295,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -308,7 +308,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -334,7 +334,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/DateFilter_1"
+                "$ref": "#/$defs/DateFilter-1"
               },
               "type": "array"
             },
@@ -347,7 +347,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -360,7 +360,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -373,7 +373,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -386,7 +386,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -399,7 +399,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -438,7 +438,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/NumberFilter_1"
+                "$ref": "#/$defs/NumberFilter-1"
               },
               "type": "array"
             },
@@ -451,7 +451,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -464,7 +464,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -477,7 +477,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -516,7 +516,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -529,7 +529,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/NumberFilter_1"
+                "$ref": "#/$defs/NumberFilter-1"
               },
               "type": "array"
             },
@@ -542,7 +542,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -555,7 +555,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/DateFilter_1"
+                "$ref": "#/$defs/DateFilter-1"
               },
               "type": "array"
             },
@@ -568,7 +568,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -581,7 +581,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/DateFilter_1"
+                "$ref": "#/$defs/DateFilter-1"
               },
               "type": "array"
             },
@@ -594,7 +594,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -607,7 +607,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/NumberFilter_1"
+                "$ref": "#/$defs/NumberFilter-1"
               },
               "type": "array"
             },
@@ -620,7 +620,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -633,7 +633,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/NumberFilter_1"
+                "$ref": "#/$defs/NumberFilter-1"
               },
               "type": "array"
             },
@@ -646,7 +646,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/DateFilter_1"
+                "$ref": "#/$defs/DateFilter-1"
               },
               "type": "array"
             },
@@ -659,7 +659,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -672,7 +672,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/MapFilter_1"
+                "$ref": "#/$defs/MapFilter-1"
               },
               "type": "array"
             },
@@ -685,7 +685,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -698,7 +698,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -711,7 +711,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -724,7 +724,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -737,7 +737,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -750,7 +750,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -763,7 +763,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -776,7 +776,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -815,7 +815,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -828,7 +828,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/DateFilter_1"
+                "$ref": "#/$defs/DateFilter-1"
               },
               "type": "array"
             },
@@ -841,7 +841,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -854,7 +854,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -867,7 +867,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -880,7 +880,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/DateFilter_1"
+                "$ref": "#/$defs/DateFilter-1"
               },
               "type": "array"
             },
@@ -893,7 +893,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -906,7 +906,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -919,7 +919,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -932,7 +932,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -945,7 +945,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -958,7 +958,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -971,7 +971,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -984,7 +984,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -997,7 +997,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/DateFilter_1"
+                "$ref": "#/$defs/DateFilter-1"
               },
               "type": "array"
             },
@@ -1010,7 +1010,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -1023,7 +1023,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/MapFilter_1"
+                "$ref": "#/$defs/MapFilter-1"
               },
               "type": "array"
             },
@@ -1036,7 +1036,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -1049,7 +1049,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -1062,7 +1062,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -1075,7 +1075,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/MapFilter_1"
+                "$ref": "#/$defs/MapFilter-1"
               },
               "type": "array"
             },
@@ -1088,7 +1088,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -1114,7 +1114,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -1127,7 +1127,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/NumberFilter_1"
+                "$ref": "#/$defs/NumberFilter-1"
               },
               "type": "array"
             },
@@ -1140,7 +1140,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/NumberFilter_1"
+                "$ref": "#/$defs/NumberFilter-1"
               },
               "type": "array"
             },
@@ -1153,7 +1153,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -1166,7 +1166,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -1179,7 +1179,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/DateFilter_1"
+                "$ref": "#/$defs/DateFilter-1"
               },
               "type": "array"
             },
@@ -1192,7 +1192,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -1205,7 +1205,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -1218,7 +1218,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -1231,7 +1231,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -1244,7 +1244,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -1257,7 +1257,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -1270,7 +1270,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/DateFilter_1"
+                "$ref": "#/$defs/DateFilter-1"
               },
               "type": "array"
             },
@@ -1283,7 +1283,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/MapFilter_1"
+                "$ref": "#/$defs/MapFilter-1"
               },
               "type": "array"
             },
@@ -1296,7 +1296,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -1309,7 +1309,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -1322,7 +1322,7 @@
           "oneOf": [
             {
               "items": {
-                "$ref": "#/$defs/StringFilter_1"
+                "$ref": "#/$defs/StringFilter-1"
               },
               "type": "array"
             },
@@ -1865,7 +1865,7 @@
         "SortCriteria": {
           "oneOf": [
             {
-              "$ref": "#/$defs/SortCriteria_1"
+              "$ref": "#/$defs/SortCriteria-1"
             },
             {
               "type": "null"
@@ -1938,7 +1938,7 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "DateFilter_1": {
+    "DateFilter-1": {
       "properties": {
         "DateRange": {
           "oneOf": [
@@ -2873,7 +2873,7 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "MapFilter_1": {
+    "MapFilter-1": {
       "properties": {
         "Comparison": {
           "type": "string"
@@ -2928,7 +2928,7 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "NumberFilter_1": {
+    "NumberFilter-1": {
       "properties": {
         "Eq": {
           "type": "number"
@@ -3176,7 +3176,7 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "SortCriteria_1": {
+    "SortCriteria-1": {
       "properties": {
         "Field": {
           "type": "string"
@@ -3415,7 +3415,7 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "StringFilter_1": {
+    "StringFilter-1": {
       "properties": {
         "Comparison": {
           "type": "string"
