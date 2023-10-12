@@ -6,7 +6,7 @@ require (
 	github.com/aliyun/alibaba-cloud-sdk-go v1.62.266
 	github.com/aliyun/aliyun-oss-go-sdk v2.2.7+incompatible
 	github.com/apache/arrow/go/v14 v14.0.0-20230929201650-00efb06dc0de
-	github.com/cloudquery/codegen v0.3.6
+	github.com/cloudquery/codegen v0.3.7
 	github.com/cloudquery/plugin-sdk/v4 v4.12.4
 	github.com/golang/mock v1.5.0
 	github.com/pkg/errors v0.9.1
