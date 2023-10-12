@@ -1,6 +1,9 @@
 import nextra from "nextra";
 import * as fs from "fs";
 import path from "path";
+import { h } from "hastscript";
+import remarkDirective from "remark-directive";
+import { visit } from "unist-util-visit";
 
 const patterns = {
   cli: /VERSION_(CLI)/,
@@ -10,7 +13,17 @@ const patterns = {
 
 const pluginNamePatterns = {
   destinationName: /DESTINATION_NAME/,
-}
+};
+
+const getKindAndName = (file) => {
+  const match = file.history[0].match(/pages\/docs\/plugins\/(.+)\/(.+)\//);
+  const [kind, name] = [match[1], match[2]];
+
+  return {
+    kind,
+    name,
+  };
+};
 
 function removeVersionPrefix(version) {
   return version.slice(1);
@@ -39,7 +52,7 @@ function getVersionsForPrefix(prefix, files) {
   return Object.fromEntries(
     files
       .filter((file) => file.name.split("-")[0] == prefix)
-      .map((file) => [parseName(file.name), parseVersion(file.latest)])
+      .map((file) => [parseName(file.name), parseVersion(file.latest)]),
   );
 }
 
@@ -62,6 +75,47 @@ function getVersions() {
 
 const versions = getVersions();
 
+const getLatestVersion = (key, name) => {
+  const version = versions[key][name] || "Unpublished";
+  return version;
+}
+
+const customPlugin = () => {
+  return (tree, file) => {
+    visit(tree, function (node) {
+      if (
+        node.type === "containerDirective" ||
+        node.type === "leafDirective" ||
+        node.type === "textDirective"
+      ) {
+        const data = node.data || (node.data = {});
+        const hast = h(node.name, node.attributes || {});
+        data.hName = hast.tagName;
+        data.hProperties = hast.properties;
+        if (!['badge', 'configuration', 'authentication'].includes(data.hName)) {
+          return;
+        }
+
+        const { kind, name } = getKindAndName(file);
+        if (data.hName === "badge") {
+          data.hProperties = {
+            ...data.hProperties,
+            text: "Latest: " + getLatestVersion(kind, name),
+          };
+          return;
+        }
+        if (data.hName === "configuration" || data.hName === "authentication") {
+          data.hProperties = {
+            ...data.hProperties,
+            kind,
+            name,
+          };
+        }
+      }
+    });
+  };
+};
+
 const replaceMdxPluginNames = (node) => {
   if (node.type === "text") {
     Object.entries(pluginNamePatterns).forEach(([key, pattern]) => {
@@ -83,7 +137,7 @@ const replaceMdxCodeVersions = (node) => {
       const match = node.value.match(pattern);
       if (match && match.length >= 1) {
         const name = match[1].toLowerCase();
-        const version = versions[key][name] || "Unpublished";
+        const version = getLatestVersion(key, name);
         node.value = node.value.replace(pattern, version);
       }
     });
@@ -99,6 +153,7 @@ const withNextra = nextra({
   theme: "nextra-theme-docs",
   themeConfig: "./theme.config.tsx",
   mdxOptions: {
+    remarkPlugins: [remarkDirective, customPlugin],
     rehypePrettyCodeOptions: {
       theme: "nord",
       onVisitLine: (node) => {
