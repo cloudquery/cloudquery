@@ -3,7 +3,7 @@ import { Footer } from "./components/Footer";
 import { EditLink } from "./components/EditLink";
 import CloudQueryLogo from "./components/logos/CloudQuery";
 import { Badge } from "./components/Badge";
-import { useConfig } from "nextra-theme-docs";
+import { Callout, useConfig } from "nextra-theme-docs";
 import { components } from "./utils/components";
 
 const theme: DocsThemeConfig = {
@@ -98,6 +98,9 @@ const theme: DocsThemeConfig = {
     authentication: ({ kind, name }: { kind: string; name: string }) => {
       return components[`${kind}-${name}-authentication`];
     },
+    callout: ({ type, children }: any) => {
+      return <Callout type={type} >{children}</Callout>;
+    }
   },
 };
 
