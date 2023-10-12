@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
@@ -49,13 +48,8 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceEcs).Ecs
-	var allConfigs []tableoptions.CustomECSListTasksInput
-	if cl.Spec.TableOptions.ECSTasks != nil && cl.Spec.TableOptions.ECSTasks.ListTasksOpts != nil {
-		allConfigs = cl.Spec.TableOptions.ECSTasks.ListTasksOpts
-	} else {
-		allConfigs = []tableoptions.CustomECSListTasksInput{{ListTasksInput: ecs.ListTasksInput{MaxResults: aws.Int32(100)}}}
-	}
-	for _, config := range allConfigs {
+
+	for _, config := range cl.Spec.TableOptions.ECSTasks.Filters() {
 		config.Cluster = cluster.ClusterArn
 		paginator := ecs.NewListTasksPaginator(svc, &config.ListTasksInput)
 		for paginator.HasMorePages() {
