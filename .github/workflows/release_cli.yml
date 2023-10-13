@@ -46,7 +46,7 @@ jobs:
           version: latest
           install-only: true
       - name: Run GoReleaser Dry-Run
-        run: goreleaser release --clean --skip-validate --skip-publish -f ./cli/.goreleaser.yaml
+        run: goreleaser release --clean --skip=validate,publish -f ./cli/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
