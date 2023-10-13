@@ -9,7 +9,7 @@ import (
 	"github.com/google/go-github/v49/github"
 )
 
-func WorkflowRunUsage() *schema.Table {
+func workflowRunUsage() *schema.Table {
 	return &schema.Table{
 		Name:      "github_workflow_run_usage",
 		Resolver:  fetchWorkflowRunUsage,

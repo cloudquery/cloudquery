@@ -20,8 +20,8 @@ func WorkflowRuns() *schema.Table {
 			client.RepositoryIDColumn,
 		},
 		Relations: []*schema.Table{
-			WorkflowRunUsage(),
-			WorkflowJobs(),
+			workflowRunUsage(),
+			workflowJobs(),
 		},
 	}
 }

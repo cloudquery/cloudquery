@@ -10,7 +10,7 @@ import (
 	"github.com/google/go-github/v49/github"
 )
 
-func WorkflowJobs() *schema.Table {
+func workflowJobs() *schema.Table {
 	return &schema.Table{
 		Name:      "github_workflow_jobs",
 		Resolver:  fetchWorkflowJobs,
