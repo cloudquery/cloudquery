@@ -20,6 +20,10 @@ const (
 )
 
 func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
+	if err := c.setupWrite(ctx); err != nil {
+		return err
+	}
+
 	if err := c.writer.Write(ctx, msgs); err != nil {
 		return err
 	}
@@ -66,6 +70,20 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 		return fmt.Errorf("failed to copy file into table with last resource %s: %w", sql, err)
 	}
 	return err
+}
+
+func (c *Client) setupWrite(ctx context.Context) error {
+	var setupErr error
+	c.setupWriteOnce.Do(func() {
+		if _, err := c.db.ExecContext(ctx, createOrReplaceFileFormat); err != nil {
+			setupErr = fmt.Errorf("failed to create file format %s: %w", createOrReplaceFileFormat, err)
+			return
+		}
+		if _, err := c.db.ExecContext(ctx, createOrReplaceStage); err != nil {
+			setupErr = fmt.Errorf("failed to create stage %s: %w", createOrReplaceStage, err)
+		}
+	})
+	return setupErr
 }
 
 // escapePath properly escapes the `\` character in window's file paths.
