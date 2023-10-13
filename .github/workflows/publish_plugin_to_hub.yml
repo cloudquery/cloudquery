@@ -12,6 +12,7 @@ jobs:
     outputs:
       plugin_name: ${{ steps.split.outputs.plugin_name }}
       plugin_kind: ${{ steps.split.outputs.plugin_kind }}
+      plugin_kind_plural: ${{ steps.split.outputs.plugin_kind_plural }}
       plugin_version: ${{ steps.split.outputs.plugin_version }}
       plugin_dir: ${{ steps.split.outputs.plugin_dir }}
       prerelease: ${{ steps.semver_parser.outputs.prerelease }}
@@ -23,9 +24,11 @@ jobs:
           tag=${{ github.ref_name }}
           plugin_kind=$(echo $tag | cut -d- -f2)
           plugin_name=$(echo $tag | cut -d- -f3)
+          plugin_kind_plural=$(if [ "$plugin_kind" = "source" ]; then echo "sources"; else echo "destinations"; fi)
           plugin_version=$(echo $tag | cut -d- -f4-)
           echo "plugin_name=${plugin_name}" >> $GITHUB_OUTPUT
           echo "plugin_kind=${plugin_kind}" >> $GITHUB_OUTPUT
+          echo "plugin_kind_plural=${plugin_kind_plural}" >> $GITHUB_OUTPUT
           echo "plugin_version=${plugin_version}" >> $GITHUB_OUTPUT
           echo "plugin_dir=plugins/${plugin_kind}/${plugin_name}" >> $GITHUB_OUTPUT
       # Fail if not a valid SemVer string
@@ -104,13 +107,13 @@ jobs:
       - name: Run package command
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         run: |
-          mkdir -p stubdocs
-          touch stubdocs/README.md
-          go run main.go package --docs-dir stubdocs -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_kind }} ${{ needs.prepare.outputs.plugin_version }} .
+          rsync -v --exclude='tables.md' ../../../website/pages/docs/plugins/${{ needs.prepare.outputs.plugin_kind_plural }}/${{ needs.prepare.outputs.plugin_name }}/*.md docsdir/
+          go run main.go package --docs-dir docsdir -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_kind }} ${{ needs.prepare.outputs.plugin_version }} .
+
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v3.21.3
+          version: v3.22.0
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}

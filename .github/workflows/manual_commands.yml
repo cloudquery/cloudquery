@@ -8,6 +8,7 @@ jobs:
   gen:
     timeout-minutes: 5
     runs-on: ubuntu-latest
+    if: ${{ github.event.issue.pull_request }}
     steps:
       - name: Trigger Source Plugin Generation Command
         uses: peter-evans/slash-command-dispatch@v3

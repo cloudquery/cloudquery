@@ -7,7 +7,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
@@ -45,18 +44,10 @@ This is useful when multi region and account aggregation is enabled.`,
 
 func fetchFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	var allConfigs []tableoptions.CustomSecurityHubGetFindingsInput
-
-	if cl.Spec.TableOptions.SecurityHubFindings != nil && cl.Spec.TableOptions.SecurityHubFindings.GetFindingsOpts != nil {
-		allConfigs = cl.Spec.TableOptions.SecurityHubFindings.GetFindingsOpts
-	} else {
-		allConfigs = []tableoptions.CustomSecurityHubGetFindingsInput{{GetFindingsInput: securityhub.GetFindingsInput{MaxResults: 100}}}
-	}
-
 	svc := cl.Services(client.AWSServiceSecurityhub).Securityhub
 
 	var config securityhub.GetFindingsInput
-	for _, w := range allConfigs {
+	for _, w := range cl.Spec.TableOptions.SecurityHubFindings.Filters() {
 		config = w.GetFindingsInput
 		p := securityhub.NewGetFindingsPaginator(svc, &config)
 		for p.HasMorePages() {

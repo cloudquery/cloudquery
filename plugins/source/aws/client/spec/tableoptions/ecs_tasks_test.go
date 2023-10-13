@@ -3,6 +3,7 @@ package tableoptions
 import (
 	"testing"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/cloudquery/codegen/jsonschema"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/stretchr/testify/assert"
@@ -35,6 +36,11 @@ func TestCustomECSListTasksInput_JSONSchemaExtend(t *testing.T) {
 			Spec: `{}`,
 		},
 		{
+			Name: "extra keyword",
+			Err:  true,
+			Spec: `{"extra":123}`,
+		},
+		{
 			Name: "empty list_tasks",
 			Spec: `{"list_tasks":[]}`,
 		},
@@ -52,6 +58,11 @@ func TestCustomECSListTasksInput_JSONSchemaExtend(t *testing.T) {
 			Spec: `{"list_tasks":[{}]}`,
 		},
 		{
+			Name: "list_tasks entry with extra keyword",
+			Err:  true,
+			Spec: `{"list_tasks":[{"extra":123}]}`,
+		},
+		{
 			Name: "null list_tasks entry",
 			Err:  true,
 			Spec: `{"list_tasks":[null]}`,
@@ -59,32 +70,72 @@ func TestCustomECSListTasksInput_JSONSchemaExtend(t *testing.T) {
 		{
 			Name: "bad list_tasks entry",
 			Err:  true,
-			Spec: `{"list_tasks":123}`,
+			Spec: `{"list_tasks":[123]}`,
 		},
 		{
-			Name: "proper list_tasks",
+			Name: "proper list_tasks entry",
 			Spec: func() string {
 				var input CustomECSListTasksInput
 				require.NoError(t, faker.FakeObject(&input))
+				input.MaxResults = aws.Int32(10) // 1-100
 				return `{"list_tasks":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken", "Cluster") + `]}`
 			}(),
 		},
 		{
-			Name: "list_tasks.NextToken is present",
+			Name: "list_tasks.NextToken present",
 			Err:  true,
 			Spec: func() string {
 				var input CustomECSListTasksInput
 				require.NoError(t, faker.FakeObject(&input))
+				input.MaxResults = aws.Int32(10) // 1-100
 				return `{"list_tasks":[` + jsonschema.WithRemovedKeys(t, &input, "Cluster") + `]}`
 			}(),
 		},
 		{
-			Name: "list_tasks.Cluster is present",
+			Name: "list_tasks.Cluster present",
 			Err:  true,
 			Spec: func() string {
 				var input CustomECSListTasksInput
 				require.NoError(t, faker.FakeObject(&input))
+				input.MaxResults = aws.Int32(10) // 1-100
 				return `{"list_tasks":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}`
+			}(),
+		},
+		{
+			Name: "missing list_tasks.MaxResults",
+			Spec: func() string {
+				var input CustomECSListTasksInput
+				require.NoError(t, faker.FakeObject(&input))
+				return `{"list_tasks":[` + jsonschema.WithRemovedKeys(t, &input, "MaxResults", "NextToken", "Cluster") + `]}`
+			}(),
+		},
+		{
+			Name: "null list_tasks.MaxResults",
+			Spec: func() string {
+				var input CustomECSListTasksInput
+				require.NoError(t, faker.FakeObject(&input))
+				input.MaxResults = nil
+				return `{"list_tasks":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken", "Cluster") + `]}`
+			}(),
+		},
+		{
+			Name: "zero list_tasks.MaxResults",
+			Err:  true,
+			Spec: func() string {
+				var input CustomECSListTasksInput
+				require.NoError(t, faker.FakeObject(&input))
+				input.MaxResults = aws.Int32(0)
+				return `{"list_tasks":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken", "Cluster") + `]}`
+			}(),
+		},
+		{
+			Name: "list_tasks.MaxResults > 100",
+			Err:  true,
+			Spec: func() string {
+				var input CustomECSListTasksInput
+				require.NoError(t, faker.FakeObject(&input))
+				input.MaxResults = aws.Int32(1000)
+				return `{"list_tasks":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken", "Cluster") + `]}`
 			}(),
 		},
 	})
