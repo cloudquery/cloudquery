@@ -53,7 +53,7 @@ jobs:
       - name: Add Docker builder
         run: docker buildx create --name mybuilder --driver docker-container --bootstrap
       - name: Run GoReleaser Dry-Run
-        run: goreleaser release --timeout 50m --clean --skip-validate --skip-publish --skip-sign -f ./plugins/source/test/.goreleaser.yaml
+        run: goreleaser release --timeout 50m --clean --skip=validate,publish,sign -f ./plugins/source/test/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
