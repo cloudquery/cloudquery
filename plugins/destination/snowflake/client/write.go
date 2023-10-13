@@ -20,10 +20,6 @@ const (
 )
 
 func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
-	if err := c.setupWrite(ctx); err != nil {
-		return err
-	}
-
 	if err := c.writer.Write(ctx, msgs); err != nil {
 		return err
 	}
@@ -34,6 +30,10 @@ func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) er
 }
 
 func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
+	if err := c.setupWrite(ctx); err != nil {
+		return err
+	}
+
 	tableName := name
 	f, err := os.CreateTemp(os.TempDir(), tableName+".json.*")
 	if err != nil {
