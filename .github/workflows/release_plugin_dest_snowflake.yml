@@ -48,7 +48,7 @@ jobs:
           version: latest
           install-only: true
       - name: Run GoReleaser Dry-Run
-        run: goreleaser release --clean --skip-validate --skip-publish --skip-sign -f ./plugins/destination/snowflake/.goreleaser.yaml
+        run: goreleaser release --clean --skip=validate,publish,sign -f ./plugins/destination/snowflake/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}

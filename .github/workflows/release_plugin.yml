@@ -154,7 +154,7 @@ jobs:
           version: latest
           install-only: true
       - name: Run GoReleaser Dry-Run
-        run: goreleaser release --timeout 50m --clean --skip-validate --skip-publish --skip-sign -f ./${{needs.prepare.outputs.plugin_dir}}/.goreleaser.yaml
+        run: goreleaser release --timeout 50m --clean --skip=validate,publish,sign -f ./${{needs.prepare.outputs.plugin_dir}}/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
