@@ -1,30 +1,34 @@
 package client
 
 import (
+	_ "embed"
 	"fmt"
 	"strings"
 	"time"
+
+	"github.com/invopop/jsonschema"
 )
 
 type Spec struct {
-	PropertyID  string     `json:"property_id,omitempty"`
-	StartDate   string     `json:"start_date,omitempty"`
-	OAuth       *oauthSpec `json:"oauth,omitempty"`
-	Reports     []*Report  `json:"reports,omitempty"`
-	Concurrency int        `json:"concurrency,omitempty"`
+	PropertyID  string     `json:"property_id,omitempty" jsonschema:"required,minLength=1"`
+	StartDate   string     `json:"start_date,omitempty" jsonschema:"format=date,default=now-168h"`
+	OAuth       *OAuthSpec `json:"oauth,omitempty"`
+	Reports     []Report   `json:"reports,omitempty"`
+	Concurrency int        `json:"concurrency,omitempty" jsonschema:"minimum=1,default=10000"`
 }
-
-const layout = "2006-01-02"
-const defaultConcurrency = 10000
 
 func (s *Spec) setDefaults() {
 	if len(s.StartDate) == 0 {
 		// date 7 days prior
-		s.StartDate = time.Now().UTC().Add(-7 * 24 * time.Hour).Format(layout)
+		s.StartDate = time.Now().UTC().Add(-7 * 24 * time.Hour).Format(time.DateOnly)
 	}
-	if s.Concurrency == 0 {
+	if s.Concurrency <= 0 {
+		const defaultConcurrency = 10000
 		s.Concurrency = defaultConcurrency
 	}
+}
+
+func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 }
 
 func (s *Spec) validate() error {
@@ -35,9 +39,9 @@ func (s *Spec) validate() error {
 		s.PropertyID = "properties/" + s.PropertyID // required for SDK
 	}
 
-	_, err := time.Parse(layout, s.StartDate)
+	_, err := time.Parse(time.DateOnly, s.StartDate)
 	if err != nil {
-		return fmt.Errorf(`"start_date" has to be in %q format, got %q: %w`, layout, s.StartDate, err)
+		return fmt.Errorf(`"start_date" has to be in %q format, got %q: %w`, time.DateOnly, s.StartDate, err)
 	}
 
 	saw := make(map[string]struct{})
@@ -54,3 +58,6 @@ func (s *Spec) validate() error {
 
 	return s.OAuth.validate()
 }
+
+//go:embed schema.json
+var JSONSchema string

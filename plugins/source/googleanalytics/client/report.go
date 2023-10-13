@@ -7,13 +7,14 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/caser"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	"github.com/invopop/jsonschema"
 	analyticsdata "google.golang.org/api/analyticsdata/v1beta"
 )
 
 type Report struct {
-	Name          string    `json:"name"`
-	Dimensions    []string  `json:"dimensions,omitempty"`
-	Metrics       []*Metric `json:"metrics"`
+	Name          string    `json:"name" jsonschema:"required,minLength=1"`
+	Dimensions    []string  `json:"dimensions,omitempty" jsonschema:"maxItems=9,minLength=1"`
+	Metrics       []*Metric `json:"metrics" jsonschema:"required,minItems=1"`
 	KeepEmptyRows bool      `json:"keep_empty_rows,omitempty"`
 }
 
@@ -25,6 +26,11 @@ func (r *Report) normalize() {
 	}
 
 	r.Name = csr.ToSnake(strings.ReplaceAll(r.Name, " ", "_"))
+}
+
+func (Report) JSONSchemaExtend(sc *jsonschema.Schema) {
+	metrics := sc.Properties.Value("metrics").OneOf[0] // 0 - spec, 1 - null
+	sc.Properties.Set("metrics", metrics)
 }
 
 func (r *Report) validate() error {
