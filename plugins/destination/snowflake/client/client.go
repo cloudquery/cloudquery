@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"sync"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
@@ -19,12 +20,15 @@ type Client struct {
 	logger zerolog.Logger
 	spec   Spec
 	writer *batchwriter.BatchWriter
+
+	setupWriteOnce *sync.Once
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
+func New(_ context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
 	c := &Client{
-		logger: logger.With().Str("module", "sf-dest").Logger(),
+		logger:         logger.With().Str("module", "sf-dest").Logger(),
+		setupWriteOnce: &sync.Once{},
 	}
 	if err := json.Unmarshal(spec, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal snowflake spec: %w", err)
@@ -43,12 +47,6 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 		return nil, err
 	}
 	c.db = db
-	if _, err := c.db.ExecContext(ctx, createOrReplaceFileFormat); err != nil {
-		return nil, fmt.Errorf("failed to create file format %s: %w", createOrReplaceFileFormat, err)
-	}
-	if _, err := c.db.ExecContext(ctx, createOrReplaceStage); err != nil {
-		return nil, fmt.Errorf("failed to create stage %s: %w", createOrReplaceStage, err)
-	}
 	return c, nil
 }
 
