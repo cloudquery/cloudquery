@@ -2,6 +2,8 @@
 <h1 align="center"><img alt="cloudquery logo" width=75% src="https://github.com/cloudquery/cloudquery/raw/main/cli/docs/images/logo.png"/></h1>
 <!-- markdownlint-enable MD033 -->
 
+[![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)  [![Go Report Card](https://goreportcard.com/badge/github.com/cloudquery/cloudquery)](https://goreportcard.com/report/github.com/cloudquery/cloudquery)  [![CLI Workflow](https://github.com/cloudquery/cloudquery/actions/workflows/cli.yml/badge.svg)](https://github.com/cloudquery/cloudquery/actions/workflows/cli.yml)  [![Latest Release](https://img.shields.io/github/v/release/cloudquery/cloudquery?logo=github)](https://github.com/cloudquery/cloudquery/releases/latest)  
+
 CloudQuery is an [open-source](https://github.com/cloudquery/cloudquery),
 high-performance data integration framework built for developers.
 
