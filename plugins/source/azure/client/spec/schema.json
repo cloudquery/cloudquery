@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/source/azure/client/spec/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Spec": {
+      "properties": {
+        "subscriptions": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": "array",
+              "uniqueItems": true
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "skip_subscriptions": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": "array",
+              "uniqueItems": true
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cloud_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "normalize_ids": {
+          "type": "boolean"
+        },
+        "oidc_token": {
+          "type": "string",
+          "minLength": 1
+        },
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 50000
+        },
+        "discovery_concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 400
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}

@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
@@ -30,17 +31,17 @@ func NewClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, opt
 	if options.NoConnection {
 		return c, nil
 	}
-	spec := &client.Spec{}
-	if err := json.Unmarshal(specBytes, spec); err != nil {
+	s := &spec.Spec{}
+	if err := json.Unmarshal(specBytes, s); err != nil {
 		return nil, err
 	}
-	spec.SetDefaults()
-	syncClient, err := client.New(ctx, logger, spec)
+	s.SetDefaults()
+	syncClient, err := client.New(ctx, logger, s)
 	if err != nil {
 		return nil, err
 	}
 	c.syncClient = syncClient.(*client.Client)
-	c.scheduler = scheduler.NewScheduler(scheduler.WithLogger(logger), scheduler.WithConcurrency(spec.Concurrency))
+	c.scheduler = scheduler.NewScheduler(scheduler.WithLogger(logger), scheduler.WithConcurrency(s.Concurrency))
 	return c, nil
 }
 
