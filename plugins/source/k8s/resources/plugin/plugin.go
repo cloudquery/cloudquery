@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/spec"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/admissionregistration"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/apps"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/autoscaling"
@@ -75,17 +76,17 @@ func newClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, opt
 	if options.NoConnection {
 		return c, nil
 	}
-	spec := &client.Spec{}
-	if err := json.Unmarshal(specBytes, spec); err != nil {
+	s := &spec.Spec{}
+	if err := json.Unmarshal(specBytes, s); err != nil {
 		return nil, err
 	}
-	spec.SetDefaults()
-	syncClient, err := client.Configure(ctx, logger, *spec)
+	s.SetDefaults()
+	syncClient, err := client.Configure(ctx, logger, *s)
 	if err != nil {
 		return nil, err
 	}
 	c.syncClient = syncClient.(*client.Client)
-	c.scheduler = scheduler.NewScheduler(scheduler.WithLogger(logger), scheduler.WithConcurrency(spec.Concurrency))
+	c.scheduler = scheduler.NewScheduler(scheduler.WithLogger(logger), scheduler.WithConcurrency(s.Concurrency))
 	return c, nil
 }
 

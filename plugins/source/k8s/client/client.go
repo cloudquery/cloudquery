@@ -5,14 +5,13 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
-	apiextensionsclientset "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
-	"k8s.io/client-go/kubernetes"
-
 	v1 "k8s.io/api/core/v1"
+	apiextensionsclientset "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
+	"k8s.io/client-go/kubernetes"
 	// import all k8s auth options
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 	"k8s.io/client-go/rest"
@@ -29,7 +28,7 @@ type Client struct {
 	// map context_name -> API extensions
 	apiExtensions map[string]apiextensionsclientset.Interface
 
-	spec     *Spec
+	spec     *spec.Spec
 	contexts []string
 	paths    map[string]struct{}
 
@@ -75,7 +74,7 @@ func (c *Client) WithNamespace(namespace string) *Client {
 	return &newC
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s Spec) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, s spec.Spec) (schema.ClientMeta, error) {
 	kubeConfig := clientcmd.NewNonInteractiveDeferredLoadingClientConfig(
 		clientcmd.NewDefaultClientConfigLoadingRules(),
 		&clientcmd.ConfigOverrides{},
