@@ -3,6 +3,11 @@
 ## [7.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v7.3.4...plugins-source-github-v7.4.0) (2023-10-16)
 
 
+### This Release has the Following Changes to Tables
+- Table `github_workflow_jobs` was added
+- Table `github_workflow_run_usage` was added
+- Table `github_workflow_runs` was added
+
 ### Features
 
 * Adding GitHub Actions workflowRuns, RunUsage, and Jobs ([#14529](https://github.com/cloudquery/cloudquery/issues/14529)) ([9e91609](https://github.com/cloudquery/cloudquery/commit/9e916090240a33ddf5a0163b950bf8fc1a8873ed))
