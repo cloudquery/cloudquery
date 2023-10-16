@@ -7,12 +7,7 @@ description: CloudQuery PostgreSQL destination plugin documentation
 
 # PostgreSQL Destination Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import { Callout } from 'nextra-theme-docs';
-import Configuration from "./_configuration.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("destination", "postgresql")}/>
+:badge
 
 This destination plugin lets you sync data from a CloudQuery source to a PostgreSQL compatible database.
 
@@ -25,13 +20,13 @@ Supported database versions:
 
 ### Example
 
-<Configuration />
+:configuration
 
 The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
-<Callout type="info">
+:::callout{type="info"}
 Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
-</Callout>
+:::
 
 The PostgreSQL destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
 
