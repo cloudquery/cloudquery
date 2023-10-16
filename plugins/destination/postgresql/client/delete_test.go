@@ -28,7 +28,7 @@ func TestGenerateInitialDelete(t *testing.T) {
 					},
 				},
 			},
-			want: `DELETE from "table1" where ( "id" = $1 ) RETURNING "_cq_id"`,
+			want: `DELETE from "table1" where ( "id" = $1 ) RETURNING *`,
 		},
 		{
 			name:      "multiple pks-AND",
@@ -48,7 +48,7 @@ func TestGenerateInitialDelete(t *testing.T) {
 					},
 				},
 			},
-			want: `DELETE from "table1" where ( "id1" = $1 AND "id2" = $2 ) RETURNING "_cq_id"`,
+			want: `DELETE from "table1" where ( "id1" = $1 AND "id2" = $2 ) RETURNING *`,
 		},
 		{
 			name:      "multiple pks-OR",
@@ -68,7 +68,7 @@ func TestGenerateInitialDelete(t *testing.T) {
 					},
 				},
 			},
-			want: `DELETE from "table1" where ( "id1" = $1 OR "id2" = $2 ) RETURNING "_cq_id"`,
+			want: `DELETE from "table1" where ( "id1" = $1 OR "id2" = $2 ) RETURNING *`,
 		},
 		{
 			name:      "multiple pks-OR+AND",
@@ -101,7 +101,7 @@ func TestGenerateInitialDelete(t *testing.T) {
 					},
 				},
 			},
-			want: `DELETE from "table1" where ( "id1" = $1 OR "id2" = $2 ) AND ( "id1" = $3 AND "id2" = $4 ) RETURNING "_cq_id"`,
+			want: `DELETE from "table1" where ( "id1" = $1 OR "id2" = $2 ) AND ( "id1" = $3 AND "id2" = $4 ) RETURNING *`,
 		},
 	}
 	for _, tt := range tests {
@@ -168,7 +168,7 @@ func TestGenerateDeleteCTE(t *testing.T) {
 					},
 				},
 			},
-			want: `WITH "table1_CTE" AS (DELETE from "table1" where ( "id" = $1 ) RETURNING "_cq_id") , "relation_table1_CTE" AS (DELETE from "relation_table1" where "_cq_parent_id" in (select "_cq_id" from "table1_CTE") RETURNING "_cq_id") Select count(*) from "relation_table1_CTE" UNION ALL Select count(*) from "table1_CTE"`,
+			want: `WITH "table1_CTE" AS (DELETE from "table1" where ( "id" = $1 ) RETURNING *) , "relation_table1_CTE" AS (DELETE from "relation_table1" where "_cq_parent_id" in (select "_cq_id" from "table1_CTE") RETURNING "_cq_id") Select count(*) from "relation_table1_CTE" UNION ALL Select count(*) from "table1_CTE"`,
 		},
 	}
 	for _, tt := range tests {
