@@ -147,6 +147,7 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version-file: ${{needs.prepare.outputs.plugin_dir}}/go.mod
+          cache: false
       - name: Install GoReleaser
         uses: goreleaser/goreleaser-action@v5
         with:
