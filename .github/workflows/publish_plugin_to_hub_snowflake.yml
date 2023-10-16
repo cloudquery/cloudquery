@@ -60,6 +60,7 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
+          cache: false
 
       - name: Use Node.js LTS
         uses: actions/setup-node@v3
