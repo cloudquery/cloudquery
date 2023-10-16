@@ -77,6 +77,7 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version-file: plugins/destination/gcs/go.mod
+          cache: false
       - name: Install GoReleaser
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: goreleaser/goreleaser-action@v5
