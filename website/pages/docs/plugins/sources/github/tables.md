@@ -28,4 +28,7 @@
 - [github_traffic_paths](tables/github_traffic_paths)
 - [github_traffic_referrers](tables/github_traffic_referrers)
 - [github_traffic_views](tables/github_traffic_views)
+- [github_workflow_runs](tables/github_workflow_runs)
+  - [github_workflow_jobs](tables/github_workflow_jobs)
+  - [github_workflow_run_usage](tables/github_workflow_run_usage)
 - [github_workflows](tables/github_workflows)

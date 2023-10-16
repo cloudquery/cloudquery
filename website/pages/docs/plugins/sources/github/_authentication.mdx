@@ -1,5 +1,7 @@
 The GitHub source plugin supports two authentication methods: Personal Access Token and App authentication. Which one you use is up to and the security requirements of your organization.
 
+Keep in mind rate limits for GitHub Apps are higher than for personal access tokens.  Review [GitHub rate limits documentation](https://docs.github.com/en/apps/creating-github-apps/registering-a-github-app/rate-limits-for-github-apps) for details. 
+
 CloudQuery requires only *read* permissions (we will never make any changes to your GitHub account or organizations),
 so, following the principle of least privilege, it's recommended to grant it read-only permissions to all the resources you wish to sync.
 

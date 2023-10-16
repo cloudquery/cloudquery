@@ -68,6 +68,9 @@ type IssuesService interface {
 //go:generate mockgen -package=mocks -destination=./mocks/mock_actions.go . ActionsService
 type ActionsService interface {
 	ListWorkflows(ctx context.Context, owner, repo string, opts *github.ListOptions) (*github.Workflows, *github.Response, error)
+	ListRepositoryWorkflowRuns(ctx context.Context, owner, repo string, opts *github.ListWorkflowRunsOptions) (*github.WorkflowRuns, *github.Response, error)
+	GetWorkflowRunUsageByID(ctx context.Context, owner, repo string, runID int64) (*github.WorkflowRunUsage, *github.Response, error)
+	ListWorkflowJobs(ctx context.Context, owner, repo string, runID int64, opts *github.ListWorkflowJobsOptions) (*github.Jobs, *github.Response, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_dependabot.go . DependabotService
