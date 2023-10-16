@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/source/k8s/client/spec/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Spec": {
+      "properties": {
+        "contexts": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 50000
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
