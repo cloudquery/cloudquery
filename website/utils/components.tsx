@@ -44,6 +44,7 @@ import BigQueryConfiguration from "../pages/docs/plugins/destinations/bigquery/_
 import ClickHouseConfiguration from "../pages/docs/plugins/destinations/clickhouse/_configuration.md";
 import DuckDBConfiguration from "../pages/docs/plugins/destinations/duckdb/_configuration.md";
 import ElasticSearchConfiguration from "../pages/docs/plugins/destinations/elasticsearch/_configuration.md";
+import FileDestinationConfiguration from "../pages/docs/plugins/destinations/file/_configuration.md";
 import GremlinConfiguration from "../pages/docs/plugins/destinations/gremlin/_configuration.md";
 import PostgresDestConfiguration from "../pages/docs/plugins/destinations/postgresql/_configuration.md";
 import SnowflakeConfiguration from "../pages/docs/plugins/destinations/snowflake/_configuration.md";
@@ -95,6 +96,7 @@ export const components = {
   "destinations-clickhouse-configuration": <ClickHouseConfiguration />,
   "destinations-duckdb-configuration": <DuckDBConfiguration />,
   "destinations-elasticsearch-configuration": <ElasticSearchConfiguration />,
+  "destinations-file-configuration": <FileDestinationConfiguration />,
   "destinations-gremlin-configuration": <GremlinConfiguration />,
   "destinations-postgresql-configuration": <PostgresDestConfiguration />,
   "destinations-snowflake-configuration": <SnowflakeConfiguration />,
