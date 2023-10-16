@@ -4,7 +4,7 @@ go 1.21.1
 
 require (
 	github.com/apache/arrow/go/v14 v14.0.0-20230929201650-00efb06dc0de
-	github.com/cloudquery/codegen v0.3.7
+	github.com/cloudquery/codegen v0.3.8
 	github.com/cloudquery/plugin-sdk/v4 v4.12.5
 	github.com/oracle/oci-go-sdk/v65 v65.28.3
 	github.com/rs/zerolog v1.29.1
@@ -13,7 +13,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231009001222-d4016862d2dd
+replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231014001145-dbcb1498009c
 
 // github.com/cloudquery/jsonschema @ cqmain
 replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20231012111802-b28735982a93

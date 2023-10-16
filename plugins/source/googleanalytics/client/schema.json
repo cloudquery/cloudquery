@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/source/googleanalytics/client/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Metric": {
+      "properties": {
+        "expression": {
+          "type": "string"
+        },
+        "invisible": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "name"
+      ]
+    },
+    "OAuthSpec": {
+      "if": {
+        "not": {
+          "properties": {
+            "access_token": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "access_token"
+          ]
+        }
+      },
+      "then": {
+        "properties": {
+          "client_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "client_secret": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "client_id",
+          "client_secret"
+        ]
+      },
+      "properties": {
+        "access_token": {
+          "type": "string"
+        },
+        "client_id": {
+          "type": "string"
+        },
+        "client_secret": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Report": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dimensions": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": "array",
+              "maxItems": 9
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "metrics": {
+          "items": {
+            "$ref": "#/$defs/Metric"
+          },
+          "type": "array",
+          "minItems": 1
+        },
+        "keep_empty_rows": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "name",
+        "metrics"
+      ]
+    },
+    "Spec": {
+      "properties": {
+        "property_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "start_date": {
+          "type": "string",
+          "format": "date",
+          "default": "now-168h"
+        },
+        "oauth": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/OAuthSpec"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reports": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/Report"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 10000
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "property_id"
+      ]
+    }
+  }
+}

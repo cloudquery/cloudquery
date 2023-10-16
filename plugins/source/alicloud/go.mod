@@ -6,7 +6,7 @@ require (
 	github.com/aliyun/alibaba-cloud-sdk-go v1.62.266
 	github.com/aliyun/aliyun-oss-go-sdk v2.2.7+incompatible
 	github.com/apache/arrow/go/v14 v14.0.0-20230929201650-00efb06dc0de
-	github.com/cloudquery/codegen v0.3.7
+	github.com/cloudquery/codegen v0.3.8
 	github.com/cloudquery/plugin-sdk/v4 v4.12.5
 	github.com/golang/mock v1.5.0
 	github.com/pkg/errors v0.9.1
@@ -14,7 +14,7 @@ require (
 	github.com/thoas/go-funk v0.9.3
 )
 
-replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231009001222-d4016862d2dd
+replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231014001145-dbcb1498009c
 
 require (
 	github.com/BurntSushi/toml v1.3.2 // indirect

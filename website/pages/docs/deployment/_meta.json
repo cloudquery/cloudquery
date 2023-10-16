@@ -3,6 +3,7 @@
   "ecs": "Amazon ECS",
   "airflow": "Apache Airflow",
   "docker": "Docker",
+  "docker-offline": "Docker - Offline Installation",
   "github-actions": "GitHub Actions",
   "cloud-run": "Google Cloud Run",
   "google-cloud-vm": "Google Cloud VM",

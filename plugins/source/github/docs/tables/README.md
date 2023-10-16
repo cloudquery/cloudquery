@@ -28,4 +28,7 @@
 - [github_traffic_paths](../../../../../website/tables/github/github_traffic_paths.md)
 - [github_traffic_referrers](../../../../../website/tables/github/github_traffic_referrers.md)
 - [github_traffic_views](../../../../../website/tables/github/github_traffic_views.md)
+- [github_workflow_runs](../../../../../website/tables/github/github_workflow_runs.md)
+  - [github_workflow_jobs](../../../../../website/tables/github/github_workflow_jobs.md)
+  - [github_workflow_run_usage](../../../../../website/tables/github/github_workflow_run_usage.md)
 - [github_workflows](../../../../../website/tables/github/github_workflows.md)
