@@ -9,14 +9,13 @@ require (
 	github.com/apache/arrow/go/v14 v14.0.0-20230929201650-00efb06dc0de
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.2.1
-	github.com/cloudquery/cloudquery-api-go v1.2.6
-	github.com/cloudquery/plugin-pb-go v1.12.1
-	github.com/cloudquery/plugin-sdk/v4 v4.12.3
+	github.com/cloudquery/cloudquery-api-go v1.2.8
+	github.com/cloudquery/plugin-pb-go v1.12.3
+	github.com/cloudquery/plugin-sdk/v4 v4.12.5
 	github.com/getsentry/sentry-go v0.24.1
 	github.com/ghodss/yaml v1.0.0
 	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.1
-	github.com/gosimple/slug v1.13.1
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/rs/zerolog v1.29.1
 	github.com/schollz/progressbar/v3 v3.13.1
@@ -65,7 +64,6 @@ require (
 	github.com/gomarkdown/markdown v0.0.0-20230922112808-5421fefb8386 // indirect
 	github.com/google/flatbuffers v23.5.26+incompatible // indirect
 	github.com/gorilla/css v1.0.0 // indirect
-	github.com/gosimple/unidecode v1.0.1 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/iris-contrib/schema v0.0.6 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
@@ -112,12 +110,12 @@ require (
 	github.com/yosssi/ace v0.0.5 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	golang.org/x/arch v0.5.0 // indirect
-	golang.org/x/crypto v0.13.0 // indirect
+	golang.org/x/crypto v0.14.0 // indirect
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
 	golang.org/x/mod v0.12.0 // indirect
-	golang.org/x/net v0.15.0 // indirect
-	golang.org/x/sys v0.12.0 // indirect
-	golang.org/x/term v0.12.0 // indirect
+	golang.org/x/net v0.17.0 // indirect
+	golang.org/x/sys v0.13.0 // indirect
+	golang.org/x/term v0.13.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	golang.org/x/tools v0.13.0 // indirect
@@ -127,4 +125,4 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231009001222-d4016862d2dd
+replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231014001145-dbcb1498009c

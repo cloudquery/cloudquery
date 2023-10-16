@@ -14,7 +14,7 @@ import (
 )
 
 func TestPublish(t *testing.T) {
-	t.Setenv("CQ_API_KEY", "testkey")
+	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
 		"PUT /plugins/cloudquery/source/test/versions/v1.2.3":                      1,
@@ -64,7 +64,8 @@ func TestPublish(t *testing.T) {
 	defer ts.Close()
 
 	cmd := NewCmdRoot()
-	args := []string{"publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1", "--url", ts.URL}
+	t.Setenv("CLOUDQUERY_API_URL", ts.URL)
+	args := []string{"publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1"}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {
@@ -76,7 +77,7 @@ func TestPublish(t *testing.T) {
 }
 
 func TestPublishFinalize(t *testing.T) {
-	t.Setenv("CQ_API_KEY", "testkey")
+	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
 		"PUT /plugins/cloudquery/source/test/versions/v1.2.3":                      1,
@@ -137,8 +138,10 @@ func TestPublishFinalize(t *testing.T) {
 	}))
 	defer ts.Close()
 
+	t.Setenv("CLOUDQUERY_API_URL", ts.URL)
+
 	cmd := NewCmdRoot()
-	args := []string{"publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1", "--url", ts.URL, "--finalize"}
+	args := []string{"publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1", "--finalize"}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {
@@ -150,7 +153,7 @@ func TestPublishFinalize(t *testing.T) {
 }
 
 func TestPublish_Unauthorized(t *testing.T) {
-	t.Setenv("CQ_API_KEY", "badkey")
+	t.Setenv("CLOUDQUERY_API_KEY", "badkey")
 
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
@@ -159,8 +162,10 @@ func TestPublish_Unauthorized(t *testing.T) {
 	}))
 	defer ts.Close()
 
+	t.Setenv("CLOUDQUERY_API_URL", ts.URL)
+
 	cmd := NewCmdRoot()
-	args := []string{"publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1", "--url", ts.URL, "--finalize"}
+	args := []string{"publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1", "--finalize"}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err == nil {
@@ -308,22 +313,16 @@ func checkCreateDocsRequest(t *testing.T, r *http.Request) {
 	want := map[string]any{
 		"pages": []any{
 			map[string]any{
-				"content":          customDocContent,
-				"name":             "custom-doc",
-				"title":            "Custom Documentation",
-				"ordinal_position": float64(3),
+				"content": customDocContent,
+				"name":    "Custom-Doc",
 			},
 			map[string]any{
-				"content":          configurationContent,
-				"name":             "configuration",
-				"title":            "Configuration",
-				"ordinal_position": float64(2),
+				"content": configurationContent,
+				"name":    "configuration",
 			},
 			map[string]any{
-				"content":          overviewContent,
-				"name":             "overview",
-				"title":            "Overview",
-				"ordinal_position": float64(1),
+				"content": overviewContent,
+				"name":    "overview",
 			},
 		},
 	}

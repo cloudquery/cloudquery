@@ -43,7 +43,7 @@ jobs:
     needs: prepare
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -60,6 +60,7 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
+          cache: false
 
       - name: Use Node.js LTS
         uses: actions/setup-node@v3
@@ -93,7 +94,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v3.21.3
+          version: v3.23.1
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}

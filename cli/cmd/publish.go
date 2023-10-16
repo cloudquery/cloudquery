@@ -12,13 +12,11 @@ import (
 	"path"
 	"path/filepath"
 	"reflect"
-	"strconv"
 	"strings"
 	"syscall"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery/cli/internal/auth"
-	"github.com/gosimple/slug"
 	"github.com/spf13/cobra"
 )
 
@@ -31,13 +29,11 @@ This publishes a plugin version to CloudQuery Hub from a local dist directory.
 	publishExample = `
 # Publish a plugin version from a local dist directory
 cloudquery publish my_team/my_plugin`
-
-	cloudQueryAPI = "https://api.cloudquery.io"
 )
 
 func newCmdPublish() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "publish <team_name>/<plugin_name> [-D dist] [-u <url>]",
+		Use:     "publish <team_name>/<plugin_name> [-D dist]",
 		Short:   publishShort,
 		Long:    publishLong,
 		Example: publishExample,
@@ -59,7 +55,6 @@ func newCmdPublish() *cobra.Command {
 		},
 	}
 	cmd.Flags().StringP("dist-dir", "D", "dist", "Path to the dist directory")
-	cmd.Flags().StringP("url", "u", cloudQueryAPI, "CloudQuery API URL")
 	cmd.Flags().BoolP("finalize", "f", false, `Finalize the plugin version after publishing. If false, the plugin version will be marked as draft=true.`)
 
 	return cmd
@@ -109,11 +104,11 @@ func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 	name := fmt.Sprintf("%s/%s@%s", teamName, pluginName, pkgJSON.Version)
 	fmt.Printf("Publishing %s to CloudQuery Hub...\n", name)
 
-	uri := cmd.Flag("url").Value.String()
-	c, err := cloudquery_api.NewClientWithResponses(uri, cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
-		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
-		return nil
-	}))
+	c, err := cloudquery_api.NewClientWithResponses(getEnvOrDefault("CLOUDQUERY_API_URL", defaultAPIURL),
+		cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
+			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
+			return nil
+		}))
 	if err != nil {
 		return fmt.Errorf("failed to create hub client: %w", err)
 	}
@@ -271,23 +266,9 @@ func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, team
 			return fmt.Errorf("failed to read docs file: %w", err)
 		}
 		contentStr := normalizeContent(string(content))
-		frontmatter := extractFrontMatter(contentStr)
-		ordinal := 0
-		ordinalStr := frontmatter["ordinal_position"]
-		if ordinalStr != "" {
-			ordinal, err = strconv.Atoi(ordinalStr)
-			if err != nil {
-				return fmt.Errorf("failed to parse ordinal_position in %s: %w", dirEntry.Name(), err)
-			}
-		}
-		slug.CustomRuneSub = map[rune]string{
-			'_': "-",
-		}
 		pages = append(pages, cloudquery_api.PluginDocsPageCreate{
-			Content:         contentStr,
-			Name:            slug.Make(strings.TrimSuffix(dirEntry.Name(), fileExt)),
-			OrdinalPosition: &ordinal,
-			Title:           frontmatter["title"],
+			Content: contentStr,
+			Name:    strings.TrimSuffix(dirEntry.Name(), fileExt),
 		})
 	}
 	body := cloudquery_api.CreatePluginVersionDocsJSONRequestBody{
@@ -384,27 +365,4 @@ func normalizeContent(s string) string {
 	s = strings.ReplaceAll(s, "\r\n", "\n")
 	s = strings.ReplaceAll(s, "\r", "\n")
 	return s
-}
-
-func extractFrontMatter(s string) map[string]string {
-	m := make(map[string]string)
-	lines := strings.Split(s, "\n")
-	if len(lines) == 0 {
-		return m
-	}
-	if strings.TrimSpace(lines[0]) != "---" {
-		return m
-	}
-	for i := 1; i < len(lines); i++ {
-		if strings.TrimSpace(lines[i]) == "---" {
-			break
-		}
-		parts := strings.SplitN(lines[i], ":", 2)
-		if len(parts) != 2 {
-			fmt.Println("invalid frontmatter line:", lines[i])
-			continue
-		}
-		m[strings.TrimSpace(parts[0])] = strings.TrimSpace(parts[1])
-	}
-	return m
 }

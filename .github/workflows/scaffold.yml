@@ -25,7 +25,7 @@ jobs:
       run:
         working-directory: ./scaffold
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
@@ -53,7 +53,7 @@ jobs:
     steps:
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - uses: actions/cache@v3
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         with:
@@ -68,15 +68,16 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version-file: scaffold/go.mod
+          cache: false
       - name: Install GoReleaser
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: goreleaser/goreleaser-action@v3
+        uses: goreleaser/goreleaser-action@v5
         with:
           distribution: goreleaser-pro
           version: latest
           install-only: true
       - name: Run GoReleaser Dry-Run
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        run: goreleaser release --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./scaffold/.goreleaser.yaml
+        run: goreleaser release --snapshot --clean --skip=validate,publish,sign -f ./scaffold/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

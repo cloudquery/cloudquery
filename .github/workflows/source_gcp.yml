@@ -25,7 +25,7 @@ jobs:
       run:
         working-directory: ./plugins/source/gcp
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
@@ -47,7 +47,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v3.21.3
+          version: v3.23.1
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -66,7 +66,7 @@ jobs:
     steps:
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - uses: actions/cache@v3
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         with:
@@ -81,16 +81,17 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version-file: plugins/source/gcp/go.mod
+          cache: false
       - name: Install GoReleaser
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: goreleaser/goreleaser-action@v3
+        uses: goreleaser/goreleaser-action@v5
         with:
           distribution: goreleaser-pro
           version: latest
           install-only: true
       - name: Run GoReleaser Dry-Run
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        run: goreleaser release --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/source/gcp/.goreleaser.yaml
+        run: goreleaser release --snapshot --clean --skip=validate,publish,sign -f ./plugins/source/gcp/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
   test-policies:
@@ -116,7 +117,7 @@ jobs:
           --health-retries 5
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Go 1.x
         uses: erezrokah/setup-go@feat/add_cache_prefix
         with:
@@ -129,7 +130,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v3.21.3
+          version: v3.23.1
       - name: Migrate DB
         run: cloudquery migrate test/policy_cq_config.yml
         env:

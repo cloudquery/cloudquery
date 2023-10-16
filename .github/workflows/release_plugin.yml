@@ -37,7 +37,7 @@ jobs:
         with:
           input_string: ${{steps.split.outputs.plugin_version}}
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - uses: actions/github-script@v6
         id: set-result
@@ -103,7 +103,7 @@ jobs:
             GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Update version file
         if: needs.prepare.outputs.prerelease == ''
@@ -132,7 +132,7 @@ jobs:
       CGO_ENABLED: 0
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
       - uses: actions/cache@v3
@@ -147,14 +147,15 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version-file: ${{needs.prepare.outputs.plugin_dir}}/go.mod
+          cache: false
       - name: Install GoReleaser
-        uses: goreleaser/goreleaser-action@v3
+        uses: goreleaser/goreleaser-action@v5
         with:
           distribution: goreleaser-pro
           version: latest
           install-only: true
       - name: Run GoReleaser Dry-Run
-        run: goreleaser release --timeout 50m --clean --skip-validate --skip-publish --skip-sign -f ./${{needs.prepare.outputs.plugin_dir}}/.goreleaser.yaml
+        run: goreleaser release --timeout 50m --clean --skip=validate,publish,sign -f ./${{needs.prepare.outputs.plugin_dir}}/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}

@@ -25,7 +25,7 @@ jobs:
       run:
         working-directory: ./plugins/source/hubspot
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
@@ -46,7 +46,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v3.21.3
+          version: v3.23.1
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -65,7 +65,7 @@ jobs:
     steps:
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - uses: actions/cache@v3
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         with:
@@ -80,15 +80,16 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version-file: plugins/source/hubspot/go.mod
+          cache: false
       - name: Install GoReleaser
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: goreleaser/goreleaser-action@v3
+        uses: goreleaser/goreleaser-action@v5
         with:
           distribution: goreleaser-pro
           version: latest
           install-only: true
       - name: Run GoReleaser Dry-Run
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        run: goreleaser release --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/source/hubspot/.goreleaser.yaml
+        run: goreleaser release --snapshot --clean --skip=validate,publish,sign -f ./plugins/source/hubspot/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

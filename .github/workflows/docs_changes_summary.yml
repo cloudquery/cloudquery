@@ -21,7 +21,7 @@ jobs:
       breaking: ${{ steps.breaking.outputs.status }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Get PR diff
         run: |
           curl -L ${{ github.event.pull_request.diff_url }} > pr.diff
@@ -60,7 +60,7 @@ jobs:
         with:
           token: ${{ secrets.GH_CQ_BOT }}
           issue-number: ${{ github.event.pull_request.number }}
-          comment-author: "github-actions[bot]"
+          comment-author: "cq-bot"
           body-includes: "### This PR has the following changes to source plugin(s) tables:"
       - name: Create or update comment
         uses: peter-evans/create-or-update-comment@716151b9579b05352dbf244d48e968d211889bbc

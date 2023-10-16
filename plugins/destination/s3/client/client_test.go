@@ -65,10 +65,11 @@ func testPlugin(t *testing.T, spec *Spec) {
 	plugin.TestWriterSuiteRunner(t,
 		p,
 		plugin.WriterTestSuiteTests{
-			SkipInsert:      true,
-			SkipUpsert:      true,
-			SkipMigrate:     true,
-			SkipDeleteStale: true,
+			SkipInsert:       true,
+			SkipUpsert:       true,
+			SkipMigrate:      true,
+			SkipDeleteStale:  true,
+			SkipDeleteRecord: true,
 		},
 	)
 }

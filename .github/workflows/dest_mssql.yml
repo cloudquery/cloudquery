@@ -46,7 +46,7 @@ jobs:
                  --health-start-period 20s
                  --health-retries 5
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 2
     - name: Create Database
@@ -83,7 +83,7 @@ jobs:
     steps:
     - name: Checkout
       if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - uses: actions/cache@v3
       if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
       with:
@@ -98,15 +98,16 @@ jobs:
       uses: actions/setup-go@v4
       with:
         go-version-file: plugins/destination/mssql/go.mod
+        cache: false
     - name: Install GoReleaser
       if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-      uses: goreleaser/goreleaser-action@v3
+      uses: goreleaser/goreleaser-action@v5
       with:
         distribution: goreleaser-pro
         version:      latest
         install-only: true
     - name: Run GoReleaser Dry-Run
       if:   startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-      run:  goreleaser release --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/destination/mssql/.goreleaser.yaml
+      run:  goreleaser release --snapshot --clean --skip=validate,publish,sign -f ./plugins/destination/mssql/.goreleaser.yaml
       env:
         GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}

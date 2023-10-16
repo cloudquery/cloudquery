@@ -1,7 +1,7 @@
 name: 🐛 Bug Report
 description: If something isn't working as expected 🤔
 title: "bug: <title>"
-labels: [bug]
+labels: [kind/bug]
 body:
   - type: checkboxes
     attributes:
