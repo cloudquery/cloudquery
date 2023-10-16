@@ -172,5 +172,6 @@ func Plugin() *plugin.Plugin {
 		"k8s",
 		Version,
 		newClient,
+		plugin.WithJSONSchema(spec.JSONSchema),
 	)
 }
