@@ -26,6 +26,7 @@ const (
 
 type Client struct {
 	plugin.UnimplementedSource
+	batchwriter.UnimplementedDeleteRecord
 	logger        zerolog.Logger
 	spec          Spec
 	db            *sql.DB
