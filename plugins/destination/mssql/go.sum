@@ -92,12 +92,12 @@ github.com/cloudquery/arrow/go/v14 v14.0.0-20231014001145-dbcb1498009c h1:z0ZtXv
 github.com/cloudquery/arrow/go/v14 v14.0.0-20231014001145-dbcb1498009c/go.mod h1:EkHPhLB+98ANnPojOy2sUhM0rzYbPEmrtuA9v8aZp/c=
 github.com/cloudquery/cloudquery-api-go v1.2.8 h1:kzTuHxA/CwNFiCeg+rUZN+pe7lIi4w6FgbG2T+abGlI=
 github.com/cloudquery/cloudquery-api-go v1.2.8/go.mod h1:oyNUZZ6CKjPapxMbmE/qR2vdo9/G+tuCdF7uXT1LYuM=
-github.com/cloudquery/plugin-pb-go v1.12.2 h1:zDu+ClcuPLDcsyjiosyGpCADipPLhXNrc/sEC1WvWAU=
-github.com/cloudquery/plugin-pb-go v1.12.2/go.mod h1:CYorX3zCHF9ByoOgdBOuwLX/2vVCDH6/FoREOE3oH+w=
+github.com/cloudquery/plugin-pb-go v1.12.3 h1:rLK3/RR70/BX8tj2QzTnrjkxQhzfAT7SXEEEGuKr7Rk=
+github.com/cloudquery/plugin-pb-go v1.12.3/go.mod h1:CYorX3zCHF9ByoOgdBOuwLX/2vVCDH6/FoREOE3oH+w=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0/go.mod h1:pAX6ojIW99b/Vg4CkhnsGkRIzNaVEceYMR+Bdit73ug=
-github.com/cloudquery/plugin-sdk/v4 v4.12.5 h1:YLTIfYqnlaT5gz+Bv+CRrs9dX63e8mQNYNu3eteee+M=
-github.com/cloudquery/plugin-sdk/v4 v4.12.5/go.mod h1:WL9cNSAGEiEaUI5Go02hC5ZWUhei6TQJy/QEvbE1cCA=
+github.com/cloudquery/plugin-sdk/v4 v4.14.0 h1:FzbJ2AEeZu0A4TBKcr+In2Cs5PeLyiwIBxg8EMRbXXQ=
+github.com/cloudquery/plugin-sdk/v4 v4.14.0/go.mod h1:m7UY//dEzq2b/F6wDAqU2Vd9DLfZRrMjgn4qlnOrkPY=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/cncf/udpa/go v0.0.0-20210930031921-04548b0d99d4/go.mod h1:6pvJx4me5XPnfI9Z40ddWsdw2W/uZgQLFXToKeRcDiI=
