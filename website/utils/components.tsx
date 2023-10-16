@@ -47,6 +47,8 @@ import ElasticSearchConfiguration from "../pages/docs/plugins/destinations/elast
 import FileDestinationConfiguration from "../pages/docs/plugins/destinations/file/_configuration.md";
 import FirehoseConfiguration from "../pages/docs/plugins/destinations/firehose/_configuration.md";
 import FirehoseAuthentication from "../pages/docs/plugins/destinations/firehose/_authentication.md";
+import GCSAuthentication from "../pages/docs/plugins/destinations/gcs/_authentication.md";
+import GCSConfiguration from "../pages/docs/plugins/destinations/gcs/_configuration.md";
 import GremlinConfiguration from "../pages/docs/plugins/destinations/gremlin/_configuration.md";
 import PostgresDestConfiguration from "../pages/docs/plugins/destinations/postgresql/_configuration.md";
 import SnowflakeConfiguration from "../pages/docs/plugins/destinations/snowflake/_configuration.md";
@@ -101,6 +103,8 @@ export const components = {
   "destinations-file-configuration": <FileDestinationConfiguration />,
   "destinations-firehose-configuration": <FirehoseConfiguration />,
   "destinations-firehose-authentication": <FirehoseAuthentication />,
+  "destinations-gcs-authentication": <GCSAuthentication />,
+  "destinations-gcs-configuration": <GCSConfiguration />,
   "destinations-gremlin-configuration": <GremlinConfiguration />,
   "destinations-postgresql-configuration": <PostgresDestConfiguration />,
   "destinations-snowflake-configuration": <SnowflakeConfiguration />,
