@@ -72,8 +72,7 @@ func generateInitialDelete(tableName string, whereClause message.PredicateGroups
 		}
 	}
 
-	sb.WriteString(" RETURNING ")
-	sb.WriteString(pgx.Identifier{schema.CqIDColumn.Name}.Sanitize())
+	sb.WriteString(" RETURNING *")
 	return sb.String()
 }
 
