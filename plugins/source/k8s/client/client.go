@@ -13,7 +13,6 @@ import (
 	apiextensionsclientset "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
-	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 	// import all k8s auth options
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 	"k8s.io/client-go/rest"
@@ -136,7 +135,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s spec.Spec) (schema.
 	return &c, nil
 }
 
-func loadContexts(s *spec.Spec, rawCfg clientcmdapi.Config, logger zerolog.Logger) ([]string, error) {
+func loadContexts(s *spec.Spec, rawCfg api.Config, logger zerolog.Logger) ([]string, error) {
 	if len(s.Contexts) == 0 {
 		logger.Debug().Str("context", rawCfg.CurrentContext).Msg("no context set in configuration using current default defined context")
 		return []string{rawCfg.CurrentContext}, nil
