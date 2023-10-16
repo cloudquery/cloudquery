@@ -45,6 +45,8 @@ import PostgresDestConfiguration from "../pages/docs/plugins/destinations/postgr
 import SnowflakeConfiguration from "../pages/docs/plugins/destinations/snowflake/_configuration.md";
 import SQLiteConfiguration from "../pages/docs/plugins/destinations/sqlite/_configuration.md";
 
+import ClickHouseConfiguration from "../pages/docs/plugins/destinations/clickhouse/_configuration.md";
+
 export const components = {
   "sources-alicloud-configuration": <AlicloudConfiguration />,
   "sources-alicloud-authentication": <AlicloudAuthentication />,
