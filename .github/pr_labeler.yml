@@ -1,138 +1,138 @@
-airtable:
+area/plugin/source/airtable:
   - plugins/source/airtable/**/*
-alicloud:
+area/plugin/source/alicloud:
   - plugins/source/alicloud/**/*
-aws:
+area/plugin/source/aws:
   - plugins/source/aws/**/*
-awspricing:
+area/plugin/source/awspricing:
   - plugins/source/awspricing/**/*
-azblob:
+area/plugin/destination/azblob:
   - plugins/destination/azblob/**/*
-azure:
+area/plugin/source/azure:
   - plugins/source/azure/**/*
-azuredevops:
+area/plugin/source/azuredevops:
   - plugins/source/azuredevops/**/*
-bigquery:
+area/plugin/destination/bigquery:
   - plugins/destination/bigquery/**/*
-bitbucket:
+area/plugin/source/bitbucket:
   - plugins/source/bitbucket/**/*
-ci:
+area/ci:
   - .github/workflows/**/*
-cli:
+area/cli:
   - cli/**/*
-clickhouse:
+area/plugin/destination/clickhouse:
   - plugins/destination/clickhouse/**/*
-cloudflare:
+area/plugin/source/cloudflare:
   - plugins/source/cloudflare/**/*
-datadog:
+area/plugin/source/datadog:
   - plugins/source/datadog/**/*
-digitalocean:
+area/plugin/source/digitalocean:
   - plugins/source/digitalocean/**/*
-duckdb:
+area/plugin/destination/duckdb:
   - plugins/destination/duckdb/**/*
-elasticsearch:
+area/plugin/destination/elasticsearch:
   - plugins/destination/elasticsearch/**/*
-facebookmarketing:
+area/plugin/source/facebookmarketing:
   - plugins/source/facebookmarketing/**/*
-fastly:
+area/plugin/source/fastly:
   - plugins/source/fastly/**/*
-file:
+area/plugin/destination/file:
   - plugins/destination/file/**/*
-firehose:
+area/plugin/destination/firehose:
   - plugins/destination/firehose/**/*
-firestore:
+area/plugin/source/firestore:
   - plugins/source/firestore/**/*
-gandi:
+area/plugin/source/gandi:
   - plugins/source/gandi/**/*
-gcp:
+area/plugin/source/gcp:
   - plugins/source/gcp/**/*
-gcs:
+area/plugin/destination/gcs:
   - plugins/destination/gcs/**/*
-github:
+area/plugin/source/github:
   - plugins/source/github/**/*
-gitlab:
+area/plugin/source/gitlab:
   - plugins/source/gitlab/**/*
-googleads:
+area/plugin/source/googleads:
   - plugins/source/googleads/**/*
-googleanalytics:
+area/plugin/source/googleanalytics:
   - plugins/source/googleanalytics/**/*
-gremlin:
+area/plugin/destination/gremlin:
   - plugins/destination/gremlin/**/*
-hackernews:
+area/plugin/source/hackernews:
   - plugins/source/hackernews/**/*
-heroku:
+area/plugin/source/heroku:
   - plugins/source/heroku/**/*
-homebrew:
+area/plugin/source/homebrew:
   - plugins/source/homebrew/**/*
-hubspot:
+area/plugin/source/hubspot:
   - plugins/source/hubspot/**/*
-jira:
+area/plugin/source/jira:
   - plugins/source/jira/**/*
-k8s:
+area/plugin/source/k8s:
   - plugins/source/k8s/**/*
-kafka:
+area/plugin/destination/kafka:
   - plugins/destination/kafka/**/*
-launchdarkly:
+area/plugin/source/launchdarkly:
   - plugins/source/launchdarkly/**/*
-meilisearch:
+area/plugin/destination/meilisearch:
   - plugins/destination/meilisearch/**/*
-mixpanel:
+area/plugin/source/mixpanel:
   - plugins/source/mixpanel/**/*
-mongodb:
+area/plugin/destination/mongodb:
   - plugins/destination/mongodb/**/*
-mssql:
+area/plugin/destination/mssql:
   - plugins/destination/mssql/**/*
-mysql:
+area/plugin/destination/mysql:
   - plugins/destination/mysql/**/*
-neo4j:
+area/plugin/destination/neo4j:
   - plugins/destination/neo4j/**/*
-notion:
+area/plugin/source/notion:
   - plugins/source/notion/**/*
-okta:
+area/plugin/source/okta:
   - plugins/source/okta/**/*
-oracle:
+area/plugin/source/oracle:
   - plugins/source/oracle/**/*
-oracledb:
+area/plugin/source/oracledb:
   - plugins/source/oracledb/**/*
-pagerduty:
+area/plugin/source/pagerduty:
   - plugins/source/pagerduty/**/*
-plausible:
+area/plugin/source/plausible:
   - plugins/source/plausible/**/*
-postgresql:
+area/plugin/destination/postgresql:
   - plugins/destination/postgresql/**/*
-s3:
+area/plugin/destination/s3:
   - plugins/destination/s3/**/*
-salesforce:
+area/plugin/source/salesforce:
   - plugins/source/salesforce/**/*
-scaffold:
+area/scaffold:
   - scaffold/**/*
-shopify:
+area/plugin/source/shopify:
   - plugins/source/shopify/**/*
-slack:
+area/plugin/source/slack:
   - plugins/source/slack/**/*
-snowflake:
+area/plugin/destination/snowflake:
   - plugins/destination/snowflake/**/*
-snyk:
+area/plugin/source/snyk:
   - plugins/source/snyk/**/*
-source-mysql:
+area/plugin/source/source-mysql:
   - plugins/source/mysql/**/*
-source-postgresql:
+area/plugin/source/source-postgresql:
   - plugins/source/postgresql/**/*
-sqlite:
+area/plugin/destination/sqlite:
   - plugins/destination/sqlite/**/*
-square:
+area/plugin/source/square:
   - plugins/source/square/**/*
-stripe:
+area/plugin/source/stripe:
   - plugins/source/stripe/**/*
-tailscale:
+area/plugin/source/tailscale:
   - plugins/source/tailscale/**/*
-terraform:
+area/plugin/source/terraform:
   - plugins/source/terraform/**/*
-typeform:
+area/plugin/source/typeform:
   - plugins/source/typeform/**/*
-vault:
+area/plugin/source/vault:
   - plugins/source/vault/**/*
-vercel:
+area/plugin/source/vercel:
   - plugins/source/vercel/**/*
-website:
+area/website:
   - website/**/*

@@ -1,7 +1,7 @@
 name: 🚀 Feature request
 description: Suggest an idea for this project
 title: 'feat: <title>'
-labels: ['enhancement']
+labels: ['kind/feat']
 body:
   - type: textarea
     attributes:
