@@ -47,7 +47,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v3.21.3
+          version: v3.22.1
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -90,7 +90,7 @@ jobs:
           install-only: true
       - name: Run GoReleaser Dry-Run
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        run: goreleaser release --snapshot --clean --skip-validate --skip-publish --skip-sign -f ./plugins/source/azure/.goreleaser.yaml
+        run: goreleaser release --snapshot --clean --skip=validate,publish,sign -f ./plugins/source/azure/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
   test-policies:
@@ -129,7 +129,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v3.21.3
+          version: v3.22.1
       - name: Migrate DB
         run: cloudquery migrate test/policy_cq_config.yml
         env:

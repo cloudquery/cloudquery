@@ -8,8 +8,8 @@ require (
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/cloudquery/cloudquery-api-go v1.2.8
-	github.com/cloudquery/plugin-pb-go v1.12.1
-	github.com/cloudquery/plugin-sdk/v4 v4.12.4
+	github.com/cloudquery/plugin-pb-go v1.12.3
+	github.com/cloudquery/plugin-sdk/v4 v4.12.5
 	github.com/getsentry/sentry-go v0.24.1
 	github.com/ghodss/yaml v1.0.0
 	github.com/google/go-cmp v0.5.9
@@ -123,4 +123,4 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231009001222-d4016862d2dd
+replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231014001145-dbcb1498009c

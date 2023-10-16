@@ -7,14 +7,14 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.21.1
 	github.com/aws/aws-sdk-go-v2/config v1.18.44
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.19.1
-	github.com/cloudquery/plugin-sdk/v4 v4.12.4
+	github.com/cloudquery/plugin-sdk/v4 v4.12.5
 	github.com/goccy/go-json v0.10.2
 	github.com/rs/zerolog v1.29.1
 	github.com/stretchr/testify v1.8.4
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231009001222-d4016862d2dd
+replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231014001145-dbcb1498009c
 
 require (
 	github.com/BurntSushi/toml v1.3.2 // indirect
@@ -41,7 +41,7 @@ require (
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.0 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.2.8 // indirect
-	github.com/cloudquery/plugin-pb-go v1.12.1 // indirect
+	github.com/cloudquery/plugin-pb-go v1.12.2 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.15.0 // indirect

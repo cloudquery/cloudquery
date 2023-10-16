@@ -100,7 +100,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads v0.2.0
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azqueue v0.1.0
 	github.com/apache/arrow/go/v14 v14.0.0-20230929201650-00efb06dc0de
-	github.com/cloudquery/plugin-sdk/v4 v4.12.4
+	github.com/cloudquery/plugin-sdk/v4 v4.12.5
 	github.com/cockroachdb/cockroachdb-parser v0.0.0-20230705064001-302c9ad52e1a
 	github.com/gorilla/mux v1.8.0
 	github.com/mitchellh/hashstructure/v2 v2.0.2
@@ -113,7 +113,7 @@ require (
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231009001222-d4016862d2dd
+replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231014001145-dbcb1498009c
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.3.0 // indirect
@@ -136,7 +136,7 @@ require (
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.0 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.2.8 // indirect
-	github.com/cloudquery/plugin-pb-go v1.12.1 // indirect
+	github.com/cloudquery/plugin-pb-go v1.12.2 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/cockroachdb/apd/v3 v3.1.0 // indirect
 	github.com/cockroachdb/errors v1.9.0 // indirect

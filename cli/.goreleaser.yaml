@@ -40,7 +40,7 @@ brews:
     ids:
       - homebrew
     name: cloudquery
-    tap:
+    repository:
       owner: cloudquery
       name: homebrew-tap
     url_template: "https://github.com/cloudquery/cloudquery/releases/download/{{ .PrefixedTag }}/{{ .ArtifactName }}"
@@ -58,7 +58,7 @@ brews:
     ids:
       - homebrew
     name: cloudquery@{{.Version}}
-    tap:
+    repository:
       owner: cloudquery
       name: homebrew-tap
     url_template: "https://github.com/cloudquery/cloudquery/releases/download/{{ .PrefixedTag }}/{{ .ArtifactName }}"
