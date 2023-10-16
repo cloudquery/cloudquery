@@ -57,6 +57,8 @@ import MSSQLConfiguration from "../pages/docs/plugins/destinations/mssql/_config
 import MySQLDestinationConfiguration from "../pages/docs/plugins/destinations/mysql/_configuration.md";
 import Neo4jConfiguration from "../pages/docs/plugins/destinations/neo4j/_configuration.md";
 import PostgresDestConfiguration from "../pages/docs/plugins/destinations/postgresql/_configuration.md";
+import S3Authentication from "../pages/docs/plugins/destinations/s3/_authentication.md";
+import S3Configuration from "../pages/docs/plugins/destinations/s3/_configuration.md";
 import SnowflakeConfiguration from "../pages/docs/plugins/destinations/snowflake/_configuration.md";
 import SQLiteConfiguration from "../pages/docs/plugins/destinations/sqlite/_configuration.md";
 
@@ -119,6 +121,8 @@ export const components = {
   "destinations-mysql-configuration": <MySQLDestinationConfiguration />,
   "destinations-neo4j-configuration": <Neo4jConfiguration />,
   "destinations-postgresql-configuration": <PostgresDestConfiguration />,
+  "destinations-s3-authentication": <S3Authentication />,
+  "destinations-s3-configuration": <S3Configuration />,
   "destinations-snowflake-configuration": <SnowflakeConfiguration />,
   "destinations-sqlite-configuration": <SQLiteConfiguration />,
 };

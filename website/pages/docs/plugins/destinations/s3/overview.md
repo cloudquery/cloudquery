@@ -6,12 +6,7 @@ description: CloudQuery S3 destination plugin documentation
 ---
 # S3 Destination Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Configuration from "./_configuration.mdx";
-import Authentication from "./_authentication.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("destination", "s3")}/>
+:badge
 
 This destination plugin lets you sync data from a CloudQuery source to remote S3 storage in various formats such as CSV, JSON and Parquet.
 
@@ -19,7 +14,7 @@ This is useful in various use-cases, especially in data lakes where you can quer
 
 ## Example
 
-<Configuration />
+:configuration
 
 The S3 destination utilizes batching, and supports `batch_size`, `batch_size_bytes` and `batch_timeout` options (see below).
 
@@ -115,4 +110,4 @@ This is the (nested) spec used by the CSV destination Plugin.
 
 ## Authentication
 
-<Authentication />
+:authentication
