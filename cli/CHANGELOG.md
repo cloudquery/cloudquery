@@ -5,6 +5,25 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.23.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.23.0...cli-v3.23.1) (2023-10-16)
+
+
+### Bug Fixes
+
+* Don't use templating in Dockers publish config ([#14542](https://github.com/cloudquery/cloudquery/issues/14542)) ([6a2a4c8](https://github.com/cloudquery/cloudquery/commit/6a2a4c8e1a1caa8d246dbf504d88447a2e87040e))
+
+## [3.23.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.22.1...cli-v3.23.0) (2023-10-16)
+
+
+### Features
+
+* Add  linux `arm64` docker image ([#14515](https://github.com/cloudquery/cloudquery/issues/14515)) ([d04a87c](https://github.com/cloudquery/cloudquery/commit/d04a87c0fd48df20ba6c53b7c1ed034369dd96ed))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to dbcb149 ([#14537](https://github.com/cloudquery/cloudquery/issues/14537)) ([68686f4](https://github.com/cloudquery/cloudquery/commit/68686f4e7636db02bddd961e3d75b60d5218ca85))
+
 ## [3.22.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.22.0...cli-v3.22.1) (2023-10-13)
 
 
