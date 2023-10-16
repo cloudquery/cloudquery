@@ -6,17 +6,13 @@ description: CloudQuery Azure Blob destination plugin documentation
 ---
 # Azure Blob Storage Destination Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Authentication from "./_authentication.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("destination", "azblob")}/>
+:badge
 
 This destination plugin lets you sync data from a CloudQuery source to remote Azure Blob Storage storage in various formats such as CSV, JSON and Parquet.
 
 ## Authentication
 
-<Authentication />
+:authentication
 
 ## Example
 
