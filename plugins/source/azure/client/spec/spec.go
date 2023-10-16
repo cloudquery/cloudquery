@@ -1,5 +1,7 @@
 package spec
 
+import _ "embed"
+
 type Spec struct {
 	Subscriptions        []string `json:"subscriptions" jsonschema:"minLength=1,uniqueItems=true"`
 	CloudName            string   `json:"cloud_name"`
@@ -19,3 +21,6 @@ func (s *Spec) SetDefaults() {
 		s.Concurrency = defaultConcurrency
 	}
 }
+
+//go:embed schema.json
+var JSONSchema string
