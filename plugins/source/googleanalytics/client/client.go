@@ -28,7 +28,7 @@ type Client struct {
 	service   *analyticsdata.Service
 	backend   state.Client
 
-	reports []*Report
+	reports []Report
 
 	PropertyID string
 	StartDate  string
