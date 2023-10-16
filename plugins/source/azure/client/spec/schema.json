@@ -20,9 +20,6 @@
             }
           ]
         },
-        "cloud_name": {
-          "type": "string"
-        },
         "skip_subscriptions": {
           "oneOf": [
             {
@@ -38,21 +35,26 @@
             }
           ]
         },
+        "cloud_name": {
+          "type": "string",
+          "minLength": 1
+        },
         "normalize_ids": {
           "type": "boolean"
         },
         "oidc_token": {
-          "type": "string"
-        },
-        "discovery_concurrency": {
-          "type": "integer",
-          "minimum": 1,
-          "default": 400
+          "type": "string",
+          "minLength": 1
         },
         "concurrency": {
           "type": "integer",
           "minimum": 1,
           "default": 50000
+        },
+        "discovery_concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 400
         }
       },
       "additionalProperties": false,
