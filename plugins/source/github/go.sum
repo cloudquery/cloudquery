@@ -156,8 +156,8 @@ github.com/gobwas/glob v0.2.3/go.mod h1:d3Ez4x06l9bZtSvzIay5+Yzi0fmZzPgnTbPcKjJA
 github.com/goccy/go-json v0.10.2 h1:CrxCmQqYDkv1z7lO7Wbh2HN93uovUHgrECaO5ZrCXAU=
 github.com/goccy/go-json v0.10.2/go.mod h1:6MelG93GURQebXPDq3khkgXZkazVtN9CRI+MGFi0w8I=
 github.com/godbus/dbus/v5 v5.0.4/go.mod h1:xhWf0FNVPg57R7Z0UbKHbJfkEywrmjJnf7w5xrFpKfA=
-github.com/gofri/go-github-ratelimit v1.0.3 h1:Ocs2jaYokZDzgvqaajX+g04dqFyVqL0JQzoO7d2wmlk=
-github.com/gofri/go-github-ratelimit v1.0.3/go.mod h1:OnCi5gV+hAG/LMR7llGhU7yHt44se9sYgKPnafoL7RY=
+github.com/gofri/go-github-ratelimit v1.0.4 h1:pOwtjHldpsDACBgBiyfa3exXbbu8hlQ9tgFPimnCZzM=
+github.com/gofri/go-github-ratelimit v1.0.4/go.mod h1:OnCi5gV+hAG/LMR7llGhU7yHt44se9sYgKPnafoL7RY=
 github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b/go.mod h1:SBH7ygxi8pfUlaOkMMuAQtPIUF8ecWP5IEl/CR7VP2Q=
 github.com/golang/glog v1.0.0/go.mod h1:EWib/APOK0SL3dFbYqvxE3UYd8E6s1ouQ7iEp/0LWV4=
 github.com/golang/glog v1.1.0 h1:/d3pCKDPWNnvIWe0vVUpNP32qc8U3PDVxySP/y360qE=
