@@ -1,8 +1,6 @@
 module github.com/cloudquery/cloudquery/cli
 
 go 1.21.1
-replace github.com/cloudquery/plugin-pb-go => /Users/benbernays/Documents/GitHub/plugin-pb-go
-replace github.com/cloudquery/plugin-sdk/v4 => /Users/benbernays/Documents/GitHub/plugin-sdk
 
 require (
 	github.com/adrg/xdg v0.4.0
