@@ -55,6 +55,7 @@ import MeilisearchConfiguration from "../pages/docs/plugins/destinations/meilise
 import MongoDBConfiguration from "../pages/docs/plugins/destinations/mongodb/_configuration.md";
 import MSSQLConfiguration from "../pages/docs/plugins/destinations/mssql/_configuration.md";
 import MySQLDestinationConfiguration from "../pages/docs/plugins/destinations/mysql/_configuration.md";
+import Neo4jConfiguration from "../pages/docs/plugins/destinations/neo4j/_configuration.md";
 import PostgresDestConfiguration from "../pages/docs/plugins/destinations/postgresql/_configuration.md";
 import SnowflakeConfiguration from "../pages/docs/plugins/destinations/snowflake/_configuration.md";
 import SQLiteConfiguration from "../pages/docs/plugins/destinations/sqlite/_configuration.md";
@@ -116,6 +117,7 @@ export const components = {
   "destinations-mongodb-configuration": <MongoDBConfiguration />,
   "destinations-mssql-configuration": <MSSQLConfiguration />,
   "destinations-mysql-configuration": <MySQLDestinationConfiguration />,
+  "destinations-neo4j-configuration": <Neo4jConfiguration />,
   "destinations-postgresql-configuration": <PostgresDestConfiguration />,
   "destinations-sqlite-configuration": <SQLiteConfiguration />,
 };
