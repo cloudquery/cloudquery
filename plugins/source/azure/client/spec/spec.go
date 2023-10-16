@@ -1,4 +1,4 @@
-package client
+package spec
 
 const (
 	defaultConcurrency = 50000
