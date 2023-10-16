@@ -5,11 +5,7 @@ description: CloudQuery MySQL destination plugin documentation
 ---
 # MySQL destination plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import { Callout } from 'nextra-theme-docs'
-
-<Badge text={"Latest: " + getLatestVersion("destination", "mysql")}/>
+:badge
 
 This destination plugin lets you sync data from a CloudQuery source to a MySQL database.
 
