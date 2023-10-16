@@ -5,12 +5,7 @@ description: CloudQuery Gremlin destination plugin documentation
 ---
 # Gremlin Destination Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import { Callout } from 'nextra-theme-docs';
-import Configuration from "./_configuration.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("destination", "gremlin")}/>
+:badge
 
 This destination plugin lets you sync data from any CloudQuery source to a Gremlin compatible graph database such as AWS Neptune.
 
@@ -25,13 +20,13 @@ As a side note graph databases can be quite useful for various networking use-ca
 
 ### Example
 
-<Configuration />
+:configuration
 
 The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
-<Callout type="info">
+:::callout{type="info"}
 Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
-</Callout>
+:::
 
 The Gremlin destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
 
