@@ -111,7 +111,6 @@ func TestGenerateInitialDelete(t *testing.T) {
 			if diff != "" {
 				t.Errorf("%s", diff)
 			}
-
 		})
 	}
 }
@@ -136,7 +135,6 @@ func TestGenerateRelationsDelete(t *testing.T) {
 			if diff != "" {
 				t.Errorf("%s", diff)
 			}
-
 		})
 	}
 }
@@ -178,7 +176,6 @@ func TestGenerateDeleteCTE(t *testing.T) {
 			if diff != "" {
 				t.Errorf("%s", diff)
 			}
-
 		})
 	}
 }
