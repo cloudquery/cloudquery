@@ -51,9 +51,11 @@ import GCSAuthentication from "../pages/docs/plugins/destinations/gcs/_authentic
 import GCSConfiguration from "../pages/docs/plugins/destinations/gcs/_configuration.md";
 import GremlinConfiguration from "../pages/docs/plugins/destinations/gremlin/_configuration.md";
 import KafkaConfiguration from "../pages/docs/plugins/destinations/kafka/_configuration.md";
+import MeilisearchConfiguration from "../pages/docs/plugins/destinations/meilisearch/_configuration.md";
 import PostgresDestConfiguration from "../pages/docs/plugins/destinations/postgresql/_configuration.md";
 import SnowflakeConfiguration from "../pages/docs/plugins/destinations/snowflake/_configuration.md";
 import SQLiteConfiguration from "../pages/docs/plugins/destinations/sqlite/_configuration.md";
+
 
 export const components = {
   "sources-airtable-authentication": <AirtableAuthentication />,
@@ -108,6 +110,7 @@ export const components = {
   "destinations-gcs-configuration": <GCSConfiguration />,
   "destinations-gremlin-configuration": <GremlinConfiguration />,
   "destinations-kafka-configuration": <KafkaConfiguration />,
+  "destinations-meilisearch-configuration": <MeilisearchConfiguration />,
   "destinations-postgresql-configuration": <PostgresDestConfiguration />,
   "destinations-snowflake-configuration": <SnowflakeConfiguration />,
   "destinations-sqlite-configuration": <SQLiteConfiguration />,
