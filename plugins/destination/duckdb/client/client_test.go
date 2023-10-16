@@ -7,15 +7,10 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func TestPlugin(t *testing.T) {
 	ctx := context.Background()
-	if err := types.RegisterAllExtensions(); err != nil {
-		t.Fatal(err)
-	}
-
 	p := plugin.NewPlugin("duckdb", "development", New)
 	spec := Spec{
 		ConnectionString: "?threads=1",
