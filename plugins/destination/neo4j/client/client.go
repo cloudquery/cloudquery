@@ -13,6 +13,7 @@ import (
 
 type Client struct {
 	plugin.UnimplementedSource
+	batchwriter.UnimplementedDeleteRecord
 	logger zerolog.Logger
 	spec   *Spec
 	client neo4j.DriverWithContext
