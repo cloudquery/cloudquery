@@ -4,6 +4,7 @@ import AWSConfiguration from "../pages/docs/plugins/sources/aws/_configuration.m
 import AWSAuthentication from "../pages/docs/plugins/sources/aws/_authentication.md";
 import PostgresDestConfiguration from "../pages/docs/plugins/destinations/postgresql/_configuration.md";
 import GremlinConfiguration from "../pages/docs/plugins/destinations/gremlin/_configuration.md";
+import SnowflakeConfiguration from "../pages/docs/plugins/destinations/snowflake/_configuration.md";
 
 export const components = {
   "sources-alicloud-configuration": <AlicloudConfiguration />,
@@ -13,4 +14,5 @@ export const components = {
 
   "destinations-postgresql-configuration": <PostgresDestConfiguration />,
   "destinations-gremlin-configuration": <GremlinConfiguration />,
+  "destinations-snowflake-configuration": <SnowflakeConfiguration />,
 };
