@@ -19,6 +19,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
 	"github.com/thoas/go-funk"
@@ -45,7 +46,7 @@ type Client struct {
 	Creds         azcore.TokenCredential
 	Options       *arm.ClientOptions
 
-	pluginSpec      *Spec
+	pluginSpec      *spec.Spec
 	BillingAccounts []*armbilling.Account
 	BillingAccount  *armbilling.Account
 	BillingProfile  *armbilling.Profile
@@ -236,7 +237,7 @@ func getCloudConfigFromSpec(specCloud string) (cloud.Configuration, error) {
 	return cloud.Configuration{}, fmt.Errorf("unknown Azure cloud name %q. Supported values are %q", specCloud, maps.Keys(specCloudToConfig))
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s *Spec) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, s *spec.Spec) (schema.ClientMeta, error) {
 	s.SetDefaults()
 	uniqueSubscriptions := funk.Uniq(s.Subscriptions).([]string)
 	c := &Client{

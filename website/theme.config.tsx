@@ -2,8 +2,9 @@ import { DocsThemeConfig } from "nextra-theme-docs";
 import { Footer } from "./components/Footer";
 import { EditLink } from "./components/EditLink";
 import CloudQueryLogo from "./components/logos/CloudQuery";
-import { useRouter } from 'next/router'
-import { useConfig } from 'nextra-theme-docs'
+import { Badge } from "./components/Badge";
+import { Callout, useConfig } from "nextra-theme-docs";
+import { components } from "./utils/components";
 
 const theme: DocsThemeConfig = {
   project: {
@@ -42,8 +43,8 @@ const theme: DocsThemeConfig = {
     );
   },
   head: () => {
-      const { frontMatter } = useConfig()
-      return (
+    const { frontMatter } = useConfig();
+    return (
       <>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link
@@ -71,16 +72,12 @@ const theme: DocsThemeConfig = {
         <meta property="og:type" content="website" />
         <meta property="og:locale" content="en_US" />
         <meta property="og:site_name" content="CloudQuery" />
-        {(frontMatter.image) ?
-              <meta property="og:image" content={frontMatter.image} />
-          :
-          null
-        }
-        {(frontMatter.video) ?
+        {frontMatter.image ? (
+          <meta property="og:image" content={frontMatter.image} />
+        ) : null}
+        {frontMatter.video ? (
           <meta property="og:video" content={frontMatter.video} />
-          :
-          null
-        }
+        ) : null}
       </>
     );
   },
@@ -92,6 +89,18 @@ const theme: DocsThemeConfig = {
   },
   nextThemes: {
     defaultTheme: "dark",
+  },
+  components: {
+    badge: ({ text }: { text: string }) => <Badge text={text} />,
+    configuration: ({ kind, name }: { kind: string; name: string }) => {
+      return components[`${kind}-${name}-configuration`];
+    },
+    authentication: ({ kind, name }: { kind: string; name: string }) => {
+      return components[`${kind}-${name}-authentication`];
+    },
+    callout: ({ type, children }: any) => {
+      return <Callout type={type} >{children}</Callout>;
+    }
   },
 };
 

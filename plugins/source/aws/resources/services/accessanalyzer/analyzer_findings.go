@@ -9,7 +9,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
@@ -42,11 +41,8 @@ func fetchAccessanalyzerAnalyzerFindings(ctx context.Context, meta schema.Client
 	analyzer := parent.Item.(types.AnalyzerSummary)
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceAccessanalyzer).Accessanalyzer
-	allConfigs := []tableoptions.CustomAccessAnalyzerListFindingsInput{{}}
-	if cl.Spec.TableOptions.AccessAnalyzerFindings != nil {
-		allConfigs = cl.Spec.TableOptions.AccessAnalyzerFindings.ListFindingsOpts
-	}
-	for _, cfg := range allConfigs {
+
+	for _, cfg := range cl.Spec.TableOptions.AccessAnalyzerFindings.Filters() {
 		cfg.AnalyzerArn = analyzer.Arn
 		paginator := accessanalyzer.NewListFindingsPaginator(svc, &cfg.ListFindingsInput)
 		for paginator.HasMorePages() {

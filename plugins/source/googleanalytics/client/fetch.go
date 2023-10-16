@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	analyticsdata "google.golang.org/api/analyticsdata/v1beta"
@@ -20,7 +21,7 @@ func fetch(tableName string, request *analyticsdata.RunReportRequest) schema.Tab
 		}
 
 		for date := range dates {
-			dateStr := date.Format(layout)
+			dateStr := date.Format(time.DateOnly)
 			request.DateRanges = []*analyticsdata.DateRange{{StartDate: dateStr, EndDate: dateStr}}
 
 			var fetched int64

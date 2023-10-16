@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
@@ -49,11 +48,7 @@ func fetchInspector2Findings(ctx context.Context, meta schema.ClientMeta, parent
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceInspector2).Inspector2
 
-	allConfigs := []tableoptions.CustomInspector2ListFindingsInput{{}}
-	if cl.Spec.TableOptions.Inspector2Findings != nil {
-		allConfigs = cl.Spec.TableOptions.Inspector2Findings.ListFindingsOpts
-	}
-	for _, input := range allConfigs {
+	for _, input := range cl.Spec.TableOptions.Inspector2Findings.Filters() {
 		if input.MaxResults == nil {
 			input.MaxResults = aws.Int32(100)
 		}

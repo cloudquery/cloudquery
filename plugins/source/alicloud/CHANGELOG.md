@@ -1,5 +1,22 @@
 # Changelog
 
+## [4.0.12](https://github.com/cloudquery/cloudquery/compare/plugins-source-alicloud-v4.0.11...plugins-source-alicloud-v4.0.12) (2023-10-13)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to d401686 ([#14459](https://github.com/cloudquery/cloudquery/issues/14459)) ([7ce40f8](https://github.com/cloudquery/cloudquery/commit/7ce40f8dcb1e408c385e877e56b5bb78906b10d2))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.2.6 ([#14475](https://github.com/cloudquery/cloudquery/issues/14475)) ([83fe7ca](https://github.com/cloudquery/cloudquery/commit/83fe7ca2f5fa83bd3219ddde8fe44fcf1d447480))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.2.8 ([#14503](https://github.com/cloudquery/cloudquery/issues/14503)) ([4056593](https://github.com/cloudquery/cloudquery/commit/40565937cfc12b33048980b55e91a9a60a62bd47))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.5 ([#14446](https://github.com/cloudquery/cloudquery/issues/14446)) ([3921a55](https://github.com/cloudquery/cloudquery/commit/3921a55898a29852f1ea9a7b0a10ecad4373ecc4))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.6 ([#14466](https://github.com/cloudquery/cloudquery/issues/14466)) ([32b5a90](https://github.com/cloudquery/cloudquery/commit/32b5a9019833d44177caf6ec716215d0b4c8348b))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.7 ([#14504](https://github.com/cloudquery/cloudquery/issues/14504)) ([e206912](https://github.com/cloudquery/cloudquery/commit/e206912728ab5eb989221ed57f9e4b76c8815e2e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.2 ([#14378](https://github.com/cloudquery/cloudquery/issues/14378)) ([a2e0c46](https://github.com/cloudquery/cloudquery/commit/a2e0c4615af4aa205fa082d3f196ea2dc5ce2445))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.3 ([#14436](https://github.com/cloudquery/cloudquery/issues/14436)) ([d529e2d](https://github.com/cloudquery/cloudquery/commit/d529e2d22da93a234492c4165e7eed1257c5767f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.4 ([#14489](https://github.com/cloudquery/cloudquery/issues/14489)) ([9bb45dc](https://github.com/cloudquery/cloudquery/commit/9bb45dc2dacc2c7a6fbd47538b954f731741809b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.5 ([#14516](https://github.com/cloudquery/cloudquery/issues/14516)) ([2d905bf](https://github.com/cloudquery/cloudquery/commit/2d905bf9ea81556282c8ca27dcc6334606a2e83b))
+* **deps:** Update module golang.org/x/net to v0.17.0 [SECURITY] ([#14500](https://github.com/cloudquery/cloudquery/issues/14500)) ([9e603d5](https://github.com/cloudquery/cloudquery/commit/9e603d50d28033ed5bf451e569abc7c25014dbfb))
+
 ## [4.0.11](https://github.com/cloudquery/cloudquery/compare/plugins-source-alicloud-v4.0.10...plugins-source-alicloud-v4.0.11) (2023-10-04)
 
 
