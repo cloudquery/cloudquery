@@ -22,7 +22,7 @@ builds:
       - CC=/usr/bin/gencc.sh
       - CXX=/usr/bin/gencpp.sh
     ldflags:
-      - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}}
+      - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}} -linkmode external -extldflags=-static
     goos:
       - windows
       - linux
