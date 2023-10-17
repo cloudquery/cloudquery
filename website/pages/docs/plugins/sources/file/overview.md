@@ -6,12 +6,7 @@ description: CloudQuery File source plugin documentation
 ---
 # File Source Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import { Callout } from 'nextra-theme-docs'
-import Configuration from "./_configuration.mdx";
-
-<Badge text={"Premium"}/>
+:badge{text="Premium"}
 
 This is a premium plugin that you can buy [here](/integrations/file).
 
@@ -21,7 +16,7 @@ The CloudQuery File plugin syncs `parquet` files to any of the supported CloudQu
 
 This example configures a File source with a directory to sync files from. The (top level) spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-<Configuration/>
+:configuration
 
 ## File spec
 

@@ -6,12 +6,7 @@ description: CloudQuery GCP source plugin documentation
 ---
 # GCP Source Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Configuration from "./_configuration.mdx";
-import Authentication from "./_authentication.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("source", "gcp")}/>
+:badge
 
 The GCP Source plugin for CloudQuery extracts configuration from a variety of GCP APIs and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
@@ -22,7 +17,7 @@ The GCP Source plugin for CloudQuery extracts configuration from a variety of GC
 
 ## Authentication
 
-<Authentication/>
+:authentication
 
 ## Query Examples:
 

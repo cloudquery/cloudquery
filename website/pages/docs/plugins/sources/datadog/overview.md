@@ -6,17 +6,13 @@ description: CloudQuery Datadog Plugin documentation
 ---
 # Datadog Source Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Authentication from "./_authentication.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("source", `datadog`)}/>
+:badge
 
 The CloudQuery Datadog plugin extracts your Datadog information and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
 ## Authentication
 
-<Authentication/>
+:authentication
 
 ## Query Examples
 

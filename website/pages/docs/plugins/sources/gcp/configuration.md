@@ -4,20 +4,7 @@
 
 This example connects a single GCP project to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-```yaml copy
-kind: source
-spec:
-  # Source spec section
-  name: "gcp"
-  path: "cloudquery/gcp"
-  version: "VERSION_SOURCE_GCP"
-  tables: ["gcp_storage_buckets"]
-  destinations: ["postgresql"]
-
-  spec:
-    # GCP Spec section described below
-    project_ids: ["my-project"]
-```
+:configuration
 
 ## GCP Spec
 

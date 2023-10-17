@@ -97,7 +97,7 @@ const customPlugin = () => {
         }
 
         const { kind, name } = getKindAndName(file);
-        if (data.hName === "badge") {
+        if (data.hName === "badge" && !data.hProperties.text) {
           data.hProperties = {
             ...data.hProperties,
             text: "Latest: " + getLatestVersion(kind, name),

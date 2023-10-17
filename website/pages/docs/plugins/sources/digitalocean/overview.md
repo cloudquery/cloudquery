@@ -7,24 +7,19 @@ description: CloudQuery DigitalOcean Plugin documentation
 
 # DigitalOcean Source Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Configuration from "./_configuration.mdx";
-import Authentication from "./_authentication.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("source", "digitalocean")}/>
+:badge
 
 The CloudQuery DigitalOcean plugin pulls configuration from DigitalOcean and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
 ## Authentication
 
-<Authentication/>
+:authentication
 
 ## Configuration
 
 The following example config sets up the DigitalOcean plugin, and connects it to a destination:
 
-<Configuration/>
+:configuration
 
 ## DigitalOcean Spec
 

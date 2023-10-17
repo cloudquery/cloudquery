@@ -6,16 +6,11 @@ description: CloudQuery GitLab source plugin documentation
 ---
 # GitLab Source Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Configuration from "./_configuration.mdx";
-import Authentication from "./_authentication.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("source", `gitlab`)}/>
+:badge
 
 The CloudQuery GitLab plugin pulls configuration out of GitLab resources and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
 ## Authentication
 
-<Authentication/>
+:authentication
 
