@@ -6,10 +6,7 @@ description: CloudQuery Gandi source plugin documentation
 ---
 # Gandi Source Plugin
 
-import { Badge } from "../../../../../components/Badge";
-import Authentication from "./_authentication.mdx";
-
-<Badge text={"Premium"}/>
+:badge{text="Premium"}
 
 This is a premium plugin that you can buy [here](/integrations/gandi).
 
@@ -17,7 +14,7 @@ The CloudQuery Gandi plugin pulls configuration out of Gandi resources and loads
 
 ## Authentication
 
-<Authentication/>
+:authentication
 
 ## Query Examples
 

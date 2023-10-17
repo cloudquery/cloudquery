@@ -11,6 +11,30 @@ import BitbucketAuthentication from "../pages/docs/plugins/sources/bitbucket/_au
 import BitbucketConfiguration from "../pages/docs/plugins/sources/bitbucket/_configuration.md";
 import CloudflareAuthentication from "../pages/docs/plugins/sources/cloudflare/_authentication.md";
 import CloudflareConfiguration from "../pages/docs/plugins/sources/cloudflare/_configuration.md";
+import DatadogAuthentication from "../pages/docs/plugins/sources/datadog/_authentication.md";
+import DatadogConfiguration from "../pages/docs/plugins/sources/datadog/_configuration.md";
+import DigitalOceanAuthentication from "../pages/docs/plugins/sources/digitalocean/_authentication.md";
+import DigitalOceanConfiguration from "../pages/docs/plugins/sources/digitalocean/_configuration.md";
+import FacebookMarketingAuthentication from "../pages/docs/plugins/sources/facebookmarketing/_authentication.md";
+import FacebookMarketingConfiguration from "../pages/docs/plugins/sources/facebookmarketing/_configuration.md";
+import FastlyAuthentication from "../pages/docs/plugins/sources/fastly/_authentication.md";
+import FastlyConfiguration from "../pages/docs/plugins/sources/fastly/_configuration.md";
+import FileSourceConfiguration from "../pages/docs/plugins/sources/file/_configuration.md";
+import FirestoreAuthentication from "../pages/docs/plugins/sources/firestore/_authentication.md";
+import FirestoreConfiguration from "../pages/docs/plugins/sources/firestore/_configuration.md";
+import GandiAuthentication from "../pages/docs/plugins/sources/gandi/_authentication.md";
+import GandiConfiguration from "../pages/docs/plugins/sources/gandi/_configuration.md";
+import GCPAuthentication from "../pages/docs/plugins/sources/gcp/_authentication.md";
+import GCPConfiguration from "../pages/docs/plugins/sources/gcp/_configuration.md";
+import GitHubAuthentication from "../pages/docs/plugins/sources/github/_authentication.md";
+import GitHubConfiguration from "../pages/docs/plugins/sources/github/_configuration.md";
+import GitLabAuthentication from "../pages/docs/plugins/sources/gitlab/_authentication.md";
+import GitLabConfiguration from "../pages/docs/plugins/sources/gitlab/_configuration.md";
+import GoogleAdsAuthentication from "../pages/docs/plugins/sources/googleads/_authentication.md";
+import GoogleAdsConfiguration from "../pages/docs/plugins/sources/googleads/_configuration.md";
+import GoogleAnalyticsAuthentication from "../pages/docs/plugins/sources/googleanalytics/_authentication.md";
+import GoogleAnalyticsConfiguration from "../pages/docs/plugins/sources/googleanalytics/_configuration.md"; 
+
 import AZBlobAuthentication from "../pages/docs/plugins/destinations/azblob/_authentication.md";
 import AZBlobConfiguration from "../pages/docs/plugins/destinations/azblob/_configuration.md";
 import BigQueryAuthentication from "../pages/docs/plugins/destinations/bigquery/_authentication.md";
@@ -35,6 +59,29 @@ export const components = {
   "sources-bitbucket-configuration": <BitbucketConfiguration />,
   "sources-cloudflare-authentication": <CloudflareAuthentication />,
   "sources-cloudflare-configuration": <CloudflareConfiguration />,
+  "sources-datadog-authentication": <DatadogAuthentication />,
+  "sources-datadog-configuration": <DatadogConfiguration />,
+  "sources-digitalocean-authentication": <DigitalOceanAuthentication />,
+  "sources-digitalocean-configuration": <DigitalOceanConfiguration />,
+  "sources-facebookmarketing-authentication": <FacebookMarketingAuthentication />,
+  "sources-facebookmarketing-configuration": <FacebookMarketingConfiguration />,
+  "sources-fastly-authentication": <FastlyAuthentication />,
+  "sources-fastly-configuration": <FastlyConfiguration />,
+  "sources-file-configuration": <FileSourceConfiguration />,
+  "sources-firestore-authentication": <FirestoreAuthentication />,
+  "sources-firestore-configuration": <FirestoreConfiguration />,
+  "sources-gandi-authentication": <GandiAuthentication />,
+  "sources-gandi-configuration": <GandiConfiguration />,
+  "sources-gcp-authentication": <GCPAuthentication />,
+  "sources-gcp-configuration": <GCPConfiguration />,
+  "sources-github-authentication": <GitHubAuthentication />,
+  "sources-github-configuration": <GitHubConfiguration />,
+  "sources-gitlab-authentication": <GitLabAuthentication />,
+  "sources-gitlab-configuration": <GitLabConfiguration />,
+  "sources-googleads-authentication": <GoogleAdsAuthentication />,
+  "sources-googleads-configuration": <GoogleAdsConfiguration />,
+  "sources-googleanalytics-authentication": <GoogleAnalyticsAuthentication />,
+  "sources-googleanalytics-configuration": <GoogleAnalyticsConfiguration />,
   "destinations-azblob-authentication": <AZBlobAuthentication />,
   "destinations-azblob-configuration": <AZBlobConfiguration />,
   "destinations-bigquery-authentication": <BigQueryAuthentication />,

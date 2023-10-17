@@ -6,10 +6,7 @@ description: CloudQuery Google Ads source plugin documentation
 ---
 # Google Ads Source Plugin
 
-import { Badge } from "../../../../../components/Badge";
-import Configuration from "./_configuration.mdx";
-
-<Badge text={"Premium"}/>
+:badge{text="Premium"}
 
 This is a premium plugin that you can buy [here](/integrations/googleads).
 

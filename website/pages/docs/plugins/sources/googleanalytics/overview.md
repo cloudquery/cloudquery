@@ -6,11 +6,7 @@ description: CloudQuery Google Analytics (GA) source plugin documentation
 ---
 # Google Analytics Source Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Configuration from "./_configuration.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("source", `googleanalytics`)}/>
+:badge
 
 The CloudQuery Google Analytics plugin allows you to run custom
 [Google Analytics Data API v1 reports](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#reports)
