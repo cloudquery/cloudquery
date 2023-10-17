@@ -6,12 +6,7 @@ description: CloudQuery ClickHouse destination plugin documentation
 ---
 # ClickHouse destination plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import { Callout } from 'nextra-theme-docs'
-import Configuration from "./_configuration.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("destination", "clickhouse")}/>
+:badge
 
 This destination plugin lets you sync data from a CloudQuery source to [ClickHouse](https://clickhouse.com/) database.
 
@@ -24,11 +19,11 @@ Supported database versions: >= `22.1.2`
 
 ### Example
 
-<Configuration/>
+:configuration
 
-<Callout type="info">
+:::callout{type="info"}
 Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
-</Callout>
+:::
 
 ### ClickHouse spec
 
