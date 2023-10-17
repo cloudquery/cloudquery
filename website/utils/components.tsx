@@ -13,6 +13,8 @@ import CloudflareAuthentication from "../pages/docs/plugins/sources/cloudflare/_
 import CloudflareConfiguration from "../pages/docs/plugins/sources/cloudflare/_configuration.md";
 import AZBlobAuthentication from "../pages/docs/plugins/destinations/azblob/_authentication.md";
 import AZBlobConfiguration from "../pages/docs/plugins/destinations/azblob/_configuration.md";
+import BigQueryAuthentication from "../pages/docs/plugins/destinations/bigquery/_authentication.md";
+import BigQueryConfiguration from "../pages/docs/plugins/destinations/bigquery/_configuration.md";
 import DuckDBConfiguration from "../pages/docs/plugins/destinations/duckdb/_configuration.md";
 import GremlinConfiguration from "../pages/docs/plugins/destinations/gremlin/_configuration.md";
 import PostgresDestConfiguration from "../pages/docs/plugins/destinations/postgresql/_configuration.md";
@@ -35,6 +37,8 @@ export const components = {
   "sources-cloudflare-configuration": <CloudflareConfiguration />,
   "destinations-azblob-authentication": <AZBlobAuthentication />,
   "destinations-azblob-configuration": <AZBlobConfiguration />,
+  "destinations-bigquery-authentication": <BigQueryAuthentication />,
+  "destinations-bigquery-configuration": <BigQueryConfiguration />,
   "destinations-duckdb-configuration": <DuckDBConfiguration />,
   "destinations-gremlin-configuration": <GremlinConfiguration />,
   "destinations-postgresql-configuration": <PostgresDestConfiguration />,
