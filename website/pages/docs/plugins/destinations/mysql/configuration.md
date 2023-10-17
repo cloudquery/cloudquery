@@ -7,7 +7,7 @@
 <Configuration/>
 
 :::callout{type="info"}
-    Make sure you use [environment variable expansion](/docs/advanced-topics/environment-variable-substitution) in production instead of committing the credentials to the configuration file directly.
+Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
 :::
 
 The MySQL destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
