@@ -8,6 +8,7 @@ import (
 
 	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
+	"github.com/invopop/jsonschema"
 )
 
 type Spec struct {
@@ -17,8 +18,8 @@ type Spec struct {
 
 	Engine *Engine `json:"engine,omitempty"`
 
-	BatchSize      int                  `json:"batch_size,omitempty"`
-	BatchSizeBytes int                  `json:"batch_size_bytes,omitempty"`
+	BatchSize      int                  `json:"batch_size,omitempty" jsonschema:"minimum=1,default=10000"`
+	BatchSizeBytes int                  `json:"batch_size_bytes,omitempty" jsonschema:"minimum=1,default=5242880"`
 	BatchTimeout   *configtype.Duration `json:"batch_timeout,omitempty"`
 }
 
@@ -54,7 +55,7 @@ func (s *Spec) SetDefaults() {
 		s.Engine = DefaultEngine()
 	}
 
-	if s.BatchSize == 0 {
+	if s.BatchSize <= 0 {
 		s.BatchSize = 10_000 // 10K
 	}
 
@@ -70,6 +71,12 @@ func (s *Spec) SetDefaults() {
 
 func (s *Spec) Validate() error {
 	return s.Engine.Validate()
+}
+
+// we need to set default for batch_timeout
+func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
+	batchTimeout := sc.Properties.Value("batch_timeout").OneOf[0] // 0 - val, 1 - null
+	batchTimeout.Default = "20s"
 }
 
 //go:embed schema.json

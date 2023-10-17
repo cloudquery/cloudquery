@@ -36,7 +36,8 @@
           "type": "string"
         },
         "connection_string": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         },
         "ca_cert": {
           "type": "string"
@@ -52,15 +53,20 @@
           ]
         },
         "batch_size": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1,
+          "default": 10000
         },
         "batch_size_bytes": {
-          "type": "integer"
+          "type": "integer",
+          "minimum": 1,
+          "default": 5242880
         },
         "batch_timeout": {
           "oneOf": [
             {
-              "$ref": "#/$defs/Duration"
+              "$ref": "#/$defs/Duration",
+              "default": "20s"
             },
             {
               "type": "null"
@@ -69,7 +75,10 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "required": [
+        "connection_string"
+      ]
     }
   }
 }
