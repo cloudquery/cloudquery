@@ -1,0 +1,31 @@
+---
+name: Heroku
+stage: GA (Premium)
+title: Heroku Source Plugin
+description: CloudQuery Heroku source plugin documentation
+---
+# Heroku Source Plugin
+
+:badge{text="Premium"}
+
+This is a premium plugin that you can buy [here](/integrations/heroku).
+
+The CloudQuery Heroku plugin extracts your Heroku data and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
+
+## Configuration
+
+This example connects a Heroku account to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
+
+:configuration
+
+## Authentication
+
+:authentication
+
+## Heroku Spec
+
+This is the (nested) spec used by the Heroku source plugin.
+
+- `token` (string, **required**)
+
+Heroku API token. See the [Authentication section](overview#authentication) on how to generate it.
