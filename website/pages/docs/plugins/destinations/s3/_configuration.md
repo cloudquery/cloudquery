@@ -33,7 +33,7 @@ spec:
 
 It is also possible to use `{{YEAR}}`, `{{MONTH}}`, `{{DAY}}` and `{{HOUR}}` in the path to create a directory structure based on the current time. For example:
 
-```
+```yaml
 path: "path/to/files/{{TABLE}}/dt={{YEAR}}-{{MONTH}}-{{DAY}}/{{UUID}}.parquet"
 ```
 

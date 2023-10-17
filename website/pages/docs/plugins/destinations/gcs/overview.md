@@ -6,12 +6,7 @@ description: CloudQuery GCS destination plugin documentation
 ---
 # GCS (Google Cloud Storage) Destination Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Authentication from "./_authentication.mdx";
-import Configuration from "./_configuration.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("destination", "gcs")}/>
+:badge
 
 This destination plugin lets you sync data from a CloudQuery source to remote GCS (Google Cloud Storage) storage in various formats such as CSV, JSON and Parquet.
 
@@ -19,7 +14,7 @@ This is useful in various use-cases, especially in data lakes where you can quer
 
 ## Example
 
-<Configuration />
+:configuration
 
 The GCS destination utilizes batching, and supports `batch_size`, `batch_size_bytes` and `batch_timeout` options (see below).
 
@@ -76,4 +71,4 @@ This is the (nested) spec used by the CSV destination Plugin.
 
 ## Authentication
 
-<Authentication />
+:authentication

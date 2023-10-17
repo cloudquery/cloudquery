@@ -5,17 +5,13 @@ description: CloudQuery Kafka destination plugin documentation
 ---
 # Kafka Destination Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Configuration from "./_configuration.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("destination", "kafka")}/>
+:badge
 
 This destination plugin lets you sync data from a CloudQuery source to Kafka in various formats such as CSV, JSON. Each table will be pushed to a separate topic.
 
 ## Example
 
-<Configuration />
+:configuration
 
 ## Plugin Spec
 

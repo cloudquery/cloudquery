@@ -6,22 +6,17 @@ description: CloudQuery Amazon Kinesis Firehose destination plugin documentation
 
 # Amazon Kinesis Firehose Destination Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Authentication from "./_authentication.mdx";
-import Configuration from "./_configuration.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("destination", "firehose")}/>
+:badge
 
 This destination plugin lets you sync data from a CloudQuery source to Amazon Kinesis Firehose.
 
 ## Authentication
 
-<Authentication />
+:authentication
 
 ## Example
 
-<Configuration />
+:configuration
 
 The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 

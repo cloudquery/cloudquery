@@ -1,10 +1,6 @@
 # MySQL destination plugin example
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import { Callout } from 'nextra-theme-docs'
-
-<Badge text={"Latest: " + getLatestVersion("destination", "mysql")}/>
+:badge
 
 In this article we will show you a simple example of configuring MySQL destination plugin.
 
@@ -18,11 +14,11 @@ In this article we will show you a simple example of configuring MySQL destinati
 docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=test -e MYSQL_DATABASE=cloudquery -d mysql:latest
 ```
 
-<Callout type="info">
+:::callout{type="info"}
 For brevity we only set the `MYSQL_ROOT_PASSWORD` and `MYSQL_DATABASE` environment variables. You should create dedicated and secure credentials for production use.
 For the docker image documentation see [here](https://hub.docker.com/_/mysql).
 Also, if you're running on Apple silicon based Macs you might need to add the `--platform linux/amd64` flag to the above command.
-</Callout>
+:::
 
 ## Configure MySQL destination plugin
 
@@ -47,6 +43,6 @@ spec:
     connection_string: "root:password@/cloudquery"
 ```
 
-<Callout type="info">
+:::callout{type="info"}
 Make sure you use [environment variable expansion](/docs/advanced-topics/environment-variable-substitution) in production instead of committing the credentials to the configuration file directly.
-</Callout>
+:::

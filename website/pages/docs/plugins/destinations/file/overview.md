@@ -6,11 +6,7 @@ description: CloudQuery File destination plugin for exporting to CSV, JSON and P
 ---
 # File Destination Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Configuration from "./_configuration.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("destination", "file")}/>
+:badge
 
 This destination plugin lets you sync data from a CloudQuery source to local files in various formats. It currently supports CSV, line-delimited JSON and Parquet.
 
@@ -18,7 +14,7 @@ This plugin is useful in local environments, but also in production environments
 
 ## Example
 
-<Configuration />
+:configuration
 
 ## File Spec
 
