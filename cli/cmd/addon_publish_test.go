@@ -147,8 +147,8 @@ func checkCreateAddonVersionRequest(t *testing.T, r *http.Request) {
 	want := map[string]any{
 		"addon_deps":  nil,
 		"checksum":    "b537240431bb4868264e48a8c646ebd3a9e355140d27d7fe559b5cbfd3ce6f31",
-		"doc":         "# Test Addon README\n",
-		"message":     "# Test Addon Changelog\n",
+		"doc":         "# Test Addon README",
+		"message":     "# Test Addon Changelog",
 		"plugin_deps": []any{"cloudquery/source/test@v1.0.0"},
 	}
 	if diff := cmp.Diff(want, got); diff != "" {
