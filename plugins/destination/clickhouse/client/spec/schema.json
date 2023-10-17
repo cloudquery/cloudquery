@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/clickhouse/client/spec/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Duration": {
+      "type": "string",
+      "pattern": "^[-+]?([0-9]*(\\.[0-9]*)?[a-z]+)+$",
+      "title": "CloudQuery configtype.Duration"
+    },
+    "Engine": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^.*MergeTree$",
+          "default": "MergeTree"
+        },
+        "parameters": {
+          "oneOf": [
+            {
+              "items": true,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Spec": {
+      "properties": {
+        "connection_string": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cluster": {
+          "type": "string"
+        },
+        "engine": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Engine"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ca_cert": {
+          "type": "string"
+        },
+        "batch_size": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 10000
+        },
+        "batch_size_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 5242880
+        },
+        "batch_timeout": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Duration",
+              "default": "20s"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "connection_string"
+      ]
+    }
+  }
+}

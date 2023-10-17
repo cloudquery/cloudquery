@@ -1,24 +1,26 @@
-package client
+package spec
 
 import (
 	"crypto/x509"
+	_ "embed"
 	"fmt"
 	"time"
 
 	"github.com/ClickHouse/clickhouse-go/v2"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
+	"github.com/invopop/jsonschema"
 )
 
 type Spec struct {
+	ConnectionString string `json:"connection_string,omitempty" jsonschema:"required,minLength=1"`
 	Cluster          string `json:"cluster,omitempty"`
-	ConnectionString string `json:"connection_string,omitempty"`
-	CACert           string `json:"ca_cert,omitempty"`
 
-	Engine *queries.Engine `json:"engine,omitempty"`
+	Engine *Engine `json:"engine,omitempty"`
 
-	BatchSize      int                  `json:"batch_size,omitempty"`
-	BatchSizeBytes int                  `json:"batch_size_bytes,omitempty"`
+	CACert string `json:"ca_cert,omitempty"`
+
+	BatchSize      int                  `json:"batch_size,omitempty" jsonschema:"minimum=1,default=10000"`
+	BatchSizeBytes int                  `json:"batch_size_bytes,omitempty" jsonschema:"minimum=1,default=5242880"`
 	BatchTimeout   *configtype.Duration `json:"batch_timeout,omitempty"`
 }
 
@@ -51,14 +53,14 @@ func (s *Spec) Options() (*clickhouse.Options, error) {
 
 func (s *Spec) SetDefaults() {
 	if s.Engine == nil {
-		s.Engine = queries.DefaultEngine()
+		s.Engine = DefaultEngine()
 	}
 
-	if s.BatchSize == 0 {
+	if s.BatchSize <= 0 {
 		s.BatchSize = 10_000 // 10K
 	}
 
-	if s.BatchSizeBytes == 0 {
+	if s.BatchSizeBytes <= 0 {
 		s.BatchSizeBytes = 5 << 20 // 5 MiB
 	}
 
@@ -71,3 +73,12 @@ func (s *Spec) SetDefaults() {
 func (s *Spec) Validate() error {
 	return s.Engine.Validate()
 }
+
+// we need to set default for batch_timeout
+func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
+	batchTimeout := sc.Properties.Value("batch_timeout").OneOf[0] // 0 - val, 1 - null
+	batchTimeout.Default = "20s"
+}
+
+//go:embed schema.json
+var JSONSchema string

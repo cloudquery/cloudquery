@@ -6,6 +6,7 @@ import (
 
 	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/ClickHouse/clickhouse-go/v2/lib/proto"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
@@ -16,7 +17,7 @@ import (
 type Client struct {
 	conn     clickhouse.Conn
 	database string
-	spec     *Spec
+	spec     *spec.Spec
 
 	logger zerolog.Logger
 	writer *batchwriter.BatchWriter
@@ -40,16 +41,16 @@ func (c *Client) Close(ctx context.Context) error {
 }
 
 func New(_ context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
-	var spec Spec
-	if err := json.Unmarshal(specBytes, &spec); err != nil {
+	var s spec.Spec
+	if err := json.Unmarshal(specBytes, &s); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
-	spec.SetDefaults()
-	if err := spec.Validate(); err != nil {
+	s.SetDefaults()
+	if err := s.Validate(); err != nil {
 		return nil, err
 	}
 
-	options, err := spec.Options()
+	options, err := s.Options()
 	if err != nil {
 		return nil, fmt.Errorf("failed to prepare connect options %w", err)
 	}
@@ -57,7 +58,7 @@ func New(_ context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.Ne
 	l := logger.With().
 		Str("module", "dest-clickhouse").
 		Str("database", options.Auth.Database).
-		Str("cluster", spec.Cluster).
+		Str("cluster", s.Cluster).
 		Logger()
 	options.Debugf = l.Printf
 
@@ -80,14 +81,14 @@ func New(_ context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.Ne
 	c := &Client{
 		conn:     conn,
 		database: options.Auth.Database,
-		spec:     &spec,
+		spec:     &s,
 		logger:   l,
 	}
 	c.writer, err = batchwriter.New(c,
 		batchwriter.WithLogger(l),
-		batchwriter.WithBatchSize(spec.BatchSize),
-		batchwriter.WithBatchSizeBytes(spec.BatchSizeBytes),
-		batchwriter.WithBatchTimeout(spec.BatchTimeout.Duration()),
+		batchwriter.WithBatchSize(s.BatchSize),
+		batchwriter.WithBatchSizeBytes(s.BatchSizeBytes),
+		batchwriter.WithBatchTimeout(s.BatchTimeout.Duration()),
 	)
 	if err != nil {
 		return nil, err

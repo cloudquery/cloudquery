@@ -64,7 +64,12 @@ jobs:
         args:              "--config ../../.golangci.yml"
         skip-pkg-cache:    true
         skip-build-cache:  true
-    - run: go mod tidy
+    - name: gen
+      if: github.event_name == 'pull_request'
+      run: make gen
+    - name: Fail if generation updated files
+      if: github.event_name == 'pull_request'
+      run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
     - name: Build
       run:  go build .
     - name: Test ClickHouse
