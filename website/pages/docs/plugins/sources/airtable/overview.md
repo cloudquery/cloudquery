@@ -7,12 +7,7 @@ description: CloudQuery Airtable source plugin documentation
 
 # Airtable Source Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Configuration from "./_configuration.mdx";
-import Authentication from "./_authentication.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("source", `airtable`)}/>
+:badge
 
 The CloudQuery Airtable plugin pulls data from [Airtable](https://airtable.com/) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
@@ -22,11 +17,11 @@ The plugin discover all bases and tables in your account and syncs them to the d
 
 This example syncs from Airtable to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-<Configuration/>
+:configuration
 
 ## Authentication
 
-<Authentication/>
+:authentication
 
 ## Tables naming convention
 
