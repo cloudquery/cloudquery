@@ -1,5 +1,5 @@
 ---
-title: "plugin install"
+title: "plugin_install"
 ---
 ## cloudquery plugin install
 
@@ -43,5 +43,5 @@ cloudquery plugin install ./directory ./aws.yml ./pg.yml
 
 ### SEE ALSO
 
-* [cloudquery](/docs/reference/cli/cloudquery)	 - CloudQuery CLI
+* [cloudquery plugin](/docs/reference/cli/cloudquery_plugin)	 - Plugin commands
 

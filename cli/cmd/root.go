@@ -129,7 +129,7 @@ func NewCmdRoot() *cobra.Command {
 		Short: "Plugin commands",
 	}
 	pluginCmd.AddCommand(
-		newCmdPluginInstall(),
+		newCmdPluginInstall(false),
 		newCmdPluginPublish(),
 	)
 
@@ -149,7 +149,7 @@ func NewCmdRoot() *cobra.Command {
 		newCmdLogin(),
 		newCmdLogout(),
 		newCmdSwitch(),
-		newCmdPluginInstall(), // legacy
+		newCmdPluginInstall(true), // legacy
 		pluginCmd,
 		addonCmd,
 	)

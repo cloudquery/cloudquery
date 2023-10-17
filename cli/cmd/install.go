@@ -19,7 +19,7 @@ cloudquery plugin install ./directory ./aws.yml ./pg.yml
 `
 )
 
-func newCmdPluginInstall() *cobra.Command {
+func newCmdPluginInstall(deprecated bool) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "install [files or directories]",
 		Short:   pluginInstallShort,
@@ -27,6 +27,9 @@ func newCmdPluginInstall() *cobra.Command {
 		Example: pluginInstallExample,
 		Args:    cobra.MinimumNArgs(1),
 		RunE:    installPlugin,
+	}
+	if deprecated {
+		cmd.Deprecated = "use `cloudquery plugin install` instead"
 	}
 	return cmd
 }
