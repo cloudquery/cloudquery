@@ -7,11 +7,7 @@ description: CloudQuery AWS Pricing Plugin documentation
 
 # AWS Pricing Source Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Configuration from "./_configuration.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("source", `awspricing`)}/>
+:badge
 
 The AWS Pricing Source plugin for CloudQuery extracts data from the [AWS Bulk Pricing Service](https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/using-ppslong.html) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
@@ -19,7 +15,7 @@ The AWS Pricing Source plugin for CloudQuery extracts data from the [AWS Bulk Pr
 
 The following configuration syncs from AWS Pricing service to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec). The config for the `postgresql` destination is not shown here. See our [Quickstart](/docs/quickstart) if you need help setting up the destination.
 
-<Configuration/>
+:configuration
 
 ## AWS Pricing Spec
 

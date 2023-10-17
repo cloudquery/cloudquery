@@ -226,6 +226,7 @@ func getTables() schema.Tables {
 		maintenance.Configurations(),
 		maintenance.PublicMaintenanceConfigurations(),
 		managementgroups.ManagementGroups(),
+		managementgroups.Entities(),
 		mariadb.Servers(),
 		marketplace.PrivateStore(),
 		monitor.LogProfiles(),

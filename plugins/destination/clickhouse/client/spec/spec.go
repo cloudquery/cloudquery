@@ -60,7 +60,7 @@ func (s *Spec) SetDefaults() {
 		s.BatchSize = 10_000 // 10K
 	}
 
-	if s.BatchSizeBytes == 0 {
+	if s.BatchSizeBytes <= 0 {
 		s.BatchSizeBytes = 5 << 20 // 5 MiB
 	}
 
