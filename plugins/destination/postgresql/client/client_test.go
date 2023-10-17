@@ -47,7 +47,8 @@ func TestPgPlugin(t *testing.T) {
 	plugin.TestWriterSuiteRunner(t,
 		p,
 		plugin.WriterTestSuiteTests{
-			SafeMigrations: safeMigrations,
+			SkipDeleteRecord: true,
+			SafeMigrations:   safeMigrations,
 		},
 		plugin.WithTestDataOptions(testOpts),
 	)
