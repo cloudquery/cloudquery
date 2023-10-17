@@ -3,11 +3,11 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"github.com/cloudquery/cloudquery/cli/internal/team"
 	"github.com/spf13/cobra"
 )
 
@@ -41,7 +41,7 @@ func newCmdLogout() *cobra.Command {
 }
 
 func runLogout(_ context.Context, cmd *cobra.Command) error {
-	err := team.Logout()
+	err := auth.Logout()
 	if err != nil {
 		return fmt.Errorf("failed to logout: %w", err)
 	}
