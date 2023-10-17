@@ -1,4 +1,4 @@
-package queries
+package spec
 
 import (
 	"encoding/json"

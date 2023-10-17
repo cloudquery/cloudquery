@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/ClickHouse/clickhouse-go/v2"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
 )
 
@@ -16,7 +15,7 @@ type Spec struct {
 	ConnectionString string `json:"connection_string,omitempty"`
 	CACert           string `json:"ca_cert,omitempty"`
 
-	Engine *queries.Engine `json:"engine,omitempty"`
+	Engine *Engine `json:"engine,omitempty"`
 
 	BatchSize      int                  `json:"batch_size,omitempty"`
 	BatchSizeBytes int                  `json:"batch_size_bytes,omitempty"`
@@ -52,7 +51,7 @@ func (s *Spec) Options() (*clickhouse.Options, error) {
 
 func (s *Spec) SetDefaults() {
 	if s.Engine == nil {
-		s.Engine = queries.DefaultEngine()
+		s.Engine = DefaultEngine()
 	}
 
 	if s.BatchSize == 0 {
