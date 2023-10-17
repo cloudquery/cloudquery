@@ -64,8 +64,6 @@ jobs:
         args:              "--config ../../.golangci.yml"
         skip-pkg-cache:    true
         skip-build-cache:  true
-    - name: tidy
-      run: go mod tidy
     - name: gen
       if: github.event_name == 'pull_request'
       run: make gen
