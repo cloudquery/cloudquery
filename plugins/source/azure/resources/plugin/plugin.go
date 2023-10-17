@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/caser"
 	"github.com/cloudquery/plugin-sdk/v4/docs"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
@@ -84,5 +85,6 @@ func Plugin() *plugin.Plugin {
 		"azure",
 		Version,
 		NewClient,
+		plugin.WithJSONSchema(spec.JSONSchema),
 	)
 }
