@@ -1,3 +1,5 @@
+import AirtableAuthentication from "../pages/docs/plugins/sources/airtable/_authentication.md";
+import AirtableConfiguration from "../pages/docs/plugins/sources/airtable/_configuration.md";
 import AlicloudConfiguration from "../pages/docs/plugins/sources/alicloud/_configuration.md";
 import AlicloudAuthentication from "../pages/docs/plugins/sources/alicloud/_authentication.md";
 import AWSConfiguration from "../pages/docs/plugins/sources/aws/_configuration.md";
@@ -46,6 +48,8 @@ import SnowflakeConfiguration from "../pages/docs/plugins/destinations/snowflake
 import SQLiteConfiguration from "../pages/docs/plugins/destinations/sqlite/_configuration.md";
 
 export const components = {
+  "sources-airtable-authentication": <AirtableAuthentication />,
+  "sources-airtable-configuration": <AirtableConfiguration />,
   "sources-alicloud-configuration": <AlicloudConfiguration />,
   "sources-alicloud-authentication": <AlicloudAuthentication />,
   "sources-aws-configuration": <AWSConfiguration />,
