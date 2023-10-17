@@ -39,6 +39,9 @@ func (c *Client) Write(ctx context.Context, messages <-chan message.WriteMessage
 		case *message.WriteMigrateTable:
 			c.logger.Warn().Str("table", m.Table.Name).Msg("Migrate not implemented")
 			continue
+		case *message.WriteDeleteRecord:
+			c.logger.Warn().Str("table", m.TableName).Msg("DeleteRecord not implemented")
+			continue
 		case *message.WriteInsert:
 		// ok, handle outside of switch
 		default:
