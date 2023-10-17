@@ -35,6 +35,11 @@ func Filesystems() *schema.Table {
 				Resolver: ResolveEfsFilesystemBackupPolicyStatus,
 			},
 			{
+				Name:     "filesystem_policy",
+				Type:     arrow.BinaryTypes.String,
+				Resolver: ResolveEfsFilesystemPolicy,
+			},
+			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: client.ResolveTags,
@@ -81,4 +86,27 @@ func ResolveEfsFilesystemBackupPolicyStatus(ctx context.Context, meta schema.Cli
 	}
 
 	return resource.Set(c.Name, response.BackupPolicy.Status)
+}
+
+func ResolveEfsFilesystemPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p := resource.Item.(types.FileSystemDescription)
+	config := efs.DescribeFileSystemPolicyInput{
+		FileSystemId: p.FileSystemId,
+	}
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceEfs).Efs
+	response, err := svc.DescribeFileSystemPolicy(ctx, &config, func(options *efs.Options) {
+		options.Region = cl.Region
+	})
+	if err != nil {
+		if cl.IsNotFoundError(err) {
+			return resource.Set(c.Name, types.StatusDisabled)
+		}
+		return err
+	}
+	if response.Policy == nil {
+		return nil
+	}
+
+	return resource.Set(c.Name, response.Policy)
 }
