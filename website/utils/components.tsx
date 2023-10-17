@@ -4,6 +4,7 @@ import AWSConfiguration from "../pages/docs/plugins/sources/aws/_configuration.m
 import AWSAuthentication from "../pages/docs/plugins/sources/aws/_authentication.md";
 import PostgresDestConfiguration from "../pages/docs/plugins/destinations/postgresql/_configuration.md";
 import GremlinConfiguration from "../pages/docs/plugins/destinations/gremlin/_configuration.md";
+import SQLiteConfiguration from "../pages/docs/plugins/destinations/sqlite/_configuration.md";
 
 import AZBlobAuthentication from "../pages/docs/plugins/destinations/azblob/_authentication.md";
 import AZBlobConfiguration from "../pages/docs/plugins/destinations/azblob/_configuration.md";
@@ -17,4 +18,5 @@ export const components = {
   "destinations-azblob-configuration": <AZBlobConfiguration />,
   "destinations-postgresql-configuration": <PostgresDestConfiguration />,
   "destinations-gremlin-configuration": <GremlinConfiguration />,
+  "destinations-sqlite-configuration": <SQLiteConfiguration />,
 };
