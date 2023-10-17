@@ -154,6 +154,7 @@
 - [azure_logic_workflows](tables/azure_logic_workflows)
 - [azure_maintenance_configurations](tables/azure_maintenance_configurations)
 - [azure_maintenance_public_maintenance_configurations](tables/azure_maintenance_public_maintenance_configurations)
+- [azure_managementgroups_entities](tables/azure_managementgroups_entities)
 - [azure_managementgroups_management_groups](tables/azure_managementgroups_management_groups)
 - [azure_mariadb_servers](tables/azure_mariadb_servers)
   - [azure_mariadb_server_configurations](tables/azure_mariadb_server_configurations)
