@@ -1,61 +1,16 @@
 package cmd
 
 import (
-	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
-	"path/filepath"
 	"reflect"
 	"strings"
-
-	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 )
 
-type PackageJSONVersion struct {
+type SchemaVersion struct {
 	SchemaVersion int `json:"schema_version"`
-}
-
-type PackageJSONV1 struct {
-	Name    string `json:"name"`
-	Message string `json:"message"`
-	Version string `json:"version"`
-
-	PackageJSONPluginProperties
-	PackageJSONAddonProperties
-}
-
-type PackageJSONPluginProperties struct {
-	Kind             cloudquery_api.PluginKind `json:"kind"`
-	Protocols        []int                     `json:"protocols"`
-	SupportedTargets []TargetBuild             `json:"supported_targets"`
-	PackageType      string                    `json:"package_type"`
-}
-
-type TargetBuild struct {
-	OS       string `json:"os"`
-	Arch     string `json:"arch"`
-	Path     string `json:"path"`
-	Checksum string `json:"checksum"`
-}
-
-type PackageJSONAddonProperties struct {
-	Type        string   `json:"type"` // "addon"
-	AddonType   string   `json:"addon_type"`
-	AddonFormat string   `json:"addon_format"`
-	PluginDeps  []string `json:"plugin_deps"`
-	AddonDeps   []string `json:"addon_deps"`
-	Doc         string   `json:"doc"`
-}
-
-func (p PackageJSONV1) IsPlugin() bool {
-	return p.PackageJSONAddonProperties.Type == "" && p.PackageJSONPluginProperties.Kind != ""
-}
-
-func (p PackageJSONV1) IsAddon() bool {
-	return p.PackageJSONAddonProperties.Type == "addon" && p.PackageJSONPluginProperties.Kind == ""
 }
 
 func errorFromHTTPResponse(httpResp *http.Response, resp any) error {
@@ -110,25 +65,4 @@ func normalizeContent(s string) string {
 	s = strings.ReplaceAll(s, "\r\n", "\n")
 	s = strings.ReplaceAll(s, "\r", "\n")
 	return s
-}
-
-func readPackageJSON(distDir string) (PackageJSONV1, error) {
-	v := PackageJSONVersion{}
-	b, err := os.ReadFile(filepath.Join(distDir, "package.json"))
-	if err != nil {
-		return PackageJSONV1{}, err
-	}
-	err = json.Unmarshal(b, &v)
-	if err != nil {
-		return PackageJSONV1{}, err
-	}
-	if v.SchemaVersion != 1 {
-		return PackageJSONV1{}, errors.New("unsupported schema version. This CLI version only supports package.json v1. Try upgrading your CloudQuery CLI version")
-	}
-	pkgJSON := PackageJSONV1{}
-	err = json.Unmarshal(b, &pkgJSON)
-	if err != nil {
-		return PackageJSONV1{}, err
-	}
-	return pkgJSON, nil
 }

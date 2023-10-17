@@ -2,11 +2,13 @@ package cmd
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strings"
 	"syscall"
 
@@ -55,12 +57,18 @@ func newCmdAddonPublish() *cobra.Command {
 	return cmd
 }
 
-type AddonPackageJSONV1 struct {
-	Name        string                    `json:"name"`
-	Message     string                    `json:"message"`
-	Version     string                    `json:"version"`
-	Kind        cloudquery_api.PluginKind `json:"kind"`
-	PackageType string                    `json:"package_type"`
+type ManifestJSONV1 struct {
+	Name    string `json:"name"`
+	Version string `json:"version"`
+
+	Message   string `json:"message"`
+	PathToDoc string `json:"doc"`
+
+	Type        string   `json:"type"`         // always "addon"
+	AddonType   string   `json:"addon_type"`   // TODO unused
+	AddonFormat string   `json:"addon_format"` // TODO unused
+	PluginDeps  []string `json:"plugin_deps"`
+	AddonDeps   []string `json:"addon_deps"`
 }
 
 func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
@@ -70,9 +78,9 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 	}
 
 	distDir := cmd.Flag("dist-dir").Value.String()
-	pkgJSON, err := readPackageJSON(distDir)
+	manifest, err := readManifestJSON(distDir)
 	if err != nil {
-		return fmt.Errorf("failed to read package.json: %w", err)
+		return fmt.Errorf("failed to read manifest.json: %w", err)
 	}
 
 	parts := strings.Split(args[0], "/")
@@ -81,11 +89,11 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 	}
 	teamName, addonName := parts[0], parts[1]
 
-	if !pkgJSON.IsAddon() {
-		return errors.New("package.json is not of addon type")
+	if manifest.Type != "addon" {
+		return errors.New("manifest.json is not of addon type")
 	}
 
-	name := fmt.Sprintf("%s/%s@%s", teamName, addonName, pkgJSON.Version)
+	name := fmt.Sprintf("%s/%s@%s", teamName, addonName, manifest.Version)
 	fmt.Printf("Publishing %s to CloudQuery Hub...\n", name)
 
 	c, err := cloudquery_api.NewClientWithResponses(getEnvOrDefault("CLOUDQUERY_API_URL", defaultAPIURL),
@@ -98,14 +106,14 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 	}
 
 	// create new draft version
-	err = createNewAddonDraftVersion(ctx, c, teamName, addonName, pkgJSON)
+	err = createNewAddonDraftVersion(ctx, c, teamName, addonName, distDir, manifest)
 	if err != nil {
 		return fmt.Errorf("failed to create new draft version: %w", err)
 	}
 
 	// upload package
 	fmt.Println("Uploading addon...")
-	err = uploadAddon(ctx, c, teamName, addonName, distDir, pkgJSON)
+	err = uploadAddon(ctx, c, teamName, addonName, distDir, manifest)
 	if err != nil {
 		return fmt.Errorf("failed to upload addon: %w", err)
 	}
@@ -119,8 +127,7 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 	if finalize {
 		fmt.Println("Finalizing addon version...")
 		draft := false
-		// TODO
-		resp, err := c.UpdatePluginVersionWithResponse(ctx, teamName, pkgJSON.Kind, addonName, pkgJSON.Version, cloudquery_api.UpdatePluginVersionJSONRequestBody{
+		resp, err := c.UpdateAddonVersionWithResponse(ctx, teamName, addonName, manifest.Version, cloudquery_api.UpdateAddonVersionJSONRequestBody{
 			Draft: &draft,
 		})
 		if err != nil {
@@ -130,7 +137,7 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 			return errorFromHTTPResponse(resp.HTTPResponse, resp)
 		}
 		fmt.Println("Success!")
-		fmt.Printf("%s/%s@%s is now available on the CloudQuery Hub.\n", teamName, addonName, pkgJSON.Version)
+		fmt.Printf("%s/%s@%s is now available on the CloudQuery Hub.\n", teamName, addonName, manifest.Version)
 		return nil
 	}
 
@@ -140,42 +147,45 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 	return nil
 }
 
-func createNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginName string, pkgJSON PackageJSONV1) error {
-	targets := make([]string, len(pkgJSON.SupportedTargets))
-	checksums := make([]string, len(pkgJSON.SupportedTargets))
-	for i, t := range pkgJSON.SupportedTargets {
-		targets[i] = fmt.Sprintf("%s_%s", t.OS, t.Arch)
-		checksums[i] = strings.TrimPrefix(t.Checksum, "sha256:")
+func createNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginName, distDir string, manifest ManifestJSONV1) error {
+	doc := ""
+	if manifest.PathToDoc != "" {
+		b, err := os.ReadFile(filepath.Join(distDir, manifest.PathToDoc))
+		if err != nil {
+			return fmt.Errorf("failed to read doc file: %w", err)
+		}
+		doc = string(b)
 	}
 
-	body := cloudquery_api.CreatePluginVersionJSONRequestBody{
-		Message:          pkgJSON.Message,
-		PackageType:      cloudquery_api.CreatePluginVersionJSONBodyPackageType(pkgJSON.PackageType),
-		Protocols:        pkgJSON.Protocols,
-		SupportedTargets: targets,
-		Checksums:        checksums,
+	body := cloudquery_api.CreateAddonVersionJSONRequestBody{
+		Checksum: "", // TODO
+		Doc:      doc,
+		Message:  manifest.Message,
+
+		AddonDeps:  &manifest.AddonDeps,
+		PluginDeps: &manifest.PluginDeps,
 	}
-	resp, err := c.CreatePluginVersionWithResponse(ctx, teamName, pkgJSON.Kind, pluginName, pkgJSON.Version, body)
+	resp, err := c.CreateAddonVersionWithResponse(ctx, teamName, pluginName, manifest.Version, body)
 	if err != nil {
-		return fmt.Errorf("failed to create plugin version: %w", err)
+		return fmt.Errorf("failed to create addon version: %w", err)
 	}
 	if resp.HTTPResponse.StatusCode > 299 {
 		err := errorFromHTTPResponse(resp.HTTPResponse, resp)
 		if resp.HTTPResponse.StatusCode == http.StatusForbidden {
-			return fmt.Errorf("%w. Hint: You may need to create the plugin first", err)
+			return fmt.Errorf("%w. Hint: You may need to create the addon first", err)
 		}
 		return err
 	}
 	return nil
 }
 
-func uploadAddon(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginName, localPath string, pkgJSON PackageJSONV1) error {
-	resp, err := c.UploadPluginAssetWithResponse(ctx, teamName, pkgJSON.Kind, pluginName, pkgJSON.Version, "addon")
+func uploadAddon(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, addonName, localPath string, manifest ManifestJSONV1) error {
+	resp, err := c.UploadAddonAssetWithResponse(ctx, teamName, addonName, manifest.Version)
 	if err != nil {
-		return fmt.Errorf("failed to upload binary: %w", err)
+		return fmt.Errorf("failed to upload addon: %w", err)
 	}
 	if resp.HTTPResponse.StatusCode > 299 {
-		msg := fmt.Sprintf("failed to upload binary: %s", resp.HTTPResponse.Status)
+		msg := fmt.Sprintf("failed to upload addon: %s", resp.HTTPResponse.Status)
 		switch {
 		case resp.JSON403 != nil:
 			msg = fmt.Sprintf("%s: %s", msg, resp.JSON403.Message)
@@ -185,12 +195,33 @@ func uploadAddon(ctx context.Context, c *cloudquery_api.ClientWithResponses, tea
 		return fmt.Errorf(msg)
 	}
 	if resp.JSON201 == nil {
-		return fmt.Errorf("upload response is nil, failed to upload binary")
+		return fmt.Errorf("upload response is nil, failed to upload addon")
 	}
 	uploadURL := resp.JSON201.Url
-	err = uploadFile(uploadURL, localPath)
-	if err != nil {
+
+	if err := uploadFile(uploadURL, localPath); err != nil {
 		return fmt.Errorf("failed to upload file: %w", err)
 	}
 	return nil
+}
+
+func readManifestJSON(distDir string) (ManifestJSONV1, error) {
+	v := SchemaVersion{}
+	b, err := os.ReadFile(filepath.Join(distDir, "manifest.json"))
+	if err != nil {
+		return ManifestJSONV1{}, err
+	}
+
+	if err := json.Unmarshal(b, &v); err != nil {
+		return ManifestJSONV1{}, err
+	}
+	if v.SchemaVersion != 1 {
+		return ManifestJSONV1{}, errors.New("unsupported schema version. This CLI version only supports manifest.json v1. Try upgrading your CloudQuery CLI version")
+	}
+
+	manifest := ManifestJSONV1{}
+	if err := json.Unmarshal(b, &manifest); err != nil {
+		return ManifestJSONV1{}, err
+	}
+	return manifest, nil
 }

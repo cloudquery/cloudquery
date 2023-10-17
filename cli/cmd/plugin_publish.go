@@ -58,6 +58,24 @@ func newCmdPluginPublish() *cobra.Command {
 	return cmd
 }
 
+type PackageJSONV1 struct {
+	Name    string `json:"name"`
+	Message string `json:"message"`
+	Version string `json:"version"`
+
+	Kind             cloudquery_api.PluginKind `json:"kind"`
+	Protocols        []int                     `json:"protocols"`
+	SupportedTargets []TargetBuild             `json:"supported_targets"`
+	PackageType      string                    `json:"package_type"`
+}
+
+type TargetBuild struct {
+	OS       string `json:"os"`
+	Arch     string `json:"arch"`
+	Path     string `json:"path"`
+	Checksum string `json:"checksum"`
+}
+
 func runPluginPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 	tc := auth.NewTokenClient()
 	token, err := tc.GetToken()
@@ -76,10 +94,6 @@ func runPluginPublish(ctx context.Context, cmd *cobra.Command, args []string) er
 		return errors.New("invalid plugin name. Must be in format <team_name>/<plugin_name>")
 	}
 	teamName, pluginName := parts[0], parts[1]
-
-	if !pkgJSON.IsPlugin() {
-		return errors.New("package.json is not of plugin type")
-	}
 
 	name := fmt.Sprintf("%s/%s@%s", teamName, pluginName, pkgJSON.Version)
 	fmt.Printf("Publishing %s to CloudQuery Hub...\n", name)
@@ -270,4 +284,25 @@ func uploadPluginBinary(ctx context.Context, c *cloudquery_api.ClientWithRespons
 		return fmt.Errorf("failed to upload file: %w", err)
 	}
 	return nil
+}
+
+func readPackageJSON(distDir string) (PackageJSONV1, error) {
+	v := SchemaVersion{}
+	b, err := os.ReadFile(filepath.Join(distDir, "package.json"))
+	if err != nil {
+		return PackageJSONV1{}, err
+	}
+	err = json.Unmarshal(b, &v)
+	if err != nil {
+		return PackageJSONV1{}, err
+	}
+	if v.SchemaVersion != 1 {
+		return PackageJSONV1{}, errors.New("unsupported schema version. This CLI version only supports package.json v1. Try upgrading your CloudQuery CLI version")
+	}
+	pkgJSON := PackageJSONV1{}
+	err = json.Unmarshal(b, &pkgJSON)
+	if err != nil {
+		return PackageJSONV1{}, err
+	}
+	return pkgJSON, nil
 }
