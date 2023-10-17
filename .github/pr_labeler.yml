@@ -1,3 +1,45 @@
+area/ci:
+  - .github/workflows/**/*
+area/cli:
+  - cli/**/*
+area/plugin/destination/azblob:
+  - plugins/destination/azblob/**/*
+area/plugin/destination/bigquery:
+  - plugins/destination/bigquery/**/*
+area/plugin/destination/clickhouse:
+  - plugins/destination/clickhouse/**/*
+area/plugin/destination/duckdb:
+  - plugins/destination/duckdb/**/*
+area/plugin/destination/elasticsearch:
+  - plugins/destination/elasticsearch/**/*
+area/plugin/destination/file:
+  - plugins/destination/file/**/*
+area/plugin/destination/firehose:
+  - plugins/destination/firehose/**/*
+area/plugin/destination/gcs:
+  - plugins/destination/gcs/**/*
+area/plugin/destination/gremlin:
+  - plugins/destination/gremlin/**/*
+area/plugin/destination/kafka:
+  - plugins/destination/kafka/**/*
+area/plugin/destination/meilisearch:
+  - plugins/destination/meilisearch/**/*
+area/plugin/destination/mongodb:
+  - plugins/destination/mongodb/**/*
+area/plugin/destination/mssql:
+  - plugins/destination/mssql/**/*
+area/plugin/destination/mysql:
+  - plugins/destination/mysql/**/*
+area/plugin/destination/neo4j:
+  - plugins/destination/neo4j/**/*
+area/plugin/destination/postgresql:
+  - plugins/destination/postgresql/**/*
+area/plugin/destination/s3:
+  - plugins/destination/s3/**/*
+area/plugin/destination/snowflake:
+  - plugins/destination/snowflake/**/*
+area/plugin/destination/sqlite:
+  - plugins/destination/sqlite/**/*
 area/plugin/source/airtable:
   - plugins/source/airtable/**/*
 area/plugin/source/alicloud:
@@ -6,48 +48,28 @@ area/plugin/source/aws:
   - plugins/source/aws/**/*
 area/plugin/source/awspricing:
   - plugins/source/awspricing/**/*
-area/plugin/destination/azblob:
-  - plugins/destination/azblob/**/*
 area/plugin/source/azure:
   - plugins/source/azure/**/*
 area/plugin/source/azuredevops:
   - plugins/source/azuredevops/**/*
-area/plugin/destination/bigquery:
-  - plugins/destination/bigquery/**/*
 area/plugin/source/bitbucket:
   - plugins/source/bitbucket/**/*
-area/ci:
-  - .github/workflows/**/*
-area/cli:
-  - cli/**/*
-area/plugin/destination/clickhouse:
-  - plugins/destination/clickhouse/**/*
 area/plugin/source/cloudflare:
   - plugins/source/cloudflare/**/*
 area/plugin/source/datadog:
   - plugins/source/datadog/**/*
 area/plugin/source/digitalocean:
   - plugins/source/digitalocean/**/*
-area/plugin/destination/duckdb:
-  - plugins/destination/duckdb/**/*
-area/plugin/destination/elasticsearch:
-  - plugins/destination/elasticsearch/**/*
 area/plugin/source/facebookmarketing:
   - plugins/source/facebookmarketing/**/*
 area/plugin/source/fastly:
   - plugins/source/fastly/**/*
-area/plugin/destination/file:
-  - plugins/destination/file/**/*
-area/plugin/destination/firehose:
-  - plugins/destination/firehose/**/*
 area/plugin/source/firestore:
   - plugins/source/firestore/**/*
 area/plugin/source/gandi:
   - plugins/source/gandi/**/*
 area/plugin/source/gcp:
   - plugins/source/gcp/**/*
-area/plugin/destination/gcs:
-  - plugins/destination/gcs/**/*
 area/plugin/source/github:
   - plugins/source/github/**/*
 area/plugin/source/gitlab:
@@ -56,8 +78,6 @@ area/plugin/source/googleads:
   - plugins/source/googleads/**/*
 area/plugin/source/googleanalytics:
   - plugins/source/googleanalytics/**/*
-area/plugin/destination/gremlin:
-  - plugins/destination/gremlin/**/*
 area/plugin/source/hackernews:
   - plugins/source/hackernews/**/*
 area/plugin/source/heroku:
@@ -70,22 +90,10 @@ area/plugin/source/jira:
   - plugins/source/jira/**/*
 area/plugin/source/k8s:
   - plugins/source/k8s/**/*
-area/plugin/destination/kafka:
-  - plugins/destination/kafka/**/*
 area/plugin/source/launchdarkly:
   - plugins/source/launchdarkly/**/*
-area/plugin/destination/meilisearch:
-  - plugins/destination/meilisearch/**/*
 area/plugin/source/mixpanel:
   - plugins/source/mixpanel/**/*
-area/plugin/destination/mongodb:
-  - plugins/destination/mongodb/**/*
-area/plugin/destination/mssql:
-  - plugins/destination/mssql/**/*
-area/plugin/destination/mysql:
-  - plugins/destination/mysql/**/*
-area/plugin/destination/neo4j:
-  - plugins/destination/neo4j/**/*
 area/plugin/source/notion:
   - plugins/source/notion/**/*
 area/plugin/source/okta:
@@ -98,28 +106,18 @@ area/plugin/source/pagerduty:
   - plugins/source/pagerduty/**/*
 area/plugin/source/plausible:
   - plugins/source/plausible/**/*
-area/plugin/destination/postgresql:
-  - plugins/destination/postgresql/**/*
-area/plugin/destination/s3:
-  - plugins/destination/s3/**/*
 area/plugin/source/salesforce:
   - plugins/source/salesforce/**/*
-area/scaffold:
-  - scaffold/**/*
 area/plugin/source/shopify:
   - plugins/source/shopify/**/*
 area/plugin/source/slack:
   - plugins/source/slack/**/*
-area/plugin/destination/snowflake:
-  - plugins/destination/snowflake/**/*
 area/plugin/source/snyk:
   - plugins/source/snyk/**/*
 area/plugin/source/source-mysql:
   - plugins/source/mysql/**/*
 area/plugin/source/source-postgresql:
   - plugins/source/postgresql/**/*
-area/plugin/destination/sqlite:
-  - plugins/destination/sqlite/**/*
 area/plugin/source/square:
   - plugins/source/square/**/*
 area/plugin/source/stripe:
@@ -134,5 +132,7 @@ area/plugin/source/vault:
   - plugins/source/vault/**/*
 area/plugin/source/vercel:
   - plugins/source/vercel/**/*
+area/scaffold:
+  - scaffold/**/*
 area/website:
   - website/**/*
