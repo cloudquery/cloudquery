@@ -41,13 +41,13 @@ import AZBlobAuthentication from "../pages/docs/plugins/destinations/azblob/_aut
 import AZBlobConfiguration from "../pages/docs/plugins/destinations/azblob/_configuration.md";
 import BigQueryAuthentication from "../pages/docs/plugins/destinations/bigquery/_authentication.md";
 import BigQueryConfiguration from "../pages/docs/plugins/destinations/bigquery/_configuration.md";
+import ClickHouseConfiguration from "../pages/docs/plugins/destinations/clickhouse/_configuration.md";
 import DuckDBConfiguration from "../pages/docs/plugins/destinations/duckdb/_configuration.md";
 import GremlinConfiguration from "../pages/docs/plugins/destinations/gremlin/_configuration.md";
 import PostgresDestConfiguration from "../pages/docs/plugins/destinations/postgresql/_configuration.md";
 import SnowflakeConfiguration from "../pages/docs/plugins/destinations/snowflake/_configuration.md";
 import SQLiteConfiguration from "../pages/docs/plugins/destinations/sqlite/_configuration.md";
 
-import ClickHouseConfiguration from "../pages/docs/plugins/destinations/clickhouse/_configuration.md";
 
 export const components = {
   "sources-airtable-authentication": <AirtableAuthentication />,
@@ -92,6 +92,7 @@ export const components = {
   "destinations-azblob-configuration": <AZBlobConfiguration />,
   "destinations-bigquery-authentication": <BigQueryAuthentication />,
   "destinations-bigquery-configuration": <BigQueryConfiguration />,
+  "destinations-clickhouse-configuration": <ClickHouseConfiguration />,
   "destinations-duckdb-configuration": <DuckDBConfiguration />,
   "destinations-gremlin-configuration": <GremlinConfiguration />,
   "destinations-postgresql-configuration": <PostgresDestConfiguration />,
