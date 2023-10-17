@@ -6,17 +6,13 @@ description: CloudQuery Azure Plugin documentation
 ---
 # Azure Source Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Authentication from './_authentication.mdx'
-
-<Badge text={"Latest: " + getLatestVersion("source", "azure")}/>
+:badge
 
 The CloudQuery Azure source plugin extracts information from many of the supported services by Microsoft Azure and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
 ## Authentication
 
-<Authentication />
+:authentication
 
 For best performance we recommend creating a service principal and using environment variables to authenticate.
 For testing purposes only you can use [`az login`](#authentication-with-az-login) to authenticate.
@@ -89,11 +85,9 @@ az login
 
 You are now authenticated!
 
-import { Callout } from 'nextra-theme-docs'
-
-<Callout type="info">
+:::callout{type="info"}
 Using only `az login` is not recommended for production use, as it requires spawning a new Azure CLI process each time an authentication token is needed.
-</Callout>
+:::
 
 ## Query Examples
 
@@ -140,7 +134,7 @@ WHERE
 
 Results:
 
-```
+```bash
 +---------------------------+-------+--------+
 | name                      | vCPUs | Memory |
 |---------------------------+-------+--------|
