@@ -13,9 +13,9 @@ import (
 const (
 	pluginInstallShort   = "Install required plugin images from your configuration"
 	pluginInstallExample = `# Install required plugins specified in directory
-cloudquery install ./directory
+cloudquery plugin install ./directory
 # Install required plugins specified in directory and config files
-cloudquery install ./directory ./aws.yml ./pg.yml
+cloudquery plugin install ./directory ./aws.yml ./pg.yml
 `
 )
 
