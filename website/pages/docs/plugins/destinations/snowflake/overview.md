@@ -5,11 +5,7 @@ description: CloudQuery Snowflake destination plugin documentation
 ---
 # Snowflake Destination Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Configuration from "./_configuration.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("destination", "snowflake")}/>
+:badge
 
 The snowflake plugin helps you sync data to your Snowflake data warehouse.
 
@@ -21,7 +17,7 @@ There are two ways to sync data to Snowflake:
 
 ## Example Config
 
-<Configuration />
+:configuration
 
 The Snowflake destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
 
