@@ -20,24 +20,7 @@ This example configures an Azure blob storage destination, to create CSV files i
 
 The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
-```yaml copy
-kind: destination
-spec:
-  name: "azblob"
-  path: "cloudquery/azblob"
-  version: "VERSION_DESTINATION_AZBLOB"
-  spec:
-    storage_account: "cqdestinationazblob"
-    container: "test"
-    path: "path/to/files"
-#    batch_size: 10000 # optional
-#    batch_size_bytes: 52428800 # optional
-#    batch_timeout: 30s # optional
-#    compression: gzip # optional
-    format: "csv"
-    format_spec:
-      delimiter: ","
-```
+:configuration
 
 The Azure Blob destination utilizes batching, and supports `batch_size`, `batch_size_bytes` and `batch_timeout` options (see below).
 
