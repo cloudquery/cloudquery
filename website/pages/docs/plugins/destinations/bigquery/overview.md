@@ -6,21 +6,15 @@ description: CloudQuery BigQuery destination plugin documentation
 ---
 # BigQuery Destination Plugin
 
-import { Callout } from 'nextra-theme-docs'
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Configuration from "./_configuration.mdx";
-import Authentication from "./_authentication.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("destination", "bigquery")}/>
+:badge
 
 The BigQuery plugin syncs data from any CloudQuery source plugin(s) to a BigQuery database running on Google Cloud Platform.
 
 The plugin currently only supports a streaming mode through the legacy streaming API. This is suitable for small- to medium-sized datasets, and will stream the results directly to the BigQuery database. A batch mode of operation is being developed to support larger datasets, but this is not currently supported.
 
-<Callout type="info">
+:::callout{type="info"}
 Streaming is not available for the [Google Cloud free tier](https://cloud.google.com/bigquery/pricing#free-tier).
-</Callout>
+:::
 
 ## Before you begin
 
@@ -30,7 +24,7 @@ Streaming is not available for the [Google Cloud free tier](https://cloud.google
 
 ## Example config
 
-<Configuration />
+:configuration
 
 The BigQuery destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
 
@@ -38,7 +32,7 @@ Note that the BigQuery plugin only supports the `append` write mode.
 
 ## Authentication
 
-<Authentication />
+:authentication
 
 ## BigQuery Spec
 
