@@ -119,5 +119,6 @@ export const components = {
   "destinations-mysql-configuration": <MySQLDestinationConfiguration />,
   "destinations-neo4j-configuration": <Neo4jConfiguration />,
   "destinations-postgresql-configuration": <PostgresDestConfiguration />,
+  "destinations-snowflake-configuration": <SnowflakeConfiguration />,
   "destinations-sqlite-configuration": <SQLiteConfiguration />,
 };
