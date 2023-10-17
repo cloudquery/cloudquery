@@ -165,7 +165,7 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 		tc := auth.NewTokenClient()
 		token, err := tc.GetToken()
 		if err != nil {
-			return fmt.Errorf("failed to get team token: %w", err)
+			return fmt.Errorf("failed to get auth token: %w", err)
 		}
 		cl, err := team.NewClient(apiURL, token)
 		if err != nil {

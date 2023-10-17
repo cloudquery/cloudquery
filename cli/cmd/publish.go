@@ -87,7 +87,7 @@ func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 	tc := auth.NewTokenClient()
 	token, err := tc.GetToken()
 	if err != nil {
-		return fmt.Errorf("failed to get team token: %w", err)
+		return fmt.Errorf("failed to get auth token: %w", err)
 	}
 
 	distDir := cmd.Flag("dist-dir").Value.String()
