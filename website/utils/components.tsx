@@ -8,6 +8,7 @@ import AZBlobConfiguration from "../pages/docs/plugins/destinations/azblob/_conf
 import DuckDBConfiguration from "../pages/docs/plugins/destinations/duckdb/_configuration.md";
 import GremlinConfiguration from "../pages/docs/plugins/destinations/gremlin/_configuration.md";
 import PostgresDestConfiguration from "../pages/docs/plugins/destinations/postgresql/_configuration.md";
+import SQLiteConfiguration from "../pages/docs/plugins/destinations/sqlite/_configuration.md";
 
 export const components = {
   "sources-alicloud-configuration": <AlicloudConfiguration />,
@@ -19,4 +20,5 @@ export const components = {
   "destinations-duckdb-configuration": <DuckDBConfiguration />,
   "destinations-postgresql-configuration": <PostgresDestConfiguration />,
   "destinations-gremlin-configuration": <GremlinConfiguration />,
+  "destinations-sqlite-configuration": <SQLiteConfiguration />,
 };
