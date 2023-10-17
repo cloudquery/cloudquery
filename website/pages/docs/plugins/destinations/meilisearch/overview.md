@@ -5,19 +5,14 @@ description: CloudQuery Meilisearch destination plugin documentation
 ---
 # Meilisearch Destination Plugin
 
-import { Callout } from 'nextra-theme-docs'
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Configuration from "./_configuration.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("destination", "meilisearch")}/>
+:badge
 
 The Meilisearch plugin syncs data from any [CloudQuery source plugins](https://www.cloudquery.io/docs/plugins/sources/overview)
 to a [Meilisearch](https://www.meilisearch.com) instance.
 
 ## Example config
 
-<Configuration />
+:configuration
 
 The Meilisearch destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size)
 and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
@@ -35,9 +30,9 @@ This is the spec used by the Meilisearch destination plugin.
 
   Example: `http://localhost:7700`
 
-  <Callout type="info">
+:::callout{type="info"}
     If your Meilisearch instance uses private SSL certificate, make sure to specify `ca_cert` option, too.
-  </Callout>
+:::
 
 
 - `api_key` (`string`) (required)
@@ -53,9 +48,9 @@ This is the spec used by the Meilisearch destination plugin.
   - `settings.update`
   - `version`
 
-  <Callout type="info">
+:::callout{type="info"}
     Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
-  </Callout>
+:::
 
 
 - `timeout` (`string`) (optional) (default: `5m`)

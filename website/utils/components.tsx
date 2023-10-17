@@ -41,9 +41,24 @@ import AZBlobAuthentication from "../pages/docs/plugins/destinations/azblob/_aut
 import AZBlobConfiguration from "../pages/docs/plugins/destinations/azblob/_configuration.md";
 import BigQueryAuthentication from "../pages/docs/plugins/destinations/bigquery/_authentication.md";
 import BigQueryConfiguration from "../pages/docs/plugins/destinations/bigquery/_configuration.md";
+import ClickHouseConfiguration from "../pages/docs/plugins/destinations/clickhouse/_configuration.md";
 import DuckDBConfiguration from "../pages/docs/plugins/destinations/duckdb/_configuration.md";
+import ElasticSearchConfiguration from "../pages/docs/plugins/destinations/elasticsearch/_configuration.md";
+import FileDestinationConfiguration from "../pages/docs/plugins/destinations/file/_configuration.md";
+import FirehoseConfiguration from "../pages/docs/plugins/destinations/firehose/_configuration.md";
+import FirehoseAuthentication from "../pages/docs/plugins/destinations/firehose/_authentication.md";
+import GCSAuthentication from "../pages/docs/plugins/destinations/gcs/_authentication.md";
+import GCSConfiguration from "../pages/docs/plugins/destinations/gcs/_configuration.md";
 import GremlinConfiguration from "../pages/docs/plugins/destinations/gremlin/_configuration.md";
+import KafkaConfiguration from "../pages/docs/plugins/destinations/kafka/_configuration.md";
+import MeilisearchConfiguration from "../pages/docs/plugins/destinations/meilisearch/_configuration.md";
+import MongoDBConfiguration from "../pages/docs/plugins/destinations/mongodb/_configuration.md";
+import MSSQLConfiguration from "../pages/docs/plugins/destinations/mssql/_configuration.md";
+import MySQLDestinationConfiguration from "../pages/docs/plugins/destinations/mysql/_configuration.md";
+import Neo4jConfiguration from "../pages/docs/plugins/destinations/neo4j/_configuration.md";
 import PostgresDestConfiguration from "../pages/docs/plugins/destinations/postgresql/_configuration.md";
+import S3Authentication from "../pages/docs/plugins/destinations/s3/_authentication.md";
+import S3Configuration from "../pages/docs/plugins/destinations/s3/_configuration.md";
 import SnowflakeConfiguration from "../pages/docs/plugins/destinations/snowflake/_configuration.md";
 import SQLiteConfiguration from "../pages/docs/plugins/destinations/sqlite/_configuration.md";
 
@@ -90,9 +105,24 @@ export const components = {
   "destinations-azblob-configuration": <AZBlobConfiguration />,
   "destinations-bigquery-authentication": <BigQueryAuthentication />,
   "destinations-bigquery-configuration": <BigQueryConfiguration />,
+  "destinations-clickhouse-configuration": <ClickHouseConfiguration />,
   "destinations-duckdb-configuration": <DuckDBConfiguration />,
+  "destinations-elasticsearch-configuration": <ElasticSearchConfiguration />,
+  "destinations-file-configuration": <FileDestinationConfiguration />,
+  "destinations-firehose-configuration": <FirehoseConfiguration />,
+  "destinations-firehose-authentication": <FirehoseAuthentication />,
+  "destinations-gcs-authentication": <GCSAuthentication />,
+  "destinations-gcs-configuration": <GCSConfiguration />,
   "destinations-gremlin-configuration": <GremlinConfiguration />,
+  "destinations-kafka-configuration": <KafkaConfiguration />,
+  "destinations-meilisearch-configuration": <MeilisearchConfiguration />,
+  "destinations-mongodb-configuration": <MongoDBConfiguration />,
+  "destinations-mssql-configuration": <MSSQLConfiguration />,
+  "destinations-mysql-configuration": <MySQLDestinationConfiguration />,
+  "destinations-neo4j-configuration": <Neo4jConfiguration />,
   "destinations-postgresql-configuration": <PostgresDestConfiguration />,
+  "destinations-s3-authentication": <S3Authentication />,
+  "destinations-s3-configuration": <S3Configuration />,
   "destinations-snowflake-configuration": <SnowflakeConfiguration />,
   "destinations-sqlite-configuration": <SQLiteConfiguration />,
 };

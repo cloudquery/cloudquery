@@ -1,19 +1,14 @@
 # MySQL destination plugin configuration reference
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import { Callout } from 'nextra-theme-docs';
-import Configuration from "./_configuration.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("destination", "mysql")}/>
+:badge
 
 ## Example Configuration
 
 <Configuration/>
 
-<Callout type="info">
-    Make sure you use [environment variable expansion](/docs/advanced-topics/environment-variable-substitution) in production instead of committing the credentials to the configuration file directly.
-</Callout>
+:::callout{type="info"}
+Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
+:::
 
 The MySQL destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
 

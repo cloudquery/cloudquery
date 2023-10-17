@@ -1,10 +1,6 @@
 # Microsoft SQL Server destination plugin example
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import { Callout } from 'nextra-theme-docs'
-
-<Badge text={"Latest: " + getLatestVersion("destination", "mssql")}/>
+:badge
 
 In this article we will show you a simple example of configuring Microsoft SQL Server destination plugin.
 
@@ -73,6 +69,6 @@ spec:
     connection_string: "server=localhost;user id=SA;password=yourStrongP@ssword;port=1433;database=cloudquery;"
 ```
 
-<Callout type="info">
+:::callout{type="info"}
 Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
-</Callout>
+:::

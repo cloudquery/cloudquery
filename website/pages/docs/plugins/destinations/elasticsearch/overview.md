@@ -5,18 +5,13 @@ description: CloudQuery Elasticsearch destination plugin documentation
 ---
 # Elasticsearch Destination Plugin
 
-import { Callout } from 'nextra-theme-docs'
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Configuration from "./_configuration.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("destination", "elasticsearch")}/>
+:badge
 
 The Elasticsearch plugin syncs data from any CloudQuery source plugin(s) to an Elasticsearch cluster.
 
 ## Example config
 
-<Configuration />
+:configuration
 
 The Elasticsearch destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
 
