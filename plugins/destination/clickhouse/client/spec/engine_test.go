@@ -13,6 +13,16 @@ func TestEngineJSONSchema(t *testing.T) {
 
 	jsonschema.TestJSONSchema(t, string(schema), []jsonschema.TestCase{
 		{
+			Name: "null",
+			Err:  true,
+			Spec: `null`,
+		},
+		{
+			Name: "bad",
+			Err:  true,
+			Spec: `123`,
+		},
+		{
 			Name: "empty",
 			Spec: `{}`,
 		},

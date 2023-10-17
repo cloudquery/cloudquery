@@ -12,11 +12,12 @@ import (
 )
 
 type Spec struct {
-	Cluster          string `json:"cluster,omitempty"`
 	ConnectionString string `json:"connection_string,omitempty" jsonschema:"required,minLength=1"`
-	CACert           string `json:"ca_cert,omitempty"`
+	Cluster          string `json:"cluster,omitempty"`
 
 	Engine *Engine `json:"engine,omitempty"`
+
+	CACert string `json:"ca_cert,omitempty"`
 
 	BatchSize      int                  `json:"batch_size,omitempty" jsonschema:"minimum=1,default=10000"`
 	BatchSizeBytes int                  `json:"batch_size_bytes,omitempty" jsonschema:"minimum=1,default=5242880"`

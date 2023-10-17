@@ -32,14 +32,11 @@
     },
     "Spec": {
       "properties": {
-        "cluster": {
-          "type": "string"
-        },
         "connection_string": {
           "type": "string",
           "minLength": 1
         },
-        "ca_cert": {
+        "cluster": {
           "type": "string"
         },
         "engine": {
@@ -51,6 +48,9 @@
               "type": "null"
             }
           ]
+        },
+        "ca_cert": {
+          "type": "string"
         },
         "batch_size": {
           "type": "integer",
