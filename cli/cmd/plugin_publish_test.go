@@ -176,6 +176,8 @@ func TestPluginPublish_Unauthorized(t *testing.T) {
 }
 
 func checkAuthHeader(t *testing.T, r *http.Request) {
+	t.Helper()
+
 	wantAuth := "Bearer testkey"
 	if r.Header.Get("Authorization") != wantAuth {
 		t.Fatalf("expected Authorization header to be %q, got %q", wantAuth, r.Header.Get("Authorization"))
@@ -183,6 +185,8 @@ func checkAuthHeader(t *testing.T, r *http.Request) {
 }
 
 func checkCreatePluginVersionRequest(t *testing.T, r *http.Request) {
+	t.Helper()
+
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		t.Fatal(err)
@@ -207,6 +211,8 @@ func checkCreatePluginVersionRequest(t *testing.T, r *http.Request) {
 }
 
 func checkUpdatePluginVersionRequest(t *testing.T, r *http.Request) {
+	t.Helper()
+
 	got := map[string]any{}
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -222,6 +228,8 @@ func checkUpdatePluginVersionRequest(t *testing.T, r *http.Request) {
 }
 
 func checkCreateTablesRequest(t *testing.T, r *http.Request) {
+	t.Helper()
+
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		t.Fatal(err)
@@ -295,6 +303,8 @@ func checkCreateTablesRequest(t *testing.T, r *http.Request) {
 }
 
 func checkCreateDocsRequest(t *testing.T, r *http.Request) {
+	t.Helper()
+
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		t.Fatal(err)
