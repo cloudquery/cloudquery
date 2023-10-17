@@ -2,14 +2,15 @@ package cmd
 
 import (
 	"context"
+	"crypto/sha256"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"os/signal"
 	"path/filepath"
-	"strings"
 	"syscall"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
@@ -21,21 +22,21 @@ const (
 	addonPublishShort = "Publish to CloudQuery Hub."
 	addonPublishLong  = `Publish to CloudQuery Hub.
 
-This publishes an addon version to CloudQuery Hub from a local dist directory.
+This publishes an addon version to CloudQuery Hub from a manifest file.
 `
 	addonPublishExample = `
-# Publish an addon version from a local dist directory
-cloudquery addon publish my_team/my_addon`
+# Publish an addon version from a manifest file
+cloudquery addon publish /path/to/manifest.json v1.0.0`
 )
 
 func newCmdAddonPublish() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "publish <team_name>/<addon_name> [-D dist]",
+		Use:     "publish manifest.json v1.0.0 [--finalize]",
 		Short:   addonPublishShort,
 		Long:    addonPublishLong,
 		Example: addonPublishExample,
 		Hidden:  true,
-		Args:    cobra.ExactArgs(1),
+		Args:    cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// Set up a channel to listen for OS signals for graceful shutdown.
 			ctx, cancel := context.WithCancel(cmd.Context())
@@ -51,24 +52,24 @@ func newCmdAddonPublish() *cobra.Command {
 			return runAddonPublish(ctx, cmd, args)
 		},
 	}
-	cmd.Flags().StringP("dist-dir", "D", "dist", "Path to the dist directory")
 	cmd.Flags().BoolP("finalize", "f", false, `Finalize the addon version after publishing. If false, the addon version will be marked as draft=true.`)
 
 	return cmd
 }
 
 type ManifestJSONV1 struct {
-	Name    string `json:"name"`
-	Version string `json:"version"`
+	Type      string `json:"type"` // always "addon"
+	TeamName  string `json:"team_name"`
+	AddonName string `json:"addon_name"`
+	// AddonType   string   `json:"addon_type"`   // unused
+	// AddonFormat string   `json:"addon_format"` // unused
 
-	Message   string `json:"message"`
-	PathToDoc string `json:"doc"`
+	PathToMessage string `json:"message"`
+	PathToZip     string `json:"path"`
+	PathToDoc     string `json:"doc"`
 
-	Type        string   `json:"type"`         // always "addon"
-	AddonType   string   `json:"addon_type"`   // TODO unused
-	AddonFormat string   `json:"addon_format"` // TODO unused
-	PluginDeps  []string `json:"plugin_deps"`
-	AddonDeps   []string `json:"addon_deps"`
+	PluginDeps []string `json:"plugin_deps"`
+	AddonDeps  []string `json:"addon_deps"`
 }
 
 func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
@@ -77,23 +78,24 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}
 
-	distDir := cmd.Flag("dist-dir").Value.String()
-	manifest, err := readManifestJSON(distDir)
+	manifestPath, version := args[0], args[1]
+	manifestDir := filepath.Dir(manifestPath)
+
+	manifest, err := readManifestJSON(manifestPath)
 	if err != nil {
 		return fmt.Errorf("failed to read manifest.json: %w", err)
 	}
-
-	parts := strings.Split(args[0], "/")
-	if len(parts) != 2 {
-		return errors.New("invalid addon name. Must be in format <team_name>/<addon_name>")
-	}
-	teamName, addonName := parts[0], parts[1]
 
 	if manifest.Type != "addon" {
 		return errors.New("manifest.json is not of addon type")
 	}
 
-	name := fmt.Sprintf("%s/%s@%s", teamName, addonName, manifest.Version)
+	zipPath := filepath.Join(manifestDir, manifest.PathToZip)
+	if _, err := os.Stat(zipPath); err != nil {
+		return fmt.Errorf("could not read file %s: %w", zipPath, err)
+	}
+
+	name := fmt.Sprintf("%s/%s@%s", manifest.TeamName, manifest.AddonName, version)
 	fmt.Printf("Publishing %s to CloudQuery Hub...\n", name)
 
 	c, err := cloudquery_api.NewClientWithResponses(getEnvOrDefault("CLOUDQUERY_API_URL", defaultAPIURL),
@@ -106,14 +108,15 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 	}
 
 	// create new draft version
-	err = createNewAddonDraftVersion(ctx, c, teamName, addonName, distDir, manifest)
+	err = createNewAddonDraftVersion(ctx, c, manifest, version, manifestDir, zipPath)
 	if err != nil {
 		return fmt.Errorf("failed to create new draft version: %w", err)
 	}
 
 	// upload package
 	fmt.Println("Uploading addon...")
-	err = uploadAddon(ctx, c, teamName, addonName, distDir, manifest)
+
+	err = uploadAddon(ctx, c, manifest, version, zipPath)
 	if err != nil {
 		return fmt.Errorf("failed to upload addon: %w", err)
 	}
@@ -127,7 +130,7 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 	if finalize {
 		fmt.Println("Finalizing addon version...")
 		draft := false
-		resp, err := c.UpdateAddonVersionWithResponse(ctx, teamName, addonName, manifest.Version, cloudquery_api.UpdateAddonVersionJSONRequestBody{
+		resp, err := c.UpdateAddonVersionWithResponse(ctx, manifest.TeamName, manifest.AddonName, version, cloudquery_api.UpdateAddonVersionJSONRequestBody{
 			Draft: &draft,
 		})
 		if err != nil {
@@ -137,7 +140,7 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 			return errorFromHTTPResponse(resp.HTTPResponse, resp)
 		}
 		fmt.Println("Success!")
-		fmt.Printf("%s/%s@%s is now available on the CloudQuery Hub.\n", teamName, addonName, manifest.Version)
+		fmt.Printf("%s/%s@%s is now available on the CloudQuery Hub.\n", manifest.TeamName, manifest.AddonName, version)
 		return nil
 	}
 
@@ -147,25 +150,40 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 	return nil
 }
 
-func createNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, addonName, distDir string, manifest ManifestJSONV1) error {
-	doc := ""
-	if manifest.PathToDoc != "" {
-		b, err := os.ReadFile(filepath.Join(distDir, manifest.PathToDoc))
-		if err != nil {
-			return fmt.Errorf("failed to read doc file: %w", err)
-		}
-		doc = string(b)
-	}
-
+func createNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWithResponses, manifest ManifestJSONV1, version, manifestDir, zipPath string) error {
 	body := cloudquery_api.CreateAddonVersionJSONRequestBody{
-		Checksum: "", // TODO
-		Doc:      doc,
-		Message:  manifest.Message,
-
 		AddonDeps:  &manifest.AddonDeps,
 		PluginDeps: &manifest.PluginDeps,
 	}
-	resp, err := c.CreateAddonVersionWithResponse(ctx, teamName, addonName, manifest.Version, body)
+
+	if manifest.PathToDoc != "" {
+		b, err := os.ReadFile(filepath.Join(manifestDir, manifest.PathToDoc))
+		if err != nil {
+			return fmt.Errorf("failed to read doc file: %w", err)
+		}
+		body.Doc = string(b)
+	}
+
+	if manifest.PathToMessage != "" {
+		b, err := os.ReadFile(filepath.Join(manifestDir, manifest.PathToMessage))
+		if err != nil {
+			return fmt.Errorf("failed to read message file: %w", err)
+		}
+		body.Message = string(b)
+	}
+
+	f, err := os.Open(zipPath)
+	if err != nil {
+		return fmt.Errorf("failed to open file: %w", err)
+	}
+	defer f.Close()
+	s := sha256.New()
+	if _, err := io.Copy(s, f); err != nil {
+		return fmt.Errorf("failed to calculate checksum: %w", err)
+	}
+	body.Checksum = fmt.Sprintf("%x", s.Sum(nil))
+
+	resp, err := c.CreateAddonVersionWithResponse(ctx, manifest.TeamName, manifest.AddonName, version, body)
 	if err != nil {
 		return fmt.Errorf("failed to create addon version: %w", err)
 	}
@@ -179,8 +197,8 @@ func createNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWit
 	return nil
 }
 
-func uploadAddon(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, addonName, localPath string, manifest ManifestJSONV1) error {
-	resp, err := c.UploadAddonAssetWithResponse(ctx, teamName, addonName, manifest.Version)
+func uploadAddon(ctx context.Context, c *cloudquery_api.ClientWithResponses, manifest ManifestJSONV1, version, localPath string) error {
+	resp, err := c.UploadAddonAssetWithResponse(ctx, manifest.TeamName, manifest.AddonName, version)
 	if err != nil {
 		return fmt.Errorf("failed to upload addon: %w", err)
 	}
@@ -205,9 +223,9 @@ func uploadAddon(ctx context.Context, c *cloudquery_api.ClientWithResponses, tea
 	return nil
 }
 
-func readManifestJSON(distDir string) (ManifestJSONV1, error) {
+func readManifestJSON(manifestPath string) (ManifestJSONV1, error) {
 	v := SchemaVersion{}
-	b, err := os.ReadFile(filepath.Join(distDir, "manifest.json"))
+	b, err := os.ReadFile(manifestPath)
 	if err != nil {
 		return ManifestJSONV1{}, err
 	}

@@ -13,7 +13,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestPublish(t *testing.T) {
+func TestPluginPublish(t *testing.T) {
 	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
@@ -34,7 +34,7 @@ func TestPublish(t *testing.T) {
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
 			w.Write([]byte(`{"name": "v1.2.3"}`))
-			checkCreateVersionRequest(t, r)
+			checkCreatePluginVersionRequest(t, r)
 		case "/plugins/cloudquery/source/test/versions/v1.2.3/tables":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
@@ -76,7 +76,7 @@ func TestPublish(t *testing.T) {
 	}
 }
 
-func TestPublishFinalize(t *testing.T) {
+func TestPluginPublishFinalize(t *testing.T) {
 	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
@@ -98,17 +98,16 @@ func TestPublishFinalize(t *testing.T) {
 		case "/plugins/cloudquery/source/test/versions/v1.2.3":
 			checkAuthHeader(t, r)
 			if r.Method == "PATCH" {
-				checkUpdateVersionRequest(t, r)
+				checkUpdatePluginVersionRequest(t, r)
 				if gotUploads != 2 {
 					t.Fatalf("expected 2 uploads before draft=false, got %d", gotUploads)
 				}
 				w.WriteHeader(http.StatusOK)
-				w.Write([]byte(`{"name": "v1.2.3"}`))
 			} else {
+				checkCreatePluginVersionRequest(t, r)
 				w.WriteHeader(http.StatusCreated)
-				w.Write([]byte(`{"name": "v1.2.3"}`))
-				checkCreateVersionRequest(t, r)
 			}
+			w.Write([]byte(`{"name": "v1.2.3"}`))
 		case "/plugins/cloudquery/source/test/versions/v1.2.3/tables":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
@@ -152,7 +151,7 @@ func TestPublishFinalize(t *testing.T) {
 	}
 }
 
-func TestPublish_Unauthorized(t *testing.T) {
+func TestPluginPublish_Unauthorized(t *testing.T) {
 	t.Setenv("CLOUDQUERY_API_KEY", "badkey")
 
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -183,7 +182,7 @@ func checkAuthHeader(t *testing.T, r *http.Request) {
 	}
 }
 
-func checkCreateVersionRequest(t *testing.T, r *http.Request) {
+func checkCreatePluginVersionRequest(t *testing.T, r *http.Request) {
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		t.Fatal(err)
@@ -207,7 +206,7 @@ func checkCreateVersionRequest(t *testing.T, r *http.Request) {
 	}
 }
 
-func checkUpdateVersionRequest(t *testing.T, r *http.Request) {
+func checkUpdatePluginVersionRequest(t *testing.T, r *http.Request) {
 	got := map[string]any{}
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
