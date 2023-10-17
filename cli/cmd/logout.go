@@ -7,7 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/cloudquery/cloudquery/cli/internal/auth"
+	"github.com/cloudquery/cloudquery/cli/internal/team"
 	"github.com/spf13/cobra"
 )
 
@@ -41,7 +41,7 @@ func newCmdLogout() *cobra.Command {
 }
 
 func runLogout(_ context.Context, cmd *cobra.Command) error {
-	err := auth.Logout()
+	err := team.Logout()
 	if err != nil {
 		return fmt.Errorf("failed to logout: %w", err)
 	}

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/cloudquery/cloudquery-api-go/auth"
 	"io"
 	"net/http"
 	"os"
@@ -16,7 +17,6 @@ import (
 	"syscall"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
-	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/spf13/cobra"
 )
 
@@ -84,9 +84,10 @@ type TargetBuild struct {
 }
 
 func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
-	token, err := auth.GetToken()
+	tc := auth.NewTokenClient()
+	token, err := tc.GetToken()
 	if err != nil {
-		return fmt.Errorf("failed to get auth token: %w", err)
+		return fmt.Errorf("failed to get team token: %w", err)
 	}
 
 	distDir := cmd.Flag("dist-dir").Value.String()

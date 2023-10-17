@@ -44,8 +44,12 @@ github.com/chenzhuoyu/iasm v0.9.0 h1:9fhXjVzq5hUy2gkhhgHl95zG2cEAhw9OSGs8toWWAwo
 github.com/chenzhuoyu/iasm v0.9.0/go.mod h1:Xjy2NpN3h7aUqeqM+woSuuvxmIe6+DDsiNLIrkAmYog=
 github.com/cloudquery/arrow/go/v14 v14.0.0-20231014001145-dbcb1498009c h1:z0ZtXvDjtohLaNHLGl25gyq7ULS0y64CayNvReJJCTc=
 github.com/cloudquery/arrow/go/v14 v14.0.0-20231014001145-dbcb1498009c/go.mod h1:EkHPhLB+98ANnPojOy2sUhM0rzYbPEmrtuA9v8aZp/c=
+github.com/cloudquery/cloudquery-api-go v1.2.8 h1:kzTuHxA/CwNFiCeg+rUZN+pe7lIi4w6FgbG2T+abGlI=
+github.com/cloudquery/cloudquery-api-go v1.2.8/go.mod h1:oyNUZZ6CKjPapxMbmE/qR2vdo9/G+tuCdF7uXT1LYuM=
 github.com/cloudquery/cloudquery-api-go v1.2.9 h1:EozP62InCFsleavJryPG/P9a3t2ddXU5KH3pO+opj1s=
 github.com/cloudquery/cloudquery-api-go v1.2.9/go.mod h1:oyNUZZ6CKjPapxMbmE/qR2vdo9/G+tuCdF7uXT1LYuM=
+github.com/cloudquery/cloudquery-api-go v1.3.0 h1:INlkV7TLLwaAfY0LlexNO/UeTn2RoJYXjyutn0q1j5c=
+github.com/cloudquery/cloudquery-api-go v1.3.0/go.mod h1:03fojQg0UpdgqXZ9tzZ5gF5CPad/F0sok66bsX6u4RA=
 github.com/cloudquery/plugin-pb-go v1.12.3 h1:rLK3/RR70/BX8tj2QzTnrjkxQhzfAT7SXEEEGuKr7Rk=
 github.com/cloudquery/plugin-pb-go v1.12.3/go.mod h1:CYorX3zCHF9ByoOgdBOuwLX/2vVCDH6/FoREOE3oH+w=
 github.com/cloudquery/plugin-sdk/v4 v4.15.0 h1:A/aob9SlBgwfT2qqLp1+Kxryu0wgcKoaBx++BjlDEX8=
@@ -185,6 +189,8 @@ github.com/mattn/go-runewidth v0.0.15 h1:UNAjwbU9l54TA3KzvqLGxwWjHmMgBUVhBiTjelZ
 github.com/mattn/go-runewidth v0.0.15/go.mod h1:Jdepj2loyihRzMpdS35Xk/zdY8IAYHsh153qUoGf23w=
 github.com/microcosm-cc/bluemonday v1.0.25 h1:4NEwSfiJ+Wva0VxN5B8OwMicaJvD8r9tlJWm9rtloEg=
 github.com/microcosm-cc/bluemonday v1.0.25/go.mod h1:ZIOjCQp1OrzBBPIJmfX4qDYFuhU02nx4bn030ixfHLE=
+github.com/microcosm-cc/bluemonday v1.0.26 h1:xbqSvqzQMeEHCqMi64VAs4d8uy6Mequs3rQ0k/Khz58=
+github.com/microcosm-cc/bluemonday v1.0.26/go.mod h1:JyzOCs9gkyQyjs+6h10UEVSe02CGwkhd72Xdqh78TWs=
 github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db h1:62I3jR2EmQ4l5rM/4FEfDWcRD+abF5XlKShorW5LRoQ=
 github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db/go.mod h1:l0dey0ia/Uv7NcFFVbCLtqEBQbrT4OCwCSKTEv6enCw=
 github.com/mitchellh/go-wordwrap v1.0.1 h1:TLuKupo69TCn6TQSyGxwI1EblZZEsQ0vMlAFQflz0v0=

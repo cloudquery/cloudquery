@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"bytes"
+	"github.com/cloudquery/cloudquery-api-go/auth"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -10,7 +11,6 @@ import (
 	"testing"
 
 	"github.com/adrg/xdg"
-	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
