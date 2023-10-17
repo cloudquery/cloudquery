@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [9.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v9.3.8...plugins-source-azure-v9.4.0) (2023-10-17)
 
 
+### This Release has the Following Changes to Tables
+- Table `azure_managementgroups_entities` was added
+
 ### Features
 
 * Add JSON schema for plugin spec ([#14558](https://github.com/cloudquery/cloudquery/issues/14558)) ([4426d4d](https://github.com/cloudquery/cloudquery/commit/4426d4df3879ae3f6dc4aecbdbfe8fd978659fcb))
