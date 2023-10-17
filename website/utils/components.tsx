@@ -2,6 +2,8 @@ import AlicloudConfiguration from "../pages/docs/plugins/sources/alicloud/_confi
 import AlicloudAuthentication from "../pages/docs/plugins/sources/alicloud/_authentication.md";
 import AWSConfiguration from "../pages/docs/plugins/sources/aws/_configuration.md";
 import AWSAuthentication from "../pages/docs/plugins/sources/aws/_authentication.md";
+import PostgresDestConfiguration from "../pages/docs/plugins/destinations/postgresql/_configuration.md";
+import GremlinConfiguration from "../pages/docs/plugins/destinations/gremlin/_configuration.md";
 
 import MeilisearchConfiguration from "../pages/docs/plugins/destinations/meilisearch/_configuration.md";
 
@@ -12,4 +14,6 @@ export const components = {
   "sources-aws-authentication": <AWSAuthentication />,
 
   "destinations-meilisearch-configuration": <MeilisearchConfiguration />,
+  "destinations-postgresql-configuration": <PostgresDestConfiguration />,
+  "destinations-gremlin-configuration": <GremlinConfiguration />,
 };

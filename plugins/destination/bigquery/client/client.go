@@ -20,6 +20,7 @@ type Client struct {
 	writer *batchwriter.BatchWriter
 
 	batchwriter.UnimplementedDeleteStale
+	batchwriter.UnimplementedDeleteRecord
 }
 
 func New(_ context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
