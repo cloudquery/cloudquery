@@ -37,7 +37,6 @@ CloudFormation
 Cloudinary
 cloudquery
 CloudQuery
-Changelog
 CMK
 CMKs
 codegen
