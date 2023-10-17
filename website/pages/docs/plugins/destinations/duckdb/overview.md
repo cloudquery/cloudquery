@@ -6,17 +6,13 @@ description: CloudQuery DuckDB destination plugin documentation
 ---
 # DuckDB Destination Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Configuration from "./_configuration.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("destination", "duckdb")}/>
+:badge
 
 This destination plugin lets you sync data from a CloudQuery source to a [DuckDB](https://duckdb.org/) database.
 
 ## Example Config
 
-<Configuration />
+:configuration
 
 ## DuckDB Spec
 
