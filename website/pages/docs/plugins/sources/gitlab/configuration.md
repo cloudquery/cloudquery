@@ -4,9 +4,7 @@
 
 This example syncs from GitLab to a Postgres destination, using API Key authentication. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-import Configuration from "./_configuration.mdx";
-
-<Configuration/>
+:configuration
 
 See [tables](/docs/plugins/sources/gitlab/tables) for a list of supported tables.
 

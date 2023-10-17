@@ -7,22 +7,17 @@ description: CloudQuery Fastly source plugin documentation
 
 # Fastly Source Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Configuration from "./_configuration.mdx";
-import Authentication from "./_authentication.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("source", `fastly`)}/>
+:badge
 
 The CloudQuery Fastly plugin reads information from your Fastly account(s) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
 ## Authentication
 
-<Authentication />
+:authentication
 
 ## Configuration
 
-<Configuration />
+:configuration
 
 For more information on downloading, installing and running the CloudQuery CLI, see the [Quickstart guide](/docs/quickstart).
 

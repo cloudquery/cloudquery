@@ -2,9 +2,7 @@
 
 ## Example
 
-import Configuration from "./_configuration.mdx";
-
-<Configuration/>
+:configuration
 
 ## Gandi Spec
 

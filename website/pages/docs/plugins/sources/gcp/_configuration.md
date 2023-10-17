@@ -8,6 +8,6 @@ spec:
   tables: ["gcp_storage_buckets"]
   destinations: ["DESTINATION_NAME"]
   spec:
-    # GCP Spec section described below
+    # GCP Spec
     project_ids: ["my-project"]
 ```
