@@ -6,6 +6,8 @@ import (
 	"os"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/client/spec"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/resources/plugin"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/goccy/go-json"
@@ -26,8 +28,12 @@ func getTestConnection() string {
 
 func TestPlugin(t *testing.T) {
 	ctx := context.Background()
-	p := plugin.NewPlugin("clickhouse", "development", New)
-	s := &Spec{ConnectionString: getTestConnection()}
+	p := plugin.NewPlugin("clickhouse",
+		internalPlugin.Version,
+		New,
+		plugin.WithJSONSchema(spec.JSONSchema),
+	)
+	s := &spec.Spec{ConnectionString: getTestConnection()}
 	b, err := json.Marshal(s)
 	require.NoError(t, err)
 	require.NoError(t, p.Init(ctx, b, plugin.NewClientOptions{}))

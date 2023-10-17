@@ -1,4 +1,4 @@
-package queries
+package spec
 
 import (
 	"encoding/json"
@@ -12,7 +12,7 @@ const (
 )
 
 type Engine struct {
-	Name       string `json:"name,omitempty"`
+	Name       string `json:"name,omitempty" jsonschema:"pattern=^.*MergeTree$,default=MergeTree"`
 	Parameters []any  `json:"parameters,omitempty"`
 }
 
