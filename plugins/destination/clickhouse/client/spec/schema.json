@@ -4,9 +4,9 @@
   "$ref": "#/$defs/Spec",
   "$defs": {
     "Duration": {
-      "properties": {},
-      "additionalProperties": false,
-      "type": "object"
+      "type": "string",
+      "pattern": "^[-+]?([0-9]*(\\.[0-9]*)?[a-z]+)+$",
+      "title": "CloudQuery configtype.Duration"
     },
     "Engine": {
       "properties": {
