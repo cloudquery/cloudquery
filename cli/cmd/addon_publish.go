@@ -52,7 +52,7 @@ func newCmdAddonPublish() *cobra.Command {
 		},
 	}
 	cmd.Flags().StringP("dist-dir", "D", "dist", "Path to the dist directory")
-	cmd.Flags().BoolP("finalize", "f", false, `Finalize the plugin version after publishing. If false, the plugin version will be marked as draft=true.`)
+	cmd.Flags().BoolP("finalize", "f", false, `Finalize the addon version after publishing. If false, the addon version will be marked as draft=true.`)
 
 	return cmd
 }
@@ -85,7 +85,7 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 
 	parts := strings.Split(args[0], "/")
 	if len(parts) != 2 {
-		return errors.New("invalid addon name. Must be in format <team_name>/<plugin_name>")
+		return errors.New("invalid addon name. Must be in format <team_name>/<addon_name>")
 	}
 	teamName, addonName := parts[0], parts[1]
 
@@ -118,7 +118,7 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 		return fmt.Errorf("failed to upload addon: %w", err)
 	}
 
-	// optional: mark plugin as draft=false
+	// optional: mark addon as draft=false
 	finalize, err := cmd.Flags().GetBool("finalize")
 	if err != nil {
 		return err
@@ -147,7 +147,7 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 	return nil
 }
 
-func createNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginName, distDir string, manifest ManifestJSONV1) error {
+func createNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, addonName, distDir string, manifest ManifestJSONV1) error {
 	doc := ""
 	if manifest.PathToDoc != "" {
 		b, err := os.ReadFile(filepath.Join(distDir, manifest.PathToDoc))
@@ -165,7 +165,7 @@ func createNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWit
 		AddonDeps:  &manifest.AddonDeps,
 		PluginDeps: &manifest.PluginDeps,
 	}
-	resp, err := c.CreateAddonVersionWithResponse(ctx, teamName, pluginName, manifest.Version, body)
+	resp, err := c.CreateAddonVersionWithResponse(ctx, teamName, addonName, manifest.Version, body)
 	if err != nil {
 		return fmt.Errorf("failed to create addon version: %w", err)
 	}

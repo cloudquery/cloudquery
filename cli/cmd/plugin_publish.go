@@ -31,7 +31,7 @@ cloudquery plugin publish my_team/my_plugin`
 
 func newCmdPluginPublish() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "plugin publish <team_name>/<plugin_name> [-D dist]",
+		Use:     "publish <team_name>/<plugin_name> [-D dist]",
 		Short:   pluginPublishShort,
 		Long:    pluginPublishLong,
 		Example: pluginPublishExample,
