@@ -12,7 +12,7 @@ import (
 
 type Spec struct {
 	Cluster          string `json:"cluster,omitempty"`
-	ConnectionString string `json:"connection_string,omitempty"`
+	ConnectionString string `json:"connection_string,omitempty" jsonschema:"required,minLength=1"`
 	CACert           string `json:"ca_cert,omitempty"`
 
 	Engine *Engine `json:"engine,omitempty"`

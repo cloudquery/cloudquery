@@ -11,7 +11,9 @@
     "Engine": {
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
+          "pattern": "^.*MergeTree$",
+          "default": "MergeTree"
         },
         "parameters": {
           "oneOf": [
