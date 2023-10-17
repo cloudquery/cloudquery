@@ -25,6 +25,8 @@ func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) err
 			if err := c.insertMessage(ctx, m); err != nil {
 				return fmt.Errorf("failed to process Insert message: %w", err)
 			}
+		case *message.WriteDeleteRecord:
+			c.logger.Warn().Str("table", m.TableName).Msg("DeleteRecord not implemented")
 		default:
 			return fmt.Errorf("unsupported message type: %T", m)
 		}

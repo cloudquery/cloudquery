@@ -24,6 +24,7 @@ func main() {
 			{OS: plugin.GoOSDarwin, Arch: plugin.GoArchAmd64},
 			{OS: plugin.GoOSDarwin, Arch: plugin.GoArchArm64},
 		}),
+		plugin.WithStaticLinking(),
 	)
 	server := serve.Plugin(p,
 		serve.WithPluginSentryDSN(sentryDSN),

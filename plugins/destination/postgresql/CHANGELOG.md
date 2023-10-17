@@ -1,5 +1,17 @@
 # Changelog
 
+## [6.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v6.0.9...plugins-destination-postgresql-v6.1.0) (2023-10-17)
+
+
+### Features
+
+* Support DeleteRecord functionality in Postgres Destination ([#14499](https://github.com/cloudquery/cloudquery/issues/14499)) ([acf3dcf](https://github.com/cloudquery/cloudquery/commit/acf3dcf9e3b392ed3e9e94c73bbf6e72fb80daf3))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.14.0 ([#14577](https://github.com/cloudquery/cloudquery/issues/14577)) ([223c4c1](https://github.com/cloudquery/cloudquery/commit/223c4c1df6c432d7f1bf67a48114e417282bcd0f))
+
 ## [6.0.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v6.0.8...plugins-destination-postgresql-v6.0.9) (2023-10-16)
 
 
