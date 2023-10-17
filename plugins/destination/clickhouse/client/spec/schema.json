@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/clickhouse/client/spec/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Duration": {
+      "properties": {},
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Engine": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "parameters": {
+          "oneOf": [
+            {
+              "items": true,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Spec": {
+      "properties": {
+        "cluster": {
+          "type": "string"
+        },
+        "connection_string": {
+          "type": "string"
+        },
+        "ca_cert": {
+          "type": "string"
+        },
+        "engine": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Engine"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "batch_size": {
+          "type": "integer"
+        },
+        "batch_size_bytes": {
+          "type": "integer"
+        },
+        "batch_timeout": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Duration"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}

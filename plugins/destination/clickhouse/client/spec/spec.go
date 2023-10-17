@@ -2,6 +2,7 @@ package spec
 
 import (
 	"crypto/x509"
+	_ "embed"
 	"fmt"
 	"time"
 
@@ -71,3 +72,6 @@ func (s *Spec) SetDefaults() {
 func (s *Spec) Validate() error {
 	return s.Engine.Validate()
 }
+
+//go:embed schema.json
+var JSONSchema string
