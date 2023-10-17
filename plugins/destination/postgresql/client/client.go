@@ -28,7 +28,6 @@ type Client struct {
 	pgTablesToPKConstraints map[string]string
 
 	plugin.UnimplementedSource
-	mixedbatchwriter.UnimplementedDeleteRecordsBatch
 }
 
 // Assert Client implements plugin.Client interface.
