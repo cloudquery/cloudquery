@@ -31,4 +31,4 @@ This is the (nested) spec used by the OracleDB destination plugin.
 
 :::callout{type="info"}
 Make sure you use [environment variable expansion](/docs/advanced-topics/environment-variable-substitution) in production instead of committing the credentials to the configuration file directly.
-:::callout{type="info"}
+:::
