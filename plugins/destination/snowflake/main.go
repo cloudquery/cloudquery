@@ -26,6 +26,7 @@ func main() {
 			{OS: plugin.GoOSDarwin, Arch: plugin.GoArchAmd64},
 			{OS: plugin.GoOSDarwin, Arch: plugin.GoArchArm64},
 		}),
+		plugin.WithStaticLinking(),
 	)
 	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN), serve.WithDestinationV0V1Server()).Serve(context.Background()); err != nil {
 		fmt.Println(err)
