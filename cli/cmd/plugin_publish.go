@@ -96,7 +96,7 @@ func runPluginPublish(ctx context.Context, cmd *cobra.Command, args []string) er
 	teamName, pluginName := parts[0], parts[1]
 
 	name := fmt.Sprintf("%s/%s@%s", teamName, pluginName, pkgJSON.Version)
-	fmt.Printf("Publishing %s to CloudQuery Hub...\n", name)
+	fmt.Printf("Publishing plugin %s to CloudQuery Hub...\n", name)
 
 	c, err := cloudquery_api.NewClientWithResponses(getEnvOrDefault("CLOUDQUERY_API_URL", defaultAPIURL),
 		cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {

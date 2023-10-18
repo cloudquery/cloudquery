@@ -96,7 +96,7 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 	}
 
 	name := fmt.Sprintf("%s/%s@%s", manifest.TeamName, manifest.AddonName, version)
-	fmt.Printf("Publishing %s to CloudQuery Hub...\n", name)
+	fmt.Printf("Publishing addon %s to CloudQuery Hub...\n", name)
 
 	c, err := cloudquery_api.NewClientWithResponses(getEnvOrDefault("CLOUDQUERY_API_URL", defaultAPIURL),
 		cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
@@ -108,16 +108,13 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 	}
 
 	// create new draft version
-	err = createNewAddonDraftVersion(ctx, c, manifest, version, manifestDir, zipPath)
-	if err != nil {
+	if err := createNewAddonDraftVersion(ctx, c, manifest, version, manifestDir, zipPath); err != nil {
 		return fmt.Errorf("failed to create new draft version: %w", err)
 	}
 
 	// upload package
 	fmt.Println("Uploading addon...")
-
-	err = uploadAddon(ctx, c, manifest, version, zipPath)
-	if err != nil {
+	if err := uploadAddon(ctx, c, manifest, version, zipPath); err != nil {
 		return fmt.Errorf("failed to upload addon: %w", err)
 	}
 
@@ -151,6 +148,12 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 }
 
 func createNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWithResponses, manifest ManifestJSONV1, version, manifestDir, zipPath string) error {
+	if manifest.PluginDeps == nil {
+		manifest.PluginDeps = []string{}
+	}
+	if manifest.AddonDeps == nil {
+		manifest.AddonDeps = []string{}
+	}
 	body := cloudquery_api.CreateAddonVersionJSONRequestBody{
 		AddonDeps:  &manifest.AddonDeps,
 		PluginDeps: &manifest.PluginDeps,
