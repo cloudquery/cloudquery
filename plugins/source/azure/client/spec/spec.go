@@ -44,11 +44,15 @@ type Spec struct {
 	DiscoveryConcurrency int `json:"discovery_concurrency" jsonschema:"minimum=1,default=400"`
 }
 
-var specCloudToConfig = map[string]cloud.Configuration{
-	"AzurePublic":     cloud.AzurePublic,
-	"AzureGovernment": cloud.AzureGovernment,
-	"AzureChina":      cloud.AzureChina,
-}
+var (
+	specCloudToConfig = map[string]cloud.Configuration{
+		"AzurePublic":     cloud.AzurePublic,
+		"AzureGovernment": cloud.AzureGovernment,
+		"AzureChina":      cloud.AzureChina,
+	}
+	// note: this should also be updated if new keys are added to specCloudToConfig
+	specCloudToConfigKeys = []any{"AzurePublic", "AzureGovernment", "AzureChina"}
+)
 
 func (s *Spec) CloudConfig() (cloud.Configuration, error) {
 	if v, ok := specCloudToConfig[s.CloudName]; ok {
@@ -70,9 +74,7 @@ func (s *Spec) SetDefaults() {
 
 func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 	cloudName := sc.Properties.Value("cloud_name")
-	for key := range specCloudToConfig {
-		cloudName.Enum = append(cloudName.Enum, key)
-	}
+	cloudName.Enum = append(cloudName.Enum, specCloudToConfigKeys...)
 }
 
 //go:embed schema.json
