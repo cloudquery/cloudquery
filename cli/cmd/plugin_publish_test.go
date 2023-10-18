@@ -13,7 +13,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestPublish(t *testing.T) {
+func TestPluginPublish(t *testing.T) {
 	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
@@ -34,7 +34,7 @@ func TestPublish(t *testing.T) {
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
 			w.Write([]byte(`{"name": "v1.2.3"}`))
-			checkCreateVersionRequest(t, r)
+			checkCreatePluginVersionRequest(t, r)
 		case "/plugins/cloudquery/source/test/versions/v1.2.3/tables":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
@@ -64,8 +64,8 @@ func TestPublish(t *testing.T) {
 	defer ts.Close()
 
 	cmd := NewCmdRoot()
-	t.Setenv("CLOUDQUERY_API_URL", ts.URL)
-	args := []string{"publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1"}
+	t.Setenv(envAPIURL, ts.URL)
+	args := []string{"plugin", "publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1"}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {
@@ -76,7 +76,7 @@ func TestPublish(t *testing.T) {
 	}
 }
 
-func TestPublishFinalize(t *testing.T) {
+func TestPluginPublishFinalize(t *testing.T) {
 	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
@@ -98,17 +98,16 @@ func TestPublishFinalize(t *testing.T) {
 		case "/plugins/cloudquery/source/test/versions/v1.2.3":
 			checkAuthHeader(t, r)
 			if r.Method == "PATCH" {
-				checkUpdateVersionRequest(t, r)
+				checkUpdatePluginVersionRequest(t, r)
 				if gotUploads != 2 {
 					t.Fatalf("expected 2 uploads before draft=false, got %d", gotUploads)
 				}
 				w.WriteHeader(http.StatusOK)
-				w.Write([]byte(`{"name": "v1.2.3"}`))
 			} else {
+				checkCreatePluginVersionRequest(t, r)
 				w.WriteHeader(http.StatusCreated)
-				w.Write([]byte(`{"name": "v1.2.3"}`))
-				checkCreateVersionRequest(t, r)
 			}
+			w.Write([]byte(`{"name": "v1.2.3"}`))
 		case "/plugins/cloudquery/source/test/versions/v1.2.3/tables":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
@@ -138,10 +137,10 @@ func TestPublishFinalize(t *testing.T) {
 	}))
 	defer ts.Close()
 
-	t.Setenv("CLOUDQUERY_API_URL", ts.URL)
+	t.Setenv(envAPIURL, ts.URL)
 
 	cmd := NewCmdRoot()
-	args := []string{"publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1", "--finalize"}
+	args := []string{"plugin", "publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1", "--finalize"}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {
@@ -152,7 +151,7 @@ func TestPublishFinalize(t *testing.T) {
 	}
 }
 
-func TestPublish_Unauthorized(t *testing.T) {
+func TestPluginPublish_Unauthorized(t *testing.T) {
 	t.Setenv("CLOUDQUERY_API_KEY", "badkey")
 
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -162,10 +161,10 @@ func TestPublish_Unauthorized(t *testing.T) {
 	}))
 	defer ts.Close()
 
-	t.Setenv("CLOUDQUERY_API_URL", ts.URL)
+	t.Setenv(envAPIURL, ts.URL)
 
 	cmd := NewCmdRoot()
-	args := []string{"publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1", "--finalize"}
+	args := []string{"plugin", "publish", "cloudquery/test", "--dist-dir", "testdata/dist-v1", "--finalize"}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err == nil {
@@ -177,13 +176,17 @@ func TestPublish_Unauthorized(t *testing.T) {
 }
 
 func checkAuthHeader(t *testing.T, r *http.Request) {
+	t.Helper()
+
 	wantAuth := "Bearer testkey"
 	if r.Header.Get("Authorization") != wantAuth {
 		t.Fatalf("expected Authorization header to be %q, got %q", wantAuth, r.Header.Get("Authorization"))
 	}
 }
 
-func checkCreateVersionRequest(t *testing.T, r *http.Request) {
+func checkCreatePluginVersionRequest(t *testing.T, r *http.Request) {
+	t.Helper()
+
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		t.Fatal(err)
@@ -207,7 +210,9 @@ func checkCreateVersionRequest(t *testing.T, r *http.Request) {
 	}
 }
 
-func checkUpdateVersionRequest(t *testing.T, r *http.Request) {
+func checkUpdatePluginVersionRequest(t *testing.T, r *http.Request) {
+	t.Helper()
+
 	got := map[string]any{}
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -223,6 +228,8 @@ func checkUpdateVersionRequest(t *testing.T, r *http.Request) {
 }
 
 func checkCreateTablesRequest(t *testing.T, r *http.Request) {
+	t.Helper()
+
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		t.Fatal(err)
@@ -296,6 +303,8 @@ func checkCreateTablesRequest(t *testing.T, r *http.Request) {
 }
 
 func checkCreateDocsRequest(t *testing.T, r *http.Request) {
+	t.Helper()
+
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		t.Fatal(err)

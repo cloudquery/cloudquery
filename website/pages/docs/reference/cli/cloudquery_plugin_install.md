@@ -1,7 +1,7 @@
 ---
-title: "install"
+title: "plugin_install"
 ---
-## cloudquery install
+## cloudquery plugin install
 
 Install required plugin images from your configuration
 
@@ -10,16 +10,16 @@ Install required plugin images from your configuration
 Install required plugin images from your configuration
 
 ```
-cloudquery install [files or directories] [flags]
+cloudquery plugin install [files or directories] [flags]
 ```
 
 ### Examples
 
 ```
 # Install required plugins specified in directory
-cloudquery install ./directory
+cloudquery plugin install ./directory
 # Install required plugins specified in directory and config files
-cloudquery install ./directory ./aws.yml ./pg.yml
+cloudquery plugin install ./directory ./aws.yml ./pg.yml
 
 ```
 
@@ -43,5 +43,5 @@ cloudquery install ./directory ./aws.yml ./pg.yml
 
 ### SEE ALSO
 
-* [cloudquery](/docs/reference/cli/cloudquery)	 - CloudQuery CLI
+* [cloudquery plugin](/docs/reference/cli/cloudquery_plugin)	 - Plugin commands
 
