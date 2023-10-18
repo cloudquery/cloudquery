@@ -48,6 +48,8 @@ gen-docs: build
 
 .PHONY: gen-spec-schema
 gen-spec-schema:
+	# required for loading comments from AWS SDK
+	go mod vendor
 	go run client/spec/gen/main.go
 
 # All gen targets
