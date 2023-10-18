@@ -205,7 +205,9 @@ This is used to specify one or more accounts to extract information from. Note t
 - `local_profile` (string) (default: will use current credentials)
 
   [Local profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) to use to authenticate this account with.
-  Please note this should be set to the name of the profile. For example, with the following credentials file:
+  Please note this should be set to the name of the profile.
+
+  For example, with the following credentials file:
 
   ```ini copy
   [default]
