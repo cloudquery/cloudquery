@@ -82,11 +82,11 @@ export const getStaticPaths = async () => {
 export const components = {
   IntegrationSource: ({ source }) => <IntegrationSource source={getPlugin("source", source)} />,
   IntegrationDestination: ({ source, destination, isOfficialSource, isOfficialDestination, sourceHasAuth, destHasAuth }) => {
-    const SourceConfiguration = isOfficialSource ? dynamic(() => import(`../../components/mdx/plugins/source/${source}/${destination}/_configuration.mdx`)) : null
-    const DestinationConfiguration = isOfficialDestination ? dynamic(() =>import(`../../components/mdx/plugins/destination/${destination}/_configuration.mdx`)) : null
-    const SourceAuthentication = sourceHasAuth ? dynamic(() => import(`../../components/mdx/plugins/source/${source}/_authentication.mdx`)) : null
-    const DestinationAuthentication = destHasAuth ? dynamic(() => import(`../../components/mdx/plugins/destination/${destination}/_authentication.mdx`)) : null
-    const SyncCommand = dynamic(() => import(`../../components/mdx/plugins/source/${source}/${destination}/_sync.mdx`))
+    const SourceConfiguration = isOfficialSource ? dynamic(() => import(`../../components/mdx/plugins/source/${source}/${destination}/_configuration.md`)) : null
+    const DestinationConfiguration = isOfficialDestination ? dynamic(() =>import(`../../components/mdx/plugins/destination/${destination}/_configuration.md`)) : null
+    const SourceAuthentication = sourceHasAuth ? dynamic(() => import(`../../components/mdx/plugins/source/${source}/_authentication.md`)) : null
+    const DestinationAuthentication = destHasAuth ? dynamic(() => import(`../../components/mdx/plugins/destination/${destination}/_authentication.md`)) : null
+    const SyncCommand = dynamic(() => import(`../../components/mdx/plugins/source/${source}/${destination}/_sync.md`))
     return <IntegrationDestination  
               source={getPlugin("source", source)}
               destination={getPlugin("destination", destination)}

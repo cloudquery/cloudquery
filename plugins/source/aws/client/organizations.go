@@ -86,6 +86,7 @@ func loadAccounts(ctx context.Context, awsPluginSpec *spec.Spec, accountsApi ser
 
 		accounts = append(accounts, spec.Account{
 			ID:              *account.Id,
+			AccountName:     aws.ToString(account.Name),
 			RoleARN:         roleArn.String(),
 			RoleSessionName: awsPluginSpec.Organization.ChildAccountRoleSessionName,
 			ExternalID:      awsPluginSpec.Organization.ChildAccountExternalID,
@@ -98,7 +99,7 @@ func loadAccounts(ctx context.Context, awsPluginSpec *spec.Spec, accountsApi ser
 }
 
 // Get Accounts for specific Organizational Units
-func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient, awsOrg *spec.Org, region string) ([]orgTypes.Account, error) {
+func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient, awsOrg *spec.Organization, region string) ([]orgTypes.Account, error) {
 	q := awsOrg.OrganizationUnits
 	var ou string
 	var rawAccounts []orgTypes.Account
@@ -159,7 +160,7 @@ func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient
 }
 
 // Get All accounts in a specific organization
-func getAllAccounts(ctx context.Context, accountsApi services.OrganizationsClient, org *spec.Org, region string) ([]orgTypes.Account, error) {
+func getAllAccounts(ctx context.Context, accountsApi services.OrganizationsClient, org *spec.Organization, region string) ([]orgTypes.Account, error) {
 	var rawAccounts []orgTypes.Account
 	accountsPaginator := organizations.NewListAccountsPaginator(accountsApi, &organizations.ListAccountsInput{})
 	for accountsPaginator.HasMorePages() {
