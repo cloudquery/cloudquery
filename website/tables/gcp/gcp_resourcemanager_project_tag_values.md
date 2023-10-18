@@ -1,10 +1,14 @@
-# Table: gcp_resourcemanager_tag_bindings
+# Table: gcp_resourcemanager_project_tag_values
 
-This table shows data for GCP Resourcemanager Tag Bindings.
+This table shows data for GCP Resourcemanager Project Tag Values.
 
-https://cloud.google.com/resource-manager/reference/rest/v3/tagBindings
+https://cloud.google.com/resource-manager/reference/rest/v3/tagValues/list
 
 The composite primary key for this table is (**project_id**, **name**).
+
+## Relations
+
+This table depends on [gcp_resourcemanager_project_tag_keys](gcp_resourcemanager_project_tag_keys).
 
 ## Columns
 
