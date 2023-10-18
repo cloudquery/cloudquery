@@ -14,7 +14,7 @@ import (
 	"syscall"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
-	"github.com/cloudquery/cloudquery/cli/internal/auth"
+	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/spf13/cobra"
 )
 
@@ -73,7 +73,8 @@ type ManifestJSONV1 struct {
 }
 
 func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
-	token, err := auth.GetToken()
+	tc := auth.NewTokenClient()
+	token, err := tc.GetToken()
 	if err != nil {
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}
