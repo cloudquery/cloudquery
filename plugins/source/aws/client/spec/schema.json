@@ -3199,12 +3199,13 @@
       "type": "object",
       "description": "A number filter for querying findings."
     },
-    "Org": {
+    "Organization": {
       "properties": {
         "admin_account": {
           "oneOf": [
             {
-              "$ref": "#/$defs/Account"
+              "$ref": "#/$defs/Account",
+              "description": "Configuration for how to grab credentials from an admin account."
             },
             {
               "type": "null"
@@ -3214,7 +3215,8 @@
         "member_trusted_principal": {
           "oneOf": [
             {
-              "$ref": "#/$defs/Account"
+              "$ref": "#/$defs/Account",
+              "description": "Configuration for how to specify the principle to use in order to assume a role in the member accounts."
             },
             {
               "type": "null"
@@ -3223,21 +3225,26 @@
         },
         "member_role_name": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "description": "Role name that CloudQuery should use to assume a role in the member account from the admin account.\n\nNote: This is not a full ARN, it is just the name."
         },
         "member_role_session_name": {
-          "type": "string"
+          "type": "string",
+          "description": "Overrides the default session name."
         },
         "member_external_id": {
-          "type": "string"
+          "type": "string",
+          "description": "Specify an external ID for use in the trust policy."
         },
         "member_regions": {
           "oneOf": [
             {
               "items": {
-                "type": "string"
+                "type": "string",
+                "minLength": 1
               },
-              "type": "array"
+              "type": "array",
+              "description": "Limit fetching resources within this specific account to only these regions.\nThis will override any regions specified in the provider block.\nYou can specify all regions by using the `*` character as the only argument in the array."
             },
             {
               "type": "null"
@@ -3251,7 +3258,8 @@
                 "type": "string",
                 "pattern": "^((ou-[0-9a-z]{4,32}-[a-z0-9]{8,32})|(r-[0-9a-z]{4,32}))$"
               },
-              "type": "array"
+              "type": "array",
+              "description": "List of Organizational Units that CloudQuery should use to source accounts from.\nIf you specify an OU, CloudQuery will also traverse nested OUs."
             },
             {
               "type": "null"
@@ -3265,7 +3273,8 @@
                 "type": "string",
                 "pattern": "^((ou-[0-9a-z]{4,32}-[a-z0-9]{8,32})|(r-[0-9a-z]{4,32}))$"
               },
-              "type": "array"
+              "type": "array",
+              "description": "List of Organizational Units to skip.\nThis is useful in conjunction with `organization_units` if there are child OUs that should be ignored."
             },
             {
               "type": "null"
@@ -3278,7 +3287,8 @@
               "items": {
                 "type": "string"
               },
-              "type": "array"
+              "type": "array",
+              "description": "List of OU member accounts to skip.\nThis is useful if there are accounts under the selected OUs that should be ignored."
             },
             {
               "type": "null"
@@ -3290,7 +3300,8 @@
       "type": "object",
       "required": [
         "member_role_name"
-      ]
+      ],
+      "description": "Organization mode spec used to source all accounts underneath automatically."
     },
     "PackageFilter": {
       "properties": {
@@ -3526,7 +3537,7 @@
           "not": {
             "properties": {
               "org": {
-                "$ref": "#/$defs/Org",
+                "$ref": "#/$defs/Organization",
                 "description": "In AWS organization mode, CloudQuery will source all accounts underneath automatically."
               },
               "accounts": {
@@ -3578,7 +3589,7 @@
         "org": {
           "oneOf": [
             {
-              "$ref": "#/$defs/Org",
+              "$ref": "#/$defs/Organization",
               "description": "In AWS organization mode, CloudQuery will source all accounts underneath automatically."
             },
             {

@@ -20,7 +20,7 @@ type Spec struct {
 	Accounts []Account `json:"accounts"`
 
 	// In AWS organization mode, CloudQuery will source all accounts underneath automatically.
-	Organization *Org `json:"org"`
+	Organization *Organization `json:"org"`
 
 	// If `true`, will log AWS debug logs, including retries and other request/response metadata.
 	AWSDebug bool `json:"aws_debug,omitempty"`
@@ -148,7 +148,7 @@ func (s *Spec) Validate() error {
 	}
 
 	if s.Organization != nil && len(s.Accounts) > 0 {
-		return errors.New("specifying accounts via both the Accounts and Org properties is not supported. To achieve both, use multiple source configurations")
+		return errors.New("specifying accounts via both the Accounts and Organization properties is not supported. To achieve both, use multiple source configurations")
 	}
 	if s.Organization != nil {
 		if err := s.Organization.Validate(); err != nil {

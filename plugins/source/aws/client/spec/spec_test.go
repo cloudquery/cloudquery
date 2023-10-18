@@ -25,7 +25,7 @@ func TestSpecValidate(t *testing.T) {
 		{
 			name: "valid org",
 			spec: &Spec{
-				Organization: &Org{
+				Organization: &Organization{
 					ChildAccountRoleName: "test",
 					OrganizationUnits:    []string{"ou-1234-12345678"},
 				},
@@ -35,7 +35,7 @@ func TestSpecValidate(t *testing.T) {
 		{
 			name: "invalid org",
 			spec: &Spec{
-				Organization: &Org{
+				Organization: &Organization{
 					ChildAccountRoleName: "test",
 					OrganizationUnits:    []string{"123"},
 				},
@@ -45,14 +45,14 @@ func TestSpecValidate(t *testing.T) {
 		{
 			name: "missing member account role name",
 			spec: &Spec{
-				Organization: &Org{},
+				Organization: &Organization{},
 			},
 			wantErr: true,
 		},
 		{
 			name: "valid skip ou",
 			spec: &Spec{
-				Organization: &Org{
+				Organization: &Organization{
 					ChildAccountRoleName:    "test",
 					OrganizationUnits:       []string{"ou-1234-12345678"},
 					SkipOrganizationalUnits: []string{"ou-1234-45678901"},
@@ -63,7 +63,7 @@ func TestSpecValidate(t *testing.T) {
 		{
 			name: "invalid skip ou",
 			spec: &Spec{
-				Organization: &Org{
+				Organization: &Organization{
 					ChildAccountRoleName:    "test",
 					OrganizationUnits:       []string{"ou-1234-12345678"},
 					SkipOrganizationalUnits: []string{"456"},
@@ -77,7 +77,7 @@ func TestSpecValidate(t *testing.T) {
 				Accounts: []Account{
 					{ID: "123456789012"},
 				},
-				Organization: &Org{
+				Organization: &Organization{
 					ChildAccountRoleName: "test",
 				},
 			},
@@ -93,8 +93,8 @@ func TestSpecValidate(t *testing.T) {
 	}
 }
 
-func TestJSONSchema(t *testing.T) {
-	// Accounts, Org, TableOptions & EventBasedSync are tested separately
+func TestSpecJSONSchema(t *testing.T) {
+	// Accounts, Organization, TableOptions & EventBasedSync are tested separately
 	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
 		{
 			Name: "empty",
@@ -128,6 +128,20 @@ func TestJSONSchema(t *testing.T) {
 			Err:  true,
 			Spec: `{"accounts":[123]}`,
 		},
+		{
+			Name: "empty org",
+			Err:  true, // missing member_role_name
+			Spec: `{"org":{}}`,
+		},
+		{
+			Name: "null org",
+			Spec: `{"org":null}`,
+		},
+		{
+			Name: "bad org",
+			Err:  true,
+			Spec: `{"org":123}`,
+		},
 		// We check that accounts aren't present together with org, though
 		{
 			Name: "accounts with org",
@@ -147,12 +161,12 @@ func TestJSONSchema(t *testing.T) {
 			Spec: `{"org":{"member_role_name":"abc"},"accounts":[]}`,
 		},
 		{
-			Name: "null regions",
-			Spec: `{"regions":null}`,
-		},
-		{
 			Name: "empty regions",
 			Spec: `{"regions":[]}`,
+		},
+		{
+			Name: "null regions",
+			Spec: `{"regions":null}`,
 		},
 		{
 			Name: "bad regions type",
@@ -162,7 +176,7 @@ func TestJSONSchema(t *testing.T) {
 		{
 			Name: "bad region type",
 			Err:  true,
-			Spec: `{"regions":[1,2,3]}`,
+			Spec: `{"regions":[123]}`,
 		},
 		{
 			Name: "empty region",

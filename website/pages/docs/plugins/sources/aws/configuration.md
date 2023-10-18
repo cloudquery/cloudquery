@@ -253,31 +253,37 @@ This is used to specify one or more accounts to extract information from. Note t
 
 - `member_role_name` (string) (**required**)
 
-  Role name that CloudQuery should use to assume a role in the member account from the admin account. Note: This is not a full ARN, it is just the name
+  Role name that CloudQuery should use to assume a role in the member account from the admin account.
+
+  Note: This is not a full ARN, it is just the name.
 
 - `member_role_session_name` (string)
 
-  Override the default Session name.
+  Overrides the default session name.
 
 - `member_external_id` (string)
 
-  Specify an ExternalID for use in the trust policy
+  Specify an external ID for use in the trust policy
 
 - `member_regions` ([]string)
 
-  Limit fetching resources within this specific account to only these regions. This will override any regions specified in the provider block. You can specify all regions by using the `*` character as the only argument in the array
+  Limit fetching resources within this specific account to only these regions.
+  This will override any regions specified in the provider block.
+  You can specify all regions by using the `*` character as the only argument in the array.
 
 - `organization_units` ([]string)
 
-  List of Organizational Units that CloudQuery should use to source accounts from. If you specify an OU, CloudQuery will not traverse nested OUs
+  List of Organizational Units that CloudQuery should use to source accounts from.
+ If you specify an OU, CloudQuery will also traverse nested OUs.
 
 - `skip_organization_units` ([]string)
 
-  List of Organizational Units to skip. This is useful in conjunction with `organization_units` if there are child OUs that should be ignored.
+  List of Organizational Units to skip.
+ This is useful in conjunction with `organization_units` if there are child OUs that should be ignored.
 
 - `skip_member_accounts` ([]string)
 
-  List of OU member accounts to skip. This is useful in conjunction with `organization_units` if there are accounts under the selected OUs that should be ignored.
+  List of OU member accounts to skip. This is useful if there are accounts under the selected OUs that should be ignored.
 
 
 <!-- vale off -->
