@@ -70,7 +70,7 @@ This is the (nested) spec used by the AWS source plugin.
 
 - `concurrency` (`int`) (default: `50000`):
 
-  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
+  The best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
 
 - `initialization_concurrency` (`int`) (default: `4`)
 
@@ -99,7 +99,8 @@ This is the (nested) spec used by the AWS source plugin.
 
 - `custom_endpoint_hostname_immutable` (`bool`) (default: not used)
 
-  Specifies if the endpoint's hostname can be modified by the SDK's API client. When using something like LocalStack make sure to set it equal to `True`
+  Specifies if the endpoint's hostname can be modified by the SDK's API client.
+  When using something like LocalStack make sure to set it equal to `true`.
 
 - `custom_endpoint_partition_id` (`string`) (default: not used)
 

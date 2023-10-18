@@ -3479,7 +3479,8 @@
             "properties": {
               "custom_endpoint_url": {
                 "type": "string",
-                "minLength": 1
+                "minLength": 1,
+                "description": "The base URL endpoint the SDK API clients will use to make API calls to.\nThe SDK will suffix URI path and query elements to this endpoint."
               }
             },
             "required": [
@@ -3490,14 +3491,17 @@
             "properties": {
               "custom_endpoint_partition_id": {
                 "type": "string",
-                "minLength": 1
+                "minLength": 1,
+                "description": "The AWS partition the endpoint belongs to."
               },
               "custom_endpoint_signing_region": {
                 "type": "string",
-                "minLength": 1
+                "minLength": 1,
+                "description": "The region that should be used for signing the request to the endpoint."
               },
               "custom_endpoint_hostname_immutable": {
-                "type": "boolean"
+                "type": "boolean",
+                "description": "Specifies if the endpoint's hostname can be modified by the SDK's API client.\nWhen using something like LocalStack make sure to set it equal to `true`."
               }
             },
             "required": [
@@ -3511,14 +3515,16 @@
           "not": {
             "properties": {
               "org": {
-                "$ref": "#/$defs/Org"
+                "$ref": "#/$defs/Org",
+                "description": "In AWS organization mode, CloudQuery will source all accounts underneath automatically."
               },
               "accounts": {
                 "items": {
                   "$ref": "#/$defs/Account"
                 },
                 "type": "array",
-                "minItems": 1
+                "minItems": 1,
+                "description": "List of all accounts to fetch information from."
               }
             },
             "required": [
@@ -3536,7 +3542,8 @@
                 "type": "string",
                 "minLength": 1
               },
-              "type": "array"
+              "type": "array",
+              "description": "Regions to use."
             },
             {
               "type": "null"
@@ -3549,7 +3556,8 @@
               "items": {
                 "$ref": "#/$defs/Account"
               },
-              "type": "array"
+              "type": "array",
+              "description": "List of all accounts to fetch information from."
             },
             {
               "type": "null"
@@ -3559,7 +3567,8 @@
         "org": {
           "oneOf": [
             {
-              "$ref": "#/$defs/Org"
+              "$ref": "#/$defs/Org",
+              "description": "In AWS organization mode, CloudQuery will source all accounts underneath automatically."
             },
             {
               "type": "null"
@@ -3567,12 +3576,14 @@
           ]
         },
         "aws_debug": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "If `true`, will log AWS debug logs, including retries and other request/response metadata."
         },
         "max_retries": {
           "oneOf": [
             {
               "type": "integer",
+              "description": "Defines the maximum number of times an API request will be retried.",
               "default": 10
             },
             {
@@ -3584,6 +3595,7 @@
           "oneOf": [
             {
               "type": "integer",
+              "description": "Defines the duration between retry attempts.",
               "default": 30
             },
             {
@@ -3592,12 +3604,14 @@
           ]
         },
         "custom_endpoint_url": {
-          "type": "string"
+          "type": "string",
+          "description": "The base URL endpoint the SDK API clients will use to make API calls to.\nThe SDK will suffix URI path and query elements to this endpoint."
         },
         "custom_endpoint_hostname_immutable": {
           "oneOf": [
             {
-              "type": "boolean"
+              "type": "boolean",
+              "description": "Specifies if the endpoint's hostname can be modified by the SDK's API client.\nWhen using something like LocalStack make sure to set it equal to `true`."
             },
             {
               "type": "null"
@@ -3605,29 +3619,35 @@
           ]
         },
         "custom_endpoint_partition_id": {
-          "type": "string"
+          "type": "string",
+          "description": "The AWS partition the endpoint belongs to."
         },
         "custom_endpoint_signing_region": {
-          "type": "string"
+          "type": "string",
+          "description": "The region that should be used for signing the request to the endpoint."
         },
         "initialization_concurrency": {
           "type": "integer",
           "minimum": 1,
+          "description": "During initialization the AWS source plugin fetches information about each account and region.\nThis setting controls how many accounts can be initialized concurrently.\nOnly configurations with many accounts (either hardcoded or discovered via Organizations)\nshould require modifying this setting, to either lower it to avoid rate limit errors, or to increase it to speed up the initialization process.",
           "default": 4
         },
         "concurrency": {
           "type": "integer",
           "minimum": 1,
+          "description": "The best effort maximum number of Go routines to use. Lower this number to reduce memory usage.",
           "default": 50000
         },
         "use_paid_apis": {
           "type": "boolean",
+          "description": "When set to `true` plugin will sync data from APIs that incur a fee.\nCurrently only `aws_costexplorer*` and `aws_alpha_cloudwatch_metric*` tables require this flag to be set to `true`.",
           "default": false
         },
         "table_options": {
           "oneOf": [
             {
-              "$ref": "#/$defs/TableOptions"
+              "$ref": "#/$defs/TableOptions",
+              "description": "This is a preview feature (for more information about `preview` features look at [plugin versioning](/docs/plugins/sources/aws/versioning))\nthat enables users to override the default options for specific tables.\nThe root of the object takes a table name, and the next level takes an API method name.\nThe final level is the actual input object as defined by the API."
             },
             {
               "type": "null"
@@ -3637,7 +3657,8 @@
         "event_based_sync": {
           "oneOf": [
             {
-              "$ref": "#/$defs/EventBasedSync"
+              "$ref": "#/$defs/EventBasedSync",
+              "description": "This feature is available only in premium version of the plugin."
             },
             {
               "type": "null"
@@ -3645,7 +3666,8 @@
           ]
         },
         "scheduler": {
-          "$ref": "#/$defs/Strategy"
+          "$ref": "#/$defs/Strategy",
+          "description": "The scheduler to use when determining the priority of resources to sync.\n\nFor more information about this, see [performance tuning](/docs/advanced-topics/performance-tuning)."
         }
       },
       "additionalProperties": false,
