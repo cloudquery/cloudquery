@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/codegen/jsonschema"
 )
 
-func TestSpecJSONSchema(t *testing.T) {
+func TestSpec_JSONSchemaExtend(t *testing.T) {
 	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
 		{
 			Name: "empty",
@@ -107,8 +107,21 @@ func TestSpecJSONSchema(t *testing.T) {
 			Spec: `{"cloud_name":123}`,
 		},
 		{
-			Name: "proper cloud_name",
-			Spec: `{"cloud_name":"a"}`,
+			Name: "bad cloud_name value",
+			Err:  true,
+			Spec: `{"cloud_name":"abc"}`,
+		},
+		{
+			Name: "cloud_name: AzurePublic",
+			Spec: `{"cloud_name":"AzurePublic"}`,
+		},
+		{
+			Name: "cloud_name: AzureGovernment",
+			Spec: `{"cloud_name":"AzureGovernment"}`,
+		},
+		{
+			Name: "cloud_name: AzureChina",
+			Spec: `{"cloud_name":"AzureChina"}`,
 		},
 		{
 			Name: "normalize_ids:false",

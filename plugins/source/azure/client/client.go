@@ -11,7 +11,6 @@ import (
 	// Import all autorest modules
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -23,7 +22,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
 	"github.com/thoas/go-funk"
-	"golang.org/x/exp/maps"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -223,20 +221,6 @@ func (c *Client) discoverResourceGroups(ctx context.Context) error {
 	return errorGroup.Wait()
 }
 
-func getCloudConfigFromSpec(specCloud string) (cloud.Configuration, error) {
-	var specCloudToConfig = map[string]cloud.Configuration{
-		"AzurePublic":     cloud.AzurePublic,
-		"AzureGovernment": cloud.AzureGovernment,
-		"AzureChina":      cloud.AzureChina,
-	}
-
-	if v, ok := specCloudToConfig[specCloud]; ok {
-		return v, nil
-	}
-
-	return cloud.Configuration{}, fmt.Errorf("unknown Azure cloud name %q. Supported values are %q", specCloud, maps.Keys(specCloudToConfig))
-}
-
 func New(ctx context.Context, logger zerolog.Logger, s *spec.Spec) (schema.ClientMeta, error) {
 	s.SetDefaults()
 	uniqueSubscriptions := funk.Uniq(s.Subscriptions).([]string)
@@ -248,7 +232,7 @@ func New(ctx context.Context, logger zerolog.Logger, s *spec.Spec) (schema.Clien
 	}
 
 	if s.CloudName != "" {
-		cloudConfig, err := getCloudConfigFromSpec(s.CloudName)
+		cloudConfig, err := s.CloudConfig()
 		if err != nil {
 			return nil, err
 		}

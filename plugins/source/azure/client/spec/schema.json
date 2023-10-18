@@ -13,7 +13,8 @@
                 "minLength": 1
               },
               "type": "array",
-              "uniqueItems": true
+              "uniqueItems": true,
+              "description": "Specify which subscriptions to sync data from.\nEmpty means all visible subscriptions."
             },
             {
               "type": "null"
@@ -28,7 +29,8 @@
                 "minLength": 1
               },
               "type": "array",
-              "uniqueItems": true
+              "uniqueItems": true,
+              "description": "A list of subscription IDs that CloudQuery will skip syncing.\nThis is useful if CloudQuery is discovering the list of subscription IDs and there are some subscriptions that you want to not even attempt syncing."
             },
             {
               "type": "null"
@@ -37,23 +39,33 @@
         },
         "cloud_name": {
           "type": "string",
-          "minLength": 1
+          "enum": [
+            "AzurePublic",
+            "AzureGovernment",
+            "AzureChina"
+          ],
+          "minLength": 1,
+          "description": "The name of the cloud environment to use.\nSee the [Azure CLI documentation](https://learn.microsoft.com/en-us/cli/azure/manage-clouds-azure-cli) for more information."
         },
         "normalize_ids": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "Enabling this setting will force all `id` column values to be lowercase.\nThis is useful to avoid case sensitivity and uniqueness issues around the `id` primary keys."
         },
         "oidc_token": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "description": "An OIDC token can be used to authenticate with Azure instead of `AZURE_CLIENT_SECRET`.\nThis is useful for Azure AD workload identity federation.\nWhen using this option, the `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables must be set."
         },
         "concurrency": {
           "type": "integer",
           "minimum": 1,
+          "description": "The best effort maximum number of Go routines to use.\nLower this number to reduce memory usage.",
           "default": 50000
         },
         "discovery_concurrency": {
           "type": "integer",
           "minimum": 1,
+          "description": "During initialization the Azure source plugin discovers all resource groups\nand enabled resource providers per subscription, to be used later on during the sync process.\nThe plugin runs the discovery process in parallel.\nThis setting controls the maximum number of concurrent requests to the Azure API during discovery.\nOnly accounts with many subscriptions should require modifying this setting,\nto either lower it to avoid network errors, or to increase it to speed up the discovery process.",
           "default": 400
         }
       },
