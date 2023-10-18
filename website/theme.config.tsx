@@ -105,7 +105,7 @@ const theme: DocsThemeConfig = {
     "slack-app-link": () => {
       return (
         <div style={{ marginTop: "1em" }}>
-          <a target="_blank" className="btn btn-blue">
+          <a target="_blank" className="btn btn-blue" href={getSlackAppLink()}>
             Install App
           </a>
         </div>
