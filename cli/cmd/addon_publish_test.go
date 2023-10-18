@@ -145,7 +145,7 @@ func checkCreateAddonVersionRequest(t *testing.T, r *http.Request) {
 		t.Fatal(err)
 	}
 	want := map[string]any{
-		"addon_deps":  nil,
+		"addon_deps":  []any{},
 		"checksum":    "b537240431bb4868264e48a8c646ebd3a9e355140d27d7fe559b5cbfd3ce6f31",
 		"doc":         "# Test Addon README",
 		"message":     "# Test Addon Changelog",
