@@ -35,7 +35,7 @@ func Filesystems() *schema.Table {
 				Resolver: ResolveEfsFilesystemBackupPolicyStatus,
 			},
 			{
-				Name:     "filesystem_policy",
+				Name:     "policy",
 				Type:     arrow.BinaryTypes.String,
 				Resolver: ResolveEfsFilesystemPolicy,
 			},
