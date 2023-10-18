@@ -114,11 +114,11 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v3.23.1
+          version: v3.24.0
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         run: |
           mkdir -p ~/.local/share/cloudquery
           echo ${{ secrets.CQ_CI_CLOUDQUERY_HUB_TOKEN }} > ~/.local/share/cloudquery/token
-          cloudquery publish cloudquery/${{ needs.prepare.outputs.plugin_name }} --finalize
+          cloudquery plugin publish cloudquery/${{ needs.prepare.outputs.plugin_name }} --finalize

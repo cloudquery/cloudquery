@@ -9,8 +9,8 @@ import (
 	"path"
 	"testing"
 
-	"github.com/adrg/xdg"
-	"github.com/cloudquery/cloudquery/cli/internal/auth"
+	"github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery-api-go/config"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -32,19 +32,19 @@ func TestSwitch(t *testing.T) {
 
 	t.Setenv(auth.EnvVarCloudQueryAPIKey, "test-api-key")
 	t.Setenv("CLOUDQUERY_ACCOUNTS_URL", ts.URL)
-	t.Setenv("CLOUDQUERY_API_URL", ts.URL)
+	t.Setenv(envAPIURL, ts.URL)
 	t.Cleanup(func() {
 		CloseLogFile()
 		os.RemoveAll(configDir)
 	})
 
-	t.Setenv("XDG_CONFIG_HOME", configDir)
-	xdg.Reload()
+	err := config.SetConfigHome(configDir)
+	require.NoError(t, err)
 
 	// calling switch before a team is set should not result in an error
 	cmd := NewCmdRoot()
 	cmd.SetArgs([]string{"switch"})
-	err := cmd.Execute()
+	err = cmd.Execute()
 	require.NoError(t, err)
 
 	// now set the team

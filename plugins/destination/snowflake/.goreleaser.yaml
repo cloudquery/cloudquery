@@ -22,7 +22,7 @@ builds:
       - CC=/usr/bin/gencc.sh
       - CXX=/usr/bin/gencpp.sh
     ldflags:
-      - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}} -linkmode external -extldflags=-static
+      - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}}
     goos:
       - windows
       - linux
@@ -45,6 +45,10 @@ builds:
           - GO111MODULE=on
           - CC=/usr/bin/gencc.sh
           - CXX=/usr/bin/gencpp.sh
+      - goos: linux
+        goarch: amd64
+        ldflags:
+          - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}} -linkmode external -extldflags=-static
 after:
   hooks:
     - cmd: unzip -o {{ .Var.binary }}_darwin_arm64.zip

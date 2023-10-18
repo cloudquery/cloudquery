@@ -1,5 +1,3 @@
-import { Callout } from 'nextra-theme-docs';
-
 In order for CloudQuery to sync data from Facebook Marketing, you will need a Facebook Marketing access token.
 You will need to follow the following steps (if you don't have them set up already):
 
@@ -23,9 +21,7 @@ You will need to follow the following steps (if you don't have them set up alrea
 - You will also need to find your `ad_account_id`, which you can find in the [Facebook Ads Manager](https://www.facebook.com/ads/manager/accounts/). 
   ([See documentation](https://www.facebook.com/business/help/1492627900875762)).
 
-<Callout> 
-
+:::callout{type="info"}
 CloudQuery only ever makes `READ` calls to the API, but due to the way the Facebook permission model works,
 some of the tables also require `ads_management` permissions.
-
-</Callout>
+:::

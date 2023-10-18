@@ -3,11 +3,11 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/spf13/cobra"
 )
 
