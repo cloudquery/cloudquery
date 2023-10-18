@@ -1,6 +1,7 @@
 package spec
 
 import (
+	"path"
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
@@ -536,7 +537,10 @@ func TestJSONSchema(t *testing.T) {
 }
 
 func TestEnsureJSONSchema(t *testing.T) {
-	data, err := jsonschema.Generate(new(Spec))
+	data, err := jsonschema.Generate(new(Spec),
+		jsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/source/aws/client/spec", "./"),
+		jsonschema.WithAddGoComments("github.com/aws/aws-sdk-go-v2", path.Join("..", "..", "vendor", "github.com/aws/aws-sdk-go-v2")),
+	)
 	require.NoError(t, err)
 	require.JSONEqf(t, string(data), JSONSchema, "new schema should be:\n%s\n", string(data))
 }
