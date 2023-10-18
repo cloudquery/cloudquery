@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.2.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.2.7...plugins-destination-snowflake-v3.2.8) (2023-10-18)
+
+
+### Bug Fixes
+
+* Compile DuckDB, SQLite and Snowflake plugins for running under Alpine Linux  ([#14612](https://github.com/cloudquery/cloudquery/issues/14612)) ([c47cd1c](https://github.com/cloudquery/cloudquery/commit/c47cd1cc8bb014d654097087e81a9d658ea8f1dc))
+* Conditional static linking for linux/amd64 for DuckDB, SQLite and Snowflake ([#14626](https://github.com/cloudquery/cloudquery/issues/14626)) ([0ba7e3f](https://github.com/cloudquery/cloudquery/commit/0ba7e3f938c11fbc0c9c3f9dc05fce677d311f47))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.2.9 ([#14627](https://github.com/cloudquery/cloudquery/issues/14627)) ([c1d244c](https://github.com/cloudquery/cloudquery/commit/c1d244c95199141ac39a713a3f0577b2fb3bf736))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.3.0 ([#14635](https://github.com/cloudquery/cloudquery/issues/14635)) ([00b380c](https://github.com/cloudquery/cloudquery/commit/00b380c10be1642f737f871ba5588888ed5dd180))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.4.0 ([#14639](https://github.com/cloudquery/cloudquery/issues/14639)) ([f139c0e](https://github.com/cloudquery/cloudquery/commit/f139c0e9369ef92a3cd874003db40b48e229ab58))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.14.0 ([#14577](https://github.com/cloudquery/cloudquery/issues/14577)) ([223c4c1](https://github.com/cloudquery/cloudquery/commit/223c4c1df6c432d7f1bf67a48114e417282bcd0f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.15.0 ([#14622](https://github.com/cloudquery/cloudquery/issues/14622)) ([b497a6b](https://github.com/cloudquery/cloudquery/commit/b497a6bc5645854bd25d4083fd91ec549a7f274f))
+
 ## [3.2.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.2.6...plugins-destination-snowflake-v3.2.7) (2023-10-16)
 
 
