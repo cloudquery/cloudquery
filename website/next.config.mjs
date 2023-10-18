@@ -16,7 +16,7 @@ const pluginNamePatterns = {
 };
 
 const getKindAndName = (file) => {
-  const match = file.history[0].match(/pages\/docs\/plugins\/(.+)\/(.+)\//);
+  const match = file.history[0].match(/\/plugins\/(.+)\/(.+)\//);
   const [kind, name] = [match[1], match[2]];
 
   return {
@@ -92,25 +92,23 @@ const customPlugin = () => {
         const hast = h(node.name, node.attributes || {});
         data.hName = hast.tagName;
         data.hProperties = hast.properties;
-        if (!['badge', 'configuration', 'authentication', 'callout'].includes(data.hName)) {
+        if (!['badge', 'configuration', 'authentication', 'callout', 'slack-app-link'].includes(data.hName)) {
           return;
         }
 
         const { kind, name } = getKindAndName(file);
-        if (data.hName === "badge" && !data.hProperties.text) {
+        if (data.hName === "badge") {
           data.hProperties = {
-            ...data.hProperties,
             text: "Latest: " + getLatestVersion(kind, name),
+            ...data.hProperties,
           };
           return;
         }
-        if (data.hName === "configuration" || data.hName === "authentication" || data.hName === "callout") {
-          data.hProperties = {
-            ...data.hProperties,
-            kind,
-            name,
-          };
-        }
+        data.hProperties = {
+          ...data.hProperties,
+          kind,
+          name,
+        };
       }
     });
   };
