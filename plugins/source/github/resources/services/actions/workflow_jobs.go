@@ -36,7 +36,7 @@ func fetchWorkflowJobs(ctx context.Context, meta schema.ClientMeta, resource *sc
 	listOpts := &github.ListOptions{PerPage: 100}
 	listWorkflowJobOptions := &github.ListWorkflowJobsOptions{Filter: "all", ListOptions: *listOpts}
 	for {
-		workflowJobs, resp, err := c.Github.Actions.ListWorkflowJobs(ctx, c.Org, *repo.Name, *run.ID, listWorkflowJobOptions)
+		workflowJobs, resp, err := c.Github.Actions.ListWorkflowJobs(ctx, *repo.Owner.Login, *repo.Name, *run.ID, listWorkflowJobOptions)
 		if err != nil {
 			return err
 		}
