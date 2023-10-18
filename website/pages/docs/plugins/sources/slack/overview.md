@@ -6,10 +6,7 @@ description: CloudQuery Slack source plugin documentation
 ---
 # Slack Source Plugin
 
-import { Badge } from "../../../../../components/Badge";
-import Authentication from "./_authentication.mdx";
-
-<Badge text={"Premium"}/>
+:badge{text="Premium"}
 
 This is a premium plugin that you can buy [here](/integrations/slack).
 
@@ -17,7 +14,7 @@ The CloudQuery Slack plugin extracts information from your Slack organization(s)
 
 ## Installation
 
-<Authentication/>
+:authentication
 
 ## Syncing message histories
 
