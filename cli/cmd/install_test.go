@@ -58,7 +58,7 @@ func TestInstall(t *testing.T) {
 			testConfig := path.Join(currentDir, "testdata", tc.config)
 			logFileName := path.Join(cqDir, "cloudquery.log")
 			cmd := NewCmdRoot()
-			cmd.SetArgs([]string{"install", testConfig, "--cq-dir", cqDir, "--log-file-name", logFileName})
+			cmd.SetArgs([]string{"plugin", "install", testConfig, "--cq-dir", cqDir, "--log-file-name", logFileName})
 			err := cmd.Execute()
 			assert.NoError(t, err)
 

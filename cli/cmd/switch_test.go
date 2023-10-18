@@ -2,8 +2,6 @@ package cmd
 
 import (
 	"bytes"
-	"github.com/cloudquery/cloudquery-api-go/auth"
-	"github.com/cloudquery/cloudquery-api-go/config"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -11,6 +9,8 @@ import (
 	"path"
 	"testing"
 
+	"github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery-api-go/config"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -32,7 +32,7 @@ func TestSwitch(t *testing.T) {
 
 	t.Setenv(auth.EnvVarCloudQueryAPIKey, "test-api-key")
 	t.Setenv("CLOUDQUERY_ACCOUNTS_URL", ts.URL)
-	t.Setenv("CLOUDQUERY_API_URL", ts.URL)
+	t.Setenv(envAPIURL, ts.URL)
 	t.Cleanup(func() {
 		CloseLogFile()
 		os.RemoveAll(configDir)

@@ -5,38 +5,36 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/cloudquery/cloudquery-api-go/auth"
-	"io"
 	"net/http"
 	"os"
 	"os/signal"
 	"path"
 	"path/filepath"
-	"reflect"
 	"strings"
 	"syscall"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
+	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/spf13/cobra"
 )
 
 const (
-	publishShort = "Publish to CloudQuery Hub."
-	publishLong  = `Publish to CloudQuery Hub.
+	pluginPublishShort = "Publish to CloudQuery Hub."
+	pluginPublishLong  = `Publish to CloudQuery Hub.
 
 This publishes a plugin version to CloudQuery Hub from a local dist directory.
 `
-	publishExample = `
+	pluginPublishExample = `
 # Publish a plugin version from a local dist directory
-cloudquery publish my_team/my_plugin`
+cloudquery plugin publish my_team/my_plugin`
 )
 
-func newCmdPublish() *cobra.Command {
+func newCmdPluginPublish() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "publish <team_name>/<plugin_name> [-D dist]",
-		Short:   publishShort,
-		Long:    publishLong,
-		Example: publishExample,
+		Short:   pluginPublishShort,
+		Long:    pluginPublishLong,
+		Example: pluginPublishExample,
 		Hidden:  true,
 		Args:    cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
@@ -51,7 +49,7 @@ func newCmdPublish() *cobra.Command {
 				cancel()
 			}()
 
-			return runPublish(ctx, cmd, args)
+			return runPluginPublish(ctx, cmd, args)
 		},
 	}
 	cmd.Flags().StringP("dist-dir", "D", "dist", "Path to the dist directory")
@@ -60,16 +58,11 @@ func newCmdPublish() *cobra.Command {
 	return cmd
 }
 
-type PackageJSONVersion struct {
-	SchemaVersion int `json:"schema_version"`
-}
-
-type Kind = cloudquery_api.PluginKind
-
 type PackageJSONV1 struct {
-	Name             string                    `json:"name"`
-	Message          string                    `json:"message"`
-	Version          string                    `json:"version"`
+	Name    string `json:"name"`
+	Message string `json:"message"`
+	Version string `json:"version"`
+
 	Kind             cloudquery_api.PluginKind `json:"kind"`
 	Protocols        []int                     `json:"protocols"`
 	SupportedTargets []TargetBuild             `json:"supported_targets"`
@@ -83,7 +76,7 @@ type TargetBuild struct {
 	Checksum string `json:"checksum"`
 }
 
-func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
+func runPluginPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 	tc := auth.NewTokenClient()
 	token, err := tc.GetToken()
 	if err != nil {
@@ -103,9 +96,9 @@ func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 	teamName, pluginName := parts[0], parts[1]
 
 	name := fmt.Sprintf("%s/%s@%s", teamName, pluginName, pkgJSON.Version)
-	fmt.Printf("Publishing %s to CloudQuery Hub...\n", name)
+	fmt.Printf("Publishing plugin %s to CloudQuery Hub...\n", name)
 
-	c, err := cloudquery_api.NewClientWithResponses(getEnvOrDefault("CLOUDQUERY_API_URL", defaultAPIURL),
+	c, err := cloudquery_api.NewClientWithResponses(getEnvOrDefault(envAPIURL, defaultAPIURL),
 		cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
 			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 			return nil
@@ -115,7 +108,7 @@ func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 	}
 
 	// create new draft version
-	err = createNewDraftVersion(ctx, c, teamName, pluginName, pkgJSON)
+	err = createNewPluginDraftVersion(ctx, c, teamName, pluginName, pkgJSON)
 	if err != nil {
 		return fmt.Errorf("failed to create new draft version: %w", err)
 	}
@@ -142,7 +135,7 @@ func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 	fmt.Println("Uploading binaries...")
 	for _, t := range pkgJSON.SupportedTargets {
 		fmt.Printf("- Uploading %s_%s...\n", t.OS, t.Arch)
-		err = uploadBinary(ctx, c, teamName, pluginName, t.OS, t.Arch, path.Join(distDir, t.Path), pkgJSON)
+		err = uploadPluginBinary(ctx, c, teamName, pluginName, t.OS, t.Arch, path.Join(distDir, t.Path), pkgJSON)
 		if err != nil {
 			return fmt.Errorf("failed to upload binary: %w", err)
 		}
@@ -172,12 +165,12 @@ func runPublish(ctx context.Context, cmd *cobra.Command, args []string) error {
 	}
 
 	fmt.Println("Success!")
-	fmt.Println("\nNote: this plugin version is marked as draft=true. You can preview and finalize it on the CloudQuery Hub, or run `cloudquery publish` with the --finalize flag.")
+	fmt.Println("\nNote: this plugin version is marked as draft=true. You can preview and finalize it on the CloudQuery Hub, or run `cloudquery plugin publish` with the --finalize flag.")
 
 	return nil
 }
 
-func createNewDraftVersion(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginName string, pkgJSON PackageJSONV1) error {
+func createNewPluginDraftVersion(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginName string, pkgJSON PackageJSONV1) error {
 	targets := make([]string, len(pkgJSON.SupportedTargets))
 	checksums := make([]string, len(pkgJSON.SupportedTargets))
 	for i, t := range pkgJSON.SupportedTargets {
@@ -229,25 +222,6 @@ func uploadTableSchemas(ctx context.Context, c *cloudquery_api.ClientWithRespons
 	return nil
 }
 
-func errorFromHTTPResponse(httpResp *http.Response, resp any) error {
-	fields := make(map[string]any)
-	el := reflect.ValueOf(resp).Elem()
-	for i := 0; i < el.NumField(); i++ {
-		f := el.Field(i)
-		fields[el.Type().Field(i).Name] = f.Interface()
-	}
-	for k, v := range fields {
-		if !strings.HasPrefix(k, "JSON") || v == nil || reflect.ValueOf(v).Elem().Kind() != reflect.Struct {
-			continue
-		}
-		msg := reflect.ValueOf(v).Elem().FieldByName("Message")
-		if msg.IsValid() {
-			return fmt.Errorf("%s: %s", strings.TrimPrefix(k, "JSON"), msg.String())
-		}
-	}
-	return fmt.Errorf("error code: %v", httpResp.StatusCode)
-}
-
 func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginName, docsDir string, pkgJSON PackageJSONV1) error {
 	dirEntries, err := os.ReadDir(docsDir)
 	if err != nil {
@@ -285,7 +259,7 @@ func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, team
 	return nil
 }
 
-func uploadBinary(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginName, goos, goarch, localPath string, pkgJSON PackageJSONV1) error {
+func uploadPluginBinary(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginName, goos, goarch, localPath string, pkgJSON PackageJSONV1) error {
 	target := goos + "_" + goarch
 	resp, err := c.UploadPluginAssetWithResponse(ctx, teamName, pkgJSON.Kind, pluginName, pkgJSON.Version, target)
 	if err != nil {
@@ -312,36 +286,8 @@ func uploadBinary(ctx context.Context, c *cloudquery_api.ClientWithResponses, te
 	return nil
 }
 
-func uploadFile(uploadURL, localPath string) error {
-	file, err := os.Open(localPath)
-	if err != nil {
-		return fmt.Errorf("failed to open file: %w", err)
-	}
-	defer file.Close()
-
-	req, err := http.NewRequest(http.MethodPut, uploadURL, file)
-	if err != nil {
-		return fmt.Errorf("failed to create request: %w", err)
-	}
-	req.Header.Set("Content-Type", "application/octet-stream")
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		body, readErr := io.ReadAll(resp.Body)
-		if readErr != nil {
-			return fmt.Errorf("failed to read response body: %w", readErr)
-		}
-		return fmt.Errorf("status %s: %s", resp.Status, body)
-	}
-	return nil
-}
-
 func readPackageJSON(distDir string) (PackageJSONV1, error) {
-	v := PackageJSONVersion{}
+	v := SchemaVersion{}
 	b, err := os.ReadFile(filepath.Join(distDir, "package.json"))
 	if err != nil {
 		return PackageJSONV1{}, err
@@ -359,11 +305,4 @@ func readPackageJSON(distDir string) (PackageJSONV1, error) {
 		return PackageJSONV1{}, err
 	}
 	return pkgJSON, nil
-}
-
-func normalizeContent(s string) string {
-	s = strings.TrimSpace(s)
-	s = strings.ReplaceAll(s, "\r\n", "\n")
-	s = strings.ReplaceAll(s, "\r", "\n")
-	return s
 }
