@@ -86,6 +86,7 @@ func loadAccounts(ctx context.Context, awsPluginSpec *spec.Spec, accountsApi ser
 
 		accounts = append(accounts, spec.Account{
 			ID:              *account.Id,
+			AccountName:     aws.ToString(account.Name),
 			RoleARN:         roleArn.String(),
 			RoleSessionName: awsPluginSpec.Organization.ChildAccountRoleSessionName,
 			ExternalID:      awsPluginSpec.Organization.ChildAccountExternalID,
