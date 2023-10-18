@@ -21,7 +21,7 @@ This is the (nested) spec used by the Azure source plugin.
 
 - `concurrency` (`int`) (default: `50000`):
 
-  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
+  The best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
 
 - `discovery_concurrency` (`int`) (default: `400`)
 
@@ -40,4 +40,6 @@ This is the (nested) spec used by the Azure source plugin.
 
 - `oidc_token` (`string`) (default: empty)
 
-An OIDC token can be used to authenticate with Azure instead of `AZURE_CLIENT_SECRET`. This is useful for Azure AD workload identity federation. When using this option, the `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables must be set.
+  An OIDC token can be used to authenticate with Azure instead of `AZURE_CLIENT_SECRET`.
+  This is useful for Azure AD workload identity federation.
+  When using this option, the `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables must be set.
