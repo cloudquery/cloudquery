@@ -157,7 +157,7 @@ func createNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWit
 	}
 	body := cloudquery_api.CreateAddonVersionJSONRequestBody{
 		AddonDeps:  &manifest.AddonDeps,
-		PluginDeps: &manifest.PluginDeps,
+		PluginDeps: manifest.PluginDeps,
 	}
 
 	if manifest.PathToDoc != "" {
