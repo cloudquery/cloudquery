@@ -109,6 +109,10 @@ function recreateDirectory(dir: string) {
     }
 }
 
+function escapeBracesForMDX(str: string) {
+    return  str.replaceAll("{", "&#123;").replaceAll("}", "&#125;");
+}
+
 // Copy the source authentication file if it exists
 function copySourceAuthenticationFile(source: Plugin) : boolean {
     const sourceDir = `./pages/docs/plugins/sources/${source.id}`;
@@ -122,8 +126,6 @@ function copySourceAuthenticationFile(source: Plugin) : boolean {
     }
     return false;
 }
-
-const escapeBracesForMDX = (str: string) => str.replaceAll("{", "&#123;").replaceAll("}", "&#125;");
 
 // Copy the source configuration file if it exists and replace the destination name
 function copySourceConfigurationFile(source: Plugin): boolean {
