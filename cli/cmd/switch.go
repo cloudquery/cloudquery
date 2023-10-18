@@ -3,11 +3,11 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"github.com/cloudquery/cloudquery-api-go/auth"
-	"github.com/cloudquery/cloudquery-api-go/config"
 	"os"
 	"strings"
 
+	"github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery-api-go/config"
 	"github.com/cloudquery/cloudquery/cli/internal/team"
 	"github.com/spf13/cobra"
 )
@@ -35,7 +35,7 @@ func newCmdSwitch() *cobra.Command {
 }
 
 func runSwitch(cmd *cobra.Command, args []string) error {
-	apiURL := getEnvOrDefault("CLOUDQUERY_API_URL", defaultAPIURL)
+	apiURL := getEnvOrDefault(envAPIURL, defaultAPIURL)
 
 	tc := auth.NewTokenClient()
 	token, err := tc.GetToken()

@@ -42,7 +42,7 @@ func TestAddonPublish(t *testing.T) {
 	defer ts.Close()
 
 	cmd := NewCmdRoot()
-	t.Setenv("CLOUDQUERY_API_URL", ts.URL)
+	t.Setenv(envAPIURL, ts.URL)
 	args := []string{"addon", "publish", "testdata/addon-v1/manifest.json", "v1.2.3"}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
@@ -94,7 +94,7 @@ func TestAddonPublishFinalize(t *testing.T) {
 	}))
 	defer ts.Close()
 
-	t.Setenv("CLOUDQUERY_API_URL", ts.URL)
+	t.Setenv(envAPIURL, ts.URL)
 
 	cmd := NewCmdRoot()
 	args := []string{"addon", "publish", "testdata/addon-v1/manifest.json", "v1.2.3", "--finalize"}
@@ -118,7 +118,7 @@ func TestAddonPublish_Unauthorized(t *testing.T) {
 	}))
 	defer ts.Close()
 
-	t.Setenv("CLOUDQUERY_API_URL", ts.URL)
+	t.Setenv(envAPIURL, ts.URL)
 
 	cmd := NewCmdRoot()
 	args := []string{"addon", "publish", "testdata/addon-v1/manifest.json", "v1.2.3", "--finalize"}

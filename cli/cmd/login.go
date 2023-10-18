@@ -4,8 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/cloudquery/cloudquery-api-go/auth"
-	"github.com/cloudquery/cloudquery-api-go/config"
 	"io"
 	"net"
 	"net/http"
@@ -16,6 +14,8 @@ import (
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
+	"github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery-api-go/config"
 	"github.com/cloudquery/cloudquery/cli/internal/team"
 	"github.com/pkg/browser"
 	"github.com/spf13/cobra"
@@ -91,7 +91,7 @@ func waitForServer(ctx context.Context, url string) error {
 
 func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	accountsURL := getEnvOrDefault("CLOUDQUERY_ACCOUNTS_URL", defaultAccountsURL)
-	apiURL := getEnvOrDefault("CLOUDQUERY_API_URL", defaultAPIURL)
+	apiURL := getEnvOrDefault(envAPIURL, defaultAPIURL)
 
 	mux := http.NewServeMux()
 	refreshToken := ""

@@ -99,7 +99,7 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 	name := fmt.Sprintf("%s/%s@%s", manifest.TeamName, manifest.AddonName, version)
 	fmt.Printf("Publishing addon %s to CloudQuery Hub...\n", name)
 
-	c, err := cloudquery_api.NewClientWithResponses(getEnvOrDefault("CLOUDQUERY_API_URL", defaultAPIURL),
+	c, err := cloudquery_api.NewClientWithResponses(getEnvOrDefault(envAPIURL, defaultAPIURL),
 		cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
 			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 			return nil
