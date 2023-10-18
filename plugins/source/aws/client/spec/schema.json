@@ -76,7 +76,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The Amazon Web Services account ID that a finding is generated in."
             },
             {
               "type": "null"
@@ -89,7 +90,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The name of the findings provider (company) that owns the solution (product)\nthat generates findings."
             },
             {
               "type": "null"
@@ -102,7 +104,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The unique identifier of a standard in which a control is enabled. This field\nconsists of the resource portion of the Amazon Resource Name (ARN) returned for\na standard in the DescribeStandards (https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_DescribeStandards.html)\nAPI response."
             },
             {
               "type": "null"
@@ -115,7 +118,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The unique identifier of a control across standards. Values for this field\ntypically consist of an Amazon Web Service and a number, such as APIGateway.5."
             },
             {
               "type": "null"
@@ -128,7 +132,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Exclusive to findings that are generated as the result of a check run against a\nspecific rule in a supported standard, such as CIS Amazon Web Services\nFoundations. Contains security standard-related finding details."
             },
             {
               "type": "null"
@@ -141,7 +146,8 @@
               "items": {
                 "$ref": "#/$defs/NumberFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "A finding's confidence. Confidence is defined as the likelihood that a finding\naccurately identifies the behavior or issue that it was intended to identify.\nConfidence is scored on a 0-100 basis using a ratio scale, where 0 means zero\npercent confidence and 100 means 100 percent confidence."
             },
             {
               "type": "null"
@@ -154,7 +160,8 @@
               "items": {
                 "$ref": "#/$defs/DateFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "An ISO8601-formatted timestamp that indicates when the security findings\nprovider captured the potential security issue that a finding captured. A\ncorrectly formatted example is 2020-05-21T20:16:34.724Z . The value cannot\ncontain spaces, and date and time should be separated by T . For more\ninformation, see RFC 3339 section 5.6, Internet Date/Time Format (https://www.rfc-editor.org/rfc/rfc3339#section-5.6)\n."
             },
             {
               "type": "null"
@@ -167,7 +174,8 @@
               "items": {
                 "$ref": "#/$defs/NumberFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The level of importance assigned to the resources associated with the finding.\nA score of 0 means that the underlying resources have no criticality, and a\nscore of 100 is reserved for the most critical resources."
             },
             {
               "type": "null"
@@ -180,7 +188,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "A finding's description."
             },
             {
               "type": "null"
@@ -193,7 +202,8 @@
               "items": {
                 "$ref": "#/$defs/NumberFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The finding provider value for the finding confidence. Confidence is defined as\nthe likelihood that a finding accurately identifies the behavior or issue that\nit was intended to identify. Confidence is scored on a 0-100 basis using a ratio\nscale, where 0 means zero percent confidence and 100 means 100 percent\nconfidence."
             },
             {
               "type": "null"
@@ -206,7 +216,8 @@
               "items": {
                 "$ref": "#/$defs/NumberFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The finding provider value for the level of importance assigned to the\nresources associated with the findings. A score of 0 means that the underlying\nresources have no criticality, and a score of 100 is reserved for the most\ncritical resources."
             },
             {
               "type": "null"
@@ -219,7 +230,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The finding identifier of a related finding that is identified by the finding\nprovider."
             },
             {
               "type": "null"
@@ -232,7 +244,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The ARN of the solution that generated a related finding that is identified by\nthe finding provider."
             },
             {
               "type": "null"
@@ -245,7 +258,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The finding provider value for the severity label."
             },
             {
               "type": "null"
@@ -258,7 +272,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The finding provider's original value for the severity."
             },
             {
               "type": "null"
@@ -271,7 +286,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "One or more finding types that the finding provider assigned to the finding.\nUses the format of namespace/category/classifier that classify a finding. Valid\nnamespace values are: Software and Configuration Checks | TTPs | Effects |\nUnusual Behaviors | Sensitive Data Identifications"
             },
             {
               "type": "null"
@@ -284,7 +300,8 @@
               "items": {
                 "$ref": "#/$defs/DateFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "An ISO8601-formatted timestamp that indicates when the security findings\nprovider first observed the potential security issue that a finding captured. A\ncorrectly formatted example is 2020-05-21T20:16:34.724Z . The value cannot\ncontain spaces, and date and time should be separated by T . For more\ninformation, see RFC 3339 section 5.6, Internet Date/Time Format (https://www.rfc-editor.org/rfc/rfc3339#section-5.6)\n."
             },
             {
               "type": "null"
@@ -297,7 +314,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The identifier for the solution-specific component (a discrete unit of logic)\nthat generated a finding. In various security findings providers' solutions,\nthis generator can be called a rule, a check, a detector, a plugin, etc."
             },
             {
               "type": "null"
@@ -310,7 +328,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The security findings provider-specific identifier for a finding."
             },
             {
               "type": "null"
@@ -323,7 +342,8 @@
               "items": {
                 "$ref": "#/$defs/KeywordFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "A keyword for a finding.\n\nDeprecated: The Keyword property is deprecated."
             },
             {
               "type": "null"
@@ -336,7 +356,8 @@
               "items": {
                 "$ref": "#/$defs/DateFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "An ISO8601-formatted timestamp that indicates when the security findings\nprovider most recently observed the potential security issue that a finding\ncaptured. A correctly formatted example is 2020-05-21T20:16:34.724Z . The value\ncannot contain spaces, and date and time should be separated by T . For more\ninformation, see RFC 3339 section 5.6, Internet Date/Time Format (https://www.rfc-editor.org/rfc/rfc3339#section-5.6)\n."
             },
             {
               "type": "null"
@@ -349,7 +370,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The name of the malware that was observed."
             },
             {
               "type": "null"
@@ -362,7 +384,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The filesystem path of the malware that was observed."
             },
             {
               "type": "null"
@@ -375,7 +398,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The state of the malware that was observed."
             },
             {
               "type": "null"
@@ -388,7 +412,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The type of the malware that was observed."
             },
             {
               "type": "null"
@@ -401,7 +426,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The destination domain of network-related information about a finding."
             },
             {
               "type": "null"
@@ -414,7 +440,8 @@
               "items": {
                 "$ref": "#/$defs/IpFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The destination IPv4 address of network-related information about a finding."
             },
             {
               "type": "null"
@@ -427,7 +454,8 @@
               "items": {
                 "$ref": "#/$defs/IpFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The destination IPv6 address of network-related information about a finding."
             },
             {
               "type": "null"
@@ -440,7 +468,8 @@
               "items": {
                 "$ref": "#/$defs/NumberFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The destination port of network-related information about a finding."
             },
             {
               "type": "null"
@@ -453,7 +482,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Indicates the direction of network traffic associated with a finding."
             },
             {
               "type": "null"
@@ -466,7 +496,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The protocol of network-related information about a finding."
             },
             {
               "type": "null"
@@ -479,7 +510,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The source domain of network-related information about a finding."
             },
             {
               "type": "null"
@@ -492,7 +524,8 @@
               "items": {
                 "$ref": "#/$defs/IpFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The source IPv4 address of network-related information about a finding."
             },
             {
               "type": "null"
@@ -505,7 +538,8 @@
               "items": {
                 "$ref": "#/$defs/IpFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The source IPv6 address of network-related information about a finding."
             },
             {
               "type": "null"
@@ -518,7 +552,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The source media access control (MAC) address of network-related information\nabout a finding."
             },
             {
               "type": "null"
@@ -531,7 +566,8 @@
               "items": {
                 "$ref": "#/$defs/NumberFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The source port of network-related information about a finding."
             },
             {
               "type": "null"
@@ -544,7 +580,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The text of a note."
             },
             {
               "type": "null"
@@ -557,7 +594,8 @@
               "items": {
                 "$ref": "#/$defs/DateFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The timestamp of when the note was updated."
             },
             {
               "type": "null"
@@ -570,7 +608,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The principal that created a note."
             },
             {
               "type": "null"
@@ -583,7 +622,8 @@
               "items": {
                 "$ref": "#/$defs/DateFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "A timestamp that identifies when the process was launched. A correctly\nformatted example is 2020-05-21T20:16:34.724Z . The value cannot contain spaces,\nand date and time should be separated by T . For more information, see RFC 3339\nsection 5.6, Internet Date/Time Format (https://www.rfc-editor.org/rfc/rfc3339#section-5.6)\n."
             },
             {
               "type": "null"
@@ -596,7 +636,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The name of the process."
             },
             {
               "type": "null"
@@ -609,7 +650,8 @@
               "items": {
                 "$ref": "#/$defs/NumberFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The parent process ID. This field accepts positive integers between O and\n2147483647 ."
             },
             {
               "type": "null"
@@ -622,7 +664,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The path to the process executable."
             },
             {
               "type": "null"
@@ -635,7 +678,8 @@
               "items": {
                 "$ref": "#/$defs/NumberFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The process ID."
             },
             {
               "type": "null"
@@ -648,7 +692,8 @@
               "items": {
                 "$ref": "#/$defs/DateFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "A timestamp that identifies when the process was terminated. A correctly\nformatted example is 2020-05-21T20:16:34.724Z . The value cannot contain spaces,\nand date and time should be separated by T . For more information, see RFC 3339\nsection 5.6, Internet Date/Time Format (https://www.rfc-editor.org/rfc/rfc3339#section-5.6)\n."
             },
             {
               "type": "null"
@@ -661,7 +706,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The ARN generated by Security Hub that uniquely identifies a third-party\ncompany (security findings provider) after this provider's product (solution\nthat generates findings) is registered with Security Hub."
             },
             {
               "type": "null"
@@ -674,7 +720,8 @@
               "items": {
                 "$ref": "#/$defs/MapFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "A data type where security findings providers can include additional\nsolution-specific details that aren't part of the defined AwsSecurityFinding\nformat."
             },
             {
               "type": "null"
@@ -687,7 +734,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The name of the solution (product) that generates findings."
             },
             {
               "type": "null"
@@ -700,7 +748,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The recommendation of what to do about the issue described in a finding."
             },
             {
               "type": "null"
@@ -713,7 +762,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The updated record state for the finding."
             },
             {
               "type": "null"
@@ -726,7 +776,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The Region from which the finding was generated."
             },
             {
               "type": "null"
@@ -739,7 +790,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The solution-generated identifier for a related finding."
             },
             {
               "type": "null"
@@ -752,7 +804,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The ARN of the solution that generated a related finding."
             },
             {
               "type": "null"
@@ -765,7 +818,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The IAM profile ARN of the instance."
             },
             {
               "type": "null"
@@ -778,7 +832,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The Amazon Machine Image (AMI) ID of the instance."
             },
             {
               "type": "null"
@@ -791,7 +846,8 @@
               "items": {
                 "$ref": "#/$defs/IpFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The IPv4 addresses associated with the instance."
             },
             {
               "type": "null"
@@ -804,7 +860,8 @@
               "items": {
                 "$ref": "#/$defs/IpFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The IPv6 addresses associated with the instance."
             },
             {
               "type": "null"
@@ -817,7 +874,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The key name associated with the instance."
             },
             {
               "type": "null"
@@ -830,7 +888,8 @@
               "items": {
                 "$ref": "#/$defs/DateFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The date and time the instance was launched."
             },
             {
               "type": "null"
@@ -843,7 +902,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The identifier of the subnet that the instance was launched in."
             },
             {
               "type": "null"
@@ -856,7 +916,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The instance type of the instance."
             },
             {
               "type": "null"
@@ -869,7 +930,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The identifier of the VPC that the instance was launched in."
             },
             {
               "type": "null"
@@ -882,7 +944,8 @@
               "items": {
                 "$ref": "#/$defs/DateFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The creation date/time of the IAM access key related to a finding."
             },
             {
               "type": "null"
@@ -895,7 +958,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The name of the principal that is associated with an IAM access key."
             },
             {
               "type": "null"
@@ -908,7 +972,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The status of the IAM access key related to a finding."
             },
             {
               "type": "null"
@@ -921,7 +986,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The user associated with the IAM access key related to a finding.\n\nDeprecated: This filter is deprecated. Instead, use\nResourceAwsIamAccessKeyPrincipalName."
             },
             {
               "type": "null"
@@ -934,7 +1000,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The name of an IAM user."
             },
             {
               "type": "null"
@@ -947,7 +1014,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The canonical user ID of the owner of the S3 bucket."
             },
             {
               "type": "null"
@@ -960,7 +1028,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The display name of the owner of the S3 bucket."
             },
             {
               "type": "null"
@@ -973,7 +1042,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The identifier of the image related to a finding."
             },
             {
               "type": "null"
@@ -986,7 +1056,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The name of the image related to a finding."
             },
             {
               "type": "null"
@@ -999,7 +1070,8 @@
               "items": {
                 "$ref": "#/$defs/DateFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "A timestamp that identifies when the container was started. A correctly\nformatted example is 2020-05-21T20:16:34.724Z . The value cannot contain spaces,\nand date and time should be separated by T . For more information, see RFC 3339\nsection 5.6, Internet Date/Time Format (https://www.rfc-editor.org/rfc/rfc3339#section-5.6)\n."
             },
             {
               "type": "null"
@@ -1012,7 +1084,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The name of the container related to a finding."
             },
             {
               "type": "null"
@@ -1025,7 +1098,8 @@
               "items": {
                 "$ref": "#/$defs/MapFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The details of a resource that doesn't have a specific subfield for the\nresource type defined."
             },
             {
               "type": "null"
@@ -1038,7 +1112,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The canonical identifier for the given resource type."
             },
             {
               "type": "null"
@@ -1051,7 +1126,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The canonical Amazon Web Services partition name that the Region is assigned to."
             },
             {
               "type": "null"
@@ -1064,7 +1140,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The canonical Amazon Web Services external Region name where this resource is\nlocated."
             },
             {
               "type": "null"
@@ -1077,7 +1154,8 @@
               "items": {
                 "$ref": "#/$defs/MapFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "A list of Amazon Web Services tags associated with a resource at the time the\nfinding was processed."
             },
             {
               "type": "null"
@@ -1090,7 +1168,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Specifies the type of the resource that details are provided for."
             },
             {
               "type": "null"
@@ -1103,7 +1182,8 @@
               "items": {
                 "$ref": "#/$defs/BooleanFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Indicates whether or not sample findings are included in the filter results."
             },
             {
               "type": "null"
@@ -1116,7 +1196,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The label of a finding's severity."
             },
             {
               "type": "null"
@@ -1129,7 +1210,8 @@
               "items": {
                 "$ref": "#/$defs/NumberFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The normalized severity of a finding.\n\nDeprecated: This filter is deprecated. Instead, use SeverityLabel or\nFindingProviderFieldsSeverityLabel."
             },
             {
               "type": "null"
@@ -1142,7 +1224,8 @@
               "items": {
                 "$ref": "#/$defs/NumberFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The native severity as defined by the security findings provider's solution\nthat generated the finding.\n\nDeprecated: This filter is deprecated. Instead, use\nFindingProviderSeverityOriginal."
             },
             {
               "type": "null"
@@ -1155,7 +1238,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "A URL that links to a page about the current finding in the security findings\nprovider's solution."
             },
             {
               "type": "null"
@@ -1168,7 +1252,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The category of a threat intelligence indicator."
             },
             {
               "type": "null"
@@ -1181,7 +1266,8 @@
               "items": {
                 "$ref": "#/$defs/DateFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "A timestamp that identifies the last observation of a threat intelligence\nindicator."
             },
             {
               "type": "null"
@@ -1194,7 +1280,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The source of the threat intelligence."
             },
             {
               "type": "null"
@@ -1207,7 +1294,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The URL for more details from the source of the threat intelligence."
             },
             {
               "type": "null"
@@ -1220,7 +1308,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The type of a threat intelligence indicator."
             },
             {
               "type": "null"
@@ -1233,7 +1322,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The value of a threat intelligence indicator."
             },
             {
               "type": "null"
@@ -1246,7 +1336,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "A finding's title."
             },
             {
               "type": "null"
@@ -1259,7 +1350,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "A finding type in the format of namespace/category/classifier that classifies a\nfinding."
             },
             {
               "type": "null"
@@ -1272,7 +1364,8 @@
               "items": {
                 "$ref": "#/$defs/DateFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "An ISO8601-formatted timestamp that indicates when the security findings\nprovider last updated the finding record. A correctly formatted example is\n2020-05-21T20:16:34.724Z . The value cannot contain spaces, and date and time\nshould be separated by T . For more information, see RFC 3339 section 5.6,\nInternet Date/Time Format (https://www.rfc-editor.org/rfc/rfc3339#section-5.6) ."
             },
             {
               "type": "null"
@@ -1285,7 +1378,8 @@
               "items": {
                 "$ref": "#/$defs/MapFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "A list of name/value string pairs associated with the finding. These are\ncustom, user-defined fields added to a finding."
             },
             {
               "type": "null"
@@ -1298,7 +1392,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The veracity of a finding."
             },
             {
               "type": "null"
@@ -1311,7 +1406,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The workflow state of a finding. Note that this field is deprecated. To search\nfor a finding based on its workflow status, use WorkflowStatus ."
             },
             {
               "type": "null"
@@ -1324,7 +1420,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter-1"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The status of the investigation into a finding. Allowed values are the\nfollowing.\n  - NEW - The initial state of a finding, before it is reviewed. Security Hub\n  also resets the workflow status from NOTIFIED or RESOLVED to NEW in the\n  following cases:\n  - RecordState changes from ARCHIVED to ACTIVE .\n  - Compliance.Status changes from PASSED to either WARNING , FAILED , or\n  NOT_AVAILABLE .\n  - NOTIFIED - Indicates that the resource owner has been notified about the\n  security issue. Used when the initial reviewer is not the resource owner, and\n  needs intervention from the resource owner. If one of the following occurs, the\n  workflow status is changed automatically from NOTIFIED to NEW :\n  - RecordState changes from ARCHIVED to ACTIVE .\n  - Compliance.Status changes from PASSED to FAILED , WARNING , or NOT_AVAILABLE\n  .\n  - SUPPRESSED - Indicates that you reviewed the finding and do not believe that\n  any action is needed. The workflow status of a SUPPRESSED finding does not\n  change if RecordState changes from ARCHIVED to ACTIVE .\n  - RESOLVED - The finding was reviewed and remediated and is now considered\n  resolved. The finding remains RESOLVED unless one of the following occurs:\n  - RecordState changes from ARCHIVED to ACTIVE .\n  - Compliance.Status changes from PASSED to FAILED , WARNING , or NOT_AVAILABLE\n  . In those cases, the workflow status is automatically reset to NEW . For\n  findings from controls, if Compliance.Status is PASSED , then Security Hub\n  automatically sets the workflow status to RESOLVED ."
             },
             {
               "type": "null"
@@ -1333,16 +1430,19 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "A collection of attributes that are applied to all active Security Hub-aggregated findings and that result in a subset of findings that are included in this insight."
     },
     "BooleanFilter": {
       "properties": {
         "Value": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "The value of the boolean."
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "Boolean filter for querying findings."
     },
     "CloudtrailEvents": {
       "properties": {
@@ -1369,7 +1469,8 @@
           "oneOf": [
             {
               "type": "string",
-              "format": "date-time"
+              "format": "date-time",
+              "description": "The time stamp that determines the last data point to return. The value\nspecified is exclusive; results include data points up to the specified time\nstamp. In a raw HTTP query, the time stamp must be in ISO 8601 UTC format (for\nexample, 2016-10-10T23:00:00Z).\n\nThis member is required."
             },
             {
               "type": "null"
@@ -1379,7 +1480,8 @@
         "Period": {
           "oneOf": [
             {
-              "type": "integer"
+              "type": "integer",
+              "description": "The granularity, in seconds, of the returned data points. For metrics with\nregular resolution, a period can be as short as one minute (60 seconds) and must\nbe a multiple of 60. For high-resolution metrics that are collected at intervals\nof less than one minute, the period can be 1, 5, 10, 30, 60, or any multiple of\n60. High-resolution metrics are those metrics stored by a PutMetricData call\nthat includes a StorageResolution of 1 second. If the StartTime parameter\nspecifies a time stamp that is greater than 3 hours ago, you must specify the\nperiod as follows or no data points in that time range is returned:\n  - Start time between 3 hours and 15 days ago - Use a multiple of 60 seconds\n  (1 minute).\n  - Start time between 15 and 63 days ago - Use a multiple of 300 seconds (5\n  minutes).\n  - Start time greater than 63 days ago - Use a multiple of 3600 seconds (1\n  hour).\n\nThis member is required."
             },
             {
               "type": "null"
@@ -1390,7 +1492,8 @@
           "oneOf": [
             {
               "type": "string",
-              "format": "date-time"
+              "format": "date-time",
+              "description": "The time stamp that determines the first data point to return. Start times are\nevaluated relative to the time that CloudWatch receives the request. The value\nspecified is inclusive; results include data points with the specified time\nstamp. In a raw HTTP query, the time stamp must be in ISO 8601 UTC format (for\nexample, 2016-10-03T23:00:00Z). CloudWatch rounds the specified time stamp as\nfollows:\n  - Start time less than 15 days ago - Round down to the nearest whole minute.\n  For example, 12:32:34 is rounded down to 12:32:00.\n  - Start time between 15 and 63 days ago - Round down to the nearest 5-minute\n  clock interval. For example, 12:32:34 is rounded down to 12:30:00.\n  - Start time greater than 63 days ago - Round down to the nearest 1-hour\n  clock interval. For example, 12:32:34 is rounded down to 12:00:00.\nIf you set Period to 5, 10, or 30, the start time of your request is rounded\ndown to the nearest time that corresponds to even 5-, 10-, or 30-second\ndivisions of a minute. For example, if you make a query at (HH:mm:ss) 01:05:23\nfor the previous 10-second period, the start time of your request is rounded\ndown and you receive data from 01:05:10 to 01:05:20. If you make a query at\n15:07:17 for the previous 5 minutes of data, using a period of 5 seconds, you\nreceive data timestamped between 15:02:15 and 15:07:15.\n\nThis member is required."
             },
             {
               "type": "null"
@@ -1403,7 +1506,8 @@
               "items": {
                 "type": "string"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The percentile statistics. Specify values between p0.0 and p100. When calling\nGetMetricStatistics , you must specify either Statistics or ExtendedStatistics ,\nbut not both. Percentile statistics are not available for metrics when any of\nthe metric values are negative numbers."
             },
             {
               "type": "null"
@@ -1416,7 +1520,8 @@
               "items": {
                 "type": "string"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The metric statistics, other than percentile. For percentile statistics, use\nExtendedStatistics . When calling GetMetricStatistics , you must specify either\nStatistics or ExtendedStatistics , but not both."
             },
             {
               "type": "null"
@@ -1424,7 +1529,8 @@
           ]
         },
         "Unit": {
-          "type": "string"
+          "type": "string",
+          "description": "The unit for a given metric. If you omit Unit , all data that was collected with\nany unit is returned, along with the corresponding units that were specified\nwhen the data was reported to CloudWatch. If you specify a unit, the operation\nreturns only data that was collected with that unit specified. If you specify a\nunit that does not match the data collected, the results of the operation are\nnull. CloudWatch does not perform unit conversions."
         }
       },
       "additionalProperties": false,
@@ -1438,7 +1544,8 @@
               "items": {
                 "$ref": "#/$defs/DimensionFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The dimensions to filter against. Only the dimensions that match exactly will\nbe returned."
             },
             {
               "type": "null"
@@ -1446,12 +1553,14 @@
           ]
         },
         "IncludeLinkedAccounts": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "If you are using this operation in a monitoring account, specify true to\ninclude metrics from source accounts in the returned data. The default is false ."
         },
         "MetricName": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "The name of the metric to filter against. Only the metrics with names that\nmatch exactly will be returned."
             },
             {
               "type": "null"
@@ -1461,7 +1570,8 @@
         "Namespace": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "The metric namespace to filter against. Only the namespace that matches exactly\nwill be returned."
             },
             {
               "type": "null"
@@ -1471,7 +1581,8 @@
         "OwningAccount": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "When you use this operation in a monitoring account, use this field to return\nmetrics only from one source account. To do so, specify that source account ID\nin this field, and also specify true for IncludeLinkedAccounts ."
             },
             {
               "type": "null"
@@ -1479,7 +1590,8 @@
           ]
         },
         "RecentlyActive": {
-          "type": "string"
+          "type": "string",
+          "description": "To filter the results to show only metrics that have had data points published\nin the past three hours, specify this parameter with a value of PT3H . This is\nthe only valid value for this parameter. The results that are returned are an\napproximation of the value you specify. There is a low probability that the\nreturned results include metrics with last published data as much as 40 minutes\nmore than the specified time interval."
         }
       },
       "additionalProperties": false,
@@ -1518,7 +1630,8 @@
         "Key": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "The unique name of the Cost Category."
             },
             {
               "type": "null"
@@ -1531,7 +1644,8 @@
               "items": {
                 "type": "string"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The match options that you can use to filter your results. MatchOptions is only\napplicable for actions related to cost category. The default values for\nMatchOptions is EQUALS and CASE_SENSITIVE ."
             },
             {
               "type": "null"
@@ -1544,7 +1658,8 @@
               "items": {
                 "type": "string"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The specific value of the Cost Category."
             },
             {
               "type": "null"
@@ -1553,7 +1668,8 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "The Cost Categories values used for filtering the costs."
     },
     "CostExplorerAPIs": {
       "properties": {
@@ -1582,7 +1698,8 @@
               "items": {
                 "type": "string"
               },
-              "type": "array"
+              "type": "array",
+              "description": "A \"contains\" operator to match for the filter used to create the rule."
             },
             {
               "type": "null"
@@ -1595,7 +1712,8 @@
               "items": {
                 "type": "string"
               },
-              "type": "array"
+              "type": "array",
+              "description": "An \"equals\" operator to match for the filter used to create the rule."
             },
             {
               "type": "null"
@@ -1605,7 +1723,8 @@
         "Exists": {
           "oneOf": [
             {
-              "type": "boolean"
+              "type": "boolean",
+              "description": "An \"exists\" operator to match for the filter used to create the rule."
             },
             {
               "type": "null"
@@ -1618,7 +1737,8 @@
               "items": {
                 "type": "string"
               },
-              "type": "array"
+              "type": "array",
+              "description": "A \"not equals\" operator to match for the filter used to create the rule."
             },
             {
               "type": "null"
@@ -1627,7 +1747,8 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "The criteria to use in the filter that defines the archive rule."
     },
     "CustomAccessAnalyzerListFindingsInput": {
       "properties": {
@@ -1637,7 +1758,8 @@
               "additionalProperties": {
                 "$ref": "#/$defs/Criterion"
               },
-              "type": "object"
+              "type": "object",
+              "description": "A filter to match for the findings to return."
             },
             {
               "type": "null"
@@ -1647,7 +1769,8 @@
         "MaxResults": {
           "oneOf": [
             {
-              "type": "integer"
+              "type": "integer",
+              "description": "The maximum number of results to return in the response."
             },
             {
               "type": "null"
@@ -1657,7 +1780,8 @@
         "Sort": {
           "oneOf": [
             {
-              "$ref": "#/$defs/SortCriteria"
+              "$ref": "#/$defs/SortCriteria",
+              "description": "The sort order for the findings returned."
             },
             {
               "type": "null"
@@ -1674,7 +1798,8 @@
           "oneOf": [
             {
               "type": "string",
-              "format": "date-time"
+              "format": "date-time",
+              "description": "Specifies that only events that occur before or at the specified time are\nreturned. If the specified end time is before the specified start time, an error\nis returned."
             },
             {
               "type": "null"
@@ -1682,7 +1807,8 @@
           ]
         },
         "EventCategory": {
-          "type": "string"
+          "type": "string",
+          "description": "Specifies the event category. If you do not specify an event category, events\nof the category are not returned in the response. For example, if you do not\nspecify insight as the value of EventCategory , no Insights events are returned."
         },
         "LookupAttributes": {
           "oneOf": [
@@ -1690,7 +1816,8 @@
               "items": {
                 "$ref": "#/$defs/LookupAttribute"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Contains a list of lookup attributes. Currently the list can contain only one\nitem."
             },
             {
               "type": "null"
@@ -1700,7 +1827,8 @@
         "MaxResults": {
           "oneOf": [
             {
-              "type": "integer"
+              "type": "integer",
+              "description": "The number of events to return. Possible values are 1 through 50. The default\nis 50."
             },
             {
               "type": "null"
@@ -1711,7 +1839,8 @@
           "oneOf": [
             {
               "type": "string",
-              "format": "date-time"
+              "format": "date-time",
+              "description": "Specifies that only events that occur after or at the specified time are\nreturned. If the specified start time is after the specified end time, an error\nis returned."
             },
             {
               "type": "null"
@@ -1727,7 +1856,8 @@
         "ContainerInstance": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "The container instance ID or full ARN of the container instance to use when\nfiltering the ListTasks results. Specifying a containerInstance limits the\nresults to tasks that belong to that container instance."
             },
             {
               "type": "null"
@@ -1735,12 +1865,14 @@
           ]
         },
         "DesiredStatus": {
-          "type": "string"
+          "type": "string",
+          "description": "The task desired status to use when filtering the ListTasks results. Specifying\na desiredStatus of STOPPED limits the results to tasks that Amazon ECS has set\nthe desired status to STOPPED . This can be useful for debugging tasks that\naren't starting properly or have died or finished. The default status filter is\nRUNNING , which shows tasks that Amazon ECS has set the desired status to\nRUNNING . Although you can filter results based on a desired status of PENDING ,\nthis doesn't return any results. Amazon ECS never sets the desired status of a\ntask to that value (only a task's lastStatus may have a value of PENDING )."
         },
         "Family": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "The name of the task definition family to use when filtering the ListTasks\nresults. Specifying a family limits the results to tasks that belong to that\nfamily."
             },
             {
               "type": "null"
@@ -1748,7 +1880,8 @@
           ]
         },
         "LaunchType": {
-          "type": "string"
+          "type": "string",
+          "description": "The launch type to use when filtering the ListTasks results."
         },
         "MaxResults": {
           "oneOf": [
@@ -1756,6 +1889,7 @@
               "type": "integer",
               "maximum": 100,
               "minimum": 1,
+              "description": "The maximum number of task results that ListTasks returned in paginated output.\nWhen this parameter is used, ListTasks only returns maxResults results in a\nsingle page along with a nextToken response element. The remaining results of\nthe initial request can be seen by sending another ListTasks request with the\nreturned nextToken value. This value can be between 1 and 100. If this\nparameter isn't used, then ListTasks returns up to 100 results and a nextToken\nvalue if applicable.",
               "default": 100
             },
             {
@@ -1766,7 +1900,8 @@
         "ServiceName": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "The name of the service to use when filtering the ListTasks results. Specifying\na serviceName limits the results to tasks that belong to that service."
             },
             {
               "type": "null"
@@ -1776,7 +1911,8 @@
         "StartedBy": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "The startedBy value to filter the task results with. Specifying a startedBy\nvalue limits the results to tasks that were started with that value. When you\nspecify startedBy as the filter, it must be the only filter that you use."
             },
             {
               "type": "null"
@@ -1790,7 +1926,8 @@
     "CustomGetCostAndUsageInput": {
       "properties": {
         "Granularity": {
-          "type": "string"
+          "type": "string",
+          "description": "Sets the Amazon Web Services cost granularity to MONTHLY or DAILY , or HOURLY .\nIf Granularity isn't set, the response object doesn't include the Granularity ,\neither MONTHLY or DAILY , or HOURLY .\n\nThis member is required."
         },
         "Metrics": {
           "oneOf": [
@@ -1798,7 +1935,8 @@
               "items": {
                 "type": "string"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Which metrics are returned in the query. For more information about blended and\nunblended rates, see Why does the \"blended\" annotation appear on some line\nitems in my bill? (http://aws.amazon.com/premiumsupport/knowledge-center/blended-rates-intro/)\n. Valid values are AmortizedCost , BlendedCost , NetAmortizedCost ,\nNetUnblendedCost , NormalizedUsageAmount , UnblendedCost , and UsageQuantity .\nIf you return the UsageQuantity metric, the service aggregates all usage\nnumbers without taking into account the units. For example, if you aggregate\nusageQuantity across all of Amazon EC2, the results aren't meaningful because\nAmazon EC2 compute hours and data transfer are measured in different units (for\nexample, hours and GB). To get more meaningful UsageQuantity metrics, filter by\nUsageType or UsageTypeGroups . Metrics is required for GetCostAndUsage requests.\n\nThis member is required."
             },
             {
               "type": "null"
@@ -1808,7 +1946,8 @@
         "TimePeriod": {
           "oneOf": [
             {
-              "$ref": "#/$defs/DateInterval"
+              "$ref": "#/$defs/DateInterval",
+              "description": "Sets the start date and end date for retrieving Amazon Web Services costs. The\nstart date is inclusive, but the end date is exclusive. For example, if start\nis 2017-01-01 and end is 2017-05-01 , then the cost and usage data is retrieved\nfrom 2017-01-01 up to and including 2017-04-30 but not including 2017-05-01 .\n\nThis member is required."
             },
             {
               "type": "null"
@@ -1818,7 +1957,8 @@
         "Filter": {
           "oneOf": [
             {
-              "$ref": "#/$defs/Expression"
+              "$ref": "#/$defs/Expression",
+              "description": "Filters Amazon Web Services costs by different dimensions. For example, you can\nspecify SERVICE and LINKED_ACCOUNT and get the costs that are associated with\nthat account's usage of that service. You can nest Expression objects to define\nany combination of dimension filters. For more information, see Expression (https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_Expression.html)\n. Valid values for MatchOptions for Dimensions are EQUALS and CASE_SENSITIVE .\nValid values for MatchOptions for CostCategories and Tags are EQUALS , ABSENT ,\nand CASE_SENSITIVE . Default values are EQUALS and CASE_SENSITIVE ."
             },
             {
               "type": "null"
@@ -1831,7 +1971,8 @@
               "items": {
                 "$ref": "#/$defs/GroupDefinition"
               },
-              "type": "array"
+              "type": "array",
+              "description": "You can group Amazon Web Services costs using up to two different groups,\neither dimensions, tag keys, cost categories, or any two group by types. Valid\nvalues for the DIMENSION type are AZ , INSTANCE_TYPE , LEGAL_ENTITY_NAME ,\nINVOICING_ENTITY , LINKED_ACCOUNT , OPERATION , PLATFORM , PURCHASE_TYPE ,\nSERVICE , TENANCY , RECORD_TYPE , and USAGE_TYPE . When you group by the TAG\ntype and include a valid tag key, you get all tag values, including empty\nstrings."
             },
             {
               "type": "null"
@@ -1847,7 +1988,8 @@
         "FilterCriteria": {
           "oneOf": [
             {
-              "$ref": "#/$defs/FilterCriteria"
+              "$ref": "#/$defs/FilterCriteria",
+              "description": "Details on the filters to apply to your finding results."
             },
             {
               "type": "null"
@@ -1857,7 +1999,8 @@
         "MaxResults": {
           "oneOf": [
             {
-              "type": "integer"
+              "type": "integer",
+              "description": "The maximum number of results to return in the response."
             },
             {
               "type": "null"
@@ -1867,7 +2010,8 @@
         "SortCriteria": {
           "oneOf": [
             {
-              "$ref": "#/$defs/SortCriteria-1"
+              "$ref": "#/$defs/SortCriteria-1",
+              "description": "Details on the sort criteria to apply to your finding results."
             },
             {
               "type": "null"
@@ -1883,7 +2027,8 @@
         "Filters": {
           "oneOf": [
             {
-              "$ref": "#/$defs/AwsSecurityFindingFilters"
+              "$ref": "#/$defs/AwsSecurityFindingFilters",
+              "description": "The finding attributes used to define a condition to filter the returned\nfindings. You can filter by up to 10 finding attributes. For each attribute, you\ncan provide up to 20 filter values. Note that in the available filter fields,\nWorkflowState is deprecated. To search for a finding based on its workflow\nstatus, use WorkflowStatus ."
             },
             {
               "type": "null"
@@ -1894,6 +2039,7 @@
           "type": "integer",
           "maximum": 100,
           "minimum": 1,
+          "description": "The maximum number of findings to return.",
           "default": 100
         },
         "SortCriteria": {
@@ -1902,7 +2048,8 @@
               "items": {
                 "$ref": "#/$defs/SortCriterion"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The finding attributes used to sort the list of returned findings."
             },
             {
               "type": "null"
@@ -1919,7 +2066,8 @@
           "oneOf": [
             {
               "type": "string",
-              "format": "date-time"
+              "format": "date-time",
+              "description": "A timestamp representing the end of the time period filtered on."
             },
             {
               "type": "null"
@@ -1930,7 +2078,8 @@
           "oneOf": [
             {
               "type": "string",
-              "format": "date-time"
+              "format": "date-time",
+              "description": "A timestamp representing the start of the time period filtered on."
             },
             {
               "type": "null"
@@ -1939,14 +2088,16 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "Contains details on the time range used to filter findings."
     },
     "DateFilter-1": {
       "properties": {
         "DateRange": {
           "oneOf": [
             {
-              "$ref": "#/$defs/DateRange"
+              "$ref": "#/$defs/DateRange",
+              "description": "A date range for the date filter."
             },
             {
               "type": "null"
@@ -1956,7 +2107,8 @@
         "End": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "A timestamp that provides the end date for the date filter. A correctly\nformatted example is 2020-05-21T20:16:34.724Z . The value cannot contain spaces,\nand date and time should be separated by T . For more information, see RFC 3339\nsection 5.6, Internet Date/Time Format (https://www.rfc-editor.org/rfc/rfc3339#section-5.6)\n."
             },
             {
               "type": "null"
@@ -1966,7 +2118,8 @@
         "Start": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "A timestamp that provides the start date for the date filter. A correctly\nformatted example is 2020-05-21T20:16:34.724Z . The value cannot contain spaces,\nand date and time should be separated by T . For more information, see RFC 3339\nsection 5.6, Internet Date/Time Format (https://www.rfc-editor.org/rfc/rfc3339#section-5.6)\n."
             },
             {
               "type": "null"
@@ -1975,14 +2128,16 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "A date filter for querying findings."
     },
     "DateInterval": {
       "properties": {
         "End": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "The end of the time period. The end date is exclusive. For example, if end is\n2017-05-01 , Amazon Web Services retrieves cost and usage data from the start\ndate up to, but not including, 2017-05-01 .\n\nThis member is required."
             },
             {
               "type": "null"
@@ -1992,7 +2147,8 @@
         "Start": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "The beginning of the time period. The start date is inclusive. For example, if\nstart is 2017-01-01 , Amazon Web Services retrieves cost and usage data starting\nat 2017-01-01 up to the end date. The start date must be equal to or no later\nthan the current date to avoid a validation error.\n\nThis member is required."
             },
             {
               "type": "null"
@@ -2001,26 +2157,31 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "The time period of the request."
     },
     "DateRange": {
       "properties": {
         "Unit": {
-          "type": "string"
+          "type": "string",
+          "description": "A date range unit for the date filter."
         },
         "Value": {
-          "type": "integer"
+          "type": "integer",
+          "description": "A date range value for the date filter."
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "A date range for the date filter."
     },
     "DimensionFilter": {
       "properties": {
         "Name": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "The dimension name to be matched.\n\nThis member is required."
             },
             {
               "type": "null"
@@ -2030,7 +2191,8 @@
         "Value": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "The value of the dimension to be matched."
             },
             {
               "type": "null"
@@ -2039,12 +2201,14 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "Represents filters for a dimension."
     },
     "DimensionValues": {
       "properties": {
         "Key": {
-          "type": "string"
+          "type": "string",
+          "description": "The names of the metadata types that you can use to filter and group your\nresults. For example, AZ returns a list of Availability Zones. Not all\ndimensions are supported in each API. Refer to the documentation for each\nspecific API to see what is supported. LINK_ACCOUNT_NAME and SERVICE_CODE can\nonly be used in CostCategoryRule (https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_CostCategoryRule.html)\n. ANOMALY_TOTAL_IMPACT_ABSOLUTE and ANOMALY_TOTAL_IMPACT_PERCENTAGE can only be\nused in AnomalySubscriptions (https://docs.aws.amazon.com/aws-cost-management/latest/APIReference/API_AnomalySubscription.html)\n."
         },
         "MatchOptions": {
           "oneOf": [
@@ -2052,7 +2216,8 @@
               "items": {
                 "type": "string"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The match options that you can use to filter your results. MatchOptions is only\napplicable for actions related to Cost Category and Anomaly Subscriptions. Refer\nto the documentation for each specific API to see what is supported. The default\nvalues for MatchOptions are EQUALS and CASE_SENSITIVE ."
             },
             {
               "type": "null"
@@ -2065,7 +2230,8 @@
               "items": {
                 "type": "string"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The metadata values that you can use to filter and group your results. You can\nuse GetDimensionValues to find specific values."
             },
             {
               "type": "null"
@@ -2074,7 +2240,8 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "The metadata that you can use to filter and group your results."
     },
     "ECSTasks": {
       "properties": {
@@ -2142,7 +2309,8 @@
               "items": {
                 "$ref": "#/$defs/Expression"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Return results that match both Dimension objects."
             },
             {
               "type": "null"
@@ -2152,7 +2320,8 @@
         "CostCategories": {
           "oneOf": [
             {
-              "$ref": "#/$defs/CostCategoryValues"
+              "$ref": "#/$defs/CostCategoryValues",
+              "description": "The filter that's based on CostCategory values."
             },
             {
               "type": "null"
@@ -2162,7 +2331,8 @@
         "Dimensions": {
           "oneOf": [
             {
-              "$ref": "#/$defs/DimensionValues"
+              "$ref": "#/$defs/DimensionValues",
+              "description": "The specific Dimension to use for Expression ."
             },
             {
               "type": "null"
@@ -2172,7 +2342,8 @@
         "Not": {
           "oneOf": [
             {
-              "$ref": "#/$defs/Expression"
+              "$ref": "#/$defs/Expression",
+              "description": "Return results that don't match a Dimension object."
             },
             {
               "type": "null"
@@ -2185,7 +2356,8 @@
               "items": {
                 "$ref": "#/$defs/Expression"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Return results that match either Dimension object."
             },
             {
               "type": "null"
@@ -2195,7 +2367,8 @@
         "Tags": {
           "oneOf": [
             {
-              "$ref": "#/$defs/TagValues"
+              "$ref": "#/$defs/TagValues",
+              "description": "The specific Tag to use for Expression ."
             },
             {
               "type": "null"
@@ -2204,7 +2377,8 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "Use Expression to filter in various Cost Explorer APIs."
     },
     "FilterCriteria": {
       "properties": {
@@ -2214,7 +2388,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details of the Amazon Web Services account IDs used to filter findings."
             },
             {
               "type": "null"
@@ -2227,7 +2402,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The name of the detector used to identify a code vulnerability in a Lambda\nfunction used to filter findings."
             },
             {
               "type": "null"
@@ -2240,7 +2416,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The detector type tag associated with the vulnerability used to filter\nfindings. Detector tags group related vulnerabilities by common themes or\ntactics. For a list of available tags by programming language, see Java tags (https://docs.aws.amazon.com/codeguru/detector-library/java/tags/)\n, or Python tags (https://docs.aws.amazon.com/codeguru/detector-library/python/tags/)\n."
             },
             {
               "type": "null"
@@ -2253,7 +2430,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The file path to the file in a Lambda function that contains a code\nvulnerability used to filter findings."
             },
             {
               "type": "null"
@@ -2266,7 +2444,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details of the component IDs used to filter findings."
             },
             {
               "type": "null"
@@ -2279,7 +2458,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details of the component types used to filter findings."
             },
             {
               "type": "null"
@@ -2292,7 +2472,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details of the Amazon EC2 instance image IDs used to filter findings."
             },
             {
               "type": "null"
@@ -2305,7 +2486,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details of the Amazon EC2 instance subnet IDs used to filter findings."
             },
             {
               "type": "null"
@@ -2318,7 +2500,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details of the Amazon EC2 instance VPC IDs used to filter findings."
             },
             {
               "type": "null"
@@ -2331,7 +2514,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details of the Amazon ECR image architecture types used to filter findings."
             },
             {
               "type": "null"
@@ -2344,7 +2528,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details of the Amazon ECR image hashes used to filter findings."
             },
             {
               "type": "null"
@@ -2357,7 +2542,8 @@
               "items": {
                 "$ref": "#/$defs/DateFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on the Amazon ECR image push date and time used to filter findings."
             },
             {
               "type": "null"
@@ -2370,7 +2556,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on the Amazon ECR registry used to filter findings."
             },
             {
               "type": "null"
@@ -2383,7 +2570,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on the name of the Amazon ECR repository used to filter findings."
             },
             {
               "type": "null"
@@ -2396,7 +2584,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The tags attached to the Amazon ECR container image."
             },
             {
               "type": "null"
@@ -2409,7 +2598,8 @@
               "items": {
                 "$ref": "#/$defs/NumberFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The EPSS score used to filter findings."
             },
             {
               "type": "null"
@@ -2422,7 +2612,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Filters the list of AWS Lambda findings by the availability of exploits."
             },
             {
               "type": "null"
@@ -2435,7 +2626,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on the finding ARNs used to filter findings."
             },
             {
               "type": "null"
@@ -2448,7 +2640,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on the finding status types used to filter findings."
             },
             {
               "type": "null"
@@ -2461,7 +2654,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on the finding types used to filter findings."
             },
             {
               "type": "null"
@@ -2474,7 +2668,8 @@
               "items": {
                 "$ref": "#/$defs/DateFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on the date and time a finding was first seen used to filter findings."
             },
             {
               "type": "null"
@@ -2487,7 +2682,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on whether a fix is available through a version update. This value can\nbe YES , NO , or PARTIAL . A PARTIAL fix means that some, but not all, of the\npackages identified in the finding have fixes available through updated\nversions."
             },
             {
               "type": "null"
@@ -2500,7 +2696,8 @@
               "items": {
                 "$ref": "#/$defs/NumberFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The Amazon Inspector score to filter on."
             },
             {
               "type": "null"
@@ -2513,7 +2710,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Filters the list of AWS Lambda functions by execution role."
             },
             {
               "type": "null"
@@ -2526,7 +2724,8 @@
               "items": {
                 "$ref": "#/$defs/DateFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Filters the list of AWS Lambda functions by the date and time that a user last\nupdated the configuration, in ISO 8601 format (https://www.iso.org/iso-8601-date-and-time-format.html)"
             },
             {
               "type": "null"
@@ -2539,7 +2738,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Filters the list of AWS Lambda functions by the function's  layers (https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html)\n. A Lambda function can have up to five layers."
             },
             {
               "type": "null"
@@ -2552,7 +2752,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Filters the list of AWS Lambda functions by the name of the function."
             },
             {
               "type": "null"
@@ -2565,7 +2766,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Filters the list of AWS Lambda functions by the runtime environment for the\nLambda function."
             },
             {
               "type": "null"
@@ -2578,7 +2780,8 @@
               "items": {
                 "$ref": "#/$defs/DateFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on the date and time a finding was last seen used to filter findings."
             },
             {
               "type": "null"
@@ -2591,7 +2794,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on network protocol used to filter findings."
             },
             {
               "type": "null"
@@ -2604,7 +2808,8 @@
               "items": {
                 "$ref": "#/$defs/PortRangeFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on the port ranges used to filter findings."
             },
             {
               "type": "null"
@@ -2617,7 +2822,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on the related vulnerabilities used to filter findings."
             },
             {
               "type": "null"
@@ -2630,7 +2836,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on the resource IDs used to filter findings."
             },
             {
               "type": "null"
@@ -2643,7 +2850,8 @@
               "items": {
                 "$ref": "#/$defs/MapFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on the resource tags used to filter findings."
             },
             {
               "type": "null"
@@ -2656,7 +2864,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on the resource types used to filter findings."
             },
             {
               "type": "null"
@@ -2669,7 +2878,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on the severity used to filter findings."
             },
             {
               "type": "null"
@@ -2682,7 +2892,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on the finding title used to filter findings."
             },
             {
               "type": "null"
@@ -2695,7 +2906,8 @@
               "items": {
                 "$ref": "#/$defs/DateFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on the date and time a finding was last updated at used to filter\nfindings."
             },
             {
               "type": "null"
@@ -2708,7 +2920,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on the vendor severity used to filter findings."
             },
             {
               "type": "null"
@@ -2721,7 +2934,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on the vulnerability ID used to filter findings."
             },
             {
               "type": "null"
@@ -2734,7 +2948,8 @@
               "items": {
                 "$ref": "#/$defs/StringFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on the vulnerability type used to filter findings."
             },
             {
               "type": "null"
@@ -2747,7 +2962,8 @@
               "items": {
                 "$ref": "#/$defs/PackageFilter"
               },
-              "type": "array"
+              "type": "array",
+              "description": "Details on the vulnerable packages used to filter findings."
             },
             {
               "type": "null"
@@ -2756,14 +2972,16 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "Details on the criteria used to define the filter."
     },
     "GroupDefinition": {
       "properties": {
         "Key": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "The string that represents a key for a specified group."
             },
             {
               "type": "null"
@@ -2771,11 +2989,13 @@
           ]
         },
         "Type": {
-          "type": "string"
+          "type": "string",
+          "description": "The string that represents the type of group."
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "Represents a group when you specify a group by criteria or in the response to a query with a specific grouping."
     },
     "Inspector2Findings": {
       "properties": {
@@ -2801,7 +3021,8 @@
         "Cidr": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "A finding's CIDR value."
             },
             {
               "type": "null"
@@ -2810,14 +3031,16 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "The IP filter for querying findings."
     },
     "KeywordFilter": {
       "properties": {
         "Value": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "A value for the keyword."
             },
             {
               "type": "null"
@@ -2826,17 +3049,20 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "A keyword filter for querying findings."
     },
     "LookupAttribute": {
       "properties": {
         "AttributeKey": {
-          "type": "string"
+          "type": "string",
+          "description": "Specifies an attribute on which to filter the events returned.\n\nThis member is required."
         },
         "AttributeValue": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "Specifies a value for the specified AttributeKey.\n\nThis member is required."
             },
             {
               "type": "null"
@@ -2845,17 +3071,20 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "Specifies an attribute and value that filter the events returned."
     },
     "MapFilter": {
       "properties": {
         "Comparison": {
-          "type": "string"
+          "type": "string",
+          "description": "The operator to use when comparing values in the filter.\n\nThis member is required."
         },
         "Key": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "The tag key used in the filter.\n\nThis member is required."
             },
             {
               "type": "null"
@@ -2865,7 +3094,8 @@
         "Value": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "The tag value used in the filter."
             },
             {
               "type": "null"
@@ -2874,17 +3104,20 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "An object that describes details of a map filter."
     },
     "MapFilter-1": {
       "properties": {
         "Comparison": {
-          "type": "string"
+          "type": "string",
+          "description": "The condition to apply to the key value when filtering Security Hub findings\nwith a map filter. To search for values that have the filter value, use one of\nthe following comparison operators:\n  - To search for values that include the filter value, use CONTAINS . For\n  example, for the ResourceTags field, the filter Department CONTAINS Security\n  matches findings that include the value Security for the Department tag. In\n  the same example, a finding with a value of Security team for the Department\n  tag is a match.\n  - To search for values that exactly match the filter value, use EQUALS . For\n  example, for the ResourceTags field, the filter Department EQUALS Security\n  matches findings that have the value Security for the Department tag.\nCONTAINS and EQUALS filters on the same field are joined by OR . A finding\nmatches if it matches any one of those filters. For example, the filters\nDepartment CONTAINS Security OR Department CONTAINS Finance match a finding that\nincludes either Security , Finance , or both values. To search for values that\ndon't have the filter value, use one of the following comparison operators:\n  - To search for values that exclude the filter value, use NOT_CONTAINS . For\n  example, for the ResourceTags field, the filter Department NOT_CONTAINS\n  Finance matches findings that exclude the value Finance for the Department\n  tag.\n  - To search for values other than the filter value, use NOT_EQUALS . For\n  example, for the ResourceTags field, the filter Department NOT_EQUALS Finance\n  matches findings that don’t have the value Finance for the Department tag.\nNOT_CONTAINS and NOT_EQUALS filters on the same field are joined by AND . A\nfinding matches only if it matches all of those filters. For example, the\nfilters Department NOT_CONTAINS Security AND Department NOT_CONTAINS Finance\nmatch a finding that excludes both the Security and Finance values. CONTAINS\nfilters can only be used with other CONTAINS filters. NOT_CONTAINS filters can\nonly be used with other NOT_CONTAINS filters. You can’t have both a CONTAINS\nfilter and a NOT_CONTAINS filter on the same field. Similarly, you can’t have\nboth an EQUALS filter and a NOT_EQUALS filter on the same field. Combining\nfilters in this way returns an error. CONTAINS and NOT_CONTAINS operators can\nbe used only with automation rules. For more information, see Automation rules (https://docs.aws.amazon.com/securityhub/latest/userguide/automation-rules.html)\nin the Security Hub User Guide."
         },
         "Key": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "The key of the map filter. For example, for ResourceTags , Key identifies the\nname of the tag. For UserDefinedFields , Key is the name of the field."
             },
             {
               "type": "null"
@@ -2894,7 +3127,8 @@
         "Value": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "The value for the key in the map filter. Filter values are case sensitive. For\nexample, one of the values for a tag called Department might be Security . If\nyou provide security as the filter value, then there's no match."
             },
             {
               "type": "null"
@@ -2903,14 +3137,16 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "A map filter for filtering Security Hub findings."
     },
     "NumberFilter": {
       "properties": {
         "LowerInclusive": {
           "oneOf": [
             {
-              "type": "number"
+              "type": "number",
+              "description": "The lowest number to be included in the filter."
             },
             {
               "type": "null"
@@ -2920,7 +3156,8 @@
         "UpperInclusive": {
           "oneOf": [
             {
-              "type": "number"
+              "type": "number",
+              "description": "The highest number to be included in the filter."
             },
             {
               "type": "null"
@@ -2929,22 +3166,27 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "An object that describes the details of a number filter."
     },
     "NumberFilter-1": {
       "properties": {
         "Eq": {
-          "type": "number"
+          "type": "number",
+          "description": "The equal-to condition to be applied to a single field when querying for\nfindings."
         },
         "Gte": {
-          "type": "number"
+          "type": "number",
+          "description": "The greater-than-equal condition to be applied to a single field when querying\nfor findings."
         },
         "Lte": {
-          "type": "number"
+          "type": "number",
+          "description": "The less-than-equal condition to be applied to a single field when querying for\nfindings."
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "A number filter for querying findings."
     },
     "Org": {
       "properties": {
@@ -3044,7 +3286,8 @@
         "Architecture": {
           "oneOf": [
             {
-              "$ref": "#/$defs/StringFilter"
+              "$ref": "#/$defs/StringFilter",
+              "description": "An object that contains details on the package architecture type to filter on."
             },
             {
               "type": "null"
@@ -3054,7 +3297,8 @@
         "Epoch": {
           "oneOf": [
             {
-              "$ref": "#/$defs/NumberFilter"
+              "$ref": "#/$defs/NumberFilter",
+              "description": "An object that contains details on the package epoch to filter on."
             },
             {
               "type": "null"
@@ -3064,7 +3308,8 @@
         "Name": {
           "oneOf": [
             {
-              "$ref": "#/$defs/StringFilter"
+              "$ref": "#/$defs/StringFilter",
+              "description": "An object that contains details on the name of the package to filter on."
             },
             {
               "type": "null"
@@ -3074,7 +3319,8 @@
         "Release": {
           "oneOf": [
             {
-              "$ref": "#/$defs/StringFilter"
+              "$ref": "#/$defs/StringFilter",
+              "description": "An object that contains details on the package release to filter on."
             },
             {
               "type": "null"
@@ -3084,7 +3330,8 @@
         "SourceLambdaLayerArn": {
           "oneOf": [
             {
-              "$ref": "#/$defs/StringFilter"
+              "$ref": "#/$defs/StringFilter",
+              "description": "An object that describes the details of a string filter."
             },
             {
               "type": "null"
@@ -3094,7 +3341,8 @@
         "SourceLayerHash": {
           "oneOf": [
             {
-              "$ref": "#/$defs/StringFilter"
+              "$ref": "#/$defs/StringFilter",
+              "description": "An object that contains details on the source layer hash to filter on."
             },
             {
               "type": "null"
@@ -3104,7 +3352,8 @@
         "Version": {
           "oneOf": [
             {
-              "$ref": "#/$defs/StringFilter"
+              "$ref": "#/$defs/StringFilter",
+              "description": "The package version to filter on."
             },
             {
               "type": "null"
@@ -3113,14 +3362,16 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "Contains information on the details of a package filter."
     },
     "PortRangeFilter": {
       "properties": {
         "BeginInclusive": {
           "oneOf": [
             {
-              "type": "integer"
+              "type": "integer",
+              "description": "The port number the port range begins at."
             },
             {
               "type": "null"
@@ -3130,7 +3381,8 @@
         "EndInclusive": {
           "oneOf": [
             {
-              "type": "integer"
+              "type": "integer",
+              "description": "The port number the port range ends at."
             },
             {
               "type": "null"
@@ -3139,7 +3391,8 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "An object that describes the details of a port range filter."
     },
     "SecurityHubFindings": {
       "properties": {
@@ -3165,7 +3418,8 @@
         "AttributeName": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "The name of the attribute to sort on."
             },
             {
               "type": "null"
@@ -3173,30 +3427,36 @@
           ]
         },
         "OrderBy": {
-          "type": "string"
+          "type": "string",
+          "description": "The sort order, ascending or descending."
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "The criteria used to sort."
     },
     "SortCriteria-1": {
       "properties": {
         "Field": {
-          "type": "string"
+          "type": "string",
+          "description": "The finding detail field by which results are sorted.\n\nThis member is required."
         },
         "SortOrder": {
-          "type": "string"
+          "type": "string",
+          "description": "The order by which findings are sorted.\n\nThis member is required."
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "Details about the criteria used to sort finding results."
     },
     "SortCriterion": {
       "properties": {
         "Field": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "The finding attribute used to sort findings."
             },
             {
               "type": "null"
@@ -3204,11 +3464,13 @@
           ]
         },
         "SortOrder": {
-          "type": "string"
+          "type": "string",
+          "description": "The order used to sort findings."
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "A collection of finding attributes used to sort findings."
     },
     "Spec": {
       "allOf": [
@@ -3402,12 +3664,14 @@
     "StringFilter": {
       "properties": {
         "Comparison": {
-          "type": "string"
+          "type": "string",
+          "description": "The operator to use when comparing values in the filter.\n\nThis member is required."
         },
         "Value": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "The value to filter on.\n\nThis member is required."
             },
             {
               "type": "null"
@@ -3416,17 +3680,20 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "An object that describes the details of a string filter."
     },
     "StringFilter-1": {
       "properties": {
         "Comparison": {
-          "type": "string"
+          "type": "string",
+          "description": "The condition to apply to a string value when filtering Security Hub findings.\nTo search for values that have the filter value, use one of the following\ncomparison operators:\n  - To search for values that include the filter value, use CONTAINS . For\n  example, the filter Title CONTAINS CloudFront matches findings that have a\n  Title that includes the string CloudFront.\n  - To search for values that exactly match the filter value, use EQUALS . For\n  example, the filter AwsAccountId EQUALS 123456789012 only matches findings\n  that have an account ID of 123456789012 .\n  - To search for values that start with the filter value, use PREFIX . For\n  example, the filter ResourceRegion PREFIX us matches findings that have a\n  ResourceRegion that starts with us . A ResourceRegion that starts with a\n  different value, such as af , ap , or ca , doesn't match.\nCONTAINS , EQUALS , and PREFIX filters on the same field are joined by OR . A\nfinding matches if it matches any one of those filters. For example, the filters\nTitle CONTAINS CloudFront OR Title CONTAINS CloudWatch match a finding that\nincludes either CloudFront , CloudWatch , or both strings in the title. To\nsearch for values that don’t have the filter value, use one of the following\ncomparison operators:\n  - To search for values that exclude the filter value, use NOT_CONTAINS . For\n  example, the filter Title NOT_CONTAINS CloudFront matches findings that have a\n  Title that excludes the string CloudFront.\n  - To search for values other than the filter value, use NOT_EQUALS . For\n  example, the filter AwsAccountId NOT_EQUALS 123456789012 only matches findings\n  that have an account ID other than 123456789012 .\n  - To search for values that don't start with the filter value, use\n  PREFIX_NOT_EQUALS . For example, the filter ResourceRegion PREFIX_NOT_EQUALS\n  us matches findings with a ResourceRegion that starts with a value other than\n  us .\nNOT_CONTAINS , NOT_EQUALS , and PREFIX_NOT_EQUALS filters on the same field are\njoined by AND . A finding matches only if it matches all of those filters. For\nexample, the filters Title NOT_CONTAINS CloudFront AND Title NOT_CONTAINS\nCloudWatch match a finding that excludes both CloudFront and CloudWatch in the\ntitle. You can’t have both a CONTAINS filter and a NOT_CONTAINS filter on the\nsame field. Similarly, you can't provide both an EQUALS filter and a NOT_EQUALS\nor PREFIX_NOT_EQUALS filter on the same field. Combining filters in this way\nreturns an error. CONTAINS filters can only be used with other CONTAINS\nfilters. NOT_CONTAINS filters can only be used with other NOT_CONTAINS filters.\nYou can combine PREFIX filters with NOT_EQUALS or PREFIX_NOT_EQUALS filters for\nthe same field. Security Hub first processes the PREFIX filters, and then the\nNOT_EQUALS or PREFIX_NOT_EQUALS filters. For example, for the following\nfilters, Security Hub first identifies findings that have resource types that\nstart with either AwsIam or AwsEc2 . It then excludes findings that have a\nresource type of AwsIamPolicy and findings that have a resource type of\nAwsEc2NetworkInterface .\n  - ResourceType PREFIX AwsIam\n  - ResourceType PREFIX AwsEc2\n  - ResourceType NOT_EQUALS AwsIamPolicy\n  - ResourceType NOT_EQUALS AwsEc2NetworkInterface\nCONTAINS and NOT_CONTAINS operators can be used only with automation rules. For\nmore information, see Automation rules (https://docs.aws.amazon.com/securityhub/latest/userguide/automation-rules.html)\nin the Security Hub User Guide."
         },
         "Value": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "The string filter value. Filter values are case sensitive. For example, the\nproduct name for control-based findings is Security Hub . If you provide\nsecurity hub as the filter value, there's no match."
             },
             {
               "type": "null"
@@ -3435,7 +3702,8 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "A string filter for filtering Security Hub findings."
     },
     "TableOptions": {
       "properties": {
@@ -3518,7 +3786,8 @@
         "Key": {
           "oneOf": [
             {
-              "type": "string"
+              "type": "string",
+              "description": "The key for the tag."
             },
             {
               "type": "null"
@@ -3531,7 +3800,8 @@
               "items": {
                 "type": "string"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The match options that you can use to filter your results. MatchOptions is only\napplicable for actions related to Cost Category. The default values for\nMatchOptions are EQUALS and CASE_SENSITIVE ."
             },
             {
               "type": "null"
@@ -3544,7 +3814,8 @@
               "items": {
                 "type": "string"
               },
-              "type": "array"
+              "type": "array",
+              "description": "The specific value of the tag."
             },
             {
               "type": "null"
@@ -3553,7 +3824,8 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "The values that are available for a tag."
     }
   }
 }
