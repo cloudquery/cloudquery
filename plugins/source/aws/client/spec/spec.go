@@ -60,8 +60,6 @@ type Spec struct {
 
 	// This is a preview feature (for more information about `preview` features look at [plugin versioning](/docs/plugins/sources/aws/versioning))
 	// that enables users to override the default options for specific tables.
-	// The root of the object takes a table name, and the next level takes an API method name.
-	// The final level is the actual input object as defined by the API.
 	TableOptions *tableoptions.TableOptions `json:"table_options,omitempty"`
 
 	// This feature is available only in premium version of the plugin.

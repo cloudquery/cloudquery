@@ -3674,7 +3674,7 @@
           "oneOf": [
             {
               "$ref": "#/$defs/TableOptions",
-              "description": "This is a preview feature (for more information about `preview` features look at [plugin versioning](/docs/plugins/sources/aws/versioning))\nthat enables users to override the default options for specific tables.\nThe root of the object takes a table name, and the next level takes an API method name.\nThe final level is the actual input object as defined by the API."
+              "description": "This is a preview feature (for more information about `preview` features look at [plugin versioning](/docs/plugins/sources/aws/versioning))\nthat enables users to override the default options for specific tables."
             },
             {
               "type": "null"
@@ -3759,7 +3759,8 @@
         "aws_accessanalyzer_analyzer_findings": {
           "oneOf": [
             {
-              "$ref": "#/$defs/AccessAnalyzerFindings"
+              "$ref": "#/$defs/AccessAnalyzerFindings",
+              "description": "Override options for `aws_accessanalyzer_analyzer_findings` table."
             },
             {
               "type": "null"
@@ -3769,7 +3770,8 @@
         "aws_cloudtrail_events": {
           "oneOf": [
             {
-              "$ref": "#/$defs/CloudtrailEvents"
+              "$ref": "#/$defs/CloudtrailEvents",
+              "description": "Override options for `aws_cloudtrail_events` table."
             },
             {
               "type": "null"
@@ -3779,7 +3781,8 @@
         "aws_alpha_cloudwatch_metrics": {
           "oneOf": [
             {
-              "$ref": "#/$defs/CloudwatchMetrics"
+              "$ref": "#/$defs/CloudwatchMetrics",
+              "description": "Override options for `aws_alpha_cloudwatch_metrics` table."
             },
             {
               "type": "null"
@@ -3789,7 +3792,8 @@
         "aws_alpha_costexplorer_cost_custom": {
           "oneOf": [
             {
-              "$ref": "#/$defs/CostExplorerAPIs"
+              "$ref": "#/$defs/CostExplorerAPIs",
+              "description": "Override options for `aws_alpha_costexplorer_cost_custom` table."
             },
             {
               "type": "null"
@@ -3799,7 +3803,8 @@
         "aws_ecs_cluster_tasks": {
           "oneOf": [
             {
-              "$ref": "#/$defs/ECSTasks"
+              "$ref": "#/$defs/ECSTasks",
+              "description": "Override options for `aws_ecs_cluster_tasks` table."
             },
             {
               "type": "null"
@@ -3809,7 +3814,8 @@
         "aws_inspector2_findings": {
           "oneOf": [
             {
-              "$ref": "#/$defs/Inspector2Findings"
+              "$ref": "#/$defs/Inspector2Findings",
+              "description": "Override options for `aws_inspector2_findings` table."
             },
             {
               "type": "null"
@@ -3819,7 +3825,8 @@
         "aws_securityhub_findings": {
           "oneOf": [
             {
-              "$ref": "#/$defs/SecurityHubFindings"
+              "$ref": "#/$defs/SecurityHubFindings",
+              "description": "Override options for `aws_securityhub_findings` table."
             },
             {
               "type": "null"
@@ -3828,7 +3835,8 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "TableOptions allows users to override the default options for specific tables."
     },
     "TagValues": {
       "properties": {
