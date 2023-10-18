@@ -12,7 +12,10 @@ import (
 
 func main() {
 	fmt.Println("Generating JSON schema for plugin spec")
-	jsonschema.GenerateIntoFile(new(spec.Spec), path.Join(currDir(), "..", "schema.json"))
+	jsonschema.GenerateIntoFile(new(spec.Spec), path.Join(currDir(), "..", "schema.json"),
+		jsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/source/aws/client/spec", path.Join(currDir(), "..")),
+		jsonschema.WithAddGoComments("github.com/aws/aws-sdk-go-v2", path.Join(currDir(), "..", "..", "..", "vendor", "github.com/aws/aws-sdk-go-v2")),
+	)
 }
 
 func currDir() string {
