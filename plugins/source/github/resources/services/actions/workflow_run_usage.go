@@ -33,7 +33,7 @@ func fetchWorkflowRunUsage(ctx context.Context, meta schema.ClientMeta, resource
 	repo := c.Repository
 	run := resource.Item.(*github.WorkflowRun)
 
-	workflowRunUsage, _, err := c.Github.Actions.GetWorkflowRunUsageByID(ctx, c.Org, *repo.Name, *run.ID)
+	workflowRunUsage, _, err := c.Github.Actions.GetWorkflowRunUsageByID(ctx, *repo.Owner.Login, *repo.Name, *run.ID)
 	if err != nil {
 		return err
 	}
