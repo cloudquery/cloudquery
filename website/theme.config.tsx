@@ -5,6 +5,7 @@ import CloudQueryLogo from "./components/logos/CloudQuery";
 import { Badge } from "./components/Badge";
 import { Callout, useConfig } from "nextra-theme-docs";
 import { components } from "./utils/components";
+import { getSlackAppLink } from "./utils/slack-app-link";
 
 const theme: DocsThemeConfig = {
   project: {
@@ -99,8 +100,17 @@ const theme: DocsThemeConfig = {
       return components[`${kind}-${name}-authentication`];
     },
     callout: ({ type, children }: any) => {
-      return <Callout type={type} >{children}</Callout>;
-    }
+      return <Callout type={type}>{children}</Callout>;
+    },
+    "slack-app-link": () => {
+      return (
+        <div style={{ marginTop: "1em" }}>
+          <a target="_blank" className="btn btn-blue">
+            Install App
+          </a>
+        </div>
+      );
+    },
   },
 };
 

@@ -71,6 +71,8 @@ import SalesforceAuthentication from "../pages/docs/plugins/sources/salesforce/_
 import SalesforceConfiguration from "../pages/docs/plugins/sources/salesforce/_configuration.md";
 import ShopifyAuthentication from "../pages/docs/plugins/sources/shopify/_authentication.md";
 import ShopifyConfiguration from "../pages/docs/plugins/sources/shopify/_configuration.md";
+import SlackAuthentication from "../pages/docs/plugins/sources/slack/_authentication.md";
+import SlackConfiguration from "../pages/docs/plugins/sources/slack/_configuration.md";
 import SnykAuthentication from "../pages/docs/plugins/sources/snyk/_authentication.md";
 import SnykConfiguration from "../pages/docs/plugins/sources/snyk/_configuration.md";
 import SquareAuthentication from "../pages/docs/plugins/sources/square/_authentication.md";
@@ -187,6 +189,8 @@ export const components = {
   "sources-salesforce-configuration": <SalesforceConfiguration />,
   "sources-shopify-authentication": <ShopifyAuthentication />,
   "sources-shopify-configuration": <ShopifyConfiguration />,
+  "sources-slack-authentication": <SlackAuthentication />,
+  "sources-slack-configuration": <SlackConfiguration />,
   "sources-snyk-authentication": <SnykAuthentication />,
   "sources-snyk-configuration": <SnykConfiguration />,
   "sources-square-authentication": <SquareAuthentication />,
