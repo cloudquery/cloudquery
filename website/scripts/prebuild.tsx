@@ -109,9 +109,6 @@ function recreateDirectory(dir: string) {
     }
 }
 
-function escapeBracesForMDX(str: string) {
-    return  str.replaceAll("{", "&#123;").replaceAll("}", "&#125;");
-}
 
 // Copy the source authentication file if it exists
 function copySourceAuthenticationFile(source: Plugin) : boolean {
@@ -121,7 +118,7 @@ function copySourceAuthenticationFile(source: Plugin) : boolean {
     if (authFilePath) {
         const ext = path.extname(authFilePath);
         const outputFilePath = path.join(mdxSourceComponentDir, `${source.id}/_authentication${ext}`);
-        fs.writeFileSync(outputFilePath, escapeBracesForMDX(fs.readFileSync(authFilePath, "utf8")));
+        fs.copyFileSync(authFilePath, outputFilePath);
         return true;
     }
     return false;
@@ -139,7 +136,7 @@ function copySourceConfigurationFile(source: Plugin): boolean {
             fileContents = fileContents.replace(/DESTINATION_NAME/g, destination.id);
             const ext = path.extname(configFilePath);
             const outputFilePath = path.join(sourceConfigDir, `_configuration${ext}`);
-            fs.writeFileSync(outputFilePath, escapeBracesForMDX(fileContents));
+            fs.writeFileSync(outputFilePath, fileContents);
         })
         return true;
     }
@@ -154,7 +151,7 @@ function copyDestinationAuthenticationFile(destination: Plugin) : boolean {
     if (authFilePath) {
         const ext = path.extname(authFilePath);
         const outputFilePath = path.join(mdxDestinationComponentDir, `${destination.id}/_authentication${ext}`);
-        fs.writeFileSync(outputFilePath, escapeBracesForMDX(fs.readFileSync(authFilePath, "utf8")));
+        fs.copyFileSync(authFilePath, outputFilePath);
         return true;
     }
     return false;
@@ -167,7 +164,7 @@ function copyDestinationConfigurationFile(destination: Plugin) : boolean {
     if (configFilePath) {
         const ext = path.extname(configFilePath);
         const outputFilePath = path.join(mdxDestinationComponentDir, `${destination.id}/_configuration${ext}`);
-        fs.writeFileSync(outputFilePath, escapeBracesForMDX(fs.readFileSync(configFilePath, "utf8")));
+        fs.copyFileSync(configFilePath, outputFilePath);
         return true;
     }
     return false;
