@@ -115,7 +115,8 @@ function copySourceAuthenticationFile(source: Plugin) : boolean {
     // Copy the authentication and configuration files if they exist
     const authFilePath = locatePathSync([`${sourceDir}/_authentication.mdx`, `${sourceDir}/_authentication.md`]);
     if (authFilePath) {
-        const outputFilePath = path.join(mdxSourceComponentDir, `${source.id}/_authentication.mdx`);
+        const ext = path.extname(authFilePath);
+        const outputFilePath = path.join(mdxSourceComponentDir, `${source.id}/_authentication${ext}`);
         fs.copyFileSync(authFilePath, outputFilePath);
         return true;
     }
@@ -132,7 +133,8 @@ function copySourceConfigurationFile(source: Plugin): boolean {
             recreateDirectory(sourceConfigDir);
             let fileContents = fs.readFileSync(configFilePath, "utf8");
             fileContents = fileContents.replace(/DESTINATION_NAME/g, destination.id);
-            const outputFilePath = path.join(sourceConfigDir, `_configuration.mdx`);
+            const ext = path.extname(configFilePath);
+            const outputFilePath = path.join(sourceConfigDir, `_configuration${ext}`);
             fs.writeFileSync(outputFilePath, fileContents);
         })
         return true;
@@ -146,7 +148,8 @@ function copyDestinationAuthenticationFile(destination: Plugin) : boolean {
     // Copy the authentication and configuration files if they exist
     const authFilePath = locatePathSync([`${destinationDir}/_authentication.mdx`, `${destinationDir}/_authentication.md`]);
     if (authFilePath) {
-        const outputFilePath = path.join(mdxDestinationComponentDir, `${destination.id}/_authentication.mdx`);
+        const ext = path.extname(authFilePath);
+        const outputFilePath = path.join(mdxDestinationComponentDir, `${destination.id}/_authentication${ext}`);
         fs.copyFileSync(authFilePath, outputFilePath);
         return true;
     }
@@ -156,10 +159,11 @@ function copyDestinationAuthenticationFile(destination: Plugin) : boolean {
 // Copy the destination configuration file if it exists
 function copyDestinationConfigurationFile(destination: Plugin) : boolean {
     const destinationDir = `./pages/docs/plugins/destinations/${destination.id}`;
-    const authFilePath = locatePathSync([`${destinationDir}/_configuration.mdx`, `${destinationDir}/_configuration.md`]);
-    if (authFilePath) {
-        const outputFilePath = path.join(mdxDestinationComponentDir, `${destination.id}/_configuration.mdx`);
-        fs.copyFileSync(authFilePath, outputFilePath);
+    const configFilePath = locatePathSync([`${destinationDir}/_configuration.mdx`, `${destinationDir}/_configuration.md`]);
+    if (configFilePath) {
+        const ext = path.extname(configFilePath);
+        const outputFilePath = path.join(mdxDestinationComponentDir, `${destination.id}/_configuration${ext}`);
+        fs.copyFileSync(configFilePath, outputFilePath);
         return true;
     }
     return false;

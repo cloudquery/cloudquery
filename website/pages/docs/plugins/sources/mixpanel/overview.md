@@ -1,0 +1,54 @@
+---
+name: Mixpanel
+stage: GA (Premium)
+title: Mixpanel Source Plugin
+description: CloudQuery Mixpanel source plugin documentation
+---
+# Mixpanel Source Plugin
+
+:badge{text="Premium"}
+
+This is a premium plugin that you can buy [here](/integrations/mixpanel).
+
+The CloudQuery Mixpanel plugin pulls data from Mixpanel and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
+
+## Authentication
+
+:authentication
+
+### Example
+
+This example syncs from Mixpanel to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
+
+:configuration
+
+## Configuration Reference
+
+This is the (nested) spec used by the Mixpanel source plugin:
+
+- `username` (string, required):
+  Your Service Account username from Mixpanel.
+
+- `secret` (string, required):
+  Service Account secret.
+
+- `project_id` (integer, required):
+  ID of the Mixpanel project to sync data from.
+
+- `workspace_id` (integer, optional):
+  ID of the Mixpanel workspace to sync data from.
+
+- `start_date` (date in YYYY-MM-DD format, optional):
+  Start date to sync data from. Defaults to 30 days ago.
+
+- `end_date` (date in YYYY-MM-DD format, optional):
+  End date to sync data until. Defaults to today.
+
+- `region` (string, optional):
+  Your Mixpanel region. Defaults to "US". Possible values are "US" and "EU".
+
+- `timeout_secs` (integer in seconds, optional. Default: 30):
+  Timeout for requests against the Mixpanel API.
+
+- `max_retries` (integer, optional. Default: 5):
+  Number of retries if a request was rate limited at the API endpoint.
