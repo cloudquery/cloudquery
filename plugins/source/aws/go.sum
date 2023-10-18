@@ -406,8 +406,8 @@ github.com/cilium/ebpf v0.7.0/go.mod h1:/oI2+1shJiTGAMgl6/RgJr36Eo1jzrRcAWbcXO2u
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudquery/arrow/go/v14 v14.0.0-20231014001145-dbcb1498009c h1:z0ZtXvDjtohLaNHLGl25gyq7ULS0y64CayNvReJJCTc=
 github.com/cloudquery/arrow/go/v14 v14.0.0-20231014001145-dbcb1498009c/go.mod h1:EkHPhLB+98ANnPojOy2sUhM0rzYbPEmrtuA9v8aZp/c=
-github.com/cloudquery/cloudquery-api-go v1.4.0 h1:iWK69Xyl+c7ezJS8NGBzvvjxFZtjWeKSACuqufWbFU0=
-github.com/cloudquery/cloudquery-api-go v1.4.0/go.mod h1:03fojQg0UpdgqXZ9tzZ5gF5CPad/F0sok66bsX6u4RA=
+github.com/cloudquery/cloudquery-api-go v1.4.1 h1:ag//nY7xWo+7LiBmS7FX6OSSIrutgTgo+DpEpYujjzs=
+github.com/cloudquery/cloudquery-api-go v1.4.1/go.mod h1:03fojQg0UpdgqXZ9tzZ5gF5CPad/F0sok66bsX6u4RA=
 github.com/cloudquery/codegen v0.3.9 h1:l3Pdq8PNVQ56P6VkUkCkqRm7CfDWASA2HL0oJXMnwnY=
 github.com/cloudquery/codegen v0.3.9/go.mod h1:c5+13oL0GRo42AEfFZey9k5TZpwSFdwBvtxXPFC8W/I=
 github.com/cloudquery/jsonschema v0.0.0-20231018073309-6c617a23d42f h1:vmYGxIGDVpmhk0QVeDwXXbAt+SwQcOn4xH1G25pmKP8=
