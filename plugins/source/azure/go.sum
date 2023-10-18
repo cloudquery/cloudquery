@@ -318,8 +318,8 @@ github.com/cilium/ebpf v0.7.0/go.mod h1:/oI2+1shJiTGAMgl6/RgJr36Eo1jzrRcAWbcXO2u
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudquery/arrow/go/v14 v14.0.0-20231014001145-dbcb1498009c h1:z0ZtXvDjtohLaNHLGl25gyq7ULS0y64CayNvReJJCTc=
 github.com/cloudquery/arrow/go/v14 v14.0.0-20231014001145-dbcb1498009c/go.mod h1:EkHPhLB+98ANnPojOy2sUhM0rzYbPEmrtuA9v8aZp/c=
-github.com/cloudquery/cloudquery-api-go v1.4.0 h1:iWK69Xyl+c7ezJS8NGBzvvjxFZtjWeKSACuqufWbFU0=
-github.com/cloudquery/cloudquery-api-go v1.4.0/go.mod h1:03fojQg0UpdgqXZ9tzZ5gF5CPad/F0sok66bsX6u4RA=
+github.com/cloudquery/cloudquery-api-go v1.4.1 h1:ag//nY7xWo+7LiBmS7FX6OSSIrutgTgo+DpEpYujjzs=
+github.com/cloudquery/cloudquery-api-go v1.4.1/go.mod h1:03fojQg0UpdgqXZ9tzZ5gF5CPad/F0sok66bsX6u4RA=
 github.com/cloudquery/codegen v0.3.8 h1:SViYwHVhjTzTAHkAtTPxFJ+vxhZOB6BZAXk9DtczeBk=
 github.com/cloudquery/codegen v0.3.8/go.mod h1:ovC0nEJ5a1CO+sUWTsvkizVgZaO6yUBbACRmy0d+v5Y=
 github.com/cloudquery/jsonschema v0.0.0-20231013155745-f32a9237eda0 h1:4L/chcVQqiOQXC9Y9/s51mbX5qWwaKa5sGGNXHkkD/A=
@@ -328,8 +328,8 @@ github.com/cloudquery/plugin-pb-go v1.12.3 h1:rLK3/RR70/BX8tj2QzTnrjkxQhzfAT7SXE
 github.com/cloudquery/plugin-pb-go v1.12.3/go.mod h1:CYorX3zCHF9ByoOgdBOuwLX/2vVCDH6/FoREOE3oH+w=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0/go.mod h1:pAX6ojIW99b/Vg4CkhnsGkRIzNaVEceYMR+Bdit73ug=
-github.com/cloudquery/plugin-sdk/v4 v4.15.0 h1:A/aob9SlBgwfT2qqLp1+Kxryu0wgcKoaBx++BjlDEX8=
-github.com/cloudquery/plugin-sdk/v4 v4.15.0/go.mod h1:m7UY//dEzq2b/F6wDAqU2Vd9DLfZRrMjgn4qlnOrkPY=
+github.com/cloudquery/plugin-sdk/v4 v4.15.2 h1:ILeWN+A0gxIyKzh+wc+1+tytNvtjUWjEVbiI4Fh3VWc=
+github.com/cloudquery/plugin-sdk/v4 v4.15.2/go.mod h1:ujSFEUAp8BmozOee0ljjsPHQfddXJCUTAzCD6sVKsu8=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/cncf/udpa/go v0.0.0-20210930031921-04548b0d99d4/go.mod h1:6pvJx4me5XPnfI9Z40ddWsdw2W/uZgQLFXToKeRcDiI=
