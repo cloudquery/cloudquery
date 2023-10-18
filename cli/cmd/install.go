@@ -11,27 +11,30 @@ import (
 )
 
 const (
-	installShort   = "Install required plugin images from your configuration"
-	installExample = `# Install required plugins specified in directory
-cloudquery install ./directory
+	pluginInstallShort   = "Install required plugin images from your configuration"
+	pluginInstallExample = `# Install required plugins specified in directory
+cloudquery plugin install ./directory
 # Install required plugins specified in directory and config files
-cloudquery install ./directory ./aws.yml ./pg.yml
+cloudquery plugin install ./directory ./aws.yml ./pg.yml
 `
 )
 
-func newCmdInstall() *cobra.Command {
+func newCmdPluginInstall(deprecated bool) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "install [files or directories]",
-		Short:   installShort,
-		Long:    installShort,
-		Example: installExample,
+		Short:   pluginInstallShort,
+		Long:    pluginInstallShort,
+		Example: pluginInstallExample,
 		Args:    cobra.MinimumNArgs(1),
-		RunE:    install,
+		RunE:    installPlugin,
+	}
+	if deprecated {
+		cmd.Deprecated = "use `cloudquery plugin install` instead"
 	}
 	return cmd
 }
 
-func install(cmd *cobra.Command, args []string) error {
+func installPlugin(cmd *cobra.Command, args []string) error {
 	cqDir, err := cmd.Flags().GetString("cq-dir")
 	if err != nil {
 		return err
