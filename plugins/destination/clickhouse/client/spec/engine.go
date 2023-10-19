@@ -11,9 +11,15 @@ const (
 	MergeTree = "MergeTree"
 )
 
+// Engine allows to specify a custom table engine to be used.
 type Engine struct {
-	Name       string `json:"name,omitempty" jsonschema:"pattern=^.*MergeTree$,default=MergeTree"`
-	Parameters []any  `json:"parameters,omitempty"`
+	// Name of the table engine.
+	// Only [`*MergeTree` family](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family) is supported at the moment.
+	Name string `json:"name,omitempty" jsonschema:"pattern=^.*MergeTree$,default=MergeTree"`
+
+	// Engine parameters.
+	// Currently, no restrictions are imposed on the parameter types.
+	Parameters []any `json:"parameters,omitempty"`
 }
 
 func (e *Engine) String() string {
@@ -46,7 +52,7 @@ func (e *Engine) params() []string {
 				res[i] = "false"
 			}
 		default:
-			panic(fmt.Errorf("unsupported engine option type %T", t))
+			res[i] = fmt.Sprint(p)
 		}
 	}
 
