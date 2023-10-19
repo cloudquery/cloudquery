@@ -1,10 +1,10 @@
 package resourcemanager
 
 import (
+	"context"
+
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
-	"context"
-	"fmt"
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"google.golang.org/api/iterator"
@@ -30,14 +30,12 @@ func fetchOrganizationTagKeys(ctx context.Context, meta schema.ClientMeta, paren
 		if err != nil {
 			return err
 		}
-		fmt.Printf("key resp: %#v\n", resp)
-
 		res <- resp
 	}
 	return nil
 }
 
-func fetchOgranizationTagValues(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchOrganizationTagValues(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 
 	fClient, err := resourcemanager.NewTagValuesClient(ctx, c.ClientOptions...)

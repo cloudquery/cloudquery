@@ -33,7 +33,7 @@ func organizationTagValues() *schema.Table {
 	return &schema.Table{
 		Name:        "gcp_resourcemanager_organization_tag_values",
 		Description: `https://cloud.google.com/resource-manager/reference/rest/v3/tagValues/list`,
-		Resolver:    fetchOgranizationTagValues,
+		Resolver:    fetchOrganizationTagValues,
 		Multiplex:   client.OrgMultiplex,
 		Transform:   client.TransformWithStruct(&pb.TagValue{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
