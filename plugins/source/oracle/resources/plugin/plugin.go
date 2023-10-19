@@ -18,6 +18,9 @@ import (
 )
 
 var (
+	Name    = "oracle"
+	Kind    = "source"
+	Team    = "cloudquery"
 	Version = "development"
 )
 
@@ -120,9 +123,11 @@ func getTables() schema.Tables {
 
 func Plugin() *plugin.Plugin {
 	return plugin.NewPlugin(
-		"oracle",
+		Name,
 		Version,
 		Configure,
 		plugin.WithJSONSchema(spec.JSONSchema),
+		plugin.WithKind(Kind),
+		plugin.WithTeam(Team),
 	)
 }

@@ -5,13 +5,18 @@ import (
 )
 
 var (
-	Version = "Development"
+	Name    = "pagerduty"
+	Kind    = "source"
+	Team    = "cloudquery"
+	Version = "development"
 )
 
 func Plugin() *plugin.Plugin {
 	return plugin.NewPlugin(
-		"pagerduty",
+		Name,
 		Version,
 		Configure,
+		plugin.WithKind(Kind),
+		plugin.WithTeam(Team),
 	)
 }

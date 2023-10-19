@@ -11,7 +11,13 @@ import (
 )
 
 func main() {
-	p := plugin.NewPlugin("test", internalPlugin.Version, client.New)
+	p := plugin.NewPlugin(
+		internalPlugin.Name,
+		internalPlugin.Version,
+		client.New,
+		plugin.WithKind(internalPlugin.Kind),
+		plugin.WithTeam(internalPlugin.Team),
+	)
 	if err := serve.Plugin(p,
 		serve.WithDestinationV0V1Server(),
 	).Serve(context.Background()); err != nil {

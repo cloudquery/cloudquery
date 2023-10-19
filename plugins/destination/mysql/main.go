@@ -17,9 +17,11 @@ const (
 func main() {
 	if err := serve.Plugin(
 		plugin.NewPlugin(
-			"mysql",
+			internalPlugin.Name,
 			internalPlugin.Version,
 			client.New,
+			plugin.WithKind(internalPlugin.Kind),
+			plugin.WithTeam(internalPlugin.Team),
 		),
 		serve.WithDestinationV0V1Server(),
 		serve.WithPluginSentryDSN(sentryDSN),

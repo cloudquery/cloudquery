@@ -1,4 +1,4 @@
-# Source Plugin: cloudquery-notion
+# Source Plugin: notion
 
 ## Tables
 
