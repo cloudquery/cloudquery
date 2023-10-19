@@ -90,7 +90,7 @@ jobs:
         run: |
           mkdir -p stubdocs
           touch stubdocs/README.md
-          go run main.go package --docs-dir stubdocs -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_kind }} ${{ needs.prepare.outputs.plugin_version }} .
+          go run main.go package --docs-dir stubdocs -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
