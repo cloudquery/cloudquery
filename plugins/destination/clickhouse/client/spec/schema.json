@@ -13,13 +13,15 @@
         "name": {
           "type": "string",
           "pattern": "^.*MergeTree$",
+          "description": "Name of the table engine.\nOnly [`*MergeTree` family](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family) is supported at the moment.",
           "default": "MergeTree"
         },
         "parameters": {
           "oneOf": [
             {
               "items": true,
-              "type": "array"
+              "type": "array",
+              "description": "Engine parameters.\nCurrently, no restrictions are imposed on the parameter types."
             },
             {
               "type": "null"
@@ -28,21 +30,25 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "Engine allows to specify a custom table engine to be used."
     },
     "Spec": {
       "properties": {
         "connection_string": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "description": "Connection string to connect to the database.\nSee [SDK documentation](https://github.com/ClickHouse/clickhouse-go#dsn) for more details."
         },
         "cluster": {
-          "type": "string"
+          "type": "string",
+          "description": "Cluster name to be used for [distributed DDL](https://clickhouse.com/docs/en/sql-reference/distributed-ddl).\nIf the value is empty, DDL operations will affect only the server the plugin is connected to."
         },
         "engine": {
           "oneOf": [
             {
-              "$ref": "#/$defs/Engine"
+              "$ref": "#/$defs/Engine",
+              "description": "Engine to be used for tables.\nOnly [`*MergeTree` family](https://clickhouse.com/docs/en/engines/table-engines/mergetree-family) is supported at the moment."
             },
             {
               "type": "null"
@@ -50,22 +56,26 @@
           ]
         },
         "ca_cert": {
-          "type": "string"
+          "type": "string",
+          "description": "PEM-encoded certificate authorities.\nWhen set, a certificate pool will be created by appending the certificates to the system pool.\n\nSee [file variable substitution](/docs/advanced-topics/environment-variable-substitution#file-variable-substitution-example)\nfor how to read this value from a file."
         },
         "batch_size": {
           "type": "integer",
           "minimum": 1,
+          "description": "This parameter controls the maximum amount of items may be grouped together to be written as a single write.",
           "default": 10000
         },
         "batch_size_bytes": {
           "type": "integer",
           "minimum": 1,
+          "description": "This parameter controls the maximum size of items that may be grouped together to be written as a single write.",
           "default": 5242880
         },
         "batch_timeout": {
           "oneOf": [
             {
               "$ref": "#/$defs/Duration",
+              "description": "This parameter controls the maximum interval between batch writes.",
               "default": "20s"
             },
             {
@@ -78,7 +88,8 @@
       "type": "object",
       "required": [
         "connection_string"
-      ]
+      ],
+      "description": "CloudQuery ClickHouse destination plugin spec."
     }
   }
 }
