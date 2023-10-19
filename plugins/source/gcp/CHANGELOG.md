@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [9.8.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.7.0...plugins-source-gcp-v9.8.0) (2023-10-19)
 
 
+### This Release has the Following Changes to Tables
+- Table `gcp_resourcemanager_organization_tag_keys` was added
+- Table `gcp_resourcemanager_organization_tag_values` was added
+- Table `gcp_resourcemanager_project_tag_bindings` was added
+- Table `gcp_resourcemanager_project_tag_keys` was added
+- Table `gcp_resourcemanager_project_tag_values` was added
+
 ### Features
 
 * Move gcp to dbt (only 1 section) ([#14458](https://github.com/cloudquery/cloudquery/issues/14458)) ([46c28e7](https://github.com/cloudquery/cloudquery/commit/46c28e7c48ab8efb2d8d69d2f48b808cda21ecfa))
