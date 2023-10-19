@@ -43,6 +43,7 @@ This is the (nested) spec used by the ClickHouse destination plugin.
 
   PEM-encoded certificate authorities.
   When set, a certificate pool will be created by appending the certificates to the system pool.
+
   See [file variable substitution](/docs/advanced-topics/environment-variable-substitution#file-variable-substitution-example)
   for how to read this value from a file.
 
@@ -61,7 +62,7 @@ This is the (nested) spec used by the ClickHouse destination plugin.
 
 - `batch_timeout` (`duration`) (optional) (default: `20s`)
 
-  This parameter controls the timeout for writing a single batch.
+  This parameter controls the maximum interval between batch writes.
 
 #### ClickHouse table engine
 
@@ -75,7 +76,7 @@ This option allows to specify a custom table engine to be used.
 - `parameters` (array of parameters) (optional) (default: empty)
 
   Engine parameters.
-  Parameters can be strings, numbers, booleans.
+  Currently, no restrictions are imposed on the parameter types.
 
 ```yaml copy
 kind: destination

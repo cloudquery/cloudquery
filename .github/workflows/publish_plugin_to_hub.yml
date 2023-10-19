@@ -109,12 +109,12 @@ jobs:
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         run: |
           rsync -v --exclude='tables.md' ../../../website/pages/docs/plugins/${{ needs.prepare.outputs.plugin_kind_plural }}/${{ needs.prepare.outputs.plugin_name }}/*.md docsdir/
-          go run main.go package --docs-dir docsdir -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_kind }} ${{ needs.prepare.outputs.plugin_version }} .
+          go run main.go package --docs-dir docsdir -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
 
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v3.24.0
+          version: v3.25.0
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}

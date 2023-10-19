@@ -11,7 +11,10 @@ import (
 )
 
 func main() {
-	p := plugin.NewPlugin("jira", internalPlugin.Version, client.New)
+	p := plugin.NewPlugin(internalPlugin.Name, internalPlugin.Version, client.New,
+		plugin.WithTeam(internalPlugin.Team),
+		plugin.WithKind(internalPlugin.Kind),
+	)
 	if err := serve.Plugin(p).Serve(context.Background()); err != nil {
 		log.Fatal(err)
 	}

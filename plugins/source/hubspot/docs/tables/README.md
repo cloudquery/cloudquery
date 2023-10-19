@@ -1,4 +1,4 @@
-# Source Plugin: cloudquery-hubspot
+# Source Plugin: hubspot
 
 ## Tables
 
