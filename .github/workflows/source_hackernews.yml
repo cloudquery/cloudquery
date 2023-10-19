@@ -28,14 +28,39 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 2
+      - uses: actions/github-script@v6
+        name: Get last successful commit sha
+        id: last-successful-commit-sha
+        if: github.event_name == 'pull_request'
+        with:
+          script: |
+            const script = require('./scripts/workflows/get_last_successful_commit_sha.js')
+            const lastSuccessfulCommitSha = await script({github, context})
+            core.setOutput('commit_sha', lastSuccessfulCommitSha)
+      - name: Get changed files from last successful commit
+        id: changed-files
+        if: github.event_name == 'pull_request'
+        uses: tj-actions/changed-files@v39
+        with:
+          base_sha: ${{ steps.last-successful-commit-sha.outputs.commit_sha }}
+      - name: Exit if no changed files affect this workflow
+        id: should-continue
+        if: github.event_name == 'pull_request'
+        with:
+          script: |
+            const script = require('./scripts/workflows/have_files_matching_workflow_changed.js')
+            const have_changed = await script({github, context})
+            core.setOutput('result', have_changed)
       - name: Set up Go 1.x
         uses: actions/setup-go@v4
+        if: github.event_name != 'pull_request' || steps.should-continue.outputs.result == 'true'
         with:
           go-version-file: plugins/source/hackernews/go.mod
           cache: true
           cache-dependency-path: plugins/source/hackernews/go.sum
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
+        if: github.event_name != 'pull_request' || steps.should-continue.outputs.result == 'true'
         with:
           version: v1.54.2
           working-directory: plugins/source/hackernews
@@ -43,19 +68,21 @@ jobs:
           skip-pkg-cache: true
           skip-build-cache: true
       - name: Setup CloudQuery
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && steps.should-continue.outputs.result == 'true'
         uses: cloudquery/setup-cloudquery@v3
         with:
           version: v3.25.0
       - name: gen
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && steps.should-continue.outputs.result == 'true'
         run: make gen
       - name: Fail if generation updated files
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && steps.should-continue.outputs.result == 'true'
         run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
       - name: Build
+        if: github.event_name != 'pull_request' || steps.should-continue.outputs.result == 'true'
         run: go build .
       - name: Test
+        if: github.event_name != 'pull_request' || steps.should-continue.outputs.result == 'true'
         run: make test
   validate-release:
     timeout-minutes: 30
