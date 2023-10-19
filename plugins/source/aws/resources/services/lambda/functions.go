@@ -9,7 +9,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v4/scalar"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
@@ -153,9 +152,7 @@ func resolveCodeSigningConfig(ctx context.Context, meta schema.ClientMeta, resou
 	svc := cl.Services(client.AWSServiceLambda).Lambda
 
 	// skip getting CodeSigningConfig since containerized lambda functions does not support this feature
-	// value can be nil if the caller doesn't have GetFunctionConfiguration permission and only has List*
-	lambdaType := resource.Get("code_repository_type").(*scalar.String)
-	if lambdaType != nil && lambdaType.Value == "ECR" {
+	if r.Configuration.PackageType == "Image" {
 		return nil
 	}
 
@@ -231,6 +228,11 @@ func resolveRuntimeManagementConfig(ctx context.Context, meta schema.ClientMeta,
 	}
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceLambda).Lambda
+
+	// skip getting GetRuntimeManagementConfig since containerized lambda functions does not support this feature
+	if r.Configuration.PackageType == "Image" {
+		return nil
+	}
 
 	runtimeManagementConfig, err := svc.GetRuntimeManagementConfig(ctx, &lambda.GetRuntimeManagementConfigInput{
 		FunctionName: r.Configuration.FunctionName,
