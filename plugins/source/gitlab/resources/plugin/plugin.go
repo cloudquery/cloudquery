@@ -19,7 +19,12 @@ import (
 	"github.com/rs/zerolog"
 )
 
-var Version = "Development"
+var (
+	Name    = "gitlab"
+	Kind    = "source"
+	Team    = "cloudquery"
+	Version = "development"
+)
 
 type Client struct {
 	plugin.UnimplementedDestination
@@ -79,9 +84,11 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 
 func Plugin() *plugin.Plugin {
 	return plugin.NewPlugin(
-		"gitlab",
+		Name,
 		Version,
 		newClient,
+		plugin.WithKind(Kind),
+		plugin.WithTeam(Team),
 	)
 }
 
