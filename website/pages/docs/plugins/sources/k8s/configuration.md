@@ -12,10 +12,12 @@ This example connects a single k8s context to a Postgres destination. The (top l
 
 This is the (nested) spec used by K8s Source Plugin
 
-- `contexts` ([]string) (default: empty. Will use the default context from K8s's config file)
+- `contexts` (`[]string`) (optional) (default: empty. Will use the default context from K8s's config file)
 
-  Specify specific K8s contexts to connect to. Specifying `*` will connect to all contexts available in
-  the K8s config file (usually `~/.kube/config`).
+  Specify K8s contexts to connect to.
+  Specifying `*` will connect to all contexts available in the K8s config file (usually `~/.kube/config`).
 
-- `concurrency` (int, optional, default: 50000):
-  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
+- `concurrency` (`integer`) (optional) (default: `50000`):
+
+  The best effort maximum number of Go routines to use.
+  Lower this number to reduce memory usage.
