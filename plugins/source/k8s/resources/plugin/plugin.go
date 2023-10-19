@@ -33,7 +33,7 @@ import (
 	"golang.org/x/exp/maps"
 )
 
-var var (
+var (
 	Name = "k8s"
 	Kind = "source"
 	Team = "cloudquery"
