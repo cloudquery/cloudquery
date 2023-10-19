@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/homebrew
 go 1.21.1
 
 require (
-	github.com/cloudquery/plugin-sdk/v4 v4.15.3
+	github.com/cloudquery/plugin-sdk/v4 v4.16.0
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.29.1
 )
