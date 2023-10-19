@@ -45,6 +45,7 @@ jobs:
           base_sha: ${{ steps.last-successful-commit-sha.outputs.commit_sha }}
       - name: Exit if no changed files affect this workflow
         id: should-continue
+        uses: actions/github-script@v6
         if: github.event_name == 'pull_request'
         with:
           script: |
