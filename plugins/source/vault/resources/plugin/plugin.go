@@ -5,9 +5,12 @@ import (
 )
 
 var (
+	Name    = "vault"
+	Kind    = "source"
+	Team    = "cloudquery"
 	Version = "development"
 )
 
 func Plugin() *plugin.Plugin {
-	return plugin.NewPlugin("vault", Version, Configure)
+	return plugin.NewPlugin(Name, Version, Configure, plugin.WithKind(Kind), plugin.WithTeam(Team))
 }

@@ -11,7 +11,10 @@ import (
 )
 
 var (
-	Version = "Development"
+	Name    = "aws"
+	Kind    = "source"
+	Team    = "cloudquery"
+	Version = "development"
 )
 
 var awsExceptions = map[string]string{
@@ -111,9 +114,11 @@ func titleTransformer(table *schema.Table) {
 
 func AWS() *plugin.Plugin {
 	return plugin.NewPlugin(
-		"aws",
+		Name,
 		Version,
 		New,
 		plugin.WithJSONSchema(spec.JSONSchema),
+		plugin.WithKind(Kind),
+		plugin.WithTeam(Team),
 	)
 }

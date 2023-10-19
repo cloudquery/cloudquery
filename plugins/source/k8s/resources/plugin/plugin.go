@@ -33,7 +33,12 @@ import (
 	"golang.org/x/exp/maps"
 )
 
-var Version = "Development"
+var (
+	Name = "k8s"
+	Kind = "source"
+	Team = "cloudquery"
+	Version = "development"
+)
 
 var googleAdsExceptions = map[string]string{
 	"admissionregistration": "Admission Registration",
