@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/cloudquery/codegen/jsonschema"
-	"github.com/stretchr/testify/require"
 )
 
 func TestJSONSchema(t *testing.T) {
@@ -324,19 +323,6 @@ func TestJSONSchema(t *testing.T) {
 			Name: "proper concurrency",
 			Spec: `{"concurrency":1}`,
 		},
-		// Scheduler tests are included for completeness’s sake, but should be done in scheduler package instead
-		{
-			Name: "dfs scheduler",
-			Spec: `{"scheduler":"dfs"}`,
-		},
-		{
-			Name: "round-robin scheduler",
-			Spec: `{"scheduler":"round-robin"}`,
-		},
-		{
-			Name: "shuffle scheduler",
-			Spec: `{"scheduler":"shuffle"}`,
-		},
 		{
 			Name: "empty scheduler",
 			Err:  true,
@@ -358,153 +344,14 @@ func TestJSONSchema(t *testing.T) {
 			Spec: `{"scheduler":null}`,
 		},
 		// ServiceAccountImpersonation(CredentialsConfig) is tested separately
-	})
-}
-
-func TestCredentialsConfigJSONSchema(t *testing.T) {
-	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
 		{
-			Name: "empty",
-			Err:  true,
-			Spec: `{"service_account_impersonation":{}}`,
-		},
-		{
-			Name: "null",
+			Name: "null service_account_impersonation",
 			Spec: `{"service_account_impersonation":null}`,
 		},
 		{
 			Name: "bad service_account_impersonation",
 			Err:  true,
-			Spec: `{"service_account_impersonation":false}`,
-		},
-		{
-			Name: "extra field",
-			Err:  true,
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some"},"extra_field_is_not_welcome":true}`,
-		},
-		{
-			Name: "empty target_principal",
-			Err:  true,
-			Spec: `{"service_account_impersonation":{"target_principal":""}}`,
-		},
-		{
-			Name: "null target_principal",
-			Err:  true,
-			Spec: `{"service_account_impersonation":{"target_principal":null}}`,
-		},
-		{
-			Name: "malformed target_principal",
-			Err:  true,
-			Spec: `{"service_account_impersonation":{"target_principal":"some"}}`,
-		},
-		{
-			Name: "bad target_principal",
-			Err:  true,
-			Spec: `{"service_account_impersonation":{"target_principal":123}}`,
-		},
-		{
-			Name: "proper target_principal",
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some"}}`,
-		},
-		{
-			Name: "empty scopes",
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some", "scopes":[]}}`,
-		},
-		{
-			Name: "null scopes",
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some", "scopes":null}}`,
-		},
-		{
-			Name: "bad scopes",
-			Err:  true,
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some", "scopes":123}}`,
-		},
-		{
-			Name: "empty scopes entry",
-			Err:  true,
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some", "scopes":[""]}}`,
-		},
-		{
-			Name: "null scopes entry",
-			Err:  true,
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some", "scopes":[null]}}`,
-		},
-		{
-			Name: "bad scopes entry",
-			Err:  true,
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some", "scopes":[123]}}`,
-		},
-		{
-			Name: "malformed scope",
-			Err:  true,
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some", "scopes":["https://www.g00gleapis.com/auth/cloud-platform"]}}`,
-		},
-		{
-			Name: "proper scopes",
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some", "scopes":["https://www.googleapis.com/auth/cloud-platform.read-only"]}}`,
-		},
-
-		{
-			Name: "empty delegates",
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some", "delegates":[]}}`,
-		},
-		{
-			Name: "null delegates",
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some", "delegates":null}}`,
-		},
-		{
-			Name: "bad delegates",
-			Err:  true,
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some", "delegates":123}}`,
-		},
-		{
-			Name: "empty delegates entry",
-			Err:  true,
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some", "delegates":[""]}}`,
-		},
-		{
-			Name: "null delegates entry",
-			Err:  true,
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some", "delegates":[null]}}`,
-		},
-		{
-			Name: "bad delegates entry",
-			Err:  true,
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some", "delegates":[123]}}`,
-		},
-		{
-			Name: "malformed delegate",
-			Err:  true,
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some", "delegates":["abc"]}}`,
-		},
-		{
-			Name: "proper delegates",
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some", "delegates":["a@some"]}}`,
-		},
-		{
-			Name: "empty subject",
-			Err:  true,
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some", "subject":""}}`,
-		},
-		{
-			Name: "null subject",
-			Err:  true,
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some", "subject":null}}`,
-		},
-		{
-			Name: "bad subject",
-			Err:  true,
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some", "subject":123}}`,
-		},
-		{
-			Name: "proper subject",
-			Spec: `{"service_account_impersonation":{"target_principal":"a@some", "subject":"some"}}`,
+			Spec: `{"service_account_impersonation":123}`,
 		},
 	})
-}
-
-func TestEnsureJSONSchema(t *testing.T) {
-	data, err := jsonschema.Generate(new(Spec))
-	require.NoError(t, err)
-	require.JSONEqf(t, string(data), JSONSchema, "new schema should be:\n%s\n", string(data))
 }
