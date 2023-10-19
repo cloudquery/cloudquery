@@ -16,5 +16,5 @@ module.exports = async ({github, context}) => {
     }
   }
   // by default return base sha
-  return github.event.pull_request.base.sha
+  return context.github.event.pull_request.base.sha
 }

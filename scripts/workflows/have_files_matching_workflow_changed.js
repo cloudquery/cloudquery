@@ -21,7 +21,7 @@ module.exports = async ({github, context}) => {
     return files.some(file => file.startsWith(`${action}/`) || matchesWorkflow(file, action))
   }
 
-  if (matchesFile(github.action)) {
+  if (matchesFile(context.github.action)) {
     return true
   }
   return false
