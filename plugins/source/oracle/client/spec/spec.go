@@ -2,7 +2,10 @@ package spec
 
 import _ "embed"
 
+// CloudQuery Oracle source plugin configuration spec.
 type Spec struct {
+	// The best effort maximum number of Go routines to use.
+	// Lower this number to reduce memory usage.
 	Concurrency int `json:"concurrency,omitempty" jsonschema:"minimum=1,default=10000"`
 }
 
