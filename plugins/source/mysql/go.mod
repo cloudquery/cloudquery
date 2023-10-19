@@ -4,7 +4,7 @@ go 1.21.1
 
 require (
 	github.com/apache/arrow/go/v14 v14.0.0-20230929201650-00efb06dc0de
-	github.com/cloudquery/plugin-sdk/v4 v4.15.2
+	github.com/cloudquery/plugin-sdk/v4 v4.15.3
 	github.com/go-sql-driver/mysql v1.7.0
 	github.com/rs/zerolog v1.29.1
 	github.com/stretchr/testify v1.8.4
