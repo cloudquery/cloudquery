@@ -3,6 +3,71 @@
   "$id": "https://github.com/cloudquery/cloudquery/plugins/source/azure/client/spec/spec",
   "$ref": "#/$defs/Spec",
   "$defs": {
+    "RetryOptions": {
+      "properties": {
+        "max_retries": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "try_timeout_seconds": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "retry_delay_seconds": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "max_retry_delay_seconds": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status_codes": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
     "Spec": {
       "properties": {
         "subscriptions": {
@@ -67,6 +132,17 @@
           "minimum": 1,
           "description": "During initialization the Azure source plugin discovers all resource groups\nand enabled resource providers per subscription, to be used later on during the sync process.\nThe plugin runs the discovery process in parallel.\nThis setting controls the maximum number of concurrent requests to the Azure API during discovery.\nOnly accounts with many subscriptions should require modifying this setting,\nto either lower it to avoid network errors, or to increase it to speed up the discovery process.",
           "default": 400
+        },
+        "retry_options": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/RetryOptions",
+              "description": "Retry options to pass to the Azure Go SDK, see more details [here](https://github.com/Azure/azure-sdk-for-go/blob/b6d8699f156be94570b22ca755ffe850d1aa199b/documentation/new-version-guideline.md#request-retry-policy)"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,

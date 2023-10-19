@@ -42,6 +42,17 @@ type Spec struct {
 	// Only accounts with many subscriptions should require modifying this setting,
 	// to either lower it to avoid network errors, or to increase it to speed up the discovery process.
 	DiscoveryConcurrency int `json:"discovery_concurrency" jsonschema:"minimum=1,default=400"`
+
+	// Retry options to pass to the Azure Go SDK, see more details [here](https://github.com/Azure/azure-sdk-for-go/blob/b6d8699f156be94570b22ca755ffe850d1aa199b/documentation/new-version-guideline.md#request-retry-policy)
+	RetryOptions *RetryOptions `json:"retry_options"`
+}
+
+type RetryOptions struct {
+	MaxRetries           *int32 `json:"max_retries" jsonschema:"minimum=0"`
+	TryTimeoutSeconds    *int   `json:"try_timeout_seconds" jsonschema:"minimum=0"`
+	RetryDelaySeconds    *int   `json:"retry_delay_seconds" jsonschema:"minimum=0"`
+	MaxRetryDelaySeconds *int   `json:"max_retry_delay_seconds" jsonschema:"minimum=0"`
+	StatusCodes          *[]int `json:"status_codes" jsonschema:"minItems=1,uniqueItems=true"`
 }
 
 var (
