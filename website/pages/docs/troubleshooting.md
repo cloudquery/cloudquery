@@ -3,8 +3,6 @@ title: Troubleshooting
 description: Troubleshooting common issues with CloudQuery.
 ---
 
-import { Callout } from 'nextra-theme-docs';
-
 # Troubleshooting
 
 ## Help Channels
@@ -26,9 +24,9 @@ There are a couple of ways to get help for any CloudQuery-related issues or ques
 
 Usually the first step that will be needed to debug/resolve an issue is to run `cloudquery` with `--log-level debug` to enable verbose logging.
 
-<Callout type="warning">
+:::callout{type="warning"}
 The CLI may print out environment variables, including sensitive information, when verbose logging is enabled.
-</Callout>
+:::
 
 ### Error: "failed to migrate source"…
 

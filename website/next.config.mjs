@@ -17,8 +17,9 @@ const pluginNamePatterns = {
 
 const getKindAndName = (file) => {
   const match = file.history[0].match(/\/plugins\/(.+)\/(.+)\//);
-  const [kind, name] = [match[1], match[2]];
+  if(!match) return null;
 
+  const [kind, name] = [match[1], match[2]];
   return {
     kind,
     name,
@@ -95,8 +96,9 @@ const customPlugin = () => {
         if (!['badge', 'configuration', 'authentication', 'callout', 'slack-app-link'].includes(data.hName)) {
           return;
         }
-
-        const { kind, name } = getKindAndName(file);
+        const pluginData = getKindAndName(file);
+        if (!pluginData) return;
+        const { kind, name } = pluginData;
         if (data.hName === "badge") {
           data.hProperties = {
             text: "Latest: " + getLatestVersion(kind, name),
