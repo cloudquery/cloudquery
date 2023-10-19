@@ -7,7 +7,10 @@ import (
 	analyticsdata "google.golang.org/api/analyticsdata/v1beta"
 )
 
-type Metric analyticsdata.Metric
+// Google Analytics metric spec.
+type Metric struct {
+	*analyticsdata.Metric
+}
 
 func (Metric) JSONSchemaExtend(sc *jsonschema.Schema) {
 	name := sc.Properties.Value("name")
@@ -29,6 +32,5 @@ func (m *Metric) validate() error {
 }
 
 func (m *Metric) toGA() *analyticsdata.Metric {
-	res := analyticsdata.Metric(*m)
-	return &res
+	return m.Metric
 }
