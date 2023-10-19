@@ -34,7 +34,7 @@ import (
 )
 
 var var (
-	Name = "gcp"
+	Name = "k8s"
 	Kind = "source"
 	Team = "cloudquery"
 	Version = "development"
