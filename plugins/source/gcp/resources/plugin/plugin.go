@@ -12,6 +12,9 @@ import (
 )
 
 var (
+	Name    = "gcp"
+	Kind    = "source"
+	Team    = "cloudquery"
 	Version = "development"
 )
 
@@ -98,9 +101,11 @@ func titleTransformer(table *schema.Table) error {
 
 func Plugin() *plugin.Plugin {
 	return plugin.NewPlugin(
-		"gcp",
+		Name,
 		Version,
 		NewClient,
 		plugin.WithJSONSchema(spec.JSONSchema),
+		plugin.WithKind(Kind),
+		plugin.WithTeam(Team),
 	)
 }

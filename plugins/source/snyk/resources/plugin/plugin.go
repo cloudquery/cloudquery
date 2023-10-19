@@ -4,12 +4,19 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 
-var Version = "Development"
+var (
+	Name    = "snyk"
+	Kind    = "source"
+	Team    = "cloudquery"
+	Version = "development"
+)
 
 func Snyk() *plugin.Plugin {
 	return plugin.NewPlugin(
-		"snyk",
+		Name,
 		Version,
 		configure,
+		plugin.WithKind(Kind),
+		plugin.WithTeam(Team),
 	)
 }

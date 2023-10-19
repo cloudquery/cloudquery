@@ -5,13 +5,18 @@ import (
 )
 
 var (
+	Name    = "alicloud"
+	Kind    = "source"
+	Team    = "cloudquery"
 	Version = "development"
 )
 
 func Plugin() *plugin.Plugin {
 	return plugin.NewPlugin(
-		"alicloud",
+		Name,
 		Version,
 		Configure,
+		plugin.WithKind(Kind),
+		plugin.WithTeam(Team),
 	)
 }

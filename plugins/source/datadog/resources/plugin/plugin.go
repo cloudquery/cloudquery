@@ -14,7 +14,10 @@ import (
 )
 
 var (
-	Version = "Development"
+	Name    = "datadog"
+	Kind    = "source"
+	Team    = "cloudquery"
+	Version = "development"
 
 	customExceptions = map[string]string{
 		"slo":  "SLO",
@@ -76,8 +79,10 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 func Plugin() *plugin.Plugin {
 	// here you can append custom non-generated tables
 	return plugin.NewPlugin(
-		"datadog",
+		Name,
 		Version,
 		newClient,
+		plugin.WithKind(Kind),
+		plugin.WithTeam(Team),
 	)
 }
