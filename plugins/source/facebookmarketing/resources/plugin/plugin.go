@@ -20,6 +20,9 @@ import (
 )
 
 var (
+	Name    = "facebookmarketing"
+	Kind    = "source"
+	Team    = "cloudquery"
 	Version = "development"
 )
 
@@ -108,9 +111,11 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 
 func Plugin() *plugin.Plugin {
 	return plugin.NewPlugin(
-		"facebookmarketing",
+		Name,
 		Version,
 		newClient,
+		plugin.WithKind(Kind),
+		plugin.WithTeam(Team),
 	)
 }
 
