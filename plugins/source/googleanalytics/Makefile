@@ -13,6 +13,8 @@ gen-docs:
 
 .PHONY: gen-spec-schema
 gen-spec-schema:
+	# required for Google Analytics SDK comments
+	go mod vendor
 	go run client/schemagen/main.go
 
 # All gen targets
