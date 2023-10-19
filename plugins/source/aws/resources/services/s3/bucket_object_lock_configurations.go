@@ -43,7 +43,7 @@ func fetchS3BucketObjectLockConfigurations(ctx context.Context, meta schema.Clie
 		o.Region = region.Value
 	})
 	if err != nil {
-		if client.IsAWSError(err, "NoSuchBucket") {
+		if client.IsAWSError(err, "NoSuchBucket", "ObjectLockConfigurationNotFound") {
 			return nil
 		}
 		return err
