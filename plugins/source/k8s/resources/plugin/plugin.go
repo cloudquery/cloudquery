@@ -34,9 +34,9 @@ import (
 )
 
 var (
-	Name = "k8s"
-	Kind = "source"
-	Team = "cloudquery"
+	Name    = "k8s"
+	Kind    = "source"
+	Team    = "cloudquery"
 	Version = "development"
 )
 
@@ -174,9 +174,11 @@ func getTables() schema.Tables {
 
 func Plugin() *plugin.Plugin {
 	return plugin.NewPlugin(
-		"k8s",
+		Name,
 		Version,
 		newClient,
 		plugin.WithJSONSchema(spec.JSONSchema),
+		plugin.WithKind(Kind),
+		plugin.WithTeam(Team),
 	)
 }
