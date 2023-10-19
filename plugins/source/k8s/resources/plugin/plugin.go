@@ -33,7 +33,12 @@ import (
 	"golang.org/x/exp/maps"
 )
 
-var Version = "Development"
+var (
+	Name    = "k8s"
+	Kind    = "source"
+	Team    = "cloudquery"
+	Version = "development"
+)
 
 var googleAdsExceptions = map[string]string{
 	"admissionregistration": "Admission Registration",
@@ -169,9 +174,11 @@ func getTables() schema.Tables {
 
 func Plugin() *plugin.Plugin {
 	return plugin.NewPlugin(
-		"k8s",
+		Name,
 		Version,
 		newClient,
 		plugin.WithJSONSchema(spec.JSONSchema),
+		plugin.WithKind(Kind),
+		plugin.WithTeam(Team),
 	)
 }

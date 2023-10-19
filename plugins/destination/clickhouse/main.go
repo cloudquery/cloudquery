@@ -16,10 +16,13 @@ const (
 )
 
 func main() {
-	p := plugin.NewPlugin("clickhouse",
+	p := plugin.NewPlugin(
+		internalPlugin.Name,
 		internalPlugin.Version,
 		client.New,
 		plugin.WithJSONSchema(spec.JSONSchema),
+		plugin.WithKind(internalPlugin.Kind),
+		plugin.WithTeam(internalPlugin.Team),
 	)
 	if err := serve.Plugin(p,
 		serve.WithPluginSentryDSN(sentryDSN),
