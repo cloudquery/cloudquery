@@ -22,6 +22,13 @@ This example syncs from Mixpanel to a Postgres destination. The (top level) sour
 
 :configuration
 
+:::callout{type="info"}
+Note that if `backend_options` is omitted, by default no backend will be used.
+This will result in all items being fetched on every sync.
+
+For more information about managing state for incremental tables, see [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables).
+:::
+
 ## Configuration Reference
 
 This is the (nested) spec used by the Mixpanel source plugin:

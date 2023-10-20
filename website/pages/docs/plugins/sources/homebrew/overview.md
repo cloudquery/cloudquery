@@ -19,12 +19,21 @@ The following configuration syncs from Homebrew to a Postgres destination. The (
 
 :configuration
 
+:::callout{type="info"}
+Note that if `backend_options` is omitted, by default no backend will be used.
+This will result in all items being fetched on every sync.
+
+For more information about managing state for incremental tables, see [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables).
+:::
+
 ## Homebrew Spec
 
 This is the (nested) spec used by the Homebrew source plugin:
 
-- `concurrency` (int, optional, default: 50000):
-  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
+- `concurrency` (`integer`) (optional) (default: `50000`):
+
+  The best effort maximum number of Go routines to use.
+  Lower this number to reduce memory usage.
 
 ## Example Queries
 

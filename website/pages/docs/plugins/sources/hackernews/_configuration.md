@@ -7,7 +7,7 @@ spec:
   version: "VERSION_SOURCE_HACKERNEWS"
   tables: ["*"]
   backend_options:
-    table_name: "cq_hackernews_state"
+    table_name: "cq_state_hackernews"
     connection: "@@plugins.DESTINATION_NAME.connection"
   destinations:
     - "DESTINATION_NAME"
