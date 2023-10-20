@@ -5,12 +5,19 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 
-var Version = "Development"
+var (
+	Name    = "googleanalytics"
+	Kind    = "source"
+	Team    = "cloudquery"
+	Version = "development"
+)
 
 func Plugin() *plugin.Plugin {
 	return plugin.NewPlugin(
 		"googleanalytics",
 		Version,
 		client.Configure,
+		plugin.WithKind(Kind),
+		plugin.WithTeam(Team),
 	)
 }

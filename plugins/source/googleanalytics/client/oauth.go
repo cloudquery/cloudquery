@@ -17,9 +17,18 @@ import (
 	analyticsdata "google.golang.org/api/analyticsdata/v1beta"
 )
 
+// OAuth spec to authenticate with Google Analytics.
 type OAuthSpec struct {
-	AccessToken  string `json:"access_token,omitempty"`
-	ClientID     string `json:"client_id,omitempty"`
+	// An access token that you generated authorizing for `https://www.googleapis.com/auth/analytics.readonly` scope
+	// (e.g., by using [OAuth 2.0 Playground](https://developers.google.com/oauthplayground/)).
+	AccessToken string `json:"access_token,omitempty"`
+
+	// OAuth 2.0 Client ID.
+	// Required if `access_token` is empty.
+	ClientID string `json:"client_id,omitempty"`
+
+	// OAuth 2.0 Client secret.
+	// Required if `access_token` is empty.
 	ClientSecret string `json:"client_secret,omitempty"`
 }
 

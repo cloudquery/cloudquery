@@ -8,11 +8,13 @@
         "concurrency": {
           "type": "integer",
           "minimum": 1,
+          "description": "The best effort maximum number of Go routines to use.\nLower this number to reduce memory usage.",
           "default": 10000
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "CloudQuery Oracle source plugin configuration spec."
     }
   }
 }

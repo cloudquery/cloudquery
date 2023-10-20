@@ -38,6 +38,9 @@ func fetchRepositoryLifecyclePolicy(ctx context.Context, meta schema.ClientMeta,
 		options.Region = cl.Region
 	})
 	if err != nil {
+		if client.IsAWSError(err, "LifecyclePolicyNotFound") {
+			return nil
+		}
 		return err
 	}
 	res <- resp

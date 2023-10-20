@@ -3,8 +3,10 @@ package security
 import (
 	"encoding/json"
 	"net/http"
+	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/gorilla/mux"
 )
@@ -18,7 +20,7 @@ func createSubAssessments(router *mux.Router) error {
 	emptyStr := ""
 	item.NextLink = &emptyStr
 
-	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.Security/assessments/test string/subAssessments", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.Security/subAssessments", func(w http.ResponseWriter, r *http.Request) {
 		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
@@ -31,4 +33,8 @@ func createSubAssessments(router *mux.Router) error {
 	})
 
 	return nil
+}
+
+func TestSubAssessments(t *testing.T) {
+	client.MockTestHelper(t, SubAssessments(), createSubAssessments)
 }
