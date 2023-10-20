@@ -5,12 +5,19 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 
-var version = "development"
+var (
+	Name    = "firestore"
+	Kind    = "source"
+	Team    = "cloudquery"
+	Version = "development"
+)
 
 func Plugin() *plugin.Plugin {
 	return plugin.NewPlugin(
-		"firestore",
-		version,
+		Name,
+		Version,
 		client.Configure,
+		plugin.WithKind(Kind),
+		plugin.WithTeam(Team),
 	)
 }

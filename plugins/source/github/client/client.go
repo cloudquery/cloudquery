@@ -70,7 +70,11 @@ func (c *Client) WithRepository(repository *github.Repository) *Client {
 
 func limitDetectedCallback(logger zerolog.Logger) github_ratelimit.OnLimitDetected {
 	return func(callbackContext *github_ratelimit.CallbackContext) {
-		logger.Warn().Msgf("GitHub secondary rate limit detected. Sleeping until %s", callbackContext.SleepUntil.Format(time.RFC3339))
+		apiCall := ""
+		if callbackContext.Request != nil {
+			apiCall = callbackContext.Request.URL.String()
+		}
+		logger.Warn().Msgf("GitHub secondary rate limit detected for API call: %s. Sleeping until %s", apiCall, callbackContext.SleepUntil.Format(time.RFC3339))
 	}
 }
 

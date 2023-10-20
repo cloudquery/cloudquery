@@ -454,7 +454,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logoDark: "/images/logos/plugins/tailscale-dark.svg",
     id: "tailscale",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
     buyLinks: {
       standard: "https://buy.stripe.com/14k8wAdap49hbGE6rR",
@@ -475,7 +475,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logoDark: "/images/logos/plugins/vercel-dark.svg",
     id: "vercel",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
     buyLinks: {
       standard: "https://buy.stripe.com/bIY7swc6lcFN9yw5nP",

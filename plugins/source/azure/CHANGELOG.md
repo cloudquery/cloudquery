@@ -5,6 +5,60 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v10.0.0...plugins-source-azure-v10.1.0) (2023-10-20)
+
+
+### Features
+
+* Expose Azure Go SDK retry configuration ([#14745](https://github.com/cloudquery/cloudquery/issues/14745)) ([361a734](https://github.com/cloudquery/cloudquery/commit/361a73439c1ab85d7de89d4c2bd4def21d72c8cb))
+
+## [10.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v9.4.0...plugins-source-azure-v10.0.0) (2023-10-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* Use `ListAll` API to list sub assessments and make `azure_security_sub_assessments` a top level table. If you were syncing it implicitly via `azure_security_assessments`, please add `azure_security_sub_assessments` to you existing config to sync its data, e.g. before: `tables: ["azure_security_assessments"]`, after: `tables: ["azure_security_assessments", "azure_security_sub_assessments"]`
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.2.9 ([#14627](https://github.com/cloudquery/cloudquery/issues/14627)) ([c1d244c](https://github.com/cloudquery/cloudquery/commit/c1d244c95199141ac39a713a3f0577b2fb3bf736))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.3.0 ([#14635](https://github.com/cloudquery/cloudquery/issues/14635)) ([00b380c](https://github.com/cloudquery/cloudquery/commit/00b380c10be1642f737f871ba5588888ed5dd180))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.4.0 ([#14639](https://github.com/cloudquery/cloudquery/issues/14639)) ([f139c0e](https://github.com/cloudquery/cloudquery/commit/f139c0e9369ef92a3cd874003db40b48e229ab58))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.9 ([#14660](https://github.com/cloudquery/cloudquery/issues/14660)) ([68ab0bb](https://github.com/cloudquery/cloudquery/commit/68ab0bb4092f554538aebf892081735fcacb11e7))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.15.0 ([#14622](https://github.com/cloudquery/cloudquery/issues/14622)) ([b497a6b](https://github.com/cloudquery/cloudquery/commit/b497a6bc5645854bd25d4083fd91ec549a7f274f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.15.2 ([#14662](https://github.com/cloudquery/cloudquery/issues/14662)) ([e274fe4](https://github.com/cloudquery/cloudquery/commit/e274fe419f6cacdf62547cd7134f40916e5ddd96))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.15.3 ([#14679](https://github.com/cloudquery/cloudquery/issues/14679)) ([0513c19](https://github.com/cloudquery/cloudquery/commit/0513c193919f4555d41f22ba2ff66efaaf5fca67))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.16.1 ([#14721](https://github.com/cloudquery/cloudquery/issues/14721)) ([1c7ee1d](https://github.com/cloudquery/cloudquery/commit/1c7ee1dc99d7a9cb3358a83e8d827d59be78cefa))
+* Properly handle `cloud_name` in JSON schema ([#14663](https://github.com/cloudquery/cloudquery/issues/14663)) ([6cf28e4](https://github.com/cloudquery/cloudquery/commit/6cf28e418006afa45455ea1364d3c10772023406))
+* Set plugin metadata ([#14715](https://github.com/cloudquery/cloudquery/issues/14715)) ([39935e2](https://github.com/cloudquery/cloudquery/commit/39935e2531c4edbd960d5db91e1027b13d7c0a4f))
+* Update plugin-SDK to v4.16.0 ([#14702](https://github.com/cloudquery/cloudquery/issues/14702)) ([0dcb545](https://github.com/cloudquery/cloudquery/commit/0dcb5455a71eaa7d28193b1b2fbcdd184dfad2ab))
+* Use `ListAll` API to list security sub assessments ([23eab8d](https://github.com/cloudquery/cloudquery/commit/23eab8d5fcc99f2aed0ae6041cc840aade6e6d30))
+
+## [9.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v9.3.8...plugins-source-azure-v9.4.0) (2023-10-17)
+
+
+### This Release has the Following Changes to Tables
+- Table `azure_managementgroups_entities` was added
+
+### Features
+
+* Add JSON schema for plugin spec ([#14558](https://github.com/cloudquery/cloudquery/issues/14558)) ([4426d4d](https://github.com/cloudquery/cloudquery/commit/4426d4df3879ae3f6dc4aecbdbfe8fd978659fcb))
+* **resources:** Add Management Group Entities ([#14613](https://github.com/cloudquery/cloudquery/issues/14613)) ([d6113f7](https://github.com/cloudquery/cloudquery/commit/d6113f71019717712178c36470549c3f9309474e))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to d401686 ([#14459](https://github.com/cloudquery/cloudquery/issues/14459)) ([7ce40f8](https://github.com/cloudquery/cloudquery/commit/7ce40f8dcb1e408c385e877e56b5bb78906b10d2))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to dbcb149 ([#14537](https://github.com/cloudquery/cloudquery/issues/14537)) ([68686f4](https://github.com/cloudquery/cloudquery/commit/68686f4e7636db02bddd961e3d75b60d5218ca85))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.2.6 ([#14475](https://github.com/cloudquery/cloudquery/issues/14475)) ([83fe7ca](https://github.com/cloudquery/cloudquery/commit/83fe7ca2f5fa83bd3219ddde8fe44fcf1d447480))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.2.8 ([#14503](https://github.com/cloudquery/cloudquery/issues/14503)) ([4056593](https://github.com/cloudquery/cloudquery/commit/40565937cfc12b33048980b55e91a9a60a62bd47))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.2 ([#14378](https://github.com/cloudquery/cloudquery/issues/14378)) ([a2e0c46](https://github.com/cloudquery/cloudquery/commit/a2e0c4615af4aa205fa082d3f196ea2dc5ce2445))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.3 ([#14436](https://github.com/cloudquery/cloudquery/issues/14436)) ([d529e2d](https://github.com/cloudquery/cloudquery/commit/d529e2d22da93a234492c4165e7eed1257c5767f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.4 ([#14489](https://github.com/cloudquery/cloudquery/issues/14489)) ([9bb45dc](https://github.com/cloudquery/cloudquery/commit/9bb45dc2dacc2c7a6fbd47538b954f731741809b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.5 ([#14516](https://github.com/cloudquery/cloudquery/issues/14516)) ([2d905bf](https://github.com/cloudquery/cloudquery/commit/2d905bf9ea81556282c8ca27dcc6334606a2e83b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.14.0 ([#14577](https://github.com/cloudquery/cloudquery/issues/14577)) ([223c4c1](https://github.com/cloudquery/cloudquery/commit/223c4c1df6c432d7f1bf67a48114e417282bcd0f))
+* **deps:** Update module golang.org/x/net to v0.17.0 [SECURITY] ([#14500](https://github.com/cloudquery/cloudquery/issues/14500)) ([9e603d5](https://github.com/cloudquery/cloudquery/commit/9e603d50d28033ed5bf451e569abc7c25014dbfb))
+
 ## [9.3.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v9.3.7...plugins-source-azure-v9.3.8) (2023-10-04)
 
 

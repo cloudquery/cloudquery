@@ -15,7 +15,10 @@ const (
 )
 
 func main() {
-	p := plugin.NewPlugin("meilisearch", internalPlugin.Version, client.New)
+	p := plugin.NewPlugin(internalPlugin.Name, internalPlugin.Version, client.New,
+		plugin.WithKind(internalPlugin.Kind),
+		plugin.WithTeam(internalPlugin.Team),
+	)
 	if err := serve.Plugin(p,
 		serve.WithPluginSentryDSN(sentryDSN),
 		serve.WithDestinationV0V1Server(),

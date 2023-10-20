@@ -14,6 +14,9 @@ import (
 )
 
 var (
+	Name    = "fastly"
+	Kind    = "source"
+	Team    = "cloudquery"
 	Version = "development"
 )
 
@@ -68,8 +71,10 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 
 func Plugin() *plugin.Plugin {
 	return plugin.NewPlugin(
-		"fastly",
+		Name,
 		Version,
 		newClient,
+		plugin.WithKind(Kind),
+		plugin.WithTeam(Team),
 	)
 }

@@ -1,0 +1,84 @@
+---
+name: Meilisearch
+title: Meilisearch Destination Plugin
+description: CloudQuery Meilisearch destination plugin documentation
+---
+# Meilisearch Destination Plugin
+
+:badge
+
+The Meilisearch plugin syncs data from any [CloudQuery source plugins](https://www.cloudquery.io/docs/plugins/sources/overview)
+to a [Meilisearch](https://www.meilisearch.com) instance.
+
+## Example config
+
+:configuration
+
+The Meilisearch destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size)
+and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
+
+It supports `append` and `overwrite` write modes. Write mode selection is required through
+[`write_mode`](/docs/reference/destination-spec#write_mode).
+
+## Meilisearch Spec
+
+This is the spec used by the Meilisearch destination plugin.
+
+- `host` (`string`) (required)
+
+  A Meilisearch instance host & port to use.
+
+  Example: `http://localhost:7700`
+
+:::callout{type="info"}
+    If your Meilisearch instance uses private SSL certificate, make sure to specify `ca_cert` option, too.
+:::
+
+
+- `api_key` (`string`) (required)
+
+  Meilisearch API key, granted the following actions:
+
+  - `documents.add`
+  - `indexes.create`
+  - `indexes.get`
+  - `indexes.update`
+  - `tasks.get`
+  - `settings.get`
+  - `settings.update`
+  - `version`
+
+:::callout{type="info"}
+    Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
+:::
+
+
+- `timeout` (`string`) (optional) (default: `5m`)
+
+  Meilisearch API client timeout.
+
+- `ca_cert` (`string`) (optional)
+
+  PEM-encoded certificate authorities.
+  When set, a certificate pool will be created by appending the certificates to the system pool.
+  See [file variable substitution](/docs/advanced-topics/environment-variable-substitution#file-variable-substitution-example)
+  for how to read this value from a file.
+
+- `batch_size` (`integer`) (optional) (default: `1000`)
+
+  This parameter controls the maximum amount of items may be grouped together to be written as a single write.
+
+- `batch_size_bytes` (`integer`) (optional) (default: `4194304` (= 4 MiB))
+
+  This parameter controls the maximum size of items that may be grouped together to be written as a single write.
+
+- `batch_timeout` (`duration`) (optional) (default: `20s`)
+
+  This parameter controls the timeout for writing a single batch.
+
+## Underlying library
+
+We use the official [meilisearch-go](https://github.com/meilisearch/meilisearch-go) package.
+It is tested against Meilisearch v1.1.0.
+Please [open an issue](https://github.com/cloudquery/cloudquery/issues/new/choose)
+if you encounter any problems with this (or another) version.

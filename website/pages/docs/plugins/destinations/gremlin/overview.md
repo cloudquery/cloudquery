@@ -1,0 +1,92 @@
+---
+name: Gremlin
+title: Gremlin Destination Plugin
+description: CloudQuery Gremlin destination plugin documentation
+---
+# Gremlin Destination Plugin
+
+:badge
+
+This destination plugin lets you sync data from any CloudQuery source to a Gremlin compatible graph database such as AWS Neptune.
+
+Supported database (tested) versions (We use the [official Go driver](https://github.com/apache/tinkerpop/tree/master/gremlin-go)):
+
+- Gremlin Server >= 3.6.2
+- AWS Neptune >= 1.2
+
+As a side note graph databases can be quite useful for various networking use-cases, visualization, for read-teams, blue-teams and more.
+
+## Configuration
+
+### Example
+
+:configuration
+
+The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
+
+:::callout{type="info"}
+Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
+:::
+
+The Gremlin destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
+
+### Connecting to AWS Neptune
+
+For AWS Neptune, you don't need to specify any credentials if IAM authentication is not enabled. Keep `auth_mode` at `none`.
+
+If IAM authentication is enabled, you need to set `auth_mode` to `aws` and `aws_region` to the region of the database. The plugin will use the default AWS credentials chain to authenticate.
+
+### Plugin Spec
+
+This is the (nested) spec used by the Gremlin destination Plugin.
+
+- `endpoint` (`string`) (required)
+
+  Endpoint for the database. Supported schemes are `wss://` and `ws://`, the default port is `8182`.
+
+  - `"localhost"` (defaults to `wss://localhost:8182`)
+  - `"ws://localhost:8182"`
+  - `"wss://your-endpoint.cluster-id.your-region.neptune.amazonaws.com"`
+
+- `insecure` (`boolean`) (optional)
+
+  Whether to skip TLS verification. Defaults to `false`. This should be set on a MacOS environment when connecting to an AWS Neptune endpoint.
+
+- `auth_mode` (`string`) (optional) (default: `none`)
+
+  Authentication mode to use. `basic` uses static credentials, `aws` uses AWS IAM authentication.
+  Supported values are `none`, `basic` or `aws`.
+
+- `username` (`string`) (optional)
+
+  Username to connect to the database.
+
+- `password` (`string`) (optional)
+
+  Password to connect to the database.
+
+- `aws_region` (`string`) (required when `auth_mode` is `aws`)
+
+  AWS region to use for AWS IAM authentication.
+
+- `max_retries` (`integer`) (optional) (default: `5`)
+
+  Number of retries on `ConcurrentModificationException` before giving up for each batch.
+  Retries are exponentially backed off.
+
+- `max_concurrent_connections` (`integer`) (optional) (default: number of CPUs)
+
+  Maximum number of concurrent connections to the database.
+
+- `complete_types` (`boolean`) (optional) (default: `false`)
+
+  Whether to use all Gremlin-supported types or just a basic set.
+  Should remain `false` for Amazon Neptune compatibility.
+
+- `batch_size` (`integer`) (optional) (default: `200`)
+
+  Number of records to batch together before sending to the database.
+
+- `batch_size_bytes` (`intege`r) (optional) (default: `4194304` (4 MiB))
+
+  Number of bytes (as Arrow buffer size) to batch together before sending to the database.

@@ -28,6 +28,7 @@ func TestPlugin(t *testing.T) {
 	plugin.TestWriterSuiteRunner(t,
 		p,
 		plugin.WriterTestSuiteTests{
+			SkipDeleteRecord: true,
 			SafeMigrations: plugin.SafeMigrations{
 				AddColumn:           true,
 				AddColumnNotNull:    true,

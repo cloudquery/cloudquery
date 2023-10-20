@@ -5,14 +5,14 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
-	apiextensionsclientset "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
-	"k8s.io/client-go/kubernetes"
-
+	"golang.org/x/exp/maps"
 	v1 "k8s.io/api/core/v1"
+	apiextensionsclientset "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
+	"k8s.io/client-go/kubernetes"
 	// import all k8s auth options
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 	"k8s.io/client-go/rest"
@@ -29,7 +29,7 @@ type Client struct {
 	// map context_name -> API extensions
 	apiExtensions map[string]apiextensionsclientset.Interface
 
-	spec     *Spec
+	spec     *spec.Spec
 	contexts []string
 	paths    map[string]struct{}
 
@@ -75,7 +75,7 @@ func (c *Client) WithNamespace(namespace string) *Client {
 	return &newC
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s Spec) (schema.ClientMeta, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, s spec.Spec) (schema.ClientMeta, error) {
 	kubeConfig := clientcmd.NewNonInteractiveDeferredLoadingClientConfig(
 		clientcmd.NewDefaultClientConfigLoadingRules(),
 		&clientcmd.ConfigOverrides{},
@@ -85,32 +85,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, s Spec) (schema.Clien
 		return nil, err
 	}
 
-	var contexts []string
-	switch len(s.Contexts) {
-	case 0:
-		logger.Debug().Str("context", rawKubeConfig.CurrentContext).Msg("no context set in configuration using current default defined context")
-		contexts = []string{rawKubeConfig.CurrentContext}
-	case 1:
-		if s.Contexts[0] == "*" {
-			logger.Debug().Msg("loading all available configuration")
-			for cName := range rawKubeConfig.Contexts {
-				contexts = append(contexts, cName)
-			}
-		} else {
-			if _, ok := rawKubeConfig.Contexts[s.Contexts[0]]; !ok {
-				return nil, fmt.Errorf("context %q doesn't exist in kube configuration", s.Contexts[0])
-			}
-			contexts = []string{s.Contexts[0]}
-		}
-	default:
-		for _, cName := range s.Contexts {
-			if _, ok := rawKubeConfig.Contexts[cName]; !ok {
-				return nil, fmt.Errorf("context %q doesn't exist in kube configuration", cName)
-			}
-			contexts = append(contexts, cName)
-		}
+	contexts, err := loadContexts(&s, rawKubeConfig, logger)
+	if err != nil {
+		return nil, err
 	}
-
 	if len(contexts) == 0 {
 		return nil, fmt.Errorf("could not find any context. Try to add context, https://kubernetes.io/docs/reference/kubectl/cheatsheet/#kubectl-context-and-configuration")
 	}
@@ -155,6 +133,26 @@ func Configure(ctx context.Context, logger zerolog.Logger, s Spec) (schema.Clien
 	}
 
 	return &c, nil
+}
+
+func loadContexts(s *spec.Spec, rawCfg api.Config, logger zerolog.Logger) ([]string, error) {
+	if len(s.Contexts) == 0 {
+		logger.Debug().Str("context", rawCfg.CurrentContext).Msg("no context set in configuration using current default defined context")
+		return []string{rawCfg.CurrentContext}, nil
+	}
+
+	if len(s.Contexts) == 1 && s.Contexts[0] == "*" {
+		logger.Debug().Msg("loading all available configuration")
+		return maps.Keys(rawCfg.Contexts), nil
+	}
+
+	// verify contexts
+	for _, cName := range s.Contexts {
+		if _, ok := rawCfg.Contexts[cName]; !ok {
+			return nil, fmt.Errorf("context %q doesn't exist in kube configuration", cName)
+		}
+	}
+	return s.Contexts, nil
 }
 
 func discoverNamespaces(ctx context.Context, client kubernetes.Interface) ([]v1.Namespace, error) {

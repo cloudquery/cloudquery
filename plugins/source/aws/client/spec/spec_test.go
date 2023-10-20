@@ -3,10 +3,7 @@ package spec
 import (
 	"testing"
 
-	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/cloudquery/codegen/jsonschema"
-	"github.com/cloudquery/plugin-sdk/v4/faker"
-	"github.com/stretchr/testify/require"
 )
 
 func TestSpecValidate(t *testing.T) {
@@ -28,7 +25,7 @@ func TestSpecValidate(t *testing.T) {
 		{
 			name: "valid org",
 			spec: &Spec{
-				Organization: &Org{
+				Organization: &Organization{
 					ChildAccountRoleName: "test",
 					OrganizationUnits:    []string{"ou-1234-12345678"},
 				},
@@ -38,7 +35,7 @@ func TestSpecValidate(t *testing.T) {
 		{
 			name: "invalid org",
 			spec: &Spec{
-				Organization: &Org{
+				Organization: &Organization{
 					ChildAccountRoleName: "test",
 					OrganizationUnits:    []string{"123"},
 				},
@@ -48,14 +45,14 @@ func TestSpecValidate(t *testing.T) {
 		{
 			name: "missing member account role name",
 			spec: &Spec{
-				Organization: &Org{},
+				Organization: &Organization{},
 			},
 			wantErr: true,
 		},
 		{
 			name: "valid skip ou",
 			spec: &Spec{
-				Organization: &Org{
+				Organization: &Organization{
 					ChildAccountRoleName:    "test",
 					OrganizationUnits:       []string{"ou-1234-12345678"},
 					SkipOrganizationalUnits: []string{"ou-1234-45678901"},
@@ -66,7 +63,7 @@ func TestSpecValidate(t *testing.T) {
 		{
 			name: "invalid skip ou",
 			spec: &Spec{
-				Organization: &Org{
+				Organization: &Organization{
 					ChildAccountRoleName:    "test",
 					OrganizationUnits:       []string{"ou-1234-12345678"},
 					SkipOrganizationalUnits: []string{"456"},
@@ -80,7 +77,7 @@ func TestSpecValidate(t *testing.T) {
 				Accounts: []Account{
 					{ID: "123456789012"},
 				},
-				Organization: &Org{
+				Organization: &Organization{
 					ChildAccountRoleName: "test",
 				},
 			},
@@ -96,46 +93,80 @@ func TestSpecValidate(t *testing.T) {
 	}
 }
 
-func TestJSONSchema(t *testing.T) {
-	// Accounts, Org, TableOptions & EventBasedSync are tested separately
+func TestSpecJSONSchema(t *testing.T) {
+	// Accounts, Organization, TableOptions & EventBasedSync are tested separately
 	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
 		{
 			Name: "empty",
 			Spec: `{}`,
 		},
+		{
+			Name: "empty accounts",
+			Spec: `{"accounts":[]}`,
+		},
+		{
+			Name: "null accounts",
+			Spec: `{"accounts":null}`,
+		},
+		{
+			Name: "bad accounts",
+			Err:  true,
+			Spec: `{"accounts":123}`,
+		},
+		{
+			Name: "empty accounts entry", // detailed is tested separately
+			Err:  true,
+			Spec: `{"accounts":[{}]}`,
+		},
+		{
+			Name: "null accounts entry",
+			Err:  true,
+			Spec: `{"accounts":[null]}`,
+		},
+		{
+			Name: "bad accounts entry",
+			Err:  true,
+			Spec: `{"accounts":[123]}`,
+		},
+		{
+			Name: "empty org",
+			Err:  true, // missing member_role_name
+			Spec: `{"org":{}}`,
+		},
+		{
+			Name: "null org",
+			Spec: `{"org":null}`,
+		},
+		{
+			Name: "bad org",
+			Err:  true,
+			Spec: `{"org":123}`,
+		},
 		// We check that accounts aren't present together with org, though
 		{
 			Name: "accounts with org",
 			Err:  true,
-			Spec: func() string {
-				var account Account
-				require.NoError(t, faker.FakeObject(&account))
-
-				var randomARN arn.ARN
-				require.NoError(t, faker.FakeObject(&randomARN))
-				account.RoleARN = randomARN.String()
-
-				var org Org
-				require.NoError(t, faker.FakeObject(&org))
-
-				ou := []string{"ou-abcdefg123-qwerty789", "r-qwerty789"}
-				org.OrganizationUnits = ou
-				org.SkipOrganizationalUnits = ou
-
-				org.AdminAccount.RoleARN = randomARN.String()
-				org.MemberCredentials.RoleARN = randomARN.String()
-
-				return `{"org":` + jsonschema.WithRemovedKeys(t, &org) +
-					`,"accounts":[` + jsonschema.WithRemovedKeys(t, &account) + `]}`
-			}(),
+			Spec: `{"org":{"member_role_name":"abc"},"accounts":[{"id":"abc"}]}`,
 		},
 		{
-			Name: "null regions",
-			Spec: `{"regions":null}`,
+			Name: "filled in accounts with null org",
+			Spec: `{"org":null,"accounts":[{"id":"abc"}]}`,
+		},
+		{
+			Name: "filled in org with null accounts",
+			Spec: `{"org":{"member_role_name":"abc"},"accounts":null}`,
+		},
+		{
+			Name: "filled in org with empty accounts",
+			Spec: `{"org":{"member_role_name":"abc"},"accounts":[]}`,
 		},
 		{
 			Name: "empty regions",
 			Spec: `{"regions":[]}`,
+		},
+		{
+			Name: "null regions",
+			Spec: `{"regions":null}`,
 		},
 		{
 			Name: "bad regions type",
@@ -145,7 +176,7 @@ func TestJSONSchema(t *testing.T) {
 		{
 			Name: "bad region type",
 			Err:  true,
-			Spec: `{"regions":[1,2,3]}`,
+			Spec: `{"regions":[123]}`,
 		},
 		{
 			Name: "empty region",
@@ -532,11 +563,20 @@ func TestJSONSchema(t *testing.T) {
 			Name: "empty table_options",
 			Spec: `{"table_options":null}`,
 		},
+		// detailed event_based_sync cases are tested separately
+		{
+			Name: "empty",
+			Err:  true,
+			Spec: `{"event_based_sync":{}}`,
+		},
+		{
+			Name: "null",
+			Spec: `{"event_based_sync":null}`,
+		},
+		{
+			Name: "bad",
+			Err:  true,
+			Spec: `{"event_based_sync":123}`,
+		},
 	})
-}
-
-func TestEnsureJSONSchema(t *testing.T) {
-	data, err := jsonschema.Generate(new(Spec))
-	require.NoError(t, err)
-	require.JSONEqf(t, string(data), JSONSchema, "new schema should be:\n%s\n", string(data))
 }

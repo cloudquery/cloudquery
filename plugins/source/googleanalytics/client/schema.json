@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/source/googleanalytics/client/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Metric": {
+      "properties": {
+        "expression": {
+          "type": "string",
+          "description": "Expression: A mathematical expression for derived metrics. For\nexample, the metric Event count per user is `eventCount/totalUsers`."
+        },
+        "invisible": {
+          "type": "boolean",
+          "description": "Invisible: Indicates if a metric is invisible in the report response.\nIf a metric is invisible, the metric will not produce a column in the\nresponse, but can be used in `metricFilter`, `orderBys`, or a metric\n`expression`."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Name: The name of the metric. See the API Metrics\n(https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#metrics)\nfor the list of metric names. If `expression` is specified, `name`\ncan be any string that you would like within the allowed character\nset. For example if `expression` is `screenPageViews/sessions`, you\ncould call that metric's name = `viewsPerSession`. Metric names that\nyou choose must match the regular expression `^[a-zA-Z0-9_]$`.\nMetrics are referenced by `name` in `metricFilter`, `orderBys`, and\nmetric `expression`."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "description": "Google Analytics metric spec."
+    },
+    "OAuthSpec": {
+      "if": {
+        "not": {
+          "properties": {
+            "access_token": {
+              "type": "string",
+              "minLength": 1,
+              "description": "An access token that you generated authorizing for `https://www.googleapis.com/auth/analytics.readonly` scope\n(e.g., by using [OAuth 2.0 Playground](https://developers.google.com/oauthplayground/))."
+            }
+          },
+          "required": [
+            "access_token"
+          ]
+        }
+      },
+      "then": {
+        "properties": {
+          "client_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "OAuth 2.0 Client ID.\nRequired if `access_token` is empty."
+          },
+          "client_secret": {
+            "type": "string",
+            "minLength": 1,
+            "description": "OAuth 2.0 Client secret.\nRequired if `access_token` is empty."
+          }
+        },
+        "required": [
+          "client_id",
+          "client_secret"
+        ]
+      },
+      "properties": {
+        "access_token": {
+          "type": "string",
+          "description": "An access token that you generated authorizing for `https://www.googleapis.com/auth/analytics.readonly` scope\n(e.g., by using [OAuth 2.0 Playground](https://developers.google.com/oauthplayground/))."
+        },
+        "client_id": {
+          "type": "string",
+          "description": "OAuth 2.0 Client ID.\nRequired if `access_token` is empty."
+        },
+        "client_secret": {
+          "type": "string",
+          "description": "OAuth 2.0 Client secret.\nRequired if `access_token` is empty."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "description": "OAuth spec to authenticate with Google Analytics."
+    },
+    "Report": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Name of the report.\nIt will be translated into a table name as `ga_` prefix followed by report name in snake case."
+        },
+        "dimensions": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": "array",
+              "maxItems": 9,
+              "description": "A list of Google Analytics Data API v1 [dimensions](https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#dimensions).\nAt most `9` dimensions can be specified per report."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "metrics": {
+          "items": {
+            "$ref": "#/$defs/Metric"
+          },
+          "type": "array",
+          "minItems": 1,
+          "description": "A list of Google Analytics Data API v1 [metrics](https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#metrics).\nExpressions are supported, too."
+        },
+        "keep_empty_rows": {
+          "type": "boolean",
+          "description": "Whether empty rows should be captured, too.",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "name",
+        "metrics"
+      ],
+      "description": "Google Analytics Report spec."
+    },
+    "Spec": {
+      "properties": {
+        "property_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "A Google Analytics GA4 [property](https://support.google.com/analytics/answer/9304153#property) identifier whose events are tracked.\nTo learn more, see where to [find your Property ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).\n\nSupported formats:\n\n- A plain property ID (example: `1234`)\n\n- Prefixed with `properties/` (example: `properties/1234`)"
+        },
+        "reports": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/Report"
+              },
+              "type": "array",
+              "description": "Reports to be fetched from Google Analytics."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "start_date": {
+          "type": "string",
+          "format": "date",
+          "description": "A date in `YYYY-MM-DD` format (example: `2023-05-15`).\nIf not specified, the start date will be the one that is 7 days prior to the sync start date.",
+          "default": "now-168h"
+        },
+        "oauth": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/OAuthSpec",
+              "description": "OAuth spec for authorization in Google Analytics."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "The best effort maximum number of Go routines to use.\nLower this number to reduce memory usage.",
+          "default": 10000
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "property_id"
+      ],
+      "description": "CloudQuery Google Analytics source plugin confugiration spec."
+    }
+  }
+}

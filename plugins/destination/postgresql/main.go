@@ -15,7 +15,10 @@ const (
 )
 
 func main() {
-	p := pluginSDK.NewPlugin("postgresql", plugin.Version, client.New)
+	p := pluginSDK.NewPlugin(plugin.Name, plugin.Version, client.New,
+		pluginSDK.WithKind(plugin.Kind),
+		pluginSDK.WithTeam(plugin.Team),
+	)
 	server := serve.Plugin(p,
 		serve.WithPluginSentryDSN(sentryDSN),
 		serve.WithDestinationV0V1Server(),

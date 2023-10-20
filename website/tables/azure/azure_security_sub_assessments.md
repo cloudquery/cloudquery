@@ -2,13 +2,9 @@
 
 This table shows data for Azure Security Sub Assessments.
 
-https://learn.microsoft.com/en-us/rest/api/defenderforcloud/sub-assessments/list?tabs=HTTP#securitysubassessment
+https://learn.microsoft.com/en-us/rest/api/defenderforcloud/sub-assessments/list-all?tabs=HTTP#securitysubassessment
 
 The primary key for this table is **id**.
-
-## Relations
-
-This table depends on [azure_security_assessments](azure_security_assessments).
 
 ## Columns
 

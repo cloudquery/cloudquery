@@ -119,7 +119,7 @@ func Test_loadAccounts(t *testing.T) {
 		{
 			name: "all_accounts",
 			spec: &spec.Spec{
-				Organization: &spec.Org{
+				Organization: &spec.Organization{
 					AdminAccount: &spec.Account{},
 				},
 			},
@@ -128,7 +128,7 @@ func Test_loadAccounts(t *testing.T) {
 		{
 			name: "all_accounts_with_skip_member_accounts",
 			spec: &spec.Spec{
-				Organization: &spec.Org{
+				Organization: &spec.Organization{
 					AdminAccount:       &spec.Account{},
 					SkipMemberAccounts: []string{"id-child2-account", "id-parent1-account", "id-parent2-account", "id-top-level-account"},
 				},
@@ -138,7 +138,7 @@ func Test_loadAccounts(t *testing.T) {
 		{
 			name: "org_root",
 			spec: &spec.Spec{
-				Organization: &spec.Org{
+				Organization: &spec.Organization{
 					OrganizationUnits: []string{"root"},
 					AdminAccount:      &spec.Account{},
 				},
@@ -148,7 +148,7 @@ func Test_loadAccounts(t *testing.T) {
 		{
 			name: "ou_parent1",
 			spec: &spec.Spec{
-				Organization: &spec.Org{
+				Organization: &spec.Organization{
 					OrganizationUnits: []string{"ou-parent1"},
 					AdminAccount:      &spec.Account{},
 				},
@@ -158,7 +158,7 @@ func Test_loadAccounts(t *testing.T) {
 		{
 			name: "ou_parent1_and_parent2",
 			spec: &spec.Spec{
-				Organization: &spec.Org{
+				Organization: &spec.Organization{
 					OrganizationUnits: []string{"ou-parent1", "ou-parent2"},
 					AdminAccount:      &spec.Account{},
 				},
@@ -168,7 +168,7 @@ func Test_loadAccounts(t *testing.T) {
 		{
 			name: "ou_parent1_skip_child1",
 			spec: &spec.Spec{
-				Organization: &spec.Org{
+				Organization: &spec.Organization{
 					OrganizationUnits:  []string{"ou-parent1"},
 					SkipMemberAccounts: []string{"id-child1-account"},
 					AdminAccount:       &spec.Account{},
@@ -179,7 +179,7 @@ func Test_loadAccounts(t *testing.T) {
 		{
 			name: "ou_root_skip_parent1",
 			spec: &spec.Spec{
-				Organization: &spec.Org{
+				Organization: &spec.Organization{
 					OrganizationUnits:       []string{"root"},
 					SkipOrganizationalUnits: []string{"ou-parent1"},
 					AdminAccount:            &spec.Account{},
@@ -190,7 +190,7 @@ func Test_loadAccounts(t *testing.T) {
 		{
 			name: "ou_root_skip_parent1",
 			spec: &spec.Spec{
-				Organization: &spec.Org{
+				Organization: &spec.Organization{
 					OrganizationUnits:       []string{"root"},
 					SkipOrganizationalUnits: []string{"ou-parent1"},
 					AdminAccount:            &spec.Account{},
@@ -201,7 +201,7 @@ func Test_loadAccounts(t *testing.T) {
 		{
 			name: "ou_root_and_parent1",
 			spec: &spec.Spec{
-				Organization: &spec.Org{
+				Organization: &spec.Organization{
 					OrganizationUnits:       []string{"root", "ou-parent1"},
 					SkipOrganizationalUnits: []string{},
 					AdminAccount:            &spec.Account{},

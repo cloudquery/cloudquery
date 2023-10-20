@@ -1,30 +1,53 @@
 package client
 
 import (
+	_ "embed"
 	"fmt"
 	"strings"
 	"time"
+
+	"github.com/invopop/jsonschema"
 )
 
+// CloudQuery Google Analytics source plugin confugiration spec.
 type Spec struct {
-	PropertyID  string     `json:"property_id,omitempty"`
-	StartDate   string     `json:"start_date,omitempty"`
-	OAuth       *oauthSpec `json:"oauth,omitempty"`
-	Reports     []*Report  `json:"reports,omitempty"`
-	Concurrency int        `json:"concurrency,omitempty"`
-}
+	// A Google Analytics GA4 [property](https://support.google.com/analytics/answer/9304153#property) identifier whose events are tracked.
+	// To learn more, see where to [find your Property ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
+	//
+	// Supported formats:
+	//
+	// - A plain property ID (example: `1234`)
+	//
+	// - Prefixed with `properties/` (example: `properties/1234`)
+	PropertyID string `json:"property_id,omitempty" jsonschema:"required,minLength=1"`
 
-const layout = "2006-01-02"
-const defaultConcurrency = 10000
+	// Reports to be fetched from Google Analytics.
+	Reports []Report `json:"reports,omitempty"`
+
+	// A date in `YYYY-MM-DD` format (example: `2023-05-15`).
+	// If not specified, the start date will be the one that is 7 days prior to the sync start date.
+	StartDate string `json:"start_date,omitempty" jsonschema:"format=date,default=now-168h"`
+
+	// OAuth spec for authorization in Google Analytics.
+	OAuth *OAuthSpec `json:"oauth,omitempty"`
+
+	// The best effort maximum number of Go routines to use.
+	// Lower this number to reduce memory usage.
+	Concurrency int `json:"concurrency,omitempty" jsonschema:"minimum=1,default=10000"`
+}
 
 func (s *Spec) setDefaults() {
 	if len(s.StartDate) == 0 {
 		// date 7 days prior
-		s.StartDate = time.Now().UTC().Add(-7 * 24 * time.Hour).Format(layout)
+		s.StartDate = time.Now().UTC().Add(-7 * 24 * time.Hour).Format(time.DateOnly)
 	}
-	if s.Concurrency == 0 {
+	if s.Concurrency <= 0 {
+		const defaultConcurrency = 10000
 		s.Concurrency = defaultConcurrency
 	}
+}
+
+func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 }
 
 func (s *Spec) validate() error {
@@ -35,9 +58,9 @@ func (s *Spec) validate() error {
 		s.PropertyID = "properties/" + s.PropertyID // required for SDK
 	}
 
-	_, err := time.Parse(layout, s.StartDate)
+	_, err := time.Parse(time.DateOnly, s.StartDate)
 	if err != nil {
-		return fmt.Errorf(`"start_date" has to be in %q format, got %q: %w`, layout, s.StartDate, err)
+		return fmt.Errorf(`"start_date" has to be in %q format, got %q: %w`, time.DateOnly, s.StartDate, err)
 	}
 
 	saw := make(map[string]struct{})
@@ -54,3 +77,6 @@ func (s *Spec) validate() error {
 
 	return s.OAuth.validate()
 }
+
+//go:embed schema.json
+var JSONSchema string

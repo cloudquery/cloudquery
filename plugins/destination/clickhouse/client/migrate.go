@@ -2,8 +2,8 @@ package client
 
 import (
 	"context"
+	"errors"
 	"fmt"
-
 	"slices"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
@@ -11,7 +11,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/pkg/errors"
 	"golang.org/x/sync/errgroup"
 )
 

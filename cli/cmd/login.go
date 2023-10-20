@@ -14,8 +14,9 @@ import (
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
-	"github.com/cloudquery/cloudquery/cli/internal/auth"
-	"github.com/cloudquery/cloudquery/cli/internal/config"
+	"github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery-api-go/config"
+	"github.com/cloudquery/cloudquery/cli/internal/team"
 	"github.com/pkg/browser"
 	"github.com/spf13/cobra"
 )
@@ -90,7 +91,7 @@ func waitForServer(ctx context.Context, url string) error {
 
 func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	accountsURL := getEnvOrDefault("CLOUDQUERY_ACCOUNTS_URL", defaultAccountsURL)
-	apiURL := getEnvOrDefault("CLOUDQUERY_API_URL", defaultAPIURL)
+	apiURL := getEnvOrDefault(envAPIURL, defaultAPIURL)
 
 	mux := http.NewServeMux()
 	refreshToken := ""
@@ -160,20 +161,21 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	}
 
 	if cmd.Flags().Changed("team") {
-		team := cmd.Flag("team").Value.String()
-		token, err := auth.GetToken()
+		selectedTeam := cmd.Flag("team").Value.String()
+		tc := auth.NewTokenClient()
+		token, err := tc.GetToken()
 		if err != nil {
 			return fmt.Errorf("failed to get auth token: %w", err)
 		}
-		cl, err := auth.NewClient(apiURL, token)
+		cl, err := team.NewClient(apiURL, token)
 		if err != nil {
 			return fmt.Errorf("failed to create API client: %w", err)
 		}
-		err = cl.ValidateTeam(ctx, team)
+		err = cl.ValidateTeam(ctx, selectedTeam)
 		if err != nil {
 			return fmt.Errorf("failed to set team: %w", err)
 		}
-		err = config.SetValue("team", team)
+		err = config.SetValue("team", selectedTeam)
 		if err != nil {
 			return fmt.Errorf("failed to set team: %w", err)
 		}

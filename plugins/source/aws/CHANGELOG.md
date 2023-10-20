@@ -6,6 +6,66 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.15.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.15.1...plugins-source-aws-v22.15.2) (2023-10-20)
+
+
+### Bug Fixes
+
+* Don't error on ECR repositories when they're missing Lifecycle policies (`aws_ecr_repository_lifecycle_policies`) ([#14730](https://github.com/cloudquery/cloudquery/issues/14730)) ([352d46d](https://github.com/cloudquery/cloudquery/commit/352d46d784326ecb5aecab7a18c9df3a463f8e63))
+
+## [22.15.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.15.0...plugins-source-aws-v22.15.1) (2023-10-19)
+
+
+### Bug Fixes
+
+* Add descriptions to JSON schema ([#14647](https://github.com/cloudquery/cloudquery/issues/14647)) ([e0586fe](https://github.com/cloudquery/cloudquery/commit/e0586fe14667d62ba9bb343c16f6d0fe85982707))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to dbcb149 ([#14537](https://github.com/cloudquery/cloudquery/issues/14537)) ([68686f4](https://github.com/cloudquery/cloudquery/commit/68686f4e7636db02bddd961e3d75b60d5218ca85))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.2.9 ([#14627](https://github.com/cloudquery/cloudquery/issues/14627)) ([c1d244c](https://github.com/cloudquery/cloudquery/commit/c1d244c95199141ac39a713a3f0577b2fb3bf736))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.3.0 ([#14635](https://github.com/cloudquery/cloudquery/issues/14635)) ([00b380c](https://github.com/cloudquery/cloudquery/commit/00b380c10be1642f737f871ba5588888ed5dd180))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.4.0 ([#14639](https://github.com/cloudquery/cloudquery/issues/14639)) ([f139c0e](https://github.com/cloudquery/cloudquery/commit/f139c0e9369ef92a3cd874003db40b48e229ab58))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.8 ([#14532](https://github.com/cloudquery/cloudquery/issues/14532)) ([1ecef25](https://github.com/cloudquery/cloudquery/commit/1ecef25b6cfe182a74857769f7308e85099fc766))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.14.0 ([#14577](https://github.com/cloudquery/cloudquery/issues/14577)) ([223c4c1](https://github.com/cloudquery/cloudquery/commit/223c4c1df6c432d7f1bf67a48114e417282bcd0f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.15.0 ([#14622](https://github.com/cloudquery/cloudquery/issues/14622)) ([b497a6b](https://github.com/cloudquery/cloudquery/commit/b497a6bc5645854bd25d4083fd91ec549a7f274f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.15.2 ([#14662](https://github.com/cloudquery/cloudquery/issues/14662)) ([e274fe4](https://github.com/cloudquery/cloudquery/commit/e274fe419f6cacdf62547cd7134f40916e5ddd96))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.15.3 ([#14679](https://github.com/cloudquery/cloudquery/issues/14679)) ([0513c19](https://github.com/cloudquery/cloudquery/commit/0513c193919f4555d41f22ba2ff66efaaf5fca67))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.16.1 ([#14721](https://github.com/cloudquery/cloudquery/issues/14721)) ([1c7ee1d](https://github.com/cloudquery/cloudquery/commit/1c7ee1dc99d7a9cb3358a83e8d827d59be78cefa))
+* Don't error on S3 buckets with Object Lock disabled (`aws_s3_bucket_object_lock_configurations` ) ([#14726](https://github.com/cloudquery/cloudquery/issues/14726)) ([3328007](https://github.com/cloudquery/cloudquery/commit/33280074c71e4db21049842710fb268b2ca5ba0b))
+* Set plugin metadata ([#14715](https://github.com/cloudquery/cloudquery/issues/14715)) ([39935e2](https://github.com/cloudquery/cloudquery/commit/39935e2531c4edbd960d5db91e1027b13d7c0a4f))
+* Update plugin-SDK to v4.16.0 ([#14702](https://github.com/cloudquery/cloudquery/issues/14702)) ([0dcb545](https://github.com/cloudquery/cloudquery/commit/0dcb5455a71eaa7d28193b1b2fbcdd184dfad2ab))
+
+## [22.15.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.14.0...plugins-source-aws-v22.15.0) (2023-10-13)
+
+
+### Features
+
+* Deleted query origin_access_identity_enabled.sql ([#13921](https://github.com/cloudquery/cloudquery/issues/13921)) ([ec77ff8](https://github.com/cloudquery/cloudquery/commit/ec77ff83fde2935f87d7e4a40fb66013f4292067))
+* Introduce spec JSON schema ([#14296](https://github.com/cloudquery/cloudquery/issues/14296)) ([c35f473](https://github.com/cloudquery/cloudquery/commit/c35f4739eb68e92a65df77a110e0ab175a3073f5))
+* **services:** Support newly added regions ([#14481](https://github.com/cloudquery/cloudquery/issues/14481)) ([672772c](https://github.com/cloudquery/cloudquery/commit/672772c6df559505826ed2078236bc88f684b295))
+* Updated query api_gw_cache_encrypted.sql ([#13860](https://github.com/cloudquery/cloudquery/issues/13860)) ([dca3fe0](https://github.com/cloudquery/cloudquery/commit/dca3fe08463173e64a11a6fd90e84eed13fc0086))
+* Updated query of security_groups_with_access_to_unauthorized_ports ([#13855](https://github.com/cloudquery/cloudquery/issues/13855)) ([efa9e34](https://github.com/cloudquery/cloudquery/commit/efa9e34bd240cab3746ea6a8478d35dd913cb7d6))
+* Updated query of security_groups_with_open_critical_ports ([#13854](https://github.com/cloudquery/cloudquery/issues/13854)) ([6834ee9](https://github.com/cloudquery/cloudquery/commit/6834ee920039351d33e73828e2c520baedd21b06))
+* Updated query rds_databases_and_clusters_should_not_use_a_datab… ([#13936](https://github.com/cloudquery/cloudquery/issues/13936)) ([810078f](https://github.com/cloudquery/cloudquery/commit/810078fe255e4beeb7b980f3422135924090a5d0))
+* Updated query secrets_configured_with_automatic_rotation_should… ([#13934](https://github.com/cloudquery/cloudquery/issues/13934)) ([8b1293c](https://github.com/cloudquery/cloudquery/commit/8b1293cd870d1c46eeb87416d2bee585137a1cd2))
+* Updated query unused_acls.sql ([#13859](https://github.com/cloudquery/cloudquery/issues/13859)) ([f47df0c](https://github.com/cloudquery/cloudquery/commit/f47df0c8566538cec285a4ae0442510d3bfc3314))
+
+
+### Bug Fixes
+
+* Added check for empty string health_status ([#13861](https://github.com/cloudquery/cloudquery/issues/13861)) ([37d8875](https://github.com/cloudquery/cloudquery/commit/37d8875b930bc6a75c8592df44c6a5dc7b0ef353))
+* Changed ssm.2 query to reduce redundent rows ([#13933](https://github.com/cloudquery/cloudquery/issues/13933)) ([cee1fab](https://github.com/cloudquery/cloudquery/commit/cee1fab4fe1ad35c1da51f9db602dc8a878432a9))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to d401686 ([#14459](https://github.com/cloudquery/cloudquery/issues/14459)) ([7ce40f8](https://github.com/cloudquery/cloudquery/commit/7ce40f8dcb1e408c385e877e56b5bb78906b10d2))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.2.6 ([#14475](https://github.com/cloudquery/cloudquery/issues/14475)) ([83fe7ca](https://github.com/cloudquery/cloudquery/commit/83fe7ca2f5fa83bd3219ddde8fe44fcf1d447480))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.2.8 ([#14503](https://github.com/cloudquery/cloudquery/issues/14503)) ([4056593](https://github.com/cloudquery/cloudquery/commit/40565937cfc12b33048980b55e91a9a60a62bd47))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.2 ([#14378](https://github.com/cloudquery/cloudquery/issues/14378)) ([a2e0c46](https://github.com/cloudquery/cloudquery/commit/a2e0c4615af4aa205fa082d3f196ea2dc5ce2445))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.3 ([#14436](https://github.com/cloudquery/cloudquery/issues/14436)) ([d529e2d](https://github.com/cloudquery/cloudquery/commit/d529e2d22da93a234492c4165e7eed1257c5767f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.4 ([#14489](https://github.com/cloudquery/cloudquery/issues/14489)) ([9bb45dc](https://github.com/cloudquery/cloudquery/commit/9bb45dc2dacc2c7a6fbd47538b954f731741809b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.12.5 ([#14516](https://github.com/cloudquery/cloudquery/issues/14516)) ([2d905bf](https://github.com/cloudquery/cloudquery/commit/2d905bf9ea81556282c8ca27dcc6334606a2e83b))
+* **deps:** Update module golang.org/x/net to v0.17.0 [SECURITY] ([#14500](https://github.com/cloudquery/cloudquery/issues/14500)) ([9e603d5](https://github.com/cloudquery/cloudquery/commit/9e603d50d28033ed5bf451e569abc7c25014dbfb))
+* Fallback to `eu-west-1` if a given buckets LocationConstraint is `EU` ([#14476](https://github.com/cloudquery/cloudquery/issues/14476)) ([f6433e7](https://github.com/cloudquery/cloudquery/commit/f6433e732b3b072b92aa5b0c05a60cea2b9f6d64))
+* Lowercase policy statement in query for KMS.1 ([#13858](https://github.com/cloudquery/cloudquery/issues/13858)) ([b161fe1](https://github.com/cloudquery/cloudquery/commit/b161fe1c091a1c02fcd46d5f89998adf0ca849bb))
+* Proper schema for `CustomECSListTasksInput.MaxResults` ([#14502](https://github.com/cloudquery/cloudquery/issues/14502)) ([cdaaa99](https://github.com/cloudquery/cloudquery/commit/cdaaa996c1c2766e161592039412c795672d6a52))
+* Redact Code Location and Fall back to other APIs to fully resolve `aws_lambda_functions` ([#14381](https://github.com/cloudquery/cloudquery/issues/14381)) ([bf402f4](https://github.com/cloudquery/cloudquery/commit/bf402f4f7007a0df704c88ba91b31b2f9dd84d29))
+
 ## [22.14.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.13.2...plugins-source-aws-v22.14.0) (2023-10-04)
 
 
