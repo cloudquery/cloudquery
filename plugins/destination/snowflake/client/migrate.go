@@ -104,7 +104,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, forc
 				return fmt.Errorf("column %s on table %s has different type than schema, expected %s got %s. migrate manually or consider using 'migrate_mode: forced'", col.Name, tableName, columnType, snowflakeColumn[0].typ)
 			}
 			c.logger.Debug().Str("table", tableName).Str("column", col.Name).Str("current_type", snowflakeColumn[0].typ).Str("want_type", columnType).Msg("Column type mismatch, dropping to recreate")
-			sql := fmt.Sprintf("alter table %s drop column %q", tableName, columnName)
+			sql := fmt.Sprintf("alter table %s drop column %q", tableName, snowflakeColumn[0].name)
 			if _, err := c.db.ExecContext(ctx, sql); err != nil {
 				return fmt.Errorf("failed to drop column %s from table %s: %w", col.Name, tableName, err)
 			}
