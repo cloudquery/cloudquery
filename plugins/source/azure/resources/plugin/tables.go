@@ -319,6 +319,7 @@ func getTables() schema.Tables {
 		security.AllowedConnections(),
 		security.Applications(),
 		security.Assessments(),
+		security.SubAssessments(),
 		security.AssessmentsMetadata(),
 		security.AutoProvisioningSettings(),
 		security.Automations(),

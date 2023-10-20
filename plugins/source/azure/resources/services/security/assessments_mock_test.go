@@ -33,7 +33,7 @@ func createAssessments(router *mux.Router) error {
 		}
 	})
 
-	return createSubAssessments(router)
+	return nil
 }
 
 func TestAssessments(t *testing.T) {
