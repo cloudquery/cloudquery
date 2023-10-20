@@ -233,6 +233,7 @@ tables:
   - aws_elasticbeanstalk_configuration_settings
   - aws_elasticbeanstalk_environments
   - aws_elasticsearch_domains
+  - aws_elbv1_load_balancer_policies
   - aws_elbv1_load_balancers
   - aws_elbv2_listeners
   - aws_elbv2_load_balancer_attributes
