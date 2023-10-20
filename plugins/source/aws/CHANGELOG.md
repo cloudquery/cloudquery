@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.15.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.15.1...plugins-source-aws-v22.15.2) (2023-10-20)
+
+
+### Bug Fixes
+
+* Don't error on ECR repositories when they're missing Lifecycle policies (`aws_ecr_repository_lifecycle_policies`) ([#14730](https://github.com/cloudquery/cloudquery/issues/14730)) ([352d46d](https://github.com/cloudquery/cloudquery/commit/352d46d784326ecb5aecab7a18c9df3a463f8e63))
+
 ## [22.15.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.15.0...plugins-source-aws-v22.15.1) (2023-10-19)
 
 
