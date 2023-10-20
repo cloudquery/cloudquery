@@ -21,39 +21,33 @@ This example syncs from Stripe to a Postgres destination. The (top level) source
 
 :configuration
 
+:::callout{type="info"}
+Note that if `backend_options` is omitted, by default no backend will be used.
+This will result in all items being fetched on every sync.
+
+For more information about managing state for incremental tables, see [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables).
+:::
+
 ## Configuration Reference
 
 This is the (nested) spec used by the Stripe source plugin:
 
-- `api_key` (string, required):
+- `api_key` (`string`) (required):
+
   Your secret API key from the Stripe Dashboard.
 
-- `rate_limit` (integer, optional. Default: varies):
+- `rate_limit` (`integer`) (optional)  (default: varies):
+
   Used to override number of requests allowed per second. Defaults to 90 req/sec for production environment keys, otherwise 20 req/sec.
 
-- `max_retries` (integer, optional. Default: 2):
+- `max_retries` (`integer`) (optional)  (default: `2`):
+
   Number of retries if a request was rate limited at the API endpoint.
 
-- `concurrency` (integer, optional. Default: 10000):
+- `concurrency` (`integer`) (optional)  (default: `10000`):
+
   Number of concurrent requests to Stripe API.
 
-- `stripe_debug` (boolean, optional. Default: false):
+- `stripe_debug` (`boolean`) (optional)  (default: `false`):
+
   Enables verbose logging on the Stripe client.
-
-- **preview** `backend_options` (object) (default: not used)
-
-  Allowed properties are `table_name` and `connection`. Use this configuration to enable incremental syncs for supported tables. See more [here](/blog/proto-v3#unified-protocol).
-  Example
-
-  ```yaml
-  kind: source
-  spec:
-    name: stripe
-    path: cloudquery/stripe
-    version: "VERSION_SOURCE_STRIPE"
-    destinations: ["postgresql"]
-    spec:
-      backend_options:
-        table_name: "test_state_table"
-        connection: "@@plugins.postgresql.connection"
-  ```

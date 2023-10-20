@@ -98,6 +98,11 @@ func getSnsSubscription(ctx context.Context, meta schema.ClientMeta, resource *s
 		},
 	)
 	if err != nil {
+		// If a subscriptions topic is deleted GetSubscriptionAttributes will error.
+		if client.IsAWSError(err, "NotFound") {
+			resource.Item = s
+			return nil
+		}
 		return err
 	}
 	dec, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{WeaklyTypedInput: true, Result: &s})
