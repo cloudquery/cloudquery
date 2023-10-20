@@ -8,11 +8,11 @@ spec:
   version: "PREMIUM"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
+  backend_options:
+    table_name: "test_state_table"
+    connection: "@@plugins.DESTINATION_NAME.connection"
   # Mixpanel specific configuration
   spec:
-    backend_options:
-      table_name: "test_state_table"
-      connection: "@@plugins.DESTINATION_NAME.connection"
     username: "<YOUR_SERVICE_ACCOUNT_USER_HERE>"
     secret: "<YOUR_SERVICE_ACCOUNT_SECRET_HERE>"
     project_id: 12345 # Your project ID
