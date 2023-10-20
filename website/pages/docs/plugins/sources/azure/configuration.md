@@ -64,7 +64,7 @@ Described in the [Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f
 
 * `max_retry_delay_seconds` (`integer`) (default: `60`)
 
-Described in the [Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L100)
+Described in the [Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L105)
 
 * `status_codes` (`[]integer`) (default: `nil`)
 
