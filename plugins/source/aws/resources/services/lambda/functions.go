@@ -152,7 +152,7 @@ func resolveCodeSigningConfig(ctx context.Context, meta schema.ClientMeta, resou
 	svc := cl.Services(client.AWSServiceLambda).Lambda
 
 	// skip getting CodeSigningConfig since containerized lambda functions does not support this feature
-	if r.Configuration.PackageType == "Image" {
+	if r.Configuration.PackageType == types.PackageTypeImage {
 		return nil
 	}
 
@@ -230,7 +230,7 @@ func resolveRuntimeManagementConfig(ctx context.Context, meta schema.ClientMeta,
 	svc := cl.Services(client.AWSServiceLambda).Lambda
 
 	// skip getting GetRuntimeManagementConfig since containerized lambda functions does not support this feature
-	if r.Configuration.PackageType == "Image" {
+	if r.Configuration.PackageType == types.PackageTypeImage {
 		return nil
 	}
 
