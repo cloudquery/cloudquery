@@ -55,7 +55,6 @@
                 "type": "integer"
               },
               "type": "array",
-              "minItems": 1,
               "uniqueItems": true
             },
             {

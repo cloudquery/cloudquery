@@ -52,7 +52,7 @@ type RetryOptions struct {
 	TryTimeoutSeconds    *int   `json:"try_timeout_seconds" jsonschema:"minimum=0"`
 	RetryDelaySeconds    *int   `json:"retry_delay_seconds" jsonschema:"minimum=0"`
 	MaxRetryDelaySeconds *int   `json:"max_retry_delay_seconds" jsonschema:"minimum=0"`
-	StatusCodes          *[]int `json:"status_codes" jsonschema:"minItems=1,uniqueItems=true"`
+	StatusCodes          *[]int `json:"status_codes" jsonschema:"uniqueItems=true"`
 }
 
 var (
