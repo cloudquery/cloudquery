@@ -198,5 +198,54 @@ func TestSpec_JSONSchemaExtend(t *testing.T) {
 			Name: "proper discovery_concurrency",
 			Spec: `{"discovery_concurrency":123}`,
 		},
+		{
+			Name: "proper retry_options.max_retries",
+			Spec: `{"retry_options":{"max_retries":1}}`,
+		},
+		{
+			Name: "bad retry_options.max_retries",
+			Spec: `{"retry_options":{"max_retries":"1"}}`,
+			Err:  true,
+		},
+		{
+			Name: "proper retry_options.try_timeout_seconds",
+			Spec: `{"retry_options":{"try_timeout_seconds":1}}`,
+		},
+		{
+			Name: "bad retry_options.try_timeout_seconds",
+			Spec: `{"retry_options":{"try_timeout_seconds":-1}}`,
+			Err:  true,
+		},
+		{
+			Name: "proper retry_options.retry_delay_seconds",
+			Spec: `{"retry_options":{"try_timeout_seconds":1}}`,
+		},
+		{
+			Name: "bad retry_options.retry_delay_seconds",
+			Spec: `{"retry_options":{"try_timeout_seconds":-1}}`,
+			Err:  true,
+		},
+		{
+			Name: "proper retry_options.max_retry_delay_seconds",
+			Spec: `{"retry_options":{"try_timeout_seconds":1}}`,
+		},
+		{
+			Name: "bad retry_options.max_retry_delay_seconds",
+			Spec: `{"retry_options":{"try_timeout_seconds":-1}}`,
+			Err:  true,
+		},
+		{
+			Name: "empty retry_options.status_codes",
+			Spec: `{"retry_options":{"status_codes":[]}}`,
+		},
+		{
+			Name: "proper retry_options.status_codes",
+			Spec: `{"retry_options":{"status_codes":[200]}}`,
+		},
+		{
+			Name: "bad retry_options.status_codes",
+			Spec: `{"retry_options":{"status_codes":[200, 200]}}`,
+			Err:  true,
+		},
 	})
 }

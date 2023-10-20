@@ -21,14 +21,23 @@ The (top level) source spec section is described in the [Source Spec Reference](
 :configuration
 
 :::callout{type="info"}
-Note that if `backend_options` is omitted, by default no backend will be used. This will result in all items being fetched on every sync.
+Note that if `backend_options` is omitted, by default no backend will be used.
+This will result in all items being fetched on every sync.
+
+For more information about managing state for incremental tables, see [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables).
 :::
 
-- `item_concurrency` (int, optional):
-    The number of items to fetch concurrently. Defaults to 100.
+- `item_concurrency` (`integer`) (optional):
 
-- `start_time` (string, optional):
-    A date-time string in RFC3339 format. For example, `"2023-01-01T00:00:00Z"` will sync all items created on or after January 1, 2023. If not specified, the plugin will fetch all items. Note that because this is an incremental table, a previous cursor position will take precedence over this setting, unless the given start time is after the last cursor position.
+  The number of items to fetch concurrently. Defaults to `100`.
+
+- `start_time` (`string`) (optional):
+
+  A date-time string in `RFC3339` format.
+  For example, `"2023-01-01T00:00:00Z"` will sync all items created on or after January 1, 2023.
+  If not specified, the plugin will fetch all items.
+
+  Note that because this is an incremental table, a previous cursor position will take precedence over this setting, unless the given start time is after the last cursor position.
 
 ## Example Queries
 
