@@ -25,7 +25,7 @@ FROM flat_listeners fl
 )
 SELECT
   DISTINCT
-    :'execution_time' AS execution_time,
+    cast(:'execution_time' as timestamp with time zone) AS execution_time,
     :'framework' AS framework,
     :'check_id' AS check_id,
     'Classic Load Balancers with HTTPS/SSL listeners should use a predefined security policy that has strong configuration' AS title,
