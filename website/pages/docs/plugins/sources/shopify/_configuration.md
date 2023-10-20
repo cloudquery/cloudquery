@@ -17,6 +17,3 @@ spec:
     shop_url: "https://<YOUR_SHOP>.myshopify.com"
 #    concurrency: 1000
 ```
-
-The Shopify plugin supports incremental syncing for event data. This means that only new events will be fetched from Shopify and loaded into your destination. This is done by keeping track of the last event fetched and only fetching events that has been created since then.
-To enable this, `backend` option must be set in the spec (as shown in the example). This is documented in the [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables) section.
