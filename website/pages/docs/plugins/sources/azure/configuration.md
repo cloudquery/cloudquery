@@ -43,3 +43,31 @@ This is the (nested) spec used by the Azure source plugin.
   An OIDC token can be used to authenticate with Azure instead of `AZURE_CLIENT_SECRET`.
   This is useful for Azure AD workload identity federation.
   When using this option, the `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables must be set.
+
+- `retry_options` ([`RetryOptions`](#retry_options)) (default: empty)
+
+  Retry options to pass to the Azure Go SDK, see more details [here](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L86)
+
+### `retry_options`
+
+* `max_retries` (`integer`) (default: `3`)
+
+Described in the [Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L89)
+
+* `try_timeout_seconds` (`integer`) (default: `0`)
+
+Disabled by default, see [the Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L89) for more details
+
+* `retry_delay_seconds` (`integer`) (default: `4`)
+
+Described in the [Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L100)
+
+* `max_retry_delay_seconds` (`integer`) (default: `60`)
+
+Described in the [Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L105)
+
+* `status_codes` (`[]integer`) (default: `nil`)
+
+Described in the [Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L108)
+The default of `nil` uses the [default status codes](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L109).
+An empty value disables retries for HTTP status codes.

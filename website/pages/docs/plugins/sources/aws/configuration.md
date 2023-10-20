@@ -308,11 +308,7 @@ Event-based syncing is only supported by the enterprise-version AWS plugin. Read
 
 - `full_sync` (`bool`) (default: `true`)
 
-  By default CQ will do a full sync on the specified tables before starting to consume the events in the stream. This parameter enables users to skip the full pull based sync and go straight to the event based sync.
-
-
-	
-
+  By default, CQ will do a full sync on the specified tables before starting to consume the events in the stream. This parameter enables users to skip the full pull based sync and go straight to the event based sync.
 
 
 ## Advanced Configuration
@@ -331,7 +327,7 @@ spec:
   tables: ["aws_cloudtrail_events"]
   destinations: ["postgresql"]
   backend_options:
-    table_name: "cq_aws_state"
+    table_name: "cq_state_aws"
     connection: "@@plugins.postgresql.connection"
   spec:
 ---

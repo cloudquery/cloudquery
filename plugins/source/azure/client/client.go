@@ -7,6 +7,7 @@ import (
 	"os"
 	"strings"
 	"sync"
+	"time"
 
 	// Import all autorest modules
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -229,6 +230,7 @@ func New(ctx context.Context, logger zerolog.Logger, s *spec.Spec) (schema.Clien
 		subscriptions:      uniqueSubscriptions,
 		pluginSpec:         s,
 		storageAccountKeys: &sync.Map{},
+		Options:            &arm.ClientOptions{},
 	}
 
 	if s.CloudName != "" {
@@ -236,7 +238,25 @@ func New(ctx context.Context, logger zerolog.Logger, s *spec.Spec) (schema.Clien
 		if err != nil {
 			return nil, err
 		}
-		c.Options = &arm.ClientOptions{ClientOptions: azcore.ClientOptions{Cloud: cloudConfig}}
+		c.Options.Cloud = cloudConfig
+	}
+
+	if s.RetryOptions != nil {
+		if s.RetryOptions.MaxRetries != nil {
+			c.Options.Retry.MaxRetries = *s.RetryOptions.MaxRetries
+		}
+		if s.RetryOptions.TryTimeoutSeconds != nil {
+			c.Options.Retry.TryTimeout = time.Duration(*s.RetryOptions.TryTimeoutSeconds) * time.Second
+		}
+		if s.RetryOptions.RetryDelaySeconds != nil {
+			c.Options.Retry.RetryDelay = time.Duration(*s.RetryOptions.RetryDelaySeconds) * time.Second
+		}
+		if s.RetryOptions.MaxRetryDelaySeconds != nil {
+			c.Options.Retry.MaxRetryDelay = time.Duration(*s.RetryOptions.MaxRetryDelaySeconds) * time.Second
+		}
+		if s.RetryOptions.StatusCodes != nil {
+			c.Options.Retry.StatusCodes = *s.RetryOptions.StatusCodes
+		}
 	}
 
 	// NewDefaultAzureCredential builds a chain of credentials, and reports errors via the log listener
