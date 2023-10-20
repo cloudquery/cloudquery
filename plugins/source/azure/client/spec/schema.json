@@ -8,8 +8,7 @@
         "max_retries": {
           "oneOf": [
             {
-              "type": "integer",
-              "minimum": 0
+              "type": "integer"
             },
             {
               "type": "null"
@@ -137,7 +136,7 @@
           "oneOf": [
             {
               "$ref": "#/$defs/RetryOptions",
-              "description": "Retry options to pass to the Azure Go SDK, see more details [here](https://github.com/Azure/azure-sdk-for-go/blob/b6d8699f156be94570b22ca755ffe850d1aa199b/documentation/new-version-guideline.md#request-retry-policy)"
+              "description": "Retry options to pass to the Azure Go SDK, see more details here https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L86"
             },
             {
               "type": "null"
