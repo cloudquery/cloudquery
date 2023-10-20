@@ -3,6 +3,13 @@
 ## [1.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-vault-v1.0.5...plugins-source-vault-v1.0.6) (2023-10-20)
 
 
+### This Release has the Following Changes to Tables
+- Table `vault_sys_audits` was added
+- Table `vault_sys_auths` was added
+- Table `vault_sys_mounts` was added
+- Table `vault_sys_plugins` was added
+- Table `vault_sys_policies` was added
+
 ### Bug Fixes
 
 * **deps:** Update github.com/cloudquery/arrow/go/v14 digest to d401686 ([#14459](https://github.com/cloudquery/cloudquery/issues/14459)) ([7ce40f8](https://github.com/cloudquery/cloudquery/commit/7ce40f8dcb1e408c385e877e56b5bb78906b10d2))
