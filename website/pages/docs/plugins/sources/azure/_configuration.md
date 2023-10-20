@@ -16,4 +16,9 @@ spec:
     # skip_subscriptions: []
     # normalize_ids: false
     # oidc_token: ""
+    # retry_options:
+    #   max_retries: 3
+    #   try_timeout_seconds: 0
+    #   retry_delay_seconds: 4
+    #   max_retry_delay_seconds: 60
 ```
