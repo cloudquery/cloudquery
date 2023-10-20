@@ -1,5 +1,5 @@
 module.exports = async ({github, context}) => {
-  const allCommits = context.github.event.pull_request.commits;
+  const allCommits = context.github.pull_request.commits;
   // loop from second-to-last commit to first
   for (const commit of allCommits.reverse().slice(1)) {
     const checkRuns = await github.paginate(github.rest.checks.listForRef, {
@@ -16,5 +16,5 @@ module.exports = async ({github, context}) => {
     }
   }
   // by default return base sha
-  return context.github.event.pull_request.base.sha
+  return context.github.pull_request.base.sha
 }
