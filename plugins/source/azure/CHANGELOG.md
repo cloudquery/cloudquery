@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v10.0.0...plugins-source-azure-v10.1.0) (2023-10-20)
+
+
+### Features
+
+* Expose Azure Go SDK retry configuration ([#14745](https://github.com/cloudquery/cloudquery/issues/14745)) ([361a734](https://github.com/cloudquery/cloudquery/commit/361a73439c1ab85d7de89d4c2bd4def21d72c8cb))
+
 ## [10.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v9.4.0...plugins-source-azure-v10.0.0) (2023-10-20)
 
 
