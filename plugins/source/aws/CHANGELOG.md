@@ -6,6 +6,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.15.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.15.1...plugins-source-aws-v22.15.2) (2023-10-20)
+
+
+### Bug Fixes
+
+* Don't error on ECR repositories when they're missing Lifecycle policies (`aws_ecr_repository_lifecycle_policies`) ([#14730](https://github.com/cloudquery/cloudquery/issues/14730)) ([352d46d](https://github.com/cloudquery/cloudquery/commit/352d46d784326ecb5aecab7a18c9df3a463f8e63))
+
+## [22.15.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.15.0...plugins-source-aws-v22.15.1) (2023-10-19)
+
+
+### Bug Fixes
+
+* Add descriptions to JSON schema ([#14647](https://github.com/cloudquery/cloudquery/issues/14647)) ([e0586fe](https://github.com/cloudquery/cloudquery/commit/e0586fe14667d62ba9bb343c16f6d0fe85982707))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to dbcb149 ([#14537](https://github.com/cloudquery/cloudquery/issues/14537)) ([68686f4](https://github.com/cloudquery/cloudquery/commit/68686f4e7636db02bddd961e3d75b60d5218ca85))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.2.9 ([#14627](https://github.com/cloudquery/cloudquery/issues/14627)) ([c1d244c](https://github.com/cloudquery/cloudquery/commit/c1d244c95199141ac39a713a3f0577b2fb3bf736))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.3.0 ([#14635](https://github.com/cloudquery/cloudquery/issues/14635)) ([00b380c](https://github.com/cloudquery/cloudquery/commit/00b380c10be1642f737f871ba5588888ed5dd180))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.4.0 ([#14639](https://github.com/cloudquery/cloudquery/issues/14639)) ([f139c0e](https://github.com/cloudquery/cloudquery/commit/f139c0e9369ef92a3cd874003db40b48e229ab58))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.8 ([#14532](https://github.com/cloudquery/cloudquery/issues/14532)) ([1ecef25](https://github.com/cloudquery/cloudquery/commit/1ecef25b6cfe182a74857769f7308e85099fc766))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.14.0 ([#14577](https://github.com/cloudquery/cloudquery/issues/14577)) ([223c4c1](https://github.com/cloudquery/cloudquery/commit/223c4c1df6c432d7f1bf67a48114e417282bcd0f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.15.0 ([#14622](https://github.com/cloudquery/cloudquery/issues/14622)) ([b497a6b](https://github.com/cloudquery/cloudquery/commit/b497a6bc5645854bd25d4083fd91ec549a7f274f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.15.2 ([#14662](https://github.com/cloudquery/cloudquery/issues/14662)) ([e274fe4](https://github.com/cloudquery/cloudquery/commit/e274fe419f6cacdf62547cd7134f40916e5ddd96))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.15.3 ([#14679](https://github.com/cloudquery/cloudquery/issues/14679)) ([0513c19](https://github.com/cloudquery/cloudquery/commit/0513c193919f4555d41f22ba2ff66efaaf5fca67))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.16.1 ([#14721](https://github.com/cloudquery/cloudquery/issues/14721)) ([1c7ee1d](https://github.com/cloudquery/cloudquery/commit/1c7ee1dc99d7a9cb3358a83e8d827d59be78cefa))
+* Don't error on S3 buckets with Object Lock disabled (`aws_s3_bucket_object_lock_configurations` ) ([#14726](https://github.com/cloudquery/cloudquery/issues/14726)) ([3328007](https://github.com/cloudquery/cloudquery/commit/33280074c71e4db21049842710fb268b2ca5ba0b))
+* Set plugin metadata ([#14715](https://github.com/cloudquery/cloudquery/issues/14715)) ([39935e2](https://github.com/cloudquery/cloudquery/commit/39935e2531c4edbd960d5db91e1027b13d7c0a4f))
+* Update plugin-SDK to v4.16.0 ([#14702](https://github.com/cloudquery/cloudquery/issues/14702)) ([0dcb545](https://github.com/cloudquery/cloudquery/commit/0dcb5455a71eaa7d28193b1b2fbcdd184dfad2ab))
+
 ## [22.15.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.14.0...plugins-source-aws-v22.15.0) (2023-10-13)
 
 

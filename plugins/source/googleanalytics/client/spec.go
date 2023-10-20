@@ -9,12 +9,31 @@ import (
 	"github.com/invopop/jsonschema"
 )
 
+// CloudQuery Google Analytics source plugin confugiration spec.
 type Spec struct {
-	PropertyID  string     `json:"property_id,omitempty" jsonschema:"required,minLength=1"`
-	StartDate   string     `json:"start_date,omitempty" jsonschema:"format=date,default=now-168h"`
-	OAuth       *OAuthSpec `json:"oauth,omitempty"`
-	Reports     []Report   `json:"reports,omitempty"`
-	Concurrency int        `json:"concurrency,omitempty" jsonschema:"minimum=1,default=10000"`
+	// A Google Analytics GA4 [property](https://support.google.com/analytics/answer/9304153#property) identifier whose events are tracked.
+	// To learn more, see where to [find your Property ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
+	//
+	// Supported formats:
+	//
+	// - A plain property ID (example: `1234`)
+	//
+	// - Prefixed with `properties/` (example: `properties/1234`)
+	PropertyID string `json:"property_id,omitempty" jsonschema:"required,minLength=1"`
+
+	// Reports to be fetched from Google Analytics.
+	Reports []Report `json:"reports,omitempty"`
+
+	// A date in `YYYY-MM-DD` format (example: `2023-05-15`).
+	// If not specified, the start date will be the one that is 7 days prior to the sync start date.
+	StartDate string `json:"start_date,omitempty" jsonschema:"format=date,default=now-168h"`
+
+	// OAuth spec for authorization in Google Analytics.
+	OAuth *OAuthSpec `json:"oauth,omitempty"`
+
+	// The best effort maximum number of Go routines to use.
+	// Lower this number to reduce memory usage.
+	Concurrency int `json:"concurrency,omitempty" jsonschema:"minimum=1,default=10000"`
 }
 
 func (s *Spec) setDefaults() {
