@@ -32,12 +32,12 @@ func Filesystems() *schema.Table {
 			{
 				Name:     "backup_policy_status",
 				Type:     arrow.BinaryTypes.String,
-				Resolver: ResolveEfsFilesystemBackupPolicyStatus,
+				Resolver: resolveEfsFilesystemBackupPolicyStatus,
 			},
 			{
 				Name:     "policy",
 				Type:     arrow.BinaryTypes.String,
-				Resolver: ResolveEfsFilesystemPolicy,
+				Resolver: resolveEfsFilesystemPolicy,
 			},
 			{
 				Name:     "tags",
@@ -65,7 +65,7 @@ func fetchEfsFilesystems(ctx context.Context, meta schema.ClientMeta, parent *sc
 	return nil
 }
 
-func ResolveEfsFilesystemBackupPolicyStatus(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveEfsFilesystemBackupPolicyStatus(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.FileSystemDescription)
 	config := efs.DescribeBackupPolicyInput{
 		FileSystemId: p.FileSystemId,
@@ -88,7 +88,7 @@ func ResolveEfsFilesystemBackupPolicyStatus(ctx context.Context, meta schema.Cli
 	return resource.Set(c.Name, response.BackupPolicy.Status)
 }
 
-func ResolveEfsFilesystemPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveEfsFilesystemPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.FileSystemDescription)
 	config := efs.DescribeFileSystemPolicyInput{
 		FileSystemId: p.FileSystemId,
@@ -99,9 +99,6 @@ func ResolveEfsFilesystemPolicy(ctx context.Context, meta schema.ClientMeta, res
 		options.Region = cl.Region
 	})
 	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return resource.Set(c.Name, types.StatusDisabled)
-		}
 		return err
 	}
 	if response.Policy == nil {
