@@ -30,4 +30,5 @@ See [tables](/docs/plugins/sources/oracle/tables) for a full list of available t
 This is the (nested) spec used by Oracle Source Plugin
 
 - `concurrency` (int, optional, default: 10000):
-  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
+  The best effort maximum number of Go routines to use.
+  Lower this number to reduce memory usage.
