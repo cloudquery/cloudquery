@@ -10,12 +10,12 @@ spec:
   destinations: ["DESTINATION_NAME"]
   skip_tables:
     - vercel_deployment_checks
+  backend_options:
+    table_name: "test_state_table"
+    connection: "@@plugins.DESTINATION_NAME.connection"
 
   # Vercel specific configuration
   spec:
-    backend_options:
-      table_name: "test_state_table"
-      connection: "@@plugins.DESTINATION_NAME.connection"
     access_token: "<YOUR_ACCESS_TOKEN_HERE>"
 ```
 
