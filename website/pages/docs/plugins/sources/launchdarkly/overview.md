@@ -22,11 +22,20 @@ This example syncs from LaunchDarkly to a Postgres destination. The (top level) 
 
 :configuration
 
+:::callout{type="info"}
+Note that if `backend_options` is omitted, by default no backend will be used.
+This will result in all items being fetched on every sync.
+
+For more information about managing state for incremental tables, see [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables).
+:::
+
 ## Configuration Reference
 
 This is the (nested) spec used by the LaunchDarkly source plugin:
 
-- `access_token` (string, required):
+- `access_token` (`string`) (required):
+
   Your access token from LaunchDarkly.
-- `timeout_secs` (integer in seconds, optional. Default: 30):
-  Timeout for requests against the LaunchDarkly API.
+- `timeout_secs` (`integer`) (optional) (default: `30`):
+
+  Timeout (in seconds) for requests against the LaunchDarkly API.

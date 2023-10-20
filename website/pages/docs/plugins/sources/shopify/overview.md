@@ -26,53 +26,52 @@ This example syncs from Shopify to a Postgres destination. The (top level) sourc
 
 :configuration
 
+:::callout{type="info"}
+Note that if `backend_options` is omitted, by default no backend will be used.
+This will result in all items being fetched on every sync.
+
+For more information about managing state for incremental tables, see [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables).
+:::
+
 # Configuration Reference
 
 This is the (nested) spec used by the Shopify source plugin:
 
-- `api_key` (string, required\*):
+- `api_key` (`string`) (required if `access_token` isn't used):
+
   The API Key for your custom app in your store.
 
-- `api_secret` (string, required\*):
+- `api_secret` (`string`) (required if `access_token` isn't used):
+
   The API Secret for your custom app in your store.
 
-- `access_token` (string, required if api_key/secret is not used):
+- `access_token` (`string`) (required if `api_key` & `api_secret` aren't used):
+
   An access token for your Shopify custom app. This is an alternative way of authenticating, use either this or the ones above.
 
-- `shop_url` (string, required): The URL of your Shopify store. Must start with `https://` and end with `.myshopify.com`.
+- `shop_url` (`string`) (required):
 
-- `api_version` (string, optional. Default: `2023-01`):
+  The URL of your Shopify store. Must start with `https://` and end with `.myshopify.com`.
+
+- `api_version` (string) (optional) (default: `2023-01`):
+
   The Shopify Admin API version to use. See [here](https://shopify.dev/docs/api/usage/versioning) for more information.
 
-- `timeout_secs` (integer in seconds, optional. Default: 10):
-  Timeout for requests against the Shopify Admin API.
+- `timeout_secs` (`integer`) (optional) (default: `10`):
 
-- `max_retries` (integer, optional. Default: 30):
+  Timeout (in seconds) for requests against the Shopify Admin API.
+
+- `max_retries` (`integer`) (optional) (default: `30`):
+
   Number of retries if a request was rate limited.
 
-- `page_size` (integer, optional. Default: 50):
+- `page_size` (`integer`) (optional) (default: `50`):
+
   Maximum number of items queried each request. Find an optimum value to balance amount of data fetched and requests timing out. Maximum value 250.
 
-- `concurrency` (integer, optional. Default: 1000):
+- `concurrency` (`integer`) (optional) (default: `1000`):
+
   Maximum number of concurrent requests to the Shopify Admin API.
-
-- **preview** `backend_options` (object) (default: not used)
-
-  Allowed properties are `table_name` and `connection`. Use this configuration to enable incremental syncs for supported tables. See more [here](/blog/proto-v3#unified-protocol).
-  Example
-
-  ```yaml
-  kind: source
-  spec:
-    name: shopify
-    path: cloudquery/shopify
-    version: "VERSION_SOURCE_SHOPIFY"
-    destinations: ["postgresql"]
-    spec:
-      backend_options:
-        table_name: "test_state_table"
-        connection: "@@plugins.postgresql.connection"
-  ```
 
 # Query Examples
 
