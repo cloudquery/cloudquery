@@ -9,7 +9,7 @@ spec:
   destinations:
     - "DESTINATION_NAME"
   backend_options:
-    table_name: "test_state_table"
+    table_name: "cq_state_homebrew"
     connection: "@@plugins.DESTINATION_NAME.connection"
   spec:
 ```

@@ -11,7 +11,7 @@ spec:
   skip_tables:
     - vercel_deployment_checks
   backend_options:
-    table_name: "test_state_table"
+    table_name: "cq_state_vercel"
     connection: "@@plugins.DESTINATION_NAME.connection"
 
   # Vercel specific configuration

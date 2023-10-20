@@ -12,7 +12,7 @@ spec:
     - stripe_treasury* # Needs sign-up at https://stripe.com/treasury
     - stripe_sigma_scheduled_query_runs # Live keys only
   backend_options:
-    table_name: "test_state_table"
+    table_name: "cq_state_stripe"
     connection: "@@plugins.DESTINATION_NAME.connection"
   # Stripe specific configuration
   spec:

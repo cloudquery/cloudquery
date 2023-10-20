@@ -8,7 +8,7 @@ spec:
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
   backend_options:
-    table_name: "test_state_table"
+    table_name: "cq_state_shopify"
     connection: "@@plugins.DESTINATION_NAME.connection"
   # Shopify specific configuration
   spec:

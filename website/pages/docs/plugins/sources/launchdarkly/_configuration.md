@@ -9,7 +9,7 @@ spec:
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
   backend_options:
-    table_name: "test_state_table"
+    table_name: "cq_state_launchdarkly"
     connection: "@@plugins.DESTINATION_NAME.connection"
   # LaunchDarkly specific configuration
   spec:

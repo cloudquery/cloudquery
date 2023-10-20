@@ -327,7 +327,7 @@ spec:
   tables: ["aws_cloudtrail_events"]
   destinations: ["postgresql"]
   backend_options:
-    table_name: "cq_aws_state"
+    table_name: "cq_state_aws"
     connection: "@@plugins.postgresql.connection"
   spec:
 ---
