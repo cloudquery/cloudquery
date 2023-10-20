@@ -110,12 +110,3 @@ Metric spec that is based on Google Analytics Data API v1
 
   Indicates if a metric is invisible in the report response.
   This allows creating more complex requests, while also not saving the intermediate results.
-
-## Advanced Configuration
-
-### Incremental Tables
-
-Google Analytics tables support incremental syncs.
-When incremental syncing is enabled, CloudQuery will only fetch new data since the last sync.
-
-For more information about managing state for incremental tables, see [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables).
