@@ -45,10 +45,10 @@ spec:
   path: cloudquery/aws
   version: "VERSION_SOURCE_AWS"
   destinations: ["postgresql"]
+  backend_options:
+    table_name: "test_state_table"
+    connection: "@@plugins.postgresql.connection"
   spec:
-    backend_options:
-      table_name: "test_state_table"
-      connection: "@@plugins.postgresql.connection"
     ...
 ---
 kind: destination
