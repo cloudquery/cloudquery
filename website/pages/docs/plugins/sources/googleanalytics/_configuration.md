@@ -7,6 +7,9 @@ spec:
   version: "VERSION_SOURCE_GOOGLEANALYTICS"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
+  backend_options:
+    table_name: "test_state_table"
+    connection: "@@plugins.DESTINATION_NAME.connection"
 
   # Google Analytics specific configuration
   spec:

@@ -7,6 +7,13 @@ The (top level) source spec section is described in the [Source Spec Reference](
 
 :configuration
 
+:::callout{type="info"}
+Note that if `backend_options` is omitted, by default no backend will be used.
+This will result in all items being fetched on every sync.
+
+For more information about managing state for incremental tables, see [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables).
+:::
+
 ## Google Analytics Spec
 
 This is the (nested) spec used by the Google Analytics source plugin:
@@ -39,24 +46,6 @@ This is the (nested) spec used by the Google Analytics source plugin:
 
   The best effort maximum number of Go routines to use.
   Lower this number to reduce memory usage.
-
-- **preview** `backend_options` (`object`) (default: not used)
-
-  Allowed properties are `table_name` and `connection`. Use this configuration to enable incremental syncs for supported tables. See more [here](/blog/proto-v3#unified-protocol).
-  Example
-
-  ```yaml
-  kind: source
-  spec:
-    name: googleanalytics
-    path: cloudquery/googleanalytics
-    version: "VERSION_SOURCE_GOOGLEANALYTICS"
-    destinations: ["postgresql"]
-    spec:
-      backend_options:
-        table_name: "test_state_table"
-        connection: "@@plugins.postgresql.connection"
-  ```
 
 ### Google Analytics OAuth spec
 
@@ -121,3 +110,12 @@ Metric spec that is based on Google Analytics Data API v1
 
   Indicates if a metric is invisible in the report response.
   This allows creating more complex requests, while also not saving the intermediate results.
+
+## Advanced Configuration
+
+### Incremental Tables
+
+Google Analytics tables support incremental syncs.
+When incremental syncing is enabled, CloudQuery will only fetch new data since the last sync.
+
+For more information about managing state for incremental tables, see [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables).
