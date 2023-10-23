@@ -3,8 +3,8 @@ kind: source
 # Common source-plugin configuration
 spec:
   name: render
-  path: cloudquery/render # Buy from here: https://cloudquery.io/integrations/render
-  registry: cloudquery
+  path: /path/to/downloaded/plugin # Buy from here: https://cloudquery.io/integrations/render
+  registry: local
   version: "PREMIUM"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
