@@ -3,7 +3,7 @@ kind: source
 # Common source-plugin configuration
 spec:
   name: vercel
-  path: cloudquery/vercel # Buy from here: https://cloudquery.io/integrations/vercle
+  path: cloudquery/vercel # Buy from here: https://cloudquery.io/integrations/vercel
   registry: cloudquery
   version: "PREMIUM"
   tables: ["*"]
