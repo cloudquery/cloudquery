@@ -64,7 +64,7 @@ require (
 	golang.org/x/sync v0.4.0
 	google.golang.org/api v0.128.0
 	google.golang.org/genproto v0.0.0-20230920204549-e6e6cdab5c13
-	google.golang.org/grpc v1.57.0
+	google.golang.org/grpc v1.58.2
 	google.golang.org/protobuf v1.31.0
 )
 
@@ -103,8 +103,8 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.15.0 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
-	github.com/envoyproxy/go-control-plane v0.11.1-0.20230524094728-9239064ad72f // indirect
-	github.com/envoyproxy/protoc-gen-validate v0.10.1 // indirect
+	github.com/envoyproxy/go-control-plane v0.11.1 // indirect
+	github.com/envoyproxy/protoc-gen-validate v1.0.2 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/flosch/pongo2/v4 v4.0.2 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect
@@ -196,7 +196,7 @@ require (
 	golang.org/x/crypto v0.14.0 // indirect
 	golang.org/x/mod v0.13.0 // indirect
 	golang.org/x/net v0.17.0 // indirect
-	golang.org/x/oauth2 v0.8.0 // indirect
+	golang.org/x/oauth2 v0.10.0 // indirect
 	golang.org/x/sys v0.13.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
@@ -204,14 +204,14 @@ require (
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20230920204549-e6e6cdab5c13 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20230920204549-e6e6cdab5c13 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20231002182017-d307bd883b97 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
 // TODO: remove once all updates are merged
-replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231014001145-dbcb1498009c
+replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231023001216-f46436fa3561
 
 // github.com/cloudquery/jsonschema @ cqmain
 replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20231018073309-6c617a23d42f
