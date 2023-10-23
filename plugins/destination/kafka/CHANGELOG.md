@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.2.13](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v3.2.12...plugins-destination-kafka-v3.2.13) (2023-10-23)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to f46436f ([#14803](https://github.com/cloudquery/cloudquery/issues/14803)) ([f5248d7](https://github.com/cloudquery/cloudquery/commit/f5248d749398ded6a50903e09ecabbb996e94a34))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.0 ([#14844](https://github.com/cloudquery/cloudquery/issues/14844)) ([f034696](https://github.com/cloudquery/cloudquery/commit/f0346967836a7fc6afffdded045257bb3caac79b))
+
 ## [3.2.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v3.2.11...plugins-destination-kafka-v3.2.12) (2023-10-19)
 
 

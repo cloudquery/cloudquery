@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.13](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.3.12...plugins-destination-mssql-v4.3.13) (2023-10-23)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to f46436f ([#14803](https://github.com/cloudquery/cloudquery/issues/14803)) ([f5248d7](https://github.com/cloudquery/cloudquery/commit/f5248d749398ded6a50903e09ecabbb996e94a34))
+
 ## [4.3.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.3.11...plugins-destination-mssql-v4.3.12) (2023-10-19)
 
 

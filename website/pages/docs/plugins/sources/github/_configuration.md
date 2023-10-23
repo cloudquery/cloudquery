@@ -8,6 +8,7 @@ spec:
   # Source spec section
   name: github
   path: cloudquery/github
+  registry: cloudquery
   version: "VERSION_SOURCE_GITHUB"
   tables: ["github_issues"]
   destinations: ["DESTINATION_NAME"]
