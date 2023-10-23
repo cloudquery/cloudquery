@@ -135,29 +135,6 @@ FROM
   jsonb_array_elements(lb.listener_descriptions) AS li;
 ```
 
-### Classic Load Balancers with HTTPS/SSL listeners should use a predefined security policy that has strong configuration
-
-```sql
-SELECT
-  'Classic Load Balancers with HTTPS/SSL listeners should use a predefined security policy that has strong configuration'
-    AS title,
-  lb.account_id,
-  lb.arn AS resource_id,
-  CASE
-  WHEN li->'Listener'->>'Protocol' IN ('HTTPS', 'SSL')
-  AND 'ELBSecurityPolicy-TLS-1-2-2017-01'
-    != ANY (
-        ARRAY (SELECT jsonb_array_elements_text(lb.policies->'OtherPolicies'))
-      )
-  THEN 'fail'
-  ELSE 'pass'
-  END
-    AS status
-FROM
-  aws_elbv1_load_balancers AS lb,
-  jsonb_array_elements(lb.listener_descriptions) AS li;
-```
-
 ### Find all Classic ELBs that are Internet Facing
 
 ```sql
