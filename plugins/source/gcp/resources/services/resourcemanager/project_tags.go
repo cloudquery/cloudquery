@@ -34,7 +34,6 @@ func projectTagValues() *schema.Table {
 		Name:        "gcp_resourcemanager_project_tag_values",
 		Description: `https://cloud.google.com/resource-manager/reference/rest/v3/tagValues/list`,
 		Resolver:    fetchProjectTagValues,
-		Multiplex:   client.ProjectMultiplexEnabledServices("resourcemanager.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.TagValue{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			{
