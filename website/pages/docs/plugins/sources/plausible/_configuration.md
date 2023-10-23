@@ -3,8 +3,8 @@ kind: source
 # Common source-plugin configuration
 spec:
   name: plausible
-  path: cloudquery/plausible # Buy from here: https://cloudquery.io/integrations/plausible
-  registry: cloudquery
+  path: /path/to/downloaded/plugin # Buy from here: https://cloudquery.io/integrations/plausible
+  registry: local
   version: "PREMIUM"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
