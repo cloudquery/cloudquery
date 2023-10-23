@@ -4,6 +4,7 @@ spec:
   # Source spec section
   name: k8s
   path: cloudquery/k8s
+  registry: cloudquery
   version: "VERSION_SOURCE_K8S"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]

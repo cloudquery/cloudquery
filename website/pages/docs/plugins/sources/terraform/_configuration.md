@@ -4,6 +4,7 @@ spec:
   # Source spec section
   name: terraform
   path: cloudquery/terraform
+  registry: cloudquery
   version: "VERSION_SOURCE_TERRAFORM"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]

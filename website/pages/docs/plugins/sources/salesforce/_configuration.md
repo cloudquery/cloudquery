@@ -3,6 +3,7 @@ kind: source
 spec:
   name: slack
   path: cloudquery/salesforce
+  registry: cloudquery
   version: "VERSION_SOURCE_SALESFORCE"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
