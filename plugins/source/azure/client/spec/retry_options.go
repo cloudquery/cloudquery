@@ -25,6 +25,9 @@ type RetryOptions struct {
 
 	// Described in the
 	// [Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L118).
+	//
+	// The default of `null` uses the [default status codes](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L109).
+	// An empty value disables retries for HTTP status codes.
 	StatusCodes []int `json:"status_codes" jsonschema:"uniqueItems=true"`
 }
 

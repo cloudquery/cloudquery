@@ -62,7 +62,7 @@
               },
               "type": "array",
               "uniqueItems": true,
-              "description": "Described in the\n[Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L118)."
+              "description": "Described in the\n[Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L118).\n\nThe default of `null` uses the [default status codes](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L109).\nAn empty value disables retries for HTTP status codes."
             },
             {
               "type": "null"

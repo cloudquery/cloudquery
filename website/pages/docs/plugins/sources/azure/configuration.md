@@ -52,22 +52,28 @@ This is the (nested) spec used by the Azure source plugin.
 
 * `max_retries` (`integer`) (default: `3`)
 
-Described in the [Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L89)
+Described in the
+[Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L90).
 
-* `try_timeout_seconds` (`integer`) (default: `0`)
+* `try_timeout` (`duration`) (default: `0s` (`0` seconds))
 
-Disabled by default, see [the Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L89) for more details
+Disabled by default. Described in the
+[Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L95).
 
-* `retry_delay_seconds` (`integer`) (default: `4`)
+* `retry_delay` (`duration`) (default: `4s` (`4` seconds))
 
-Described in the [Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L100)
+Described in the
+[Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L101).
 
-* `max_retry_delay_seconds` (`integer`) (default: `60`)
+* `max_retry_delay` (`duration`) (default: `60s` (`60` seconds))
 
-Described in the [Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L105)
+Described in the
+[Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L106).
 
-* `status_codes` (`[]integer`) (default: `nil`)
+* `status_codes` (`[]integer`) (default: `null`)
 
-Described in the [Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L108)
-The default of `nil` uses the [default status codes](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L109).
+Described in the
+[Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L118).
+
+The default of `null` uses the [default status codes](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L109).
 An empty value disables retries for HTTP status codes.
