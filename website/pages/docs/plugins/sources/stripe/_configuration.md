@@ -4,6 +4,7 @@ kind: source
 spec:
   name: stripe
   path: cloudquery/stripe
+  registry: cloudquery
   version: "VERSION_SOURCE_STRIPE"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]

@@ -3,7 +3,7 @@ kind: source
 spec:
   name: "homebrew"
   path: "cloudquery/homebrew"
-  registry: cloudquery
+  registry: "cloudquery"
   version: "VERSION_SOURCE_HOMEBREW"
   tables: ["*"]
   destinations:
