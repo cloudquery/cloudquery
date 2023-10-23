@@ -4,6 +4,7 @@ kind: source
 spec:
   name: cloudflare
   path: cloudquery/cloudflare
+  registry: cloudquery
   version: "VERSION_SOURCE_CLOUDFLARE"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]

@@ -2,8 +2,8 @@
 kind: source
 spec:
   name: "postgresql"
-  registry: "github"
   path: "cloudquery/postgresql"
+  registry: "cloudquery"
   version: "VERSION_SOURCE_POSTGRESQL"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
