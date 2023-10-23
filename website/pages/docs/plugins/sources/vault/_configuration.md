@@ -4,6 +4,7 @@ kind: source
 spec:
   name: vault
   path: cloudquery/vault
+  registry: cloudquery
   version: "VERSION_SOURCE_VAULT"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
