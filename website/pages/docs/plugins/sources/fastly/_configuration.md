@@ -6,6 +6,7 @@ kind: source
 spec:
   name: fastly
   path: cloudquery/fastly
+  registry: cloudquery
   version: "VERSION_SOURCE_FASTLY"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
