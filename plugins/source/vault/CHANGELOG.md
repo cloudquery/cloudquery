@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-vault-v1.0.6...plugins-source-vault-v1.0.7) (2023-10-23)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to f46436f ([#14803](https://github.com/cloudquery/cloudquery/issues/14803)) ([f5248d7](https://github.com/cloudquery/cloudquery/commit/f5248d749398ded6a50903e09ecabbb996e94a34))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.10 ([#14773](https://github.com/cloudquery/cloudquery/issues/14773)) ([98f3e2c](https://github.com/cloudquery/cloudquery/commit/98f3e2c73c94b65f6ae30a55663b6445ebf1146a))
+
 ## [1.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-vault-v1.0.5...plugins-source-vault-v1.0.6) (2023-10-20)
 
 
