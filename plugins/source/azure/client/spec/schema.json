@@ -3,45 +3,51 @@
   "$id": "https://github.com/cloudquery/cloudquery/plugins/source/azure/client/spec/spec",
   "$ref": "#/$defs/Spec",
   "$defs": {
+    "Duration": {
+      "type": "string",
+      "pattern": "^[-+]?([0-9]*(\\.[0-9]*)?[a-z]+)+$",
+      "title": "CloudQuery configtype.Duration"
+    },
     "RetryOptions": {
       "properties": {
         "max_retries": {
           "oneOf": [
             {
-              "type": "integer"
+              "type": "integer",
+              "description": "Described in the\n[Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L90)."
             },
             {
               "type": "null"
             }
           ]
         },
-        "try_timeout_seconds": {
+        "try_timeout": {
           "oneOf": [
             {
-              "type": "integer",
-              "minimum": 0
+              "$ref": "#/$defs/Duration",
+              "description": "Disabled by default. Described in the\n[Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L95)."
             },
             {
               "type": "null"
             }
           ]
         },
-        "retry_delay_seconds": {
+        "retry_delay": {
           "oneOf": [
             {
-              "type": "integer",
-              "minimum": 0
+              "$ref": "#/$defs/Duration",
+              "description": "Described in the\n[Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L101)."
             },
             {
               "type": "null"
             }
           ]
         },
-        "max_retry_delay_seconds": {
+        "max_retry_delay": {
           "oneOf": [
             {
-              "type": "integer",
-              "minimum": 0
+              "$ref": "#/$defs/Duration",
+              "description": "Described in the\n[Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L106)."
             },
             {
               "type": "null"
@@ -55,7 +61,8 @@
                 "type": "integer"
               },
               "type": "array",
-              "uniqueItems": true
+              "uniqueItems": true,
+              "description": "Described in the\n[Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L118)."
             },
             {
               "type": "null"
@@ -64,7 +71,8 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "CloudQuery Azure source plugin retry options."
     },
     "Spec": {
       "properties": {
@@ -135,7 +143,7 @@
           "oneOf": [
             {
               "$ref": "#/$defs/RetryOptions",
-              "description": "Retry options to pass to the Azure Go SDK, see more details here https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L86"
+              "description": "Retry options to pass to the Azure Go SDK, see more details\n[here](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L86)."
             },
             {
               "type": "null"
