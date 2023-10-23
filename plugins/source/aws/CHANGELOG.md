@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.16.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.15.2...plugins-source-aws-v22.16.0) (2023-10-23)
+
+
+### Features
+
+* Add `policy` column to `aws_efs_filesystems` table ([#14672](https://github.com/cloudquery/cloudquery/issues/14672)) ([833b9c2](https://github.com/cloudquery/cloudquery/commit/833b9c2d1c7be30f33888eca64fa08a8b0498ed7))
+
+
+### Bug Fixes
+
+* Changed the condition to check for policies in policies table ([#13935](https://github.com/cloudquery/cloudquery/issues/13935)) ([f136331](https://github.com/cloudquery/cloudquery/commit/f136331250dd32a50b8437daf6ee16925e559de5))
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to f46436f ([#14803](https://github.com/cloudquery/cloudquery/issues/14803)) ([f5248d7](https://github.com/cloudquery/cloudquery/commit/f5248d749398ded6a50903e09ecabbb996e94a34))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.10 ([#14773](https://github.com/cloudquery/cloudquery/issues/14773)) ([98f3e2c](https://github.com/cloudquery/cloudquery/commit/98f3e2c73c94b65f6ae30a55663b6445ebf1146a))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.11 ([#14870](https://github.com/cloudquery/cloudquery/issues/14870)) ([4fa917d](https://github.com/cloudquery/cloudquery/commit/4fa917d5085b6d99e7818413e507c3fbb32be523))
+* Don't call GetFunctionCodeSigningConfig or GetRuntimeManagementConfig on Lambdas packaged as Images (`aws_lambda_functions`) ([#14729](https://github.com/cloudquery/cloudquery/issues/14729)) ([6fc30d3](https://github.com/cloudquery/cloudquery/commit/6fc30d3f82720479faee06ffa2b2a09cb0e98a9c))
+* Handle `NotFound` error when syncing Subscriptions with deleted topic (`aws_sns_subscriptions`) ([#14771](https://github.com/cloudquery/cloudquery/issues/14771)) ([6fcf43d](https://github.com/cloudquery/cloudquery/commit/6fcf43d0a28e54d0eaf679b41d5475b319b06730))
+
 ## [22.15.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.15.1...plugins-source-aws-v22.15.2) (2023-10-20)
 
 
