@@ -4,6 +4,7 @@ kind: source
 spec:
   name: shopify
   path: cloudquery/shopify
+  registry: cloudquery
   version: "VERSION_SOURCE_SHOPIFY"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]

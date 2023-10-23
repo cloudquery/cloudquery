@@ -4,6 +4,7 @@ spec:
   # Source spec section
   name: "datadog"
   path: "cloudquery/datadog"
+  registry: "cloudquery"
   version: "VERSION_SOURCE_DATADOG"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]

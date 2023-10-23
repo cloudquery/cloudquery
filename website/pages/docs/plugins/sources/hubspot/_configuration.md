@@ -3,6 +3,7 @@ kind: source
 spec:
   name: "hubspot"
   path: cloudquery/hubspot
+  registry: cloudquery
   version: "VERSION_SOURCE_HUBSPOT"
   destinations: ["DESTINATION_NAME"]
   tables: ["*"]
