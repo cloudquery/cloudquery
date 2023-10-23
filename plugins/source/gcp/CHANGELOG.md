@@ -5,6 +5,15 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.8.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.8.1...plugins-source-gcp-v9.8.2) (2023-10-23)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to f46436f ([#14803](https://github.com/cloudquery/cloudquery/issues/14803)) ([f5248d7](https://github.com/cloudquery/cloudquery/commit/f5248d749398ded6a50903e09ecabbb996e94a34))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.10 ([#14773](https://github.com/cloudquery/cloudquery/issues/14773)) ([98f3e2c](https://github.com/cloudquery/cloudquery/commit/98f3e2c73c94b65f6ae30a55663b6445ebf1146a))
+* **services:** Update GCP Services ([#14824](https://github.com/cloudquery/cloudquery/issues/14824)) ([48386a0](https://github.com/cloudquery/cloudquery/commit/48386a015be8948baea03f79e92141e767d0e211))
+
 ## [9.8.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.8.0...plugins-source-gcp-v9.8.1) (2023-10-19)
 
 
