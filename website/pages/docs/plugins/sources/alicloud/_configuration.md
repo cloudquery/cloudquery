@@ -3,6 +3,7 @@ kind: source
 spec:
   name: "alicloud"
   path: "cloudquery/alicloud"
+  registry: "cloudquery"
   version: "VERSION_SOURCE_ALICLOUD"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]

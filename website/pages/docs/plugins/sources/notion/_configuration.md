@@ -3,6 +3,7 @@ kind: source
 spec:
   name: "notion"
   path: "cloudquery/notion"
+  registry: "cloudquery"
   version: "VERSION_SOURCE_NOTION"
   destinations:
     - "postgresql"

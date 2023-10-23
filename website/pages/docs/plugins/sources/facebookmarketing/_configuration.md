@@ -4,6 +4,7 @@ spec:
   # Source spec section
   name: facebookmarketing
   path: cloudquery/facebookmarketing
+  registry: cloudquery
   version: "VERSION_SOURCE_FACEBOOKMARKETING"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
