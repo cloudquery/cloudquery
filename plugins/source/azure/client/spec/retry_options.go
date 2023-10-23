@@ -1,8 +1,9 @@
 package spec
 
 import (
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/cloudquery/plugin-sdk/v4/configtype"
 )
 
 // CloudQuery Azure source plugin retry options.
@@ -13,15 +14,15 @@ type RetryOptions struct {
 
 	// Disabled by default. Described in the
 	// [Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L95).
-	TryTimeout *configtype.Duration `json:"try_timeout"`
+	TryTimeoutSeconds *int `json:"try_timeout_seconds" jsonschema:"minimum=0"`
 
 	// Described in the
 	// [Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L101).
-	RetryDelay *configtype.Duration `json:"retry_delay"`
+	RetryDelaySeconds *int `json:"retry_delay_seconds" jsonschema:"minimum=0"`
 
 	// Described in the
 	// [Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L106).
-	MaxRetryDelay *configtype.Duration `json:"max_retry_delay"`
+	MaxRetryDelaySeconds *int `json:"max_retry_delay_seconds" jsonschema:"minimum=0"`
 
 	// Described in the
 	// [Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L118).
@@ -39,14 +40,14 @@ func (r *RetryOptions) FillIn(options *policy.RetryOptions) {
 	if r.MaxRetries != nil {
 		options.MaxRetries = *r.MaxRetries
 	}
-	if r.TryTimeout != nil {
-		options.TryTimeout = r.TryTimeout.Duration()
+	if r.TryTimeoutSeconds != nil {
+		options.TryTimeout = time.Duration(*r.TryTimeoutSeconds) * time.Second
 	}
-	if r.RetryDelay != nil {
-		options.RetryDelay = r.RetryDelay.Duration()
+	if r.RetryDelaySeconds != nil {
+		options.RetryDelay = time.Duration(*r.RetryDelaySeconds) * time.Second
 	}
-	if r.MaxRetryDelay != nil {
-		options.MaxRetryDelay = r.MaxRetryDelay.Duration()
+	if r.MaxRetryDelaySeconds != nil {
+		options.MaxRetryDelay = time.Duration(*r.MaxRetryDelaySeconds) * time.Second
 	}
 	if r.StatusCodes != nil {
 		options.StatusCodes = r.StatusCodes

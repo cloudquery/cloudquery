@@ -55,17 +55,17 @@ This is the (nested) spec used by the Azure source plugin.
 Described in the
 [Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L90).
 
-* `try_timeout` (`duration`) (default: `0s` (`0` seconds))
+* `try_timeout_seconds` (`integer`) (default: `0`)
 
 Disabled by default. Described in the
 [Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L95).
 
-* `retry_delay` (`duration`) (default: `4s` (`4` seconds))
+* `retry_delay_seconds` (`integer`) (default: `4`)
 
 Described in the
 [Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L101).
 
-* `max_retry_delay` (`duration`) (default: `60s` (`60` seconds))
+* `max_retry_delay_seconds` (`integer`) (default: `60`)
 
 Described in the
 [Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L106).

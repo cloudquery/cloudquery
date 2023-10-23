@@ -18,7 +18,7 @@ spec:
     # oidc_token: ""
     # retry_options:
     #   max_retries: 3
-    #   try_timeout: 0s
-    #   retry_delay: 4s
-    #   max_retry_delay: 60s
+    #   try_timeout_seconds: 0
+    #   retry_delay_seconds: 4
+    #   max_retry_delay_seconds: 60
 ```
