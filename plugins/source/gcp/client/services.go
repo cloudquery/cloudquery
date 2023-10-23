@@ -217,7 +217,6 @@ var GcpServices = map[string]bool{
 	"recommender.googleapis.com":                      true,
 	"redis.googleapis.com":                            true,
 	"reseller.googleapis.com":                         true,
-	"resourcemanager.googleapis.com":                  true,
 	"resourcesettings.googleapis.com":                 true,
 	"retail.googleapis.com":                           true,
 	"run.googleapis.com":                              true,
