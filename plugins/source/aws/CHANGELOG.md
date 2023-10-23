@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [22.16.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.15.2...plugins-source-aws-v22.16.0) (2023-10-23)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_efs_filesystems`: column added with name `file_system_policy` and type `utf8`
+
 ### Features
 
 * Add `policy` column to `aws_efs_filesystems` table ([#14672](https://github.com/cloudquery/cloudquery/issues/14672)) ([833b9c2](https://github.com/cloudquery/cloudquery/commit/833b9c2d1c7be30f33888eca64fa08a8b0498ed7))
