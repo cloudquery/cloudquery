@@ -3,8 +3,8 @@ kind: source
 # Common source-plugin configuration
 spec:
   name: mixpanel
-  path: cloudquery/mixpanel # Buy from here: https://cloudquery.io/integrations/mixpanel
-  registry: cloudquery
+  path: /path/to/downloaded/plugin # Buy from here: https://cloudquery.io/integrations/mixpanel
+  registry: local
   version: "PREMIUM"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
