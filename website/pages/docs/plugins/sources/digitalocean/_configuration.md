@@ -4,6 +4,7 @@ spec:
   # Source spec section
   name: digitalocean
   path: cloudquery/digitalocean
+  registry: cloudquery
   version: "VERSION_SOURCE_DIGITALOCEAN"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]

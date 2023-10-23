@@ -4,6 +4,7 @@ kind: source
 spec:
   name: gitlab
   path: cloudquery/gitlab
+  registry: cloudquery
   version: "VERSION_SOURCE_GITLAB"
   tables: ["gitlab_users"]
   destinations: ["DESTINATION_NAME"]
