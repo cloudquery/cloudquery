@@ -38,82 +38,70 @@ func TestRetryOptionsJSONSchema(t *testing.T) {
 			Spec: `{"max_retries":100}`,
 		},
 		{
-			Name: "empty try_timeout",
+			Name: "null try_timeout_seconds",
+			Spec: `{"try_timeout_seconds":null}`,
+		},
+		{
+			Name: "bad try_timeout_seconds",
 			Err:  true,
-			Spec: `{"try_timeout":""}`,
+			Spec: `{"try_timeout_seconds":"abc"}`,
 		},
 		{
-			Name: "null try_timeout",
-			Spec: `{"try_timeout":null}`,
+			Name: "zero try_timeout_seconds",
+			Spec: `{"try_timeout_seconds":0}`,
 		},
 		{
-			Name: "bad try_timeout",
+			Name: "positive try_timeout_seconds",
+			Spec: `{"try_timeout_seconds":100}`,
+		},
+		{
+			Name: "negative try_timeout_seconds",
 			Err:  true,
-			Spec: `{"try_timeout":123}`,
+			Spec: `{"try_timeout_seconds":-100}`,
 		},
 		{
-			Name: "zero try_timeout",
-			Spec: `{"try_timeout":"0s"}`,
+			Name: "null retry_delay_seconds",
+			Spec: `{"retry_delay_seconds":null}`,
 		},
 		{
-			Name: "positive try_timeout",
-			Spec: `{"try_timeout":"100s"}`,
-		},
-		{
-			Name: "negative try_timeout",
-			Spec: `{"try_timeout":"-100s"}`,
-		},
-		{
-			Name: "empty retry_delay",
+			Name: "bad retry_delay_seconds",
 			Err:  true,
-			Spec: `{"retry_delay":""}`,
+			Spec: `{"retry_delay_seconds":"abc"}`,
 		},
 		{
-			Name: "null retry_delay",
-			Spec: `{"retry_delay":null}`,
+			Name: "zero retry_delay_seconds",
+			Spec: `{"retry_delay_seconds":0}`,
 		},
 		{
-			Name: "bad retry_delay",
+			Name: "positive retry_delay_seconds",
+			Spec: `{"retry_delay_seconds":100}`,
+		},
+		{
+			Name: "negative retry_delay_seconds",
 			Err:  true,
-			Spec: `{"retry_delay":123}`,
+			Spec: `{"retry_delay_seconds":-100}`,
 		},
 		{
-			Name: "zero retry_delay",
-			Spec: `{"retry_delay":"0s"}`,
+			Name: "null max_retry_delay_seconds",
+			Spec: `{"max_retry_delay_seconds":null}`,
 		},
 		{
-			Name: "positive retry_delay",
-			Spec: `{"retry_delay":"100s"}`,
-		},
-		{
-			Name: "negative retry_delay",
-			Spec: `{"retry_delay":"-100s"}`,
-		},
-		{
-			Name: "empty max_retry_delay",
+			Name: "bad max_retry_delay_seconds",
 			Err:  true,
-			Spec: `{"max_retry_delay":""}`,
+			Spec: `{"max_retry_delay_seconds":"abc"}`,
 		},
 		{
-			Name: "null max_retry_delay",
-			Spec: `{"max_retry_delay":null}`,
+			Name: "zero max_retry_delay_seconds",
+			Spec: `{"max_retry_delay_seconds":0}`,
 		},
 		{
-			Name: "bad max_retry_delay",
+			Name: "positive max_retry_delay_seconds",
+			Spec: `{"max_retry_delay_seconds":100}`,
+		},
+		{
+			Name: "negative max_retry_delay_seconds",
 			Err:  true,
-			Spec: `{"max_retry_delay":123}`,
-		},
-		{
-			Name: "zero max_retry_delay",
-			Spec: `{"max_retry_delay":"0s"}`,
-		},
-		{
-			Name: "positive max_retry_delay",
-			Spec: `{"max_retry_delay":"100s"}`,
-		},
-		{
-			Name: "negative max_retry_delay",
-			Spec: `{"max_retry_delay":"-100s"}`,
+			Spec: `{"max_retry_delay_seconds":-100}`,
 		},
 		{
 			Name: "empty status_codes",
