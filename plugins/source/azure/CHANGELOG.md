@@ -5,6 +5,15 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v10.1.0...plugins-source-azure-v10.1.1) (2023-10-23)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to f46436f ([#14803](https://github.com/cloudquery/cloudquery/issues/14803)) ([f5248d7](https://github.com/cloudquery/cloudquery/commit/f5248d749398ded6a50903e09ecabbb996e94a34))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.10 ([#14773](https://github.com/cloudquery/cloudquery/issues/14773)) ([98f3e2c](https://github.com/cloudquery/cloudquery/commit/98f3e2c73c94b65f6ae30a55663b6445ebf1146a))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.11 ([#14870](https://github.com/cloudquery/cloudquery/issues/14870)) ([4fa917d](https://github.com/cloudquery/cloudquery/commit/4fa917d5085b6d99e7818413e507c3fbb32be523))
+
 ## [10.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v10.0.0...plugins-source-azure-v10.1.0) (2023-10-20)
 
 
