@@ -5,7 +5,7 @@ kind: destination
 spec:
   name: sqlite
   path: cloudquery/sqlite
-  registry: cloudquery
+  registry: "cloudquery"
   version: "VERSION_DESTINATION_SQLITE"
   spec:
     connection_string: ./db.sql

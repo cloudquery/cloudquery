@@ -3,8 +3,8 @@ kind: source
 # Common source-plugin configuration
 spec:
   name: launchdarkly
-  path: /path/to/downloaded/plugin # Buy from here: https://cloudquery.io/integrations/launchdakrly
-  registry: local
+  path: cloudquery/launchdarkly # Buy from here: https://cloudquery.io/integrations/launchdakrly
+  registry: cloudquery
   version: "PREMIUM"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]

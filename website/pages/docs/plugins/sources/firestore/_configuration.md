@@ -4,6 +4,7 @@ spec:
   # Source spec section
   name: firestore
   path: cloudquery/firestore
+  registry: cloudquery
   version: "VERSION_SOURCE_FIRESTORE"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]

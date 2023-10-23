@@ -2,8 +2,8 @@
 kind: source
 spec:
   name: "jira"
-  path: /path/to/downloaded/plugin # Jira is a premium plugin: https://cloudquery.io/buy/jira
-  registry: local
+  path: "cloudquery/jira" # Jira is a premium plugin: https://cloudquery.io/buy/jira
+  registry: "cloudquery"
   version: "VERSION_SOURCE_JIRA"
   destinations: ["DESTINATION_NAME"]
   tables: ["*"]

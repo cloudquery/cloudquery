@@ -2,8 +2,8 @@
 kind: source
 spec: # Common source spec section
   name: heroku
-  path: /path/to/downloaded/plugin # Buy from here: https://cloudquery.io/integrations/heroku
-  registry: local
+  path: cloudquery/heroku # Buy from here: https://cloudquery.io/integrations/heroku
+  registry: cloudquery
   version: "PREMIUM"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]

@@ -4,6 +4,7 @@ kind: source
 spec:
   name: azuredevops
   path: cloudquery/azuredevops
+  registry: cloudquery
   version: "VERSION_SOURCE_AZUREDEVOPS"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]

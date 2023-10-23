@@ -4,6 +4,7 @@ kind: source
 spec:
   name: googleanalytics
   path: cloudquery/googleanalytics
+  registry: cloudquery
   version: "VERSION_SOURCE_GOOGLEANALYTICS"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]

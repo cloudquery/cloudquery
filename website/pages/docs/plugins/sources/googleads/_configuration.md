@@ -3,8 +3,8 @@ kind: source
 # Common source-plugin configuration
 spec:
   name: googleads
-  path: /path/to/downloaded/plugin # Buy from here: https://cloudquery.io/integrations/googleads
-  registry: local
+  path: cloudquery/googleads # Buy from here: https://cloudquery.io/integrations/googleads
+  registry: cloudquery
   version: "PREMIUM"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]

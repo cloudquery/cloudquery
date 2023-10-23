@@ -2,8 +2,8 @@
 kind: source
 spec:
   name: file
-  path: /path/to/downloaded/plugin # Buy from here: https://cloudquery.io/integrations/file
-  registry: local
+  path: cloudquery/file # Buy from here: https://cloudquery.io/integrations/file
+  registry: cloudquery
   version: "PREMIUM"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
