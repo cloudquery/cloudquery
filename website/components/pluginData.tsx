@@ -299,6 +299,15 @@ export const ALL_PLUGINS: Plugin[] = [
     category: "databases",
   },
   {
+    name: "Notion",
+    logo: "/images/logos/plugins/notion.svg",
+    logoDark: "/images/logos/plugins/notion.svg",
+    id: "notion",
+    kind: "source",
+    availability: "free",
+    category: "other",
+  },
+  {
     name: "Okta",
     logo: "/images/logos/plugins/okta.svg",
     id: "okta",
@@ -445,7 +454,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logoDark: "/images/logos/plugins/tailscale-dark.svg",
     id: "tailscale",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
     buyLinks: {
       standard: "https://buy.stripe.com/14k8wAdap49hbGE6rR",
@@ -466,7 +475,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logoDark: "/images/logos/plugins/vercel-dark.svg",
     id: "vercel",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
     buyLinks: {
       standard: "https://buy.stripe.com/bIY7swc6lcFN9yw5nP",
@@ -813,7 +822,7 @@ export const ALL_PLUGINS: Plugin[] = [
   },
   {
     name: "HashiCorp Vault",
-    id: "hashicorp-vault",
+    id: "vault",
     kind: "source",
     availability: "free",
     category: "cloud-infrastructure",

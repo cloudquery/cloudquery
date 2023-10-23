@@ -16,12 +16,12 @@ func buildNotebooksMock(t *testing.T, ctrl *gomock.Controller) client.DatadogSer
 		NotebooksAPI: m,
 	}
 
-	var n datadogV1.NotebooksResponse
+	var n datadogV1.NotebooksResponseData
 	err := faker.FakeObject(&n)
 	if err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListNotebooks(gomock.Any()).Return(n, nil, nil)
+	m.EXPECT().ListNotebooksWithPagination(gomock.Any()).Return(client.MockPaginatedResponse(n))
 
 	return services
 }

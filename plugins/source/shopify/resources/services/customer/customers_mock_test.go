@@ -17,7 +17,7 @@ func createCustomers(router *mux.Router) error {
 		return err
 	}
 
-	router.HandleFunc("/admin/api/"+shopify.APIVersion+"/customers.json", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/admin/api/"+shopify.DefaultAPIVersion+"/customers.json", func(w http.ResponseWriter, r *http.Request) {
 		list := shopify.GetCustomersResponse{
 			Customers: []shopify.Customer{sc},
 			PageSize:  1,

@@ -52,8 +52,8 @@ WITH
         account_id,
         network_acl_id AS resource_id,
         CASE
-        WHEN (a->>'NetworkAclAssociationId') IS NULL THEN 'pass'
-        ELSE 'fail'
+        WHEN (a->>'NetworkAclAssociationId') IS NULL THEN 'fail'
+        ELSE 'pass'
         END
           AS status
       FROM

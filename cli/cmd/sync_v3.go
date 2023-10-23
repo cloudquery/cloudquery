@@ -239,6 +239,21 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 					return handleSendError(err, writeClients[i], "insert")
 				}
 			}
+		case *plugin.Sync_Response_DeleteRecord:
+			for i := range destinationsPbClients {
+				wr := &plugin.Write_Request{}
+				// Transformations aren't required here because DeleteRecord is only in V3
+				wr.Message = &plugin.Write_Request_DeleteRecord{
+					DeleteRecord: &plugin.Write_MessageDeleteRecord{
+						TableName:      m.DeleteRecord.TableName,
+						TableRelations: m.DeleteRecord.TableRelations,
+						WhereClause:    m.DeleteRecord.WhereClause,
+					},
+				}
+				if err := writeClients[i].Send(wr); err != nil {
+					return handleSendError(err, writeClients[i], "delete")
+				}
+			}
 		case *plugin.Sync_Response_MigrateTable:
 			sc, err := plugin.NewSchemaFromBytes(m.MigrateTable.Table)
 			if err != nil {

@@ -4,15 +4,16 @@ import (
 	"fmt"
 	"strings"
 
+	"slices"
+
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"golang.org/x/exp/slices"
 )
 
 const (
-	migrateShort   = "Run migration for source and destination plugins specified in configuration"
+	migrateShort   = "Update schema of your destinations based on the latest changes in sources from your configuration"
 	migrateExample = `# Run migration for plugins specified in directory
 cloudquery migrate ./directory
 # Run migration for plugins specified in directory and config files

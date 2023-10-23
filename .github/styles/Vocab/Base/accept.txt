@@ -1,5 +1,6 @@
 ACL
 ACLs
+Addon
 Airbyte
 Airtable
 Ajv
@@ -14,6 +15,7 @@ ARNs
 Atlassian
 autoscaling
 Autoscaling
+AutoScaling
 aws
 AWS
 backend_spec
@@ -25,10 +27,12 @@ bool
 browsable
 bugfix
 Callout
+callout
 CCPA's
 Chargebee
 cis
 CIS
+Claeyssens
 CloudFormation
 Cloudinary
 cloudquery
@@ -69,6 +73,7 @@ Detrack
 discoverability
 Docusaurus
 Dockerfile
+Dunelm
 ELB
 ELBs
 Embeddable
@@ -92,6 +97,8 @@ Firestore
 Fivetran
 format_spec
 Gandi
+Gagan
+Gaurav
 gcp
 GCP
 gists

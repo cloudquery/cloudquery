@@ -6,10 +6,7 @@ const pluginTitle = (plugin) => title(plugin.replace(/-/g, " "));
 
 const getData = (pluginsDir, plugin) => {
   try {
-    const overviewFile = fs.readFileSync(
-      `${pluginsDir}/${plugin}/overview.mdx`,
-      "utf-8"
-    );
+    const overviewFile = fs.readFileSync(`${pluginsDir}/${plugin}/overview.md`);
     return {
       id: plugin,
       name: pluginTitle(plugin),

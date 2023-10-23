@@ -28,6 +28,11 @@ func buildEfsFilesystemsMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 	m.EXPECT().DescribeBackupPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&b, nil)
 
+	p := efs.DescribeFileSystemPolicyOutput{}
+	require.NoError(t, faker.FakeObject(&p))
+	m.EXPECT().DescribeFileSystemPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&p, nil)
+
 	return client.Services{
 		Efs: m,
 	}

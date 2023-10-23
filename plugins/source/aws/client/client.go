@@ -11,6 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/aws/smithy-go/logging"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/state"
 	"github.com/rs/zerolog"
@@ -32,7 +33,7 @@ type Client struct {
 	LanguageCode         string
 	Backend              state.Client
 	specificRegions      bool
-	Spec                 *Spec
+	Spec                 *spec.Spec
 	accountMutex         map[string]*sync.Mutex
 }
 
@@ -88,13 +89,13 @@ func (s *ServicesManager) InitServicesForPartitionAccount(partition, accountId s
 	s.services[partition][accountId].Regions = funk.UniqString(append(s.services[partition][accountId].Regions, svcs.Regions...))
 }
 
-func NewAwsClient(logger zerolog.Logger, spec *Spec) Client {
+func NewAwsClient(logger zerolog.Logger, s *spec.Spec) Client {
 	return Client{
 		ServicesManager: &ServicesManager{
 			services: ServicesPartitionAccountMap{},
 		},
 		logger:       logger,
-		Spec:         spec,
+		Spec:         s,
 		accountMutex: map[string]*sync.Mutex{},
 	}
 }
@@ -200,14 +201,14 @@ func (c *Client) withLanguageCode(code string) *Client {
 }
 
 // Configure is the entrypoint into configuring the AWS plugin. It is called by the plugin initialization in resources/plugin/aws.go
-func Configure(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMeta, error) {
-	if err := spec.Validate(); err != nil {
+func Configure(ctx context.Context, logger zerolog.Logger, s spec.Spec) (schema.ClientMeta, error) {
+	if err := s.Validate(); err != nil {
 		return nil, fmt.Errorf("spec validation failed: %w", err)
 	}
-	spec.SetDefaults()
+	s.SetDefaults()
 
-	if spec.TableOptions != nil {
-		structVal := reflect.ValueOf(*spec.TableOptions)
+	if s.TableOptions != nil {
+		structVal := reflect.ValueOf(*s.TableOptions)
 		fieldNum := structVal.NumField()
 		for i := 0; i < fieldNum; i++ {
 			field := structVal.Field(i)
@@ -218,7 +219,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.Cl
 		}
 	}
 
-	client := NewAwsClient(logger, &spec)
+	client := NewAwsClient(logger, &s)
 
 	var adminAccountSts AssumeRoleAPIClient
 
@@ -231,11 +232,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.Cl
 		}
 	}
 	if len(client.Spec.Accounts) == 0 {
-		client.Spec.Accounts = []Account{
-			{
-				ID: defaultVar,
-			},
-		}
+		client.Spec.Accounts = []spec.Account{{ID: defaultVar}}
 	}
 
 	initLock := sync.Mutex{}

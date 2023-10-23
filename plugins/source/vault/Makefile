@@ -25,12 +25,12 @@ gen-docs:
 	go run main.go doc --format json docs
 	rm docs/__tables.json
 
-	rm -rf ../../../website/tables/hashicorp-vault
-	go run main.go doc ../../../website/tables/hashicorp-vault
-	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/hashicorp-vault/README.md
-	mv ../../../website/tables/hashicorp-vault/README.md ../../../website/pages/docs/plugins/sources/hashicorp-vault/tables.md
-	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/hashicorp-vault/*.md
-	rm -rf ../../../website/tables/hashicorp-vault/*.bak
+	rm -rf ../../../website/tables/vault
+	go run main.go doc ../../../website/tables/vault
+	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/vault/README.md
+	mv ../../../website/tables/vault/README.md ../../../website/pages/docs/plugins/sources/vault/tables.md
+	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/vault/*.md
+	rm -rf ../../../website/tables/vault/*.bak
 
 # All gen targets
 .PHONY: gen

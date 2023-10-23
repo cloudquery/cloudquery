@@ -4,8 +4,8 @@ select distinct
     network_acl_id as resource_id,
     case when
         a->>'NetworkAclAssociationId' is null
-        then 'pass'
-        else 'fail'
+        then 'fail'
+        else 'pass'
     end as status
 from aws_ec2_network_acls left join jsonb_array_elements(aws_ec2_network_acls.associations) as a on true
         )

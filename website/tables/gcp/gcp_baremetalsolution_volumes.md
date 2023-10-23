@@ -23,8 +23,10 @@ The following tables depend on gcp_baremetalsolution_volumes:
 |storage_type|`utf8`|
 |state|`utf8`|
 |requested_size_gib|`int64`|
+|originally_requested_size_gib|`int64`|
 |current_size_gib|`int64`|
 |emergency_size_gib|`int64`|
+|max_size_gib|`int64`|
 |auto_grown_size_gib|`int64`|
 |remaining_space_gib|`int64`|
 |snapshot_reservation_detail|`json`|
@@ -32,3 +34,11 @@ The following tables depend on gcp_baremetalsolution_volumes:
 |labels|`json`|
 |snapshot_enabled|`bool`|
 |pod|`utf8`|
+|protocol|`utf8`|
+|boot_volume|`bool`|
+|performance_tier|`utf8`|
+|notes|`utf8`|
+|workload_profile|`utf8`|
+|expire_time|`timestamp[us, tz=UTC]`|
+|instances|`list<item: utf8, nullable>`|
+|attached|`bool`|

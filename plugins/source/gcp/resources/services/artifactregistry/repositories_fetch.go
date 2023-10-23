@@ -5,8 +5,8 @@ import (
 
 	"google.golang.org/api/iterator"
 
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/cloudquery/plugins/source/gcp/client"
 
 	v1cloud "cloud.google.com/go/artifactregistry/apiv1"
 	pb "cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"

@@ -1,0 +1,24 @@
+```yaml copy
+kind: source
+# Common source-plugin configuration
+spec:
+  name: snyk
+  path: cloudquery/snyk
+  registry: cloudquery
+  version: "VERSION_SOURCE_SNYK"
+  tables: ["*"]
+  destinations: ["DESTINATION_NAME"]
+
+  # Snyk specific configuration
+  spec:
+    api_key: "<YOUR_API_KEY_HERE>"
+    organizations:
+    - "<YOUR_ORG_1>"
+    - "<YOUR_ORG_2>"
+    endpoint_url: "<YOUR_BASE_URL>"
+    table_options:
+      snyk_reporting_issues:
+        period: 30d
+
+    # Optional parameters:
+```

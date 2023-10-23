@@ -17,7 +17,7 @@ func createOrders(router *mux.Router) error {
 		return err
 	}
 
-	router.HandleFunc("/admin/api/"+shopify.APIVersion+"/orders.json", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/admin/api/"+shopify.DefaultAPIVersion+"/orders.json", func(w http.ResponseWriter, r *http.Request) {
 		list := shopify.GetOrdersResponse{
 			Orders:   []shopify.Order{so},
 			PageSize: 1,

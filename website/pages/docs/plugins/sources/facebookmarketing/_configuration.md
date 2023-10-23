@@ -1,0 +1,20 @@
+```yaml copy
+kind: source
+spec:
+  # Source spec section
+  name: facebookmarketing
+  path: cloudquery/facebookmarketing
+  registry: cloudquery
+  version: "VERSION_SOURCE_FACEBOOKMARKETING"
+  tables: ["*"]
+  destinations: ["DESTINATION_NAME"]
+
+  spec:
+    # Facebook Marketing Spec section
+
+    # You can find the ad_account_id in the Facebook Ads Manager: https://www.facebook.com/ads/manager/accounts/
+    ad_account_id: "AD_ACCOUNT_ID"
+    # See the "authentication section" on how to create an access token
+    access_token: "ACCESS_TOKEN"
+
+```

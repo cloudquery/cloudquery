@@ -5,8 +5,10 @@ build:
 # Test unit
 .PHONY: test
 test: gen-fixtures
-	wget -nc https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json -P ./resources/testdata
-	go test -race -timeout 3m ./...
+	stripeSDKTag=$$(go list -m github.com/stripe/stripe-go/v74 | awk '{print $$2}') ;\
+	stripeOpenAPITag=$$(curl --silent https://raw.githubusercontent.com/stripe/stripe-go/$$stripeSDKTag/OPENAPI_VERSION) ;\
+	curl --silent https://raw.githubusercontent.com/stripe/openapi/$$stripeOpenAPITag/openapi/spec3.json > ./resources/testdata/spec3.json ;\
+	go test -race -timeout 3m ./... ;\
 
 .PHONY: gen-docs
 gen-docs: build

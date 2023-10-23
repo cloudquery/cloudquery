@@ -89,22 +89,31 @@ FROM
 ### Amazon EC2 instances managed by Systems Manager should have a patch compliance status of COMPLIANT after a patch installation
 
 ```sql
+WITH
+  patch_compliance_status_groups
+    AS (
+      SELECT
+        DISTINCT instance_arn, status
+      FROM
+        aws_ssm_instance_compliance_items
+      WHERE
+        compliance_type = 'Patch'
+    )
 SELECT
   'Amazon EC2 instances managed by Systems Manager should have a patch compliance status of COMPLIANT after a patch installation'
     AS title,
   aws_ssm_instances.account_id,
   aws_ssm_instances.arn,
   CASE
-  WHEN aws_ssm_instance_compliance_items.compliance_type = 'Patch'
-  AND aws_ssm_instance_compliance_items.status IS DISTINCT FROM 'COMPLIANT'
+  WHEN patch_compliance_status_groups.status IS DISTINCT FROM 'COMPLIANT'
   THEN 'fail'
   ELSE 'pass'
   END
     AS status
 FROM
   aws_ssm_instances
-  INNER JOIN aws_ssm_instance_compliance_items ON
-      aws_ssm_instances.arn = aws_ssm_instance_compliance_items.instance_arn;
+  INNER JOIN patch_compliance_status_groups ON
+      aws_ssm_instances.arn = patch_compliance_status_groups.instance_arn;
 ```
 
 

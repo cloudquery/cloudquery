@@ -30,3 +30,4 @@ This table depends on [gcp_aiplatform_indexendpoint_locations](gcp_aiplatform_in
 |private_service_connect_config|`json`|
 |public_endpoint_enabled|`bool`|
 |public_endpoint_domain_name|`utf8`|
+|encryption_spec|`json`|

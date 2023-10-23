@@ -27,3 +27,5 @@ This table depends on [gcp_baremetalsolution_volumes](gcp_baremetalsolution_volu
 |boot_lun|`bool`|
 |storage_type|`utf8`|
 |wwid|`utf8`|
+|expire_time|`timestamp[us, tz=UTC]`|
+|instances|`list<item: utf8, nullable>`|

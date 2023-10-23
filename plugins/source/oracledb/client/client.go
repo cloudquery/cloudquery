@@ -30,6 +30,13 @@ func (*Client) ID() string {
 }
 
 func Configure(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
+	if opts.NoConnection {
+		return &Client{
+			logger:  logger,
+			options: opts,
+			tables:  schema.Tables{},
+		}, nil
+	}
 	var oracleDBSpec Spec
 	err := json.Unmarshal(spec, &oracleDBSpec)
 	if err != nil {
@@ -63,6 +70,9 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec []byte, opts plu
 }
 
 func (c Client) Tables(ctx context.Context, opts plugin.TableOptions) (schema.Tables, error) {
+	if c.options.NoConnection {
+		return schema.Tables{}, nil
+	}
 	return c.tables.FilterDfs(opts.Tables, opts.SkipTables, opts.SkipDependentTables)
 }
 

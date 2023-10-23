@@ -1,0 +1,45 @@
+---
+name: Tailscale
+stage: GA (Premium)
+title: Tailscale Source Plugin
+description: CloudQuery Tailscale source plugin documentation
+---
+# Tailscale Source Plugin
+
+:badge{text="Premium"}
+
+This is a premium plugin that you can buy [here](/integrations/tailscale).
+
+The CloudQuery Tailscale plugin pulls configuration out of Tailscale resources and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
+
+## Authentication
+
+:authentication
+
+## Example
+
+This example syncs from Tailscale to a Postgres destination, using OAuth authentication.
+The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
+
+:configuration
+
+## Spec
+
+This is the (nested) spec used by the Tailscale source plugin.
+
+- `client_id` (string, required):
+  Client ID of the [OAuth Client](https://tailscale.com/kb/1215/oauth-clients/).
+
+- `client_secret` (string, required):
+  Client secret of the [OAuth Client](https://tailscale.com/kb/1215/oauth-clients/) (Make sure to use environment variable
+  expansion and not hard code the keys in the config YAML).
+
+- `tailnet`  (string, required):
+  This is your Tailscale tailnet name (also known as organization name).
+
+- `api_key` (string, optional):
+  This way of authentication is not recommended. An API key to access Tailscale resources.
+  This can be obtained from [Tailscale Keys Settings Page](https://login.tailscale.com/admin/settings/keys).
+
+- `endpoint_url` (string, optional. Default: not used):
+  Endpoint URL to make the API requests to.

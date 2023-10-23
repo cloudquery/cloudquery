@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/gorilla/mux"
@@ -139,7 +140,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 			TestSubscription: {&billingPeriod},
 		},
 		storageAccountKeys: &sync.Map{},
-		pluginSpec: &Spec{
+		pluginSpec: &spec.Spec{
 			NormalizeIDs: true,
 		},
 	}

@@ -156,7 +156,7 @@
     },
     {
       "source": "/blog/cloud-asset-inventory-cloudquery-apache-superset",
-      "destination":"/how-to-guides/cloud-asset-inventory-cloudquery-apache-superset"
+      "destination": "/how-to-guides/cloud-asset-inventory-cloudquery-apache-superset"
     },
     {
       "source": "/blog/cloud-asset-inventory-cloudquery-aws-quicksight",
@@ -233,6 +233,10 @@
     {
       "source": "/contact",
       "destination": "https://cloudquery.typeform.com/to/UrgOydHV"
+    },
+    {
+      "source": "/contact-policies",
+      "destination": "https://cloudquery.typeform.com/to/TTBdFOfe"
     },
     {
       "source": "/docs/support",
@@ -340,11 +344,23 @@
     },
     {
       "source": "/register_for_cloud",
-      "destination": "https://cloudquery.typeform.com/to/MZ0DSN82"
+      "destination": "/register-for-cloud"
     },
     {
       "source": "/apply_for_job",
-      "destination": "https://cloudquery.typeform.com/to/flNY3OaO"
+      "destination": "https://apply.workable.com/cloudquery/"
+    },
+    {
+      "source": "/careers",
+      "destination": "https://apply.workable.com/cloudquery/"
+    },
+    {
+      "source": "/careers/overview",
+      "destination": "https://apply.workable.com/cloudquery/"
+    },
+    {
+      "source": "/docs/plugins/sources/hashicorp-vault/:path*",
+      "destination": "/docs/plugins/sources/vault/:path*"
     }
   ]
 }

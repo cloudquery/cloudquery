@@ -64,7 +64,7 @@ const navigation = {
     { name: "GitHub", href: "https://github.com/cloudquery/cloudquery" },
     { name: "Twitter", href: "https://twitter.com/cloudqueryio" },
     { name: "Brand Logo", href: "/logo" },
-    { name: "Careers", href: "/docs/careers/overview" },
+    { name: "Careers", href: "/careers" },
   ],
   legal: [
     { name: "Privacy Policy", href: "/privacy" },

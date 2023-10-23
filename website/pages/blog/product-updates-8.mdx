@@ -1,0 +1,57 @@
+---
+title: "CloudQuery Product Updates #8"
+tag: product
+date: 2023/09/28
+description: >-
+  Monthly updates on CloudQuery product and roadmap.
+author: michal
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
+Hey everyone! Our monthly round-up of CloudQuery product and roadmap updates is here! Here are the main highlights:
+
+- Open source: A new SDK, new plugins, performance improvements
+- Premium (closed source): New policies
+
+## SDKs!
+
+In case you missed it, we published [Python](https://www.cloudquery.io/blog/announcing-cloudquery-python-sdk) and [JavaScript](https://www.cloudquery.io/blog/announcing-cloudquery-javascript-sdk) SDKs last month and this month, we followed with Java!
+
+- Check out our [Java announcement blog](https://www.cloudquery.io/blog/announcing-cloudquery-java-sdk)!
+- Creating a [Java source](https://www.cloudquery.io/docs/developers/creating-new-plugin/java-source)
+
+## Sources
+
+### New Source Plugins
+
+- [Bitbucket](https://www.cloudquery.io/docs/plugins/sources/bitbucket/overview) - First plugin utilizing our Java SDK!
+- [Notion](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/notion) - Loads databases, pages, and users from Notion to any database, data warehouse or data lake supported by CloudQuery, such as PostgreSQL, BigQuery, Athena, and many more. Shout-out to 
+[Gagan Gaurav](https://github.com/gagan-gaurav) for this community contribution!
+
+### AWS, GCP, Azure Highlights
+
+- CloudQuery is now an official AWS Partner! Read more about this in our [announcement](https://www.cloudquery.io/blog/announcing-aws-partnership).
+
+- We launched a closed beta for event-based sync with the AWS plugin. This helps with keeping your data fresh without running full syncs. [Sign up for beta](https://cloudquery.typeform.com/to/Dvdn6P2u) or [read the full announcement](https://www.cloudquery.io/blog/announcing-cloudquery-aws-event-based-sync-beta) first.
+
+- The AWS plugin has a new scheduler strategy that reduces the number of concurrent calls made to AWS APIs in syncs with multiple tables. This means the probability of hitting rate limits is lower. Read more about this in our documentation on [performance tuning](https://www.cloudquery.io/docs/advanced-topics/performance-tuning#use-a-different-scheduler).
+
+Check out the full changelog for [AWS](https://github.com/cloudquery/cloudquery/blob/97d86a5c282e587420c1abd714bb0218d9c86f5a/plugins/source/aws/CHANGELOG.md),
+[GCP](https://github.com/cloudquery/cloudquery/blob/97d86a5c282e587420c1abd714bb0218d9c86f5a/plugins/source/gcp/CHANGELOG.md) and [Azure](https://github.com/cloudquery/cloudquery/blob/97d86a5c282e587420c1abd714bb0218d9c86f5a/plugins/source/azure/CHANGELOG.md)
+for full updates.
+
+## Destinations
+
+- We have made performance fixes to our PostgreSQL destination plugin which resulted in a significant improvement in data throughput and resource utilization.
+
+## Policies
+
+- We released [AWS Foundational Security Best Practices for Snowflake](https://www.cloudquery.io/blog/announcing-aws-fsbp-policies-snowflake)! With this release, there are now over 200 controls with coverage for more than 40 AWS services.
+- Bug fixes on AWS policies
+
+## Other notable blogs and use-cases
+
+- [Partner Case Study: Dunelm's CSPM Puzzle](https://www.cloudquery.io/case-studies/dunelm-cspm-puzzle)

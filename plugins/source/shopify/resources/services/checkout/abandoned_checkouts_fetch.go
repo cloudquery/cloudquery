@@ -36,7 +36,7 @@ func fetchAbandonedCheckouts(ctx context.Context, meta schema.ClientMeta, parent
 	for {
 		ret, cur, err := cl.Services.GetAbandonedCheckouts(ctx, cursor, p)
 		if err != nil {
-			return err
+			return fmt.Errorf("GetAbandonedCheckouts failed: %w", err)
 		}
 
 		for i := range ret.Checkouts {

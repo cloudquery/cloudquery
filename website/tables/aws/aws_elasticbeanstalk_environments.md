@@ -59,7 +59,7 @@ SELECT
   account_id,
   arn AS resource_id,
   CASE
-  WHEN health_status IS NULL OR health IS NULL THEN 'fail'
+  WHEN health_status IS NULL OR health_status = '' OR health IS NULL THEN 'fail'
   ELSE 'pass'
   END
     AS status

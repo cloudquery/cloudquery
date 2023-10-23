@@ -7,9 +7,9 @@ import (
 	"cloud.google.com/go/compute/apiv1/computepb"
 	osconfig "cloud.google.com/go/osconfig/apiv1"
 	pb "cloud.google.com/go/osconfig/apiv1/osconfigpb"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/api/iterator"
 )
 
@@ -29,6 +29,7 @@ func fetchOSConfigInventories(ctx context.Context, meta schema.ClientMeta, paren
 	zone := parent.Item.(*computepb.Zone)
 	req := &pb.ListInventoriesRequest{
 		Parent: "projects/" + c.ProjectId + "/locations/" + *zone.Name + "/instances/-",
+		View:   pb.InventoryView_FULL,
 	}
 
 	gcpClient, err := osconfig.NewOsConfigZonalRESTClient(ctx, c.ClientOptions...)

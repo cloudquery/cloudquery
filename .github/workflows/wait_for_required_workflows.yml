@@ -3,7 +3,7 @@ name: Wait for all required workflows to pass
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-  
+
 on:
   pull_request:
     branches:
@@ -15,13 +15,15 @@ jobs:
     name: wait-for-required-workflows
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Get changed files
         id: changed-files
-        uses: Ana06/get-changed-files@v2.2.0
+        uses: tj-actions/changed-files@v39
       - uses: actions/github-script@v6
         env:
-          FILES: ${{ steps.changed-files.outputs.all }}
+          FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         with:
           script: |
             const script = require('./scripts/workflows/wait_for_required_workflows.js')

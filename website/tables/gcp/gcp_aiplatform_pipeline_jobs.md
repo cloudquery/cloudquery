@@ -35,3 +35,4 @@ This table depends on [gcp_aiplatform_pipeline_locations](gcp_aiplatform_pipelin
 |reserved_ip_ranges|`list<item: utf8, nullable>`|
 |template_uri|`utf8`|
 |template_metadata|`json`|
+|schedule_name|`utf8`|

@@ -16,11 +16,12 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/shopify/internal/httperror"
 	"github.com/rs/zerolog"
+	"golang.org/x/net/http2"
 	"golang.org/x/time/rate"
 )
 
 const (
-	APIVersion = "2022-10"
+	DefaultAPIVersion = "2023-01"
 )
 
 type Client struct {
@@ -36,9 +37,11 @@ type ClientOptions struct {
 	HC         HTTPDoer
 	MaxRetries int64
 	PageSize   int
+	Timeout    time.Duration
 
 	ApiKey, ApiSecret, AccessToken string
 	ShopURL                        string
+	APIVersion                     string
 }
 
 type HTTPDoer interface {
@@ -52,6 +55,9 @@ func New(opts ClientOptions) (*Client, error) {
 	if opts.ShopURL == "" {
 		return nil, fmt.Errorf("missing shop url")
 	}
+	if opts.APIVersion == "" {
+		opts.APIVersion = DefaultAPIVersion
+	}
 
 	return &Client{
 		opts:    &opts,
@@ -60,7 +66,7 @@ func New(opts ClientOptions) (*Client, error) {
 	}, nil
 }
 
-func (s *Client) request(ctx context.Context, edge string, params url.Values) (retResp *http.Response, retErr error) {
+func (s *Client) request(ctx context.Context, edge string, params url.Values) (retResp *http.Response, closer func(), retErr error) {
 	if params == nil {
 		params = url.Values{}
 	}
@@ -82,29 +88,34 @@ func (s *Client) request(ctx context.Context, edge string, params url.Values) (r
 		if !s.lim.Allow() {
 			log.Debug().Msg("waiting for rate limiter...")
 			if err := s.lim.Wait(ctx); err != nil {
-				return nil, err
+				return nil, nil, err
 			}
 			log.Debug().Msg("wait complete")
 		}
 
-		r, wait, err := s.retryableRequest(ctx, edge, params)
+		timeoutContext, canceler := context.WithTimeout(ctx, s.opts.Timeout)
+		r, wait, err := s.retryableRequest(timeoutContext, edge, params)
 		if err == nil {
-			return r, nil
+			return r, func() {
+				_ = r.Body.Close()
+				canceler()
+			}, nil
 		}
 
+		canceler()
 		temporary := false
-		if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+		if isErrCanceled(err) || isErrH2GoAway(err) {
 			temporary = true
 		} else if he, ok := err.(httperror.Error); ok {
 			temporary = he.Temporary()
 		}
 		if !temporary {
-			return nil, fmt.Errorf("request failed with error: %w", err)
+			return nil, nil, fmt.Errorf("request failed with error: %w", err)
 		}
 
 		tries++
 		if tries >= s.opts.MaxRetries {
-			return nil, fmt.Errorf("exceeded max retries (%d): %w", s.opts.MaxRetries, err)
+			return nil, nil, fmt.Errorf("exceeded max retries (%d): %w", s.opts.MaxRetries, err)
 		}
 
 		if wait == nil { // no retry-after returned, linear backoff
@@ -116,7 +127,7 @@ func (s *Client) request(ctx context.Context, edge string, params url.Values) (r
 
 		select {
 		case <-ctx.Done():
-			return nil, ctx.Err()
+			return nil, nil, ctx.Err()
 		case <-time.After(*wait):
 		}
 	}
@@ -195,14 +206,15 @@ func (s *Client) GetProducts(ctx context.Context, pageUrl string, params url.Val
 	var ret GetProductsResponse
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/products.json", APIVersion)
+		pageUrl = fmt.Sprintf("admin/api/%s/products.json", s.opts.APIVersion)
 	}
 
-	resp, err := s.request(ctx, pageUrl, params)
+	//nolint:bodyclose
+	resp, closer, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
 	}
-	defer resp.Body.Close()
+	defer closer()
 
 	nextPage := getNextPage(resp.Header)
 
@@ -220,14 +232,15 @@ func (s *Client) GetOrders(ctx context.Context, pageUrl string, params url.Value
 	var ret GetOrdersResponse
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/orders.json", APIVersion)
+		pageUrl = fmt.Sprintf("admin/api/%s/orders.json", s.opts.APIVersion)
 	}
 
-	resp, err := s.request(ctx, pageUrl, params)
+	//nolint:bodyclose
+	resp, closer, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
 	}
-	defer resp.Body.Close()
+	defer closer()
 
 	nextPage := getNextPage(resp.Header)
 
@@ -245,14 +258,15 @@ func (s *Client) GetCustomers(ctx context.Context, pageUrl string, params url.Va
 	var ret GetCustomersResponse
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/customers.json", APIVersion)
+		pageUrl = fmt.Sprintf("admin/api/%s/customers.json", s.opts.APIVersion)
 	}
 
-	resp, err := s.request(ctx, pageUrl, params)
+	//nolint:bodyclose
+	resp, closer, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
 	}
-	defer resp.Body.Close()
+	defer closer()
 
 	nextPage := getNextPage(resp.Header)
 
@@ -270,14 +284,15 @@ func (s *Client) GetAbandonedCheckouts(ctx context.Context, pageUrl string, para
 	var ret GetCheckoutsResponse
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/checkouts.json", APIVersion)
+		pageUrl = fmt.Sprintf("admin/api/%s/checkouts.json", s.opts.APIVersion)
 	}
 
-	resp, err := s.request(ctx, pageUrl, params)
+	//nolint:bodyclose
+	resp, closer, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
 	}
-	defer resp.Body.Close()
+	defer closer()
 
 	nextPage := getNextPage(resp.Header)
 
@@ -295,14 +310,15 @@ func (s *Client) GetPriceRules(ctx context.Context, pageUrl string, params url.V
 	var ret GetPriceRulesResponse
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/price_rules.json", APIVersion)
+		pageUrl = fmt.Sprintf("admin/api/%s/price_rules.json", s.opts.APIVersion)
 	}
 
-	resp, err := s.request(ctx, pageUrl, params)
+	//nolint:bodyclose
+	resp, closer, err := s.request(ctx, pageUrl, params)
 	if err != nil {
 		return nil, "", err
 	}
-	defer resp.Body.Close()
+	defer closer()
 
 	nextPage := getNextPage(resp.Header)
 
@@ -320,14 +336,15 @@ func (s *Client) GetDiscountCodes(ctx context.Context, priceRuleID int64, pageUr
 	var ret GetDiscountCodesResponse
 
 	if pageUrl == "" {
-		pageUrl = fmt.Sprintf("admin/api/%s/price_rules/%d/discount_codes.json", APIVersion, priceRuleID)
+		pageUrl = fmt.Sprintf("admin/api/%s/price_rules/%d/discount_codes.json", s.opts.APIVersion, priceRuleID)
 	}
 
-	resp, err := s.request(ctx, pageUrl, nil)
+	//nolint:bodyclose
+	resp, closer, err := s.request(ctx, pageUrl, nil)
 	if err != nil {
 		return nil, "", err
 	}
-	defer resp.Body.Close()
+	defer closer()
 
 	nextPage := getNextPage(resp.Header)
 
@@ -356,4 +373,18 @@ func getNextPage(hdr http.Header) string {
 	}
 
 	return ""
+}
+
+func isErrH2GoAway(err error) bool {
+	var he http2.GoAwayError
+	if errors.As(err, &he) {
+		return true
+	}
+	var he2 *http2.GoAwayError
+	return errors.As(err, &he2)
+}
+
+func isErrCanceled(err error) bool {
+	// errors.Is(err, context.Canceled) isn't enough as of Go 1.21, if the context times out during json.Decode for example
+	return strings.Contains(err.Error(), context.Canceled.Error()) || strings.Contains(err.Error(), context.DeadlineExceeded.Error())
 }

@@ -6,8 +6,8 @@ import (
 
 	container "cloud.google.com/go/container/apiv1"
 	"cloud.google.com/go/container/apiv1/containerpb"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
 func fetchClusters(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- any) error {

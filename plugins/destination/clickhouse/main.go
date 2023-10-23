@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/client"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/client/spec"
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/serve"
@@ -15,7 +16,14 @@ const (
 )
 
 func main() {
-	p := plugin.NewPlugin("clickhouse", internalPlugin.Version, client.New)
+	p := plugin.NewPlugin(
+		internalPlugin.Name,
+		internalPlugin.Version,
+		client.New,
+		plugin.WithJSONSchema(spec.JSONSchema),
+		plugin.WithKind(internalPlugin.Kind),
+		plugin.WithTeam(internalPlugin.Team),
+	)
 	if err := serve.Plugin(p,
 		serve.WithPluginSentryDSN(sentryDSN),
 		serve.WithDestinationV0V1Server(),

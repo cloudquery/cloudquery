@@ -3,8 +3,6 @@ package sns
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
-
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
@@ -13,6 +11,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sns/models"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/mitchellh/mapstructure"
 )
 
@@ -99,6 +98,11 @@ func getSnsSubscription(ctx context.Context, meta schema.ClientMeta, resource *s
 		},
 	)
 	if err != nil {
+		// If a subscriptions topic is deleted GetSubscriptionAttributes will error.
+		if client.IsAWSError(err, "NotFound") {
+			resource.Item = s
+			return nil
+		}
 		return err
 	}
 	dec, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{WeaklyTypedInput: true, Result: &s})

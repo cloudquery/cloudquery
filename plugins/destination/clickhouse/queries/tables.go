@@ -1,12 +1,13 @@
 package queries
 
 import (
+	"slices"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/client/spec"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"golang.org/x/exp/slices"
 )
 
 func sortKeys(table *schema.Table) []string {
@@ -26,7 +27,7 @@ func sortKeys(table *schema.Table) []string {
 	return slices.Clip(keys)
 }
 
-func CreateTable(table *schema.Table, cluster string, engine *Engine) (string, error) {
+func CreateTable(table *schema.Table, cluster string, engine *spec.Engine) (string, error) {
 	builder := strings.Builder{}
 	builder.WriteString("CREATE TABLE ")
 	builder.WriteString(tableNamePart(table.Name, cluster))

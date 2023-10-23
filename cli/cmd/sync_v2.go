@@ -8,6 +8,8 @@ import (
 	"io"
 	"time"
 
+	"slices"
+
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/cloudquery/cli/internal/transformer"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -17,7 +19,6 @@ import (
 	"github.com/cloudquery/plugin-pb-go/pb/source/v2"
 	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
-	"golang.org/x/exp/slices"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 

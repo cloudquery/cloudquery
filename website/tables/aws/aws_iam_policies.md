@@ -238,13 +238,13 @@ WITH
             OR arn LIKE 'arn:aws-us-gov:iam::aws:policy%'
           )
         AND statement->>'Effect' = 'Allow'
-        AND statement->'Resource'
+        AND lower(statement::STRING)::JSONB->'resource'
           ?| ARRAY[
               '*',
               'arn:aws:kms:*:' || account_id || ':key/*',
               'arn:aws:kms:*:' || account_id || ':alias/*'
             ]
-        AND statement->'Action'
+        AND lower(statement::STRING)::JSONB->'action'
           ?| ARRAY[
               '*',
               'kms:*',

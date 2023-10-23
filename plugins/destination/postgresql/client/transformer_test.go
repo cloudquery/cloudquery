@@ -3,7 +3,7 @@ package client
 import (
 	"testing"
 
-	"golang.org/x/exp/slices"
+	"slices"
 )
 
 func TestStripNullsFromMarshalledJson(t *testing.T) {

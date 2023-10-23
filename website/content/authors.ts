@@ -31,6 +31,12 @@ export const EXTERNAL_AUTHORS: Map<Author> = {
         company: "Tempus",
         image_url: "/images/people/michaeltayo.png",
     },
+    janclaeyssens: {
+        name: "Jan Claeyssens",
+        company: "Dunelm",
+        image_url: "/images/people/dunelm.png",
+        url: "https://medium.com/@jan_claeyssens"
+    }
 };
 
 export const CLOUDQUERY_TEAM: Map<Author> = {

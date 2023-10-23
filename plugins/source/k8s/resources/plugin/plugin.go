@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/spec"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/admissionregistration"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/apps"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/autoscaling"
@@ -32,7 +33,12 @@ import (
 	"golang.org/x/exp/maps"
 )
 
-var Version = "Development"
+var (
+	Name    = "k8s"
+	Kind    = "source"
+	Team    = "cloudquery"
+	Version = "development"
+)
 
 var googleAdsExceptions = map[string]string{
 	"admissionregistration": "Admission Registration",
@@ -75,17 +81,17 @@ func newClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, opt
 	if options.NoConnection {
 		return c, nil
 	}
-	spec := &client.Spec{}
-	if err := json.Unmarshal(specBytes, spec); err != nil {
+	s := &spec.Spec{}
+	if err := json.Unmarshal(specBytes, s); err != nil {
 		return nil, err
 	}
-	spec.SetDefaults()
-	syncClient, err := client.Configure(ctx, logger, *spec)
+	s.SetDefaults()
+	syncClient, err := client.Configure(ctx, logger, *s)
 	if err != nil {
 		return nil, err
 	}
 	c.syncClient = syncClient.(*client.Client)
-	c.scheduler = scheduler.NewScheduler(scheduler.WithLogger(logger), scheduler.WithConcurrency(spec.Concurrency))
+	c.scheduler = scheduler.NewScheduler(scheduler.WithLogger(logger), scheduler.WithConcurrency(s.Concurrency))
 	return c, nil
 }
 
@@ -132,6 +138,7 @@ func getTables() schema.Tables {
 		core.Pvs(),
 		core.Pvcs(),
 		core.Pods(),
+		core.PodTemplates(),
 		core.ReplicationControllers(),
 		core.ResourceQuotas(),
 		core.Secrets(),
@@ -167,8 +174,11 @@ func getTables() schema.Tables {
 
 func Plugin() *plugin.Plugin {
 	return plugin.NewPlugin(
-		"k8s",
+		Name,
 		Version,
 		newClient,
+		plugin.WithJSONSchema(spec.JSONSchema),
+		plugin.WithKind(Kind),
+		plugin.WithTeam(Team),
 	)
 }

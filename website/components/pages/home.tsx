@@ -78,7 +78,7 @@ export default function Home() {
           </div>
           <div className="rounded-md fix-width-auto xl:w-auto">
             <Link
-              href="/register_for_cloud"
+              href="/register-for-cloud"
               className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white no-underline bg-black border border-transparent rounded-md dark:bg-green-400 dark:text-black betterhover:dark:hover:bg-green-500 betterhover:hover:bg-gray-700 md:py-3 md:text-lg md:px-10 md:leading-6">
               
                 Register for CloudQuery Cloud →

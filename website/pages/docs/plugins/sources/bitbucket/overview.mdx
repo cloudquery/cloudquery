@@ -7,12 +7,7 @@ description: CloudQuery Bitbucket source plugin documentation
 
 # Bitbucket Source Plugin
 
-import { getLatestVersion } from "../../../../../utils/versions";
-import { Badge } from "../../../../../components/Badge";
-import Configuration from "./_configuration.mdx";
-import Authentication from "./_authentication.mdx";
-
-<Badge text={"Latest: " + getLatestVersion("source", `bitbucket`)}/>
+:badge
 
 The CloudQuery Bitbucket plugin pulls data from [Bitbucket](https://bitbucket.org/) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
@@ -22,11 +17,11 @@ The plugin discover all workspaces and repositories in your account and syncs th
 
 This example syncs from Bitbucket to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
 
-<Configuration/>
+:configuration
 
 ## Authentication
 
-<Authentication/>
+:authentication
 
 ## Example
 

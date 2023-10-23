@@ -5,8 +5,9 @@ import (
 	"math"
 	"strings"
 
+	"slices"
+
 	"github.com/google/uuid"
-	"golang.org/x/exp/slices"
 
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"

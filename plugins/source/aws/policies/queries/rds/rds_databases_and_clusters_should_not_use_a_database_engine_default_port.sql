@@ -22,13 +22,13 @@ union
     account_id,
     arn AS resource_id,
     case when
-                 (
-                             engine in ( 'aurora', 'aurora-mysql', 'mariadb', 'mysql' )
-                         and db_instance_port = 3306
-                     )
-                 or (engine like '%postgres%' and db_instance_port = 5432)
-                 or (engine like '%oracle%' and db_instance_port = 1521)
-                 or (engine like '%sqlserver%' and db_instance_port = 1433)
+        (
+            engine in ('aurora', 'aurora-mysql', 'mariadb', 'mysql')
+            and (endpoint ->> 'Port')::integer = 3306
+        )
+        or (engine like '%postgres%' and (endpoint ->> 'Port')::integer = 5432)
+        or (engine like '%oracle%' and (endpoint ->> 'Port')::integer = 1521)
+        or (engine like '%sqlserver%' and (endpoint ->> 'Port')::integer = 1433)
     then 'fail' else 'pass' end as status
     from aws_rds_instances
 )

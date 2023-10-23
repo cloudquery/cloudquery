@@ -20,6 +20,8 @@ type Spec struct {
 	MaxRetries  int64 `json:"max_retries,omitempty"`
 	PageSize    int64 `json:"page_size,omitempty"`
 	Concurrency int   `json:"concurrency,omitempty"`
+
+	APIVersion string `json:"api_version,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {

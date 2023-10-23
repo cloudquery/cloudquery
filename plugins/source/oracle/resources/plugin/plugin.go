@@ -3,6 +3,7 @@ package plugin
 import (
 	"sort"
 
+	"github.com/cloudquery/cloudquery/plugins/source/oracle/client/spec"
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/resources/services/blockstorage"
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/resources/services/database"
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/resources/services/filestorage"
@@ -17,6 +18,9 @@ import (
 )
 
 var (
+	Name    = "oracle"
+	Kind    = "source"
+	Team    = "cloudquery"
 	Version = "development"
 )
 
@@ -119,8 +123,11 @@ func getTables() schema.Tables {
 
 func Plugin() *plugin.Plugin {
 	return plugin.NewPlugin(
-		"oracle",
+		Name,
 		Version,
 		Configure,
+		plugin.WithJSONSchema(spec.JSONSchema),
+		plugin.WithKind(Kind),
+		plugin.WithTeam(Team),
 	)
 }

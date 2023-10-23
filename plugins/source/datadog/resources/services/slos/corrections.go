@@ -22,10 +22,6 @@ func Corrections() *schema.Table {
 func fetchCorrections(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	ctx = c.BuildContextV2(ctx)
-	resp, _, err := c.DDServices.ServiceLevelObjectiveCorrectionsAPI.ListSLOCorrection(ctx)
-	if err != nil {
-		return err
-	}
-	res <- resp.GetData()
-	return nil
+	resp, cancel := c.DDServices.ServiceLevelObjectiveCorrectionsAPI.ListSLOCorrectionWithPagination(ctx)
+	return client.ConsumePaginatedResponse(resp, cancel, res)
 }

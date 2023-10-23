@@ -27,6 +27,9 @@ import (
 )
 
 var (
+	Name    = "cloudflare"
+	Kind    = "source"
+	Team    = "cloudquery"
 	Version = "development"
 )
 
@@ -81,9 +84,11 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 
 func Plugin() *plugin.Plugin {
 	return plugin.NewPlugin(
-		"cloudflare",
+		Name,
 		Version,
 		newClient,
+		plugin.WithKind(Kind),
+		plugin.WithTeam(Team),
 	)
 }
 
