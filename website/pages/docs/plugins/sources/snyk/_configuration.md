@@ -4,6 +4,7 @@ kind: source
 spec:
   name: snyk
   path: cloudquery/snyk
+  registry: cloudquery
   version: "VERSION_SOURCE_SNYK"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]

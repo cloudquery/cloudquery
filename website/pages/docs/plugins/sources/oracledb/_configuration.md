@@ -3,6 +3,7 @@ kind: source
 spec:
   name: "oracledb"
   path: "cloudquery/oracledb"
+  registry: "cloudquery"
   version: "VERSION_SOURCE_ORACLEDB"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]

@@ -4,6 +4,7 @@ spec:
   # Source spec section
   name: okta
   path: cloudquery/okta
+  registry: cloudquery
   version: "VERSION_SOURCE_OKTA"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
