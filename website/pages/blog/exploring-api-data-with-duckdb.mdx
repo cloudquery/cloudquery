@@ -39,8 +39,9 @@ First we create a CloudQuery config file called `homebrew-duckdb.yml`, in which 
 kind: source
 spec:
   name: "homebrew"
-  version: "VERSION_SOURCE_HOMEBREW"
   path: "cloudquery/homebrew"
+  registry: "cloudquery"
+  version: "VERSION_SOURCE_HOMEBREW"
   destinations: ["duckdb"]
   tables:
     - homebrew_analytics_installs_30d
@@ -50,8 +51,9 @@ spec:
 kind: destination
 spec:
   name: "duckdb"
-  version: "VERSION_DESTINATION_DUCKDB"
   path: "cloudquery/duckdb"
+  registry: "cloudquery"
+  version: "VERSION_DESTINATION_DUCKDB"
   spec:
     connection_string: "./homebrew.duckdb"
 ```
