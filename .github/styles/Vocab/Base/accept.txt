@@ -118,6 +118,7 @@ hcl
 HCL
 hostname
 Hostname
+Hotjar
 hyperfunctions
 hyperscale
 implementor
