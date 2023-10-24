@@ -64,8 +64,8 @@ Make sure not to use it in production environment.
 kind: destination
 spec:
   name:     "mssql"
-  registry: "github"
   path:     "cloudquery/mssql"
+  registry:   "cloudquery"
   version:  "VERSION_DESTINATION_MSSQL"
 
   spec:

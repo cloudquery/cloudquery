@@ -7,6 +7,7 @@ kind: destination
 spec:
   name: "s3"
   path: "cloudquery/s3"
+  registry: "cloudquery"
   version: "VERSION_DESTINATION_S3"
   spec:
     bucket: "bucket_name"

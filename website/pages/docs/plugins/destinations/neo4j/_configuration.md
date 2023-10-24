@@ -4,8 +4,8 @@ This example configures a Neo4j destination, located at `bolt://localhost:7687`.
 kind: destination
 spec:
   name: "neo4j"
-  registry: "github"
   path: "cloudquery/neo4j"
+  registry: "cloudquery"
   version: "VERSION_DESTINATION_NEO4J"
   spec:
     connection_string: "bolt://localhost:7687"

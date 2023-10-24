@@ -8,8 +8,8 @@ The plugin supports discovery of AWS Accounts via AWS Organizations. This means 
 kind: source
 spec:
   name: aws
-  registry: github
   path: cloudquery/aws
+  registry: cloudquery
   version: "VERSION_SOURCE_AWS"
   tables: ['aws_s3_buckets']
   destinations: ["postgresql"]

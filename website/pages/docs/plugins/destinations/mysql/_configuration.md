@@ -2,8 +2,8 @@
 kind: destination
 spec:
   name: "mysql"
-  registry: "github"
   path: "cloudquery/mysql"
+  registry: "cloudquery"
   version: "VERSION_DESTINATION_MYSQL"
   spec:
     connection_string: "user:password@/dbname"
