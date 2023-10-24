@@ -5,6 +5,7 @@ kind: destination
 spec:
   name: "file"
   path: "cloudquery/file"
+  registry: "cloudquery"
   version: "VERSION_DESTINATION_FILE"
   spec:
     path: "path/to/files/{{TABLE}}/{{UUID}}.{{FORMAT}}"
