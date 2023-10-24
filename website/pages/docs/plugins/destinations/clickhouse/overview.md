@@ -82,8 +82,8 @@ This option allows to specify a custom table engine to be used.
 kind: destination
 spec:
   name:       "clickhouse"
-  registry:   "github"
   path:       "cloudquery/clickhouse"
+  registry:   "cloudquery"
   version:    "VERSION_DESTINATION_CLICKHOUSE"
   write_mode: "append"
 
@@ -111,8 +111,8 @@ Make sure not to use it in production environment.
 kind: destination
 spec:
   name:       "clickhouse"
-  registry:   "github"
   path:       "cloudquery/clickhouse"
+  registry:   "cloudquery"
   version:    "VERSION_DESTINATION_CLICKHOUSE"
   write_mode: "append"
 

@@ -38,11 +38,12 @@ Having a single protocol version ensures better manageability of upgrades and ma
 
 Moreover, any of the CloudQuery destinations can now be utilized as backends for [incremental syncs](/docs/core-concepts/syncs#incremental-table-syncs). For example, you can now specify the following for sources with incremental syncs:
 
-```
+```yaml
 kind: source
 spec:
   name: aws
   path: cloudquery/aws
+  registry: cloudquery
   version: "VERSION_SOURCE_AWS"
   destinations: ["postgresql"]
   backend_options:
@@ -54,7 +55,8 @@ spec:
 kind: destination
 spec:
   name: postgresql
-  path: "cloudquery/postgresql"
+  path: cloudquery/postgresql
+  registry: cloudquery
   version: "VERSION_DESTINATION_POSTGRESQL"
   spec:
     connection_string: .... 

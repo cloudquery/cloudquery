@@ -64,7 +64,7 @@ Configure a destination for CloudQuery to use to store the data. For this tutori
 kind: destination
 spec:
   name: "postgresql"
-  registry: "github"
+  registry: "cloudquery"
   path: "cloudquery/postgresql"
   version: "VERSION_DESTINATION_POSTGRESQL"
   spec:
@@ -83,8 +83,8 @@ kind: source
 spec:
   # Source spec section
   name: "aws"
-  registry: "github"
   path: "cloudquery/aws"
+  registry: "cloudquery"
   version: "VERSION_SOURCE_AWS"
   destinations: ["postgresql"]
   tables: ["aws_ec2_vpcs", "aws_ec2_security_groups"]
