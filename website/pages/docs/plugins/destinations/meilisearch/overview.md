@@ -7,7 +7,7 @@ description: CloudQuery Meilisearch destination plugin documentation
 
 :badge
 
-The Meilisearch plugin syncs data from any [CloudQuery source plugins](https://www.cloudquery.io/docs/plugins/sources/overview)
+The Meilisearch plugin syncs data from any [CloudQuery source plugins](/docs/plugins/sources/overview)
 to a [Meilisearch](https://www.meilisearch.com) instance.
 
 ## Example config
