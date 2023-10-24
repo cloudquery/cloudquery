@@ -5,6 +5,7 @@ kind: destination
 spec:
   name: duckdb
   path: cloudquery/duckdb
+  registry: cloudquery
   version: "VERSION_DESTINATION_DUCKDB"
   write_mode: "overwrite-delete-stale"
   spec:

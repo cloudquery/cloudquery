@@ -5,6 +5,7 @@ kind: destination
 spec:
   name: elasticsearch
   path: cloudquery/elasticsearch
+  registry: cloudquery
   version: "VERSION_DESTINATION_ELASTICSEARCH"
   write_mode: "overwrite-delete-stale"
   spec:

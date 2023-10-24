@@ -5,6 +5,7 @@ kind: destination
 spec:
   name: "gcs"
   path: "cloudquery/gcs"
+  registry: "cloudquery"
   version: "VERSION_DESTINATION_GCS"
   spec:
     bucket: "bucket_name"
