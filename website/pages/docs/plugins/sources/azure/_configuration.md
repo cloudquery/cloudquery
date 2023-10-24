@@ -4,6 +4,7 @@ spec:
   # Source spec section
   name: "azure"
   path: "cloudquery/azure"
+  registry: "cloudquery"
   version: "VERSION_SOURCE_AZURE"
   destinations: ["DESTINATION_NAME"]
   tables: ["azure_compute_virtual_machines"]

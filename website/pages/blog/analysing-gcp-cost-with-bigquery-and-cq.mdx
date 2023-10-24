@@ -34,6 +34,7 @@ spec:
   # Source spec section
   name: "gcp"
   path: "cloudquery/gcp"
+  registry: "cloudquery"
   version: "VERSION_SOURCE_GCP"
   destinations: ["bigquery"]
   tables: ["gcp_billing*"]
@@ -45,6 +46,7 @@ kind: destination
 spec:
   name: bigquery
   path: cloudquery/bigquery
+  registry: "cloudquery"
   version: "VERSION_DESTINATION_BIGQUERY"
   write_mode: "append"
   spec:
