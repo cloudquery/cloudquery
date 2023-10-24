@@ -5,6 +5,7 @@ kind: destination
 spec:
   name: snowflake
   path: cloudquery/snowflake
+  registry: cloudquery
   version: "VERSION_DESTINATION_SNOWFLAKE"
   write_mode: "append"
   spec:
