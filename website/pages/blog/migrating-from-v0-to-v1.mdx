@@ -38,12 +38,12 @@ spec:
   # Required. Must be a specific version starting with v, e.g. v1.2.3
   version: "VERSION_SOURCE_AWS"
  
-  ## Optional. Default: "github". Available: "local", "grpc"
-  # registry: github
+  ## Optional. Default: "github". Available: "github", "cloudquery", "local", "grpc"
+  registry: "cloudquery"
  
   ## Plugin path. For official plugins, this should be in the format "cloudquery/<name>", e.g. "cloudquery/aws"
   path: "cloudquery/aws"
- 
+
   ## Required. You can use ["*"] to sync all tables or specify specific tables. Please note that syncing all tables can be slow
   ## See all tables: https://www.cloudquery.io/docs/plugins/sources/aws/tables
   tables: ["aws_s3_buckets"]
@@ -66,15 +66,13 @@ kind: destination
 spec:
   ## Required. name of the plugin
   name: "postgresql"
- 
   path: "cloudquery/postgresql"
-
+  registry: "cloudquery"
   # Required. Must be a specific version starting with v, e.g. v1.2.3
   version: "VERSION_DESTINATION_POSTGRESQL"
- 
-  ## Optional. Default: "overwrite". Available: "overwrite", "append", "overwrite-delete-stale". Not all modes are 
+  ## Optional. Default: "overwrite-delete-stale". Available:  "overwrite-delete-stale", "overwrite", "append". Not all modes are 
   ## supported by all plugins, so make sure to check the plugin documentation for more details.
-  write_mode: "overwrite" # overwrite, overwrite-delete-stale, append
+  write_mode: "overwrite-delete-stale" # overwrite-delete-stale, overwrite, append
  
   spec:
     ## plugin-specific configuration for PostgreSQL:

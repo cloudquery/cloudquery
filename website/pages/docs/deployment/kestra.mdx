@@ -40,6 +40,7 @@ tasks:
       spec:
         name: aws
         path: cloudquery/aws
+        registry: cloudquery
         version: "VERSION_SOURCE_AWS"
         tables: ["aws_ec2*"]
         destinations: ["postgresql"]
@@ -48,8 +49,9 @@ tasks:
       kind: destination
       spec:
         name: "postgresql"
-        version: "VERSION_DESTINATION_POSTGRESQL"
         path: "cloudquery/postgresql"
+        registry: cloudquery
+        version: "VERSION_DESTINATION_POSTGRESQL"
         write_mode: "overwrite-delete-stale"
         spec:
           connection_string: ${PG_CONNECTION_STRING}

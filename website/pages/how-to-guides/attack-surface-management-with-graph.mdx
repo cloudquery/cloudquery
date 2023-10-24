@@ -47,6 +47,7 @@ kind: source
 spec:
   name: "aws"
   path: "cloudquery/aws"
+  registry: "cloudquery"
   version: "VERSION_SOURCE_AWS"
   destinations: ["neo4j"]
   tables: ["*"]
@@ -63,7 +64,7 @@ Example neo4j.yml destination configuration file:
   kind: destination
   spec:
     name: "neo4j"
-    registry: "github"
+    registry: "cloudquery"
     path: "cloudquery/neo4j"
     version: "VERSION_DESTINATION_NEO4J"
     spec:
