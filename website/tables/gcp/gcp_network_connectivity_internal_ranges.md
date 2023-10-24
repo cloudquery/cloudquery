@@ -4,7 +4,7 @@ This table shows data for GCP Network Connectivity Internal Ranges.
 
 https://cloud.google.com/network-connectivity/docs/reference/networkconnectivity/rest/v1/projects.locations.internalRanges/list
 
-The primary key for this table is **self_link**.
+The primary key for this table is **name**.
 
 ## Columns
 
