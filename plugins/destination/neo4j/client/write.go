@@ -20,7 +20,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs mes
 		return err
 	}
 
-	session := c.Session(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
+	session := c.LoggedSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close(ctx)
 
 	rows := make([]map[string]any, 0, len(msgs))

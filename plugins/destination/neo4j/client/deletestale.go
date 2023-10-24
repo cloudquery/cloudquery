@@ -12,7 +12,7 @@ import (
 const deleteCypher = "MATCH (n:%s) WHERE n._cq_source_name = $cq_source_name AND n._cq_sync_time < $cq_sync_time DETACH DELETE n"
 
 func (c *Client) DeleteStale(ctx context.Context, msgs message.WriteDeleteStales) error {
-	session := c.Session(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
+	session := c.LoggedSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close(ctx)
 	for _, msg := range msgs {
 		stmt := fmt.Sprintf(deleteCypher, msg.TableName)
