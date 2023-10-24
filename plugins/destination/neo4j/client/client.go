@@ -59,9 +59,13 @@ func (c *Client) Close(ctx context.Context) error {
 	return c.client.Close(ctx)
 }
 
-func (c *Client) LoggedSession(ctx context.Context, cf neo4j.SessionConfig) neo4j.SessionWithContext {
+func (c *Client) Session(ctx context.Context, cf neo4j.SessionConfig) neo4j.SessionWithContext {
 	if c.logger.GetLevel() <= zerolog.DebugLevel {
 		cf.BoltLogger = &Logger{Base: c.logger}
 	}
+
+	// maintain consistency across sessions as well
+	cf.BookmarkManager = c.client.DefaultExecuteQueryBookmarkManager()
+
 	return c.client.NewSession(ctx, cf)
 }
