@@ -142,6 +142,7 @@
 - [gcp_logging_metrics](tables/gcp_logging_metrics)
 - [gcp_logging_sinks](tables/gcp_logging_sinks)
 - [gcp_monitoring_alert_policies](tables/gcp_monitoring_alert_policies)
+- [gcp_network_connectivity_internal_ranges](tables/gcp_network_connectivity_internal_ranges)
 - [gcp_projects](tables/gcp_projects)
 - [gcp_redis_instances](tables/gcp_redis_instances)
 - [gcp_resourcemanager_folders](tables/gcp_resourcemanager_folders)
