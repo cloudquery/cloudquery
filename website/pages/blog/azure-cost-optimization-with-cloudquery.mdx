@@ -52,6 +52,7 @@ spec:
   # Source spec section
   name: "azure"
   path: "cloudquery/azure"
+  registry: "cloudquery"
   version: "VERSION_SOURCE_AZURE"
   destinations: ["postgresql"]
   tables: ["azure_costmanagement_views", "azure_costmanagement_view_queries"]
@@ -60,6 +61,7 @@ kind: destination
 spec:
   name: postgresql
   path: cloudquery/postgresql
+  registry: "cloudquery"
   version: "VERSION_DESTINATION_POSTGRESQL"
   spec:
     # You will need to edit this to specify your own DSN
