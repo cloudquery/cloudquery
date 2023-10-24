@@ -7,6 +7,7 @@ kind: destination
 spec:
   name: "kafka"
   path: "cloudquery/kafka"
+  registry: "cloudquery"
   version: "VERSION_DESTINATION_KAFKA"
   spec:
     brokers: ["<broker-host>:<broker-port>"]
