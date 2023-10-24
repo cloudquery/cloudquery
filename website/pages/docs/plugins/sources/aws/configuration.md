@@ -12,6 +12,7 @@ spec:
   # Source spec section
   name: aws
   path: cloudquery/aws
+  registry: cloudquery
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_ec2_instances"]
   destinations: ["DESTINATION_NAME"]
@@ -35,8 +36,8 @@ CloudQuery supports discovery of AWS Accounts via AWS Organizations. This means 
 kind: source
 spec:
   name: aws
-  registry: github
   path: cloudquery/aws
+  registry: cloudquery
   version: "VERSION_SOURCE_AWS"
   tables: ['aws_s3_buckets']
   destinations: ["DESTINATION_NAME"]
@@ -323,6 +324,7 @@ spec:
   # Source spec section
   name: aws
   path: cloudquery/aws
+  registry: cloudquery
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_cloudtrail_events"]
   destinations: ["postgresql"]
@@ -334,8 +336,9 @@ spec:
 kind: destination
 spec:
   name: "postgresql"
-  version: "VERSION_DESTINATION_POSTGRESQL"
   path: "cloudquery/postgresql"
+  registry: cloudquery
+  version: "VERSION_DESTINATION_POSTGRESQL"
   write_mode: "overwrite-delete-stale"
   spec:
     connection_string: "${CONNECTION_STRING}"
@@ -353,6 +356,7 @@ spec:
   # Source spec section
   name: aws
   path: cloudquery/aws
+  registry: cloudquery
   version: "VERSION_SOURCE_AWS"
   tables: ["*"]
   skip_tables:

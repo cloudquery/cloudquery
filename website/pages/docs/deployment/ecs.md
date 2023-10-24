@@ -23,6 +23,7 @@ spec:
   # Source spec section
   name: aws
   path: "cloudquery/aws"
+  registry: "cloudquery"
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_s3_buckets"]
   destinations: ["s3"] 
@@ -31,6 +32,7 @@ kind: destination
 spec:
   name: "s3"
   path: "cloudquery/s3"
+  registry: "cloudquery"
   version: "VERSION_DESTINATION_S3"
   write_mode: "append"
   spec:

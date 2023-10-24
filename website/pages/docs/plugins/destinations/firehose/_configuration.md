@@ -3,6 +3,7 @@ kind: destination
 spec:
   name: "firehose"
   path: "cloudquery/firehose"
+  registry: "cloudquery"
   version: "VERSION_DESTINATION_FIREHOSE"
   write_mode: "append" # this plugin only supports 'append' mode
   spec:
