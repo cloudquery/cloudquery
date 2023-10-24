@@ -38,6 +38,13 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 			Aliases: []types.AliasConfiguration{a},
 		}, nil)
 
+	u := types.FunctionUrlConfig{}
+	require.NoError(t, faker.FakeObject(&u))
+	m.EXPECT().ListFunctionUrlConfigs(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&lambda.ListFunctionUrlConfigsOutput{
+			FunctionUrlConfigs: []types.FunctionUrlConfig{u},
+		}, nil)
+
 	i := types.FunctionEventInvokeConfig{}
 	require.NoError(t, faker.FakeObject(&i))
 	m.EXPECT().ListFunctionEventInvokeConfigs(gomock.Any(), gomock.Any(), gomock.Any()).Return(
