@@ -20,7 +20,7 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 		return nil
 	}
 
-	sess := c.LoggedSession(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
+	sess := c.Session(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer sess.Close(ctx)
 
 	for _, m := range messages {
