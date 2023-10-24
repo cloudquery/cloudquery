@@ -965,6 +965,7 @@
           "regions": {
             "ap-northeast-1": {},
             "ap-southeast-1": {},
+            "eu-central-1": {},
             "us-east-1": {},
             "us-west-2": {}
           }
@@ -2500,6 +2501,7 @@
             "ap-east-1": {},
             "ap-northeast-1": {},
             "ap-northeast-2": {},
+            "ap-northeast-3": {},
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
@@ -2624,8 +2626,13 @@
         },
         "finspace": {
           "regions": {
+            "ap-northeast-1": {},
+            "ap-southeast-1": {},
+            "ap-southeast-2": {},
             "ca-central-1": {},
+            "eu-central-1": {},
             "eu-west-1": {},
+            "eu-west-2": {},
             "us-east-1": {},
             "us-east-2": {},
             "us-west-2": {}
@@ -2797,12 +2804,6 @@
             "us-east-2": {},
             "us-west-1": {},
             "us-west-2": {}
-          }
-        },
-        "gamesparks": {
-          "regions": {
-            "ap-northeast-1": {},
-            "us-east-1": {}
           }
         },
         "geo": {
@@ -3240,6 +3241,9 @@
         },
         "iottwinmaker": {
           "regions": {
+            "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
             "eu-central-1": {},
@@ -7709,6 +7713,11 @@
             "us-isob-east-1": {}
           }
         },
+        "api.sagemaker": {
+          "regions": {
+            "us-isob-east-1": {}
+          }
+        },
         "appconfig": {
           "regions": {
             "us-isob-east-1": {}
@@ -8727,6 +8736,12 @@
         },
         "rekognition": {
           "regions": {
+            "us-gov-west-1": {}
+          }
+        },
+        "resiliencehub": {
+          "regions": {
+            "us-gov-east-1": {},
             "us-gov-west-1": {}
           }
         },
