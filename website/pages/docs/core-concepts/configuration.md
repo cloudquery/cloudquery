@@ -20,6 +20,7 @@ kind: source
 spec:
   name: aws
   path: cloudquery/aws
+  registry: cloudquery
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_s3_buckets"]
   destinations: ["postgresql"]
@@ -30,6 +31,7 @@ kind: destination
 spec:
   name: postgresql
   path: cloudquery/postgresql
+  registry: cloudquery
   version: "VERSION_DESTINATION_POSTGRESQL"
   spec:
     connection_string: ${PG_CONNECTION_STRING}
@@ -50,6 +52,7 @@ kind: source
 spec:
   name: gcp
   path: cloudquery/gcp
+  registry: cloudquery
   version: "VERSION_SOURCE_GCP"
   tables: ["gcp_storage_buckets"]
   destinations: ["postgresql"]
@@ -70,6 +73,7 @@ kind: source
 spec:
   name: aws
   path: cloudquery/aws
+  registry: cloudquery
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_s3_buckets"]
   destinations: ["postgresql"]
@@ -78,6 +82,7 @@ kind: destination
 spec:
   name: postgresql
   path: cloudquery/postgresql
+  registry: cloudquery
   version: "VERSION_DESTINATION_POSTGRESQL"
   spec:
     connection_string: ${PG_CONNECTION_STRING}

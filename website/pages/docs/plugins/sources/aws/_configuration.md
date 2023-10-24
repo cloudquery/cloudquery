@@ -4,6 +4,7 @@ spec:
   # Source spec section
   name: aws
   path: cloudquery/aws
+  registry: cloudquery
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_ec2_instances"]
   destinations: ["DESTINATION_NAME"]

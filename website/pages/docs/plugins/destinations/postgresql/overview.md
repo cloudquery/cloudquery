@@ -73,6 +73,7 @@ kind: destination
 spec:
   name: postgresql
   path: cloudquery/postgresql
+  registry: cloudquery
   version: "VERSION_DESTINATION_POSTGRESQL"
   spec:
     connection_string: ${PG_CONNECTION_STRING}
