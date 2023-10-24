@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-vault-v1.0.7...plugins-source-vault-v1.0.8) (2023-10-24)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.11 ([#14870](https://github.com/cloudquery/cloudquery/issues/14870)) ([4fa917d](https://github.com/cloudquery/cloudquery/commit/4fa917d5085b6d99e7818413e507c3fbb32be523))
+
 ## [1.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-vault-v1.0.6...plugins-source-vault-v1.0.7) (2023-10-23)
 
 
