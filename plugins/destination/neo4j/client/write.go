@@ -29,6 +29,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs mes
 	}
 
 	var sb strings.Builder
+	sb.WriteString(`CYPHER replan=skip`) // we write in bulks, no need to replan
 	pks := table.PrimaryKeys()
 	if len(pks) == 0 {
 		sb.WriteString("UNWIND $rows AS row CREATE (t:")
