@@ -96,6 +96,7 @@ kind: source
 spec:
   name: "gcp"
   path: "cloudquery/gcp"
+  registry: "cloudquery"
   version: "VERSION_SOURCE_GCP"
   tables: ["gcp_storage_*", "gcp_compute_*"]
   destinations: ["postgresql"]
@@ -111,6 +112,7 @@ kind: source
 spec:
   name: "aws"
   path: "cloudquery/aws"
+  registry: "cloudquery"
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_account_*", "aws_s3_*", "aws_ec2_*"]
   destinations: ["postgresql"]
