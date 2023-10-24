@@ -3,6 +3,7 @@ kind: destination
 spec:
   name: "azblob"
   path: "cloudquery/azblob"
+  registry: "cloudquery"
   version: "VERSION_DESTINATION_AZBLOB"
   spec:
     storage_account: "cqdestinationazblob"

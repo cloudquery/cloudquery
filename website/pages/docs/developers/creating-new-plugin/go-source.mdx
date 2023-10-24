@@ -224,7 +224,8 @@ kind: destination
 spec:
   name: sqlite
   path: cloudquery/sqlite
-  version: "v1.2.1"
+  registry: cloudquery
+  version: "VERSION_DESTINATION_SQLITE"
   spec:
     connection_string: ./db.sql
 ```
@@ -263,7 +264,8 @@ kind: destination
 spec:
   name: sqlite
   path: cloudquery/sqlite
-  version: "v1.2.1"
+  registry: cloudquery
+  version: "VERSION_DESTINATION_SQLITE"
   spec:
     connection_string: ./db.sql
 ```
@@ -400,6 +402,7 @@ A community plugin using this convention can be imported in a config by using:
 ```yaml copy
 kind: source
 spec:
+  name: name
   path: org/name
 ```
 
@@ -408,6 +411,7 @@ for source plugins, or
 ```yaml copy
 kind: destination
 spec:
+  name: name
   path: org/name
 ```
 
@@ -420,7 +424,9 @@ Official plugins, in contrast, are contained in the [CloudQuery repository](http
 ```yaml copy
 kind: source
 spec:
+  name: aws
   path: cloudquery/aws
+  registry: cloudquery
 ```
 
 ## Real-world Examples

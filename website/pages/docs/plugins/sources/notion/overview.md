@@ -9,7 +9,7 @@ description: CloudQuery Notion source plugin documentation
 
 :badge
 
-A Notion source plugin for CloudQuery that loads data from notion to any database, data warehouse or data lake supported by [CloudQuery](https://www.cloudquery.io/), such as PostgreSQL, BigQuery, Athena, and many more.
+A Notion source plugin for CloudQuery that loads data from Notion to any of the supported CloudQuery destinations (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
 ## Example Configuration
 
