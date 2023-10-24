@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.12](https://github.com/cloudquery/cloudquery/compare/plugins-source-facebookmarketing-v3.0.11...plugins-source-facebookmarketing-v3.0.12) (2023-10-24)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to f46436f ([#14803](https://github.com/cloudquery/cloudquery/issues/14803)) ([f5248d7](https://github.com/cloudquery/cloudquery/commit/f5248d749398ded6a50903e09ecabbb996e94a34))
+
 ## [3.0.11](https://github.com/cloudquery/cloudquery/compare/plugins-source-facebookmarketing-v3.0.10...plugins-source-facebookmarketing-v3.0.11) (2023-10-20)
 
 
