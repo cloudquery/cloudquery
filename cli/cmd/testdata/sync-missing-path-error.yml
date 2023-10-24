@@ -9,4 +9,4 @@ spec:
 kind: "destination"
 spec:
   name: "test"
-  version: "v2.2.11" # latest version of destination test plugin
+  version: "v2.2.12" # latest version of destination test plugin
