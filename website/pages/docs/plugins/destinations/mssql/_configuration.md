@@ -2,8 +2,8 @@
 kind: destination
 spec:
   name: "mssql"
-  registry: "github"
   path: "cloudquery/mssql"
+  registry: "cloudquery"
   version: "VERSION_DESTINATION_MSSQL"
   spec:
     connection_string: "server=localhost;user id=SA;password=yourStrongP@ssword;port=1433;database=cloudquery;"

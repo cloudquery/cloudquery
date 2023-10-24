@@ -4,8 +4,8 @@ This example configures a Gremlin destination, located at `ws://localhost:8182`.
 kind: destination
 spec:
   name: "gremlin"
-  registry: "github"
   path: "cloudquery/gremlin"
+  registry: "cloudquery"
   version: "VERSION_DESTINATION_GREMLIN"
   spec:
     endpoint: "ws://localhost:8182"
