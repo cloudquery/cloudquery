@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.18.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.17.0...plugins-source-aws-v22.18.0) (2023-10-24)
+
+
+### Features
+
+* Add `aws_lambda_function_url_configs` table ([#14913](https://github.com/cloudquery/cloudquery/issues/14913)) ([0c377ab](https://github.com/cloudquery/cloudquery/commit/0c377ab0fd4903514b467e7f01e1dcc82107868e))
+
 ## [22.17.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.16.0...plugins-source-aws-v22.17.0) (2023-10-24)
 
 
