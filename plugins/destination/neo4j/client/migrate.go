@@ -10,10 +10,10 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
 )
 
-// MigrateTables tries to create indexes for the tables.
-// It will issue `CREATE RANGE INDEX ... IF NOT EXIST`.
+// MigrateTables tries to create constraints & indexes for the tables.
+// It will issue `CREATE CONSTRAINT ... IF NOT EXIST`.
 // If the error occurs & indicates that the issue is caused by conflicting schema, 2 scenarios can happen:
-// 1. Force mode is selected for migration: drop & recreate index (without checking for error this time)
+// 1. Force mode is selected for migration: drop & recreate constraint (without checking for error this time)
 // 2. No forced migration is requested - return error.
 func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrateTables) error {
 	if len(messages) == 0 {
@@ -24,22 +24,22 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 	defer sess.Close(ctx)
 
 	for _, m := range messages {
-		if err := c.tryCreateIndex(ctx, sess, m); err != nil {
+		if err := c.tryCreateConstraint(ctx, sess, m); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func (c *Client) tryCreateIndex(ctx context.Context, sess neo4j.SessionWithContext, migrate *message.WriteMigrateTable) error {
-	createQuery := createIndexQuery(migrate.Table)
+func (c *Client) tryCreateConstraint(ctx context.Context, sess neo4j.SessionWithContext, migrate *message.WriteMigrateTable) error {
+	createQuery := createConstraintQuery(migrate.Table)
 	if len(createQuery) == 0 {
 		c.logger.Debug().Str("table", migrate.Table.Name).Msg("table has no primary keys, skipping")
 		// nothing to be done here, table has no primary keys
 		return nil
 	}
 
-	index := indexName(migrate.Table)
+	constraint := constraintName(migrate.Table)
 
 	_, err := sess.Run(ctx, createQuery, map[string]any{})
 	if err == nil {
@@ -49,31 +49,31 @@ func (c *Client) tryCreateIndex(ctx context.Context, sess neo4j.SessionWithConte
 	if !migrate.MigrateForce {
 		c.logger.Err(err).
 			Str("table", migrate.Table.Name).
-			Str("index", index).
-			Msg("failed to create index")
-		return fmt.Errorf("failed to create index for %q: %w", migrate.Table.Name, err)
+			Str("constraint", constraint).
+			Msg("failed to create constraint")
+		return fmt.Errorf("failed to create constraint for %q: %w", migrate.Table.Name, err)
 	}
 
 	c.logger.Warn().
 		Str("table", migrate.Table.Name).
-		Str("index", index).
+		Str("constraint", constraint).
 		Err(err).
-		Msg("failed to create index, recreating")
+		Msg("failed to create constraint, recreating")
 
-	_, err = sess.Run(ctx, `DROP INDEX `+index+` IF EXISTS;`, map[string]any{})
+	_, err = sess.Run(ctx, `DROP CONSTRAINT `+constraint+` IF EXISTS;`, map[string]any{})
 	if err != nil {
 		c.logger.Err(err).
 			Str("table", migrate.Table.Name).
-			Str("index", index).
-			Msg("failed to drop index")
-		return fmt.Errorf("failed to drop index for %q: %w", migrate.Table.Name, err)
+			Str("constraint", constraint).
+			Msg("failed to drop constraint")
+		return fmt.Errorf("failed to drop constraint for %q: %w", migrate.Table.Name, err)
 	}
 
 	_, err = sess.Run(ctx, createQuery, map[string]any{})
 	return err
 }
 
-func createIndexQuery(table *schema.Table) string {
+func createConstraintQuery(table *schema.Table) string {
 	pks := table.PrimaryKeys()
 	if len(pks) == 0 {
 		// empty query = no need to do anything
@@ -81,11 +81,11 @@ func createIndexQuery(table *schema.Table) string {
 	}
 
 	var sb strings.Builder
-	sb.WriteString(`CREATE INDEX `)
-	sb.WriteString(indexName(table))
+	sb.WriteString(`CREATE CONSTRAINT `)
+	sb.WriteString(constraintName(table))
 	sb.WriteString(` IF NOT EXISTS FOR (n:`)
 	sb.WriteString(table.Name)
-	sb.WriteString(`) ON (`)
+	sb.WriteString(`) REQUIRE (`)
 	for i, name := range pks {
 		if i != 0 {
 			sb.WriteString(`, `)
@@ -93,11 +93,11 @@ func createIndexQuery(table *schema.Table) string {
 		sb.WriteString(`n.`)
 		sb.WriteString(name)
 	}
-	sb.WriteString(`);`)
+	sb.WriteString(`) IS UNIQUE;`)
 
 	return sb.String()
 }
 
-func indexName(table *schema.Table) string {
-	return `_cq_index_` + table.Name
+func constraintName(table *schema.Table) string {
+	return `_cq_constraint_` + table.Name
 }
