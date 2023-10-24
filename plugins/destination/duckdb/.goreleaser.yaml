@@ -34,9 +34,6 @@ builds:
     ignore:
       - goos: windows
         goarch: arm64
-# linux arm64 has some issues with cross-compile
-      - goos: linux
-        goarch: arm64
     overrides:
       - goos: linux
         goarch: amd64
