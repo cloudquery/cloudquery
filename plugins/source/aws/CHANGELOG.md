@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [22.18.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.17.0...plugins-source-aws-v22.18.0) (2023-10-24)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_lambda_function_url_configs` was added
+
 ### Features
 
 * Add `aws_lambda_function_url_configs` table ([#14913](https://github.com/cloudquery/cloudquery/issues/14913)) ([0c377ab](https://github.com/cloudquery/cloudquery/commit/0c377ab0fd4903514b467e7f01e1dcc82107868e))
