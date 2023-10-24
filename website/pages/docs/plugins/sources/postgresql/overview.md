@@ -23,8 +23,8 @@ This example configures a PostgreSQL source, located at `localhost:5432`. The (t
 kind: source
 spec:
   name: "postgresql"
-  registry: "github"
   path: "cloudquery/postgresql"
+  registry: "cloudquery"
   version: "VERSION_SOURCE_POSTGRESQL"
   tables: ["*"]
 
@@ -77,6 +77,7 @@ kind: source
 spec:
   name: postgresql
   path: cloudquery/postgresql
+  registry: cloudquery
   version: "VERSION_SOURCE_POSTGRESQL"
   tables: ["*"]
   spec:

@@ -49,9 +49,10 @@ spec:
 kind: source
 spec:
   name: aws
+  path: cloudquery/aws
+  registry: cloudquery
   version: "VERSION_SOURCE_AWS"
   destinations: [postgresql]
-  path: cloudquery/aws
   tables: ["*"]
   skip_tables:
     - aws_ec2_vpc_endpoint_services 
@@ -78,6 +79,7 @@ kind: destination
 spec:
   name: postgresql
   path: cloudquery/postgresql
+  registry: cloudquery
   version: "VERSION_DESTINATION_POSTGRESQL"
   spec:
     connection_string: postgresql://postgres:pass@localhost:5432/postgres
