@@ -1,5 +1,16 @@
 # Changelog
 
+## [5.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v4.0.12...plugins-destination-neo4j-v5.0.0) (2023-10-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* Support creating & recreating indexes for tables with primary keys ([#14922](https://github.com/cloudquery/cloudquery/issues/14922)). CloudQuery Neo4j plugin will create or recreate indexes for tables with primary keys. This feature is marked breaking, as `CREATE INDEX` & `DROP INDEX` privileges are now required.
+
+### Features
+
+* Support creating & recreating indexes for tables with primary keys ([#14922](https://github.com/cloudquery/cloudquery/issues/14922)), closes ([#13754](https://github.com/cloudquery/cloudquery/issues/13754)) ([693ff72](https://github.com/cloudquery/cloudquery/commit/693ff72fb83cbf147cff811c37435e9bb22262de))
+
 ## [4.0.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v4.0.11...plugins-destination-neo4j-v4.0.12) (2023-10-24)
 
 
