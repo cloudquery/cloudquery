@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.2.1...plugins-source-oracle-v4.2.2) (2023-10-24)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to f46436f ([#14803](https://github.com/cloudquery/cloudquery/issues/14803)) ([f5248d7](https://github.com/cloudquery/cloudquery/commit/f5248d749398ded6a50903e09ecabbb996e94a34))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.11 ([#14870](https://github.com/cloudquery/cloudquery/issues/14870)) ([4fa917d](https://github.com/cloudquery/cloudquery/commit/4fa917d5085b6d99e7818413e507c3fbb32be523))
+
 ## [4.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.2.0...plugins-source-oracle-v4.2.1) (2023-10-20)
 
 
