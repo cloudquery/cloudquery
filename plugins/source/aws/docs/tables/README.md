@@ -439,6 +439,7 @@
   - [aws_lambda_function_concurrency_configs](../../../../../website/tables/aws/aws_lambda_function_concurrency_configs.md)
   - [aws_lambda_function_event_invoke_configs](../../../../../website/tables/aws/aws_lambda_function_event_invoke_configs.md)
   - [aws_lambda_function_event_source_mappings](../../../../../website/tables/aws/aws_lambda_function_event_source_mappings.md)
+  - [aws_lambda_function_url_configs](../../../../../website/tables/aws/aws_lambda_function_url_configs.md)
   - [aws_lambda_function_versions](../../../../../website/tables/aws/aws_lambda_function_versions.md)
 - [aws_lambda_layers](../../../../../website/tables/aws/aws_lambda_layers.md)
   - [aws_lambda_layer_versions](../../../../../website/tables/aws/aws_lambda_layer_versions.md)

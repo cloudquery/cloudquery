@@ -15,7 +15,8 @@ kind: source
 spec:
   name: aws
   path: cloudquery/aws
-  version: "v22.14.0"
+  registry: cloudquery
+  version: "VERSION_SOURCE_AWS"
   tables: ["aws_ec2_instances"]
   destinations: ["postgresql"]
 ---
@@ -23,7 +24,8 @@ kind: destination
 spec:
   name: "postgresql"
   path: "cloudquery/postgresql"
-  version: "v6.0.8"
+  registry: "cloudquery"
+  version: "VERSION_DESTINATION_POSTGRESQL"
   spec:
 ```
 

@@ -16,6 +16,7 @@ kind: destination
 spec:
   name: "postgresql"
   path: "cloudquery/postgresql"
+  registry: "cloudquery"
   version: "VERSION_DESTINATION_POSTGRESQL"
 
   spec:
@@ -34,9 +35,10 @@ The name field may be used to uniquely identify a particular destination configu
 
 ### registry
 
-(`string`, optional, default: `github`, available: `github`, `local`, `grpc`)
+(`string`, optional, default: `github`, available: `github`, `cloudquery`, `local`, `grpc`)
 
 - `github`: CloudQuery will look for and download the plugin from GitHub, and then execute it.
+- `cloudquery`: CloudQuery will look for and download the plugin from the official CloudQuery registry, and then execute it.
 - `local`: CloudQuery will execute the plugin from a local path.
 - `grpc`: mostly useful in debug mode when plugin is already running in a different terminal, CloudQuery will connect to the gRPC plugin server directly without spawning the process.
 
