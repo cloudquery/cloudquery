@@ -135,7 +135,8 @@ data:
       # Source spec section
       name: digitalocean
       path: cloudquery/digitalocean
-      version: "v5.0.2"
+      registry: cloudquery
+      version: "VERSION_SOURCE_DIGITALOCEAN"
       tables:
         - "digitalocean_droplets"
         - "digitalocean_databases"
@@ -150,9 +151,9 @@ data:
     kind: destination
     spec:
       name: "postgresql"
-      registry: "github"
       path: "cloudquery/postgresql"
-      version: "v4.2.2"
+      registry: "cloudquery"
+      version: "VERSION_DESTINATION_POSTGRESQL"
       spec:
         connection_string: ${PG_CONNECTION_STR}
 ```

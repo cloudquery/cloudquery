@@ -39,6 +39,7 @@ kind: source
 spec:
   name: "aws"
   path: "cloudquery/aws"
+  registry: "cloudquery"
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_s3_buckets"]
   destinations: ["postgresql"]

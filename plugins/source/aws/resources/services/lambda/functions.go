@@ -85,6 +85,7 @@ func Functions() *schema.Table {
 		Relations: []*schema.Table{
 			functionEventInvokeConfigs(),
 			functionAliases(),
+			functionURLConfigs(),
 			functionVersions(),
 			functionConcurrencyConfigs(),
 			functionEventSourceMappings(),

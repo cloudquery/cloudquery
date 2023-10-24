@@ -4,8 +4,8 @@ This example configures a MongoDB destination, located at `localhost:27017`. The
 kind: destination
 spec:
   name: "mongodb"
-  registry: "github"
   path: "cloudquery/mongodb"
+  registry: "cloudquery"
   version: "VERSION_DESTINATION_MONGODB"
   spec:
     connection_string: "mongodb://localhost:27017"

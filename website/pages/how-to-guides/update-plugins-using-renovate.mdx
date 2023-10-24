@@ -42,6 +42,7 @@ kind: source
 spec:
   name: gcp
   path: cloudquery/gcp
+  registry: cloudquery
   version: "VERSION_SOURCE_GCP"
   tables: ["*"]
   destinations: ["postgresql"]
@@ -50,6 +51,7 @@ kind: source
 spec:
   name: aws
   path: cloudquery/aws
+  registry: cloudquery
   version: "VERSION_SOURCE_AWS"
   destinations: ["postgresql"]
   tables: ["*"]
@@ -58,6 +60,7 @@ kind: destination
 spec:
   name: postgresql
   path: cloudquery/postgresql
+  registry: cloudquery
   version: "VERSION_DESTINATION_POSTGRESQL"
   write_mode: overwrite-delete-stale
 ``` 
