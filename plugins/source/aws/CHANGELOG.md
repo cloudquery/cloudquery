@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.17.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.16.0...plugins-source-aws-v22.17.0) (2023-10-24)
+
+
+### Features
+
+* **services:** Support newly added regions ([#14878](https://github.com/cloudquery/cloudquery/issues/14878)) ([2262859](https://github.com/cloudquery/cloudquery/commit/2262859329961c082b6b81873ec524d2914860c6))
+
 ## [22.16.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.15.2...plugins-source-aws-v22.16.0) (2023-10-23)
 
 
