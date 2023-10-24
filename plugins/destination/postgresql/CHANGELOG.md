@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v6.1.2...plugins-destination-postgresql-v6.1.3) (2023-10-24)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to f46436f ([#14803](https://github.com/cloudquery/cloudquery/issues/14803)) ([f5248d7](https://github.com/cloudquery/cloudquery/commit/f5248d749398ded6a50903e09ecabbb996e94a34))
+
 ## [6.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v6.1.1...plugins-destination-postgresql-v6.1.2) (2023-10-19)
 
 
