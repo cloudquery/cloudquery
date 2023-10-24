@@ -5,6 +5,7 @@ kind: destination
 spec:
   name: meilisearch
   path: cloudquery/meilisearch
+  registry: cloudquery
   version: "VERSION_DESTINATION_MEILISEARCH"
   write_mode: "overwrite"
   spec:

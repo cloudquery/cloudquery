@@ -34,10 +34,10 @@ The full configuration for the MySQL destination plugin should look like this:
 ```yaml copy
 kind: destination
 spec:
-  name:     "mysql"
-  registry: "github"
-  path:     "cloudquery/mysql"
-  version:  "VERSION_DESTINATION_MYSQL"
+  name: "mysql"
+  path: "cloudquery/mysql"
+  registry: "cloudquery"
+  version: "VERSION_DESTINATION_MYSQL"
 
   spec:
     connection_string: "root:password@/cloudquery"
