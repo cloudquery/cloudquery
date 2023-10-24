@@ -87,6 +87,7 @@ spec:
   # Source spec section
   name: "gcp"
   path: "cloudquery/gcp"
+  registry: "cloudquery"
   version: "VERSION_SOURCE_GCP"
   tables: ["gcp_storage_buckets"] # Add more tables here if you want to sync more data
   destinations: ["postgresql"]
@@ -97,8 +98,8 @@ spec:
 kind: destination
 spec:
   name: "postgresql"
-  registry: "github"
   path: "cloudquery/postgresql"
+  registry: "cloudquery"
   version: "VERSION_DESTINATION_POSTGRESQL"
   spec:
     connection_string: "postgresql://cloudquery:<PASSWORD>@<PRIVATE_IP>:5432/cloudquery"

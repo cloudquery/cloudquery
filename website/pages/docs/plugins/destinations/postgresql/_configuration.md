@@ -4,8 +4,8 @@ This example configures a Postgresql destination, located at `localhost:5432`:
 kind: destination
 spec:
   name: "postgresql"
-  registry: "github"
   path: "cloudquery/postgresql"
+  registry: "cloudquery"
   version: "VERSION_DESTINATION_POSTGRESQL"
 
   spec:
