@@ -2,8 +2,8 @@
 kind: destination
 spec:
   name: "clickhouse"
-  registry: "github"
   path: "cloudquery/clickhouse"
+  registry: "cloudquery"
   version: "VERSION_DESTINATION_CLICKHOUSE"
   write_mode: "append"
   spec:

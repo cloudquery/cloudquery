@@ -25,6 +25,7 @@ kind: source
 spec:
   name: aws
   path: cloudquery/aws
+  registry: cloudquery
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_cloudtrail_events"]
   destinations: ["postgresql"]
@@ -38,8 +39,9 @@ spec:
 kind: destination
 spec:
   name: "postgresql"
-  version: "VERSION_DESTINATION_POSTGRESQL"
   path: "cloudquery/postgresql"
+  registry: "cloudquery"
+  version: "VERSION_DESTINATION_POSTGRESQL"
   write_mode: "overwrite-delete-stale"
   spec:
     connection_string: "${CONNECTION_STRING}"
@@ -54,6 +56,7 @@ kind: source
 spec:
   name: aws
   path: cloudquery/aws
+  registry: cloudquery
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_cloudtrail_events"]
   destinations: ["bigquery"]
@@ -68,6 +71,7 @@ kind: destination
 spec:
   name: bigquery
   path: cloudquery/bigquery
+  registry: cloudquery
   version: "VERSION_DESTINATION_BIGQUERY"
   write_mode: "append"
   spec:
@@ -78,6 +82,7 @@ kind: destination
 spec:
   name: sqlite
   path: cloudquery/sqlite
+  registry: cloudquery
   version: "VERSION_DESTINATION_SQLITE"
   spec:
     connection_string: ./db.sqlite
