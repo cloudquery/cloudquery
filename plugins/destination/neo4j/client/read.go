@@ -100,7 +100,7 @@ func (c *Client) reverseTransformer(table *schema.Table, node *neo4j.Node) (arro
 func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
 	stmt := fmt.Sprintf(readCypher, table.Name)
 
-	session := c.LoggedSession(ctx, neo4j.SessionConfig{})
+	session := c.Session(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeRead})
 	defer session.Close(ctx)
 	_, err := session.ExecuteRead(ctx, func(tx neo4j.ManagedTransaction) (any, error) {
 		r, err := tx.Run(ctx, stmt, map[string]any{})
