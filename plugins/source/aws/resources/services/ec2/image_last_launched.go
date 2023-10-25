@@ -17,8 +17,13 @@ func imageAttributesLastLaunchTime() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeImageAttribute.html. 
 The date and time, in ISO 8601 date-time format, when the AMI was last used to launch an EC2 instance. When the AMI is used to launch an instance, there is a 24-hour delay before that usage is reported.`,
 		Resolver: fetchEc2ImageAttributeLastLaunchTime,
-		Columns: schema.ColumnList{
-			imageARNColumn,
+		Columns: []schema.Column{
+			{
+				Name:       "image_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
+			},
 			{
 				Name:     "last_launched_time",
 				Type:     arrow.FixedWidthTypes.Timestamp_us,

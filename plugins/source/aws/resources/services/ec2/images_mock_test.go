@@ -18,18 +18,18 @@ func buildEc2ImagesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	services := client.Services{
 		Ec2: m,
 	}
-	image := types.Image{}
-	require.NoError(t, faker.FakeObject(&image))
+	g := types.Image{}
+	require.NoError(t, faker.FakeObject(&g))
 
 	creationDate := "1994-11-05T08:15:30-05:00"
-	image.OwnerId = aws.String("testAccount")
-	image.CreationDate = &creationDate
+	g.OwnerId = aws.String("testAccount")
+	g.CreationDate = &creationDate
 	deprecationTime := "2050-11-05T08:15:30-05:00"
-	image.DeprecationTime = &deprecationTime
+	g.DeprecationTime = &deprecationTime
 
 	m.EXPECT().DescribeImages(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ec2.DescribeImagesOutput{
-			Images: []types.Image{image},
+			Images: []types.Image{g},
 		}, nil).Times(2)
 
 	lp := types.LaunchPermission{}
@@ -39,7 +39,7 @@ func buildEc2ImagesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		gomock.Any(),
 		&ec2.DescribeImageAttributeInput{
 			Attribute: types.ImageAttributeNameLaunchPermission,
-			ImageId:   image.ImageId,
+			ImageId:   g.ImageId,
 		},
 		gomock.Any(),
 	).Return(
@@ -52,7 +52,7 @@ func buildEc2ImagesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		gomock.Any(),
 		&ec2.DescribeImageAttributeInput{
 			Attribute: types.ImageAttributeNameLastLaunchedTime,
-			ImageId:   image.ImageId,
+			ImageId:   g.ImageId,
 		},
 		gomock.Any(),
 	).Return(

@@ -105,10 +105,3 @@ func resolveImageArn(_ context.Context, meta schema.ClientMeta, resource *schema
 	}
 	return resource.Set(c.Name, a.String())
 }
-
-var imageARNColumn = schema.Column{
-	Name:       "image_arn",
-	Type:       arrow.BinaryTypes.String,
-	Resolver:   schema.ParentColumnResolver("arn"),
-	PrimaryKey: true,
-}
