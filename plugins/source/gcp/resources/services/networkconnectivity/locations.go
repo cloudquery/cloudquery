@@ -3,7 +3,6 @@ package networkconnectivity
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
 	"google.golang.org/api/networkconnectivity/v1"
 
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
@@ -18,16 +17,9 @@ func Locations() *schema.Table {
 		Resolver:    fetchLocations,
 		Multiplex:   client.ProjectMultiplexEnabledServices("networkconnectivity.googleapis.com"),
 		Transform:   client.TransformWithStruct(&networkconnectivity.Location{}, transformers.WithPrimaryKeys("Name")),
-		Columns: []schema.Column{
-			{
-				Name:       "project_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveProject,
-				PrimaryKey: true,
-			},
-		},
+		Columns:     schema.ColumnList{client.ProjectIDColumn(true)},
 		Relations: []*schema.Table{
-			InternalRanges(),
+			internalRanges(),
 		},
 	}
 }

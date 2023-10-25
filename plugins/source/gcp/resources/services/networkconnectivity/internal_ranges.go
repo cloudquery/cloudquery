@@ -3,7 +3,6 @@ package networkconnectivity
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
 	"google.golang.org/api/networkconnectivity/v1"
 
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
@@ -11,20 +10,14 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func InternalRanges() *schema.Table {
+func internalRanges() *schema.Table {
 	return &schema.Table{
 		Name:        "gcp_networkconnectivity_internal_ranges",
 		Description: `https://cloud.google.com/network-connectivity/docs/reference/networkconnectivity/rest/v1/projects.locations.internalRanges/list`,
 		Resolver:    fetchInternalRanges,
 		Multiplex:   client.ProjectMultiplexEnabledServices("networkconnectivity.googleapis.com"),
 		Transform:   client.TransformWithStruct(&networkconnectivity.InternalRange{}, transformers.WithPrimaryKeys("Name")),
-		Columns: []schema.Column{
-			{
-				Name:     "project_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveProject,
-			},
-		},
+		Columns:     schema.ColumnList{client.ProjectIDColumn(false)},
 	}
 }
 
