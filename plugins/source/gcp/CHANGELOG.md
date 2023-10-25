@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [9.9.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.8.2...plugins-source-gcp-v9.9.0) (2023-10-25)
 
 
+### This Release has the Following Changes to Tables
+- Table `gcp_bigquery_datasets`: column added with name `external_dataset_reference` and type `json`
+- Table `gcp_bigquery_tables`: column added with name `biglake_configuration` and type `json`
+- Table `gcp_bigquery_tables`: column added with name `resource_tags` and type `json`
+- Table `gcp_networkconnectivity_internal_ranges` was added
+- Table `gcp_networkconnectivity_locations` was added
+- Table `gcp_sql_instances`: column added with name `dns_name` and type `utf8`
+- Table `gcp_sql_instances`: column added with name `primary_dns_name` and type `utf8`
+- Table `gcp_sql_instances`: column added with name `psc_service_attachment_link` and type `utf8`
+- Table `gcp_sql_instances`: column added with name `write_endpoint` and type `utf8`
+
 ### Features
 
 * Add  gcp `networkconnectivity` tables ([#14925](https://github.com/cloudquery/cloudquery/issues/14925)) ([12711d4](https://github.com/cloudquery/cloudquery/commit/12711d4a5c6881b3e592a27a8627a463eae0275c))
