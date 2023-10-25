@@ -28,6 +28,7 @@ The following tables depend on gcp_bigquery_datasets:
 |default_table_expiration_ms|`int64`|
 |description|`utf8`|
 |etag|`utf8`|
+|external_dataset_reference|`json`|
 |friendly_name|`utf8`|
 |id (PK)|`utf8`|
 |is_case_insensitive|`bool`|
