@@ -17,6 +17,7 @@ This table depends on [gcp_bigquery_datasets](gcp_bigquery_datasets).
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
+|biglake_configuration|`json`|
 |clone_definition|`json`|
 |clustering|`json`|
 |creation_time|`int64`|
@@ -50,6 +51,7 @@ This table depends on [gcp_bigquery_datasets](gcp_bigquery_datasets).
 |num_total_physical_bytes|`int64`|
 |range_partitioning|`json`|
 |require_partition_filter|`bool`|
+|resource_tags|`json`|
 |schema|`json`|
 |self_link|`utf8`|
 |snapshot_definition|`json`|

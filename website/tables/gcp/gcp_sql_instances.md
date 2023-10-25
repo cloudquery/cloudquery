@@ -27,6 +27,7 @@ The following tables depend on gcp_sql_instances:
 |database_version|`utf8`|
 |disk_encryption_configuration|`json`|
 |disk_encryption_status|`json`|
+|dns_name|`utf8`|
 |etag|`utf8`|
 |failover_replica|`json`|
 |gce_zone|`utf8`|
@@ -40,7 +41,9 @@ The following tables depend on gcp_sql_instances:
 |name|`utf8`|
 |on_premises_configuration|`json`|
 |out_of_disk_report|`json`|
+|primary_dns_name|`utf8`|
 |project|`utf8`|
+|psc_service_attachment_link|`utf8`|
 |region|`utf8`|
 |replica_configuration|`json`|
 |replica_names|`list<item: utf8, nullable>`|
@@ -54,6 +57,7 @@ The following tables depend on gcp_sql_instances:
 |settings|`json`|
 |state|`utf8`|
 |suspension_reason|`list<item: utf8, nullable>`|
+|write_endpoint|`utf8`|
 
 ## Example Queries
 

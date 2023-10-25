@@ -66,6 +66,7 @@ var gcpExceptions = map[string]string{
 	"memcache":             "Memcache",
 	"ml":                   "ML",
 	"networkmanagement":    "Network Management",
+	"networkconnectivity":  "Network Connectivity",
 	"networkservices":      "Network Services",
 	"nfs":                  "NFS",
 	"osconfig":             "OS Config",
