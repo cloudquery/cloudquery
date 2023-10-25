@@ -23,9 +23,10 @@ type ProjectListEntry struct {
 
 func Projects() *schema.Table {
 	return &schema.Table{
-		Name:      "jira_projects",
-		Transform: transformers.TransformWithStruct(&ProjectListEntry{}, transformers.WithPrimaryKeys("Self")),
-		Resolver:  fetchProjects,
+		Name:        "jira_projects",
+		Description: "This table shows data for Jira Projects.",
+		Transform:   transformers.TransformWithStruct(&ProjectListEntry{}, transformers.WithPrimaryKeys("Self")),
+		Resolver:    fetchProjects,
 	}
 }
 
