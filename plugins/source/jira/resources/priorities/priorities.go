@@ -11,9 +11,10 @@ import (
 
 func Priorities() *schema.Table {
 	return &schema.Table{
-		Name:      "jira_priorities",
-		Transform: transformers.TransformWithStruct(&jira.Priority{}, transformers.WithPrimaryKeys("Self")),
-		Resolver:  fetchPriorities,
+		Name:        "jira_priorities",
+		Description: "This table shows data for Jira Priorities.",
+		Transform:   transformers.TransformWithStruct(&jira.Priority{}, transformers.WithPrimaryKeys("Self")),
+		Resolver:    fetchPriorities,
 	}
 }
 

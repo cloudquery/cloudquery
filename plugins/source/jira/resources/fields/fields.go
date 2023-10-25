@@ -11,9 +11,10 @@ import (
 
 func Fields() *schema.Table {
 	return &schema.Table{
-		Name:      "jira_fields",
-		Transform: transformers.TransformWithStruct(&jira.Field{}, transformers.WithPrimaryKeys("ID")),
-		Resolver:  fetchFields,
+		Name:        "jira_fields",
+		Description: "This table shows data for Jira Fields.",
+		Transform:   transformers.TransformWithStruct(&jira.Field{}, transformers.WithPrimaryKeys("ID")),
+		Resolver:    fetchFields,
 	}
 }
 

@@ -11,9 +11,10 @@ import (
 
 func Issues() *schema.Table {
 	return &schema.Table{
-		Name:      "jira_issues",
-		Transform: transformers.TransformWithStruct(&jira.Issue{}, transformers.WithPrimaryKeys("Self")),
-		Resolver:  fetchResolver,
+		Name:        "jira_issues",
+		Description: "This table shows data for Jira Issues.",
+		Transform:   transformers.TransformWithStruct(&jira.Issue{}, transformers.WithPrimaryKeys("Self")),
+		Resolver:    fetchResolver,
 	}
 }
 

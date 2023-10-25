@@ -11,9 +11,10 @@ import (
 
 func Boards() *schema.Table {
 	return &schema.Table{
-		Name:      "jira_boards",
-		Transform: transformers.TransformWithStruct(&jira.Board{}, transformers.WithPrimaryKeys("Self")),
-		Resolver:  fetchBoards,
+		Name:        "jira_boards",
+		Description: "This table shows data for Jira Boards.",
+		Transform:   transformers.TransformWithStruct(&jira.Board{}, transformers.WithPrimaryKeys("Self")),
+		Resolver:    fetchBoards,
 	}
 }
 
