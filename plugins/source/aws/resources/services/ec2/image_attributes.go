@@ -17,11 +17,7 @@ func imageAttributesLaunchPermissions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_LaunchPermission.html`,
 		Resolver:    fetchEc2ImageAttributeLaunchPermissions,
 		Transform:   transformers.TransformWithStruct(&types.LaunchPermission{}),
-		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(true),
-			imageARNColumn,
-		},
+		Columns:     schema.ColumnList{imageARNColumn},
 	}
 }
 
