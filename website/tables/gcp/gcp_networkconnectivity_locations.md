@@ -1,6 +1,6 @@
 # Table: gcp_networkconnectivity_locations
 
-This table shows data for GCP Networkconnectivity Locations.
+This table shows data for GCP Network Connectivity Locations.
 
 https://cloud.google.com/network-connectivity/docs/reference/networkconnectivity/rest/v1/projects.locations/list
 

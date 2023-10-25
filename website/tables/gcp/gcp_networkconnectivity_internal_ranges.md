@@ -1,6 +1,6 @@
 # Table: gcp_networkconnectivity_internal_ranges
 
-This table shows data for GCP Networkconnectivity Internal Ranges.
+This table shows data for GCP Network Connectivity Internal Ranges.
 
 https://cloud.google.com/network-connectivity/docs/reference/networkconnectivity/rest/v1/projects.locations.internalRanges/list
 
