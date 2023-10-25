@@ -3,7 +3,6 @@ package ec2
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
@@ -19,11 +18,9 @@ func imageAttributesLaunchPermissions() *schema.Table {
 		Resolver:    fetchEc2ImageAttributeLaunchPermissions,
 		Transform:   transformers.TransformWithStruct(&types.LaunchPermission{}),
 		Columns: []schema.Column{
-			{
-				Name:     "image_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
-			},
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
+			imageARNColumn,
 		},
 	}
 }
