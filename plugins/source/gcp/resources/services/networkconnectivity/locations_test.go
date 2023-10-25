@@ -20,9 +20,9 @@ func createLocation(mux *httprouter.Router) error {
 	}
 	item.Locations = []*networkconnectivity.Location{
 		{
-			DisplayName: "test-display-name",
-			LocationId:  "global",
-			Metadata:    []byte(`{"@type":"type.googleapis.com/google.cloud.networkconnectivity.v1.LocationMetadata","locationFeatures":["SITE_TO_CLOUD_SPOKES"]}`),
+			LocationId: "global",
+			Name:       "projects/testProject/locations/global",
+			Metadata:   []byte(`{"@type":"type.googleapis.com/google.cloud.networkconnectivity.v1.LocationMetadata","locationFeatures":["SITE_TO_CLOUD_SPOKES"]}`),
 		},
 	}
 	item.NextPageToken = ""
@@ -39,11 +39,7 @@ func createLocation(mux *httprouter.Router) error {
 		}
 	})
 
-	if err := createInternalRanges(mux); err != nil {
-		return err
-	}
-
-	return nil
+	return createInteradd nalRanges(mux)
 }
 
 func TestLocations(t *testing.T) {

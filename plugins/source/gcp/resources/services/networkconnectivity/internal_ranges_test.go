@@ -2,9 +2,10 @@ package networkconnectivity
 
 import (
 	"encoding/json"
+	"net/http"
+
 	"github.com/julienschmidt/httprouter"
 	"google.golang.org/api/networkconnectivity/v1"
-	"net/http"
 
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 )
