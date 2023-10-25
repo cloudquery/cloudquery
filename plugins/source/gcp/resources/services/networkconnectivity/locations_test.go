@@ -39,7 +39,7 @@ func createLocation(mux *httprouter.Router) error {
 		}
 	})
 
-	return createInteradd nalRanges(mux)
+	return createInternalRanges(mux)
 }
 
 func TestLocations(t *testing.T) {
