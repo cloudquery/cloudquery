@@ -25,8 +25,8 @@ The following tables depend on aws_ec2_images:
 |architecture|`utf8`|
 |block_device_mappings|`json`|
 |boot_mode|`utf8`|
-|creation_date|`utf8`|
-|deprecation_time|`utf8`|
+|creation_date|`timestamp[us, tz=UTC]`|
+|deprecation_time|`timestamp[us, tz=UTC]`|
 |description|`utf8`|
 |ena_support|`bool`|
 |hypervisor|`utf8`|

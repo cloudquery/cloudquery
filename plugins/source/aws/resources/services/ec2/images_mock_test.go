@@ -21,7 +21,7 @@ func buildEc2ImagesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	g := types.Image{}
 	require.NoError(t, faker.FakeObject(&g))
 
-	creationDate := "1994-11-05T08:15:30-05:00"
+	creationDate := "2019-05-10T13:17:12.000Z" // from docs
 	g.OwnerId = aws.String("testAccount")
 	g.CreationDate = &creationDate
 	deprecationTime := "2050-11-05T08:15:30-05:00"
