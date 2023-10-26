@@ -2,7 +2,7 @@ package ec2
 
 import (
 	"context"
-	reflect "reflect"
+	"reflect"
 
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
