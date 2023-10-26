@@ -5,6 +5,16 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.25.2](https://github.com/cloudquery/cloudquery/compare/cli-v3.25.1...cli-v3.25.2) (2023-10-26)
+
+
+### Bug Fixes
+
+* Add missing options to install command ([#15001](https://github.com/cloudquery/cloudquery/issues/15001)) ([a61f51e](https://github.com/cloudquery/cloudquery/commit/a61f51ef2364868e9ec3d3c9c250aa475c737535))
+* Add missing options to migrate command ([#15002](https://github.com/cloudquery/cloudquery/issues/15002)) ([b3056ef](https://github.com/cloudquery/cloudquery/commit/b3056efa036d48ec2debeae5483cd736d07118d6))
+* Add missing options to tables command ([#15003](https://github.com/cloudquery/cloudquery/issues/15003)) ([af7c8ca](https://github.com/cloudquery/cloudquery/commit/af7c8caefeb9b3f344e913f2a14be45c2bc7a886))
+* **deps:** Update module google.golang.org/grpc to v1.58.3 [SECURITY] ([#14940](https://github.com/cloudquery/cloudquery/issues/14940)) ([e1addea](https://github.com/cloudquery/cloudquery/commit/e1addeaf58ad965e545a3e068860609dadcffa10))
+
 ## [3.25.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.25.0...cli-v3.25.1) (2023-10-23)
 
 
