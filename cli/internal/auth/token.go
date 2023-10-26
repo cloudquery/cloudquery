@@ -36,9 +36,9 @@ func GetAuthTokenIfNeeded(logger zerolog.Logger, sources []*specs.Source, destin
 	tc := cqapiauth.NewTokenClient()
 	token, err := tc.GetToken()
 	if err != nil {
-		recommendLogin := strings.HasPrefix(err.Error(), "Hint:")
+		recommendLogin := strings.Contains(err.Error(), "Hint:")
 		if recommendLogin {
-			logger.Warn().Err(err).Msg("when using the CloudQuery registry, it's recommend to login first via `cloudquery login`. Logging in allows for better rate limits and downloading of premium plugins")
+			logger.Warn().Msg("when using the CloudQuery registry, it's recommend to login first via `cloudquery login`. Logging in allows for better rate limits and downloading of premium plugins")
 			return "", nil
 		}
 
