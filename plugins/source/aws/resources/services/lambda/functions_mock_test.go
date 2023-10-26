@@ -38,11 +38,14 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 			Aliases: []types.AliasConfiguration{a},
 		}, nil)
 
-	u := types.FunctionUrlConfig{}
-	require.NoError(t, faker.FakeObject(&u))
+	urlConfig := types.FunctionUrlConfig{}
+	require.NoError(t, faker.FakeObject(&urlConfig))
+	urlConfig.CreationTime = aws.String("2012-07-14T01:00:00+01:00")
+	urlConfig.LastModifiedTime = aws.String("2012-07-14T01:00:00+01:00")
+
 	m.EXPECT().ListFunctionUrlConfigs(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&lambda.ListFunctionUrlConfigsOutput{
-			FunctionUrlConfigs: []types.FunctionUrlConfig{u},
+			FunctionUrlConfigs: []types.FunctionUrlConfig{urlConfig},
 		}, nil)
 
 	i := types.FunctionEventInvokeConfig{}
@@ -91,13 +94,6 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		&lambda.ListVersionsByFunctionOutput{
 			Versions: []types.FunctionConfiguration{fc},
 		}, nil)
-
-	urlConfig := lambda.GetFunctionUrlConfigOutput{}
-	require.NoError(t, faker.FakeObject(&urlConfig))
-	urlConfig.CreationTime = aws.String("2012-07-14T01:00:00+01:00")
-	urlConfig.LastModifiedTime = aws.String("2012-07-14T01:00:00+01:00")
-	m.EXPECT().GetFunctionUrlConfig(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&urlConfig, nil)
 
 	runtimeManagementConfig := lambda.GetRuntimeManagementConfigOutput{}
 	require.NoError(t, faker.FakeObject(&runtimeManagementConfig))
