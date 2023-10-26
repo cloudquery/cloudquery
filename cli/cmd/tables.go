@@ -59,7 +59,12 @@ func tables(cmd *cobra.Command, args []string) error {
 	}
 	opts := []managedplugin.Option{
 		managedplugin.WithLogger(log.Logger),
-		managedplugin.WithDirectory(cqDir),
+	}
+	if cqDir != "" {
+		opts = append(opts, managedplugin.WithDirectory(cqDir))
+	}
+	if disableSentry {
+		opts = append(opts, managedplugin.WithNoSentry())
 	}
 	pluginConfigs := make([]managedplugin.Config, 0, len(specReader.Sources))
 	for _, sourceSpec := range specReader.Sources {
