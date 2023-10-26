@@ -10,7 +10,7 @@ require (
 	github.com/rs/zerolog v1.29.1
 	github.com/thoas/go-funk v0.9.3
 	golang.org/x/sync v0.4.0
-	google.golang.org/grpc v1.58.2
+	google.golang.org/grpc v1.58.3
 )
 
 // TODO: remove once all updates are merged

@@ -10,7 +10,7 @@ require (
 	github.com/stripe/stripe-go/v74 v74.16.0
 	github.com/stripe/stripe-mock v0.148.0
 	golang.org/x/time v0.3.0
-	google.golang.org/grpc v1.58.2
+	google.golang.org/grpc v1.58.3
 )
 
 replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231023001216-f46436fa3561
