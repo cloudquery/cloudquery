@@ -3,10 +3,11 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/cloudquery/cloudquery/cli/internal/auth"
 
 	"github.com/spf13/cobra"
 )
@@ -20,7 +21,7 @@ func newCmdLogout() *cobra.Command {
 	loginCmd := &cobra.Command{
 		Use:    "logout",
 		Short:  logoutShort,
-		Hidden: true,
+		Hidden: false,
 		Args:   cobra.MatchAll(cobra.ExactArgs(0), cobra.OnlyValidArgs),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// Set up a channel to listen for OS signals for graceful shutdown.

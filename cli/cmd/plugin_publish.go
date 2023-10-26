@@ -35,7 +35,7 @@ func newCmdPluginPublish() *cobra.Command {
 		Short:   pluginPublishShort,
 		Long:    pluginPublishLong,
 		Example: pluginPublishExample,
-		Hidden:  true,
+		Hidden:  false,
 		Args:    cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// Set up a channel to listen for OS signals for graceful shutdown.

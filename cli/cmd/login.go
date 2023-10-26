@@ -45,7 +45,7 @@ func newCmdLogin() *cobra.Command {
 		Short:   loginShort,
 		Long:    loginLong,
 		Example: loginExample,
-		Hidden:  true,
+		Hidden:  false,
 		Args:    cobra.MatchAll(cobra.ExactArgs(0), cobra.OnlyValidArgs),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// Set up a channel to listen for OS signals for graceful shutdown.
