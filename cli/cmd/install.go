@@ -49,9 +49,15 @@ func installPlugin(cmd *cobra.Command, args []string) error {
 	}
 	sources := specReader.Sources
 	destinations := specReader.Destinations
-	opts := []managedplugin.Option{managedplugin.WithNoExec()}
+	opts := []managedplugin.Option{
+		managedplugin.WithNoExec(),
+		managedplugin.WithLogger(log.Logger),
+	}
 	if cqDir != "" {
 		opts = append(opts, managedplugin.WithDirectory(cqDir))
+	}
+	if disableSentry {
+		opts = append(opts, managedplugin.WithNoSentry())
 	}
 
 	sourcePluginConfigs := make([]managedplugin.Config, 0, len(sources))
