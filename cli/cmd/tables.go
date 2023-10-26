@@ -5,6 +5,7 @@ import (
 	"path"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/rs/zerolog/log"
@@ -57,8 +58,14 @@ func tables(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
+	sources := specReader.Sources
+	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, nil)
+	if err != nil {
+		return fmt.Errorf("failed to get auth token: %w", err)
+	}
 	opts := []managedplugin.Option{
 		managedplugin.WithLogger(log.Logger),
+		managedplugin.WithAuthToken(authToken),
 	}
 	if cqDir != "" {
 		opts = append(opts, managedplugin.WithDirectory(cqDir))
@@ -66,8 +73,8 @@ func tables(cmd *cobra.Command, args []string) error {
 	if disableSentry {
 		opts = append(opts, managedplugin.WithNoSentry())
 	}
-	pluginConfigs := make([]managedplugin.Config, 0, len(specReader.Sources))
-	for _, sourceSpec := range specReader.Sources {
+	pluginConfigs := make([]managedplugin.Config, 0, len(sources))
+	for _, sourceSpec := range sources {
 		pluginConfigs = append(pluginConfigs, managedplugin.Config{
 			Name:     sourceSpec.Name,
 			Path:     sourceSpec.Path,

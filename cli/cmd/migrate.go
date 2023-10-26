@@ -6,6 +6,7 @@ import (
 
 	"slices"
 
+	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/rs/zerolog/log"
@@ -48,8 +49,15 @@ func migrate(cmd *cobra.Command, args []string) error {
 	}
 	sources := specReader.Sources
 	destinations := specReader.Destinations
+
+	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations)
+	if err != nil {
+		return fmt.Errorf("failed to get auth token: %w", err)
+	}
+
 	opts := []managedplugin.Option{
 		managedplugin.WithLogger(log.Logger),
+		managedplugin.WithAuthToken(authToken),
 	}
 	if cqDir != "" {
 		opts = append(opts, managedplugin.WithDirectory(cqDir))
