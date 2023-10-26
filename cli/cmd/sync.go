@@ -108,15 +108,13 @@ func sync(cmd *cobra.Command, args []string) error {
 	for _, source := range sources {
 		opts := []managedplugin.Option{
 			managedplugin.WithLogger(log.Logger),
+			managedplugin.WithOtelEndpoint(source.OtelEndpoint),
 		}
 		if cqDir != "" {
 			opts = append(opts, managedplugin.WithDirectory(cqDir))
 		}
 		if disableSentry {
 			opts = append(opts, managedplugin.WithNoSentry())
-		}
-		if source.OtelEndpoint != "" {
-			opts = append(opts, managedplugin.WithOtelEndpoint(source.OtelEndpoint))
 		}
 		if source.OtelEndpointInsecure {
 			opts = append(opts, managedplugin.WithOtelEndpointInsecure())
