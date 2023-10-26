@@ -20,6 +20,10 @@
       "sidebar": false
     }
   },
+  "hub": {
+    "title": "Hub",
+    "href": "https://hub.cloudquery.io"
+  },
   "integrations": {
     "title": "Integrations",
     "type": "page",
