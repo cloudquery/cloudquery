@@ -1,14 +1,18 @@
 ---
-title: "plugin"
+title: "logout"
 ---
-## cloudquery plugin
+## cloudquery logout
 
-Plugin commands
+Log out of CloudQuery Hub.
+
+```
+cloudquery logout [flags]
+```
 
 ### Options
 
 ```
-  -h, --help   help for plugin
+  -h, --help   help for logout
 ```
 
 ### Options inherited from parent commands
@@ -26,6 +30,4 @@ Plugin commands
 ### SEE ALSO
 
 * [cloudquery](/docs/reference/cli/cloudquery)	 - CloudQuery CLI
-* [cloudquery plugin install](/docs/reference/cli/cloudquery_plugin_install)	 - Install required plugin images from your configuration
-* [cloudquery plugin publish](/docs/reference/cli/cloudquery_plugin_publish)	 - Publish to CloudQuery Hub.
 

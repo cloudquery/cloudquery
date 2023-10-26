@@ -11,11 +11,15 @@ import (
 
 var docFiles = []string{
 	"cloudquery.md",
+	"cloudquery_login.md",
+	"cloudquery_logout.md",
 	"cloudquery_sync.md",
 	"cloudquery_migrate.md",
 	"cloudquery_tables.md",
 	"cloudquery_plugin.md",
 	"cloudquery_plugin_install.md",
+	"cloudquery_plugin_publish.md",
+	"cloudquery_switch.md",
 }
 
 func TestDoc(t *testing.T) {
