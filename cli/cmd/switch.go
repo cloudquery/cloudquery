@@ -28,6 +28,7 @@ func newCmdSwitch() *cobra.Command {
 		Long:    switchLong,
 		Example: switchExample,
 		Args:    cobra.MaximumNArgs(1),
+		Hidden:  false,
 		RunE:    runSwitch,
 	}
 	return switchCmd
