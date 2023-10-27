@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.14](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.3.13...plugins-destination-mssql-v4.3.14) (2023-10-27)
+
+
+### Bug Fixes
+
+* **deps:** Update module google.golang.org/grpc to v1.58.3 [SECURITY] ([#14940](https://github.com/cloudquery/cloudquery/issues/14940)) ([e1addea](https://github.com/cloudquery/cloudquery/commit/e1addeaf58ad965e545a3e068860609dadcffa10))
+
 ## [4.3.13](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.3.12...plugins-destination-mssql-v4.3.13) (2023-10-23)
 
 
