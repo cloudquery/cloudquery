@@ -27,6 +27,7 @@ class FormResponses(Table):
                 Column("hidden", JSONType()),
                 Column("calculated", JSONType()),
                 Column("variables", JSONType()),
+                Column("tags", JSONType()),
             ],
         )
 

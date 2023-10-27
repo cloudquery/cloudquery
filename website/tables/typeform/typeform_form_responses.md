@@ -23,3 +23,4 @@ This table depends on [typeform_forms](typeform_forms).
 |hidden|`json`|
 |calculated|`json`|
 |variables|`json`|
+|tags|`json`|
