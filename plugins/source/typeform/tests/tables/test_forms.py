@@ -28,6 +28,9 @@ def test_forms(mock_typeform_client):
                 "display": "https://cloudquery.typeform.com/to/XYZ",
                 "responses": "https://api.typeform.com/forms/XYZ/responses",
             },
+            "tags": [
+                "tag1", "tag2"
+            ]
         },
         {
             "id": "form2",
