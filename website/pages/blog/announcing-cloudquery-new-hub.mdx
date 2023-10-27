@@ -1,0 +1,33 @@
+---
+title: "Announcement: CloudQuery Hub"
+tag: announcement
+date: 2023/10/31
+description: "Introducing the Hub: New Home for CloudQuery Plugins and Add-ons"
+author: yevgenypats
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+<iframe width="100%" height="480" src="https://www.youtube.com/embed/tJgzlZdXIPg"></iframe>
+
+We are excited to announce that we have launched [CloudQuery Hub](https://hub.cloudquery.io) - a new place to find, download, upload and buy CloudQuery plugins and add-ons (transformations & visualizations).
+
+## What Is the Hub?
+
+
+- The Hub provides dynamic documentation for every version of a plugin or add-on.
+- It enables fast downloads by hosting assets on dedicated infrastructure.
+- Plugins can now be published from any provider, such as GitLab or Gitea, not just GitHub, using [`cloudquery publish`](https://www.cloudquery.io/docs/reference/cli/cloudquery_plugin_publish) command.
+
+## Other Important Notes
+
+To protect the CloudQuery Infrastructure that hosts plugins, we are going to introduce rate limiting per IP address when downloading plugins without logging in. If you frequently download plugins at a high rate, it is recommended to either cache the downloaded assets or to log in to increase your rate limit.
+
+This change is not coming immediately. First, we are going to enable account creation and add support for authenticating and building production deployments. After that, for an initial one-month transition period, the rate-limiting will be disabled and plugins will be published to both CloudQuery Hub and GitHub. Thereafter the default rate limits will apply and new plugin versions will only be published to CloudQuery Hub.
+
+## Feedback & Future
+
+This is just the first release of the Hub, much more is coming. Stay tuned!
+
+We would love to hear what you think about the upcoming changes. If you have any questions, comments, or suggestions, please feel free to reach out to us on [Discord](https://cloudquery.io/discord) or [GitHub](https://github.com/cloudquery/plugin-sdk-python), or just [book a meeting](https://calendar.app.google/sAXWJWxfSEjUEsBAA).
