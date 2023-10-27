@@ -3,6 +3,9 @@
 ## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v1.0.7...plugins-source-typeform-v1.1.0) (2023-10-27)
 
 
+### This Release has the Following Changes to Tables
+- Table `typeform_form_responses`: column added with name `tags` and type `json`
+
 ### Features
 
 * Add tags column to typeform plugin ([#15019](https://github.com/cloudquery/cloudquery/issues/15019)) ([17066b6](https://github.com/cloudquery/cloudquery/commit/17066b67fb4d914e9a2a7aa2088c915a772380a0))
