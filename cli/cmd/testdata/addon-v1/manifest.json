@@ -3,6 +3,8 @@
   "type": "addon",
   "team_name": "cloudquery",
   "addon_name": "test",
+  "addon_type": "visualization",
+  "addon_format": "zip",
   "message": "./changelog.md",
   "doc": "./readme.md",
   "path": "./test.zip",
