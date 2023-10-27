@@ -168,7 +168,7 @@ AWS PCI DSS v3.2.1 performs the following checks:
   - Amazon Redshift clusters should prohibit public access
   - S3 buckets should prohibit public write access
   - S3 buckets should prohibit public read access
-  - S3 buckets with replication rules should be enabled
+  - S3 buckets should have cross-Region replication enabled
   - S3 buckets should have server-side encryption enabled
   - S3 buckets should deny non-HTTPS requests
   - S3 Block Public Access setting should be enabled
