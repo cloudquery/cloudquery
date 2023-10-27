@@ -1,20 +1,20 @@
-WITH basic_table as (
-select 
-	arn,
-	region,
-	jsonb_array_elements(replication_rules) -> 'Destination' ->> 'Bucket' as dest,
-	jsonb_array_elements(replication_rules) ->> 'Status' as stat
-	from
-	aws_s3_buckets
+WITH s3_replication_info AS (
+    SELECT
+        arn,
+        region,
+        jsonb_array_elements(replication_rules) -> 'Destination' ->> 'Bucket' as destination_bucket,
+        jsonb_array_elements(replication_rules) ->> 'Status' as replication_status
+    FROM aws_s3_buckets
 ),
-sec as (
-	select bt.arn,
-		bt.region,
-		bt.dest,
-		asb.region as other,
-		bt.stat
-		from basic_table as bt
-		left join aws_s3_buckets as asb on dest = asb.arn
+cross_region_replication AS (
+    SELECT
+        sri.arn,
+        sri.region,
+        sri.destination_bucket,
+        asb.region as destination_region,
+        sri.replication_status
+    FROM s3_replication_info sri
+    LEFT JOIN aws_s3_buckets asb ON sri.destination_bucket = asb.arn
 )
 insert into aws_policy_results
 SELECT
@@ -27,11 +27,11 @@ SELECT
     CASE
         WHEN EXISTS (
             SELECT 1
-            FROM sec
+            FROM cross_region_replication
             WHERE 
-			sec.arn = aws_s3_buckets.arn
-			and
-			stat = 'Enabled' and region != other
+                cross_region_replication.arn = aws_s3_buckets.arn
+                AND replication_status = 'Enabled'
+                AND region != destination_region
         )
         THEN 'pass'
         ELSE 'fail'
