@@ -58,11 +58,11 @@ func newCmdAddonPublish() *cobra.Command {
 }
 
 type ManifestJSONV1 struct {
-	Type      string `json:"type"` // always "addon"
-	TeamName  string `json:"team_name"`
-	AddonName string `json:"addon_name"`
-	// AddonType   string   `json:"addon_type"`   // unused
-	// AddonFormat string   `json:"addon_format"` // unused
+	Type        string `json:"type"` // always "addon"
+	TeamName    string `json:"team_name"`
+	AddonName   string `json:"addon_name"`
+	AddonType   string `json:"addon_type"`
+	AddonFormat string `json:"addon_format"` // unused
 
 	PathToMessage string `json:"message"`
 	PathToZip     string `json:"path"`
@@ -128,7 +128,7 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 	if finalize {
 		fmt.Println("Finalizing addon version...")
 		draft := false
-		resp, err := c.UpdateAddonVersionWithResponse(ctx, manifest.TeamName, manifest.AddonName, version, cloudquery_api.UpdateAddonVersionJSONRequestBody{
+		resp, err := c.UpdateAddonVersionWithResponse(ctx, manifest.TeamName, cloudquery_api.AddonType(manifest.AddonType), manifest.AddonName, version, cloudquery_api.UpdateAddonVersionJSONRequestBody{
 			Draft: &draft,
 		})
 		if err != nil {
@@ -138,7 +138,7 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 			return errorFromHTTPResponse(resp.HTTPResponse, resp)
 		}
 		fmt.Println("Success!")
-		fmt.Printf("%s/%s@%s is now available on the CloudQuery Hub.\n", manifest.TeamName, manifest.AddonName, version)
+		fmt.Printf("%s/%s/%s@%s is now available on the CloudQuery Hub.\n", manifest.TeamName, manifest.AddonType, manifest.AddonName, version)
 		return nil
 	}
 
@@ -187,7 +187,7 @@ func createNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWit
 	}
 	body.Checksum = fmt.Sprintf("%x", s.Sum(nil))
 
-	resp, err := c.CreateAddonVersionWithResponse(ctx, manifest.TeamName, manifest.AddonName, version, body)
+	resp, err := c.CreateAddonVersionWithResponse(ctx, manifest.TeamName, cloudquery_api.AddonType(manifest.AddonType), manifest.AddonName, version, body)
 	if err != nil {
 		return fmt.Errorf("failed to create addon version: %w", err)
 	}
@@ -202,7 +202,7 @@ func createNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWit
 }
 
 func uploadAddon(ctx context.Context, c *cloudquery_api.ClientWithResponses, manifest ManifestJSONV1, version, localPath string) error {
-	resp, err := c.UploadAddonAssetWithResponse(ctx, manifest.TeamName, manifest.AddonName, version)
+	resp, err := c.UploadAddonAssetWithResponse(ctx, manifest.TeamName, cloudquery_api.AddonType(manifest.AddonType), manifest.AddonName, version)
 	if err != nil {
 		return fmt.Errorf("failed to upload addon: %w", err)
 	}
