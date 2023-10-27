@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.15](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.3.14...plugins-destination-mssql-v4.3.15) (2023-10-27)
+
+
+### Bug Fixes
+
+* Add missing metadata ([#15025](https://github.com/cloudquery/cloudquery/issues/15025)) ([09589f1](https://github.com/cloudquery/cloudquery/commit/09589f167abf97259cfc9adb99e560d00986f652))
+
 ## [4.3.14](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.3.13...plugins-destination-mssql-v4.3.14) (2023-10-27)
 
 
