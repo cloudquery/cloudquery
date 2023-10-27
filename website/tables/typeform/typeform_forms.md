@@ -22,4 +22,3 @@ The following tables depend on typeform_forms:
 |theme|`json`|
 |title|`utf8`|
 |_links|`json`|
-|tags|`json`|
