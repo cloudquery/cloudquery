@@ -50,8 +50,8 @@ import LaunchDarklyAuthentication from "../pages/docs/plugins/sources/launchdark
 import LaunchDarklyConfiguration from "../pages/docs/plugins/sources/launchdarkly/_configuration.md";
 import MixpanelAuthentication from "../pages/docs/plugins/sources/mixpanel/_authentication.md";
 import MixpanelConfiguration from "../pages/docs/plugins/sources/mixpanel/_configuration.md";
-import MongoDBAtlasAuthentication from "../pages/docs/plugins/sources/mongodb-atlas/_authentication.md";
-import MongoDBAtlasConfiguration from "../pages/docs/plugins/sources/mongodb-atlas/_configuration.md";
+import MongoDBAtlasAuthentication from "../pages/docs/plugins/sources/mongodbatlas/_authentication.md";
+import MongoDBAtlasConfiguration from "../pages/docs/plugins/sources/mongodbatlas/_configuration.md";
 import MySQLSourceConfiguration from "../pages/docs/plugins/sources/mysql/_configuration.md";
 import NotionAuthentication from "../pages/docs/plugins/sources/notion/_authentication.md";
 import NotionConfiguration from "../pages/docs/plugins/sources/notion/_configuration.md";
@@ -168,8 +168,8 @@ export const components = {
   "sources-launchdarkly-configuration": <LaunchDarklyConfiguration />,
   "sources-mixpanel-authentication": <MixpanelAuthentication />,
   "sources-mixpanel-configuration": <MixpanelConfiguration />,
-  "sources-mongodb-atlas-authentication": <MongoDBAtlasAuthentication />,
-  "sources-mongodb-atlas-configuration": <MongoDBAtlasConfiguration />,
+  "sources-mongodbatlas-authentication": <MongoDBAtlasAuthentication />,
+  "sources-mongodbatlas-configuration": <MongoDBAtlasConfiguration />,
   "sources-mysql-configuration": <MySQLSourceConfiguration />,
   "sources-notion-authentication": <NotionAuthentication />,
   "sources-notion-configuration": <NotionConfiguration />,
