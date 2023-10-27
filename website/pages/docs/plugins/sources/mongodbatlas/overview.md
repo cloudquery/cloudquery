@@ -8,7 +8,7 @@ description: CloudQuery MongoDB Atlas source plugin documentation
 
 :badge{text="Premium"}
 
-This is a premium plugin that you can buy [here](/integrations/mongodb-atlas).
+This is a premium plugin that you can buy [here](/integrations/mongodbatlas).
 
 The CloudQuery MongoDB Atlas plugin extracts information from your [MongoDB Atlas API](https://www.mongodb.com/docs/atlas/api/) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
 
