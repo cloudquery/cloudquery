@@ -2,8 +2,8 @@
 kind: source
 # Common source-plugin configuration
 spec:
-  name: mongodb-atlas
-  path: /path/to/downloaded/plugin # Buy from here: https://cloudquery.io/integrations/mongodb-atlas
+  name: mongodbatlas
+  path: /path/to/downloaded/plugin # Buy from here: https://cloudquery.io/integrations/mongodbatlas
   registry: local
   version: "PREMIUM"
   tables: ["*"]

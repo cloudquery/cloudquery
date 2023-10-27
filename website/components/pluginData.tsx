@@ -922,7 +922,7 @@ export const ALL_PLUGINS: Plugin[] = [
   },
   {
     name: "MongoDB Atlas",
-    id: "mongodb-atlas",
+    id: "mongodbatlas",
     website: "https://www.mongodb.com/atlas/database",
     kind: "source",
     availability: "premium",
