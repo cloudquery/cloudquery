@@ -5,6 +5,14 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.9.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.9.0...plugins-source-gcp-v9.9.1) (2023-10-27)
+
+
+### Bug Fixes
+
+* **deps:** Update module google.golang.org/grpc to v1.59.0 ([#14941](https://github.com/cloudquery/cloudquery/issues/14941)) ([520b18d](https://github.com/cloudquery/cloudquery/commit/520b18d0d75429caee54cbfdf54cfdac12bbc9a0))
+* Flush state backend client after sync ([#15031](https://github.com/cloudquery/cloudquery/issues/15031)) ([1fa8ac1](https://github.com/cloudquery/cloudquery/commit/1fa8ac1e0f49ba47f71f5be3929a821cfc888c85))
+
 ## [9.9.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.8.2...plugins-source-gcp-v9.9.0) (2023-10-25)
 
 
