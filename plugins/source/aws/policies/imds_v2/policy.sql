@@ -16,7 +16,7 @@ END AS "execution_time"  \gset
 
 \set check_id 'Lightsail-IMDSv2'
 \echo "Executing check Lightsail IMDSv2"
-\ir ../queries/lightsail/not_imdsv2_instances.sql
+\ir ../queries/lightsail/lightsail_not_imdsv2_instances.sql.sql
 
 \set check_id 'AMIs-IMDSv2'
 \echo "Executing check EC2 AMI IMDSv2"

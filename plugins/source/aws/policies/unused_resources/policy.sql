@@ -88,7 +88,7 @@ SELECT CASE
 
 \set check_id 'aws_elb_load_balancers_unused'
 \echo "Executing check aws_elb_load_balancers_unused"
-\ir ../queries/elb/load_balancers_unused.sql
+\ir ../queries/elb/elb_load_balancers_unused.sql
 
 \set check_id 'aws_elb_target_groups_unused'
 \echo "Executing check aws_elb_target_groups_unused"
@@ -108,7 +108,7 @@ SELECT CASE
 
 \set check_id 'aws_lightsail_load_balancers_unused'
 \echo "Executing check aws_lightsail_load_balancers_unused"
-\ir ../queries/lightsail/load_balancers_unused.sql
+\ir ../queries/lightsail/lightsail_load_balancers_unused.sql
 
 \set check_id 'aws_lightsail_static_ips_unused'
 \echo "Executing check aws_lightsail_static_ips_unused"
