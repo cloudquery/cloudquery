@@ -5,8 +5,8 @@ go 1.21.1
 require (
 	github.com/apache/arrow/go/v14 v14.0.0-20230929201650-00efb06dc0de
 	github.com/aws/aws-sdk-go-v2 v1.21.2
-	github.com/aws/aws-sdk-go-v2/config v1.19.0
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.91
+	github.com/aws/aws-sdk-go-v2/config v1.19.1
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.92
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.40.2
 	github.com/cloudquery/filetypes/v4 v4.2.0
 	github.com/cloudquery/plugin-sdk/v4 v4.16.1
