@@ -1,14 +1,40 @@
 ---
-title: "plugin"
+title: "login"
 ---
-## cloudquery plugin
+## cloudquery login
 
-Plugin commands
+Login to CloudQuery Hub.
+
+### Synopsis
+
+Login to CloudQuery Hub.
+
+This is required to download plugins from CloudQuery Hub.
+
+Local plugins and different registries don't need login.
+
+
+```
+cloudquery login [flags]
+```
+
+### Examples
+
+```
+
+# Log in to CloudQuery Hub
+cloudquery login
+
+# Log in to a specific team
+cloudquery login --team my-team
+
+```
 
 ### Options
 
 ```
-  -h, --help   help for plugin
+  -h, --help          help for login
+  -t, --team string   Team to login to. Specify the team name, e.g. 'my-team' (not the display name)
 ```
 
 ### Options inherited from parent commands
@@ -26,6 +52,4 @@ Plugin commands
 ### SEE ALSO
 
 * [cloudquery](/docs/reference/cli/cloudquery)	 - CloudQuery CLI
-* [cloudquery plugin install](/docs/reference/cli/cloudquery_plugin_install)	 - Install required plugin images from your configuration
-* [cloudquery plugin publish](/docs/reference/cli/cloudquery_plugin_publish)	 - Publish to CloudQuery Hub.
 

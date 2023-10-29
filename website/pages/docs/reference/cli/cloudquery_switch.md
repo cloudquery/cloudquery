@@ -1,14 +1,31 @@
 ---
-title: "plugin"
+title: "switch"
 ---
-## cloudquery plugin
+## cloudquery switch
 
-Plugin commands
+Switches between teams.
+
+### Synopsis
+
+Switches between teams.
+
+```
+cloudquery switch [flags]
+```
+
+### Examples
+
+```
+
+# Switch to a different team
+cloudquery switch my-team
+
+```
 
 ### Options
 
 ```
-  -h, --help   help for plugin
+  -h, --help   help for switch
 ```
 
 ### Options inherited from parent commands
@@ -26,6 +43,4 @@ Plugin commands
 ### SEE ALSO
 
 * [cloudquery](/docs/reference/cli/cloudquery)	 - CloudQuery CLI
-* [cloudquery plugin install](/docs/reference/cli/cloudquery_plugin_install)	 - Install required plugin images from your configuration
-* [cloudquery plugin publish](/docs/reference/cli/cloudquery_plugin_publish)	 - Publish to CloudQuery Hub.
 

@@ -16,8 +16,8 @@ func TestAddonPublish(t *testing.T) {
 	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
-		"PUT /addons/cloudquery/test/versions/v1.2.3":         1,
-		"POST /addons/cloudquery/test/versions/v1.2.3/assets": 1,
+		"PUT /addons/cloudquery/visualization/test/versions/v1.2.3":         1,
+		"POST /addons/cloudquery/visualization/test/versions/v1.2.3/assets": 1,
 		"PUT /upload-zip": 1,
 	}
 	gotCalls := map[string]int{}
@@ -25,12 +25,12 @@ func TestAddonPublish(t *testing.T) {
 		w.Header().Set("Content-Type", "application/json")
 		gotCalls[r.Method+" "+r.URL.Path]++
 		switch r.URL.Path {
-		case "/addons/cloudquery/test/versions/v1.2.3":
+		case "/addons/cloudquery/visualization/test/versions/v1.2.3":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
 			w.Write([]byte(`{"name": "v1.2.3"}`))
 			checkCreateAddonVersionRequest(t, r)
-		case "/addons/cloudquery/test/versions/v1.2.3/assets":
+		case "/addons/cloudquery/visualization/test/versions/v1.2.3/assets":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
 			w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-zip")))
@@ -58,10 +58,10 @@ func TestAddonPublishFinalize(t *testing.T) {
 	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
-		"PUT /addons/cloudquery/test/versions/v1.2.3":         1,
-		"POST /addons/cloudquery/test/versions/v1.2.3/assets": 1,
+		"PUT /addons/cloudquery/visualization/test/versions/v1.2.3":         1,
+		"POST /addons/cloudquery/visualization/test/versions/v1.2.3/assets": 1,
 		"PUT /upload-zip": 1,
-		"PATCH /addons/cloudquery/test/versions/v1.2.3": 1,
+		"PATCH /addons/cloudquery/visualization/test/versions/v1.2.3": 1,
 	}
 	gotCalls := map[string]int{}
 	gotUploads := 0
@@ -69,7 +69,7 @@ func TestAddonPublishFinalize(t *testing.T) {
 		w.Header().Set("Content-Type", "application/json")
 		gotCalls[r.Method+" "+r.URL.Path]++
 		switch r.URL.Path {
-		case "/addons/cloudquery/test/versions/v1.2.3":
+		case "/addons/cloudquery/visualization/test/versions/v1.2.3":
 			checkAuthHeader(t, r)
 			if r.Method == "PATCH" {
 				checkUpdateAddonVersionRequest(t, r)
@@ -82,7 +82,7 @@ func TestAddonPublishFinalize(t *testing.T) {
 				w.WriteHeader(http.StatusCreated)
 			}
 			w.Write([]byte(`{"name": "v1.2.3"}`))
-		case "/addons/cloudquery/test/versions/v1.2.3/assets":
+		case "/addons/cloudquery/visualization/test/versions/v1.2.3/assets":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
 			w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-zip")))
