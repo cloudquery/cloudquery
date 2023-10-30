@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.1.14](https://github.com/cloudquery/cloudquery/compare/scaffold-v2.1.13...scaffold-v2.1.14) (2023-10-30)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.13.0 ([#15008](https://github.com/cloudquery/cloudquery/issues/15008)) ([8a98b91](https://github.com/cloudquery/cloudquery/commit/8a98b915651d0450915163d1b28e230f584f0d32))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.13.1 ([#15035](https://github.com/cloudquery/cloudquery/issues/15035)) ([a872064](https://github.com/cloudquery/cloudquery/commit/a87206492e6355503ba69f4fec001ab9695ef093))
+* Use `org` as team name in scaffold ([#15047](https://github.com/cloudquery/cloudquery/issues/15047)) ([c58862a](https://github.com/cloudquery/cloudquery/commit/c58862ae616125d05a28e1eb9d5f3f238c811cea))
+
 ## [2.1.13](https://github.com/cloudquery/cloudquery/compare/scaffold-v2.1.12...scaffold-v2.1.13) (2023-10-23)
 
 
