@@ -7,7 +7,7 @@ import (
 var (
 	Name    = "{{.Name}}"
 	Kind    = "source"
-	Team    = "{{.Team}}"
+	Team    = "{{.Org}}"
 	Version = "development"
 )
 

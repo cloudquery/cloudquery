@@ -21,21 +21,14 @@ const (
 func newCmdScaffoldSource() *cobra.Command {
 	var outputDir string
 	cmd := &cobra.Command{
-		Use:   "source [org] [name] [team]",
+		Use:   "source [org] [name]",
 		Short: scaffoldSourceShort,
-		Args:  cobra.MatchAll(cobra.ExactArgs(3)),
+		Args:  cobra.MatchAll(cobra.ExactArgs(2)),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if outputDir == "" {
 				outputDir = "cq-source-" + args[1]
 			}
-			return runScaffoldSource(
-				scaffoldData{
-					Org:  args[0],
-					Name: args[1],
-					Team: args[2],
-				},
-				outputDir,
-			)
+			return runScaffoldSource(args[0], args[1], outputDir)
 		},
 	}
 	cmd.Flags().StringVar(&outputDir, "output", "", "output directory")
@@ -48,10 +41,14 @@ var sourceFS embed.FS
 type scaffoldData struct {
 	Org  string
 	Name string
-	Team string
 }
 
-func runScaffoldSource(data scaffoldData, outputDir string) error {
+func runScaffoldSource(org string, name string, outputDir string) error {
+	data := scaffoldData{
+		Org:  org,
+		Name: name,
+	}
+
 	return fs.WalkDir(sourceFS, "templates/source", func(templatePath string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return fmt.Errorf("failed to walk directory: %w", err)
