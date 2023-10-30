@@ -142,6 +142,10 @@ This is the top level spec used by the Snowflake destination plugin.
 
   Number of bytes (as Arrow buffer size) to batch together before sending to the database.
 
+- `leave_stage_files` (boolean) (optional) (default: false)
+     
+  If set to true, intermediary files used to load data to the Snowflake stage are left in the temp directory. This can be useful for debugging purposes.
+
 ## Underlying library
 
 We use the official [github.com/snowflakedb/gosnowflake](https://github.com/snowflakedb/gosnowflake) package for database connection.
