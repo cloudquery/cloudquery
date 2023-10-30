@@ -39,9 +39,14 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	if err != nil {
 		return err
 	}
+	if c.spec.LeaveStageFiles {
+		c.logger.Info().Str("filename", f.Name()).Str("table", name).Msg("Created stage file")
+	}
 	defer func() {
 		f.Close()
-		os.Remove(f.Name())
+		if !c.spec.LeaveStageFiles {
+			os.Remove(f.Name())
+		}
 	}()
 
 	enc := json.NewEncoder(f)
