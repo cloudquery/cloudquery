@@ -7,9 +7,9 @@ The primary key for this table is **id**.
 ## Relations
 
 The following tables depend on render_services:
-  - [render_service_custom_domains](render_service_custom_domains.md)
-  - [render_service_deploys](render_service_deploys.md)
-  - [render_service_jobs](render_service_jobs.md)
+  - [render_service_custom_domains](render_service_custom_domains)
+  - [render_service_deploys](render_service_deploys)
+  - [render_service_jobs](render_service_jobs)
 
 ## Columns
 

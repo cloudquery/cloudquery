@@ -1,4 +1,4 @@
-# Source Plugin: Render
+# Source Plugin: render
 
 ## Tables
 
