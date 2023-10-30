@@ -325,27 +325,54 @@ WHERE
     );
 ```
 
-### S3 buckets with replication rules should be enabled
+### S3 buckets should have cross-Region replication enabled
 
 ```sql
+WITH
+  s3_replication_info
+    AS (
+      SELECT
+        arn,
+        region,
+        jsonb_array_elements(replication_rules)->'Destination'->>'Bucket'
+          AS destination_bucket,
+        jsonb_array_elements(replication_rules)->>'Status' AS replication_status
+      FROM
+        aws_s3_buckets
+    ),
+  cross_region_replication
+    AS (
+      SELECT
+        sri.arn,
+        sri.region,
+        sri.destination_bucket,
+        asb.region AS destination_region,
+        sri.replication_status
+      FROM
+        s3_replication_info AS sri
+        LEFT JOIN aws_s3_buckets AS asb ON sri.destination_bucket = asb.arn
+    )
 SELECT
-  'S3 buckets with replication rules should be enabled' AS title,
+  'S3 buckets should have cross-Region replication enabled' AS title,
   aws_s3_buckets.account_id,
   aws_s3_buckets.arn AS resource_id,
   CASE
-  WHEN r->>'Status' IS DISTINCT FROM 'Enabled' THEN 'fail'
-  ELSE 'pass'
+  WHEN EXISTS(
+    SELECT
+      1
+    FROM
+      cross_region_replication
+    WHERE
+      cross_region_replication.arn = aws_s3_buckets.arn
+      AND replication_status = 'Enabled'
+      AND region != destination_region
+  )
+  THEN 'pass'
+  ELSE 'fail'
   END
     AS status
 FROM
-  aws_s3_buckets,
-  jsonb_array_elements(
-    CASE jsonb_typeof(replication_rules)
-    WHEN 'array' THEN replication_rules
-    ELSE '[]'
-    END
-  )
-    AS r;
+  aws_s3_buckets;
 ```
 
 ### S3 buckets should have server-side encryption enabled
