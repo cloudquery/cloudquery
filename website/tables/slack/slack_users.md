@@ -15,8 +15,6 @@ The following tables depend on slack_users:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |id (PK)|`utf8`|
@@ -39,6 +37,7 @@ The following tables depend on slack_users:
 |is_stranger|`bool`|
 |is_app_user|`bool`|
 |is_invited_user|`bool`|
+|two_factor_type|`utf8`|
 |has_files|`bool`|
 |locale|`utf8`|
 |enterprise_user|`json`|

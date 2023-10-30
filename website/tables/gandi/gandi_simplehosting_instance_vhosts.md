@@ -12,8 +12,6 @@ This table depends on [gandi_simplehosting_instances](gandi_simplehosting_instan
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |instance_id (PK)|`utf8`|

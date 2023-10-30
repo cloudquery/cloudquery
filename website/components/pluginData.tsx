@@ -1004,6 +1004,7 @@ export const ALL_PLUGINS: Plugin[] = [
     kind: "source",
     availability: "premium",
     category: "cloud-infrastructure",
+    logo: "/images/logos/plugins/render.webp",
     buyLinks: {
       standard: "https://buy.stripe.com/8wMdQUeet5dlcKI16x",
       extended: "https://buy.stripe.com/eVa004dapdJR7qo5mO",

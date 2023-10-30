@@ -17,8 +17,6 @@ The following tables depend on slack_conversation_histories:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_source_name|`utf8`|
-|_cq_sync_time|`timestamp[us, tz=UTC]`|
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |channel_id (PK)|`utf8`|
@@ -52,6 +50,7 @@ The following tables depend on slack_conversation_histories:
 |old_name|`utf8`|
 |members|`list<item: utf8, nullable>`|
 |reply_count|`int64`|
+|reply_users|`list<item: utf8, nullable>`|
 |parent_user_id|`utf8`|
 |latest_reply|`utf8`|
 |files|`json`|
