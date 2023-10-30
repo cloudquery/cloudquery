@@ -361,6 +361,14 @@
     {
       "source": "/docs/plugins/sources/hashicorp-vault/:path*",
       "destination": "/docs/plugins/sources/vault/:path*"
+    },
+    {
+      "source": "/docs/plugins/sources/mongodb-atlas/:path*",
+      "destination": "/docs/plugins/sources/mongodbatlas/:path*"
+    },
+    {
+      "source": "/integrations/mongodb-atlas",
+      "destination": "/integrations/mongodbatlas"
     }
   ]
 }

@@ -15,7 +15,7 @@ const (
 )
 
 func main() {
-	p := plugin.NewPlugin("mssql", internalPlugin.Version, client.New, plugin.WithKind(internalPlugin.Kind), plugin.WithTeam(internalPlugin.Kind))
+	p := plugin.NewPlugin(internalPlugin.Name, internalPlugin.Version, client.New, plugin.WithKind(internalPlugin.Kind), plugin.WithTeam(internalPlugin.Kind))
 	if err := serve.Plugin(p,
 		serve.WithPluginSentryDSN(sentryDSN),
 		serve.WithDestinationV0V1Server(),
