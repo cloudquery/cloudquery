@@ -6,7 +6,7 @@ The primary key for this table is **id**.
 
 ## Relations
 
-This table depends on [render_services](render_services.md).
+This table depends on [render_services](render_services).
 
 ## Columns
 
