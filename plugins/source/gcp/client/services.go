@@ -44,6 +44,7 @@ var GcpServices = map[string]bool{
 	"baremetalsolution.googleapis.com":                true,
 	"batch.googleapis.com":                            true,
 	"beyondcorp.googleapis.com":                       true,
+	"biglake.googleapis.com":                          true,
 	"bigquery.googleapis.com":                         true,
 	"bigqueryconnection.googleapis.com":               true,
 	"bigquerydatatransfer.googleapis.com":             true,
