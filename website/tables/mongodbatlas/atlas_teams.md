@@ -7,7 +7,7 @@ The composite primary key for this table is (**group_id**, **team_id**).
 ## Relations
 
 The following tables depend on atlas_teams:
-  - [atlas_team_users](atlas_team_users.md)
+  - [atlas_team_users](atlas_team_users)
 
 ## Columns
 
