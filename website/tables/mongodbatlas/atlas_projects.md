@@ -7,8 +7,8 @@ The composite primary key for this table is (**id**, **org_id**).
 ## Relations
 
 The following tables depend on atlas_projects:
-  - [atlas_project_settings](atlas_project_settings.md)
-  - [atlas_project_users](atlas_project_users.md)
+  - [atlas_project_settings](atlas_project_settings)
+  - [atlas_project_users](atlas_project_users)
 
 ## Columns
 

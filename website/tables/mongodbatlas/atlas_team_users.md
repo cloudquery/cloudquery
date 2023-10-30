@@ -6,7 +6,7 @@ The composite primary key for this table is (**org_id**, **team_id**, **id**).
 
 ## Relations
 
-This table depends on [atlas_teams](atlas_teams.md).
+This table depends on [atlas_teams](atlas_teams).
 
 ## Columns
 
