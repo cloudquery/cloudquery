@@ -14,7 +14,7 @@ var (
 
 func Plugin() *plugin.Plugin {
 	return plugin.NewPlugin(
-		"googleanalytics",
+		Name,
 		Version,
 		client.Configure,
 		plugin.WithKind(Kind),
