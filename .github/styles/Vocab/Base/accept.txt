@@ -102,6 +102,7 @@ Gaurav
 gcp
 GCP
 gists
+Gitea
 github
 GitHub
 GitLab
