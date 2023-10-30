@@ -6,7 +6,7 @@ The composite primary key for this table is (**project_id**, **id**).
 
 ## Relations
 
-This table depends on [atlas_projects](atlas_projects.md).
+This table depends on [atlas_projects](atlas_projects).
 
 ## Columns
 
