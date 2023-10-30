@@ -15,14 +15,13 @@ We are excited to announce that we have launched [CloudQuery Hub](https://hub.cl
 
 ## What Is the Hub?
 
-
 - The Hub provides dynamic documentation for every version of a plugin or add-on.
 - It enables fast downloads by hosting assets on dedicated infrastructure.
 - Plugins can now be published from any provider, such as GitLab or Gitea, not just GitHub, using [`cloudquery publish`](https://www.cloudquery.io/docs/reference/cli/cloudquery_plugin_publish) command.
 
 ## Other Important Notes
 
-To protect the CloudQuery Infrastructure that hosts plugins, we are going to introduce rate limiting per IP address when downloading plugins without logging in. If you frequently download plugins at a high rate, it is recommended to either cache the downloaded assets or to log in to increase your rate limit.
+To protect the CloudQuery Infrastructure that hosts plugins, we are going to introduce rate limiting per IP address when downloading plugins without logging in. If you frequently download plugins at a high rate, we recommend to either cache the downloaded assets or to log in to increase your rate limit.
 
 This change is not coming immediately. First, we are going to enable account creation and add support for authenticating and building production deployments. After that, for an initial one-month transition period, the rate-limiting will be disabled and plugins will be published to both CloudQuery Hub and GitHub. Thereafter the default rate limits will apply and new plugin versions will only be published to CloudQuery Hub.
 
