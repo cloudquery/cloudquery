@@ -17,4 +17,4 @@ select DISTINCT (k8s_core_namespaces.uid)                          AS resource_i
                         THEN 'fail'
                     ELSE 'pass'
                     END                                            AS status
-FROM k8s_core_namespaces;
+FROM k8s_core_namespaces
