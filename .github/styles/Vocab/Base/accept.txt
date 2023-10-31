@@ -56,6 +56,7 @@ CSPMs
 cyber
 cybersecurity
 Cybersecurity
+cychiang
 Datadog
 datasource
 Datasource
