@@ -5,7 +5,7 @@ go 1.21.1
 require (
 	github.com/apache/arrow/go/v14 v14.0.0-20230929201650-00efb06dc0de
 	github.com/clarkmcc/go-hubspot v0.0.0-20230906123538-bec7cb6c0126
-	github.com/cloudquery/plugin-sdk/v4 v4.17.0
+	github.com/cloudquery/plugin-sdk/v4 v4.17.1
 	github.com/rs/zerolog v1.29.1
 	golang.org/x/exp v0.0.0-20231006140011-7918f672742d
 	golang.org/x/time v0.3.0
