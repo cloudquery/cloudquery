@@ -20,10 +20,21 @@ func Issues() *schema.Table {
 
 func fetchResolver(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*sync.Client)
-	issueList, _, err := c.Jira.Issue.SearchWithContext(ctx, "", nil)
-	if err != nil {
-		return err
+	startAt := 0
+	for {
+		issueList, resp, err := c.Jira.Issue.SearchWithContext(ctx, "", &jira.SearchOptions{
+			StartAt:    startAt,
+			MaxResults: 1000,
+		})
+		if err != nil {
+			return err
+		}
+		res <- issueList
+
+		if resp.Total <= resp.StartAt+resp.MaxResults {
+			break
+		}
+		startAt = resp.StartAt + resp.MaxResults
 	}
-	res <- issueList
 	return nil
 }
