@@ -15,4 +15,4 @@ select uid                                                          AS resource_
                THEN 'fail'
            ELSE 'pass'
            END                                                      AS status
-FROM k8s_apps_deployments;
+FROM k8s_apps_deployments
