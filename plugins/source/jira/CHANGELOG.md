@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-jira-v1.0.9...plugins-source-jira-v1.0.10) (2023-10-31)
+
+
+### Bug Fixes
+
+* Add missing table descriptions ([#14933](https://github.com/cloudquery/cloudquery/issues/14933)) ([f2c270d](https://github.com/cloudquery/cloudquery/commit/f2c270d45a7c2c317b58cbe5ee172b6a5c189e49))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.4.2 ([#15034](https://github.com/cloudquery/cloudquery/issues/15034)) ([45c2caa](https://github.com/cloudquery/cloudquery/commit/45c2caa345aa33199ad1592bf378a5a839612c6f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.17.0 ([#15064](https://github.com/cloudquery/cloudquery/issues/15064)) ([9c2db8c](https://github.com/cloudquery/cloudquery/commit/9c2db8cedaec682a89b444db29e8c0fb45989408))
+* **deps:** Update module google.golang.org/grpc to v1.58.3 [SECURITY] ([#14940](https://github.com/cloudquery/cloudquery/issues/14940)) ([e1addea](https://github.com/cloudquery/cloudquery/commit/e1addeaf58ad965e545a3e068860609dadcffa10))
+* Fix pagination of Jira Issues and Boards ([#15073](https://github.com/cloudquery/cloudquery/issues/15073)) ([47e4e3a](https://github.com/cloudquery/cloudquery/commit/47e4e3aadc6fada47b196c930c87323b45656da9))
+
 ## [1.0.9](https://github.com/cloudquery/cloudquery/compare/plugins-source-jira-v1.0.8...plugins-source-jira-v1.0.9) (2023-10-24)
 
 
