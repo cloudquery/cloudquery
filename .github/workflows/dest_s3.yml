@@ -22,7 +22,7 @@ jobs:
   plugins-destination-s3:
     timeout-minutes: 30
     name: "plugins/destination/s3"
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./plugins/destination/s3
@@ -58,7 +58,7 @@ jobs:
         run: make test
   validate-release:
     timeout-minutes: 30
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     env:
       CGO_ENABLED: 0
     steps:

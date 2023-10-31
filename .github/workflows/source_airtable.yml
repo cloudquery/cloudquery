@@ -20,7 +20,7 @@ jobs:
   plugins-source-airtable:
     timeout-minutes: 30
     name: "plugins/source/airtable"
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./plugins/source/airtable
@@ -44,7 +44,7 @@ jobs:
           npm run build
   validate-release:
     timeout-minutes: 10
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     env:
       IMAGE_NAME_PREFIX: cloudquery
       REGISTRY: ghcr.io

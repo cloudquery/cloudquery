@@ -19,7 +19,7 @@ on:
 jobs:
   plugins-destination-clickhouse:
     name: "plugins/destination/clickhouse"
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
       DB_USER:     cq
@@ -78,7 +78,7 @@ jobs:
       run:  make test
   validate-release:
     timeout-minutes: 30
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     env:
       CGO_ENABLED: 0
     steps:
