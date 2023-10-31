@@ -28,7 +28,7 @@
 
 \set check_id 'EC2.8'
 \echo "Executing check EC2.8"
-\ir ../queries/ec2/not_imdsv2_instances.sql
+\ir ../queries/ec2/ec2_not_imdsv2_instances.sql
 
 \set check_id 'EC2.9'
 \echo "Executing check EC2.9"

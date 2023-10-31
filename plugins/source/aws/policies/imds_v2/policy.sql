@@ -12,7 +12,7 @@ END AS "execution_time"  \gset
 
 \set check_id 'EC2-IMDSv2'
 \echo "Executing check EC2 IMDSv2"
-\ir ../queries/ec2/not_imdsv2_instances.sql
+\ir ../queries/ec2/ec2_not_imdsv2_instances.sql
 
 \set check_id 'Lightsail-IMDSv2'
 \echo "Executing check Lightsail IMDSv2"

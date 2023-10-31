@@ -40,7 +40,7 @@ END AS "execution_time"  \gset
 
 \set check_id 'config.1'
 \echo "Executing check config.1"
-\ir ../queries/config/enabled_all_regions.sql
+\ir ../queries/config/config_enabled_all_regions.sql
 
 \echo "Creating view_aws_log_metric_filter_and_alarm"
 \ir ../views/log_metric_filter_and_alarm.sql
