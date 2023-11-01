@@ -15,6 +15,7 @@ import (
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
 
@@ -26,16 +27,16 @@ This publishes a plugin version to CloudQuery Hub from a local dist directory.
 `
 	pluginPublishExample = `
 # Publish a plugin version from a local dist directory
-cloudquery plugin publish my_team/my_plugin`
+cloudquery plugin publish`
 )
 
 func newCmdPluginPublish() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "publish <team_name>/<plugin_name> [-D dist]",
+		Use:     "publish [-D dist]",
 		Short:   pluginPublishShort,
 		Long:    pluginPublishLong,
 		Example: pluginPublishExample,
-		Args:    cobra.ExactArgs(1),
+		Args:    cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// Set up a channel to listen for OS signals for graceful shutdown.
 			ctx, cancel := context.WithCancel(cmd.Context())
@@ -58,10 +59,10 @@ func newCmdPluginPublish() *cobra.Command {
 }
 
 type PackageJSONV1 struct {
-	Name    string `json:"name"`
-	Message string `json:"message"`
-	Version string `json:"version"`
-
+	Team             string                    `json:"team"`
+	Name             string                    `json:"name"`
+	Message          string                    `json:"message"`
+	Version          string                    `json:"version"`
 	Kind             cloudquery_api.PluginKind `json:"kind"`
 	Protocols        []int                     `json:"protocols"`
 	SupportedTargets []TargetBuild             `json:"supported_targets"`
@@ -88,11 +89,18 @@ func runPluginPublish(ctx context.Context, cmd *cobra.Command, args []string) er
 		return fmt.Errorf("failed to read package.json: %w", err)
 	}
 
-	parts := strings.Split(args[0], "/")
-	if len(parts) != 2 {
-		return errors.New("invalid plugin name. Must be in format <team_name>/<plugin_name>")
+	if pkgJSON.Team != "" && pkgJSON.Name != "" && len(args) > 0 {
+		log.Warn().Msgf("Passing team and plugin name as an argument is deprecated and no longer needed. Argument %q will be ignored", args[0])
 	}
-	teamName, pluginName := parts[0], parts[1]
+
+	teamName, pluginName := pkgJSON.Team, pkgJSON.Name
+	if teamName == "" || pluginName == "" {
+		parts := strings.Split(args[0], "/")
+		if len(parts) != 2 {
+			return errors.New("invalid plugin name. Must be in format <team_name>/<plugin_name>")
+		}
+		teamName, pluginName = parts[0], parts[1]
+	}
 
 	name := fmt.Sprintf("%s/%s@%s", teamName, pluginName, pkgJSON.Version)
 	fmt.Printf("Publishing plugin %s to CloudQuery Hub...\n", name)
