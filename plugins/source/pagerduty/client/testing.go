@@ -9,11 +9,10 @@ import (
 	"net/http"
 	"os"
 	"reflect"
+	"slices"
 	"strings"
 	"testing"
 	"time"
-
-	"slices"
 
 	"github.com/PagerDuty/go-pagerduty"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
@@ -95,7 +94,7 @@ func (mockHttpClient *MockHttpClient) Do(req *http.Request) (*http.Response, err
 // Pionter-to-pointer structs are supported.
 func FakeStringTimestamps(ptrObj any) error {
 	timestampFieldNames := []string{
-		"CreateAt", "CreatedAt", "DeletedAt", "LastStatusChangeAt", "StartTime", "EndTime", "LastIncidentTimestamp",
+		"CreateAt", "CreatedAt", "UpdatedAt", "DeletedAt", "LastStatusChangeAt", "StartTime", "EndTime", "LastIncidentTimestamp", "ResolvedAt",
 	}
 
 	ptrType := reflect.TypeOf(ptrObj) // reflection-type is a pointer
