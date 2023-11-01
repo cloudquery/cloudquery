@@ -60,10 +60,7 @@ func runSwitch(cmd *cobra.Command, args []string) error {
 		}
 
 		if currentTeam == "" {
-			cmd.Println("Your team is not set.")
-			if len(allTeams) == 1 {
-				cmd.Println("As you are currently a member of only one team, this will be used as your default team.")
-			}
+			cmd.Printf("Your current team is not set.\n\n")
 		} else {
 			cmd.Printf("Your current team is set to %v.\n\n", currentTeam)
 		}

@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/signal"
 	"strconv"
+	"strings"
 	"syscall"
 	"time"
 
@@ -159,17 +160,22 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 		return fmt.Errorf("failed to save refresh token: %w", err)
 	}
 
+	tc := auth.NewTokenClient()
+	token, err := tc.GetToken()
+	if err != nil {
+		return fmt.Errorf("failed to get auth token: %w", err)
+	}
+	cl, err := team.NewClient(apiURL, token)
+	if err != nil {
+		return fmt.Errorf("failed to create API client: %w", err)
+	}
+
+	currentTeam, err := config.GetValue("team")
+	if err != nil && !errors.Is(err, os.ErrNotExist) {
+		return fmt.Errorf("failed to get current team: %w", err)
+	}
 	if cmd.Flags().Changed("team") {
 		selectedTeam := cmd.Flag("team").Value.String()
-		tc := auth.NewTokenClient()
-		token, err := tc.GetToken()
-		if err != nil {
-			return fmt.Errorf("failed to get auth token: %w", err)
-		}
-		cl, err := team.NewClient(apiURL, token)
-		if err != nil {
-			return fmt.Errorf("failed to create API client: %w", err)
-		}
 		err = cl.ValidateTeam(ctx, selectedTeam)
 		if err != nil {
 			return fmt.Errorf("failed to set team: %w", err)
@@ -177,6 +183,27 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 		err = config.SetValue("team", selectedTeam)
 		if err != nil {
 			return fmt.Errorf("failed to set team: %w", err)
+		}
+	} else {
+		if currentTeam == "" {
+			// if current team is not set, try to set it from the API
+			teams, err := cl.ListAllTeams(ctx)
+			if err != nil {
+				return fmt.Errorf("failed to list teams: %w", err)
+			}
+			if len(teams) == 1 {
+				err = config.SetValue("team", teams[0])
+				if err != nil {
+					return fmt.Errorf("failed to set team: %w", err)
+				}
+				cmd.Printf("Your current team is set to %s.\n", teams[0])
+			} else {
+				cmd.Printf("Your current team is not set.\n\n")
+				cmd.Printf("Teams available to you: " + strings.Join(teams, ", ") + "\n\n")
+				cmd.Printf("To set your current team, run `cloudquery switch <team>`\n\n")
+			}
+		} else {
+			cmd.Printf("Your current team is set to %s.\n", currentTeam)
 		}
 	}
 
