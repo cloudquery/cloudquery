@@ -167,7 +167,7 @@ func TestPluginPublishFinalize(t *testing.T) {
 	t.Setenv(envAPIURL, ts.URL)
 
 	cmd := NewCmdRoot()
-	args := []string{"plugin", "publish", "testdata/dist-v1-with-team-package-json", "--finalize"}
+	args := []string{"plugin", "publish", "--dist-dir", "testdata/dist-v1-with-team-package-json", "--finalize"}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {
