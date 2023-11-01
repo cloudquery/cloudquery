@@ -22,6 +22,8 @@ The following tables depend on pagerduty_incidents:
 |id (PK)|`utf8`|
 |html_url|`utf8`|
 |created_at|`timestamp[us, tz=UTC]`|
+|resolved_at|`timestamp[us, tz=UTC]`|
+|updated_at|`timestamp[us, tz=UTC]`|
 |last_status_change_at|`timestamp[us, tz=UTC]`|
 |type|`utf8`|
 |summary|`utf8`|
@@ -50,6 +52,4 @@ The following tables depend on pagerduty_incidents:
 |occurrence|`json`|
 |incidents_responders|`json`|
 |responder_requests|`json`|
-|resolved_at|`utf8`|
-|updated_at|`utf8`|
 |custom_fields|`json`|

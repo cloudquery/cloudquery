@@ -31,6 +31,16 @@ func Incidents() *schema.Table {
 				Resolver: schema.PathResolver("CreatedAt"),
 			},
 			{
+				Name:     "resolved_at",
+				Type:     arrow.FixedWidthTypes.Timestamp_us,
+				Resolver: schema.PathResolver("ResolvedAt"),
+			},
+			{
+				Name:     "updated_at",
+				Type:     arrow.FixedWidthTypes.Timestamp_us,
+				Resolver: schema.PathResolver("UpdatedAt"),
+			},
+			{
 				Name:     "last_status_change_at",
 				Type:     arrow.FixedWidthTypes.Timestamp_us,
 				Resolver: schema.PathResolver("LastStatusChangeAt"),
