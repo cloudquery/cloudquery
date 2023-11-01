@@ -5,7 +5,7 @@ description: Learn how to publish a plugin to the Hub and have it listed in http
 
 # Publishing a Plugin to the Hub
 
-With the announcement of [CloudQuery Hub](/blog/announcing-cloudquery-new-hub), we are excited to see the community contribute plugins to the Hub. This guide will walk you through the process of publishing a plugin to the Hub.
+With the announcement of [CloudQuery Hub](blog/announcing-cloudquery-new-hub), we are excited to see the community contribute plugins to the Hub. This guide will walk you through the process of publishing a plugin to the Hub.
 
 :::callout
 Publishing to the CloudQuery Hub is only supported for Go plugins at the moment. We are working on adding support for other languages.
