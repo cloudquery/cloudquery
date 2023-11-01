@@ -42,3 +42,4 @@ The following tables depend on pagerduty_services:
 |alert_grouping_parameters|`json`|
 |response_play|`json`|
 |addons|`json`|
+|auto_pause_notifications_parameters|`json`|

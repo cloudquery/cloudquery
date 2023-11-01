@@ -50,3 +50,6 @@ The following tables depend on pagerduty_incidents:
 |occurrence|`json`|
 |incidents_responders|`json`|
 |responder_requests|`json`|
+|resolved_at|`utf8`|
+|updated_at|`utf8`|
+|custom_fields|`json`|
