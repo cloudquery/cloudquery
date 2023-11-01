@@ -6,7 +6,7 @@ description: CloudQuery File source plugin documentation
 ---
 # File Source Plugin
 
-:badge{text="Premium"}
+:badge
 
 This is a premium plugin that you can buy [here](/integrations/file).
 
@@ -39,9 +39,10 @@ To learn more about visualizing AWS Cost and Usage Reports, visit [our dashboard
 kind: source
 spec:
   name: file
-  version: "PREMIUM"
+  path: cloudquery/file
+  registry: cloudquery
+  version: "VERSION_SOURCE_FILE"
   destinations: [postgresql]
-  path: /path/to/downloaded/plugin
   tables: ["*"]
   spec:
     files_dir: "/path/to/cost_and_usage_reports" # Update this value to the local directory with your AWS Cost and Usage Reports
