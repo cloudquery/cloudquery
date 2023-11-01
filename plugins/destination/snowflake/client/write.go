@@ -4,8 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"path"
-	"strings"
+	"path/filepath"
 
 	"github.com/apache/arrow/go/v14/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v4/message"
@@ -70,7 +69,8 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to put file into stage with last resource %s: %w", sql, err)
 	}
-	sql = fmt.Sprintf(copyIntoTable, tableName, escapePath(path.Base(f.Name())))
+
+	sql = fmt.Sprintf(copyIntoTable, tableName, escapePath(filepath.Base(f.Name())))
 	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to copy file into table with last resource %s: %w", sql, err)
 	}
@@ -89,9 +89,4 @@ func (c *Client) setupWrite(ctx context.Context) error {
 		}
 	})
 	return setupErr
-}
-
-// escapePath properly escapes the `\` character in window's file paths.
-func escapePath(p string) string {
-	return strings.ReplaceAll(p, "\\", "\\\\")
 }
