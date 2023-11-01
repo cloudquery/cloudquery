@@ -1,12 +1,41 @@
 package client
 
 import (
+	"encoding/json"
 	"testing"
 	"time"
 
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/google/go-cmp/cmp"
 )
+
+func TestSanitizeRawJsonMessage(t *testing.T) {
+
+	testTable := []struct {
+		initialArray []byte
+		expected     []uint8
+	}{
+		{
+			initialArray: []byte(`{"target": "localhost"}`),
+			expected:     []uint8(`{"target":"localhost"}`),
+		},
+		{
+			initialArray: []byte(`{"ta.rget*": "localhost**"}`),
+			expected:     []uint8(`{"ta.rget_":"localhost**"}`),
+		},
+	}
+	for _, test := range testTable {
+
+		data := (json.RawMessage)(test.initialArray)
+		bArray, err := sanitizeRawJsonMessage(data)
+		if err != nil {
+			t.Errorf("unexpected error: %s", err)
+		}
+		if diff := cmp.Diff(bArray, test.expected); diff != "" {
+			t.Errorf("sanitizeRawJsonMessage() mismatch (-want +got):\n%s", diff)
+		}
+	}
+}
 
 func TestSanitizeJSONKeys(t *testing.T) {
 	m := map[string]any{
