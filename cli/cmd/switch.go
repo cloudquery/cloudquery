@@ -60,7 +60,7 @@ func runSwitch(cmd *cobra.Command, args []string) error {
 		}
 
 		if currentTeam == "" {
-			cmd.Println("Your current team is not set.\n")
+			cmd.Printf("Your current team is not set.\n\n")
 		} else {
 			cmd.Printf("Your current team is set to %v.\n\n", currentTeam)
 		}
