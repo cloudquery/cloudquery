@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.3.1...plugins-destination-snowflake-v3.3.2) (2023-11-01)
+
+
+### Bug Fixes
+
+* Trigger release ([#15093](https://github.com/cloudquery/cloudquery/issues/15093)) ([132cb72](https://github.com/cloudquery/cloudquery/commit/132cb7243b58f4e5cc3ebe33b1527a2783490c34))
+
 ## [3.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.3.0...plugins-destination-snowflake-v3.3.1) (2023-11-01)
 
 
