@@ -2,10 +2,10 @@ package client
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
-	"path"
-	"strings"
+	"path/filepath"
 
 	"github.com/apache/arrow/go/v14/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v4/message"
@@ -20,13 +20,7 @@ const (
 )
 
 func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
-	if err := c.writer.Write(ctx, msgs); err != nil {
-		return err
-	}
-	if err := c.writer.Flush(ctx); err != nil {
-		return fmt.Errorf("failed to flush writer: %w", err)
-	}
-	return nil
+	return errors.Join(c.writer.Write(ctx, msgs), c.writer.Flush(ctx))
 }
 
 func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
@@ -70,7 +64,8 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to put file into stage with last resource %s: %w", sql, err)
 	}
-	sql = fmt.Sprintf(copyIntoTable, tableName, escapePath(path.Base(f.Name())))
+
+	sql = fmt.Sprintf(copyIntoTable, tableName, escapePath(filepath.Base(f.Name())))
 	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to copy file into table with last resource %s: %w", sql, err)
 	}
@@ -89,9 +84,4 @@ func (c *Client) setupWrite(ctx context.Context) error {
 		}
 	})
 	return setupErr
-}
-
-// escapePath properly escapes the `\` character in window's file paths.
-func escapePath(p string) string {
-	return strings.ReplaceAll(p, "\\", "\\\\")
 }
