@@ -31,7 +31,7 @@ Publishing to the CloudQuery Hub is only supported for Go plugins at the moment.
 ## Documentation Format
 
 - The only documentation format supported at the moment is markdown, and the `cloudquery publish` command will only upload markdown files with the `.md` extension
-- You can have multiple markdown files are documentation. The files will be concatenated in alphabetical order, and if one of the files is named `overview.md` it will show up first
+- You can have multiple markdown files as documentation. The files will be concatenated in alphabetical order, and if one of the files is named `overview.md` it will show up first
 - The markdown filename will be title cased when display in the Hub. For example `overview.md` will be displayed as `Overview`
 - HTML tags are not supported in the markdown files and will be ignored
 - Relative assets are not support e.g. `./assets/logo.png`. We recommend using absolute URLs for assets e.g. `https://raw.githubusercontent.com/<owner>/<repo>/main/assets/logo.png` in case you have the assets on GitHub
