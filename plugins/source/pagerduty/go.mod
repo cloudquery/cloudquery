@@ -3,13 +3,16 @@ module github.com/cloudquery/cloudquery/plugins/source/pagerduty
 go 1.21.1
 
 require (
-	github.com/PagerDuty/go-pagerduty v1.6.0
+	github.com/PagerDuty/go-pagerduty v1.7.0
 	github.com/apache/arrow/go/v14 v14.0.0-20230929201650-00efb06dc0de
 	github.com/cloudquery/plugin-sdk/v4 v4.17.1
 	github.com/rs/zerolog v1.29.1
+	github.com/thoas/go-funk v0.9.3
 	golang.org/x/time v0.3.0
 	gopkg.in/yaml.v3 v3.0.1
 )
+
+replace github.com/PagerDuty/go-pagerduty => github.com/hermanschaaf/go-pagerduty v1.7.0-custom-fields
 
 replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231023001216-f46436fa3561
 
@@ -91,7 +94,6 @@ require (
 	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/tdewolff/minify/v2 v2.12.9 // indirect
 	github.com/tdewolff/parse/v2 v2.6.8 // indirect
-	github.com/thoas/go-funk v0.9.3 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.11 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect

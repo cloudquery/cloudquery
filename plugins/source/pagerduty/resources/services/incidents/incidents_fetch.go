@@ -50,6 +50,9 @@ func fetchIncidents(ctx context.Context, meta schema.ClientMeta, parent *schema.
 				Since:   since.UTC().Format(time.RFC3339), // since is inclusive
 				Until:   until.UTC().Format(time.RFC3339), // until is exclusive
 				TeamIDs: cqClient.Spec.TeamIds,
+				Includes: []string{
+					"custom_fields",
+				},
 			})
 			if err != nil {
 				return err
