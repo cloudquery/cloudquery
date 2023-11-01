@@ -6,7 +6,7 @@ description: CloudQuery Slack source plugin documentation
 ---
 # Slack Source Plugin
 
-:badge{text="Premium"}
+:badge
 
 This is a premium plugin that you can buy [here](/integrations/slack).
 

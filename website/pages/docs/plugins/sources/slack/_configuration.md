@@ -3,9 +3,9 @@ kind: source
 # Common source-plugin configuration
 spec:
   name: slack
-  path: /path/to/downloaded/plugin # Buy from here: https://cloudquery.io/integrations/slack
-  registry: local
-  version: "PREMIUM"
+  path: cloudquery/slack
+  registry: cloudquery
+  version: "VERSION_SOURCE_SLACK"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
 

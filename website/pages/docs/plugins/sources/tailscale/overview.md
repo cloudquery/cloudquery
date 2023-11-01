@@ -6,7 +6,7 @@ description: CloudQuery Tailscale source plugin documentation
 ---
 # Tailscale Source Plugin
 
-:badge{text="Premium"}
+:badge
 
 This is a premium plugin that you can buy [here](/integrations/tailscale).
 

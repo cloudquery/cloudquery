@@ -57,7 +57,7 @@ function getVersionsForPrefix(prefix, files) {
   );
 }
 
-function getVersions() {
+function getStaticVersions() {
   const files = fs
     .readdirSync("./versions", { withFileTypes: true })
     .filter((dirent) => dirent.isFile())
@@ -74,7 +74,42 @@ function getVersions() {
   };
 }
 
-const versions = getVersions();
+async function getHubVersions() {
+  const response = await fetch("https://api.cloudquery.io/plugins");
+  const { items: allPlugins } = await response.json();
+  const paidPlugins = allPlugins.filter((plugin) => plugin.tier === "paid" && plugin.team_name === "cloudquery" && plugin.latest_version);
+  const sources = paidPlugins.filter((plugin) => plugin.kind === "source");
+  const destinations = paidPlugins.filter((plugin) => plugin.kind === "destination");
+
+  return {
+    sources: Object.fromEntries(
+      sources.map((source) => [source.name, source.latest_version]),
+    ),
+    destinations: Object.fromEntries(
+      destinations.map((destination) => [destination.name, destination.latest_version]),
+    ),
+  };
+};
+
+async function getVersions() {
+  const staticVersions = getStaticVersions();
+  const hubVersions = await getHubVersions();
+
+
+  return {
+    ...staticVersions,
+    sources: {
+      ...hubVersions.sources,
+      ...staticVersions.sources,
+    },
+    destinations: {
+      ...hubVersions.destinations,
+      ...staticVersions.destinations,
+    },
+  };
+}
+
+const versions = await getVersions();
 
 const getLatestVersion = (key, name) => {
   const version = versions[key][name] || "Unpublished";

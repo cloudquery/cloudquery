@@ -3,9 +3,9 @@ kind: source
 # Common source-plugin configuration
 spec:
   name: tailscale
-  path: /path/to/downloaded/plugin # Buy from here: https://cloudquery.io/integrations/tailscale
-  registry: local
-  version: "PREMIUM"
+  path: cloudquery/tailscale
+  registry: cloudquery
+  version: "VERSION_SOURCE_TAILSCALE"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
 
