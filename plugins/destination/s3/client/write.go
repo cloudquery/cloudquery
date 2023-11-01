@@ -32,7 +32,7 @@ const (
 	MinuteVar     = "{{MINUTE}}"
 )
 
-var reInvalidJSONKey = regexp.MustCompile("[^a-zA-Z0-9_.]+")
+var reInvalidJSONKey = regexp.MustCompile(`\W`)
 
 func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInsert) error {
 	var s *filetypes.Stream
