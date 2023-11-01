@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.27.3](https://github.com/cloudquery/cloudquery/compare/cli-v3.27.2...cli-v3.27.3) (2023-11-01)
+
+
+### Bug Fixes
+
+* Set team context when logging in, and don't clear it when logging out ([#15119](https://github.com/cloudquery/cloudquery/issues/15119)) ([ca3aaf5](https://github.com/cloudquery/cloudquery/commit/ca3aaf560923f81677c5c1396edbbe798b853587))
+
 ## [3.27.2](https://github.com/cloudquery/cloudquery/compare/cli-v3.27.1...cli-v3.27.2) (2023-11-01)
 
 
