@@ -13,7 +13,7 @@ This publishes a plugin version to CloudQuery Hub from a local dist directory.
 
 
 ```
-cloudquery plugin publish <team_name>/<plugin_name> [-D dist] [flags]
+cloudquery plugin publish [-D dist] [flags]
 ```
 
 ### Examples
@@ -21,7 +21,7 @@ cloudquery plugin publish <team_name>/<plugin_name> [-D dist] [flags]
 ```
 
 # Publish a plugin version from a local dist directory
-cloudquery plugin publish my_team/my_plugin
+cloudquery plugin publish
 ```
 
 ### Options
