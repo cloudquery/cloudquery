@@ -21,7 +21,7 @@ func TestSanitizeRawJsonMessage(t *testing.T) {
 		},
 		{
 			initialArray: []byte(`{"ta.rget*": "localhost**"}`),
-			expected:     []uint8(`{"ta.rget_":"localhost**"}`),
+			expected:     []uint8(`{"ta_rget_":"localhost**"}`),
 		},
 	}
 	for _, test := range testTable {
