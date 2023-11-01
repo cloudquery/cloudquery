@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -20,7 +19,13 @@ const (
 )
 
 func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
-	return errors.Join(c.writer.Write(ctx, msgs), c.writer.Flush(ctx))
+	if err := c.writer.Write(ctx, msgs); err != nil {
+		return err
+	}
+	if err := c.writer.Flush(ctx); err != nil {
+		return fmt.Errorf("failed to flush writer: %w", err)
+	}
+	return nil
 }
 
 func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
