@@ -6,7 +6,7 @@ description: CloudQuery Heroku source plugin documentation
 ---
 # Heroku Source Plugin
 
-:badge{text="Premium"}
+:badge
 
 This is a premium plugin that you can buy [here](/integrations/heroku).
 
