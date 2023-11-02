@@ -37,11 +37,11 @@ gen-docs: build
 		echo "You can install it by following the instructions at: https://www.cloudquery.io/docs/quickstart"; \
 		exit 1; \
 	}
+	rm -rf docs/tables
 	rm -rf ../../../website/tables/alicloud
 	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
-	sed 's_(\(.*\))_(../../../../../website/tables/alicloud/\1)_' ../../../website/tables/alicloud/README.md > ./docs/tables/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/alicloud/README.md
-	mv ../../../website/tables/alicloud/README.md ../../../website/pages/docs/plugins/sources/alicloud/tables.md
+	cp -r ../../../website/tables/alicloud docs/tables
+	rm ../../../website/tables/alicloud/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/alicloud/*.md
 	rm -rf ../../../website/tables/alicloud/*.bak
 

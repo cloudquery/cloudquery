@@ -18,12 +18,12 @@ gen-docs: build
 	go run scripts/policy_docs/main.go azure policies ../../../website/pages/docs/plugins/sources/azure/policies.md docs/azure/__tables.json
 	rm docs/azure/__tables.json
 
+	rm -rf docs/tables
 	rm -rf ../../../website/tables/azure
 	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
 	go run scripts/example_queries/main.go policies/queries ../../../website/tables/azure
-	sed 's_(\(.*\))_(../../../../../website/tables/azure/\1)_' ../../../website/tables/azure/README.md > ./docs/tables/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/azure/README.md
-	mv ../../../website/tables/azure/README.md ../../../website/pages/docs/plugins/sources/azure/tables.md
+	cp -r ../../../website/tables/azure docs/tables
+	rm ../../../website/tables/azure/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/azure/*.md
 	rm -rf ../../../website/tables/azure/*.bak
 
