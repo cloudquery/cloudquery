@@ -12,6 +12,10 @@ install-tools:
 lint:
 	golangci-lint run --config ../../.golangci.yml
 
+.PHONY: build
+build:
+	go build
+
 .PHONY: gen-mocks
 gen-mocks:
 	go install github.com/golang/mock/mockgen@v1.6.0
@@ -21,14 +25,18 @@ gen-mocks:
 	go generate ./client/...
 
 .PHONY: gen-docs
-gen-docs:
-	go run main.go doc --format json docs
-	rm docs/__tables.json
+gen-docs: build
+	@command -v cloudquery >/dev/null 2>&1 || { \
+		echo "Error: 'cloudquery' command not found. Please install it before running gen-docs."; \
+		echo "You can install it by following the instructions at: https://www.cloudquery.io/docs/quickstart"; \
+		exit 1; \
+	}
 
+	rm -rf docs/tables
 	rm -rf ../../../website/tables/vault
-	go run main.go doc ../../../website/tables/vault
-	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/vault/README.md
-	mv ../../../website/tables/vault/README.md ../../../website/pages/docs/plugins/sources/vault/tables.md
+	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
+	cp -r ../../../website/tables/vault docs/tables
+	rm ../../../website/tables/vault/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/vault/*.md
 	rm -rf ../../../website/tables/vault/*.bak
 

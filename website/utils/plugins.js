@@ -45,7 +45,7 @@ const getPlugins = (type) => {
   const typeSingular = type === "sources" ? "source" : "destination";
   const newFilesPath = fs.readdirSync(path.resolve(process.cwd(), `../plugins/${typeSingular}`), { withFileTypes: true });
   const pluginsFromNewPath = newFilesPath
-    .filter((file) => file.isDirectory())
+    .filter((file) => file.isDirectory() && file.name !== "test")
     .map((file) => file.name);
 
 

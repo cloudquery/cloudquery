@@ -22,11 +22,11 @@ gen-docs: build
 		echo "You can install it by following the instructions at: https://www.cloudquery.io/docs/quickstart"; \
 		exit 1; \
 	}
+	rm -rf docs/tables
 	rm -rf ../../../website/tables/hubspot
 	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
-	sed 's_(\(.*\))_(../../../../../website/tables/hubspot/\1)_' ../../../website/tables/hubspot/README.md > ./docs/tables/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/hubspot/README.md
-	mv ../../../website/tables/hubspot/README.md ../../../website/pages/docs/plugins/sources/hubspot/tables.md
+	cp -r ../../../website/tables/hubspot docs/tables
+	rm ../../../website/tables/hubspot/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/hubspot/*.md
 	rm -rf ../../../website/tables/hubspot/*.bak
 

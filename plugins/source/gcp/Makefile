@@ -24,15 +24,15 @@ gen-docs: build
 		exit 1; \
 	}
 	cloudquery tables --format json --output-dir ./docs test/config.yml
-	go run scripts/policy_docs/main.go gcp policies ../../../website/pages/docs/plugins/sources/gcp/policies.md docs/gcp/__tables.json
+	go run scripts/policy_docs/main.go gcp policies docs/policies.md docs/gcp/__tables.json
 	rm docs/gcp/__tables.json
 
+	rm -rf docs/tables
 	rm -rf ../../../website/tables/gcp
 	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
 	go run scripts/example_queries/main.go policies/queries ../../../website/tables/gcp
-	sed 's_(\(.*\))_(../../../../../website/tables/gcp/\1)_' ../../../website/tables/gcp/README.md > ./docs/tables/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/gcp/README.md
-	mv ../../../website/tables/gcp/README.md ../../../website/pages/docs/plugins/sources/gcp/tables.md
+	cp -r ../../../website/tables/gcp docs/tables
+	rm ../../../website/tables/gcp/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/gcp/*.md
 	rm -rf ../../../website/tables/gcp/*.bak
 

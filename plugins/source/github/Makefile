@@ -27,11 +27,11 @@ gen-docs: build
 		echo "You can install it by following the instructions at: https://www.cloudquery.io/docs/quickstart"; \
 		exit 1; \
 	}
+	rm -rf docs/tables
 	rm -rf ../../../website/tables/github
 	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
-	sed 's_(\(.*\))_(../../../../../website/tables/github/\1)_' ../../../website/tables/github/README.md > ./docs/tables/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/github/README.md
-	mv ../../../website/tables/github/README.md ../../../website/pages/docs/plugins/sources/github/tables.md
+	cp -r ../../../website/tables/github docs/tables
+	rm ../../../website/tables/github/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/github/*.md
 	rm -rf ../../../website/tables/github/*.bak
 

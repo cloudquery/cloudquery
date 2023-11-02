@@ -26,15 +26,15 @@ gen-docs: build
 		exit 1; \
 	}
 	cloudquery tables --format json --output-dir ./docs test/config.yml
-	go run scripts/policy_docs/main.go k8s policies ../../../website/pages/docs/plugins/sources/k8s/policies.md docs/k8s/__tables.json
+	go run scripts/policy_docs/main.go k8s policies docs/policies.md docs/k8s/__tables.json
 	rm docs/k8s/__tables.json
-	
+
+	rm -rf docs/tables
 	rm -rf ../../../website/tables/k8s
 	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
 	go run scripts/example_queries/main.go policies/queries ../../../website/tables/k8s
-	sed 's_(\(.*\))_(../../../../../website/tables/k8s/\1)_' ../../../website/tables/k8s/README.md > ./docs/tables/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/k8s/README.md
-	mv ../../../website/tables/k8s/README.md ../../../website/pages/docs/plugins/sources/k8s/tables.md
+	cp -r ../../../website/tables/k8s docs/tables
+	rm ../../../website/tables/k8s/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/k8s/*.md
 	rm -rf ../../../website/tables/k8s/*.bak
 

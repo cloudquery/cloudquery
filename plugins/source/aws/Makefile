@@ -34,7 +34,7 @@ gen-docs: build
 		exit 1; \
 	}
 	cloudquery tables --format json --output-dir ./docs test/config.yml
-	go run scripts/policy_docs/main.go aws policies ../../../website/pages/docs/plugins/sources/aws/policies.md docs/aws/__tables.json
+	go run scripts/policy_docs/main.go aws policies docs/policies.md docs/aws/__tables.json
 	rm docs/aws/__tables.json
 
 	rm -rf docs/tables

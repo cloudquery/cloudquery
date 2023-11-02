@@ -25,11 +25,11 @@ gen-docs: build
 		echo "You can install it by following the instructions at: https://www.cloudquery.io/docs/quickstart"; \
 		exit 1; \
 	}
+	rm -rf docs/tables
 	rm -rf ../../../website/tables/terraform
 	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
-	sed 's_(\(.*\))_(../../../../../website/tables/terraform/\1)_' ../../../website/tables/terraform/README.md > ./docs/tables/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/terraform/README.md
-	mv ../../../website/tables/terraform/README.md ../../../website/pages/docs/plugins/sources/terraform/tables.md
+	cp -r ../../../website/tables/terraform docs/tables
+	rm ../../../website/tables/terraform/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/terraform/*.md
 	rm -rf ../../../website/tables/terraform/*.bak
 

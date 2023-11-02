@@ -18,11 +18,11 @@ gen-docs: build
 		echo "You can install it by following the instructions at: https://www.cloudquery.io/docs/quickstart"; \
 		exit 1; \
 	}
+	rm -rf docs/tables
 	rm -rf ../../../website/tables/oracle
 	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
-	sed 's_(\(.*\))_(../../../../../website/tables/oracle/\1)_' ../../../website/tables/oracle/README.md > ./docs/tables/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/oracle/README.md
-	mv ../../../website/tables/oracle/README.md ../../../website/pages/docs/plugins/sources/oracle/tables.md
+	cp -r ../../../website/tables/oracle docs/tables
+	rm ../../../website/tables/oracle/README.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/oracle/*.md
 	rm -rf ../../../website/tables/oracle/*.bak
 
