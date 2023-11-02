@@ -15,12 +15,8 @@ gen-docs: build
 		exit 1; \
 	}
 	rm -rf docs/tables
-	rm -rf ../../../website/tables/shopify
-	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
-	cp -r ../../../website/tables/shopify docs/tables
-	rm ../../../website/tables/shopify/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/shopify/*.md
-	rm -rf ../../../website/tables/shopify/*.bak
+	cloudquery tables --format markdown --output-dir docs test/config.yml
+	mv docs/$(shell basename $(CURDIR)) docs/tables
 
 .PHONY: lint
 lint:

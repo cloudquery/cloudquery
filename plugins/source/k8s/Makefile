@@ -30,13 +30,9 @@ gen-docs: build
 	rm docs/k8s/__tables.json
 
 	rm -rf docs/tables
-	rm -rf ../../../website/tables/k8s
-	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
-	go run scripts/example_queries/main.go policies/queries ../../../website/tables/k8s
-	cp -r ../../../website/tables/k8s docs/tables
-	rm ../../../website/tables/k8s/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/k8s/*.md
-	rm -rf ../../../website/tables/k8s/*.bak
+	cloudquery tables --format markdown --output-dir docs test/config.yml
+	mv docs/$(shell basename $(CURDIR)) docs/tables
+	go run scripts/example_queries/main.go policies/queries docs/tables
 
 .PHONY: lint
 lint:

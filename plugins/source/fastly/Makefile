@@ -36,12 +36,8 @@ gen-docs: build
 		exit 1; \
 	}
 	rm -rf docs/tables
-	rm -rf ../../../website/tables/fastly
-	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
-	cp -r ../../../website/tables/fastly docs/tables
-	rm ../../../website/tables/fastly/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/fastly/*.md
-	rm -rf ../../../website/tables/fastly/*.bak
+	cloudquery tables --format markdown --output-dir docs test/config.yml
+	mv docs/$(shell basename $(CURDIR)) docs/tables
 
 # All gen targets
 .PHONY: gen

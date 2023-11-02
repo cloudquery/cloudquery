@@ -28,12 +28,8 @@ gen-docs: build
 		exit 1; \
 	}
 	rm -rf docs/tables
-	rm -rf ../../../website/tables/github
-	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
-	cp -r ../../../website/tables/github docs/tables
-	rm ../../../website/tables/github/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/github/*.md
-	rm -rf ../../../website/tables/github/*.bak
+	cloudquery tables --format markdown --output-dir docs test/config.yml
+	mv docs/$(shell basename $(CURDIR)) docs/tables
 
 .PHONY: lint
 lint:

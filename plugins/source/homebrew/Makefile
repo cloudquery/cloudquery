@@ -29,12 +29,8 @@ gen-docs: build
 		exit 1; \
 	}
 	rm -rf docs/tables
-	rm -rf ../../../website/tables/homebrew
-	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
-	cp -r ../../../website/tables/homebrew docs/tables
-	rm ../../../website/tables/homebrew/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/homebrew/*.md
-	rm -rf ../../../website/tables/homebrew/*.bak
+	cloudquery tables --format markdown --output-dir docs test/config.yml
+	mv docs/$(shell basename $(CURDIR)) docs/tables
 
 # All gen targets
 .PHONY: gen

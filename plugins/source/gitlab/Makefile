@@ -19,12 +19,8 @@ gen-docs: build
 		exit 1; \
 	}
 	rm -rf docs/tables
-	rm -rf ../../../website/tables/gitlab
-	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
-	cp -r ../../../website/tables/gitlab docs/tables
-	rm ../../../website/tables/gitlab/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/gitlab/*.md
-	rm -rf ../../../website/tables/gitlab/*.bak
+	cloudquery tables --format markdown --output-dir docs test/config.yml
+	mv docs/$(shell basename $(CURDIR)) docs/tables
 
 # All gen targets
 .PHONY: gen

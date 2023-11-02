@@ -20,12 +20,8 @@ gen-docs: build
 		exit 1; \
 	}
 	rm -rf docs/tables
-	rm -rf ../../../website/tables/salesforce
-	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
-	cp -r ../../../website/tables/salesforce docs/tables
-	rm ../../../website/tables/salesforce/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/salesforce/*.md
-	rm -rf ../../../website/tables/salesforce/*.bak
+	cloudquery tables --format markdown --output-dir docs test/config.yml
+	mv docs/$(shell basename $(CURDIR)) docs/tables
 
 # All gen targets
 .PHONY: gen

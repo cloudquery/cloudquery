@@ -31,14 +31,9 @@ gen-docs: build
 		echo "You can install it by following the instructions at: https://www.cloudquery.io/docs/quickstart"; \
 		exit 1; \
 	}
-
 	rm -rf docs/tables
-	rm -rf ../../../website/tables/vault
-	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
-	cp -r ../../../website/tables/vault docs/tables
-	rm ../../../website/tables/vault/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/vault/*.md
-	rm -rf ../../../website/tables/vault/*.bak
+	cloudquery tables --format markdown --output-dir docs test/config.yml
+	mv docs/$(shell basename $(CURDIR)) docs/tables
 
 # All gen targets
 .PHONY: gen

@@ -19,13 +19,9 @@ gen-docs: build
 	rm docs/azure/__tables.json
 
 	rm -rf docs/tables
-	rm -rf ../../../website/tables/azure
-	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
-	go run scripts/example_queries/main.go policies/queries ../../../website/tables/azure
-	cp -r ../../../website/tables/azure docs/tables
-	rm ../../../website/tables/azure/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/azure/*.md
-	rm -rf ../../../website/tables/azure/*.bak
+	cloudquery tables --format markdown --output-dir docs test/config.yml
+	mv docs/$(shell basename $(CURDIR)) docs/tables
+	go run scripts/example_queries/main.go policies/queries docs/tables
 
 .PHONY: lint
 lint:

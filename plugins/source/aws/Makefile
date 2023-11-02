@@ -38,13 +38,9 @@ gen-docs: build
 	rm docs/aws/__tables.json
 
 	rm -rf docs/tables
-	rm -rf ../../../website/tables/aws
-	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
-	go run scripts/example_queries/main.go policies/queries ../../../website/tables/aws
-	cp -r ../../../website/tables/aws docs/tables
-	rm ../../../website/tables/aws/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/aws/*.md
-	rm -rf ../../../website/tables/aws/*.bak
+	cloudquery tables --format markdown --output-dir docs test/config.yml
+	mv docs/$(shell basename $(CURDIR)) docs/tables
+	go run scripts/example_queries/main.go policies/queries docs/tables
 
 .PHONY: gen-spec-schema
 gen-spec-schema:

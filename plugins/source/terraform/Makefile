@@ -26,12 +26,8 @@ gen-docs: build
 		exit 1; \
 	}
 	rm -rf docs/tables
-	rm -rf ../../../website/tables/terraform
-	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
-	cp -r ../../../website/tables/terraform docs/tables
-	rm ../../../website/tables/terraform/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/terraform/*.md
-	rm -rf ../../../website/tables/terraform/*.bak
+	cloudquery tables --format markdown --output-dir docs test/config.yml
+	mv docs/$(shell basename $(CURDIR)) docs/tables
 
 .PHONY: lint
 lint:
