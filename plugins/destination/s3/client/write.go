@@ -96,7 +96,6 @@ func sanitizeRecordJSONKeys(record arrow.Record) (arrow.Record, error) {
 					return nil, err
 				}
 				b.Append(bArray)
-
 			}
 			cols[i] = b.NewArray()
 			continue
@@ -107,7 +106,6 @@ func sanitizeRecordJSONKeys(record arrow.Record) (arrow.Record, error) {
 }
 
 func sanitizeRawJsonMessage(rawMessage json.RawMessage) ([]byte, error) {
-
 	var objInterface any
 	err := json.Unmarshal(rawMessage, &objInterface)
 	if err != nil {

@@ -10,7 +10,6 @@ import (
 )
 
 func TestSanitizeRawJsonMessage(t *testing.T) {
-
 	testTable := []struct {
 		initialArray []byte
 		expected     []uint8
@@ -25,7 +24,6 @@ func TestSanitizeRawJsonMessage(t *testing.T) {
 		},
 	}
 	for _, test := range testTable {
-
 		data := (json.RawMessage)(test.initialArray)
 		bArray, err := sanitizeRawJsonMessage(data)
 		if err != nil {
