@@ -15,7 +15,7 @@ Publishing to the CloudQuery Hub is only supported for Go plugins at the moment.
 
 - You have created a [CloudQuery Cloud](https://cloud.cloudquery.io/) account and completed the onboarding process to create a team
 - You have created the plugin you'd like to publish on https://cloud.cloudquery.io/ under the relevant team
-- You have the [CloudQuery CLI](https://cloudquery.io/docs/cli/installation) installed (version >= `v3.27.1`)
+- You have the [CloudQuery CLI](https://www.cloudquery.io/docs/quickstart) installed (version >= `v3.27.1`)
 - The plugin you'd like to publish is written in Go, and uses an SDK version >= `v4.17.1`
 - The plugin you'd like to publish is initialized using the plugin's name, team and kind. See example [here](https://github.com/cloudquery/cloudquery/blob/b7ef6f6ed8948272a429f35614fa28559397227a/plugins/source/test/resources/plugin/plugin.go#L15)
 - You are authenticated to [CloudQuery Cloud](https://cloud.cloudquery.io/) using the `cloudquery login` command
