@@ -40,8 +40,6 @@ area/plugin/destination/snowflake:
   - plugins/destination/snowflake/**/*
 area/plugin/destination/sqlite:
   - plugins/destination/sqlite/**/*
-area/plugin/source/airtable:
-  - plugins/source/airtable/**/*
 area/plugin/source/alicloud:
   - plugins/source/alicloud/**/*
 area/plugin/source/aws:
@@ -52,8 +50,6 @@ area/plugin/source/azure:
   - plugins/source/azure/**/*
 area/plugin/source/azuredevops:
   - plugins/source/azuredevops/**/*
-area/plugin/source/bitbucket:
-  - plugins/source/bitbucket/**/*
 area/plugin/source/cloudflare:
   - plugins/source/cloudflare/**/*
 area/plugin/source/datadog:
@@ -86,8 +82,6 @@ area/plugin/source/homebrew:
   - plugins/source/homebrew/**/*
 area/plugin/source/hubspot:
   - plugins/source/hubspot/**/*
-area/plugin/source/jira:
-  - plugins/source/jira/**/*
 area/plugin/source/k8s:
   - plugins/source/k8s/**/*
 area/plugin/source/launchdarkly:
@@ -100,8 +94,6 @@ area/plugin/source/okta:
   - plugins/source/okta/**/*
 area/plugin/source/oracle:
   - plugins/source/oracle/**/*
-area/plugin/source/oracledb:
-  - plugins/source/oracledb/**/*
 area/plugin/source/pagerduty:
   - plugins/source/pagerduty/**/*
 area/plugin/source/plausible:
@@ -114,10 +106,6 @@ area/plugin/source/slack:
   - plugins/source/slack/**/*
 area/plugin/source/snyk:
   - plugins/source/snyk/**/*
-area/plugin/source/source-mysql:
-  - plugins/source/mysql/**/*
-area/plugin/source/source-postgresql:
-  - plugins/source/postgresql/**/*
 area/plugin/source/square:
   - plugins/source/square/**/*
 area/plugin/source/stripe:
