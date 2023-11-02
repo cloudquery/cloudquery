@@ -4,9 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"strings"
-
 	"slices"
+	"strings"
 
 	"github.com/thoas/go-funk"
 )
@@ -170,7 +169,7 @@ func (s *Source) Validate() error {
 		return fmt.Errorf("tables configuration is required. Hint: set the tables you want to sync by adding `tables: [...]` or use `cloudquery tables` to list available tables")
 	}
 
-	if s.Registry == RegistryGithub {
+	if s.Registry == RegistryGithub || s.Registry == RegistryCloudQuery {
 		if s.Version == "" {
 			return fmt.Errorf("version is required")
 		}
