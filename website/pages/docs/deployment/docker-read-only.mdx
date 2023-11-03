@@ -79,7 +79,7 @@ sh -c "${postgresql_plugin_path} serve --address localhost:7779" & \
 
 ### Connecting it all together
 
-We will use the `ghcr.io/cloudquery/cloudquery:latest` container as a base and add all files in it. Then we will override the entry point with our start script:
+We will use the `ghcr.io/cloudquery/cloudquery:latest` container as a base and add all the files in it. Then we will override the entry point with our start script:
 
 ```docker
 FROM ghcr.io/cloudquery/cloudquery:latest
