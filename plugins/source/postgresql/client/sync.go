@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/apache/arrow/go/v14/arrow/array"
@@ -158,21 +159,30 @@ func (c *Client) syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, 
 	return nil
 }
 
-func stringForTime(t pgtype.Time, unit arrow.TimeUnit) string {
-	extra := ""
-	hour := t.Microseconds / 1e6 / 60 / 60
-	minute := t.Microseconds / 1e6 / 60 % 60
-	second := t.Microseconds / 1e6 % 60
-	micros := t.Microseconds % 1e6
-	switch unit {
-	case arrow.Millisecond:
-		extra = fmt.Sprintf(".%03d", (micros)/1e3)
-	case arrow.Microsecond:
-		extra = fmt.Sprintf(".%06d", micros)
-	case arrow.Nanosecond:
-		// postgres doesn't support nanosecond precision
-		extra = fmt.Sprintf(".%06d", micros)
-	}
+func pgToUTCTime(t pgtype.Time) time.Time {
+	return time.Time{}.Add(time.Duration(t.Microseconds) * time.Microsecond).UTC()
+}
 
-	return fmt.Sprintf("%02d:%02d:%02d"+extra, hour, minute, second)
+func stringForTime32(t pgtype.Time, unit arrow.TimeUnit) string {
+	ts := pgToUTCTime(t)
+	switch unit {
+	case arrow.Second:
+		return ts.Format("15:04:05")
+	case arrow.Millisecond:
+		return ts.Format("15:04:05.000")
+	default:
+		panic("time32 can only be seconds or milliseconds, got: " + unit.String())
+	}
+}
+
+func stringForTime64(t pgtype.Time, unit arrow.TimeUnit) string {
+	ts := pgToUTCTime(t)
+	switch unit {
+	case arrow.Microsecond:
+		return ts.Format("15:04:05.000000")
+	case arrow.Nanosecond:
+		return ts.Format("15:04:05.000000000")
+	default:
+		panic("time64 can only be microseconds or nanoseconds, got: " + unit.String())
+	}
 }
