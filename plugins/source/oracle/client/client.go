@@ -37,6 +37,10 @@ type Client struct {
 }
 
 func New(ctx context.Context, logger zerolog.Logger, _ spec.Spec) (schema.ClientMeta, error) {
+	// common.DefaultRetryPolicy handles (409, IncorrectState), (429, TooManyRequests) + 5XX errors
+	defaultRetryPolicy := common.DefaultRetryPolicy()
+	common.GlobalRetry = &defaultRetryPolicy
+
 	configProvider := common.DefaultConfigProvider()
 
 	tenancyOcid, err := configProvider.TenancyOCID()
