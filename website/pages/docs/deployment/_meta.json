@@ -4,10 +4,10 @@
   "airflow": "Apache Airflow",
   "docker": "Docker",
   "docker-offline": "Docker - Offline Installation",
-  "docker-read-only": "Docker - Read-only Containers",
   "github-actions": "GitHub Actions",
   "cloud-run": "Google Cloud Run",
   "google-cloud-vm": "Google Cloud VM",
   "kubernetes": "Kubernetes CronJob",
-  "kestra": "Kestra"
+  "kestra": "Kestra",
+  "read-only-containers": "Containers with Read Only Root Filesystem"
 }

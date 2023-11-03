@@ -17,8 +17,8 @@ Apart from these options, we have also written some guides to help you get start
  - [Amazon ECS](/docs/deployment/ecs)
  - [Docker](/docs/deployment/docker)
  - [Docker - Offline Installation](/docs/deployment/docker-offline)
- - [Docker - Read-only Containers](/docs/deployment/docker-read-only)
  - [GitHub Actions](/docs/deployment/github-actions)
  - [Google Cloud Run](/docs/deployment/cloud-run)
  - [Google Cloud Virtual Machine (VM)](/docs/deployment/google-cloud-vm) 🎥
  - [Kestra](/docs/deployment/kestra)
+ - [Read-Only Containers](/docs/deployment/read-only-containers)
