@@ -22,5 +22,4 @@ It should look something like this:
   private_key: -----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEA3eVv6PCn9P8zO+EP8K7pLMfxcA2uVrSZ2f+H3GgYIavDxWtO\n...vM9tE3jAA8mOjZpdLaG5yy4QfV1LQ3R7kO49JCB6VbClwN2lNvd8Iw==\n-----END RSA PRIVATE KEY-----`.
   app_id: your_app_id
   ...
-
 ```
