@@ -159,30 +159,10 @@ func (c *Client) syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, 
 	return nil
 }
 
-func pgToUTCTime(t pgtype.Time) time.Time {
-	return time.Time{}.Add(time.Duration(t.Microseconds) * time.Microsecond).UTC()
-}
-
 func stringForTime32(t pgtype.Time, unit arrow.TimeUnit) string {
-	ts := pgToUTCTime(t)
-	switch unit {
-	case arrow.Second:
-		return ts.Format("15:04:05")
-	case arrow.Millisecond:
-		return ts.Format("15:04:05.000")
-	default:
-		panic("time32 can only be seconds or milliseconds, got: " + unit.String())
-	}
+	return arrow.Time32((time.Duration(t.Microseconds) * time.Microsecond) / unit.Multiplier()).FormattedString(unit)
 }
 
 func stringForTime64(t pgtype.Time, unit arrow.TimeUnit) string {
-	ts := pgToUTCTime(t)
-	switch unit {
-	case arrow.Microsecond:
-		return ts.Format("15:04:05.000000")
-	case arrow.Nanosecond:
-		return ts.Format("15:04:05.000000000")
-	default:
-		panic("time64 can only be microseconds or nanoseconds, got: " + unit.String())
-	}
+	return arrow.Time64((time.Duration(t.Microseconds) * time.Microsecond) / unit.Multiplier()).FormattedString(unit)
 }
