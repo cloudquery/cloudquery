@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/apache/arrow/go/v14/arrow/array"
@@ -158,21 +159,10 @@ func (c *Client) syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, 
 	return nil
 }
 
-func stringForTime(t pgtype.Time, unit arrow.TimeUnit) string {
-	extra := ""
-	hour := t.Microseconds / 1e6 / 60 / 60
-	minute := t.Microseconds / 1e6 / 60 % 60
-	second := t.Microseconds / 1e6 % 60
-	micros := t.Microseconds % 1e6
-	switch unit {
-	case arrow.Millisecond:
-		extra = fmt.Sprintf(".%03d", (micros)/1e3)
-	case arrow.Microsecond:
-		extra = fmt.Sprintf(".%06d", micros)
-	case arrow.Nanosecond:
-		// postgres doesn't support nanosecond precision
-		extra = fmt.Sprintf(".%06d", micros)
-	}
+func stringForTime32(t pgtype.Time, unit arrow.TimeUnit) string {
+	return arrow.Time32((time.Duration(t.Microseconds) * time.Microsecond) / unit.Multiplier()).FormattedString(unit)
+}
 
-	return fmt.Sprintf("%02d:%02d:%02d"+extra, hour, minute, second)
+func stringForTime64(t pgtype.Time, unit arrow.TimeUnit) string {
+	return arrow.Time64((time.Duration(t.Microseconds) * time.Microsecond) / unit.Multiplier()).FormattedString(unit)
 }
