@@ -365,7 +365,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/postgresql.svg",
     id: "postgresql",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "databases",
   },
   {
