@@ -20,7 +20,7 @@ Once we're done with the post, you'll be able to create and build your own Attac
 
 ### Prerequisites
 
-In this guide, we will use Neo4j as a destination and AWS as a source.  For more information on how to set those up, see our documentation on [Neo4j](/docs/plugins/destinations/neo4j/overview) and [AWS](/docs/plugins/sources/aws/overview).
+In this guide, we will use Neo4j as a destination and AWS as a source.  For more information on how to set those up, see our documentation on [Neo4j](https://hub.cloudquery.io/plugins/destination/cloudquery/neo4j) and [AWS](https://hub.cloudquery.io/plugins/source/cloudquery/aws).
 
 For the example queries, we'll be using AWS Identity and Access Management (IAM) Users and Amazon Relational Database Service (RDS) along with some common infrastructure associated with those resources that include IAM User Access Keys, IAM Managed and Inline Policies, IAM Groups, Amazon Virtual Private Cloud (VPC), Amazon VPC Security Groups, and Internet Gateways.  Our demo environment will have those sample resources already created and the graph visualizations will look different than results from your walkthrough.  
 
@@ -29,7 +29,7 @@ Refer to Neo4j's installation documentation (https://neo4j.com/docs/operations-m
 
 ### Step 1: Install or Deploy CloudQuery
 
-To get started with CloudQuery, check out our [quickstart guide](/docs/quickstart) and [AWS source plugin](/docs/plugins/sources/aws/overview) for how to configure CloudQuery and run it locally on your machine.
+To get started with CloudQuery, check out our [quickstart guide](/docs/quickstart) and [AWS source plugin](https://hub.cloudquery.io/plugins/source/cloudquery/aws) for how to configure CloudQuery and run it locally on your machine.
 
 ### Step 2: Sync Data from CloudQuery to Neo4j
 
@@ -37,7 +37,7 @@ The following command will sync data from AWS as a source to Neo4J as a destinat
 
 `cloudquery sync aws-neo.yml neo4j.yml`
 
-For more information on configuration files, see [AWS source configuration](/docs/plugins/sources/aws/configuration) and [Neo4j destination configuration](/docs/plugins/destinations/neo4j/overview)
+For more information on configuration files, see [AWS source configuration](https://hub.cloudquery.io/plugins/source/cloudquery/aws/configuration) and [Neo4j destination configuration](https://hub.cloudquery.io/plugins/destination/cloudquery/neo4j)
 
 The configuration we're running locally looks like this:
 

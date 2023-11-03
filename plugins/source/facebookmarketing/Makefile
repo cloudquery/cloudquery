@@ -17,12 +17,9 @@ gen-docs: build
 		echo "You can install it by following the instructions at: https://www.cloudquery.io/docs/quickstart"; \
 		exit 1; \
 	}
-	rm -rf ../../../website/tables/facebookmarketing
-	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
-	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/facebookmarketing/README.md
-	mv ../../../website/tables/facebookmarketing/README.md ../../../website/pages/docs/plugins/sources/facebookmarketing/tables.md
-	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/facebookmarketing/*.md
-	rm -rf ../../../website/tables/facebookmarketing/*.bak
+	rm -rf docs/tables
+	cloudquery tables --format markdown --output-dir docs test/config.yml
+	mv docs/$(shell basename $(CURDIR)) docs/tables
 
 # All gen targets
 .PHONY: gen

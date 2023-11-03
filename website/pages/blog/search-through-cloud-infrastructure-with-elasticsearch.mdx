@@ -32,9 +32,9 @@ You will also need a running Elasticsearch instance. If you don't have one, you 
 
 ## Configuring the Elasticsearch Destination
 
-Now that you have CloudQuery and Elasticsearch running, you can configure the Elasticsearch destination. To do this, follow the instructions in the [Elasticsearch destination plugin docs](/docs/plugins/destinations/elasticsearch/overview) to create a configuration file called `elasticsearch.yml`.
+Now that you have CloudQuery and Elasticsearch running, you can configure the Elasticsearch destination. To do this, follow the instructions in the [Elasticsearch destination plugin docs](https://hub.cloudquery.io/plugins/destination/cloudquery/elasticsearch) to create a configuration file called `elasticsearch.yml`.
 
-Assuming you want to browse AWS infrastructure data, you also need to create a configuration file for the AWS provider. Again, follow the instructions in the [AWS Source guide](/docs/plugins/sources/aws/overview) to create a configuration file called `aws.yml`.
+Assuming you want to browse AWS infrastructure data, you also need to create a configuration file for the AWS provider. Again, follow the instructions in the [AWS Source guide](https://hub.cloudquery.io/plugins/source/cloudquery/aws) to create a configuration file called `aws.yml`.
 
 Finally, you can run the CloudQuery command to sync your AWS infrastructure data to Elasticsearch:
 
@@ -74,7 +74,7 @@ We can also build visualizations and dashboards using the data in Elasticsearch.
 
 ## Building a Historical View of Your Infrastructure
 
-One of the great things about Elasticsearch is that it is designed to be used with time series data, and therefore a final thing we wanted to note in this post is the ability to view historical snapshots of your infrastructure from Elasticsearch. The CloudQuery Elasticsearch destination currently supports three write modes: `overwrite`, `overwrite-delete-stale` (the default) and `append`. You can read more about these in the [plugin documentation](/docs/plugins/destinations/elasticsearch/overview#index-naming), but in short, when using `append` mode, CloudQuery will never delete data, so you can build a historical view of your infrastructure over time. For example, by running a sync in `append` mode every day, you can build a visualization that shows the number of EC2 instances over time, or more generally track how (or whether!) your organization's security posture is improving over time.
+One of the great things about Elasticsearch is that it is designed to be used with time series data, and therefore a final thing we wanted to note in this post is the ability to view historical snapshots of your infrastructure from Elasticsearch. The CloudQuery Elasticsearch destination currently supports three write modes: `overwrite`, `overwrite-delete-stale` (the default) and `append`. You can read more about these in the [plugin documentation](https://hub.cloudquery.io/plugins/destination/cloudquery/elasticsearch#index-naming), but in short, when using `append` mode, CloudQuery will never delete data, so you can build a historical view of your infrastructure over time. For example, by running a sync in `append` mode every day, you can build a visualization that shows the number of EC2 instances over time, or more generally track how (or whether!) your organization's security posture is improving over time.
 
 ## Conclusion
 
