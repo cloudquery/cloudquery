@@ -114,8 +114,6 @@ area/plugin/source/slack:
   - plugins/source/slack/**/*
 area/plugin/source/snyk:
   - plugins/source/snyk/**/*
-area/plugin/source/source-mysql:
-  - plugins/source/mysql/**/*
 area/plugin/source/source-postgresql:
   - plugins/source/postgresql/**/*
 area/plugin/source/square:

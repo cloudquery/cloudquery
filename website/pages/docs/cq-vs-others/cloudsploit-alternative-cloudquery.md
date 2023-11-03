@@ -13,7 +13,7 @@ CloudQuery can be used as an alternative to CloudSploit. Here are some of the si
 
 - Both CloudQuery and CloudSploit are open-source projects.
 - Both CloudQuery and CloudSploit can be used to detect security risks in cloud infrastructure accounts and support the big cloud providers (AWS, GCP, Azure, OCI, GitHub).
-- Both CloudQuery and CloudSploit can be used to return a series of potential misconfigurations and security risks. In CloudQuery, this is done via Policies: plain SQL that should be executed after a sync completes. See [AWS Policies](/docs/plugins/sources/aws/policies), [GCP Policies](/docs/plugins/sources/gcp/policies) and [Azure Policies](/docs/plugins/sources/azure/policies), for example.
+- Both CloudQuery and CloudSploit can be used to return a series of potential misconfigurations and security risks. In CloudQuery, this is done via Policies: plain SQL that should be executed after a sync completes. See [AWS Policies](https://hub.cloudquery.io/plugins/source/cloudquery/aws), [GCP Policies](https://hub.cloudquery.io/plugins/source/cloudquery/gcp) and [Azure Policies](https://hub.cloudquery.io/plugins/source/cloudquery/azure), for example.
 
 ## Key Differences
 
