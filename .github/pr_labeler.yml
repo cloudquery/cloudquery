@@ -100,8 +100,6 @@ area/plugin/source/okta:
   - plugins/source/okta/**/*
 area/plugin/source/oracle:
   - plugins/source/oracle/**/*
-area/plugin/source/oracledb:
-  - plugins/source/oracledb/**/*
 area/plugin/source/pagerduty:
   - plugins/source/pagerduty/**/*
 area/plugin/source/plausible:

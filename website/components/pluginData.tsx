@@ -337,7 +337,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/oracle.svg",
     id: "oracledb",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "databases",
   },
   {
