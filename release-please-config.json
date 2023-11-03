@@ -132,9 +132,6 @@
     "plugins/source/k8s": {
       "component": "plugins-source-k8s"
     },
-    "plugins/source/mysql": {
-      "component": "plugins-source-mysql"
-    },
     "plugins/source/notion": {
       "component": "plugins-source-notion"
     },
