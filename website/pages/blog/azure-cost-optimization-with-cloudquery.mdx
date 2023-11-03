@@ -17,8 +17,8 @@ Optimizing cloud costs is a never-ending task. There are many ways to do it, and
 
 ## Prerequisites
 
-- [Azure Source Plugin](/docs/plugins/sources/azure/overview)
-- [PostgreSQL Destination Plugin](/docs/plugins/destinations/postgresql/overview)
+- [Azure Source Plugin](https://hub.cloudquery.io/plugins/source/cloudquery/azure)
+- [PostgreSQL Destination Plugin](https://hub.cloudquery.io/plugins/destination/cloudquery/postgresql)
 - A PostgreSQL instance (can be local or remote)
 
 ## Create a Cost Analysis Report in Azure
@@ -44,7 +44,7 @@ Now we can configure CloudQuery so each time we run `cloudquery sync` the data f
 
 ## Syncing data
 
-Before going off and writing queries, we need to sync the data from Azure to our PostgreSQL database. To do that, we'll use the `cloudquery sync` command. Let's start with creating a configuration file (For the full configuration reference, check out the [Azure Source Plugin](/docs/plugins/sources/azure/configuration) and [PostgreSQL Destination Plugin](/docs/plugins/destinations/postgresql/overview)):
+Before going off and writing queries, we need to sync the data from Azure to our PostgreSQL database. To do that, we'll use the `cloudquery sync` command. Let's start with creating a configuration file (For the full configuration reference, check out the [Azure Source Plugin](https://hub.cloudquery.io/plugins/source/cloudquery/azure/configuration) and [PostgreSQL Destination Plugin](https://hub.cloudquery.io/plugins/destination/cloudquery/postgresql)):
 
 ```yaml copy
 kind: source

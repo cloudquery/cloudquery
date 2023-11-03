@@ -2,12 +2,12 @@
 
 ## Tables
 
-- [gitlab_groups](../../../../../website/tables/gitlab/gitlab_groups.md)
-  - [gitlab_group_billable_members](../../../../../website/tables/gitlab/gitlab_group_billable_members.md)
-  - [gitlab_group_members](../../../../../website/tables/gitlab/gitlab_group_members.md)
-- [gitlab_projects](../../../../../website/tables/gitlab/gitlab_projects.md)
-  - [gitlab_project_branches](../../../../../website/tables/gitlab/gitlab_project_branches.md)
-  - [gitlab_project_members](../../../../../website/tables/gitlab/gitlab_project_members.md)
-  - [gitlab_projects_releases](../../../../../website/tables/gitlab/gitlab_projects_releases.md)
-- [gitlab_settings](../../../../../website/tables/gitlab/gitlab_settings.md)
-- [gitlab_users](../../../../../website/tables/gitlab/gitlab_users.md)
+- [gitlab_groups](gitlab_groups.md)
+  - [gitlab_group_billable_members](gitlab_group_billable_members.md)
+  - [gitlab_group_members](gitlab_group_members.md)
+- [gitlab_projects](gitlab_projects.md)
+  - [gitlab_project_branches](gitlab_project_branches.md)
+  - [gitlab_project_members](gitlab_project_members.md)
+  - [gitlab_projects_releases](gitlab_projects_releases.md)
+- [gitlab_settings](gitlab_settings.md)
+- [gitlab_users](gitlab_users.md)
