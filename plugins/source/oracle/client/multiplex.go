@@ -34,7 +34,7 @@ func AvailibilityDomainCompartmentMultiplex(meta schema.ClientMeta) []schema.Cli
 
 	multiplexedClients := make([]schema.ClientMeta, 0)
 
-	for region, availibilityDomains := range cqClient.RegionAvaililbilityDomainMap {
+	for region, availibilityDomains := range cqClient.RegionAvailabilityDomainMap {
 		for _, availibilityDomain := range availibilityDomains {
 			for _, compartmentOcid := range cqClient.AllCompartmentOcids {
 				multiplexedClients = append(multiplexedClients, cqClient.

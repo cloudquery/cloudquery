@@ -75,7 +75,7 @@ func (d *Destination) Validate() error {
 		return fmt.Errorf(msg)
 	}
 
-	if d.Registry == RegistryGithub {
+	if d.Registry == RegistryGithub || d.Registry == RegistryCloudQuery {
 		if d.Version == "" {
 			return fmt.Errorf("version is required")
 		}
