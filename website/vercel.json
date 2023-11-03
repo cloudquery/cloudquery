@@ -507,10 +507,6 @@
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/snyk/tables/:path*"
     },
     {
-      "source": "/docs/plugins/sources/square/tables/:path*",
-      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/square/tables/:path*"
-    },
-    {
       "source": "/docs/plugins/sources/stripe/tables/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/stripe/tables/:path*"
     },
@@ -657,10 +653,6 @@
     {
       "source": "/docs/plugins/sources/snyk/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/snyk"
-    },
-    {
-      "source": "/docs/plugins/sources/square/:path*",
-      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/square"
     },
     {
       "source": "/docs/plugins/sources/stripe/:path*",
