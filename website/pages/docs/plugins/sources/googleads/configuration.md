@@ -17,7 +17,7 @@ This is the (nested) spec used by the Google Ads source plugin:
 
 - `login_customer_id` (`string`, optional. Default: `""`):
 
-  Google Ads [Login customer ID](https://developers.google.com/google-ads/api/docs/migration/login-customer-id).
+  Google Ads [Login customer ID](https://support.google.com/google-ads/answer/1704344).
 
   Format: digits either with or without hyphen (`-`).
 
