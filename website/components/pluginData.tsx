@@ -295,7 +295,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logoDark: "/images/logos/plugins/mysql-dark.svg",
     id: "mysql",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "databases",
   },
   {
