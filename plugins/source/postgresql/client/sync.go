@@ -159,10 +159,18 @@ func (c *Client) syncTable(ctx context.Context, tx pgx.Tx, table *schema.Table, 
 	return nil
 }
 
-func stringForTime32(t pgtype.Time, unit arrow.TimeUnit) string {
-	return arrow.Time32((time.Duration(t.Microseconds) * time.Microsecond) / unit.Multiplier()).FormattedString(unit)
-}
+func stringForTime(t pgtype.Time, dt arrow.TemporalWithUnit) any {
+	if !t.Valid {
+		return nil
+	}
 
-func stringForTime64(t pgtype.Time, unit arrow.TimeUnit) string {
-	return arrow.Time64((time.Duration(t.Microseconds) * time.Microsecond) / unit.Multiplier()).FormattedString(unit)
+	unit := dt.TimeUnit()
+	switch dt.(type) {
+	case *arrow.Time32Type:
+		return arrow.Time32((time.Duration(t.Microseconds) * time.Microsecond) / unit.Multiplier()).FormattedString(unit)
+	case *arrow.Time64Type:
+		return arrow.Time32((time.Duration(t.Microseconds) * time.Microsecond) / unit.Multiplier()).FormattedString(unit)
+	default:
+		panic("only time32 or time64 expected")
+	}
 }

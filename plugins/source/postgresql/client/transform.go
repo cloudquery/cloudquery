@@ -35,10 +35,7 @@ func transformerForDataType(dt arrow.DataType) transformer {
 			if err != nil {
 				return nil, err
 			}
-			if !t.Valid {
-				return nil, nil
-			}
-			return stringForTime32(t, dt.Unit), nil
+			return stringForTime(t, dt), nil
 		}
 	case *arrow.Time64Type:
 		return func(v any) (any, error) {
@@ -46,10 +43,7 @@ func transformerForDataType(dt arrow.DataType) transformer {
 			if err != nil {
 				return nil, err
 			}
-			if !t.Valid {
-				return nil, nil
-			}
-			return stringForTime64(t, dt.Unit), nil
+			return stringForTime(t, dt), nil
 		}
 	default:
 		return func(v any) (any, error) {
