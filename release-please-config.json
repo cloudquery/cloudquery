@@ -144,9 +144,6 @@
     "plugins/source/pagerduty": {
       "component": "plugins-source-pagerduty"
     },
-    "plugins/source/postgresql": {
-      "component": "plugins-source-postgresql"
-    },
     "plugins/source/salesforce": {
       "component": "plugins-source-salesforce"
     },
