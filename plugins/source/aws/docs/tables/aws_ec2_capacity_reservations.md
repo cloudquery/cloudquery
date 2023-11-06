@@ -34,6 +34,7 @@ The primary key for this table is **arn**.
 |outpost_arn|`utf8`|
 |owner_id|`utf8`|
 |placement_group_arn|`utf8`|
+|reservation_type|`utf8`|
 |start_date|`timestamp[us, tz=UTC]`|
 |state|`utf8`|
 |tenancy|`utf8`|

@@ -23,8 +23,10 @@ The primary key for this table is **arn**.
 |export_manifest|`utf8`|
 |export_status|`utf8`|
 |export_time|`timestamp[us, tz=UTC]`|
+|export_type|`utf8`|
 |failure_code|`utf8`|
 |failure_message|`utf8`|
+|incremental_export_specification|`json`|
 |item_count|`int64`|
 |s3_bucket|`utf8`|
 |s3_bucket_owner|`utf8`|

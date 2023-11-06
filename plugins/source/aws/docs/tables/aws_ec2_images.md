@@ -45,6 +45,7 @@ The following tables depend on aws_ec2_images:
 |ramdisk_id|`utf8`|
 |root_device_name|`utf8`|
 |root_device_type|`utf8`|
+|source_instance_id|`utf8`|
 |sriov_net_support|`utf8`|
 |state|`utf8`|
 |state_reason|`json`|

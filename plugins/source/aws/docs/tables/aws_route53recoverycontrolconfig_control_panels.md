@@ -24,5 +24,6 @@ The following tables depend on aws_route53recoverycontrolconfig_control_panels:
 |control_panel_arn|`utf8`|
 |default_control_panel|`bool`|
 |name|`utf8`|
+|owner|`utf8`|
 |routing_control_count|`int64`|
 |status|`utf8`|

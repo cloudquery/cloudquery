@@ -20,6 +20,7 @@ The primary key for this table is **arn**.
 |tls_inspection_configuration_arn|`utf8`|
 |tls_inspection_configuration_id|`utf8`|
 |tls_inspection_configuration_name|`utf8`|
+|certificate_authority|`json`|
 |certificates|`json`|
 |description|`utf8`|
 |encryption_configuration|`json`|
