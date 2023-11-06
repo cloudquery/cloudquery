@@ -67,7 +67,7 @@ func (s *SecurityHubFindings) sanitized() *SecurityHubFindings {
 		result.GetFindingsOpts = []CustomSecurityHubGetFindingsInput{{GetFindingsInput: securityhub.GetFindingsInput{}}}
 	}
 	for i, opt := range result.GetFindingsOpts {
-		if opt.MaxResults == aws.Int32(0) {
+		if aws.ToInt32(opt.MaxResults) == 0 {
 			result.GetFindingsOpts[i].MaxResults = aws.Int32(100)
 		}
 	}
