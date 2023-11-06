@@ -35,7 +35,6 @@ func newCmdAddonPublish() *cobra.Command {
 		Short:   addonPublishShort,
 		Long:    addonPublishLong,
 		Example: addonPublishExample,
-		Hidden:  true,
 		Args:    cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// Set up a channel to listen for OS signals for graceful shutdown.
