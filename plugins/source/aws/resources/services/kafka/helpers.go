@@ -3,6 +3,7 @@ package kafka
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/kafka"
 	"github.com/aws/aws-sdk-go-v2/service/kafka/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -13,14 +14,14 @@ import (
 func getListNodesInput(parent *schema.Resource) kafka.ListNodesInput {
 	return kafka.ListNodesInput{
 		ClusterArn: parent.Item.(*types.Cluster).ClusterArn,
-		MaxResults: 100,
+		MaxResults: aws.Int32(100),
 	}
 }
 
 func getListClusterOperationsInput(parent *schema.Resource) kafka.ListClusterOperationsInput {
 	return kafka.ListClusterOperationsInput{
 		ClusterArn: parent.Item.(*types.Cluster).ClusterArn,
-		MaxResults: 100,
+		MaxResults: aws.Int32(100),
 	}
 }
 

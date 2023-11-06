@@ -3,6 +3,7 @@ package securityhub
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -29,7 +30,7 @@ func EnabledStandards() *schema.Table {
 func fetchEnabledStandards(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceSecurityhub).Securityhub
-	config := securityhub.GetEnabledStandardsInput{MaxResults: 100}
+	config := securityhub.GetEnabledStandardsInput{MaxResults: aws.Int32(100)}
 	p := securityhub.NewGetEnabledStandardsPaginator(svc, &config)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(o *securityhub.Options) { o.Region = cl.Region })

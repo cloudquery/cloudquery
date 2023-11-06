@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	"github.com/cloudquery/plugin-sdk/v4/caser"
 	"github.com/invopop/jsonschema"
@@ -49,7 +50,7 @@ func (s *SecurityHubFindings) validateGetFindings() error {
 		if opt.NextToken != nil {
 			return errors.New("invalid input: cannot set NextToken in GetFindings")
 		}
-		if opt.MaxResults < 1 || opt.MaxResults > 100 {
+		if aws.ToInt32(opt.MaxResults) < 1 || aws.ToInt32(opt.MaxResults) > 100 {
 			return errors.New("invalid range: MaxResults must be within range [1-100]")
 		}
 	}
@@ -66,8 +67,8 @@ func (s *SecurityHubFindings) sanitized() *SecurityHubFindings {
 		result.GetFindingsOpts = []CustomSecurityHubGetFindingsInput{{GetFindingsInput: securityhub.GetFindingsInput{}}}
 	}
 	for i, opt := range result.GetFindingsOpts {
-		if opt.MaxResults == 0 {
-			result.GetFindingsOpts[i].MaxResults = 100
+		if opt.MaxResults == aws.Int32(0) {
+			result.GetFindingsOpts[i].MaxResults = aws.Int32(100)
 		}
 	}
 	return &result
