@@ -38,6 +38,7 @@ The following tables depend on aws_apigateway_rest_apis:
 |minimum_compression_size|`int64`|
 |name|`utf8`|
 |policy|`utf8`|
+|root_resource_id|`utf8`|
 |tags|`json`|
 |version|`utf8`|
 |warnings|`list<item: utf8, nullable>`|

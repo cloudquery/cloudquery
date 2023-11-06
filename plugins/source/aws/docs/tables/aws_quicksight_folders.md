@@ -22,3 +22,4 @@ The composite primary key for this table is (**account_id**, **region**, **arn**
 |folder_type|`utf8`|
 |last_updated_time|`timestamp[us, tz=UTC]`|
 |name|`utf8`|
+|sharing_model|`utf8`|

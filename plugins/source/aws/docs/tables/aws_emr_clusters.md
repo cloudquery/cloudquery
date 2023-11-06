@@ -31,7 +31,9 @@ The following tables depend on aws_emr_clusters:
 |cluster_arn|`utf8`|
 |configurations|`json`|
 |custom_ami_id|`utf8`|
+|ebs_root_volume_iops|`int64`|
 |ebs_root_volume_size|`int64`|
+|ebs_root_volume_throughput|`int64`|
 |ec2_instance_attributes|`json`|
 |id|`utf8`|
 |instance_collection_type|`utf8`|

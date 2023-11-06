@@ -575,6 +575,36 @@ func (mr *MockSesv2ClientMockRecorder) GetEmailTemplate(arg0, arg1 interface{}, 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetEmailTemplate", reflect.TypeOf((*MockSesv2Client)(nil).GetEmailTemplate), varargs...)
 }
 
+// GetExportJob mocks base method.
+func (m *MockSesv2Client) GetExportJob(arg0 context.Context, arg1 *sesv2.GetExportJobInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetExportJobOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetExportJob")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetExportJob", varargs...)
+	ret0, _ := ret[0].(*sesv2.GetExportJobOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetExportJob indicates an expected call of GetExportJob.
+func (mr *MockSesv2ClientMockRecorder) GetExportJob(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetExportJob", reflect.TypeOf((*MockSesv2Client)(nil).GetExportJob), varargs...)
+}
+
 // GetImportJob mocks base method.
 func (m *MockSesv2Client) GetImportJob(arg0 context.Context, arg1 *sesv2.GetImportJobInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetImportJobOutput, error) {
 
@@ -603,6 +633,36 @@ func (mr *MockSesv2ClientMockRecorder) GetImportJob(arg0, arg1 interface{}, arg2
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetImportJob", reflect.TypeOf((*MockSesv2Client)(nil).GetImportJob), varargs...)
+}
+
+// GetMessageInsights mocks base method.
+func (m *MockSesv2Client) GetMessageInsights(arg0 context.Context, arg1 *sesv2.GetMessageInsightsInput, arg2 ...func(*sesv2.Options)) (*sesv2.GetMessageInsightsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetMessageInsights")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetMessageInsights", varargs...)
+	ret0, _ := ret[0].(*sesv2.GetMessageInsightsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetMessageInsights indicates an expected call of GetMessageInsights.
+func (mr *MockSesv2ClientMockRecorder) GetMessageInsights(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMessageInsights", reflect.TypeOf((*MockSesv2Client)(nil).GetMessageInsights), varargs...)
 }
 
 // GetSuppressedDestination mocks base method.
@@ -903,6 +963,36 @@ func (mr *MockSesv2ClientMockRecorder) ListEmailTemplates(arg0, arg1 interface{}
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListEmailTemplates", reflect.TypeOf((*MockSesv2Client)(nil).ListEmailTemplates), varargs...)
+}
+
+// ListExportJobs mocks base method.
+func (m *MockSesv2Client) ListExportJobs(arg0 context.Context, arg1 *sesv2.ListExportJobsInput, arg2 ...func(*sesv2.Options)) (*sesv2.ListExportJobsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sesv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListExportJobs")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListExportJobs", varargs...)
+	ret0, _ := ret[0].(*sesv2.ListExportJobsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListExportJobs indicates an expected call of ListExportJobs.
+func (mr *MockSesv2ClientMockRecorder) ListExportJobs(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListExportJobs", reflect.TypeOf((*MockSesv2Client)(nil).ListExportJobs), varargs...)
 }
 
 // ListImportJobs mocks base method.

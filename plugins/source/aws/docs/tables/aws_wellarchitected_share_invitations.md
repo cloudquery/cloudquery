@@ -23,5 +23,7 @@ The composite primary key for this table is (**account_id**, **region**, **share
 |share_resource_type|`utf8`|
 |shared_by|`utf8`|
 |shared_with|`utf8`|
+|template_arn|`utf8`|
+|template_name|`utf8`|
 |workload_id|`utf8`|
 |workload_name|`utf8`|

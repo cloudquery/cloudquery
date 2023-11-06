@@ -3,6 +3,7 @@ package tableoptions
 import (
 	"testing"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/cloudquery/codegen/jsonschema"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/stretchr/testify/assert"
@@ -76,7 +77,7 @@ func TestCustomSecurityHubGetFindingsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: func() string {
 				var input CustomSecurityHubGetFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
-				input.MaxResults = int32(100) // 1-100
+				input.MaxResults = aws.Int32(100) // 1-100
 				return `{"get_findings":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}`
 			}(),
 		},
@@ -86,7 +87,7 @@ func TestCustomSecurityHubGetFindingsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: func() string {
 				var input CustomSecurityHubGetFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
-				input.MaxResults = int32(100) // 1-100
+				input.MaxResults = aws.Int32(100) // 1-100
 				return `{"get_findings":[` + jsonschema.WithRemovedKeys(t, &input) + `]}`
 			}(),
 		},
@@ -104,7 +105,7 @@ func TestCustomSecurityHubGetFindingsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: func() string {
 				var input CustomSecurityHubGetFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
-				input.MaxResults = int32(0)
+				input.MaxResults = aws.Int32(0)
 				return `{"get_findings":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}`
 			}(),
 		},
@@ -114,7 +115,7 @@ func TestCustomSecurityHubGetFindingsInput_JSONSchemaExtend(t *testing.T) {
 			Spec: func() string {
 				var input CustomSecurityHubGetFindingsInput
 				require.NoError(t, faker.FakeObject(&input))
-				input.MaxResults = int32(1000)
+				input.MaxResults = aws.Int32(1000)
 				return `{"get_findings":[` + jsonschema.WithRemovedKeys(t, &input, "NextToken") + `]}`
 			}(),
 		},

@@ -19,6 +19,7 @@ type ApprunnerClient interface {
 	ListObservabilityConfigurations(context.Context, *apprunner.ListObservabilityConfigurationsInput, ...func(*apprunner.Options)) (*apprunner.ListObservabilityConfigurationsOutput, error)
 	ListOperations(context.Context, *apprunner.ListOperationsInput, ...func(*apprunner.Options)) (*apprunner.ListOperationsOutput, error)
 	ListServices(context.Context, *apprunner.ListServicesInput, ...func(*apprunner.Options)) (*apprunner.ListServicesOutput, error)
+	ListServicesForAutoScalingConfiguration(context.Context, *apprunner.ListServicesForAutoScalingConfigurationInput, ...func(*apprunner.Options)) (*apprunner.ListServicesForAutoScalingConfigurationOutput, error)
 	ListTagsForResource(context.Context, *apprunner.ListTagsForResourceInput, ...func(*apprunner.Options)) (*apprunner.ListTagsForResourceOutput, error)
 	ListVpcConnectors(context.Context, *apprunner.ListVpcConnectorsInput, ...func(*apprunner.Options)) (*apprunner.ListVpcConnectorsOutput, error)
 	ListVpcIngressConnections(context.Context, *apprunner.ListVpcIngressConnectionsInput, ...func(*apprunner.Options)) (*apprunner.ListVpcIngressConnectionsOutput, error)

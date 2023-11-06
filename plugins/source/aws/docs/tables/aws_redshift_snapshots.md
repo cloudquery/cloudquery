@@ -39,6 +39,8 @@ This table depends on [aws_redshift_clusters](aws_redshift_clusters.md).
 |maintenance_track_name|`utf8`|
 |manual_snapshot_remaining_days|`int64`|
 |manual_snapshot_retention_period|`int64`|
+|master_password_secret_arn|`utf8`|
+|master_password_secret_kms_key_id|`utf8`|
 |master_username|`utf8`|
 |node_type|`utf8`|
 |number_of_nodes|`int64`|
