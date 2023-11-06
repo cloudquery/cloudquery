@@ -2,12 +2,13 @@
   "overview": "Overview",
   "ecs": "Amazon ECS",
   "airflow": "Apache Airflow",
+  "read-only-containers": "Containers with Read Only Root Filesystem",
   "docker": "Docker",
   "docker-offline": "Docker - Offline Installation",
+  "generate-api-key": "Generate an API Key",
   "github-actions": "GitHub Actions",
   "cloud-run": "Google Cloud Run",
   "google-cloud-vm": "Google Cloud VM",
   "kubernetes": "Kubernetes CronJob",
-  "kestra": "Kestra",
-  "read-only-containers": "Containers with Read Only Root Filesystem"
+  "kestra": "Kestra"
 }
