@@ -3,6 +3,7 @@ package cognito
 import (
 	"testing"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -20,7 +21,7 @@ func buildCognitoIdentityPools(t *testing.T, ctrl *gomock.Controller) client.Ser
 
 	m.EXPECT().ListIdentityPools(
 		gomock.Any(),
-		&cognitoidentity.ListIdentityPoolsInput{MaxResults: 60},
+		&cognitoidentity.ListIdentityPoolsInput{MaxResults: aws.Int32(60)},
 		gomock.Any(),
 	).Return(
 		&cognitoidentity.ListIdentityPoolsOutput{IdentityPools: []types.IdentityPoolShortDescription{desc}},

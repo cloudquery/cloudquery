@@ -3,6 +3,7 @@ package wellarchitected
 import (
 	"testing"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
@@ -22,7 +23,7 @@ func buildLensReviews(t *testing.T, m *mocks.MockWellarchitectedClient,
 		&wellarchitected.ListLensReviewsInput{
 			WorkloadId:      workload.WorkloadId,
 			MilestoneNumber: milestone.MilestoneNumber,
-			MaxResults:      50,
+			MaxResults:      aws.Int32(50),
 		},
 		gomock.Any()).
 		Return(

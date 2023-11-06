@@ -19,6 +19,7 @@ type ComputeoptimizerClient interface {
 	GetEnrollmentStatus(context.Context, *computeoptimizer.GetEnrollmentStatusInput, ...func(*computeoptimizer.Options)) (*computeoptimizer.GetEnrollmentStatusOutput, error)
 	GetEnrollmentStatusesForOrganization(context.Context, *computeoptimizer.GetEnrollmentStatusesForOrganizationInput, ...func(*computeoptimizer.Options)) (*computeoptimizer.GetEnrollmentStatusesForOrganizationOutput, error)
 	GetLambdaFunctionRecommendations(context.Context, *computeoptimizer.GetLambdaFunctionRecommendationsInput, ...func(*computeoptimizer.Options)) (*computeoptimizer.GetLambdaFunctionRecommendationsOutput, error)
+	GetLicenseRecommendations(context.Context, *computeoptimizer.GetLicenseRecommendationsInput, ...func(*computeoptimizer.Options)) (*computeoptimizer.GetLicenseRecommendationsOutput, error)
 	GetRecommendationPreferences(context.Context, *computeoptimizer.GetRecommendationPreferencesInput, ...func(*computeoptimizer.Options)) (*computeoptimizer.GetRecommendationPreferencesOutput, error)
 	GetRecommendationSummaries(context.Context, *computeoptimizer.GetRecommendationSummariesInput, ...func(*computeoptimizer.Options)) (*computeoptimizer.GetRecommendationSummariesOutput, error)
 }

@@ -24,6 +24,7 @@ The primary key for this table is **arn**.
 |db_snapshot_identifier|`utf8`|
 |db_system_id|`utf8`|
 |dbi_resource_id|`utf8`|
+|dedicated_log_volume|`bool`|
 |encrypted|`bool`|
 |engine|`utf8`|
 |engine_version|`utf8`|

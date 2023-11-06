@@ -1447,8 +1447,15 @@
     "BooleanFilter": {
       "properties": {
         "Value": {
-          "type": "boolean",
-          "description": "The value of the boolean."
+          "oneOf": [
+            {
+              "type": "boolean",
+              "description": "The value of the boolean."
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -1564,8 +1571,15 @@
           ]
         },
         "IncludeLinkedAccounts": {
-          "type": "boolean",
-          "description": "If you are using this operation in a monitoring account, specify true to\ninclude metrics from source accounts in the returned data. The default is false ."
+          "oneOf": [
+            {
+              "type": "boolean",
+              "description": "If you are using this operation in a monitoring account, specify true to\ninclude metrics from source accounts in the returned data. The default is false ."
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "MetricName": {
           "oneOf": [
@@ -2011,7 +2025,7 @@
           "oneOf": [
             {
               "type": "integer",
-              "description": "The maximum number of results to return in the response."
+              "description": "The maximum number of results the response can return. If your request would\nreturn more than the maximum the response will return a nextToken value, use\nthis value when you call the action again to get the remaining results."
             },
             {
               "type": "null"
@@ -2047,11 +2061,18 @@
           ]
         },
         "MaxResults": {
-          "type": "integer",
-          "maximum": 100,
-          "minimum": 1,
-          "description": "The maximum number of findings to return.",
-          "default": 100
+          "oneOf": [
+            {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "description": "The maximum number of findings to return.",
+              "default": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "SortCriteria": {
           "oneOf": [
@@ -2178,8 +2199,15 @@
           "description": "A date range unit for the date filter."
         },
         "Value": {
-          "type": "integer",
-          "description": "A date range value for the date filter."
+          "oneOf": [
+            {
+              "type": "integer",
+              "description": "A date range value for the date filter."
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -3188,16 +3216,37 @@
     "NumberFilter-1": {
       "properties": {
         "Eq": {
-          "type": "number",
-          "description": "The equal-to condition to be applied to a single field when querying for\nfindings."
+          "oneOf": [
+            {
+              "type": "number",
+              "description": "The equal-to condition to be applied to a single field when querying for\nfindings."
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Gte": {
-          "type": "number",
-          "description": "The greater-than-equal condition to be applied to a single field when querying\nfor findings."
+          "oneOf": [
+            {
+              "type": "number",
+              "description": "The greater-than-equal condition to be applied to a single field when querying\nfor findings."
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "Lte": {
-          "type": "number",
-          "description": "The less-than-equal condition to be applied to a single field when querying for\nfindings."
+          "oneOf": [
+            {
+              "type": "number",
+              "description": "The less-than-equal condition to be applied to a single field when querying for\nfindings."
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,

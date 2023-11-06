@@ -33,6 +33,7 @@ The composite primary key for this table is (**request_account_id**, **request_r
 |criticality|`int64`|
 |finding_provider_fields|`json`|
 |first_observed_at|`timestamp[us, tz=UTC]`|
+|generator_details|`json`|
 |last_observed_at|`timestamp[us, tz=UTC]`|
 |malware|`json`|
 |network|`json`|

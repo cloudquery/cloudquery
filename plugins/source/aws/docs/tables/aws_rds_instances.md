@@ -51,6 +51,7 @@ The primary key for this table is **arn**.
 |db_system_id|`utf8`|
 |db_instance_port|`int64`|
 |dbi_resource_id|`utf8`|
+|dedicated_log_volume|`bool`|
 |deletion_protection|`bool`|
 |domain_memberships|`json`|
 |enabled_cloudwatch_logs_exports|`list<item: utf8, nullable>`|
@@ -61,6 +62,7 @@ The primary key for this table is **arn**.
 |iam_database_authentication_enabled|`bool`|
 |instance_create_time|`timestamp[us, tz=UTC]`|
 |iops|`int64`|
+|is_storage_config_upgrade_available|`bool`|
 |kms_key_id|`utf8`|
 |latest_restorable_time|`timestamp[us, tz=UTC]`|
 |license_model|`utf8`|

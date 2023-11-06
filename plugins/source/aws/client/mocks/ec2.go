@@ -305,6 +305,36 @@ func (mr *MockEc2ClientMockRecorder) DescribeByoipCidrs(arg0, arg1 interface{}, 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeByoipCidrs", reflect.TypeOf((*MockEc2Client)(nil).DescribeByoipCidrs), varargs...)
 }
 
+// DescribeCapacityBlockOfferings mocks base method.
+func (m *MockEc2Client) DescribeCapacityBlockOfferings(arg0 context.Context, arg1 *ec2.DescribeCapacityBlockOfferingsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeCapacityBlockOfferingsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCapacityBlockOfferings")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeCapacityBlockOfferings", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeCapacityBlockOfferingsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeCapacityBlockOfferings indicates an expected call of DescribeCapacityBlockOfferings.
+func (mr *MockEc2ClientMockRecorder) DescribeCapacityBlockOfferings(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeCapacityBlockOfferings", reflect.TypeOf((*MockEc2Client)(nil).DescribeCapacityBlockOfferings), varargs...)
+}
+
 // DescribeCapacityReservationFleets mocks base method.
 func (m *MockEc2Client) DescribeCapacityReservationFleets(arg0 context.Context, arg1 *ec2.DescribeCapacityReservationFleetsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeCapacityReservationFleetsOutput, error) {
 
@@ -4775,6 +4805,36 @@ func (mr *MockEc2ClientMockRecorder) GetHostReservationPurchasePreview(arg0, arg
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetHostReservationPurchasePreview", reflect.TypeOf((*MockEc2Client)(nil).GetHostReservationPurchasePreview), varargs...)
 }
 
+// GetImageBlockPublicAccessState mocks base method.
+func (m *MockEc2Client) GetImageBlockPublicAccessState(arg0 context.Context, arg1 *ec2.GetImageBlockPublicAccessStateInput, arg2 ...func(*ec2.Options)) (*ec2.GetImageBlockPublicAccessStateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetImageBlockPublicAccessState")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetImageBlockPublicAccessState", varargs...)
+	ret0, _ := ret[0].(*ec2.GetImageBlockPublicAccessStateOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetImageBlockPublicAccessState indicates an expected call of GetImageBlockPublicAccessState.
+func (mr *MockEc2ClientMockRecorder) GetImageBlockPublicAccessState(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetImageBlockPublicAccessState", reflect.TypeOf((*MockEc2Client)(nil).GetImageBlockPublicAccessState), varargs...)
+}
+
 // GetInstanceTypesFromInstanceRequirements mocks base method.
 func (m *MockEc2Client) GetInstanceTypesFromInstanceRequirements(arg0 context.Context, arg1 *ec2.GetInstanceTypesFromInstanceRequirementsInput, arg2 ...func(*ec2.Options)) (*ec2.GetInstanceTypesFromInstanceRequirementsOutput, error) {
 
@@ -5223,6 +5283,36 @@ func (mr *MockEc2ClientMockRecorder) GetReservedInstancesExchangeQuote(arg0, arg
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetReservedInstancesExchangeQuote", reflect.TypeOf((*MockEc2Client)(nil).GetReservedInstancesExchangeQuote), varargs...)
+}
+
+// GetSecurityGroupsForVpc mocks base method.
+func (m *MockEc2Client) GetSecurityGroupsForVpc(arg0 context.Context, arg1 *ec2.GetSecurityGroupsForVpcInput, arg2 ...func(*ec2.Options)) (*ec2.GetSecurityGroupsForVpcOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ec2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSecurityGroupsForVpc")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetSecurityGroupsForVpc", varargs...)
+	ret0, _ := ret[0].(*ec2.GetSecurityGroupsForVpcOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetSecurityGroupsForVpc indicates an expected call of GetSecurityGroupsForVpc.
+func (mr *MockEc2ClientMockRecorder) GetSecurityGroupsForVpc(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSecurityGroupsForVpc", reflect.TypeOf((*MockEc2Client)(nil).GetSecurityGroupsForVpc), varargs...)
 }
 
 // GetSerialConsoleAccessStatus mocks base method.

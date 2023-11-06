@@ -40,6 +40,7 @@ type RdsClient interface {
 	DescribeEvents(context.Context, *rds.DescribeEventsInput, ...func(*rds.Options)) (*rds.DescribeEventsOutput, error)
 	DescribeExportTasks(context.Context, *rds.DescribeExportTasksInput, ...func(*rds.Options)) (*rds.DescribeExportTasksOutput, error)
 	DescribeGlobalClusters(context.Context, *rds.DescribeGlobalClustersInput, ...func(*rds.Options)) (*rds.DescribeGlobalClustersOutput, error)
+	DescribeIntegrations(context.Context, *rds.DescribeIntegrationsInput, ...func(*rds.Options)) (*rds.DescribeIntegrationsOutput, error)
 	DescribeOptionGroupOptions(context.Context, *rds.DescribeOptionGroupOptionsInput, ...func(*rds.Options)) (*rds.DescribeOptionGroupOptionsOutput, error)
 	DescribeOptionGroups(context.Context, *rds.DescribeOptionGroupsInput, ...func(*rds.Options)) (*rds.DescribeOptionGroupsOutput, error)
 	DescribeOrderableDBInstanceOptions(context.Context, *rds.DescribeOrderableDBInstanceOptionsInput, ...func(*rds.Options)) (*rds.DescribeOrderableDBInstanceOptionsOutput, error)

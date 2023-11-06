@@ -30,6 +30,7 @@ The following tables depend on aws_rds_clusters:
 |auto_minor_version_upgrade|`bool`|
 |automatic_restart_time|`timestamp[us, tz=UTC]`|
 |availability_zones|`list<item: utf8, nullable>`|
+|aws_backup_recovery_point_arn|`utf8`|
 |backtrack_consumed_change_records|`int64`|
 |backtrack_window|`int64`|
 |backup_retention_period|`int64`|
@@ -84,6 +85,7 @@ The following tables depend on aws_rds_clusters:
 |preferred_backup_window|`utf8`|
 |preferred_maintenance_window|`utf8`|
 |publicly_accessible|`bool`|
+|rds_custom_cluster_configuration|`json`|
 |read_replica_identifiers|`list<item: utf8, nullable>`|
 |reader_endpoint|`utf8`|
 |replication_source_identifier|`utf8`|

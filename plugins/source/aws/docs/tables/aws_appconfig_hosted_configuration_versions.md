@@ -25,5 +25,6 @@ This table depends on [aws_appconfig_configuration_profiles](aws_appconfig_confi
 |content|`binary`|
 |content_type|`utf8`|
 |description|`utf8`|
+|kms_key_arn|`utf8`|
 |version_label|`utf8`|
 |version_number|`int64`|

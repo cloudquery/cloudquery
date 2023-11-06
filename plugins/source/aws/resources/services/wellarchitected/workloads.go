@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -41,7 +42,7 @@ func fetchWorkloads(ctx context.Context, meta schema.ClientMeta, _ *schema.Resou
 	cl := meta.(*client.Client)
 	service := cl.Services(client.AWSServiceWellarchitected).Wellarchitected
 
-	p := wellarchitected.NewListWorkloadsPaginator(service, &wellarchitected.ListWorkloadsInput{MaxResults: 50})
+	p := wellarchitected.NewListWorkloadsPaginator(service, &wellarchitected.ListWorkloadsInput{MaxResults: aws.Int32(50)})
 	for p.HasMorePages() {
 		output, err := p.NextPage(ctx, func(o *wellarchitected.Options) {
 			o.Region = cl.Region

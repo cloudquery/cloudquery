@@ -14,12 +14,14 @@ The primary key for this table is **instance_arn**.
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |tags|`json`|
+|current_instance_gpu_info|`json`|
 |current_instance_type|`utf8`|
 |current_performance_risk|`utf8`|
 |effective_recommendation_preferences|`json`|
 |external_metric_status|`json`|
 |finding|`utf8`|
 |finding_reason_codes|`list<item: utf8, nullable>`|
+|idle|`utf8`|
 |inferred_workload_types|`list<item: utf8, nullable>`|
 |instance_arn (PK)|`utf8`|
 |instance_name|`utf8`|
