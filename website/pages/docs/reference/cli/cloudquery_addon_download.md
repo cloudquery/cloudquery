@@ -1,14 +1,34 @@
 ---
-title: "addon"
+title: "addon_download"
 ---
-## cloudquery addon
+## cloudquery addon download
 
-Addon commands
+Download addon from CloudQuery Hub.
+
+### Synopsis
+
+Download addon from CloudQuery Hub.
+
+This downloads an addon from CloudQuery Hub to local disk.
+
+
+```
+cloudquery addon download addon-team/transformation/addon-name@v1.0.0 [-t directory] [flags]
+```
+
+### Examples
+
+```
+
+# Download an addon to local disk
+cloudquery addon download addon-team/transformation/addon-name@v1.0.0
+```
 
 ### Options
 
 ```
-  -h, --help   help for addon
+  -h, --help            help for download
+  -t, --target string   Download to specified directory (default ".")
 ```
 
 ### Options inherited from parent commands
@@ -25,7 +45,5 @@ Addon commands
 
 ### SEE ALSO
 
-* [cloudquery](/docs/reference/cli/cloudquery)	 - CloudQuery CLI
-* [cloudquery addon download](/docs/reference/cli/cloudquery_addon_download)	 - Download addon from CloudQuery Hub.
-* [cloudquery addon publish](/docs/reference/cli/cloudquery_addon_publish)	 - Publish to CloudQuery Hub.
+* [cloudquery addon](/docs/reference/cli/cloudquery_addon)	 - Addon commands
 
