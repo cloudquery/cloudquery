@@ -1,6 +1,6 @@
 ---
 name: MySQL
-stage: GA (Premium)
+stage: Preview (Premium)
 title: MySQL Source Plugin
 description: CloudQuery MySQL source plugin documentation
 ---
