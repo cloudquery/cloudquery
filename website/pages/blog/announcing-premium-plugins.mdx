@@ -1,0 +1,47 @@
+---
+title: Moving Preview Plugins to Premium
+tag: announcement
+date: 2023/11/06
+description: Preview Plugins Are Moving to Premium Preview
+author: yevgenypats
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
+Development and maintenance of our open source plugins requires a substantial effort on our side. We have decided that going forward, new versions of some of our preview plugins will be available as closed-source. While older versions will have the source available in our [git repository](https://github.com/cloudquery/cloudquery), premium plugins will be available only via our [Hub.](https://hub.cloudquery.io/)
+
+To make the transition easier, all premium plugins will be free during November and then will be charged based on your usage. The pricing will be based on the amount of row synced with a free quota per plugin to give a way for new users to try it out (as opposed to today's pricing - $500 per 6 months per plugin).
+
+With this, we are moving the plugins released in Preview to Premium Preview and their source code is being removed from our CloudQuery repository.
+
+This affects the following plugins:
+
+- PostgreSQL Source
+- MySQL Source
+- OracleDB Source
+
+Note that this does not affect any plugins that are Generally Available (see [Source Plugin Release Stages](/docs/plugins/sources/overview#source-plugin-release-stages)).
+
+## How this affects you
+
+If you are using one of the plugins above, you have the following options:
+
+### Keep using the latest release from Github
+
+In your config, you can specify `registry: github` and lock on the latest released version (that was published to GitHub) to keep installing the plugins from GitHub. To get access to their source code and create a fork, you can check out their release tags from the [CloudQuery repository](https://github.com/cloudquery/cloudquery):
+
+- MySQL: `plugins-source-mysql-v2.0.12`
+- PostgreSQL: `plugins-source-postgresql-v3.0.7`
+- OracleDB: `plugins-source-oracledb-v3.0.12`
+
+### Log in to Hub and install plugins from there
+
+Premium (free up to a quota) and Premium Preview (free) plugins will be available upon logging in with CLI. To log in, run the `cloudquery login` command. You can create a new account at the same time.
+
+To log in in a non-interactive mode, you can [generate an API key](https://cloud.cloudquery.io).
+
+## Feedback
+
+Let us know what you think, we would love to hear your feedback on our plans! If you have any questions, comments, or suggestions, please feel free to reach out to us on [Discord](https://cloudquery.io/discord), [GitHub](https://github.com/cloudquery/plugin-sdk-java), or just [book a meeting](https://calendar.app.google/sAXWJWxfSEjUEsBAA).
