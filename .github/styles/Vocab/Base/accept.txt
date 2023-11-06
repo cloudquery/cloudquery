@@ -1,5 +1,6 @@
 ACL
 ACLs
+addon
 Addon
 Airbyte
 Airtable
