@@ -1268,3 +1268,4 @@ export function getPlugin(kind: string, id: string): Plugin {
   }
   return ALL_SOURCE_PLUGINS.find((p) => p.id === id);
 }
+
