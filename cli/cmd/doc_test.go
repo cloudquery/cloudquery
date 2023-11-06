@@ -11,6 +11,8 @@ import (
 
 var docFiles = []string{
 	"cloudquery.md",
+	"cloudquery_addon.md",
+	"cloudquery_addon_publish.md",
 	"cloudquery_login.md",
 	"cloudquery_logout.md",
 	"cloudquery_sync.md",
