@@ -1,7 +1,8 @@
 {
   "architecture": "Architecture",
   "creating-new-plugin": "Creating a New Plugin",
-  "publishing-a-plugin-to-the-hub": "Publishing a Plugin to the Hub",
+  "publishing-an-addon-to-the-hub": "Publishing a Addon to the Hub",
+  "publishing-a-plugin-to-the-hub": "Publishing an Plugin to the Hub",
   "codegen": "Generating Resources",
   "running-locally": "Running Plugins Locally",
   "build": "Building From Source"
