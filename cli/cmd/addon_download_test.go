@@ -38,7 +38,6 @@ func TestAddonDownload(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
 			t.Fatalf("unexpected method: %s %s", r.Method, r.URL.Path)
-			t.FailNow()
 		}
 		w.Header().Set("Content-Type", "application/json")
 		gotCalls[r.Method+" "+r.URL.Path]++
@@ -109,7 +108,6 @@ func TestAddonDownloadStdout(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
 			t.Fatalf("unexpected method: %s %s", r.Method, r.URL.Path)
-			t.FailNow()
 		}
 		w.Header().Set("Content-Type", "application/json")
 		gotCalls[r.Method+" "+r.URL.Path]++
