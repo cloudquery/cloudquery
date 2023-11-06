@@ -13,7 +13,7 @@ This downloads an addon from CloudQuery Hub to local disk.
 
 
 ```
-cloudquery addon download addon-team/transformation/addon-name@v1.0.0 [-t directory] [flags]
+cloudquery addon download addon-team/addon-type/addon-name@v1.0.0 [-t directory] [flags]
 ```
 
 ### Examples
@@ -21,14 +21,14 @@ cloudquery addon download addon-team/transformation/addon-name@v1.0.0 [-t direct
 ```
 
 # Download an addon to local disk
-cloudquery addon download addon-team/transformation/addon-name@v1.0.0
+cloudquery addon download addon-team/addon-type/addon-name@v1.0.0
 ```
 
 ### Options
 
 ```
   -h, --help            help for download
-  -t, --target string   Download to specified directory (default ".")
+  -t, --target string   Download to specified directory. Use - for stdout (default ".")
 ```
 
 ### Options inherited from parent commands
