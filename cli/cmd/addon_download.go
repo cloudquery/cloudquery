@@ -93,11 +93,7 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 		return fmt.Errorf("failed to get addon metadata: %w", err)
 	}
 
-	if err := downloadAddon(ctx, c, addon.TeamName, addon.AddonType, addon.Name, addonVersion.Name, addon.AddonFormat, addonVersion.Checksum, target); err != nil {
-		return err
-	}
-
-	return nil
+	return downloadAddon(ctx, c, addon.TeamName, addon.AddonType, addon.Name, addonVersion.Name, addon.AddonFormat, addonVersion.Checksum, target)
 }
 
 func getAddonMetadata(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, addonType, addonName, version string) (*cloudquery_api.Addon, *cloudquery_api.AddonVersion, error) {
