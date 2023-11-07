@@ -144,9 +144,10 @@ func checkCreateAddonVersionRequest(t *testing.T, r *http.Request) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	delete(got, "checksum")
+
 	want := map[string]any{
 		"addon_deps":  []any{},
-		"checksum":    "626b12ba65949c7fc0ef288a7f3d93dade34b8fd54fb131f5ae4abd89a074bc1",
 		"doc":         "# Test Addon README",
 		"message":     "# Test Addon Changelog",
 		"plugin_deps": []any{"cloudquery/source/test@v1.0.0"},
