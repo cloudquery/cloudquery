@@ -99,17 +99,15 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 func getAddonMetadata(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, addonType, addonName, version string) (*cloudquery_api.Addon, *cloudquery_api.AddonVersion, error) {
 	addonResp, err := c.GetAddonWithResponse(ctx, teamName, cloudquery_api.AddonType(addonType), addonName)
 	if err != nil {
-		if addonResp == nil {
-			return nil, nil, fmt.Errorf("failed to get addon: %w", err)
-		}
+		return nil, nil, fmt.Errorf("failed to get addon: %w", err)
+	} else if addonResp.StatusCode() != http.StatusOK {
 		return nil, nil, fmt.Errorf("failed to get addon: %w", errorFromHTTPResponse(addonResp.HTTPResponse, addonResp))
 	}
 
 	addonVersionResp, err := c.GetAddonVersionWithResponse(ctx, teamName, cloudquery_api.AddonType(addonType), addonName, version)
 	if err != nil {
-		if addonVersionResp == nil {
-			return nil, nil, fmt.Errorf("failed to get addon version: %w", err)
-		}
+		return nil, nil, fmt.Errorf("failed to get addon version: %w", err)
+	} else if addonVersionResp.StatusCode() != http.StatusOK {
 		return nil, nil, fmt.Errorf("failed to get addon version: %w", errorFromHTTPResponse(addonVersionResp.HTTPResponse, addonVersionResp))
 	}
 	return addonResp.JSON200, addonVersionResp.JSON200, nil
