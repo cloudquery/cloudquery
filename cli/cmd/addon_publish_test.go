@@ -43,7 +43,7 @@ func TestAddonPublish(t *testing.T) {
 
 	cmd := NewCmdRoot()
 	t.Setenv(envAPIURL, ts.URL)
-	args := []string{"addon", "publish", "testdata/addon-v1/manifest.json", "v1.2.3"}
+	args := []string{"addon", "publish", "testdata/addon-v1/manifest.json", "testdata/addon-v1", "v1.2.3"}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {
@@ -97,7 +97,7 @@ func TestAddonPublishFinalize(t *testing.T) {
 	t.Setenv(envAPIURL, ts.URL)
 
 	cmd := NewCmdRoot()
-	args := []string{"addon", "publish", "testdata/addon-v1/manifest.json", "v1.2.3", "--finalize"}
+	args := []string{"addon", "publish", "testdata/addon-v1/manifest.json", "testdata/addon-v1", "v1.2.3", "--finalize"}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {
@@ -121,7 +121,7 @@ func TestAddonPublish_Unauthorized(t *testing.T) {
 	t.Setenv(envAPIURL, ts.URL)
 
 	cmd := NewCmdRoot()
-	args := []string{"addon", "publish", "testdata/addon-v1/manifest.json", "v1.2.3", "--finalize"}
+	args := []string{"addon", "publish", "testdata/addon-v1/manifest.json", "testdata/addon-v1", "v1.2.3", "--finalize"}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err == nil {
@@ -146,7 +146,7 @@ func checkCreateAddonVersionRequest(t *testing.T, r *http.Request) {
 	}
 	want := map[string]any{
 		"addon_deps":  []any{},
-		"checksum":    "b537240431bb4868264e48a8c646ebd3a9e355140d27d7fe559b5cbfd3ce6f31",
+		"checksum":    "626b12ba65949c7fc0ef288a7f3d93dade34b8fd54fb131f5ae4abd89a074bc1",
 		"doc":         "# Test Addon README",
 		"message":     "# Test Addon Changelog",
 		"plugin_deps": []any{"cloudquery/source/test@v1.0.0"},

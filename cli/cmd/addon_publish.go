@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"archive/zip"
 	"context"
 	"crypto/sha256"
 	"encoding/json"
@@ -10,7 +11,9 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path"
 	"path/filepath"
+	"strings"
 	"syscall"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
@@ -22,20 +25,20 @@ const (
 	addonPublishShort = "Publish to CloudQuery Hub."
 	addonPublishLong  = `Publish to CloudQuery Hub.
 
-This publishes an addon version to CloudQuery Hub from a manifest file.
+This publishes an addon version to CloudQuery Hub from a manifest file and directory.
 `
 	addonPublishExample = `
-# Publish an addon version from a manifest file
-cloudquery addon publish /path/to/manifest.json v1.0.0`
+# Publish an addon version from a manifest file and directory
+cloudquery addon publish /path/to/manifest.json /path/to/addon-dir v1.0.0`
 )
 
 func newCmdAddonPublish() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "publish manifest.json v1.0.0 [--finalize]",
+		Use:     "publish manifest.json v1.0.0 /path/to/directory [--finalize]",
 		Short:   addonPublishShort,
 		Long:    addonPublishLong,
 		Example: addonPublishExample,
-		Args:    cobra.ExactArgs(2),
+		Args:    cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// Set up a channel to listen for OS signals for graceful shutdown.
 			ctx, cancel := context.WithCancel(cmd.Context())
@@ -64,7 +67,6 @@ type ManifestJSONV1 struct {
 	AddonFormat string `json:"addon_format"` // unused
 
 	PathToMessage string `json:"message"`
-	PathToZip     string `json:"path"`
 	PathToDoc     string `json:"doc"`
 
 	PluginDeps []string `json:"plugin_deps"`
@@ -78,7 +80,7 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}
 
-	manifestPath, version := args[0], args[1]
+	manifestPath, addonPath, version := args[0], args[1], args[2]
 	manifestDir := filepath.Dir(manifestPath)
 
 	manifest, err := readManifestJSON(manifestPath)
@@ -89,13 +91,17 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 	if manifest.Type != "addon" {
 		return errors.New("manifest.json is not of addon type")
 	}
-
-	zipPath := filepath.Join(manifestDir, manifest.PathToZip)
-	if _, err := os.Stat(zipPath); err != nil {
-		return fmt.Errorf("could not read file %s: %w", zipPath, err)
+	if manifest.AddonFormat != string(cloudquery_api.Zip) {
+		return fmt.Errorf("unsupported manifest.json addon_format: only `%v` is supported", cloudquery_api.Zip)
 	}
 
-	name := fmt.Sprintf("%s/%s@%s", manifest.TeamName, manifest.AddonName, version)
+	if st, err := os.Stat(addonPath); err != nil {
+		return fmt.Errorf("could not read directory %s: %w", addonPath, err)
+	} else if !st.IsDir() {
+		return fmt.Errorf("%s is not a directory", addonPath)
+	}
+
+	name := fmt.Sprintf("%s/%s/%s@%s", manifest.TeamName, manifest.AddonType, manifest.AddonName, version)
 	fmt.Printf("Publishing addon %s to CloudQuery Hub...\n", name)
 
 	c, err := cloudquery_api.NewClientWithResponses(getEnvOrDefault(envAPIURL, defaultAPIURL),
@@ -107,14 +113,21 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 		return fmt.Errorf("failed to create hub client: %w", err)
 	}
 
+	wrapDirectory := strings.Join([]string{manifest.TeamName, manifest.AddonType, manifest.AddonName, version}, "_")
+	tempFile, checksum, err := zipAddon(addonPath, wrapDirectory, name)
+	if err != nil {
+		return fmt.Errorf("failed to zip: %w", err)
+	}
+	defer os.Remove(tempFile)
+
 	// create new draft version
-	if err := createNewAddonDraftVersion(ctx, c, manifest, version, manifestDir, zipPath); err != nil {
+	if err := createNewAddonDraftVersion(ctx, c, manifest, version, manifestDir, checksum); err != nil {
 		return fmt.Errorf("failed to create new draft version: %w", err)
 	}
 
 	// upload package
 	fmt.Println("Uploading addon...")
-	if err := uploadAddon(ctx, c, manifest, version, zipPath); err != nil {
+	if err := uploadAddon(ctx, c, manifest, version, tempFile); err != nil {
 		return fmt.Errorf("failed to upload addon: %w", err)
 	}
 
@@ -147,7 +160,7 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 	return nil
 }
 
-func createNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWithResponses, manifest ManifestJSONV1, version, manifestDir, zipPath string) error {
+func createNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWithResponses, manifest ManifestJSONV1, version, manifestDir, checksum string) error {
 	if manifest.PluginDeps == nil {
 		manifest.PluginDeps = []string{}
 	}
@@ -157,6 +170,7 @@ func createNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWit
 	body := cloudquery_api.CreateAddonVersionJSONRequestBody{
 		AddonDeps:  &manifest.AddonDeps,
 		PluginDeps: &manifest.PluginDeps,
+		Checksum:   checksum,
 	}
 
 	if manifest.PathToDoc != "" {
@@ -174,17 +188,6 @@ func createNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWit
 		}
 		body.Message = string(b)
 	}
-
-	f, err := os.Open(zipPath)
-	if err != nil {
-		return fmt.Errorf("failed to open file: %w", err)
-	}
-	defer f.Close()
-	s := sha256.New()
-	if _, err := io.Copy(s, f); err != nil {
-		return fmt.Errorf("failed to calculate checksum: %w", err)
-	}
-	body.Checksum = fmt.Sprintf("%x", s.Sum(nil))
 
 	resp, err := c.CreateAddonVersionWithResponse(ctx, manifest.TeamName, cloudquery_api.AddonType(manifest.AddonType), manifest.AddonName, version, body)
 	if err != nil {
@@ -245,4 +248,49 @@ func readManifestJSON(manifestPath string) (ManifestJSONV1, error) {
 		return ManifestJSONV1{}, err
 	}
 	return manifest, nil
+}
+
+func zipAddon(addonPath, wrapDirectory, comment string) (string, string, error) {
+	s := sha256.New()
+	zipFile, err := os.CreateTemp("", "cq-addon*.zip")
+	if err != nil {
+		return "", "", fmt.Errorf("failed to create temp file: %w", err)
+	}
+
+	w := io.MultiWriter(zipFile, s)
+	zr := zip.NewWriter(w)
+	if err := filepath.WalkDir(addonPath, func(pth string, d os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.Type() == os.ModeDir {
+			return nil
+		}
+		fn := path.Join(wrapDirectory, filepath.ToSlash(strings.TrimPrefix(pth, addonPath)))
+		zf, err := zr.Create(fn)
+		if err != nil {
+			return err
+		}
+		rd, err := os.Open(pth)
+		if err != nil {
+			return err
+		}
+		if _, err := io.Copy(zf, rd); err != nil {
+			return err
+		}
+		if err := rd.Close(); err != nil {
+			return err
+		}
+		return nil
+	}); err != nil {
+		return "", "", fmt.Errorf("failed to zip: %w", err)
+	}
+
+	if err := zr.SetComment(comment); err != nil {
+		return "", "", fmt.Errorf("failed to set comment: %w", err)
+	}
+	if err := zr.Close(); err != nil {
+		return "", "", fmt.Errorf("failed to close zip writer: %w", err)
+	}
+	return zipFile.Name(), fmt.Sprintf("%x", s.Sum(nil)), nil
 }

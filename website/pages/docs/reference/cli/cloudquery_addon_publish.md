@@ -9,19 +9,19 @@ Publish to CloudQuery Hub.
 
 Publish to CloudQuery Hub.
 
-This publishes an addon version to CloudQuery Hub from a manifest file.
+This publishes an addon version to CloudQuery Hub from a manifest file and directory.
 
 
 ```
-cloudquery addon publish manifest.json v1.0.0 [--finalize] [flags]
+cloudquery addon publish manifest.json v1.0.0 /path/to/directory [--finalize] [flags]
 ```
 
 ### Examples
 
 ```
 
-# Publish an addon version from a manifest file
-cloudquery addon publish /path/to/manifest.json v1.0.0
+# Publish an addon version from a manifest file and directory
+cloudquery addon publish /path/to/manifest.json /path/to/addon-dir v1.0.0
 ```
 
 ### Options
