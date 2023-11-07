@@ -34,7 +34,7 @@ cloudquery addon publish /path/to/manifest.json /path/to/addon-dir v1.0.0`
 
 func newCmdAddonPublish() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "publish manifest.json v1.0.0 /path/to/directory [--finalize]",
+		Use:     "publish manifest.json /path/to/directory v1.0.0 [--finalize]",
 		Short:   addonPublishShort,
 		Long:    addonPublishLong,
 		Example: addonPublishExample,

@@ -13,7 +13,7 @@ This publishes an addon version to CloudQuery Hub from a manifest file and direc
 
 
 ```
-cloudquery addon publish manifest.json v1.0.0 /path/to/directory [--finalize] [flags]
+cloudquery addon publish manifest.json /path/to/directory v1.0.0 [--finalize] [flags]
 ```
 
 ### Examples
