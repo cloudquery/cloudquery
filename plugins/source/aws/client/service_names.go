@@ -22,6 +22,7 @@ const (
 	AWSServiceAutoscalingplans
 	AWSServiceBackup
 	AWSServiceBatch
+	AWSServiceBudgets
 	AWSServiceCloudformation
 	AWSServiceCloudfront
 	AWSServiceCloudhsmv2
@@ -154,6 +155,7 @@ var AllAWSServiceNames = [...]string{
 	AWSServiceAutoscalingplans:             "autoscalingplans",
 	AWSServiceBackup:                       "backup",
 	AWSServiceBatch:                        "batch",
+	AWSServiceBudgets:                      "budgets",
 	AWSServiceCloudformation:               "cloudformation",
 	AWSServiceCloudfront:                   "cloudfront",
 	AWSServiceCloudhsmv2:                   "cloudhsmv2",

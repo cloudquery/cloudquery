@@ -26,6 +26,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/autoscalingplans"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
 	"github.com/aws/aws-sdk-go-v2/service/batch"
+	"github.com/aws/aws-sdk-go-v2/service/budgets"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	"github.com/aws/aws-sdk-go-v2/service/cloudhsmv2"
@@ -151,6 +152,7 @@ var clients = []any{
 	&autoscalingplans.Client{},
 	&backup.Client{},
 	&batch.Client{},
+	&budgets.Client{},
 	&cloudformation.Client{},
 	&cloudfront.Client{},
 	&cloudhsmv2.Client{},

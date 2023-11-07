@@ -110,6 +110,8 @@
 - [aws_batch_job_definitions](aws_batch_job_definitions.md)
 - [aws_batch_job_queues](aws_batch_job_queues.md)
   - [aws_batch_jobs](aws_batch_jobs.md)
+- [aws_budget_actions](aws_budget_actions.md)
+- [aws_budgets](aws_budgets.md)
 - [aws_cloudformation_stack_sets](aws_cloudformation_stack_sets.md)
   - [aws_cloudformation_stack_instance_summaries](aws_cloudformation_stack_instance_summaries.md)
     - [aws_cloudformation_stack_instance_resource_drifts](aws_cloudformation_stack_instance_resource_drifts.md)

@@ -24,6 +24,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscalingplans"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/backup"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/batch"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/budgets"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudformation"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudfront"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudhsmv2"
@@ -181,6 +182,8 @@ func getTables() schema.Tables {
 		backup.Vaults(),
 		batch.JobQueues(),
 		batch.JobDefinitions(),
+		budgets.Budgets(),
+		budgets.BudgetActions(),
 		cloudformation.Stacks(),
 		cloudformation.StackSets(),
 		cloudfront.CachePolicies(),

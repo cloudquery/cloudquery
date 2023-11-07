@@ -23,6 +23,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/autoscalingplans"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
 	"github.com/aws/aws-sdk-go-v2/service/batch"
+	"github.com/aws/aws-sdk-go-v2/service/budgets"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	"github.com/aws/aws-sdk-go-v2/service/cloudhsmv2"
@@ -156,6 +157,7 @@ type Services struct {
 	Autoscalingplans             services.AutoscalingplansClient
 	Backup                       services.BackupClient
 	Batch                        services.BatchClient
+	Budgets                      services.BudgetsClient
 	Cloudformation               services.CloudformationClient
 	Cloudfront                   services.CloudfrontClient
 	Cloudhsmv2                   services.Cloudhsmv2Client
@@ -302,6 +304,8 @@ func (s *Services) InitService(service AWSServiceName) {
 		s.Backup = backup.NewFromConfig(c)
 	case AWSServiceBatch:
 		s.Batch = batch.NewFromConfig(c)
+	case AWSServiceBudgets:
+		s.Budgets = budgets.NewFromConfig(c)
 	case AWSServiceCloudformation:
 		s.Cloudformation = cloudformation.NewFromConfig(c)
 	case AWSServiceCloudfront:
@@ -549,6 +553,8 @@ func (s *Services) GetService(service AWSServiceName) any {
 		return s.Backup
 	case AWSServiceBatch:
 		return s.Batch
+	case AWSServiceBudgets:
+		return s.Budgets
 	case AWSServiceCloudformation:
 		return s.Cloudformation
 	case AWSServiceCloudfront:
