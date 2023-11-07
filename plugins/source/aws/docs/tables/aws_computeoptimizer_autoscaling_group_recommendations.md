@@ -16,6 +16,7 @@ The primary key for this table is **auto_scaling_group_arn**.
 |auto_scaling_group_arn (PK)|`utf8`|
 |auto_scaling_group_name|`utf8`|
 |current_configuration|`json`|
+|current_instance_gpu_info|`json`|
 |current_performance_risk|`utf8`|
 |effective_recommendation_preferences|`json`|
 |finding|`utf8`|

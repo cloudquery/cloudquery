@@ -23,6 +23,7 @@ The primary key for this table is **arn**.
 |rule_group_arn|`utf8`|
 |rule_group_id|`utf8`|
 |rule_group_name|`utf8`|
+|analysis_results|`json`|
 |capacity|`int64`|
 |consumed_capacity|`int64`|
 |description|`utf8`|

@@ -22,6 +22,7 @@ The composite primary key for this table is (**account_id**, **region**, **arn**
 |errors|`json`|
 |last_updated_time|`timestamp[us, tz=UTC]`|
 |name|`utf8`|
+|options|`json`|
 |sheets|`json`|
 |status|`utf8`|
 |theme_arn|`utf8`|

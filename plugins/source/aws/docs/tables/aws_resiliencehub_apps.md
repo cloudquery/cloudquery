@@ -35,5 +35,7 @@ The following tables depend on aws_resiliencehub_apps:
 |permission_model|`json`|
 |policy_arn|`utf8`|
 |resiliency_score|`float64`|
+|rpo_in_secs|`int64`|
+|rto_in_secs|`int64`|
 |status|`utf8`|
 |tags|`json`|

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -49,7 +50,7 @@ func fetchWorkloadMilestones(ctx context.Context, meta schema.ClientMeta, parent
 	p := wellarchitected.NewListMilestonesPaginator(service,
 		&wellarchitected.ListMilestonesInput{
 			WorkloadId: &workloadID,
-			MaxResults: 50,
+			MaxResults: aws.Int32(50),
 		},
 	)
 	for p.HasMorePages() {

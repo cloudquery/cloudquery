@@ -58,11 +58,16 @@ The following tables depend on aws_redshift_clusters:
 |expected_next_snapshot_schedule_time_status|`utf8`|
 |hsm_status|`json`|
 |iam_roles|`json`|
+|ip_address_type|`utf8`|
 |kms_key_id|`utf8`|
 |maintenance_track_name|`utf8`|
 |manual_snapshot_retention_period|`int64`|
+|master_password_secret_arn|`utf8`|
+|master_password_secret_kms_key_id|`utf8`|
 |master_username|`utf8`|
 |modify_status|`utf8`|
+|multi_az|`utf8`|
+|multi_az_secondary|`json`|
 |next_maintenance_window_start_time|`timestamp[us, tz=UTC]`|
 |node_type|`utf8`|
 |number_of_nodes|`int64`|

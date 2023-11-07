@@ -32,6 +32,7 @@ The primary key for this table is **arn**.
 |image_arn|`utf8`|
 |image_name|`utf8`|
 |max_concurrent_sessions|`int64`|
+|max_sessions_per_instance|`int64`|
 |max_user_duration_in_seconds|`int64`|
 |platform|`utf8`|
 |session_script_s3_location|`json`|
