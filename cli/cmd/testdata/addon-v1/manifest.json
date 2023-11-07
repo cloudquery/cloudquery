@@ -8,5 +8,6 @@
   "message": "./changelog.md",
   "doc": "./readme.md",
   "path": "./test.zip",
-  "plugin_deps": ["cloudquery/source/test@v1.0.0"]
+  "plugin_deps": ["cloudquery/source/test@v1.0.0"],
+  "addon_deps": []
 }
