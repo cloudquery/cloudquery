@@ -54,7 +54,7 @@ func newCmdAddonPublish() *cobra.Command {
 			return runAddonPublish(ctx, cmd, args)
 		},
 	}
-	cmd.Flags().BoolP("finalize", "f", false, `Finalize the addon version after publishing. If false, the addon version will be marked as draft=true.`)
+	cmd.Flags().BoolP("finalize", "f", false, `Finalize the addon version after publishing. If false, the addon version will be marked as draft.`)
 
 	return cmd
 }
@@ -64,7 +64,7 @@ type ManifestJSONV1 struct {
 	TeamName    string `json:"team_name"`
 	AddonName   string `json:"addon_name"`
 	AddonType   string `json:"addon_type"`
-	AddonFormat string `json:"addon_format"` // unused
+	AddonFormat string `json:"addon_format"` // needs to be "zip"
 
 	PathToMessage string `json:"message"`
 	PathToDoc     string `json:"doc"`
@@ -250,7 +250,7 @@ func readManifestJSON(manifestPath string) (ManifestJSONV1, error) {
 	return manifest, nil
 }
 
-func zipAddon(addonPath, wrapDirectory, comment string) (string, string, error) {
+func zipAddon(addonPath, wrapDirectory, comment string) (zipFilename string, checksum string, retErr error) {
 	s := sha256.New()
 	zipFile, err := os.CreateTemp("", "cq-addon*.zip")
 	if err != nil {
@@ -278,10 +278,7 @@ func zipAddon(addonPath, wrapDirectory, comment string) (string, string, error) 
 		if _, err := io.Copy(zf, rd); err != nil {
 			return err
 		}
-		if err := rd.Close(); err != nil {
-			return err
-		}
-		return nil
+		return rd.Close()
 	}); err != nil {
 		return "", "", fmt.Errorf("failed to zip: %w", err)
 	}
