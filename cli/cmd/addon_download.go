@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path"
 	"path/filepath"
 	"strings"
 	"syscall"
@@ -74,7 +75,16 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 		return fmt.Errorf("invalid addon ref %q: version must start with 'v'", args[0])
 	}
 
+	checksum := ""
+	hc := *http.DefaultClient
+	hc.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+		if len(via) == 1 && req.Response != nil {
+			checksum = req.Response.Header.Get("X-Checksum-Sha256") // get checksum from first request
+		}
+		return nil
+	}
 	c, err := cloudquery_api.NewClientWithResponses(getEnvOrDefault(envAPIURL, defaultAPIURL),
+		cloudquery_api.WithHTTPClient(&hc),
 		cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
 			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 			return nil
@@ -88,37 +98,7 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 		return err
 	}
 
-	addon, addonVersion, err := getAddonMetadata(ctx, c, addonParts[0], addonParts[1], addonVer[0], addonVer[1])
-	if err != nil {
-		return fmt.Errorf("failed to get addon metadata: %w", err)
-	}
-
-	return downloadAddon(ctx, c, addon.TeamName, addon.AddonType, addon.Name, addonVersion.Name, addon.AddonFormat, addonVersion.Checksum, target)
-}
-
-func getAddonMetadata(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, addonType, addonName, version string) (*cloudquery_api.Addon, *cloudquery_api.AddonVersion, error) {
-	addonResp, err := c.GetAddonWithResponse(ctx, teamName, cloudquery_api.AddonType(addonType), addonName)
-	if err != nil {
-		return nil, nil, fmt.Errorf("failed to get addon: %w", err)
-	} else if addonResp.StatusCode() != http.StatusOK {
-		return nil, nil, fmt.Errorf("failed to get addon: %w", errorFromHTTPResponse(addonResp.HTTPResponse, addonResp))
-	}
-
-	addonVersionResp, err := c.GetAddonVersionWithResponse(ctx, teamName, cloudquery_api.AddonType(addonType), addonName, version)
-	if err != nil {
-		return nil, nil, fmt.Errorf("failed to get addon version: %w", err)
-	} else if addonVersionResp.StatusCode() != http.StatusOK {
-		return nil, nil, fmt.Errorf("failed to get addon version: %w", errorFromHTTPResponse(addonVersionResp.HTTPResponse, addonVersionResp))
-	}
-	return addonResp.JSON200, addonVersionResp.JSON200, nil
-}
-
-func addonFilename(teamName string, addonType cloudquery_api.AddonType, addonName, version string, format cloudquery_api.AddonFormat) string {
-	return strings.Join([]string{teamName, string(addonType), addonName, version}, "_") + "." + string(format)
-}
-
-func downloadAddon(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName string, addonType cloudquery_api.AddonType, addonName, version string, format cloudquery_api.AddonFormat, checksum, targetDir string) (retErr error) {
-	res, err := c.DownloadAddonAsset(ctx, teamName, addonType, addonName, version)
+	res, err := c.DownloadAddonAsset(ctx, addonParts[0], cloudquery_api.AddonType(addonParts[1]), addonVer[0], addonVer[1])
 	if err != nil {
 		return fmt.Errorf("download failed: %w", err)
 	}
@@ -130,16 +110,21 @@ func downloadAddon(ctx context.Context, c *cloudquery_api.ClientWithResponses, t
 		return fmt.Errorf("failed to download addon: %w", errorFromHTTPResponse(resp.HTTPResponse, resp))
 	}
 
+	return downloadAddonFromResponse(res, checksum, target)
+}
+
+func downloadAddonFromResponse(res *http.Response, expectedChecksum, targetDir string) (retErr error) {
 	var (
 		fileWriter io.WriteCloser
 		size       int64
+		err        error
 	)
 
 	switch targetDir {
 	case "-":
 		fileWriter = os.Stdout
 	default:
-		zipPath := filepath.Join(targetDir, addonFilename(teamName, addonType, addonName, version, format))
+		zipPath := filepath.Join(targetDir, path.Base(res.Request.URL.Path))
 		if st, err := os.Stat(zipPath); err == nil {
 			if st.IsDir() {
 				return fmt.Errorf("file %s already exists: is a directory", zipPath)
@@ -176,8 +161,10 @@ func downloadAddon(ctx context.Context, c *cloudquery_api.ClientWithResponses, t
 	}
 
 	writtenChecksum := fmt.Sprintf("%x", shaWriter.Sum(nil))
-	if writtenChecksum != checksum {
-		return fmt.Errorf("checksum mismatch: expected %s, got %s", checksum, writtenChecksum)
+	if expectedChecksum == "" {
+		fmt.Fprintf(os.Stderr, "Warning - checksum not verified: %s\n", writtenChecksum)
+	} else if writtenChecksum != expectedChecksum {
+		return fmt.Errorf("checksum mismatch: expected %s, got %s", expectedChecksum, writtenChecksum)
 	}
 
 	return nil
