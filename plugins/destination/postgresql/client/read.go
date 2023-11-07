@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"math/big"
 	"strings"
+	"time"
 
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/apache/arrow/go/v14/arrow/array"
@@ -113,8 +114,7 @@ func prepareValueForResourceSet(dataType arrow.DataType, v any) (any, error) {
 			if err != nil {
 				return nil, err
 			}
-			v = stringForTime(t, tp.Unit)
-			return v, nil
+			return stringForTime32(t, tp.Unit), nil
 		case string:
 			v = vt
 		}
@@ -125,8 +125,7 @@ func prepareValueForResourceSet(dataType arrow.DataType, v any) (any, error) {
 			if err != nil {
 				return nil, err
 			}
-			v = stringForTime(t, tp.Unit)
-			return v, nil
+			return stringForTime64(t, tp.Unit), nil
 		case string:
 			v = vt
 		}
@@ -164,21 +163,10 @@ func numericToUint64(n pgtype.Numeric) uint64 {
 	).Uint64()
 }
 
-func stringForTime(t pgtype.Time, unit arrow.TimeUnit) string {
-	extra := ""
-	hour := t.Microseconds / 1e6 / 60 / 60
-	minute := t.Microseconds / 1e6 / 60 % 60
-	second := t.Microseconds / 1e6 % 60
-	micros := t.Microseconds % 1e6
-	switch unit {
-	case arrow.Millisecond:
-		extra = fmt.Sprintf(".%03d", (micros)/1e3)
-	case arrow.Microsecond:
-		extra = fmt.Sprintf(".%06d", micros)
-	case arrow.Nanosecond:
-		// postgres doesn't support nanosecond precision
-		extra = fmt.Sprintf(".%06d", micros)
-	}
+func stringForTime32(t pgtype.Time, unit arrow.TimeUnit) string {
+	return arrow.Time32((time.Duration(t.Microseconds) * time.Microsecond) / unit.Multiplier()).FormattedString(unit)
+}
 
-	return fmt.Sprintf("%02d:%02d:%02d"+extra, hour, minute, second)
+func stringForTime64(t pgtype.Time, unit arrow.TimeUnit) string {
+	return arrow.Time64((time.Duration(t.Microseconds) * time.Microsecond) / unit.Multiplier()).FormattedString(unit)
 }
