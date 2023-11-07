@@ -94,7 +94,7 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 	}
 
 	if err := downloadAddon(ctx, c, addon.TeamName, addon.AddonType, addon.Name, addonVersion.Name, addon.AddonFormat, addonVersion.Checksum, target); err != nil {
-		return fmt.Errorf("download failed: %w", err)
+		return err
 	}
 
 	return nil
@@ -119,10 +119,14 @@ func getAddonMetadata(ctx context.Context, c *cloudquery_api.ClientWithResponses
 	return addonResp.JSON200, addonVersionResp.JSON200, nil
 }
 
+func addonFilename(teamName string, addonType cloudquery_api.AddonType, addonName, version string, format cloudquery_api.AddonFormat) string {
+	return strings.Join([]string{teamName, string(addonType), addonName, version}, "_") + "." + string(format)
+}
+
 func downloadAddon(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName string, addonType cloudquery_api.AddonType, addonName, version string, format cloudquery_api.AddonFormat, checksum, targetDir string) (retErr error) {
 	res, err := c.DownloadAddonAsset(ctx, teamName, addonType, addonName, version)
 	if err != nil {
-		return err
+		return fmt.Errorf("download failed: %w", err)
 	}
 	if res.StatusCode > 399 {
 		resp, err := cloudquery_api.ParseDownloadAddonAssetResponse(res)
@@ -141,8 +145,14 @@ func downloadAddon(ctx context.Context, c *cloudquery_api.ClientWithResponses, t
 	case "-":
 		fileWriter = os.Stdout
 	default:
-		filename := strings.Join([]string{teamName, string(addonType), addonName, version}, "_") + "." + string(format)
-		zipPath := filepath.Join(targetDir, filename)
+		zipPath := filepath.Join(targetDir, addonFilename(teamName, addonType, addonName, version, format))
+		if st, err := os.Stat(zipPath); err == nil {
+			if st.IsDir() {
+				return fmt.Errorf("file %s already exists: is a directory", zipPath)
+			}
+			return fmt.Errorf("file %s already exists", zipPath)
+		}
+
 		f, err := os.Create(zipPath)
 		if err != nil {
 			return fmt.Errorf("failed to create file: %w", err)
