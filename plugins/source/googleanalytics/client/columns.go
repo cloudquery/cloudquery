@@ -14,7 +14,7 @@ var PropertyIDColumn = schema.Column{
 	PrimaryKey:  true,
 	NotNull:     true,
 	Resolver: func(_ context.Context, m schema.ClientMeta, r *schema.Resource, c schema.Column) error {
-		return r.Set(c.Name, m.(*Client).PropertyID)
+		return r.Set(c.Name, m.(*Client).Spec.PropertyID)
 	},
 }
 

@@ -84,7 +84,7 @@ func (r *Report) toGA(propertyID string) *analyticsdata.RunReportRequest {
 	return req
 }
 
-func (r *Report) table(propertyID string) *schema.Table {
+func (r *Report) Table(propertyID string) *schema.Table {
 	tableName := "ga_" + r.Name
 	return &schema.Table{
 		Name:          tableName,

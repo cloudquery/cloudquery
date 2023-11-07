@@ -11,7 +11,7 @@ func genDates(ctx context.Context, c *Client, table string) (<-chan time.Time, e
 		return nil, err
 	}
 
-	startDate := c.StartDate
+	startDate := c.Spec.StartDate
 	if len(res) > 0 {
 		startDate = res
 	}

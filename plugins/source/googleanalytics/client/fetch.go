@@ -13,7 +13,7 @@ func fetch(tableName string, request *analyticsdata.RunReportRequest) schema.Tab
 		c := meta.(*Client)
 		logger := c.Logger().With().Str("table", tableName).Logger()
 
-		req := c.service.Properties.RunReport(c.PropertyID, request).Context(ctx)
+		req := c.service.Properties.RunReport(c.Spec.PropertyID, request).Context(ctx)
 
 		dates, err := genDates(ctx, c, tableName)
 		if err != nil {

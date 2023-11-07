@@ -36,7 +36,7 @@ type Spec struct {
 	Concurrency int `json:"concurrency,omitempty" jsonschema:"minimum=1,default=10000"`
 }
 
-func (s *Spec) setDefaults() {
+func (s *Spec) SetDefaults() {
 	if len(s.StartDate) == 0 {
 		// date 7 days prior
 		s.StartDate = time.Now().UTC().Add(-7 * 24 * time.Hour).Format(time.DateOnly)
@@ -50,7 +50,7 @@ func (s *Spec) setDefaults() {
 func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 }
 
-func (s *Spec) validate() error {
+func (s *Spec) Validate() error {
 	if len(s.PropertyID) == 0 {
 		return fmt.Errorf(`required field "property_id" is missing`)
 	}
