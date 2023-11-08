@@ -89,9 +89,19 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 		}
 		table := tables[len(tables)-1]
 		// Note: constraints always have a name in PostgreSQL.
-		// It can either be an assigned name or an automatically generated one,
-		// if the constraint name is skipped in the query adding this constraint.
-		if len(pkName) > 0 { // ~ pkName != "" but without string comparison
+		// However, we want not only to store the info about the constraint name,
+		// but also the fact that we saw such table.
+		switch len(pkName) {
+		case 0: // ~ pkName == "" but without string comparison
+			// We still store the fact that we saw the table
+			if _, ok := c.pgTablesToPKConstraints[tableName]; !ok {
+				// Just store the empty string.
+				// This will indicate 2 things:
+				// 1. We saw the table with this name
+				// 2. If this is still empty on insert, the table in the database doesn't have a PK constraint
+				c.pgTablesToPKConstraints[tableName] = ""
+			}
+		default:
 			c.pgTablesToPKConstraints[tableName], table.PkConstraintName = pkName, pkName
 		}
 		table.Columns = append(table.Columns, schema.Column{
