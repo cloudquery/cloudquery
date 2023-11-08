@@ -111,7 +111,7 @@
   "plugins/source/square+FILLER": "0.0.0",
   "plugins/source/typeform": "1.1.0",
   "plugins/source/typeform+FILLER": "0.0.0",
-  "plugins/source/jira": "1.0.10",
+  "plugins/source/jira": "1.0.11",
   "plugins/source/jira+FILLER": "0.0.0",
   "plugins/source/vault": "1.0.8",
   "plugins/source/vault+FILLER": "0.0.0",
