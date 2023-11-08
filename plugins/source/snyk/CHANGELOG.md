@@ -3,6 +3,18 @@
 ## [3.1.12](https://github.com/cloudquery/cloudquery/compare/plugins-source-snyk-v3.1.11...plugins-source-snyk-v3.1.12) (2023-11-08)
 
 
+### This Release has the Following Changes to Tables
+- Table `snyk_dependencies` was removed (:warning: breaking)
+- Table `snyk_group_members` was removed (:warning: breaking)
+- Table `snyk_groups` was removed (:warning: breaking)
+- Table `snyk_integrations` was removed (:warning: breaking)
+- Table `snyk_organization_members` was removed (:warning: breaking)
+- Table `snyk_organization_provisions` was removed (:warning: breaking)
+- Table `snyk_organizations` was removed (:warning: breaking)
+- Table `snyk_projects` was removed (:warning: breaking)
+- Table `snyk_reporting_issues` was removed (:warning: breaking)
+- Table `snyk_reporting_latest_issues` was removed (:warning: breaking)
+
 ### Bug Fixes
 
 * **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.4.2 ([#15034](https://github.com/cloudquery/cloudquery/issues/15034)) ([45c2caa](https://github.com/cloudquery/cloudquery/commit/45c2caa345aa33199ad1592bf378a5a839612c6f))
