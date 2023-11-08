@@ -53,7 +53,7 @@ func newCmdPluginPublish() *cobra.Command {
 		},
 	}
 	cmd.Flags().StringP("dist-dir", "D", "dist", "Path to the dist directory")
-	cmd.Flags().BoolP("finalize", "f", false, `Finalize the plugin version after publishing. If false, the plugin version will be marked as draft=true.`)
+	cmd.Flags().BoolP("finalize", "f", false, `Finalize the plugin version after publishing. If false, the plugin version will be marked as draft.`)
 
 	return cmd
 }

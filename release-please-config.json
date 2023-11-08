@@ -126,9 +126,6 @@
     "plugins/source/hubspot": {
       "component": "plugins-source-hubspot"
     },
-    "plugins/source/jira": {
-      "component": "plugins-source-jira"
-    },
     "plugins/source/k8s": {
       "component": "plugins-source-k8s"
     },
