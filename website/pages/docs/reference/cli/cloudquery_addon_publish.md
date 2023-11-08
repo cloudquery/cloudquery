@@ -27,7 +27,7 @@ cloudquery addon publish /path/to/manifest.json v1.0.0
 ### Options
 
 ```
-  -f, --finalize   Finalize the addon version after publishing. If false, the addon version will be marked as draft=true.
+  -f, --finalize   Finalize the addon version after publishing. If false, the addon version will be marked as draft.
   -h, --help       help for publish
 ```
 
