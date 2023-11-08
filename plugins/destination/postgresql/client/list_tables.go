@@ -91,8 +91,8 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 		// Note: constraints always have a name in PostgreSQL.
 		// However, we want not only to store the info about the constraint name,
 		// but also the fact that we saw such table.
-		switch len(pkName) {
-		case 0: // ~ pkName == "" but without string comparison
+		switch pkName {
+		case "":
 			// We still store the fact that we saw the table
 			if _, ok := c.pgTablesToPKConstraints[tableName]; !ok {
 				// Just store the empty string.
