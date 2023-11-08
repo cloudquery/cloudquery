@@ -3,6 +3,11 @@
 ## [3.0.13](https://github.com/cloudquery/cloudquery/compare/plugins-source-terraform-v3.0.12...plugins-source-terraform-v3.0.13) (2023-11-08)
 
 
+### This Release has the Following Changes to Tables
+- Table `tf_data` was removed (:warning: breaking)
+- Table `tf_resource_instances` was removed (:warning: breaking)
+- Table `tf_resources` was removed (:warning: breaking)
+
 ### Bug Fixes
 
 * **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.4.2 ([#15034](https://github.com/cloudquery/cloudquery/issues/15034)) ([45c2caa](https://github.com/cloudquery/cloudquery/commit/45c2caa345aa33199ad1592bf378a5a839612c6f))
