@@ -91,7 +91,7 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 		// Note: constraints always have a name in PostgreSQL.
 		// It can either be an assigned name or an automatically generated one,
 		// if the constraint name is skipped in the query adding this constraint.
-		if len(pkName) > 0 { // ~ pkName == "" but without string comparison
+		if len(pkName) > 0 { // ~ pkName != "" but without string comparison
 			c.pgTablesToPKConstraints[tableName], table.PkConstraintName = pkName, pkName
 		}
 		table.Columns = append(table.Columns, schema.Column{
