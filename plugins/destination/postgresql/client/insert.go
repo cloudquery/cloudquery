@@ -43,10 +43,10 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 		if !ok {
 			return fmt.Errorf("table name not found in metadata")
 		}
-		table := tables.Get(tableName)
-		if table == nil {
+		if _, ok = c.pgTablesToPKConstraints[tableName]; !ok {
 			return fmt.Errorf("table %s not found", tableName)
 		}
+		table := tables.Get(tableName) // will always be present, panic should be produced if not
 		if len(table.PrimaryKeysIndexes()) > 0 {
 			sql = c.upsert(table)
 		} else {

@@ -88,7 +88,13 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 			})
 		}
 		table := tables[len(tables)-1]
-		if pkName != "" {
+		switch len(pkName) {
+		case 0: // ~ pkName == "" but without string comparison
+			if _, ok := c.pgTablesToPKConstraints[tableName]; !ok {
+				// we still store the fact that we saw the table
+				c.pgTablesToPKConstraints[tableName] = ""
+			}
+		default:
 			c.pgTablesToPKConstraints[tableName], table.PkConstraintName = pkName, pkName
 		}
 		table.Columns = append(table.Columns, schema.Column{
