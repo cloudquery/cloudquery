@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.0.0...plugins-destination-postgresql-v7.0.1) (2023-11-08)
+
+
+### Bug Fixes
+
+* Fail insert if the table to insert to is unknown to the client ([#15181](https://github.com/cloudquery/cloudquery/issues/15181)) ([817a8ac](https://github.com/cloudquery/cloudquery/commit/817a8acabe69875371558c85920b8d5fc0837fdb))
+
 ## [7.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v6.1.3...plugins-destination-postgresql-v7.0.0) (2023-11-07)
 
 
