@@ -27,6 +27,7 @@
   "integrations": {
     "title": "Integrations",
     "type": "page",
+    "display": "hidden",
     "theme": {
       "layout": "full",
       "sidebar": false

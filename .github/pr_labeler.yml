@@ -90,8 +90,6 @@ area/plugin/source/square:
   - plugins/source/square/**/*
 area/plugin/source/typeform:
   - plugins/source/typeform/**/*
-area/plugin/source/vault:
-  - plugins/source/vault/**/*
 area/plugin/source/vercel:
   - plugins/source/vercel/**/*
 area/scaffold:
