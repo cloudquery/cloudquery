@@ -140,9 +140,6 @@
       ],
       "release-type": "python"
     },
-    "plugins/source/vault": {
-      "component": "plugins-source-vault"
-    },
     "scaffold": {
       "component": "scaffold"
     }
