@@ -21,4 +21,3 @@ This table depends on [gcp_bigtableadmin_instances](gcp_bigtableadmin_instances.
 |etag|`utf8`|
 |description|`utf8`|
 |routing_policy|`json`|
-|isolation|`json`|
