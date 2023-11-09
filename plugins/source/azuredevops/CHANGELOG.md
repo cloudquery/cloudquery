@@ -3,6 +3,9 @@
 ## 1.0.0 (2023-11-09)
 
 
+### This Release has the Following Changes to Tables
+- Table `azuredevops_core_projects` was removed (:warning: breaking)
+
 ### Bug Fixes
 
 * **deps:** Update github.com/cloudquery/arrow/go/v14 digest to f46436f ([#14803](https://github.com/cloudquery/cloudquery/issues/14803)) ([f5248d7](https://github.com/cloudquery/cloudquery/commit/f5248d749398ded6a50903e09ecabbb996e94a34))
