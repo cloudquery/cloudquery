@@ -3,6 +3,35 @@
 ## 1.0.0 (2023-11-09)
 
 
+### This Release has the Following Changes to Tables
+- Table `facebookmarketing_ad_place_page_sets` was removed (:warning: breaking)
+- Table `facebookmarketing_ad_studies` was removed (:warning: breaking)
+- Table `facebookmarketing_adaccount_users` was removed (:warning: breaking)
+- Table `facebookmarketing_adaccounts` was removed (:warning: breaking)
+- Table `facebookmarketing_adcloudplayables` was removed (:warning: breaking)
+- Table `facebookmarketing_adcreatives` was removed (:warning: breaking)
+- Table `facebookmarketing_adimages` was removed (:warning: breaking)
+- Table `facebookmarketing_adlabels` was removed (:warning: breaking)
+- Table `facebookmarketing_adplayables` was removed (:warning: breaking)
+- Table `facebookmarketing_adrules` was removed (:warning: breaking)
+- Table `facebookmarketing_ads` was removed (:warning: breaking)
+- Table `facebookmarketing_adsets` was removed (:warning: breaking)
+- Table `facebookmarketing_adspixels` was removed (:warning: breaking)
+- Table `facebookmarketing_advideos` was removed (:warning: breaking)
+- Table `facebookmarketing_applications` was removed (:warning: breaking)
+- Table `facebookmarketing_broad_targeting_categories` was removed (:warning: breaking)
+- Table `facebookmarketing_businesses` was removed (:warning: breaking)
+- Table `facebookmarketing_campaigns` was removed (:warning: breaking)
+- Table `facebookmarketing_connected_instagram_accounts` was removed (:warning: breaking)
+- Table `facebookmarketing_customaudiences` was removed (:warning: breaking)
+- Table `facebookmarketing_customconversions` was removed (:warning: breaking)
+- Table `facebookmarketing_max_bids` was removed (:warning: breaking)
+- Table `facebookmarketing_offline_conversion_data_sets` was removed (:warning: breaking)
+- Table `facebookmarketing_promote_pages` was removed (:warning: breaking)
+- Table `facebookmarketing_publisher_block_lists` was removed (:warning: breaking)
+- Table `facebookmarketing_reach_frequency_predictions` was removed (:warning: breaking)
+- Table `facebookmarketing_saved_audiences` was removed (:warning: breaking)
+
 ### Bug Fixes
 
 * **deps:** Update github.com/cloudquery/arrow/go/v14 digest to f46436f ([#14803](https://github.com/cloudquery/cloudquery/issues/14803)) ([f5248d7](https://github.com/cloudquery/cloudquery/commit/f5248d749398ded6a50903e09ecabbb996e94a34))
