@@ -80,9 +80,6 @@
     "plugins/source/azure": {
       "component": "plugins-source-azure"
     },
-    "plugins/source/azuredevops": {
-      "component": "plugins-source-azuredevops"
-    },
     "plugins/source/bitbucket": {
       "component": "plugins-source-bitbucket",
       "release-type": "simple"
@@ -96,12 +93,6 @@
     "plugins/source/digitalocean": {
       "component": "plugins-source-digitalocean"
     },
-    "plugins/source/facebookmarketing": {
-      "component": "plugins-source-facebookmarketing"
-    },
-    "plugins/source/fastly": {
-      "component": "plugins-source-fastly"
-    },
     "plugins/source/firestore": {
       "component": "plugins-source-firestore"
     },
@@ -114,14 +105,8 @@
     "plugins/source/gitlab": {
       "component": "plugins-source-gitlab"
     },
-    "plugins/source/googleanalytics": {
-      "component": "plugins-source-googleanalytics"
-    },
     "plugins/source/hackernews": {
       "component": "plugins-source-hackernews"
-    },
-    "plugins/source/homebrew": {
-      "component": "plugins-source-homebrew"
     },
     "plugins/source/hubspot": {
       "component": "plugins-source-hubspot"
@@ -141,24 +126,9 @@
     "plugins/source/pagerduty": {
       "component": "plugins-source-pagerduty"
     },
-    "plugins/source/salesforce": {
-      "component": "plugins-source-salesforce"
-    },
-    "plugins/source/shopify": {
-      "component": "plugins-source-shopify"
-    },
-    "plugins/source/snyk": {
-      "component": "plugins-source-snyk"
-    },
     "plugins/source/square": {
       "component": "plugins-source-square",
       "release-type": "python"
-    },
-    "plugins/source/stripe": {
-      "component": "plugins-source-stripe"
-    },
-    "plugins/source/terraform": {
-      "component": "plugins-source-terraform"
     },
     "plugins/source/test": {
       "component": "plugins-source-test"
