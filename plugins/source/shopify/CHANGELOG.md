@@ -3,6 +3,16 @@
 ## 1.0.0 (2023-11-09)
 
 
+### This Release has the Following Changes to Tables
+- Table `shopify_abandoned_checkouts` was removed (:warning: breaking)
+- Table `shopify_customers` was removed (:warning: breaking)
+- Table `shopify_orders` was removed (:warning: breaking)
+- Table `shopify_price_rule_discount_codes` was removed (:warning: breaking)
+- Table `shopify_price_rules` was removed (:warning: breaking)
+- Table `shopify_product_images` was removed (:warning: breaking)
+- Table `shopify_product_variants` was removed (:warning: breaking)
+- Table `shopify_products` was removed (:warning: breaking)
+
 ### Bug Fixes
 
 * **deps:** Update github.com/cloudquery/arrow/go/v14 digest to f46436f ([#14803](https://github.com/cloudquery/cloudquery/issues/14803)) ([f5248d7](https://github.com/cloudquery/cloudquery/commit/f5248d749398ded6a50903e09ecabbb996e94a34))
