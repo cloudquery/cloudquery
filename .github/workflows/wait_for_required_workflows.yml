@@ -23,7 +23,7 @@ jobs:
         uses: tj-actions/changed-files@v39
       - uses: actions/github-script@v6
         env:
-          FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+          FILES: ${{ steps.changed-files.outputs.all_modified_files }}
         with:
           script: |
             const script = require('./scripts/workflows/wait_for_required_workflows.js')
