@@ -238,7 +238,7 @@ function generateFiles() {
     });
 
     // Loop through each source plugin and generate or copy MDX files
-    ALL_SOURCE_PLUGINS.forEach((source) => {
+    ALL_SOURCE_PLUGINS.filter((p) => p.availability !== 'premium' ).forEach((source) => {
       if (sources.has(source.id)) {
         throw new Error("Duplicate source id: " + source.id + ". Did you forget to remove an unpublished plugin you implemented?");
       }
