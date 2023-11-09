@@ -3,6 +3,18 @@
 ## 1.0.0 (2023-11-09)
 
 
+### This Release has the Following Changes to Tables
+- Table `snyk_dependencies` was removed (:warning: breaking)
+- Table `snyk_group_members` was removed (:warning: breaking)
+- Table `snyk_groups` was removed (:warning: breaking)
+- Table `snyk_integrations` was removed (:warning: breaking)
+- Table `snyk_organization_members` was removed (:warning: breaking)
+- Table `snyk_organization_provisions` was removed (:warning: breaking)
+- Table `snyk_organizations` was removed (:warning: breaking)
+- Table `snyk_projects` was removed (:warning: breaking)
+- Table `snyk_reporting_issues` was removed (:warning: breaking)
+- Table `snyk_reporting_latest_issues` was removed (:warning: breaking)
+
 ### Bug Fixes
 
 * **deps:** Update github.com/cloudquery/arrow/go/v14 digest to f46436f ([#14803](https://github.com/cloudquery/cloudquery/issues/14803)) ([f5248d7](https://github.com/cloudquery/cloudquery/commit/f5248d749398ded6a50903e09ecabbb996e94a34))
