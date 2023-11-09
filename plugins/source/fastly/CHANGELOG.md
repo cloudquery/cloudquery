@@ -3,6 +3,18 @@
 ## 1.0.0 (2023-11-09)
 
 
+### This Release has the Following Changes to Tables
+- Table `fastly_account_events` was removed (:warning: breaking)
+- Table `fastly_account_users` was removed (:warning: breaking)
+- Table `fastly_auth_tokens` was removed (:warning: breaking)
+- Table `fastly_service_backends` was removed (:warning: breaking)
+- Table `fastly_service_domains` was removed (:warning: breaking)
+- Table `fastly_service_health_checks` was removed (:warning: breaking)
+- Table `fastly_service_versions` was removed (:warning: breaking)
+- Table `fastly_services` was removed (:warning: breaking)
+- Table `fastly_stats_regions` was removed (:warning: breaking)
+- Table `fastly_stats_services` was removed (:warning: breaking)
+
 ### Bug Fixes
 
 * **deps:** Update github.com/cloudquery/arrow/go/v14 digest to f46436f ([#14803](https://github.com/cloudquery/cloudquery/issues/14803)) ([f5248d7](https://github.com/cloudquery/cloudquery/commit/f5248d749398ded6a50903e09ecabbb996e94a34))
