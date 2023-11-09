@@ -3,6 +3,17 @@
 ## [3.0.14](https://github.com/cloudquery/cloudquery/compare/plugins-source-homebrew-v3.0.13...plugins-source-homebrew-v3.0.14) (2023-11-09)
 
 
+### This Release has the Following Changes to Tables
+- Table `homebrew_analytics_build_errors_30d` was removed (:warning: breaking)
+- Table `homebrew_analytics_build_errors_365d` was removed (:warning: breaking)
+- Table `homebrew_analytics_build_errors_90d` was removed (:warning: breaking)
+- Table `homebrew_analytics_cask_installs_30d` was removed (:warning: breaking)
+- Table `homebrew_analytics_cask_installs_365d` was removed (:warning: breaking)
+- Table `homebrew_analytics_cask_installs_90d` was removed (:warning: breaking)
+- Table `homebrew_analytics_installs_30d` was removed (:warning: breaking)
+- Table `homebrew_analytics_installs_365d` was removed (:warning: breaking)
+- Table `homebrew_analytics_installs_90d` was removed (:warning: breaking)
+
 ### Bug Fixes
 
 * **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.4.2 ([#15034](https://github.com/cloudquery/cloudquery/issues/15034)) ([45c2caa](https://github.com/cloudquery/cloudquery/commit/45c2caa345aa33199ad1592bf378a5a839612c6f))
