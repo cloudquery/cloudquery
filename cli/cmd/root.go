@@ -138,6 +138,7 @@ func NewCmdRoot() *cobra.Command {
 		Short: "Addon commands",
 	}
 	addonCmd.AddCommand(
+		newCmdAddonDownload(),
 		newCmdAddonPublish(),
 	)
 

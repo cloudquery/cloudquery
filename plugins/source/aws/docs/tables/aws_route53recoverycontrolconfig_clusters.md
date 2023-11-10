@@ -17,4 +17,5 @@ The primary key for this table is **arn**.
 |cluster_arn|`utf8`|
 |cluster_endpoints|`json`|
 |name|`utf8`|
+|owner|`utf8`|
 |status|`utf8`|

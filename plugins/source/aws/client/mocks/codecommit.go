@@ -815,6 +815,36 @@ func (mr *MockCodecommitClientMockRecorder) ListBranches(arg0, arg1 interface{},
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListBranches", reflect.TypeOf((*MockCodecommitClient)(nil).ListBranches), varargs...)
 }
 
+// ListFileCommitHistory mocks base method.
+func (m *MockCodecommitClient) ListFileCommitHistory(arg0 context.Context, arg1 *codecommit.ListFileCommitHistoryInput, arg2 ...func(*codecommit.Options)) (*codecommit.ListFileCommitHistoryOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &codecommit.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListFileCommitHistory")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListFileCommitHistory", varargs...)
+	ret0, _ := ret[0].(*codecommit.ListFileCommitHistoryOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListFileCommitHistory indicates an expected call of ListFileCommitHistory.
+func (mr *MockCodecommitClientMockRecorder) ListFileCommitHistory(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListFileCommitHistory", reflect.TypeOf((*MockCodecommitClient)(nil).ListFileCommitHistory), varargs...)
+}
+
 // ListPullRequests mocks base method.
 func (m *MockCodecommitClient) ListPullRequests(arg0 context.Context, arg1 *codecommit.ListPullRequestsInput, arg2 ...func(*codecommit.Options)) (*codecommit.ListPullRequestsOutput, error) {
 

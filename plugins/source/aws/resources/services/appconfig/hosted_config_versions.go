@@ -72,7 +72,7 @@ func getHostedConfiguration(ctx context.Context, meta schema.ClientMeta, resourc
 	input := appconfig.GetHostedConfigurationVersionInput{
 		ApplicationId:          hostedConfigurationVersionSummary.ApplicationId,
 		ConfigurationProfileId: hostedConfigurationVersionSummary.ConfigurationProfileId,
-		VersionNumber:          hostedConfigurationVersionSummary.VersionNumber,
+		VersionNumber:          aws.Int32(hostedConfigurationVersionSummary.VersionNumber),
 	}
 	output, err := svc.GetHostedConfigurationVersion(ctx, &input, func(o *appconfig.Options) { o.Region = cl.Region })
 	if err != nil {

@@ -365,6 +365,36 @@ func (mr *MockApprunnerClientMockRecorder) ListServices(arg0, arg1 interface{}, 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListServices", reflect.TypeOf((*MockApprunnerClient)(nil).ListServices), varargs...)
 }
 
+// ListServicesForAutoScalingConfiguration mocks base method.
+func (m *MockApprunnerClient) ListServicesForAutoScalingConfiguration(arg0 context.Context, arg1 *apprunner.ListServicesForAutoScalingConfigurationInput, arg2 ...func(*apprunner.Options)) (*apprunner.ListServicesForAutoScalingConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &apprunner.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListServicesForAutoScalingConfiguration")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListServicesForAutoScalingConfiguration", varargs...)
+	ret0, _ := ret[0].(*apprunner.ListServicesForAutoScalingConfigurationOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListServicesForAutoScalingConfiguration indicates an expected call of ListServicesForAutoScalingConfiguration.
+func (mr *MockApprunnerClientMockRecorder) ListServicesForAutoScalingConfiguration(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListServicesForAutoScalingConfiguration", reflect.TypeOf((*MockApprunnerClient)(nil).ListServicesForAutoScalingConfiguration), varargs...)
+}
+
 // ListTagsForResource mocks base method.
 func (m *MockApprunnerClient) ListTagsForResource(arg0 context.Context, arg1 *apprunner.ListTagsForResourceInput, arg2 ...func(*apprunner.Options)) (*apprunner.ListTagsForResourceOutput, error) {
 

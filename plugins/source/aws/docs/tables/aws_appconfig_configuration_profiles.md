@@ -26,6 +26,8 @@ The following tables depend on aws_appconfig_configuration_profiles:
 |application_id|`utf8`|
 |description|`utf8`|
 |id|`utf8`|
+|kms_key_arn|`utf8`|
+|kms_key_identifier|`utf8`|
 |location_uri|`utf8`|
 |name|`utf8`|
 |retrieval_role_arn|`utf8`|

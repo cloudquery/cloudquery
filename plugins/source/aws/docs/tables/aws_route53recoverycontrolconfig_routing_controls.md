@@ -20,5 +20,6 @@ This table depends on [aws_route53recoverycontrolconfig_control_panels](aws_rout
 |arn (PK)|`utf8`|
 |control_panel_arn (PK)|`utf8`|
 |name|`utf8`|
+|owner|`utf8`|
 |routing_control_arn|`utf8`|
 |status|`utf8`|

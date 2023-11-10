@@ -74,7 +74,7 @@ func getMqBrokerConfigurationRevision(ctx context.Context, meta schema.ClientMet
 	rev := resource.Item.(types.ConfigurationRevision)
 	cfg := resource.Parent.Item.(mq.DescribeConfigurationOutput)
 
-	revId := strconv.Itoa(int(rev.Revision))
+	revId := strconv.Itoa(int(aws.ToInt32(rev.Revision)))
 	output, err := svc.DescribeConfigurationRevision(ctx, &mq.DescribeConfigurationRevisionInput{ConfigurationId: cfg.Id, ConfigurationRevision: &revId}, func(options *mq.Options) {
 		options.Region = cl.Region
 	})

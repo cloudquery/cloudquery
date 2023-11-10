@@ -23,8 +23,10 @@ This table depends on [aws_servicequotas_services](aws_servicequotas_services.md
 |error_reason|`json`|
 |global_quota|`bool`|
 |period|`json`|
+|quota_applied_at_level|`utf8`|
 |quota_arn|`utf8`|
 |quota_code|`utf8`|
+|quota_context|`json`|
 |quota_name|`utf8`|
 |service_code|`utf8`|
 |service_name|`utf8`|
