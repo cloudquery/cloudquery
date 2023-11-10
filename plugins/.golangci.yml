@@ -50,8 +50,6 @@ linters-settings:
         disabled: true
       - name: unhandled-error
         disabled: true
-      - name: unchecked-type-assertion
-        disabled: true
       - name: var-naming
         disabled: true
       - name: deep-exit
@@ -69,6 +67,8 @@ linters-settings:
       - name: flag-parameter
         disabled: true
       - name: nested-structs
+        disabled: true
+      - name: unchecked-type-assertion
         disabled: true
       - name: import-alias-naming
         disabled: true
