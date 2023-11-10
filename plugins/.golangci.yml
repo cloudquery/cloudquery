@@ -70,6 +70,8 @@ linters-settings:
         disabled: true
       - name: nested-structs
         disabled: true
+      - name: import-alias-naming
+        disabled: true
 
   gofmt:
     rewrite-rules:
