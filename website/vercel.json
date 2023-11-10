@@ -853,6 +853,10 @@
     {
       "source": "/integrations/vercel",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/vercel"
+    },
+    {
+      "source": "/docs/plugins/destinations/overview",
+      "destination": "https://hub.cloudquery.io/plugins/destination"
     }
   ]
 }
