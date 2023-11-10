@@ -2,4 +2,4 @@ cloudquery-plugin-sdk==0.1.8
 pyarrow==13.0.0
 requests==2.31.0
 pytest==7.4.2
-pandas==2.1.1
+pandas==2.1.2
