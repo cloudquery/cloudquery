@@ -29,31 +29,3 @@ The following tables depend on aws_accessanalyzer_analyzers:
 |last_resource_analyzed_at|`timestamp[us, tz=UTC]`|
 |status_reason|`json`|
 |tags|`json`|
-
-## Example Queries
-
-These SQL queries are sampled from CloudQuery policies and are compatible with PostgreSQL.
-
-### Ensure that IAM Access analyzer is enabled for all regions (Automated)
-
-```sql
-SELECT
-  'Ensure that IAM Access analyzer is enabled for all regions (Automated)'
-    AS title,
-  ar.account_id,
-  ar.region AS resource_id,
-  CASE
-  WHEN ar.enabled
-  AND aregion.region IS NULL
-  AND aregion.status IS DISTINCT FROM 'ACTIVE'
-  THEN 'fail'
-  ELSE 'pass'
-  END
-    AS status
-FROM
-  aws_regions AS ar
-  LEFT JOIN aws_accessanalyzer_analyzers AS aregion ON
-      ar.region = aregion.region;
-```
-
-
