@@ -37,7 +37,6 @@ gen-docs: build
 	rm -rf docs/tables
 	cloudquery tables --format markdown --output-dir docs test/config.yml
 	mv docs/$(shell basename $(CURDIR)) docs/tables
-	go run scripts/example_queries/main.go policies/queries docs/tables
 
 .PHONY: gen-spec-schema
 gen-spec-schema:
