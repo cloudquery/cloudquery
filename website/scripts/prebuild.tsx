@@ -14,39 +14,6 @@ const outputDir = "./integrations";
 const mdxSourceComponentDir = "./components/mdx/plugins/source";
 const mdxDestinationComponentDir = "./components/mdx/plugins/destination";
 
-function getPluginRedirectContent(plugin: Plugin, licenseType: string, licenseName: string) {
-   return `---
-title: Buy ${plugin.name} (${licenseName})
----
-
-import Head from "next/head";
-
-<Head>
-  <meta httpEquiv="refresh" content="5; url='${plugin.buyLinks[licenseType]}'" />
-</Head>
-
-## Purchase ${plugin.name} (${licenseName}${(plugin.availability === "unpublished") ? " - Pre-order" : ""})
-
-You will be redirected to a Stripe checkout page to complete your purchase in 5 seconds…
-
-If the page does not redirect automatically, please click this link: [${plugin.buyLinks[licenseType]}](${plugin.buyLinks[licenseType]})
-`;
-}
-
-function createPluginBuyRedirects() {
-    const buyDir = `./pages/buy`;
-    ALL_PLUGINS.forEach((plugin) => {
-        if (plugin.buyLinks && plugin.buyLinks['standard']) {
-            const filePath = path.join(buyDir, `${plugin.id}-standard.mdx`);
-            fs.writeFileSync(filePath, getPluginRedirectContent(plugin, 'standard', "Standard License"));
-        }
-        if (plugin.buyLinks && plugin.buyLinks['extended']) {
-            const filePath = path.join(buyDir, `${plugin.id}-extended.mdx`);
-            fs.writeFileSync(filePath, getPluginRedirectContent(plugin, 'extended', "Extended License"));
-        }
-    });
-}
-
 
 function getPolicyRedirectContent(policy: Policy, licenseType: string, licenseName: string) {
     return `---
@@ -65,36 +32,6 @@ You will be redirected to a Stripe checkout page to complete your purchase in 5 
 
 If the page does not redirect automatically, please click this link: [${policy.buyLinks[licenseType]}](${policy.buyLinks[licenseType]})
 `;
-}
-
-function getPolicySignupContent(policy: Policy, licenseName: string) {
-    return `---
-title: Buy ${policy.name} (${licenseName})
----
-
-## Purchase ${policy.name} (${licenseName})
-
-This policy is currently only accessible through our early access program. [Get in touch](/contact-policies).
-`;
-}
-
-function createPolicyBuyRedirects() {
-    const buyDir = `./pages/buy`;
-    ALL_PREMIUM_POLICIES.forEach((policy) => {
-        if (!policy.availableForPurchase) {
-            fs.writeFileSync(path.join(buyDir, `${policy.id}-standard.mdx`), getPolicySignupContent(policy, "Standard License"));
-            fs.writeFileSync(path.join(buyDir, `${policy.id}-extended.mdx`), getPolicySignupContent(policy, "Extended License"));
-            return;
-        }
-        if (policy.buyLinks && policy.buyLinks['standard']) {
-            const filePath = path.join(buyDir, `${policy.id}-standard.mdx`);
-            fs.writeFileSync(filePath, getPolicyRedirectContent(policy, 'standard', "Standard License"));
-        }
-        if (policy.buyLinks && policy.buyLinks['extended']) {
-            const filePath = path.join(buyDir, `${policy.id}-extended.mdx`);
-            fs.writeFileSync(filePath, getPolicyRedirectContent(policy, 'extended', "Extended License"));
-        }
-    });
 }
 
 
@@ -292,7 +229,5 @@ function generateFiles() {
 
 
 generateFiles()
-createPluginBuyRedirects()
-createPolicyBuyRedirects()
 
 console.log("MDX files generated successfully!");
