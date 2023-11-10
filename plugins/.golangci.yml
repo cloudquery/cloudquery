@@ -72,6 +72,8 @@ linters-settings:
         disabled: true
       - name: import-alias-naming
         disabled: true
+      - name: redundant-import-alias
+        disabled: true
 
   gofmt:
     rewrite-rules:
