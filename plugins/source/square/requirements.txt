@@ -1,5 +1,5 @@
 black==23.9.1
 cloudquery-plugin-sdk==0.1.7
-pyarrow==14.0.1
+pyarrow==13.0.0
 squareup==29.0.0.20230720
 pytest==7.4.2
