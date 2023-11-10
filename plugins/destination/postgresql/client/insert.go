@@ -34,8 +34,12 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 		return err
 	}
 
-	var sql string
 	batch := &pgx.Batch{}
+
+	// Queries cache.
+	// We may consider LRU cache in the future, but even for 10K records it may be OK to just save.
+	queries := make(map[string]string, 100)
+
 	for _, msg := range messages {
 		r := msg.Record
 		md := r.Schema().Metadata()
@@ -46,12 +50,19 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 		if _, ok = c.pgTablesToPKConstraints[tableName]; !ok {
 			return fmt.Errorf("table %s not found", tableName)
 		}
-		table := tables.Get(tableName) // will always be present, panic should be produced if not
-		if len(table.PrimaryKeysIndexes()) > 0 {
-			sql = c.upsert(table)
-		} else {
-			sql = c.insert(table)
+
+		sql, ok := queries[tableName]
+		if !ok {
+			// cache the query
+			table := tables.Get(tableName) // will always be present, panic should be produced if not
+			if len(table.PrimaryKeysIndexes()) > 0 {
+				sql = c.upsert(table)
+			} else {
+				sql = c.insert(table)
+			}
+			queries[tableName] = sql
 		}
+
 		rows := transformValues(r)
 		for _, rowVals := range rows {
 			batch.Queue(sql, rowVals...)
