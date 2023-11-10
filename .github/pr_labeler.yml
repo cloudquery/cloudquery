@@ -50,8 +50,6 @@ area/plugin/source/awspricing:
   - plugins/source/awspricing/**/*
 area/plugin/source/azure:
   - plugins/source/azure/**/*
-area/plugin/source/azuredevops:
-  - plugins/source/azuredevops/**/*
 area/plugin/source/bitbucket:
   - plugins/source/bitbucket/**/*
 area/plugin/source/cloudflare:
@@ -60,10 +58,6 @@ area/plugin/source/datadog:
   - plugins/source/datadog/**/*
 area/plugin/source/digitalocean:
   - plugins/source/digitalocean/**/*
-area/plugin/source/facebookmarketing:
-  - plugins/source/facebookmarketing/**/*
-area/plugin/source/fastly:
-  - plugins/source/fastly/**/*
 area/plugin/source/firestore:
   - plugins/source/firestore/**/*
 area/plugin/source/gandi:
@@ -76,22 +70,12 @@ area/plugin/source/gitlab:
   - plugins/source/gitlab/**/*
 area/plugin/source/googleads:
   - plugins/source/googleads/**/*
-area/plugin/source/googleanalytics:
-  - plugins/source/googleanalytics/**/*
 area/plugin/source/hackernews:
   - plugins/source/hackernews/**/*
-area/plugin/source/heroku:
-  - plugins/source/heroku/**/*
-area/plugin/source/homebrew:
-  - plugins/source/homebrew/**/*
 area/plugin/source/hubspot:
   - plugins/source/hubspot/**/*
 area/plugin/source/k8s:
   - plugins/source/k8s/**/*
-area/plugin/source/launchdarkly:
-  - plugins/source/launchdarkly/**/*
-area/plugin/source/mixpanel:
-  - plugins/source/mixpanel/**/*
 area/plugin/source/notion:
   - plugins/source/notion/**/*
 area/plugin/source/okta:
@@ -102,26 +86,10 @@ area/plugin/source/pagerduty:
   - plugins/source/pagerduty/**/*
 area/plugin/source/plausible:
   - plugins/source/plausible/**/*
-area/plugin/source/salesforce:
-  - plugins/source/salesforce/**/*
-area/plugin/source/shopify:
-  - plugins/source/shopify/**/*
-area/plugin/source/slack:
-  - plugins/source/slack/**/*
-area/plugin/source/snyk:
-  - plugins/source/snyk/**/*
 area/plugin/source/square:
   - plugins/source/square/**/*
-area/plugin/source/stripe:
-  - plugins/source/stripe/**/*
-area/plugin/source/tailscale:
-  - plugins/source/tailscale/**/*
-area/plugin/source/terraform:
-  - plugins/source/terraform/**/*
 area/plugin/source/typeform:
   - plugins/source/typeform/**/*
-area/plugin/source/vault:
-  - plugins/source/vault/**/*
 area/plugin/source/vercel:
   - plugins/source/vercel/**/*
 area/scaffold:
