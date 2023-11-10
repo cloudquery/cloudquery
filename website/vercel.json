@@ -751,6 +751,54 @@
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/file"
     },
     {
+      "source": "/integrations/salesforce",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/salesforce"
+    },
+    {
+      "source": "/integrations/azuredevops",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/azuredevops"
+    },
+    {
+      "source": "/integrations/facebookmarketing",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/facebookmarketing"
+    },
+    {
+      "source": "/integrations/fastly",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/fastly"
+    },
+    {
+      "source": "/integrations/googleanalytics",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/googleanalytics"
+    },
+    {
+      "source": "/integrations/homebrew",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/homebrew"
+    },
+    {
+      "source": "/integrations/hubspot",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/hubspot"
+    },
+    {
+      "source": "/integrations/shopify",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/shopify"
+    },
+    {
+      "source": "/integrations/snyk",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/snyk"
+    },
+    {
+      "source": "/integrations/stripe",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/stripe"
+    },
+    {
+      "source": "/integrations/terraform",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/terraform"
+    },
+    {
+      "source": "/integrations/mongodbatlas",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/mongodbatlas"
+    },
+    {
       "source": "/integrations/gandi",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/gandi"
     },
