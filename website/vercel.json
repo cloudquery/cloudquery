@@ -849,6 +849,10 @@
     {
       "source": "/docs/plugins",
       "destination": "https://hub.cloudquery.io"
+    },
+    {
+      "source": "/docs/plugins/overview",
+      "destination": "https://hub.cloudquery.io"
     }
   ]
 }
