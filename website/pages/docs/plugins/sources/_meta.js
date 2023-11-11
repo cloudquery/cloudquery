@@ -15,7 +15,7 @@ const getMeta = () => {
   );
   const meta = {
     overview: "Overview",
-    ...Object.fromEntries(asMeta),
+    // ...Object.fromEntries(asMeta),
   };
   return meta;
 };
