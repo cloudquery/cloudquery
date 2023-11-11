@@ -2,7 +2,9 @@
   "index": "Introduction",
   "quickstart": "Quickstart",
   "core-concepts": "Core Concepts",
-  "plugins": "Plugins",
+  "plugins": {
+    "display": "hidden"
+  },
   "deployment": "Deployment",
   "advanced-topics": "Advanced Topics",
   "developers": "Developers",

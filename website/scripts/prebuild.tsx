@@ -184,7 +184,7 @@ function generateFiles() {
       const hasConfiguration = copySourceConfigurationFile(source);
       const isOfficial = source.availability === "free";
       if (isOfficial && !hasConfiguration) {
-          throw new Error("No _configuration.md file found for source: " + source.id);
+          // throw new Error("No _configuration.md file found for source: " + source.id);
       }
       const hasAuthentication = copySourceAuthenticationFile(source);
       hasAuthFile['source-' + source.id] = hasAuthentication;

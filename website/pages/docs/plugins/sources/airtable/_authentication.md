@@ -1,1 +1,0 @@
-In order to fetch information from Airtable, `cloudquery` needs to authenticate using a [personal access token for Airtable's API](https://airtable.com/developers/web/guides/personal-access-tokens). Follow the instructions on the Airtable website and create a read-only token with `data.records:read` and `schema.bases:read` scopes.
