@@ -1,0 +1,1 @@
+In order to fetch information from Vercel, `cloudquery` needs to be authenticated. An access token is required for authentication. You can create a new access token in [Vercel's Account Tokens Page](https://vercel.com/account/tokens).

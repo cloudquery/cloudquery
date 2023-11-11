@@ -1,0 +1,73 @@
+---
+name: Plausible
+stage: GA (Premium)
+title: Plausible Source Plugin
+description: CloudQuery Plausible source plugin documentation
+---
+# Plausible Analytics Source Plugin
+
+:badge{text="Premium"}
+
+This is a premium plugin that you can buy [here](/integrations/plausible).
+
+The CloudQuery Plausible plugin extracts information from your [Plausible Analytics Stats API](https://plausible.io/docs/stats-api#get-apiv1statstimeseries) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
+
+## Authentication
+
+:authentication
+
+## Configuration
+
+This example syncs analytics from plausible API to a specified CQ destination. Running the following job on a daily basis will keep your db up to date with the latest events and without duplicates (as long as you use `overwrite` write mode).
+
+:configuration
+
+:::callout{type="info"}
+Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
+:::
+
+## Plausible Spec
+
+This is the (nested) spec used by this plugin:
+
+- `site_id` (string, required):
+   
+  This is the value of your domain where plausible is deployed. If you're unsure, navigate to your site settings in Plausible and grab the value of the domain field.
+
+- `api_key` (string, required):
+
+  This is your secret API key which you can obtain for your account by going to your user settings page [plausible.io/settings](https://plausible.io/settings).
+
+- `period` (string, optional, default: `30d`):
+
+  [Time period](https://plausible.io/docs/stats-api#time-periods) to fetch data.
+
+- `Filters` (string, optional, default: `null`):
+  
+  Filter results, see [Plausible Analytics Filters](https://plausible.io/docs/stats-api#filtering).
+
+- `metrics` (string array, optional, default: `["visitors", "pageviews", "bounce_rate", "visit_duration", "visits"]`):
+
+  By default the plugin will sync all metrics.
+
+- `interval` (string array, optional, `date`):
+    
+  Choose your reporting interval. Valid options are `date` (always) and month (when specified period is longer than one calendar month).
+
+- `base_url` (string, optional, `https://plausible.io`):
+    
+  Base URL for the Plausible API. If you are using self-hosted version this should be changed to the domain where plausible is hosted.
+
+## Example Queries
+
+### Sum all visitors since date
+
+```sql copy
+select sum(visitors) from plausible_stats_timeseries where date >= '2021-01-01';
+```
+
+### Select all dates where bounce rate was above 50%
+
+```sql copy
+select date, bounce_rate from plausible_stats_timeseries where bounce_rate > 50;
+```
