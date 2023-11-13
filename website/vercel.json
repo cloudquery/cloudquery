@@ -745,6 +745,118 @@
     {
       "source": "/docs/plugins/destinations/sqlite/:path*",
       "destination": "https://hub.cloudquery.io/plugins/destination/cloudquery/sqlite"
+    },
+    {
+      "source": "/integrations/file",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/file"
+    },
+    {
+      "source": "/integrations/salesforce",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/salesforce"
+    },
+    {
+      "source": "/integrations/azuredevops",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/azuredevops"
+    },
+    {
+      "source": "/integrations/facebookmarketing",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/facebookmarketing"
+    },
+    {
+      "source": "/integrations/fastly",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/fastly"
+    },
+    {
+      "source": "/integrations/googleanalytics",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/googleanalytics"
+    },
+    {
+      "source": "/integrations/homebrew",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/homebrew"
+    },
+    {
+      "source": "/integrations/shopify",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/shopify"
+    },
+    {
+      "source": "/integrations/snyk",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/snyk"
+    },
+    {
+      "source": "/integrations/stripe",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/stripe"
+    },
+    {
+      "source": "/integrations/terraform",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/terraform"
+    },
+    {
+      "source": "/integrations/mongodbatlas",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/mongodbatlas"
+    },
+    {
+      "source": "/integrations/gandi",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/gandi"
+    },
+    {
+      "source": "/integrations/googleads",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/googleads"
+    },
+    {
+      "source": "/integrations/heroku",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/heroku"
+    },
+    {
+      "source": "/integrations/jira",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/jira"
+    },
+    {
+      "source": "/integrations/launchdarkly",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/launchdarkly"
+    },
+    {
+      "source": "/integrations/mixpanel",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/mixpanel"
+    },
+    {
+      "source": "/integrations/mysql",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/mysql"
+    },
+    {
+      "source": "/integrations/oracledb",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/oracledb"
+    },
+    {
+      "source": "/integrations/plausible",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/plausible"
+    },
+    {
+      "source": "/integrations/postgresql",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/postgresql"
+    },
+    {
+      "source": "/integrations/render",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/render"
+    },
+    {
+      "source": "/integrations/slack",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/slack"
+    },
+    {
+      "source": "/integrations/tailscale",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/tailscale"
+    },
+    {
+      "source": "/integrations/vault",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/vault"
+    },
+    {
+      "source": "/integrations/vercel",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/vercel"
+    },
+    {
+      "source": "/docs/plugins/destinations/overview",
+      "destination": "https://hub.cloudquery.io/plugins/destination"
     }
   ]
 }

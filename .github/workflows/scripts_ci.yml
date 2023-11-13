@@ -30,7 +30,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.54.2
+          version: v1.55.2
           working-directory: scripts/table_diff
       - name: Test
         run: go test ./...
