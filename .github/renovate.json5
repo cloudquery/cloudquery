@@ -20,7 +20,7 @@
       allowedVersions: "<5",
     },
     {
-      matchPackageNames: ["github.com/cloudquery/plugin-pb-go"],
+      matchPackageNames: ["github.com/cloudquery/plugin-pb-go", "github.com/cloudquery/cloudquery-api-go"],
       matchFileNames: ["plugins/**"],
       enabled: false,
     },
