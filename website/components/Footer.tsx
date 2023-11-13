@@ -41,8 +41,8 @@ const navigation = {
     { name: "Blog", href: "/blog" },
     { name: "Case Studies", href: "/case-studies" },
     {
-      name: "Releases",
-      href: "https://github.com/cloudquery/cloudquery/releases",
+      name: "Integrations",
+      href: "/integrations",
     },
     { name: "FAQ", href: "/docs/faq" },
   ],

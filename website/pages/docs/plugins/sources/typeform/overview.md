@@ -8,7 +8,7 @@ description: CloudQuery Typeform source plugin documentation
 
 :badge
 
-The CloudQuery Typeform plugin pulls data from [Typeform](https://www.typeform.com/) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
+The CloudQuery Typeform plugin pulls data from [Typeform](https://www.typeform.com/) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](https://hub.cloudquery.io/plugins/destination)).
 
 See [tables](/docs/plugins/sources/typeform/tables) for a list of resources supported.
 

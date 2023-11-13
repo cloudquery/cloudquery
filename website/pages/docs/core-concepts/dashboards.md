@@ -38,7 +38,7 @@ For more information visit our [premium policies page](/docs/core-concepts/polic
 
 ## Building Custom Dashboards
 
-Custom dashboards can be built with different BI tools such as Grafana, Apache Superset, QuickSight, PowerBI.  These can be layered on top of CloudQuery synced data in the [destination of your choice](/docs/plugins/destinations/overview).  These reference solutions are built on a PostgreSQL and Grafana architecture.  For other possible solutions and architecture, reach out to the CloudQuery team.
+Custom dashboards can be built with different BI tools such as Grafana, Apache Superset, QuickSight, PowerBI.  These can be layered on top of CloudQuery synced data in the [destination of your choice](https://hub.cloudquery.io/plugins/destination).  These reference solutions are built on a PostgreSQL and Grafana architecture.  For other possible solutions and architecture, reach out to the CloudQuery team.
 
 ## Contact Us
 

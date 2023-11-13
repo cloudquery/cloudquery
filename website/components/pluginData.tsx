@@ -77,7 +77,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/azuredevops.svg",
     id: "azuredevops",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
   },
   {
@@ -137,7 +137,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/meta.svg",
     id: "facebookmarketing",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "marketing-analytics",
   },
   {
@@ -145,7 +145,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/fastly.svg",
     id: "fastly",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
   },
   {
@@ -207,7 +207,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/ga.svg",
     id: "googleanalytics",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "marketing-analytics",
   },
   {
@@ -244,7 +244,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/homebrew.svg",
     id: "homebrew",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "marketing-analytics",
   },
   {
@@ -373,7 +373,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/salesforce.svg",
     id: "salesforce",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "marketing-analytics",
   },
   {
@@ -408,7 +408,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/shopify.svg",
     id: "shopify",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "marketing-analytics",
   },
   {
@@ -437,7 +437,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/snyk.svg",
     id: "snyk",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "security",
   },
   {
@@ -445,7 +445,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/stripe.svg",
     id: "stripe",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-finops",
   },
   {
@@ -466,7 +466,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/terraform.svg",
     id: "terraform",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
   },
   {
@@ -824,7 +824,7 @@ export const ALL_PLUGINS: Plugin[] = [
     name: "HashiCorp Vault",
     id: "vault",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
     logo: "/images/logos/plugins/hashicorp-vault.svg",
     logoDark: "/images/logos/plugins/hashicorp-vault-dark.svg",
