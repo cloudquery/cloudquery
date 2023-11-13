@@ -244,7 +244,7 @@
     },
     {
       "source": "/docs/plugins/destinations/csv/overview",
-      "destination": "https://hub.cloudquery.io/plugins/destination/cloudquery/file/"
+      "destination": "https://hub.cloudquery.io/plugins/destination/cloudquery/file"
     },
     {
       "source": "/docs/advanced-topics/docker",
