@@ -27,6 +27,30 @@
 - Table `pagerduty_users` was removed (:warning: breaking)
 - Table `pagerduty_vendors` was removed (:warning: breaking)
 
+### This Release has the Following Changes to Tables
+- Table `pagerduty_addons` was removed (:warning: breaking)
+- Table `pagerduty_business_services` was removed (:warning: breaking)
+- Table `pagerduty_escalation_policies` was removed (:warning: breaking)
+- Table `pagerduty_extension_schemas` was removed (:warning: breaking)
+- Table `pagerduty_extensions` was removed (:warning: breaking)
+- Table `pagerduty_incident_alerts` was removed (:warning: breaking)
+- Table `pagerduty_incident_log_entries` was removed (:warning: breaking)
+- Table `pagerduty_incident_notes` was removed (:warning: breaking)
+- Table `pagerduty_incidents` was removed (:warning: breaking)
+- Table `pagerduty_maintenance_windows` was removed (:warning: breaking)
+- Table `pagerduty_priorities` was removed (:warning: breaking)
+- Table `pagerduty_ruleset_rules` was removed (:warning: breaking)
+- Table `pagerduty_rulesets` was removed (:warning: breaking)
+- Table `pagerduty_schedules` was removed (:warning: breaking)
+- Table `pagerduty_service_rules` was removed (:warning: breaking)
+- Table `pagerduty_services` was removed (:warning: breaking)
+- Table `pagerduty_tags` was removed (:warning: breaking)
+- Table `pagerduty_teams` was removed (:warning: breaking)
+- Table `pagerduty_user_contact_methods` was removed (:warning: breaking)
+- Table `pagerduty_user_notification_rules` was removed (:warning: breaking)
+- Table `pagerduty_users` was removed (:warning: breaking)
+- Table `pagerduty_vendors` was removed (:warning: breaking)
+
 ### Bug Fixes
 
 * **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.4.2 ([#15034](https://github.com/cloudquery/cloudquery/issues/15034)) ([45c2caa](https://github.com/cloudquery/cloudquery/commit/45c2caa345aa33199ad1592bf378a5a839612c6f))
