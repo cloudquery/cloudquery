@@ -161,9 +161,7 @@ func downloadAddonFromResponse(res *http.Response, expectedChecksum, targetDir s
 	}
 
 	writtenChecksum := fmt.Sprintf("%x", shaWriter.Sum(nil))
-	if expectedChecksum == "" {
-		fmt.Fprintf(os.Stderr, "Warning - checksum not verified: %s\n", writtenChecksum)
-	} else if writtenChecksum != expectedChecksum {
+	if writtenChecksum != expectedChecksum {
 		return fmt.Errorf("checksum mismatch: expected %s, got %s", expectedChecksum, writtenChecksum)
 	}
 
