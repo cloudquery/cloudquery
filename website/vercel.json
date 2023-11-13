@@ -128,7 +128,7 @@
     },
     {
       "source": "/docs/plugins/destinations",
-      "destination": "/docs/plugins/destinations/overview"
+      "destination": "https://hub.cloudquery.io/plugins/destination"
     },
     {
       "source": "/docs/plugins/source-plugin-release-stages",
@@ -140,7 +140,7 @@
     },
     {
       "source": "/docs/recipes/destinations/:plugin",
-      "destination": "/docs/plugins/destinations/:plugin/overview"
+      "destination": "https://hub.cloudquery.io/plugins/destination/cloudquery/:plugin"
     },
     {
       "source": "/docs/recipes/overview",
@@ -244,7 +244,7 @@
     },
     {
       "source": "/docs/plugins/destinations/csv/overview",
-      "destination": "/docs/plugins/destinations/file/overview"
+      "destination": "https://hub.cloudquery.io/plugins/destination/cloudquery/file/"
     },
     {
       "source": "/docs/advanced-topics/docker",
@@ -855,7 +855,7 @@
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/vercel"
     },
     {
-      "source": "/docs/plugins/destinations/overview",
+      "source": "https://hub.cloudquery.io/plugins/destination",
       "destination": "https://hub.cloudquery.io/plugins/destination"
     }
   ]
