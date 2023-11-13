@@ -12,5 +12,5 @@ This is a premium plugin that you can buy [here](/integrations/googleads).
 
 The CloudQuery Google Ads plugin for CloudQuery pulls configuration from
 [Google Ads API](https://developers.google.com/google-ads/api/)
-and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
+and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](https://hub.cloudquery.io/plugins/destination)).
 
