@@ -24,7 +24,7 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 		}
 	}
 
-	batch := &pgx.Batch{}
+	batch := new(pgx.Batch)
 
 	// Queries cache.
 	// We may consider LRU cache in the future, but even for 10K records it may be OK to just save.
@@ -57,34 +57,33 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 		for _, rowVals := range rows {
 			batch.Queue(sql, rowVals...)
 		}
-		batchSize := batch.Len()
-		if batchSize >= c.batchSize {
-			br := c.conn.SendBatch(ctx, batch)
-			if err := br.Close(); err != nil {
-				var pgErr *pgconn.PgError
-				if !errors.As(err, &pgErr) {
-					// not recoverable error
-					return fmt.Errorf("failed to execute batch: %w", err)
-				}
-				return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
+		if batch.Len() >= c.batchSize {
+			if err := c.flushBatch(ctx, batch); err != nil {
+				return err
 			}
-			batch = &pgx.Batch{}
+			batch = new(pgx.Batch)
 		}
 	}
 
-	batchSize := batch.Len()
-	if batchSize > 0 {
-		br := c.conn.SendBatch(ctx, batch)
-		if err := br.Close(); err != nil {
-			var pgErr *pgconn.PgError
-			if !errors.As(err, &pgErr) {
-				// not recoverable error
-				return fmt.Errorf("failed to execute batch: %w", err)
-			}
-			return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
-		}
+	return c.flushBatch(ctx, batch)
+}
+
+func (c *Client) flushBatch(ctx context.Context, batch *pgx.Batch) error {
+	if batch.Len() == 0 {
+		return nil
 	}
-	return nil
+	err := c.conn.SendBatch(ctx, batch).Close()
+	if err == nil {
+		return nil
+	}
+
+	var pgErr *pgconn.PgError
+	if errors.As(err, &pgErr) {
+		return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
+	}
+
+	// not recoverable error
+	return fmt.Errorf("failed to execute batch: %w", err)
 }
 
 func (*Client) insert(table *schema.Table) string {
