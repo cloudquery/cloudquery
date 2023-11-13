@@ -1,5 +1,9 @@
 {
   "overview": "Overview",
   "sources": "Sources",
-  "destinations": "Destinations"
+  "destinations": {
+    "title": "Destinations",
+    "href": "https://hub.cloudquery.io/plugins/destination",
+    "newWindow": true
+  }
 }

@@ -8,7 +8,7 @@ description: CloudQuery Square source plugin documentation
 
 :badge
 
-The CloudQuery Square plugin pulls data from [Square](https://www.squareup.com/) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
+The CloudQuery Square plugin pulls data from [Square](https://www.squareup.com/) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](https://hub.cloudquery.io/plugins/destination)).
 
 See [tables](/docs/plugins/sources/square/tables) for a list of resources supported.
 

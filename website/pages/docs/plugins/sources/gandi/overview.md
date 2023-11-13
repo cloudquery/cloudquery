@@ -10,7 +10,7 @@ description: CloudQuery Gandi source plugin documentation
 
 This is a premium plugin that you can buy [here](/integrations/gandi).
 
-The CloudQuery Gandi plugin pulls configuration out of Gandi resources and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
+The CloudQuery Gandi plugin pulls configuration out of Gandi resources and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](https://hub.cloudquery.io/plugins/destination)).
 
 ## Authentication
 
