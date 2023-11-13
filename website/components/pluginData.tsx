@@ -252,7 +252,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/hubspot.svg",
     id: "hubspot",
     kind: "source",
-    availability: "premium",
+    availability: "free",
     category: "marketing-analytics",
   },
   {

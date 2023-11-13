@@ -128,7 +128,7 @@
     },
     {
       "source": "/docs/plugins/destinations",
-      "destination": "/docs/plugins/destinations/overview"
+      "destination": "https://hub.cloudquery.io/plugins/destination"
     },
     {
       "source": "/docs/plugins/source-plugin-release-stages",
@@ -140,7 +140,7 @@
     },
     {
       "source": "/docs/recipes/destinations/:plugin",
-      "destination": "/docs/plugins/destinations/:plugin/overview"
+      "destination": "https://hub.cloudquery.io/plugins/destination/cloudquery/:plugin"
     },
     {
       "source": "/docs/recipes/overview",
@@ -244,7 +244,7 @@
     },
     {
       "source": "/docs/plugins/destinations/csv/overview",
-      "destination": "/docs/plugins/destinations/file/overview"
+      "destination": "https://hub.cloudquery.io/plugins/destination/cloudquery/file"
     },
     {
       "source": "/docs/advanced-topics/docker",
@@ -751,6 +751,50 @@
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/file"
     },
     {
+      "source": "/integrations/salesforce",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/salesforce"
+    },
+    {
+      "source": "/integrations/azuredevops",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/azuredevops"
+    },
+    {
+      "source": "/integrations/facebookmarketing",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/facebookmarketing"
+    },
+    {
+      "source": "/integrations/fastly",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/fastly"
+    },
+    {
+      "source": "/integrations/googleanalytics",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/googleanalytics"
+    },
+    {
+      "source": "/integrations/homebrew",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/homebrew"
+    },
+    {
+      "source": "/integrations/shopify",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/shopify"
+    },
+    {
+      "source": "/integrations/snyk",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/snyk"
+    },
+    {
+      "source": "/integrations/stripe",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/stripe"
+    },
+    {
+      "source": "/integrations/terraform",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/terraform"
+    },
+    {
+      "source": "/integrations/mongodbatlas",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/mongodbatlas"
+    },
+    {
       "source": "/integrations/gandi",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/gandi"
     },
@@ -809,6 +853,10 @@
     {
       "source": "/integrations/vercel",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/vercel"
+    },
+    {
+      "source": "/docs/plugins/destinations/overview",
+      "destination": "https://hub.cloudquery.io/plugins/destination"
     }
   ]
 }

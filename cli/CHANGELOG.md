@@ -5,6 +5,14 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.28.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.28.0...cli-v3.28.1) (2023-11-10)
+
+
+### Bug Fixes
+
+* Better publish command messages ([#15179](https://github.com/cloudquery/cloudquery/issues/15179)) ([efcbe0a](https://github.com/cloudquery/cloudquery/commit/efcbe0ad28e513c8206fbfea128a4216b9ae878c))
+* Improve error messages when downloads fail (upgrades plugin-pb-go to v1.13.5) ([#15215](https://github.com/cloudquery/cloudquery/issues/15215)) ([3619fc7](https://github.com/cloudquery/cloudquery/commit/3619fc758ef628cbe29bb3fa795d45212ee8cb5d))
+
 ## [3.28.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.27.3...cli-v3.28.0) (2023-11-07)
 
 

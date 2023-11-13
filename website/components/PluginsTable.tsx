@@ -24,6 +24,8 @@ const TableRow = ({ type, name, id, stage, meta = () => null, openInHub = false 
   { target: "_blank", href: `https://hub.cloudquery.io/plugins/${type}/cloudquery/${id}` } : { href:`/docs/plugins/${pluralize[type]}/${id}/overview` };
   const tablesLinkProps =  openInHub ? 
   { target: "_blank", href: `https://hub.cloudquery.io/plugins/${type}/cloudquery/${id}/tables` } : { href: `/docs/plugins/sources/${id}/tables` };
+  const changeLogProps = openInHub ?
+  { target: "_blank", href: `https://hub.cloudquery.io/plugins/${type}/cloudquery/${id}` } : { target: "_blank", href: `https://github.com/cloudquery/cloudquery/blob/main/plugins/${type}/${id}/CHANGELOG.md` };
   return (
     <Tr>
       <Td>
@@ -37,8 +39,7 @@ const TableRow = ({ type, name, id, stage, meta = () => null, openInHub = false 
       <Td>
         <TableLink
           text="Changelog"
-          href={`https://github.com/cloudquery/cloudquery/blob/main/plugins/${type}/${id}/CHANGELOG.md`}
-          target="_blank"
+          {...changeLogProps}
         />
       </Td>
       {type === "source" && (
