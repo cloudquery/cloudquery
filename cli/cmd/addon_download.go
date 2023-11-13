@@ -75,16 +75,7 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 		return fmt.Errorf("invalid addon ref %q: version must start with 'v'", args[0])
 	}
 
-	checksum := ""
-	hc := *http.DefaultClient
-	hc.CheckRedirect = func(req *http.Request, via []*http.Request) error {
-		if len(via) == 1 && req.Response != nil {
-			checksum = req.Response.Header.Get("X-Checksum-Sha256") // get checksum from first request
-		}
-		return nil
-	}
 	c, err := cloudquery_api.NewClientWithResponses(getEnvOrDefault(envAPIURL, defaultAPIURL),
-		cloudquery_api.WithHTTPClient(&hc),
 		cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
 			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 			return nil
@@ -98,19 +89,28 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 		return err
 	}
 
-	res, err := c.DownloadAddonAsset(ctx, addonParts[0], cloudquery_api.AddonType(addonParts[1]), addonVer[0], addonVer[1])
+	aj := "application/json"
+	resp, err := c.DownloadAddonAssetWithResponse(ctx, addonParts[0], cloudquery_api.AddonType(addonParts[1]), addonVer[0], addonVer[1], &cloudquery_api.DownloadAddonAssetParams{Accept: &aj})
 	if err != nil {
-		return fmt.Errorf("download failed: %w", err)
+		return fmt.Errorf("failed to get metadata: %w", err)
 	}
-	if res.StatusCode > 399 {
-		resp, err := cloudquery_api.ParseDownloadAddonAssetResponse(res)
-		if err != nil {
-			return fmt.Errorf("failed to parse %d response: %w", res.StatusCode, err)
-		}
-		return fmt.Errorf("failed to download addon: %w", errorFromHTTPResponse(resp.HTTPResponse, resp))
+	if resp.StatusCode() > 299 || resp.JSON200 == nil {
+		return fmt.Errorf("failed to read addon metadata: %w", errorFromHTTPResponse(resp.HTTPResponse, resp))
 	}
 
-	return downloadAddonFromResponse(res, checksum, target)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, resp.JSON200.Location, nil)
+	if err != nil {
+		return fmt.Errorf("failed to create request: %w", err)
+	}
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return fmt.Errorf("failed to make download request: %w", err)
+	}
+	if res.StatusCode > 399 {
+		return fmt.Errorf("addon download failed: %s", res.Status)
+	}
+
+	return downloadAddonFromResponse(res, resp.JSON200.Checksum, target)
 }
 
 func downloadAddonFromResponse(res *http.Response, expectedChecksum, targetDir string) (retErr error) {
