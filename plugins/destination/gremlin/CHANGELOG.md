@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.2.14](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.2.13...plugins-destination-gremlin-v2.2.14) (2023-11-13)
+
+
+### Bug Fixes
+
+* **deps:** Update AWS modules ([#15146](https://github.com/cloudquery/cloudquery/issues/15146)) ([678bbbd](https://github.com/cloudquery/cloudquery/commit/678bbbdb0e46a1683d0dfca6afd605c540905e2f))
+* **deps:** Update AWS modules ([#15227](https://github.com/cloudquery/cloudquery/issues/15227)) ([84ee332](https://github.com/cloudquery/cloudquery/commit/84ee332c88c004751726e24498bfe89854a83185))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.4.2 ([#15034](https://github.com/cloudquery/cloudquery/issues/15034)) ([45c2caa](https://github.com/cloudquery/cloudquery/commit/45c2caa345aa33199ad1592bf378a5a839612c6f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.17.0 ([#15064](https://github.com/cloudquery/cloudquery/issues/15064)) ([9c2db8c](https://github.com/cloudquery/cloudquery/commit/9c2db8cedaec682a89b444db29e8c0fb45989408))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.17.1 ([#15075](https://github.com/cloudquery/cloudquery/issues/15075)) ([151769e](https://github.com/cloudquery/cloudquery/commit/151769e7c02028a04ef0ed280951c000ebb1f9c2))
+* **deps:** Update module github.com/docker/docker to v24 [SECURITY] ([#15060](https://github.com/cloudquery/cloudquery/issues/15060)) ([41acd0e](https://github.com/cloudquery/cloudquery/commit/41acd0e4ac63221e90cca89a7137a8685692267d))
+* **deps:** Update module google.golang.org/grpc to v1.58.3 [SECURITY] ([#14940](https://github.com/cloudquery/cloudquery/issues/14940)) ([e1addea](https://github.com/cloudquery/cloudquery/commit/e1addeaf58ad965e545a3e068860609dadcffa10))
+
 ## [2.2.13](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.2.12...plugins-destination-gremlin-v2.2.13) (2023-10-23)
 
 
