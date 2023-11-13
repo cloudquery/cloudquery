@@ -855,7 +855,7 @@
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/vercel"
     },
     {
-      "source": "https://hub.cloudquery.io/plugins/destination",
+      "source": "/docs/plugins/destinations/overview",
       "destination": "https://hub.cloudquery.io/plugins/destination"
     }
   ]
