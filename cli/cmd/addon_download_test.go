@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"crypto/sha256"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -40,9 +41,12 @@ func TestAddonDownload(t *testing.T) {
 		switch r.URL.Path {
 		case "/addons/cloudquery/visualization/test/versions/v1.2.3/assets":
 			checkAuthHeader(t, r)
-			w.Header().Set("Location", "http://"+r.Host+"/assets/cloudquery/addon_visualization/test/v1.2.3/cloudquery_visualization_test_v1.2.3.zip")
-			w.Header().Set("X-Checksum-Sha256", payloadChecksum)
-			w.WriteHeader(http.StatusFound)
+			w.WriteHeader(http.StatusOK)
+			b, _ := json.Marshal(map[string]string{
+				"checksum": payloadChecksum,
+				"location": "http://" + r.Host + "/assets/cloudquery/addon_visualization/test/v1.2.3/cloudquery_visualization_test_v1.2.3.zip",
+			})
+			w.Write(b)
 		case "/assets/cloudquery/addon_visualization/test/v1.2.3/cloudquery_visualization_test_v1.2.3.zip":
 			w.Header().Set("Content-Type", "application/octet-stream")
 			w.WriteHeader(http.StatusOK)
@@ -91,9 +95,12 @@ func TestAddonDownloadStdout(t *testing.T) {
 		switch r.URL.Path {
 		case "/addons/cloudquery/visualization/test/versions/v1.2.3/assets":
 			checkAuthHeader(t, r)
-			w.Header().Set("Location", "http://"+r.Host+"/assets/cloudquery/addon_visualization/test/v1.2.3/cloudquery_visualization_test_v1.2.3.zip")
-			w.Header().Set("X-Checksum-Sha256", payloadChecksum)
-			w.WriteHeader(http.StatusFound)
+			w.WriteHeader(http.StatusOK)
+			b, _ := json.Marshal(map[string]string{
+				"checksum": payloadChecksum,
+				"location": "http://" + r.Host + "/assets/cloudquery/addon_visualization/test/v1.2.3/cloudquery_visualization_test_v1.2.3.zip",
+			})
+			w.Write(b)
 		case "/assets/cloudquery/addon_visualization/test/v1.2.3/cloudquery_visualization_test_v1.2.3.zip":
 			w.Header().Set("Content-Type", "application/octet-stream")
 			w.WriteHeader(http.StatusOK)
