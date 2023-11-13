@@ -10,7 +10,7 @@ description: CloudQuery LaunchDarkly source plugin documentation
 
 This is a premium plugin that you can buy [here](/integrations/launchdarkly).
 
-The CloudQuery LaunchDarkly plugin pulls data from LaunchDarkly and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
+The CloudQuery LaunchDarkly plugin pulls data from LaunchDarkly and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](https://hub.cloudquery.io/plugins/destination)).
 
 ## Authentication
 

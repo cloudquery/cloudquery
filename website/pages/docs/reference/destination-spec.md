@@ -104,7 +104,7 @@ Supported by destination plugins released on 2023-03-21 and later
 
 (`object`, optional)
 
-Plugin specific configurations. Visit [destination plugins](/docs/plugins/destinations/overview) documentation for more information.
+Plugin specific configurations. Visit [destination plugins](https://hub.cloudquery.io/plugins/destination) documentation for more information.
 
 The following options are available for most destination plugins **under the nested plugin spec**:
 

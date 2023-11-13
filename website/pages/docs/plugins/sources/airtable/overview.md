@@ -9,7 +9,7 @@ description: CloudQuery Airtable source plugin documentation
 
 :badge
 
-The CloudQuery Airtable plugin pulls data from [Airtable](https://airtable.com/) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
+The CloudQuery Airtable plugin pulls data from [Airtable](https://airtable.com/) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](https://hub.cloudquery.io/plugins/destination)).
 
 The plugin discover all bases and tables in your account and syncs them to the destination.
 
