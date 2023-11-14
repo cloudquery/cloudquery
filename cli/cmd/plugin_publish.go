@@ -235,7 +235,7 @@ func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, team
 		return nil, fmt.Errorf("failed to read docs directory: %w", err)
 	}
 
-	var processed []string
+	processed := make([]string, 0, len(dirEntries))
 	pages := make([]cloudquery_api.PluginDocsPageCreate, 0, len(dirEntries))
 	for _, dirEntry := range dirEntries {
 		if dirEntry.IsDir() {
