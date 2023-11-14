@@ -1,39 +1,18 @@
 import {locatePathSync} from 'locate-path';
-import {ALL_PREMIUM_POLICIES, Policy} from "../components/policyData";
+import {Policy} from "../components/policyData";
 import fs from "fs";
 import path from "path";
 
 // Read the plugin data file
 import {
     Plugin,
-    ALL_SOURCE_PLUGINS, ALL_DESTINATION_PLUGINS, ALL_PLUGINS, PUBLISHED_SOURCE_PLUGINS, PUBLISHED_DESTINATION_PLUGINS
+    ALL_SOURCE_PLUGINS, ALL_DESTINATION_PLUGINS, PUBLISHED_SOURCE_PLUGINS, PUBLISHED_DESTINATION_PLUGINS
 } from "../components/pluginData";
 
 // Define the directories to write the MDX files to
 const outputDir = "./integrations";
 const mdxSourceComponentDir = "./components/mdx/plugins/source";
 const mdxDestinationComponentDir = "./components/mdx/plugins/destination";
-
-
-function getPolicyRedirectContent(policy: Policy, licenseType: string, licenseName: string) {
-    return `---
-title: Buy ${policy.name} (${licenseName})
----
-
-import Head from "next/head";
-
-<Head>
-  <meta httpEquiv="refresh" content="5; url='${policy.buyLinks[licenseType]}'" />
-</Head>
-
-## Purchase ${policy.name} (${licenseName})
-
-You will be redirected to a Stripe checkout page to complete your purchase in 5 seconds…
-
-If the page does not redirect automatically, please click this link: [${policy.buyLinks[licenseType]}](${policy.buyLinks[licenseType]})
-`;
-}
-
 
 function recreateDirectory(dir: string) {
     if (fs.existsSync(dir)) {
@@ -80,7 +59,7 @@ function copySourceConfigurationFile(source: Plugin): boolean {
 
 // Copy the destination authentication file if it exists
 function copyDestinationAuthenticationFile(destination: Plugin) : boolean {
-    const authFilePath = locatePathSync([`./pages/docs/plugins/destinations/${destination.id}/_authentication.md`, `../plugins/destination/${destination.id}/docs/_authentication.md`]);
+    const authFilePath = locatePathSync([`../plugins/destination/${destination.id}/docs/_authentication.md`]);
     if (authFilePath) {
         const ext = path.extname(authFilePath);
         const outputFilePath = path.join(mdxDestinationComponentDir, `${destination.id}/_authentication${ext}`);
@@ -92,7 +71,7 @@ function copyDestinationAuthenticationFile(destination: Plugin) : boolean {
 
 // Copy the destination configuration file if it exists
 function copyDestinationConfigurationFile(destination: Plugin) : boolean {
-    const configFilePath = locatePathSync([`./pages/docs/plugins/destinations/${destination.id}/_configuration.md`, `../plugins/destination/${destination.id}/docs/_configuration.md`]);
+    const configFilePath = locatePathSync([`../plugins/destination/${destination.id}/docs/_configuration.md`]);
     if (configFilePath) {
         const ext = path.extname(configFilePath);
         const outputFilePath = path.join(mdxDestinationComponentDir, `${destination.id}/_configuration${ext}`);
