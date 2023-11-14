@@ -1,7 +1,7 @@
 import {ALL_PLUGINS, DESTINATION_CATEGORIES, SOURCE_CATEGORIES} from "./pluginData";
 
 import {LogoContainer} from "./LogoContainer";
-import {CATEGORIES, CategoryTitle} from "./Category";
+import {CategoryTitle} from "./Category";
 import {useState} from "react";
 import {KINDS, KindTitle} from "./Kind";
 
