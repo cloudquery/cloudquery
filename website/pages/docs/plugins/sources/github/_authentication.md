@@ -15,11 +15,42 @@ For App authentication, you need to create a GitHub App and install it on your o
 
 Every organization will have a unique installation ID. You can find it by going to the organization's settings page, and clicking on the "Installed GitHub Apps" tab. The installation ID is the number in the URL of the page.
 
-When providing the `private_key` as a string for the app auth, you will need to replace all the new lines in your PEM file with `\n`. 
-It should look something like this:
-```yaml 
-- org: cloudquery
-  private_key: -----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEA3eVv6PCn9P8zO+EP8K7pLMfxcA2uVrSZ2f+H3GgYIavDxWtO\n...vM9tE3jAA8mOjZpdLaG5yy4QfV1LQ3R7kO49JCB6VbClwN2lNvd8Iw==\n-----END RSA PRIVATE KEY-----`.
-  app_id: your_app_id
-  ...
-```
+<details>
+    <summary>Passing `private_key` as plaintext </summary>
+    You can use `|` to pass the multiline private key as plaintext.
+    
+    For example:
+
+    ```yaml
+    - org: cloudquery
+      private_key: |
+        -----BEGIN RSA PRIVATE KEY-----
+        MIIEpQIBAAKCAQEA3eVv6PCn9P8zO+EP8K7pLMfxcA2uVrSZ2f+H3GgYIavDxWtO
+        vM9tE3jAA8mOjZpdLaG5yy4QfV1LQ3R7kO49JCB6VbClwN2lNvd8Iw49JCBDid7D
+        ...
+        -----END RSA PRIVATE KEY-----
+      app_id: your_app_id
+    ```
+
+</details>
+
+<details>
+    <summary>Referencing `private_key` as environment variable </summary>
+    When referencing the `private_key` as a string from environment variables, you will need to replace all the new lines in your PEM file with `\n` otherwise the new line and indent will prevent CloudQuery from reading the variable correctly. 
+
+    For example:
+
+    ```yaml 
+    - org: cloudquery
+      private_key: "${GITHUB_PRI_KEY}"
+      app_id: your_app_id
+      ...
+    ```
+    where
+    ```bash
+    GITHUB_PRI_KEY="-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEA3eVv6PCn9P8zO+EP8K7pLMfxcA2uVrSZ2f+H3GgYIavDxWtO\n...vM9tE3jAA8mOjZpdLaG5yy4QfV1LQ3R7kO49JCB6VbClwN2lNvd8Iw==\n-----END RSA PRIVATE KEY-----"
+    ```
+
+</details>
+
+
