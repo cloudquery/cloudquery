@@ -314,6 +314,7 @@ func getTables() schema.Tables {
 		policy.SetDefinitions(),
 		saas.Resources(),
 		search.Services(),
+		security.AdaptiveApplicationControls(),
 		security.Alerts(),
 		security.AlertsSuppressionRules(),
 		security.AllowedConnections(),
