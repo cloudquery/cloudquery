@@ -16,7 +16,10 @@ gen-docs: build-docker
 		exit 1; \
 	}
 	rm -rf ../../../website/tables/bitbucket
+	rm -rf docs/tables
+	mkdir -p docs/tables
 	cloudquery tables --format markdown --output-dir ../../../website/tables testdata/config.yml
+	cp -r ../../../website/tables/bitbucket docs/tables
 	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/bitbucket/README.md
 	mv ../../../website/tables/bitbucket/README.md ../../../website/pages/docs/plugins/sources/bitbucket/tables.md
 	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/bitbucket/*.md

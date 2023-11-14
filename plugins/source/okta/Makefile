@@ -18,13 +18,9 @@ gen-docs: build
 		echo "You can install it by following the instructions at: https://www.cloudquery.io/docs/quickstart"; \
 		exit 1; \
 	}
-	rm -rf ../../../website/tables/okta
-	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
-	sed 's_(\(.*\))_(../../../../../website/tables/okta/\1)_' ../../../website/tables/okta/README.md > ./docs/tables/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/okta/README.md
-	mv ../../../website/tables/okta/README.md ../../../website/pages/docs/plugins/sources/okta/tables.md
-	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/okta/*.md
-	rm -rf ../../../website/tables/okta/*.bak
+	rm -rf docs/tables
+	cloudquery tables --format markdown --output-dir docs test/config.yml
+	mv docs/$(shell basename $(CURDIR)) docs/tables
 
 # All gen targets
 .PHONY: gen

@@ -1,102 +1,18 @@
 import {locatePathSync} from 'locate-path';
-import {ALL_PREMIUM_POLICIES, Policy} from "../components/policyData";
+import {Policy} from "../components/policyData";
 import fs from "fs";
 import path from "path";
 
 // Read the plugin data file
 import {
     Plugin,
-    ALL_SOURCE_PLUGINS, ALL_DESTINATION_PLUGINS, ALL_PLUGINS, PUBLISHED_SOURCE_PLUGINS, PUBLISHED_DESTINATION_PLUGINS
+    ALL_SOURCE_PLUGINS, ALL_DESTINATION_PLUGINS, PUBLISHED_SOURCE_PLUGINS, PUBLISHED_DESTINATION_PLUGINS
 } from "../components/pluginData";
 
 // Define the directories to write the MDX files to
 const outputDir = "./integrations";
 const mdxSourceComponentDir = "./components/mdx/plugins/source";
 const mdxDestinationComponentDir = "./components/mdx/plugins/destination";
-
-function getPluginRedirectContent(plugin: Plugin, licenseType: string, licenseName: string) {
-   return `---
-title: Buy ${plugin.name} (${licenseName})
----
-
-import Head from "next/head";
-
-<Head>
-  <meta httpEquiv="refresh" content="5; url='${plugin.buyLinks[licenseType]}'" />
-</Head>
-
-## Purchase ${plugin.name} (${licenseName}${(plugin.availability === "unpublished") ? " - Pre-order" : ""})
-
-You will be redirected to a Stripe checkout page to complete your purchase in 5 seconds…
-
-If the page does not redirect automatically, please click this link: [${plugin.buyLinks[licenseType]}](${plugin.buyLinks[licenseType]})
-`;
-}
-
-function createPluginBuyRedirects() {
-    const buyDir = `./pages/buy`;
-    ALL_PLUGINS.forEach((plugin) => {
-        if (plugin.buyLinks && plugin.buyLinks['standard']) {
-            const filePath = path.join(buyDir, `${plugin.id}-standard.mdx`);
-            fs.writeFileSync(filePath, getPluginRedirectContent(plugin, 'standard', "Standard License"));
-        }
-        if (plugin.buyLinks && plugin.buyLinks['extended']) {
-            const filePath = path.join(buyDir, `${plugin.id}-extended.mdx`);
-            fs.writeFileSync(filePath, getPluginRedirectContent(plugin, 'extended', "Extended License"));
-        }
-    });
-}
-
-
-function getPolicyRedirectContent(policy: Policy, licenseType: string, licenseName: string) {
-    return `---
-title: Buy ${policy.name} (${licenseName})
----
-
-import Head from "next/head";
-
-<Head>
-  <meta httpEquiv="refresh" content="5; url='${policy.buyLinks[licenseType]}'" />
-</Head>
-
-## Purchase ${policy.name} (${licenseName})
-
-You will be redirected to a Stripe checkout page to complete your purchase in 5 seconds…
-
-If the page does not redirect automatically, please click this link: [${policy.buyLinks[licenseType]}](${policy.buyLinks[licenseType]})
-`;
-}
-
-function getPolicySignupContent(policy: Policy, licenseName: string) {
-    return `---
-title: Buy ${policy.name} (${licenseName})
----
-
-## Purchase ${policy.name} (${licenseName})
-
-This policy is currently only accessible through our early access program. [Get in touch](/contact-policies).
-`;
-}
-
-function createPolicyBuyRedirects() {
-    const buyDir = `./pages/buy`;
-    ALL_PREMIUM_POLICIES.forEach((policy) => {
-        if (!policy.availableForPurchase) {
-            fs.writeFileSync(path.join(buyDir, `${policy.id}-standard.mdx`), getPolicySignupContent(policy, "Standard License"));
-            fs.writeFileSync(path.join(buyDir, `${policy.id}-extended.mdx`), getPolicySignupContent(policy, "Extended License"));
-            return;
-        }
-        if (policy.buyLinks && policy.buyLinks['standard']) {
-            const filePath = path.join(buyDir, `${policy.id}-standard.mdx`);
-            fs.writeFileSync(filePath, getPolicyRedirectContent(policy, 'standard', "Standard License"));
-        }
-        if (policy.buyLinks && policy.buyLinks['extended']) {
-            const filePath = path.join(buyDir, `${policy.id}-extended.mdx`);
-            fs.writeFileSync(filePath, getPolicyRedirectContent(policy, 'extended', "Extended License"));
-        }
-    });
-}
-
 
 function recreateDirectory(dir: string) {
     if (fs.existsSync(dir)) {
@@ -112,9 +28,8 @@ function recreateDirectory(dir: string) {
 
 // Copy the source authentication file if it exists
 function copySourceAuthenticationFile(source: Plugin) : boolean {
-    const sourceDir = `./pages/docs/plugins/sources/${source.id}`;
-    // Copy the authentication and configuration files if they exist
-    const authFilePath = locatePathSync([`${sourceDir}/_authentication.md`]);
+    // Copy the authentication file if it exists
+    const authFilePath = locatePathSync([`./pages/docs/plugins/sources/${source.id}/_authentication.md`, `../plugins/source/${source.id}/docs/_authentication.md`]);
     if (authFilePath) {
         const ext = path.extname(authFilePath);
         const outputFilePath = path.join(mdxSourceComponentDir, `${source.id}/_authentication${ext}`);
@@ -126,8 +41,7 @@ function copySourceAuthenticationFile(source: Plugin) : boolean {
 
 // Copy the source configuration file if it exists and replace the destination name
 function copySourceConfigurationFile(source: Plugin): boolean {
-    const sourceDir = `./pages/docs/plugins/sources/${source.id}`;
-    const configFilePath = locatePathSync([`${sourceDir}/_configuration.md`]);
+    const configFilePath = locatePathSync([`./pages/docs/plugins/sources/${source.id}/_configuration.md`, `../plugins/source/${source.id}/docs/_configuration.md`]);
     if (configFilePath) {
         ALL_DESTINATION_PLUGINS.forEach((destination) => {
             const sourceConfigDir = mdxSourceComponentDir + `/${source.id}/${destination.id}`;
@@ -145,9 +59,7 @@ function copySourceConfigurationFile(source: Plugin): boolean {
 
 // Copy the destination authentication file if it exists
 function copyDestinationAuthenticationFile(destination: Plugin) : boolean {
-    const destinationDir = `./pages/docs/plugins/destinations/${destination.id}`;
-    // Copy the authentication and configuration files if they exist
-    const authFilePath = locatePathSync([`${destinationDir}/_authentication.md`]);
+    const authFilePath = locatePathSync([`../plugins/destination/${destination.id}/docs/_authentication.md`]);
     if (authFilePath) {
         const ext = path.extname(authFilePath);
         const outputFilePath = path.join(mdxDestinationComponentDir, `${destination.id}/_authentication${ext}`);
@@ -159,8 +71,7 @@ function copyDestinationAuthenticationFile(destination: Plugin) : boolean {
 
 // Copy the destination configuration file if it exists
 function copyDestinationConfigurationFile(destination: Plugin) : boolean {
-    const destinationDir = `./pages/docs/plugins/destinations/${destination.id}`;
-    const configFilePath = locatePathSync([`${destinationDir}/_configuration.md`]);
+    const configFilePath = locatePathSync([`../plugins/destination/${destination.id}/docs/_configuration.md`]);
     if (configFilePath) {
         const ext = path.extname(configFilePath);
         const outputFilePath = path.join(mdxDestinationComponentDir, `${destination.id}/_configuration${ext}`);
@@ -243,7 +154,7 @@ function generateFiles() {
     });
 
     // Loop through each source plugin and generate or copy MDX files
-    ALL_SOURCE_PLUGINS.forEach((source) => {
+    ALL_SOURCE_PLUGINS.filter((p) => p.availability !== 'premium' ).forEach((source) => {
       if (sources.has(source.id)) {
         throw new Error("Duplicate source id: " + source.id + ". Did you forget to remove an unpublished plugin you implemented?");
       }
@@ -297,7 +208,5 @@ function generateFiles() {
 
 
 generateFiles()
-createPluginBuyRedirects()
-createPolicyBuyRedirects()
 
 console.log("MDX files generated successfully!");

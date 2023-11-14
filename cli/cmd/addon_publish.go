@@ -35,7 +35,6 @@ func newCmdAddonPublish() *cobra.Command {
 		Short:   addonPublishShort,
 		Long:    addonPublishLong,
 		Example: addonPublishExample,
-		Hidden:  true,
 		Args:    cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// Set up a channel to listen for OS signals for graceful shutdown.
@@ -52,7 +51,7 @@ func newCmdAddonPublish() *cobra.Command {
 			return runAddonPublish(ctx, cmd, args)
 		},
 	}
-	cmd.Flags().BoolP("finalize", "f", false, `Finalize the addon version after publishing. If false, the addon version will be marked as draft=true.`)
+	cmd.Flags().BoolP("finalize", "f", false, `Finalize the addon version after publishing. If false, the addon version will be marked as draft.`)
 
 	return cmd
 }
@@ -96,7 +95,7 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 		return fmt.Errorf("could not read file %s: %w", zipPath, err)
 	}
 
-	name := fmt.Sprintf("%s/%s@%s", manifest.TeamName, manifest.AddonName, version)
+	name := fmt.Sprintf("%s/%s/%s@%s", manifest.TeamName, manifest.AddonType, manifest.AddonName, version)
 	fmt.Printf("Publishing addon %s to CloudQuery Hub...\n", name)
 
 	c, err := cloudquery_api.NewClientWithResponses(getEnvOrDefault(envAPIURL, defaultAPIURL),
@@ -157,7 +156,7 @@ func createNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWit
 	}
 	body := cloudquery_api.CreateAddonVersionJSONRequestBody{
 		AddonDeps:  &manifest.AddonDeps,
-		PluginDeps: manifest.PluginDeps,
+		PluginDeps: &manifest.PluginDeps,
 	}
 
 	if manifest.PathToDoc != "" {

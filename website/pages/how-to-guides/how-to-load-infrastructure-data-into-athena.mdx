@@ -63,11 +63,11 @@ spec:
   path: cloudquery/aws
   registry: cloudquery
   version: "VERSION_SOURCE_AWS"
-  tables: ["aws_s3_buckets"] # See full list of tables at https://www.cloudquery.io/docs/plugins/sources/aws/tables
+  tables: ["aws_s3_buckets"] # See full list of tables at https://hub.cloudquery.io/plugins/source/cloudquery/aws/tables
   destinations: ["s3"]
 ```
 
-This is the most basic configuration of the AWS source plugin. It will work as long as the AWS credentials you have configured in your environment have the appropriate permissions (e.g. via `aws sso login`). For more information on configuring the AWS source plugin, see the [AWS Source Plugin](/docs/plugins/sources/aws/overview) documentation.
+This is the most basic configuration of the AWS source plugin. It will work as long as the AWS credentials you have configured in your environment have the appropriate permissions (e.g. via `aws sso login`). For more information on configuring the AWS source plugin, see the [AWS Source Plugin](https://hub.cloudquery.io/plugins/source/cloudquery/aws) documentation.
 
 ## Step 4: Configure the S3 Destination Plugin
 
@@ -89,7 +89,7 @@ spec:
     athena: true
 ```
 
-Take special note of the `athena: true` flag: this is important, as it will tell the S3 destination to sanitize JSON columns for use with Glue & Athena. For more information on configuring the S3 destination plugin, see the [S3 Destination Plugin](/docs/plugins/destinations/s3/overview) documentation.
+Take special note of the `athena: true` flag: this is important, as it will tell the S3 destination to sanitize JSON columns for use with Glue & Athena. For more information on configuring the S3 destination plugin, see the [S3 Destination Plugin](https://hub.cloudquery.io/plugins/destination/cloudquery/s3) documentation.
 
 ## Step 5: Run CloudQuery sync
 

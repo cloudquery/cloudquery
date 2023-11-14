@@ -33,13 +33,9 @@ gen-docs: build
 		echo "You can install it by following the instructions at: https://www.cloudquery.io/docs/quickstart"; \
 		exit 1; \
 	}
-	rm -rf ../../../website/tables/hackernews
-	cloudquery tables --format markdown --output-dir ../../../website/tables test/config.yml
-	sed 's_(\(.*\))_(../../../../../website/tables/hackernews/\1)_' ../../../website/tables/hackernews/README.md > ./docs/tables/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/hackernews/README.md
-	mv ../../../website/tables/hackernews/README.md ../../../website/pages/docs/plugins/sources/hackernews/tables.md
-	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/hackernews/*.md
-	rm -rf ../../../website/tables/hackernews/*.bak
+	rm -rf docs/tables
+	cloudquery tables --format markdown --output-dir docs test/config.yml
+	mv docs/$(shell basename $(CURDIR)) docs/tables
 
 # All gen targets
 .PHONY: gen

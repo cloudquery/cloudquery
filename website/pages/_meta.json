@@ -27,6 +27,7 @@
   "integrations": {
     "title": "Integrations",
     "type": "page",
+    "display": "hidden",
     "theme": {
       "layout": "full",
       "sidebar": false
@@ -87,14 +88,6 @@
       "overview":  {
         "title": "Overview",
         "href": "/docs"
-      },
-      "plugins":  {
-        "title": "Plugins",
-        "href": "/docs/plugins/overview"
-      },
-      "tables":  {
-        "title": "Tables",
-        "href": "/tables"
       },
       "how-to-guides":  {
         "title": "How-to Guides",

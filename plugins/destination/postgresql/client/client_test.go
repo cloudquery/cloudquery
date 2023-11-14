@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -42,7 +43,8 @@ func TestPgPlugin(t *testing.T) {
 		t.Fatal(err)
 	}
 	testOpts := schema.TestSourceOptions{
-		SkipMaps: true,
+		SkipMaps:      true,
+		TimePrecision: time.Microsecond, // only us precision supported by time cols
 	}
 	plugin.TestWriterSuiteRunner(t,
 		p,

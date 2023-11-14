@@ -48,7 +48,7 @@ You can read more about this [here](/docs/advanced-topics/running-cloudquery-in-
 ### My AWS sync is taking a long time. What can I do to speed it up?
 
 A few specific tables in AWS are quite slow to sync. You can try skipping them if you don't need this data.
-Take a look at the [skip_tables list](/docs/plugins/sources/aws/configuration#skipping-tables-with-configuration-parameters).
+Take a look at the [skip_tables list](https://hub.cloudquery.io/plugins/source/cloudquery/aws).
 If syncs are still taking a long time, you can also take a look at our [performance tuning guide](/docs/advanced-topics/performance-tuning).
 
 ### I am running `cloudquery sync` locally, but it is taking a long time / doesn't seem to finish

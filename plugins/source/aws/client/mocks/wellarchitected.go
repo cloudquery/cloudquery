@@ -305,6 +305,96 @@ func (mr *MockWellarchitectedClientMockRecorder) GetProfileTemplate(arg0, arg1 i
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetProfileTemplate", reflect.TypeOf((*MockWellarchitectedClient)(nil).GetProfileTemplate), varargs...)
 }
 
+// GetReviewTemplate mocks base method.
+func (m *MockWellarchitectedClient) GetReviewTemplate(arg0 context.Context, arg1 *wellarchitected.GetReviewTemplateInput, arg2 ...func(*wellarchitected.Options)) (*wellarchitected.GetReviewTemplateOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &wellarchitected.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetReviewTemplate")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetReviewTemplate", varargs...)
+	ret0, _ := ret[0].(*wellarchitected.GetReviewTemplateOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetReviewTemplate indicates an expected call of GetReviewTemplate.
+func (mr *MockWellarchitectedClientMockRecorder) GetReviewTemplate(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetReviewTemplate", reflect.TypeOf((*MockWellarchitectedClient)(nil).GetReviewTemplate), varargs...)
+}
+
+// GetReviewTemplateAnswer mocks base method.
+func (m *MockWellarchitectedClient) GetReviewTemplateAnswer(arg0 context.Context, arg1 *wellarchitected.GetReviewTemplateAnswerInput, arg2 ...func(*wellarchitected.Options)) (*wellarchitected.GetReviewTemplateAnswerOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &wellarchitected.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetReviewTemplateAnswer")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetReviewTemplateAnswer", varargs...)
+	ret0, _ := ret[0].(*wellarchitected.GetReviewTemplateAnswerOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetReviewTemplateAnswer indicates an expected call of GetReviewTemplateAnswer.
+func (mr *MockWellarchitectedClientMockRecorder) GetReviewTemplateAnswer(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetReviewTemplateAnswer", reflect.TypeOf((*MockWellarchitectedClient)(nil).GetReviewTemplateAnswer), varargs...)
+}
+
+// GetReviewTemplateLensReview mocks base method.
+func (m *MockWellarchitectedClient) GetReviewTemplateLensReview(arg0 context.Context, arg1 *wellarchitected.GetReviewTemplateLensReviewInput, arg2 ...func(*wellarchitected.Options)) (*wellarchitected.GetReviewTemplateLensReviewOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &wellarchitected.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetReviewTemplateLensReview")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetReviewTemplateLensReview", varargs...)
+	ret0, _ := ret[0].(*wellarchitected.GetReviewTemplateLensReviewOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetReviewTemplateLensReview indicates an expected call of GetReviewTemplateLensReview.
+func (mr *MockWellarchitectedClientMockRecorder) GetReviewTemplateLensReview(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetReviewTemplateLensReview", reflect.TypeOf((*MockWellarchitectedClient)(nil).GetReviewTemplateLensReview), varargs...)
+}
+
 // GetWorkload mocks base method.
 func (m *MockWellarchitectedClient) GetWorkload(arg0 context.Context, arg1 *wellarchitected.GetWorkloadInput, arg2 ...func(*wellarchitected.Options)) (*wellarchitected.GetWorkloadOutput, error) {
 
@@ -695,6 +785,66 @@ func (mr *MockWellarchitectedClientMockRecorder) ListProfiles(arg0, arg1 interfa
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListProfiles", reflect.TypeOf((*MockWellarchitectedClient)(nil).ListProfiles), varargs...)
 }
 
+// ListReviewTemplateAnswers mocks base method.
+func (m *MockWellarchitectedClient) ListReviewTemplateAnswers(arg0 context.Context, arg1 *wellarchitected.ListReviewTemplateAnswersInput, arg2 ...func(*wellarchitected.Options)) (*wellarchitected.ListReviewTemplateAnswersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &wellarchitected.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListReviewTemplateAnswers")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListReviewTemplateAnswers", varargs...)
+	ret0, _ := ret[0].(*wellarchitected.ListReviewTemplateAnswersOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListReviewTemplateAnswers indicates an expected call of ListReviewTemplateAnswers.
+func (mr *MockWellarchitectedClientMockRecorder) ListReviewTemplateAnswers(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListReviewTemplateAnswers", reflect.TypeOf((*MockWellarchitectedClient)(nil).ListReviewTemplateAnswers), varargs...)
+}
+
+// ListReviewTemplates mocks base method.
+func (m *MockWellarchitectedClient) ListReviewTemplates(arg0 context.Context, arg1 *wellarchitected.ListReviewTemplatesInput, arg2 ...func(*wellarchitected.Options)) (*wellarchitected.ListReviewTemplatesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &wellarchitected.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListReviewTemplates")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListReviewTemplates", varargs...)
+	ret0, _ := ret[0].(*wellarchitected.ListReviewTemplatesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListReviewTemplates indicates an expected call of ListReviewTemplates.
+func (mr *MockWellarchitectedClientMockRecorder) ListReviewTemplates(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListReviewTemplates", reflect.TypeOf((*MockWellarchitectedClient)(nil).ListReviewTemplates), varargs...)
+}
+
 // ListShareInvitations mocks base method.
 func (m *MockWellarchitectedClient) ListShareInvitations(arg0 context.Context, arg1 *wellarchitected.ListShareInvitationsInput, arg2 ...func(*wellarchitected.Options)) (*wellarchitected.ListShareInvitationsOutput, error) {
 
@@ -753,6 +903,36 @@ func (mr *MockWellarchitectedClientMockRecorder) ListTagsForResource(arg0, arg1 
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTagsForResource", reflect.TypeOf((*MockWellarchitectedClient)(nil).ListTagsForResource), varargs...)
+}
+
+// ListTemplateShares mocks base method.
+func (m *MockWellarchitectedClient) ListTemplateShares(arg0 context.Context, arg1 *wellarchitected.ListTemplateSharesInput, arg2 ...func(*wellarchitected.Options)) (*wellarchitected.ListTemplateSharesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &wellarchitected.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTemplateShares")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListTemplateShares", varargs...)
+	ret0, _ := ret[0].(*wellarchitected.ListTemplateSharesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTemplateShares indicates an expected call of ListTemplateShares.
+func (mr *MockWellarchitectedClientMockRecorder) ListTemplateShares(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTemplateShares", reflect.TypeOf((*MockWellarchitectedClient)(nil).ListTemplateShares), varargs...)
 }
 
 // ListWorkloadShares mocks base method.

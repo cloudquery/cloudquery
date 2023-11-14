@@ -13,10 +13,10 @@ Policies, views, and dashboards include asset inventories and CSPMs (Cloud Secur
 
 Details about policies for every cloud provider can be found on its source plugin page:
 
-- [AWS](/docs/plugins/sources/aws/policies)
-- [Azure](/docs/plugins/sources/azure/policies)
-- [GCP](/docs/plugins/sources/gcp/policies)
-- [Kubernetes](/docs/plugins/sources/k8s/policies)
+- [AWS](https://hub.cloudquery.io/plugins/source/cloudquery/aws)
+- [Azure](https://hub.cloudquery.io/plugins/source/cloudquery/azure)
+- [GCP](https://hub.cloudquery.io/plugins/source/cloudquery/gcp)
+- [Kubernetes](https://hub.cloudquery.io/plugins/source/cloudquery/k8s)
 
 ## Premium Policies
 

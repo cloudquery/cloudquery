@@ -7,7 +7,7 @@ description: Reference for the source spec CloudQuery configuration object.
 
 Following are available options for the top level source plugin `spec` object.
 
-Note: For configuring individual plugins, please refer to the configuration section from the relevant plugins from [here](/docs/plugins/sources/overview). (e.g. [AWS plugin configuration](/docs/plugins/sources/aws/configuration)).
+Note: For configuring individual plugins, please refer to the configuration section from the relevant plugins from [here](https://hub.cloudquery.io/plugins/source). (e.g. [AWS plugin configuration](https://hub.cloudquery.io/plugins/source/cloudquery/aws)).
 
 ## Example
 
@@ -129,7 +129,7 @@ If set to `true`, the exporter will not verify the server will connect via `http
 
 (`object`, optional)
 
-Plugin-specific configurations. Visit [source plugins](/docs/plugins/sources/overview) documentation for more information.
+Plugin-specific configurations. Visit [source plugins](https://hub.cloudquery.io/plugins/source) documentation for more information.
 
 ## Top level deprecated options
 
