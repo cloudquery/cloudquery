@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"crypto/sha256"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -15,6 +16,8 @@ import (
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery-api-go/config"
+	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/spf13/cobra"
 )
 
@@ -75,7 +78,7 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 		return fmt.Errorf("invalid addon ref %q: version must start with 'v'", args[0])
 	}
 
-	c, err := cloudquery_api.NewClientWithResponses(getEnvOrDefault(envAPIURL, defaultAPIURL),
+	c, err := cloudquery_api.NewClientWithResponses(managedplugin.APIBaseURL(),
 		cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
 			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 			return nil
@@ -84,21 +87,17 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 		return fmt.Errorf("failed to create hub client: %w", err)
 	}
 
-	target, err := cmd.Flags().GetString("target")
+	targetDir, err := cmd.Flags().GetString("target")
 	if err != nil {
 		return err
 	}
 
-	aj := "application/json"
-	resp, err := c.DownloadAddonAssetWithResponse(ctx, addonParts[0], cloudquery_api.AddonType(addonParts[1]), addonVer[0], addonVer[1], &cloudquery_api.DownloadAddonAssetParams{Accept: &aj})
+	location, checksum, err := getAddonMetadata(ctx, c, addonParts[0], addonParts[1], addonVer[0], addonVer[1])
 	if err != nil {
-		return fmt.Errorf("failed to get metadata: %w", err)
-	}
-	if resp.StatusCode() > 299 || resp.JSON200 == nil {
-		return fmt.Errorf("failed to read addon metadata: %w", errorFromHTTPResponse(resp.HTTPResponse, resp))
+		return err
 	}
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, resp.JSON200.Location, nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, location, nil)
 	if err != nil {
 		return fmt.Errorf("failed to create request: %w", err)
 	}
@@ -110,7 +109,36 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 		return fmt.Errorf("addon download failed: %s", res.Status)
 	}
 
-	return downloadAddonFromResponse(res, resp.JSON200.Checksum, target)
+	return downloadAddonFromResponse(res, checksum, targetDir)
+}
+
+func getAddonMetadata(ctx context.Context, c *cloudquery_api.ClientWithResponses, addonTeam, addonType, addonName, addonVersion string) (location, checksum string, retErr error) {
+	currentTeam, err := config.GetValue("team")
+	if err != nil && !errors.Is(err, os.ErrNotExist) {
+		return "", "", fmt.Errorf("failed to get current team: %w", err)
+	}
+	aj := "application/json"
+
+	switch {
+	case currentTeam != "":
+		resp, err := c.DownloadAddonAssetByTeamWithResponse(ctx, currentTeam, addonTeam, cloudquery_api.AddonType(addonType), addonName, addonVersion, &cloudquery_api.DownloadAddonAssetByTeamParams{Accept: &aj})
+		if err != nil {
+			return "", "", fmt.Errorf("failed to get team addon metadata: %w", err)
+		}
+		if resp.StatusCode() > 299 || resp.JSON200 == nil {
+			return "", "", fmt.Errorf("failed to read team addon metadata: %w", errorFromHTTPResponse(resp.HTTPResponse, resp))
+		}
+		return resp.JSON200.Location, resp.JSON200.Checksum, nil
+	default:
+		resp, err := c.DownloadAddonAssetWithResponse(ctx, addonTeam, cloudquery_api.AddonType(addonType), addonName, addonVersion, &cloudquery_api.DownloadAddonAssetParams{Accept: &aj})
+		if err != nil {
+			return "", "", fmt.Errorf("failed to get addon metadata: %w", err)
+		}
+		if resp.StatusCode() > 299 || resp.JSON200 == nil {
+			return "", "", fmt.Errorf("failed to read addon metadata: %w", errorFromHTTPResponse(resp.HTTPResponse, resp))
+		}
+		return resp.JSON200.Location, resp.JSON200.Checksum, nil
+	}
 }
 
 func downloadAddonFromResponse(res *http.Response, expectedChecksum, targetDir string) (retErr error) {

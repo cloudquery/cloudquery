@@ -6,8 +6,8 @@ require (
 	github.com/apache/arrow/go/v14 v14.0.0-20231031200323-c49e24273160
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.2.1
-	github.com/cloudquery/cloudquery-api-go v1.4.4
-	github.com/cloudquery/plugin-pb-go v1.13.6-0.20231113121727-245cf96ea3ea
+	github.com/cloudquery/cloudquery-api-go v1.4.6
+	github.com/cloudquery/plugin-pb-go v1.14.0
 	github.com/cloudquery/plugin-sdk/v4 v4.17.1
 	github.com/getsentry/sentry-go v0.24.1
 	github.com/ghodss/yaml v1.0.0
