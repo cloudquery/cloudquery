@@ -1,14 +1,35 @@
 ---
-title: "plugin"
+title: "plugin_docs_upload"
 ---
-## cloudquery plugin
+## cloudquery plugin docs upload
 
-Plugin commands
+Upload plugin docs to CloudQuery Hub.
+
+### Synopsis
+
+Upload plugin docs to CloudQuery Hub.
+
+This uploads documentation for a specific plugin version from a local docs directory to CloudQuery hub.
+
+
+```
+cloudquery plugin docs upload [-D docs] [--sync] <team_name>/<plugin_name>@<version> [flags]
+```
+
+### Examples
+
+```
+
+# Upload plugin docs to CloudQuery Hub
+cloudquery plugin docs upload test-team/test-plugin@v1.0.0
+```
 
 ### Options
 
 ```
-  -h, --help   help for plugin
+  -D, --docs-dir string   Path to the docs directory (default "docs")
+  -h, --help              help for upload
+      --sync              Syncronize docs with CloudQuery Hub, deleting any docs that are not present locally
 ```
 
 ### Options inherited from parent commands
@@ -25,8 +46,5 @@ Plugin commands
 
 ### SEE ALSO
 
-* [cloudquery](/docs/reference/cli/cloudquery)	 - CloudQuery CLI
 * [cloudquery plugin docs](/docs/reference/cli/cloudquery_plugin_docs)	 - Plugin docs commands
-* [cloudquery plugin install](/docs/reference/cli/cloudquery_plugin_install)	 - Install required plugin images from your configuration
-* [cloudquery plugin publish](/docs/reference/cli/cloudquery_plugin_publish)	 - Publish to CloudQuery Hub.
 

@@ -1,14 +1,34 @@
 ---
-title: "plugin"
+title: "plugin_docs_download"
 ---
-## cloudquery plugin
+## cloudquery plugin docs download
 
-Plugin commands
+Download plugin docs from CloudQuery Hub.
+
+### Synopsis
+
+Download plugin docs from CloudQuery Hub.
+
+This downloads documentation for a specific plugin version in CloudQuery hub to a local docs directory.
+
+
+```
+cloudquery plugin docs download [-D docs] <team_name>/<plugin_name>@<version> [flags]
+```
+
+### Examples
+
+```
+
+# Download plugin docs from CloudQuery Hub
+cloudquery plugin docs download test-team/test-plugin@v1.0.0
+```
 
 ### Options
 
 ```
-  -h, --help   help for plugin
+  -D, --docs-dir string   Path to the docs directory (default "docs")
+  -h, --help              help for download
 ```
 
 ### Options inherited from parent commands
@@ -25,8 +45,5 @@ Plugin commands
 
 ### SEE ALSO
 
-* [cloudquery](/docs/reference/cli/cloudquery)	 - CloudQuery CLI
 * [cloudquery plugin docs](/docs/reference/cli/cloudquery_plugin_docs)	 - Plugin docs commands
-* [cloudquery plugin install](/docs/reference/cli/cloudquery_plugin_install)	 - Install required plugin images from your configuration
-* [cloudquery plugin publish](/docs/reference/cli/cloudquery_plugin_publish)	 - Publish to CloudQuery Hub.
 

@@ -1,14 +1,14 @@
 ---
-title: "plugin"
+title: "plugin_docs"
 ---
-## cloudquery plugin
+## cloudquery plugin docs
 
-Plugin commands
+Plugin docs commands
 
 ### Options
 
 ```
-  -h, --help   help for plugin
+  -h, --help   help for docs
 ```
 
 ### Options inherited from parent commands
@@ -25,8 +25,7 @@ Plugin commands
 
 ### SEE ALSO
 
-* [cloudquery](/docs/reference/cli/cloudquery)	 - CloudQuery CLI
-* [cloudquery plugin docs](/docs/reference/cli/cloudquery_plugin_docs)	 - Plugin docs commands
-* [cloudquery plugin install](/docs/reference/cli/cloudquery_plugin_install)	 - Install required plugin images from your configuration
-* [cloudquery plugin publish](/docs/reference/cli/cloudquery_plugin_publish)	 - Publish to CloudQuery Hub.
+* [cloudquery plugin](/docs/reference/cli/cloudquery_plugin)	 - Plugin commands
+* [cloudquery plugin docs download](/docs/reference/cli/cloudquery_plugin_docs_download)	 - Download plugin docs from CloudQuery Hub.
+* [cloudquery plugin docs upload](/docs/reference/cli/cloudquery_plugin_docs_upload)	 - Upload plugin docs to CloudQuery Hub.
 
