@@ -16,8 +16,8 @@ For App authentication, you need to create a GitHub App and install it on your o
 Every organization will have a unique installation ID. You can find it by going to the organization's settings page, and clicking on the "Installed GitHub Apps" tab. The installation ID is the number in the URL of the page.
 
 <details>
-    <summary>Passing `private_key` as plaintext </summary>
-    You can use `|` to pass the multiline private key as plaintext.
+    <summary>Passing `private_key` as plaintext</summary>
+    You can use `|` to pass the multi-line private key as plaintext.
     
     For example:
 
@@ -35,7 +35,7 @@ Every organization will have a unique installation ID. You can find it by going 
 </details>
 
 <details>
-    <summary>Referencing `private_key` as environment variable </summary>
+    <summary>Referencing `private_key` as environment variable</summary>
     When referencing the `private_key` as a string from environment variables, you will need to replace all the new lines in your PEM file with `\n` otherwise the new line and indent will prevent CloudQuery from reading the variable correctly. 
 
     For example:
