@@ -26,11 +26,11 @@ func destinationsNeedToken(destinations []*specs.Destination) bool {
 	return false
 }
 
-func GetAuthTokenIfNeeded(logger zerolog.Logger, sources []*specs.Source, destinations []*specs.Destination) (string, error) {
+func GetAuthTokenIfNeeded(logger zerolog.Logger, sources []*specs.Source, destinations []*specs.Destination) (cqapiauth.Token, error) {
 	needsToken := sourcesNeedToken(sources) || destinationsNeedToken(destinations)
 	if !needsToken {
 		logger.Debug().Msg("no need to get token since no source or destination uses the CloudQuery registry")
-		return "", nil
+		return cqapiauth.UndefinedToken, nil
 	}
 
 	tc := cqapiauth.NewTokenClient()
@@ -39,11 +39,11 @@ func GetAuthTokenIfNeeded(logger zerolog.Logger, sources []*specs.Source, destin
 		recommendLogin := strings.Contains(err.Error(), "Hint:")
 		if recommendLogin {
 			logger.Warn().Msg("when using the CloudQuery registry, it's recommended to log in via `cloudquery login`. Logging in allows for better rate limits and downloading of premium plugins")
-			return "", nil
+			return cqapiauth.UndefinedToken, nil
 		}
 
-		return "", err
+		return cqapiauth.UndefinedToken, err
 	}
 
-	return token.Value, nil
+	return token, nil
 }
