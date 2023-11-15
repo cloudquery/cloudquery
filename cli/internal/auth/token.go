@@ -45,5 +45,5 @@ func GetAuthTokenIfNeeded(logger zerolog.Logger, sources []*specs.Source, destin
 		return "", err
 	}
 
-	return token, nil
+	return token.Value, nil
 }

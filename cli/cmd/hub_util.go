@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -11,6 +12,43 @@ import (
 
 type SchemaVersion struct {
 	SchemaVersion int `json:"schema_version"`
+}
+
+type HubPluginRef struct {
+	TeamName string
+	Kind     string
+	Name     string
+	Version  string
+}
+
+func (h HubPluginRef) String() string {
+	return fmt.Sprintf("%s/%s/%s@%s", h.TeamName, h.Kind, h.Name, h.Version)
+}
+
+func parseHubPluginRef(ref string) (*HubPluginRef, error) {
+	versionParts := strings.Split(ref, "@")
+	if len(versionParts) != 2 {
+		return nil, errors.New("invalid plugin version: Must be in format <team_name>/<kind>/<plugin_name>@<version>")
+	}
+	if !strings.HasPrefix(versionParts[1], "v") {
+		return nil, errors.New("invalid plugin version: version must start with 'v'")
+	}
+
+	parts := strings.Split(versionParts[0], "/")
+	if len(parts) != 3 {
+		return nil, errors.New("invalid plugin name: Must be in format <team_name>/<kind>/<plugin_name>@<version>")
+	}
+
+	if parts[1] != "source" && parts[1] != "destination" {
+		return nil, errors.New("invalid plugin kind: must be either 'source' or 'destination'")
+	}
+
+	return &HubPluginRef{
+		TeamName: parts[0],
+		Kind:     parts[1],
+		Name:     parts[2],
+		Version:  versionParts[1],
+	}, nil
 }
 
 func errorFromHTTPResponse(httpResp *http.Response, resp any) error {

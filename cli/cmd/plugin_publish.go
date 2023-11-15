@@ -133,7 +133,7 @@ func runPluginPublish(ctx context.Context, cmd *cobra.Command, args []string) er
 	// upload docs
 	fmt.Println("Uploading docs...")
 	docsDir := filepath.Join(distDir, "docs")
-	err = uploadDocs(ctx, c, teamName, pluginName, docsDir, pkgJSON)
+	_, err = uploadDocs(ctx, c, teamName, string(pkgJSON.Kind), pluginName, pkgJSON.Version, docsDir)
 	if err != nil {
 		return fmt.Errorf("failed to upload docs: %w", err)
 	}
@@ -229,11 +229,13 @@ func uploadTableSchemas(ctx context.Context, c *cloudquery_api.ClientWithRespons
 	return nil
 }
 
-func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginName, docsDir string, pkgJSON PackageJSONV1) error {
+func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginKind, pluginName, version, docsDir string) ([]string, error) {
 	dirEntries, err := os.ReadDir(docsDir)
 	if err != nil {
-		return fmt.Errorf("failed to read docs directory: %w", err)
+		return nil, fmt.Errorf("failed to read docs directory: %w", err)
 	}
+
+	processed := make([]string, 0, len(dirEntries))
 	pages := make([]cloudquery_api.PluginDocsPageCreate, 0, len(dirEntries))
 	for _, dirEntry := range dirEntries {
 		if dirEntry.IsDir() {
@@ -243,9 +245,10 @@ func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, team
 		if fileExt != ".md" {
 			continue
 		}
+		processed = append(processed, dirEntry.Name())
 		content, err := os.ReadFile(filepath.Join(docsDir, dirEntry.Name()))
 		if err != nil {
-			return fmt.Errorf("failed to read docs file: %w", err)
+			return nil, fmt.Errorf("failed to read docs file: %w", err)
 		}
 		contentStr := normalizeContent(string(content))
 		pages = append(pages, cloudquery_api.PluginDocsPageCreate{
@@ -256,14 +259,14 @@ func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, team
 	body := cloudquery_api.CreatePluginVersionDocsJSONRequestBody{
 		Pages: pages,
 	}
-	resp, err := c.CreatePluginVersionDocsWithResponse(ctx, teamName, pkgJSON.Kind, pluginName, pkgJSON.Version, body)
+	resp, err := c.CreatePluginVersionDocsWithResponse(ctx, teamName, cloudquery_api.PluginKind(pluginKind), pluginName, version, body)
 	if err != nil {
-		return fmt.Errorf("failed to upload docs: %w", err)
+		return nil, fmt.Errorf("failed to upload docs: %w", err)
 	}
 	if resp.HTTPResponse.StatusCode > 299 {
-		return errorFromHTTPResponse(resp.HTTPResponse, resp)
+		return nil, errorFromHTTPResponse(resp.HTTPResponse, resp)
 	}
-	return nil
+	return processed, nil
 }
 
 func uploadPluginBinary(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginName, goos, goarch, localPath string, pkgJSON PackageJSONV1) error {
