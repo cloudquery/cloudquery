@@ -118,7 +118,7 @@ func addonFilename(teamName string, addonType cloudquery_api.AddonType, addonNam
 }
 
 func downloadAddon(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName string, addonType cloudquery_api.AddonType, addonName, version string, format cloudquery_api.AddonFormat, checksum, targetDir string) (retErr error) {
-	res, err := c.DownloadAddonAsset(ctx, teamName, addonType, addonName, version)
+	res, err := c.DownloadAddonAsset(ctx, teamName, addonType, addonName, version, &cloudquery_api.DownloadAddonAssetParams{})
 	if err != nil {
 		return fmt.Errorf("download failed: %w", err)
 	}
