@@ -597,5 +597,11 @@ func validateTagsIsJSON(table *schema.Table) error {
 			return fmt.Errorf("column %s in table %s must be of type %s", col.Name, table.Name, types.ExtensionTypes.JSON)
 		}
 	}
+	for _, rel := range table.Relations {
+		if err := validateTagsIsJSON(rel); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
