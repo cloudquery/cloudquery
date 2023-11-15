@@ -463,6 +463,10 @@
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/k8s/tables/:path*"
     },
     {
+      "source": "/docs/plugins/sources/launchdarkly/tables/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/launchdarkly/tables/:path*"
+    },
+    {
       "source": "/docs/plugins/sources/mysql/tables/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/mysql/tables/:path*"
     },
@@ -609,6 +613,10 @@
     {
       "source": "/docs/plugins/sources/k8s/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/k8s"
+    },
+    {
+      "source": "/docs/plugins/sources/launchdarkly/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/launchdarkly"
     },
     {
       "source": "/docs/plugins/sources/mysql/:path*",
