@@ -90,7 +90,7 @@ func AwsCreateMockClient(t *testing.T, ctrl *gomock.Controller, builder func(*te
 
 func validateTagStructure(t *testing.T, tables schema.Tables) {
 	for _, table := range tables.FlattenTables() {
-		t.Run(table.Name, func(t *testing.T) {
+		t.Run(table.Name+"/validate tags", func(t *testing.T) {
 			for _, column := range table.Columns {
 				if column.Name != "tags" {
 					continue
@@ -119,7 +119,7 @@ func validateMultiplexers(t *testing.T, parentTable *schema.Table) {
 
 func validateSkippedColumns(t *testing.T, tables schema.Tables) {
 	for _, table := range tables.FlattenTables() {
-		t.Run(table.Name, func(t *testing.T) {
+		t.Run(table.Name+"/validate skipped columns", func(t *testing.T) {
 			for _, columnName := range []string{"result_metadata"} {
 				col := table.Columns.Get(columnName)
 				if !ignoreNonSkippedColumns(table.Name, columnName) && col != nil {
