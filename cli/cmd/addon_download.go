@@ -91,9 +91,9 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 		return err
 	}
 
-	currentTeam, err := auth.GetTeamForToken(token)
+	currentTeam, err := auth.RequireTeamForToken(token)
 	if err != nil {
-		return fmt.Errorf("failed to get team name: %w", err)
+		return fmt.Errorf("failed to get team name for token: %w", err)
 	}
 
 	location, checksum, err := getAddonMetadata(ctx, c, currentTeam, addonParts[0], addonParts[1], addonVer[0], addonVer[1])
