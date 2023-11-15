@@ -129,8 +129,9 @@ func NewCmdRoot() *cobra.Command {
 		Short: "Plugin commands",
 	}
 	pluginDocCmd := &cobra.Command{
-		Use:   "docs",
-		Short: "Plugin docs commands",
+		Use:    "docs",
+		Short:  "Plugin docs commands",
+		Hidden: true,
 	}
 	pluginDocCmd.AddCommand(
 		newCmdPluginDocsDownload(),

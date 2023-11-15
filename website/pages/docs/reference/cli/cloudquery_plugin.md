@@ -26,7 +26,6 @@ Plugin commands
 ### SEE ALSO
 
 * [cloudquery](/docs/reference/cli/cloudquery)	 - CloudQuery CLI
-* [cloudquery plugin docs](/docs/reference/cli/cloudquery_plugin_docs)	 - Plugin docs commands
 * [cloudquery plugin install](/docs/reference/cli/cloudquery_plugin_install)	 - Install required plugin images from your configuration
 * [cloudquery plugin publish](/docs/reference/cli/cloudquery_plugin_publish)	 - Publish to CloudQuery Hub.
 
