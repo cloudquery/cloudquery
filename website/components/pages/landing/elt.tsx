@@ -110,7 +110,7 @@ export default function Home() {
                     Available Integrations
                 </h2>
                 <p className="mx-auto mt-4 font-medium text-lg text-gray-400 lg:max-w-3xl lg:nx-text-xl text-center">
-                    Export data from an ever-growing list of <a className="dark:text-white" href="/docs/plugins/sources/overview">cloud providers, databases and SaaS apps</a> with more than 1,000 unique tables. Sync to your <a href="https://hub.cloudquery.io/plugins/destination" className="dark:text-white">favorite database, data warehouse or data lake</a>.
+                    Export data from an ever-growing list of <a className="dark:text-white" href="https://hub.cloudquery.io/plugins/source">cloud providers, databases and SaaS apps</a> with more than 1,000 unique tables. Sync to your <a href="https://hub.cloudquery.io/plugins/destination" className="dark:text-white">favorite database, data warehouse or data lake</a>.
                 </p>
                 <Plugins />
             </div>

@@ -89,10 +89,6 @@
         "title": "Overview",
         "href": "/docs"
       },
-      "plugins":  {
-        "title": "Plugins",
-        "href": "/docs/plugins/overview"
-      },
       "how-to-guides":  {
         "title": "How-to Guides",
         "href": "/how-to-guides"
