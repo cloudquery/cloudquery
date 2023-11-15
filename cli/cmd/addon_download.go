@@ -92,7 +92,7 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 		return err
 	}
 
-	location, checksum, err := getAddonMetadata(ctx, c, addonParts[0], addonParts[1], addonVer[0], addonVer[1])
+	location, checksum, err := getAddonMetadata(ctx, c, token.Type, addonParts[0], addonParts[1], addonVer[0], addonVer[1])
 	if err != nil {
 		return err
 	}
@@ -112,10 +112,16 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 	return downloadAddonFromResponse(res, checksum, targetDir)
 }
 
-func getAddonMetadata(ctx context.Context, c *cloudquery_api.ClientWithResponses, addonTeam, addonType, addonName, addonVersion string) (location, checksum string, retErr error) {
-	currentTeam, err := config.GetValue("team")
-	if err != nil && !errors.Is(err, os.ErrNotExist) {
-		return "", "", fmt.Errorf("failed to get current team: %w", err)
+func getAddonMetadata(ctx context.Context, c *cloudquery_api.ClientWithResponses, tokenType auth.TokenType, addonTeam, addonType, addonName, addonVersion string) (location, checksum string, retErr error) {
+	var currentTeam string
+
+	if tokenType != auth.APIKey {
+		var err error
+
+		currentTeam, err = config.GetValue("team")
+		if err != nil && !errors.Is(err, os.ErrNotExist) {
+			return "", "", fmt.Errorf("failed to get current team: %w", err)
+		}
 	}
 	aj := "application/json"
 
