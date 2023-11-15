@@ -72,12 +72,12 @@ type wrappedResultByTime struct {
 func fetchCustom(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 
-	if len(cl.Spec.TableOptions.CloudwatchMetrics) > 0 && !cl.Spec.UsePaidAPIs {
-		return client.ErrPaidAPIsNotEnabled
-	}
-
 	if cl.Spec.TableOptions.CustomCostExplorer == nil {
 		return fmt.Errorf("skipping `%s` because `get_cost_and_usage` is not specified in `table_options`", tableName)
+	}
+
+	if !cl.Spec.UsePaidAPIs {
+		return client.ErrPaidAPIsNotEnabled
 	}
 
 	svc := cl.Services(client.AWSServiceCostexplorer).Costexplorer
