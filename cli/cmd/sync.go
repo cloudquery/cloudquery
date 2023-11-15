@@ -110,11 +110,16 @@ func sync(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}
+	teamName, err := auth.GetTeamForToken(authToken)
+	if err != nil {
+		return fmt.Errorf("failed to get team name from token: %w", err)
+	}
 	for _, source := range sources {
 		opts := []managedplugin.Option{
 			managedplugin.WithLogger(log.Logger),
 			managedplugin.WithOtelEndpoint(source.OtelEndpoint),
-			managedplugin.WithAuthToken(authToken),
+			managedplugin.WithAuthToken(authToken.Value),
+			managedplugin.WithTeamName(teamName),
 		}
 		if cqDir != "" {
 			opts = append(opts, managedplugin.WithDirectory(cqDir))
@@ -147,7 +152,7 @@ func sync(cmd *cobra.Command, args []string) error {
 	for _, destination := range destinations {
 		opts := []managedplugin.Option{
 			managedplugin.WithLogger(log.Logger),
-			managedplugin.WithAuthToken(authToken),
+			managedplugin.WithAuthToken(authToken.Value),
 		}
 		if cqDir != "" {
 			opts = append(opts, managedplugin.WithDirectory(cqDir))
