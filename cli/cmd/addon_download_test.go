@@ -10,7 +10,6 @@ import (
 	"path/filepath"
 	"testing"
 
-	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/google/go-cmp/cmp"
 	"github.com/stretchr/testify/assert"
 )
@@ -22,10 +21,8 @@ func TestAddonDownload(t *testing.T) {
 	expectedFileAndPath := filepath.Join(tempDir, "cloudquery_visualization_test_v1.2.3.zip")
 
 	wantCalls := map[string]int{
-		"GET /addons/cloudquery/visualization/test":                        1,
-		"GET /addons/cloudquery/visualization/test/versions/v1.2.3":        1,
-		"GET /addons/cloudquery/visualization/test/versions/v1.2.3/assets": 1,
-		"GET /asset-zip": 1,
+		"GET /addons/cloudquery/visualization/test/versions/v1.2.3/assets":                                1,
+		"GET /assets/cloudquery/addon_visualization/test/v1.2.3/cloudquery_visualization_test_v1.2.3.zip": 1,
 	}
 
 	payload := []byte("test payload")
@@ -42,29 +39,15 @@ func TestAddonDownload(t *testing.T) {
 		w.Header().Set("Content-Type", "application/json")
 		gotCalls[r.Method+" "+r.URL.Path]++
 		switch r.URL.Path {
-		case "/addons/cloudquery/visualization/test":
-			checkAuthHeader(t, r)
-			w.WriteHeader(http.StatusOK)
-			b, _ := json.Marshal(cloudquery_api.Addon{
-				AddonFormat: cloudquery_api.Zip,
-				AddonType:   cloudquery_api.Visualization,
-				Name:        "test",
-				TeamName:    "cloudquery",
-			})
-			w.Write(b)
-		case "/addons/cloudquery/visualization/test/versions/v1.2.3":
-			checkAuthHeader(t, r)
-			w.WriteHeader(http.StatusOK)
-			b, _ := json.Marshal(cloudquery_api.AddonVersion{
-				Checksum: payloadChecksum,
-				Name:     "v1.2.3",
-			})
-			w.Write(b)
 		case "/addons/cloudquery/visualization/test/versions/v1.2.3/assets":
 			checkAuthHeader(t, r)
-			w.Header().Set("Location", "http://"+r.Host+"/asset-zip")
-			w.WriteHeader(http.StatusFound)
-		case "/asset-zip":
+			w.WriteHeader(http.StatusOK)
+			b, _ := json.Marshal(map[string]string{
+				"checksum": payloadChecksum,
+				"location": "http://" + r.Host + "/assets/cloudquery/addon_visualization/test/v1.2.3/cloudquery_visualization_test_v1.2.3.zip",
+			})
+			w.Write(b)
+		case "/assets/cloudquery/addon_visualization/test/v1.2.3/cloudquery_visualization_test_v1.2.3.zip":
 			w.Header().Set("Content-Type", "application/octet-stream")
 			w.WriteHeader(http.StatusOK)
 			w.Write(payload)
@@ -92,10 +75,8 @@ func TestAddonDownloadStdout(t *testing.T) {
 	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
-		"GET /addons/cloudquery/visualization/test":                        1,
-		"GET /addons/cloudquery/visualization/test/versions/v1.2.3":        1,
-		"GET /addons/cloudquery/visualization/test/versions/v1.2.3/assets": 1,
-		"GET /asset-zip": 1,
+		"GET /addons/cloudquery/visualization/test/versions/v1.2.3/assets":                                1,
+		"GET /assets/cloudquery/addon_visualization/test/v1.2.3/cloudquery_visualization_test_v1.2.3.zip": 1,
 	}
 
 	payload := []byte("payload to stdout")
@@ -112,29 +93,15 @@ func TestAddonDownloadStdout(t *testing.T) {
 		w.Header().Set("Content-Type", "application/json")
 		gotCalls[r.Method+" "+r.URL.Path]++
 		switch r.URL.Path {
-		case "/addons/cloudquery/visualization/test":
-			checkAuthHeader(t, r)
-			w.WriteHeader(http.StatusOK)
-			b, _ := json.Marshal(cloudquery_api.Addon{
-				AddonFormat: cloudquery_api.Zip,
-				AddonType:   cloudquery_api.Visualization,
-				Name:        "test",
-				TeamName:    "cloudquery",
-			})
-			w.Write(b)
-		case "/addons/cloudquery/visualization/test/versions/v1.2.3":
-			checkAuthHeader(t, r)
-			w.WriteHeader(http.StatusOK)
-			b, _ := json.Marshal(cloudquery_api.AddonVersion{
-				Checksum: payloadChecksum,
-				Name:     "v1.2.3",
-			})
-			w.Write(b)
 		case "/addons/cloudquery/visualization/test/versions/v1.2.3/assets":
 			checkAuthHeader(t, r)
-			w.Header().Set("Location", "http://"+r.Host+"/asset-zip")
-			w.WriteHeader(http.StatusFound)
-		case "/asset-zip":
+			w.WriteHeader(http.StatusOK)
+			b, _ := json.Marshal(map[string]string{
+				"checksum": payloadChecksum,
+				"location": "http://" + r.Host + "/assets/cloudquery/addon_visualization/test/v1.2.3/cloudquery_visualization_test_v1.2.3.zip",
+			})
+			w.Write(b)
+		case "/assets/cloudquery/addon_visualization/test/v1.2.3/cloudquery_visualization_test_v1.2.3.zip":
 			w.Header().Set("Content-Type", "application/octet-stream")
 			w.WriteHeader(http.StatusOK)
 			w.Write(payload)
