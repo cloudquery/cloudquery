@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.13.1
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.42.0
 	github.com/cloudquery/filetypes/v4 v4.2.0
-	github.com/cloudquery/plugin-sdk/v4 v4.18.0
+	github.com/cloudquery/plugin-sdk/v4 v4.18.1
 	github.com/google/go-cmp v0.5.9
 	github.com/google/uuid v1.3.1
 	github.com/rs/zerolog v1.31.0
@@ -49,8 +49,8 @@ require (
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.0 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.4.3 // indirect
-	github.com/cloudquery/plugin-pb-go v1.13.4 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.4.5 // indirect
+	github.com/cloudquery/plugin-pb-go v1.13.5 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.15.0 // indirect
