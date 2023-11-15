@@ -258,6 +258,7 @@
 - [azure_role_management_policy_assignments](azure_role_management_policy_assignments.md)
 - [azure_saas_resources](azure_saas_resources.md)
 - [azure_search_services](azure_search_services.md)
+- [azure_security_adaptive_application_controls](azure_security_adaptive_application_controls.md)
 - [azure_security_alerts](azure_security_alerts.md)
 - [azure_security_alerts_suppression_rules](azure_security_alerts_suppression_rules.md)
 - [azure_security_allowed_connections](azure_security_allowed_connections.md)
