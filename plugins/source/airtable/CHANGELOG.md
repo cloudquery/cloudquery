@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v1.1.2...plugins-source-airtable-v1.1.3) (2023-11-16)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/docker/docker to v24 [SECURITY] ([#15060](https://github.com/cloudquery/cloudquery/issues/15060)) ([41acd0e](https://github.com/cloudquery/cloudquery/commit/41acd0e4ac63221e90cca89a7137a8685692267d))
+
 ## [1.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v1.1.1...plugins-source-airtable-v1.1.2) (2023-09-27)
 
 
