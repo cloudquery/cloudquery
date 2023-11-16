@@ -23,12 +23,12 @@ This uploads documentation for a specific plugin version from a local docs direc
 `
 	pluginDocsUploadExample = `
 # Upload plugin docs to CloudQuery Hub
-cloudquery plugin docs upload test-team/test-plugin@v1.0.0`
+cloudquery plugin docs upload test-team/source/test-plugin@v1.0.0`
 )
 
 func newCmdPluginDocsUpload() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "upload [-D docs] [--sync] <team_name>/<plugin_name>@<version>",
+		Use:     "upload [-D docs] [--sync] <team_name>/<plugin_kind>/<plugin_name>@<version>",
 		Short:   pluginDocsUploadShort,
 		Long:    pluginDocsUploadLong,
 		Example: pluginDocsUploadExample,
