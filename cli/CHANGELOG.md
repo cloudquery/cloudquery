@@ -5,6 +5,21 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.29.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.28.1...cli-v3.29.0) (2023-11-15)
+
+
+### Features
+
+* Add `plugin docs` commands for doc updates ([#15264](https://github.com/cloudquery/cloudquery/issues/15264)) ([307d7bd](https://github.com/cloudquery/cloudquery/commit/307d7bd89f48a4acac277d3e0f1d8b4907c1ddf2))
+* Add teamName to managed plugin configuration ([#15278](https://github.com/cloudquery/cloudquery/issues/15278)) ([b3cf9b8](https://github.com/cloudquery/cloudquery/commit/b3cf9b8a9a7fe15a936704e1662162318b71f2be))
+
+
+### Bug Fixes
+
+* Better addon downloads ([#15173](https://github.com/cloudquery/cloudquery/issues/15173)) ([958483f](https://github.com/cloudquery/cloudquery/commit/958483fd0fc6be0a2f1f3fc7530813bc6a474fcb))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.0 ([#15132](https://github.com/cloudquery/cloudquery/issues/15132)) ([81ee138](https://github.com/cloudquery/cloudquery/commit/81ee138ff86c4b92c3ec93208e0a7e05af2b0036))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.1 ([#15263](https://github.com/cloudquery/cloudquery/issues/15263)) ([a9a39ef](https://github.com/cloudquery/cloudquery/commit/a9a39efe8112a564f21c06ba7627fe6c7ced4cdf))
+
 ## [3.28.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.28.0...cli-v3.28.1) (2023-11-10)
 
 
