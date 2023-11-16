@@ -52,7 +52,7 @@
     },
     {
       "source": "/docs/policies",
-      "destination": "/docs/core-concepts/policies"
+      "destination": "https://hub.cloudquery.io/addons/transformation"
     },
     {
       "source": "/providers",
@@ -873,6 +873,10 @@
     {
       "source": "/docs/plugins/overview",
       "destination": "https://hub.cloudquery.io"
+    },
+    {
+      "source": "/docs/core-concepts/policies",
+      "destination": "https://hub.cloudquery.io/addons/transformation"
     }
   ]
 }
