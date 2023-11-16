@@ -3,7 +3,6 @@ package cmd
 import (
 	"context"
 	"crypto/sha256"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -15,8 +14,8 @@ import (
 	"syscall"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
-	"github.com/cloudquery/cloudquery-api-go/auth"
-	"github.com/cloudquery/cloudquery-api-go/config"
+	cqapiauth "github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/spf13/cobra"
 )
@@ -60,7 +59,7 @@ func newCmdAddonDownload() *cobra.Command {
 }
 
 func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) error {
-	tc := auth.NewTokenClient()
+	tc := cqapiauth.NewTokenClient()
 	token, err := tc.GetToken()
 	if err != nil {
 		return fmt.Errorf("failed to get auth token: %w", err)
@@ -92,7 +91,12 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 		return err
 	}
 
-	location, checksum, err := getAddonMetadata(ctx, c, token.Type, addonParts[0], addonParts[1], addonVer[0], addonVer[1])
+	currentTeam, err := auth.RequireTeamForToken(token)
+	if err != nil {
+		return fmt.Errorf("failed to get team name for token: %w", err)
+	}
+
+	location, checksum, err := getAddonMetadata(ctx, c, currentTeam, addonParts[0], addonParts[1], addonVer[0], addonVer[1])
 	if err != nil {
 		return err
 	}
@@ -112,17 +116,7 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 	return downloadAddonFromResponse(res, checksum, targetDir)
 }
 
-func getAddonMetadata(ctx context.Context, c *cloudquery_api.ClientWithResponses, tokenType auth.TokenType, addonTeam, addonType, addonName, addonVersion string) (location, checksum string, retErr error) {
-	var currentTeam string
-
-	if tokenType != auth.APIKey {
-		var err error
-
-		currentTeam, err = config.GetValue("team")
-		if err != nil && !errors.Is(err, os.ErrNotExist) {
-			return "", "", fmt.Errorf("failed to get current team: %w", err)
-		}
-	}
+func getAddonMetadata(ctx context.Context, c *cloudquery_api.ClientWithResponses, currentTeam, addonTeam, addonType, addonName, addonVersion string) (location, checksum string, retErr error) {
 	aj := "application/json"
 
 	switch {
