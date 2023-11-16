@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.1.17](https://github.com/cloudquery/cloudquery/compare/scaffold-v2.1.16...scaffold-v2.1.17) (2023-11-16)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.13.5 ([#15216](https://github.com/cloudquery/cloudquery/issues/15216)) ([48ecac5](https://github.com/cloudquery/cloudquery/commit/48ecac5eaa9e9fbca68a9f9328e76d7457388ea1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.0 ([#15132](https://github.com/cloudquery/cloudquery/issues/15132)) ([81ee138](https://github.com/cloudquery/cloudquery/commit/81ee138ff86c4b92c3ec93208e0a7e05af2b0036))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.1 ([#15263](https://github.com/cloudquery/cloudquery/issues/15263)) ([a9a39ef](https://github.com/cloudquery/cloudquery/commit/a9a39efe8112a564f21c06ba7627fe6c7ced4cdf))
+* Increase test and lint timeouts in tests, fix caching ([#15273](https://github.com/cloudquery/cloudquery/issues/15273)) ([9797928](https://github.com/cloudquery/cloudquery/commit/97979287d7a81c69a0e078279fc904ae1754a6fa))
+
 ## [2.1.16](https://github.com/cloudquery/cloudquery/compare/scaffold-v2.1.15...scaffold-v2.1.16) (2023-11-01)
 
 
