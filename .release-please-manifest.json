@@ -11,7 +11,7 @@
   "plugins/source/digitalocean+FILLER": "0.0.0",
   "plugins/source/gcp": "9.9.1",
   "plugins/source/gcp+FILLER": "0.0.0",
-  "plugins/source/github": "7.5.0",
+  "plugins/source/github": "7.5.1",
   "plugins/source/github+FILLER": "0.0.0",
   "plugins/source/k8s": "5.2.1",
   "plugins/source/k8s+FILLER": "0.0.0",
