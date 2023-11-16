@@ -59,7 +59,7 @@ jobs:
           echo "latest=${tag}" >> $GITHUB_OUTPUT
       - name: Generate diff
         run: |
-          git diff ${{ steps.tag.outputs.latest }}..HEAD -- website/tables/${{ steps.plugin.outputs.name }} > scripts/table_diff/diff.txt
+          git diff ${{ steps.tag.outputs.latest }}..HEAD -- plugins/source/${{ steps.plugin.outputs.name }}/docs/tables > scripts/table_diff/diff.txt
       - name: Set up Go 1.x
         uses: actions/setup-go@v4
         with:
