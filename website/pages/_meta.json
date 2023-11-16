@@ -50,10 +50,6 @@
     "title": "Solutions",
     "type": "menu",
     "items": {
-      "policies": {
-        "title": "Policies",
-        "href": "/docs/core-concepts/policies"
-      },
       "dashboards": {
         "title": "Dashboards",
         "href": "/docs/core-concepts/dashboards"

@@ -4,7 +4,7 @@ description: CloudQuery maintains official dashboards for use cases including se
 ---
 # Dashboards
 
-CloudQuery offers dashboards to help customers visualize data loaded by CloudQuery into the destination of your choice.  These dashboards can be used to visualize direct infrastructure data and combined with [CloudQuery SQL policies](/docs/core-concepts/policies) for security, compliance, DevOps, and financial optimization use cases. 
+CloudQuery offers dashboards to help customers visualize data loaded by CloudQuery into the destination of your choice.  These dashboards can be used to visualize direct infrastructure data and combined with [CloudQuery SQL policies](https://hub.cloudquery.io/addons/transformation) for security, compliance, DevOps, and financial optimization use cases. 
 
 CloudQuery offers the following dashboard solutions:
 * Out-of-the-box prebuilt dashboards for a variety of use cases.
@@ -22,7 +22,7 @@ The following use cases and solutions are powered by CloudQuery.  Reach out to [
 
 ![A Grafana dashboard of AWS EC2 data](/images/blog/open-source-cloud-asset-inventory-with-cloudquery-and-grafana/image1.png)
 
-More information can be found [here for building an open-source CSPM solution powered by CloudQuery.](/solutions/open-source-cspm)  CloudQuery can be used as a CSPM platform with the ability to build custom rules, create custom visualizations, and layer [policy packs](/docs/core-concepts/policies) for a flexible and scalable cloud security posture management tool that can cover multiple cloud providers.
+More information can be found [here for building an open-source CSPM solution powered by CloudQuery.](/solutions/open-source-cspm)  CloudQuery can be used as a CSPM platform with the ability to build custom rules, create custom visualizations, and layer [policy packs](https://hub.cloudquery.io/addons/transformation) for a flexible and scalable cloud security posture management tool that can cover multiple cloud providers.
 
 ### Resilience and Data Backup
 
@@ -34,7 +34,7 @@ More information and a getting started guide can be found [here on how to manage
 
 ![AWS Cost Optimization Dashboard Powered by CloudQuery and Grafana](/images/dashboards/aws-cost.png)
 
-For more information visit our [premium policies page](/docs/core-concepts/policies#premium-policies). CloudQuery can be used to monitor and visualize cost data to help optimize cloud spend.
+For more information visit our [premium policies page](https://hub.cloudquery.io/addons/transformation). CloudQuery can be used to monitor and visualize cost data to help optimize cloud spend.
 
 ## Building Custom Dashboards
 
