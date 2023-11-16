@@ -49,7 +49,7 @@ jobs:
       - name: Get latest tag
         id: tag
         run: |
-          tag_prefix='plugins-source-${{ steps.plugin.outputs.name }}*'
+          tag_prefix='plugins-source-${{ steps.plugin.outputs.name }}-*'
           if [[ $(git tag --list "${tag_prefix}" | wc -l) -gt 0 ]]; then
              tag=$(git describe --tags --match "${tag_prefix}" --abbrev=0)
           else
