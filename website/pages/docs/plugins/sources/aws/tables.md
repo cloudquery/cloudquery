@@ -93,6 +93,7 @@
 - [aws_backup_region_settings](tables/aws_backup_region_settings)
 - [aws_backup_vaults](tables/aws_backup_vaults)
   - [aws_backup_vault_recovery_points](tables/aws_backup_vault_recovery_points)
+- [aws_batch_compute_environments](tables/aws_batch_compute_environments)
 - [aws_batch_job_definitions](tables/aws_batch_job_definitions)
 - [aws_batch_job_queues](tables/aws_batch_job_queues)
   - [aws_batch_jobs](tables/aws_batch_jobs)
