@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.13](https://github.com/cloudquery/cloudquery/compare/plugins-source-pagerduty-v3.0.12...plugins-source-pagerduty-v3.0.13) (2023-11-16)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.0 ([#15132](https://github.com/cloudquery/cloudquery/issues/15132)) ([81ee138](https://github.com/cloudquery/cloudquery/commit/81ee138ff86c4b92c3ec93208e0a7e05af2b0036))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.1 ([#15263](https://github.com/cloudquery/cloudquery/issues/15263)) ([a9a39ef](https://github.com/cloudquery/cloudquery/commit/a9a39efe8112a564f21c06ba7627fe6c7ced4cdf))
+
 ## [3.0.12](https://github.com/cloudquery/cloudquery/compare/plugins-source-pagerduty-v3.0.11...plugins-source-pagerduty-v3.0.12) (2023-11-13)
 
 
