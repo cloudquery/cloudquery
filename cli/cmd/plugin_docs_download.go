@@ -23,12 +23,12 @@ This downloads documentation for a specific plugin version in CloudQuery hub to 
 `
 	pluginDocsDownloadExample = `
 # Download plugin docs from CloudQuery Hub
-cloudquery plugin docs download test-team/test-plugin@v1.0.0`
+cloudquery plugin docs download test-team/source/test-plugin@v1.0.0`
 )
 
 func newCmdPluginDocsDownload() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "download [-D docs] <team_name>/<plugin_name>@<version>",
+		Use:     "download [-D docs] <team_name>/<plugin_kind>/<plugin_name>@<version>",
 		Short:   pluginDocsDownloadShort,
 		Long:    pluginDocsDownloadLong,
 		Example: pluginDocsDownloadExample,
