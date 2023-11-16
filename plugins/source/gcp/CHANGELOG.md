@@ -5,6 +5,23 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [9.9.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.9.1...plugins-source-gcp-v9.9.2) (2023-11-16)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.4.2 ([#15034](https://github.com/cloudquery/cloudquery/issues/15034)) ([45c2caa](https://github.com/cloudquery/cloudquery/commit/45c2caa345aa33199ad1592bf378a5a839612c6f))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.12 ([#15084](https://github.com/cloudquery/cloudquery/issues/15084)) ([ff308d5](https://github.com/cloudquery/cloudquery/commit/ff308d5f0696417f037d8f11cd5f398e1d24ac39))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.17.0 ([#15064](https://github.com/cloudquery/cloudquery/issues/15064)) ([9c2db8c](https://github.com/cloudquery/cloudquery/commit/9c2db8cedaec682a89b444db29e8c0fb45989408))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.17.1 ([#15075](https://github.com/cloudquery/cloudquery/issues/15075)) ([151769e](https://github.com/cloudquery/cloudquery/commit/151769e7c02028a04ef0ed280951c000ebb1f9c2))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.0 ([#15132](https://github.com/cloudquery/cloudquery/issues/15132)) ([81ee138](https://github.com/cloudquery/cloudquery/commit/81ee138ff86c4b92c3ec93208e0a7e05af2b0036))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.1 ([#15263](https://github.com/cloudquery/cloudquery/issues/15263)) ([a9a39ef](https://github.com/cloudquery/cloudquery/commit/a9a39efe8112a564f21c06ba7627fe6c7ced4cdf))
+* **deps:** Update module github.com/docker/docker to v24 [SECURITY] ([#15060](https://github.com/cloudquery/cloudquery/issues/15060)) ([41acd0e](https://github.com/cloudquery/cloudquery/commit/41acd0e4ac63221e90cca89a7137a8685692267d))
+* Remove old policy docs ([#15188](https://github.com/cloudquery/cloudquery/issues/15188)) ([0ec583c](https://github.com/cloudquery/cloudquery/commit/0ec583c71e6672aeed84ef7aac89f772788aa784))
+* Remove policies docs ([#15222](https://github.com/cloudquery/cloudquery/issues/15222)) ([6fd1d24](https://github.com/cloudquery/cloudquery/commit/6fd1d243c0ec95ad66f7174b87d9a35aa4553717))
+* Remove policy doc gen ([#15205](https://github.com/cloudquery/cloudquery/issues/15205)) ([35e1535](https://github.com/cloudquery/cloudquery/commit/35e1535b0cac95d3869cc7683091cf25e3bebef8))
+* **services:** Update GCP Services ([#15042](https://github.com/cloudquery/cloudquery/issues/15042)) ([9fd343e](https://github.com/cloudquery/cloudquery/commit/9fd343e970db4b79b226b858bd5a8924fac8c28e))
+
 ## [9.9.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.9.0...plugins-source-gcp-v9.9.1) (2023-10-27)
 
 
