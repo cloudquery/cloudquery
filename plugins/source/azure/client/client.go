@@ -4,13 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 	"sync"
-
 	// Import all autorest modules
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -18,12 +17,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client/spec"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
 	"github.com/thoas/go-funk"
-	"golang.org/x/exp/maps"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -46,7 +43,7 @@ type Client struct {
 	Creds         azcore.TokenCredential
 	Options       *arm.ClientOptions
 
-	pluginSpec      *Spec
+	pluginSpec      *spec.Spec
 	BillingAccounts []*armbilling.Account
 	BillingAccount  *armbilling.Account
 	BillingProfile  *armbilling.Profile
@@ -223,44 +220,27 @@ func (c *Client) discoverResourceGroups(ctx context.Context) error {
 	return errorGroup.Wait()
 }
 
-func getCloudConfigFromSpec(specCloud string) (cloud.Configuration, error) {
-	var specCloudToConfig = map[string]cloud.Configuration{
-		"AzurePublic":     cloud.AzurePublic,
-		"AzureGovernment": cloud.AzureGovernment,
-		"AzureChina":      cloud.AzureChina,
-	}
-
-	if v, ok := specCloudToConfig[specCloud]; ok {
-		return v, nil
-	}
-
-	return cloud.Configuration{}, fmt.Errorf("unknown Azure cloud name %q. Supported values are %q", specCloud, maps.Keys(specCloudToConfig))
-}
-
-func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
-	var spec Spec
-	var err error
-	if err := s.UnmarshalSpec(&spec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal gcp spec: %w", err)
-	}
-
-	spec.SetDefaults()
-
-	uniqueSubscriptions := funk.Uniq(spec.Subscriptions).([]string)
+func New(ctx context.Context, logger zerolog.Logger, s *spec.Spec) (schema.ClientMeta, error) {
+	s.SetDefaults()
+	uniqueSubscriptions := funk.Uniq(s.Subscriptions).([]string)
 	c := &Client{
 		logger:             logger,
 		subscriptions:      uniqueSubscriptions,
-		pluginSpec:         &spec,
+		pluginSpec:         s,
 		storageAccountKeys: &sync.Map{},
+		Options:            &arm.ClientOptions{},
 	}
 
-	if spec.CloudName != "" {
-		cloudConfig, err := getCloudConfigFromSpec(spec.CloudName)
+	if s.CloudName != "" {
+		cloudConfig, err := s.CloudConfig()
 		if err != nil {
 			return nil, err
 		}
-		c.Options = &arm.ClientOptions{ClientOptions: azcore.ClientOptions{Cloud: cloudConfig}}
+		c.Options.Cloud = cloudConfig
 	}
+
+	// fill in the retry settings
+	s.RetryOptions.FillIn(&c.Options.Retry)
 
 	// NewDefaultAzureCredential builds a chain of credentials, and reports errors via the log listener
 	// This is currently the way we have to get the errors and report them to the user
@@ -274,14 +254,31 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 		}
 	})
 
+	oidcToken := c.pluginSpec.OIDCToken
 	var credsOptions *azidentity.DefaultAzureCredentialOptions
 	if c.Options != nil {
 		credsOptions = &azidentity.DefaultAzureCredentialOptions{ClientOptions: c.Options.ClientOptions}
 	}
-
-	c.Creds, err = azidentity.NewDefaultAzureCredential(credsOptions)
-	if err != nil {
-		return nil, err
+	var err error
+	if oidcToken != "" {
+		// Accessing Azure using OIDC token
+		tenantID := os.Getenv("AZURE_TENANT_ID")
+		clientID := os.Getenv("AZURE_CLIENT_ID")
+		if tenantID == "" {
+			return nil, errors.New("AZURE_TENANT_ID is empty")
+		}
+		c.Creds, err = azidentity.NewClientAssertionCredential(tenantID, clientID, func(ctx context.Context) (string, error) {
+			return oidcToken, nil
+		}, nil)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		// Use default Azure credential chain
+		c.Creds, err = azidentity.NewDefaultAzureCredential(credsOptions)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	log.SetListener(nil)
@@ -294,7 +291,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Op
 		}
 	}
 	// User specified subscriptions, that CloudQuery should skip syncing
-	c.subscriptions = funk.LeftJoinString(c.subscriptions, spec.SkipSubscriptions)
+	c.subscriptions = funk.LeftJoinString(c.subscriptions, s.SkipSubscriptions)
 
 	if len(c.subscriptions) == 0 {
 		return nil, fmt.Errorf("no subscriptions found")
@@ -333,6 +330,11 @@ func (c *Client) ID() string {
 		return fmt.Sprintf("subscriptions/%s/billingPeriods/%s", c.SubscriptionId, *c.BillingPeriod.Name)
 	}
 	return fmt.Sprintf("subscriptions/%s", c.SubscriptionId)
+}
+
+func (c *Client) Duplicate() *Client {
+	newClient := *c
+	return &newClient
 }
 
 // withSubscription allows multiplexer to create a new client with given subscriptionId

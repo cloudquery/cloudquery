@@ -1,10 +1,13 @@
 package main
 
 import (
+	"context"
+	"log"
+
 	"github.com/cloudquery/cloudquery/plugins/destination/azblob/client"
-	"github.com/cloudquery/cloudquery/plugins/destination/azblob/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/v3/serve"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/azblob/resources/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/serve"
 )
 
 const (
@@ -12,6 +15,11 @@ const (
 )
 
 func main() {
-	p := destination.NewPlugin("azblob", plugin.Version, client.New, destination.WithManagedWriter())
-	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
+	p := plugin.NewPlugin(internalPlugin.Name, internalPlugin.Version, client.New,
+		plugin.WithKind(internalPlugin.Kind),
+		plugin.WithTeam(internalPlugin.Team),
+	)
+	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN), serve.WithDestinationV0V1Server()).Serve(context.Background()); err != nil {
+		log.Fatalf("failed to serve plugin: %v", err)
+	}
 }

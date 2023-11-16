@@ -1,12 +1,16 @@
-const fs = require("fs");
-const path = require("path");
+import {locatePathSync} from 'locate-path';
+import {Policy} from "../components/policyData";
+import fs from "fs";
+import path from "path";
 
 // Read the plugin data file
-import {Plugin, SOURCE_PLUGINS, UNPUBLISHED_SOURCE_PLUGINS, DESTINATION_PLUGINS} from "../components/pluginData";
+import {
+    Plugin,
+    ALL_SOURCE_PLUGINS, ALL_DESTINATION_PLUGINS, PUBLISHED_SOURCE_PLUGINS, PUBLISHED_DESTINATION_PLUGINS
+} from "../components/pluginData";
 
 // Define the directories to write the MDX files to
 const outputDir = "./integrations";
-const metaJSONsDir = "./pages/integrations";
 const mdxSourceComponentDir = "./components/mdx/plugins/source";
 const mdxDestinationComponentDir = "./components/mdx/plugins/destination";
 
@@ -21,15 +25,14 @@ function recreateDirectory(dir: string) {
     }
 }
 
+
 // Copy the source authentication file if it exists
 function copySourceAuthenticationFile(source: Plugin) : boolean {
-    const sourceDir = `./pages/docs/plugins/sources/${source.id}`;
-
-    // Copy the authentication and configuration files if they exist
-    const authFilePath = path.join(sourceDir, "_authentication.mdx");
-
-    if (fs.existsSync(authFilePath)) {
-        const outputFilePath = path.join(mdxSourceComponentDir, `${source.id}/_authentication.mdx`);
+    // Copy the authentication file if it exists
+    const authFilePath = locatePathSync([`./pages/docs/plugins/sources/${source.id}/_authentication.md`, `../plugins/source/${source.id}/docs/_authentication.md`]);
+    if (authFilePath) {
+        const ext = path.extname(authFilePath);
+        const outputFilePath = path.join(mdxSourceComponentDir, `${source.id}/_authentication${ext}`);
         fs.copyFileSync(authFilePath, outputFilePath);
         return true;
     }
@@ -38,14 +41,15 @@ function copySourceAuthenticationFile(source: Plugin) : boolean {
 
 // Copy the source configuration file if it exists and replace the destination name
 function copySourceConfigurationFile(source: Plugin): boolean {
-    const configFilePath = `./pages/docs/plugins/sources/${source.id}/_configuration.mdx`;
-    if (fs.existsSync(configFilePath)) {
-        DESTINATION_PLUGINS.forEach((destination) => {
+    const configFilePath = locatePathSync([`./pages/docs/plugins/sources/${source.id}/_configuration.md`, `../plugins/source/${source.id}/docs/_configuration.md`]);
+    if (configFilePath) {
+        ALL_DESTINATION_PLUGINS.forEach((destination) => {
             const sourceConfigDir = mdxSourceComponentDir + `/${source.id}/${destination.id}`;
             recreateDirectory(sourceConfigDir);
             let fileContents = fs.readFileSync(configFilePath, "utf8");
             fileContents = fileContents.replace(/DESTINATION_NAME/g, destination.id);
-            const outputFilePath = path.join(sourceConfigDir, `_configuration.mdx`);
+            const ext = path.extname(configFilePath);
+            const outputFilePath = path.join(sourceConfigDir, `_configuration${ext}`);
             fs.writeFileSync(outputFilePath, fileContents);
         })
         return true;
@@ -55,12 +59,10 @@ function copySourceConfigurationFile(source: Plugin): boolean {
 
 // Copy the destination authentication file if it exists
 function copyDestinationAuthenticationFile(destination: Plugin) : boolean {
-    const destinationPluginDir = `./pages/docs/plugins/destinations/${destination.id}`;
-
-    // Copy the authentication and configuration files if they exist
-    const authFilePath = path.join(destinationPluginDir, "_authentication.mdx");
-    if (fs.existsSync(authFilePath)) {
-        const outputFilePath = path.join(mdxDestinationComponentDir, `${destination.id}/_authentication.mdx`);
+    const authFilePath = locatePathSync([`../plugins/destination/${destination.id}/docs/_authentication.md`]);
+    if (authFilePath) {
+        const ext = path.extname(authFilePath);
+        const outputFilePath = path.join(mdxDestinationComponentDir, `${destination.id}/_authentication${ext}`);
         fs.copyFileSync(authFilePath, outputFilePath);
         return true;
     }
@@ -69,12 +71,11 @@ function copyDestinationAuthenticationFile(destination: Plugin) : boolean {
 
 // Copy the destination configuration file if it exists
 function copyDestinationConfigurationFile(destination: Plugin) : boolean {
-    const destinationDir = `./pages/docs/plugins/destinations/${destination.id}`;
-    const authFilePath = path.join(destinationDir, "_configuration.mdx");
-
-    if (fs.existsSync(authFilePath)) {
-        const outputFilePath = path.join(mdxDestinationComponentDir, `${destination.id}/_configuration.mdx`);
-        fs.copyFileSync(authFilePath, outputFilePath);
+    const configFilePath = locatePathSync([`../plugins/destination/${destination.id}/docs/_configuration.md`]);
+    if (configFilePath) {
+        const ext = path.extname(configFilePath);
+        const outputFilePath = path.join(mdxDestinationComponentDir, `${destination.id}/_configuration${ext}`);
+        fs.copyFileSync(configFilePath, outputFilePath);
         return true;
     }
     return false;
@@ -103,8 +104,8 @@ function createSourceDestinationIntegrationFile(source: Plugin, destination: Plu
         `${source.id}/${destination.id}.mdx`
     );
 
-    const isOfficialSource = source.kind === "official";
-    const isOfficialDestination = destination.kind === "official";
+    const isOfficialSource = source.availability === "free";
+    const isOfficialDestination = destination.availability === "free";
 
     // Define the contents of the MDX file
     const fileContents = `---
@@ -129,7 +130,7 @@ title: Export data from ${source.name} to ${destination.name}
         fs.mkdirSync(syncCommandDir, { recursive: true });
     }
     // Write the sync command file
-    const syncCommandFilePath = path.join(syncCommandDir, "_sync.mdx");
+    const syncCommandFilePath = path.join(syncCommandDir, "_sync.md");
     const sourceFilename = source.id === destination.id ? `source-${source.id}.yaml` : `${source.id}.yaml`;
     const destinationFilename = source.id === destination.id ? `destination-${destination.id}.yaml` : `${destination.id}.yaml`;
     const syncCommandFileContents = "```bash copy\n" +
@@ -145,18 +146,24 @@ function generateFiles() {
 
     let hasAuthFile = {};
 
+    PUBLISHED_SOURCE_PLUGINS.forEach((source) => {
+        if (source.availability === "premium") {
+            return;
+        }
+        recreateDirectory(outputDir + "/" + source.id);
+    });
+
     // Loop through each source plugin and generate or copy MDX files
-    [...SOURCE_PLUGINS, ...UNPUBLISHED_SOURCE_PLUGINS].forEach((source) => {
+    ALL_SOURCE_PLUGINS.filter((p) => p.availability !== 'premium' ).forEach((source) => {
       if (sources.has(source.id)) {
         throw new Error("Duplicate source id: " + source.id + ". Did you forget to remove an unpublished plugin you implemented?");
       }
       sources.add(source.id);
-      recreateDirectory(outputDir + "/" + source.id);
 
       const hasConfiguration = copySourceConfigurationFile(source);
-      const isOfficial = source.kind === "official";
+      const isOfficial = source.availability === "free";
       if (isOfficial && !hasConfiguration) {
-          throw new Error("No _configuration.mdx file found for source: " + source.id);
+          throw new Error("No _configuration.md file found for source: " + source.id);
       }
       const hasAuthentication = copySourceAuthenticationFile(source);
       hasAuthFile['source-' + source.id] = hasAuthentication;
@@ -164,7 +171,10 @@ function generateFiles() {
     });
 
     // Loop through each destination plugin and generate or copy MDX files
-    DESTINATION_PLUGINS.forEach((destination) => {
+    ALL_DESTINATION_PLUGINS.forEach((destination) => {
+        if (destination.availability === "premium") {
+            return;
+        }
         if (destinations.has(destination.id)) {
             throw new Error("Duplicate destination id: " + destination.id);
         }
@@ -172,17 +182,23 @@ function generateFiles() {
         recreateDirectory(mdxDestinationComponentDir + "/" + destination.id);
 
         const hasConfiguration = copyDestinationConfigurationFile(destination);
-        const isOfficial = destination.kind === "official";
+        const isOfficial = destination.availability === "free";
         if (isOfficial && !hasConfiguration && destination.id !== "more") {
-            throw new Error("No _configuration.mdx file found for destination: " + destination.id);
+            throw new Error("No _configuration.md file found for destination: " + destination.id);
         }
         const hasAuthentication = copyDestinationAuthenticationFile(destination);
         hasAuthFile['destination-' + destination.id] = hasAuthentication;
     });
 
     // Create the source -> destination integration files
-    [...SOURCE_PLUGINS, ...UNPUBLISHED_SOURCE_PLUGINS].forEach((source: Plugin) => {
-       DESTINATION_PLUGINS.forEach((destination: Plugin) => {
+    PUBLISHED_SOURCE_PLUGINS.forEach((source: Plugin) => {
+        if (source.availability === "premium") {
+            return;
+        }
+        PUBLISHED_DESTINATION_PLUGINS.forEach((destination: Plugin) => {
+           if (destination.availability === "premium") {
+             return;
+           }
            const sourceHasAuth = hasAuthFile['source-' + source.id];
            const destHasAuth = hasAuthFile['destination-' + destination.id];
            createSourceDestinationIntegrationFile(source, destination, sourceHasAuth, destHasAuth);

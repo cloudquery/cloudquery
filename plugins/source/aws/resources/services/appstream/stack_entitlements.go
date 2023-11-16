@@ -3,13 +3,13 @@ package appstream
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/appstream"
 	"github.com/aws/aws-sdk-go-v2/service/appstream/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func stackEntitlements() *schema.Table {
@@ -18,7 +18,6 @@ func stackEntitlements() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Entitlement.html`,
 		Resolver:    fetchAppstreamStackEntitlements,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "appstream2"),
 		Transform:   transformers.TransformWithStruct(&types.Entitlement{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
@@ -43,7 +42,7 @@ func fetchAppstreamStackEntitlements(ctx context.Context, meta schema.ClientMeta
 	var input appstream.DescribeEntitlementsInput
 	input.StackName = parent.Item.(types.Stack).Name
 	cl := meta.(*client.Client)
-	svc := cl.Services().Appstream
+	svc := cl.Services(client.AWSServiceAppstream).Appstream
 	// No paginator available
 	for {
 		response, err := svc.DescribeEntitlements(ctx, &input, func(options *appstream.Options) {

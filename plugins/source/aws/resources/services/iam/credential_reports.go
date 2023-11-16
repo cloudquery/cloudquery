@@ -5,13 +5,13 @@ import (
 	"errors"
 	"time"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam/models"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/gocarina/gocsv"
 	"github.com/thoas/go-funk"
 )
@@ -19,8 +19,9 @@ import (
 func CredentialReports() *schema.Table {
 	tableName := "aws_iam_credential_reports"
 	return &schema.Table{
-		Name:     tableName,
-		Resolver: fetchIamCredentialReports,
+		Name:        tableName,
+		Description: "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_getting-report.html#id_credentials_understanding_the_report_format",
+		Resolver:    fetchIamCredentialReports,
 		Transform: transformers.TransformWithStruct(
 			&models.CredentialReportEntry{},
 			transformers.WithSkipFields(
@@ -105,7 +106,7 @@ func fetchIamCredentialReports(ctx context.Context, meta schema.ClientMeta, _ *s
 	var apiErr smithy.APIError
 	var reportOutput *iam.GetCredentialReportOutput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services(client.AWSServiceIam).Iam
 	for {
 		reportOutput, err = svc.GetCredentialReport(ctx, &iam.GetCredentialReportInput{}, func(options *iam.Options) {
 			options.Region = cl.Region

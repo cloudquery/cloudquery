@@ -1,25 +1,25 @@
 package client
 
 import (
+	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 
-	"github.com/cloudquery/filetypes/v3"
-	"github.com/cloudquery/filetypes/v3/csv"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v14/arrow/array"
+	"github.com/apache/arrow/go/v14/arrow/memory"
+	"github.com/cloudquery/filetypes/v4"
+	"github.com/cloudquery/filetypes/v4/csv"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 )
-
-var migrateStrategy = destination.MigrateStrategy{
-	AddColumn:           specs.MigrateModeForced,
-	AddColumnNotNull:    specs.MigrateModeForced,
-	RemoveColumn:        specs.MigrateModeForced,
-	RemoveColumnNotNull: specs.MigrateModeForced,
-	ChangeColumn:        specs.MigrateModeForced,
-}
 
 func testFormats() []filetypes.FileSpec {
 	return []filetypes.FileSpec{
@@ -45,45 +45,44 @@ type testSpec struct {
 	baseDir  string
 }
 
-func testSpecsWithoutFormat(t *testing.T) []testSpec {
+func testSpecsWithoutFormat() []testSpec {
 	var (
-		ret []testSpec
-		bd  string // temp variable to hold tempdir/basedir dir for each test case
+		ret  []testSpec
+		zero int64
 	)
 
-	bd = t.TempDir()
 	ret = append(ret, testSpec{
 		testName: "Directory",
-		baseDir:  bd,
 		Spec: Spec{
-			Directory: bd,
+			BatchSize:      &zero,
+			BatchSizeBytes: &zero,
 		},
 	})
 
-	bd = t.TempDir()
 	ret = append(ret, testSpec{
 		testName: "DirectoryWithTable",
-		baseDir:  bd,
 		Spec: Spec{
-			Directory: filepath.Join(bd, "{{TABLE}}", "data.{{FORMAT}}"),
+			Directory:      filepath.Join("{{TABLE}}", "data.{{FORMAT}}"),
+			BatchSize:      &zero,
+			BatchSizeBytes: &zero,
 		},
 	})
 
-	bd = t.TempDir()
 	ret = append(ret, testSpec{
 		testName: "Path",
-		baseDir:  bd,
 		Spec: Spec{
-			Path: filepath.Join(bd, "{{TABLE}}.{{FORMAT}}"),
+			Path:           filepath.Join("{{TABLE}}.{{FORMAT}}"),
+			BatchSize:      &zero,
+			BatchSizeBytes: &zero,
 		},
 	})
 
-	bd = t.TempDir()
 	ret = append(ret, testSpec{
 		testName: "PathWithTable",
-		baseDir:  bd,
 		Spec: Spec{
-			Path: filepath.Join(bd, "{{TABLE}}", "data.{{FORMAT}}"),
+			Path:           filepath.Join("{{TABLE}}", "data.{{FORMAT}}"),
+			BatchSize:      &zero,
+			BatchSizeBytes: &zero,
 		},
 	})
 
@@ -93,7 +92,7 @@ func testSpecsWithoutFormat(t *testing.T) []testSpec {
 func testSpecs(t *testing.T) []testSpec {
 	var ret []testSpec
 	formats := testFormats()
-	for _, s := range testSpecsWithoutFormat(t) {
+	for _, s := range testSpecsWithoutFormat() {
 		s := s
 		s.NoRotate = true
 		for i := range formats {
@@ -101,6 +100,24 @@ func testSpecs(t *testing.T) []testSpec {
 			s2.testName += ":" + string(formats[i].Format)
 			s2.FileSpec = &formats[i]
 			ret = append(ret, s2)
+
+			if formats[i].Format != filetypes.FormatTypeParquet {
+				s2.testName += ":gzip"
+				fs := *s2.FileSpec
+				fs.Compression = filetypes.CompressionTypeGZip
+				s2.FileSpec = &fs
+				ret = append(ret, s2)
+			}
+		}
+	}
+
+	for i := range ret {
+		bd := t.TempDir()
+		ret[i].baseDir = bd
+		if ret[i].Spec.Path == "" {
+			ret[i].Spec.Directory = filepath.Join(bd, ret[i].Spec.Directory)
+		} else {
+			ret[i].Spec.Path = filepath.Join(bd, ret[i].Spec.Path)
 		}
 	}
 
@@ -111,7 +128,11 @@ func TestPlugin(t *testing.T) {
 	for _, ts := range testSpecs(t) {
 		ts := ts
 		t.Run(ts.testName, func(t *testing.T) {
-			testPlugin(t, &ts.Spec)
+			if ts.Spec.Format == filetypes.FormatTypeParquet || ts.Spec.Compression != filetypes.CompressionTypeNone {
+				testPluginCustom(t, &ts.Spec)
+			} else {
+				testPlugin(t, &ts.Spec)
+			}
 
 			fi, err := os.Stat(ts.baseDir)
 			assert.NoError(t, err)
@@ -127,8 +148,7 @@ func TestPlugin(t *testing.T) {
 				if !d.IsDir() {
 					fileCount++
 				}
-				assert.NotContainsf(t, path, "{", "path %s still contains template", path)
-				if t.Failed() {
+				if !assert.NotContainsf(t, path, "{", "path %s still contains template", path) {
 					return fmt.Errorf("test failed")
 				}
 				return nil
@@ -140,23 +160,98 @@ func TestPlugin(t *testing.T) {
 }
 
 func testPlugin(t *testing.T, spec *Spec) {
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin("file", "development", New, destination.WithManagedWriter())
-		},
-		specs.Destination{
-			Spec: spec,
-		},
-		destination.PluginTestSuiteTests{
-			SkipOverwrite:             true,
-			SkipSecondAppend:          true,
-			SkipDeleteStale:           true,
-			SkipMigrateOverwrite:      true,
-			SkipMigrateOverwriteForce: true,
-			SkipMigrateAppendForce:    true,
-
-			MigrateStrategyOverwrite: migrateStrategy,
-			MigrateStrategyAppend:    migrateStrategy,
+	ctx := context.Background()
+	p := plugin.NewPlugin("file", "development", New)
+	b, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := p.Init(ctx, b, plugin.NewClientOptions{}); err != nil {
+		t.Fatal(err)
+	}
+	plugin.TestWriterSuiteRunner(t,
+		p,
+		plugin.WriterTestSuiteTests{
+			SkipUpsert:       true,
+			SkipMigrate:      true,
+			SkipDeleteStale:  true,
+			SkipDeleteRecord: true,
 		},
 	)
+}
+
+func testPluginCustom(t *testing.T, spec *Spec) {
+	ctx := context.Background()
+
+	var client plugin.Client
+
+	p := plugin.NewPlugin("file", "development", func(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
+		var err error
+		client, err = New(ctx, logger, spec, opts)
+		return client, err
+	})
+	b, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := p.Init(ctx, b, plugin.NewClientOptions{}); err != nil {
+		t.Fatal(err)
+	}
+
+	tableName := fmt.Sprintf("cq_test_custom_insert_%d", time.Now().UnixNano())
+	table := &schema.Table{
+		Name: tableName,
+		Columns: []schema.Column{
+			{Name: "name", Type: arrow.BinaryTypes.String},
+		},
+	}
+	if err := p.WriteAll(ctx, []message.WriteMessage{
+		&message.WriteMigrateTable{
+			Table: table,
+		},
+	}); err != nil {
+		t.Fatal(fmt.Errorf("failed to create table: %w", err))
+	}
+
+	bldr := array.NewRecordBuilder(memory.DefaultAllocator, table.ToArrowSchema())
+	bldr.Field(0).(*array.StringBuilder).Append("foo")
+	record := bldr.NewRecord()
+
+	if err := p.WriteAll(ctx, []message.WriteMessage{
+		&message.WriteInsert{
+			Record: record,
+		},
+		&message.WriteInsert{
+			Record: record,
+		},
+	}); err != nil {
+		t.Fatal(fmt.Errorf("failed to insert records: %w", err))
+	}
+
+	if err := client.Close(ctx); err != nil {
+		t.Fatal(fmt.Errorf("failed to close client: %w", err))
+	}
+
+	readRecords, err := readAll(ctx, client, table)
+	if err != nil {
+		t.Fatal(fmt.Errorf("failed to sync: %w", err))
+	}
+
+	totalItems := plugin.TotalRows(readRecords)
+	assert.Equalf(t, int64(2), totalItems, "expected 2 items, got %d", totalItems)
+}
+
+func readAll(ctx context.Context, client plugin.Client, table *schema.Table) ([]arrow.Record, error) {
+	var err error
+	ch := make(chan arrow.Record)
+	go func() {
+		defer close(ch)
+		err = client.Read(ctx, table, ch)
+	}()
+	// nolint:prealloc
+	var records []arrow.Record
+	for record := range ch {
+		records = append(records, record)
+	}
+	return records, err
 }

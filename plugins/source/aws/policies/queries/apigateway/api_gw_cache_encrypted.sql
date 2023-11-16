@@ -8,11 +8,12 @@ select
   arn as resource_id,
   case
     when stage_caching_enabled is true
-        or (
+        and (
             caching_enabled is true
             and cache_data_encrypted is not true
-        ) then 'pass'
-    else 'fail'
+        ) 
+        then 'fail'
+        else 'pass'
   end as status
 from
     view_aws_apigateway_method_settings

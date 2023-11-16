@@ -1,24 +1,22 @@
 package plugin
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client"
-	"github.com/cloudquery/cloudquery/plugins/source/hackernews/resources/services/items"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 
 var (
+	Name    = "hackernews"
+	Kind    = "source"
+	Team    = "cloudquery"
 	Version = "development"
 )
 
-func Plugin() *source.Plugin {
-	tables := []*schema.Table{
-		items.Items(),
-	}
-	return source.NewPlugin(
-		"hackernews",
+func Plugin() *plugin.Plugin {
+	return plugin.NewPlugin(
+		Name,
 		Version,
-		tables,
-		client.Configure,
+		Configure,
+		plugin.WithKind(Kind),
+		plugin.WithTeam(Team),
 	)
 }

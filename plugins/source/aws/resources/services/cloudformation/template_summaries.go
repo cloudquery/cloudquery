@@ -3,13 +3,13 @@ package cloudformation
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
-	cqtypes "github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func templateSummaries() *schema.Table {
@@ -18,7 +18,6 @@ func templateSummaries() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_GetTemplateSummary.html`,
 		Resolver:    fetchTemplateSummary,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "cloudformation"),
 		Transform: transformers.TransformWithStruct(
 			&cloudformation.GetTemplateSummaryOutput{},
 			transformers.WithSkipFields("ResultMetadata"), // This field contains metadata about the API call rather than the template itself, so remove it.
@@ -48,7 +47,7 @@ func templateSummaries() *schema.Table {
 
 func fetchTemplateSummary(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudformation
+	svc := cl.Services(client.AWSServiceCloudformation).Cloudformation
 
 	stack := parent.Item.(types.Stack)
 

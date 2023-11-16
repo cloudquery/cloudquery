@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/resiliencehub"
 	"github.com/aws/aws-sdk-go-v2/service/resiliencehub/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Apps() *schema.Table {
@@ -26,7 +26,7 @@ func Apps() *schema.Table {
 
 func fetchApps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Resiliencehub
+	svc := cl.Services(client.AWSServiceResiliencehub).Resiliencehub
 	p := resiliencehub.NewListAppsPaginator(svc, &resiliencehub.ListAppsInput{})
 	for p.HasMorePages() {
 		out, err := p.NextPage(ctx, func(options *resiliencehub.Options) {
@@ -43,7 +43,7 @@ func fetchApps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 
 func describeApp(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Resiliencehub
+	svc := cl.Services(client.AWSServiceResiliencehub).Resiliencehub
 	out, err := svc.DescribeApp(ctx,
 		&resiliencehub.DescribeAppInput{AppArn: resource.Item.(types.AppSummary).AppArn},
 		func(options *resiliencehub.Options) {

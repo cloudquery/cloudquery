@@ -3,14 +3,13 @@ package cloudwatch
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Alarms() *schema.Table {
@@ -47,7 +46,7 @@ func Alarms() *schema.Table {
 func fetchCloudwatchAlarms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config cloudwatch.DescribeAlarmsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudwatch
+	svc := cl.Services(client.AWSServiceCloudwatch).Cloudwatch
 	paginator := cloudwatch.NewDescribeAlarmsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *cloudwatch.Options) {
@@ -71,7 +70,7 @@ func resolveCloudwatchAlarmDimensions(ctx context.Context, meta schema.ClientMet
 
 func resolveCloudwatchAlarmTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudwatch
+	svc := cl.Services(client.AWSServiceCloudwatch).Cloudwatch
 	alarm := resource.Item.(types.MetricAlarm)
 
 	input := cloudwatch.ListTagsForResourceInput{

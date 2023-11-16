@@ -3,14 +3,13 @@ package servicediscovery
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/servicediscovery"
 	"github.com/aws/aws-sdk-go-v2/service/servicediscovery/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Services() *schema.Table {
@@ -38,7 +37,7 @@ func Services() *schema.Table {
 }
 func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Servicediscovery
+	svc := cl.Services(client.AWSServiceServicediscovery).Servicediscovery
 	input := servicediscovery.ListServicesInput{MaxResults: aws.Int32(100)}
 	paginator := servicediscovery.NewListServicesPaginator(svc, &input)
 	for paginator.HasMorePages() {
@@ -55,7 +54,7 @@ func fetchServices(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 
 func getService(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Servicediscovery
+	svc := cl.Services(client.AWSServiceServicediscovery).Servicediscovery
 	namespace := resource.Item.(types.ServiceSummary)
 
 	desc, err := svc.GetService(ctx, &servicediscovery.GetServiceInput{Id: namespace.Id}, func(o *servicediscovery.Options) {

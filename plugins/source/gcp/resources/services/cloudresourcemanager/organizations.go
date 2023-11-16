@@ -3,9 +3,9 @@ package cloudresourcemanager
 import (
 	"context"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
-	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	crmv1 "google.golang.org/api/cloudresourcemanager/v1"
 )
 

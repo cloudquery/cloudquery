@@ -3,11 +3,10 @@ package quicksight
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
 	"github.com/aws/aws-sdk-go-v2/service/quicksight"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/thoas/go-funk"
 )
 
@@ -20,7 +19,7 @@ var tagsCol = schema.Column{
 func resolveTags(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 	arn := funk.Get(r.Item, "Arn", funk.WithAllowZero()).(*string)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Quicksight
+	svc := cl.Services(client.AWSServiceQuicksight).Quicksight
 	params := quicksight.ListTagsForResourceInput{ResourceArn: arn}
 
 	output, err := svc.ListTagsForResource(ctx, &params, func(options *quicksight.Options) {

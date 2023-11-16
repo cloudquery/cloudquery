@@ -3,13 +3,13 @@ package route53
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func DelegationSets() *schema.Table {
@@ -36,7 +36,7 @@ func DelegationSets() *schema.Table {
 func fetchRoute53DelegationSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config route53.ListReusableDelegationSetsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Route53
+	svc := cl.Services(client.AWSServiceRoute53).Route53
 	// no paginator available
 	for {
 		response, err := svc.ListReusableDelegationSets(ctx, &config, func(options *route53.Options) {

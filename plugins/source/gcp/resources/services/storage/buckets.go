@@ -2,16 +2,16 @@ package storage
 
 import (
 	pb "cloud.google.com/go/storage"
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
-	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Buckets() *schema.Table {
 	return &schema.Table{
 		Name:        "gcp_storage_buckets",
-		Description: `https://cloud.google.com/storage/docs/json_api/v1/buckets#resource`,
+		Description: `https://pkg.go.dev/cloud.google.com/go/storage#BucketAttrs`,
 		Resolver:    fetchBuckets,
 		Multiplex:   client.ProjectMultiplexEnabledServices("storage.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.BucketAttrs{}, transformers.WithPrimaryKeys("Name")),

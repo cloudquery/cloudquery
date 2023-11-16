@@ -2,19 +2,22 @@ package plugin
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/firestore/client"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 
-var version = "development"
+var (
+	Name    = "firestore"
+	Kind    = "source"
+	Team    = "cloudquery"
+	Version = "development"
+)
 
-func Plugin() *source.Plugin {
-	return source.NewPlugin(
-		"firestore",
-		version,
-		nil,
+func Plugin() *plugin.Plugin {
+	return plugin.NewPlugin(
+		Name,
+		Version,
 		client.Configure,
-		source.WithDynamicTableOption(getDynamicTables),
-		source.WithNoInternalColumns(),
-		source.WithUnmanaged(),
+		plugin.WithKind(Kind),
+		plugin.WithTeam(Team),
 	)
 }

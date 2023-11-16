@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apprunner"
 	"github.com/aws/aws-sdk-go-v2/service/apprunner/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func operations() *schema.Table {
@@ -25,7 +25,7 @@ func operations() *schema.Table {
 
 func fetchApprunnerOperations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	paginator := apprunner.NewListOperationsPaginator(cl.Services().Apprunner,
+	paginator := apprunner.NewListOperationsPaginator(cl.Services(client.AWSServiceApprunner).Apprunner,
 		&apprunner.ListOperationsInput{ServiceArn: parent.Item.(*types.Service).ServiceArn})
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(options *apprunner.Options) {

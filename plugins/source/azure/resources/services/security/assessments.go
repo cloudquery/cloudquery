@@ -5,8 +5,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Assessments() *schema.Table {
@@ -18,9 +18,6 @@ func Assessments() *schema.Table {
 		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_security_assessments", client.Namespacemicrosoft_security),
 		Transform:            transformers.TransformWithStruct(&armsecurity.AssessmentResponse{}, transformers.WithPrimaryKeys("ID")),
 		Columns:              schema.ColumnList{client.SubscriptionID},
-		Relations: []*schema.Table{
-			subAssessments(),
-		},
 	}
 }
 

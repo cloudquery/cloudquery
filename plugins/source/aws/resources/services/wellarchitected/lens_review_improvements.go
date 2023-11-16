@@ -3,12 +3,13 @@ package wellarchitected
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func lensReviewImprovements() *schema.Table {
@@ -19,8 +20,7 @@ func lensReviewImprovements() *schema.Table {
 		Transform: transformers.TransformWithStruct(new(types.ImprovementSummary),
 			transformers.WithPrimaryKeys("PillarId", "QuestionId"),
 		),
-		Multiplex: client.ServiceAccountRegionMultiplexer(name, "wellarchitected"),
-		Resolver:  fetchLensReviewImprovements,
+		Resolver: fetchLensReviewImprovements,
 		Columns: schema.ColumnList{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -59,7 +59,7 @@ func fetchLensReviewImprovements(ctx context.Context, meta schema.ClientMeta, pa
 	}
 
 	cl := meta.(*client.Client)
-	service := cl.Services().Wellarchitected
+	service := cl.Services(client.AWSServiceWellarchitected).Wellarchitected
 	milestoneNumber := int32(parent.Get("milestone_number").Get().(int64))
 	workloadID := parent.Get("workload_id").String()
 
@@ -68,8 +68,8 @@ func fetchLensReviewImprovements(ctx context.Context, meta schema.ClientMeta, pa
 			&wellarchitected.ListLensReviewImprovementsInput{
 				LensAlias:       review.LensAlias,
 				WorkloadId:      &workloadID,
-				MilestoneNumber: milestoneNumber,
-				MaxResults:      50,
+				MilestoneNumber: aws.Int32(milestoneNumber),
+				MaxResults:      aws.Int32(50),
 				PillarId:        pillar.PillarId,
 			},
 		)

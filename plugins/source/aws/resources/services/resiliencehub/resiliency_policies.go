@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/resiliencehub"
 	"github.com/aws/aws-sdk-go-v2/service/resiliencehub/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func ResiliencyPolicies() *schema.Table {
@@ -24,7 +24,7 @@ func ResiliencyPolicies() *schema.Table {
 
 func fetchResiliencyPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Resiliencehub
+	svc := cl.Services(client.AWSServiceResiliencehub).Resiliencehub
 	p := resiliencehub.NewListResiliencyPoliciesPaginator(svc, &resiliencehub.ListResiliencyPoliciesInput{})
 	for p.HasMorePages() {
 		out, err := p.NextPage(ctx, func(options *resiliencehub.Options) {

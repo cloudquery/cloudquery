@@ -4,14 +4,14 @@ import (
 	"context"
 	"strings"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Gateways() *schema.Table {
@@ -47,7 +47,7 @@ func Gateways() *schema.Table {
 func fetchDirectconnectGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config directconnect.DescribeDirectConnectGatewaysInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Directconnect
+	svc := cl.Services(client.AWSServiceDirectconnect).Directconnect
 	// No paginator available
 	for {
 		output, err := svc.DescribeDirectConnectGateways(ctx, &config, func(options *directconnect.Options) {

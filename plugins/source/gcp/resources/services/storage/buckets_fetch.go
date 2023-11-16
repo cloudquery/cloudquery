@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"cloud.google.com/go/storage"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"google.golang.org/api/iterator"
 )
 

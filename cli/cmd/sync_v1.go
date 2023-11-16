@@ -33,7 +33,8 @@ func syncConnectionV1(ctx context.Context, sourceClient *managedplugin.Client, d
 			}
 		}
 	}()
-	syncTime := time.Now().UTC()
+	// https://github.com/golang/go/issues/41087
+	syncTime := time.Now().UTC().Truncate(time.Microsecond)
 	destinationStrings := make([]string, len(destinationsClients))
 	for i := range destinationsClients {
 		destinationStrings[i] = destinationSpecs[i].VersionString()
@@ -164,6 +165,20 @@ func syncConnectionV1(ctx context.Context, sourceClient *managedplugin.Client, d
 			}
 		}
 	}
+
+	for i := range destinationsClients {
+		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
+			_, err := destinationsPbClients[i].DeleteStale(ctx, &destination.DeleteStale_Request{
+				Tables:    tablesRes.Tables,
+				Source:    sourceSpec.Name,
+				Timestamp: timestamppb.New(syncTime),
+			})
+			if err != nil {
+				return err
+			}
+		}
+	}
+
 	getMetricsRes, err := sourcePbClient.GetMetrics(ctx, &source.GetMetrics_Request{})
 	if err != nil {
 		return err

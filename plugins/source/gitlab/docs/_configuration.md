@@ -1,0 +1,18 @@
+```yaml copy
+kind: source
+# Common source-plugin configuration
+spec:
+  name: gitlab
+  path: cloudquery/gitlab
+  registry: cloudquery
+  version: "VERSION_SOURCE_GITLAB"
+  tables: ["gitlab_users"]
+  destinations: ["DESTINATION_NAME"]
+
+  # Gitlab specific configuration
+  spec:
+    access_token: "<YOUR_ACCESS_TOKEN_HERE>"
+    base_url: "<INSTANCE_URL>" # optional, leave empty for GitLab SaaS
+    # Optional parameters
+    # concurrency: 10000
+```

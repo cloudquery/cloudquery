@@ -3,12 +3,13 @@ package wellarchitected
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 // lens info consists of types.LensSummary & types.Lens fields
@@ -44,7 +45,7 @@ func Lenses() *schema.Table {
 
 func fetchLenses(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	service := cl.Services().Wellarchitected
+	service := cl.Services(client.AWSServiceWellarchitected).Wellarchitected
 
 	// we do fetch for all 3 types
 	for _, lensType := range types.LensType("").Values() {
@@ -52,7 +53,7 @@ func fetchLenses(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 			&wellarchitected.ListLensesInput{
 				LensStatus: types.LensStatusTypeAll,
 				LensType:   lensType,
-				MaxResults: 50,
+				MaxResults: aws.Int32(50),
 			},
 		)
 		for p.HasMorePages() {
@@ -71,7 +72,7 @@ func fetchLenses(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 
 func getLens(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	service := cl.Services().Wellarchitected
+	service := cl.Services(client.AWSServiceWellarchitected).Wellarchitected
 	summary := resource.Item.(types.LensSummary)
 	l := &lens{LensSummary: &summary}
 

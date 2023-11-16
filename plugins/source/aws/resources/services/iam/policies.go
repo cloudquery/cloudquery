@@ -4,15 +4,14 @@ import (
 	"context"
 	"net/url"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Policies() *schema.Table {
@@ -55,7 +54,7 @@ func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 		},
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services(client.AWSServiceIam).Iam
 	paginator := iam.NewGetAccountAuthorizationDetailsPaginator(svc, &config)
 
 	for paginator.HasMorePages() {
@@ -73,7 +72,7 @@ func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.ManagedPolicyDetail)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services(client.AWSServiceIam).Iam
 	response, err := svc.ListPolicyTags(ctx, &iam.ListPolicyTagsInput{PolicyArn: r.Arn}, func(options *iam.Options) {
 		options.Region = cl.Region
 	})

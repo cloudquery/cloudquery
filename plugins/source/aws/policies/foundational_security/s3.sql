@@ -24,4 +24,4 @@
 
 \set check_id 'S3.8'
 \echo "Executing check S3.8"
-\ir ../queries/s3/account_level_public_access_blocks.sql
+\ir ../queries/s3/bucket_level_public_access_blocks.sql

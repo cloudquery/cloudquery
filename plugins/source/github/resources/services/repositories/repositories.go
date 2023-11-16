@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/google/go-github/v49/github"
 )
 
@@ -16,7 +16,7 @@ func Repositories() *schema.Table {
 		Multiplex: client.OrgRepositoryMultiplex,
 		Transform: client.TransformWithStruct(&github.Repository{}, transformers.WithPrimaryKeys("ID")),
 		Columns:   []schema.Column{client.OrgColumn},
-		Relations: []*schema.Table{alerts(), releases(), secrets(), branches()},
+		Relations: []*schema.Table{alerts(), releases(), secrets(), branches(), keys()},
 	}
 }
 

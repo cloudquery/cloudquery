@@ -4,15 +4,15 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53/models"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func hostedZoneTrafficPolicyInstances() *schema.Table {
@@ -22,7 +22,6 @@ func hostedZoneTrafficPolicyInstances() *schema.Table {
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicyInstance.html`,
 		Resolver:    fetchRoute53HostedZoneTrafficPolicyInstances,
 		Transform:   transformers.TransformWithStruct(&types.TrafficPolicyInstance{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "route53"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
@@ -45,7 +44,7 @@ func fetchRoute53HostedZoneTrafficPolicyInstances(ctx context.Context, meta sche
 	r := parent.Item.(*models.Route53HostedZoneWrapper)
 	config := route53.ListTrafficPolicyInstancesByHostedZoneInput{HostedZoneId: r.Id}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Route53
+	svc := cl.Services(client.AWSServiceRoute53).Route53
 	// No paginator available
 	for {
 		response, err := svc.ListTrafficPolicyInstancesByHostedZone(ctx, &config, func(options *route53.Options) {

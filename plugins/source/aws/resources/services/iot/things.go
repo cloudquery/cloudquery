@@ -3,13 +3,13 @@ package iot
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Things() *schema.Table {
@@ -44,7 +44,7 @@ func fetchIotThings(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	}
 	cl := meta.(*client.Client)
 
-	svc := cl.Services().Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 	paginator := iot.NewListThingsPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *iot.Options) {
@@ -60,7 +60,7 @@ func fetchIotThings(ctx context.Context, meta schema.ClientMeta, parent *schema.
 func ResolveIotThingPrincipals(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(types.ThingAttribute)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iot
+	svc := cl.Services(client.AWSServiceIot).Iot
 	input := iot.ListThingPrincipalsInput{
 		ThingName:  i.ThingName,
 		MaxResults: aws.Int32(250),

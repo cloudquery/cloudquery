@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client/mocks"
 
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -17,15 +17,15 @@ func buildObjectivesMock(t *testing.T, ctrl *gomock.Controller) client.DatadogSe
 		ServiceLevelObjectivesAPI: m,
 	}
 
-	var d datadogV1.SLOListResponse
+	var d datadogV1.ServiceLevelObjective
 	err := faker.FakeObject(&d)
 	if err != nil {
 		t.Fatal(err)
 	}
 	str := "test"
-	d.Data[0].Description.Set(&str)
+	d.Description.Set(&str)
 
-	m.EXPECT().ListSLOs(gomock.Any()).Return(d, nil, nil)
+	m.EXPECT().ListSLOsWithPagination(gomock.Any()).Return(client.MockPaginatedResponse(d))
 
 	return services
 }

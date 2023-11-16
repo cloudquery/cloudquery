@@ -3,12 +3,12 @@ package stepfunctions
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/sfn"
 	"github.com/aws/aws-sdk-go-v2/service/sfn/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func mapRuns() *schema.Table {
@@ -19,7 +19,6 @@ func mapRuns() *schema.Table {
 		Resolver:            fetchStepfunctionsMapRuns,
 		PreResourceResolver: getMapRun,
 		Transform:           transformers.TransformWithStruct(&sfn.DescribeMapRunOutput{}, transformers.WithSkipFields("ResultMetadata")),
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "states"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -43,7 +42,7 @@ func mapRuns() *schema.Table {
 
 func fetchStepfunctionsMapRuns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sfn
+	svc := cl.Services(client.AWSServiceSfn).Sfn
 	config := sfn.ListMapRunsInput{
 		MaxResults:   1000,
 		ExecutionArn: parent.Item.(*sfn.DescribeExecutionOutput).ExecutionArn,
@@ -63,7 +62,7 @@ func fetchStepfunctionsMapRuns(ctx context.Context, meta schema.ClientMeta, pare
 
 func getMapRun(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sfn
+	svc := cl.Services(client.AWSServiceSfn).Sfn
 	config := sfn.DescribeMapRunInput{
 		MapRunArn: resource.Item.(types.MapRunListItem).MapRunArn,
 	}

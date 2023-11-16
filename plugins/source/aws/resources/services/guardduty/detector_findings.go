@@ -3,13 +3,13 @@ package guardduty
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty/models"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func detectorFindings() *schema.Table {
@@ -23,7 +23,6 @@ func detectorFindings() *schema.Table {
 			transformers.WithResolverTransformer(client.TimestampResolverTransformer),
 			transformers.WithPrimaryKeys("Arn"),
 		),
-		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
 		Columns: []schema.Column{
 			{
 				Name:       "detector_arn",
@@ -39,7 +38,7 @@ func fetchDetectorFindings(ctx context.Context, meta schema.ClientMeta, parent *
 	detector := parent.Item.(*models.DetectorWrapper)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Guardduty
+	svc := cl.Services(client.AWSServiceGuardduty).Guardduty
 	config := &guardduty.ListFindingsInput{
 		DetectorId: &detector.Id,
 	}

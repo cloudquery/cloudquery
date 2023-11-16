@@ -5,8 +5,8 @@ import (
 
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV1"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Synthetics() *schema.Table {
@@ -22,10 +22,6 @@ func Synthetics() *schema.Table {
 func fetchSynthetics(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	ctx = c.BuildContextV1(ctx)
-	resp, _, err := c.DDServices.SyntheticsAPI.ListTests(ctx)
-	if err != nil {
-		return err
-	}
-	res <- resp.GetTests()
-	return nil
+	resp, cancel := c.DDServices.SyntheticsAPI.ListTestsWithPagination(ctx)
+	return client.ConsumePaginatedResponse(resp, cancel, res)
 }

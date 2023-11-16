@@ -3,15 +3,14 @@ package neptune
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/neptune/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func DbParameterGroups() *schema.Table {
@@ -46,7 +45,7 @@ func DbParameterGroups() *schema.Table {
 
 func fetchNeptuneDbParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Neptune
+	svc := cl.Services(client.AWSServiceNeptune).Neptune
 	input := neptune.DescribeDBParameterGroupsInput{
 		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
 	}
@@ -65,7 +64,7 @@ func fetchNeptuneDbParameterGroups(ctx context.Context, meta schema.ClientMeta, 
 
 func fetchNeptuneDbParameterGroupDbParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Neptune
+	svc := cl.Services(client.AWSServiceNeptune).Neptune
 	g := parent.Item.(types.DBParameterGroup)
 	input := neptune.DescribeDBParametersInput{DBParameterGroupName: g.DBParameterGroupName}
 	paginator := neptune.NewDescribeDBParametersPaginator(svc, &input)
@@ -88,7 +87,7 @@ func fetchNeptuneDbParameterGroupDbParameters(ctx context.Context, meta schema.C
 func resolveNeptuneDbParameterGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	g := resource.Item.(types.DBParameterGroup)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Neptune
+	svc := cl.Services(client.AWSServiceNeptune).Neptune
 	out, err := svc.ListTagsForResource(ctx, &neptune.ListTagsForResourceInput{ResourceName: g.DBParameterGroupArn}, func(options *neptune.Options) {
 		options.Region = cl.Region
 	})

@@ -1,47 +1,43 @@
 package client
 
 import (
+	"context"
+	"encoding/json"
 	"testing"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-var migrateStrategy = destination.MigrateStrategy{
-	AddColumn:           specs.MigrateModeSafe,
-	AddColumnNotNull:    specs.MigrateModeForced,
-	RemoveColumn:        specs.MigrateModeSafe,
-	RemoveColumnNotNull: specs.MigrateModeForced,
-	ChangeColumn:        specs.MigrateModeForced,
-}
-
 func TestPlugin(t *testing.T) {
-	if err := types.RegisterAllExtensions(); err != nil {
+	ctx := context.Background()
+	p := plugin.NewPlugin("duckdb", "development", New)
+	spec := Spec{
+		ConnectionString: "?threads=1",
+		Debug:            true,
+	}
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
 		t.Fatal(err)
 	}
-
-	destination.PluginTestSuiteRunner(t,
-		func() *destination.Plugin {
-			return destination.NewPlugin("duckdb", "development", New, destination.WithManagedWriter())
-		},
-		specs.Destination{
-			Spec: &Spec{
-				ConnectionString: "?threads=1",
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
+		t.Fatal(err)
+	}
+	plugin.TestWriterSuiteRunner(t,
+		p,
+		plugin.WriterTestSuiteTests{
+			SkipDeleteRecord: true,
+			SafeMigrations: plugin.SafeMigrations{
+				AddColumn:    true,
+				RemoveColumn: true,
 			},
-			Version: "development",
 		},
-		destination.PluginTestSuiteTests{
-			MigrateStrategyOverwrite: migrateStrategy,
-			MigrateStrategyAppend:    migrateStrategy,
-		},
-		// not supported in Parquet Writer
-		destination.WithTestSourceSkipIntervals(),
-		destination.WithTestSourceSkipDurations(),
-
-		// not supported in duckDB for now
-		destination.WithTestSourceSkipTimes(),
-		destination.WithTestSourceSkipDates(),
-		destination.WithTestSourceSkipLargeTypes(),
+		plugin.WithTestDataOptions(schema.TestSourceOptions{
+			// not supported in Parquet Writer
+			SkipDurations: true,
+			SkipIntervals: true,
+			// not supported in duckDB for now
+			SkipLargeTypes: true,
+		}),
 	)
 }

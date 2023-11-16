@@ -3,12 +3,12 @@ package cloudtrail
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Imports() *schema.Table {
@@ -38,7 +38,7 @@ func Imports() *schema.Table {
 
 func fetchImports(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudtrail
+	svc := cl.Services(client.AWSServiceCloudtrail).Cloudtrail
 
 	paginator := cloudtrail.NewListImportsPaginator(svc, nil)
 	for paginator.HasMorePages() {
@@ -55,7 +55,7 @@ func fetchImports(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 
 func getImport(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudtrail
+	svc := cl.Services(client.AWSServiceCloudtrail).Cloudtrail
 	item := resource.Item.(types.ImportsListItem)
 	importOutput, err := svc.GetImport(ctx, &cloudtrail.GetImportInput{ImportId: item.ImportId}, func(options *cloudtrail.Options) {
 		options.Region = cl.Region

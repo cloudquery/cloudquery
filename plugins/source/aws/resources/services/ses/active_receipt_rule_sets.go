@@ -3,11 +3,11 @@ package ses
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/ses"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func ActiveReceiptRuleSets() *schema.Table {
@@ -51,7 +51,7 @@ func isRegionSupported(region string) bool {
 
 func fetchSesActiveReceiptRuleSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ses
+	svc := cl.Services(client.AWSServiceSes).Ses
 
 	set, err := svc.DescribeActiveReceiptRuleSet(ctx, nil, func(o *ses.Options) {
 		o.Region = cl.Region

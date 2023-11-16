@@ -20,18 +20,21 @@ func TestPlugin(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := p.Init(ctx, specBytes); err != nil {
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
 		t.Fatal(err)
 	}
 	plugin.TestWriterSuiteRunner(t,
 		p,
 		plugin.WriterTestSuiteTests{
-			SkipUpsert:  true,
-			SkipMigrate: true,
+			SkipUpsert:       true,
+			SkipMigrate:      true,
+			SkipDeleteRecord: true,
 		},
 		plugin.WithTestDataOptions(schema.TestSourceOptions{
-			SkipIntervals: true,
-			SkipMaps:      true,
+			SkipIntervals:  true,
+			SkipMaps:       true,
+			SkipLargeTypes: true,
+			SkipLists:      true,
 		}),
 	)
 }

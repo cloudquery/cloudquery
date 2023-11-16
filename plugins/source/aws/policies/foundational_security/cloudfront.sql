@@ -2,10 +2,6 @@
 \echo "Executing check Cloudfront.1"
 \ir ../queries/cloudfront/default_root_object_configured.sql
 
-\set check_id 'Cloudfront.2'
-\echo "Executing check Cloudfront.2"
-\ir ../queries/cloudfront/origin_access_identity_enabled.sql
-
 \set check_id 'Cloudfront.3'
 \echo "Executing check Cloudfront.3"
 \ir ../queries/cloudfront/viewer_policy_https.sql

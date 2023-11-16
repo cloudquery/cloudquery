@@ -3,12 +3,12 @@ package identitystore
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/identitystore"
 	"github.com/aws/aws-sdk-go-v2/service/identitystore/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func groupMemberships() *schema.Table {
@@ -18,7 +18,6 @@ func groupMemberships() *schema.Table {
 		Description: `https://docs.aws.amazon.com/singlesignon/latest/IdentityStoreAPIReference/API_GroupMembership.html`,
 		Resolver:    fetchIdentitystoreGroupMemberships,
 		Transform:   transformers.TransformWithStruct(&types.GroupMembership{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "identitystore"),
 		Columns: []schema.Column{
 			{
 				Name:     "member_id",
@@ -31,7 +30,7 @@ func groupMemberships() *schema.Table {
 
 func fetchIdentitystoreGroupMemberships(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Identitystore
+	svc := cl.Services(client.AWSServiceIdentitystore).Identitystore
 	group := parent.Item.(types.Group)
 	config := identitystore.ListGroupMembershipsInput{
 		GroupId:         group.GroupId,

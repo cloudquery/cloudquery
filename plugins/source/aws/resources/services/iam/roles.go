@@ -5,13 +5,12 @@ import (
 	"encoding/json"
 	"net/url"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Roles() *schema.Table {
@@ -47,7 +46,7 @@ func Roles() *schema.Table {
 func fetchIamRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config iam.ListRolesInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services(client.AWSServiceIam).Iam
 	paginator := iam.NewListRolesPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		response, err := paginator.NextPage(ctx, func(options *iam.Options) {
@@ -64,7 +63,7 @@ func fetchIamRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 func getRole(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	role := resource.Item.(types.Role)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Iam
+	svc := cl.Services(client.AWSServiceIam).Iam
 	roleDetails, err := svc.GetRole(ctx, &iam.GetRoleInput{
 		RoleName: role.RoleName,
 	}, func(options *iam.Options) {

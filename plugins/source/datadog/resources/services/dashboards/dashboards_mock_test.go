@@ -6,7 +6,7 @@ import (
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV1"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -16,14 +16,14 @@ func buildDashboardsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogSe
 		DashboardsAPI: m,
 	}
 
-	var d datadogV1.DashboardSummary
+	var d datadogV1.DashboardSummaryDefinition
 	err := faker.FakeObject(&d)
 	if err != nil {
 		t.Fatal(err)
 	}
 	desc := "test string"
-	d.Dashboards[0].Description.Set(&desc)
-	m.EXPECT().ListDashboards(gomock.Any()).Return(d, nil, nil)
+	d.Description.Set(&desc)
+	m.EXPECT().ListDashboardsWithPagination(gomock.Any()).Return(client.MockPaginatedResponse(d))
 
 	return services
 }

@@ -3,13 +3,12 @@ package detective
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
 	"github.com/aws/aws-sdk-go-v2/service/detective"
 	"github.com/aws/aws-sdk-go-v2/service/detective/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Graphs() *schema.Table {
@@ -37,7 +36,7 @@ func Graphs() *schema.Table {
 
 func fetchGraphs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Detective
+	svc := cl.Services(client.AWSServiceDetective).Detective
 	config := detective.ListGraphsInput{}
 	paginator := detective.NewListGraphsPaginator(svc, &config)
 	for paginator.HasMorePages() {
@@ -56,7 +55,7 @@ func fetchGraphs(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 func resolveGraphTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	graph := resource.Item.(types.Graph)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Detective
+	svc := cl.Services(client.AWSServiceDetective).Detective
 	input := &detective.ListTagsForResourceInput{
 		ResourceArn: graph.Arn,
 	}

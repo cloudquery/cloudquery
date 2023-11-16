@@ -3,12 +3,12 @@ package athena
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func workGroupPreparedStatements() *schema.Table {
@@ -18,7 +18,6 @@ func workGroupPreparedStatements() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/athena/latest/APIReference/API_PreparedStatement.html`,
 		Resolver:            fetchAthenaWorkGroupPreparedStatements,
 		PreResourceResolver: getWorkGroupPreparedStatement,
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "athena"),
 		Transform:           transformers.TransformWithStruct(&types.PreparedStatement{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
@@ -34,7 +33,7 @@ func workGroupPreparedStatements() *schema.Table {
 
 func fetchAthenaWorkGroupPreparedStatements(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Athena
+	svc := cl.Services(client.AWSServiceAthena).Athena
 	wg := parent.Item.(types.WorkGroup)
 	input := athena.ListPreparedStatementsInput{WorkGroup: wg.Name}
 	paginator := athena.NewListPreparedStatementsPaginator(svc, &input)
@@ -52,7 +51,7 @@ func fetchAthenaWorkGroupPreparedStatements(ctx context.Context, meta schema.Cli
 
 func getWorkGroupPreparedStatement(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Athena
+	svc := cl.Services(client.AWSServiceAthena).Athena
 	wg := resource.Parent.Item.(types.WorkGroup)
 
 	d := resource.Item.(types.PreparedStatementSummary)

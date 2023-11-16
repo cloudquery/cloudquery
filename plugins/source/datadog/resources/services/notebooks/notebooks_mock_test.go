@@ -6,7 +6,7 @@ import (
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV1"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -16,12 +16,12 @@ func buildNotebooksMock(t *testing.T, ctrl *gomock.Controller) client.DatadogSer
 		NotebooksAPI: m,
 	}
 
-	var n datadogV1.NotebooksResponse
+	var n datadogV1.NotebooksResponseData
 	err := faker.FakeObject(&n)
 	if err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListNotebooks(gomock.Any()).Return(n, nil, nil)
+	m.EXPECT().ListNotebooksWithPagination(gomock.Any()).Return(client.MockPaginatedResponse(n))
 
 	return services
 }

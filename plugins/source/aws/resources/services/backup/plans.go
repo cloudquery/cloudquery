@@ -3,15 +3,14 @@ package backup
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
 	"github.com/aws/aws-sdk-go-v2/service/backup/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Plans() *schema.Table {
@@ -47,7 +46,7 @@ func Plans() *schema.Table {
 
 func fetchBackupPlans(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Backup
+	svc := cl.Services(client.AWSServiceBackup).Backup
 	params := backup.ListBackupPlansInput{MaxResults: aws.Int32(1000)} // maximum value from https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListBackupPlans.html
 	paginator := backup.NewListBackupPlansPaginator(svc, &params)
 	for paginator.HasMorePages() {
@@ -64,7 +63,7 @@ func fetchBackupPlans(ctx context.Context, meta schema.ClientMeta, parent *schem
 
 func getPlan(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Backup
+	svc := cl.Services(client.AWSServiceBackup).Backup
 	m := resource.Item.(types.BackupPlansListMember)
 
 	plan, err := svc.GetBackupPlan(
@@ -84,7 +83,7 @@ func getPlan(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 func resolvePlanTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	plan := resource.Item.(*backup.GetBackupPlanOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Backup
+	svc := cl.Services(client.AWSServiceBackup).Backup
 	params := backup.ListTagsInput{ResourceArn: plan.BackupPlanArn}
 	tags := make(map[string]string)
 	paginator := backup.NewListTagsPaginator(svc, &params)

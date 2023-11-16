@@ -365,6 +365,36 @@ func (mr *MockCognitoidentityproviderClientMockRecorder) GetIdentityProviderById
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetIdentityProviderByIdentifier", reflect.TypeOf((*MockCognitoidentityproviderClient)(nil).GetIdentityProviderByIdentifier), varargs...)
 }
 
+// GetLogDeliveryConfiguration mocks base method.
+func (m *MockCognitoidentityproviderClient) GetLogDeliveryConfiguration(arg0 context.Context, arg1 *cognitoidentityprovider.GetLogDeliveryConfigurationInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.GetLogDeliveryConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cognitoidentityprovider.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetLogDeliveryConfiguration")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetLogDeliveryConfiguration", varargs...)
+	ret0, _ := ret[0].(*cognitoidentityprovider.GetLogDeliveryConfigurationOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetLogDeliveryConfiguration indicates an expected call of GetLogDeliveryConfiguration.
+func (mr *MockCognitoidentityproviderClientMockRecorder) GetLogDeliveryConfiguration(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLogDeliveryConfiguration", reflect.TypeOf((*MockCognitoidentityproviderClient)(nil).GetLogDeliveryConfiguration), varargs...)
+}
+
 // GetSigningCertificate mocks base method.
 func (m *MockCognitoidentityproviderClient) GetSigningCertificate(arg0 context.Context, arg1 *cognitoidentityprovider.GetSigningCertificateInput, arg2 ...func(*cognitoidentityprovider.Options)) (*cognitoidentityprovider.GetSigningCertificateOutput, error) {
 

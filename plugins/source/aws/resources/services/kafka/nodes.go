@@ -3,12 +3,12 @@ package kafka
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/kafka"
 	"github.com/aws/aws-sdk-go-v2/service/kafka/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func nodes() *schema.Table {
@@ -18,7 +18,6 @@ func nodes() *schema.Table {
 		Description: `https://docs.aws.amazon.com/msk/1.0/apireference/clusters-clusterarn-nodes.html#ListNodes`,
 		Resolver:    fetchKafkaNodes,
 		Transform:   transformers.TransformWithStruct(&types.NodeInfo{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "kafka"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
@@ -48,7 +47,7 @@ func fetchKafkaNodes(ctx context.Context, meta schema.ClientMeta, parent *schema
 
 	var input = getListNodesInput(parent)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Kafka
+	svc := cl.Services(client.AWSServiceKafka).Kafka
 	paginator := kafka.NewListNodesPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *kafka.Options) {

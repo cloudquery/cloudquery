@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 const (
@@ -57,7 +57,7 @@ func (c *Client) duckDBTables(ctx context.Context, tables schema.Tables) (schema
 	return schemaTables, nil
 }
 
-func (c *Client) normalizeColumns(tables schema.Tables) schema.Tables {
+func (*Client) normalizeColumns(tables schema.Tables) schema.Tables {
 	var normalized schema.Tables
 	for _, table := range tables {
 		normalizedTable := *table
@@ -66,10 +66,7 @@ func (c *Client) normalizeColumns(tables schema.Tables) schema.Tables {
 			// In DuckDB, a PK column must be NOT NULL, so we need to make sure that the schema we're comparing to has the same
 			// constraint.
 			normalizedColumn := table.Columns[i]
-			if !c.enabledPks() {
-				normalizedColumn.PrimaryKey = false
-				normalizedColumn.Unique = false
-			} else if normalizedColumn.PrimaryKey {
+			if normalizedColumn.PrimaryKey {
 				normalizedColumn.NotNull = true
 			}
 			// Since multiple schema types can map to the same duckdb type we need to normalize them to avoid false positives when detecting schema changes
@@ -128,19 +125,32 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 }
 
 // Migrate migrates to the latest schema
-func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
+func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
+	tables := make(schema.Tables, len(msgs))
+	for i, msg := range msgs {
+		tables[i] = msg.Table
+	}
+
 	duckdbTables, err := c.duckDBTables(ctx, tables)
 	if err != nil {
 		return err
 	}
 
 	normalizedTables := c.normalizeColumns(tables)
-	if c.spec.MigrateMode != specs.MigrateModeForced {
-		nonAutoMigratableTables, changes := c.nonAutoMigratableTables(normalizedTables, duckdbTables)
-		if len(nonAutoMigratableTables) > 0 {
-			return fmt.Errorf("tables %s with changes %s require force migration. use 'migrate_mode: forced'",
-				strings.Join(nonAutoMigratableTables, ","), changes)
+	normalizedTablesSafeMode := make(schema.Tables, 0, len(normalizedTables))
+	for _, table := range normalizedTables {
+		msg := msgs.GetMessageByTable(table.Name)
+		if msg == nil {
+			continue
 		}
+		if !msg.MigrateForce {
+			normalizedTablesSafeMode = append(normalizedTablesSafeMode, table)
+		}
+	}
+
+	nonAutoMigratableTables, changes := c.nonAutoMigratableTables(normalizedTablesSafeMode, duckdbTables)
+	if len(nonAutoMigratableTables) > 0 {
+		return fmt.Errorf("tables %s with changes %v require migration. Migrate manually or consider using 'migrate_mode: forced'", strings.Join(nonAutoMigratableTables, ","), changes)
 	}
 
 	for _, table := range normalizedTables {
@@ -202,7 +212,7 @@ func (c *Client) createTableIfNotExist(ctx context.Context, tableName string, ta
 		if col.PrimaryKey {
 			pks = append(pks, col.Name)
 		}
-		if col.Unique && c.enabledPks() {
+		if col.Unique {
 			fieldDef += " UNIQUE"
 		}
 		if col.NotNull {
@@ -213,7 +223,7 @@ func (c *Client) createTableIfNotExist(ctx context.Context, tableName string, ta
 			sb.WriteString(",")
 		}
 	}
-	if len(pks) > 0 && c.enabledPks() {
+	if len(pks) > 0 {
 		sb.WriteString(", PRIMARY KEY (")
 		for i, pk := range pks {
 			sb.WriteString(sanitizeID(pk))
@@ -287,8 +297,4 @@ func (c *Client) getTableInfo(ctx context.Context, tableName string) (*tableInfo
 		return nil, nil
 	}
 	return &info, nil
-}
-
-func (c *Client) enabledPks() bool {
-	return c.spec.WriteMode == specs.WriteModeOverwrite || c.spec.WriteMode == specs.WriteModeOverwriteDeleteStale
 }

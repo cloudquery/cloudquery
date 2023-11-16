@@ -1,11 +1,11 @@
 package client
 
 import (
+	"slices"
 	"strings"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v3/types"
-	"golang.org/x/exp/slices"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func transformSchemaForWriting(sc *arrow.Schema) *arrow.Schema {
@@ -82,10 +82,8 @@ func arrowToDuckDB(dt arrow.DataType) string {
 		return "uuid"
 	case *types.JSONType:
 		return "json"
-	case *arrow.TimestampType:
+	case *arrow.Date32Type, *arrow.Date64Type, *arrow.TimestampType:
 		return "timestamp"
-	case *arrow.Date32Type, *arrow.Date64Type:
-		return "date"
 	case *arrow.DayTimeIntervalType:
 		return "interval"
 	default:
@@ -128,8 +126,6 @@ func duckDBToArrow(t string) arrow.DataType {
 		return arrow.PrimitiveTypes.Float32
 	case "blob", "bytea", "binary", "varbinary":
 		return arrow.BinaryTypes.Binary
-	case "date":
-		return arrow.FixedWidthTypes.Date64
 	case "timestamp", "datetime", "timestamp with time zone", "timestamptz":
 		return arrow.FixedWidthTypes.Timestamp_us
 	case "interval":

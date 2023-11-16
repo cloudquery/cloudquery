@@ -8,7 +8,7 @@ select
   arn as resource_id,
   case when
    protocol = 'HTTP' and (
-        da->>'Type' != 'REDIRECT' or da->'RedirectConfig'->>'Protocol' != 'HTTPS')
+        da->>'Type' != 'redirect' or da->'RedirectConfig'->>'Protocol' != 'HTTPS')
     then 'fail'
     else 'pass'
   end as status

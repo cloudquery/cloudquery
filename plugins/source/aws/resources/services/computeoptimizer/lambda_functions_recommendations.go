@@ -7,9 +7,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/computeoptimizer"
 	"github.com/aws/aws-sdk-go-v2/service/computeoptimizer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func LambdaFunctionsRecommendations() *schema.Table {
@@ -33,8 +33,7 @@ func LambdaFunctionsRecommendations() *schema.Table {
 
 func fetchLambdaFunctionsRecommendations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	s := cl.Services()
-	svc := s.Computeoptimizer
+	svc := cl.Services(client.AWSServiceComputeoptimizer).Computeoptimizer
 
 	input := computeoptimizer.GetLambdaFunctionRecommendationsInput{
 		MaxResults: aws.Int32(1000),

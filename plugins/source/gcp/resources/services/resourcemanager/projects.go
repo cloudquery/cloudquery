@@ -2,10 +2,10 @@ package resourcemanager
 
 import (
 	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
-	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Projects() *schema.Table {

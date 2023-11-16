@@ -365,6 +365,36 @@ func (mr *MockComputeoptimizerClientMockRecorder) GetLambdaFunctionRecommendatio
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLambdaFunctionRecommendations", reflect.TypeOf((*MockComputeoptimizerClient)(nil).GetLambdaFunctionRecommendations), varargs...)
 }
 
+// GetLicenseRecommendations mocks base method.
+func (m *MockComputeoptimizerClient) GetLicenseRecommendations(arg0 context.Context, arg1 *computeoptimizer.GetLicenseRecommendationsInput, arg2 ...func(*computeoptimizer.Options)) (*computeoptimizer.GetLicenseRecommendationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &computeoptimizer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetLicenseRecommendations")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetLicenseRecommendations", varargs...)
+	ret0, _ := ret[0].(*computeoptimizer.GetLicenseRecommendationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetLicenseRecommendations indicates an expected call of GetLicenseRecommendations.
+func (mr *MockComputeoptimizerClientMockRecorder) GetLicenseRecommendations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLicenseRecommendations", reflect.TypeOf((*MockComputeoptimizerClient)(nil).GetLicenseRecommendations), varargs...)
+}
+
 // GetRecommendationPreferences mocks base method.
 func (m *MockComputeoptimizerClient) GetRecommendationPreferences(arg0 context.Context, arg1 *computeoptimizer.GetRecommendationPreferencesInput, arg2 ...func(*computeoptimizer.Options)) (*computeoptimizer.GetRecommendationPreferencesOutput, error) {
 

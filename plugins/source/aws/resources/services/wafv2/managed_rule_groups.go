@@ -3,15 +3,14 @@ package wafv2
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func ManagedRuleGroups() *schema.Table {
@@ -42,7 +41,7 @@ func ManagedRuleGroups() *schema.Table {
 
 func fetchWafv2ManagedRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	service := cl.Services().Wafv2
+	service := cl.Services(client.AWSServiceWafv2).Wafv2
 
 	config := wafv2.ListAvailableManagedRuleGroupsInput{Scope: cl.WAFScope}
 	for {
@@ -65,7 +64,7 @@ func resolveManageRuleGroupProperties(ctx context.Context, meta schema.ClientMet
 	managedRuleGroupSum := resource.Item.(types.ManagedRuleGroupSummary)
 
 	cl := meta.(*client.Client)
-	service := cl.Services().Wafv2
+	service := cl.Services(client.AWSServiceWafv2).Wafv2
 
 	// Resolve managed rule group via describe managed rule group
 	output, err := service.DescribeManagedRuleGroup(ctx, &wafv2.DescribeManagedRuleGroupInput{

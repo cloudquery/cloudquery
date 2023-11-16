@@ -3,12 +3,12 @@ package resourcemanager
 import (
 	"context"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	pb "google.golang.org/api/cloudresourcemanager/v3"
 )
 
-func fetchProjectPolicies(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- any) error {
+func fetchProjectPolicies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	projectsClient, err := pb.NewService(ctx, c.ClientOptions...)
 	if err != nil {

@@ -3,15 +3,14 @@ package ecs
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func clusterTasks() *schema.Table {
@@ -20,7 +19,6 @@ func clusterTasks() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Task.html`,
 		Resolver:    fetchEcsClusterTasks,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ecs"),
 		Transform:   transformers.TransformWithStruct(&types.Task{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
@@ -49,40 +47,41 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 	cluster := parent.Item.(types.Cluster)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecs
-	config := ecs.ListTasksInput{
-		Cluster: cluster.ClusterArn,
-	}
-	paginator := ecs.NewListTasksPaginator(svc, &config)
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx, func(options *ecs.Options) {
-			options.Region = cl.Region
-		})
-		if err != nil {
-			return err
+	svc := cl.Services(client.AWSServiceEcs).Ecs
+
+	for _, config := range cl.Spec.TableOptions.ECSTasks.Filters() {
+		config.Cluster = cluster.ClusterArn
+		paginator := ecs.NewListTasksPaginator(svc, &config.ListTasksInput)
+		for paginator.HasMorePages() {
+			page, err := paginator.NextPage(ctx, func(options *ecs.Options) {
+				options.Region = cl.Region
+			})
+			if err != nil {
+				return err
+			}
+			if len(page.TaskArns) == 0 {
+				continue
+			}
+			describeServicesInput := ecs.DescribeTasksInput{
+				Cluster: cluster.ClusterArn,
+				Tasks:   page.TaskArns,
+				Include: []types.TaskField{types.TaskFieldTags},
+			}
+			describeTasks, err := svc.DescribeTasks(ctx, &describeServicesInput, func(options *ecs.Options) {
+				options.Region = cl.Region
+			})
+			if err != nil {
+				return err
+			}
+			res <- describeTasks.Tasks
 		}
-		if len(page.TaskArns) == 0 {
-			continue
-		}
-		describeServicesInput := ecs.DescribeTasksInput{
-			Cluster: cluster.ClusterArn,
-			Tasks:   page.TaskArns,
-			Include: []types.TaskField{types.TaskFieldTags},
-		}
-		describeTasks, err := svc.DescribeTasks(ctx, &describeServicesInput, func(options *ecs.Options) {
-			options.Region = cl.Region
-		})
-		if err != nil {
-			return err
-		}
-		res <- describeTasks.Tasks
 	}
 	return nil
 }
 
 func getEcsTaskProtection(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecs
+	svc := cl.Services(client.AWSServiceEcs).Ecs
 	task := resource.Item.(types.Task)
 	resp, err := svc.GetTaskProtection(ctx, &ecs.GetTaskProtectionInput{
 		Cluster: task.ClusterArn,

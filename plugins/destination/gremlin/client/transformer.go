@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/apache/arrow/go/v13/arrow/memory"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v14/arrow/array"
+	"github.com/apache/arrow/go/v14/arrow/memory"
 )
 
 func (c *Client) transformArr(arr arrow.Array, isCQTime bool) []any {
@@ -45,7 +45,7 @@ func (c *Client) transformArr(arr arrow.Array, isCQTime bool) []any {
 			}
 			dbArr[i] = a.Value(i).ToTime(a.DataType().(*arrow.TimestampType).Unit).UTC().Format("2006-01-02 15:04:05.999999999")
 		case array.ListLike:
-			if !c.pluginSpec.CompleteTypes {
+			if !c.spec.CompleteTypes {
 				dbArr[i] = stripNulls(arr.ValueStr(i))
 				continue
 			}

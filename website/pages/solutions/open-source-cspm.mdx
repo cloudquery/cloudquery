@@ -1,0 +1,38 @@
+---
+title: Open Source CSPM
+---
+
+# Cloud Security Posture Management with CloudQuery
+
+CloudQuery is the cloud security posture management framework for the modern data stack. It allows you to build your own security rules and audit your cloud infrastructure for misconfigurations, using databases and visualization tools your team already know and love.
+
+![A Grafana dashboard of AWS EC2 data](/images/blog/open-source-cloud-asset-inventory-with-cloudquery-and-grafana/image1.png "A Grafana dashboard of AWS EC2 data")
+
+_Example of a Grafana dashboard showing AWS EC2 data synced with CloudQuery_
+
+## How does it work?
+
+CloudQuery is an open source CLI tool that allows you to sync your cloud infrastructure data to any database. You run the CloudQuery CLI on your own infrastructure. It fetches your cloud infrastructure data and stores it in your database. You can then either use [pre-made policy packs](/docs/core-concepts/policies) or use your favorite SQL query builder to build your own security rules and audit your cloud infrastructure for misconfigurations. Once the configuration data is in your database, you can use your favorite visualization tools to build dashboards and alerts. This is fully in the spirit of the [Modern Data Stack](/docs/glossary/what-is-the-modern-data-stack).
+
+## Which cloud providers and databases are supported?
+
+CloudQuery supports all major cloud providers, including [AWS, GCP, and Azure, among many others](/integrations). It also supports more than 18 different database backends, including PostgreSQL, MySQL and BigQuery. You can use any of these databases to store your cloud infrastructure data. And if that's not enough, CloudQuery is open source and makes use of a pluggable architecture that allows you to build your own sources and destinations on top of the open protocol and SDK.
+
+## How do I get started?
+
+There are a number of tutorials to help you get started for every cloud provider and chosen visualization tools.
+
+### Syncing your cloud data
+
+* [Syncing AWS data to any database](/integrations/aws)
+* [Syncing Azure data to any database](/integrations/azure)
+* [Syncing GCP data to any database](/integrations/gcp)
+* [Syncing DigitalOcean data to any database](/integrations/digitalocean)
+* [See all integrations](/integrations)
+
+### Visualizing your cloud data
+
+* [Visualizing CloudQuery Data with Grafana](/blog/open-source-cloud-asset-inventory-with-cloudquery-and-grafana)
+* [Visualizing CloudQuery Data with Apache Superset](/how-to-guides/cloud-asset-inventory-cloudquery-apache-superset)
+* [Visualizing CloudQuery Data with AWS QuickSight](/how-to-guides/cloud-asset-inventory-cloudquery-aws-quicksight)
+* [Visualizing CloudQuery Data with Metabase](/how-to-guides/cloud-asset-inventory-cloudquery-metabase)

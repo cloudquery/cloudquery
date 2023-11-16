@@ -123,7 +123,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select count(*) from azure_resources where subscription_id in (${subscription_ids}) and location in (${locations}) and _cq_table in (${cq_tables}) ;",
+          "rawSql": "select count(*) from azure_resources where subscription_id in (${subscription_ids}) and location in (${locations}) and _cq_table in (${cq_tables}) and $__timeFilter(_cq_sync_time);",
           "refId": "A"
         }
       ],
@@ -183,7 +183,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select subscription_id, count(*) from azure_resources where location in (${locations}) and _cq_table in (${cq_tables}) group by subscription_id order by count desc;",
+          "rawSql": "select subscription_id, count(*) from azure_resources where location in (${locations}) and _cq_table in (${cq_tables}) and $__timeFilter(_cq_sync_time) group by subscription_id order by count desc;",
           "refId": "A"
         }
       ],
@@ -259,7 +259,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select location, count(*) from azure_resources where subscription_id in (${subscription_ids}) group by location order by count desc;",
+          "rawSql": "select location, count(*) from azure_resources where subscription_id in (${subscription_ids}) and $__timeFilter(_cq_sync_time) group by location order by count desc;",
           "refId": "A"
         }
       ],
@@ -383,26 +383,8 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select _cq_id, _cq_table, subscription_id, location, id, _cq_sync_time from azure_resources where subscription_id in (${subscription_ids}) and location in (${locations}) and _cq_table in (${cq_tables}) ;",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
+          "rawSql": "select _cq_id, _cq_table, subscription_id, location, id, _cq_sync_time from azure_resources where subscription_id in (${subscription_ids}) and location in (${locations}) and _cq_table in (${cq_tables}) and $__timeFilter(_cq_sync_time);",
+          "refId": "A"
         }
       ],
       "title": "Azure Resources",
@@ -456,7 +438,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select _cq_table, count(*) from azure_resources where subscription_id in (${subscription_ids}) and location in (${locations}) group by _cq_table order by count desc;",
+          "rawSql": "select _cq_table, count(*) from azure_resources where subscription_id in (${subscription_ids}) and location in (${locations}) and $__timeFilter(_cq_sync_time) group by _cq_table order by count desc;",
           "refId": "A"
         }
       ],
@@ -540,7 +522,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select location, count(*) from azure_resources where subscription_id in (${subscription_ids}) group by location order by count desc;",
+          "rawSql": "select location, count(*) from azure_resources where subscription_id in (${subscription_ids}) and $__timeFilter(_cq_sync_time) group by location order by count desc;",
           "refId": "A"
         }
       ],
@@ -554,7 +536,15 @@
   "templating": {
     "list": [
       {
-        "current": {},
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": {
           "type": "postgres",
           "uid": "${DS_POSTGRESQL}"
@@ -573,7 +563,15 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": {
           "type": "postgres",
           "uid": "${DS_POSTGRESQL}"
@@ -592,7 +590,15 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
         "definition": "select distinct(_cq_table) from azure_resources;",
         "hide": 0,
         "includeAll": true,

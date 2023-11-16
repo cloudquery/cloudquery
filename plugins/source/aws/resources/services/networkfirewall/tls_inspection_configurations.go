@@ -3,14 +3,14 @@ package networkfirewall
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/networkfirewall"
 	"github.com/aws/aws-sdk-go-v2/service/networkfirewall/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/networkfirewall/models"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func TLSInspectionConfigurations() *schema.Table {
@@ -46,7 +46,7 @@ func TLSInspectionConfigurations() *schema.Table {
 func fetchTLSInspectionConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var input networkfirewall.ListTLSInspectionConfigurationsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Networkfirewall
+	svc := cl.Services(client.AWSServiceNetworkfirewall).Networkfirewall
 	p := networkfirewall.NewListTLSInspectionConfigurationsPaginator(svc, &input)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *networkfirewall.Options) {
@@ -63,7 +63,7 @@ func fetchTLSInspectionConfigurations(ctx context.Context, meta schema.ClientMet
 
 func getTLSInspectionConfigurations(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Networkfirewall
+	svc := cl.Services(client.AWSServiceNetworkfirewall).Networkfirewall
 	metadata := resource.Item.(types.TLSInspectionConfigurationMetadata)
 
 	tlsInspectionConfigurationDetails, err := svc.DescribeTLSInspectionConfiguration(ctx, &networkfirewall.DescribeTLSInspectionConfigurationInput{

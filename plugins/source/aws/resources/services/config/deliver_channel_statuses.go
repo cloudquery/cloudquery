@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func deliveryChannelStatuses() *schema.Table {
@@ -17,7 +17,6 @@ func deliveryChannelStatuses() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeDeliveryChannelStatus.html`,
 		Resolver:    fetchDeliveryChannelStatuses,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "config"),
 		Transform:   transformers.TransformWithStruct(&types.DeliveryChannelStatus{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
@@ -29,7 +28,7 @@ func deliveryChannelStatuses() *schema.Table {
 func fetchDeliveryChannelStatuses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	ruleDetail := parent.Item.(types.DeliveryChannel)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Configservice
+	svc := cl.Services(client.AWSServiceConfigservice).Configservice
 
 	input := &configservice.DescribeDeliveryChannelStatusInput{
 		DeliveryChannelNames: []string{aws.ToString(ruleDetail.Name)},

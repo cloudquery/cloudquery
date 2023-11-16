@@ -3,15 +3,14 @@ package ecrpublic
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecrpublic"
 	"github.com/aws/aws-sdk-go-v2/service/ecrpublic/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Repositories() *schema.Table {
@@ -46,7 +45,7 @@ func Repositories() *schema.Table {
 
 func fetchEcrpublicRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecrpublic
+	svc := cl.Services(client.AWSServiceEcrpublic).Ecrpublic
 	paginator := ecrpublic.NewDescribeRepositoriesPaginator(svc, &ecrpublic.DescribeRepositoriesInput{
 		MaxResults: aws.Int32(1000),
 	})
@@ -67,7 +66,7 @@ func fetchEcrpublicRepositories(ctx context.Context, meta schema.ClientMeta, par
 
 func resolveRepositoryTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecrpublic
+	svc := cl.Services(client.AWSServiceEcrpublic).Ecrpublic
 	repo := resource.Item.(types.Repository)
 
 	input := ecrpublic.ListTagsForResourceInput{

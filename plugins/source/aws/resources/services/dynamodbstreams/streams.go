@@ -3,13 +3,13 @@ package dynamodbstreams
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodbstreams"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodbstreams/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Streams() *schema.Table {
@@ -36,7 +36,7 @@ func Streams() *schema.Table {
 
 func listStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Dynamodbstreams
+	svc := cl.Services(client.AWSServiceDynamodbstreams).Dynamodbstreams
 
 	config := dynamodbstreams.ListStreamsInput{}
 	// No paginator available
@@ -60,7 +60,7 @@ func listStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 
 func describeStream(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Dynamodbstreams
+	svc := cl.Services(client.AWSServiceDynamodbstreams).Dynamodbstreams
 	stream := resource.Item.(types.Stream)
 	response, err := svc.DescribeStream(ctx, &dynamodbstreams.DescribeStreamInput{StreamArn: stream.StreamArn}, func(options *dynamodbstreams.Options) {
 		options.Region = cl.Region

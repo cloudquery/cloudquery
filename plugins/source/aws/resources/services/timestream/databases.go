@@ -3,15 +3,14 @@ package timestream
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/timestreamwrite"
 	"github.com/aws/aws-sdk-go-v2/service/timestreamwrite/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Databases() *schema.Table {
@@ -46,8 +45,16 @@ func Databases() *schema.Table {
 
 func fetchTimestreamDatabases(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
+	services := cl.Services(client.AWSServiceTimestreamwrite)
+	svc := services.Timestreamwrite
+	// This should be removed once https://github.com/aws/aws-sdk-go-v2/issues/2163 is fixed
+	if services.AWSConfig.Region != cl.Region {
+		awsCfg := services.AWSConfig.Copy()
+		awsCfg.Region = cl.Region
+		svc = timestreamwrite.NewFromConfig(awsCfg)
+	}
 	input := &timestreamwrite.ListDatabasesInput{MaxResults: aws.Int32(20)}
-	paginator := timestreamwrite.NewListDatabasesPaginator(cl.Services().Timestreamwrite, input)
+	paginator := timestreamwrite.NewListDatabasesPaginator(svc, input)
 	for paginator.HasMorePages() {
 		response, err := paginator.NextPage(ctx, func(o *timestreamwrite.Options) {
 			o.Region = cl.Region
@@ -62,7 +69,7 @@ func fetchTimestreamDatabases(ctx context.Context, meta schema.ClientMeta, _ *sc
 
 func fetchDatabaseTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Timestreamwrite
+	svc := cl.Services(client.AWSServiceTimestreamwrite).Timestreamwrite
 
 	output, err := svc.ListTagsForResource(ctx,
 		&timestreamwrite.ListTagsForResourceInput{

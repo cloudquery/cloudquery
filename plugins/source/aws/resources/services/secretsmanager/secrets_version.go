@@ -3,13 +3,13 @@ package secretsmanager
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func secretVersions() *schema.Table {
@@ -19,7 +19,6 @@ func secretVersions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_ListSecretVersionIds.html`,
 		Resolver:    fetchSecretsmanagerSecretsVersions,
 		Transform:   transformers.TransformWithStruct(&types.SecretVersionsListEntry{}, transformers.WithPrimaryKeys("VersionId")),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "secretsmanager"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -36,7 +35,7 @@ func secretVersions() *schema.Table {
 func fetchSecretsmanagerSecretsVersions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, res chan<- any) error {
 	secret := resource.Item.(*secretsmanager.DescribeSecretOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Secretsmanager
+	svc := cl.Services(client.AWSServiceSecretsmanager).Secretsmanager
 	paginator := secretsmanager.NewListSecretVersionIdsPaginator(svc, &secretsmanager.ListSecretVersionIdsInput{
 		SecretId:          secret.ARN,
 		IncludeDeprecated: aws.Bool(true),

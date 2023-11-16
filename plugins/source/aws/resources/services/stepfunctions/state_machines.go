@@ -3,14 +3,13 @@ package stepfunctions
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/sfn"
 	"github.com/aws/aws-sdk-go-v2/service/sfn/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func StateMachines() *schema.Table {
@@ -45,7 +44,7 @@ func StateMachines() *schema.Table {
 
 func fetchStepfunctionsStateMachines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sfn
+	svc := cl.Services(client.AWSServiceSfn).Sfn
 	config := sfn.ListStateMachinesInput{}
 	paginator := sfn.NewListStateMachinesPaginator(svc, &config)
 	for paginator.HasMorePages() {
@@ -62,7 +61,7 @@ func fetchStepfunctionsStateMachines(ctx context.Context, meta schema.ClientMeta
 
 func getStepFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sfn
+	svc := cl.Services(client.AWSServiceSfn).Sfn
 	sm := resource.Item.(types.StateMachineListItem)
 
 	stateMachineDetails, err := svc.DescribeStateMachine(ctx,
@@ -82,7 +81,7 @@ func getStepFunction(ctx context.Context, meta schema.ClientMeta, resource *sche
 func resolveStepFunctionTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	sm := resource.Item.(*sfn.DescribeStateMachineOutput)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sfn
+	svc := cl.Services(client.AWSServiceSfn).Sfn
 	tagParams := sfn.ListTagsForResourceInput{
 		ResourceArn: sm.StateMachineArn,
 	}

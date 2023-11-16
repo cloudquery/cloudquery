@@ -5,17 +5,16 @@ import (
 	"fmt"
 	"regexp"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudtrail/models"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Trails() *schema.Table {
@@ -57,7 +56,7 @@ var groupNameRegex = regexp.MustCompile("arn:[a-zA-Z0-9-]+:logs:[a-z0-9-]+:[0-9]
 
 func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudtrail
+	svc := cl.Services(client.AWSServiceCloudtrail).Cloudtrail
 	log := cl.Logger()
 	response, err := svc.DescribeTrails(ctx, nil, func(options *cloudtrail.Options) {
 		options.Region = cl.Region
@@ -145,7 +144,7 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 
 func resolveCloudTrailStatus(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cloudtrail
+	svc := cl.Services(client.AWSServiceCloudtrail).Cloudtrail
 	r := resource.Item.(*models.CloudTrailWrapper)
 	response, err := svc.GetTrailStatus(ctx,
 		&cloudtrail.GetTrailStatusInput{Name: r.TrailARN}, func(o *cloudtrail.Options) {

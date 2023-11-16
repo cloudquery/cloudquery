@@ -3,15 +3,14 @@ package scheduler
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/scheduler"
 	"github.com/aws/aws-sdk-go-v2/service/scheduler/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/thoas/go-funk"
 )
 
@@ -48,7 +47,7 @@ func fetchSchedulerSchedules(ctx context.Context, meta schema.ClientMeta, parent
 		MaxResults: aws.Int32(100),
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Scheduler
+	svc := cl.Services(client.AWSServiceScheduler).Scheduler
 	paginator := scheduler.NewListSchedulesPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx, func(o *scheduler.Options) {
@@ -64,7 +63,7 @@ func fetchSchedulerSchedules(ctx context.Context, meta schema.ClientMeta, parent
 
 func getSchedule(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Scheduler
+	svc := cl.Services(client.AWSServiceScheduler).Scheduler
 	scheduleSummary := resource.Item.(types.ScheduleSummary)
 
 	describeTaskDefinitionOutput, err := svc.GetSchedule(ctx, &scheduler.GetScheduleInput{
@@ -85,7 +84,7 @@ func resolveSchedulerScheduleTags() schema.ColumnResolver {
 	return func(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 		arnStr := funk.Get(r.Item, "Arn", funk.WithAllowZero()).(*string)
 		cl := meta.(*client.Client)
-		svc := cl.Services().Scheduler
+		svc := cl.Services(client.AWSServiceScheduler).Scheduler
 		params := scheduler.ListTagsForResourceInput{ResourceArn: arnStr}
 
 		output, err := svc.ListTagsForResource(ctx, &params, func(o *scheduler.Options) {

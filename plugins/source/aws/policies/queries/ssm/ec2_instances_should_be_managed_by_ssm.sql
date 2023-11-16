@@ -3,7 +3,7 @@ select
     :'execution_time' as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
-    'EC2 instances should be managed by AWS Systems Manager' as title,
+    'Amazon EC2 instances should be managed by AWS Systems Manager' as title,
     aws_ec2_instances.account_id,
     aws_ec2_instances.arn as resource_id,
     case when

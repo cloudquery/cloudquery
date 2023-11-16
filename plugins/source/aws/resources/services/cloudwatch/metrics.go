@@ -5,16 +5,15 @@ import (
 	"errors"
 	"strconv"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
-	cqtypes "github.com/cloudquery/plugin-sdk/v3/types"
-	"github.com/mitchellh/hashstructure/v2"
-
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
+	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
+	"github.com/mitchellh/hashstructure/v2"
 )
 
 type metricOutput struct {
@@ -71,7 +70,7 @@ func fetchCloudwatchMetrics(ctx context.Context, meta schema.ClientMeta, parent 
 		return errors.New("skipping `aws_alpha_cloudwatch_metrics` because `list_metrics` is not specified in `table_options`")
 	}
 
-	svc := cl.Services().Cloudwatch
+	svc := cl.Services(client.AWSServiceCloudwatch).Cloudwatch
 	for _, input := range cl.Spec.TableOptions.CloudwatchMetrics {
 		input := input
 

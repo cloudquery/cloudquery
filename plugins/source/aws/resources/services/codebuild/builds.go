@@ -6,14 +6,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/codebuild"
 	"github.com/aws/aws-sdk-go-v2/service/codebuild/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func builds() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_codebuild_builds",
-		Description: `https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_ServiceQuota.html`,
+		Description: `https://docs.aws.amazon.com/codebuild/latest/APIReference/API_Build.html`,
 		Resolver:    fetchBuildsForProject,
 		Transform:   transformers.TransformWithStruct(&types.Build{}, transformers.WithPrimaryKeys("Arn")),
 		Columns: []schema.Column{
@@ -25,7 +25,7 @@ func builds() *schema.Table {
 
 func fetchBuildsForProject(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Codebuild
+	svc := cl.Services(client.AWSServiceCodebuild).Codebuild
 	project := parent.Item.(types.Project)
 	config := codebuild.ListBuildsForProjectInput{
 		ProjectName: project.Name,

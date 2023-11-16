@@ -7,9 +7,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/support/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/golang/mock/gomock"
 )
 
@@ -33,7 +33,7 @@ func fetchTrustedAdvisorCheckResults(ctx context.Context, meta schema.ClientMeta
 	if cl.LanguageCode != "en" {
 		return nil
 	}
-	svc := cl.Services().Support
+	svc := cl.Services(client.AWSServiceSupport).Support
 	check := parent.Item.(types.TrustedAdvisorCheckDescription)
 	input := support.DescribeTrustedAdvisorCheckResultInput{CheckId: check.Id}
 

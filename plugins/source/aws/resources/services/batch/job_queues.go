@@ -3,15 +3,14 @@ package batch
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/batch"
 	"github.com/aws/aws-sdk-go-v2/service/batch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func JobQueues() *schema.Table {
@@ -48,7 +47,7 @@ func fetchBatchJobQueues(ctx context.Context, meta schema.ClientMeta, parent *sc
 		MaxResults: aws.Int32(100),
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Batch
+	svc := cl.Services(client.AWSServiceBatch).Batch
 	p := batch.NewDescribeJobQueuesPaginator(svc, &config)
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx, func(options *batch.Options) {
@@ -64,7 +63,7 @@ func fetchBatchJobQueues(ctx context.Context, meta schema.ClientMeta, parent *sc
 
 func resolveBatchJobQueueTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Batch
+	svc := cl.Services(client.AWSServiceBatch).Batch
 	summary := resource.Item.(types.JobQueueDetail)
 
 	input := batch.ListTagsForResourceInput{

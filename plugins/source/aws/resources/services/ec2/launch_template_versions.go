@@ -3,12 +3,12 @@ package ec2
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func launchTemplateVersions() *schema.Table {
@@ -18,7 +18,6 @@ func launchTemplateVersions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_LaunchTemplateVersion.html`,
 		Resolver:    fetchEc2LaunchTemplateVersions,
 		Transform:   transformers.TransformWithStruct(&types.LaunchTemplateVersion{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -43,7 +42,7 @@ func fetchEc2LaunchTemplateVersions(ctx context.Context, meta schema.ClientMeta,
 		LaunchTemplateId: parent.Item.(types.LaunchTemplate).LaunchTemplateId,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ec2
+	svc := cl.Services(client.AWSServiceEc2).Ec2
 	paginator := ec2.NewDescribeLaunchTemplateVersionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *ec2.Options) {

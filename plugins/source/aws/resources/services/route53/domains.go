@@ -3,15 +3,14 @@ package route53
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Domains() *schema.Table {
@@ -46,7 +45,7 @@ func Domains() *schema.Table {
 
 func fetchRoute53Domains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Route53domains
+	svc := cl.Services(client.AWSServiceRoute53domains).Route53domains
 	var input route53domains.ListDomainsInput
 	paginator := route53domains.NewListDomainsPaginator(svc, &input)
 	for paginator.HasMorePages() {
@@ -62,7 +61,7 @@ func fetchRoute53Domains(ctx context.Context, meta schema.ClientMeta, parent *sc
 }
 func getDomain(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Route53domains
+	svc := cl.Services(client.AWSServiceRoute53domains).Route53domains
 	v := resource.Item.(types.DomainSummary)
 
 	d, err := svc.GetDomainDetail(ctx, &route53domains.GetDomainDetailInput{DomainName: v.DomainName}, func(options *route53domains.Options) {
@@ -79,7 +78,7 @@ func getDomain(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 
 func resolveRoute53DomainTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Route53domains
+	svc := cl.Services(client.AWSServiceRoute53domains).Route53domains
 	d := resource.Item.(*route53domains.GetDomainDetailOutput)
 	out, err := svc.ListTagsForDomain(ctx, &route53domains.ListTagsForDomainInput{DomainName: d.DomainName}, func(options *route53domains.Options) {
 		options.Region = cl.Region

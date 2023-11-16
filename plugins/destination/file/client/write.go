@@ -8,32 +8,58 @@ import (
 	"strings"
 	"time"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/filetypes/v3"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/filetypes/v4/types"
+	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/google/uuid"
 )
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, data []arrow.Record) error {
-	timeNow := time.Now().UTC()
-	p := replacePathVariables(c.pluginSpec.Path, table.Name, c.pluginSpec.Format, uuid.NewString(), timeNow)
+func (c *Client) WriteTable(_ context.Context, msgs <-chan *message.WriteInsert) error {
+	var (
+		f *os.File
+		h types.Handle
+	)
+	for msg := range msgs {
+		if f == nil {
+			table := msg.GetTable()
+			p := c.replacePathVariables(table.Name, uuid.NewString(), time.Now().UTC())
+			if err := os.MkdirAll(filepath.Dir(p), 0755); err != nil {
+				return fmt.Errorf("failed to create directory: %w", err)
+			}
 
-	if err := os.MkdirAll(filepath.Dir(p), 0755); err != nil {
-		return fmt.Errorf("failed to create directory: %w", err)
+			var err error
+			f, err = os.OpenFile(p, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+			if err != nil {
+				return err
+			}
+
+			h, err = c.Client.WriteHeader(f, table)
+			if err != nil {
+				return err
+			}
+		}
+
+		if err := h.WriteContent([]arrow.Record{msg.Record}); err != nil {
+			return err
+		}
 	}
 
-	f, err := os.OpenFile(p, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
+	if err := h.WriteFooter(); err != nil {
 		return err
 	}
-	defer f.Close()
-
-	return c.Client.WriteTableBatchFile(f, table, data)
+	return f.Close()
 }
 
-func replacePathVariables(specPath, table string, format filetypes.FormatType, fileIdentifier string, t time.Time) string {
-	name := strings.ReplaceAll(specPath, PathVarTable, table)
-	name = strings.ReplaceAll(name, PathVarFormat, string(format))
+func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
+	return c.writer.Write(ctx, msgs)
+}
+
+func (c *Client) replacePathVariables(table string, fileIdentifier string, t time.Time) string {
+	name := strings.ReplaceAll(c.spec.Path, PathVarTable, table)
+	if strings.Contains(name, PathVarFormat) {
+		e := string(c.spec.Format) + c.spec.Compression.Extension()
+		name = strings.ReplaceAll(name, PathVarFormat, e)
+	}
 	name = strings.ReplaceAll(name, PathVarUUID, fileIdentifier)
 	name = strings.ReplaceAll(name, YearVar, t.Format("2006"))
 	name = strings.ReplaceAll(name, MonthVar, t.Format("01"))

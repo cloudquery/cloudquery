@@ -5,14 +5,14 @@ import (
 	"errors"
 	"strconv"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
-	cqtypes "github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/mitchellh/hashstructure/v2"
 )
 
@@ -33,8 +33,7 @@ To sync this table you must set the 'use_paid_apis' option to 'true' and set the
 
 Please note that this table is considered **alpha** (experimental) and may have breaking changes or be removed in the future.
 `,
-		Resolver:  fetchCloudwatchMetricStatistics,
-		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "monitoring"),
+		Resolver: fetchCloudwatchMetricStatistics,
 		Transform: transformers.TransformWithStruct(&statOutput{},
 			transformers.WithPrimaryKeys("Timestamp", "Label"),
 			transformers.WithSkipFields("ResultMetadata"),
@@ -75,7 +74,7 @@ func fetchCloudwatchMetricStatistics(ctx context.Context, meta schema.ClientMeta
 		return errors.New("skipping `aws_alpha_cloudwatch_metric_statistics` because `get_metric_statistics` is not specified in `table_options`")
 	}
 
-	svc := cl.Services().Cloudwatch
+	svc := cl.Services(client.AWSServiceCloudwatch).Cloudwatch
 	for _, input := range item.getStatsInputs {
 		input := input
 

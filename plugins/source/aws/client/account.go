@@ -12,6 +12,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec"
 	"github.com/rs/zerolog"
 )
 
@@ -21,7 +22,7 @@ type svcsDetail struct {
 	svcs      Services
 }
 
-func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, awsPluginSpec *Spec, adminAccountSts AssumeRoleAPIClient, account Account) (*svcsDetail, error) {
+func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, awsPluginSpec *spec.Spec, adminAccountSts AssumeRoleAPIClient, account spec.Account) (*svcsDetail, error) {
 	if account.AccountName == "" {
 		account.AccountName = account.ID
 	}
@@ -43,21 +44,22 @@ func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, aws
 		c.specificRegions = false
 	}
 
-	awsCfg, err := configureAwsSDK(ctx, logger, awsPluginSpec, account, adminAccountSts)
+	awsCfg, err := ConfigureAwsSDK(ctx, logger, awsPluginSpec, account, adminAccountSts)
 	if err != nil {
-		if account.source == "org" {
-			logger.Warn().Msg("Unable to assume role in account")
+		warningMsg := logger.Warn().Str("account", account.AccountName).Err(err)
+		if account.Source == spec.AccountSourceOrg {
+			warningMsg.Msg("Unable to assume role in account")
 			return nil, nil
 		}
 		var ae smithy.APIError
 		if errors.As(err, &ae) {
 			if strings.Contains(ae.ErrorCode(), "AccessDenied") {
-				logger.Warn().Str("account", account.AccountName).Err(err).Msg("Access denied for account")
+				warningMsg.Msg("Access denied for account")
 				return nil, nil
 			}
 		}
 		if errors.Is(err, errRetrievingCredentials) {
-			logger.Warn().Str("account", account.AccountName).Err(err).Msg("Could not retrieve credentials for account")
+			warningMsg.Msg("Could not retrieve credentials for account")
 			return nil, nil
 		}
 
@@ -65,7 +67,7 @@ func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, aws
 	}
 	account.Regions = findEnabledRegions(ctx, logger, account.AccountName, ec2.NewFromConfig(awsCfg), localRegions, account.DefaultRegion)
 	if len(account.Regions) == 0 {
-		logger.Warn().Str("account", account.AccountName).Err(err).Msg("No enabled regions provided in config for account")
+		logger.Warn().Str("account", account.AccountName).Msg("No enabled regions provided in config for account")
 		return nil, nil
 	}
 	awsCfg.Region = getRegion(account.Regions)

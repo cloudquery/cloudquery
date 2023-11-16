@@ -3,15 +3,14 @@ package kinesis
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/kinesis"
 	"github.com/aws/aws-sdk-go-v2/service/kinesis/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Streams() *schema.Table {
@@ -43,7 +42,7 @@ func Streams() *schema.Table {
 
 func fetchKinesisStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Kinesis
+	svc := cl.Services(client.AWSServiceKinesis).Kinesis
 	input := kinesis.ListStreamsInput{}
 	paginator := kinesis.NewListStreamsPaginator(svc, &input)
 	for paginator.HasMorePages() {
@@ -61,7 +60,7 @@ func fetchKinesisStreams(ctx context.Context, meta schema.ClientMeta, parent *sc
 func getStream(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
 	streamName := resource.Item.(string)
-	svc := cl.Services().Kinesis
+	svc := cl.Services(client.AWSServiceKinesis).Kinesis
 	streamSummary, err := svc.DescribeStreamSummary(ctx, &kinesis.DescribeStreamSummaryInput{
 		StreamName: aws.String(streamName),
 	}, func(options *kinesis.Options) {
@@ -76,7 +75,7 @@ func getStream(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 
 func resolveKinesisStreamTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Kinesis
+	svc := cl.Services(client.AWSServiceKinesis).Kinesis
 	summary := resource.Item.(*types.StreamDescriptionSummary)
 	input := kinesis.ListTagsForStreamInput{
 		StreamName: summary.StreamName,

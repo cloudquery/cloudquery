@@ -4,15 +4,17 @@ import (
 	"fmt"
 	"strings"
 
+	"slices"
+
+	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"golang.org/x/exp/slices"
 )
 
 const (
-	migrateShort   = "Run migration for source and destination plugins specified in configuration"
+	migrateShort   = "Update schema of your destinations based on the latest changes in sources from your configuration"
 	migrateExample = `# Run migration for plugins specified in directory
 cloudquery migrate ./directory
 # Run migration for plugins specified in directory and config files
@@ -47,9 +49,25 @@ func migrate(cmd *cobra.Command, args []string) error {
 	}
 	sources := specReader.Sources
 	destinations := specReader.Destinations
-	var opts []managedplugin.Option
+
+	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations)
+	if err != nil {
+		return fmt.Errorf("failed to get auth token: %w", err)
+	}
+	teamName, err := auth.GetTeamForToken(authToken)
+	if err != nil {
+		return fmt.Errorf("failed to get team name: %w", err)
+	}
+	opts := []managedplugin.Option{
+		managedplugin.WithLogger(log.Logger),
+		managedplugin.WithAuthToken(authToken.Value),
+		managedplugin.WithTeamName(teamName),
+	}
 	if cqDir != "" {
 		opts = append(opts, managedplugin.WithDirectory(cqDir))
+	}
+	if disableSentry {
+		opts = append(opts, managedplugin.WithNoSentry())
 	}
 	sourcePluginConfigs := make([]managedplugin.Config, 0, len(sources))
 	for _, source := range sources {
@@ -88,14 +106,13 @@ func migrate(cmd *cobra.Command, args []string) error {
 			fmt.Println(err)
 		}
 	}()
-
 	for _, source := range sources {
 		cl := managedSourceClients.ClientByName(source.Name)
 		versions, err := cl.Versions(ctx)
 		if err != nil {
 			return fmt.Errorf("failed to get source versions: %w", err)
 		}
-		maxVersion := findMaxCommonVersion(versions, []int{2, 1, 0})
+		maxVersion := findMaxCommonVersion(versions, []int{3, 2, 1, 0})
 
 		var destinationClientsForSource []*managedplugin.Client
 		var destinationForSourceSpec []specs.Destination
@@ -106,19 +123,38 @@ func migrate(cmd *cobra.Command, args []string) error {
 			}
 		}
 		switch maxVersion {
+		case 3:
+			for _, destination := range destinationClientsForSource {
+				versions, err := destination.Versions(ctx)
+				if err != nil {
+					return fmt.Errorf("failed to get destination versions: %w", err)
+				}
+				if !slices.Contains(versions, 3) {
+					return fmt.Errorf("destination plugin %[1]s does not support CloudQuery protocol version 3, required by the %[2]s source plugin. Please upgrade to a newer version of the %[1]s destination plugin", destination.Name(), source.Name)
+				}
+			}
+			if err := migrateConnectionV3(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec); err != nil {
+				return fmt.Errorf("failed to migrate v3 source %s: %w", cl.Name(), err)
+			}
 		case 2:
+			destinationsVersions := make([][]int, 0, len(destinationClientsForSource))
 			for _, destination := range destinationClientsForSource {
 				versions, err := destination.Versions(ctx)
 				if err != nil {
 					return fmt.Errorf("failed to get destination versions: %w", err)
 				}
 				if !slices.Contains(versions, 1) {
-					return fmt.Errorf("destination %[1]s does not support CloudQuery SDK version 1. Please upgrade to newer version of %[1]s", destination.Name())
+					return fmt.Errorf("destination plugin %[1]s does not support CloudQuery SDK version 1. Please upgrade to a newer version of the %[1]s destination plugin", destination.Name())
 				}
+				destinationsVersions = append(destinationsVersions, versions)
 			}
-			return migrateConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec)
+			if err := migrateConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, destinationsVersions); err != nil {
+				return fmt.Errorf("failed to migrate source %v@%v: %w", source.Name, source.Version, err)
+			}
 		case 1:
-			return migrateConnectionV1(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec)
+			if err := migrateConnectionV1(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec); err != nil {
+				return fmt.Errorf("failed to migrate source %v@%v: %w", source.Name, source.Version, err)
+			}
 		case 0:
 			return fmt.Errorf("please upgrade your source or use a CLI version between v3.0.1 and v3.5.3")
 		case -1:

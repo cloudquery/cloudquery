@@ -3,12 +3,13 @@ package wellarchitected
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func workloadShares() *schema.Table {
@@ -19,8 +20,7 @@ func workloadShares() *schema.Table {
 		Transform: transformers.TransformWithStruct(new(types.WorkloadShareSummary),
 			transformers.WithPrimaryKeys("ShareId"),
 		),
-		Multiplex: client.ServiceAccountRegionMultiplexer(name, "wellarchitected"),
-		Resolver:  fetchWorkloadShares,
+		Resolver: fetchWorkloadShares,
 		Columns: schema.ColumnList{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -37,13 +37,13 @@ func workloadShares() *schema.Table {
 
 func fetchWorkloadShares(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	service := cl.Services().Wellarchitected
+	service := cl.Services(client.AWSServiceWellarchitected).Wellarchitected
 	workloadID := parent.Get("workload_id").String()
 
 	p := wellarchitected.NewListWorkloadSharesPaginator(service,
 		&wellarchitected.ListWorkloadSharesInput{
 			WorkloadId: &workloadID,
-			MaxResults: 50,
+			MaxResults: aws.Int32(50),
 		},
 	)
 	for p.HasMorePages() {

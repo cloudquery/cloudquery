@@ -3,28 +3,25 @@ package client
 import (
 	"context"
 	"database/sql"
-	"fmt"
+	"errors"
 	"strings"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-// Migrate relies on the CLI/client to lock before running migration.
-func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
-	have, err := c.schemaTables(ctx, tables)
+// MigrateTables relies on the CLI/client to lock before running migration.
+func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrateTables) error {
+	have, err := c.schemaTables(ctx, messages)
 	if err != nil {
 		return err
 	}
 
-	want := c.normalizedTables(tables)
+	want := normalizedTables(messages)
 
-	if c.spec.MigrateMode != specs.MigrateModeForced {
-		unsafe := unsafeSchemaChanges(have, want)
-		if len(unsafe) > 0 {
-			return fmt.Errorf("the following changes cannot be automatically migrated:\n%s\n\nPlease perform this migration manually or enable `migrate_mode: 'forced'`", prettifyChanges(unsafe))
-		}
+	if err := c.checkForced(have, want, messages); err != nil {
+		return err
 	}
 
 	for _, want := range want {
@@ -52,6 +49,34 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	return nil
 }
 
+func (c *Client) checkForced(have, want schema.Tables, messages message.WriteMigrateTables) error {
+	forcedErr := false
+	for _, m := range messages {
+		if m.MigrateForce {
+			continue
+		}
+
+		// check that this migration can go through
+		have := have.Get(m.Table.Name)
+		if have == nil {
+			continue // create new is always OK
+		}
+		want := want.Get(m.Table.Name) // and it should never be nil
+		if unsafe := unsafeChanges(want.GetChanges(have)); len(unsafe) > 0 {
+			c.logger.Error().
+				Str("table", m.Table.Name).
+				Str("changes", prettifyChanges(m.Table.Name, unsafe)).
+				Msg("migrate manually or consider using 'migrate_mode: forced'")
+			forcedErr = true
+		}
+	}
+
+	if forcedErr {
+		return errors.New("migrate manually or consider using 'migrate_mode: forced'")
+	}
+	return nil
+}
+
 func (c *Client) autoMigrateTable(ctx context.Context, have, want *schema.Table) error {
 	changes := want.GetChanges(have)
 	if len(changes) == 0 {
@@ -68,7 +93,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, have, want *schema.Table)
 	statements := make([]string, 0, len(changes))
 	for _, change := range changes {
 		if change.Type == schema.TableColumnChangeTypeAdd {
-			statements = append(statements, queries.AddColumn(c.schemaName, want, &change.Current))
+			statements = append(statements, queries.AddColumn(c.spec.Schema, want, &change.Current))
 		}
 	}
 

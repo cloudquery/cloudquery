@@ -3,12 +3,12 @@ package stepfunctions
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/sfn"
 	"github.com/aws/aws-sdk-go-v2/service/sfn/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func executions() *schema.Table {
@@ -19,7 +19,6 @@ func executions() *schema.Table {
 		Resolver:            fetchStepfunctionsExecutions,
 		PreResourceResolver: getExecution,
 		Transform:           transformers.TransformWithStruct(&sfn.DescribeExecutionOutput{}, transformers.WithSkipFields("ResultMetadata")),
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "states"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -43,7 +42,7 @@ func executions() *schema.Table {
 
 func fetchStepfunctionsExecutions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sfn
+	svc := cl.Services(client.AWSServiceSfn).Sfn
 	sfnOutput := parent.Item.(*sfn.DescribeStateMachineOutput)
 	config := sfn.ListExecutionsInput{
 		MaxResults:      1000,
@@ -66,7 +65,7 @@ func getExecution(ctx context.Context, meta schema.ClientMeta, resource *schema.
 	execution := resource.Item.(types.ExecutionListItem)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sfn
+	svc := cl.Services(client.AWSServiceSfn).Sfn
 
 	executionResult, err := svc.DescribeExecution(ctx, &sfn.DescribeExecutionInput{
 		ExecutionArn: execution.ExecutionArn,

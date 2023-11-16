@@ -1,9 +1,9 @@
 package client
 
 import (
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v14/arrow/array"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func getValue(arr arrow.Array, i int) (any, error) {

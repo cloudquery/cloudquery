@@ -3,13 +3,13 @@ package waf
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/waf/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func SubscribedRuleGroups() *schema.Table {
@@ -41,7 +41,7 @@ func SubscribedRuleGroups() *schema.Table {
 
 func fetchWafSubscribedRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	service := cl.Services().Waf
+	service := cl.Services(client.AWSServiceWaf).Waf
 	config := waf.ListSubscribedRuleGroupsInput{}
 	for {
 		output, err := service.ListSubscribedRuleGroups(ctx, &config, func(o *waf.Options) {

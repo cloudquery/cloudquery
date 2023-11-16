@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/support"
 	"github.com/aws/aws-sdk-go-v2/service/support/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Cases() *schema.Table {
@@ -29,7 +29,7 @@ func Cases() *schema.Table {
 
 func fetchCases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Support
+	svc := cl.Services(client.AWSServiceSupport).Support
 	input := support.DescribeCasesInput{MaxResults: aws.Int32(100), IncludeResolvedCases: true}
 
 	paginator := support.NewDescribeCasesPaginator(svc, &input)

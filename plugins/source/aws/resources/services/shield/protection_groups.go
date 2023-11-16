@@ -3,14 +3,13 @@ package shield
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/aws/aws-sdk-go-v2/service/shield/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func ProtectionGroups() *schema.Table {
@@ -40,7 +39,7 @@ func ProtectionGroups() *schema.Table {
 
 func fetchShieldProtectionGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Shield
+	svc := cl.Services(client.AWSServiceShield).Shield
 	config := shield.ListProtectionGroupsInput{}
 	paginator := shield.NewListProtectionGroupsPaginator(svc, &config)
 	for paginator.HasMorePages() {
@@ -60,7 +59,7 @@ func fetchShieldProtectionGroups(ctx context.Context, meta schema.ClientMeta, pa
 func resolveShieldProtectionGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.ProtectionGroup)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Shield
+	svc := cl.Services(client.AWSServiceShield).Shield
 	config := shield.ListTagsForResourceInput{ResourceARN: r.ProtectionGroupArn}
 
 	output, err := svc.ListTagsForResource(ctx, &config, func(o *shield.Options) {

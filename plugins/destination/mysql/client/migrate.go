@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func (c *Client) normalizeTables(tables schema.Tables) schema.Tables {
@@ -22,23 +22,22 @@ func (c *Client) normalizeTables(tables schema.Tables) schema.Tables {
 func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 	columns := make([]schema.Column, len(table.Columns))
 	for i, col := range table.Columns {
-		if !c.pkEnabled() {
-			col.PrimaryKey = false
-		}
-		normalized := c.normalizeField(col.ToArrowField())
-		columns[i] = schema.NewColumnFromArrowField(*normalized)
+		columns[i] = c.normalizeColumn(col)
 	}
 	return &schema.Table{Name: table.Name, Columns: columns}
 }
 
-func (*Client) normalizeField(field arrow.Field) *arrow.Field {
+func (*Client) normalizeColumn(col schema.Column) schema.Column {
+	field := col.ToArrowField()
 	normalizedType := mySQLTypeToArrowType(arrowTypeToMySqlStr(field.Type))
-	return &arrow.Field{
+	// In MySQL primary keys are implicitly not null
+	notNull := col.NotNull || col.PrimaryKey
+	return schema.NewColumnFromArrowField(arrow.Field{
 		Name:     field.Name,
 		Type:     normalizedType,
-		Nullable: field.Nullable,
+		Nullable: !notNull,
 		Metadata: field.Metadata,
-	}
+	})
 }
 
 func (c *Client) nonAutoMigratableTables(tables schema.Tables, mysqlTables schema.Tables) ([]string, [][]schema.TableColumnChange) {
@@ -88,19 +87,37 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 	return nil
 }
 
+func getTables(msgs message.WriteMigrateTables) schema.Tables {
+	tables := make(schema.Tables, len(msgs))
+	for i, msg := range msgs {
+		tables[i] = msg.Table
+	}
+	return tables
+}
+
 // Migrate relies on the CLI/client to lock before running migration.
-func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
+func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
+	tables := getTables(msgs)
 	mysqlTables, err := c.schemaTables(ctx, tables)
 	if err != nil {
 		return err
 	}
 
 	normalizedTables := c.normalizeTables(tables)
-	if c.spec.MigrateMode != specs.MigrateModeForced {
-		nonAutoMigrtableTables, changes := c.nonAutoMigratableTables(normalizedTables, mysqlTables)
-		if len(nonAutoMigrtableTables) > 0 {
-			return fmt.Errorf("tables %s with changes %v require force migration. use 'migrate_mode: forced'", strings.Join(nonAutoMigrtableTables, ","), changes)
+	normalizedTablesSafeMode := make(schema.Tables, 0, len(normalizedTables))
+	for _, table := range normalizedTables {
+		msg := msgs.GetMessageByTable(table.Name)
+		if msg == nil {
+			continue
 		}
+		if !msg.MigrateForce {
+			normalizedTablesSafeMode = append(normalizedTablesSafeMode, table)
+		}
+	}
+
+	nonAutoMigrtableTables, changes := c.nonAutoMigratableTables(normalizedTablesSafeMode, mysqlTables)
+	if len(nonAutoMigrtableTables) > 0 {
+		return fmt.Errorf("tables %s with changes %v require migration. Migrate manually or consider using 'migrate_mode: forced'", strings.Join(nonAutoMigrtableTables, ","), changes)
 	}
 
 	for _, table := range normalizedTables {

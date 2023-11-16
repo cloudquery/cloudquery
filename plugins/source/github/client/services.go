@@ -39,6 +39,7 @@ type RepositoriesService interface {
 	GetBranchProtection(ctx context.Context, owner string, repo string, branch string) (*github.Protection, *github.Response, error)
 	ListBranches(ctx context.Context, owner string, repo string, opts *github.BranchListOptions) ([]*github.Branch, *github.Response, error)
 	ListByOrg(ctx context.Context, org string, opts *github.RepositoryListByOrgOptions) ([]*github.Repository, *github.Response, error)
+	ListKeys(ctx context.Context, owner string, repo string, opts *github.ListOptions) ([]*github.Key, *github.Response, error)
 	ListReleases(ctx context.Context, owner, repo string, opts *github.ListOptions) ([]*github.RepositoryRelease, *github.Response, error)
 	ListReleaseAssets(ctx context.Context, owner, repo string, id int64, opts *github.ListOptions) ([]*github.ReleaseAsset, *github.Response, error)
 	ListTrafficClones(ctx context.Context, owner, repo string, opts *github.TrafficBreakdownOptions) (*github.TrafficClones, *github.Response, error)
@@ -67,6 +68,9 @@ type IssuesService interface {
 //go:generate mockgen -package=mocks -destination=./mocks/mock_actions.go . ActionsService
 type ActionsService interface {
 	ListWorkflows(ctx context.Context, owner, repo string, opts *github.ListOptions) (*github.Workflows, *github.Response, error)
+	ListRepositoryWorkflowRuns(ctx context.Context, owner, repo string, opts *github.ListWorkflowRunsOptions) (*github.WorkflowRuns, *github.Response, error)
+	GetWorkflowRunUsageByID(ctx context.Context, owner, repo string, runID int64) (*github.WorkflowRunUsage, *github.Response, error)
+	ListWorkflowJobs(ctx context.Context, owner, repo string, runID int64, opts *github.ListWorkflowJobsOptions) (*github.Jobs, *github.Response, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_dependabot.go . DependabotService

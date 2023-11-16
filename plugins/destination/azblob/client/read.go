@@ -6,17 +6,17 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
-	if !c.pluginSpec.NoRotate {
-		return fmt.Errorf("reading is not supported when `no_rotate` is false. Table: %q; Source: %q", table.Name, sourceName)
+func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
+	if !c.spec.NoRotate {
+		return fmt.Errorf("reading is not supported when `no_rotate` is false. Table: %q", table.Name)
 	}
-	name := fmt.Sprintf("%s/%s.%s", c.pluginSpec.Path, table.Name, c.pluginSpec.Format)
+	name := fmt.Sprintf("%s/%s.%s%s", c.spec.Path, table.Name, c.spec.Format, c.spec.FileSpec.Compression.Extension())
 
-	response, err := c.storageClient.DownloadStream(ctx, c.pluginSpec.Container, name, nil)
+	response, err := c.storageClient.DownloadStream(ctx, c.spec.Container, name, nil)
 	if err != nil {
 		return err
 	}
@@ -26,5 +26,5 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName strin
 		return err
 	}
 	byteReader := bytes.NewReader(b)
-	return c.Client.Read(byteReader, table, sourceName, res)
+	return c.Client.Read(byteReader, table, res)
 }

@@ -3,15 +3,14 @@ package glue
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func registrySchemas() *schema.Table {
@@ -22,7 +21,6 @@ func registrySchemas() *schema.Table {
 		Resolver:            fetchGlueRegistrySchemas,
 		PreResourceResolver: getRegistrySchema,
 		Transform:           transformers.TransformWithStruct(&glue.GetSchemaOutput{}),
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -48,7 +46,7 @@ func registrySchemas() *schema.Table {
 func fetchGlueRegistrySchemas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(types.RegistryListItem)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Glue
+	svc := cl.Services(client.AWSServiceGlue).Glue
 	input := glue.ListSchemasInput{
 		RegistryId: &types.RegistryId{RegistryArn: r.RegistryArn},
 		MaxResults: aws.Int32(100),
@@ -68,7 +66,7 @@ func fetchGlueRegistrySchemas(ctx context.Context, meta schema.ClientMeta, paren
 
 func getRegistrySchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Glue
+	svc := cl.Services(client.AWSServiceGlue).Glue
 	item := resource.Item.(types.SchemaListItem)
 
 	s, err := svc.GetSchema(ctx, &glue.GetSchemaInput{SchemaId: &types.SchemaId{SchemaArn: item.SchemaArn}}, func(options *glue.Options) {
@@ -84,7 +82,7 @@ func getRegistrySchema(ctx context.Context, meta schema.ClientMeta, resource *sc
 
 func resolveGlueRegistrySchemaTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Glue
+	svc := cl.Services(client.AWSServiceGlue).Glue
 	s := resource.Item.(*glue.GetSchemaOutput)
 	result, err := svc.GetTags(ctx, &glue.GetTagsInput{
 		ResourceArn: s.SchemaArn,

@@ -1,10 +1,13 @@
 package main
 
 import (
+	"context"
+	"log"
+
 	"github.com/cloudquery/cloudquery/plugins/destination/duckdb/client"
-	"github.com/cloudquery/cloudquery/plugins/destination/duckdb/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/v3/serve"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/duckdb/resources/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/serve"
 )
 
 const (
@@ -12,6 +15,25 @@ const (
 )
 
 func main() {
-	p := destination.NewPlugin("duckdb", plugin.Version, client.New, destination.WithManagedWriter())
-	serve.Destination(p, serve.WithDestinationSentryDSN(sentryDSN))
+	p := plugin.NewPlugin(
+		internalPlugin.Name,
+		internalPlugin.Version,
+		client.New,
+		plugin.WithBuildTargets([]plugin.BuildTarget{
+			{OS: plugin.GoOSLinux, Arch: plugin.GoArchAmd64},
+			{OS: plugin.GoOSDarwin, Arch: plugin.GoArchAmd64},
+			{OS: plugin.GoOSDarwin, Arch: plugin.GoArchArm64},
+		}),
+		plugin.WithStaticLinking(),
+		plugin.WithKind(internalPlugin.Kind),
+		plugin.WithTeam(internalPlugin.Team),
+	)
+	server := serve.Plugin(p,
+		serve.WithPluginSentryDSN(sentryDSN),
+		serve.WithDestinationV0V1Server(),
+	)
+	err := server.Serve(context.Background())
+	if err != nil {
+		log.Fatalf("failed to serve plugin: %v", err)
+	}
 }

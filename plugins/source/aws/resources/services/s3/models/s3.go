@@ -30,12 +30,12 @@ type WrappedBucket struct {
 	LoggingTargetPrefix   *string
 	Policy                map[string]any
 	PolicyStatus          *types.PolicyStatus
-	VersioningStatus      types.BucketVersioningStatus
-	VersioningMfaDelete   types.MFADeleteStatus
-	BlockPublicAcls       bool
-	BlockPublicPolicy     bool
-	IgnorePublicAcls      bool
-	RestrictPublicBuckets bool
+	VersioningStatus      *types.BucketVersioningStatus
+	VersioningMfaDelete   *types.MFADeleteStatus
+	BlockPublicAcls       *bool
+	BlockPublicPolicy     *bool
+	IgnorePublicAcls      *bool
+	RestrictPublicBuckets *bool
 	Tags                  map[string]*string
 	OwnershipControls     []string
 }

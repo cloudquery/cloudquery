@@ -3,7 +3,7 @@ select
     :'execution_time' as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
-    'S3 Block Public Access (bucket) setting should be enabled' as title,
+    'S3 Block Public Access setting should be enabled at the bucket-level' as title,
     account_id,
     arn AS resource_id,
     case when

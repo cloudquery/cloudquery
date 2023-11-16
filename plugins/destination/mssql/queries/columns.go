@@ -1,8 +1,9 @@
 package queries
 
 import (
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"golang.org/x/exp/slices"
+	"slices"
+
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 type colQueryBuilder struct {

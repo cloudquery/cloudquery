@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/signer"
 	"github.com/aws/aws-sdk-go-v2/service/signer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Profiles() *schema.Table {
@@ -28,7 +28,7 @@ func Profiles() *schema.Table {
 
 func fetchProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Signer
+	svc := cl.Services(client.AWSServiceSigner).Signer
 	config := signer.ListSigningProfilesInput{}
 
 	paginator := signer.NewListSigningProfilesPaginator(svc, &config)
@@ -46,7 +46,7 @@ func fetchProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 
 func getProfile(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Signer
+	svc := cl.Services(client.AWSServiceSigner).Signer
 	a := resource.Item.(types.SigningProfile)
 
 	profile, err := svc.GetSigningProfile(ctx, &signer.GetSigningProfileInput{ProfileName: a.ProfileName}, func(o *signer.Options) {

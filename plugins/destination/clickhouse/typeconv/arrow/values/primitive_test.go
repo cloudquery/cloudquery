@@ -3,9 +3,9 @@ package values
 import (
 	"testing"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/apache/arrow/go/v13/arrow/float16"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v14/arrow/float16"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/google/uuid"
 )
 

@@ -18,6 +18,7 @@ type ResiliencehubClient interface {
 	DescribeDraftAppVersionResourcesImportStatus(context.Context, *resiliencehub.DescribeDraftAppVersionResourcesImportStatusInput, ...func(*resiliencehub.Options)) (*resiliencehub.DescribeDraftAppVersionResourcesImportStatusOutput, error)
 	DescribeResiliencyPolicy(context.Context, *resiliencehub.DescribeResiliencyPolicyInput, ...func(*resiliencehub.Options)) (*resiliencehub.DescribeResiliencyPolicyOutput, error)
 	ListAlarmRecommendations(context.Context, *resiliencehub.ListAlarmRecommendationsInput, ...func(*resiliencehub.Options)) (*resiliencehub.ListAlarmRecommendationsOutput, error)
+	ListAppAssessmentComplianceDrifts(context.Context, *resiliencehub.ListAppAssessmentComplianceDriftsInput, ...func(*resiliencehub.Options)) (*resiliencehub.ListAppAssessmentComplianceDriftsOutput, error)
 	ListAppAssessments(context.Context, *resiliencehub.ListAppAssessmentsInput, ...func(*resiliencehub.Options)) (*resiliencehub.ListAppAssessmentsOutput, error)
 	ListAppComponentCompliances(context.Context, *resiliencehub.ListAppComponentCompliancesInput, ...func(*resiliencehub.Options)) (*resiliencehub.ListAppComponentCompliancesOutput, error)
 	ListAppComponentRecommendations(context.Context, *resiliencehub.ListAppComponentRecommendationsInput, ...func(*resiliencehub.Options)) (*resiliencehub.ListAppComponentRecommendationsOutput, error)

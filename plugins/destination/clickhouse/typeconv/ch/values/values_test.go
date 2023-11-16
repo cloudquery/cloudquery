@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/apache/arrow/go/v13/arrow/memory"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/apache/arrow/go/v14/arrow/array"
+	"github.com/apache/arrow/go/v14/arrow/memory"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -45,11 +45,9 @@ func BenchmarkFromArray(b *testing.B) {
 		SyncTime:   syncTime,
 		MaxRows:    b.N,
 	}
-	records := schema.GenTestData(table, opts)
+	record := schema.NewTestDataGenerator().Generate(table, opts)
 	b.ResetTimer()
-	for n := range table.Columns {
-		for i := range records {
-			_, _ = FromArray(records[i].Column(n))
-		}
+	for _, col := range record.Columns() {
+		_, _ = FromArray(col)
 	}
 }

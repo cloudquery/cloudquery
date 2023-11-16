@@ -8,46 +8,48 @@ import (
 
 	"github.com/goccy/go-json"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/apache/arrow/go/v13/arrow/memory"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v14/arrow/array"
+	"github.com/apache/arrow/go/v14/arrow/memory"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/elastic/go-elasticsearch/v8/typedapi/core/search"
 	"github.com/elastic/go-elasticsearch/v8/typedapi/types"
 )
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, sourceName string, res chan<- arrow.Record) error {
-	index := c.getIndexNamePattern(table.Name)
+func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
+	index := c.getIndexNamePattern(table)
 
 	// refresh index before read, to ensure all written data is available
 	resp, err := c.typedClient.Indices.Refresh().Index(index).Do(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to refresh index before read: %w", err)
 	}
-	io.Copy(io.Discard, resp.Body)
-	resp.Body.Close()
+	_, _ = io.Copy(io.Discard, resp.Body)
+	_ = resp.Body.Close()
 
-	// do the read
+	size := 100
 	resp, err = c.typedClient.Search().Index(index).Request(&search.Request{
 		Query: &types.Query{
-			MatchPhrase: map[string]types.MatchPhraseQuery{
-				schema.CqSourceNameColumn.Name: {
-					Query: sourceName,
-				},
-			},
+			MatchAll: &types.MatchAllQuery{},
 		},
+		Size: &size,
 	}).Do(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to read: %w", err)
 	}
+
 	defer resp.Body.Close()
+	if resp.StatusCode > 299 {
+		data, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("failed to read: %s: %s", resp.Status, string(data))
+	}
 
 	var result struct {
 		Hits struct {
 			Hits []struct {
 				Source map[string]any `json:"_source"`
-			}
-		}
+			} `json:"hits"`
+		} `json:"hits"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return fmt.Errorf("failed to decode response body: %w", err)

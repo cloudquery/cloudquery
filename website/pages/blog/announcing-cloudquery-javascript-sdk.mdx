@@ -1,0 +1,129 @@
+---
+title: Announcing the Javascript SDK for CloudQuery Plugin Development
+tag: announcement
+date: 2023/08/31
+description:
+author: michal
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
+We're excited to announce the first release of a JavaScript SDK for CloudQuery plugin development! This SDK provides a high-level toolkit for developing CloudQuery plugins in JavaScript.
+
+## Background
+
+CloudQuery is designed with a pluggable architecture and uses [Apache Arrow](https://arrow.apache.org/) over [gRPC](https://grpc.io/) for communication between plugins. Source and destination plugins are independent of one another, and this architecture allows plugins to be written in different languages but still communicate with one another.
+
+Originally, we only provided SDK for writing plugins in Go, but that is changing now. Recently, we released [SDK for Python](https://www.cloudquery.io/blog/announcing-cloudquery-python-sdk), and now we are excited to announce the SDK for JavaScript as well!
+
+![cloudquery high-level architecture](/images/cloudquery-architecture.png)
+
+## Features
+
+### Plugin Server
+
+The most basic functionality provided by the JavaScript SDK is to start a gRPC plugin server that supports all the flags expected by the CloudQuery CLI. This allows you to write a plugin in JavaScript and run it using the same command line interface as any other plugin.
+
+The following example shows how to create a plugin server that runs a plugin called `MyPlugin`:
+
+```typescript
+import { createServeCommand } from '@cloudquery/plugin-sdk-javascript/plugin/serve';
+
+import { myPlugin } from './plugin.js';
+
+const main = () => {
+  createServeCommand(myPlugin()).parse();
+};
+
+main();
+```
+
+All you need to do is to implement the NewClientFunction interface and return it.
+
+### Client Interface
+
+When implementing a source plugin, the core functionality should be handled by the three functions required by the `SourceClient` interface: `tables`, and `sync`.
+
+The `tables` function should return a list of tables that the plugin supports. The `sync` function is called when a table needs to be synced, and this is where the SDK scheduler can be used to manage the syncing of all the supported tables.
+
+There are other functions that the `Client` needs to support. Unless you need a custom implementation, you can use the `newPlugin` function to provide the basic implementation.
+
+Check out our [Airtable](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/airtable/src/plugin.ts) plugin to get an example.
+
+### Managed Asynchronous Scheduler
+
+The scheduler's main responsibilities are to manage concurrent execution of requests and the order in which tables are synced to avoid dependency issues. It also supports placing limits on the number of concurrent requests and memory usage.
+
+To invoke the scheduler, the `sync` method of a plugin should pass a list of its tables and options to the scheduler. The scheduler will take care of the rest. Here is an example [from the Airtable plugin](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/typeform/plugin/plugin.py):
+
+```typescript
+import { sync } from '@cloudquery/plugin-sdk-javascript/scheduler';
+
+const pluginClient = {
+    //...
+    sync: (options: SyncOptions) => {
+      const { client, allTables, plugin } = pluginClient;
+
+      if (client === null) {
+        return Promise.reject(new Error('Client not initialized'));
+      }
+
+      const logger = plugin.getLogger();
+      const {
+        spec: { concurrency },
+      } = pluginClient;
+
+      const { stream, tables, skipTables, skipDependentTables, deterministicCQId } = options;
+      const filtered = filterTables(allTables, tables, skipTables, skipDependentTables);
+
+      return sync({
+        logger,
+        client,
+        stream,
+        tables: filtered,
+        deterministicCQId,
+        concurrency,
+      });
+    },
+  };
+```
+
+### Apache Arrow-based Type System with Custom Types
+
+Table columns are defined using the Apache Arrow type system, a powerful and flexible way to define data types. CloudQuery destinations support almost all Arrow types, and the JavaScript SDK provides support for two additional types: `UUID`, `JSON`. 
+
+Here’s how our [Airtable plugin uses the JSON type](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/airtable/src/tables.ts#L68):
+
+```typescript
+const airtableFieldToArrowField = (field: APIField): DataType => {
+    switch(field.type) {
+        // ...
+        case: APIFieldType.singleCollaborator: {
+            return new JSONType();
+        }
+        // ...
+    }
+}
+```
+
+### Docker for Cross-Platform Distribution
+
+To support cross-platform packaging of JavaScript plugins (and other languages in the future), we introduced a new `docker` registry type to the CloudQuery CLI in `v3.12.0`. Where Go-based plugins are downloaded as binaries from GitHub releases, JavaScript plugins are downloaded as Docker images from the specified Docker registry. This allows CloudQuery to support multiple platforms, and also makes it easier to distribute plugins that have dependencies on external libraries.
+
+### Start Creating Your Own Plugin
+
+Want to start writing your own plugin? Here is our guide to get you started: https://www.cloudquery.io/docs/developers/creating-new-plugin/javascript-source
+
+We will also be adding more documentation and examples in the coming weeks, so stay tuned!
+
+### Future work
+
+Work is already underway to add SDKs for more languages. We won't spoil the surprise here, but we're excited to share more details soon. Be sure to follow us on [Twitter](https://twitter.com/cloudqueryio) or subscribe to our newsletter below 👇 to get the latest updates.
+
+The first release of the JavaScript SDK only officially supports source plugins. Writing a destination plugin in JavaScript is possible using the low-level gRPC APIs, but is not yet officially supported by the JavaScript SDK.
+
+## Feedback
+
+We'd love to hear your feedback on the JavaScript SDK. If you have any questions, comments, or suggestions, please feel free to reach out to us on [Discord](https://cloudquery.io/discord) or [GitHub](https://github.com/cloudquery/plugin-sdk-javascript).

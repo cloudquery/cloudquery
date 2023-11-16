@@ -44,8 +44,8 @@ module.exports = async ({github, context}) => {
         actions = ["cli (ubuntu-latest)", "cli (windows-latest)", "cli (macos-latest)", ...actions]
     }
 
-    // Enforce policy tests for AWS,GCP and K8s plugins
-    const pluginsWithPolicyTests = ["plugins/source/aws", "plugins/source/azure", "plugins/source/gcp", "plugins/source/k8s"]
+    // Enforce policy tests for AWS, Azure, GCP and K8s plugins
+    const pluginsWithPolicyTests = ['plugins/source/aws', 'plugins/source/azure', 'plugins/source/gcp', 'plugins/source/k8s']
     for (const plugin of pluginsWithPolicyTests) {
         if (actions.includes(plugin)) {
             actions = [...actions, 'test-policies']
@@ -57,7 +57,7 @@ module.exports = async ({github, context}) => {
     while (now <= deadline) {
         const checkRuns = await github.paginate(github.rest.checks.listForRef, {
             owner: 'cloudquery',
-            repo: 'cloudquery',
+            repo: context.repo.repo,
             ref: context.payload.pull_request.head.sha,
             status: 'completed',
             per_page: 100
@@ -78,7 +78,7 @@ module.exports = async ({github, context}) => {
         }
         pendingActions = actions.filter(action => !runs.some(({name}) => name === action))
         console.log(`Waiting for ${pendingActions.join(", ")}`)
-        await new Promise(r => setTimeout(r, 5000));
+        await new Promise(r => setTimeout(r, 60000));
         now = new Date().getTime()
     }
     throw new Error(`Timed out waiting for ${pendingActions.join(', ')}`)

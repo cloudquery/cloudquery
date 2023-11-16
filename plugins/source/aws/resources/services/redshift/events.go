@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Events() *schema.Table {
@@ -30,7 +30,7 @@ Only events occurred in the last 14 days are returned.`,
 
 func fetchEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Redshift
+	svc := cl.Services(client.AWSServiceRedshift).Redshift
 
 	config := redshift.DescribeEventsInput{
 		Duration:   aws.Int32(60 * 24 * 14), // 14 days (maximum)

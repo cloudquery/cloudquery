@@ -20,6 +20,7 @@ kind: source
 spec:
   name: aws
   path: cloudquery/aws
+  registry: cloudquery
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_ec2_*"]
   destinations: ["postgresql"]
@@ -28,6 +29,7 @@ kind: destination
 spec:
   name: postgresql
   path: cloudquery/postgresql
+  registry: cloudquery
   version: "VERSION_DESTINATION_POSTGRESQL"
   spec:
     connection_string: "postgres://postgres:pass@host.docker.internal:5432/postgres?sslmode=disable"

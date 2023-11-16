@@ -1,7 +1,7 @@
 package values
 
 import (
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 )
 
 type primitive[A any] interface {

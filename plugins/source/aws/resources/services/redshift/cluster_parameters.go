@@ -3,12 +3,12 @@ package redshift
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func clusterParameters() *schema.Table {
@@ -18,7 +18,6 @@ func clusterParameters() *schema.Table {
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_Parameter.html`,
 		Resolver:    fetchClusterParameters,
 		Transform:   transformers.TransformWithStruct(&types.Parameter{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -42,7 +41,7 @@ func clusterParameters() *schema.Table {
 func fetchClusterParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	group := parent.Item.(types.ClusterParameterGroupStatus)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Redshift
+	svc := cl.Services(client.AWSServiceRedshift).Redshift
 
 	config := redshift.DescribeClusterParametersInput{
 		ParameterGroupName: group.ParameterGroupName,

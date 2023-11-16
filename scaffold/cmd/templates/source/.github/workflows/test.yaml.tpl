@@ -12,18 +12,20 @@ jobs:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version-file: go.mod
-          cache: true
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.51.2
+          version: v1.55.2
+          skip-pkg-cache: true
+          skip-build-cache: true
+          args: --timeout=10m
       - name: Get dependencies
         run: go get -t -d ./...
       - name: Build

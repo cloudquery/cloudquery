@@ -3,14 +3,13 @@ package acm
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/acm"
 	"github.com/aws/aws-sdk-go-v2/service/acm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Certificates() *schema.Table {
@@ -40,15 +39,28 @@ func Certificates() *schema.Table {
 	}
 }
 
+func allowedKeyUsages() []types.KeyUsageName {
+	keyUsagesValues := types.KeyUsageName("").Values()
+	allowedKeyUsages := make([]types.KeyUsageName, 0)
+	for _, k := range keyUsagesValues {
+		// For some reason AWS doesn't allow to filter by custom key usage
+		// The odd bit is that it does allow to filter by custom extended key usage
+		if k != types.KeyUsageNameCustom {
+			allowedKeyUsages = append(allowedKeyUsages, k)
+		}
+	}
+	return allowedKeyUsages
+}
+
 func fetchAcmCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Acm
+	svc := cl.Services(client.AWSServiceAcm).Acm
 	input := acm.ListCertificatesInput{
 		CertificateStatuses: types.CertificateStatus("").Values(),
 		Includes: &types.Filters{
-			ExtendedKeyUsage: []types.ExtendedKeyUsageName{types.ExtendedKeyUsageNameAny},
+			ExtendedKeyUsage: types.ExtendedKeyUsageName("").Values(),
 			KeyTypes:         types.KeyAlgorithm("").Values(),
-			KeyUsage:         []types.KeyUsageName{types.KeyUsageNameAny},
+			KeyUsage:         allowedKeyUsages(),
 		},
 	}
 	paginator := acm.NewListCertificatesPaginator(svc, &input)
@@ -66,7 +78,7 @@ func fetchAcmCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 
 func getCertificate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Acm
+	svc := cl.Services(client.AWSServiceAcm).Acm
 	input := acm.DescribeCertificateInput{CertificateArn: resource.Item.(types.CertificateSummary).CertificateArn}
 	output, err := svc.DescribeCertificate(ctx, &input, func(o *acm.Options) { o.Region = cl.Region })
 	if err != nil {
@@ -79,7 +91,7 @@ func getCertificate(ctx context.Context, meta schema.ClientMeta, resource *schem
 func resolveCertificateTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cert := resource.Item.(*types.CertificateDetail)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Acm
+	svc := cl.Services(client.AWSServiceAcm).Acm
 	out, err := svc.ListTagsForCertificate(ctx,
 		&acm.ListTagsForCertificateInput{CertificateArn: cert.CertificateArn},
 		func(o *acm.Options) {

@@ -4,14 +4,14 @@ import (
 	"context"
 	"errors"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func webACLs() *schema.Table {
@@ -20,7 +20,6 @@ func webACLs() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/waf/latest/APIReference/API_GetWebACLForResource.html`,
 		Resolver:    resolveLoadBalancerWebACL,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "waf-regional"),
 		Transform:   transformers.TransformWithStruct(&wafv2types.WebACL{}, transformers.WithPrimaryKeys("ARN")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
@@ -42,7 +41,7 @@ func resolveLoadBalancerWebACL(ctx context.Context, meta schema.ClientMeta, pare
 		return nil
 	}
 	cl := meta.(*client.Client)
-	wafClient := cl.Services().Wafv2
+	wafClient := cl.Services(client.AWSServiceWafv2).Wafv2
 	input := wafv2.GetWebACLForResourceInput{ResourceArn: p.LoadBalancerArn}
 	response, err := wafClient.GetWebACLForResource(ctx, &input, func(options *wafv2.Options) {}, func(options *wafv2.Options) {
 		options.Region = cl.Region
@@ -57,6 +56,10 @@ func resolveLoadBalancerWebACL(ctx context.Context, meta schema.ClientMeta, pare
 
 		return err
 	}
-	res <- response.WebACL
+	// nil value means no web acl is associated
+	if response.WebACL != nil {
+		res <- response.WebACL
+	}
+
 	return nil
 }

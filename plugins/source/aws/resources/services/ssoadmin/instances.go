@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin"
 	"github.com/aws/aws-sdk-go-v2/service/ssoadmin/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Instances() *schema.Table {
@@ -27,7 +27,7 @@ func Instances() *schema.Table {
 
 func fetchSsoadminInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ssoadmin
+	svc := cl.Services(client.AWSServiceSsoadmin).Ssoadmin
 	config := ssoadmin.ListInstancesInput{}
 	paginator := ssoadmin.NewListInstancesPaginator(svc, &config)
 	for paginator.HasMorePages() {

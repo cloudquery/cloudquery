@@ -5,6 +5,7 @@ import (
 	"path"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/rs/zerolog/log"
@@ -57,12 +58,28 @@ func tables(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
+	sources := specReader.Sources
+	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, nil)
+	if err != nil {
+		return fmt.Errorf("failed to get auth token: %w", err)
+	}
+	teamName, err := auth.GetTeamForToken(authToken)
+	if err != nil {
+		return fmt.Errorf("failed to get team name: %w", err)
+	}
 	opts := []managedplugin.Option{
 		managedplugin.WithLogger(log.Logger),
-		managedplugin.WithDirectory(cqDir),
+		managedplugin.WithAuthToken(authToken.Value),
+		managedplugin.WithTeamName(teamName),
 	}
-	pluginConfigs := make([]managedplugin.Config, 0, len(specReader.Sources))
-	for _, sourceSpec := range specReader.Sources {
+	if cqDir != "" {
+		opts = append(opts, managedplugin.WithDirectory(cqDir))
+	}
+	if disableSentry {
+		opts = append(opts, managedplugin.WithNoSentry())
+	}
+	pluginConfigs := make([]managedplugin.Config, 0, len(sources))
+	for _, sourceSpec := range sources {
 		pluginConfigs = append(pluginConfigs, managedplugin.Config{
 			Name:     sourceSpec.Name,
 			Path:     sourceSpec.Path,
@@ -83,16 +100,23 @@ func tables(cmd *cobra.Command, args []string) error {
 	for _, source := range specReader.Sources {
 		cl := sourceClients.ClientByName(source.Name)
 		outputPath := path.Join(outputDir, source.Name)
+		fmt.Printf("Generating docs for %q to directory %q\n", source.Name, outputPath)
 		versions, err := cl.Versions(ctx)
 		if err != nil {
 			return fmt.Errorf("failed to get versions for %s. Error: %w", source.Name, err)
 		}
-		maxVersion := findMaxCommonVersion(versions, []int{2})
+		maxVersion := findMaxCommonVersion(versions, []int{2, 3})
 		switch maxVersion {
+		case 3:
+			if err := tablesV3(ctx, cl, outputPath, format); err != nil {
+				return err
+			}
+			fmt.Printf("Done generating docs for %q to directory %q\n", source.Name, outputPath)
 		case 2:
 			if err := tablesV2(ctx, cl, outputPath, format); err != nil {
 				return err
 			}
+			fmt.Printf("Done generating docs for %q to directory %q\n", source.Name, outputPath)
 		default:
 			return fmt.Errorf("unsupported version %d for %s", maxVersion, source.Name)
 		}

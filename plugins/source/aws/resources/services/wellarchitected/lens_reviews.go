@@ -3,12 +3,13 @@ package wellarchitected
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func lensReviews() *schema.Table {
@@ -19,8 +20,7 @@ func lensReviews() *schema.Table {
 		Transform: transformers.TransformWithStruct(new(types.LensReview),
 			transformers.WithPrimaryKeys("LensAlias"),
 		),
-		Multiplex: client.ServiceAccountRegionMultiplexer(name, "wellarchitected"),
-		Resolver:  fetchLensReviews,
+		Resolver: fetchLensReviews,
 		Columns: schema.ColumnList{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -48,15 +48,15 @@ func lensReviews() *schema.Table {
 
 func fetchLensReviews(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	service := cl.Services().Wellarchitected
+	service := cl.Services(client.AWSServiceWellarchitected).Wellarchitected
 	milestoneNumber := int32(parent.Get("milestone_number").Get().(int64))
 	workloadID := parent.Get("workload_id").String()
 
 	p := wellarchitected.NewListLensReviewsPaginator(service,
 		&wellarchitected.ListLensReviewsInput{
 			WorkloadId:      &workloadID,
-			MilestoneNumber: milestoneNumber,
-			MaxResults:      50,
+			MilestoneNumber: aws.Int32(milestoneNumber),
+			MaxResults:      aws.Int32(50),
 		},
 	)
 	for p.HasMorePages() {
@@ -73,7 +73,7 @@ func fetchLensReviews(ctx context.Context, meta schema.ClientMeta, parent *schem
 				&wellarchitected.GetLensReviewInput{
 					LensAlias:       summary.LensAlias,
 					WorkloadId:      &workloadID,
-					MilestoneNumber: milestoneNumber,
+					MilestoneNumber: aws.Int32(milestoneNumber),
 				},
 				func(o *wellarchitected.Options) { o.Region = cl.Region },
 			)

@@ -2,12 +2,9 @@ package client
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadog"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 )
@@ -16,6 +13,9 @@ type Client struct {
 	// This is a client that you need to create and initialize in Configure
 	// It will be passed for each resource fetcher.
 	logger zerolog.Logger
+
+	// The site to use for the API calls - see https://docs.datadoghq.com/getting_started/site/
+	Site string
 
 	Accounts []Account
 	// this is set by the table client multiplexer
@@ -32,22 +32,15 @@ func (c *Client) ID() string {
 }
 
 func (c *Client) BuildContextV1(ctx context.Context) context.Context {
-	return context.WithValue(
-		ctx,
-		datadog.ContextAPIKeys,
-		map[string]datadog.APIKey{
-			"apiKeyAuth": {
-				Key: c.multiplexedAccount.APIKey,
-			},
-			"appKeyAuth": {
-				Key: c.multiplexedAccount.AppKey,
-			},
-		},
-	)
+	return c.buildContext(ctx)
 }
 
 func (c *Client) BuildContextV2(ctx context.Context) context.Context {
-	return context.WithValue(
+	return c.buildContext(ctx)
+}
+
+func (c *Client) buildContext(ctx context.Context) context.Context {
+	ctx = context.WithValue(
 		ctx,
 		datadog.ContextAPIKeys,
 		map[string]datadog.APIKey{
@@ -59,24 +52,34 @@ func (c *Client) BuildContextV2(ctx context.Context) context.Context {
 			},
 		},
 	)
+	if c.Site != "" {
+		ctx = context.WithValue(
+			ctx,
+			datadog.ContextServerVariables,
+			map[string]string{
+				"site": c.Site,
+			})
+	}
+	return ctx
 }
 
 func (c *Client) withAccount(account Account) schema.ClientMeta {
 	return &Client{
 		logger:             c.logger.With().Str("id", account.Name).Logger(),
+		Site:               c.Site,
 		Accounts:           c.Accounts,
 		multiplexedAccount: account,
 		DDServices:         c.DDServices,
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
-	cfSpec := &Spec{}
-	if err := s.UnmarshalSpec(cfSpec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal datadog spec: %w", err)
-	}
+func (c *Client) Duplicate() schema.ClientMeta {
+	newClient := *c
+	return &newClient
+}
 
-	if len(cfSpec.Accounts) == 0 {
+func Configure(ctx context.Context, logger zerolog.Logger, spec *Spec) (schema.ClientMeta, error) {
+	if len(spec.Accounts) == 0 {
 		return nil, errors.New("no datadog accounts configured")
 	}
 	configuration := datadog.NewConfiguration()
@@ -84,7 +87,8 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 
 	client := Client{
 		logger:     logger,
-		Accounts:   cfSpec.Accounts,
+		Site:       spec.Site,
+		Accounts:   spec.Accounts,
 		DDServices: NewDatadogServices(apiClient),
 	}
 

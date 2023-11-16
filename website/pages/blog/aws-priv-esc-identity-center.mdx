@@ -204,7 +204,7 @@ Examples of permission modification and access disruption include:
 
 AWS CloudTrail offers 90 days of logging to identify API calls made in AWS accounts.  While it’s possible to search directly in CloudTrail for the last 90 days of activity, we’ll show how to identify Identity Center Actions in CloudTrail logs synced with CloudQuery.
 
-We recently added support for [CloudTrail Events](https://www.cloudquery.io/docs/plugins/sources/aws/tables/aws_cloudtrail_events) and [Incremental Tables](https://www.cloudquery.io/docs/advanced-topics/managing-incremental-tables) with CloudQuery as we saw useful use cases for syncing CloudTrail events to the destination of your choice. 
+We recently added support for [CloudTrail Events](https://hub.cloudquery.io/plugins/source/cloudquery/aws/tables/aws_cloudtrail_events) and [Incremental Tables](https://www.cloudquery.io/docs/advanced-topics/managing-incremental-tables) with CloudQuery as we saw useful use cases for syncing CloudTrail events to the destination of your choice. 
 
 ### CloudQuery Setup and Configuration
 
@@ -219,7 +219,8 @@ kind: source
 spec:
   name: "aws"
   path: "cloudquery/aws"
-  version: "v15.3.0" 
+  registry: "cloudquery"
+  version: "VERSION_SOURCE_AWS"
   destinations: ["postgresql"]
   tables: ["aws_cloudtrail_events"]
   spec:
@@ -263,6 +264,6 @@ Stay tuned for more updates in CloudQuery including our coverage of CloudTrail E
 
 ## References and Useful Links
 
-[CloudQuery: AWS Plugin](https://www.cloudquery.io/docs/plugins/sources/aws/overview)
+[CloudQuery: AWS Plugin](https://hub.cloudquery.io/plugins/source/cloudquery/aws)
 
 [AWS: What is IAM Identity Center](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html) 

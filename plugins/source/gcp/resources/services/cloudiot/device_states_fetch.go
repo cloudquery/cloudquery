@@ -6,8 +6,8 @@ import (
 	iot "cloud.google.com/go/iot/apiv1"
 	pb "cloud.google.com/go/iot/apiv1/iotpb"
 
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func fetchDeviceStates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {

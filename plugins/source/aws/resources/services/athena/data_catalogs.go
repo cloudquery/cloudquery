@@ -4,15 +4,14 @@ import (
 	"context"
 	"fmt"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func DataCatalogs() *schema.Table {
@@ -48,7 +47,7 @@ func DataCatalogs() *schema.Table {
 
 func fetchAthenaDataCatalogs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Athena
+	svc := cl.Services(client.AWSServiceAthena).Athena
 	input := athena.ListDataCatalogsInput{}
 	paginator := athena.NewListDataCatalogsPaginator(svc, &input)
 	for paginator.HasMorePages() {
@@ -65,7 +64,7 @@ func fetchAthenaDataCatalogs(ctx context.Context, meta schema.ClientMeta, parent
 
 func getDataCatalog(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Athena
+	svc := cl.Services(client.AWSServiceAthena).Athena
 	catalogSummary := resource.Item.(types.DataCatalogSummary)
 	dc, err := svc.GetDataCatalog(ctx, &athena.GetDataCatalogInput{
 		Name: catalogSummary.CatalogName,
@@ -93,7 +92,7 @@ func resolveAthenaDataCatalogArn(ctx context.Context, meta schema.ClientMeta, re
 
 func resolveAthenaDataCatalogTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Athena
+	svc := cl.Services(client.AWSServiceAthena).Athena
 	dc := resource.Item.(types.DataCatalog)
 	arnStr := createDataCatalogArn(cl, *dc.Name)
 	paginator := athena.NewListTagsForResourcePaginator(svc, &athena.ListTagsForResourceInput{ResourceARN: &arnStr})
@@ -116,7 +115,7 @@ func resolveAthenaDataCatalogTags(ctx context.Context, meta schema.ClientMeta, r
 func createDataCatalogArn(cl *client.Client, catalogName string) string {
 	return arn.ARN{
 		Partition: cl.Partition,
-		Service:   string(client.Athena),
+		Service:   string(client.AthenaService),
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
 		Resource:  fmt.Sprintf("datacatalog/%s", catalogName),

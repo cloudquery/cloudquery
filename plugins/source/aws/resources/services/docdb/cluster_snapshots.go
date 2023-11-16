@@ -3,14 +3,13 @@ package docdb
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/docdb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func clusterSnapshots() *schema.Table {
@@ -19,7 +18,6 @@ func clusterSnapshots() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBClusterSnapshot.html`,
 		Resolver:    fetchDocdbClusterSnapshots,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "docdb"),
 		Transform:   transformers.TransformWithStruct(&types.DBClusterSnapshot{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
@@ -57,7 +55,7 @@ func clusterSnapshots() *schema.Table {
 func fetchDocdbClusterSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	item := parent.Item.(types.DBCluster)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Docdb
+	svc := cl.Services(client.AWSServiceDocdb).Docdb
 
 	input := &docdb.DescribeDBClusterSnapshotsInput{
 		DBClusterIdentifier: item.DBClusterIdentifier,
@@ -78,7 +76,7 @@ func fetchDocdbClusterSnapshots(ctx context.Context, meta schema.ClientMeta, par
 func resolveDocdbClusterSnapshotAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	item := resource.Item.(types.DBClusterSnapshot)
 	cli := meta.(*client.Client)
-	svc := cli.Services().Docdb
+	svc := cli.Services(client.AWSServiceDocdb).Docdb
 
 	input := &docdb.DescribeDBClusterSnapshotAttributesInput{
 		DBClusterSnapshotIdentifier: item.DBClusterSnapshotIdentifier,

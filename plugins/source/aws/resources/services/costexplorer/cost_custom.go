@@ -5,14 +5,14 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/costexplorer"
 	"github.com/aws/aws-sdk-go-v2/service/costexplorer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
-	cqtypes "github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/mitchellh/hashstructure/v2"
 )
 
@@ -72,15 +72,15 @@ type wrappedResultByTime struct {
 func fetchCustom(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 
-	if len(cl.Spec.TableOptions.CloudwatchMetrics) > 0 && !cl.Spec.UsePaidAPIs {
-		return client.ErrPaidAPIsNotEnabled
-	}
-
 	if cl.Spec.TableOptions.CustomCostExplorer == nil {
 		return fmt.Errorf("skipping `%s` because `get_cost_and_usage` is not specified in `table_options`", tableName)
 	}
 
-	svc := cl.Services().Costexplorer
+	if !cl.Spec.UsePaidAPIs {
+		return client.ErrPaidAPIsNotEnabled
+	}
+
+	svc := cl.Services(client.AWSServiceCostexplorer).Costexplorer
 	allConfigs := cl.Spec.TableOptions.CustomCostExplorer.GetCostAndUsageOpts
 	for _, input := range allConfigs {
 		hash, err := hashstructure.Hash(input, hashstructure.FormatV2, nil)

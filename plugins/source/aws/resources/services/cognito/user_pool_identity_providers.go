@@ -3,12 +3,12 @@ package cognito
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func userPoolIdentityProviders() *schema.Table {
@@ -18,7 +18,6 @@ func userPoolIdentityProviders() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_IdentityProviderType.html`,
 		Resolver:            fetchCognitoUserPoolIdentityProviders,
 		PreResourceResolver: getUserPoolIdentityProvider,
-		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "cognito-identity"),
 		Transform:           transformers.TransformWithStruct(&types.IdentityProviderType{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
@@ -35,7 +34,7 @@ func userPoolIdentityProviders() *schema.Table {
 func fetchCognitoUserPoolIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	pool := parent.Item.(*types.UserPoolType)
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cognitoidentityprovider
+	svc := cl.Services(client.AWSServiceCognitoidentityprovider).Cognitoidentityprovider
 
 	params := cognitoidentityprovider.ListIdentityProvidersInput{UserPoolId: pool.Id}
 	paginator := cognitoidentityprovider.NewListIdentityProvidersPaginator(svc, &params)
@@ -53,7 +52,7 @@ func fetchCognitoUserPoolIdentityProviders(ctx context.Context, meta schema.Clie
 
 func getUserPoolIdentityProvider(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Cognitoidentityprovider
+	svc := cl.Services(client.AWSServiceCognitoidentityprovider).Cognitoidentityprovider
 	item := resource.Item.(types.ProviderDescription)
 	pool := resource.Parent.Item.(*types.UserPoolType)
 

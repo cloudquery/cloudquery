@@ -7,16 +7,16 @@ import (
 	"os"
 	"strings"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/apache/arrow/go/v13/arrow/memory"
-	"github.com/apache/arrow/go/v13/parquet/file"
-	"github.com/apache/arrow/go/v13/parquet/pqarrow"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v14/arrow/array"
+	"github.com/apache/arrow/go/v14/arrow/memory"
+	"github.com/apache/arrow/go/v14/parquet/file"
+	"github.com/apache/arrow/go/v14/parquet/pqarrow"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, _ string, res chan<- arrow.Record) error {
+func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
 	f, err := os.CreateTemp("", fmt.Sprintf("%s-*.parquet", table.Name))
 	if err != nil {
 		return err
@@ -65,10 +65,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, _ string, res ch
 	}
 
 	for rr.Next() {
-		rec := rr.Record()
-		rec.Retain()
-		castRecs := convertToSingleRowRecords(sc, rec)
-		for _, r := range castRecs {
+		for _, r := range slice(reverseTransformRecord(sc, rr.Record())) {
 			res <- r
 		}
 	}
@@ -79,17 +76,12 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, _ string, res ch
 	return nil
 }
 
-func convertToSingleRowRecords(sc *arrow.Schema, rec arrow.Record) []arrow.Record {
-	// transform arrays first
-	transformed := reverseTransformRecord(sc, rec)
-
-	// slice after
-	records := make([]arrow.Record, transformed.NumRows())
-	for i := int64(0); i < transformed.NumRows(); i++ {
-		records[i] = transformed.NewSlice(i, i+1)
+func slice(r arrow.Record) []arrow.Record {
+	res := make([]arrow.Record, r.NumRows())
+	for i := int64(0); i < r.NumRows(); i++ {
+		res[i] = r.NewSlice(i, i+1)
 	}
-
-	return records
+	return res
 }
 
 func reverseTransformRecord(sc *arrow.Schema, rec arrow.Record) arrow.Record {
@@ -118,6 +110,12 @@ func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
 		return reverseTransformUint8(arr.(*array.Uint32))
 	case *arrow.TimestampType:
 		return transformTimestamp(dt, arr.(*array.Timestamp))
+	case *arrow.Date32Type:
+		// We save date types as Timestamp
+		return reverseTransformDate32(arr.(*array.Timestamp))
+	case *arrow.Date64Type:
+		// We save date types as Timestamp
+		return reverseTransformDate64(arr.(*array.Timestamp))
 	case *arrow.StructType:
 		arr := arr.(*array.Struct)
 		children := make([]arrow.ArrayData, arr.NumField())
@@ -131,7 +129,8 @@ func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
 			dt, arr.Len(),
 			arr.Data().Buffers(),
 			children,
-			arr.NullN(), arr.Data().Offset(),
+			arr.NullN(),
+			0, // we use 0 as offset for struct arrays, as the child arrays would already be sliced properly
 		))
 
 	case arrow.ListLikeType: // also handles maps
@@ -139,7 +138,9 @@ func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
 			dt, arr.Len(),
 			arr.Data().Buffers(),
 			[]arrow.ArrayData{reverseTransformArray(dt.Elem(), arr.(array.ListLike).ListValues()).Data()},
-			arr.NullN(), arr.Data().Offset(),
+			arr.NullN(),
+			// we use data offset for list like as the `ListValues` can be a larger array (happens when slicing)
+			arr.Data().Offset(),
 		))
 
 	default:
@@ -183,6 +184,32 @@ func reverseTransformUint16(arr *array.Uint32) arrow.Array {
 			continue
 		}
 		builder.Append(uint16(arr.Value(i)))
+	}
+
+	return builder.NewArray()
+}
+
+func reverseTransformDate32(arr *array.Timestamp) arrow.Array {
+	builder := array.NewDate32Builder(memory.DefaultAllocator)
+	for i := 0; i < arr.Len(); i++ {
+		if arr.IsNull(i) {
+			builder.AppendNull()
+			continue
+		}
+		builder.Append(arrow.Date32FromTime(arr.Value(i).ToTime(arrow.Microsecond)))
+	}
+
+	return builder.NewArray()
+}
+
+func reverseTransformDate64(arr *array.Timestamp) arrow.Array {
+	builder := array.NewDate64Builder(memory.DefaultAllocator)
+	for i := 0; i < arr.Len(); i++ {
+		if arr.IsNull(i) {
+			builder.AppendNull()
+			continue
+		}
+		builder.Append(arrow.Date64FromTime(arr.Value(i).ToTime(arrow.Microsecond)))
 	}
 
 	return builder.NewArray()

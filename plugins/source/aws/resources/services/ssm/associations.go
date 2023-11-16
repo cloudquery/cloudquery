@@ -3,12 +3,12 @@ package ssm
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Associations() *schema.Table {
@@ -34,7 +34,7 @@ func Associations() *schema.Table {
 
 func fetchSsmAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ssm
+	svc := cl.Services(client.AWSServiceSsm).Ssm
 
 	paginator := ssm.NewListAssociationsPaginator(svc, nil)
 	for paginator.HasMorePages() {

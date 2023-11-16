@@ -3,7 +3,7 @@ package types
 import (
 	"testing"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 )
 
 func Test_arrayType(t *testing.T) {

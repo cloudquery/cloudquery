@@ -3,14 +3,13 @@ package inspector2
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Findings() *schema.Table {
@@ -47,13 +46,9 @@ The 'request_account_id' and 'request_region' columns are added to show from whe
 
 func fetchInspector2Findings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Inspector2
+	svc := cl.Services(client.AWSServiceInspector2).Inspector2
 
-	allConfigs := []tableoptions.CustomInspector2ListFindingsInput{{}}
-	if cl.Spec.TableOptions.Inspector2Findings != nil {
-		allConfigs = cl.Spec.TableOptions.Inspector2Findings.ListFindingsOpts
-	}
-	for _, input := range allConfigs {
+	for _, input := range cl.Spec.TableOptions.Inspector2Findings.Filters() {
 		if input.MaxResults == nil {
 			input.MaxResults = aws.Int32(100)
 		}

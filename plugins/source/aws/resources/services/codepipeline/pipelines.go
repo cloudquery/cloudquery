@@ -3,15 +3,14 @@ package codepipeline
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Pipelines() *schema.Table {
@@ -43,7 +42,7 @@ func Pipelines() *schema.Table {
 
 func fetchCodepipelinePipelines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Codepipeline
+	svc := cl.Services(client.AWSServiceCodepipeline).Codepipeline
 	config := codepipeline.ListPipelinesInput{}
 	paginator := codepipeline.NewListPipelinesPaginator(svc, &config)
 	for paginator.HasMorePages() {
@@ -60,7 +59,7 @@ func fetchCodepipelinePipelines(ctx context.Context, meta schema.ClientMeta, par
 
 func getPipeline(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Codepipeline
+	svc := cl.Services(client.AWSServiceCodepipeline).Codepipeline
 	item := resource.Item.(types.PipelineSummary)
 	response, err := svc.GetPipeline(ctx, &codepipeline.GetPipelineInput{Name: item.Name}, func(options *codepipeline.Options) {
 		options.Region = cl.Region
@@ -76,7 +75,7 @@ func resolvePipelineTags(ctx context.Context, meta schema.ClientMeta, resource *
 	pipeline := resource.Item.(*codepipeline.GetPipelineOutput)
 
 	cl := meta.(*client.Client)
-	svc := cl.Services().Codepipeline
+	svc := cl.Services(client.AWSServiceCodepipeline).Codepipeline
 	paginator := codepipeline.NewListTagsForResourcePaginator(svc, &codepipeline.ListTagsForResourceInput{
 		ResourceArn: pipeline.Metadata.PipelineArn,
 	})

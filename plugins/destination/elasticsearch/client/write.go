@@ -7,12 +7,13 @@ import (
 	"fmt"
 	"io"
 	"strings"
+	"time"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	cqtypes "github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v14/arrow/array"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/segmentio/fasthash/fnv1a"
 )
 
@@ -21,28 +22,39 @@ type bulkResponse struct {
 	Errors bool  `json:"errors"`
 }
 
-func (c *Client) WriteTableBatch(ctx context.Context, table *schema.Table, records []arrow.Record) error {
-	for _, record := range records {
-		err := c.writeRecord(ctx, table, record)
-		if err != nil {
-			return err
-		}
+func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
+	if err := c.writer.Write(ctx, msgs); err != nil {
+		return fmt.Errorf("failed to write messages: %w", err)
+	}
+	if err := c.writer.Flush(ctx); err != nil {
+		return fmt.Errorf("failed to flush writer: %w", err)
 	}
 	return nil
 }
 
-func (c *Client) writeRecord(ctx context.Context, table *schema.Table, record arrow.Record) error {
-	var buf bytes.Buffer
-	pks := pkIndexes(table) // do some work up front to avoid doing it for every resource
-	// get the sync time from the first resource in the batch (here we assume that all resources in the batch
-	// have the same sync time. At the moment this assumption holds.)
-	cqSyncName := table.Columns.Index(schema.CqSyncTimeColumn.Name)
-	cqSyncUnit := schema.CqSyncTimeColumn.Type.(*arrow.TimestampType).Unit
-	syncTime := record.Column(cqSyncName).(*array.Timestamp).Value(0).ToTime(cqSyncUnit)
+func (c *Client) WriteTableBatch(ctx context.Context, _ string, msgs message.WriteInserts) error {
+	if len(msgs) == 0 {
+		return nil
+	}
+
+	// all messages correspond to the same table
+	table := msgs[0].GetTable()
+	data := new(bytes.Buffer)
+	for _, msg := range msgs {
+		if err := c.appendToWriteBuffer(table, msg.Record, data); err != nil {
+			return err
+		}
+	}
+
+	return c.writeData(ctx, table, data)
+}
+
+func (c *Client) appendToWriteBuffer(table *schema.Table, record arrow.Record, buf *bytes.Buffer) error {
+	pks := table.PrimaryKeysIndexes() // do some work up front to avoid doing it for every resource
 	for r := 0; r < int(record.NumRows()); r++ {
 		doc := map[string]any{}
 		for i, col := range record.Columns() {
-			doc[table.Columns[i].Name] = c.getValueForElasticsearch(col, r)
+			doc[record.ColumnName(i)] = c.getValueForElasticsearch(col, r)
 		}
 		data, err := json.Marshal(doc)
 		if err != nil {
@@ -50,7 +62,7 @@ func (c *Client) writeRecord(ctx context.Context, table *schema.Table, record ar
 		}
 
 		var meta []byte
-		if c.spec.WriteMode == specs.WriteModeOverwrite || c.spec.WriteMode == specs.WriteModeOverwriteDeleteStale {
+		if len(pks) > 0 {
 			docID := fmt.Sprint(resourceID(record, r, pks))
 			meta = []byte(fmt.Sprintf(`{"index":{"_id":"%s"}}%s`, docID, "\n"))
 		} else {
@@ -61,10 +73,18 @@ func (c *Client) writeRecord(ctx context.Context, table *schema.Table, record ar
 		buf.Write(meta)
 		buf.Write(data)
 	}
-	index := c.getIndexName(table.Name, syncTime)
+	return nil
+}
+
+func (c *Client) writeData(ctx context.Context, table *schema.Table, buf *bytes.Buffer) error {
+	// get the sync time from the first resource in the batch (here we assume that all resources in the batch
+	// have the same sync time. At the moment this assumption holds.)
+	syncTime := time.Now()
+	index := c.getIndexName(table, syncTime)
 	resp, err := c.client.Bulk(bytes.NewReader(buf.Bytes()),
 		c.client.Bulk.WithContext(ctx),
 		c.client.Bulk.WithIndex(index),
+		c.client.Bulk.WithRefresh("wait_for"), // returns only once the data is written
 	)
 	if err != nil {
 		return fmt.Errorf("failed to create bulk request: %w", err)
@@ -78,14 +98,13 @@ func (c *Client) writeRecord(ctx context.Context, table *schema.Table, record ar
 		return fmt.Errorf("failed to read bulk response: %w", err)
 	}
 	var bulkResp bulkResponse
-	err = json.Unmarshal(b, &bulkResp)
-	if err != nil {
+	if err := json.Unmarshal(b, &bulkResp); err != nil {
 		return fmt.Errorf("failed to unmarshal bulk response: %w", err)
 	}
 	if bulkResp.Errors {
 		return fmt.Errorf("bulk request had errors: %s", string(b))
 	}
-	return err
+	return nil
 }
 
 func (c *Client) getValueForElasticsearch(col arrow.Array, i int) any {
@@ -103,17 +122,11 @@ func (c *Client) getValueForElasticsearch(col arrow.Array, i int) any {
 	case *cqtypes.JSONArray:
 		return col.ValueStr(i)
 	case array.ListLike:
-		elems := make([]any, 0, col.Len())
-		for j := 0; j < col.Len(); j++ {
-			from, to := col.ValueOffsets(j)
-			slc := array.NewSlice(col.ListValues(), from, to)
-			for k := 0; k < slc.Len(); k++ {
-				if slc.IsNull(k) {
-					elems = append(elems, nil)
-				} else {
-					elems = append(elems, c.getValueForElasticsearch(slc, k))
-				}
-			}
+		from, to := col.ValueOffsets(i)
+		slc := array.NewSlice(col.ListValues(), from, to)
+		elems := make([]any, slc.Len())
+		for k := 0; k < slc.Len(); k++ {
+			elems[k] = c.getValueForElasticsearch(slc, k)
 		}
 		return elems
 	case *array.Timestamp:
@@ -153,19 +166,6 @@ func (c *Client) getValueForElasticsearch(col arrow.Array, i int) any {
 		panic(fmt.Sprintf("unsupported time64 unit: %s", u))
 	}
 	return col.GetOneForMarshal(i)
-}
-
-func pkIndexes(table *schema.Table) []int {
-	pks := table.PrimaryKeys()
-	if len(pks) == 0 {
-		// if no PK is defined, use all columns for the ID which is based on the indices returned by this function
-		pks = table.Columns.Names()
-	}
-	inds := make([]int, 0, len(pks))
-	for _, col := range pks {
-		inds = append(inds, table.Columns.Index(col))
-	}
-	return inds
 }
 
 // elasticsearch IDs are limited to 512 bytes, so we hash the resource PK to make sure it's within the limit

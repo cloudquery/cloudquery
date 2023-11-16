@@ -3,14 +3,13 @@ package efs
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/efs"
 	"github.com/aws/aws-sdk-go-v2/service/efs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Filesystems() *schema.Table {
@@ -33,7 +32,12 @@ func Filesystems() *schema.Table {
 			{
 				Name:     "backup_policy_status",
 				Type:     arrow.BinaryTypes.String,
-				Resolver: ResolveEfsFilesystemBackupPolicyStatus,
+				Resolver: resolveEfsFilesystemBackupPolicyStatus,
+			},
+			{
+				Name:     "file_system_policy",
+				Type:     arrow.BinaryTypes.String,
+				Resolver: resolveEfsFilesystemPolicy,
 			},
 			{
 				Name:     "tags",
@@ -47,7 +51,7 @@ func Filesystems() *schema.Table {
 func fetchEfsFilesystems(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config efs.DescribeFileSystemsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Efs
+	svc := cl.Services(client.AWSServiceEfs).Efs
 	paginator := efs.NewDescribeFileSystemsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *efs.Options) {
@@ -61,13 +65,13 @@ func fetchEfsFilesystems(ctx context.Context, meta schema.ClientMeta, parent *sc
 	return nil
 }
 
-func ResolveEfsFilesystemBackupPolicyStatus(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveEfsFilesystemBackupPolicyStatus(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.FileSystemDescription)
 	config := efs.DescribeBackupPolicyInput{
 		FileSystemId: p.FileSystemId,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Efs
+	svc := cl.Services(client.AWSServiceEfs).Efs
 	response, err := svc.DescribeBackupPolicy(ctx, &config, func(options *efs.Options) {
 		options.Region = cl.Region
 	})
@@ -82,4 +86,27 @@ func ResolveEfsFilesystemBackupPolicyStatus(ctx context.Context, meta schema.Cli
 	}
 
 	return resource.Set(c.Name, response.BackupPolicy.Status)
+}
+
+func resolveEfsFilesystemPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	p := resource.Item.(types.FileSystemDescription)
+	config := efs.DescribeFileSystemPolicyInput{
+		FileSystemId: p.FileSystemId,
+	}
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceEfs).Efs
+	response, err := svc.DescribeFileSystemPolicy(ctx, &config, func(options *efs.Options) {
+		options.Region = cl.Region
+	})
+	if err != nil {
+		if cl.IsNotFoundError(err) {
+			return nil
+		}
+		return err
+	}
+	if response.Policy == nil {
+		return nil
+	}
+
+	return resource.Set(c.Name, response.Policy)
 }

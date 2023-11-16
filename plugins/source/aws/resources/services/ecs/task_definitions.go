@@ -4,16 +4,15 @@ import (
 	"context"
 	"errors"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecs/models"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func TaskDefinitions() *schema.Table {
@@ -46,7 +45,7 @@ func TaskDefinitions() *schema.Table {
 func fetchEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	var config ecs.ListTaskDefinitionsInput
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecs
+	svc := cl.Services(client.AWSServiceEcs).Ecs
 	paginator := ecs.NewListTaskDefinitionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *ecs.Options) {
@@ -62,7 +61,7 @@ func fetchEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, parent
 
 func getTaskDefinition(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Ecs
+	svc := cl.Services(client.AWSServiceEcs).Ecs
 	taskArn := resource.Item.(string)
 
 	describeTaskDefinitionOutput, err := svc.DescribeTaskDefinition(ctx, &ecs.DescribeTaskDefinitionInput{

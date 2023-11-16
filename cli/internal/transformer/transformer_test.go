@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/apache/arrow/go/v13/arrow/memory"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v14/arrow/array"
+	"github.com/apache/arrow/go/v14/arrow/memory"
 )
 
 var transformTestCases = []struct {
@@ -42,7 +42,7 @@ var transformTestCases = []struct {
 		}, nil),
 		originalJSONRecord: []byte(`{"id": 1}`),
 		expectedSchema: arrow.NewSchema([]arrow.Field{
-			{Name: "_cq_source_name", Type: arrow.BinaryTypes.String},
+			{Name: "_cq_source_name", Type: arrow.BinaryTypes.String, Nullable: true},
 			{Name: "id", Type: arrow.PrimitiveTypes.Int64},
 		}, nil),
 		expectedJSONRecord: []byte(`{"_cq_source_name": "test","id": 1}`),
@@ -61,7 +61,7 @@ var transformTestCases = []struct {
 		}, nil),
 		originalJSONRecord: []byte(`{"id": 1}`),
 		expectedSchema: arrow.NewSchema([]arrow.Field{
-			{Name: "_cq_sync_time", Type: arrow.FixedWidthTypes.Timestamp_us},
+			{Name: "_cq_sync_time", Type: arrow.FixedWidthTypes.Timestamp_us, Nullable: true},
 			{Name: "id", Type: arrow.PrimitiveTypes.Int64},
 		}, nil),
 		expectedJSONRecord: []byte(`{"_cq_sync_time": "2023-06-21 17:54:44.488177","id": 1}`),
@@ -80,11 +80,27 @@ var transformTestCases = []struct {
 		}, nil),
 		originalJSONRecord: []byte(`{"id": 1}`),
 		expectedSchema: arrow.NewSchema([]arrow.Field{
-			{Name: "_cq_sync_time", Type: arrow.FixedWidthTypes.Timestamp_us},
-			{Name: "_cq_source_name", Type: arrow.BinaryTypes.String},
+			{Name: "_cq_sync_time", Type: arrow.FixedWidthTypes.Timestamp_us, Nullable: true},
+			{Name: "_cq_source_name", Type: arrow.BinaryTypes.String, Nullable: true},
 			{Name: "id", Type: arrow.PrimitiveTypes.Int64},
 		}, nil),
 		expectedJSONRecord: []byte(`{"_cq_sync_time": "2023-06-21 17:54:44.488177","_cq_source_name": "test","id": 1}`),
+	},
+	{
+		name: "use_cq_id_primary_key_with_remove_pks",
+		transformer: func() *RecordTransformer {
+			return NewRecordTransformer(WithRemovePKs(), WithCQIDPrimaryKey())
+		},
+		originalSchema: arrow.NewSchema([]arrow.Field{
+			{Name: "id", Type: arrow.PrimitiveTypes.Int64, Metadata: arrow.MetadataFrom(map[string]string{"cq:extension:primary_key": "true"})},
+			{Name: "_cq_id", Type: arrow.PrimitiveTypes.Int64},
+		}, nil),
+		originalJSONRecord: []byte(`{"id": 1, "_cq_id": 2}`),
+		expectedSchema: arrow.NewSchema([]arrow.Field{
+			{Name: "id", Type: arrow.PrimitiveTypes.Int64, Metadata: arrow.MetadataFrom(map[string]string{})},
+			{Name: "_cq_id", Type: arrow.PrimitiveTypes.Int64, Metadata: arrow.MetadataFrom(map[string]string{"cq:extension:primary_key": "true"})},
+		}, nil),
+		expectedJSONRecord: []byte(`{"id": 1, "_cq_id": 2}`),
 	},
 }
 
@@ -98,7 +114,7 @@ func TestRecord(t *testing.T) {
 			record := bldr.NewRecord()
 			transformedRecord := tc.transformer().Transform(record)
 			if transformedRecord.Schema().String() != tc.expectedSchema.String() {
-				t.Fatalf("expected schema %v, got %v", tc.expectedSchema, transformedRecord.Schema())
+				t.Fatalf("expected schema\n%v, got\n%v", tc.expectedSchema, transformedRecord.Schema())
 			}
 			bldr = array.NewRecordBuilder(memory.DefaultAllocator, transformedRecord.Schema())
 			if err := bldr.UnmarshalJSON(tc.expectedJSONRecord); err != nil {

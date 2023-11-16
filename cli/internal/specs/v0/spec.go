@@ -8,6 +8,9 @@ import (
 	"github.com/ghodss/yaml"
 )
 
+// Warnings is a map of field name to string, used mainly for deprecation notices.
+type Warnings map[string]string
+
 type Kind int
 
 type Spec struct {

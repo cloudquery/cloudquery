@@ -3,12 +3,12 @@ package dynamodb
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Exports() *schema.Table {
@@ -35,7 +35,7 @@ func Exports() *schema.Table {
 
 func listExports(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Dynamodb
+	svc := cl.Services(client.AWSServiceDynamodb).Dynamodb
 
 	paginator := dynamodb.NewListExportsPaginator(svc, &dynamodb.ListExportsInput{})
 	for paginator.HasMorePages() {
@@ -53,7 +53,7 @@ func listExports(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 
 func getExport(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Dynamodb
+	svc := cl.Services(client.AWSServiceDynamodb).Dynamodb
 
 	exportSummary := resource.Item.(types.ExportSummary)
 

@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func ScalableTargets() *schema.Table {
@@ -27,7 +27,7 @@ func ScalableTargets() *schema.Table {
 
 func fetchScalableTargets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Applicationautoscaling
+	svc := cl.Services(client.AWSServiceApplicationautoscaling).Applicationautoscaling
 
 	config := applicationautoscaling.DescribeScalableTargetsInput{
 		ServiceNamespace: types.ServiceNamespace(cl.AutoscalingNamespace),

@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/identitystore"
 	"github.com/aws/aws-sdk-go-v2/service/identitystore/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func Users() *schema.Table {
@@ -27,7 +27,7 @@ func fetchIdentitystoreUsers(ctx context.Context, meta schema.ClientMeta, parent
 		return err
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Identitystore
+	svc := cl.Services(client.AWSServiceIdentitystore).Identitystore
 	config := identitystore.ListUsersInput{
 		IdentityStoreId: instance.IdentityStoreId,
 	}

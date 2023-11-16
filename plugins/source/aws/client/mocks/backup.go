@@ -935,6 +935,36 @@ func (mr *MockBackupClientMockRecorder) ListProtectedResources(arg0, arg1 interf
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListProtectedResources", reflect.TypeOf((*MockBackupClient)(nil).ListProtectedResources), varargs...)
 }
 
+// ListProtectedResourcesByBackupVault mocks base method.
+func (m *MockBackupClient) ListProtectedResourcesByBackupVault(arg0 context.Context, arg1 *backup.ListProtectedResourcesByBackupVaultInput, arg2 ...func(*backup.Options)) (*backup.ListProtectedResourcesByBackupVaultOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListProtectedResourcesByBackupVault")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListProtectedResourcesByBackupVault", varargs...)
+	ret0, _ := ret[0].(*backup.ListProtectedResourcesByBackupVaultOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListProtectedResourcesByBackupVault indicates an expected call of ListProtectedResourcesByBackupVault.
+func (mr *MockBackupClientMockRecorder) ListProtectedResourcesByBackupVault(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListProtectedResourcesByBackupVault", reflect.TypeOf((*MockBackupClient)(nil).ListProtectedResourcesByBackupVault), varargs...)
+}
+
 // ListRecoveryPointsByBackupVault mocks base method.
 func (m *MockBackupClient) ListRecoveryPointsByBackupVault(arg0 context.Context, arg1 *backup.ListRecoveryPointsByBackupVaultInput, arg2 ...func(*backup.Options)) (*backup.ListRecoveryPointsByBackupVaultOutput, error) {
 

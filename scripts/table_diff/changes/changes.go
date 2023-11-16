@@ -116,6 +116,11 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 	for name, deleted := range deletedColumns {
 		added, ok := addedColumns[name]
 		if !ok {
+			if name == "_cq_source_name" || name == "_cq_sync_time" {
+				// Ignore removal of these columns for SDK v4 migration; they are now
+				// owned by the CLI as an optional transformation.
+				continue
+			}
 			changes = append(changes, change{
 				Text:     fmt.Sprintf("Table %s: column %s removed from table", backtickStrings(table, name)...),
 				Breaking: true,
@@ -123,8 +128,7 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 			continue
 		}
 
-		dtEqual, _ := dataTypesEqual(deleted.dataType, added.dataType)
-		if !dtEqual {
+		if deleted.dataType != added.dataType {
 			changes = append(changes, change{
 				Text:     fmt.Sprintf("Table %s: column type changed from %s to %s for %s", backtickStrings(table, deleted.dataType, added.dataType, name)...),
 				Breaking: true,

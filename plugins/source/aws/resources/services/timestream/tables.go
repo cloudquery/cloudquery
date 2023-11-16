@@ -3,13 +3,13 @@ package timestream
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/timestreamwrite"
 	"github.com/aws/aws-sdk-go-v2/service/timestreamwrite/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func tables() *schema.Table {
@@ -37,7 +37,7 @@ func fetchTimestreamTables(ctx context.Context, meta schema.ClientMeta, parent *
 		DatabaseName: parent.Item.(types.Database).DatabaseName,
 		MaxResults:   aws.Int32(20),
 	}
-	paginator := timestreamwrite.NewListTablesPaginator(cl.Services().Timestreamwrite, input)
+	paginator := timestreamwrite.NewListTablesPaginator(cl.Services(client.AWSServiceTimestreamwrite).Timestreamwrite, input)
 	for paginator.HasMorePages() {
 		response, err := paginator.NextPage(ctx, func(o *timestreamwrite.Options) {
 			o.Region = cl.Region

@@ -8,8 +8,15 @@ author: yevgenypats
 ---
 
 import { BlogHeader } from "../../components/BlogHeader"
+import { Callout } from 'nextra-theme-docs';
 
 <BlogHeader/>
+
+{/* <!-- vale off --> */}
+<Callout type="info">
+**Update (July 2023)**: The Tailscale plugin is now a premium plugin. You can find more information about the pricing [here](https://hub.cloudquery.io/plugins/source/cloudquery/tailscale).
+</Callout>
+{/* <!-- vale on --> */}
 
 ## Introduction
 
@@ -38,8 +45,9 @@ kind: source
 # Common source-plugin configuration
 spec:
   name: tailscale
-  path: cloudquery/tailscale
-  version: "VERSION_SOURCE_TAILSCALE"
+  path: /path/to/downloaded/plugin # Buy from here: https://cloudquery.io/integrations/tailscale
+  registry: local
+  version: "PREMIUM"
   tables: ["tailscale_devices"]
   destinations: ["postgresql"]
   # Tailscale specific configuration
@@ -99,7 +107,7 @@ select count(*), os from tailscale_devices group by os;
 
 ### Find all devices of disabled Okta users
 
-Other cool things once you have Tailscale configuration in your database/datalake is that you can join and query it with data from other CloudQuery [source plugins](/docs/plugins/sources/overview).
+Other cool things once you have Tailscale configuration in your database/datalake is that you can join and query it with data from other CloudQuery [source plugins](https://hub.cloudquery.io/plugins/source).
 
 For example, the following will show all devices of users that were deactivated on Okta:
 

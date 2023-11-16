@@ -3,16 +3,15 @@ package sns
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sns/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sns/models"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/mitchellh/mapstructure"
 )
 
@@ -60,7 +59,7 @@ func Subscriptions() *schema.Table {
 
 func fetchSnsSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sns
+	svc := cl.Services(client.AWSServiceSns).Sns
 	config := sns.ListSubscriptionsInput{}
 	paginator := sns.NewListSubscriptionsPaginator(svc, &config)
 	for paginator.HasMorePages() {
@@ -77,7 +76,7 @@ func fetchSnsSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *
 
 func getSnsSubscription(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sns
+	svc := cl.Services(client.AWSServiceSns).Sns
 	item := resource.Item.(types.Subscription)
 	s := models.Subscription{
 		SubscriptionArn: item.SubscriptionArn,
@@ -99,6 +98,11 @@ func getSnsSubscription(ctx context.Context, meta schema.ClientMeta, resource *s
 		},
 	)
 	if err != nil {
+		// If a subscriptions topic is deleted GetSubscriptionAttributes will error.
+		if client.IsAWSError(err, "NotFound") {
+			resource.Item = s
+			return nil
+		}
 		return err
 	}
 	dec, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{WeaklyTypedInput: true, Result: &s})

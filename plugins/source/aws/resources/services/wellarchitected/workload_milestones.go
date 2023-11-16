@@ -3,12 +3,13 @@ package wellarchitected
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func workloadMilestones() *schema.Table {
@@ -21,8 +22,7 @@ func workloadMilestones() *schema.Table {
 			transformers.WithUnwrapAllEmbeddedStructs(),
 			transformers.WithSkipFields("WorkloadSummary"),
 		),
-		Multiplex: client.ServiceAccountRegionMultiplexer(name, "wellarchitected"),
-		Resolver:  fetchWorkloadMilestones,
+		Resolver: fetchWorkloadMilestones,
 		Columns: schema.ColumnList{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -44,13 +44,13 @@ func workloadMilestones() *schema.Table {
 
 func fetchWorkloadMilestones(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	service := cl.Services().Wellarchitected
+	service := cl.Services(client.AWSServiceWellarchitected).Wellarchitected
 	workloadID := parent.Get("workload_id").String()
 
 	p := wellarchitected.NewListMilestonesPaginator(service,
 		&wellarchitected.ListMilestonesInput{
 			WorkloadId: &workloadID,
-			MaxResults: 50,
+			MaxResults: aws.Int32(50),
 		},
 	)
 	for p.HasMorePages() {

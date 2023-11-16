@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/apprunner"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/thoas/go-funk"
 )
 
@@ -22,7 +22,7 @@ func resolveApprunnerTags(path string) schema.ColumnResolver {
 			return nil
 		}
 		cl := meta.(*client.Client)
-		svc := cl.Services().Apprunner
+		svc := cl.Services(client.AWSServiceApprunner).Apprunner
 		params := apprunner.ListTagsForResourceInput{ResourceArn: arn}
 
 		output, err := svc.ListTagsForResource(ctx, &params, func(options *apprunner.Options) {

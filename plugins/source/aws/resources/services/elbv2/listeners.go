@@ -3,14 +3,13 @@ package elbv2
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func listeners() *schema.Table {
@@ -19,7 +18,6 @@ func listeners() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_Listener.html`,
 		Resolver:    fetchElbv2Listeners,
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticloadbalancing"),
 		Transform:   transformers.TransformWithStruct(&types.Listener{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
@@ -50,7 +48,7 @@ func fetchElbv2Listeners(ctx context.Context, meta schema.ClientMeta, parent *sc
 		LoadBalancerArn: lb.LoadBalancerArn,
 	}
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticloadbalancingv2
+	svc := cl.Services(client.AWSServiceElasticloadbalancingv2).Elasticloadbalancingv2
 	paginator := elbv2.NewDescribeListenersPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *elbv2.Options) {
@@ -70,7 +68,7 @@ func fetchElbv2Listeners(ctx context.Context, meta schema.ClientMeta, parent *sc
 func resolveElbv2listenerTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	region := meta.(*client.Client).Region
 	cl := meta.(*client.Client)
-	svc := cl.Services().Elasticloadbalancingv2
+	svc := cl.Services(client.AWSServiceElasticloadbalancingv2).Elasticloadbalancingv2
 	listener := resource.Item.(types.Listener)
 	tagsOutput, err := svc.DescribeTags(ctx, &elbv2.DescribeTagsInput{
 		ResourceArns: []string{

@@ -3,16 +3,15 @@ package sqs
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/sqs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sqs/models"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/mitchellh/mapstructure"
 )
 
@@ -60,7 +59,7 @@ func Queues() *schema.Table {
 
 func fetchSqsQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sqs
+	svc := cl.Services(client.AWSServiceSqs).Sqs
 	var params sqs.ListQueuesInput
 	paginator := sqs.NewListQueuesPaginator(svc, &params)
 	for paginator.HasMorePages() {
@@ -77,7 +76,7 @@ func fetchSqsQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.
 
 func getQueue(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sqs
+	svc := cl.Services(client.AWSServiceSqs).Sqs
 	qURL := resource.Item.(string)
 
 	input := sqs.GetQueueAttributesInput{
@@ -106,7 +105,7 @@ func getQueue(ctx context.Context, meta schema.ClientMeta, resource *schema.Reso
 
 func resolveSqsQueueTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Sqs
+	svc := cl.Services(client.AWSServiceSqs).Sqs
 	q := resource.Item.(*models.Queue)
 	result, err := svc.ListQueueTags(ctx, &sqs.ListQueueTagsInput{QueueUrl: &q.URL}, func(o *sqs.Options) {
 		o.Region = cl.Region

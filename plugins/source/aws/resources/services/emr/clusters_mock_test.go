@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/emr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
@@ -85,6 +85,48 @@ func buildEMRClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	mock.EXPECT().ListInstances(gomock.Any(), &emr.ListInstancesInput{ClusterId: summary2.Id}, gomock.Any()).Return(
 		&emr.ListInstancesOutput{Instances: []types.Instance{instance}},
+		nil,
+	)
+
+	var notebookExecutionSummary types.NotebookExecutionSummary
+	require.NoError(t, faker.FakeObject(&notebookExecutionSummary))
+
+	mock.EXPECT().ListNotebookExecutions(gomock.Any(), &emr.ListNotebookExecutionsInput{ExecutionEngineId: summary1.Id}, gomock.Any()).Return(
+		&emr.ListNotebookExecutionsOutput{NotebookExecutions: []types.NotebookExecutionSummary{notebookExecutionSummary}},
+		nil,
+	)
+
+	mock.EXPECT().ListNotebookExecutions(gomock.Any(), &emr.ListNotebookExecutionsInput{ExecutionEngineId: summary2.Id}, gomock.Any()).Return(
+		&emr.ListNotebookExecutionsOutput{NotebookExecutions: []types.NotebookExecutionSummary{}},
+		nil,
+	)
+
+	var notebookExecution types.NotebookExecution
+	require.NoError(t, faker.FakeObject(&notebookExecution))
+
+	mock.EXPECT().DescribeNotebookExecution(gomock.Any(), &emr.DescribeNotebookExecutionInput{NotebookExecutionId: notebookExecutionSummary.NotebookExecutionId}, gomock.Any()).Return(
+		&emr.DescribeNotebookExecutionOutput{NotebookExecution: &notebookExecution},
+		nil,
+	)
+
+	var stepSummary types.StepSummary
+	require.NoError(t, faker.FakeObject(&stepSummary))
+
+	mock.EXPECT().ListSteps(gomock.Any(), &emr.ListStepsInput{ClusterId: summary1.Id}, gomock.Any()).Return(
+		&emr.ListStepsOutput{Steps: []types.StepSummary{stepSummary}},
+		nil,
+	)
+
+	mock.EXPECT().ListSteps(gomock.Any(), &emr.ListStepsInput{ClusterId: summary2.Id}, gomock.Any()).Return(
+		&emr.ListStepsOutput{Steps: []types.StepSummary{}},
+		nil,
+	)
+
+	var step types.Step
+	require.NoError(t, faker.FakeObject(&step))
+
+	mock.EXPECT().DescribeStep(gomock.Any(), &emr.DescribeStepInput{ClusterId: summary1.Id, StepId: stepSummary.Id}, gomock.Any()).Return(
+		&emr.DescribeStepOutput{Step: &step},
 		nil,
 	)
 

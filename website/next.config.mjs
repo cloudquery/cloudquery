@@ -1,6 +1,9 @@
 import nextra from "nextra";
 import * as fs from "fs";
 import path from "path";
+import { h } from "hastscript";
+import remarkDirective from "remark-directive";
+import { visit } from "unist-util-visit";
 
 const patterns = {
   cli: /VERSION_(CLI)/,
@@ -10,7 +13,18 @@ const patterns = {
 
 const pluginNamePatterns = {
   destinationName: /DESTINATION_NAME/,
-}
+};
+
+const getKindAndName = (file) => {
+  const match = file.history[0].match(/\/plugins\/(.+)\/(.+)\//);
+  if(!match) return null;
+
+  const [kind, name] = [match[1], match[2]];
+  return {
+    kind,
+    name,
+  };
+};
 
 function removeVersionPrefix(version) {
   return version.slice(1);
@@ -39,11 +53,11 @@ function getVersionsForPrefix(prefix, files) {
   return Object.fromEntries(
     files
       .filter((file) => file.name.split("-")[0] == prefix)
-      .map((file) => [parseName(file.name), parseVersion(file.latest)])
+      .map((file) => [parseName(file.name), parseVersion(file.latest)]),
   );
 }
 
-function getVersions() {
+function getStaticVersions() {
   const files = fs
     .readdirSync("./versions", { withFileTypes: true })
     .filter((dirent) => dirent.isFile())
@@ -60,7 +74,82 @@ function getVersions() {
   };
 }
 
-const versions = getVersions();
+async function getHubVersions() {
+  const response = await fetch("https://api.cloudquery.io/plugins");
+  const { items: allPlugins } = await response.json();
+  const paidPlugins = allPlugins.filter((plugin) => plugin.tier === "paid" && plugin.team_name === "cloudquery" && plugin.latest_version);
+  const sources = paidPlugins.filter((plugin) => plugin.kind === "source");
+  const destinations = paidPlugins.filter((plugin) => plugin.kind === "destination");
+
+  return {
+    sources: Object.fromEntries(
+      sources.map((source) => [source.name, source.latest_version]),
+    ),
+    destinations: Object.fromEntries(
+      destinations.map((destination) => [destination.name, destination.latest_version]),
+    ),
+  };
+};
+
+async function getVersions() {
+  const staticVersions = getStaticVersions();
+  const hubVersions = await getHubVersions();
+
+
+  return {
+    ...staticVersions,
+    sources: {
+      ...hubVersions.sources,
+      ...staticVersions.sources,
+    },
+    destinations: {
+      ...hubVersions.destinations,
+      ...staticVersions.destinations,
+    },
+  };
+}
+
+const versions = await getVersions();
+
+const getLatestVersion = (key, name) => {
+  const version = versions[key][name] || "Unpublished";
+  return version;
+}
+
+const customPlugin = () => {
+  return (tree, file) => {
+    visit(tree, function (node) {
+      if (
+        node.type === "containerDirective" ||
+        node.type === "leafDirective" ||
+        node.type === "textDirective"
+      ) {
+        const data = node.data || (node.data = {});
+        const hast = h(node.name, node.attributes || {});
+        data.hName = hast.tagName;
+        data.hProperties = hast.properties;
+        if (!['badge', 'configuration', 'authentication', 'callout', 'slack-app-link'].includes(data.hName)) {
+          return;
+        }
+        const pluginData = getKindAndName(file);
+        if (!pluginData) return;
+        const { kind, name } = pluginData;
+        if (data.hName === "badge") {
+          data.hProperties = {
+            text: "Latest: " + getLatestVersion(kind, name),
+            ...data.hProperties,
+          };
+          return;
+        }
+        data.hProperties = {
+          ...data.hProperties,
+          kind,
+          name,
+        };
+      }
+    });
+  };
+};
 
 const replaceMdxPluginNames = (node) => {
   if (node.type === "text") {
@@ -83,7 +172,7 @@ const replaceMdxCodeVersions = (node) => {
       const match = node.value.match(pattern);
       if (match && match.length >= 1) {
         const name = match[1].toLowerCase();
-        const version = versions[key][name] || "Unpublished";
+        const version = getLatestVersion(key, name);
         node.value = node.value.replace(pattern, version);
       }
     });
@@ -99,6 +188,7 @@ const withNextra = nextra({
   theme: "nextra-theme-docs",
   themeConfig: "./theme.config.tsx",
   mdxOptions: {
+    remarkPlugins: [remarkDirective, customPlugin],
     rehypePrettyCodeOptions: {
       theme: "nord",
       onVisitLine: (node) => {

@@ -2,20 +2,21 @@ package client
 
 import (
 	"context"
+	"crypto/rsa"
 	"fmt"
 	"net/http"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/beatlabs/github-auth/app/inst"
 	"github.com/beatlabs/github-auth/key"
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/source"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/gofri/go-github-ratelimit/github_ratelimit"
 	"github.com/google/go-github/v49/github"
 	"github.com/rs/zerolog"
 	"golang.org/x/oauth2"
+	"golang.org/x/sync/errgroup"
 )
 
 type Client struct {
@@ -69,24 +70,31 @@ func (c *Client) WithRepository(repository *github.Repository) *Client {
 
 func limitDetectedCallback(logger zerolog.Logger) github_ratelimit.OnLimitDetected {
 	return func(callbackContext *github_ratelimit.CallbackContext) {
-		logger.Warn().Msgf("GitHub secondary rate limit detected. Sleeping until %s", callbackContext.SleepUntil.Format(time.RFC3339))
+		apiCall := ""
+		if callbackContext.Request != nil {
+			apiCall = callbackContext.Request.URL.String()
+		}
+		logger.Warn().Msgf("GitHub secondary rate limit detected for API call: %s. Sleeping until %s", apiCall, callbackContext.SleepUntil.Format(time.RFC3339))
 	}
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ source.Options) (schema.ClientMeta, error) {
-	var spec Spec
-	if err := s.UnmarshalSpec(&spec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal GitHub spec: %w", err)
-	}
-
-	// validate plugin config
+func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMeta, error) {
 	if err := spec.Validate(); err != nil {
 		return nil, fmt.Errorf("failed to validate GitHub spec: %w", err)
 	}
+	spec.SetDefaults()
 
 	ghServices := map[string]GithubServices{}
 	for _, auth := range spec.AppAuth {
-		k, err := key.FromFile(auth.PrivateKeyPath)
+		var (
+			k   *rsa.PrivateKey
+			err error
+		)
+		if auth.PrivateKeyPath != "" {
+			k, err = key.FromFile(auth.PrivateKeyPath)
+		} else if auth.PrivateKey != "" {
+			k, err = key.Parse([]byte(auth.PrivateKey))
+		}
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse private key: %w", err)
 		}
@@ -123,7 +131,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source, _ sou
 		repos:       spec.Repos,
 	}
 	c.logger.Info().Msg("Discovering repositories")
-	orgRepositories, err := c.discoverRepositories(ctx, spec.Orgs, spec.Repos)
+	orgRepositories, err := c.discoverRepositories(ctx, spec.DiscoveryConcurrency, spec.Orgs, spec.Repos)
 	if err != nil {
 		return nil, fmt.Errorf("failed to discover repositories: %w", err)
 	}
@@ -143,25 +151,43 @@ func servicesForClient(c *github.Client) GithubServices {
 	}
 }
 
-func (c *Client) discoverRepositories(ctx context.Context, orgs []string, repos []string) (map[string][]*github.Repository, error) {
-	opts := &github.RepositoryListByOrgOptions{ListOptions: github.ListOptions{PerPage: 100}}
-
+func (c *Client) discoverRepositories(ctx context.Context, discoveryConcurrency int, orgs []string, repos []string) (map[string][]*github.Repository, error) {
 	orgRepos := make(map[string][]*github.Repository)
-	for _, org := range orgs {
-		services := c.servicesForOrg(org)
-		for {
-			repos, resp, err := services.Repositories.ListByOrg(ctx, org, opts)
-			if err != nil {
-				return nil, err
-			}
-			orgRepos[org] = append(orgRepos[org], repos...)
+	orgReposLock := sync.Mutex{}
+	errorGroup, gtx := errgroup.WithContext(ctx)
+	errorGroup.SetLimit(discoveryConcurrency)
 
-			if resp.NextPage == 0 {
-				break
+	for _, org := range orgs {
+		org := org
+		opts := &github.RepositoryListByOrgOptions{ListOptions: github.ListOptions{PerPage: 100}}
+		services := c.servicesForOrg(org)
+		errorGroup.Go(func() error {
+			orgRepositories := []*github.Repository{}
+			for {
+				repos, resp, err := services.Repositories.ListByOrg(gtx, org, opts)
+				if err != nil {
+					return err
+				}
+				orgRepositories = append(orgRepositories, repos...)
+
+				if resp.NextPage == 0 {
+					break
+				}
+				opts.Page = resp.NextPage
 			}
-			opts.Page = resp.NextPage
-		}
+
+			orgReposLock.Lock()
+			defer orgReposLock.Unlock()
+			orgRepos[org] = orgRepositories
+
+			return nil
+		})
 	}
+
+	if err := errorGroup.Wait(); err != nil {
+		return nil, err
+	}
+
 	seenOrgs := make(map[string]struct{})
 	for _, repo := range repos {
 		repoSplit := splitRepo(repo)

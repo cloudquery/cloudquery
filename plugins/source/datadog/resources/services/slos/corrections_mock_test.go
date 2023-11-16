@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client/mocks"
 
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -17,13 +17,13 @@ func buildCorrectionsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogS
 		ServiceLevelObjectiveCorrectionsAPI: m,
 	}
 
-	var d datadogV1.SLOCorrectionListResponse
+	var d datadogV1.SLOCorrection
 	err := faker.FakeObject(&d)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListSLOCorrection(gomock.Any()).Return(d, nil, nil)
+	m.EXPECT().ListSLOCorrectionWithPagination(gomock.Any()).Return(client.MockPaginatedResponse(d))
 
 	return services
 }

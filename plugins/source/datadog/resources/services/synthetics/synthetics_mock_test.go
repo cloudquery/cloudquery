@@ -7,7 +7,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/datadog/client"
 	mocks "github.com/cloudquery/cloudquery/plugins/source/datadog/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -17,12 +17,12 @@ func buildSyntheticsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogSe
 		SyntheticsAPI: m,
 	}
 
-	var s datadogV1.SyntheticsListTestsResponse
+	var s datadogV1.SyntheticsTestDetails
 	err := faker.FakeObject(&s)
 	if err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListTests(gomock.Any()).Return(s, nil, nil)
+	m.EXPECT().ListTestsWithPagination(gomock.Any()).Return(client.MockPaginatedResponse(s))
 
 	return services
 }

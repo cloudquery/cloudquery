@@ -3,11 +3,12 @@ package securityhub
 import (
 	"testing"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/v3/faker"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
@@ -19,7 +20,7 @@ func buildEnabledStandards(t *testing.T, ctrl *gomock.Controller) client.Service
 
 	shMock.EXPECT().GetEnabledStandards(
 		gomock.Any(),
-		&securityhub.GetEnabledStandardsInput{MaxResults: 100},
+		&securityhub.GetEnabledStandardsInput{MaxResults: aws.Int32(100)},
 		gomock.Any(),
 	).Return(
 		&securityhub.GetEnabledStandardsOutput{StandardsSubscriptions: []types.StandardsSubscription{standardsSubscription}},

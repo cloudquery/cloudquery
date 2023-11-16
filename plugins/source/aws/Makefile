@@ -3,6 +3,10 @@
 test:
 	go test -race -timeout 3m ./...
 
+.PHONY: build
+build:
+	go build -o aws .
+
 # Install tools
 .PHONY: install-tools
 install-tools:
@@ -23,20 +27,23 @@ gen-mocks:
 	go run client/mockassert/main.go
 
 .PHONY: gen-docs
-gen-docs:
-	go run main.go doc --format json docs
-	go run scripts/policy_docs/main.go aws policies ../../../website/pages/docs/plugins/sources/aws/policies.md docs/__tables.json
-	rm docs/__tables.json
+gen-docs: build
+	@command -v cloudquery >/dev/null 2>&1 || { \
+		echo "Error: 'cloudquery' command not found. Please install it before running gen-docs."; \
+		echo "You can install it by following the instructions at: https://www.cloudquery.io/docs/quickstart"; \
+		exit 1; \
+	}
 
-	rm -rf ../../../website/tables/aws
-	go run main.go doc ../../../website/tables/aws
-	go run scripts/example_queries/main.go policies/queries ../../../website/tables/aws
-	sed 's_(\(.*\))_(../../../../../website/tables/aws/\1)_' ../../../website/tables/aws/README.md > ./docs/tables/README.md
-	sed -i.bak -e 's_(\(.*\).md)_(tables/\1)_' ../../../website/tables/aws/README.md
-	mv ../../../website/tables/aws/README.md ../../../website/pages/docs/plugins/sources/aws/tables.md
-	sed -i.bak -e 's_(\(.*\).md)_(\1)_' ../../../website/tables/aws/*.md
-	rm -rf ../../../website/tables/aws/*.bak
+	rm -rf docs/tables
+	cloudquery tables --format markdown --output-dir docs test/config.yml
+	mv docs/$(shell basename $(CURDIR)) docs/tables
+
+.PHONY: gen-spec-schema
+gen-spec-schema:
+	# required for loading comments from AWS SDK
+	go mod vendor
+	go run client/spec/gen/main.go
 
 # All gen targets
 .PHONY: gen
-gen: gen-mocks gen-docs
+gen: gen-spec-schema gen-mocks gen-docs

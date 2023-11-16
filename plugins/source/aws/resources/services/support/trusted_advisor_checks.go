@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/support"
 	"github.com/aws/aws-sdk-go-v2/service/support/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 var checksSupportedLanguageCodes = []string{"en", "fr", "de", "id", "it", "ja", "ko", "pt_BR", "es", "zh", "zh_TW"}
@@ -32,7 +32,7 @@ func TrustedAdvisorChecks() *schema.Table {
 
 func fetchTrustedAdvisorChecks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Support
+	svc := cl.Services(client.AWSServiceSupport).Support
 	input := support.DescribeTrustedAdvisorChecksInput{Language: aws.String(cl.LanguageCode)}
 
 	response, err := svc.DescribeTrustedAdvisorChecks(ctx, &input, func(o *support.Options) {

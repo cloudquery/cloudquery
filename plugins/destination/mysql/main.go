@@ -1,10 +1,13 @@
 package main
 
 import (
+	"context"
+	"log"
+
 	"github.com/cloudquery/cloudquery/plugins/destination/mysql/client"
-	"github.com/cloudquery/cloudquery/plugins/destination/mysql/resources/plugin"
-	"github.com/cloudquery/plugin-sdk/v3/plugins/destination"
-	"github.com/cloudquery/plugin-sdk/v3/serve"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/mysql/resources/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/serve"
 )
 
 const (
@@ -12,13 +15,17 @@ const (
 )
 
 func main() {
-	serve.Destination(
-		destination.NewPlugin(
-			"mysql",
-			plugin.Version,
+	if err := serve.Plugin(
+		plugin.NewPlugin(
+			internalPlugin.Name,
+			internalPlugin.Version,
 			client.New,
-			destination.WithManagedWriter(),
+			plugin.WithKind(internalPlugin.Kind),
+			plugin.WithTeam(internalPlugin.Team),
 		),
-		serve.WithDestinationSentryDSN(sentryDSN),
-	)
+		serve.WithDestinationV0V1Server(),
+		serve.WithPluginSentryDSN(sentryDSN),
+	).Serve(context.Background()); err != nil {
+		log.Fatal(err)
+	}
 }

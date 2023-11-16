@@ -2,7 +2,7 @@ import { Callout } from 'nextra-theme-docs';
 
 ## Configure Source Plugin
 
-Source plugins define the APIs you want to sync from (See [available sources](/docs/plugins/sources/overview)).
+Source plugins define the APIs you want to sync from (See [available sources](https://hub.cloudquery.io/plugins/source)).
 
 For example, let's configure the [AWS](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws) source plugin.
 Create an `aws.yml` file in your `cloudquery-config` directory:
@@ -13,13 +13,17 @@ spec:
   ## Required. name of the plugin to use.
   ## This should be unique if you have number of aws plugins.
   name: "aws"
-  ## Optional. Where to search for the plugin. Default: "github". Options: "github", "local", "grpc"
+  ## Optional. Where to search for the plugin. Default: "github". Options: "github", "cloudquery", "local", "grpc"
   # registry: "github"
 
   ## Path for the plugin.
   ## If registry is "github" path should be "repo/name"
+  ## If registry is "cloudquery" path should be "team/name"
   ## If registry is "local", path is path to binary. If "grpc" then it should be address of the plugin (usually useful in debug).
   path: "cloudquery/aws"
+
+  ## Optional. Registry to download the plugin from. Defaults to "github"
+  registry: "cloudquery"
 
   ## Required. Must be a specific version starting with v, e.g. v1.2.3
   ## checkout latest versions here https://github.com/cloudquery/cloudquery/releases?q=plugins-source-aws&expanded=true

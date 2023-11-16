@@ -3,13 +3,13 @@ package resiliencehub
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/resiliencehub"
 	"github.com/aws/aws-sdk-go-v2/service/resiliencehub/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
 func appVersionResources() *schema.Table {
@@ -19,7 +19,6 @@ func appVersionResources() *schema.Table {
 		Description: `https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_PhysicalResource.html`,
 		Resolver:    fetchAppVersionResources,
 		Transform:   transformers.TransformWithStruct(&types.PhysicalResource{}),
-		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "resiliencehub"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARN, appVersion,
 			{
@@ -34,7 +33,7 @@ func appVersionResources() *schema.Table {
 
 func fetchAppVersionResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Resiliencehub
+	svc := cl.Services(client.AWSServiceResiliencehub).Resiliencehub
 	p := resiliencehub.NewListAppVersionResourcesPaginator(svc, &resiliencehub.ListAppVersionResourcesInput{
 		AppArn:     parent.Parent.Item.(*types.App).AppArn,
 		AppVersion: parent.Item.(types.AppVersionSummary).AppVersion,

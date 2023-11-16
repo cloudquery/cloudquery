@@ -4,33 +4,32 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/plugin-pb-go/specs"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
-	for _, t := range tables {
-		if err := c.migrateTable(ctx, t); err != nil {
+func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
+	for _, msg := range msgs {
+		if err := c.migrateTable(ctx, msg.MigrateForce, msg.Table); err != nil {
 			return err
 		}
 	}
-
 	return nil
 }
 
-func (c *Client) migrateTable(ctx context.Context, table *schema.Table) error {
+func (c *Client) migrateTable(ctx context.Context, force bool, table *schema.Table) error {
 	tableName := table.Name
 	for _, mdl := range c.getIndexTemplates(table) {
-		res, err := c.client.Database(c.pluginSpec.Database).Collection(tableName).Indexes().CreateOne(ctx, mdl)
+		res, err := c.client.Database(c.spec.Database).Collection(tableName).Indexes().CreateOne(ctx, mdl)
 		switch {
 		case err == nil:
 			c.logger.Debug().Str("index_name", res).Str("table", tableName).Msg("created index")
 		case isIndexConflictError(err):
 			c.logger.Debug().Str("index_name", res).Str("table", tableName).Err(err).Msg("create index conflict")
-			if err := c.migrateTableOnConflict(ctx, table, mdl); err != nil {
+			if err := c.migrateTableOnConflict(ctx, force, table, mdl); err != nil {
 				return err
 			}
 		case isIndexOptionsConflictError(err):
@@ -43,16 +42,16 @@ func (c *Client) migrateTable(ctx context.Context, table *schema.Table) error {
 	return nil
 }
 
-func (c *Client) migrateTableOnConflict(ctx context.Context, table *schema.Table, mdl mongo.IndexModel) error {
+func (c *Client) migrateTableOnConflict(ctx context.Context, force bool, table *schema.Table, mdl mongo.IndexModel) error {
 	tableName := table.Name
-	if c.spec.MigrateMode != specs.MigrateModeForced {
-		return fmt.Errorf("collection %s requires forced migration due to changes in unique indexes. use 'migrate_mode: forced'", tableName)
+	if !force {
+		return fmt.Errorf("collection %s requires forced migration due to changes in unique indexes. Migrate manually or consider using 'migrate_mode: forced'", tableName)
 	}
 
-	if _, err := c.client.Database(c.pluginSpec.Database).Collection(tableName).Indexes().DropOne(ctx, *mdl.Options.Name); err != nil {
+	if _, err := c.client.Database(c.spec.Database).Collection(tableName).Indexes().DropOne(ctx, *mdl.Options.Name); err != nil {
 		return fmt.Errorf("drop index on %s: %w", tableName, err)
 	}
-	res, err := c.client.Database(c.pluginSpec.Database).Collection(tableName).Indexes().CreateOne(ctx, mdl)
+	res, err := c.client.Database(c.spec.Database).Collection(tableName).Indexes().CreateOne(ctx, mdl)
 	if err != nil {
 		return fmt.Errorf("recreate index on %s: %w", tableName, err)
 	}
@@ -60,7 +59,7 @@ func (c *Client) migrateTableOnConflict(ctx context.Context, table *schema.Table
 	return nil
 }
 
-func (c *Client) getIndexTemplates(table *schema.Table) []mongo.IndexModel {
+func (*Client) getIndexTemplates(table *schema.Table) []mongo.IndexModel {
 	var indexes []mongo.IndexModel
 
 	pks := table.PrimaryKeys()
@@ -76,16 +75,6 @@ func (c *Client) getIndexTemplates(table *schema.Table) []mongo.IndexModel {
 			Options: &options.IndexOptions{
 				Unique: &[]bool{true}[0],
 				Name:   &pkIndexName,
-			},
-		})
-	}
-
-	if c.spec.WriteMode == specs.WriteModeOverwriteDeleteStale {
-		delIndexName := "cq_del"
-		indexes = append(indexes, mongo.IndexModel{
-			Keys: bson.D{{Key: schema.CqSourceNameColumn.Name, Value: 1}, {Key: schema.CqSyncTimeColumn.Name, Value: 1}},
-			Options: &options.IndexOptions{
-				Name: &delIndexName,
 			},
 		})
 	}

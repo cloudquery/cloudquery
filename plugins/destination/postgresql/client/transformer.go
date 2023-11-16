@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"strings"
 
-	"github.com/apache/arrow/go/v13/arrow"
-	"github.com/apache/arrow/go/v13/arrow/array"
-	"github.com/cloudquery/plugin-sdk/v3/types"
+	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v14/arrow/array"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
@@ -131,6 +131,26 @@ func transformArr(arr arrow.Array) []any {
 				Time:  a.Value(i).ToTime(a.DataType().(*arrow.TimestampType).Unit).UTC(),
 				Valid: a.IsValid(i),
 			}
+		case *array.Time32:
+			pgArr[i] = pgtype.Time{
+				Microseconds: a.Value(i).ToTime(a.DataType().(*arrow.Time32Type).Unit).UTC().UnixMicro(),
+				Valid:        a.IsValid(i),
+			}
+		case *array.Time64:
+			pgArr[i] = pgtype.Time{
+				Microseconds: a.Value(i).ToTime(a.DataType().(*arrow.Time64Type).Unit).UTC().UnixMicro(),
+				Valid:        a.IsValid(i),
+			}
+		case *array.Date32:
+			pgArr[i] = pgtype.Date{
+				Time:  a.Value(i).ToTime().UTC(),
+				Valid: a.IsValid(i),
+			}
+		case *array.Date64:
+			pgArr[i] = pgtype.Date{
+				Time:  a.Value(i).ToTime().UTC(),
+				Valid: a.IsValid(i),
+			}
 		case *types.UUIDArray:
 			bUUID, err := a.Value(i).MarshalBinary()
 			if err != nil {
@@ -146,7 +166,7 @@ func transformArr(arr arrow.Array) []any {
 			nested := array.NewSlice(a.ListValues(), start, end)
 			pgArr[i] = transformArr(nested)
 		case *types.JSONArray:
-			pgArr[i] = a.Storage().(*array.Binary).Value(i)
+			pgArr[i] = stripNullsFromMarshalledJson(a.Storage().(*array.Binary).Value(i))
 		default:
 			pgArr[i] = stripNulls(arr.ValueStr(i))
 		}

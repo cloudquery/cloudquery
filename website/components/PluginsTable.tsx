@@ -19,29 +19,34 @@ const pluralize = {
   destination: "destinations",
 };
 
-const TableRow = ({ type, name, id, stage, meta = () => null }) => {
+const TableRow = ({ type, name, id, stage, meta = () => null, openInHub = false }) => {
+  const pluginLinkProps = openInHub ? 
+  { target: "_blank", href: `https://hub.cloudquery.io/plugins/${type}/cloudquery/${id}` } : { href:`/docs/plugins/${pluralize[type]}/${id}/overview` };
+  const tablesLinkProps =  openInHub ? 
+  { target: "_blank", href: `https://hub.cloudquery.io/plugins/${type}/cloudquery/${id}/tables` } : { href: `/docs/plugins/sources/${id}/tables` };
+  const changeLogProps = openInHub ?
+  { target: "_blank", href: `https://hub.cloudquery.io/plugins/${type}/cloudquery/${id}` } : { target: "_blank", href: `https://github.com/cloudquery/cloudquery/blob/main/plugins/${type}/${id}/CHANGELOG.md` };
   return (
     <Tr>
       <Td>
         <TableLink
           text={name}
-          href={`/docs/plugins/${pluralize[type]}/${id}/overview`}
+          {...pluginLinkProps}
         />
         {meta()}
       </Td>
-      <Td>{getLatestVersion(type, id)}</Td>
+      <Td>{stage.endsWith("(Premium)") ? "PREMIUM" : getLatestVersion(type, id)}</Td>
       <Td>
         <TableLink
           text="Changelog"
-          href={`https://github.com/cloudquery/cloudquery/blob/main/plugins/${type}/${id}/CHANGELOG.md`}
-          target="_blank"
+          {...changeLogProps}
         />
       </Td>
       {type === "source" && (
         <Td>
           <TableLink
             text="Tables"
-            href={`/docs/plugins/sources/${id}/tables`}
+            {...tablesLinkProps}
           />
         </Td>
       )}
@@ -64,12 +69,13 @@ export const PluginsTable = ({ plugins, type }) => {
         <Th>Stage</Th>
       </thead>
       <tbody>
-        {sortedPlugins.map(({ name, stage, meta, id = name }) => (
+        {sortedPlugins.map(({ name, stage, meta, id = name, openInHub }) => (
           <TableRow
             key={id}
             type={type}
             name={name}
             id={id.toLowerCase()}
+            openInHub={openInHub}
             stage={stage}
             meta={meta}
           />

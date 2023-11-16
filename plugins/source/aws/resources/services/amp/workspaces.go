@@ -3,15 +3,14 @@ package amp
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v3/types"
-
-	"github.com/apache/arrow/go/v13/arrow"
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/amp"
 	"github.com/aws/aws-sdk-go-v2/service/amp/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v3/schema"
-	"github.com/cloudquery/plugin-sdk/v3/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Workspaces() *schema.Table {
@@ -51,7 +50,7 @@ func Workspaces() *schema.Table {
 
 func fetchAmpWorkspaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Amp
+	svc := cl.Services(client.AWSServiceAmp).Amp
 
 	p := amp.NewListWorkspacesPaginator(svc, &amp.ListWorkspacesInput{MaxResults: aws.Int32(int32(1000))})
 	for p.HasMorePages() {
@@ -70,7 +69,7 @@ func fetchAmpWorkspaces(ctx context.Context, meta schema.ClientMeta, parent *sch
 
 func describeWorkspace(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Amp
+	svc := cl.Services(client.AWSServiceAmp).Amp
 
 	out, err := svc.DescribeWorkspace(ctx,
 		&amp.DescribeWorkspaceInput{WorkspaceId: resource.Item.(types.WorkspaceSummary).WorkspaceId},
@@ -89,7 +88,7 @@ func describeWorkspace(ctx context.Context, meta schema.ClientMeta, resource *sc
 
 func describeAlertManagerDefinition(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Amp
+	svc := cl.Services(client.AWSServiceAmp).Amp
 
 	out, err := svc.DescribeAlertManagerDefinition(ctx,
 		&amp.DescribeAlertManagerDefinitionInput{WorkspaceId: resource.Item.(*types.WorkspaceDescription).WorkspaceId},
@@ -106,7 +105,7 @@ func describeAlertManagerDefinition(ctx context.Context, meta schema.ClientMeta,
 
 func describeLoggingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().Amp
+	svc := cl.Services(client.AWSServiceAmp).Amp
 
 	out, err := svc.DescribeLoggingConfiguration(ctx,
 		&amp.DescribeLoggingConfigurationInput{WorkspaceId: resource.Item.(*types.WorkspaceDescription).WorkspaceId},

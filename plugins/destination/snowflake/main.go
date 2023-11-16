@@ -16,8 +16,21 @@ const (
 )
 
 func main() {
-	p := plugin.NewPlugin("snowflake", internalPlugin.Version, client.New)
-	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN)).Serve(context.Background()); err != nil {
+	p := plugin.NewPlugin(
+		internalPlugin.Name,
+		internalPlugin.Version,
+		client.New,
+		plugin.WithBuildTargets([]plugin.BuildTarget{
+			{OS: plugin.GoOSLinux, Arch: plugin.GoArchAmd64},
+			{OS: plugin.GoOSWindows, Arch: plugin.GoArchAmd64},
+			{OS: plugin.GoOSDarwin, Arch: plugin.GoArchAmd64},
+			{OS: plugin.GoOSDarwin, Arch: plugin.GoArchArm64},
+		}),
+		plugin.WithStaticLinking(),
+		plugin.WithKind(internalPlugin.Kind),
+		plugin.WithTeam(internalPlugin.Team),
+	)
+	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN), serve.WithDestinationV0V1Server()).Serve(context.Background()); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
