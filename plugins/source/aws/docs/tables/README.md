@@ -107,6 +107,7 @@
 - [aws_backup_report_plans](aws_backup_report_plans.md)
 - [aws_backup_vaults](aws_backup_vaults.md)
   - [aws_backup_vault_recovery_points](aws_backup_vault_recovery_points.md)
+- [aws_batch_compute_environments](aws_batch_compute_environments.md)
 - [aws_batch_job_definitions](aws_batch_job_definitions.md)
 - [aws_batch_job_queues](aws_batch_job_queues.md)
   - [aws_batch_jobs](aws_batch_jobs.md)
