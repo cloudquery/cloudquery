@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"strings"
 	"syscall"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
@@ -63,9 +64,9 @@ type ManifestJSONV1 struct {
 	AddonType   string `json:"addon_type"`
 	AddonFormat string `json:"addon_format"` // unused
 
-	PathToMessage string `json:"message"`
-	PathToZip     string `json:"path"`
-	PathToDoc     string `json:"doc"`
+	Message   string `json:"message"`
+	PathToZip string `json:"path"`
+	PathToDoc string `json:"doc"`
 
 	PluginDeps []string `json:"plugin_deps"`
 	AddonDeps  []string `json:"addon_deps"`
@@ -167,12 +168,17 @@ func createNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWit
 		body.Doc = string(b)
 	}
 
-	if manifest.PathToMessage != "" {
-		b, err := os.ReadFile(filepath.Join(manifestDir, manifest.PathToMessage))
-		if err != nil {
-			return fmt.Errorf("failed to read message file: %w", err)
+	if manifest.Message != "" {
+		if strings.HasPrefix(manifest.Message, "@") {
+			messageFile := filepath.Join(manifestDir, strings.TrimPrefix(manifest.Message, "@"))
+			messageBytes, err := os.ReadFile(messageFile)
+			if err != nil {
+				return fmt.Errorf("failed to read message file: %w", err)
+			}
+			body.Message = string(messageBytes)
+		} else {
+			body.Message = manifest.Message
 		}
-		body.Message = string(b)
 	}
 
 	f, err := os.Open(zipPath)
