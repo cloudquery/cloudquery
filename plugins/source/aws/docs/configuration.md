@@ -165,33 +165,37 @@ The `table_options` parameter is deprecated and will be removed soon. Please rea
   table_options:
     aws_accessanalyzer_analyzer_findings:
       list_findings:
-        - <ListFindings>
+        - <AccessAnalyzer.ListFindings> # NextToken & AnalyzerArn are prohibited
+
     aws_alpha_cloudwatch_metrics:
-      - list_metrics:
-          <ListMetrics>
+      - list_metrics: <CloudWatch.ListMetrics> # NextToken is prohibited
         get_metric_statistics:
-          # Namespace, MetricName and Dimensions fields cannot be set here and are derived from the result of the respective ListMetrics call
-          - <GetMetricStatistics>
+          - <CloudWatch.GetMetricStatistics>  # Namespace, MetricName and Dimensions are prohibited
+
     aws_cloudtrail_events:
       lookup_events:
-        - <LookupEvents>
+        - <CloudTrail.LookupEvents> # NextToken is prohibited
+
     aws_inspector2_findings:
       list_findings:
-        - <ListFindings>
+        - <InspectorV2.ListFindings> # NextToken is prohibited.
+
     aws_securityhub_findings:
       get_findings:
-        - <GetFindings>
+        - <SecurityHub.GetFindings> # NextToken is prohibited. MaxResults should be in range [1-100].
+
     aws_ecs_cluster_tasks:
       list_tasks:
-        - <ListTasks>
+        - <ECS.ListTasks> # Cluster and NextToken are prohibited. MaxResults should be in range [1-100].
   ```
-    - [ListFindings](https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_ListFindings.html)
-    - [ListMetrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_ListMetrics.html)
-    - [GetMetricStatistics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html)
-    - [LookupEvents](https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_LookupEvents.html)
-    - [ListFindings](https://docs.aws.amazon.com/inspector/v2/APIReference/API_ListFindings.html)
-    - [GetFindings](https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html)
-    - [ListTasks](https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ListTasks.html)
+
+    - [AccessAnalyzer.ListFindings](https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_ListFindings.html)
+    - [CloudTrail.LookupEvents](https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_LookupEvents.html)
+    - [CloudWatch.ListMetrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_ListMetrics.html)
+    - [CloudWatch.GetMetricStatistics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html)
+    - [ECS.ListTasks](https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ListTasks.html)
+    - [InspectorV2.ListFindings](https://docs.aws.amazon.com/inspector/v2/APIReference/API_ListFindings.html)
+    - [SecurityHub.GetFindings](https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html)
 
 - **enterprise version only** `event_based_sync` (`array`) (default: empty)
 
