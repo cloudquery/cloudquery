@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [22.19.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.19.0...plugins-source-aws-v22.19.1) (2023-11-17)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_batch_compute_environments` was added
+
 ### Bug Fixes
 
 * **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.2 ([#15325](https://github.com/cloudquery/cloudquery/issues/15325)) ([77f2db5](https://github.com/cloudquery/cloudquery/commit/77f2db52634bad6e56d970d55172b08d823b97c9))
