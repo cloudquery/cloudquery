@@ -54,6 +54,48 @@ func TestAddonPublish(t *testing.T) {
 	}
 }
 
+func TestAddonPublishEmbedded(t *testing.T) {
+	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
+
+	wantCalls := map[string]int{
+		"PUT /addons/cloudquery/visualization/test/versions/v1.2.3":         1,
+		"POST /addons/cloudquery/visualization/test/versions/v1.2.3/assets": 1,
+		"PUT /upload-zip": 1,
+	}
+	gotCalls := map[string]int{}
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		gotCalls[r.Method+" "+r.URL.Path]++
+		switch r.URL.Path {
+		case "/addons/cloudquery/visualization/test/versions/v1.2.3":
+			checkAuthHeader(t, r)
+			w.WriteHeader(http.StatusCreated)
+			w.Write([]byte(`{"name": "v1.2.3"}`))
+			checkCreateAddonVersionRequest(t, r)
+		case "/addons/cloudquery/visualization/test/versions/v1.2.3/assets":
+			checkAuthHeader(t, r)
+			w.WriteHeader(http.StatusCreated)
+			w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-zip")))
+		case "/upload-zip":
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte(`{}`))
+		}
+	}))
+	defer ts.Close()
+
+	cmd := NewCmdRoot()
+	t.Setenv(envAPIURL, ts.URL)
+	args := []string{"addon", "publish", "testdata/addon-v1/manifest-embedded-message.json", "v1.2.3"}
+	cmd.SetArgs(args)
+	err := cmd.Execute()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if diff := cmp.Diff(wantCalls, gotCalls); diff != "" {
+		t.Fatalf("mismatch (-want +got):\n%s", diff)
+	}
+}
+
 func TestAddonPublishFinalize(t *testing.T) {
 	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
