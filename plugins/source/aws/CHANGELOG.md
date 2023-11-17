@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.19.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.19.0...plugins-source-aws-v22.19.1) (2023-11-17)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.2 ([#15325](https://github.com/cloudquery/cloudquery/issues/15325)) ([77f2db5](https://github.com/cloudquery/cloudquery/commit/77f2db52634bad6e56d970d55172b08d823b97c9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.3 ([#15355](https://github.com/cloudquery/cloudquery/issues/15355)) ([d8455e5](https://github.com/cloudquery/cloudquery/commit/d8455e5ca1059746c7aced395e9bc150ea495591))
+* Event-based sync doc ([#15359](https://github.com/cloudquery/cloudquery/issues/15359)) ([258b088](https://github.com/cloudquery/cloudquery/commit/258b088a4bc3ee2160d0f54f72731a7b861720e9))
+* Include `aws_batch_compute_environments` in list of tables ([#15293](https://github.com/cloudquery/cloudquery/issues/15293)) ([ef1cac5](https://github.com/cloudquery/cloudquery/commit/ef1cac5c51c022bb4716ea82d7560dea76132794))
+
 ## [22.19.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.18.0...plugins-source-aws-v22.19.0) (2023-11-16)
 
 
