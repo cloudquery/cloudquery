@@ -60,9 +60,64 @@ func TestTableOptions_Validate(t *testing.T) {
 	}
 }
 
-// TestTableOptionsUnmarshal tests that the TableOptions struct can be unmarshaled from JSON using
+// TestTableOptionsUnmarshalPascalCase tests that the TableOptions struct can be unmarshaled from JSON.
+func TestTableOptionsUnmarshalPascalCase(t *testing.T) {
+	tableOpts := TableOptions{}
+	require.NoError(t, faker.FakeObject(&tableOpts))
+	b, err := json.Marshal(tableOpts)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var got TableOptions
+	err = json.Unmarshal(b, &got)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if diff := cmp.Diff(tableOpts, got, cmpopts.IgnoreUnexported(
+		accessanalyzer.ListFindingsInput{},
+		accessanalyzertypes.SortCriteria{},
+		accessanalyzertypes.Criterion{},
+		cloudwatch.GetMetricStatisticsInput{},
+		cloudwatch.ListMetricsInput{},
+		cloudwatchtypes.Dimension{},
+		cloudwatchtypes.DimensionFilter{},
+		cloudtrail.LookupEventsInput{},
+		cloudtrailtypes.LookupAttribute{},
+		inspector2.ListFindingsInput{},
+		inspector2types.StringFilter{},
+		inspector2types.DateFilter{},
+		inspector2types.NumberFilter{},
+		inspector2types.PortRangeFilter{},
+		inspector2types.MapFilter{},
+		inspector2types.PackageFilter{},
+		inspector2types.FilterCriteria{},
+		inspector2types.SortCriteria{},
+		costexplorertypes.DateInterval{},
+		costexplorertypes.Expression{},
+		costexplorertypes.CostCategoryValues{},
+		costexplorertypes.DimensionValues{},
+		costexplorertypes.TagValues{},
+		costexplorertypes.GroupDefinition{},
+		costexplorer.GetCostAndUsageInput{},
+		securityhub.GetFindingsInput{},
+		securityhubtypes.AwsSecurityFindingFilters{},
+		securityhubtypes.StringFilter{},
+		securityhubtypes.NumberFilter{},
+		securityhubtypes.DateFilter{},
+		securityhubtypes.KeywordFilter{},
+		securityhubtypes.MapFilter{},
+		securityhubtypes.IpFilter{},
+		securityhubtypes.BooleanFilter{},
+		securityhubtypes.SortCriterion{},
+		ecs.ListTasksInput{},
+	)); diff != "" {
+		t.Fatalf("mismatch between objects after loading from pascal case json: %v", diff)
+	}
+}
+
+// TestTableOptionsUnmarshalSnakeCase tests that the TableOptions struct can be unmarshaled from JSON using
 // snake_case keys.
-func TestTableOptionsUnmarshal(t *testing.T) {
+func TestTableOptionsUnmarshalSnakeCase(t *testing.T) {
 	tableOpts := TableOptions{}
 	require.NoError(t, faker.FakeObject(&tableOpts))
 	b, err := json.Marshal(tableOpts)
