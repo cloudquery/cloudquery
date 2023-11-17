@@ -5,7 +5,7 @@
   "addon_name": "test",
   "addon_type": "visualization",
   "addon_format": "zip",
-  "message": "@./changelog.md",
+  "message": "# Test Addon Changelog",
   "doc": "./readme.md",
   "path": "./test.zip",
   "plugin_deps": ["cloudquery/source/test@v1.0.0"],
