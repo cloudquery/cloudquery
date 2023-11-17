@@ -6,7 +6,7 @@ require (
 	github.com/Shopify/sarama v1.37.2
 	github.com/apache/arrow/go/v14 v14.0.0-20231031200323-c49e24273160
 	github.com/cloudquery/filetypes/v4 v4.2.0
-	github.com/cloudquery/plugin-sdk/v4 v4.18.2
+	github.com/cloudquery/plugin-sdk/v4 v4.18.3
 	github.com/rs/zerolog v1.31.0
 )
 
