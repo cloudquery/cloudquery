@@ -17,13 +17,19 @@ func Coverages() *schema.Table {
 		Description: `https://docs.aws.amazon.com/inspector/v2/APIReference/API_ListCoverage.html
 The 'request_account_id' and 'request_region' columns are added to show from where the request was made.`,
 		Resolver:  fetchInspector2Coverages,
-		Transform: transformers.TransformWithStruct(&types.CoveredResource{}, transformers.WithSkipFields("ResourceId")),
+		Transform: transformers.TransformWithStruct(&types.CoveredResource{}),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "inspector2"),
 		Columns: []schema.Column{
 			{
-				Name:       "arn",
+				Name:       "request_account_id",
 				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ResourceId"),
+				Resolver:   client.ResolveAWSAccount,
+				PrimaryKey: true,
+			},
+			{
+				Name:       "request_region",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSRegion,
 				PrimaryKey: true,
 			},
 		},
