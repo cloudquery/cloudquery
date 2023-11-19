@@ -4,7 +4,7 @@ go 1.21.1
 
 require (
 	github.com/apache/arrow/go/v14 v14.0.0-20231031200323-c49e24273160
-	github.com/cloudquery/plugin-sdk/v4 v4.18.2
+	github.com/cloudquery/plugin-sdk/v4 v4.18.1
 	github.com/google/go-cmp v0.5.9
 	github.com/jackc/pgx-zerolog v0.0.0-20230315001418-f978528409eb
 	github.com/jackc/pgx/v5 v5.3.1
