@@ -20,7 +20,7 @@ func registrySchemaVersions() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/glue/latest/webapi/API_GetSchemaVersion.html`,
 		Resolver:            fetchGlueRegistrySchemaVersions,
 		PreResourceResolver: getRegistrySchemaVersion,
-		Transform:           transformers.TransformWithStruct(&glue.GetSchemaVersionOutput{}),
+		Transform:           transformers.TransformWithStruct(&glue.GetSchemaVersionOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

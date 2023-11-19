@@ -17,7 +17,7 @@ func planSelections() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/aws-backup/latest/devguide/API_GetBackupSelection.html`,
 		Resolver:    fetchBackupPlanSelections,
-		Transform:   transformers.TransformWithStruct(&backup.GetBackupSelectionOutput{}),
+		Transform:   transformers.TransformWithStruct(&backup.GetBackupSelectionOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

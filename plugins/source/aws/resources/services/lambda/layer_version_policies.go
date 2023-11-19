@@ -14,7 +14,7 @@ func layerVersionPolicies() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_GetLayerVersionPolicy.html`,
 		Resolver:    fetchLambdaLayerVersionPolicies,
-		Transform:   transformers.TransformWithStruct(&lambda.GetLayerVersionPolicyOutput{}),
+		Transform:   transformers.TransformWithStruct(&lambda.GetLayerVersionPolicyOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
