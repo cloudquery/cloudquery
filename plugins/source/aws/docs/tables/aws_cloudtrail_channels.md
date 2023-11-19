@@ -21,4 +21,3 @@ The primary key for this table is **arn**.
 |name|`utf8`|
 |source|`utf8`|
 |source_config|`json`|
-|result_metadata|`json`|

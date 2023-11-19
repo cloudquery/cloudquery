@@ -17,4 +17,3 @@ The composite primary key for this table is (**stage**, **arn**).
 |arn (PK)|`utf8`|
 |e_tag|`utf8`|
 |function_summary|`json`|
-|result_metadata|`json`|

@@ -24,4 +24,3 @@ This table depends on [aws_backup_plans](aws_backup_plans.md).
 |creation_date|`timestamp[us, tz=UTC]`|
 |creator_request_id|`utf8`|
 |selection_id|`utf8`|
-|result_metadata|`json`|

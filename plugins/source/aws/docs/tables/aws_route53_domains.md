@@ -37,4 +37,3 @@ The composite primary key for this table is (**account_id**, **domain_name**).
 |tech_privacy|`bool`|
 |updated_date|`timestamp[us, tz=UTC]`|
 |who_is_server|`utf8`|
-|result_metadata|`json`|

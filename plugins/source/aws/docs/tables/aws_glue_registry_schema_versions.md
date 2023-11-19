@@ -27,4 +27,3 @@ This table depends on [aws_glue_registry_schemas](aws_glue_registry_schemas.md).
 |schema_version_id|`utf8`|
 |status|`utf8`|
 |version_number|`int64`|
-|result_metadata|`json`|

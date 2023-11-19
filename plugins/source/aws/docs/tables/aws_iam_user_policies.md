@@ -22,4 +22,3 @@ This table depends on [aws_iam_users](aws_iam_users.md).
 |policy_document|`json`|
 |policy_name (PK)|`utf8`|
 |user_name|`utf8`|
-|result_metadata|`json`|
