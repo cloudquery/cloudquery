@@ -46,6 +46,7 @@ func Trails() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
+			trailAdvancedEventSelectors(),
 			trailEventSelectors(),
 		},
 	}

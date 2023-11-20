@@ -12,18 +12,18 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func trailEventSelectors() *schema.Table {
-	tableName := "aws_cloudtrail_trail_event_selectors"
+func trailAdvancedEventSelectors() *schema.Table {
+	tableName := "aws_cloudtrail_trail_advanced_event_selectors"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_EventSelector.html`,
-		Resolver:    fetchCloudtrailTrailEventSelectors,
-		Transform:   transformers.TransformWithStruct(&types.EventSelector{}),
+		Description: `https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_AdvancedEventSelector.html`,
+		Resolver:    fetchCloudtrailTrailAdvancedEventSelectors,
+		Transform:   transformers.TransformWithStruct(&types.AdvancedEventSelector{}),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				// we can't use trail_arn as PK as single trail can have multiple event selectors
+				// we can't use trail_arn as PK as single trail can have multiple advanced event selectors
 				Name:     "trail_arn",
 				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
@@ -32,7 +32,7 @@ func trailEventSelectors() *schema.Table {
 	}
 }
 
-func fetchCloudtrailTrailEventSelectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchCloudtrailTrailAdvancedEventSelectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	r := parent.Item.(*models.CloudTrailWrapper)
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceCloudtrail).Cloudtrail
@@ -42,6 +42,6 @@ func fetchCloudtrailTrailEventSelectors(ctx context.Context, meta schema.ClientM
 	if err != nil {
 		return err
 	}
-	res <- response.EventSelectors
+	res <- response.AdvancedEventSelectors
 	return nil
 }
