@@ -40,9 +40,7 @@ func TestAWSTables(t *testing.T) {
 
 func ignoreTableDescription(tableName string) bool {
 	tablesToIgnore := map[string]bool{
-		"aws_resiliencehub_suggested_resiliency_policies": true,
-		// TODO: Remove this once we breakup S3 Bucket into multiple tables rather than a single composite table
-		"aws_s3_buckets": true,
+		"aws_resiliencehub_suggested_resiliency_policies":       true,
 		"aws_rds_cluster_parameter_group_parameters":            true,
 		"aws_rds_db_parameter_group_db_parameters":              true,
 		"aws_rds_cluster_parameters":                            true,
