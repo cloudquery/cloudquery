@@ -13,7 +13,7 @@ import (
 )
 
 func endpointAuthorization() *schema.Table {
-	tableName := "aws_redshift_endpoint_authorization"
+	tableName := "aws_redshift_endpoint_authorizations"
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_EndpointAuthorization.html`,
