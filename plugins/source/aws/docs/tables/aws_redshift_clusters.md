@@ -10,8 +10,8 @@ The primary key for this table is **arn**.
 
 The following tables depend on aws_redshift_clusters:
   - [aws_redshift_cluster_parameter_groups](aws_redshift_cluster_parameter_groups.md)
-  - [aws_redshift_endpoint_access](aws_redshift_endpoint_access.md)
-  - [aws_redshift_endpoint_authorization](aws_redshift_endpoint_authorization.md)
+  - [aws_redshift_endpoint_accesses](aws_redshift_endpoint_accesses.md)
+  - [aws_redshift_endpoint_authorizations](aws_redshift_endpoint_authorizations.md)
   - [aws_redshift_snapshots](aws_redshift_snapshots.md)
 
 ## Columns

@@ -1,6 +1,6 @@
-# Table: aws_redshift_endpoint_authorization
+# Table: aws_redshift_endpoint_authorizations
 
-This table shows data for Redshift Endpoint Authorization.
+This table shows data for Redshift Endpoint Authorizations.
 
 https://docs.aws.amazon.com/redshift/latest/APIReference/API_EndpointAuthorization.html
 
