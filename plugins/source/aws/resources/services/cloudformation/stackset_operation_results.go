@@ -16,10 +16,11 @@ func stackSetOperationResults() *schema.Table {
 	table_name := "aws_cloudformation_stack_set_operation_results"
 	return &schema.Table{
 		Name: table_name,
-		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackSetOperationResultSummary.html.
+		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackSetOperationResultSummary.html
+
 The 'request_account_id' and 'request_region' columns are added to show the account and region of where the request was made from.`,
 		Resolver:  fetchCloudformationStackSetOperationResults,
-		Transform: transformers.TransformWithStruct(&types.StackSetOperationResultSummary{}),
+		Transform: transformers.TransformWithStruct(&types.StackSetOperationResultSummary{}, transformers.WithPrimaryKeys("Account", "Region")),
 		Columns: []schema.Column{
 			{
 				Name:       "request_account_id",
@@ -34,15 +35,15 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 				PrimaryKey: true,
 			},
 			{
-				Name:       "operation_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("operation_id"),
-				PrimaryKey: true,
-			},
-			{
 				Name:       "stack_set_arn",
 				Type:       arrow.BinaryTypes.String,
 				Resolver:   schema.ParentColumnResolver("stack_set_arn"),
+				PrimaryKey: true,
+			},
+			{
+				Name:       "operation_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("operation_id"),
 				PrimaryKey: true,
 			},
 		},
