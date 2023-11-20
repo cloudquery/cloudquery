@@ -22,24 +22,28 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 		Transform: transformers.TransformWithStruct(&types.StackSetOperationResultSummary{}),
 		Columns: []schema.Column{
 			{
-				Name:     "request_account_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveAWSAccount,
+				Name:       "request_account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSAccount,
+				PrimaryKey: true,
 			},
 			{
-				Name:     "request_region",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveAWSRegion,
+				Name:       "request_region",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSRegion,
+				PrimaryKey: true,
 			},
 			{
-				Name:     "operation_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("operation_id"),
+				Name:       "operation_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("operation_id"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "stack_set_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("stack_set_arn"),
+				Name:       "stack_set_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("stack_set_arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -49,7 +53,7 @@ func fetchCloudformationStackSetOperationResults(ctx context.Context, meta schem
 	operation := parent.Item.(models.ExpandedStackSetOperation)
 	input := cloudformation.ListStackSetOperationResultsInput{
 		OperationId:  operation.OperationId,
-		StackSetName: stackSet.StackSetName,
+		StackSetName: stackSet.StackSetId,
 		CallAs:       stackSet.CallAs,
 	}
 
