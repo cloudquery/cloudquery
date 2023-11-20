@@ -15,9 +15,7 @@ func functionURLConfigs() *schema.Table {
 		Name:        "aws_lambda_function_url_configs",
 		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_FunctionUrlConfig.html`,
 		Resolver:    fetchLambdaFunctionURLConfigs,
-		Transform: transformers.TransformWithStruct(&types.FunctionUrlConfig{},
-			transformers.WithPrimaryKeys("FunctionArn", "FunctionUrl"),
-		),
+		Transform:   transformers.TransformWithStruct(&types.FunctionUrlConfig{}, transformers.WithPrimaryKeys("FunctionArn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
