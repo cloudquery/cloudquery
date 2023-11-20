@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"maps"
 	"strings"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec"
@@ -94,21 +95,21 @@ var awsExceptions = map[string]string{
 	"xray":                         "AWS X-Ray",
 }
 
-func titleTransformer(table *schema.Table) {
-	if table.Title == "" {
-		exceptions := make(map[string]string)
-		for k, v := range docs.DefaultTitleExceptions {
-			exceptions[k] = v
-		}
-		for k, v := range awsExceptions {
-			exceptions[k] = v
-		}
-		csr := caser.New(caser.WithCustomExceptions(exceptions))
-		t := csr.ToTitle(table.Name)
-		table.Title = strings.Trim(strings.ReplaceAll(t, "  ", " "), " ")
+func titleTransformer() func(*schema.Table) {
+	exceptions := maps.Clone(docs.DefaultTitleExceptions)
+	maps.Copy(exceptions, awsExceptions)
+	csr := caser.New(caser.WithCustomExceptions(exceptions))
+	return func(table *schema.Table) {
+		titleTransformerFunc(table, csr)
+	}
+}
+
+func titleTransformerFunc(table *schema.Table, csr *caser.Caser) {
+	if len(table.Title) == 0 {
+		table.Title = strings.Trim(strings.ReplaceAll(csr.ToTitle(table.Name), "  ", " "), " ")
 	}
 	for _, rel := range table.Relations {
-		titleTransformer(rel)
+		titleTransformerFunc(rel, csr)
 	}
 }
 
