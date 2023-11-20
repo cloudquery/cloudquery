@@ -20,7 +20,7 @@ func registrySchemas() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/glue/latest/webapi/API_GetSchema.html`,
 		Resolver:            fetchGlueRegistrySchemas,
 		PreResourceResolver: getRegistrySchema,
-		Transform:           transformers.TransformWithStruct(&glue.GetSchemaOutput{}),
+		Transform:           transformers.TransformWithStruct(&glue.GetSchemaOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

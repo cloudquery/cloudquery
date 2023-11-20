@@ -19,4 +19,3 @@ The primary key for this table is **arn**.
 |create_date|`timestamp[us, tz=UTC]`|
 |thumbprint_list|`list<item: utf8, nullable>`|
 |url|`utf8`|
-|result_metadata|`json`|

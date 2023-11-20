@@ -23,4 +23,3 @@ This table depends on [aws_mq_broker_configurations](aws_mq_broker_configuration
 |configuration_id|`utf8`|
 |created|`timestamp[us, tz=UTC]`|
 |description|`utf8`|
-|result_metadata|`json`|

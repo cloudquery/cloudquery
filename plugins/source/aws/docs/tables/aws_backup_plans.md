@@ -30,4 +30,3 @@ The following tables depend on aws_backup_plans:
 |deletion_date|`timestamp[us, tz=UTC]`|
 |last_execution_date|`timestamp[us, tz=UTC]`|
 |version_id (PK)|`utf8`|
-|result_metadata|`json`|

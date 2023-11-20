@@ -38,4 +38,3 @@ The primary key for this table is **arn**.
 |subnet_id|`utf8`|
 |url|`utf8`|
 |volume_size_in_gb|`int64`|
-|result_metadata|`json`|

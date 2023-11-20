@@ -25,4 +25,3 @@ The primary key for this table is **arn**.
 |explainer_config|`json`|
 |kms_key_id|`utf8`|
 |shadow_production_variants|`json`|
-|result_metadata|`json`|

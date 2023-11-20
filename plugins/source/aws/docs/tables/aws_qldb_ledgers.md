@@ -28,4 +28,3 @@ The following tables depend on aws_qldb_ledgers:
 |name|`utf8`|
 |permissions_mode|`utf8`|
 |state|`utf8`|
-|result_metadata|`json`|

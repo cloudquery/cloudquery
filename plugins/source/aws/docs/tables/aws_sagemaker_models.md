@@ -26,4 +26,3 @@ The primary key for this table is **arn**.
 |inference_execution_config|`json`|
 |primary_container|`json`|
 |vpc_config|`json`|
-|result_metadata|`json`|

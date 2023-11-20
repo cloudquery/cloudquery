@@ -21,7 +21,7 @@ func rolePolicies() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetRolePolicy.html`,
 		Resolver:            fetchIamRolePolicies,
 		PreResourceResolver: getRolePolicy,
-		Transform:           transformers.TransformWithStruct(&iam.GetRolePolicyOutput{}, transformers.WithPrimaryKeys("PolicyName")),
+		Transform:           transformers.TransformWithStruct(&iam.GetRolePolicyOutput{}, transformers.WithPrimaryKeys("PolicyName"), transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{

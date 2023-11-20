@@ -20,7 +20,7 @@ func BillingGroups() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/iot/latest/apireference/API_DescribeBillingGroup.html`,
 		Resolver:            fetchIotBillingGroups,
 		PreResourceResolver: getBillingGroup,
-		Transform:           transformers.TransformWithStruct(&iot.DescribeBillingGroupOutput{}),
+		Transform:           transformers.TransformWithStruct(&iot.DescribeBillingGroupOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
