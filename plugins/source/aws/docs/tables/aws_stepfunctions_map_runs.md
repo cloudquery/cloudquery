@@ -32,4 +32,6 @@ The following tables depend on aws_stepfunctions_map_runs:
 |status|`utf8`|
 |tolerated_failure_count|`int64`|
 |tolerated_failure_percentage|`float64`|
+|redrive_count|`int64`|
+|redrive_date|`timestamp[us, tz=UTC]`|
 |stop_date|`timestamp[us, tz=UTC]`|

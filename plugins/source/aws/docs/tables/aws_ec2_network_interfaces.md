@@ -19,6 +19,7 @@ The primary key for this table is **arn**.
 |association|`json`|
 |attachment|`json`|
 |availability_zone|`utf8`|
+|connection_tracking_configuration|`json`|
 |deny_all_igw_traffic|`bool`|
 |description|`utf8`|
 |groups|`json`|

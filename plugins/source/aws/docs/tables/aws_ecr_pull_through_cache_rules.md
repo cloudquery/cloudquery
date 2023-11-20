@@ -15,6 +15,9 @@ The composite primary key for this table is (**account_id**, **region**, **ecr_r
 |account_id (PK)|`utf8`|
 |region (PK)|`utf8`|
 |created_at|`timestamp[us, tz=UTC]`|
+|credential_arn|`utf8`|
 |ecr_repository_prefix (PK)|`utf8`|
 |registry_id (PK)|`utf8`|
+|updated_at|`timestamp[us, tz=UTC]`|
+|upstream_registry|`utf8`|
 |upstream_registry_url (PK)|`utf8`|
