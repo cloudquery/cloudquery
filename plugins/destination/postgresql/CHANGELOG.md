@@ -1,5 +1,20 @@
 # Changelog
 
+## [7.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.0.1...plugins-destination-postgresql-v7.1.0) (2023-11-16)
+
+
+### Features
+
+* Cache queries for writing ([#15223](https://github.com/cloudquery/cloudquery/issues/15223)) ([2f9e4bc](https://github.com/cloudquery/cloudquery/commit/2f9e4bc1b8110b1622c0db89c608cb2030fa32b9))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.0 ([#15132](https://github.com/cloudquery/cloudquery/issues/15132)) ([81ee138](https://github.com/cloudquery/cloudquery/commit/81ee138ff86c4b92c3ec93208e0a7e05af2b0036))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.1 ([#15263](https://github.com/cloudquery/cloudquery/issues/15263)) ([a9a39ef](https://github.com/cloudquery/cloudquery/commit/a9a39efe8112a564f21c06ba7627fe6c7ced4cdf))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.2 ([#15325](https://github.com/cloudquery/cloudquery/issues/15325)) ([77f2db5](https://github.com/cloudquery/cloudquery/commit/77f2db52634bad6e56d970d55172b08d823b97c9))
+* Don't iterate over batch messages twice ([#15223](https://github.com/cloudquery/cloudquery/issues/15223)) ([2f9e4bc](https://github.com/cloudquery/cloudquery/commit/2f9e4bc1b8110b1622c0db89c608cb2030fa32b9))
+
 ## [7.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.0.0...plugins-destination-postgresql-v7.0.1) (2023-11-08)
 
 

@@ -4,7 +4,7 @@ This table shows data for Amazon Elastic Compute Cloud (EC2) VPC Endpoint Servic
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ServiceDetail.html
 
-The primary key for this table is **arn**.
+The composite primary key for this table is (**account_id**, **region**, **service_id**).
 
 ## Relations
 
@@ -17,9 +17,8 @@ The following tables depend on aws_ec2_vpc_endpoint_services:
 | ------------- | ------------- |
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id|`utf8`|
-|region|`utf8`|
-|arn (PK)|`utf8`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
 |tags|`json`|
 |acceptance_required|`bool`|
 |availability_zones|`list<item: utf8, nullable>`|
@@ -30,7 +29,7 @@ The following tables depend on aws_ec2_vpc_endpoint_services:
 |private_dns_name|`utf8`|
 |private_dns_name_verification_state|`utf8`|
 |private_dns_names|`json`|
-|service_id|`utf8`|
+|service_id (PK)|`utf8`|
 |service_name|`utf8`|
 |service_type|`json`|
 |supported_ip_address_types|`list<item: utf8, nullable>`|

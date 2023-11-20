@@ -4,7 +4,7 @@ This table shows data for AWS CloudFormation Stack Instance Summaries.
 
 https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackInstanceSummary.html
 
-The composite primary key for this table is (**stack_set_arn**, **stack_set_id**).
+The composite primary key for this table is (**stack_set_arn**, **stack_id**, **stack_set_id**).
 
 ## Relations
 
@@ -28,7 +28,7 @@ The following tables depend on aws_cloudformation_stack_instance_summaries:
 |last_drift_check_timestamp|`timestamp[us, tz=UTC]`|
 |last_operation_id|`utf8`|
 |organizational_unit_id|`utf8`|
-|stack_id|`utf8`|
+|stack_id (PK)|`utf8`|
 |stack_instance_status|`json`|
 |stack_set_id (PK)|`utf8`|
 |status|`utf8`|

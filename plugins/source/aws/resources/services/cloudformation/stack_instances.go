@@ -17,7 +17,11 @@ func stackInstanceSummaries() *schema.Table {
 		Name:        table_name,
 		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackInstanceSummary.html`,
 		Resolver:    fetchStackInstanceSummary,
-		Transform:   transformers.TransformWithStruct(&models.ExpandedStackInstanceSummary{}, transformers.WithUnwrapStructFields("StackInstanceSummary"), transformers.WithSkipFields("CallAs"), transformers.WithPrimaryKeys("StackSetId")),
+		Transform: transformers.TransformWithStruct(&models.ExpandedStackInstanceSummary{},
+			transformers.WithUnwrapStructFields("StackInstanceSummary"),
+			transformers.WithSkipFields("CallAs"),
+			transformers.WithPrimaryKeys("StackSetId", "StackId"),
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
